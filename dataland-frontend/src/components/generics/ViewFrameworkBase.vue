@@ -2,18 +2,19 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section min-h-screen">
-      <MarginWrapper class="text-left mt-2 surface-0">
+      <MarginWrapper class="text-left mt-2 surface-0" style="margin-right: 0rem">
         <BackButton />
-        <FrameworkDataSearchBar class="mt-2" @search-confirmed="handleSearchConfirm" />
+        <FrameworkDataSearchBar class="mt-2" ref="frameworkDataSearchBar" @search-confirmed="handleSearchConfirm"
+        />
       </MarginWrapper>
-      <MarginWrapper class="surface-0">
+      <MarginWrapper class="surface-0" style="margin-right: 0rem">
         <div class="grid align-items-end">
           <div class="col-9">
             <CompanyInformation :companyID="companyID" />
           </div>
         </div>
       </MarginWrapper>
-      <MarginWrapper class="text-left surface-0">
+      <MarginWrapper class="text-left surface-0" style="margin-right: 0rem">
         <Dropdown
           id="frameworkDataDropdown"
           v-model="chosenDataTypeInDropdown"
@@ -27,7 +28,7 @@
           @change="setFramework"
         />
       </MarginWrapper>
-      <MarginWrapper>
+      <MarginWrapper style="margin-right: 0rem">
         <slot></slot>
       </MarginWrapper>
     </TheContent>
@@ -43,7 +44,7 @@ import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject } from "vue";
+import {defineComponent, inject, ref} from "vue";
 import Keycloak from "keycloak-js";
 import { DataMetaInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -75,6 +76,7 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
     };
   },
   data() {
@@ -82,12 +84,20 @@ export default defineComponent({
       chosenDataTypeInDropdown: "",
       dataTypesInDropdown: [] as { label: string; value: string }[],
       humanizeString: humanizeString,
+      windowScrollHandler: (): void => {
+        this.handleScroll();
+      },
     };
   },
   created() {
     void this.getAllDataIdsForFrameworkAndEmitThem();
+    window.addEventListener("scroll", this.windowScrollHandler);
   },
   methods: {
+    handleScroll() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      this.frameworkDataSearchBar?.$refs.autocomplete.hide();
+    },
     setFramework() {
       void this.$router.push(`/companies/${this.companyID as string}/frameworks/${this.chosenDataTypeInDropdown}`);
     },
