@@ -17,7 +17,7 @@ data class LksgForcedLabourSlaveryAndDebtBondage(
 
     val forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: YesNo?,
 
-    val forcedLabourAndSlaveryPreventionProvisionTraining: YesNo?,
+    val forcedLabourAndSlaveryPreventionTraining: YesNo?,
 
     val documentedWorkingHoursAndWages: YesNo?,
 

@@ -2687,7 +2687,7 @@
           "forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "forcedLabourAndSlaveryPreventionProvisionTraining": {
+          "forcedLabourAndSlaveryPreventionTraining": {
             "$ref": "#/components/schemas/YesNo"
           },
           "documentedWorkingHoursAndWages": {
