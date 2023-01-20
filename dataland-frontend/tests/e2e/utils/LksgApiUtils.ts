@@ -41,8 +41,8 @@ export async function getReportingYearOfLksgDataSet(dataId: string, token: strin
   const response = await new LksgDataControllerApi(
     new Configuration({ accessToken: token })
   ).getCompanyAssociatedLksgData(dataId);
-  const lksgData = response.data.data;
-  const reportingDate = lksgData!.social!.general!.dataDate; // TODO
+  const lksgData = response.data.data!;
+  const reportingDate = lksgData.social!.general!.dataDate; // TODO
   if (lksgData) {
     return reportingDate!.split("-").shift()!; // TODO
   } else {

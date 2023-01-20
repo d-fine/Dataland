@@ -11,8 +11,11 @@ import {
 } from "@e2e/utils/LksgApiUtils";
 import { getPreparedFixture, getStoredCompaniesForDataType, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
-import { MONTH_AND_DAY_OF_LKSG_PREPARED_FIXTURES } from "@e2e/utils/Constants";
-import { MEDIUM_TIMEOUT_IN_MS, SHORT_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
+import {
+  MONTH_AND_DAY_OF_LKSG_PREPARED_FIXTURES,
+  MEDIUM_TIMEOUT_IN_MS,
+  SHORT_TIMEOUT_IN_MS,
+} from "@e2e/utils/Constants";
 
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 

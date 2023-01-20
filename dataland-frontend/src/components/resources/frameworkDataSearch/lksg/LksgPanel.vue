@@ -76,6 +76,32 @@ export default defineComponent({
       }
     },
 
+    appendKpiValues(kpi: string, kpiValues: string, topic: string, dataDate: string): void {
+      let indexOfExistingItem = -1;
+      const singleKpiDataObject = {
+        kpi: kpi,
+        group: topic == "general" ? `_${topic}` : topic,
+        [dataDate ? dataDate : ""]: kpiValues,
+      };
+      indexOfExistingItem = this.kpisDataObjects.findIndex((item) => item.kpi === kpi);
+
+      if (indexOfExistingItem !== -1) {
+        Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiDataObject);
+      } else {
+        this.kpisDataObjects.push(singleKpiDataObject);
+      }
+    },
+
+    sortDatesToDisplayAsColumns(): void {
+      this.listOfDatesToDisplayAsColumns.sort((dateA, dateB) => {
+        if (Date.parse(dateA) < Date.parse(dateB)) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    },
+
     convertLksgDataToFrontendFormat(): void {
       this.listOfDatesToDisplayAsColumns = [];
       this.lksgData?.forEach((oneLksgDataSet) => {
@@ -86,30 +112,12 @@ export default defineComponent({
         for (const area of Object.values(oneLksgDataSet)) {
           for (const [topic, topicValues] of Object.entries(area)) {
             for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) {
-              let indexOfExistingItem = -1;
-              const singleKpiDataObject = {
-                kpi: kpi,
-                group: topic == "general" ? `_${topic}` : topic,
-                [dataDate ? dataDate : ""]: kpiValues as string,
-              };
-              indexOfExistingItem = this.kpisDataObjects.findIndex((item) => item.kpi === kpi);
-
-              if (indexOfExistingItem !== -1) {
-                Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiDataObject);
-              } else {
-                this.kpisDataObjects.push(singleKpiDataObject);
-              }
+              this.appendKpiValues(kpi, kpiValues as string, topic, dataDate);
             }
           }
         }
       });
-      this.listOfDatesToDisplayAsColumns.sort((dateA, dateB) => {
-        if (Date.parse(dateA) < Date.parse(dateB)) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
+      this.sortDatesToDisplayAsColumns();
     },
   },
 });

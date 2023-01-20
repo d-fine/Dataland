@@ -16,7 +16,7 @@ export function getCompanyLegalForm(): string {
     "AG",
     "GmbH & Co. KG",
   ];
-  return legalForms[Math.floor(Math.random() * legalForms.length)];
+  return legalForms[faker.datatype.number(legalForms.length - 1)];
 }
 
 export function generateCompanyInformation(): CompanyInformation {

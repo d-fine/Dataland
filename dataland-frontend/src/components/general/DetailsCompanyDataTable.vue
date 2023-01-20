@@ -58,7 +58,7 @@ export default defineComponent({
   },
   watch: {
     dataToDisplay() {
-      void this.generateColsNames();
+      this.generateColsNames();
     },
   },
 });
