@@ -34,18 +34,4 @@ export function uploadCompanyAndLksgDataViaApi(
       });
     }
   );
-} // TODO might be kind of a duplicate for all Dataintegrity tests!
-
-export async function getReportingYearOfLksgDataSet(dataId: string, token: string): Promise<string> {
-  // check if lksg
-  const response = await new LksgDataControllerApi(
-    new Configuration({ accessToken: token })
-  ).getCompanyAssociatedLksgData(dataId);
-  const lksgData = response.data.data!;
-  const reportingDate = lksgData.social!.general!.dataDate; // TODO
-  if (lksgData) {
-    return reportingDate!.split("-").shift()!; // TODO
-  } else {
-    throw Error(`blub`);
-  }
 }

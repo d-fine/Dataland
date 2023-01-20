@@ -3,9 +3,8 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import { DataTypeEnum, LksgData } from "@clients/backend";
+import {Configuration, DataTypeEnum, LksgData, LksgDataControllerApi} from "@clients/backend";
 import {
-  getReportingYearOfLksgDataSet,
   uploadOneLksgDatasetViaApi,
   uploadCompanyAndLksgDataViaApi,
 } from "@e2e/utils/LksgApiUtils";
@@ -37,6 +36,19 @@ describeIf(
         preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
       });
     });
+
+    async function getReportingYearOfLksgDataSet(dataId: string, token: string): Promise<string> {
+      const response = await new LksgDataControllerApi(
+          new Configuration({ accessToken: token })
+      ).getCompanyAssociatedLksgData(dataId);
+      const lksgData = response.data.data;
+      const reportingDateAsString = lksgData!.social!.general!.dataDate as string
+      if (lksgData) {
+        return (new Date(reportingDateAsString)).getFullYear().toString()
+      } else {
+        throw Error(`No Lksg dataset could be retrieved for the provided dataId ${dataId}`);
+      }
+    }
 
     function getYearFromLksgDate(lksgDate: string): string {
       return lksgDate.split("-")[0];
