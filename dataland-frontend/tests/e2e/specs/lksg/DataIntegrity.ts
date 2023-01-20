@@ -7,10 +7,9 @@ import { DataTypeEnum, LksgData } from "@clients/backend";
 import {
   getReportingYearOfLksgDataSet,
   uploadOneLksgDatasetViaApi,
-  getPreparedLksgFixture,
   uploadCompanyAndLksgDataViaApi,
 } from "@e2e/utils/LksgApiUtils";
-import { getStoredCompaniesForDataType, UploadIds } from "@e2e/utils/GeneralApiUtils";
+import { getPreparedFixture, getStoredCompaniesForDataType, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
 import { MONTH_AND_DAY_OF_LKSG_PREPARED_FIXTURES } from "@e2e/utils/Constants";
 import { MEDIUM_TIMEOUT_IN_MS, SHORT_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
@@ -66,7 +65,7 @@ describeIf(
     }
 
     it("Check Lksg view page for company with one Lksg data set", () => {
-      const preparedFixture = getPreparedLksgFixture("one-lksg-data-set", preparedFixtures);
+      const preparedFixture = getPreparedFixture("one-lksg-data-set", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
 
@@ -148,7 +147,7 @@ describeIf(
     });
 
     it("Check Lksg view page for company with two Lksg data sets reported for the same year", () => {
-      const preparedFixture = getPreparedLksgFixture("two-lksg-data-sets-in-same-year", preparedFixtures);
+      const preparedFixture = getPreparedFixture("two-lksg-data-sets-in-same-year", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
 
@@ -176,7 +175,7 @@ describeIf(
     });
 
     it("Check Lksg view page for company with six Lksg data sets reported in different years ", () => {
-      const preparedFixture = getPreparedLksgFixture("six-lksg-data-sets-in-different-years", preparedFixtures);
+      const preparedFixture = getPreparedFixture("six-lksg-data-sets-in-different-years", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
 

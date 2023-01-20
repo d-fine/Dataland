@@ -7,7 +7,6 @@ import {
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
-import { FixtureData } from "../fixtures/FixtureUtils";
 
 export async function uploadOneLksgDatasetViaApi(
   token: string,
@@ -22,22 +21,6 @@ export async function uploadOneLksgDatasetViaApi(
   });
   return response.data;
 }
-
-export function getPreparedLksgFixture(
-  companyName: string,
-  preparedFixtures: Array<FixtureData<LksgData>>
-): FixtureData<LksgData> {
-  const preparedFixture = preparedFixtures.find(
-    (fixtureData): boolean => fixtureData.companyInformation.companyName == companyName
-  )!;
-  if (!preparedFixture) {
-    throw new ReferenceError(
-      "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
-    );
-  } else {
-    return preparedFixture;
-  }
-} // TODO this is partially a duplicate in all DataIntegrity tests
 
 export function uploadCompanyAndLksgDataViaApi(
   token: string,

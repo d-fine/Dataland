@@ -5,8 +5,9 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { LksgData } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
-import { getPreparedLksgFixture, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgApiUtils";
+import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgApiUtils";
 import { MEDIUM_TIMEOUT_IN_MS } from "../../utils/Constants";
+import { getPreparedFixture } from "../../utils/GeneralApiUtils";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -90,7 +91,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
           })
           .then(() => {
-            const fixture = getPreparedLksgFixture(companyName, preparedFixtures);
+            const fixture = getPreparedFixture(companyName, preparedFixtures);
             return getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
               return uploadCompanyAndLksgDataViaApi(token, fixture.companyInformation, fixture.t).then((uploadIds) => {
                 return uploadOneEuTaxonomyFinancialsDatasetViaApi(

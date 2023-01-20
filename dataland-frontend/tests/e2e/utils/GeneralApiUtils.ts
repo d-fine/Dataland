@@ -1,5 +1,6 @@
 import { CompanyDataControllerApi, Configuration, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { RouteHandler } from "cypress/types/net-stubbing";
+import { FixtureData } from "../fixtures/FixtureUtils";
 
 export interface UploadIds {
   companyId: string;
@@ -42,4 +43,15 @@ export function interceptAllAndCheckFor500Errors(): void {
   };
   cy.intercept("/api/**", handler);
   cy.intercept("/api-keys/**", handler);
+}
+
+export function getPreparedFixture<T>(name: string, preparedFixtures: FixtureData<T>[]): FixtureData<T> {
+  const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
+  if (!preparedFixture) {
+    throw new ReferenceError(
+      "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
+    );
+  } else {
+    return preparedFixture;
+  }
 }

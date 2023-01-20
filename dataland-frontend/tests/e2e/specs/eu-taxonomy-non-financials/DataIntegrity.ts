@@ -6,6 +6,7 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { LONG_TIMEOUT_IN_MS } from "@e2e/utils/Constants";
+import { getPreparedFixture } from "../../utils/GeneralApiUtils";
 
 describeIf(
   "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",
@@ -25,17 +26,6 @@ describeIf(
         preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
       });
     });
-
-    function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForNonFinancials> {
-      const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
-      if (!preparedFixture) {
-        throw new ReferenceError(
-          "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
-        );
-      } else {
-        return preparedFixture;
-      }
-    }
 
     function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
       return Math.round(inputNumber * 100) / 100;
@@ -70,7 +60,7 @@ describeIf(
     }
 
     it("Create a EU Taxonomy Dataset via Api with total(€) and eligible(%) numbers", () => {
-      const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers");
+      const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
         cy.get("body")
@@ -84,7 +74,7 @@ describeIf(
     });
 
     it("Create a EU Taxonomy Dataset via Api with only eligible(%) numbers", () => {
-      const preparedFixture = getPreparedFixture("only-eligible-numbers");
+      const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("body")
           .should("contain", "Eligible OpEx")
