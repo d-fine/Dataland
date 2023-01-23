@@ -6,126 +6,327 @@
     </template>
     <template #content>
       <div class="grid uploadFormWrapper">
-        <div id="topicLabel" class="col-3 text-left topicLabel">
-          <h4 id="topicTitle" class="title">General</h4>
-          <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-          <p>Please input all relevant basic information about the dataset</p>
-        </div>
-        <div id="uploadForm" class="col-6 text-left uploadForm">
+        <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="formInputsModel"
             :actions="false"
             type="form"
-            id="createEuTaxonomyForFinancialsForm"
+            id="createLkSGForm"
             @submit="postEuTaxonomyDataForFinancials"
             #default="{ state: { valid } }"
           >
-            <FormKit
-              type="text"
-              name="companyId"
-              label="Company ID"
-              placeholder="Company ID"
-              :model-value="companyID"
-              disabled="true"
-            />
-            <FormKit type="group" name="data" label="data">
-              <FormKit
-                type="select"
-                name="financialServicesTypes"
-                multiple
-                validation="required"
-                label="Financial Services Types"
-                placeholder="Please choose"
-                :options="{
-                  CreditInstitution: humanizeString('CreditInstitution'),
-                  InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),
-                  AssetManagement: humanizeString('AssetManagement'),
-                  InvestmentFirm: humanizeString('InvestmentFirm'),
-                }"
-                help="Select all that apply by holding command (macOS) or control (PC)."
-              />
-              <FormKit type="group" name="assurance" label="Assurance">
-                <FormKit
-                  type="select"
-                  name="assurance"
-                  label="Assurance"
-                  placeholder="Please choose"
-                  :options="{
-                    None: humanizeString('None'),
-                    LimitedAssurance: humanizeString('LimitedAssurance'),
-                    ReasonableAssurance: humanizeString('ReasonableAssurance'),
-                  }"
-                />
-              </FormKit>
-              <FormKit
-                type="radio"
-                name="reportingObligation"
-                label="Reporting Obligation"
-                :options="['Yes', 'No']"
-                :outer-class="{
-                  'formkit-outer': false,
-                }"
-                :inner-class="{
-                  'formkit-inner': false,
-                }"
-                :input-class="{
-                  'formkit-input': false,
-                  'p-radiobutton:': true,
-                }"
-              />
-              <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
-                <template
-                  v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement', 'InvestmentFirm']"
-                  :key="fsType"
-                >
-                  <div :name="fsType">
-                    <FormKit type="group" :name="fsType">
-                      <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>
-                      <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />
-                      <DataPointFormElement name="taxonomyNonEligibleActivity" label="Taxonomy Non Eligible Activity" />
-                      <DataPointFormElement name="derivatives" label="Derivatives" />
-                      <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />
-                      <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />
-                    </FormKit>
-                  </div>
-                </template>
-              </FormKit>
-              <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">
-                <h4>Credit Institution KPIs</h4>
-                <div name="creditInstitutionKpis">
-                  <DataPointFormElement name="tradingPortfolio" label="Trading Portfolio" />
-                  <DataPointFormElement name="interbankLoans" label="Interbank Loans" />
-                  <DataPointFormElement
-                    name="tradingPortfolioAndInterbankLoans"
-                    label="Trading Portfolio and Interbank Loans (combined)"
+            <div class="uploadFormSection grid">
+              <div id="topicLabel" class="col-3 topicLabel">
+                <h4 id="general" class="anchor title">General</h4>
+                <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
+                <p>Please input all relevant basic information about the dataset</p>
+              </div>
+
+              <div id="formFields" class="col-9 formFields">
+                <FormKit type="group" name="data" label="data">
+                  <FormKit
+                    type="date"
+                    value="03-03-2018"
+                    label="Birthday"
+                    help="Enter your birth day"
+                    validation="required"
+                    validation-visibility="live"
                   />
-                  <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />
-                </div>
-              </FormKit>
-              <FormKit type="group" name="insuranceKpis" label="Insurance KPIs">
-                <h4>Insurance KPIs</h4>
-                <DataPointFormElement
-                  name="taxonomyEligibleNonLifeInsuranceActivities"
-                  label="Taxonomy Eligible non Life Insurance Activities"
+                  <FormKit
+                    type="radio"
+                    name="lksgInScope"
+                    label="LKSG in Scope"
+                    :options="['Yes', 'No']"
+                    :outer-class="{
+                      'formkit-outer': false,
+                      'yes-no-radio': true,
+                    }"
+                    :inner-class="{
+                      'formkit-inner': false,
+                    }"
+                    :input-class="{
+                      'formkit-input': false,
+                      'p-radiobutton': true,
+                    }"
+                  />
+                  <FormKit type="text" label="Company Legal Form" name="companyLegalForm" validation="required" />
+                  <FormKit
+                    type="number"
+                    label="VAT Identification Number"
+                    name="VATidentificationNumber"
+                    validation="required|number"
+                    step="1"
+                  />
+                  <FormKit
+                    type="number"
+                    label="Number Of Employees"
+                    name="shareOfTemporaryWorkers"
+                    placeholder="Value"
+                    validation="required|number|between:0,100"
+                    step="1"
+                    :inner-class="{
+                      short: true,
+                    }"
+                  />
+                  <FormKit
+                    type="number"
+                    label="Share Of Temporary Workers"
+                    name="shareOfTemporaryWorkers"
+                    placeholder="Value %"
+                    validation="required|number|between:0,100"
+                    step="1"
+                    :inner-class="{
+                      short: true,
+                    }"
+                  />
+                  <FormKit type="group" name="assurance" label="Assurance">
+                    <div class="next-to-each-other">
+                      <FormKit
+                        type="number"
+                        label="Total Revenue"
+                        name="totalRevenue"
+                        placeholder="Value"
+                        validation="required|number"
+                        step="1"
+                      />
+                      <FormKit type="select" label="&nbsp;" name="unit" placeholder="Unit" :options="['zł', 'USD']" />
+                    </div>
+                  </FormKit>
+                  <FormKit
+                    type="text"
+                    label="Total Revenue Currency"
+                    name="totalRevenueCurrency"
+                    placeholder="Currency"
+                    validation="required"
+                    :inner-class="{
+                      medium: true,
+                    }"
+                  />
+
+                  <hr />
+
+                  <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
+                    <template
+                      v-for="fsType in [
+                        'CreditInstitution',
+                        'InsuranceOrReinsurance',
+                        'AssetManagement',
+                        'InvestmentFirm',
+                      ]"
+                      :key="fsType"
+                    >
+                      <div :name="fsType">
+                        <FormKit type="group" :name="fsType">
+                          <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>
+                          <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />
+                          <DataPointFormElement
+                            name="taxonomyNonEligibleActivity"
+                            label="Taxonomy Non Eligible Activity"
+                          />
+                          <DataPointFormElement name="derivatives" label="Derivatives" />
+                          <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />
+                          <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />
+                        </FormKit>
+                      </div>
+                    </template>
+                  </FormKit>
+                </FormKit>
+                <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
+              </div>
+            </div>
+            <div class="uploadFormSection grid">
+              <div id="topicLabel" class="col-3 topicLabel">
+                <h4 id="childLabour" class="anchor title">Child Labour</h4>
+                <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
+                <p>Please input all relevant basic information about the dataset</p>
+              </div>
+
+              <div id="formFields" class="col-9 formFields">
+                <FormKit
+                  type="text"
+                  name="companyId"
+                  label="Company ID"
+                  placeholder="Company ID"
+                  :model-value="companyID"
+                  disabled="true"
                 />
-              </FormKit>
-              <FormKit type="group" name="investmentFirmKpis" label="Investment Firm KPIs">
-                <h4>Investment Firm KPIs</h4>
-                <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />
-              </FormKit>
-              <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
-            </FormKit>
+                <FormKit type="group" name="data" label="data">
+                  <FormKit
+                    type="select"
+                    name="financialServicesTypes"
+                    multiple
+                    validation="required"
+                    label="Financial Services Types"
+                    placeholder="Please choose"
+                    :options="{
+                      CreditInstitution: humanizeString('CreditInstitution'),
+                      InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),
+                      AssetManagement: humanizeString('AssetManagement'),
+                      InvestmentFirm: humanizeString('InvestmentFirm'),
+                    }"
+                    help="Select all that apply by holding command (macOS) or control (PC)."
+                  />
+                  <FormKit type="group" name="assurance" label="Assurance">
+                    <FormKit
+                      type="select"
+                      name="assurance"
+                      label="Assurance"
+                      placeholder="Please choose"
+                      :options="{
+                        None: humanizeString('None'),
+                        LimitedAssurance: humanizeString('LimitedAssurance'),
+                        ReasonableAssurance: humanizeString('ReasonableAssurance'),
+                      }"
+                    />
+                  </FormKit>
+                  <FormKit
+                    type="radio"
+                    name="reportingObligation"
+                    label="Reporting Obligation"
+                    :options="['Yes', 'No']"
+                    :outer-class="{
+                      'formkit-outer': false,
+                    }"
+                    :inner-class="{
+                      'formkit-inner': false,
+                    }"
+                    :input-class="{
+                      'formkit-input': false,
+                      'p-radiobutton:': true,
+                    }"
+                  />
+                  <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
+                    <template
+                      v-for="fsType in [
+                        'CreditInstitution',
+                        'InsuranceOrReinsurance',
+                        'AssetManagement',
+                        'InvestmentFirm',
+                      ]"
+                      :key="fsType"
+                    >
+                      <div :name="fsType">
+                        <FormKit type="group" :name="fsType">
+                          <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>
+                          <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />
+                          <DataPointFormElement
+                            name="taxonomyNonEligibleActivity"
+                            label="Taxonomy Non Eligible Activity"
+                          />
+                          <DataPointFormElement name="derivatives" label="Derivatives" />
+                          <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />
+                          <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />
+                        </FormKit>
+                      </div>
+                    </template>
+                  </FormKit>
+                </FormKit>
+                <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
+              </div>
+            </div>
+            <div class="uploadFormSection grid">
+              <div id="topicLabel" class="col-3 topicLabel">
+                <h4 id="osh" class="anchor title">General</h4>
+                <div class="p-badge badge-yellow"><span>OSH</span></div>
+                <p>Please input all relevant basic information about the dataset</p>
+              </div>
+
+              <div id="formFields" class="col-9 formFields">
+                <FormKit
+                  type="date"
+                  value="2011-01-01"
+                  label="Birthday"
+                  help="Enter your birth day"
+                  validation="required|date_before:2010-01-01"
+                  validation-visibility="live"
+                />
+                <FormKit
+                  type="text"
+                  name="companyId"
+                  label="Company ID"
+                  placeholder="Company ID"
+                  :model-value="companyID"
+                  disabled="true"
+                />
+                <FormKit type="group" name="data" label="data">
+                  <FormKit
+                    type="select"
+                    name="financialServicesTypes"
+                    multiple
+                    validation="required"
+                    label="Financial Services Types"
+                    placeholder="Please choose"
+                    :options="{
+                      CreditInstitution: humanizeString('CreditInstitution'),
+                      InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),
+                      AssetManagement: humanizeString('AssetManagement'),
+                      InvestmentFirm: humanizeString('InvestmentFirm'),
+                    }"
+                    help="Select all that apply by holding command (macOS) or control (PC)."
+                  />
+                  <FormKit type="group" name="assurance" label="Assurance">
+                    <FormKit
+                      type="select"
+                      name="assurance"
+                      label="Assurance"
+                      placeholder="Please choose"
+                      :options="{
+                        None: humanizeString('None'),
+                        LimitedAssurance: humanizeString('LimitedAssurance'),
+                        ReasonableAssurance: humanizeString('ReasonableAssurance'),
+                      }"
+                    />
+                  </FormKit>
+                  <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
+                    <template
+                      v-for="fsType in [
+                        'CreditInstitution',
+                        'InsuranceOrReinsurance',
+                        'AssetManagement',
+                        'InvestmentFirm',
+                      ]"
+                      :key="fsType"
+                    >
+                      <div :name="fsType">
+                        <FormKit type="group" :name="fsType">
+                          <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>
+                          <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />
+                          <DataPointFormElement
+                            name="taxonomyNonEligibleActivity"
+                            label="Taxonomy Non Eligible Activity"
+                          />
+                          <DataPointFormElement name="derivatives" label="Derivatives" />
+                          <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />
+                          <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />
+                        </FormKit>
+                      </div>
+                    </template>
+                  </FormKit>
+                </FormKit>
+                <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
+              </div>
+            </div>
           </FormKit>
         </div>
+
         <div id="jumpLinks" class="col-3 text-left jumpLinks">
-          <h4 id="topicTitle" class="title">On this page</h4>
+          <h4 id="topicTitles" class="title">On this page</h4>
 
           <ul>
             <li><a href="#general">General</a></li>
             <li><a href="#childLabour">Child labour</a></li>
             <li><a href="#forcedLabourSlaveryAndDebtBondage">Forced labour, slavery and debt bondage</a></li>
             <li><a href="#evidenceCertificatesAndAttestations">Evidence, certificates and attestations</a></li>
-            <li><a href="#support">Theme Support</a></li>
+            <li><a href="#socialAndEmployeeMatters">Social and employee matters</a></li>
+            <li><a href="#environment">Environment</a></li>
+            <li><a href="#osh">OSH</a></li>
+            <li><a href="#riskManagement">Risk management</a></li>
+            <li><a href="#grievanceMechanism">Grievance mechanism</a></li>
+            <li><a href="#codeOfConduct">Code of Conduct</a></li>
+            <li><a href="#grievanceMechanism">Grievance mechanism</a></li>
+            <li><a href="#freedomOfAssociation">Freedom of association</a></li>
+            <li><a href="#humanRights">Human rights</a></li>
+            <li><a href="#waste">Waste</a></li>
           </ul>
         </div>
       </div>
@@ -208,3 +409,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped lang="scss">
+.anchor {
+  scroll-margin-top: 300px;
+}
+</style>

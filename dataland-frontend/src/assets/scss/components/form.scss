@@ -5,11 +5,10 @@
 }
 form {
   text-align: left;
-  [data-type="text"], [data-type="select"] {
+  [data-type="text"], [data-type="select"], [data-type="number"] {
     .formkit-inner {
       font-size: $input-text-fs;
       border-radius: 0;
-      width: 100%;
       background:$input-text-bg;
       border-style: solid;
       border-width: 0 0 1px 0;
@@ -400,8 +399,58 @@ input[type="checkbox"], input[type="radio"]{
   }
 }
 .uploadFormWrapper {
+  input[type=checkbox], input[type=radio] {
+    display: grid;
+    place-content: center;
+    margin: 0;
+    height: 18px;
+    width: 18px;
+    background-color: white;
+    border: 2px solid $input-label-color;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  input[type=checkbox]::before, input[type=radio]::before {
+    content: "";
+    width: 3px;
+    height: 7px;
+    border: solid $input-label-color;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+    display: none;
+  }
+  input[type=checkbox]:checked::before, input[type=radio]:checked::before {
+    display: block;
+  }
+  .short { width: 33%; }
+  .medium { width: 66%; }
+  .next-to-each-other {
+    display: flex;
+    gap: 1rem;
+    .formkit-outer {
+      width: calc(33% - 0.5em);
+    }
+  }
+  .yes-no-radio {
+    fieldset.formkit-fieldset {
+      border: 0;
+      padding: 0;
+    }
+    .formkit-options {
+      display: flex;
+      padding: 1rem 0;
+      .formkit-option:nth-child(2n) {
+        margin-left: 30%;
+      }
+    }
+  }
+  .formkit-wrapper, .formkit-fieldset {
+    max-width: 100%;
+  }
   .title {
-    margin-bottom: .25rem;
+    margin: .25rem 0;
   }
   p {
     margin: .25rem;
