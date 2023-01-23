@@ -7,6 +7,10 @@ import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonom
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { uploadCompanyAndLksgDataViaApi } from "../../utils/LksgUpload";
 import { getPreparedFixture } from "../../utils/GeneralApiUtils";
+import { uploadCompanyViaApi } from "../../utils/CompanyUpload";
+import { generateCompanyInformation } from "../../fixtures/CompanyFixtures";
+import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "../../utils/EuTaxonomyNonFinancialsUpload";
+import { generateEuTaxonomyDataForNonFinancials } from "../../fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -17,7 +21,8 @@ describe("The shared header of the framework pages should act as expected", { sc
       dataEnvironments: ["fakeFixtures"],
     },
     function (): void {
-      const companyName = "two-different-data-set-types";
+      const lksgAndFinancialCompanyName = "two-different-data-set-types";
+      const nonFinancialCompanyName = "some-non-financial-only-company";
       const dropdownSelector = "div#frameworkDataDropdown";
       const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
       const financialsDropdownItem = "EU Taxonomy for financial companies";
@@ -31,7 +36,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.wait(3000);
       }
 
-      function selectCompanyViaUniqueSearchRequest(framework: string): void {
+      function selectCompanyViaUniqueSearchRequest(framework: string, companyName: string): void {
         cy.visit(`/companies?input=${companyName}&framework=${framework}`);
         interceptFrameworkPageLoad(() => {
           const companySelector = "a span:contains( VIEW)";
@@ -40,9 +45,15 @@ describe("The shared header of the framework pages should act as expected", { sc
         });
       }
 
-      function selectCompanyViaAutocompleteClick(framework: string): void {
+      function selectCompanyViaAutocompleteOnCompaniesPage(framework: string, companyName: string): void {
         cy.visit(`/companies?framework=${framework}`);
-        const searchBarSelector = "input#search_bar_top";
+        searchCompanyViaLocalSearchBarAndSelect(companyName);
+      }
+
+      function searchCompanyViaLocalSearchBarAndSelect(
+        companyName: string,
+        searchBarSelector = "input#search_bar_top"
+      ): void {
         cy.get(searchBarSelector).click();
         cy.get(searchBarSelector).type(companyName, { force: true });
         interceptFrameworkPageLoad(() => {
@@ -78,19 +89,24 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get("h2").should("contain", "EU Taxonomy Data");
       }
 
+      function validateNonFinancialsPage(): void {
+        cy.url().should("contain", `/frameworks/eutaxonomy-non-financials`);
+        cy.get("h2").should("contain", "EU Taxonomy Data");
+      }
+
       function validateLksgPage(): void {
         cy.url().should("contain", `/frameworks/lksg`);
         cy.get("h2").should("contain", "LkSG data");
       }
 
-      before(() => {
+      function uploadLksgAndFinancialCompany(): void {
         let preparedFixtures: Array<FixtureData<LksgData>>;
         cy.fixture("CompanyInformationWithLksgPreparedFixtures")
           .then(function (jsonContent) {
             preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
           })
           .then(() => {
-            const fixture = getPreparedFixture(companyName, preparedFixtures);
+            const fixture = getPreparedFixture(lksgAndFinancialCompanyName, preparedFixtures);
             return getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
               return uploadCompanyAndLksgDataViaApi(token, fixture.companyInformation, fixture.t).then((uploadIds) => {
                 return uploadOneEuTaxonomyFinancialsDatasetViaApi(
@@ -101,14 +117,29 @@ describe("The shared header of the framework pages should act as expected", { sc
               });
             });
           });
+      }
+
+      function uploadNonFinancialCompany(): void {
+        getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+          const companyInformation = generateCompanyInformation();
+          companyInformation.companyName = nonFinancialCompanyName;
+          await uploadCompanyViaApi(token, companyInformation).then(async (storedCompany) => {
+            const nonFinancialDataSet = generateEuTaxonomyDataForNonFinancials();
+            await uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, nonFinancialDataSet);
+          });
+        });
+      }
+
+      before(() => {
+        uploadLksgAndFinancialCompany();
+        uploadNonFinancialCompany();
       });
 
       it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-
-        selectCompanyViaAutocompleteClick("eutaxonomy-financials");
+        selectCompanyViaAutocompleteOnCompaniesPage("eutaxonomy-financials", lksgAndFinancialCompanyName);
         validateFinancialsPage();
-        selectCompanyViaUniqueSearchRequest("eutaxonomy-financials");
+        selectCompanyViaUniqueSearchRequest("eutaxonomy-financials", lksgAndFinancialCompanyName);
         validateFinancialsPage();
         validateDropdown(financialsDropdownItem);
         dropdownSelect(lksgDropdownItem);
@@ -117,11 +148,19 @@ describe("The shared header of the framework pages should act as expected", { sc
         dropdownSelect(financialsDropdownItem);
         validateFinancialsPage();
 
-        selectCompanyViaAutocompleteClick("lksg");
+        selectCompanyViaAutocompleteOnCompaniesPage("lksg", lksgAndFinancialCompanyName);
         validateLksgPage();
-        selectCompanyViaUniqueSearchRequest("lksg");
+        selectCompanyViaUniqueSearchRequest("lksg", lksgAndFinancialCompanyName);
         validateLksgPage();
         validateDropdown(lksgDropdownItem);
+      });
+
+      it("Check that from a framework page you can search a company without this framework", () => {
+        cy.ensureLoggedIn();
+        selectCompanyViaUniqueSearchRequest("lksg", lksgAndFinancialCompanyName);
+        validateLksgPage();
+        searchCompanyViaLocalSearchBarAndSelect(nonFinancialCompanyName, "input#framework_data_search_bar_standard");
+        validateNonFinancialsPage();
       });
     }
   );
