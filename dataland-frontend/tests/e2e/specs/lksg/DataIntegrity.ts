@@ -186,42 +186,36 @@ describeIf(
       const preparedFixture = getPreparedFixture("six-lksg-data-sets-in-different-years", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
+      const reportingYearAsString = getYearFromLksgDate(lksgData.social!.general!.dataDate!);
+      const reportingYear: number = +reportingYearAsString;
+      const numberOfLksgDataSetsForCompany = 6;
 
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
-          const reportingYearAsString = getYearFromLksgDate(lksgData.social!.general!.dataDate!);
-          const reportingYear: number = +reportingYearAsString;
-          const numberOfLksgDataSetsForCompany = 6;
-          return (
-            uploadAnotherLksgDataSetToExistingCompany(uploadIds)
-              .then(uploadAnotherLksgDataSetToExistingCompany)
-              .then(uploadAnotherLksgDataSetToExistingCompany)
-              .then(uploadAnotherLksgDataSetToExistingCompany)
-              .then(uploadAnotherLksgDataSetToExistingCompany)
-              // TODO does someone have an idea how this can be done in one line like "queue this calllback four times"?
-              .then(() => {
-                cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
-                cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-                cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
-                  cy.get("table")
-                    .find(`tr:contains("Data Date")`)
-                    .find(`span`)
-                    .eq(numberOfLksgDataSetsForCompany)
-                    .contains(lksgData.social!.general!.dataDate!);
+          let currentChainable: Chainable<UploadIds> = uploadAnotherLksgDataSetToExistingCompany(uploadIds);
+          for (let i = 3; i <= numberOfLksgDataSetsForCompany; i++) {
+            currentChainable = currentChainable.then(uploadAnotherLksgDataSetToExistingCompany);
+          }
+          cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
+          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+          cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
+            cy.get("table")
+              .find(`tr:contains("Data Date")`)
+              .find(`span`)
+              .eq(numberOfLksgDataSetsForCompany)
+              .contains(lksgData.social!.general!.dataDate!);
 
-                  cy.get(`span.p-column-title`)
-                    .eq(numberOfLksgDataSetsForCompany)
-                    .should("contain.text", reportingYearAsString);
+            cy.get(`span.p-column-title`)
+              .eq(numberOfLksgDataSetsForCompany)
+              .should("contain.text", reportingYearAsString);
 
-                  const latestLksgDataSetReportingYear = reportingYear + numberOfLksgDataSetsForCompany - 1;
-                  for (let indexOfColumn = 1; indexOfColumn < numberOfLksgDataSetsForCompany; indexOfColumn++) {
-                    cy.get(`span.p-column-title`)
-                      .eq(indexOfColumn)
-                      .should("contain.text", (latestLksgDataSetReportingYear + 1 - indexOfColumn).toString());
-                  }
-                });
-              })
-          );
+            const latestLksgDataSetReportingYear = reportingYear + numberOfLksgDataSetsForCompany - 1;
+            for (let indexOfColumn = 1; indexOfColumn < numberOfLksgDataSetsForCompany; indexOfColumn++) {
+              cy.get(`span.p-column-title`)
+                .eq(indexOfColumn)
+                .should("contain.text", (latestLksgDataSetReportingYear + 1 - indexOfColumn).toString());
+            }
+          });
         });
       });
     });
