@@ -1,13 +1,13 @@
 <template>
   <ViewFrameworkBase :companyID="companyID" dataType="lksg" @updateDataId="handleReceivedListOfDataIds">
-    <template v-if="lksgDataExists">
+    <template v-if="receivedLksgDataIds">
       <div class="grid">
         <div class="col-12">
           <LksgPanel :companyId="companyID" />
         </div>
       </div>
     </template>
-    <div v-if="!lksgDataExists" class="col-12 text-left">
+    <div v-if="receivedLksgDataIds === null" class="col-12 text-left">
       <h2>No LkSG data</h2>
     </div>
   </ViewFrameworkBase>
@@ -28,12 +28,12 @@ export default defineComponent({
   },
   data() {
     return {
-      lksgDataExists: false,
+      receivedLksgDataIds: [] as string[],
     };
   },
   methods: {
     handleReceivedListOfDataIds(receivedLksgDataIds: []) {
-      this.lksgDataExists = receivedLksgDataIds.length > 0;
+      this.receivedLksgDataIds = receivedLksgDataIds;
     },
   },
 });
