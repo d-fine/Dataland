@@ -14,6 +14,12 @@ declare global {
   }
 }
 
+/**
+ * Visits the provided endpoint and verifies that the Vue #app component exists
+ *
+ * @param endpoint the endpoint to navigate to
+ * @returns the cypress chainable
+ */
 export function visitAndCheckAppMount(endpoint: string): Chainable<JQuery> {
   return cy.visit(endpoint).get("#app").should("exist");
 }

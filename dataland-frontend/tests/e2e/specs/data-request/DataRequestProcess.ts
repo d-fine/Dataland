@@ -19,6 +19,12 @@ describe("As a user I expect a data request page where I can download an excel t
       const submitButtonSelector = "button[name=submit_request_button]";
       const removeButtonSelector = 'img[alt="remove-file-button"]';
 
+      /**
+       * Selects an empty file with the given filename and contentsize
+       *
+       * @param filename the name of the dummy file to create
+       * @param contentSize the size of the dummy file
+       */
       function uploadDummyExcelFile(filename = "test.xlsx", contentSize = 1): void {
         cy.get(uploadBoxSelector).selectFile(
           {
@@ -31,10 +37,19 @@ describe("As a user I expect a data request page where I can download an excel t
         );
       }
 
+      /**
+       * submits the upload form
+       */
       function submit(): void {
         cy.get(submitButtonSelector).click();
       }
 
+      /**
+       * Submits the upload form and intercepts the api request. Performs validation on the response status.
+       * The moreValidation function may be supplied to perform further validation
+       *
+       * @param moreValidation a function that can be used to impose further restraints on the intercepted api message
+       */
       function submitAndValidateSuccess(
         moreValidation: (interception: Interception) => void = (): void => undefined
       ): void {
@@ -52,6 +67,11 @@ describe("As a user I expect a data request page where I can download an excel t
         });
       }
 
+      /**
+       * Verifies that the upload box shows a file with the given filename
+       *
+       * @param filename the filename that is expected to be present in the upload box
+       */
       function uploadBoxEntryShouldBe(filename: string): void {
         cy.get(uploadBoxSelector).find(uploadBoxEmptySelector).should("not.exist");
         cy.get(uploadBoxSelector)
@@ -65,25 +85,44 @@ describe("As a user I expect a data request page where I can download an excel t
           .should("eq", 1);
       }
 
+      /**
+       * Asserts that the upload box is empty and shows the upload file div
+       */
       function uploadBoxShouldBeEmpty(): void {
         cy.get(uploadBoxSelector).find(uploadBoxEmptySelector);
         cy.get(uploadBoxSelector).find(uploadFilenameSelector).should("not.exist");
       }
 
+      /**
+       * Clicks on the remove file button in the upload box
+       */
       function removeFileFromUploadBox(): void {
         cy.get(uploadBoxSelector).find(removeButtonSelector).click();
       }
 
+      /**
+       * Assets that the error message contains all strings in the provided array
+       *
+       * @param substrings an array of strings that are required to be present in the error message
+       */
       function validateThatErrorMessageContains(substrings: string[]): void {
         substrings.forEach((it) => {
           cy.get("div.p-message-text").should("contain.text", it);
         });
       }
 
+      /**
+       * Assets that the submit button is disabled
+       */
       function validateThatSubmitButtonIsDisabled(): void {
         cy.get(submitButtonSelector).should("be.disabled");
       }
 
+      /**
+       * Checks/unchecks the hideUsername checkbox depending on the provided boolean
+       *
+       * @param hideUsername whether to check or to uncheck the hide username checkbox
+       */
       function setHideUsernameCheckbox(hideUsername: boolean): void {
         if (hideUsername) {
           cy.get("input[type=checkbox]").check({ force: true });

@@ -11,6 +11,11 @@ import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtur
 import { randomEuroValue, randomNumber } from "@e2e/fixtures/common/NumberFixtures";
 import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 
+/**
+ * Generates a random SFDR dataset
+ *
+ * @returns a random SFDR dataset
+ */
 export function generateSfdrData(): SfdrData {
   const sfdr: SfdrData = {};
   const reports = generateReferencedReports();

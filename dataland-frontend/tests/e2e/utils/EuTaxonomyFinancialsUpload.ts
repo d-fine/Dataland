@@ -8,6 +8,11 @@ import {
 import { FixtureData } from "../fixtures/FixtureUtils";
 import Chainable = Cypress.Chainable;
 
+/**
+ * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
+ *
+ * @returns the resulting cypress chainable
+ */
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click();

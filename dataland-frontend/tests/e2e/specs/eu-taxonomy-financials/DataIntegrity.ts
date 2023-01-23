@@ -34,6 +34,12 @@ describeIf(
       });
     });
 
+    /**
+     * Retrieves the prepared fixture identified by the provided company name
+     *
+     * @param name the name of the prepared fixture company
+     * @returns the found dataset from the prepared fixtures
+     */
     function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForFinancials> {
       const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
       if (!preparedFixture) {
@@ -45,6 +51,13 @@ describeIf(
       }
     }
 
+    /**
+     * Uploads the provided company and dataset to Dataland and navigates to the page of the uploaded dataset.
+     * The company is uploaded via the API. The dataset via the upload form.
+     *
+     * @param companyInformation the company information to upload
+     * @param testData the dataset to upload
+     */
     function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
@@ -61,6 +74,13 @@ describeIf(
       });
     }
 
+    /**
+     * Uploads the provided company and dataset to Dataland via the API and navigates to the page of the uploaded
+     * dataset
+     *
+     * @param companyInformation the company information to upload
+     * @param testData the dataset to upload
+     */
     function uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
@@ -76,12 +96,25 @@ describeIf(
       });
     }
 
+    /**
+     * Formats a number as a percentage value with 2 decimal points.
+     * Returns "No data has been reported" if the datapoint contains no value
+     *
+     * @param value the value of the datapoint to format as a percentage
+     * @returns the formatted string
+     */
     function formatPercentNumber(value?: DataPointBigDecimal): string {
       if (value === undefined || value === null || value.value === undefined || value.value === null)
         return "No data has been reported";
       return (Math.round(value.value * 100 * 100) / 100).toString();
     }
 
+    /**
+     * Verifies that the frontend correctly displays eligibilityKPIs for a specific company type
+     *
+     * @param financialCompanyType the company type to check
+     * @param eligibilityKpis the dataset used as the source of truth
+     */
     function checkCommonFields(financialCompanyType: string, eligibilityKpis: EligibilityKpis): void {
       cy.get(`div[name="taxonomyEligibleActivity${financialCompanyType}"]`)
         .should("contain", "Taxonomy-eligible economic activity")
@@ -100,6 +133,11 @@ describeIf(
         .should("contain", formatPercentNumber(eligibilityKpis.investmentNonNfrd));
     }
 
+    /**
+     * Verifies that the frontend correctly displays the insurenace firm KPIs
+     *
+     * @param testData the dataset used as the source of truth
+     */
     function checkInsuranceValues(testData: EuTaxonomyDataForFinancials): void {
       checkCommonFields("InsuranceOrReinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
       cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
@@ -107,6 +145,11 @@ describeIf(
         .should("contain", formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivities));
     }
 
+    /**
+     * Verifies that the frontend correctly displays the investment firm KPIs
+     *
+     * @param testData the dataset used as the source of truth
+     */
     function checkInvestmentFirmValues(testData: EuTaxonomyDataForFinancials): void {
       checkCommonFields("InvestmentFirm", testData.eligibilityKpis!.InvestmentFirm);
       cy.get('div[name="greenAssetRatioInvestmentFirm"]')
@@ -114,6 +157,13 @@ describeIf(
         .should("contain", formatPercentNumber(testData.investmentFirmKpis!.greenAssetRatio));
     }
 
+    /**
+     * Verifies that the frontend correctly displays the credit institution KPIs
+     *
+     * @param testData he dataset used as the source of truth
+     * @param individualFieldSubmission whether individual field submission is expected
+     * @param dualFieldSubmission whether dual field submission is expected
+     */
     function checkCreditInstitutionValues(
       testData: EuTaxonomyDataForFinancials,
       individualFieldSubmission: boolean,

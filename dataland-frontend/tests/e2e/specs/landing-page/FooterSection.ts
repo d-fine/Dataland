@@ -36,6 +36,9 @@ describe("As a user, I expect the footer section to be present and contain relev
       "/samples/eutaxonomy-non-financials",
     ];
 
+    /**
+     * Verifies that the Dataland footer is present
+     */
     function assertFooterPresence(): void {
       cy.get('a p[title="data privacy"]').should("contain.text", "Data Privacy");
     }

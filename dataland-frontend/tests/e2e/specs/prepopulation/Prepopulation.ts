@@ -31,6 +31,13 @@ describe(
   () => {
     type UploadFunction<T> = (token: string, companyId: string, dataset: T) => Promise<void>;
 
+    /**
+     * A higher-level helper function for bulk data upload. Creates all provided companies and uses
+     * the uploaderOneFrameworkDataset function to upload the datasets
+     *
+     * @param companiesWithFrameworkData a list of companies with datasets to upload
+     * @param uploadOneFrameworkDataset a function that uploads a single dataset
+     */
     function prepopulate<T>(
       companiesWithFrameworkData: Array<FixtureData<T>>,
       uploadOneFrameworkDataset: UploadFunction<T>
@@ -43,6 +50,13 @@ describe(
       });
     }
 
+    /**
+     * Uses the Dataland API to verify that exactly expectedNumberOfIds companies and datasets of the provided
+     * dataType exist
+     *
+     * @param dataType the datatype to filter by
+     * @param expectedNumberOfIds the expected number of companies/datasets of the datatype
+     */
     function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number): void {
       cy.getKeycloakToken(uploader_name, uploader_pw)
         .then((token) => wrapPromiseToCypressPromise(countCompanyAndDataIds(token, dataType)))

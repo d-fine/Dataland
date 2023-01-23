@@ -11,6 +11,11 @@ import {
 import { randomYesNoNaUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 
+/**
+ * Generates a random SME dataset
+ *
+ * @returns a random SME dataset
+ */
 export function generateSmeData(): SmeData {
   const returnBase: SmeData = {};
 

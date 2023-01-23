@@ -26,6 +26,12 @@ describeIf(
       });
     });
 
+    /**
+     * Retrieves the prepared fixture identified by the provided company name
+     *
+     * @param name the name of the prepared fixture company
+     * @returns the found dataset from the prepared fixtures
+     */
     function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForNonFinancials> {
       const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
       if (!preparedFixture) {
@@ -37,6 +43,12 @@ describeIf(
       }
     }
 
+    /**
+     * Rounds the input number to 2 decimal places
+     *
+     * @param inputNumber the number to round
+     * @returns the rounded number
+     */
     function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
       return Math.round(inputNumber * 100) / 100;
     }

@@ -28,6 +28,11 @@ describe("As a user, I want to be able to search companies existing on Dataland"
     cy.get("table.p-datatable-table").contains("th", "SECTOR");
   });
 
+  /**
+   * Returns the first company from the fake fixture that has at least one alternative name
+   *
+   * @returns the matching company from the fake fixtures
+   */
   function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForFinancials> {
     return companiesWithEuTaxonomyDataForFinancials.filter((it) => {
       return (

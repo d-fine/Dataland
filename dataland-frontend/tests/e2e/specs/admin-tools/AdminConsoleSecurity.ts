@@ -1,6 +1,11 @@
 import { getStringCypressEnv } from "@e2e/utils/Cypress";
 
 describe("As a user I expect the admin console only to be reachable using admin-proxy and not from remote", (): void => {
+  /**
+   * Verifies that an error page is shown when navigating to the provided url
+   *
+   * @param url the url to navigate to expecting an error
+   */
   function checkThatUrlResolvesToErrorPage(url: string): void {
     cy.visit(url);
     cy.get("h2").should("exist").should("contain", "Sorry an error occurred!");

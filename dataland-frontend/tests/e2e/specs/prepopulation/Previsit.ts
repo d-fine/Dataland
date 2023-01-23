@@ -9,6 +9,12 @@ describe(
   "As a developer, I want to ensure that all tests work by ensuring that all EuTaxonomy data is cached",
   { defaultCommandTimeout: Cypress.env("PREVISIT_TIMEOUT_S") * 1000 },
   () => {
+    /**
+     * Requests metadata for all datasets of the provided type using the dataland API.
+     * Ensures that all requests succeed.
+     *
+     * @param dataType the dataType filter
+     */
     function visitTaxonomyData(dataType: DataTypeEnum): void {
       getKeycloakToken(reader_name, reader_pw).then((token) => {
         cy.browserThen(getCompanyAndDataIds(token, dataType)).then((myDataset: StoredCompany[]) =>
