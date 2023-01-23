@@ -185,6 +185,10 @@ export default defineComponent({
     };
   },
   methods: {
+    /**
+     * Uses the dataland API to retrieve the eutaxonomy-financials dataset identified by this components
+     * dataID and stores it in this components dataSet attribute
+     */
     async getCompanyEuDataset() {
       try {
         this.waitingForData = true;
@@ -203,6 +207,12 @@ export default defineComponent({
         console.error(error);
       }
     },
+    /**
+     * Converts the type of financial company to the section heading
+     *
+     * @param type the type of financial company to convert
+     * @returns the section heading of the specified fs type
+     */
     getSectionHeading(type: string): string {
       const mapping: { [key: string]: string } = {
         CreditInstitution: "Credit Institution",

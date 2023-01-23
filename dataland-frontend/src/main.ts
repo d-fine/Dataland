@@ -12,6 +12,9 @@ import { plugin, defaultConfig } from "@formkit/vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
 
+/**
+ * The main entrypoint of the dataland frontend initiating the vue app
+ */
 function instantiateVueApp(): void {
   const app = createApp(App);
   app.use(plugin, defaultConfig);

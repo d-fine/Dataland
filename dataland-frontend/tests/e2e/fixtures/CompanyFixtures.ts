@@ -5,6 +5,11 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
 import { valueOrUndefined } from "./common/DataPointFixtures";
 
+/**
+ * Generates a company fixture with random information
+ *
+ * @returns information about a randomly generated company
+ */
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
   const headquarters = faker.address.city();
@@ -56,6 +61,11 @@ export function generateCompanyInformation(): CompanyInformation {
   };
 }
 
+/**
+ * Returns the CSV mapping for the columns belonging to basic company information
+ *
+ * @returns the static CSV mapping
+ */
 export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, string>> {
   return [
     {

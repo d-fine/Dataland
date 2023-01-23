@@ -64,12 +64,23 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Called when a new search term is entered in the search bar. Redirects the user to the company search page
+     * with the entered search term
+     *
+     * @param searchTerm the search term to use
+     * @returns the promise of the vue router push
+     */
     handleSearchConfirm(searchTerm: string) {
       return this.$router.push({
         name: "Search Companies for Framework Data",
         query: { input: searchTerm },
       });
     },
+    /**
+     * Uses the dataland API and the current framework data type to decide on the dataId of the Dataset that
+     * is supposed to be displayed
+     */
     async getDataIdToLoad() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(

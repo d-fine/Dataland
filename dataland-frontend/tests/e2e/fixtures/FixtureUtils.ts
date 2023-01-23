@@ -8,6 +8,13 @@ export interface FixtureData<T> {
   t: T;
 }
 
+/**
+ * Randomly generates a fixture datasets containing of a specified number of pairs of companies and framework datasets
+ *
+ * @param generator a generator that generates a random framework dataset
+ * @param numElements the number of elements to generate
+ * @returns a list of numElements pairs of randomly generated companies associated to randomly generated framework datasets
+ */
 export function generateFixtureDataset<T>(generator: () => T, numElements: number): Array<FixtureData<T>> {
   const fixtureDataset = [];
   for (let id = 1; id <= numElements; id++) {

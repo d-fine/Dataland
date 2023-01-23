@@ -70,6 +70,11 @@ export default defineComponent({
     additionalCompanies: null,
   }),
   methods: {
+    /**
+     * Uses the Dataland API to request all companies matching companyName (or all companies if all is set to true)
+     *
+     * @param all whether to retrieve all companies or just companies matching companyName
+     */
     async getCompanyByName(all = false) {
       try {
         this.loading = false;

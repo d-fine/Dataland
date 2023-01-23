@@ -15,6 +15,9 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "BackButton",
   methods: {
+    /**
+     * Performs a go-back operation on the vue router
+     */
     goBack(): void {
       this.$router.go(-1);
     },

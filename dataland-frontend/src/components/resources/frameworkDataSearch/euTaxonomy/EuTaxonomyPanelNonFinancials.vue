@@ -119,6 +119,10 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Uses the dataland API to retrieve the eutaxonomy-non-financials dataset identified by this components
+     * dataID and stores it in this components dataSet attribute
+     */
     async getCompanyEuDataset() {
       try {
         this.waitingForData = true;

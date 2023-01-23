@@ -106,6 +106,12 @@ export default defineComponent({
     ],
   }),
   methods: {
+    /**
+     * Called when the user selects a new expiry date from the dropdown.
+     * Updates the local expiry date based on the selected value or the value of the date time selector if "custom" was selected
+     *
+     * @param event the selection event
+     */
     setExpiryTimeDays(event: HTMLSelectElement) {
       if (event.value === "noExpiry") {
         this.expiryTimeDays = null;
@@ -119,6 +125,10 @@ export default defineComponent({
       this.isExpiryDateValid = true;
     },
 
+    /**
+     * Called when the user clicks on generate api key. Validates that the expiry time is set and emits
+     * the "generateApiKey" event to trigger api-key generation
+     */
     checkDateAndEmitGenerateApiKey() {
       if (this.expiryTimeDays) {
         this.$emit("generateApiKey", this.expiryTimeDays);

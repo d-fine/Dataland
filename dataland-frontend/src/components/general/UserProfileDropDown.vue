@@ -38,6 +38,12 @@ export default defineComponent({
   emits: ["profilePictureLoadingError", "profilePictureObtained"],
   setup() {
     const menu: Ref<PrimeMenu | undefined> = ref();
+
+    /**
+     * Toggles the dropdown menu (shows/hides it) on a mouse click
+     *
+     * @param event the event of the click
+     */
     function toggleDropdownMenu(event: Event): void {
       if (menu.value !== undefined) {
         menu.value.toggle(event);
@@ -84,6 +90,9 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Logs the user out and redirects him to the dataland homepage
+     */
     logoutViaDropdown() {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
@@ -95,6 +104,9 @@ export default defineComponent({
         })
         .catch((error) => console.log(error));
     },
+    /**
+     * Redirects the user to the keycloak user settings page
+     */
     gotoUserSettings() {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
@@ -104,6 +116,9 @@ export default defineComponent({
         })
         .catch((error) => console.log(error));
     },
+    /**
+     * Redirects the user to the data-request/invite screen
+     */
     gotoDataRequest() {
       assertDefined(this.getKeycloakPromise)()
         .then(() => {
@@ -111,9 +126,16 @@ export default defineComponent({
         })
         .catch((error) => console.log(error));
     },
+    /**
+     * Redirects the user to the api-key management interface
+     */
     gotoApiKeysPage() {
       void this.$router.push("/api-key");
     },
+    /**
+     * Called when the profile picture could not load. Propagates the event and sets the profile picture
+     * to a default image
+     */
     handleProfilePicError() {
       if (this.profilePictureSource !== defaultProfilePicture) {
         this.$emit("profilePictureLoadingError");

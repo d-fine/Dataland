@@ -146,11 +146,17 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Resets all the filters to their default values (i.e. select all frameworks but no countries / sectors)
+     */
     resetFilters() {
       this.selectedFrameworksInt = this.availableFrameworks.filter((it) => !it.disabled);
       this.selectedCountriesInt = [];
       this.selectedSectorsInt = [];
     },
+    /**
+     * A helper function that closes all the dropdown filters
+     */
     closeAllOpenDropDowns() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.countryFilter?.$refs.multiselect.hide();
@@ -159,6 +165,10 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.frameworkFilter?.$refs.multiselect.hide();
     },
+    /**
+     * Uses the Dataland API to obtain available company search filters and fills in the
+     * availableCountries and availableSectors elements in the format expected by the DropDown filters
+     */
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
@@ -176,6 +186,9 @@ export default defineComponent({
         return { displayName: it, disabled: false };
       });
     },
+    /**
+     * Populates the availableFrameworks property in the format expected by the dropdown filter
+     */
     retrieveAvailableFrameworks() {
       this.availableFrameworks = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.map((it) => {
         return {
@@ -197,7 +210,12 @@ export default defineComponent({
         }
       );
     },
-    retrieveAvailableFilterOptions() {
+    /**
+     * Initializes the availableCountries, availableSectors and avaialbleFrameworks properties for the dropdown filters
+     *
+     * @returns a promise as this function needs to request the dataland api
+     */
+    async retrieveAvailableFilterOptions() {
       this.retrieveAvailableFrameworks();
       return this.retrieveCountryAndSectorFilterOptions();
     },

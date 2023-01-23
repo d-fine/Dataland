@@ -46,6 +46,11 @@ export default defineComponent({
     };
   },
   methods: {
+    /**
+     * Updates the id of the dataset to display
+     *
+     * @param id the new dataId
+     */
     receiveDataId(id: undefined) {
       this.frameworkDataId = id;
     },

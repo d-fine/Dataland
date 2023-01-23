@@ -197,10 +197,19 @@ export default defineComponent({
   },
   watch: {},
   methods: {
+    /**
+     * Updates the page state. Possible options are "view" and "create"
+     *
+     * @param state the new page state
+     */
     setActivePageState(state: string) {
       this.pageState = state;
     },
 
+    /**
+     * Called during initialisation. Uses the Dataland API to check if the user already has an existing API key.
+     * Updates the UI according to the retrieved meta-information.
+     */
     async getApiKeyMetaInfoForUser() {
       try {
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
@@ -223,6 +232,10 @@ export default defineComponent({
       }
     },
 
+    /**
+     * Called on the revokeApiKey event emitted from the ApiKeyCard. Uses the Dataland API to revoke any existing api key.
+     * Updates the UI accordingly.
+     */
     async revokeApiKey() {
       try {
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
@@ -236,6 +249,12 @@ export default defineComponent({
       }
     },
 
+    /**
+     * Called when the generateApiKey event is emitted form the CreateApiKeyCard. Uses the Dataland API to
+     * generate a new API key with the specified validity time. Updates the UI to display the new key
+     *
+     * @param daysValid the number of days the api key is valid for
+     */
     async generateApiKey(daysValid: number) {
       try {
         this.waitingForData = true;
@@ -259,10 +278,16 @@ export default defineComponent({
       }
     },
 
+    /**
+     * Toggles the visibility of the "confirm regeneration" popup
+     */
     regenerateConfirmToggle() {
       this.regenerateConfirmationVisible = !this.regenerateConfirmationVisible;
     },
 
+    /**
+     * Selects the API key text and copies it to the clipboard
+     */
     copyToClipboard() {
       if (this.newKeyHolderRef) {
         (this.newKeyHolderRef.$el as HTMLTextAreaElement).focus();
