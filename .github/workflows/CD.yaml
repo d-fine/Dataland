@@ -103,6 +103,8 @@ jobs:
           API_KEY_MANAGER_DB_PASSWORD: ${{ secrets.API_KEY_MANAGER_DB_PASSWORD }}
           INTERNAL_STORAGE_DB_PASSWORD: ${{ secrets.INTERNAL_STORAGE_DB_PASSWORD }}
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
+          KEYCLOAK_DATALAND_ADMIN_VALUE: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_VALUE }}
+          KEYCLOAK_DATALAND_ADMIN_SALT: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_SALT }}
           KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
           KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
           KEYCLOAK_UPLOADER_VALUE: ${{ secrets.KEYCLOAK_UPLOADER_VALUE }}
@@ -160,7 +162,7 @@ jobs:
         run: |
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data"
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.15
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.16
           fi
       - name: Download frontend API client
         uses: actions/download-artifact@v3
@@ -186,6 +188,7 @@ jobs:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com"
           CYPRESS_KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           CYPRESS_KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
+          CYPRESS_KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_PASSWORD }}
           CYPRESS_KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
           CYPRESS_KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           CYPRESS_PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
