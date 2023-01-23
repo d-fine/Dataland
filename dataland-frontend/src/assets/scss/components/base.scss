@@ -43,12 +43,28 @@ body {
 .p-badge {
   color: $btn-primary-color;
   background: $btn-primary-bg;
-  font-size: $fs-xs;
-  font-weight: $fw-bold;
-  margin-left: $spacing-xxs;
+  font-size: $fs-sm;
+  font-weight: $fw-semibold;
+  margin: $spacing-xxxs;
+  text-align: center;
   min-width: 1.5rem;
   height: 1.5rem;
-  line-height: 1.5rem
+  line-height: 1.5rem;
+  display: inline-block;
+  border-radius: .25rem;
+  padding: 0 .5rem;
+  &.badge-yellow {
+    color: var(--yellow-700);
+    background: var(--yellow-100);
+  }
+  &.badge-green {
+    color: var(--green-700);
+    background: var(--green-100);
+  }
+  &.badge-blue {
+    color: var(--blue-700);
+    background: var(--blue-100);
+  }
 }
 .d-center-div {
   position: absolute;

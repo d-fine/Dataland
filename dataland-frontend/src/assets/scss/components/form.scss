@@ -399,6 +399,19 @@ input[type="checkbox"], input[type="radio"]{
     }
   }
 }
+.uploadFormWrapper {
+  .title {
+    margin-bottom: .25rem;
+  }
+  p {
+    margin: .25rem;
+  }
+  .uploadForm {
+    background: $upload-form-bg;
+    border-radius: $upload-form-radius;
+    padding: $upload-form-padding;
+  }
+}
 .p-checkbox .p-checkbox-box {
   border: 2px solid #ced4da;
   background: #f6f5ef;

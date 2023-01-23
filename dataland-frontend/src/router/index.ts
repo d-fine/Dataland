@@ -21,6 +21,7 @@ const ViewEuTaxonomyNonFinancials = (): Promise<RouteComponent> =>
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewLksg = (): Promise<RouteComponent> => import("@/components/pages/ViewLksg.vue");
+const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
 
 const routes = [
   {
@@ -49,6 +50,12 @@ const routes = [
     props: true,
     name: "Upload Eu Taxonomy Data For Financials",
     component: UploadEuTaxonomyDataForFinancials,
+  },
+  {
+    path: "/companies/:companyID/frameworks/lksg/upload",
+    props: true,
+    name: "Upload lkSG Data",
+    component: UploadLkSG,
   },
   {
     path: "/companies",

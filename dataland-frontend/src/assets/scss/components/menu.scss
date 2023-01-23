@@ -20,3 +20,21 @@
     }
   }
 }
+
+.jumpLinks {
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      list-style: none;
+      margin: .5rem 0;
+      a {
+        color: $jumpLinks-color;
+        text-decoration: none;
+        &:hover {
+          color: $jumpLinks-hover;
+        }
+      }
+    }
+  }
+}
