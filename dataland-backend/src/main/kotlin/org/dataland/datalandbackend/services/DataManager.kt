@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackendutils.cloudevents.CloudEventMessages
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -32,8 +33,10 @@ class DataManager(
     @Autowired var companyManager: CompanyManager,
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
+    @Autowired var cloudEventBuilder: CloudEventMessages,
     private val rabbitTemplate: RabbitTemplate,
-    var metaDataInformationHashMap : HashMap<String, StorableDataSet>
+    var metaDataInformationHashMap : HashMap<String, StorableDataSet>,
+    //@Autowired var dataInformationHashMap : HashMap<String, String>
 
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -73,7 +76,10 @@ class DataManager(
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         metaDataInformationHashMap.put(dataId, storableDataSet)
-        rabbitTemplate.convertAndSend("upload_queue", dataId)
+        println(dataId)
+        var messageInput = cloudEventBuilder.buildRQMessage(dataId)
+        println(messageInput)
+        rabbitTemplate.convertAndSend("upload_queue", messageInput)
         return dataId
     }
 
@@ -92,6 +98,8 @@ class DataManager(
         }
         metaDataInformationHashMap.remove(dataId)
     }
+   // @RabbitListener(queues = ["stored_queue"])
+    //@RabbitHandler
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
         companyName: String,

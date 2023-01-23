@@ -24,4 +24,9 @@ dependencies {
     implementation("junit:junit:4.13.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.amqp:spring-rabbit-test")
+    implementation("io.cloudevents:cloudevents-api:2.4.1")
+    implementation("io.cloudevents:cloudevents-json-jackson:2.4.1")
+    implementation("io.cloudevents:cloudevents-core:2.3.0")
+    implementation(project(":dataland-backend-utils"))
+
 }
