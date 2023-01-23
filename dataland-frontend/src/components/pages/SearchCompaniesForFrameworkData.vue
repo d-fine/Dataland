@@ -335,9 +335,9 @@ export default defineComponent({
       this.scrollEmittedByToggleSearchBar = true;
       this.searchBarId = "search_bar_scrolled";
     },
-    unmounted() {
-      window.removeEventListener("scroll", this.windowScrollHandler); // TODO why is this in the methods{} block?
-    },
+  },
+  unmounted() {
+    window.removeEventListener("scroll", this.windowScrollHandler);
   },
 });
 </script>

@@ -107,15 +107,21 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 }
 
 export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
-  const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
-  const companyId = companyData.companyId;
+  const dataTypesForWhichCompanyHasData = companyData.dataRegisteredByDataland.map(
+    (dataMetaInformation) => dataMetaInformation.dataType
+  );
+  const defaultRoute = `/companies/${companyData.companyId}/frameworks/${dataTypesForWhichCompanyHasData[0]}`;
   const filtersStore = useFiltersStore();
-  if (dataRegisteredByDataland.length === 0) return `/companies/${companyId}`;
-  let targetData = [dataRegisteredByDataland[0]];
-  if (filtersStore.selectedFiltersForFrameworks.length) {
-    targetData = dataRegisteredByDataland.filter((dataMetaInformation) =>
-      filtersStore.selectedFiltersForFrameworks.includes(dataMetaInformation.dataType)
+  if (filtersStore.selectedFiltersForFrameworks.length === 0) {
+    return defaultRoute;
+  } else {
+    const dataTypesOfCompanyThatMatchTheFiltersStore = dataTypesForWhichCompanyHasData.filter((dataType) =>
+      filtersStore.selectedFiltersForFrameworks.includes(dataType)
     );
+    if (dataTypesOfCompanyThatMatchTheFiltersStore.length === 0) {
+      return defaultRoute;
+    } else {
+      return `/companies/${companyData.companyId}/frameworks/${dataTypesOfCompanyThatMatchTheFiltersStore[0]}`;
+    }
   }
-  return `/companies/${companyId}/frameworks/${targetData[0].dataType}`;
 }
