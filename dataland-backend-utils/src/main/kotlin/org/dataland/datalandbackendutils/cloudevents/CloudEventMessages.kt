@@ -18,7 +18,8 @@ class CloudEventMessages{
     fun buildRQMessage(input :String) :Message<String>{
         var message = CloudEventMessageBuilder
             .withData(input)
-            .setSource("https://cloudevent.demo")
+            .setType("TestType")
+            .setSubject("TestSubject")
             .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
             .build(CloudEventMessageUtils.AMQP_ATTR_PREFIX);
         return message
