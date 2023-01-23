@@ -132,6 +132,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       before(() => {
         uploadLksgAndFinancialCompany();
+
         uploadNonFinancialCompany();
       });
 
