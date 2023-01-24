@@ -7,6 +7,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import { useFiltersStore } from "@/stores/filters";
 
 export interface DataSearchStoredCompany {
   companyName: string;
@@ -115,9 +116,21 @@ export async function getCompanyDataForFrameworkDataSearchPage(
  * @returns a vue router link to the first framework associated with the given company object
  */
 export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
-  const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
-  const companyId = companyData.companyId;
-  if (dataRegisteredByDataland.length === 0) return `/companies/${companyId}`;
-  const targetData = dataRegisteredByDataland[0];
-  return `/companies/${companyId}/frameworks/${targetData.dataType}`;
+  const dataTypesForWhichCompanyHasData = companyData.dataRegisteredByDataland.map(
+    (dataMetaInformation) => dataMetaInformation.dataType
+  );
+  const defaultRoute = `/companies/${companyData.companyId}/frameworks/${dataTypesForWhichCompanyHasData[0]}`;
+  const filtersStore = useFiltersStore();
+  if (filtersStore.selectedFiltersForFrameworks.length === 0) {
+    return defaultRoute;
+  } else {
+    const dataTypesOfCompanyThatMatchTheFiltersStore = dataTypesForWhichCompanyHasData.filter((dataType) =>
+      filtersStore.selectedFiltersForFrameworks.includes(dataType)
+    );
+    if (dataTypesOfCompanyThatMatchTheFiltersStore.length === 0) {
+      return defaultRoute;
+    } else {
+      return `/companies/${companyData.companyId}/frameworks/${dataTypesOfCompanyThatMatchTheFiltersStore[0]}`;
+    }
+  }
 }

@@ -1,6 +1,10 @@
 <template>
-  <ViewFrameworkBase :companyID="companyID" dataType="eutaxonomy-financials" @updateDataId="receiveDataId">
-    <template v-if="frameworkDataId">
+  <ViewFrameworkBase
+    :companyID="companyID"
+    dataType="eutaxonomy-financials"
+    @updateDataId="handleReceivedListOfDataIds"
+  >
+    <template v-if="listOfReceivedEuTaxoFinancialsDataIds">
       <div class="grid">
         <div class="col-12 text-left">
           <h2 class="mb-0">EU Taxonomy Data</h2>
@@ -12,14 +16,14 @@
       </div>
       <div class="grid">
         <div class="col-7">
-          <EuTaxonomyPanelFinancials :dataID="frameworkDataId" />
+          <EuTaxonomyPanelFinancials :dataID="listOfReceivedEuTaxoFinancialsDataIds[0]" />
         </div>
       </div>
     </template>
-    <div v-if="frameworkDataId === null" class="col-12 text-left">
+    <div v-if="listOfReceivedEuTaxoFinancialsDataIds === null" class="col-12 text-left">
       <h2>No EU-Taxonomy data for financial companies present</h2>
     </div>
-    <div v-if="frameworkDataId === undefined" class="col-12 text-left">
+    <div v-if="listOfReceivedEuTaxoFinancialsDataIds === undefined" class="col-12 text-left">
       <h2>Loading...</h2>
     </div>
   </ViewFrameworkBase>
@@ -42,17 +46,12 @@ export default defineComponent({
   },
   data() {
     return {
-      frameworkDataId: undefined,
+      listOfReceivedEuTaxoFinancialsDataIds: [] as string[],
     };
   },
   methods: {
-    /**
-     * Updates the id of the dataset to display
-     *
-     * @param id the new dataId
-     */
-    receiveDataId(id: undefined) {
-      this.frameworkDataId = id;
+    handleReceivedListOfDataIds(receivedEuTaxoFinancialsDataIds: []) {
+      this.listOfReceivedEuTaxoFinancialsDataIds = receivedEuTaxoFinancialsDataIds;
     },
   },
 });

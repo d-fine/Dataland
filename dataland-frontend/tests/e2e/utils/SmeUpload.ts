@@ -1,5 +1,4 @@
-import { Configuration, SmeData, SmeDataControllerApi } from "@clients/backend";
-
+import { Configuration, DataMetaInformation, SmeData, SmeDataControllerApi } from "@clients/backend";
 /**
  * Uploads a single SME data entry for a company
  *
@@ -7,9 +6,16 @@ import { Configuration, SmeData, SmeDataControllerApi } from "@clients/backend";
  * @param companyId The Id of the company to upload the dataset for
  * @param data The Dataset to upload
  */
-export async function uploadOneSmeDataset(token: string, companyId: string, data: SmeData): Promise<void> {
-  await new SmeDataControllerApi(new Configuration({ accessToken: token })).postCompanyAssociatedSmeData({
+export async function uploadOneSmeDataset(
+  token: string,
+  companyId: string,
+  data: SmeData
+): Promise<DataMetaInformation> {
+  const response = await new SmeDataControllerApi(
+    new Configuration({ accessToken: token })
+  ).postCompanyAssociatedSmeData({
     companyId,
     data,
   });
+  return response.data;
 }

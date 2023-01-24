@@ -8,6 +8,8 @@ import {
   EuTaxonomyDataForFinancialsControllerApiInterface,
   MetaDataControllerApi,
   MetaDataControllerApiInterface,
+  LksgDataControllerApi,
+  LksgDataControllerApiInterface,
   InviteControllerApi,
 } from "@clients/backend/api";
 import Keycloak from "keycloak-js";
@@ -65,6 +67,11 @@ export class ApiClientProvider {
   async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {
     return this.getConstructedApi(MetaDataControllerApi);
   }
+
+  async getLksgDataControllerApi(): Promise<LksgDataControllerApiInterface> {
+    return this.getConstructedApi(LksgDataControllerApi);
+  }
+
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
     return this.getConstructedApiKeyManager(ApiKeyControllerApi);
   }

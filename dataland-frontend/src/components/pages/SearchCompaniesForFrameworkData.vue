@@ -93,8 +93,17 @@ import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import { useFiltersStore } from "@/stores/filters";
 
 export default defineComponent({
+  setup() {
+    return {
+      searchBarAndFiltersContainer: ref(),
+      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
+      frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
+      searchResults: ref(),
+    };
+  },
   name: "SearchCompaniesForFrameworkData",
   components: {
     FrameworkDataSearchFilters,
@@ -107,13 +116,13 @@ export default defineComponent({
     FrameworkDataSearchResults,
     DatalandFooter,
   },
-
   created() {
     window.addEventListener("scroll", this.windowScrollHandler);
     this.scanQueryParams(this.route);
   },
   data() {
     return {
+      frameworksFilters: useFiltersStore(),
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
@@ -142,14 +151,6 @@ export default defineComponent({
   },
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
     this.scanQueryParams(to);
-  },
-  setup() {
-    return {
-      searchBarAndFiltersContainer: ref(),
-      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
-      frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
-      searchResults: ref(),
-    };
   },
   watch: {
     currentFilteredFrameworks: {
@@ -241,8 +242,8 @@ export default defineComponent({
       const queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
         const allowedDataTypeEnumValues = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS as Array<string>;
-        return parseQueryParamArray(queryFrameworks).filter((it) =>
-          allowedDataTypeEnumValues.includes(it)
+        return parseQueryParamArray(queryFrameworks).filter((singleFrameworkInQueryParam) =>
+          allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam)
         ) as Array<DataTypeEnum>;
       } else {
         return ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS;
@@ -292,6 +293,7 @@ export default defineComponent({
      * An update of the combined filter object automatically triggers a new search.
      */
     updateCombinedFilterIfRequired() {
+      this.frameworksFilters.setSelectedFiltersForFrameworks(this.currentFilteredFrameworks);
       if (
         !arraySetEquals(this.currentFilteredFrameworks, this.currentCombinedFilter.frameworkFilter) ||
         !arraySetEquals(this.currentFilteredSectors, this.currentCombinedFilter.sectorFilter) ||
@@ -348,8 +350,8 @@ export default defineComponent({
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
-      const allFrameworksSelected = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.every((it) =>
-        this.currentFilteredFrameworks.includes(it)
+      const allFrameworksSelected = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.every((frameworkAsDataTypeEnum) =>
+        this.currentFilteredFrameworks.includes(frameworkAsDataTypeEnum)
       );
       let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;
       if (allFrameworksSelected) queryFrameworks = undefined;

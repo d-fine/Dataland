@@ -81,6 +81,7 @@ import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "CreateApiKeyCard",
@@ -95,7 +96,7 @@ export default defineComponent({
     expiryTimeDropdown: "",
     isExpiryDateValid: true,
     minDate: new Date(new Date().getTime() + 86400000),
-    customDateInMilliseconds: null,
+    customDateInMilliseconds: null as null | number,
     days: [
       { label: "7 days", value: 7 },
       { label: "30 days", value: 30 },
@@ -117,10 +118,10 @@ export default defineComponent({
         this.expiryTimeDays = null;
       } else if (event.value === "custom") {
         this.expiryTimeDays = this.customDateInMilliseconds
-          ? calculateDaysFromNow(this.customDateInMilliseconds as unknown as number)
+          ? calculateDaysFromNow(this.customDateInMilliseconds)
           : null;
       } else {
-        this.expiryTimeDays = event.value as unknown as number;
+        this.expiryTimeDays = parseInt(event.value);
       }
       this.isExpiryDateValid = true;
     },
@@ -141,12 +142,12 @@ export default defineComponent({
   },
   computed: {
     expiryDateFormated(): string {
-      return formatExpiryDate(this.expiryTimeDays as unknown as number);
+      return formatExpiryDate(assertDefined(this.expiryTimeDays));
     },
   },
   watch: {
-    customDateInMilliseconds: function () {
-      this.expiryTimeDays = calculateDaysFromNow(this.customDateInMilliseconds as unknown as number);
+    customDateInMilliseconds: function (newValue: number) {
+      this.expiryTimeDays = calculateDaysFromNow(newValue);
       this.isExpiryDateValid = true;
     },
   },

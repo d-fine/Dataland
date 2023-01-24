@@ -117,7 +117,6 @@ interface CompanyApi {
         value = ["/{companyId}"],
         produces = ["application/json"]
     )
-
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     /**
      * A method to retrieve company information for one specific company identified by its company Id

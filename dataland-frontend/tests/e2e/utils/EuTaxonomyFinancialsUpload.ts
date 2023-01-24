@@ -4,6 +4,7 @@ import {
   DataPointBigDecimal,
   EuTaxonomyDataForFinancialsControllerApi,
   Configuration,
+  DataMetaInformation,
 } from "@clients/backend";
 import { FixtureData } from "../fixtures/FixtureUtils";
 import Chainable = Cypress.Chainable;
@@ -17,18 +18,6 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click();
   return cy.wait("@postCompanyAssociatedData").get("body").should("contain", "success");
-}
-
-/**
- * Uploads a single eutaxonomy-financials data entry for a company via the Dataland upload form
- *
- * @param companyId The Id of the company to upload the dataset for
- * @returns the id of the dataset that has been uploaded
- */
-export function uploadDummyEuTaxonomyDataForFinancialsViaForm(companyId: string): Cypress.Chainable {
-  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-financials/upload`);
-  fillEuTaxonomyFinancialsDummyUploadFields();
-  return submitEuTaxonomyFinancialsUploadForm();
 }
 
 /**
@@ -97,16 +86,6 @@ function fillField(divName: string, inputName: string, value?: DataPointBigDecim
     }
   }
 }
-
-/**
- * Enters the minimum set of dummy values that can be used to submit an eutaxonomy-financials upload form
- */
-function fillEuTaxonomyFinancialsDummyUploadFields(): void {
-  cy.get("select[name=financialServicesTypes]").select("Credit Institution");
-  cy.get("select[name=assurance]").select("Limited Assurance");
-  cy.get('input[name="reportingObligation"][value=Yes]').check();
-}
-
 /**
  * Extracts the first eutaxonomy-financials dataset from the fake fixtures
  *
@@ -130,11 +109,12 @@ export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
   token: string,
   companyId: string,
   data: EuTaxonomyDataForFinancials
-): Promise<void> {
-  await new EuTaxonomyDataForFinancialsControllerApi(
+): Promise<DataMetaInformation> {
+  const response = await new EuTaxonomyDataForFinancialsControllerApi(
     new Configuration({ accessToken: token })
   ).postCompanyAssociatedEuTaxonomyDataForFinancials({
     companyId,
     data,
   });
+  return response.data;
 }

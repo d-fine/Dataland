@@ -2,18 +2,32 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section min-h-screen">
-      <MarginWrapper class="text-left mt-2 surface-0">
+      <MarginWrapper class="text-left mt-2 surface-0" style="margin-right: 0rem">
         <BackButton />
-        <FrameworkDataSearchBar class="mt-2" @search-confirmed="handleSearchConfirm" />
+        <FrameworkDataSearchBar class="mt-2" ref="frameworkDataSearchBar" @search-confirmed="handleSearchConfirm" />
       </MarginWrapper>
-      <MarginWrapper class="surface-0">
+      <MarginWrapper class="surface-0" style="margin-right: 0rem">
         <div class="grid align-items-end">
           <div class="col-9">
             <CompanyInformation :companyID="companyID" />
           </div>
         </div>
       </MarginWrapper>
-      <MarginWrapper>
+      <MarginWrapper class="text-left surface-0" style="margin-right: 0rem">
+        <Dropdown
+          id="frameworkDataDropdown"
+          v-model="chosenDataTypeInDropdown"
+          :options="dataTypesInDropdown"
+          optionLabel="label"
+          optionValue="value"
+          :placeholder="humanizeString(dataType)"
+          aria-label="Choose framework"
+          class="fill-dropdown"
+          dropdownIcon="pi pi-angle-down"
+          @change="setFramework"
+        />
+      </MarginWrapper>
+      <MarginWrapper style="margin-right: 0rem">
         <slot></slot>
       </MarginWrapper>
     </TheContent>
@@ -29,10 +43,13 @@ import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
-import { DataTypeEnum } from "@clients/backend";
+import { DataMetaInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import Dropdown from "primevue/dropdown";
+import { humanizeString } from "@/utils/StringHumanizer";
+import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -42,19 +59,11 @@ export default defineComponent({
     BackButton,
     MarginWrapper,
     FrameworkDataSearchBar,
+    Dropdown,
     AuthenticationWrapper,
     CompanyInformation,
   },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
-  data() {
-    return {
-      currentInput: "",
-    };
-  },
+  emits: ["updateDataId"],
   props: {
     companyID: {
       type: String,
@@ -63,36 +72,65 @@ export default defineComponent({
       type: String,
     },
   },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
+    };
+  },
+  data() {
+    return {
+      chosenDataTypeInDropdown: "",
+      dataTypesInDropdown: [] as { label: string; value: string }[],
+      humanizeString: humanizeString,
+      windowScrollHandler: (): void => {
+        this.handleScroll();
+      },
+    };
+  },
+  created() {
+    void this.getAllDataIdsForFrameworkAndEmitThem();
+    window.addEventListener("scroll", this.windowScrollHandler);
+  },
   methods: {
-    /**
-     * Called when a new search term is entered in the search bar. Redirects the user to the company search page
-     * with the entered search term
-     *
-     * @param searchTerm the search term to use
-     * @returns the promise of the vue router push
-     */
+    handleScroll() {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      this.frameworkDataSearchBar?.$refs.autocomplete.hide();
+    },
+    setFramework() {
+      void this.$router.push(`/companies/${this.companyID as string}/frameworks/${this.chosenDataTypeInDropdown}`);
+    },
     handleSearchConfirm(searchTerm: string) {
       return this.$router.push({
         name: "Search Companies for Framework Data",
         query: { input: searchTerm },
       });
     },
-    /**
-     * Uses the Dataland API and the current framework data type to decide on the dataId of the Dataset that
-     * is supposed to be displayed
-     */
-    async getDataIdToLoad() {
+
+    appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo: DataMetaInformation) {
+      if (!this.dataTypesInDropdown.some((dataTypeObject) => dataTypeObject.value === dataMetaInfo.dataType)) {
+        this.dataTypesInDropdown.push({ label: humanizeString(dataMetaInfo.dataType), value: dataMetaInfo.dataType });
+      }
+    },
+
+    async getAllDataIdsForFrameworkAndEmitThem() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
-        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
-          this.companyID,
-          this.dataType as DataTypeEnum
-        );
-        const listOfMetaData = apiResponse.data;
-        if (listOfMetaData.length > 0) {
-          this.$emit("updateDataId", listOfMetaData[0].dataId);
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
+        const listOfDataMetaInfoForCompany = apiResponse.data;
+        const listOfDataIdsToEmit = [] as string[];
+        listOfDataMetaInfoForCompany.forEach((dataMetaInfo) => {
+          if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)) {
+            this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo);
+          }
+          if (dataMetaInfo.dataType === this.dataType) {
+            listOfDataIdsToEmit.push(dataMetaInfo.dataId);
+          }
+        });
+        if (listOfDataIdsToEmit.length) {
+          this.$emit("updateDataId", listOfDataIdsToEmit);
         } else {
           this.$emit("updateDataId", null);
         }
@@ -101,12 +139,9 @@ export default defineComponent({
       }
     },
   },
-  created() {
-    void this.getDataIdToLoad();
-  },
   watch: {
     companyID() {
-      void this.getDataIdToLoad();
+      void this.getAllDataIdsForFrameworkAndEmitThem();
     },
   },
 });

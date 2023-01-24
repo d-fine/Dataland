@@ -6,8 +6,9 @@ import {
   LksgData,
   SfdrData,
   SmeData,
+  DataMetaInformation,
 } from "@clients/backend";
-import { countCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { countCompaniesAndDataSetsForDataType } from "@e2e//utils/GeneralApiUtils";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
@@ -21,7 +22,7 @@ const chunkSize = 15;
 describe(
   "As a user, I want to be able to see some data on the Dataland webpage",
   {
-    defaultCommandTimeout: Cypress.env("PREPOPULATE_TIMEOUT_S") * 1000,
+    defaultCommandTimeout: Cypress.env("prepopulate_timeout_s") * 1000,
     retries: {
       runMode: 0,
       openMode: 0,
@@ -29,7 +30,7 @@ describe(
   },
 
   () => {
-    type UploadFunction<T> = (token: string, companyId: string, dataset: T) => Promise<void>;
+    type UploadFunction<T> = (token: string, companyId: string, dataset: T) => Promise<DataMetaInformation>;
 
     /**
      * A higher-level helper function for bulk data upload. Creates all provided companies and uses
@@ -57,14 +58,19 @@ describe(
      * @param dataType the datatype to filter by
      * @param expectedNumberOfIds the expected number of companies/datasets of the datatype
      */
-    function checkMatchingIds(dataType: DataTypeEnum, expectedNumberOfIds: number): void {
+    function checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+      dataType: DataTypeEnum,
+      expectedNumberOfCompanies: number
+    ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw)
-        .then((token) => wrapPromiseToCypressPromise(countCompanyAndDataIds(token, dataType)))
+        .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, dataType)))
         .then((response) => {
           assert(
-            response.matchingDataIds === expectedNumberOfIds && response.matchingCompanies === expectedNumberOfIds,
-            `Found ${response.matchingCompanies} companies with matching data 
-                  and ${response.matchingDataIds} uploaded data ids, expected both to be ${expectedNumberOfIds}`
+            response.numberOfDataSetsForDataType === expectedNumberOfCompanies &&
+              response.numberOfCompaniesForDataType === expectedNumberOfCompanies,
+            `Found ${response.numberOfCompaniesForDataType} companies having 
+            ${response.numberOfDataSetsForDataType} datasets with datatype ${dataType}, 
+            but expected ${expectedNumberOfCompanies} companies and ${expectedNumberOfCompanies} datasets`
           );
         });
     }
@@ -83,7 +89,10 @@ describe(
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(DataTypeEnum.EutaxonomyFinancials, companiesWithEuTaxonomyDataForFinancials.length);
+        checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+          DataTypeEnum.EutaxonomyFinancials,
+          companiesWithEuTaxonomyDataForFinancials.length
+        );
       });
     });
 
@@ -103,7 +112,10 @@ describe(
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkMatchingIds(DataTypeEnum.EutaxonomyNonFinancials, companiesWithEuTaxonomyDataForNonFinancials.length);
+        checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+          DataTypeEnum.EutaxonomyNonFinancials,
+          companiesWithEuTaxonomyDataForNonFinancials.length
+        );
       });
     });
 
@@ -127,7 +139,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Lksg, companiesWithLksgData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Lksg, companiesWithLksgData.length);
         });
       }
     );
@@ -152,7 +164,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Sfdr, companiesWithSfdrData.length);
         });
       }
     );
@@ -177,7 +189,7 @@ describe(
         });
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-          checkMatchingIds(DataTypeEnum.Sme, companiesWithSmeData.length);
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Sme, companiesWithSmeData.length);
         });
       }
     );

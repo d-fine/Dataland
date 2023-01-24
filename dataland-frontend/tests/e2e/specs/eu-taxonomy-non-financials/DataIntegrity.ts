@@ -5,10 +5,10 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 
-const timeout = 120 * 1000;
 describeIf(
-  "As a user, I expect data that I upload for a company to be displayed correctly",
+  "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],
@@ -26,29 +26,6 @@ describeIf(
       });
     });
 
-    /**
-     * Retrieves the prepared fixture identified by the provided company name
-     *
-     * @param name the name of the prepared fixture company
-     * @returns the found dataset from the prepared fixtures
-     */
-    function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForNonFinancials> {
-      const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
-      if (!preparedFixture) {
-        throw new ReferenceError(
-          "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
-        );
-      } else {
-        return preparedFixture;
-      }
-    }
-
-    /**
-     * Rounds the input number to 2 decimal places
-     *
-     * @param inputNumber the number to round
-     * @returns the rounded number
-     */
     function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
       return Math.round(inputNumber * 100) / 100;
     }
@@ -73,7 +50,7 @@ describeIf(
             () => {
               cy.intercept("**/api/data/eutaxonomy-non-financials/*").as("retrieveTaxonomyData");
               cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-non-financials`);
-              cy.wait("@retrieveTaxonomyData", { timeout: timeout }).then(() => {
+              cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
                 euTaxonomyPageVerifier();
               });
             }
@@ -82,8 +59,8 @@ describeIf(
       });
     }
 
-    it("Create a EU Taxonomy Dataset via upload form with total(€) and eligible(%) numbers", () => {
-      const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers");
+    it("Create a EU Taxonomy Dataset via Api with total(€) and eligible(%) numbers", () => {
+      const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
         cy.get("body")
@@ -96,8 +73,8 @@ describeIf(
       });
     });
 
-    it("Create a EU Taxonomy Dataset via upload form with only eligible(%) numbers", () => {
-      const preparedFixture = getPreparedFixture("only-eligible-numbers");
+    it("Create a EU Taxonomy Dataset via Api with only eligible(%) numbers", () => {
+      const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("body")
           .should("contain", "Eligible OpEx")

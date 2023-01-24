@@ -38,4 +38,9 @@ class SmeDataController(
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData)
     }
+
+    @Operation(operationId = "getAllCompanySmeData")
+    override fun getAllCompanyData(companyId: String): ResponseEntity<List<SmeData>> {
+        return super.getAllCompanyData(companyId)
+    }
 }

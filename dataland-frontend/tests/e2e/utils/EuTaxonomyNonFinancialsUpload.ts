@@ -1,5 +1,6 @@
 import {
   Configuration,
+  DataMetaInformation,
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsControllerApi,
@@ -62,11 +63,12 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
   token: string,
   companyId: string,
   data?: EuTaxonomyDataForFinancials
-): Promise<void> {
-  await new EuTaxonomyDataForNonFinancialsControllerApi(
+): Promise<DataMetaInformation> {
+  const dataMetaInformation = await new EuTaxonomyDataForNonFinancialsControllerApi(
     new Configuration({ accessToken: token })
   ).postCompanyAssociatedEuTaxonomyDataForNonFinancials({
     companyId,
     data,
   });
+  return dataMetaInformation.data;
 }

@@ -1,4 +1,4 @@
-import { Configuration, SfdrData, SfdrDataControllerApi } from "@clients/backend";
+import { Configuration, DataMetaInformation, SfdrData, SfdrDataControllerApi } from "@clients/backend";
 
 /**
  * Uploads a single SFDR data entry for a company
@@ -7,9 +7,16 @@ import { Configuration, SfdrData, SfdrDataControllerApi } from "@clients/backend
  * @param companyId The Id of the company to upload the dataset for
  * @param data The Dataset to upload
  */
-export async function uploadOneSfdrDataset(token: string, companyId: string, data: SfdrData): Promise<void> {
-  await new SfdrDataControllerApi(new Configuration({ accessToken: token })).postCompanyAssociatedSfdrData({
+export async function uploadOneSfdrDataset(
+  token: string,
+  companyId: string,
+  data: SfdrData
+): Promise<DataMetaInformation> {
+  const response = await new SfdrDataControllerApi(
+    new Configuration({ accessToken: token })
+  ).postCompanyAssociatedSfdrData({
     companyId,
     data,
   });
+  return response.data;
 }
