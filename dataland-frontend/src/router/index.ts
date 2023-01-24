@@ -22,6 +22,7 @@ const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/Ap
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewLksg = (): Promise<RouteComponent> => import("@/components/pages/ViewLksg.vue");
 const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
+const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
@@ -105,6 +106,11 @@ const routes = [
     path: "/companies-only-search",
     name: "Search Companies",
     component: SearchCompanies,
+  },
+  {
+    path: "/datasets",
+    name: "Dataset Overview",
+    component: DatasetOverview,
   },
   {
     path: "/requests",
