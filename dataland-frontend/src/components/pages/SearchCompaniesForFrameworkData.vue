@@ -23,11 +23,7 @@
         <div
           id="searchFiltersPanel"
           class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
-          :class="[
-            pageScrolled && !searchBarToggled
-              ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white', ]
-              : '',
-          ]"
+          :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
         >
           <div id="searchFiltersContainer">
             <div
@@ -348,7 +344,9 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
-      this.$nextTick( () => {this.searchBarId = "search_bar_scrolled";})
+      this.$nextTick(() => {
+        this.searchBarId = "search_bar_scrolled";
+      });
     },
   },
   unmounted() {

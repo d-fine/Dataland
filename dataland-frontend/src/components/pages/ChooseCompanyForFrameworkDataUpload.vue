@@ -2,26 +2,31 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent>
+      <BackButton id="backButton" label="MY DATASETS" />
       <Card class="col-12">
         <template #title>
-          <div class="grid">
-          <BackButton class="col-2" />
-          <span clas="col-2">New Dataset - Company</span>
-          </div>
+          New Dataset - Company
           <hr />
         </template>
         <template #content>
-          <div style="flex-wrap: wrap">
-            <div id="option1Container">
-              <div id="topicLabel" class="col-3 text-left topicLabel">
-                <h4 id="topicTitle" class="title">Option 01</h4>
+          <div class="uploadFormWrapper">
+            <div id="option1Container" class="grid">
+              <div id="option1Label" class="col-3 text-left topicLabel">
+                <h4 id="option1Title" class="title">Option 01</h4>
+                <h3>Select a company</h3>
                 <p>Select the company for which you would like to add a new dataset.</p>
               </div>
-              <div>SELECTOR PLACEHOLDER</div>
+              <div class="col-6 text-left uploadForm">*SearchBar for companies only*</div>
             </div>
-            <div id="option2Container">
-              <div id="topicLabel" class="col-3 text-left topicLabel">
-                <h4 id="topicTitle" class="title">Option 02</h4>
+
+            <div id="emptyDiv" style="height: 5rem">
+              <hr />
+            </div>
+
+            <div id="option2Container" class="grid">
+              <div id="option2Label" class="col-3 text-left topicLabel">
+                <h4 id="option2Title" class="title">Option 02</h4>
+                <h3>Add a new company</h3>
                 <p>
                   If you want to add a dataset for a new company, you first have to create the company. To create a new
                   company, all mandatory * fields must be filled.
@@ -30,17 +35,6 @@
               <div id="uploadForm" class="col-6 text-left uploadForm">
                 <CreateCompany />
               </div>
-            </div>
-            <div id="jumpLinks" class="col-3 text-left jumpLinks">
-              <h4 id="topicTitle" class="title">On this page</h4>
-
-              <ul>
-                <li><a href="#general">General</a></li>
-                <li><a href="#childLabour">Child labour</a></li>
-                <li><a href="#forcedLabourSlaveryAndDebtBondage">Forced labour, slavery and debt bondage</a></li>
-                <li><a href="#evidenceCertificatesAndAttestations">Evidence, certificates and attestations</a></li>
-                <li><a href="#support">Theme Support</a></li>
-              </ul>
             </div>
           </div>
         </template>
