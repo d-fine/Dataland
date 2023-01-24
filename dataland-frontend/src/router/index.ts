@@ -24,6 +24,8 @@ const ViewLksg = (): Promise<RouteComponent> => import("@/components/pages/ViewL
 const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
+const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
+    import("@/components/pages/ChooseFrameworkForDataUpload.vue");
 
 const routes = [
   {
@@ -45,6 +47,12 @@ const routes = [
     path: "/companies/choose",
     name: "Choose Company",
     component: ChooseCompanyForFrameworkDataUpload,
+  },
+  {
+    path: "/companies/:companyID/frameworks/upload",
+    props: true,
+    name: "Choose Framework",
+    component: ChooseFrameworkForDataUpload,
   },
   {
     path: "/companies/:companyID/frameworks/eutaxonomy-non-financials/upload",
