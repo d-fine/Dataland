@@ -25,7 +25,7 @@ const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/Upl
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
-    import("@/components/pages/ChooseFrameworkForDataUpload.vue");
+  import("@/components/pages/ChooseFrameworkForDataUpload.vue");
 
 const routes = [
   {
