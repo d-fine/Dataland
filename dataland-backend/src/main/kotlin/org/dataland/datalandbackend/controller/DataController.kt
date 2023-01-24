@@ -88,9 +88,23 @@ abstract class DataController<T>(
             ),
         )
         logger.info(
-            "Received company data with dataId '$dataId' for companyId '$companyId' from EuroDaT. " +
+            "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +
                 "Correlation ID '$correlationId'"
         )
         return ResponseEntity.ok(companyAssociatedData)
+    }
+
+    override fun getAllCompanyData(companyId: String): ResponseEntity<List<T>> {
+        val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
+        val frameworkData: MutableList<T> = mutableListOf()
+        metaInfos.forEach {
+            val correlationId = generatedCorrelationId(companyId)
+            logger.info(
+                "Generated correlation ID '$correlationId' for the received request with company ID: $companyId."
+            )
+            val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
+            frameworkData.add(objectMapper.readValue(dataAsString, clazz))
+        }
+        return ResponseEntity.ok(frameworkData)
     }
 }

@@ -14,6 +14,7 @@ import {
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -33,17 +34,6 @@ describeIf(
         preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
     });
-
-    function getPreparedFixture(name: string): FixtureData<EuTaxonomyDataForFinancials> {
-      const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
-      if (!preparedFixture) {
-        throw new ReferenceError(
-          "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."
-        );
-      } else {
-        return preparedFixture;
-      }
-    }
 
     function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
@@ -149,7 +139,7 @@ describeIf(
       "Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
         "that the upload form works fine with all options",
       () => {
-        const testData = getPreparedFixture("company-for-all-types");
+        const testData = getPreparedFixture("company-for-all-types", preparedFixtures);
         uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
           testData.companyInformation,
           testData.t
@@ -163,7 +153,7 @@ describeIf(
     );
 
     it("Create a CreditInstitution (combined field submission)", () => {
-      const testData = getPreparedFixture("credit-institution-single-field-submission");
+      const testData = getPreparedFixture("credit-institution-single-field-submission", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t
@@ -172,7 +162,7 @@ describeIf(
     });
 
     it("Create a CreditInstitution (individual field submission)", () => {
-      const testData = getPreparedFixture("credit-institution-dual-field-submission");
+      const testData = getPreparedFixture("credit-institution-dual-field-submission", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t
@@ -181,7 +171,7 @@ describeIf(
     });
 
     it("Create an insurance company", () => {
-      const testData = getPreparedFixture("insurance-company");
+      const testData = getPreparedFixture("insurance-company", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t
@@ -192,7 +182,7 @@ describeIf(
     });
 
     it("Create an Investment Firm", () => {
-      const testData = getPreparedFixture("company-for-all-types");
+      const testData = getPreparedFixture("company-for-all-types", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t
@@ -201,7 +191,7 @@ describeIf(
     });
 
     it("Create an Asset Manager", () => {
-      const testData = getPreparedFixture("asset-management-company");
+      const testData = getPreparedFixture("asset-management-company", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t
@@ -213,7 +203,7 @@ describeIf(
     });
 
     it("Create a Company that is Asset Manager and Insurance", () => {
-      const testData = getPreparedFixture("asset-management-insurance-company");
+      const testData = getPreparedFixture("asset-management-insurance-company", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
         testData.t

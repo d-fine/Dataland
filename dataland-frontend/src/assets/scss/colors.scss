@@ -9,9 +9,11 @@ $btn-focus-border-color: $blue-light;
 //table
 $table-background-color: $white;
 $table-background-hover-color: $gray-light;
+$table-background-hover-color-light: $gray-lighter;
 $table-border: $gray-light;
 $table-border-dark: $gray;
 $table-icon-color: $gray;
+$tables-headers-bg: $surface-ground;
 
 //pagination
 $pagination-color: $gray;
@@ -37,6 +39,13 @@ $input-label-color: $aquamarine-dark;
 $input-text-bg: $paper-white;
 $input-text-border: $brown-lighter;
 $input-text-border-hover: $orange-prime;
+$outline-dropdown-border: $brown-light;
+$fill-dropdown-bg: $brown-light;
+$fill-dropdown-hover-bg: $gray-light;
+$fill-dropdown-hover-text: $brown-light;
+$fill-dropdown-select-text-color: $white;
+$fill-dropdown-select-bg-color: $orange-prime;
+$fill-input-color: $white;
 $input-error: $red;
 $input-checked-color: $orange-prime;
 $dropdown-options-bg: var(--surface-hover);
@@ -50,9 +59,13 @@ $message-info-bg: var(--blue-600);
 $message-info-border: var(--blue-800);
 $message-info-text: $white;
 
-$message-success-bg: $white;
+$message-bordered-success-bg: $white;
+$message-bordered-success-border: $green;
+$message-bordered-success-text: $brown-light;
+
+$message-success-bg: $green;
 $message-success-border: $green;
-$message-success-text: $brown-light;
+$message-success-text: $white;
 
 $message-warn-bg: var(--yellow-600);
 $message-warn-border: var(--yellow-800);

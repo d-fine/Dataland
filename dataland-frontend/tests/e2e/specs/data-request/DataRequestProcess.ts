@@ -1,7 +1,7 @@
-import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { Interception } from "cypress/types/net-stubbing";
 import { describeIf } from "@e2e/support/TestUtility";
 import { InviteMetaInfoEntity } from "@clients/backend";
+import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 
 describe("As a user I expect a data request page where I can download an excel template, fill it, and submit it", (): void => {
   describeIf(
@@ -108,14 +108,13 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.intercept("**/Dataland_Request_Template.xlsx").as(downloadAlias);
         cy.get(downloadLinkSelector).click();
         cy.wait(`@${downloadAlias}`);
-        cy.readFile("./public/Dataland_Request_Template.xlsx", "binary", { timeout: 15000 }).then(
-          (expectedExcelTemplateBinary) => {
-            cy.readFile(expectedPathToDownloadedExcelTemplate, "binary", { timeout: 15000 }).should(
-              "eq",
-              expectedExcelTemplateBinary
-            );
-          }
-        );
+        cy.readFile("./public/Dataland_Request_Template.xlsx", "binary", {
+          timeout: Cypress.env("medium_timeout_in_ms") as number,
+        }).then((expectedExcelTemplateBinary) => {
+          cy.readFile(expectedPathToDownloadedExcelTemplate, "binary", {
+            timeout: Cypress.env("medium_timeout_in_ms") as number,
+          }).should("eq", expectedExcelTemplateBinary);
+        });
         cy.task("deleteFolder", Cypress.config("downloadsFolder"));
       });
 
@@ -194,7 +193,7 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.get(finishedTextSelector).then((element: JQuery<HTMLElement>) => {
           expect(element.text()).to.equal("100%");
         });
-        cy.get("div.p-message-success").should("contain.text", "submit");
+        cy.get("div.p-message-bordered-success").should("contain.text", "submit");
       });
 
       it(`Test the failure response screen`, () => {

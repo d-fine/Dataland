@@ -38,4 +38,9 @@ class SfdrDataController(
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData)
     }
+
+    @Operation(operationId = "getAllCompanySfdrData")
+    override fun getAllCompanyData(companyId: String): ResponseEntity<List<SfdrData>> {
+        return super.getAllCompanyData(companyId)
+    }
 }

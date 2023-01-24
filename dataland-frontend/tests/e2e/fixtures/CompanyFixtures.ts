@@ -5,6 +5,20 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
 import { valueOrUndefined } from "./common/DataPointFixtures";
 
+export function getCompanyLegalForm(): string {
+  const legalForms = [
+    "Public Limited Company (PLC)",
+    "Private Limited Company (Ltd)",
+    "Limited Liability Partnership (LLP)",
+    "Partnership without Limited Liability",
+    "Sole Trader",
+    "GmbH",
+    "AG",
+    "GmbH & Co. KG",
+  ];
+  return legalForms[faker.datatype.number(legalForms.length - 1)];
+}
+
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
   const headquarters = faker.address.city();
@@ -40,8 +54,8 @@ export function generateCompanyInformation(): CompanyInformation {
   const countryCode = faker.address.countryCode();
   const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
     return faker.company.name();
-  });
-  const companyLegalForm = valueOrUndefined(faker.company.bsNoun());
+  }).sort();
+  const companyLegalForm = valueOrUndefined(getCompanyLegalForm());
 
   return {
     companyName: companyName,
@@ -91,10 +105,11 @@ export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, strin
       label: "Teaser Company",
       value: (row: FixtureData<T>): string => (row.companyInformation.isTeaserCompany ? "Yes" : "No"),
     },
-    ...Object.values(CompanyIdentifierIdentifierTypeEnum).map((e) => {
+    ...Object.values(CompanyIdentifierIdentifierTypeEnum).map((identifiyerTypeAsString) => {
       return {
-        label: humanizeString(e),
-        value: (row: FixtureData<T>): string => getIdentifierValueForCsv(row.companyInformation.identifiers, e),
+        label: humanizeString(identifiyerTypeAsString),
+        value: (row: FixtureData<T>): string =>
+          getIdentifierValueForCsv(row.companyInformation.identifiers, identifiyerTypeAsString),
       };
     }),
   ];

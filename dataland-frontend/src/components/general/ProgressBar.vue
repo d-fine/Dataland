@@ -4,7 +4,7 @@
       <div
         v-if="processIsFinished"
         class="p-2 mb-5 mt-8 border-2 p-message"
-        :class="[wasProcessSuccessful ? 'p-message-success' : 'p-message-error']"
+        :class="[wasProcessSuccessful ? 'p-message-bordered-success' : 'p-message-error']"
       >
         {{ processResultMessage }}
       </div>

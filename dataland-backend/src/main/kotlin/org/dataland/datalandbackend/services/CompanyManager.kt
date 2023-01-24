@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional
 @Component("CompanyManager")
 class CompanyManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
+    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 

@@ -39,7 +39,7 @@
         />
       </div>
 
-      <div data-test="apiKeyInfo" v-if="existsApiKey && !waitingForData && pageState === 'view'">
+      <div data-test="apiKeyInfo" class="apiKeyInfo" v-if="existsApiKey && !waitingForData && pageState === 'view'">
         <div class="col-12 md:col-8 lg:col-6">
           <MessageComponent
             data-test="newKeyHolder"
@@ -112,7 +112,7 @@
           data-test="regenerateApiKeyCancelButton"
           label="CANCEL"
           @click="regenerateConfirmToggle"
-          class="p-button-outlined text-sm"
+          class="p-button-outlined"
         />
         <PrimeButton
           data-test="regenerateApiKeyConfirmButton"
@@ -123,7 +123,6 @@
               regenerateConfirmToggle();
             }
           "
-          class="text-sm"
         />
       </template>
     </PrimeDialog>
@@ -273,11 +272,16 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .copy-button {
   cursor: pointer;
 }
 .p-inputText:enabled:focus {
   box-shadow: none;
+}
+.apiKeyInfo .p-message-success {
+  background-color: var(--green-600);
+  border-color: var(--green-600);
+  color: white;
 }
 </style>

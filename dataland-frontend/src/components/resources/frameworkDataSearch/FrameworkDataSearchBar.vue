@@ -8,13 +8,6 @@
             aria-hidden="true"
             style="z-index: 20; color: #958d7c"
           />
-          <i
-            v-if="loading"
-            class="pi pi-spinner pi-spin"
-            aria-hidden="true"
-            style="z-index: 20; color: #e67f3f; right: 0.5rem"
-          />
-          <i v-else aria-hidden="true" />
           <AutoComplete
             :inputId="searchBarId"
             ref="autocomplete"
@@ -199,7 +192,6 @@ export default defineComponent({
       }
     },
     async searchCompanyName(companyName: { query: string }) {
-      this.loading = true;
       this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
         companyName.query,
         true,
@@ -209,7 +201,6 @@ export default defineComponent({
         assertDefined(this.getKeycloakPromise)()
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumOfDisplayedAutocompleteEntries);
-      this.loading = false;
     },
   },
 });
@@ -240,8 +231,8 @@ export default defineComponent({
   align-items: center;
 }
 
-.p-focus {
-  color: #fff !important;
-  background: #e67f3f !important;
+.p-autocomplete-loader {
+  color: #e67f3f;
+  right: 0.5rem;
 }
 </style>
