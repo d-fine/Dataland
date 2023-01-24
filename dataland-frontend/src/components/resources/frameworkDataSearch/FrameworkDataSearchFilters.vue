@@ -167,7 +167,7 @@ export default defineComponent({
     },
     /**
      * Uses the Dataland API to obtain available company search filters and fills in the
-     * availableCountries and availableSectors elements in the format expected by the DropDown filters
+     * availableCountries and availableSectors elements in the format expected by the dropdown filters
      */
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
@@ -213,7 +213,7 @@ export default defineComponent({
     /**
      * Initializes the availableCountries, availableSectors and avaialbleFrameworks properties for the dropdown filters
      *
-     * @returns a promise as this function needs to request the dataland api
+     * @returns a promise as this function needs to request the Dataland api
      */
     async retrieveAvailableFilterOptions() {
       this.retrieveAvailableFrameworks();

@@ -78,15 +78,15 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Toggles the confirm api key deletion dialog
+     * Toggles the "confirm api key deletion" dialog
      */
     deleteConfirmToggle() {
       this.viewDeleteConfirmation = !this.viewDeleteConfirmation;
     },
     /**
-     * Calculates whether the current api key is expired or not base don the expiryDateInMilliseconds
+     * Calculates whether the current api key is expired based on the expiryDateInMilliseconds
      *
-     * @returns wheter the api key is expired
+     * @returns whether the api key is expired
      */
     isKeyExpired() {
       return !(this.expiryDateInMilliseconds >= new Date().getTime() || this.expiryDateInMilliseconds == null);

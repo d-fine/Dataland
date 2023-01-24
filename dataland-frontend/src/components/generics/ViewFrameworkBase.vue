@@ -78,7 +78,7 @@ export default defineComponent({
       });
     },
     /**
-     * Uses the dataland API and the current framework data type to decide on the dataId of the Dataset that
+     * Uses the Dataland API and the current framework data type to decide on the dataId of the Dataset that
      * is supposed to be displayed
      */
     async getDataIdToLoad() {

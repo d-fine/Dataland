@@ -186,7 +186,7 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Uses the dataland API to retrieve the eutaxonomy-financials dataset identified by this components
+     * Uses the Dataland API to retrieve the eutaxonomy-financials dataset identified by this components
      * dataID and stores it in this components dataSet attribute
      */
     async getCompanyEuDataset() {

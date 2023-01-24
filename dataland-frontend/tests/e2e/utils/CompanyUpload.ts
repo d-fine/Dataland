@@ -72,7 +72,7 @@ export function generateDummyCompanyInformation(companyName: string, sector = "I
 /**
  * Uses the Dataland API to create a new company with the provided CompanyInformation
  *
- * @param token the JWT token used to authorize the API requests
+ * @param token the bearer token used to authorize the API requests
  * @param companyInformation information about the company to create
  */
 export async function uploadCompanyViaApi(

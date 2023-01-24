@@ -286,7 +286,7 @@ export default defineComponent({
     },
 
     /**
-     * Selects the API key text and copies it to the clipboard
+     * Highlights the newly generated API key and copies it to the clipboard
      */
     copyToClipboard() {
       if (this.newKeyHolderRef) {

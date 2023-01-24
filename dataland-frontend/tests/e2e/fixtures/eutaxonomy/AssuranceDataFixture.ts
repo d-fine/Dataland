@@ -4,7 +4,7 @@ import { AssuranceData, AssuranceDataAssuranceEnum } from "@clients/backend";
 import { ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 
 /**
- * Generates random assurance data *
+ * Generates random assurance data
  *
  * @param reports the reports that can be referenced as data sources
  * @returns random assurance data

@@ -16,7 +16,7 @@ import { randomNumberOrUndefined } from "@e2e/fixtures/common/NumberFixtures";
 import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 
 /**
- * Fills in random values for field shared between the eutaxonomy frameworks
+ * Fills in random values for fields shared between the eutaxonomy frameworks
  *
  * @param input the framework object to fill in data for
  */

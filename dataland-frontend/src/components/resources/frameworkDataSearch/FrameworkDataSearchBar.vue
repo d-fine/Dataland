@@ -172,7 +172,7 @@ export default defineComponent({
     },
 
     /**
-     * Resets the index of the currently selected index variable
+     * Resets the currently selected index variable
      */
     setCurrentFocusedOptionIndexToDefault() {
       this.currentFocusedOptionIndex = -1;
@@ -190,7 +190,7 @@ export default defineComponent({
      * Called when an item is selected from the dropdown. Navigates to the view framework page for the selected company
      *
      * @param event the click event
-     * @param event.value the company that was clicked upon
+     * @param event.value the company that was clicked on
      */
     pushToViewDataPageForItem(event: { value: DataSearchStoredCompany }) {
       void this.$router.push(getRouterLinkTargetFramework(event.value));
@@ -211,7 +211,7 @@ export default defineComponent({
       }
     },
     /**
-     * A function that performs the company search if the parent company wants to receive the complete search results
+     * Performs the company search if the parent component indicated it wants to receive the complete search results
      */
     async queryCompany() {
       if (this.emitSearchResultsArray) {
@@ -230,7 +230,7 @@ export default defineComponent({
     },
     /**
      * This function is called to obtain search suggestions for the dropdown. Uses the Dataland API to search
-     * companies by the current search bar input.
+     * companies by the current search bar input (and selected filters).
      *
      * @param companyName the autocomplete suggestion event
      * @param companyName.query the query text entered into the search bar

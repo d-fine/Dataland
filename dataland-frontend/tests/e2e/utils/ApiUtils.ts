@@ -4,7 +4,7 @@ import { RouteHandler } from "cypress/types/net-stubbing";
 /**
  * Uses the Dataland API to retrieve all companies that have a dataset for the specified dataType
  *
- * @param token the JWT token used to authorize the API requests
+ * @param token the bearer token used to authorize the API requests
  * @param dataType the dataType to filter companies by
  * @returns all companies that have data for the specified dataType
  */
@@ -20,7 +20,7 @@ export async function getCompanyAndDataIds(token: string, dataType: DataTypeEnum
  * Uses the Dataland API to count how many datasets are stored on Dataland of a specified type and how many companies
  * have at least one such dataset associated to them.
  *
- * @param token the JWT token used to authorize the API requests
+ * @param token the bearer token used to authorize the API requests
  * @param dataType the dataType of interest
  * @returns the counters for matching datasets and companies
  */

@@ -380,7 +380,7 @@ export default defineComponent({
       this.currentSearchBarInput = companyNameFilter;
     },
     /**
-     * A function that expands the searchbar that got collapsed when the user scrolled down
+     * Expands the searchbar that got collapsed when the user scrolled down
      */
     toggleSearchBar() {
       this.searchBarToggled = true;

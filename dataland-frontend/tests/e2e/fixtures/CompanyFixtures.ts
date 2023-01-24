@@ -62,7 +62,7 @@ export function generateCompanyInformation(): CompanyInformation {
 }
 
 /**
- * Returns the CSV mapping for the columns belonging to basic company information
+ * Returns the CSV mapping for the columns showing basic company information
  *
  * @returns the static CSV mapping
  */

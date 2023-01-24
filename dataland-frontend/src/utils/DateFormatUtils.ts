@@ -9,7 +9,7 @@ export const dateFormatOptions = {
 } as Intl.DateTimeFormatOptions;
 
 /**
- * Given a unix time in milliseconds calculates how many days the day is in the future (rounding up)
+ * Given a unix time in milliseconds calculates how many days the timestamp is in the future (rounding up)
  *
  * @param endDateInMilliseconds the unix time in milliseconds to
  * @returns the number of days until endDateInMilliseconds (rounding up)

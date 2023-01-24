@@ -210,7 +210,8 @@ export default defineComponent({
     },
 
     /**
-     * Called when a new file is selected in the file selector. Updated the selected file. Overrides it if already existent
+     * Called when a new file is selected in the file selector. Updates the selected file.
+     * Overwrites any currently selected file if present.
      *
      * @param event the file upload event
      */

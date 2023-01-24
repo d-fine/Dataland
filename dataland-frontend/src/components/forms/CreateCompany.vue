@@ -110,8 +110,8 @@ export default defineComponent({
   }),
   methods: {
     /**
-     * Creates a new company with the data entered in the FormKit form
-     * by callind the Dataland API
+     * Creates a new company with the data entered in the FormKit form by calling the Dataland API.
+     * Stores the response so it may be displayed in the UI.
      */
     async postCompanyData() {
       try {

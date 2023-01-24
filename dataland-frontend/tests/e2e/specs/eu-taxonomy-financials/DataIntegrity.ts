@@ -97,7 +97,7 @@ describeIf(
     }
 
     /**
-     * Formats a number as a percentage value with 2 decimal points.
+     * Formats a datapoint as a percentage value rounded to a precision of 0.01%.
      * Returns "No data has been reported" if the datapoint contains no value
      *
      * @param value the value of the datapoint to format as a percentage

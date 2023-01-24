@@ -36,9 +36,9 @@ export function randomNumberOrUndefined(max: number): number | undefined {
 }
 
 /**
- * Generates a random value between 0 and 1
+ * Generates a random decimal value between 0 and 1
  *
- * @returns a random number between 0 and 1
+ * @returns a random float between 0 and 1
  */
 export function randomPercentageValue(): number {
   return faker.datatype.float({

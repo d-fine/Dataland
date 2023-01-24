@@ -40,7 +40,8 @@ export default defineComponent({
     const menu: Ref<PrimeMenu | undefined> = ref();
 
     /**
-     * Toggles the dropdown menu (shows/hides it) on a mouse click
+     * Toggles the dropdown menu (shows/hides it) on a mouse click.
+     * Used as an event handler by the dropdown-toggle UI element.
      *
      * @param event the event of the click
      */

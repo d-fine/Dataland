@@ -27,7 +27,7 @@ export default defineComponent({
 
   methods: {
     /**
-     * Sends a user to the keycloak login page (if not authenticated already)
+     * Sends the user to the keycloak login page (if not authenticated already)
      */
     login() {
       assertDefined(this.getKeycloakPromise)()

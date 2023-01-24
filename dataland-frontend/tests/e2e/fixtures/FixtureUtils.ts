@@ -9,7 +9,7 @@ export interface FixtureData<T> {
 }
 
 /**
- * Randomly generates a fixture datasets containing of a specified number of pairs of companies and framework datasets
+ * Randomly generates a fixture datasets consisting of a specified number of pairs of companies and framework datasets
  *
  * @param generator a generator that generates a random framework dataset
  * @param numElements the number of elements to generate

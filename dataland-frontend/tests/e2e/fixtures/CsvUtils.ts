@@ -48,7 +48,7 @@ export function getFiscalYearDeviation(isDeviation: FiscalYearDeviation | undefi
 }
 
 /**
- * A function that returns the header suffix of columns belonging to a specified financial services type
+ * Returns the header suffix of columns belonging to a specified financial services type
  *
  * @param type the financial services type to get the suffix for
  * @returns the suffix belonging to type
@@ -68,7 +68,7 @@ export function getCompanyTypeHeader(type: EuTaxonomyDataForFinancialsFinancialS
 }
 
 /**
- * Uses the humanizeString utils function to convert the input function (or returns undefined if the input is undefined)
+ * Uses the humanizeString utils function to convert the input string (or returns undefined if the input is undefined)
  *
  * @param stringToHumanise the string to humanize (or undefined)
  * @returns the converted string (or undefined if the input is undefined)
@@ -112,7 +112,7 @@ export function decimalSeparatorConverter(scaleFactor: number): (value: number |
 }
 
 /**
- * A function that formats a decimal value to a percentage string in german CSV format
+ * Formats a decimal value to a percentage string in german CSV format
  * (i.e. 0.123 gets converted to 12,3%)
  *
  * @param value the value in [0,1] to convert

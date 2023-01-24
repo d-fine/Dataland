@@ -10,7 +10,7 @@ describe(
   { defaultCommandTimeout: Cypress.env("PREVISIT_TIMEOUT_S") * 1000 },
   () => {
     /**
-     * Requests metadata for all datasets of the provided type using the dataland API.
+     * Requests metadata for all datasets of the provided type using the Dataland API.
      * Ensures that all requests succeed.
      *
      * @param dataType the dataType filter
