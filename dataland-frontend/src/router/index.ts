@@ -23,6 +23,10 @@ const RequestData = (): Promise<RouteComponent> => import("@/components/pages/Re
 const ViewLksg = (): Promise<RouteComponent> => import("@/components/pages/ViewLksg.vue");
 const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
+const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
+  import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
+const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
+    import("@/components/pages/ChooseFrameworkForDataUpload.vue");
 
 const routes = [
   {
@@ -39,6 +43,17 @@ const routes = [
     path: "/companies/upload",
     name: "Upload Company",
     component: UploadCompany,
+  },
+  {
+    path: "/companies/choose",
+    name: "Choose Company",
+    component: ChooseCompanyForFrameworkDataUpload,
+  },
+  {
+    path: "/companies/:companyID/frameworks/upload",
+    props: true,
+    name: "Choose Framework",
+    component: ChooseFrameworkForDataUpload,
   },
   {
     path: "/companies/:companyID/frameworks/eutaxonomy-non-financials/upload",

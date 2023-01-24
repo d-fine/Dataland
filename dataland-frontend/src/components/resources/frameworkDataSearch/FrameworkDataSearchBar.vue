@@ -133,7 +133,6 @@ export default defineComponent({
       latestValidSearchString: "",
       autocompleteArray: [] as Array<object>,
       autocompleteArrayDisplayed: [] as Array<object>,
-      loading: false,
       route: useRoute(),
     };
   },
@@ -178,7 +177,6 @@ export default defineComponent({
     },
     async queryCompany() {
       if (this.emitSearchResultsArray) {
-        this.loading = true;
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
           this.searchBarInput,
           false,
@@ -188,7 +186,6 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         );
         this.$emit("companies-received", resultsArray);
-        this.loading = false;
       }
     },
     async searchCompanyName(companyName: { query: string }) {
