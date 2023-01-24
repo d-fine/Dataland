@@ -3,29 +3,37 @@
     <TheHeader />
     <TheContent class="pl-0 pt-0 min-h-screen paper-section relative">
       <div
-        class="col-12 bg-white"
-        :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
+        id="searchBarAndFiltersContainer"
+        class="w-full bg-white pt-4"
+        :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
         ref="searchBarAndFiltersContainer"
       >
-        <div class="pt-4" />
-        <MarginWrapper>
-          <FrameworkDataSearchBar
-            v-model="currentSearchBarInput"
-            ref="frameworkDataSearchBar"
-            :filter="currentCombinedFilter"
-            :searchBarId="searchBarId"
-            :emit-search-results-array="true"
-            @search-confirmed="handleSearchConfirmed"
-            @companies-received="handleCompanyQuery"
-          />
-          <div
-            :class="[
-              pageScrolled && !searchBarToggled
-                ? ['grid', 'col-12', 'align-items-center', 'bg-white', 'd-search-toggle', 'fixed', 'd-shadow-bottom']
-                : 'flex',
-            ]"
-          >
-            <div :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']">
+        <FrameworkDataSearchBar
+          id="frameworkDataSearchBar"
+          ref="frameworkDataSearchBar"
+          class="pl-4 m-0"
+          v-model="currentSearchBarInput"
+          :filter="currentCombinedFilter"
+          :searchBarId="searchBarId"
+          :emit-search-results-array="true"
+          @search-confirmed="handleSearchConfirmed"
+          @companies-received="handleCompanyQuery"
+        />
+
+        <div
+          id="searchFiltersPanel"
+          class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
+          :class="[
+            pageScrolled && !searchBarToggled
+              ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white', ]
+              : '',
+          ]"
+        >
+          <div id="searchFiltersContainer">
+            <div
+              id="scrolledSearchToggler"
+              :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"
+            >
               <span class="mr-3 font-semibold">Search Data for Companies</span>
               <PrimeButton
                 name="search_bar_collapse"
@@ -36,7 +44,9 @@
                 <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
               </PrimeButton>
             </div>
+
             <FrameworkDataSearchFilters
+              id="frameworkDataSearchFilters"
               class="ml-3"
               ref="frameworkDataSearchFilters"
               :show-heading="!pageScrolled || searchBarToggled"
@@ -44,14 +54,25 @@
               v-model:selected-frameworks="currentFilteredFrameworks"
               v-model:selected-sectors="currentFilteredSectors"
             />
-            <span v-show="!pageScrolled" class="d-page-display">{{ currentlyVisiblePageText }}</span>
           </div>
-        </MarginWrapper>
+
+          <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
+            <PrimeButton
+              class="uppercase p-button p-button-sm d-letters mr-3"
+              label="New Dataset"
+              icon="pi pi-plus"
+              @click="redirectToChooseCompanyPage"
+            />
+            <span>{{ currentlyVisiblePageText }}</span>
+          </div>
+        </div>
       </div>
+
       <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading...</p>
         <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
+
       <FrameworkDataSearchResults
         v-if="!waitingForSearchResults"
         ref="searchResults"
@@ -63,15 +84,6 @@
     <DatalandFooter />
   </AuthenticationWrapper>
 </template>
-
-<style scoped>
-.d-page-display {
-  margin-left: auto;
-  margin-top: auto;
-  margin-bottom: 0;
-  color: #5a4f36;
-}
-</style>
 
 <script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -193,6 +205,9 @@ export default defineComponent({
     },
   },
   methods: {
+    redirectToChooseCompanyPage() {
+      this.$router.push("/companies/choose");
+    },
     setFirstShownRow(value: number) {
       this.indexOfFirstShownRow = value;
     },
@@ -217,7 +232,7 @@ export default defineComponent({
         } else {
           //ScrollDOWN event
           this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop > 100;
+          this.pageScrolled = document.documentElement.scrollTop > 102;
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         }
@@ -333,7 +348,7 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
-      this.searchBarId = "search_bar_scrolled";
+      this.$nextTick( () => {this.searchBarId = "search_bar_scrolled";})
     },
   },
   unmounted() {
@@ -341,3 +356,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.d-search-toggle {
+  z-index: 99;
+  top: 4rem;
+}
+.d-search-filters-panel {
+  height: 5rem;
+}
+</style>

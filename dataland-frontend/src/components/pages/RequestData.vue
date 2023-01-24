@@ -112,7 +112,7 @@
             <div class="flex align-items-center justify-content-center m-2">
               <PrimeButton
                 label="Submit"
-                class="uppercase p-button p-button-sm d-letters text-white d-button justify-content-center bg-primary w-6rem mr-3"
+                class="uppercase p-button p-button-sm d-letters justify-content-center w-6rem mr-3"
                 name="submit_request_button"
                 @click="handleSubmission"
                 :disabled="!selectedFile"
