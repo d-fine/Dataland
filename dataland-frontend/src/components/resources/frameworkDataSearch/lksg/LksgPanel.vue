@@ -123,7 +123,7 @@ export default defineComponent({
     },
 
     convertToMillions(value: number): string {
-      return (value / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 8 });
+      return `${(value / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 8 })} MM`;
     },
   },
 });
