@@ -14,7 +14,7 @@ form {
       border-width: 0 0 1px 0;
       border-color: $input-text-border;
       box-shadow: none;
-      &:focus {
+      &:focus-within {
         outline: none;
         border-bottom: 1px solid $input-text-border-hover;
       }
@@ -440,7 +440,7 @@ input[type="checkbox"], input[type="radio"]{
     }
     .formkit-options {
       display: flex;
-      padding: 1rem 0;
+      padding: .5rem 0 0 0;
       .formkit-option:nth-child(2n) {
         margin-left: 30%;
       }
@@ -452,13 +452,50 @@ input[type="checkbox"], input[type="radio"]{
   .title {
     margin: .25rem 0;
   }
+  .form-field-label {
+    display: flex;
+    align-items: center;
+    .info-icon {
+      margin-left: .5rem;
+    }
+    button {
+      margin-left: auto;
+    }
+  }
   p {
     margin: .25rem;
   }
-  .uploadForm {
+  .formFields {
     background: $upload-form-bg;
     border-radius: $upload-form-radius;
     padding: $upload-form-padding;
+  }
+  .form-list-item {
+    color: $input-label-color;
+    background: $el-list-item-bg;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    margin: $spacing-xxxs;
+    text-align: center;
+    min-width: 1.5rem;
+    border-radius: 1rem;
+    padding: .25rem 1rem;
+    border: 1px solid $input-label-color;
+    display: inline-flex;
+    align-items: center;
+    em {
+      margin-left: .5rem;
+      cursor: pointer;
+      &:hover {
+        color: darken($input-label-color, 20%);
+      }
+    }
+  }
+  .uploadFormSection {
+    margin-bottom: 1.5rem;
+    .formkit-outer {
+      margin: 0 0 2rem 0;
+    }
   }
 }
 .p-checkbox .p-checkbox-box {
