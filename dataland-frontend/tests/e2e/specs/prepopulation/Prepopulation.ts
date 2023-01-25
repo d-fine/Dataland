@@ -57,7 +57,7 @@ describe(
      * It also asserts that the total number of datasets of the provided data type equals that number.
      *
      * @param dataType the datatype to filter by
-     * @param expectedNumberOfCompanies
+     * @param expectedNumberOfCompanies is the expected number of companies
      */
     function checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
       dataType: DataTypeEnum,

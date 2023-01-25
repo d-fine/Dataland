@@ -1,7 +1,12 @@
 import { ApiKeyAndMetaInfo } from "@clients/apikeymanager";
 
 describe("As a user I expect my api key will be generated correctly", () => {
-  function verifyInitialPageStateAndCreateApiKeyCard(): void {
+
+  /**
+   * Verifies that the initial state of the api key page is as expected and that the "Create Api Key" popup works
+   * as expected
+   */
+  function verifyInitialPageStateAndCreateApiKeyCardPopup(): void {
     cy.get("[data-test='noApiKeyWelcomeComponent']").should("exist").should("contain.text", "You have no API Key!");
     cy.get("[data-test='noApiKeyWelcomeComponent']")
       .find("button")
@@ -14,6 +19,9 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="CreateApiKeyCard"]').should("not.exist");
   }
 
+  /**
+   * Verifies that setting the expiration date via the dropdown options works as expected
+   */
   function verifyExpirationDropdownOptions(): void {
     cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
     cy.get("button#generateApiKey").click();
@@ -44,6 +52,10 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="cancelGenerateApiKey"]').click();
   }
 
+  /**
+   * Verifies that creating an api key works as expected, and also assures that the copy-to-clipboard button works if
+   * the Chrome browser is used to execute this cypress test. For other browsers it skips that part of the test.
+   */
   function verifyCreatingApiKeyAndCopyingIt(): void {
     cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
     cy.get("div#expiryTime").click();
@@ -83,6 +95,9 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="apiKeyInfo"]').find("textarea").should("have.attr", "readonly");
   }
 
+  /**
+   * Verifies that the api key page looks and behaves as expected if you visit it while you already have an api key.
+   */
   function verifyAlreadyExistingApiKeyState(): void {
     cy.reload(true);
     cy.location("pathname", { timeout: Cypress.env("short_timeout_in_ms") as number }).should("include", "/api-key");
@@ -117,7 +132,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     );
     cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") as number });
 
-    verifyInitialPageStateAndCreateApiKeyCard();
+    verifyInitialPageStateAndCreateApiKeyCardPopup();
 
     verifyExpirationDropdownOptions();
 
