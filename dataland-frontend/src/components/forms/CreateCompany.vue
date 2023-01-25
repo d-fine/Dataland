@@ -3,53 +3,106 @@
     <template #title>Create a Company </template>
     <template #content>
       <FormKit
-        v-model="model"
+        v-model="formInputsModel"
         :actions="false"
         type="form"
         id="createCompanyForm"
-        @submit="postCompanyData"
-        #default="{ state: { valid } }"
+        @submit="postCompanyInformation"
       >
-        <FormKitSchema :schema="companyInformationSchema" />
-        <FormKit type="list" name="identifiers">
-          <FormKit v-for="nIdentifier in identifierListSize" :key="nIdentifier" type="group">
-            <FormKitSchema :schema="companyIdentifierSchema" />
-          </FormKit>
-        </FormKit>
-        <FormKit type="list" name="companyAlternativeNames">
-          <template v-for="nAlternativeNames in alternativeNamesListSize" :key="nAlternativeNames">
-            <FormKit
-              type="text"
-              label="Alternative Name"
-              placeholder="e.g. some Abbreviation"
-              :inner-class="{
-                'formkit-inner': false,
-                'p-inputwrapper': true,
-              }"
-              :input-class="{
-                'formkit-input': false,
-                'p-inputtext': true,
-              }"
-            />
+        <h4>Name & location</h4>
+        <FormKit
+          v-model="companyName"
+          type="text"
+          label="Company name"
+          placeholder="Company name"
+          validation="required"
+        />
+        <div class="grid align-items-center">
+          <FormKit
+            v-model="enteredCompanyAlternativeName"
+            type="text"
+            label="Add company alternative name"
+            placeholder="Company alternative name"
+          />
+          <PrimeButton @click="addCompanyAlternativeName"> + </PrimeButton>
+        </div>
+
+        <FormKit v-model="companyAlternativeNames" type="list" name="companyAlternativeNames">
+          <template v-for="index in companyAlternativeNames.length" :key="index">
+            <div class="grid align-items-center">
+              <FormKit type="text" label="Existing company alternative name" />
+              <PrimeButton @click="removeAlternativeName(index)"> - </PrimeButton>
+            </div>
           </template>
         </FormKit>
-        <FormKit type="submit" :disabled="!valid" label="Post Company" name="postCompanyData" />
+
+        <div class="grid align-items-center">
+          <div>
+            <UploadFormHeader :name="companyDataNames.headquarters" :explanation="companyDataExplanations.headquarters" />
+            <FormKit v-model="headquarters" type="text" placeholder="City" validation="required" />
+          </div>
+          <div>
+            <UploadFormHeader :name="companyDataNames.countryCode" :explanation="companyDataExplanations.countryCode" />
+            <FormKit
+              v-model="countryCode"
+              type="select"
+              placeholder="Select"
+              validation="required"
+              :options="allCountryCodes"
+            />
+          </div>
+        </div>
+
+        <UploadFormHeader
+          :name="companyDataNames.headquartersPostalCode"
+          :explanation="companyDataExplanations.headquartersPostalCode"
+        />
+        <FormKit v-model="headquartersPostalCode" type="text" :placeholder="companyDataNames.headquartersPostalCode" />
+
+        <UploadFormHeader
+          :name="companyDataNames.companyLegalForm"
+          :explanation="companyDataExplanations.companyLegalForm"
+        />
+        <FormKit v-model="companyLegalForm" type="text" :placeholder="companyDataNames.companyLegalForm" />
+
+        <h4>Identifier</h4>
+
+        <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
+        <FormKit v-model="ticker" type="text" :placeholder="companyDataNames.isin" />
+
+        <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker" />
+        <FormKit v-model="ticker" type="text" :placeholder="companyDataNames.ticker" />
+
+        <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId" />
+        <FormKit v-model="ticker" type="text" :placeholder="companyDataNames.permId" />
+
+        <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
+        <FormKit v-model="ticker" type="text" :placeholder="companyDataNames.duns" />
+
+        <h4>GICS classification</h4>
+
+        <UploadFormHeader :name="companyDataNames.sector" :explanation="companyDataExplanations.sector" />
+        <FormKit
+          v-model="sector"
+          type="select"
+          placeholder="Please choose"
+          :options="[
+            'Energy',
+            'Materials',
+            'Industrials',
+            'Consumer Discretionary',
+            'Consumer Staples',
+            'Health Care',
+            'Financials',
+            'Information Technology',
+            'Communication Services',
+            'Utilities',
+            'Real Estate',
+          ]"
+        />
+
+        <FormKit type="submit" label="ADD COMPANY" name="addCompany" />
       </FormKit>
-      <p>{{ model }}</p>
-      <PrimeButton v-if="alternativeNamesListSize < 1" @click="alternativeNamesListSize++" name="addAlternativeName">
-        Add an alternative Name</PrimeButton
-      >
-      <PrimeButton v-if="alternativeNamesListSize >= 1" @click="alternativeNamesListSize++">
-        Add another alternative Name</PrimeButton
-      >
-      <PrimeButton v-if="alternativeNamesListSize >= 1" @click="alternativeNamesListSize--" class="ml-2">
-        Remove the last alternative Name
-      </PrimeButton>
-      <p></p>
-      <PrimeButton @click="identifierListSize++"> Add a new identifier</PrimeButton>
-      <PrimeButton v-if="identifierListSize > 1" @click="identifierListSize--" class="ml-2">
-        Remove the last identifier
-      </PrimeButton>
       <template v-if="postCompanyProcessed">
         <SuccessUpload
           v-if="postCompanyResponse"
@@ -57,67 +110,127 @@
           :messageCount="messageCount"
           :data="postCompanyResponse.data"
         />
-        <FailedUpload v-else msg="Company" :messageCount="messageCount" />
+        <FailedUpload v-else msg="company" :messageCount="messageCount" />
       </template>
     </template>
   </Card>
 </template>
 
 <script lang="ts">
-import { FormKit, FormKitSchema } from "@formkit/vue";
-import SuccessUpload from "@/components/messages/SuccessUpload.vue";
-import { SchemaGenerator } from "@/services/SchemaGenerator";
-import { ApiClientProvider } from "@/services/ApiClients";
-import backend from "@clients/backend/backendOpenApi.json";
-import FailedUpload from "@/components/messages/FailedUpload.vue";
+import { FormKit } from "@formkit/vue";
 import Card from "primevue/card";
-import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { CompanyInformation } from "@clients/backend";
+import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
+import { ApiClientProvider } from "@/services/ApiClients";
+import PrimeButton from "primevue/button";
+import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-
-const companyInformation = backend.components.schemas.CompanyInformation;
-const companyIdentifier = backend.components.schemas.CompanyIdentifier;
-const companyInformationSchemaGenerator = new SchemaGenerator(companyInformation, ["isTeaserCompany"]);
-const companyIdentifierSchemaGenerator = new SchemaGenerator(companyIdentifier);
+import SuccessUpload from "@/components/messages/SuccessUpload.vue";
+import FailedUpload from "@/components/messages/FailedUpload.vue";
+import Tooltip from "primevue/tooltip";
+import {
+  companyDataNames,
+  companyDataExplanations,
+} from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
+import UploadFormHeader from "@/utils/UploadFormHeader.vue";
 
 export default defineComponent({
   name: "CreateCompany",
   components: {
-    FailedUpload,
+    UploadFormHeader,
     Card,
-    PrimeButton,
     FormKit,
-    FormKitSchema,
+    PrimeButton,
     SuccessUpload,
+    FailedUpload,
+  },
+  directives: {
+    tooltip: Tooltip,
   },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-
   data: () => ({
-    postCompanyProcessed: false,
-    model: {} as CompanyInformation,
-    companyInformationSchema: companyInformationSchemaGenerator.generate(),
-    companyIdentifierSchema: companyIdentifierSchemaGenerator.generate(),
+    //ToDo tooltips are missing
+    contentTest: "This is the content",
+    companyName: "",
+    companyAlternativeNames: [] as Array<string>,
+    companyLegalForm: "",
+    headquarters: "",
+    headquartersPostalCode: "",
+    countryCode: "",
+    lei: "",
+    isin: "",
+    ticker: "",
+    permId: "",
+    duns: "",
+    identifiers: [] as Array<CompanyIdentifier>,
+    sector: "",
+    enteredCompanyAlternativeName: "",
+    allCountryCodes: getAllCountryCodes(),
     postCompanyResponse: null,
     messageCount: 0,
-    identifierListSize: 1,
-    alternativeNamesListSize: 0,
+    postCompanyProcessed: false,
+    companyDataExplanations,
+    companyDataNames,
   }),
   methods: {
-    async postCompanyData() {
+    addIdentifier(identifierType: CompanyIdentifierIdentifierTypeEnum, identifierValue: string): void {
+      if (identifierValue !== "") {
+        const newIdentifier = {
+          identifierType: identifierType,
+          identifierValue: identifierValue,
+        } as CompanyIdentifier;
+        this.identifiers.push(newIdentifier);
+      }
+    },
+    addCompanyAlternativeName(): void {
+      //ToDo change the companyAlternativeNames to a set to avoid duplicate entries
+      if (this.enteredCompanyAlternativeName !== "") {
+        this.companyAlternativeNames.push(this.enteredCompanyAlternativeName);
+        this.enteredCompanyAlternativeName = "";
+      }
+    },
+    removeAlternativeName(index: number): void {
+      this.companyAlternativeNames.splice(index - 1, 1);
+    },
+    getCompanyInformation(): CompanyInformation {
+      this.addCompanyAlternativeName();
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Lei, this.lei);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Isin, this.isin);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Ticker, this.ticker);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.PermId, this.permId);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Duns, this.duns);
+      return {
+        companyName: this.companyName,
+        companyAlternativeNames: this.companyAlternativeNames,
+        companyLegalForm: this.companyLegalForm,
+        headquarters: this.headquarters,
+        headquartersPostalCode: this.headquartersPostalCode,
+        sector: this.sector,
+        identifiers: this.identifiers,
+        countryCode: this.countryCode,
+        isTeaserCompany: false,
+      } as CompanyInformation;
+    },
+    async postCompanyInformation() {
+      //ToDo displaying of error/success was transferred from original script should be replaced by a more sensible version
       try {
-        this.postCompanyProcessed = false;
         this.messageCount++;
+        console.log("Posting data");
+        const company = this.getCompanyInformation();
+        console.log("Constructed Company Object:");
+        console.log(company);
         const companyDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getCompanyDataControllerApi();
-        this.postCompanyResponse = await companyDataControllerApi.postCompany(this.model);
+        this.postCompanyResponse = await companyDataControllerApi.postCompany(company);
         this.$formkit.reset("createCompanyForm");
+        //ToDo after submission the boxes showing the alternative names get emptied but not removed
+        this.companyAlternativeNames = new Array<string>();
       } catch (error) {
         console.error(error);
         this.postCompanyResponse = null;
@@ -128,3 +241,11 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped lang="scss">
+.anchor {
+  scroll-margin-top: 300px;
+}
+.formkit-icon {
+  max-width: 5em;
+}
+</style>

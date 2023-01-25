@@ -5,3 +5,7 @@ countries.registerLocale(countriesEn);
 export function getCountryNameFromCountryCode(countryCode: string): string {
   return countries.getName(countryCode, "en");
 }
+
+export function getAllCountryCodes(): Array<string> {
+  return Object.keys(countries.getNames("en")).sort();
+}
