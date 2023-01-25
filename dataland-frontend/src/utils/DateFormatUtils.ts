@@ -16,8 +16,9 @@ export function calculateDaysFromNow(endDateInMilliseconds: number): number {
 
 export function formatExpiryDate(expiryTimeDays: number): string {
   const currentUtcDateInMilliseconds = new Date().getTime();
-  return new Date(currentUtcDateInMilliseconds + expiryTimeDays * msPerDay).toLocaleDateString(
-    "en-gb",
-    dateFormatOptions
-  );
+  return formatDate(currentUtcDateInMilliseconds + expiryTimeDays * msPerDay, dateFormatOptions);
+}
+
+export function formatDate(dateInMilliseconds: number, dateFormatOptions: Intl.DateTimeFormatOptions): string {
+  return new Date(dateInMilliseconds).toLocaleDateString("en-gb", dateFormatOptions);
 }
