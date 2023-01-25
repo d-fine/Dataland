@@ -30,7 +30,6 @@ describeIf(
       });
     });
 
-
     /**
      * Gets an LkSG dataset based on the provided data ID and parses the year from its date field
      *

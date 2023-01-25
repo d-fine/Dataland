@@ -1,7 +1,6 @@
 import { ApiKeyAndMetaInfo } from "@clients/apikeymanager";
 
 describe("As a user I expect my api key will be generated correctly", () => {
-
   /**
    * Verifies that the initial state of the api key page is as expected and that the "Create Api Key" popup works
    * as expected
