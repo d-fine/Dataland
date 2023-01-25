@@ -16,10 +16,21 @@
                 <h3>Select a company</h3>
                 <p>Select the company for which you would like to add a new dataset.</p>
               </div>
-              <div class="col-6 text-left uploadForm">*SearchBar for companies only*</div>
+              <div class="col-6 text-left uploadForm">
+                <div class="mb-3">
+                  <span>Type at least 3 characters to search for companies on Dataland:</span>
+                </div>
+                <CompaniesOnlySearchBar />
+                <div class="mt-6">
+                  <span>Can't find the company? </span>
+                  <span @click="autoScrollToCreateACompanyForm" class="cursor-pointer text-primary font-semibold"
+                    >Add it.</span
+                  >
+                </div>
+              </div>
             </div>
 
-            <div id="emptyDiv" style="height: 5rem">
+            <div ref="emptyDivBetweenOptionContainers" style="height: 5rem">
               <hr />
             </div>
 
@@ -44,75 +55,43 @@
 </template>
 
 <script lang="ts">
-import { ApiClientProvider } from "@/services/ApiClients";
-import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import { defineComponent, ref } from "vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import BackButton from "@/components/general/BackButton.vue";
-import { FormKit } from "@formkit/vue";
 import Card from "primevue/card";
-import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
 import CreateCompany from "@/components/forms/CreateCompany.vue";
+import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
 
 export default defineComponent({
-  name: "CompanyInformation",
+  name: "Choose Company",
   components: {
-    CreateCompany,
     AuthenticationWrapper,
-    TheHeader,
     BackButton,
+    TheHeader,
     TheContent,
-    FormKit,
+    CompaniesOnlySearchBar,
+    CreateCompany,
     Card,
-    DataPointFormElement,
   },
   setup() {
     return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
-  data() {
-    return {
-      waitingForData: true,
+      emptyDivBetweenOptionContainers: ref(),
     };
   },
   props: {
     companyID: {
       type: String,
-      default: "loading",
     },
   },
-  mounted() {
-    void this.getCompanyInformation();
-  },
-  watch: {
-    companyID() {
-      void this.getCompanyInformation();
-    },
-  },
+
   methods: {
-    async getCompanyInformation() {
-      try {
-        this.waitingForData = true;
-        if (this.companyID != "loading") {
-          const companyDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
-          ).getCompanyDataControllerApi();
-          const response = await companyDataControllerApi.getCompanyById(this.companyID);
-          // this.companyInformation = response.data.companyInformation;
-          this.waitingForData = false;
-        }
-      } catch (error) {
-        console.error(error);
-        // this.companyInformation = null;
+    autoScrollToCreateACompanyForm() {
+      const emptyDivBetweenOptionContainers = this.emptyDivBetweenOptionContainers;
+      if (emptyDivBetweenOptionContainers) {
+        emptyDivBetweenOptionContainers.scrollIntoView({ behavior: "smooth" });
       }
-    },
-    orderOfMagnitudeSuffix(value: number): string {
-      return convertCurrencyNumbersToNotationWithLetters(value);
     },
   },
 });
