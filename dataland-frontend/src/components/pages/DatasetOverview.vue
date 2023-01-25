@@ -15,18 +15,17 @@
             </div>
           </div>
           <div class="mt-2 flex justify-content-between">
-            <!--TODO get actual numbers-->
             <div>
               <span>Approved datasets: </span>
-              <span class="p-badge badge-green">23</span>
+              <span class="p-badge badge-green">{{ this.numApproved }}</span>
             </div>
             <div>
               <span>Pending datasets: </span>
-              <span class="p-badge badge-orange">5</span>
+              <span class="p-badge badge-orange">{{ this.numPending }}</span>
             </div>
             <div>
               <span>Rejected datasets: </span>
-              <span class="p-badge badge-red">4</span>
+              <span class="p-badge badge-red">{{ this.numRejected }}</span>
             </div>
           </div>
         </div>
@@ -56,8 +55,8 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 import { StoredCompany } from "@clients/backend";
 import { DatasetStatus, DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
-import {dateFormatOptions, formatDate} from "@/utils/DateFormatUtils";
-import {ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS} from "@/utils/Constants";
+import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
+import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 
 export default defineComponent({
   name: "DatasetOverview",
@@ -72,6 +71,9 @@ export default defineComponent({
   data() {
     return {
       datasetTableInfos: [] as DatasetTableInfo[],
+      numApproved: 0,
+      numPending: 0,
+      numRejected: 0,
     };
   },
   setup() {
@@ -82,28 +84,51 @@ export default defineComponent({
   created() {
     void this.requestDataMetaDataForCurrentUser();
   },
+  watch: {
+    datasetTableInfos() {
+      this.numApproved = this.countDatasetStatus(DatasetStatus.Approved);
+      this.numPending = this.countDatasetStatus(DatasetStatus.Pending);
+      this.numRejected = this.countDatasetStatus(DatasetStatus.Rejected);
+    }
+  },
   methods: {
-    async requestDataMetaDataForCurrentUser(): Promise<void> {
-      const companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
-      ).getCompanyDataControllerApi();
+    requestDataMetaDataForCurrentUser: async function (): Promise<void> {
+      const companyDataControllerApi = await new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
+          .getCompanyDataControllerApi();
       const companiesMetaInfos = (
-        await companyDataControllerApi.getCompanies(undefined, new Set(ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS), undefined, undefined, undefined, true)
+          await companyDataControllerApi.getCompanies(
+              undefined,
+              new Set(ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS),
+              undefined,
+              undefined,
+              undefined,
+              true
+          )
       ).data;
+      const userId = (await assertDefined(this.getKeycloakPromise)()).idTokenParsed!.sub;
       this.datasetTableInfos = companiesMetaInfos.flatMap((company: StoredCompany) =>
-        company.dataRegisteredByDataland.map(
-          (dataMetaInfo) =>
-            new DatasetTableInfo(
-              company.companyInformation.companyName,
-              dataMetaInfo.dataType,
-              2023,
-              DatasetStatus.Approved,
-              formatDate(dataMetaInfo.uploadTime, dateFormatOptions),
-              company.companyId
-            )
-        )
+          company.dataRegisteredByDataland
+              .filter(
+                  (dataMetaInfo) =>
+                      dataMetaInfo.uploaderUserId == userId &&
+                      ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)
+              )
+              .map(
+                  (dataMetaInfo) =>
+                      new DatasetTableInfo(
+                          company.companyInformation.companyName,
+                          dataMetaInfo.dataType,
+                          2023,
+                          DatasetStatus.Approved,
+                          convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime),
+                          company.companyId
+                      )
+              )
       );
     },
+    countDatasetStatus(status: DatasetStatus): number {
+      return this.datasetTableInfos.filter(info => info.status.text === status.text).length
+    }
   },
 });
 </script>
