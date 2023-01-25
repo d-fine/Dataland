@@ -2,16 +2,24 @@ package org.dataland.datalandinternalstorage.services
 
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
+import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.UUID
+import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.context.annotation.ComponentScan
 
 /**
  * Simple implementation of a data store using a postgres database
  */
+@ComponentScan(basePackages = ["org.dataland"])
 @Component
+//@RabbitListener(queues = ["storage_queue"])
 class DatabaseDataStore(
-    @Autowired private var dataItemRepository: DataItemRepository
+    @Autowired private var dataItemRepository: DataItemRepository,
+    private val rabbitTemplate: RabbitTemplate,
+    @Autowired var dataInformationHashMap : StorageHashMap,
 ) {
 
     /**
@@ -19,10 +27,18 @@ class DatabaseDataStore(
      * @param data a json object
      * @return id associated with the stored data
      */
-    fun insertDataSet(data: String): String {
-        val dataID = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
-        dataItemRepository.save(DataItem(dataID, data))
-        return dataID
+   // @RabbitListener(queues = ["storage_queue"])
+    @RabbitHandler
+    fun insertDataSet(correlationId :String): String {
+       // val correlationId = rabbitTemplate.receive("storage_queue")
+        println(correlationId)
+        println("Stooooooooooooooooooooooooooorage")
+        val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
+        val data = dataInformationHashMap.map[correlationId]
+        println("Data to save: $data")
+        dataItemRepository.save(DataItem(dataId, data!!))
+            rabbitTemplate.convertAndSend("stored_queue", dataId)
+        return dataId
     }
 
     /**
