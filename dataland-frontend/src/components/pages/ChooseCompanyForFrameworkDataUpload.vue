@@ -9,14 +9,14 @@
           <hr />
         </template>
         <template #content>
-          <div class="uploadFormWrapper">
+          <div>
             <div id="option1Container" class="grid">
-              <div id="option1Label" class="col-3 text-left topicLabel">
-                <h4 id="option1Title" class="title">Option 01</h4>
+              <div id="option1Label" class="col-3 text-left">
+                <h4 id="option1Title">Option 01</h4>
                 <h3>Select a company</h3>
                 <p>Select the company for which you would like to add a new dataset.</p>
               </div>
-              <div class="col-6 text-left uploadForm">
+              <div class="col-6 text-left">
                 <div class="mb-3">
                   <span>Type at least 3 characters to search for companies on Dataland:</span>
                 </div>
@@ -35,15 +35,15 @@
             </div>
 
             <div id="option2Container" class="grid">
-              <div id="option2Label" class="col-3 text-left topicLabel">
-                <h4 id="option2Title" class="title">Option 02</h4>
+              <div id="option2Label" class="col-3 text-left">
+                <h4 id="option2Title">Option 02</h4>
                 <h3>Add a new company</h3>
                 <p>
                   If you want to add a dataset for a new company, you first have to create the company. To create a new
                   company, all mandatory * fields must be filled.
                 </p>
               </div>
-              <div id="uploadForm" class="col-6 text-left uploadForm">
+              <div id="createCompanyForm" class="col-6 text-left">
                 <CreateCompany />
               </div>
             </div>
