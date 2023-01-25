@@ -14,7 +14,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate
  * (ref https://swagger.io/docs/specification/describing-responses/)
  */
 
-@Component("CloudEventMessages")
+@Component("CloudEventMessageHandler")
 class CloudEventMessageHandler(
     private val rabbitTemplate: RabbitTemplate
 ){
