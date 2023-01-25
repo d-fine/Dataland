@@ -163,3 +163,6 @@ body {
   justify-content: center;
   justify-items: center;
 }
+.p-disabled, .p-component:disabled {
+  opacity: .5;
+}

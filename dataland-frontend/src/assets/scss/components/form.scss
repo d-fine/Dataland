@@ -413,7 +413,7 @@ input[type="checkbox"], input[type="radio"]{
   }
   input[type=checkbox]::before, input[type=radio]::before {
     content: "";
-    width: 3px;
+    width: 5px;
     height: 7px;
     border: solid $input-label-color;
     border-width: 0 2px 2px 0;
@@ -442,7 +442,7 @@ input[type="checkbox"], input[type="radio"]{
       display: flex;
       padding: .5rem 0 0 0;
       .formkit-option:nth-child(2n) {
-        margin-left: 30%;
+        margin-left: 10%;
       }
     }
   }
@@ -467,6 +467,26 @@ input[type="checkbox"], input[type="radio"]{
   }
   p {
     margin: .25rem;
+  }
+  .productionSiteSection {
+    border: 1px solid $input-text-border;
+    padding: 1rem;
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    .close-section {
+      position: absolute;
+      right: -15px;
+      left: auto;
+      top: -15px;
+      background: white;
+      border: 1px solid;
+      border-radius: 50%;
+      text-align: center;
+      display: flex;
+      padding: 3px;
+      cursor: pointer;
+    }
   }
   .formFields {
     background: $upload-form-bg;
