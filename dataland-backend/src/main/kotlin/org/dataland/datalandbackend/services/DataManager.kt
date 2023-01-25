@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackendutils.cloudevents.CloudEventMessages
+import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -33,7 +33,7 @@ class DataManager(
     @Autowired var companyManager: CompanyManager,
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
-    @Autowired var cloudEventBuilder: CloudEventMessages,
+    @Autowired var cloudEventBuilder: CloudEventMessageHandler,
     private val rabbitTemplate: RabbitTemplate,
     var metaDataInformationHashMap : HashMap<String, StorableDataSet>,
     //@Autowired var dataInformationHashMap : HashMap<String, String>
@@ -77,15 +77,13 @@ class DataManager(
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         metaDataInformationHashMap.put(dataId, storableDataSet)
         println(dataId)
-        var messageInput = cloudEventBuilder.buildRQMessage(dataId)
-        println(messageInput)
-        rabbitTemplate.convertAndSend("upload_queue", messageInput)
+        cloudEventBuilder.buildCEMessageAndSendToQueue(input = dataId, type = "DataId on Upload", queue = "upload_queue")
         return dataId
     }
 
     @RabbitListener(queues = ["qa_queue"])
-    private fun receive(dataId: String) {
-        if (dataId != null) {
+    private fun receive(dataId: String?) {
+        if (!dataId.isNullOrEmpty()) {
             val metaInformation = metaDataInformationHashMap[dataId]!!
             val company = companyManager.getCompanyById(metaInformation.companyId)
             metaDataManager.storeDataMetaInformation(

@@ -15,11 +15,11 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate
  */
 
 @Component("CloudEventMessages")
-class CloudEventMessages(
+class CloudEventMessageHandler(
     private val rabbitTemplate: RabbitTemplate
 ){
 
-    fun buildRQMessage(input: String, type: String = "TestType") :Message<String>{
+    private fun constructCEMessage(input: String, type: String) :Message<String>{
         val message = CloudEventMessageBuilder
             .withData(input)
             .setType(type)
@@ -28,8 +28,8 @@ class CloudEventMessages(
         return message
     }
 
-    fun buildAndSendMessage(input: String, type: String = "TestType", queue: String){
-        val messageInput = buildRQMessage(input, type)
+    fun buildCEMessageAndSendToQueue(input: String, type: String = "TestType", queue: String){
+        val messageInput = constructCEMessage(input, type)
         rabbitTemplate.convertAndSend(queue, messageInput)
     }
 
