@@ -28,6 +28,14 @@ export async function uploadOneLksgDatasetViaApi(
   return response.data;
 }
 
+/**
+ * Uploads a company and single LkSG data entry for a company
+ *
+ * @param token The API bearer token to use
+ * @param companyInformation The company information to use for the company upload
+ * @param testData The Dataset to upload
+ * @returns an object which contains the companyId from the company upload and the dataId from the data upload
+ */
 export function uploadCompanyAndLksgDataViaApi(
   token: string,
   companyInformation: CompanyInformation,

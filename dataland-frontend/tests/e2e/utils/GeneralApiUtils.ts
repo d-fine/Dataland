@@ -45,6 +45,13 @@ export function interceptAllAndCheckFor500Errors(): void {
   cy.intercept("/api-keys/**", handler);
 }
 
+/**
+ * Generic function to retrieve the first prepared fixture whose company name equals the provided search string
+ *
+ * @param name Search string to look for in the prepared fixtures
+ * @param preparedFixtures The parsed array of prepared fixtures
+ * @returns the first prepared fixture whose name equals the provided search string
+ */
 export function getPreparedFixture<T>(name: string, preparedFixtures: FixtureData<T>[]): FixtureData<T> {
   const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
   if (!preparedFixture) {

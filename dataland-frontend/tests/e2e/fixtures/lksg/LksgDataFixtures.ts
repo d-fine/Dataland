@@ -56,6 +56,7 @@ export function generateVatIdentificationNumber(): string {
 /**
  * Generates a random LKSG dataset
  *
+ * @param dataDate Optional parameter if a specific date should be set instead of a random one
  * @returns a random LKSG dataset
  */
 export function generateLksgData(dataDate?: string): LksgData {
