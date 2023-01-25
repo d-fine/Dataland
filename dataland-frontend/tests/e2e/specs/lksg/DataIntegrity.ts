@@ -44,16 +44,32 @@ describeIf(
       const lksgData = response.data.data as LksgData;
       if (lksgData) {
         const reportingDateAsString = lksgData.social!.general!.dataDate as string;
-        return new Date(reportingDateAsString).getFullYear().toString();
+        return getYearFromLksgDate(reportingDateAsString);
       } else {
         throw Error(`No Lksg dataset could be retrieved for the provided dataId ${dataId}`);
       }
     }
 
+    /**
+     * Parses the year from a date string
+     *
+     * @param lksgDate date to parse
+     * @returns the year from the date as string
+     */
     function getYearFromLksgDate(lksgDate: string): string {
-      return lksgDate.split("-")[0];
+      return new Date(lksgDate).getFullYear().toString();
     }
 
+    /**
+     * Uploads an LkSG dataset to an existing company that already has at least one LkSG dataset uploaded for.
+     *
+     * @param uploadIdsOfExistingCompanyAndLksgDataSet contains the companyId of the existing company, and the data ID
+     * of one already existing LkSG dataset for that company
+     * @param isNewLksgDataSetInSameYear is a flag that decides if the new LkSG dataset should have a date which has
+     * the same year as the already existing LkSG dataset
+     * @returns an object which contains the companyId of the already existing comapny and the dataId of the newly
+     * uploaded LkSG dataset
+     */
     function uploadAnotherLksgDataSetToExistingCompany(
       uploadIdsOfExistingCompanyAndLksgDataSet: UploadIds,
       isNewLksgDataSetInSameYear?: boolean
