@@ -14,10 +14,12 @@ export function calculateDaysFromNow(endDateInMilliseconds: number): number {
   return Math.ceil(daysFromNow);
 }
 
-export function formatExpiryDate(expiryTimeDays: number): string {
+export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
+  return new Date(unixTimeInMs).toLocaleDateString("en-gb", dateFormatOptions);
+}
+
+export function calculateExpiryDateAsDateString(expiryTimeDays: number): string {
   const currentUtcDateInMilliseconds = new Date().getTime();
-  return new Date(currentUtcDateInMilliseconds + expiryTimeDays * msPerDay).toLocaleDateString(
-    "en-gb",
-    dateFormatOptions
-  );
+  const expiryUtcDateInMilliseconds = currentUtcDateInMilliseconds + expiryTimeDays * msPerDay;
+  return convertUnixTimeInMsToDateString(expiryUtcDateInMilliseconds);
 }
