@@ -1,7 +1,6 @@
 package org.dataland.datalandbackendutils.cloudevents
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.cloud.function.cloudevent.CloudEventMessageBuilder;
+import org.springframework.cloud.function.cloudevent.CloudEventMessageBuilder
 import org.springframework.cloud.function.cloudevent.CloudEventMessageUtils
 import org.springframework.messaging.Message
 import org.springframework.messaging.MessageHeaders
@@ -17,22 +16,20 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate
 
 @Component("CloudEventMessages")
 class CloudEventMessages(
-    @Autowired var cloudEventBuilder: CloudEventMessages,
     private val rabbitTemplate: RabbitTemplate
 ){
 
-
-    private fun buildRQMessage(input: String, type: String) :Message<String>{
-        var message = CloudEventMessageBuilder
+    fun buildRQMessage(input: String, type: String = "TestType") :Message<String>{
+        val message = CloudEventMessageBuilder
             .withData(input)
             .setType(type)
             .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-            .build(CloudEventMessageUtils.AMQP_ATTR_PREFIX);
+            .build(CloudEventMessageUtils.AMQP_ATTR_PREFIX)
         return message
     }
 
     fun buildAndSendMessage(input: String, type: String = "TestType", queue: String){
-        var messageInput = cloudEventBuilder.buildRQMessage(input, type)
+        val messageInput = buildRQMessage(input, type)
         rabbitTemplate.convertAndSend(queue, messageInput)
     }
 
