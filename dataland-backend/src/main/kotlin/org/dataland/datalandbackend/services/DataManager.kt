@@ -9,6 +9,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
+import org.dataland.datalandinternalstorage.services.StorageHashMap
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
@@ -36,7 +37,7 @@ class DataManager(
     @Autowired var cloudEventBuilder: CloudEventMessages,
     private val rabbitTemplate: RabbitTemplate,
     var metaDataInformationHashMap : HashMap<String, StorableDataSet>,
-    //@Autowired var dataInformationHashMap : HashMap<String, String>
+    @Autowired var dataInformationHashMap : StorageHashMap
 
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -76,10 +77,10 @@ class DataManager(
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         metaDataInformationHashMap.put(dataId, storableDataSet)
-        println(dataId)
+        println(dataId)/*
         var messageInput = cloudEventBuilder.buildRQMessage(dataId)
         println(messageInput)
-        rabbitTemplate.convertAndSend("upload_queue", messageInput)
+        rabbitTemplate.convertAndSend("upload_queue", messageInput)*/
         return dataId
     }
 
@@ -98,15 +99,22 @@ class DataManager(
         }
         metaDataInformationHashMap.remove(dataId)
     }
-   // @RabbitListener(queues = ["stored_queue"])
-    //@RabbitHandler
+    @RabbitListener(queues = ["stored_queue"])
+    @RabbitHandler
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
         companyName: String,
         correlationId: String
-    ): String {
+    ): String{
         val dataId: String
-        try {
+        dataInformationHashMap.map.put(correlationId, objectMapper.writeValueAsString(storableDataSet))
+        print(dataInformationHashMap.map[correlationId])
+        println("storeDataSet")
+        println(dataInformationHashMap.map)
+        println("storeDataSet")
+        rabbitTemplate.convertAndSend("storage_queue", correlationId)
+
+        /*try {
             dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
             val internalMessage = "Error storing data." +
@@ -122,7 +130,11 @@ class DataManager(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
                 " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId"
         )
-        return dataId
+        dataId = rabbitTemplate.receiveAndConvert("stored_queue").toString()
+        println("Datamanager DataID")
+        println(dataId)
+        return dataId*/
+        return("Test")
     }
 
     /**

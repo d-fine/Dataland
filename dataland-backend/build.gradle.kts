@@ -29,6 +29,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
     implementation(project(":dataland-backend-utils"))
+    implementation(project(":dataland-internal-storage"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.dataland.edc.client)
     implementation(libs.moshi.kotlin)
@@ -55,7 +56,6 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation("com.mailjet:mailjet-client:5.2.1")
     testImplementation("org.springframework.amqp:spring-rabbit-test")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 }
 
 openApi {
