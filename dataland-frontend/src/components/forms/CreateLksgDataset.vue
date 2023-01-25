@@ -43,6 +43,7 @@
                     validation="required"
                     validation-visibility="live"
                   />
+                  <div class="form-field">
                   <div class="form-field-label">
                     <h5>LKSG in Scope</h5>
                     <em
@@ -70,6 +71,7 @@
                       'p-radiobutton': true,
                     }"
                   />
+                  </div>
                   <div class="form-field-label">
                     <h5>Company Legal Form</h5>
                     <em
@@ -212,6 +214,39 @@
                     {{ item }} <em @click="() => removeItemFromList(item)" class="material-icons">close</em>
                   </span>
                 </div>
+
+                <!-- Is your company a manufacturing company?  -->
+                <div class="form-field">
+                  <div class="form-field-label">
+                    <h5>Is your company a manufacturing company?</h5>
+                    <em
+                        class="material-icons info-icon"
+                        aria-hidden="true"
+                        title="isYour company a manufacturing company?"
+                        v-tooltip.top="{
+                        value: lksgQuestions['lksgInScope'],
+                      }"
+                    >info</em
+                    >
+                  </div>
+                  <FormKit
+                      type="radio"
+                      name="lksgInScope"
+                      :options="['Yes', 'No']"
+                      :outer-class="{
+                      'yes-no-radio': true,
+                    }"
+                      :inner-class="{
+                      'formkit-inner': false,
+                    }"
+                      :input-class="{
+                      'formkit-input': false,
+                      'p-radiobutton': true,
+                    }"
+                  />
+                </div>
+
+
               </div>
             </div>
             ddddddddddddddd

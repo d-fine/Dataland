@@ -461,6 +461,9 @@ input[type="checkbox"], input[type="radio"]{
     button {
       margin-left: auto;
     }
+    h5 {
+      margin: .5rem 0;
+    }
   }
   p {
     margin: .25rem;
@@ -498,6 +501,7 @@ input[type="checkbox"], input[type="radio"]{
     }
   }
 }
+
 .p-checkbox .p-checkbox-box {
   border: 2px solid #ced4da;
   background: #f6f5ef;
