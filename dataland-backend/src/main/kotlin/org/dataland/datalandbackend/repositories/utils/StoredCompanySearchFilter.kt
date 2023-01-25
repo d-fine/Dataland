@@ -9,7 +9,8 @@ data class StoredCompanySearchFilter(
     val countryCodeFilter: List<String>,
     val sectorFilter: List<String>,
     val searchString: String,
-    val nameOnlyFilter: Boolean
+    val nameOnlyFilter: Boolean,
+    val uploaderIdFilter: List<String>
 ) {
     val dataTypeFilterSize: Int
         get() = dataTypeFilter.size
@@ -25,4 +26,7 @@ data class StoredCompanySearchFilter(
 
     val searchStringLower: String
         get() = searchString.lowercase()
+
+    val uploaderIdFilterSize: Int
+        get() = uploaderIdFilter.size
 }
