@@ -19,7 +19,6 @@ import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 @RabbitListener(queues = ["storage_queue"])
 class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
-    private val rabbitTemplate: RabbitTemplate,
     @Autowired var dataInformationHashMap : StorageHashMap,
     @Autowired var cloudEventBuilder: CloudEventMessageHandler,
 ) {
@@ -31,12 +30,12 @@ class DatabaseDataStore(
      */
    // @RabbitListener(queues = ["storage_queue"])
     @RabbitHandler
-    fun insertDataSet(correlationId :String) {
+    fun insertDataSet(dataId :String) {
        // val correlationId = rabbitTemplate.receive("storage_queue")
-        println(correlationId)
+        println(dataId)
         println("Stooooooooooooooooooooooooooorage")
-        val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
-        val data = dataInformationHashMap.map[correlationId]
+
+        val data = dataInformationHashMap.map[dataId]
         println("Data to save: $data")
         dataItemRepository.save(DataItem(dataId, data!!))
         cloudEventBuilder.buildCEMessageAndSendToQueue(input = dataId, type = "DataId on Upload", queue = "stored_queue")

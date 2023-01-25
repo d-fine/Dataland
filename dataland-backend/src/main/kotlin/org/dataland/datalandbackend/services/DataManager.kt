@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
+import kotlin.collections.HashMap
 
 
 /**
@@ -77,8 +79,9 @@ class DataManager(
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         metaDataInformationHashMap.put(dataId, storableDataSet)
+        println("DataId from addDataSet")
         println(dataId)
-        cloudEventBuilder.buildCEMessageAndSendToQueue(input = dataId, type = "DataId on Upload", queue = "upload_queue")
+        cloudEventBuilder.buildCEMessageAndSendToQueue(dataId, "DataId on Upload", "upload_queue")
         return dataId
     }
 
@@ -103,13 +106,13 @@ class DataManager(
         companyName: String,
         correlationId: String
     ): String{
-        val dataId: String
-        dataInformationHashMap.map.put(correlationId, objectMapper.writeValueAsString(storableDataSet))
-        print(dataInformationHashMap.map[correlationId])
+        val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
+        dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
+        print(dataInformationHashMap.map[dataId])
         println("storeDataSet")
         println(dataInformationHashMap.map)
         println("storeDataSet")
-        cloudEventBuilder.buildCEMessageAndSendToQueue(input = correlationId, type = "DataId on Upload", queue = "storage_queue")
+        cloudEventBuilder.buildCEMessageAndSendToQueue(input = dataId, type = "DataId on Upload", queue = "storage_queue")
 
         /*try {
             dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
@@ -131,7 +134,7 @@ class DataManager(
         println("Datamanager DataID")
         println(dataId)
         return dataId*/
-        return("Test")
+        return(dataId )
     }
 
     @RabbitListener(queues = ["stored_queue"])
