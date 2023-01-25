@@ -120,6 +120,9 @@ class CompanyManager(
             dataTypeFilter = filter.dataTypeFilter.map { it.name },
             sectorFilter = filter.sectorFilter.toList(),
             countryCodeFilter = filter.countryCodeFilter.toList(),
+            uploaderIdFilter = if (filter.onlyCurrentUserAsUploader)
+                listOf(DatalandAuthentication.fromContext().userId)
+            else listOf(),
         )
         val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA)
         val sortingMap = filteredAndSortedResults.mapIndexed {

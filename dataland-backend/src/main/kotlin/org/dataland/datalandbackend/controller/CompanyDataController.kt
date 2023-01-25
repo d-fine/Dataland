@@ -37,7 +37,8 @@ class CompanyDataController(
         dataTypes: Set<DataType>?,
         countryCodes: Set<String>?,
         sectors: Set<String>?,
-        onlyCompanyNames: Boolean
+        onlyCompanyNames: Boolean,
+        onlyCurrentUserAsUploader: Boolean
     ): ResponseEntity<List<StoredCompany>> {
         logger.info(
             "Received a request to get companies with " +
@@ -52,6 +53,7 @@ class CompanyDataController(
                     dataTypes ?: setOf(),
                     countryCodes ?: setOf(),
                     sectors ?: setOf(),
+                    onlyCurrentUserAsUploader
                 ),
                 DatalandAuthentication.fromContextOrNull()
             )

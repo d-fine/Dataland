@@ -463,6 +463,14 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "onlyCurrentUserAsUploader",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
