@@ -9,17 +9,19 @@ import java.util.UUID
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.context.annotation.ComponentScan
+import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 
 /**
  * Simple implementation of a data store using a postgres database
  */
 @ComponentScan(basePackages = ["org.dataland"])
 @Component
-//@RabbitListener(queues = ["storage_queue"])
+@RabbitListener(queues = ["storage_queue"])
 class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
     private val rabbitTemplate: RabbitTemplate,
     @Autowired var dataInformationHashMap : StorageHashMap,
+    @Autowired var cloudEventBuilder: CloudEventMessageHandler,
 ) {
 
     /**
@@ -29,7 +31,7 @@ class DatabaseDataStore(
      */
    // @RabbitListener(queues = ["storage_queue"])
     @RabbitHandler
-    fun insertDataSet(correlationId :String): String {
+    fun insertDataSet(correlationId :String) {
        // val correlationId = rabbitTemplate.receive("storage_queue")
         println(correlationId)
         println("Stooooooooooooooooooooooooooorage")
@@ -37,9 +39,10 @@ class DatabaseDataStore(
         val data = dataInformationHashMap.map[correlationId]
         println("Data to save: $data")
         dataItemRepository.save(DataItem(dataId, data!!))
-            rabbitTemplate.convertAndSend("stored_queue", dataId)
-        return dataId
+        cloudEventBuilder.buildCEMessageAndSendToQueue(input = dataId, type = "DataId on Upload", queue = "stored_queue")
+        //return dataId
     }
+
 
     /**
      * Reads data from a database

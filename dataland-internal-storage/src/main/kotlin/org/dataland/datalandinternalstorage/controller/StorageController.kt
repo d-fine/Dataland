@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @ComponentScan(basePackages = ["org.dataland"])
 @Component("StorageController")
-@RabbitListener(queues = ["storage_queue"])
+//@RabbitListener(queues = ["storage_queue"])
 class StorageController(
     @Autowired val dataStore: DatabaseDataStore,
     private val rabbitTemplate: RabbitTemplate,
@@ -32,14 +32,14 @@ class StorageController(
         return ResponseEntity.ok(dataStore.selectDataSet(dataId))
     }
     //@RabbitListener(queues = ["storage_queue"])
-    @RabbitHandler
+    //@RabbitHandler
     override fun insertData(correlationId :String): ResponseEntity<InsertDataResponse> {
         //val correlationId2 = rabbitTemplate.receiveAndConvert("storage_queue")
         //println(correlationId2)
        // val correlationId = correlationId2.toString()
         print("StorageController")
         //println(correlationId)
-        logger.info("Inserting data into database with (correlation id: ).")
-        return ResponseEntity.ok(InsertDataResponse(dataStore.insertDataSet(correlationId)))
+        logger.info("Inserting data into database with (correlation id: $correlationId).")
+        return ResponseEntity.ok(InsertDataResponse(dataStore.insertDataSet(correlationId).toString()))
     }
 }

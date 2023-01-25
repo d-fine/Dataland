@@ -97,7 +97,6 @@ class DataManager(
         }
         metaDataInformationHashMap.remove(dataId)
     }
-    @RabbitListener(queues = ["stored_queue"])
     @RabbitHandler
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
@@ -110,7 +109,7 @@ class DataManager(
         println("storeDataSet")
         println(dataInformationHashMap.map)
         println("storeDataSet")
-        rabbitTemplate.convertAndSend("storage_queue", correlationId)
+        cloudEventBuilder.buildCEMessageAndSendToQueue(input = correlationId, type = "DataId on Upload", queue = "storage_queue")
 
         /*try {
             dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
@@ -133,6 +132,13 @@ class DataManager(
         println(dataId)
         return dataId*/
         return("Test")
+    }
+
+    @RabbitListener(queues = ["stored_queue"])
+    @RabbitHandler
+    fun testFunktion(dataId: String) {
+        println(dataId)
+        println("tESTFUNKTIONFSDSDDSFFFFFFFFFFFFFFFFFFFFFF")
     }
 
     /**
