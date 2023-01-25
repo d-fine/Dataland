@@ -52,11 +52,12 @@ describe(
     }
 
     /**
-     * Uses the Dataland API to verify that exactly expectedNumberOfIds companies and datasets of the provided
-     * dataType exist
+     * Uses the Dataland API to verify that the number of companies that contain at least one dataset of the
+     * provided data type equal the expected number.
+     * It also asserts that the total number of datasets of the provided data type equals that number.
      *
      * @param dataType the datatype to filter by
-     * @param expectedNumberOfIds the expected number of companies/datasets of the datatype
+     * @param expectedNumberOfCompanies
      */
     function checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
       dataType: DataTypeEnum,

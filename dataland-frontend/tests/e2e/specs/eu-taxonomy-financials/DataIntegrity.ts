@@ -35,6 +35,14 @@ describeIf(
       });
     });
 
+    /**
+     * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
+     * via the form in the frontend, and then visits the view page where that dataset is displayed
+     * and
+     *
+     * @param companyInformation Company information to be used for the company upload
+     * @param testData EU Taxonomy dataset for financial companies to be uploaded
+     */
     function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials

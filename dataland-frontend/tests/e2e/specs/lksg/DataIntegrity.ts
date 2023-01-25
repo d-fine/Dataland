@@ -30,11 +30,19 @@ describeIf(
       });
     });
 
-    async function getReportingYearOfLksgDataSet(dataId: string, token: string): Promise<string> {
+
+    /**
+     * Gets an LkSG dataset based on the provided data ID and parses the year from its date field
+     *
+     * @param token The API bearer token to use
+     * @param dataId The data ID of an LkSG dataset
+     * @returns the year from the date value of the LkSG dataset as string
+     */
+    async function getReportingYearOfLksgDataSet(token: string, dataId: string): Promise<string> {
       const response = await new LksgDataControllerApi(
         new Configuration({ accessToken: token })
       ).getCompanyAssociatedLksgData(dataId);
-      const lksgData = response.data.data;
+      const lksgData = response.data.data as LksgData;
       if (lksgData) {
         const reportingDateAsString = lksgData.social!.general!.dataDate as string;
         return new Date(reportingDateAsString).getFullYear().toString();

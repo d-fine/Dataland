@@ -4,6 +4,7 @@ import { generateLksgData, generateProductionSite } from "./LksgDataFixtures";
 
 type generatorFunction = (input: FixtureData<LksgData>) => FixtureData<LksgData>;
 
+// TODO not fully happy with the namings here.  those aren't generatorFunctions, they are setterFunctions
 export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   const creationFunctions: Array<generatorFunction> = [
     createCompanyToHaveTwoLksgDataSetsInSameYear,
@@ -25,6 +26,12 @@ function createCompanyToHaveTwoLksgDataSetsInSameYear(input: FixtureData<LksgDat
   return input;
 }
 
+/**
+ * Sets the company name and the date in the fixture data to a specific string
+ *
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
 function createCompanyToHaveSixLksgDataSetsInDifferentYears(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "six-lksg-data-sets-in-different-years";
   input.t.social!.general!.dataDate = "2022-01-01";
@@ -38,7 +45,15 @@ function createCompanyToHaveOneLksgDataSetsInDifferentYears(input: FixtureData<L
   return input;
 }
 
+/**
+ * Sets the company name in the fixture data to a specific string
+ *
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
 function createCompanyToHaveTwoDifferentDataSetTypes(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "two-different-data-set-types";
   return input;
 }
+
+// TODO I suggest renaming all the functions in this class, and also the paramNames.  It's strange to read.
