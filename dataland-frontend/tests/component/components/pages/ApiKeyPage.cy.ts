@@ -1,4 +1,4 @@
-import ApiKeysPage from "../../../../src/components/pages/ApiKeysPage.vue";
+import ApiKeysPage from "@/components/pages/ApiKeysPage.vue";
 import { mount } from "cypress/vue";
 
 describe("Component test for ApiKeyCard.vue", () => {

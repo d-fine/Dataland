@@ -202,34 +202,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-.d-framework-searchbar-input-icon {
-  padding-left: 0.75rem !important;
-}
-
-.d-framework-searchbar-input {
-  padding-left: 3rem !important;
-}
-
-.d-framework-searchbar-panel {
-  max-height: 500px !important;
-}
-
-.d-framework-searchbar-panel .p-autocomplete-items {
-  padding: 0 !important;
-}
-
-.d-framework-searchbar-panel .p-autocomplete-item {
-  height: 3.5rem !important;
-  padding: 0 !important;
-  display: flex;
-  align-content: center;
-  align-items: center;
-}
-
-.p-autocomplete-loader {
-  color: #e67f3f;
-  right: 0.5rem;
-}
-</style>

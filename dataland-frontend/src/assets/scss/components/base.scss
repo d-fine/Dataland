@@ -1,6 +1,9 @@
 * {
   box-sizing: border-box
 }
+html {
+  scroll-behavior: smooth;
+}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -53,6 +56,9 @@ body {
   display: inline-block;
   border-radius: .25rem;
   padding: 0 .5rem;
+  &.round {
+    border-radius: 50%;
+  }
   &.badge-yellow {
     color: var(--yellow-700);
     background: var(--yellow-100);

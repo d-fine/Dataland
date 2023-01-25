@@ -25,7 +25,7 @@
           class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
           :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
         >
-          <div id="searchFiltersContainer">
+          <div class="flex" id="searchFiltersContainer">
             <div
               id="scrolledSearchToggler"
               :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"

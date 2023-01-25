@@ -5,12 +5,12 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { LksgData } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
-import { uploadCompanyAndLksgDataViaApi } from "../../utils/LksgUpload";
-import { getPreparedFixture } from "../../utils/GeneralApiUtils";
-import { uploadCompanyViaApi } from "../../utils/CompanyUpload";
-import { generateCompanyInformation } from "../../fixtures/CompanyFixtures";
-import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "../../utils/EuTaxonomyNonFinancialsUpload";
-import { generateEuTaxonomyDataForNonFinancials } from "../../fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
+import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
+import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
+import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
+import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
