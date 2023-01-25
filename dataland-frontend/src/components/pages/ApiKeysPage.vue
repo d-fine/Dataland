@@ -235,7 +235,7 @@ export default defineComponent({
       }
     },
 
-    async generateApiKey(daysValid: number) {
+    async generateApiKey(daysValid?: number) {
       try {
         this.waitingForData = true;
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
