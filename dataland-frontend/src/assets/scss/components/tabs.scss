@@ -1,0 +1,42 @@
+.p-tabview {
+  padding: 0;
+  .p-tabview-nav {
+    background: $white;
+    li {
+      margin-right: 0;
+      .p-tabview-nav-link {
+        border: solid;
+        border-width: 0 0 2px 0;
+        border-color: transparent transparent $white transparent;
+        background: $white;
+        color: $gray;
+        padding: 1.25rem 0;
+        margin: 0 1.25rem;
+        font-weight: 700;
+        transition: box-shadow 0.2s;
+      }
+      &:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+        background: $white;
+        border-color: $gray-light;
+        color: $gray;
+      }
+      &.p-highlight .p-tabview-nav-link {
+        background: $white;
+        border-color: $main-color;
+        color: $main-color;
+      }
+    }
+  }
+  .p-tabview-nav-btn.p-link {
+    background: $white;
+    color: $main-color;
+    width: 3rem;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0;
+  }
+  .p-tabview-panels {
+    padding: 0;
+    margin: 0;
+    border: 0 none;
+  }
+}

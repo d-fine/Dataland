@@ -1,82 +1,87 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="pl-0 pt-0 min-h-screen paper-section relative">
-      <div
-        id="searchBarAndFiltersContainer"
-        class="w-full bg-white pt-4"
-        :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
-        ref="searchBarAndFiltersContainer"
-      >
-        <FrameworkDataSearchBar
-          id="frameworkDataSearchBar"
-          ref="frameworkDataSearchBar"
-          class="pl-4 m-0"
-          v-model="currentSearchBarInput"
-          :filter="currentCombinedFilter"
-          :searchBarId="searchBarId"
-          :emit-search-results-array="true"
-          @search-confirmed="handleSearchConfirmed"
-          @companies-received="handleCompanyQuery"
-        />
+    <TabView class="col-12" v-model:activeIndex="activeTabIndex" :tab-change="handleTabChange()">
+      <TabPanel header="AVAILABLE DATASETS">
+        <TheContent class="pl-0 pt-0 min-h-screen paper-section relative">
+          <div
+            id="searchBarAndFiltersContainer"
+            class="w-full bg-white pt-4"
+            :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
+            ref="searchBarAndFiltersContainer"
+          >
+            <FrameworkDataSearchBar
+              id="frameworkDataSearchBar"
+              ref="frameworkDataSearchBar"
+              class="pl-4 m-0"
+              v-model="currentSearchBarInput"
+              :filter="currentCombinedFilter"
+              :searchBarId="searchBarId"
+              :emit-search-results-array="true"
+              @search-confirmed="handleSearchConfirmed"
+              @companies-received="handleCompanyQuery"
+            />
 
-        <div
-          id="searchFiltersPanel"
-          class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
-          :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
-        >
-          <div class="flex" id="searchFiltersContainer">
             <div
-              id="scrolledSearchToggler"
-              :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"
+              id="searchFiltersPanel"
+              class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
+              :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
             >
-              <span class="mr-3 font-semibold">Search Data for Companies</span>
-              <PrimeButton
-                name="search_bar_collapse"
-                icon="pi pi-search"
-                class="p-button-rounded surface-ground border-none m-2"
-                @click="toggleSearchBar"
-              >
-                <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-              </PrimeButton>
+              <div class="flex" id="searchFiltersContainer">
+                <div
+                  id="scrolledSearchToggler"
+                  :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"
+                >
+                  <span class="mr-3 font-semibold">Search Data for Companies</span>
+                  <PrimeButton
+                    name="search_bar_collapse"
+                    icon="pi pi-search"
+                    class="p-button-rounded surface-ground border-none m-2"
+                    @click="toggleSearchBar"
+                  >
+                    <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+                  </PrimeButton>
+                </div>
+
+                <FrameworkDataSearchFilters
+                  id="frameworkDataSearchFilters"
+                  class="ml-3"
+                  ref="frameworkDataSearchFilters"
+                  :show-heading="!pageScrolled || searchBarToggled"
+                  v-model:selected-country-codes="currentFilteredCountryCodes"
+                  v-model:selected-frameworks="currentFilteredFrameworks"
+                  v-model:selected-sectors="currentFilteredSectors"
+                />
+              </div>
+
+              <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
+                <PrimeButton
+                  class="uppercase p-button p-button-sm d-letters mr-3"
+                  label="New Dataset"
+                  icon="pi pi-plus"
+                  @click="redirectToChooseCompanyPage"
+                />
+                <span>{{ currentlyVisiblePageText }}</span>
+              </div>
             </div>
-
-            <FrameworkDataSearchFilters
-              id="frameworkDataSearchFilters"
-              class="ml-3"
-              ref="frameworkDataSearchFilters"
-              :show-heading="!pageScrolled || searchBarToggled"
-              v-model:selected-country-codes="currentFilteredCountryCodes"
-              v-model:selected-frameworks="currentFilteredFrameworks"
-              v-model:selected-sectors="currentFilteredSectors"
-            />
           </div>
 
-          <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
-            <PrimeButton
-              class="uppercase p-button p-button-sm d-letters mr-3"
-              label="New Dataset"
-              icon="pi pi-plus"
-              @click="redirectToChooseCompanyPage"
-            />
-            <span>{{ currentlyVisiblePageText }}</span>
+          <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
+            <p class="font-medium text-xl">Loading...</p>
+            <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
           </div>
-        </div>
-      </div>
 
-      <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading...</p>
-        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-      </div>
-
-      <FrameworkDataSearchResults
-        v-if="!waitingForSearchResults"
-        ref="searchResults"
-        :rows-per-page="rowsPerPage"
-        :data="resultsArray"
-        @update:first="setFirstShownRow"
-      />
-    </TheContent>
+          <FrameworkDataSearchResults
+            v-if="!waitingForSearchResults"
+            ref="searchResults"
+            :rows-per-page="rowsPerPage"
+            :data="resultsArray"
+            @update:first="setFirstShownRow"
+          />
+        </TheContent>
+      </TabPanel>
+      <TabPanel header="MY DATASETS"> </TabPanel>
+    </TabView>
     <DatalandFooter />
   </AuthenticationWrapper>
 </template>
@@ -102,6 +107,8 @@ import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { useFiltersStore } from "@/stores/filters";
+import TabPanel from "primevue/tabpanel";
+import TabView from "primevue/tabview";
 
 export default defineComponent({
   setup() {
@@ -123,6 +130,8 @@ export default defineComponent({
     PrimeButton,
     FrameworkDataSearchResults,
     DatalandFooter,
+    TabView,
+    TabPanel,
   },
   created() {
     window.addEventListener("scroll", this.windowScrollHandler);
@@ -155,6 +164,7 @@ export default defineComponent({
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
+      activeTabIndex: 0,
     };
   },
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
@@ -347,6 +357,11 @@ export default defineComponent({
       this.$nextTick(() => {
         this.searchBarId = "search_bar_scrolled";
       });
+    },
+    handleTabChange(): void {
+      if (this.activeTabIndex == 1) {
+        void this.$router.push("/datasets");
+      }
     },
   },
   unmounted() {

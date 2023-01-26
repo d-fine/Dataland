@@ -20,6 +20,8 @@ export default defineConfig({
       "primevue/autocomplete",
       "primevue/menu",
       "primevue/progressbar",
+      "primevue/tabview",
+      "primevue/tabpanel",
       "@formkit/vue",
       "axios",
     ],
