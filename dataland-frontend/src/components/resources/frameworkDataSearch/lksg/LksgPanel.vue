@@ -110,7 +110,7 @@ export default defineComponent({
     /**
      * Retrieves and converts values from an array of LkSG datasets in order to make it displayable in the frontend.
      *
-     * @param lksgData
+     * @param lksgData The LkSG dataset that shall be converted
      */
     convertLksgDataToFrontendFormat(lksgData: Array<LksgData>): void {
       this.listOfDatesToDisplayAsColumns = [];
@@ -130,6 +130,12 @@ export default defineComponent({
       this.sortDatesToDisplayAsColumns();
     },
 
+    /**
+     * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
+     *
+     * @param value
+     * @returns a string with the converted number and "MM" at the end
+     */
     convertToMillions(value: number): string {
       return `${(value / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
     },
