@@ -79,14 +79,22 @@ export default defineComponent({
       }
     },
 
-    appendKpiValues(kpiKey: string, kpiValue: string, subAreaKey: string, dataDateOfLksgDataset: string): void {
+    /**
+     * Creates kpi data objects to pass them to the data table.
+     *
+     * @param kpiKey The field name of a kpi
+     * @param kpiValue The corresponding value to the kpiKey
+     * @param subAreaKey The sub area to which the kpi belongs
+     * @param dataDateOfLksgDataset The value of the date kpi of an LkSG dataset
+     */
+    createKpiDataObjects(kpiKey: string, kpiValue: string, subAreaKey: string, dataDateOfLksgDataset: string): void {
       if (kpiKey === "totalRevenue") {
         kpiValue = this.convertToMillions(parseFloat(kpiValue));
       }
       let indexOfExistingItem = -1;
       const kpiDataObject = {
-        kpiKey: kpiKey,
         subAreaKey: subAreaKey == "general" ? `_${subAreaKey}` : subAreaKey,
+        kpiKey: kpiKey,
         [dataDateOfLksgDataset ? dataDateOfLksgDataset : ""]: kpiValue, // TODO not needed since already set to "" in convert function?!
       };
       indexOfExistingItem = this.kpiDataObjects.findIndex(
@@ -121,7 +129,7 @@ export default defineComponent({
         for (const areaObject of Object.values(oneLksgDataset)) {
           for (const [subAreaKey, subAreaObject] of Object.entries(areaObject)) {
             for (const [kpiKey, kpiValue] of Object.entries(subAreaObject as Object)) {
-              this.appendKpiValues(kpiKey, kpiValue, subAreaKey, dataDateOfLksgDataset);
+              this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataDateOfLksgDataset);
             }
           }
         }
