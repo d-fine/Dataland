@@ -87,7 +87,7 @@ export default defineComponent({
      * @param subAreaKey The sub area to which the kpi belongs
      * @param dataDateOfLksgDataset The value of the date kpi of an LkSG dataset
      */
-    createKpiDataObjects(kpiKey: string, kpiValue: string, subAreaKey: string, dataDateOfLksgDataset: string): void {
+    createKpiDataObjects(kpiKey: string, kpiValue: object, subAreaKey: string, dataDateOfLksgDataset: string): void {
       if (kpiKey === "totalRevenue") {
         kpiValue = this.convertToMillions(parseFloat(kpiValue));
       }
@@ -130,8 +130,8 @@ export default defineComponent({
         const dataDateOfLksgDataset = oneLksgDataset.social?.general?.dataDate ?? "";
         this.listOfDatesToDisplayAsColumns.push(dataDateOfLksgDataset);
         for (const areaObject of Object.values(oneLksgDataset)) {
-          for (const [subAreaKey, subAreaObject] of Object.entries(areaObject)) {
-            for (const [kpiKey, kpiValue] of Object.entries(subAreaObject as Object)) {
+          for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object)) {
+            for (const [kpiKey, kpiValue] of Object.entries(subAreaObject as object)) {
               this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataDateOfLksgDataset);
             }
           }
