@@ -51,6 +51,11 @@ export default defineComponent({
     };
   },
   methods: {
+    /**
+     * Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
+     *
+     * @param receivedEuTaxoFinancialsDataIds
+     */
     handleReceivedListOfDataIds(receivedEuTaxoFinancialsDataIds: []) {
       this.listOfReceivedEuTaxoFinancialsDataIds = receivedEuTaxoFinancialsDataIds;
       this.loading = false;

@@ -36,6 +36,11 @@ export default defineComponent({
     };
   },
   methods: {
+    /**
+     * Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
+     *
+     * @param receivedLksgDataIds
+     */
     handleReceivedListOfDataIds(receivedLksgDataIds: []) {
       this.receivedLksgDataIds = receivedLksgDataIds;
       this.loading = false;

@@ -5,17 +5,21 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
 import { valueOrUndefined } from "./common/DataPointFixtures";
 
-export function getCompanyLegalForm(): string {
-  const legalForms = [
-    "Public Limited Company (PLC)",
-    "Private Limited Company (Ltd)",
-    "Limited Liability Partnership (LLP)",
-    "Partnership without Limited Liability",
-    "Sole Trader",
-    "GmbH",
-    "AG",
-    "GmbH & Co. KG",
-  ];
+const legalForms = [
+  "Public Limited Company (PLC)",
+  "Private Limited Company (Ltd)",
+  "Limited Liability Partnership (LLP)",
+  "Partnership without Limited Liability",
+  "Sole Trader",
+  "GmbH",
+  "AG",
+  "GmbH & Co. KG",
+];
+
+/**
+ * Randomly picks and returns a legal form from a list of available legal forms.
+ */
+export function getRandomCompanyLegalForm(): string {
   return legalForms[faker.datatype.number(legalForms.length - 1)];
 }
 
@@ -60,7 +64,7 @@ export function generateCompanyInformation(): CompanyInformation {
   const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
     return faker.company.name();
   }).sort();
-  const companyLegalForm = valueOrUndefined(getCompanyLegalForm());
+  const companyLegalForm = valueOrUndefined(getRandomCompanyLegalForm());
 
   return {
     companyName: companyName,

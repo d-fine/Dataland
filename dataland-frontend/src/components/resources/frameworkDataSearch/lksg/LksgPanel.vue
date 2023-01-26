@@ -62,6 +62,9 @@ export default defineComponent({
     void this.fetchDataForAllDataIds();
   },
   methods: {
+    /**
+     * Fetches all LkSG datasets for the current company and converts them to the requried frontend format.
+     */
     async fetchDataForAllDataIds() {
       try {
         this.waitingForData = true;
@@ -69,7 +72,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
         this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))).data;
-        this.convertLksgDataToFrontendFormat();
+        this.convertLksgDataToFrontendFormat(this.lksgData);
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -104,9 +107,14 @@ export default defineComponent({
       });
     },
 
-    convertLksgDataToFrontendFormat(): void {
+    /**
+     * Retrieves and converts values from an array of LkSG datasets in order to make it displayable in the frontend.
+     *
+     * @param lksgData
+     */
+    convertLksgDataToFrontendFormat(lksgData: Array<LksgData>): void {
       this.listOfDatesToDisplayAsColumns = [];
-      this.lksgData?.forEach((oneLksgDataSet) => {
+      lksgData.forEach((oneLksgDataSet) => {
         const dataDate = oneLksgDataSet.social?.general?.dataDate ?? "";
         if (dataDate) {
           this.listOfDatesToDisplayAsColumns.push(dataDate);
