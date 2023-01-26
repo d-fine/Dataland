@@ -2,103 +2,95 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [
-				"Forkel-Dauer",
-				"Heinemann UG",
-				"Hoffman-Sonnabend",
-				"Roggatz Gruppe"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"headquarters": "West Miloburg",
-			"headquartersPostalCode": "11551",
-			"sector": "e-markets",
+			"companyAlternativeNames": [],
+			"headquarters": "West Cedricstadt",
+			"sector": "technologies",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "3mpdr0zyh"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "4j5nqq99vz0a4kb"
 				},
 				{
-					"identifierType": "Isin",
-					"identifierValue": "iz26mrooyqt2"
+					"identifierType": "Duns",
+					"identifierValue": "rkekpxse0"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "qd85t8xqub03oinnqw8p"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "hm95at5vct"
+					"identifierValue": "fkg3m3l15d"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "h1tqtxw"
+					"identifierValue": "gq3pqhm"
 				}
 			],
-			"countryCode": "KN",
+			"countryCode": "NE",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"AnnualReport": {
-					"reference": "http://gern-schiff.com/ma%C3%9Fgeschneidert-religion.pdf",
-					"reportDate": "2022-12-26",
-					"currency": "XAG"
-				},
 				"SustainabilityReport": {
-					"reference": "https://irre-hand.ch/entspannt-k%C3%A4se.pdf",
+					"reference": "http://xn--groherzig-anarchie-xqb.org/umwerfend-monarchie.pdf",
+					"reportDate": "2022-06-17",
+					"currency": "LSL"
+				},
+				"AnnualReport": {
+					"reference": "https://autonom-frucht.ch/respektiert-arch%C3%A4ologie.pdf",
 					"isGroupLevel": "No",
-					"reportDate": "2022-11-23",
-					"currency": "GEL"
+					"currency": "CVE"
 				},
 				"IntegratedReport": {
-					"reference": "http://vielschichtig-dampfmaschine.info/luxuri%C3%B6s-telefon.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-03-14",
-					"currency": "KWD"
+					"reference": "http://xn--gtig-abtreibung-zvb.org/vorbildlich-granit.pdf",
+					"reportDate": "2023-01-01",
+					"currency": "XPT"
 				},
 				"ESEFReport": {
-					"reference": "https://xn--gnnerhaft-eisen-8sb.info/popul%C3%A4r-imperialismus.pdf",
-					"reportDate": "2022-08-01",
-					"currency": "MDL"
+					"reference": "http://feurig-schnee.com/jovial-geschwindigkeit.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-05-19",
+					"currency": "CNY"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-02-16",
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-10-10",
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "ReasonableAssurance",
+				"provider": "Tasche-Stube"
 			},
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "NA",
+			"numberOfEmployees": 27163,
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.0965,
+					"value": 0.8075,
 					"dataSource": {
-						"page": 1032,
+						"page": 190,
 						"report": "IntegratedReport",
-						"tagName": "methodologies"
+						"tagName": "solutions"
 					},
 					"quality": "Incomplete",
-					"comment": "copy multi-byte monitor"
+					"comment": "back up back-end sensor"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.5523,
+					"value": 0.7181,
 					"dataSource": {
-						"page": 279,
+						"page": 504,
 						"report": "AnnualReport",
-						"tagName": "web services"
+						"tagName": "synergies"
 					},
-					"quality": "Estimated",
-					"comment": "synthesize bluetooth hard drive"
+					"quality": "Reported",
+					"comment": "index virtual system"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.825,
-					"dataSource": {
-						"page": 1184,
-						"report": "ESEFReport",
-						"tagName": "content"
-					},
-					"quality": "Audited",
-					"comment": "reboot mobile transmitter"
+					"value": 0.9486,
+					"quality": "Incomplete"
 				}
 			}
 		}
@@ -107,105 +99,128 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Roschinsky OHG",
-				"Somssich-Obergföll"
+				"Höhne-Riedel"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"headquarters": "Sandraland",
-			"headquartersPostalCode": "88314",
-			"sector": "action-items",
+			"companyLegalForm": "AG",
+			"headquarters": "Efedorf",
+			"headquartersPostalCode": "70708",
+			"sector": "models",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "48nmupfs1ogsu4t"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "7tal37dd5"
+				},
+				{
 					"identifierType": "Isin",
-					"identifierValue": "0q4i4ujbz1q0"
+					"identifierValue": "er68qbgzn24p"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "149qm2rnj7"
 				}
 			],
-			"countryCode": "BY",
-			"isTeaserCompany": false
+			"countryCode": "QA",
+			"isTeaserCompany": false,
+			"website": "https://außergewöhnlich-gott.com"
 		},
 		"t": {
 			"referencedReports": {
-				"AnnualReport": {
-					"reference": "http://putzig-meer.com/sachkundig-hotel.pdf",
-					"currency": "CHF"
-				},
-				"SustainabilityReport": {
-					"reference": "https://kreativ-kopf.ch/tugendhaft-tier.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-11-27",
-					"currency": "XBA"
-				},
 				"IntegratedReport": {
-					"reference": "https://xn--zusammenhngend-molekl-e2b77c.net/arbeitsam-kind.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-08-21",
-					"currency": "ETB"
+					"reference": "https://beeindruckend-epistemologie.com/schlau-grundkonzept.pdf",
+					"reportDate": "2022-08-28",
+					"currency": "KWD"
+				},
+				"AnnualReport": {
+					"reference": "http://kooperativ-vagina.info/pikant-schlafzimmer.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "SHP"
 				},
 				"ESEFReport": {
-					"reference": "http://erprobt-pop.ch/stilsicher-sonne.pdf",
+					"reference": "https://xn--wandelbar-prhistorie-mzb.net/gl%C3%A4nzend-jugendliche.pdf",
 					"isGroupLevel": "NA",
-					"currency": "COP"
+					"reportDate": "2022-11-21",
+					"currency": "CZK"
+				},
+				"SustainabilityReport": {
+					"reference": "https://enigmatisch-nagel.com/reizend-knie.pdf",
+					"reportDate": "2022-03-31",
+					"currency": "LRD"
 				}
 			},
-			"fiscalYearEnd": "2022-11-04",
+			"fiscalYearEnd": "2022-09-09",
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "Yes",
+			"scopeOfEntities": "NA",
 			"reportingObligation": "Yes",
-			"numberOfEmployees": 26740,
 			"opex": {
 				"totalAmount": {
-					"value": 137424.17,
+					"value": 801192.65,
 					"dataSource": {
-						"page": 82,
-						"report": "SustainabilityReport",
-						"tagName": "functionalities"
+						"page": 80,
+						"report": "IntegratedReport",
+						"tagName": "communities"
 					},
-					"quality": "Reported",
-					"comment": "parse neural application"
+					"quality": "Estimated",
+					"comment": "override optical application"
 				},
 				"eligiblePercentage": {
-					"value": 0.2723,
+					"value": 0.7791,
 					"dataSource": {
-						"page": 881,
-						"report": "IntegratedReport",
-						"tagName": "e-tailers"
+						"page": 550,
+						"report": "AnnualReport",
+						"tagName": "bandwidth"
 					},
 					"quality": "Reported",
-					"comment": "connect auxiliary port"
+					"comment": "parse virtual port"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 410353.14,
+					"value": 417518.03,
 					"dataSource": {
-						"page": 485,
-						"report": "IntegratedReport",
-						"tagName": "blockchains"
+						"page": 981,
+						"report": "AnnualReport",
+						"tagName": "supply-chains"
 					},
-					"quality": "Incomplete",
-					"comment": "program online matrix"
+					"quality": "Reported",
+					"comment": "back up neural interface"
 				},
 				"eligiblePercentage": {
-					"value": 0.4411,
-					"quality": "Estimated"
+					"value": 0.4348,
+					"dataSource": {
+						"page": 1132,
+						"report": "IntegratedReport",
+						"tagName": "e-services"
+					},
+					"quality": "Reported",
+					"comment": "override solid state matrix"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 855231.04,
+					"value": 448741.91,
 					"dataSource": {
-						"page": 174,
-						"report": "AnnualReport",
-						"tagName": "systems"
+						"page": 231,
+						"report": "IntegratedReport",
+						"tagName": "e-commerce"
 					},
-					"quality": "Reported",
-					"comment": "generate multi-byte port"
+					"quality": "Incomplete",
+					"comment": "reboot wireless matrix"
 				},
 				"eligiblePercentage": {
-					"value": 0.9889,
-					"quality": "Incomplete"
+					"value": 0.0082,
+					"dataSource": {
+						"page": 990,
+						"report": "ESEFReport",
+						"tagName": "vortals"
+					},
+					"quality": "Estimated",
+					"comment": "navigate virtual hard drive"
 				}
 			}
 		}

@@ -47,6 +47,10 @@ export function generateCompanyInformation(): CompanyInformation {
         identifierType: CompanyIdentifierIdentifierTypeEnum.Duns,
         identifierValue: faker.random.alphaNumeric(9),
       },
+      {
+        identifierType: CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber,
+        identifierValue: faker.random.alphaNumeric(15),
+      },
     ])
     .sort((a, b) => {
       return a.identifierType.localeCompare(b.identifierType);
@@ -56,6 +60,7 @@ export function generateCompanyInformation(): CompanyInformation {
     return faker.company.name();
   }).sort();
   const companyLegalForm = valueOrUndefined(getCompanyLegalForm());
+  const website = valueOrUndefined(faker.internet.url());
 
   return {
     companyName: companyName,
@@ -67,6 +72,7 @@ export function generateCompanyInformation(): CompanyInformation {
     identifiers: identifiers,
     countryCode: countryCode,
     isTeaserCompany: false,
+    website: website,
   };
 }
 
@@ -104,6 +110,10 @@ export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, strin
     {
       label: "Teaser Company",
       value: (row: FixtureData<T>): string => (row.companyInformation.isTeaserCompany ? "Yes" : "No"),
+    },
+    {
+      label: "Website",
+      value: (row: FixtureData<T>): string | undefined => row.companyInformation.website,
     },
     ...Object.values(CompanyIdentifierIdentifierTypeEnum).map((identifiyerTypeAsString) => {
       return {

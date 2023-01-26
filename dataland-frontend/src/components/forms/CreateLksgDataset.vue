@@ -8,11 +8,11 @@
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-            v-model="formInputsModel"
+            v-model="Model"
             :actions="false"
             type="form"
             id="createLkSGForm"
-            @submit="postEuTaxonomyDataForFinancials"
+            @submit="postLkSGData"
             #default="{ state: { valid } }"
           >
             <div class="uploadFormSection grid">
@@ -31,14 +31,13 @@
                       aria-hidden="true"
                       title="Date"
                       v-tooltip.top="{
-                        value: lksgQuestions['dataDate'],
+                        value: lksgQuestions['dataDate'] ? lksgQuestions['dataDate'] : '',
                       }"
                       >info</em
                     >
                   </div>
                   <FormKit
                     type="date"
-                    value="03-03-2018"
                     help="Enter date"
                     validation="required"
                     validation-visibility="live"
@@ -51,7 +50,7 @@
                       aria-hidden="true"
                       title="lksgInScope"
                       v-tooltip.top="{
-                        value: lksgQuestions['lksgInScope'],
+                        value: lksgQuestions['lksgInScope'] ? lksgQuestions['lksgInScope'] : '',
                       }"
                       >info</em
                     >
@@ -79,7 +78,7 @@
                       aria-hidden="true"
                       title="companyLegalForm"
                       v-tooltip.top="{
-                        value: lksgQuestions['companyLegalForm'],
+                        value: lksgQuestions['companyLegalForm'] ? lksgQuestions['companyLegalForm'] : '',
                       }"
                       >info</em
                     >
@@ -92,7 +91,7 @@
                       aria-hidden="true"
                       title="VATidentificationNumber"
                       v-tooltip.top="{
-                        value: lksgQuestions['VATidentificationNumber'],
+                        value: lksgQuestions['VATidentificationNumber'] ? lksgQuestions['VATidentificationNumber'] : '',
                       }"
                       >info</em
                     >
@@ -105,7 +104,7 @@
                       aria-hidden="true"
                       title="numberOfEmployees"
                       v-tooltip.top="{
-                        value: lksgQuestions['numberOfEmployees'],
+                        value: lksgQuestions['numberOfEmployees'] ? lksgQuestions['numberOfEmployees'] : '',
                       }"
                       >info</em
                     >
@@ -127,7 +126,7 @@
                       aria-hidden="true"
                       title="shareOfTemporaryWorkers"
                       v-tooltip.top="{
-                        value: lksgQuestions['shareOfTemporaryWorkers'],
+                        value: lksgQuestions['shareOfTemporaryWorkers'] ? lksgQuestions['shareOfTemporaryWorkers'] : '',
                       }"
                       >info</em
                     >
@@ -149,7 +148,7 @@
                       aria-hidden="true"
                       title="totalRevenue"
                       v-tooltip.top="{
-                        value: lksgQuestions['totalRevenue'],
+                        value: lksgQuestions['totalRevenue'] ? lksgQuestions['totalRevenue'] : '',
                       }"
                       >info</em
                     >
@@ -171,7 +170,7 @@
                       aria-hidden="true"
                       title="totalRevenueCurrency"
                       v-tooltip.top="{
-                        value: lksgQuestions['totalRevenueCurrency'],
+                        value: lksgQuestions['totalRevenueCurrency'] ? lksgQuestions['totalRevenueCurrency'] : '',
                       }"
                       >info</em
                     >
@@ -185,54 +184,27 @@
                       medium: true,
                     }"
                   />
-                  <div class="form-field-label">
-                    <h5>List Of Goods Or Services</h5>
-                    <em
-                      class="material-icons info-icon"
-                      aria-hidden="true"
-                      title="listOfGoodsOrServices"
-                      v-tooltip.top="{
-                        value: lksgQuestions['listOfGoodsOrServices'],
-                      }"
-                      >info</em
-                    >
-                    <PrimeButton label="Add" class="p-button-text" icon="pi pi-plus"></PrimeButton>
-                  </div>
-                  <FormKit
-                    type="text"
-                    name="listOfGoodsOrServices"
-                    placeholder="Add comma (,) for more than one value"
-                    validation="required"
-                  />
-                </FormKit>
-                <div class="">
-                  <span
-                    class="form-list-item"
-                    :key="item"
-                    v-for="item in formInputsModel.social.general.listOfProductionSites[0].listOfGoodsOrServices"
-                  >
-                    {{ item }} <em @click="() => removeItemFromList(item)" class="material-icons">close</em>
-                  </span>
-                </div>
 
-                <!-- Is your company a manufacturing company?  -->
+
+<!-- Is your company a manufacturing company?  -->
                 <div class="form-field">
                   <div class="form-field-label">
                     <h5>Is your company a manufacturing company?</h5>
                     <em
                         class="material-icons info-icon"
                         aria-hidden="true"
-                        title="isYour company a manufacturing company?"
+                        title="Is Your company a manufacturing company?"
                         v-tooltip.top="{
-                        value: lksgQuestions['lksgInScope'],
+                        value: lksgQuestions['listOfProductionSites'] ? lksgQuestions['listOfProductionSites'] : '',
                       }"
                     >info</em
                     >
                   </div>
                   <FormKit
                       type="radio"
-                      name="lksgInScope"
+                      name="IsYourCompanyManufacturingCompany"
                       :options="['Yes', 'No']"
+                      v-model="isYourCompanyManufacturingCompany"
                       :outer-class="{
                       'yes-no-radio': true,
                     }"
@@ -246,92 +218,235 @@
                   />
                 </div>
 
+                <FormKit type="list" :ignore="false" name="listOfProductionSites" label="listOfProductionSites">
+
+                    <FormKit type="group"
+                             :key="item.id"
+                             v-for="(item, index) in listOfProductionSites"
+                              >
+                  <div
+                      class="productionSiteSection"
+                      :class="isYourCompanyManufacturingCompany === 'No' ? 'p-disabled' : ''"
+                  >
+
+                    <em @click="removeItemFromlistOfProductionSites(item.id)" class="material-icons close-section">close</em>
+
+                    <!-- Production Site  -->
+                    <div class="form-field">
+                      <div class="form-field-label">
+                        <p>{{item.id}}</p>
+                        <h5>Production Site</h5>
+                        <em
+                            class="material-icons info-icon"
+                            aria-hidden="true"
+                            title="productionSite"
+                            placeholder="Site name"
+                            v-tooltip.top="{
+                              value: lksgQuestions['productionSite'] ? lksgQuestions['productionSite'] : '',
+                            }"
+                        >info</em
+                        >
+                      </div>
+                      <FormKit type="text" name="productionSitename" validation="required" />
+                    </div>
+
+                    <!-- Is in-house production or is Contract Processing  -->
+                    <div class="form-field">
+                      <div class="form-field-label">
+                        <h5>Is in-house production or is Contract Processing</h5>
+                        <em
+                            class="material-icons info-icon"
+                            aria-hidden="true"
+                            title="inHouseProductionOrContractProcessing"
+                            v-tooltip.top="{
+                        value: lksgQuestions['inHouseProductionOrContractProcessing'] ? lksgQuestions['inHouseProductionOrContractProcessing'] : '',
+                      }"
+                        >info</em
+                        >
+                      </div>
+                      <FormKit
+                          type="radio"
+                          name="inHouseProductionOrContractProcessing"
+                          :options="['In-house Production', 'Contract Processing']"
+                          :outer-class="{
+                      'yes-no-radio': true,
+                    }"
+                          :inner-class="{
+                      'formkit-inner': false,
+                    }"
+                          :input-class="{
+                      'formkit-input': false,
+                      'p-radiobutton': true,
+                    }"
+                      />
+                    </div>
+
+                    <!-- List Of Goods Or Services  -->
+                    <div class="form-field">
+                      <div class="form-field-label">
+                        <h5>Addresses Of Production Sites</h5>
+                        <em
+                            class="material-icons info-icon"
+                            aria-hidden="true"
+                            title="Addresses Of Production Sites"
+                            v-tooltip.top="{
+                          value: lksgQuestions['addressesOfProductionSites'] ? lksgQuestions['addressesOfProductionSites'] : '',
+                        }"
+                        >info</em
+                        >
+                      </div>
+                      <FormKit type="text" name="StreetHouseNumber" placeholder="Street, House number" validation="required" />
+                      <div class="next-to-each-other">
+                        <FormKit type="select" name="Country" placeholder="Country" :options="['CHF', 'USD']" />
+                        <FormKit type="select" name="City" placeholder="City" :options="['CHF', 'USD']" />
+                        <FormKit type="text" name="Postcode" placeholder="Postcode" validation="required" />
+                      </div>
+                    </div>
+
+                    <!-- List Of Goods Or Services  -->
+                    <div class="form-field">
+                      <div class="form-field-label">
+                        <h5>List Of Goods Or Services</h5>
+                        <em
+                            class="material-icons info-icon"
+                            aria-hidden="true"
+                            title="listOfGoodsOrServices"
+                            v-tooltip.top="{
+                          value: lksgQuestions['listOfGoodsOrServices'] ? lksgQuestions['listOfGoodsOrServices'] : '',
+                        }"
+                        >info</em
+                        >
+                        <PrimeButton :disabled="newItemsTolistOfProductionSites === ''" @click="addNewItemsTolistOfProductionSites(index)" label="Add" class="p-button-text" icon="pi pi-plus"></PrimeButton>
+                      </div>
+                      <FormKit
+                          type="text"
+                          v-model="newItemsTolistOfProductionSites"
+                          name="listOfGoodsOrServices"
+                          placeholder="Add comma (,) for more than one value"
+                      />
+                      <div class="">
+                    <span
+                        class="form-list-item"
+                        :key="element"
+                        v-for="element in item.listOfGoodsOrServices"
+                    >
+                      {{ element }} <em @click="removeItemFromlistOfGoodsOrServices(index, element)" class="material-icons">close</em>
+                    </span>
+                      </div>
+
+
+                    </div>
+                  </div>
+                    </FormKit>
+                  <PrimeButton label="ADD NEW Production Site"
+                               class="p-button-text"
+                               :disabled="isYourCompanyManufacturingCompany === 'No'"
+                               icon="pi pi-plus"
+                               @click="addNewProductionSite"/>
+                      <!----------->
+                </FormKit>
+
+
+                </FormKit>
+
+                <FormKit
+                    type="submit"
+                    label="Checkout my label"
+                    help="You can use the label prop."
+                />
+
+
+
+
+
+
+
 
               </div>
             </div>
             ddddddddddddddd
-            <div class="uploadFormSection grid">
-              <div id="topicLabel" class="col-3 topicLabel">
-                <h4 id="osh" class="anchor title">General</h4>
-                <div class="p-badge badge-yellow"><span>OSH</span></div>
-                <p>Please input all relevant basic information about the dataset</p>
-              </div>
+<!--            <div class="uploadFormSection grid">-->
+<!--              <div id="topicLabel" class="col-3 topicLabel">-->
+<!--                <h4 id="osh" class="anchor title">General</h4>-->
+<!--                <div class="p-badge badge-yellow"><span>OSH</span></div>-->
+<!--                <p>Please input all relevant basic information about the dataset</p>-->
+<!--              </div>-->
 
-              <div id="formFields" class="col-9 formFields">
-                <FormKit
-                  type="date"
-                  value="2011-01-01"
-                  label="Birthday"
-                  help="Enter your birth day"
-                  validation="required|date_before:2010-01-01"
-                  validation-visibility="live"
-                />
-                <FormKit
-                  type="text"
-                  name="companyId"
-                  label="Company ID"
-                  placeholder="Company ID"
-                  :model-value="companyID"
-                  disabled="true"
-                />
-                <FormKit type="group" name="data" label="data">
-                  <FormKit
-                    type="select"
-                    name="financialServicesTypes"
-                    multiple
-                    validation="required"
-                    label="Financial Services Types"
-                    placeholder="Please choose"
-                    :options="{
-                      CreditInstitution: humanizeString('CreditInstitution'),
-                      InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),
-                      AssetManagement: humanizeString('AssetManagement'),
-                      InvestmentFirm: humanizeString('InvestmentFirm'),
-                    }"
-                    help="Select all that apply by holding command (macOS) or control (PC)."
-                  />
-                  <FormKit type="group" name="assurance" label="Assurance">
-                    <FormKit
-                      type="select"
-                      name="assurance"
-                      label="Assurance"
-                      placeholder="Please choose"
-                      :options="{
-                        None: humanizeString('None'),
-                        LimitedAssurance: humanizeString('LimitedAssurance'),
-                        ReasonableAssurance: humanizeString('ReasonableAssurance'),
-                      }"
-                    />
-                  </FormKit>
-                  <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
-                    <template
-                      v-for="fsType in [
-                        'CreditInstitution',
-                        'InsuranceOrReinsurance',
-                        'AssetManagement',
-                        'InvestmentFirm',
-                      ]"
-                      :key="fsType"
-                    >
-                      <div :name="fsType">
-                        <FormKit type="group" :name="fsType">
-                          <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>
-                          <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />
-                          <DataPointFormElement
-                            name="taxonomyNonEligibleActivity"
-                            label="Taxonomy Non Eligible Activity"
-                          />
-                          <DataPointFormElement name="derivatives" label="Derivatives" />
-                          <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />
-                          <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />
-                        </FormKit>
-                      </div>
-                    </template>
-                  </FormKit>
-                </FormKit>
-                <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
-              </div>
-            </div>
+<!--              <div id="formFields" class="col-9 formFields">-->
+<!--                <FormKit-->
+<!--                  type="date"-->
+<!--                  value="2011-01-01"-->
+<!--                  label="Birthday"-->
+<!--                  help="Enter your birth day"-->
+<!--                  validation="required|date_before:2010-01-01"-->
+<!--                  validation-visibility="live"-->
+<!--                />-->
+<!--                <FormKit-->
+<!--                  type="text"-->
+<!--                  name="companyId"-->
+<!--                  label="Company ID"-->
+<!--                  placeholder="Company ID"-->
+<!--                  :model-value="companyID"-->
+<!--                  disabled="true"-->
+<!--                />-->
+<!--                <FormKit type="group" name="data" label="data">-->
+<!--                  <FormKit-->
+<!--                    type="select"-->
+<!--                    name="financialServicesTypes"-->
+<!--                    multiple-->
+<!--                    validation="required"-->
+<!--                    label="Financial Services Types"-->
+<!--                    placeholder="Please choose"-->
+<!--                    :options="{-->
+<!--                      CreditInstitution: humanizeString('CreditInstitution'),-->
+<!--                      InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),-->
+<!--                      AssetManagement: humanizeString('AssetManagement'),-->
+<!--                      InvestmentFirm: humanizeString('InvestmentFirm'),-->
+<!--                    }"-->
+<!--                    help="Select all that apply by holding command (macOS) or control (PC)."-->
+<!--                  />-->
+<!--                  <FormKit type="group" name="assurance" label="Assurance">-->
+<!--                    <FormKit-->
+<!--                      type="select"-->
+<!--                      name="assurance"-->
+<!--                      label="Assurance"-->
+<!--                      placeholder="Please choose"-->
+<!--                      :options="{-->
+<!--                        None: humanizeString('None'),-->
+<!--                        LimitedAssurance: humanizeString('LimitedAssurance'),-->
+<!--                        ReasonableAssurance: humanizeString('ReasonableAssurance'),-->
+<!--                      }"-->
+<!--                    />-->
+<!--                  </FormKit>-->
+<!--                  <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">-->
+<!--                    <template-->
+<!--                      v-for="fsType in [-->
+<!--                        'CreditInstitution',-->
+<!--                        'InsuranceOrReinsurance',-->
+<!--                        'AssetManagement',-->
+<!--                        'InvestmentFirm',-->
+<!--                      ]"-->
+<!--                      :key="fsType"-->
+<!--                    >-->
+<!--                      <div :name="fsType">-->
+<!--                        <FormKit type="group" :name="fsType">-->
+<!--                          <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>-->
+<!--                          <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />-->
+<!--                          <DataPointFormElement-->
+<!--                            name="taxonomyNonEligibleActivity"-->
+<!--                            label="Taxonomy Non Eligible Activity"-->
+<!--                          />-->
+<!--                          <DataPointFormElement name="derivatives" label="Derivatives" />-->
+<!--                          <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />-->
+<!--                          <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />-->
+<!--                        </FormKit>-->
+<!--                      </div>-->
+<!--                    </template>-->
+<!--                  </FormKit>-->
+<!--                </FormKit>-->
+<!--                <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />-->
+<!--              </div>-->
+<!--            </div>-->
           </FormKit>
         </div>
 
@@ -398,8 +513,12 @@ export default defineComponent({
   },
 
   data: () => ({
+    isYourCompanyManufacturingCompany: 'No',
+    newItemsTolistOfProductionSites: '',
+    listOfProductionSites: [{id: 0, listOfGoodsOrServices: ["xx", "yy"]}],
     postEuTaxonomyDataForFinancialsProcessed: false,
     messageCount: 0,
+    Model: {},
     formInputsModel: {
       social: {
         general: {
@@ -584,9 +703,24 @@ export default defineComponent({
         this.postEuTaxonomyDataForFinancialsProcessed = true;
       }
     },
-    removeItemFromList(item: string) {
-      this.formInputsModel.social.general.listOfProductionSites[0].listOfGoodsOrServices =
-        this.formInputsModel.social.general.listOfProductionSites[0].listOfGoodsOrServices.filter((el) => el !== item);
+    postLkSGData() {
+      console.log('SUBMIT', this.Model)
+    },
+    addNewProductionSite() {
+      this.listOfProductionSites.push(
+          {id: Math.random(), listOfGoodsOrServices: []}
+      )
+    },
+    addNewItemsTolistOfProductionSites(index: number) {
+      const items = this.newItemsTolistOfProductionSites.split(';').map(item => item.trim())
+      this.listOfProductionSites[index].listOfGoodsOrServices = [...this.listOfProductionSites[index].listOfGoodsOrServices, ...items]
+      this.newItemsTolistOfProductionSites = ''
+    },
+    removeItemFromlistOfProductionSites(id: number) {
+      this.listOfProductionSites = this.listOfProductionSites.filter((el) => el.id !== id);
+    },
+    removeItemFromlistOfGoodsOrServices(index: number, item: string) {
+      this.listOfProductionSites[index].listOfGoodsOrServices = this.listOfProductionSites[index].listOfGoodsOrServices.filter((el) => el !== item);
     },
   },
 });

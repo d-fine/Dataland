@@ -25,7 +25,9 @@ class CompanyInformationCsvParser {
         IdentifierType.PermId.name to "PermID",
         IdentifierType.Ticker.name to "Ticker",
         IdentifierType.Duns.name to "DUNS",
+        IdentifierType.CompanyRegistrationNumber.name to "Company Registration Number",
         "isTeaserCompany" to "Teaser Company",
+        "website" to "Website"
     )
 
     /**
@@ -44,7 +46,8 @@ class CompanyInformationCsvParser {
             identifiers = getCompanyIdentifiers(row),
             countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
             isTeaserCompany = companyInformationColumnMapping.getCsvValueAllowingNull("isTeaserCompany", row)
-                .equals("Yes", true)
+                .equals("Yes", true),
+            website = companyInformationColumnMapping.getCsvValueAllowingNull("website", row)
         )
     }
 

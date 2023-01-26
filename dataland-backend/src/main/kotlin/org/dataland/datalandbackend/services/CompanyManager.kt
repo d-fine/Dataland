@@ -56,7 +56,8 @@ class CompanyManager(
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
             countryCode = companyInformation.countryCode,
-            isTeaserCompany = companyInformation.isTeaserCompany
+            isTeaserCompany = companyInformation.isTeaserCompany,
+            website = companyInformation.website
         )
 
         return companyRepository.save(newCompanyEntity)

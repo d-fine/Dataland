@@ -11,7 +11,6 @@ export const companyDataNames = {
   lei: "LEI",
   duns: "D-U-N-S Number",
   ticker: "Ticker",
-  //ToDo the two following entries are not in the model yet
   companyRegistrationNumber: "Company Registration Number",
   website: "Website",
 };
@@ -30,7 +29,20 @@ export const companyDataExplanations = {
   lei: "The Legal Entity Identifier (LEI) is a a 20-character alphanumeric string",
   duns: "A unique nine-digit identifier for businesses",
   ticker: "An abbreviation used to identify financial instruments on stock exchanges",
-  //ToDo the two following entries are not in the model yet
   companyRegistrationNumber: "Identification number assigned to a company in the commercial register",
   website: "Company website",
 };
+
+export const gicsSectors = [
+  "Energy",
+  "Materials",
+  "Industrials",
+  "Consumer Discretionary",
+  "Consumer Staples",
+  "Health Care",
+  "Financials",
+  "Information Technology",
+  "Communication Services",
+  "Utilities",
+  "Real Estate",
+];
