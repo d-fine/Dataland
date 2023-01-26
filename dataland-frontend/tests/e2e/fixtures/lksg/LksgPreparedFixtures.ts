@@ -4,23 +4,37 @@ import { generateLksgData, generateProductionSite } from "./LksgDataFixtures";
 
 type generatorFunction = (input: FixtureData<LksgData>) => FixtureData<LksgData>;
 
-// TODO not fully happy with the namings here.  those aren't generatorFunctions, they are setterFunctions
+/**
+ * Generates LkSG prepared fixtures by generating random LkSG datasets and afterwards manipulating some fields
+ * via manipulator-functions to set specific values for those fields.
+ *
+ * @returns the prepared fixtures
+ */
 export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
-  const creationFunctions: Array<generatorFunction> = [
-    createCompanyToHaveTwoLksgDataSetsInSameYear,
-    createCompanyToHaveSixLksgDataSetsInDifferentYears,
-    createCompanyToHaveOneLksgDataSetsInDifferentYears,
-    createCompanyToHaveTwoDifferentDataSetTypes,
+  const manipulatorFunctions: Array<generatorFunction> = [
+    manipulateFixtureForTwoLksgDataSetsInSameYear,
+    manipulateFixtureForSixLksgDataSetsInDifferentYears,
+    manipulateFixtureForOneLksgDataSetWithProductionSites,
+    manipulateFixtureForTwoDifferentDataSetTypes,
   ];
-  const fixtureBase = generateFixtureDataset<LksgData>(generateLksgData, creationFunctions.length);
+  const preparedFixturesBeforeManipulation = generateFixtureDataset<LksgData>(
+    generateLksgData,
+    manipulatorFunctions.length
+  );
   const preparedFixtures = [];
-  for (let i = 0; i < creationFunctions.length; i++) {
-    preparedFixtures.push(creationFunctions[i](fixtureBase[i]));
+  for (let i = 0; i < manipulatorFunctions.length; i++) {
+    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
   }
   return preparedFixtures;
 }
 
-function createCompanyToHaveTwoLksgDataSetsInSameYear(input: FixtureData<LksgData>): FixtureData<LksgData> {
+/**
+ * Sets the company name and the date in the fixture data to a specific string.
+ *
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForTwoLksgDataSetsInSameYear(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "two-lksg-data-sets-in-same-year";
   input.t.social!.general!.dataDate = "2022-01-01";
   return input;
@@ -32,7 +46,7 @@ function createCompanyToHaveTwoLksgDataSetsInSameYear(input: FixtureData<LksgDat
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function createCompanyToHaveSixLksgDataSetsInDifferentYears(input: FixtureData<LksgData>): FixtureData<LksgData> {
+function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "six-lksg-data-sets-in-different-years";
   input.t.social!.general!.dataDate = "2022-01-01";
   return input;
@@ -45,7 +59,7 @@ function createCompanyToHaveSixLksgDataSetsInDifferentYears(input: FixtureData<L
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function createCompanyToHaveOneLksgDataSetsInDifferentYears(input: FixtureData<LksgData>): FixtureData<LksgData> {
+function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "one-lksg-data-set";
   input.t.social!.childLabour!.employeeUnder18Apprentices = "No";
   input.t.social!.general!.listOfProductionSites = [generateProductionSite(), generateProductionSite()];
@@ -58,9 +72,7 @@ function createCompanyToHaveOneLksgDataSetsInDifferentYears(input: FixtureData<L
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function createCompanyToHaveTwoDifferentDataSetTypes(input: FixtureData<LksgData>): FixtureData<LksgData> {
+function manipulateFixtureForTwoDifferentDataSetTypes(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "two-different-data-set-types";
   return input;
 }
-
-// TODO I suggest renaming all the functions in this class, and also the paramNames.  It's strange to read.
