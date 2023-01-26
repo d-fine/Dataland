@@ -12,7 +12,7 @@ const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 const monthAndDayOfLksgPreparedFixtures = "-01-01";
 
 describeIf(
-  "As a user, I expect Lksg data that I upload for a company to be displayed correctly",
+  "As a user, I expect LkSG data that I upload for a company to be displayed correctly",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],

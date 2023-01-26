@@ -18,6 +18,8 @@ const legalForms = [
 
 /**
  * Randomly picks and returns a legal form from a list of available legal forms.
+ *
+ * @returns a random legal form from the list as string
  */
 export function getRandomCompanyLegalForm(): string {
   return legalForms[faker.datatype.number(legalForms.length - 1)];

@@ -112,8 +112,8 @@ export default defineComponent({
      *
      * @param searchTerm The search term provided by the "search-confirmed" event of the search bar
      */
-    handleSearchConfirm(searchTerm: string) {
-      this.$router.push({
+    async handleSearchConfirm(searchTerm: string) {
+      await this.$router.push({
         name: "Search Companies for Framework Data",
         query: { input: searchTerm },
       });
@@ -134,8 +134,6 @@ export default defineComponent({
      * Goes through all data meta info for the currently viewed company and does two things. First it saves all distinct
      * data types into the vue components dataTypesInDropdown-array. Second it collects all data IDs for data of the
      * currently selected framework type and emits them.
-     *
-     * @param dataType The data type to check for
      */
     async getAllDataIdsForFrameworkAndEmitThem() {
       try {

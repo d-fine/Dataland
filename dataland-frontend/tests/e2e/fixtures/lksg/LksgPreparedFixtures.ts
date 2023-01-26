@@ -38,6 +38,13 @@ function createCompanyToHaveSixLksgDataSetsInDifferentYears(input: FixtureData<L
   return input;
 }
 
+/**
+ * Sets the company name in the fixture data to a specific string, the field "employeeUnder18Apprentices" to "No", and
+ * sets exactly two production sites for the "listOfProductionSites" field.
+ *
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
 function createCompanyToHaveOneLksgDataSetsInDifferentYears(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "one-lksg-data-set";
   input.t.social!.childLabour!.employeeUnder18Apprentices = "No";
