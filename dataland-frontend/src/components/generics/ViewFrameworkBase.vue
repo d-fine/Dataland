@@ -24,7 +24,7 @@
           aria-label="Choose framework"
           class="fill-dropdown"
           dropdownIcon="pi pi-angle-down"
-          @change="setFramework"
+          @change="redirectToViewPageForChosenFramework"
         />
       </MarginWrapper>
       <MarginWrapper style="margin-right: 0rem">
@@ -102,9 +102,8 @@ export default defineComponent({
     /**
      * Visits the framework view page for the framework which was chosen in the dropdown
      */
-    setFramework() {
+    redirectToViewPageForChosenFramework() {
       void this.$router.push(`/companies/${this.companyID as string}/frameworks/${this.chosenDataTypeInDropdown}`);
-      // TODO this is not a setter method!
     },
     /**
      * Handles the "search-confirmed" event of the search bar by visiting the search page with the query param set to

@@ -49,7 +49,7 @@
           <template #body="{ data }">
             <a
               v-if="Array.isArray(data[dataDate]) && data[dataDate].length"
-              @click="openModalAndDisplayArrayOfKpiValues(data[dataDate], kpiNameMappings[data.kpiKey])"
+              @click="openModalAndDisplayListOfProductionSites(data[dataDate], kpiNameMappings[data.kpiKey])"
               class="link"
               >Show "{{ kpiNameMappings[data.kpiKey] }}"
               <em class="material-icons" aria-hidden="true" title=""> dataset </em>
@@ -120,12 +120,12 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Opens a modal to display a table with the provided data   TODO this method is half generic, half explicit for production sites!
+     * Opens a modal to display a table with the provided list of production sites
      *
      * @param listOfProductionSites An array consisting of production sites
-     * @param modalTitle The title for the modal
+     * @param modalTitle The title for the modal, which is derived from the key of the KPI
      */
-    openModalAndDisplayArrayOfKpiValues(listOfProductionSites: [], modalTitle: string) {
+    openModalAndDisplayListOfProductionSites(listOfProductionSites: [], modalTitle: string) {
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
           header: modalTitle,

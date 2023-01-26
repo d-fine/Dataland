@@ -161,7 +161,7 @@ export default defineComponent({
   components: { TaxoCard, TaxoInfoCard },
   data() {
     return {
-      kpiDataObjects: null as EuTaxonomyDataForFinancials | null | undefined,
+      dataSet: null as EuTaxonomyDataForFinancials | null | undefined,
     };
   },
   props: {
