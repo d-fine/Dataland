@@ -107,6 +107,9 @@ export default defineComponent({
       }
     },
 
+    /**
+     * Sorts dates to ensure that LkSG datasets are displayed chronologically in the table of all LkSG datasets.
+     */
     sortDatesToDisplayAsColumns(): void {
       this.listOfDatesToDisplayAsColumns.sort((dateA, dateB) => {
         if (Date.parse(dateA) < Date.parse(dateB)) {

@@ -40,16 +40,21 @@
             >
           </template>
         </Column>
-        <Column v-for="col of dataDatesOfDataSets" :field="col" :header="col.split('-')[0]" :key="col">
+        <Column
+          v-for="dataDate of dataDatesOfDataSets"
+          :field="dataDate"
+          :header="dataDate.split('-')[0]"
+          :key="dataDate"
+        >
           <template #body="{ data }">
             <a
-              v-if="Array.isArray(data[col]) && data[col].length"
-              @click="openModalAndDisplayArrayOfKpiValues(data[col], kpiNameMappings[data.kpiKey])"
+              v-if="Array.isArray(data[dataDate]) && data[dataDate].length"
+              @click="openModalAndDisplayArrayOfKpiValues(data[dataDate], kpiNameMappings[data.kpiKey])"
               class="link"
               >Show "{{ kpiNameMappings[data.kpiKey] }}"
               <em class="material-icons" aria-hidden="true" title=""> dataset </em>
             </a>
-            <span v-else>{{ Array.isArray(data[col]) ? "" : data[col] }}</span>
+            <span v-else>{{ Array.isArray(data[dataDate]) ? "" : data[dataDate] }}</span>
           </template>
         </Column>
 
