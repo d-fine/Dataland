@@ -93,13 +93,26 @@ export default defineComponent({
     window.addEventListener("scroll", this.windowScrollHandler);
   },
   methods: {
+    /**
+     * Hides the dropdown of the Autocomplete-component
+     */
     handleScroll() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.frameworkDataSearchBar?.$refs.autocomplete.hide();
     },
+    /**
+     * Visits the framework view page for the framework which was chosen in the dropdown
+     */
     setFramework() {
       void this.$router.push(`/companies/${this.companyID as string}/frameworks/${this.chosenDataTypeInDropdown}`);
+      // TODO this is not a setter method!
     },
+    /**
+     * Handles the "search-confirmed" event of the search bar by visiting the search page with the query param set to
+     * the search term provided by the event.
+     *
+     * @param searchTerm The search term provided by the "search-confirmed" event of the search bar
+     */
     handleSearchConfirm(searchTerm: string) {
       return this.$router.push({
         name: "Search Companies for Framework Data",
@@ -107,12 +120,24 @@ export default defineComponent({
       });
     },
 
-    appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo: DataMetaInformation) {
-      if (!this.dataTypesInDropdown.some((dataTypeObject) => dataTypeObject.value === dataMetaInfo.dataType)) {
-        this.dataTypesInDropdown.push({ label: humanizeString(dataMetaInfo.dataType), value: dataMetaInfo.dataType });
+    /**
+     * Checks if the provided data type already exists in the vue components dataTypesInDropdown-array and adds it if not.
+     *
+     * @param dataType The data type to check for
+     */
+    appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataType: string) {
+      if (!this.dataTypesInDropdown.some((dataTypeObject) => dataTypeObject.value === dataType)) {
+        this.dataTypesInDropdown.push({ label: humanizeString(dataType), value: dataType });
       }
     },
 
+    /**
+     * Goes through all data meta info for the currently viewed company and does two things. First it saves all distinct
+     * data types into the vue components dataTypesInDropdown-array. Second it collects all data IDs for data of the
+     * currently selected framework type and emits them.
+     *
+     * @param dataType The data type to check for
+     */
     async getAllDataIdsForFrameworkAndEmitThem() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
@@ -123,17 +148,13 @@ export default defineComponent({
         const listOfDataIdsToEmit = [] as string[];
         listOfDataMetaInfoForCompany.forEach((dataMetaInfo) => {
           if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)) {
-            this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo);
+            this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo.dataType);
           }
           if (dataMetaInfo.dataType === this.dataType) {
             listOfDataIdsToEmit.push(dataMetaInfo.dataId);
           }
         });
-        if (listOfDataIdsToEmit.length) {
-          this.$emit("updateDataId", listOfDataIdsToEmit);
-        } else {
-          this.$emit("updateDataId", null);
-        }
+        this.$emit("updateDataId", listOfDataIdsToEmit);
       } catch (error) {
         console.error(error);
       }

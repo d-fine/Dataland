@@ -4,7 +4,7 @@
     dataType="eutaxonomy-non-financials"
     @updateDataId="handleReceivedListOfDataIds"
   >
-    <template v-if="listOfReceivedEuTaxoNonFinanicalsDataIds">
+    <template v-if="listOfReceivedEuTaxoNonFinanicalsDataIds.length > 0">
       <div class="grid">
         <div class="col-12 text-left">
           <h2 class="mb-0">EU Taxonomy Data</h2>
@@ -20,11 +20,11 @@
         </div>
       </div>
     </template>
-    <div v-if="listOfReceivedEuTaxoNonFinanicalsDataIds === null" class="col-12 text-left">
-      <h2>No EU-Taxonomy data for non financial companies present</h2>
+    <div v-if="loading" class="col-12 text-left">
+      <h2>Checking if EU-taxonomy data for non financial companies available...</h2>
     </div>
-    <div v-if="listOfReceivedEuTaxoNonFinanicalsDataIds === undefined" class="col-12 text-left">
-      <h2>Loading...</h2>
+    <div v-if="!loading && listOfReceivedEuTaxoNonFinanicalsDataIds.length === 0" class="col-12 text-left">
+      <h2>No EU-Taxonomy data for non financial companies present</h2>
     </div>
   </ViewFrameworkBase>
   <DatalandFooter />
@@ -46,12 +46,14 @@ export default defineComponent({
   },
   data() {
     return {
+      loading: true,
       listOfReceivedEuTaxoNonFinanicalsDataIds: [] as string[],
     };
   },
   methods: {
     handleReceivedListOfDataIds(receivedEuTaxoNonFinanicalsDataIds: []) {
       this.listOfReceivedEuTaxoNonFinanicalsDataIds = receivedEuTaxoNonFinanicalsDataIds;
+      this.loading = false;
     },
   },
 });

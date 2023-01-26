@@ -1,13 +1,16 @@
 <template>
   <ViewFrameworkBase :companyID="companyID" dataType="lksg" @updateDataId="handleReceivedListOfDataIds">
-    <template v-if="receivedLksgDataIds">
+    <template v-if="receivedLksgDataIds.length > 0">
       <div class="grid">
         <div class="col-12">
           <LksgPanel :companyId="companyID" />
         </div>
       </div>
     </template>
-    <div v-if="receivedLksgDataIds === null" class="col-12 text-left">
+    <div v-if="loading" class="col-12 text-left">
+      <h2>Checking if LkSG data available...</h2>
+    </div>
+    <div v-if="!loading && receivedLksgDataIds.length === 0" class="col-12 text-left">
       <h2>No LkSG data</h2>
     </div>
   </ViewFrameworkBase>
@@ -28,12 +31,14 @@ export default defineComponent({
   },
   data() {
     return {
+      loading: true,
       receivedLksgDataIds: [] as string[],
     };
   },
   methods: {
     handleReceivedListOfDataIds(receivedLksgDataIds: []) {
       this.receivedLksgDataIds = receivedLksgDataIds;
+      this.loading = false;
     },
   },
 });

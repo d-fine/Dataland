@@ -118,6 +118,12 @@ export default defineComponent({
     this.dataToDisplay = this.dataSet;
   },
   methods: {
+    /**
+     * Opens a modal to display a table with the provided data   TODO this method is half generic, half explicit for production sites!
+     *
+     * @param onShowData An array consisting of production sites
+     * @param onShowDataTitle The title for the modal
+     */
     openModalAndDisplayArrayOfKpiValues(onShowData: [], onShowDataTitle: string) {
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
