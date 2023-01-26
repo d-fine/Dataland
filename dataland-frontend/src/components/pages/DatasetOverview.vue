@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TabView class="col-12" v-model:activeIndex="activeTabIndex" :tab-change="handleTabChange()">
+    <TabView class="col-12" v-model:activeIndex="activeTabIndex" @tab-change="handleTabChange">
       <TabPanel header="AVAILABLE DATASETS"> </TabPanel>
       <TabPanel header="MY DATASETS">
         <TheContent class="p-3 min-h-screen paper-section relative">
