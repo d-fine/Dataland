@@ -41,13 +41,17 @@ export default defineComponent({
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {
-      detailDataForKpi: TypeOfProductionSitesNames[];
+      listOfProductionSitesNames: TypeOfProductionSitesNames[];
       listOfProductionSitesConvertedNames: TypeOfProductionSitesConvertedNames;
     };
-    this.listOfProductionSitesNames = dialogRefData.detailDataForKpi;
+    this.listOfProductionSitesNames = dialogRefData.listOfProductionSitesNames;
     this.listOfProductionSitesConvertedNames = dialogRefData.listOfProductionSitesConvertedNames;
   },
   methods: {
+    /**
+     * Gets the keys from a production site type to define the columns that the displayed table in this vue component
+     * should have.
+     */
     generateColsNames(): void {
       if (this.listOfProductionSitesNames.length && Array.isArray(this.listOfProductionSitesNames)) {
         for (const key of Object.keys(this.listOfProductionSitesNames[0])) {

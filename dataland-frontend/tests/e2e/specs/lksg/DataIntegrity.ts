@@ -76,8 +76,8 @@ describeIf(
     ): Chainable<UploadIds> {
       const companyId = uploadIdsOfExistingCompanyAndLksgDataSet.companyId;
       const dataId = uploadIdsOfExistingCompanyAndLksgDataSet.dataId;
-      return getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        return getReportingYearOfLksgDataSet(dataId, token).then((reportingYearAsString) => {
+      return getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return getReportingYearOfLksgDataSet(token, dataId).then((reportingYearAsString) => {
           let reportingYearOfNewLksgDataSet;
           if (isNewLksgDataSetInSameYear) {
             reportingYearOfNewLksgDataSet = reportingYearAsString;

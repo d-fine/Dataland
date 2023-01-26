@@ -5,11 +5,11 @@
   </div>
   <div v-if="lksgData && !waitingForData">
     <CompanyDataTable
-      :dataSet="kpisDataObjects"
-      :dataSetColumns="listOfDatesToDisplayAsColumns"
-      :kpisNames="lksgKpis"
-      :hintsForKpis="lksgQuestions"
-      :impactTopicNames="impactTopicNames"
+      :kpiDataObjects="kpiDataObjects"
+      :dataDatesOfDataSets="listOfDatesToDisplayAsColumns"
+      :kpiNameMappings="lksgKpiNameMappings"
+      :kpiInfoMappings="lksgKpiInfoMappings"
+      :subAreaNameMappings="lksgSubAreaNameMappings"
       tableDataTitle="LkSG data"
     />
   </div>
@@ -23,9 +23,9 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
-  impactTopicNames,
-  lksgKpis,
-  lksgQuestions,
+  lksgSubAreaNameMappings,
+  lksgKpiNameMappings,
+  lksgKpiInfoMappings,
 } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
@@ -36,20 +36,20 @@ export default defineComponent({
       waitingForData: true,
       lksgData: [] as Array<LksgData> | undefined,
       listOfDatesToDisplayAsColumns: [] as string[],
-      kpisDataObjects: [],
-      lksgKpis,
-      lksgQuestions,
-      impactTopicNames,
+      kpiDataObjects: [],
+      lksgKpiNameMappings,
+      lksgKpiInfoMappings,
+      lksgSubAreaNameMappings,
     };
   },
   props: {
     companyId: {
       type: String,
-      default: () => "",
     },
   },
   watch: {
     companyId() {
+      this.listOfDatesToDisplayAsColumns = [];
       void this.fetchDataForAllDataIds();
     },
   },
@@ -79,21 +79,23 @@ export default defineComponent({
       }
     },
 
-    appendKpiValues(kpi: string, kpiValues: string, topic: string, dataDate: string): void {
-      if (kpi === "totalRevenue") {
-        kpiValues = this.convertToMillions(parseFloat(kpiValues));
+    appendKpiValues(kpiKey: string, kpiValue: string, subAreaKey: string, dataDateOfLksgDataset: string): void {
+      if (kpiKey === "totalRevenue") {
+        kpiValue = this.convertToMillions(parseFloat(kpiValue));
       }
       let indexOfExistingItem = -1;
-      const singleKpiDataObject = {
-        kpi: kpi,
-        group: topic == "general" ? `_${topic}` : topic,
-        [dataDate ? dataDate : ""]: kpiValues,
+      const kpiDataObject = {
+        kpiKey: kpiKey,
+        subAreaKey: subAreaKey == "general" ? `_${subAreaKey}` : subAreaKey,
+        [dataDateOfLksgDataset ? dataDateOfLksgDataset : ""]: kpiValue, // TODO not needed since already set to "" in convert function?!
       };
-      indexOfExistingItem = this.kpisDataObjects.findIndex((item) => item.kpi === kpi);
+      indexOfExistingItem = this.kpiDataObjects.findIndex(
+        (singleKpiDataObject) => singleKpiDataObject.kpiKey === kpiKey
+      );
       if (indexOfExistingItem !== -1) {
-        Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiDataObject);
+        Object.assign(this.kpiDataObjects[indexOfExistingItem], kpiDataObject);
       } else {
-        this.kpisDataObjects.push(singleKpiDataObject);
+        this.kpiDataObjects.push(kpiDataObject);
       }
     },
 
@@ -113,16 +115,13 @@ export default defineComponent({
      * @param lksgData The LkSG dataset that shall be converted
      */
     convertLksgDataToFrontendFormat(lksgData: Array<LksgData>): void {
-      this.listOfDatesToDisplayAsColumns = [];
-      lksgData.forEach((oneLksgDataSet) => {
-        const dataDate = oneLksgDataSet.social?.general?.dataDate ?? "";
-        if (dataDate) {
-          this.listOfDatesToDisplayAsColumns.push(dataDate);
-        }
-        for (const area of Object.values(oneLksgDataSet)) {
-          for (const [topic, topicValues] of Object.entries(area)) {
-            for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) {
-              this.appendKpiValues(kpi, kpiValues as string, topic, dataDate);
+      lksgData.forEach((oneLksgDataset) => {
+        const dataDateOfLksgDataset = oneLksgDataset.social?.general?.dataDate ?? "";
+        this.listOfDatesToDisplayAsColumns.push(dataDateOfLksgDataset);
+        for (const areaObject of Object.values(oneLksgDataset)) {
+          for (const [subAreaKey, subAreaObject] of Object.entries(areaObject)) {
+            for (const [kpiKey, kpiValue] of Object.entries(subAreaObject as Object)) {
+              this.appendKpiValues(kpiKey, kpiValue, subAreaKey, dataDateOfLksgDataset);
             }
           }
         }
