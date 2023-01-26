@@ -5,7 +5,6 @@ import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.UUID
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.context.annotation.ComponentScan
@@ -15,11 +14,11 @@ import org.springframework.context.annotation.ComponentScan
  */
 @ComponentScan(basePackages = ["org.dataland"])
 @Component
-@RabbitListener(queues = ["storage_queue"])
+//@RabbitListener(queues = ["storage_queue"])
 class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired var dataInformationHashMap : StorageHashMap,
-    @Autowired var cloudEventBuilder: CloudEventMessageHandler,
+    private val rabbitTemplate: RabbitTemplate,
 ) {
 
     /**
@@ -27,18 +26,20 @@ class DatabaseDataStore(
      * @param data a json object
      * @return id associated with the stored data
      */
-   // @RabbitListener(queues = ["storage_queue"])
-    @RabbitHandler
-    fun insertDataSet(dataId :String) {
-       // val correlationId = rabbitTemplate.receive("storage_queue")
-        println(dataId)
-        println("Stooooooooooooooooooooooooooorage")
+   // @RabbitHandler
+    fun insertDataSet(correlationId: String) {
+       // println("InsertDataSet: ${message.messageProperties.headers}")
+        //println(dataId)
+      // val testMessage = rabbitTemplate.receive("storage_queue")
+        //if (testMessage?.messageProperties?.headers  != null){
+         //   println("message exists")}
+       // println(rabbitTemplate.receive("storage_queue"))
+       // println("Stooooooooooooooooooooooooooorage")
 
-        val data = dataInformationHashMap.map[dataId]
-        println("Data to save: $data")
-        dataItemRepository.save(DataItem(dataId, data!!))
-        cloudEventBuilder.buildCEMessageAndSendToQueue(input = dataId, type = "DataId on Upload", queue = "stored_queue")
-        //return dataId
+        //val data = dataInformationHashMap.map[dataId]
+       // println("Data to save: $data")
+      //  dataItemRepository.save(DataItem(dataId, data!!))
+      //  cloudEventBuilder.buildCEMessageAndSendToQueue(input = dataId, type = "DataId on Upload", queue = "stored_queue")
     }
 
 

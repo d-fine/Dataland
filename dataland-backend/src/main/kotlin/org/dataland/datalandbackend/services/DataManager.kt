@@ -19,6 +19,7 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.HashMap
 
 
@@ -81,7 +82,7 @@ class DataManager(
         metaDataInformationHashMap.put(dataId, storableDataSet)
         println("DataId from addDataSet")
         println(dataId)
-        cloudEventBuilder.buildCEMessageAndSendToQueue(dataId, "DataId on Upload", "upload_queue")
+        cloudEventBuilder.buildCEMessageAndSendToQueue(dataId, "DataId on Upload", correlationId,"upload_queue")
         return dataId
     }
 
@@ -111,9 +112,13 @@ class DataManager(
         print(dataInformationHashMap.map[dataId])
         println("storeDataSet")
         println(dataInformationHashMap.map)
+        println(correlationId)
         println("storeDataSet")
-        cloudEventBuilder.buildCEMessageAndSendToQueue(input = dataId, type = "DataId on Upload", queue = "storage_queue")
-
+        cloudEventBuilder.buildCEMessageAndSendToQueue(input = dataId, type = "DataId on Upload", correlationId, queue = "storage_queue")
+        TimeUnit.SECONDS.sleep(2L)
+        val testMessage = rabbitTemplate.receive("storage_queue")
+        if (testMessage?.messageProperties?.headers  != null){
+            println("message exists")}
         /*try {
             dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {

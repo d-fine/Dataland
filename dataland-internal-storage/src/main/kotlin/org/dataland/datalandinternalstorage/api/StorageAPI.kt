@@ -4,12 +4,9 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandinternalstorage.models.InsertDataResponse
-import org.springframework.amqp.rabbit.annotation.RabbitHandler
-import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 
 /**
  * Defines the restful internal storage API.
@@ -52,8 +49,6 @@ interface StorageAPI {
      * @param correlationId the correlation ID of the data post request
      * @param body the data stored body to be stored
      */
-    //@RabbitListener(queues = ["storage_queue"])
-    //@RabbitHandler
     fun insertData(correlationId :String):
         ResponseEntity<InsertDataResponse>
 }

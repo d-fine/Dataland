@@ -19,17 +19,20 @@ class CloudEventMessageHandler(
     private val rabbitTemplate: RabbitTemplate
 ){
 
-    private fun constructCEMessage(input: String, type: String) :Message<String>{
+    private fun constructCEMessage(input: String, type: String, identifier: String) :Message<String>{
         val message = CloudEventMessageBuilder
             .withData(input)
+            .setId(identifier)
             .setType(type)
             .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
             .build(CloudEventMessageUtils.AMQP_ATTR_PREFIX)
         return message
     }
 
-    fun buildCEMessageAndSendToQueue(input: String, type: String = "TestType", queue: String){
-        val messageInput = constructCEMessage(input, type)
+    fun buildCEMessageAndSendToQueue(input: String, type: String = "TestType", identifier: String = "Test", queue: String){
+        val messageInput = constructCEMessage(input, type, identifier)
+        println("Achtung Achtung, dies ist eine Nachricht")
+        println(messageInput)
         rabbitTemplate.convertAndSend(queue, messageInput)
     }
 
