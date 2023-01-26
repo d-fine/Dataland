@@ -45,7 +45,6 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
-import { DataMetaInformation } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Dropdown from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
@@ -114,7 +113,7 @@ export default defineComponent({
      * @param searchTerm The search term provided by the "search-confirmed" event of the search bar
      */
     handleSearchConfirm(searchTerm: string) {
-      return this.$router.push({
+      this.$router.push({
         name: "Search Companies for Framework Data",
         query: { input: searchTerm },
       });

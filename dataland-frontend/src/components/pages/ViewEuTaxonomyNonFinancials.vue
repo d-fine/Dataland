@@ -54,7 +54,7 @@ export default defineComponent({
     /**
      * Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
      *
-     * @param receivedEuTaxoNonFinanicalsDataIds
+     * @param receivedEuTaxoNonFinanicalsDataIds Received EU Taxonomy for non financial companies data IDs
      */
     handleReceivedListOfDataIds(receivedEuTaxoNonFinanicalsDataIds: []) {
       this.listOfReceivedEuTaxoNonFinanicalsDataIds = receivedEuTaxoNonFinanicalsDataIds;

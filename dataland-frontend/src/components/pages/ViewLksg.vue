@@ -39,7 +39,7 @@ export default defineComponent({
     /**
      * Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
      *
-     * @param receivedLksgDataIds
+     * @param receivedLksgDataIds Received LkSG data IDs
      */
     handleReceivedListOfDataIds(receivedLksgDataIds: []) {
       this.receivedLksgDataIds = receivedLksgDataIds;

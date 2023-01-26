@@ -26,6 +26,12 @@ describeIf(
       });
     });
 
+    /**
+     * Rounds a number to two decimal places.
+     *
+     * @param inputNumber The number which should be rounded
+     * @returns the rounded number
+     */
     function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
       return Math.round(inputNumber * 100) / 100;
     }

@@ -28,7 +28,13 @@ describe("The shared header of the framework pages should act as expected", { sc
       const financialsDropdownItem = "EU Taxonomy for financial companies";
       const lksgDropdownItem = "LkSG";
 
-      function interceptFrameworkPageLoad(trigger: () => void): void {
+      /**
+       * Wraps an interception with a wait-statement around a function that sends a request to the metadata-endpoint
+       * of the backend.
+       *
+       * @param trigger The function which sends a request to the metadata-endpoint of the backend
+       */
+      function interceptAndWaitForMetaDataRequest(trigger: () => void): void {
         const metaDataAlias = "retrieveMetaData";
         cy.intercept("**/api/metadata**").as(metaDataAlias);
         trigger();
@@ -38,7 +44,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       function selectCompanyViaUniqueSearchRequest(framework: string, companyName: string): void {
         cy.visit(`/companies?input=${companyName}&framework=${framework}`);
-        interceptFrameworkPageLoad(() => {
+        interceptAndWaitForMetaDataRequest(() => {
           const companySelector = "a span:contains( VIEW)";
           cy.get(companySelector).first().scrollIntoView();
           cy.get(companySelector).first().click({ force: true });
@@ -56,7 +62,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       ): void {
         cy.get(searchBarSelector).click();
         cy.get(searchBarSelector).type(companyName, { force: true });
-        interceptFrameworkPageLoad(() => {
+        interceptAndWaitForMetaDataRequest(() => {
           const companySelector = ".p-autocomplete-item";
           cy.get(companySelector).first().scrollIntoView();
           cy.get(companySelector).first().click({ force: true });
@@ -79,7 +85,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       function dropdownSelect(frameworkToSelect: string): void {
         cy.get(dropdownSelector).click();
-        interceptFrameworkPageLoad(() => {
+        interceptAndWaitForMetaDataRequest(() => {
           cy.get(`${dropdownItemsSelector}:contains(${frameworkToSelect})`).click({ force: true });
         });
       }
