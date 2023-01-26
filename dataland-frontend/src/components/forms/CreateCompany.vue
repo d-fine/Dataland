@@ -2,116 +2,118 @@
   <Card class="col-5 col-offset-1">
     <template #title>Create a Company </template>
     <template #content>
-      <FormKit
-        v-model="formInputsModel"
-        :actions="false"
-        type="form"
-        id="createCompanyForm"
-        @submit="postCompanyInformation"
-      >
-        <h4>Name & location</h4>
+      <div class="grid uploadFormWrapper">
         <FormKit
-          v-model="companyName"
-          type="text"
-          label="Company name"
-          placeholder="Company name"
-          validation="required"
-        />
-        <div class="grid align-items-center">
+          v-model="formInputsModel"
+          :actions="false"
+          type="form"
+          id="createCompanyForm"
+          @submit="postCompanyInformation"
+        >
+          <h4>Name & location</h4>
+          <UploadFormHeader :name="companyDataNames.companyName" :explanation="companyDataExplanations.companyName" />
           <FormKit
-            v-model="enteredCompanyAlternativeName"
+            v-model="companyName"
             type="text"
-            label="Add company alternative name"
-            placeholder="Company alternative name"
+            :placeholder="companyDataNames.companyName"
+            validation="required"
           />
-          <PrimeButton @click="addCompanyAlternativeName"> + </PrimeButton>
-        </div>
-
-        <FormKit v-model="companyAlternativeNames" type="list" name="companyAlternativeNames">
-          <template v-for="index in companyAlternativeNames.length" :key="index">
-            <div class="grid align-items-center">
-              <FormKit type="text" label="Existing company alternative name" />
-              <PrimeButton @click="removeAlternativeName(index)"> - </PrimeButton>
+          <div class="grid align-items-center">
+            <div>
+              <div class="grid align-items-center">
+                <UploadFormHeader :name="companyDataNames.companyAlternativeNames" :explanation="companyDataExplanations.companyAlternativeNames" />
+                <PrimeButton @click="addCompanyAlternativeName" label="ADD" class="p-button-text" icon="pi pi-plus"></PrimeButton>
+              </div>
+              <FormKit v-model="enteredCompanyAlternativeName" type="text" placeholder="Company alternative name" />
             </div>
-          </template>
+
+            <!--PrimeButton @click="addCompanyAlternativeName" icon="pi pi-plus"></PrimeButton-->
+          </div>
+
+          <FormKit v-model="companyAlternativeNames" type="list" name="companyAlternativeNames">
+            <template v-for="index in companyAlternativeNames.length" :key="index">
+              <div class="grid align-items-baseline">
+                <FormKit type="text" />
+                <PrimeButton @click="removeAlternativeName(index)" icon="pi pi-trash"></PrimeButton>
+              </div>
+            </template>
+          </FormKit>
+
+          <div class="grid align-items-center">
+            <div>
+              <UploadFormHeader
+                :name="companyDataNames.headquarters"
+                :explanation="companyDataExplanations.headquarters"
+              />
+              <FormKit v-model="headquarters" type="text" placeholder="City" validation="required" />
+            </div>
+            <div>
+              <UploadFormHeader
+                :name="companyDataNames.countryCode"
+                :explanation="companyDataExplanations.countryCode"
+              />
+              <FormKit
+                v-model="countryCode"
+                type="select"
+                placeholder="Select"
+                validation="required"
+                :options="allCountryCodes"
+              />
+            </div>
+          </div>
+
+          <UploadFormHeader
+            :name="companyDataNames.headquartersPostalCode"
+            :explanation="companyDataExplanations.headquartersPostalCode"
+          />
+          <FormKit
+            v-model="headquartersPostalCode"
+            type="text"
+            :placeholder="companyDataNames.headquartersPostalCode"
+          />
+
+          <UploadFormHeader
+            :name="companyDataNames.companyLegalForm"
+            :explanation="companyDataExplanations.companyLegalForm"
+          />
+          <FormKit v-model="companyLegalForm" type="text" :placeholder="companyDataNames.companyLegalForm" />
+
+          <h4>Identifier</h4>
+
+          <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
+          <FormKit v-model="isin" type="text" :placeholder="companyDataNames.isin" />
+
+          <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker" />
+          <FormKit v-model="ticker" type="text" :placeholder="companyDataNames.ticker" />
+
+          <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId" />
+          <FormKit v-model="permId" type="text" :placeholder="companyDataNames.permId" />
+
+          <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
+          <FormKit v-model="duns" type="text" :placeholder="companyDataNames.duns" />
+
+          <h4>GICS classification</h4>
+
+          <UploadFormHeader :name="companyDataNames.sector" :explanation="companyDataExplanations.sector" />
+          <FormKit
+            v-model="sector"
+            type="select"
+            placeholder="Please choose"
+            :options="gicsSectors"
+          />
+
+          <FormKit type="submit" label="ADD COMPANY" name="addCompany" />
         </FormKit>
-
-        <div class="grid align-items-center">
-          <div>
-            <UploadFormHeader :name="companyDataNames.headquarters" :explanation="companyDataExplanations.headquarters" />
-            <FormKit v-model="headquarters" type="text" placeholder="City" validation="required" />
-          </div>
-          <div>
-            <UploadFormHeader :name="companyDataNames.countryCode" :explanation="companyDataExplanations.countryCode" />
-            <FormKit
-              v-model="countryCode"
-              type="select"
-              placeholder="Select"
-              validation="required"
-              :options="allCountryCodes"
-            />
-          </div>
-        </div>
-
-        <UploadFormHeader
-          :name="companyDataNames.headquartersPostalCode"
-          :explanation="companyDataExplanations.headquartersPostalCode"
-        />
-        <FormKit v-model="headquartersPostalCode" type="text" :placeholder="companyDataNames.headquartersPostalCode" />
-
-        <UploadFormHeader
-          :name="companyDataNames.companyLegalForm"
-          :explanation="companyDataExplanations.companyLegalForm"
-        />
-        <FormKit v-model="companyLegalForm" type="text" :placeholder="companyDataNames.companyLegalForm" />
-
-        <h4>Identifier</h4>
-
-        <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
-        <FormKit v-model="ticker" type="text" :placeholder="companyDataNames.isin" />
-
-        <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker" />
-        <FormKit v-model="ticker" type="text" :placeholder="companyDataNames.ticker" />
-
-        <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId" />
-        <FormKit v-model="ticker" type="text" :placeholder="companyDataNames.permId" />
-
-        <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
-        <FormKit v-model="ticker" type="text" :placeholder="companyDataNames.duns" />
-
-        <h4>GICS classification</h4>
-
-        <UploadFormHeader :name="companyDataNames.sector" :explanation="companyDataExplanations.sector" />
-        <FormKit
-          v-model="sector"
-          type="select"
-          placeholder="Please choose"
-          :options="[
-            'Energy',
-            'Materials',
-            'Industrials',
-            'Consumer Discretionary',
-            'Consumer Staples',
-            'Health Care',
-            'Financials',
-            'Information Technology',
-            'Communication Services',
-            'Utilities',
-            'Real Estate',
-          ]"
-        />
-
-        <FormKit type="submit" label="ADD COMPANY" name="addCompany" />
-      </FormKit>
-      <template v-if="postCompanyProcessed">
-        <SuccessUpload
-          v-if="postCompanyResponse"
-          msg="company"
-          :messageCount="messageCount"
-          :data="postCompanyResponse.data"
-        />
-        <FailedUpload v-else msg="company" :messageCount="messageCount" />
-      </template>
+        <template v-if="postCompanyProcessed">
+          <SuccessUpload
+            v-if="postCompanyResponse"
+            msg="company"
+            :messageCount="messageCount"
+            :data="postCompanyResponse.data"
+          />
+          <FailedUpload v-else msg="company" :messageCount="messageCount" />
+        </template>
+      </div>
     </template>
   </Card>
 </template>
@@ -132,6 +134,7 @@ import Tooltip from "primevue/tooltip";
 import {
   companyDataNames,
   companyDataExplanations,
+  gicsSectors
 } from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
 import UploadFormHeader from "@/utils/UploadFormHeader.vue";
 
@@ -176,6 +179,7 @@ export default defineComponent({
     postCompanyProcessed: false,
     companyDataExplanations,
     companyDataNames,
+    gicsSectors,
   }),
   methods: {
     addIdentifier(identifierType: CompanyIdentifierIdentifierTypeEnum, identifierValue: string): void {

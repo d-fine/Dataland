@@ -34,3 +34,17 @@ export const companyDataExplanations = {
   companyRegistrationNumber: "Identification number assigned to a company in the commercial register",
   website: "Company website",
 };
+
+export const gicsSectors =[
+  'Energy',
+  'Materials',
+  'Industrials',
+  'Consumer Discretionary',
+  'Consumer Staples',
+  'Health Care',
+  'Financials',
+  'Information Technology',
+  'Communication Services',
+  'Utilities',
+  'Real Estate',
+];
