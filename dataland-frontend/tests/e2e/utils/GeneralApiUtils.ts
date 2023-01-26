@@ -57,12 +57,15 @@ export function interceptAllAndCheckFor500Errors(): void {
     delete incomingRequest.headers["DATALAND-ALLOW-5XX"];
     incomingRequest.continue((response) => {
       if (response.statusCode >= 500 && !is500ResponseAllowed) {
-        assert(false, `Received a ${response.statusCode} Response from the Dataland backend (request to ${incomingRequest.url})`);
+        assert(
+          false,
+          `Received a ${response.statusCode} Response from the Dataland backend (request to ${incomingRequest.url})`
+        );
       }
     });
   };
   cy.intercept("/api/**", handler);
-  cy.intercept("/api-keys/**", handler);  // TODO I think this line of code might be redundant.  this url-route should be covered by the interception above
+  cy.intercept("/api-keys/**", handler); // TODO I think this line of code might be redundant.  this url-route should be covered by the interception above
 }
 
 /**
