@@ -46,18 +46,23 @@ export async function countCompaniesAndDataSetsForDataType(
   };
 }
 
+/**
+ * TODO  talk with Marc about this and why it is needed
+ * Intercepts all requests to the backend, checks if a certain allow-flag is set in the headers, then checks if the
+ * response has a status code greater or equal 500, and throws an error depending on the allow-flag
+ */
 export function interceptAllAndCheckFor500Errors(): void {
-  const handler: RouteHandler = (req) => {
-    const allow500 = req.headers["DATALAND-ALLOW-5XX"] === "true";
-    delete req.headers["DATALAND-ALLOW-5XX"];
-    req.continue((res) => {
-      if (res.statusCode >= 500 && !allow500) {
-        assert(false, `Received a ${res.statusCode} Response from the Dataland backend (request to ${req.url})`);
+  const handler: RouteHandler = (incomingRequest) => {
+    const is500ResponseAllowed = incomingRequest.headers["DATALAND-ALLOW-5XX"] === "true";
+    delete incomingRequest.headers["DATALAND-ALLOW-5XX"];
+    incomingRequest.continue((response) => {
+      if (response.statusCode >= 500 && !is500ResponseAllowed) {
+        assert(false, `Received a ${response.statusCode} Response from the Dataland backend (request to ${incomingRequest.url})`);
       }
     });
   };
   cy.intercept("/api/**", handler);
-  cy.intercept("/api-keys/**", handler);
+  cy.intercept("/api-keys/**", handler);  // TODO I think this line of code might be redundant.  this url-route should be covered by the interception above
 }
 
 /**
