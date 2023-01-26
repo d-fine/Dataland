@@ -1,4 +1,4 @@
-package org.dataland.datalandbackendutils.cloudevents
+package org.dataland.datalandinternalstorage.services
 
 import org.springframework.cloud.function.cloudevent.CloudEventMessageBuilder
 import org.springframework.cloud.function.cloudevent.CloudEventMessageUtils

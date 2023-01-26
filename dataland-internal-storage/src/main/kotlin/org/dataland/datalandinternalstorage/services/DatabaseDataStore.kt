@@ -9,7 +9,6 @@ import java.util.UUID
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.context.annotation.ComponentScan
-import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 
 /**
  * Simple implementation of a data store using a postgres database
