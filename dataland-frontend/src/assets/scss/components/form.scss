@@ -330,6 +330,7 @@ input[type="checkbox"], input[type="radio"]{
     color: $bg-text-primary;
     padding: .5rem;
     border-radius: 0;
+    width: 300px;
   }
   &.p-tooltip-right .p-tooltip-arrow {
     border-right-color: $input-label-color
