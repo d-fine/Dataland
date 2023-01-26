@@ -3347,7 +3347,8 @@
               "Isin",
               "PermId",
               "Ticker",
-              "Duns"
+              "Duns",
+              "CompanyRegistrationNumber"
             ]
           },
           "identifierValue": {
@@ -3393,6 +3394,9 @@
             }
           },
           "countryCode": {
+            "type": "string"
+          },
+          "website": {
             "type": "string"
           },
           "isTeaserCompany": {
