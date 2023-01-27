@@ -8,7 +8,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
-import org.dataland.datalandinternalstorage.services.StorageHashMap
+import org.dataland.datalandinternalstorage.models.StorageHashMap
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
@@ -103,32 +103,11 @@ class DataManager(
     ): String{
         val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
         dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
-        print(dataInformationHashMap.map[dataId])
-        println("storeDataSet")
-        println(dataInformationHashMap.map)
-        println(correlationId)
-        println("storeDataSet")
         cloudEventBuilder.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId, "storage_queue")
-        /*try {
-            dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
-        } catch (e: ServerException) {
-            val internalMessage = "Error storing data." +
-                " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
-            logger.error(internalMessage)
-            throw InternalServerErrorApiException(
-                "Upload to Storage failed", "The upload of the dataset to the Storage failed",
-                internalMessage,
-                e
-            )
-        }
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId"
+                    " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId"
         )
-        dataId = rabbitTemplate.receiveAndConvert("stored_queue").toString()
-        println("Datamanager DataID")
-        println(dataId)
-        return dataId*/
         return(dataId )
     }
 

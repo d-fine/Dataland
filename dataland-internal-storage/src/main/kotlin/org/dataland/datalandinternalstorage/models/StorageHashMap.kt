@@ -1,11 +1,11 @@
-package org.dataland.datalandinternalstorage.services
+package org.dataland.datalandinternalstorage.models
 
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 
 
 /**
- * Implementation of a data manager for Dataland including metadata storages
+ * Implementation of a temporary storage business data to be inserted into the internal storage via Dataland
 */
 @Component
 class StorageHashMap() {
