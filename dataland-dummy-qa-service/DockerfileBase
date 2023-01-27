@@ -3,6 +3,6 @@ FROM ghcr.io/d-fine/dataland/dataland_gradle_base:${DATALAND_GRADLE_BASE_VERSION
 
 WORKDIR /app
 COPY ./dataland-dummy-qa-service/ ./dataland-dummy-qa-service/
-COPY ./dataland-backend-utils/ ./dataland-backend-utils/
+COPY ./dataland-internal-storage/ ./dataland-internal-storage/
 COPY ./.git/ ./.git
 RUN ./gradlew dataland-dummy-qa-service:bootJar --no-daemon --stacktrace

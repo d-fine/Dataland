@@ -1,5 +1,18 @@
 // dataland-dummy-qa-service
 
+val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
+val jacocoSources by extra(sonarSources)
+val jacocoClasses by extra(
+    sourceSets.asMap.values.flatMap { sourceSet ->
+        sourceSet.output.classesDirs.flatMap {
+            fileTree(it) {
+                exclude("**/openApiClient/**")
+            }.files
+        }
+    }
+)
+val jacocoVersion: String by project
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
@@ -11,22 +24,25 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
 }
 
-repositories {
-    mavenCentral()
-}
-
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
-    implementation("org.testng:testng:7.1.0")
+    implementation("org.testng:testng:7.7.0")
     implementation("junit:junit:4.13.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.amqp:spring-rabbit-test")
     implementation("io.cloudevents:cloudevents-api:2.4.1")
     implementation("io.cloudevents:cloudevents-json-jackson:2.4.1")
     implementation("io.cloudevents:cloudevents-core:2.3.0")
-    implementation(project(":dataland-backend-utils"))
+    implementation(project(":dataland-internal-storage"))
 
+}
+jacoco {
+    toolVersion = jacocoVersion
+    applyTo(tasks.bootRun.get())
+}
+gitProperties {
+    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }

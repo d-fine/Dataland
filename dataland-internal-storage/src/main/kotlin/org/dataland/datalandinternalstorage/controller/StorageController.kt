@@ -4,6 +4,7 @@ import org.dataland.datalandinternalstorage.api.StorageAPI
 import org.dataland.datalandinternalstorage.models.InsertDataResponse
 import org.dataland.datalandinternalstorage.services.DatabaseDataStore
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Message
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.http.ResponseEntity
@@ -26,9 +27,8 @@ class StorageController(
         logger.info("Selecting data from database with (data id: $dataId) and (correlation id: $correlationId).")
         return ResponseEntity.ok(dataStore.selectDataSet(dataId))
     }
-    override fun insertData(correlationId :String): ResponseEntity<InsertDataResponse> {
-        print("StorageController")
-        logger.info("Inserting data into database with (correlation id: $correlationId).")
-        return ResponseEntity.ok(InsertDataResponse(dataStore.insertDataSet(correlationId).toString()))
+    override fun insertData(message :Message): ResponseEntity<InsertDataResponse> {
+        //logger.info("Inserting data into database with (correlation id: $correlationId).")
+        return ResponseEntity.ok(InsertDataResponse(dataStore.insertDataSet(message).toString()))
     }
 }

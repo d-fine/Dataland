@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandinternalstorage.services.CloudEventMessageHandler
-import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -13,13 +12,11 @@ import org.dataland.datalandinternalstorage.services.StorageHashMap
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
-import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.collections.HashMap
 
 
@@ -38,7 +35,6 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventBuilder: CloudEventMessageHandler,
-    private val rabbitTemplate: RabbitTemplate,
     var metaDataInformationHashMap : HashMap<String, StorableDataSet>,
     @Autowired var dataInformationHashMap : StorageHashMap
 
@@ -80,9 +76,7 @@ class DataManager(
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         metaDataInformationHashMap.put(dataId, storableDataSet)
-        println("DataId from addDataSet")
-        println(dataId)
-        cloudEventBuilder.buildCEMessageAndSendToQueue(dataId, "DataId on Upload", correlationId,"upload_queue")
+        cloudEventBuilder.buildCEMessageAndSendToQueue(dataId, "New data - QA necessary", correlationId,"upload_queue")
         return dataId
     }
 
@@ -114,11 +108,7 @@ class DataManager(
         println(dataInformationHashMap.map)
         println(correlationId)
         println("storeDataSet")
-        cloudEventBuilder.buildCEMessageAndSendToQueue(input = dataId, type = "DataId on Upload", correlationId, queue = "storage_queue")
-        TimeUnit.SECONDS.sleep(2L)
-        val testMessage = rabbitTemplate.receive("storage_queue")
-        if (testMessage?.messageProperties?.headers  != null){
-            println("message exists")}
+        cloudEventBuilder.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId, "storage_queue")
         /*try {
             dataId = storageClient.insertData(correlationId, objectMapper.writeValueAsString(storableDataSet)).dataId
         } catch (e: ServerException) {
@@ -147,8 +137,8 @@ class DataManager(
     fun testFunktion(dataId: String) {
         println(dataId)
         println("tESTFUNKTIONFSDSDDSFFFFFFFFFFFFFFFFFFFFFF")
-    }
 
+    }
     /**
      * Method to make the data manager get the data of a single entry from the data store
      * @param dataId to identify the stored data

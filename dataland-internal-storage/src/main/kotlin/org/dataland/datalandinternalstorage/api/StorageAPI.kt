@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandinternalstorage.models.InsertDataResponse
+import org.springframework.amqp.core.Message
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -46,9 +47,8 @@ interface StorageAPI {
     )
     /**
      * A method to store data in the internal storage
-     * @param correlationId the correlation ID of the data post request
-     * @param body the data stored body to be stored
+     * @param message is a message object retrieved from the message queue
      */
-    fun insertData(correlationId :String):
+    fun insertData(message: Message):
         ResponseEntity<InsertDataResponse>
 }
