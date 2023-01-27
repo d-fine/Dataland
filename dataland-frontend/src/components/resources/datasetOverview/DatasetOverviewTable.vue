@@ -1,8 +1,8 @@
 <template>
   <div class="col-12 text-left">
     <DataTable
-      :value="datasetTableInfos"
-      responsive-layout="scroll"
+      v-if="displayedDatasetTableInfos.length > 0"
+      :value="displayedDatasetTableInfos"
       id="dataset-overview-table"
       class="table-cursor mt-1"
     >
@@ -21,8 +21,10 @@
       <Column field="submissionDate" header="SUBMISSION DATE" :sortable="true"></Column>
       <Column field="companyName" header="" class="d-bg-white d-datatable-column-right">
         <template #header>
-          I'M A SEARCHBAR
-          <!-- TODO? SEARCHBAR -->
+          <span class="w-12 p-input-icon-left">
+            <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
+            <InputText v-model="searchBarInput" placeholder="Search table" class="w-12 pl-6" />
+          </span>
         </template>
         <template #body="{ data }">
           <router-link :to="getRouterLinkTargetFramework(data)" class="text-primary no-underline font-bold">
@@ -44,7 +46,8 @@
 }
 
 #dataset-overview-table th {
-  /*background-color: green;*/
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
 }
 </style>
 
@@ -54,22 +57,34 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { DatasetStatus, DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import InputText from "primevue/inputtext";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
   components: {
     DataTable,
     Column,
+    InputText,
   },
   data() {
     return {
       humanizeString: humanizeString,
+      searchBarInput: "",
+      displayedDatasetTableInfos: [] as DatasetTableInfo[],
     };
   },
   props: {
     datasetTableInfos: {
       type: Array,
       default: [],
+    },
+  },
+  watch: {
+    searchBarInput() {
+      this.applySearchFilter();
+    },
+    datasetTableInfos() {
+      this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
     },
   },
   methods: {
@@ -82,6 +97,11 @@ export default defineComponent({
     },
     isDatasetRejected(datasetTableEntry: DatasetTableInfo): boolean {
       return datasetTableEntry.status.text === DatasetStatus.Requested.text;
+    },
+    applySearchFilter(): void {
+      this.displayedDatasetTableInfos = this.datasetTableInfos.filter((info) =>
+        (info as DatasetTableInfo).companyName.toLowerCase().includes(this.searchBarInput.toLowerCase())
+      ) as DatasetTableInfo[];
     },
   },
 });

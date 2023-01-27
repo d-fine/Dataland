@@ -22,6 +22,7 @@ export default defineConfig({
       "primevue/progressbar",
       "primevue/tabview",
       "primevue/tabpanel",
+      "primevue/inputtext",
       "@formkit/vue",
       "axios",
     ],
