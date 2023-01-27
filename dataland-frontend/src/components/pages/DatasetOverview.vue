@@ -5,8 +5,11 @@
       <TabPanel header="AVAILABLE DATASETS"> </TabPanel>
       <TabPanel header="MY DATASETS">
         <TheContent class="p-3 min-h-screen paper-section relative">
-          <div class="col-12 flex flex-row justify-content-between align-items-end">
+          <div
+            class="col-12 flex flex-row justify-content-between align-items-end"
+          >
             <div
+              v-if="isProperlyImplemented"
               id="dataset-summary"
               class="col-6 surface-card shadow-1 p-3 border-round-sm border-round flex flex-column"
             >
@@ -19,7 +22,7 @@
                   </router-link>
                 </div>
               </div>
-              <div class="mt-2 flex justify-content-between">
+              <div v-if="isDataLoaded" class="mt-2 flex justify-content-between">
                 <div>
                   <span>Approved datasets: </span>
                   <span class="p-badge badge-green">{{ this.numApproved }}</span>
@@ -41,7 +44,11 @@
               @click="void this.$router.push('/companies/choose')"
             />
           </div>
-          <DatasetOverviewTable :dataset-table-infos="datasetTableInfos" />
+          <DatasetOverviewTable
+              v-if="datasetTableInfos.length > 0"
+              :dataset-table-infos="datasetTableInfos"
+              :is-properly-implemented="isProperlyImplemented"
+          />
         </TheContent>
       </TabPanel>
     </TabView>
@@ -81,10 +88,12 @@ export default defineComponent({
   data() {
     return {
       datasetTableInfos: [] as DatasetTableInfo[],
+      isDataLoaded: false,
       numApproved: 0,
       numPending: 0,
       numRejected: 0,
       activeTabIndex: 1,
+      isProperlyImplemented: false
     };
   },
   setup() {
@@ -93,7 +102,7 @@ export default defineComponent({
     };
   },
   created() {
-    void this.requestDataMetaDataForCurrentUser();
+    this.requestDataMetaDataForCurrentUser().then(() => { this.isDataLoaded = true; });
   },
   watch: {
     datasetTableInfos() {
