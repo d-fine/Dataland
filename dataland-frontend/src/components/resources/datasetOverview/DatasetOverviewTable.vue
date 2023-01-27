@@ -5,6 +5,13 @@
       :value="displayedDatasetTableInfos"
       id="dataset-overview-table"
       class="table-cursor mt-1"
+      :paginator="true"
+      :rows="100"
+      :alwaysShowPaginator="false"
+      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      :rowHover="true"
+      @row-click="rerouteRowClick"
     >
       <Column field="companyName" header="COMPANY" :sortable="true"></Column>
       <Column :field="dataType" header="DATA FRAMEWORK" :sortable="true">
@@ -27,7 +34,7 @@
           </span>
         </template>
         <template #body="{ data }">
-          <router-link :to="getRouterLinkTargetFramework(data)" class="text-primary no-underline font-bold">
+          <router-link :to="getTableRowLinkTarget(data)" class="text-primary no-underline font-bold">
             <div class="text-right">
               <span>{{ isDatasetRejected(data) ? "ADD NEW DATASET" : "VIEW" }}</span>
               <span class="ml-3">></span>
@@ -88,7 +95,7 @@ export default defineComponent({
     },
   },
   methods: {
-    getRouterLinkTargetFramework(datasetTableInfo: DatasetTableInfo): string {
+    getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
       if (this.isDatasetRejected(datasetTableInfo)) {
         return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/upload`;
       } else {
@@ -103,6 +110,9 @@ export default defineComponent({
         (info as DatasetTableInfo).companyName.toLowerCase().includes(this.searchBarInput.toLowerCase())
       ) as DatasetTableInfo[];
     },
+    rerouteRowClick(event: { data: DatasetTableInfo }) {
+      void this.$router.push(this.getTableRowLinkTarget(event.data));
+    }
   },
 });
 </script>
