@@ -13,7 +13,7 @@
       @row-click="rerouteRowClick"
     >
       <Column field="companyName" header="COMPANY" :sortable="true"></Column>
-      <Column :field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType">
+      <Column field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType">
         <template #body="{ data }">
           {{ humanizeString(data.dataType) }}
         </template>
