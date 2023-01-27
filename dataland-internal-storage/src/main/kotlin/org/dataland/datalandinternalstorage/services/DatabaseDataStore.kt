@@ -40,11 +40,12 @@ class DatabaseDataStore(
             val internalMessage = "Error storing data." +
                     " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
             logger.error(internalMessage)
-            throw InternalServerErrorApiException(
+            //TODO backend-utils must be included for this to work
+            /*throw InternalServerErrorApiException(
                 "Upload to Storage failed", "The upload of the dataset to the Storage failed",
                 internalMessage,
                 e
-            )
+            )*/
         }
     }
 
