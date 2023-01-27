@@ -12,7 +12,7 @@ const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 const monthAndDayOfLksgPreparedFixtures = "-01-01";
 
 describeIf(
-  "As a user, I expect Lksg data that I upload for a company to be displayed correctly",
+  "As a user, I expect LkSG data that I upload for a company to be displayed correctly",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],
@@ -30,31 +30,54 @@ describeIf(
       });
     });
 
-    async function getReportingYearOfLksgDataSet(dataId: string, token: string): Promise<string> {
+    /**
+     * Gets an LkSG dataset based on the provided data ID and parses the year from its date field
+     *
+     * @param token The API bearer token to use
+     * @param dataId The data ID of an LkSG dataset
+     * @returns the year from the date value of the LkSG dataset as string
+     */
+    async function getReportingYearOfLksgDataSet(token: string, dataId: string): Promise<string> {
       const response = await new LksgDataControllerApi(
         new Configuration({ accessToken: token })
       ).getCompanyAssociatedLksgData(dataId);
-      const lksgData = response.data.data;
+      const lksgData = response.data.data as LksgData;
       if (lksgData) {
         const reportingDateAsString = lksgData.social!.general!.dataDate as string;
-        return new Date(reportingDateAsString).getFullYear().toString();
+        return getYearFromLksgDate(reportingDateAsString);
       } else {
         throw Error(`No Lksg dataset could be retrieved for the provided dataId ${dataId}`);
       }
     }
 
+    /**
+     * Parses the year from a date string
+     *
+     * @param lksgDate date to parse
+     * @returns the year from the date as string
+     */
     function getYearFromLksgDate(lksgDate: string): string {
-      return lksgDate.split("-")[0];
+      return new Date(lksgDate).getFullYear().toString();
     }
 
+    /**
+     * Uploads an LkSG dataset to an existing company that already has at least one LkSG dataset uploaded for.
+     *
+     * @param uploadIdsOfExistingCompanyAndLksgDataSet contains the companyId of the existing company, and the data ID
+     * of one already existing LkSG dataset for that company
+     * @param isNewLksgDataSetInSameYear is a flag that decides if the new LkSG dataset should have a date which has
+     * the same year as the already existing LkSG dataset
+     * @returns an object which contains the companyId of the already existing comapny and the dataId of the newly
+     * uploaded LkSG dataset
+     */
     function uploadAnotherLksgDataSetToExistingCompany(
       uploadIdsOfExistingCompanyAndLksgDataSet: UploadIds,
       isNewLksgDataSetInSameYear?: boolean
     ): Chainable<UploadIds> {
       const companyId = uploadIdsOfExistingCompanyAndLksgDataSet.companyId;
       const dataId = uploadIdsOfExistingCompanyAndLksgDataSet.dataId;
-      return getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        return getReportingYearOfLksgDataSet(dataId, token).then((reportingYearAsString) => {
+      return getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return getReportingYearOfLksgDataSet(token, dataId).then((reportingYearAsString) => {
           let reportingYearOfNewLksgDataSet;
           if (isNewLksgDataSetInSameYear) {
             reportingYearOfNewLksgDataSet = reportingYearAsString;

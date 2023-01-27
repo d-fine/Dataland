@@ -7,6 +7,9 @@ import {
 import fs from "fs";
 import { generateEuTaxonomyForNonFinancialsPreparedFixtures } from "../non-financials/EuTaxonomyDataForNonFinancialsPreparedFixtures";
 
+/**
+ * Generates and exports fake fixtures for the eutaxonomy-non-financials framework
+ */
 export function exportFixturesEuTaxonomyNonFinancial(): void {
   const companyInformationWithEuTaxonomyDataForNonFinancials = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
     generateEuTaxonomyDataForNonFinancials,

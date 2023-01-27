@@ -60,7 +60,6 @@
               :maxFileSize="maxFileSize"
               :fileLimit="1"
               @select="handleSelectFile"
-              @clear="clearSelection"
               @remove="clearSelection"
             >
               <template #header>
@@ -178,7 +177,6 @@ export default defineComponent({
       maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       selectedFile: null as null | File,
       hideName: false,
-      displayModal: false,
     };
   },
 
@@ -197,14 +195,26 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Refreshes the page to allow the user to make a new data request
+     */
     createNewRequest() {
       this.$router.go();
     },
 
+    /**
+     * Clears the selected file
+     */
     clearSelection() {
       this.selectedFile = null;
     },
 
+    /**
+     * Called when a new file is selected in the file selector. Updates the selected file.
+     * Overwrites any currently selected file if present.
+     *
+     * @param event the file upload event
+     */
     handleSelectFile(event: FileUploadSelectEvent) {
       const arrayOfSelectedFiles = event.files as Array<File>;
       if (arrayOfSelectedFiles.length > 1) {
@@ -216,43 +226,68 @@ export default defineComponent({
       }
     },
 
-    openModal() {
-      this.displayModal = true;
-    },
-    closeModal() {
-      this.displayModal = false;
-    },
+    /**
+     * Formats the size of a file in a human-readable format for the UI
+     *
+     * @param bytes the size of the selected file
+     * @returns a humanized version of the size specified by bytes
+     */
     formatBytes(bytes: number): string {
       return formatBytesUserFriendly(bytes, UPLOAD_FILE_SIZE_DISPLAY_DECIMALS);
     },
 
+    /**
+     * Computes the upload progress in whole percents for the progress bar
+     *
+     * @param percentage the input percentage
+     * @returns the percentage rounded to whole numbers
+     */
     formatProgressPercentage(percentage: number) {
       return roundNumber(percentage, 0);
     },
 
+    /**
+     * Opens the OSes file browser
+     */
     chooseFiles() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.fileUpload?.choose();
     },
 
+    /**
+     * Retrieves the currently selected file
+     *
+     * @returns the currently selected file
+     */
     getSelectedFile(): File {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
       return this.fileUpload?.files[0];
     },
 
+    /**
+     * Called when the user hits submit. Enables the progress bar and uploads the file.
+     */
     async handleSubmission() {
       this.submissionInProgress = true;
-      await this.uploadAllSelectedFiles();
+      await this.uploadSelectedFile();
       this.submissionFinished = true;
       this.submissionInProgress = false;
     },
 
+    /**
+     * Updates the UI to reflect the result of the file upload
+     *
+     * @param response the result of the file upload request
+     */
     readInviteStatusFromResponse(response: AxiosResponse<InviteMetaInfoEntity>) {
       this.isInviteSuccessful = response.data.wasInviteSuccessful ?? false;
       this.inviteResultMessage = response.data.inviteResultMessage ?? "No response from server.";
     },
 
-    async uploadAllSelectedFiles(): Promise<void> {
+    /**
+     * Uploads the selected file. Updates the UI after the upload has completed
+     */
+    async uploadSelectedFile(): Promise<void> {
       const selectedFile = this.getSelectedFile();
       try {
         const inviteControllerApi = await new ApiClientProvider(

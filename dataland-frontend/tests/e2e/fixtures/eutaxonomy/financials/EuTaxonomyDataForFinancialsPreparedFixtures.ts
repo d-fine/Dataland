@@ -9,6 +9,11 @@ import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 
 type generatorFunction = (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials>;
 
+/**
+ * Generates prepared fixtures for the eutaxonomy-financials framework
+ *
+ * @returns the generated fixtures
+ */
 export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<FixtureData<EuTaxonomyDataForFinancials>> {
   const creationFunctions: Array<generatorFunction> = [
     createAssetManagementAndInsuranceCompany,
@@ -29,6 +34,12 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
   return preparedFixtures;
 }
 
+/**
+ * Creates a fixture of a credit institution that uses dual field submission
+ *
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
 function createCreditInstitutionDualFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
@@ -42,6 +53,12 @@ function createCreditInstitutionDualFieldSubmission(
   return input;
 }
 
+/**
+ * Creates a fixture of a credit institution that uses single field submission
+ *
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
 function createCreditInstitutionSingleFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
@@ -54,6 +71,12 @@ function createCreditInstitutionSingleFieldSubmission(
   return input;
 }
 
+/**
+ * Creates a fixture of a company that is only an insurance company
+ *
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
 function createInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
@@ -62,6 +85,12 @@ function createInsuranceCompany(
   return input;
 }
 
+/**
+ * Creates a fixture of a company that is only an asset management company
+ *
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
 function createAssetManagementCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
@@ -70,6 +99,12 @@ function createAssetManagementCompany(
   return input;
 }
 
+/**
+ * Creates a fixture of a company that is an asset management and insurance company
+ *
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
 function createAssetManagementAndInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
@@ -78,6 +113,12 @@ function createAssetManagementAndInsuranceCompany(
   return input;
 }
 
+/**
+ * Creates a fixture of a company that has values for every field (i.e. no undefined/missing datapoints)
+ *
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
 function createAllValuesCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {

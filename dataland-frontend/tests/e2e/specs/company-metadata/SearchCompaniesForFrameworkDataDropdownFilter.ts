@@ -245,6 +245,13 @@ describe("As a user, I expect the search functionality on the /companies page to
         }
       );
 
+      /**
+       * Visits the company search page, filters by the specified framework,
+       * enters companyNamePrefix into the search bar and ensures that a matching company appears as the first result
+       *
+       * @param companyNamePrefix the search term to enter
+       * @param frameworkToFilterFor the framework to filter by
+       */
       function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
         cy.visit(`/companies?framework=${frameworkToFilterFor}`);
         cy.intercept("**/api/companies*").as("searchCompany");

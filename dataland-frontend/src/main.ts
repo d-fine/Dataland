@@ -14,6 +14,9 @@ import PrimeVue from "primevue/config";
 import DialogService from "primevue/dialogservice";
 import { createPinia } from "pinia";
 
+/**
+ * The main entrypoint of the dataland frontend initiating the vue app
+ */
 function instantiateVueApp(): void {
   const app = createApp(App);
   const pinia = createPinia();

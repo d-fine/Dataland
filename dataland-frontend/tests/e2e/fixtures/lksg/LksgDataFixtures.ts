@@ -4,6 +4,11 @@ import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 
+/**
+ * Generates a random production site
+ *
+ * @returns a random production site
+ */
 export function generateProductionSite(): ProductionSite {
   const fakeSiteName = faker.company.name();
   const yesNo = randomYesNoUndefined();
@@ -29,16 +34,31 @@ export function generateProductionSite(): ProductionSite {
   };
 }
 
+/**
+ * Generates an array consisting of 1 to 5 random production sites
+ *
+ * @returns 1 to 5 random production sites
+ */
 export function generateArrayOfProductionSites(): ProductionSite[] {
   return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, generateProductionSite);
 }
 
+/**
+ * Generates a random VAT ID number
+ *
+ * @returns a random VAT ID number
+ */
 export function generateVatIdentificationNumber(): string {
   const fakeCountryCode = faker.address.countryCode();
   const randomNineDigitNumber = faker.random.numeric(9);
   return fakeCountryCode + randomNineDigitNumber.toString();
 }
-
+/**
+ * Generates a random LKSG dataset
+ *
+ * @param dataDate Optional parameter if a specific date should be set instead of a random one
+ * @returns a random LKSG dataset
+ */
 export function generateLksgData(dataDate?: string): LksgData {
   return {
     social: {

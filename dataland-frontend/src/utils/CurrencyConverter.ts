@@ -4,8 +4,8 @@
  *
  * @param  {number} numberToConvert      is the number to be converted such as an amount
  * @param  {number} maxNumberOfDigitsAfterDecimalPoint      maximum number of digits to appear after the decimal point
+ * @returns the formatted number
  */
-
 export function convertCurrencyNumbersToNotationWithLetters(
   numberToConvert: number,
   maxNumberOfDigitsAfterDecimalPoint?: number

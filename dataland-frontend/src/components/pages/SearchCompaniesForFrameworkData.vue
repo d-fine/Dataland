@@ -214,9 +214,19 @@ export default defineComponent({
     redirectToChooseCompanyPage() {
       this.$router.push("/companies/choose");
     },
+
+    /**
+     * Updates the local variable indicating which row of the datatable is currently displayed at the top
+     *
+     * @param value the index of the new row displayed on top
+     */
     setFirstShownRow(value: number) {
       this.indexOfFirstShownRow = value;
     },
+    /**
+     * Called when the window is scrolled.
+     * Handles the collapsing / uncollapsing of the search bar depending on the scroll position
+     */
     handleScroll() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.frameworkDataSearchBar?.$refs.autocomplete.hide();
@@ -244,6 +254,12 @@ export default defineComponent({
         }
       }
     },
+    /**
+     * Parses the framework filter query parameters.
+     *
+     * @param route the current route
+     * @returns an array of framework filters from the URL or an array of all frameworks if no filter is defined
+     */
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       const queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
@@ -255,6 +271,12 @@ export default defineComponent({
         return ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS;
       }
     },
+    /**
+     * Parses the country-code query parameters.
+     *
+     * @param route the current route
+     * @returns an array of country codes to filter by or an empty array of no filter is present
+     */
     getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
       const queryCountryCodes = route.query.countryCode;
       if (queryCountryCodes) {
@@ -262,6 +284,12 @@ export default defineComponent({
       }
       return [];
     },
+    /**
+     * Parses the sector-filter query parameters.
+     *
+     * @param route the current route
+     * @returns an array of sectors to filter by or an empty array of no filter is present
+     */
     getQuerySectors(route: RouteLocationNormalizedLoaded): Array<string> {
       const querySectors = route.query.sector;
       if (querySectors) {
@@ -269,6 +297,12 @@ export default defineComponent({
       }
       return [];
     },
+    /**
+     * Parses the search term query parameter
+     *
+     * @param route the current route
+     * @returns the parsed search term query parameter or an empty string if non-existent
+     */
     getQueryInput(route: RouteLocationNormalizedLoaded): string {
       const queryInput = route.query.input as string;
       if (queryInput) {
@@ -276,6 +310,10 @@ export default defineComponent({
       }
       return "";
     },
+    /**
+     * Updates the combined filter object if any of the local filters no longer match the combined filter object.
+     * An update of the combined filter object automatically triggers a new search.
+     */
     updateCombinedFilterIfRequired() {
       this.frameworksFilters.setSelectedFiltersForFrameworks(this.currentFilteredFrameworks);
       if (
@@ -293,6 +331,12 @@ export default defineComponent({
         };
       }
     },
+    /**
+     * Reads the query parameters of the framework-, country-code-, sector- and name- filters and
+     * udpates the corresponding local variables accordingly
+     *
+     * @param route the current vue route
+     */
     scanQueryParams(route: RouteLocationNormalizedLoaded) {
       const queryFrameworks = this.getQueryFrameworks(route);
       const queryCountryCodes = this.getQueryCountryCodes(route);
@@ -311,6 +355,13 @@ export default defineComponent({
         this.currentSearchBarInput = queryInput;
       }
     },
+    /**
+     * Called when the new search results are received from the framework search bar. Disables the waiting indicator,
+     * resets the pagination and updates the datatable. Also updates the query parameters to reflect the new search parameters
+     *
+     * @param companiesReceived the received companies
+     * @returns the promise of the router push with the new query parameters
+     */
     handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
       this.resultsArray = companiesReceived;
       this.setFirstShownRow(0);
@@ -342,10 +393,19 @@ export default defineComponent({
         },
       });
     },
+    /**
+     * Called when the user performed a company search. Updates the search bar contents and
+     * displays the waiting indicator
+     *
+     * @param companyNameFilter the new search filter
+     */
     handleSearchConfirmed(companyNameFilter: string) {
       this.waitingForSearchResults = true;
       this.currentSearchBarInput = companyNameFilter;
     },
+    /**
+     * Expands the searchbar that got collapsed when the user scrolled down
+     */
     toggleSearchBar() {
       this.searchBarToggled = true;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access

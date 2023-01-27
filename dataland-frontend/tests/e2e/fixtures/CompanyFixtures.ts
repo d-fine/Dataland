@@ -5,20 +5,31 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
 import { valueOrUndefined } from "./common/DataPointFixtures";
 
-export function getCompanyLegalForm(): string {
-  const legalForms = [
-    "Public Limited Company (PLC)",
-    "Private Limited Company (Ltd)",
-    "Limited Liability Partnership (LLP)",
-    "Partnership without Limited Liability",
-    "Sole Trader",
-    "GmbH",
-    "AG",
-    "GmbH & Co. KG",
-  ];
+const legalForms = [
+  "Public Limited Company (PLC)",
+  "Private Limited Company (Ltd)",
+  "Limited Liability Partnership (LLP)",
+  "Partnership without Limited Liability",
+  "Sole Trader",
+  "GmbH",
+  "AG",
+  "GmbH & Co. KG",
+];
+
+/**
+ * Randomly picks and returns a legal form from a list of available legal forms.
+ *
+ * @returns a random legal form from the list as string
+ */
+export function getRandomCompanyLegalForm(): string {
   return legalForms[faker.datatype.number(legalForms.length - 1)];
 }
 
+/**
+ * Generates a company fixture with random information
+ *
+ * @returns information about a randomly generated company
+ */
 export function generateCompanyInformation(): CompanyInformation {
   const companyName = faker.company.name();
   const headquarters = faker.address.city();
@@ -59,7 +70,7 @@ export function generateCompanyInformation(): CompanyInformation {
   const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
     return faker.company.name();
   }).sort();
-  const companyLegalForm = valueOrUndefined(getCompanyLegalForm());
+  const companyLegalForm = valueOrUndefined(getRandomCompanyLegalForm());
   const website = valueOrUndefined(faker.internet.url());
 
   return {
@@ -76,6 +87,11 @@ export function generateCompanyInformation(): CompanyInformation {
   };
 }
 
+/**
+ * Returns the CSV mapping for the columns showing basic company information
+ *
+ * @returns the static CSV mapping
+ */
 export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, string>> {
   return [
     {

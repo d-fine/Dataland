@@ -25,9 +25,10 @@ export interface FrameworkDataSearchFilterInterface {
 }
 
 /**
- * retrieve the value of the Perm Id of a company
+ * Retrieve the value of the Perm Id of a company. Throws an exception if no perm id is found
  *
  * @param  {StoredCompany} storedCompany      is the company object for which the Perm Id should be retrieved
+ * @returns the perm id retrieved from the company object. Empty string if no perm id is known.
  */
 function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
   const permIdIdentifier = storedCompany.companyInformation.identifiers.filter(
@@ -47,6 +48,7 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
  * map the received stored companies of an API-call to the required scheme for the search page to display
  *
  * @param  {Array<StoredCompany>} responseData      the received data with the company objects
+ * @returns a list of companies in the format expected by the search page
  */
 function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCompany>): Array<DataSearchStoredCompany> {
   return responseData.map(
@@ -106,6 +108,13 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   return mappedResponse;
 }
 
+/**
+ * Generates a router link for the view button on the framework search page.
+ * Links to the first framework that is included in the data in the company object
+ *
+ * @param companyData the company to generate a link for
+ * @returns a vue router link to the first framework associated with the given company object
+ */
 export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
   const dataTypesForWhichCompanyHasData = companyData.dataRegisteredByDataland.map(
     (dataMetaInformation) => dataMetaInformation.dataType
