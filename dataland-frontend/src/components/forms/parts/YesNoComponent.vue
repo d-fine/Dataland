@@ -5,6 +5,7 @@
       type="radio"
       :name="name"
       :options="['Yes', 'No']"
+      validation="required"
       :outer-class="{
         'yes-no-radio': true,
       }"

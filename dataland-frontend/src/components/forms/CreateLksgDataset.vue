@@ -707,17 +707,16 @@ export default defineComponent({
       }
     },
     checkCustomInputs(node) {
+      let invalidElements = [];
       node.walk(child => {
-
         // Check if this child has errors
         if ((child.ledger.value('blocking') || child.ledger.value('errors')) && child.type !== 'group') {
-          console.log('JEST', child.props.id)
           // We found an input with validation errors
-          document.getElementById(child.props.id).scrollIntoView({behavior: "smooth", block: "end"})
-          // Stop searching
-          return false
+          invalidElements.push(document.getElementById(child.props.id))
         }
       }, true)
+
+      invalidElements[0].scrollIntoView({behavior: "smooth", block: "center"})
 
 
 
