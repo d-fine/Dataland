@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="lksgKpis[name]" :explanation="lksgQuestions[name]" />
+    <UploadFormHeader :name="lksgKpiNameMappings[name]" :explanation="lksgKpiInfoMappings[name]" />
     <FormKit
       type="radio"
       :name="name"
@@ -23,14 +23,14 @@
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { lksgQuestions, lksgKpis } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+import { lksgKpiNameMappings, lksgKpiInfoMappings } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
   name: "YesNoComponent",
   components: { UploadFormHeader, FormKit },
   data: () => ({
-    lksgQuestions,
-    lksgKpis
+    lksgKpiNameMappings,
+    lksgKpiInfoMappings
   }),
   props: {
     name: {
