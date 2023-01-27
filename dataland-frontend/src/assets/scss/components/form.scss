@@ -18,6 +18,9 @@ form {
         outline: none;
         border-bottom: 1px solid $input-text-border-hover;
       }
+      .formkit-input {
+        line-height: normal;
+      }
     }
   }
   .formkit-decorator {display: none;}
@@ -469,11 +472,17 @@ input[type="checkbox"], input[type="radio"]{
   p {
     margin: .25rem;
   }
+  .p-calendar {
+    width: 100%;
+    .p-button {
+      margin: 0;
+    }
+  }
   .productionSiteSection {
     border: 1px solid $input-text-border;
     padding: 1rem;
     border-radius: .5rem;
-    margin-bottom: 1rem;
+    margin: 2rem 0;
     position: relative;
     .close-section {
       position: absolute;
@@ -517,8 +526,10 @@ input[type="checkbox"], input[type="radio"]{
   }
   .uploadFormSection {
     margin-bottom: 1.5rem;
-    .formkit-outer {
-      margin: 0 0 2rem 0;
+    .form-field:not(:last-child) {
+      margin: 0 0 1rem 0;
+      padding: 0 0 1rem 0;
+      border-bottom: 1px solid $input-separator;
     }
   }
 }

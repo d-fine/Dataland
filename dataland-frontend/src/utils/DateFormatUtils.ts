@@ -24,6 +24,10 @@ export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
   return new Date(unixTimeInMs).toLocaleDateString("en-gb", dateFormatOptions);
 }
 
+export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
+  return new Date(unixTimeInMs).toLocaleDateString("en-gb", dateFormatOptions);
+}
+
 /**
  * Calculates an expiry date in the future based on the number of valid days from now
  *

@@ -1,5 +1,7 @@
 import countries from "i18n-iso-countries";
 import countriesEn from "i18n-iso-countries/langs/en.json";
+import {DataSearchStoredCompany} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import * as module from "module";
 countries.registerLocale(countriesEn);
 
 /**
@@ -14,4 +16,14 @@ export function getCountryNameFromCountryCode(countryCode: string): string {
 
 export function getAllCountryCodes(): Array<string> {
   return Object.keys(countries.getNames("en")).sort();
+}
+
+export function getAllCountryNamesWithCodes(): object {
+  return countries.getNames("en");
+}
+
+export async function getCitiesForCountry(countryCode: string): Promise<Array<string>> {
+  const allCountriesCodesAndCities = await import("@/assets/data/cities.json").then(module => module.default);
+  const citiesForCountry = allCountriesCodesAndCities[countryCode]
+  return citiesForCountry;
 }

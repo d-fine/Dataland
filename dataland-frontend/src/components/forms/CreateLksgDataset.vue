@@ -12,22 +12,33 @@
             :actions="false"
             type="form"
             id="createLkSGForm"
+            name="createLkSGForm"
             @submit="postLkSGData"
+            @submit-invalid="checkCustomInputs"
             #default="{ state: { valid } }"
           >
             <FormKit type="group" name="social" label="social">
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="general" class="anchor title">{{ lksgSubAreaNameMappings._general }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   <p>Please input all relevant basic information about the dataset</p>
                 </div>
 
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="general" :label="lksgSubAreaNameMappings._general">
                     <div class="form-field">
                       <UploadFormHeader :name="lksgKpiNameMappings.dataDate" :explanation="lksgKpiInfoMappings.dataDate" />
-                      <FormKit type="date" help="Enter date" />
+                      <Calendar
+                          data-test="lksgDataDate"
+                          inputId="icon"
+                          v-model="dataDate"
+                          :showIcon="true"
+                          dateFormat="D, M dd, yy"
+                          :maxDate="new Date()"
+                      />
+
+                      <FormKit type="hidden" ref="input"  name="dataDate" v-model="convertedDataDate" />
                     </div>
 
                     <div class="form-field">
@@ -46,15 +57,15 @@
                           'formkit-input': false,
                           'p-radiobutton': true,
                         }"
+                        validation="required"
                       />
                     </div>
-
                     <div class="form-field">
                       <UploadFormHeader
                         :name="lksgKpiNameMappings.companyLegalForm"
                         :explanation="lksgKpiInfoMappings.companyLegalForm"
                       />
-                      <FormKit type="text" name="companyLegalForm" />
+                      <FormKit type="text" validation="required|length:3" name="companyLegalForm" />
                     </div>
 
                     <div class="form-field">
@@ -62,7 +73,7 @@
                         :name="lksgKpiNameMappings.vatIdentificationNumber"
                         :explanation="lksgKpiInfoMappings.vatIdentificationNumber"
                       />
-                      <FormKit type="number" name="VATidentificationNumber" step="1" />
+                      <FormKit type="text" validation="required|length:3" name="VATidentificationNumber" />
                     </div>
 
                     <div class="form-field">
@@ -74,7 +85,9 @@
                         type="number"
                         name="numberOfEmployees"
                         placeholder="Value"
+                        validation="required|number"
                         step="1"
+                        min="0"
                         :inner-class="{ short: true }"
                       />
                     </div>
@@ -89,6 +102,8 @@
                         name="shareOfTemporaryWorkers"
                         placeholder="Value %"
                         step="1"
+                        min="0"
+                        validation="required|number|between:0,100"
                         :inner-class="{
                           short: true,
                         }"
@@ -98,8 +113,7 @@
                     <div class="form-field">
                       <UploadFormHeader :name="lksgKpiNameMappings.totalRevenue" :explanation="lksgKpiInfoMappings.totalRevenue" />
                       <div class="next-to-each-other">
-                        <FormKit type="number" name="totalRevenue" placeholder="Value" step="1" />
-                        <FormKit type="select" name="unit" placeholder="Unit" :options="['CHF', 'USD']" />
+                        <FormKit type="number" min="0" validation="required|number|min:0" name="totalRevenue" placeholder="Value" step="1" />
                       </div>
                     </div>
 
@@ -112,6 +126,7 @@
                         type="text"
                         name="totalRevenueCurrency"
                         placeholder="Currency"
+                        validation="required"
                         :inner-class="{
                           medium: true,
                         }"
@@ -125,9 +140,11 @@
                       />
                       <FormKit
                         type="radio"
+                        id="IsYourCompanyManufacturingCompany"
                         name="IsYourCompanyManufacturingCompany"
                         :options="['Yes', 'No']"
                         v-model="isYourCompanyManufacturingCompany"
+                        validation="required"
                         :outer-class="{
                           'yes-no-radio': true,
                         }"
@@ -141,7 +158,8 @@
                       />
                     </div>
 
-                    <FormKit type="list" name="listOfProductionSites" label="listOfProductionSites">
+
+                    <FormKit type="list" v-if="isYourCompanyManufacturingCompany!=='No'" name="listOfProductionSites" label="listOfProductionSites">
                       <FormKit type="group" v-for="(item, index) in listOfProductionSites" :key="item.id">
                         <div
                           class="productionSiteSection"
@@ -156,7 +174,7 @@
                               :name="lksgKpiNameMappings.productionSiteName"
                               :explanation="lksgKpiInfoMappings.productionSiteName"
                             />
-                            <FormKit type="text" name="productionSiteName" />
+                            <FormKit type="text" name="productionSiteName" validation="required" />
                           </div>
 
                           <!-- Is in-house production or is Contract Processing  -->
@@ -169,6 +187,7 @@
                               type="radio"
                               name="inHouseProductionOrContractProcessing"
                               :options="['In-house Production', 'Contract Processing']"
+                              validation="required"
                               :outer-class="{
                                 'yes-no-radio': true,
                               }"
@@ -189,11 +208,23 @@
                               :explanation="lksgKpiInfoMappings.addressesOfProductionSites"
                             />
 
-                            <FormKit type="text" name="StreetHouseNumber" placeholder="Street, House number" />
+                            <FormKit type="text" name="StreetHouseNumber" validation="required" placeholder="Street, House number" />
                             <div class="next-to-each-other">
-                              <FormKit type="select" name="Country" placeholder="Country" :options="['CHF', 'USD']" />
-                              <FormKit type="select" name="City" placeholder="City" :options="['CHF', 'USD']" />
-                              <FormKit type="text" name="Postcode" placeholder="Postcode" />
+                              <FormKit type="select"
+                                       v-model="selectedCountryCode"
+                                       name="Country"
+                                       validation="required"
+                                       placeholder="Country"
+                                       :options="allCountry"
+                                       @change="getCities"
+                              />
+                              <FormKit type="select"
+                                       name="City"
+                                       validation="required"
+                                       placeholder="City"
+                                       :options="citiesForCountry"
+                              />
+                              <FormKit type="text" validation="required" name="Postcode" placeholder="Postcode" />
                             </div>
                           </div>
 
@@ -255,12 +286,12 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="childLabour" class="anchor title">{{ lksgSubAreaNameMappings.childLabour }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="childLabour" :label="lksgSubAreaNameMappings.childLabour">
                     <YesNoComponent :name="'employeeUnder18'" />
                     <YesNoComponent :name="'employeeUnder15'" />
@@ -276,14 +307,14 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="forcedLabourSlaveryAndDebtBondage" class="anchor title">
                     {{ lksgSubAreaNameMappings.forcedLabourSlaveryAndDebtBondage }}
                   </h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit
                     type="group"
                     name="forcedLabourSlaveryAndDebtBondage"
@@ -304,14 +335,14 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="evidenceCertificatesAndAttestations" class="anchor title">
                     {{ lksgSubAreaNameMappings.evidenceCertificatesAndAttestations }}
                   </h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit
                     type="group"
                     name="evidenceCertificatesAndAttestations"
@@ -345,12 +376,12 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="grievanceMechanism" class="anchor title">{{ lksgSubAreaNameMappings.grievanceMechanism }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="grievanceMechanism" :label="lksgSubAreaNameMappings.grievanceMechanism">
                     <YesNoComponent :name="'grievanceHandlingMechanism'" />
                     <YesNoComponent :name="'grievanceHandlingMechanismUsedForReporting'" />
@@ -360,12 +391,12 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="osh" class="anchor title">{{ lksgSubAreaNameMappings.osh }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="osh" :label="lksgSubAreaNameMappings.osh">
                     <YesNoComponent :name="'oshMonitoring'" />
                     <YesNoComponent :name="'oshPolicy'" />
@@ -389,12 +420,12 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="freedomOfAssociation" class="anchor title">{{ lksgSubAreaNameMappings.freedomOfAssociation }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="freedomOfAssociation" :label="lksgSubAreaNameMappings.freedomOfAssociation">
                     <YesNoComponent :name="'freedomOfAssociation'" />
                     <YesNoComponent :name="'discriminationForTradeUnionMembers'" />
@@ -406,12 +437,12 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="humanRights" class="anchor title">{{ lksgSubAreaNameMappings.humanRights }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="humanRights" :label="lksgSubAreaNameMappings.humanRights">
                     <YesNoComponent :name="'diversityAndInclusionRole'" />
                     <YesNoComponent :name="'preventionOfMistreatments'" />
@@ -429,14 +460,14 @@
 
             <FormKit type="group" name="governance" label="governance">
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="socialAndEmployeeMatters" class="anchor title">
                     {{ lksgSubAreaNameMappings.socialAndEmployeeMatters }}
                   </h4>
                   <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                 </div>
 
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit
                     type="group"
                     name="socialAndEmployeeMatters"
@@ -448,11 +479,11 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="environment" class="anchor title">{{ lksgSubAreaNameMappings.environment }}</h4>
                   <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                 </div>
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="environment" :label="lksgSubAreaNameMappings.environment">
                     <YesNoComponent :name="'responsibilitiesForTheEnvironment'" />
                   </FormKit>
@@ -460,11 +491,11 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="osh_governance" class="anchor title">{{ lksgSubAreaNameMappings.osh }}</h4>
                   <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                 </div>
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="osh" :label="lksgSubAreaNameMappings.osh">
                     <YesNoComponent :name="'responsibilitiesForOccupationalSafety'" />
                   </FormKit>
@@ -472,11 +503,11 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="riskManagement" class="anchor title">{{ lksgSubAreaNameMappings.riskManagement }}</h4>
                   <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                 </div>
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="riskManagement" :label="lksgSubAreaNameMappings.riskManagement">
                     <YesNoComponent :name="'riskManagementSystem'" />
                   </FormKit>
@@ -484,11 +515,11 @@
               </div>
 
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="codeOfConduct" class="anchor title">{{ lksgSubAreaNameMappings.codeOfConduct }}</h4>
                   <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                 </div>
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="codeOfConduct" :label="lksgSubAreaNameMappings.codeOfConduct">
                     <YesNoComponent :name="'codeOfConduct'" />
                     <YesNoComponent :name="'codeOfConductRiskManagementTopics'" />
@@ -502,12 +533,12 @@
 
             <FormKit type="group" name="environmental" label="environmental">
               <div class="uploadFormSection grid">
-                <div id="topicLabel" class="col-3 topicLabel">
+                <div class="col-3 topicLabel">
                   <h4 id="waste" class="anchor title">{{ lksgSubAreaNameMappings.waste }}</h4>
                   <div class="p-badge badge-green"><span>ENVIRONMENTAL</span></div>
                 </div>
 
-                <div id="formFields" class="col-9 formFields">
+                <div class="col-9 formFields">
                   <FormKit type="group" name="waste" :label="lksgSubAreaNameMappings.socialAndEmployeeMatters">
                     <YesNoComponent :name="'mercuryAndMercuryWasteHandling'" />
                     <YesNoComponent :name="'mercuryAndMercuryWasteHandlingPolicy'" />
@@ -534,9 +565,19 @@
                     <YesNoComponent :name="'hazardousAndOtherWasteImport'" />
                   </FormKit>
                 </div>
-                <PrimeButton type="submit" label="SUBMIT" />
               </div>
             </FormKit>
+
+            <!--------- SUBMIT --------->
+
+            <div class="uploadFormSection grid">
+              <div class="col-3"> </div>
+
+              <div class="col-9">
+                <PrimeButton type="submit" label="SUBMIT" />
+              </div>
+            </div>
+
           </FormKit>
         </div>
 
@@ -581,7 +622,6 @@ import FailedUpload from "@/components/messages/FailedUpload.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
-import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -589,11 +629,14 @@ import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
+import Calendar from "primevue/calendar";
 import {
   lksgKpiInfoMappings,
   lksgKpiNameMappings,
   lksgSubAreaNameMappings,
 } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+import {getAllCountryNamesWithCodes, getCitiesForCountry} from "@/utils/CountryCodeConverter";
+import {dateFormatOptions} from "@/utils/DateFormatUtils";
 
 export default defineComponent({
   setup() {
@@ -602,14 +645,13 @@ export default defineComponent({
     };
   },
   name: "CreateLksgDataset",
-  components: { UploadFormHeader, FailedUpload, FormKit, SuccessUpload, Card, PrimeButton, YesNoComponent },
+  components: { UploadFormHeader, FailedUpload, FormKit, SuccessUpload, Card, PrimeButton, YesNoComponent, Calendar },
   directives: {
     tooltip: Tooltip,
   },
 
   data: () => ({
     isYourCompanyManufacturingCompany: "No",
-    newItemsTolistOfProductionSites: "",
     listOfProductionSites: [
       {
         id: 0,
@@ -617,166 +659,19 @@ export default defineComponent({
         listOfGoodsOrServicesString: "",
       },
     ],
+    allCountry: getAllCountryNamesWithCodes(),
+    selectedCountryCode: '',
+    citiesForCountry: [],
+    dataDate: '',
+    convertedDataDate: '',
+    Model: {},
+
     postEuTaxonomyDataForFinancialsProcessed: false,
     messageCount: 0,
-    Model: {},
-    formInputsModel: {
-      social: {
-        // general: {
-        //   dataDate: "2023-01-24",
-        //   lksgInScope: "Yes",
-        //   vatIdentificationNumber: "string",
-        //   numberOfEmployees: 0,
-        //   shareOfTemporaryWorkers: 0,
-        //   totalRevenue: 0,
-        //   totalRevenueCurrency: "string",
-        //   listOfProductionSites: [
-        //     {
-        //       name: "string",
-        //       isInHouseProductionOrIsContractProcessing: "Yes",
-        //       address: "string",
-        //       listOfGoodsOrServices: ["first", "second"],
-        //     },
-        //   ],
-        // },
-        // childLabour: {
-        //   employeeUnder18: "Yes",
-        //   employeeUnder15: "Yes",
-        //   employeeUnder18Apprentices: "Yes",
-        //   employmentUnderLocalMinimumAgePrevention: "Yes",
-        //   employmentUnderLocalMinimumAgePreventionEmploymentContracts: "Yes",
-        //   employmentUnderLocalMinimumAgePreventionJobDescription: "Yes",
-        //   employmentUnderLocalMinimumAgePreventionIdentityDocuments: "Yes",
-        //   employmentUnderLocalMinimumAgePreventionTraining: "Yes",
-        //   employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: "Yes",
-        // },
-        // grievanceMechanism: {
-        //   grievanceHandlingMechanism: "Yes",
-        //   grievanceHandlingMechanismUsedForReporting: "Yes",
-        //   legalProceedings: "Yes",
-        // },
-        // forcedLabourSlaveryAndDebtBondage: {
-        //   forcedLabourAndSlaveryPrevention: "Yes",
-        //   forcedLabourAndSlaveryPreventionEmploymentContracts: "Yes",
-        //   forcedLabourAndSlaveryPreventionIdentityDocuments: "Yes",
-        //   forcedLabourAndSlaveryPreventionFreeMovement: "Yes",
-        //   forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: "Yes",
-        //   forcedLabourAndSlaveryPreventionTraining: "Yes",
-        //   documentedWorkingHoursAndWages: "Yes",
-        //   adequateLivingWage: "Yes",
-        //   regularWagesProcessFlow: "Yes",
-        //   fixedHourlyWages: "Yes",
-        // },
-        // osh: {
-        //   oshMonitoring: "Yes",
-        //   oshPolicy: "Yes",
-        //   oshPolicyPersonalProtectiveEquipment: "Yes",
-        //   oshPolicyMachineSafety: "Yes",
-        //   oshPolicyDisasterBehaviouralResponse: "Yes",
-        //   oshPolicyAccidentsBehaviouralResponse: "Yes",
-        //   oshPolicyWorkplaceErgonomics: "Yes",
-        //   oshPolicyHandlingChemicalsAndOtherHazardousSubstances: "Yes",
-        //   oshPolicyFireProtection: "Yes",
-        //   oshPolicyWorkingHours: "Yes",
-        //   oshPolicyTrainingAddressed: "Yes",
-        //   oshPolicyTraining: "Yes",
-        //   oshManagementSystem: "Yes",
-        //   oshManagementSystemInternationalCertification: "Yes",
-        //   oshManagementSystemNationalCertification: "Yes",
-        //   workplaceAccidentsUnder10: "Yes",
-        //   oshTraining: "Yes",
-        // },
-        // freedomOfAssociation: {
-        //   freedomOfAssociation: "Yes",
-        //   discriminationForTradeUnionMembers: "Yes",
-        //   freedomOfOperationForTradeUnion: "Yes",
-        //   freedomOfAssociationTraining: "Yes",
-        //   worksCouncil: "Yes",
-        // },
-        // humanRights: {
-        //   diversityAndInclusionRole: "Yes",
-        //   preventionOfMistreatments: "Yes",
-        //   equalOpportunitiesOfficer: "Yes",
-        //   riskOfHarmfulPollution: "Yes",
-        //   unlawfulEvictionAndTakingOfLand: "Yes",
-        //   useOfPrivatePublicSecurityForces: "Yes",
-        //   useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: "Yes",
-        // },
-        // evidenceCertificatesAndAttestations: {
-        //   iso26000: "Yes",
-        //   sa8000Certification: "Yes",
-        //   smetaSocialAuditConcept: "Yes",
-        //   betterWorkProgramCertificate: "Yes",
-        //   iso45001Certification: "Yes",
-        //   iso14000Certification: "Yes",
-        //   emasCertification: "Yes",
-        //   iso37001Certification: "Yes",
-        //   iso37301Certification: "Yes",
-        //   riskManagementSystemCertification: "Yes",
-        //   amforiBsciAuditReport: "Yes",
-        //   initiativeClauseSocialCertification: "Yes",
-        //   responsibleBusinessAssociationCertification: "Yes",
-        //   fairLabourAssociationCertification: "Yes",
-        //   fairWorkingConditionsPolicy: "Yes",
-        //   fairAndEthicalRecruitmentPolicy: "Yes",
-        //   equalOpportunitiesAndNondiscriminationPolicy: "Yes",
-        //   healthAndSafetyPolicy: "Yes",
-        //   complaintsAndGrievancesPolicy: "Yes",
-        //   forcedLabourPolicy: "Yes",
-        //   childLabourPolicy: "Yes",
-        //   environmentalImpactPolicy: "Yes",
-        //   supplierCodeOfConduct: "Yes",
-        // },
-      },
-      governance: {
-        // socialAndEmployeeMatters: {
-        //   responsibilitiesForFairWorkingConditions: "Yes",
-        // },
-        // environment: {
-        //   responsibilitiesForTheEnvironment: "Yes",
-        // },
-        // osh: {
-        //   responsibilitiesForOccupationalSafety: "Yes",
-        // },
-        // riskManagement: {
-        //   riskManagementSystem: "Yes",
-        // },
-        // codeOfConduct: {
-        //   codeOfConduct: "Yes",
-        //   codeOfConductRiskManagementTopics: "Yes",
-        //   codeOfConductTraining: "Yes",
-        // },
-      },
-      environmental: {
-        waste: {
-          mercuryAndMercuryWasteHandling: "Yes",
-          mercuryAndMercuryWasteHandlingPolicy: "Yes",
-          chemicalHandling: "Yes",
-          environmentalManagementSystem: "Yes",
-          environmentalManagementSystemInternationalCertification: "Yes",
-          environmentalManagementSystemNationalCertification: "Yes",
-          legalRestrictedWaste: "Yes",
-          legalRestrictedWasteProcesses: "Yes",
-          mercuryAddedProductsHandling: "Yes",
-          mercuryAddedProductsHandlingRiskOfExposure: "Yes",
-          mercuryAddedProductsHandlingRiskOfDisposal: "Yes",
-          mercuryAndMercuryCompoundsProductionAndUse: "Yes",
-          mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: "Yes",
-          persistentOrganicPollutantsProductionAndUse: "Yes",
-          persistentOrganicPollutantsProductionAndUseRiskOfExposure: "Yes",
-          persistentOrganicPollutantsProductionAndUseRiskOfDisposal: "Yes",
-          persistentOrganicPollutantsProductionAndUseTransboundaryMovements: "Yes",
-          persistentOrganicPollutantsProductionAndUseRiskForImportingState: "Yes",
-          hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein: "Yes",
-          hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein: "Yes",
-          hazardousWasteDisposal: "Yes",
-          hazardousWasteDisposalRiskOfImport: "Yes",
-          hazardousAndOtherWasteImport: "Yes",
-        },
-      },
-    },
+
     postEuTaxonomyDataForFinancialsResponse: null,
     humanizeString: humanizeString,
+
     lksgKpiInfoMappings,
     lksgKpiNameMappings,
     lksgSubAreaNameMappings,
@@ -785,6 +680,11 @@ export default defineComponent({
     companyID: {
       type: String,
     },
+  },
+  watch: {
+    dataDate: function(newValue: Date) {
+      this.convertedDataDate = `${newValue.getFullYear()}-${newValue.getMonth() + 1}-${("0" + newValue.getDate()).slice(-2)}`
+    }
   },
   methods: {
     async postEuTaxonomyDataForFinancials(): Promise<void> {
@@ -806,7 +706,40 @@ export default defineComponent({
         this.postEuTaxonomyDataForFinancialsProcessed = true;
       }
     },
+    checkCustomInputs(node) {
+      node.walk(child => {
+
+        // Check if this child has errors
+        if ((child.ledger.value('blocking') || child.ledger.value('errors')) && child.type !== 'group') {
+          console.log('JEST', child.props.id)
+          // We found an input with validation errors
+          document.getElementById(child.props.id).scrollIntoView({behavior: "smooth", block: "end"})
+          // Stop searching
+          return false
+        }
+      }, true)
+
+
+
+
+
+
+
+
+      // console.log("event", node);
+      // const form = document.getElementById("createLkSGForm")
+      // const firstInvalid = form?.querySelector("li[data-message-type='validation']")
+      // console.log("firstInvalid", firstInvalid);
+      // if(firstInvalid) {
+      //   event.preventDefault()
+      //   firstInvalid.scrollIntoView({
+      //     behavior: "smooth", block: "center", inline: "nearest"
+      //   })
+      // }
+
+    },
     postLkSGData() {
+
       console.log("SUBMIT", this.Model);
     },
     addNewProductionSite() {
@@ -832,6 +765,9 @@ export default defineComponent({
         index
       ].listOfGoodsOrServices.filter((el) => el !== item);
     },
+    async getCities() {
+      this.citiesForCountry = await getCitiesForCountry(this.selectedCountryCode);
+    },
   },
 });
 </script>
@@ -843,3 +779,167 @@ export default defineComponent({
   max-width: 5em;
 }
 </style>
+
+
+
+
+
+
+<!--
+
+// formInputsModel: {
+//   social: {
+// general: {
+//   dataDate: "2023-01-24",
+//   lksgInScope: "Yes",
+//   vatIdentificationNumber: "string",
+//   numberOfEmployees: 0,
+//   shareOfTemporaryWorkers: 0,
+//   totalRevenue: 0,
+//   totalRevenueCurrency: "string",
+//   listOfProductionSites: [
+//     {
+//       name: "string",
+//       isInHouseProductionOrIsContractProcessing: "Yes",
+//       address: "string",
+//       listOfGoodsOrServices: ["first", "second"],
+//     },
+//   ],
+// },
+// childLabour: {
+//   employeeUnder18: "Yes",
+//   employeeUnder15: "Yes",
+//   employeeUnder18Apprentices: "Yes",
+//   employmentUnderLocalMinimumAgePrevention: "Yes",
+//   employmentUnderLocalMinimumAgePreventionEmploymentContracts: "Yes",
+//   employmentUnderLocalMinimumAgePreventionJobDescription: "Yes",
+//   employmentUnderLocalMinimumAgePreventionIdentityDocuments: "Yes",
+//   employmentUnderLocalMinimumAgePreventionTraining: "Yes",
+//   employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: "Yes",
+// },
+// grievanceMechanism: {
+//   grievanceHandlingMechanism: "Yes",
+//   grievanceHandlingMechanismUsedForReporting: "Yes",
+//   legalProceedings: "Yes",
+// },
+// forcedLabourSlaveryAndDebtBondage: {
+//   forcedLabourAndSlaveryPrevention: "Yes",
+//   forcedLabourAndSlaveryPreventionEmploymentContracts: "Yes",
+//   forcedLabourAndSlaveryPreventionIdentityDocuments: "Yes",
+//   forcedLabourAndSlaveryPreventionFreeMovement: "Yes",
+//   forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: "Yes",
+//   forcedLabourAndSlaveryPreventionTraining: "Yes",
+//   documentedWorkingHoursAndWages: "Yes",
+//   adequateLivingWage: "Yes",
+//   regularWagesProcessFlow: "Yes",
+//   fixedHourlyWages: "Yes",
+// },
+// osh: {
+//   oshMonitoring: "Yes",
+//   oshPolicy: "Yes",
+//   oshPolicyPersonalProtectiveEquipment: "Yes",
+//   oshPolicyMachineSafety: "Yes",
+//   oshPolicyDisasterBehaviouralResponse: "Yes",
+//   oshPolicyAccidentsBehaviouralResponse: "Yes",
+//   oshPolicyWorkplaceErgonomics: "Yes",
+//   oshPolicyHandlingChemicalsAndOtherHazardousSubstances: "Yes",
+//   oshPolicyFireProtection: "Yes",
+//   oshPolicyWorkingHours: "Yes",
+//   oshPolicyTrainingAddressed: "Yes",
+//   oshPolicyTraining: "Yes",
+//   oshManagementSystem: "Yes",
+//   oshManagementSystemInternationalCertification: "Yes",
+//   oshManagementSystemNationalCertification: "Yes",
+//   workplaceAccidentsUnder10: "Yes",
+//   oshTraining: "Yes",
+// },
+// freedomOfAssociation: {
+//   freedomOfAssociation: "Yes",
+//   discriminationForTradeUnionMembers: "Yes",
+//   freedomOfOperationForTradeUnion: "Yes",
+//   freedomOfAssociationTraining: "Yes",
+//   worksCouncil: "Yes",
+// },
+// humanRights: {
+//   diversityAndInclusionRole: "Yes",
+//   preventionOfMistreatments: "Yes",
+//   equalOpportunitiesOfficer: "Yes",
+//   riskOfHarmfulPollution: "Yes",
+//   unlawfulEvictionAndTakingOfLand: "Yes",
+//   useOfPrivatePublicSecurityForces: "Yes",
+//   useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: "Yes",
+// },
+// evidenceCertificatesAndAttestations: {
+//   iso26000: "Yes",
+//   sa8000Certification: "Yes",
+//   smetaSocialAuditConcept: "Yes",
+//   betterWorkProgramCertificate: "Yes",
+//   iso45001Certification: "Yes",
+//   iso14000Certification: "Yes",
+//   emasCertification: "Yes",
+//   iso37001Certification: "Yes",
+//   iso37301Certification: "Yes",
+//   riskManagementSystemCertification: "Yes",
+//   amforiBsciAuditReport: "Yes",
+//   initiativeClauseSocialCertification: "Yes",
+//   responsibleBusinessAssociationCertification: "Yes",
+//   fairLabourAssociationCertification: "Yes",
+//   fairWorkingConditionsPolicy: "Yes",
+//   fairAndEthicalRecruitmentPolicy: "Yes",
+//   equalOpportunitiesAndNondiscriminationPolicy: "Yes",
+//   healthAndSafetyPolicy: "Yes",
+//   complaintsAndGrievancesPolicy: "Yes",
+//   forcedLabourPolicy: "Yes",
+//   childLabourPolicy: "Yes",
+//   environmentalImpactPolicy: "Yes",
+//   supplierCodeOfConduct: "Yes",
+// },
+// },
+// governance: {
+// socialAndEmployeeMatters: {
+//   responsibilitiesForFairWorkingConditions: "Yes",
+// },
+// environment: {
+//   responsibilitiesForTheEnvironment: "Yes",
+// },
+// osh: {
+//   responsibilitiesForOccupationalSafety: "Yes",
+// },
+// riskManagement: {
+//   riskManagementSystem: "Yes",
+// },
+// codeOfConduct: {
+//   codeOfConduct: "Yes",
+//   codeOfConductRiskManagementTopics: "Yes",
+//   codeOfConductTraining: "Yes",
+// },
+// },
+// environmental: {
+//   waste: {
+//     mercuryAndMercuryWasteHandling: "Yes",
+//     mercuryAndMercuryWasteHandlingPolicy: "Yes",
+//     chemicalHandling: "Yes",
+//     environmentalManagementSystem: "Yes",
+//     environmentalManagementSystemInternationalCertification: "Yes",
+//     environmentalManagementSystemNationalCertification: "Yes",
+//     legalRestrictedWaste: "Yes",
+//     legalRestrictedWasteProcesses: "Yes",
+//     mercuryAddedProductsHandling: "Yes",
+//     mercuryAddedProductsHandlingRiskOfExposure: "Yes",
+//     mercuryAddedProductsHandlingRiskOfDisposal: "Yes",
+//     mercuryAndMercuryCompoundsProductionAndUse: "Yes",
+//     mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: "Yes",
+//     persistentOrganicPollutantsProductionAndUse: "Yes",
+//     persistentOrganicPollutantsProductionAndUseRiskOfExposure: "Yes",
+//     persistentOrganicPollutantsProductionAndUseRiskOfDisposal: "Yes",
+//     persistentOrganicPollutantsProductionAndUseTransboundaryMovements: "Yes",
+//     persistentOrganicPollutantsProductionAndUseRiskForImportingState: "Yes",
+//     hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein: "Yes",
+//     hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein: "Yes",
+//     hazardousWasteDisposal: "Yes",
+//     hazardousWasteDisposalRiskOfImport: "Yes",
+//     hazardousAndOtherWasteImport: "Yes",
+//   },
+// },
+// },
+-->
