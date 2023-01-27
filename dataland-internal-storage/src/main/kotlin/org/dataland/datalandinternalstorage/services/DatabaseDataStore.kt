@@ -5,9 +5,11 @@ import org.dataland.datalandinternalstorage.models.StorageHashMap
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
+import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.context.annotation.ComponentScan
 import java.rmi.ServerException
 
@@ -16,11 +18,12 @@ import java.rmi.ServerException
  */
 @ComponentScan(basePackages = ["org.dataland"])
 @Component
-@RabbitListener(queues = ["storage_queue"])
+//@RabbitListener(queues = ["storage_queue"])
 class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired var dataInformationHashMap : StorageHashMap,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
+    val rabbitTemplate: RabbitTemplate
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     /**
@@ -28,10 +31,12 @@ class DatabaseDataStore(
      * @param message a message object retrieved from the message queue
      * @return id associated with the stored data
      */
-   // @RabbitHandler
+    //@RabbitHandler
+    @RabbitListener(queues = ["storage_queue"])
     fun insertDataSet(message : Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
-        val correlationId = message.messageProperties.messageId
+        //val correlationId = message.messageProperties. messageId
+        val correlationId = "234"
         val data = dataInformationHashMap.map[dataId]
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         try {dataItemRepository.save(DataItem(dataId, data!!))
