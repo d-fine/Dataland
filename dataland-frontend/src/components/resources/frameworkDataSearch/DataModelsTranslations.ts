@@ -75,6 +75,7 @@ export const lksgKpis = {
   healthAndSafetyPolicy: "Health And Safety Policy",
   complaintsAndGrievancesPolicy: "Complaints And Grievances Policy",
   listOfGoodsOrServices: "List Of Goods Or Services",
+  productionSiteName: "Production Site",
   addressesOfProductionSites: "Addresses Of Production Sites",
   isInHouseProductionOrIsContractProcessing: "Is In House Production Or Is Contract Processing",
   listOfProductionSites: "List Of Production Sites",
@@ -129,12 +130,14 @@ export const lksgKpis = {
   employeeUnder18: "Employee Under 18",
   codeOfConductRiskManagementTopics: "Code Of Conduct Risk Management Topics",
   responsibilitiesForTheEnvironment: "Responsibilities For The Environment",
+  inHouseProductionOrContractProcessing: "Is in-house production or is Contract Processing",
 };
 
 export const lksgQuestions = {
   dataDate: "The date until for which the information collected is valid",
   lksgInScope: "Does your company fall within the scope of the LkSG according to §1 LkSG?",
   vatIdentificationNumber: "Value-added tax identification number",
+  companyLegalForm: "Company Legal Form",
   numberOfEmployees: "Total number of employees (including temporary workers)",
   shareOfTemporaryWorkers: "Share of temporary workers vs total number of employees in the company",
   totalRevenue:
@@ -331,12 +334,14 @@ export const lksgQuestions = {
     "Does your company have a Environmental Impact Policy? If yes, please provide us with the policy.",
   supplierCodeOfConduct:
     "Does your company have a Supplier Code Of Conduct? If yes, please provide us with the Supplier Code Of Conduct.",
+  productionSiteName: "Production Site Name",
   listOfProductionSites:
     "Is your company a manufacturing company? If yes, please provide the names of the production sites.",
   isInHouseProductionOrIsContractProcessing: "Is the production in-house or is the production done via subcontracting?",
   addressesOfProductionSites:
     "Addresses of the production sites (format: street, house number, zip code, city, country)",
   listOfGoodsOrServices: "Which goods/services are manufactured or provided at the (production) sites?",
+  inHouseProductionOrContractProcessing: "Is in-house production or is Contract Processing",
 };
 
 export const listOfProductionSitesConvertedNames = {

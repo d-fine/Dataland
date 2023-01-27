@@ -15,438 +15,528 @@
             @submit="postLkSGData"
             #default="{ state: { valid } }"
           >
-            <div class="uploadFormSection grid">
-              <div id="topicLabel" class="col-3 topicLabel">
-                <h4 id="general" class="anchor title">General</h4>
-                <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-                <p>Please input all relevant basic information about the dataset</p>
-              </div>
-
-              <div id="formFields" class="col-9 formFields">
-                <FormKit type="group" name="general" label="general">
-                  <div class="form-field-label">
-                    <h5>Date</h5>
-                    <em
-                      class="material-icons info-icon"
-                      aria-hidden="true"
-                      title="Date"
-                      v-tooltip.top="{
-                        value: lksgQuestions['dataDate'] ? lksgQuestions['dataDate'] : '',
-                      }"
-                      >info</em
-                    >
-                  </div>
-                  <FormKit
-                    type="date"
-                    help="Enter date"
-                    validation="required"
-                    validation-visibility="live"
-                  />
-                  <div class="form-field">
-                  <div class="form-field-label">
-                    <h5>LKSG in Scope</h5>
-                    <em
-                      class="material-icons info-icon"
-                      aria-hidden="true"
-                      title="lksgInScope"
-                      v-tooltip.top="{
-                        value: lksgQuestions['lksgInScope'] ? lksgQuestions['lksgInScope'] : '',
-                      }"
-                      >info</em
-                    >
-                  </div>
-                  <FormKit
-                    type="radio"
-                    name="lksgInScope"
-                    :options="['Yes', 'No']"
-                    :outer-class="{
-                      'yes-no-radio': true,
-                    }"
-                    :inner-class="{
-                      'formkit-inner': false,
-                    }"
-                    :input-class="{
-                      'formkit-input': false,
-                      'p-radiobutton': true,
-                    }"
-                  />
-                  </div>
-                  <div class="form-field-label">
-                    <h5>Company Legal Form</h5>
-                    <em
-                      class="material-icons info-icon"
-                      aria-hidden="true"
-                      title="companyLegalForm"
-                      v-tooltip.top="{
-                        value: lksgQuestions['companyLegalForm'] ? lksgQuestions['companyLegalForm'] : '',
-                      }"
-                      >info</em
-                    >
-                  </div>
-                  <FormKit type="text" name="companyLegalForm" validation="required" />
-                  <div class="form-field-label">
-                    <h5>VAT Identification Number</h5>
-                    <em
-                      class="material-icons info-icon"
-                      aria-hidden="true"
-                      title="VATidentificationNumber"
-                      v-tooltip.top="{
-                        value: lksgQuestions['VATidentificationNumber'] ? lksgQuestions['VATidentificationNumber'] : '',
-                      }"
-                      >info</em
-                    >
-                  </div>
-                  <FormKit type="number" name="VATidentificationNumber" validation="required|number" step="1" />
-                  <div class="form-field-label">
-                    <h5>Number Of Employees</h5>
-                    <em
-                      class="material-icons info-icon"
-                      aria-hidden="true"
-                      title="numberOfEmployees"
-                      v-tooltip.top="{
-                        value: lksgQuestions['numberOfEmployees'] ? lksgQuestions['numberOfEmployees'] : '',
-                      }"
-                      >info</em
-                    >
-                  </div>
-                  <FormKit
-                    type="number"
-                    name="numberOfEmployees"
-                    placeholder="Value"
-                    validation="required|number|between:0,100"
-                    step="1"
-                    :inner-class="{
-                      short: true,
-                    }"
-                  />
-                  <div class="form-field-label">
-                    <h5>Share Of Temporary Workers</h5>
-                    <em
-                      class="material-icons info-icon"
-                      aria-hidden="true"
-                      title="shareOfTemporaryWorkers"
-                      v-tooltip.top="{
-                        value: lksgQuestions['shareOfTemporaryWorkers'] ? lksgQuestions['shareOfTemporaryWorkers'] : '',
-                      }"
-                      >info</em
-                    >
-                  </div>
-                  <FormKit
-                    type="number"
-                    name="shareOfTemporaryWorkers"
-                    placeholder="Value %"
-                    validation="required|number|between:0,100"
-                    step="1"
-                    :inner-class="{
-                      short: true,
-                    }"
-                  />
-                  <div class="form-field-label">
-                    <h5>Total Revenue</h5>
-                    <em
-                      class="material-icons info-icon"
-                      aria-hidden="true"
-                      title="totalRevenue"
-                      v-tooltip.top="{
-                        value: lksgQuestions['totalRevenue'] ? lksgQuestions['totalRevenue'] : '',
-                      }"
-                      >info</em
-                    >
-                  </div>
-                  <div class="next-to-each-other">
-                    <FormKit
-                      type="number"
-                      name="totalRevenue"
-                      placeholder="Value"
-                      validation="required|number"
-                      step="1"
-                    />
-                    <FormKit type="select" name="unit" placeholder="Unit" :options="['CHF', 'USD']" />
-                  </div>
-                  <div class="form-field-label">
-                    <h5>Total Revenue Currency</h5>
-                    <em
-                      class="material-icons info-icon"
-                      aria-hidden="true"
-                      title="totalRevenueCurrency"
-                      v-tooltip.top="{
-                        value: lksgQuestions['totalRevenueCurrency'] ? lksgQuestions['totalRevenueCurrency'] : '',
-                      }"
-                      >info</em
-                    >
-                  </div>
-                  <FormKit
-                    type="text"
-                    name="totalRevenueCurrency"
-                    placeholder="Currency"
-                    validation="required"
-                    :inner-class="{
-                      medium: true,
-                    }"
-                  />
-
-
-<!-- Is your company a manufacturing company?  -->
-                <div class="form-field">
-                  <div class="form-field-label">
-                    <h5>Is your company a manufacturing company?</h5>
-                    <em
-                        class="material-icons info-icon"
-                        aria-hidden="true"
-                        title="Is Your company a manufacturing company?"
-                        v-tooltip.top="{
-                        value: lksgQuestions['listOfProductionSites'] ? lksgQuestions['listOfProductionSites'] : '',
-                      }"
-                    >info</em
-                    >
-                  </div>
-                  <FormKit
-                      type="radio"
-                      name="IsYourCompanyManufacturingCompany"
-                      :options="['Yes', 'No']"
-                      v-model="isYourCompanyManufacturingCompany"
-                      :outer-class="{
-                      'yes-no-radio': true,
-                    }"
-                      :inner-class="{
-                      'formkit-inner': false,
-                    }"
-                      :input-class="{
-                      'formkit-input': false,
-                      'p-radiobutton': true,
-                    }"
-                  />
+            <FormKit type="group" name="social" label="social">
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="general" class="anchor title">{{ impactTopicNames._general }}</h4>
+                  <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
+                  <p>Please input all relevant basic information about the dataset</p>
                 </div>
 
-                <FormKit type="list" :ignore="false" name="listOfProductionSites" label="listOfProductionSites">
-
-                    <FormKit type="group"
-                             :key="item.id"
-                             v-for="(item, index) in listOfProductionSites"
-                              >
-                  <div
-                      class="productionSiteSection"
-                      :class="isYourCompanyManufacturingCompany === 'No' ? 'p-disabled' : ''"
-                  >
-
-                    <em @click="removeItemFromlistOfProductionSites(item.id)" class="material-icons close-section">close</em>
-
-                    <!-- Production Site  -->
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="general" :label="impactTopicNames._general">
                     <div class="form-field">
-                      <div class="form-field-label">
-                        <p>{{item.id}}</p>
-                        <h5>Production Site</h5>
-                        <em
-                            class="material-icons info-icon"
-                            aria-hidden="true"
-                            title="productionSite"
-                            placeholder="Site name"
-                            v-tooltip.top="{
-                              value: lksgQuestions['productionSite'] ? lksgQuestions['productionSite'] : '',
-                            }"
-                        >info</em
-                        >
-                      </div>
-                      <FormKit type="text" name="productionSitename" validation="required" />
+                      <UploadFormHeader :name="lksgKpis.dataDate" :explanation="lksgQuestions.dataDate" />
+                      <FormKit type="date" help="Enter date" />
                     </div>
 
-                    <!-- Is in-house production or is Contract Processing  -->
                     <div class="form-field">
-                      <div class="form-field-label">
-                        <h5>Is in-house production or is Contract Processing</h5>
-                        <em
-                            class="material-icons info-icon"
-                            aria-hidden="true"
-                            title="inHouseProductionOrContractProcessing"
-                            v-tooltip.top="{
-                        value: lksgQuestions['inHouseProductionOrContractProcessing'] ? lksgQuestions['inHouseProductionOrContractProcessing'] : '',
-                      }"
-                        >info</em
-                        >
-                      </div>
+                      <UploadFormHeader :name="lksgKpis.lksgInScope" :explanation="lksgQuestions.lksgInScope" />
                       <FormKit
-                          type="radio"
-                          name="inHouseProductionOrContractProcessing"
-                          :options="['In-house Production', 'Contract Processing']"
-                          :outer-class="{
-                      'yes-no-radio': true,
-                    }"
-                          :inner-class="{
-                      'formkit-inner': false,
-                    }"
-                          :input-class="{
-                      'formkit-input': false,
-                      'p-radiobutton': true,
-                    }"
+                        type="radio"
+                        name="lksgInScope"
+                        :options="['Yes', 'No']"
+                        :outer-class="{
+                          'yes-no-radio': true,
+                        }"
+                        :inner-class="{
+                          'formkit-inner': false,
+                        }"
+                        :input-class="{
+                          'formkit-input': false,
+                          'p-radiobutton': true,
+                        }"
                       />
                     </div>
 
-                    <!-- List Of Goods Or Services  -->
                     <div class="form-field">
-                      <div class="form-field-label">
-                        <h5>Addresses Of Production Sites</h5>
-                        <em
-                            class="material-icons info-icon"
-                            aria-hidden="true"
-                            title="Addresses Of Production Sites"
-                            v-tooltip.top="{
-                          value: lksgQuestions['addressesOfProductionSites'] ? lksgQuestions['addressesOfProductionSites'] : '',
+                      <UploadFormHeader
+                        :name="lksgKpis.companyLegalForm"
+                        :explanation="lksgQuestions.companyLegalForm"
+                      />
+                      <FormKit type="text" name="companyLegalForm" />
+                    </div>
+
+                    <div class="form-field">
+                      <UploadFormHeader
+                        :name="lksgKpis.vatIdentificationNumber"
+                        :explanation="lksgQuestions.vatIdentificationNumber"
+                      />
+                      <FormKit type="number" name="VATidentificationNumber" step="1" />
+                    </div>
+
+                    <div class="form-field">
+                      <UploadFormHeader
+                        :name="lksgKpis.numberOfEmployees"
+                        :explanation="lksgQuestions.numberOfEmployees"
+                      />
+                      <FormKit
+                        type="number"
+                        name="numberOfEmployees"
+                        placeholder="Value"
+                        step="1"
+                        :inner-class="{ short: true }"
+                      />
+                    </div>
+
+                    <div class="form-field">
+                      <UploadFormHeader
+                        :name="lksgKpis.shareOfTemporaryWorkers"
+                        :explanation="lksgQuestions.shareOfTemporaryWorkers"
+                      />
+                      <FormKit
+                        type="number"
+                        name="shareOfTemporaryWorkers"
+                        placeholder="Value %"
+                        step="1"
+                        :inner-class="{
+                          short: true,
                         }"
-                        >info</em
-                        >
-                      </div>
-                      <FormKit type="text" name="StreetHouseNumber" placeholder="Street, House number" validation="required" />
+                      />
+                    </div>
+
+                    <div class="form-field">
+                      <UploadFormHeader :name="lksgKpis.totalRevenue" :explanation="lksgQuestions.totalRevenue" />
                       <div class="next-to-each-other">
-                        <FormKit type="select" name="Country" placeholder="Country" :options="['CHF', 'USD']" />
-                        <FormKit type="select" name="City" placeholder="City" :options="['CHF', 'USD']" />
-                        <FormKit type="text" name="Postcode" placeholder="Postcode" validation="required" />
+                        <FormKit type="number" name="totalRevenue" placeholder="Value" step="1" />
+                        <FormKit type="select" name="unit" placeholder="Unit" :options="['CHF', 'USD']" />
                       </div>
                     </div>
 
-                    <!-- List Of Goods Or Services  -->
                     <div class="form-field">
-                      <div class="form-field-label">
-                        <h5>List Of Goods Or Services</h5>
-                        <em
-                            class="material-icons info-icon"
-                            aria-hidden="true"
-                            title="listOfGoodsOrServices"
-                            v-tooltip.top="{
-                          value: lksgQuestions['listOfGoodsOrServices'] ? lksgQuestions['listOfGoodsOrServices'] : '',
-                        }"
-                        >info</em
-                        >
-                        <PrimeButton :disabled="newItemsTolistOfProductionSites === ''" @click="addNewItemsTolistOfProductionSites(index)" label="Add" class="p-button-text" icon="pi pi-plus"></PrimeButton>
-                      </div>
-                      <FormKit
-                          type="text"
-                          v-model="newItemsTolistOfProductionSites"
-                          name="listOfGoodsOrServices"
-                          placeholder="Add comma (,) for more than one value"
+                      <UploadFormHeader
+                        :name="lksgKpis.totalRevenueCurrency"
+                        :explanation="lksgQuestions.totalRevenueCurrency"
                       />
-                      <div class="">
-                    <span
-                        class="form-list-item"
-                        :key="element"
-                        v-for="element in item.listOfGoodsOrServices"
-                    >
-                      {{ element }} <em @click="removeItemFromlistOfGoodsOrServices(index, element)" class="material-icons">close</em>
-                    </span>
-                      </div>
-
-
+                      <FormKit
+                        type="text"
+                        name="totalRevenueCurrency"
+                        placeholder="Currency"
+                        :inner-class="{
+                          medium: true,
+                        }"
+                      />
                     </div>
-                  </div>
+
+                    <div class="form-field">
+                      <UploadFormHeader
+                        :name="'Is your company a manufacturing company?'"
+                        :explanation="lksgQuestions.listOfProductionSites"
+                      />
+                      <FormKit
+                        type="radio"
+                        name="IsYourCompanyManufacturingCompany"
+                        :options="['Yes', 'No']"
+                        v-model="isYourCompanyManufacturingCompany"
+                        :outer-class="{
+                          'yes-no-radio': true,
+                        }"
+                        :inner-class="{
+                          'formkit-inner': false,
+                        }"
+                        :input-class="{
+                          'formkit-input': false,
+                          'p-radiobutton': true,
+                        }"
+                      />
+                    </div>
+
+                    <FormKit type="list" name="listOfProductionSites" label="listOfProductionSites">
+                      <FormKit type="group" v-for="(item, index) in listOfProductionSites" :key="item.id">
+                        <div
+                          class="productionSiteSection"
+                          :class="isYourCompanyManufacturingCompany === 'No' ? 'p-disabled' : ''"
+                        >
+                          <em @click="removeItemFromlistOfProductionSites(item.id)" class="material-icons close-section"
+                            >close</em
+                          >
+
+                          <div class="form-field">
+                            <UploadFormHeader
+                              :name="lksgKpis.productionSiteName"
+                              :explanation="lksgQuestions.productionSiteName"
+                            />
+                            <FormKit type="text" name="productionSiteName" />
+                          </div>
+
+                          <!-- Is in-house production or is Contract Processing  -->
+                          <div class="form-field">
+                            <UploadFormHeader
+                              :name="lksgKpis.inHouseProductionOrContractProcessing"
+                              :explanation="lksgQuestions.inHouseProductionOrContractProcessing"
+                            />
+                            <FormKit
+                              type="radio"
+                              name="inHouseProductionOrContractProcessing"
+                              :options="['In-house Production', 'Contract Processing']"
+                              :outer-class="{
+                                'yes-no-radio': true,
+                              }"
+                              :inner-class="{
+                                'formkit-inner': false,
+                              }"
+                              :input-class="{
+                                'formkit-input': false,
+                                'p-radiobutton': true,
+                              }"
+                            />
+                          </div>
+
+                          <!-- Addresses Of Production Sites  -->
+                          <div class="form-field">
+                            <UploadFormHeader
+                              :name="lksgKpis.addressesOfProductionSites"
+                              :explanation="lksgQuestions.addressesOfProductionSites"
+                            />
+
+                            <FormKit type="text" name="StreetHouseNumber" placeholder="Street, House number" />
+                            <div class="next-to-each-other">
+                              <FormKit type="select" name="Country" placeholder="Country" :options="['CHF', 'USD']" />
+                              <FormKit type="select" name="City" placeholder="City" :options="['CHF', 'USD']" />
+                              <FormKit type="text" name="Postcode" placeholder="Postcode" />
+                            </div>
+                          </div>
+
+                          <!-- List Of Goods Or Services  -->
+                          <div class="form-field">
+                            <div class="form-field-label">
+                              <h5>List Of Goods Or Services</h5>
+                              <em
+                                class="material-icons info-icon"
+                                aria-hidden="true"
+                                title="listOfGoodsOrServices"
+                                v-tooltip.top="{
+                                  value: lksgQuestions['listOfGoodsOrServices']
+                                    ? lksgQuestions['listOfGoodsOrServices']
+                                    : '',
+                                }"
+                                >info</em
+                              >
+                              <PrimeButton
+                                :disabled="listOfProductionSites[index].listOfGoodsOrServicesString === ''"
+                                @click="addNewItemsTolistOfProductionSites(index)"
+                                label="Add"
+                                class="p-button-text"
+                                icon="pi pi-plus"
+                              ></PrimeButton>
+                            </div>
+                            <FormKit
+                              type="text"
+                              :ignore="true"
+                              v-model="listOfProductionSites[index].listOfGoodsOrServicesString"
+                              placeholder="Add comma (,) for more than one value"
+                            />
+                            <FormKit
+                              v-model="listOfProductionSites[index].listOfGoodsOrServices"
+                              type="list"
+                              name="listOfGoodsOrServices"
+                            />
+                            <div class="">
+                              <span class="form-list-item" :key="element" v-for="element in item.listOfGoodsOrServices">
+                                {{ element }}
+                                <em @click="removeItemFromlistOfGoodsOrServices(index, element)" class="material-icons"
+                                  >close</em
+                                >
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </FormKit>
+                      <PrimeButton
+                        label="ADD NEW Production Site"
+                        class="p-button-text"
+                        :disabled="isYourCompanyManufacturingCompany === 'No'"
+                        icon="pi pi-plus"
+                        @click="addNewProductionSite"
+                      />
                     </FormKit>
-                  <PrimeButton label="ADD NEW Production Site"
-                               class="p-button-text"
-                               :disabled="isYourCompanyManufacturingCompany === 'No'"
-                               icon="pi pi-plus"
-                               @click="addNewProductionSite"/>
-                      <!----------->
-                </FormKit>
-
-
-                </FormKit>
-
-                <FormKit
-                    type="submit"
-                    label="Checkout my label"
-                    help="You can use the label prop."
-                />
-
-
-
-
-
-
-
-
+                  </FormKit>
+                </div>
               </div>
-            </div>
-            ddddddddddddddd
-<!--            <div class="uploadFormSection grid">-->
-<!--              <div id="topicLabel" class="col-3 topicLabel">-->
-<!--                <h4 id="osh" class="anchor title">General</h4>-->
-<!--                <div class="p-badge badge-yellow"><span>OSH</span></div>-->
-<!--                <p>Please input all relevant basic information about the dataset</p>-->
-<!--              </div>-->
 
-<!--              <div id="formFields" class="col-9 formFields">-->
-<!--                <FormKit-->
-<!--                  type="date"-->
-<!--                  value="2011-01-01"-->
-<!--                  label="Birthday"-->
-<!--                  help="Enter your birth day"-->
-<!--                  validation="required|date_before:2010-01-01"-->
-<!--                  validation-visibility="live"-->
-<!--                />-->
-<!--                <FormKit-->
-<!--                  type="text"-->
-<!--                  name="companyId"-->
-<!--                  label="Company ID"-->
-<!--                  placeholder="Company ID"-->
-<!--                  :model-value="companyID"-->
-<!--                  disabled="true"-->
-<!--                />-->
-<!--                <FormKit type="group" name="data" label="data">-->
-<!--                  <FormKit-->
-<!--                    type="select"-->
-<!--                    name="financialServicesTypes"-->
-<!--                    multiple-->
-<!--                    validation="required"-->
-<!--                    label="Financial Services Types"-->
-<!--                    placeholder="Please choose"-->
-<!--                    :options="{-->
-<!--                      CreditInstitution: humanizeString('CreditInstitution'),-->
-<!--                      InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),-->
-<!--                      AssetManagement: humanizeString('AssetManagement'),-->
-<!--                      InvestmentFirm: humanizeString('InvestmentFirm'),-->
-<!--                    }"-->
-<!--                    help="Select all that apply by holding command (macOS) or control (PC)."-->
-<!--                  />-->
-<!--                  <FormKit type="group" name="assurance" label="Assurance">-->
-<!--                    <FormKit-->
-<!--                      type="select"-->
-<!--                      name="assurance"-->
-<!--                      label="Assurance"-->
-<!--                      placeholder="Please choose"-->
-<!--                      :options="{-->
-<!--                        None: humanizeString('None'),-->
-<!--                        LimitedAssurance: humanizeString('LimitedAssurance'),-->
-<!--                        ReasonableAssurance: humanizeString('ReasonableAssurance'),-->
-<!--                      }"-->
-<!--                    />-->
-<!--                  </FormKit>-->
-<!--                  <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">-->
-<!--                    <template-->
-<!--                      v-for="fsType in [-->
-<!--                        'CreditInstitution',-->
-<!--                        'InsuranceOrReinsurance',-->
-<!--                        'AssetManagement',-->
-<!--                        'InvestmentFirm',-->
-<!--                      ]"-->
-<!--                      :key="fsType"-->
-<!--                    >-->
-<!--                      <div :name="fsType">-->
-<!--                        <FormKit type="group" :name="fsType">-->
-<!--                          <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>-->
-<!--                          <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />-->
-<!--                          <DataPointFormElement-->
-<!--                            name="taxonomyNonEligibleActivity"-->
-<!--                            label="Taxonomy Non Eligible Activity"-->
-<!--                          />-->
-<!--                          <DataPointFormElement name="derivatives" label="Derivatives" />-->
-<!--                          <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />-->
-<!--                          <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />-->
-<!--                        </FormKit>-->
-<!--                      </div>-->
-<!--                    </template>-->
-<!--                  </FormKit>-->
-<!--                </FormKit>-->
-<!--                <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />-->
-<!--              </div>-->
-<!--            </div>-->
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="childLabour" class="anchor title">{{ impactTopicNames.childLabour }}</h4>
+                  <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
+                </div>
+
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="childLabour" :label="impactTopicNames.childLabour">
+                    <YesNoComponent :name="'employeeUnder18'" />
+                    <YesNoComponent :name="'employeeUnder15'" />
+                    <YesNoComponent :name="'employeeUnder18Apprentices'" />
+                    <YesNoComponent :name="'employmentUnderLocalMinimumAgePrevention'" />
+                    <YesNoComponent :name="'employmentUnderLocalMinimumAgePreventionEmploymentContracts'" />
+                    <YesNoComponent :name="'employmentUnderLocalMinimumAgePreventionJobDescription'" />
+                    <YesNoComponent :name="'employmentUnderLocalMinimumAgePreventionIdentityDocuments'" />
+                    <YesNoComponent :name="'employmentUnderLocalMinimumAgePreventionTraining'" />
+                    <YesNoComponent :name="'employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge'" />
+                  </FormKit>
+                </div>
+              </div>
+
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="forcedLabourSlaveryAndDebtBondage" class="anchor title">
+                    {{ impactTopicNames.forcedLabourSlaveryAndDebtBondage }}
+                  </h4>
+                  <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
+                </div>
+
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit
+                    type="group"
+                    name="forcedLabourSlaveryAndDebtBondage"
+                    :label="impactTopicNames.forcedLabourSlaveryAndDebtBondage"
+                  >
+                    <YesNoComponent :name="'forcedLabourAndSlaveryPrevention'" />
+                    <YesNoComponent :name="'forcedLabourAndSlaveryPreventionEmploymentContracts'" />
+                    <YesNoComponent :name="'forcedLabourAndSlaveryPreventionIdentityDocuments'" />
+                    <YesNoComponent :name="'forcedLabourAndSlaveryPreventionFreeMovement'" />
+                    <YesNoComponent :name="'forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets'" />
+                    <YesNoComponent :name="'forcedLabourAndSlaveryPreventionTraining'" />
+                    <YesNoComponent :name="'documentedWorkingHoursAndWages'" />
+                    <YesNoComponent :name="'adequateLivingWage'" />
+                    <YesNoComponent :name="'regularWagesProcessFlow'" />
+                    <YesNoComponent :name="'fixedHourlyWages'" />
+                  </FormKit>
+                </div>
+              </div>
+
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="evidenceCertificatesAndAttestations" class="anchor title">
+                    {{ impactTopicNames.evidenceCertificatesAndAttestations }}
+                  </h4>
+                  <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
+                </div>
+
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit
+                    type="group"
+                    name="evidenceCertificatesAndAttestations"
+                    :label="impactTopicNames.evidenceCertificatesAndAttestations"
+                  >
+                    <YesNoComponent :name="'iso26000'" />
+                    <YesNoComponent :name="'sa8000Certification'" />
+                    <YesNoComponent :name="'smetaSocialAuditConcept'" />
+                    <YesNoComponent :name="'betterWorkProgramCertificate'" />
+                    <YesNoComponent :name="'iso45001Certification'" />
+                    <YesNoComponent :name="'iso14000Certification'" />
+                    <YesNoComponent :name="'emasCertification'" />
+                    <YesNoComponent :name="'iso37001Certification'" />
+                    <YesNoComponent :name="'iso37301Certification'" />
+                    <YesNoComponent :name="'riskManagementSystemCertification'" />
+                    <YesNoComponent :name="'amforiBsciAuditReport'" />
+                    <YesNoComponent :name="'initiativeClauseSocialCertification'" />
+                    <YesNoComponent :name="'responsibleBusinessAssociationCertification'" />
+                    <YesNoComponent :name="'fairLabourAssociationCertification'" />
+                    <YesNoComponent :name="'fairWorkingConditionsPolicy'" />
+                    <YesNoComponent :name="'fairAndEthicalRecruitmentPolicy'" />
+                    <YesNoComponent :name="'equalOpportunitiesAndNondiscriminationPolicy'" />
+                    <YesNoComponent :name="'healthAndSafetyPolicy'" />
+                    <YesNoComponent :name="'complaintsAndGrievancesPolicy'" />
+                    <YesNoComponent :name="'forcedLabourPolicy'" />
+                    <YesNoComponent :name="'childLabourPolicy'" />
+                    <YesNoComponent :name="'environmentalImpactPolicy'" />
+                    <YesNoComponent :name="'supplierCodeOfConduct'" />
+                  </FormKit>
+                </div>
+              </div>
+
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="grievanceMechanism" class="anchor title">{{ impactTopicNames.grievanceMechanism }}</h4>
+                  <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
+                </div>
+
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="grievanceMechanism" :label="impactTopicNames.grievanceMechanism">
+                    <YesNoComponent :name="'grievanceHandlingMechanism'" />
+                    <YesNoComponent :name="'grievanceHandlingMechanismUsedForReporting'" />
+                    <YesNoComponent :name="'legalProceedings'" />
+                  </FormKit>
+                </div>
+              </div>
+
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="osh" class="anchor title">{{ impactTopicNames.osh }}</h4>
+                  <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
+                </div>
+
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="osh" :label="impactTopicNames.osh">
+                    <YesNoComponent :name="'oshMonitoring'" />
+                    <YesNoComponent :name="'oshPolicy'" />
+                    <YesNoComponent :name="'oshPolicyPersonalProtectiveEquipment'" />
+                    <YesNoComponent :name="'oshPolicyMachineSafety'" />
+                    <YesNoComponent :name="'oshPolicyDisasterBehaviouralResponse'" />
+                    <YesNoComponent :name="'oshPolicyAccidentsBehaviouralResponse'" />
+                    <YesNoComponent :name="'oshPolicyWorkplaceErgonomics'" />
+                    <YesNoComponent :name="'oshPolicyHandlingChemicalsAndOtherHazardousSubstances'" />
+                    <YesNoComponent :name="'oshPolicyFireProtection'" />
+                    <YesNoComponent :name="'oshPolicyWorkingHours'" />
+                    <YesNoComponent :name="'oshPolicyTrainingAddressed'" />
+                    <YesNoComponent :name="'oshPolicyTraining'" />
+                    <YesNoComponent :name="'oshManagementSystem'" />
+                    <YesNoComponent :name="'oshManagementSystemInternationalCertification'" />
+                    <YesNoComponent :name="'oshManagementSystemNationalCertification'" />
+                    <YesNoComponent :name="'workplaceAccidentsUnder10'" />
+                    <YesNoComponent :name="'oshTraining'" />
+                  </FormKit>
+                </div>
+              </div>
+
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="freedomOfAssociation" class="anchor title">{{ impactTopicNames.freedomOfAssociation }}</h4>
+                  <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
+                </div>
+
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="freedomOfAssociation" :label="impactTopicNames.freedomOfAssociation">
+                    <YesNoComponent :name="'freedomOfAssociation'" />
+                    <YesNoComponent :name="'discriminationForTradeUnionMembers'" />
+                    <YesNoComponent :name="'freedomOfOperationForTradeUnion'" />
+                    <YesNoComponent :name="'freedomOfAssociationTraining'" />
+                    <YesNoComponent :name="'worksCouncil'" />
+                  </FormKit>
+                </div>
+              </div>
+
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="humanRights" class="anchor title">{{ impactTopicNames.humanRights }}</h4>
+                  <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
+                </div>
+
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="humanRights" :label="impactTopicNames.humanRights">
+                    <YesNoComponent :name="'diversityAndInclusionRole'" />
+                    <YesNoComponent :name="'preventionOfMistreatments'" />
+                    <YesNoComponent :name="'equalOpportunitiesOfficer'" />
+                    <YesNoComponent :name="'riskOfHarmfulPollution'" />
+                    <YesNoComponent :name="'unlawfulEvictionAndTakingOfLand'" />
+                    <YesNoComponent :name="'useOfPrivatePublicSecurityForces'" />
+                    <YesNoComponent :name="'useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights'" />
+                  </FormKit>
+                </div>
+              </div>
+            </FormKit>
+
+            <!----- GOVERNANCE ------>
+
+            <FormKit type="group" name="governance" label="governance">
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="socialAndEmployeeMatters" class="anchor title">
+                    {{ impactTopicNames.socialAndEmployeeMatters }}
+                  </h4>
+                  <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
+                </div>
+
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit
+                    type="group"
+                    name="socialAndEmployeeMatters"
+                    :label="impactTopicNames.socialAndEmployeeMatters"
+                  >
+                    <YesNoComponent :name="'responsibilitiesForFairWorkingConditions'" />
+                  </FormKit>
+                </div>
+              </div>
+
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="environment" class="anchor title">{{ impactTopicNames.environment }}</h4>
+                  <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
+                </div>
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="environment" :label="impactTopicNames.environment">
+                    <YesNoComponent :name="'responsibilitiesForTheEnvironment'" />
+                  </FormKit>
+                </div>
+              </div>
+
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="osh_governance" class="anchor title">{{ impactTopicNames.osh }}</h4>
+                  <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
+                </div>
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="osh" :label="impactTopicNames.osh">
+                    <YesNoComponent :name="'responsibilitiesForOccupationalSafety'" />
+                  </FormKit>
+                </div>
+              </div>
+
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="riskManagement" class="anchor title">{{ impactTopicNames.riskManagement }}</h4>
+                  <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
+                </div>
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="riskManagement" :label="impactTopicNames.riskManagement">
+                    <YesNoComponent :name="'riskManagementSystem'" />
+                  </FormKit>
+                </div>
+              </div>
+
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="codeOfConduct" class="anchor title">{{ impactTopicNames.codeOfConduct }}</h4>
+                  <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
+                </div>
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="codeOfConduct" :label="impactTopicNames.codeOfConduct">
+                    <YesNoComponent :name="'codeOfConduct'" />
+                    <YesNoComponent :name="'codeOfConductRiskManagementTopics'" />
+                    <YesNoComponent :name="'codeOfConductTraining'" />
+                  </FormKit>
+                </div>
+              </div>
+            </FormKit>
+
+            <!----- ENVIRONMENTAL ------>
+
+            <FormKit type="group" name="environmental" label="environmental">
+              <div class="uploadFormSection grid">
+                <div id="topicLabel" class="col-3 topicLabel">
+                  <h4 id="waste" class="anchor title">{{ impactTopicNames.waste }}</h4>
+                  <div class="p-badge badge-green"><span>ENVIRONMENTAL</span></div>
+                </div>
+
+                <div id="formFields" class="col-9 formFields">
+                  <FormKit type="group" name="waste" :label="impactTopicNames.socialAndEmployeeMatters">
+                    <YesNoComponent :name="'mercuryAndMercuryWasteHandling'" />
+                    <YesNoComponent :name="'mercuryAndMercuryWasteHandlingPolicy'" />
+                    <YesNoComponent :name="'chemicalHandling'" />
+                    <YesNoComponent :name="'environmentalManagementSystem'" />
+                    <YesNoComponent :name="'environmentalManagementSystemInternationalCertification'" />
+                    <YesNoComponent :name="'environmentalManagementSystemNationalCertification'" />
+                    <YesNoComponent :name="'legalRestrictedWaste'" />
+                    <YesNoComponent :name="'legalRestrictedWasteProcesses'" />
+                    <YesNoComponent :name="'mercuryAddedProductsHandling'" />
+                    <YesNoComponent :name="'mercuryAddedProductsHandlingRiskOfExposure'" />
+                    <YesNoComponent :name="'mercuryAddedProductsHandlingRiskOfDisposal'" />
+                    <YesNoComponent :name="'mercuryAndMercuryCompoundsProductionAndUse'" />
+                    <YesNoComponent :name="'mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure'" />
+                    <YesNoComponent :name="'persistentOrganicPollutantsProductionAndUse'" />
+                    <YesNoComponent :name="'persistentOrganicPollutantsProductionAndUseRiskOfExposure'" />
+                    <YesNoComponent :name="'persistentOrganicPollutantsProductionAndUseRiskOfDisposal'" />
+                    <YesNoComponent :name="'persistentOrganicPollutantsProductionAndUseTransboundaryMovements'" />
+                    <YesNoComponent :name="'persistentOrganicPollutantsProductionAndUseRiskForImportingState'" />
+                    <YesNoComponent :name="'hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein'" />
+                    <YesNoComponent :name="'hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein'" />
+                    <YesNoComponent :name="'hazardousWasteDisposal'" />
+                    <YesNoComponent :name="'hazardousWasteDisposalRiskOfImport'" />
+                    <YesNoComponent :name="'hazardousAndOtherWasteImport'" />
+                  </FormKit>
+                </div>
+                <PrimeButton type="submit" label="SUBMIT" />
+              </div>
+            </FormKit>
           </FormKit>
         </div>
 
@@ -458,15 +548,14 @@
             <li><a href="#childLabour">Child labour</a></li>
             <li><a href="#forcedLabourSlaveryAndDebtBondage">Forced labour, slavery and debt bondage</a></li>
             <li><a href="#evidenceCertificatesAndAttestations">Evidence, certificates and attestations</a></li>
-            <li><a href="#socialAndEmployeeMatters">Social and employee matters</a></li>
-            <li><a href="#environment">Environment</a></li>
+            <li><a href="#grievanceMechanism">Grievance mechanism</a></li>
             <li><a href="#osh">OSH</a></li>
-            <li><a href="#riskManagement">Risk management</a></li>
-            <li><a href="#grievanceMechanism">Grievance mechanism</a></li>
-            <li><a href="#codeOfConduct">Code of Conduct</a></li>
-            <li><a href="#grievanceMechanism">Grievance mechanism</a></li>
             <li><a href="#freedomOfAssociation">Freedom of association</a></li>
             <li><a href="#humanRights">Human rights</a></li>
+            <li><a href="#socialAndEmployeeMatters">Social and employee matters</a></li>
+            <li><a href="#environment">Environment</a></li>
+            <li><a href="#riskManagement">Risk management</a></li>
+            <li><a href="#codeOfConduct">Code of Conduct</a></li>
             <li><a href="#waste">Waste</a></li>
           </ul>
         </div>
@@ -498,7 +587,13 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
-import { lksgQuestions } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
+import {
+  lksgQuestions,
+  lksgKpis,
+  impactTopicNames,
+} from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
   setup() {
@@ -507,144 +602,150 @@ export default defineComponent({
     };
   },
   name: "CreateLksgDataset",
-  components: { DataPointFormElement, FailedUpload, FormKit, SuccessUpload, Card, PrimeButton },
+  components: { UploadFormHeader, FailedUpload, FormKit, SuccessUpload, Card, PrimeButton, YesNoComponent },
   directives: {
     tooltip: Tooltip,
   },
 
   data: () => ({
-    isYourCompanyManufacturingCompany: 'No',
-    newItemsTolistOfProductionSites: '',
-    listOfProductionSites: [{id: 0, listOfGoodsOrServices: ["xx", "yy"]}],
+    isYourCompanyManufacturingCompany: "No",
+    newItemsTolistOfProductionSites: "",
+    listOfProductionSites: [
+      {
+        id: 0,
+        listOfGoodsOrServices: [],
+        listOfGoodsOrServicesString: "",
+      },
+    ],
     postEuTaxonomyDataForFinancialsProcessed: false,
     messageCount: 0,
     Model: {},
     formInputsModel: {
       social: {
-        general: {
-          dataDate: "2023-01-24",
-          lksgInScope: "Yes",
-          vatIdentificationNumber: "string",
-          numberOfEmployees: 0,
-          shareOfTemporaryWorkers: 0,
-          totalRevenue: 0,
-          totalRevenueCurrency: "string",
-          listOfProductionSites: [
-            {
-              name: "string",
-              isInHouseProductionOrIsContractProcessing: "Yes",
-              address: "string",
-              listOfGoodsOrServices: ["first", "second"],
-            },
-          ],
-        },
-        grievanceMechanism: {
-          grievanceHandlingMechanism: "Yes",
-          grievanceHandlingMechanismUsedForReporting: "Yes",
-          legalProceedings: "Yes",
-        },
-        childLabour: {
-          employeeUnder18: "Yes",
-          employeeUnder15: "Yes",
-          employeeUnder18Apprentices: "Yes",
-          employmentUnderLocalMinimumAgePrevention: "Yes",
-          employmentUnderLocalMinimumAgePreventionEmploymentContracts: "Yes",
-          employmentUnderLocalMinimumAgePreventionJobDescription: "Yes",
-          employmentUnderLocalMinimumAgePreventionIdentityDocuments: "Yes",
-          employmentUnderLocalMinimumAgePreventionTraining: "Yes",
-          employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: "Yes",
-        },
-        forcedLabourSlaveryAndDebtBondage: {
-          forcedLabourAndSlaveryPrevention: "Yes",
-          forcedLabourAndSlaveryPreventionEmploymentContracts: "Yes",
-          forcedLabourAndSlaveryPreventionIdentityDocuments: "Yes",
-          forcedLabourAndSlaveryPreventionFreeMovement: "Yes",
-          forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: "Yes",
-          forcedLabourAndSlaveryPreventionTraining: "Yes",
-          documentedWorkingHoursAndWages: "Yes",
-          adequateLivingWage: "Yes",
-          regularWagesProcessFlow: "Yes",
-          fixedHourlyWages: "Yes",
-        },
-        osh: {
-          oshMonitoring: "Yes",
-          oshPolicy: "Yes",
-          oshPolicyPersonalProtectiveEquipment: "Yes",
-          oshPolicyMachineSafety: "Yes",
-          oshPolicyDisasterBehaviouralResponse: "Yes",
-          oshPolicyAccidentsBehaviouralResponse: "Yes",
-          oshPolicyWorkplaceErgonomics: "Yes",
-          oshPolicyHandlingChemicalsAndOtherHazardousSubstances: "Yes",
-          oshPolicyFireProtection: "Yes",
-          oshPolicyWorkingHours: "Yes",
-          oshPolicyTrainingAddressed: "Yes",
-          oshPolicyTraining: "Yes",
-          oshManagementSystem: "Yes",
-          oshManagementSystemInternationalCertification: "Yes",
-          oshManagementSystemNationalCertification: "Yes",
-          workplaceAccidentsUnder10: "Yes",
-          oshTraining: "Yes",
-        },
-        freedomOfAssociation: {
-          freedomOfAssociation: "Yes",
-          discriminationForTradeUnionMembers: "Yes",
-          freedomOfOperationForTradeUnion: "Yes",
-          freedomOfAssociationTraining: "Yes",
-          worksCouncil: "Yes",
-        },
-        humanRights: {
-          diversityAndInclusionRole: "Yes",
-          preventionOfMistreatments: "Yes",
-          equalOpportunitiesOfficer: "Yes",
-          riskOfHarmfulPollution: "Yes",
-          unlawfulEvictionAndTakingOfLand: "Yes",
-          useOfPrivatePublicSecurityForces: "Yes",
-          useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: "Yes",
-        },
-        evidenceCertificatesAndAttestations: {
-          iso26000: "Yes",
-          sa8000Certification: "Yes",
-          smetaSocialAuditConcept: "Yes",
-          betterWorkProgramCertificate: "Yes",
-          iso45001Certification: "Yes",
-          iso14000Certification: "Yes",
-          emasCertification: "Yes",
-          iso37001Certification: "Yes",
-          iso37301Certification: "Yes",
-          riskManagementSystemCertification: "Yes",
-          amforiBsciAuditReport: "Yes",
-          initiativeClauseSocialCertification: "Yes",
-          responsibleBusinessAssociationCertification: "Yes",
-          fairLabourAssociationCertification: "Yes",
-          fairWorkingConditionsPolicy: "Yes",
-          fairAndEthicalRecruitmentPolicy: "Yes",
-          equalOpportunitiesAndNondiscriminationPolicy: "Yes",
-          healthAndSafetyPolicy: "Yes",
-          complaintsAndGrievancesPolicy: "Yes",
-          forcedLabourPolicy: "Yes",
-          childLabourPolicy: "Yes",
-          environmentalImpactPolicy: "Yes",
-          supplierCodeOfConduct: "Yes",
-        },
+        // general: {
+        //   dataDate: "2023-01-24",
+        //   lksgInScope: "Yes",
+        //   vatIdentificationNumber: "string",
+        //   numberOfEmployees: 0,
+        //   shareOfTemporaryWorkers: 0,
+        //   totalRevenue: 0,
+        //   totalRevenueCurrency: "string",
+        //   listOfProductionSites: [
+        //     {
+        //       name: "string",
+        //       isInHouseProductionOrIsContractProcessing: "Yes",
+        //       address: "string",
+        //       listOfGoodsOrServices: ["first", "second"],
+        //     },
+        //   ],
+        // },
+        // childLabour: {
+        //   employeeUnder18: "Yes",
+        //   employeeUnder15: "Yes",
+        //   employeeUnder18Apprentices: "Yes",
+        //   employmentUnderLocalMinimumAgePrevention: "Yes",
+        //   employmentUnderLocalMinimumAgePreventionEmploymentContracts: "Yes",
+        //   employmentUnderLocalMinimumAgePreventionJobDescription: "Yes",
+        //   employmentUnderLocalMinimumAgePreventionIdentityDocuments: "Yes",
+        //   employmentUnderLocalMinimumAgePreventionTraining: "Yes",
+        //   employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: "Yes",
+        // },
+        // grievanceMechanism: {
+        //   grievanceHandlingMechanism: "Yes",
+        //   grievanceHandlingMechanismUsedForReporting: "Yes",
+        //   legalProceedings: "Yes",
+        // },
+        // forcedLabourSlaveryAndDebtBondage: {
+        //   forcedLabourAndSlaveryPrevention: "Yes",
+        //   forcedLabourAndSlaveryPreventionEmploymentContracts: "Yes",
+        //   forcedLabourAndSlaveryPreventionIdentityDocuments: "Yes",
+        //   forcedLabourAndSlaveryPreventionFreeMovement: "Yes",
+        //   forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: "Yes",
+        //   forcedLabourAndSlaveryPreventionTraining: "Yes",
+        //   documentedWorkingHoursAndWages: "Yes",
+        //   adequateLivingWage: "Yes",
+        //   regularWagesProcessFlow: "Yes",
+        //   fixedHourlyWages: "Yes",
+        // },
+        // osh: {
+        //   oshMonitoring: "Yes",
+        //   oshPolicy: "Yes",
+        //   oshPolicyPersonalProtectiveEquipment: "Yes",
+        //   oshPolicyMachineSafety: "Yes",
+        //   oshPolicyDisasterBehaviouralResponse: "Yes",
+        //   oshPolicyAccidentsBehaviouralResponse: "Yes",
+        //   oshPolicyWorkplaceErgonomics: "Yes",
+        //   oshPolicyHandlingChemicalsAndOtherHazardousSubstances: "Yes",
+        //   oshPolicyFireProtection: "Yes",
+        //   oshPolicyWorkingHours: "Yes",
+        //   oshPolicyTrainingAddressed: "Yes",
+        //   oshPolicyTraining: "Yes",
+        //   oshManagementSystem: "Yes",
+        //   oshManagementSystemInternationalCertification: "Yes",
+        //   oshManagementSystemNationalCertification: "Yes",
+        //   workplaceAccidentsUnder10: "Yes",
+        //   oshTraining: "Yes",
+        // },
+        // freedomOfAssociation: {
+        //   freedomOfAssociation: "Yes",
+        //   discriminationForTradeUnionMembers: "Yes",
+        //   freedomOfOperationForTradeUnion: "Yes",
+        //   freedomOfAssociationTraining: "Yes",
+        //   worksCouncil: "Yes",
+        // },
+        // humanRights: {
+        //   diversityAndInclusionRole: "Yes",
+        //   preventionOfMistreatments: "Yes",
+        //   equalOpportunitiesOfficer: "Yes",
+        //   riskOfHarmfulPollution: "Yes",
+        //   unlawfulEvictionAndTakingOfLand: "Yes",
+        //   useOfPrivatePublicSecurityForces: "Yes",
+        //   useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: "Yes",
+        // },
+        // evidenceCertificatesAndAttestations: {
+        //   iso26000: "Yes",
+        //   sa8000Certification: "Yes",
+        //   smetaSocialAuditConcept: "Yes",
+        //   betterWorkProgramCertificate: "Yes",
+        //   iso45001Certification: "Yes",
+        //   iso14000Certification: "Yes",
+        //   emasCertification: "Yes",
+        //   iso37001Certification: "Yes",
+        //   iso37301Certification: "Yes",
+        //   riskManagementSystemCertification: "Yes",
+        //   amforiBsciAuditReport: "Yes",
+        //   initiativeClauseSocialCertification: "Yes",
+        //   responsibleBusinessAssociationCertification: "Yes",
+        //   fairLabourAssociationCertification: "Yes",
+        //   fairWorkingConditionsPolicy: "Yes",
+        //   fairAndEthicalRecruitmentPolicy: "Yes",
+        //   equalOpportunitiesAndNondiscriminationPolicy: "Yes",
+        //   healthAndSafetyPolicy: "Yes",
+        //   complaintsAndGrievancesPolicy: "Yes",
+        //   forcedLabourPolicy: "Yes",
+        //   childLabourPolicy: "Yes",
+        //   environmentalImpactPolicy: "Yes",
+        //   supplierCodeOfConduct: "Yes",
+        // },
       },
       governance: {
-        socialAndEmployeeMatters: {
-          responsibilitiesForFairWorkingConditions: "Yes",
-        },
-        environment: {
-          responsibilitiesForTheEnvironment: "Yes",
-        },
-        osh: {
-          responsibilitiesForOccupationalSafety: "Yes",
-        },
-        riskManagement: {
-          riskManagementSystem: "Yes",
-        },
-        codeOfConduct: {
-          codeOfConduct: "Yes",
-          codeOfConductRiskManagementTopics: "Yes",
-          codeOfConductTraining: "Yes",
-        },
+        // socialAndEmployeeMatters: {
+        //   responsibilitiesForFairWorkingConditions: "Yes",
+        // },
+        // environment: {
+        //   responsibilitiesForTheEnvironment: "Yes",
+        // },
+        // osh: {
+        //   responsibilitiesForOccupationalSafety: "Yes",
+        // },
+        // riskManagement: {
+        //   riskManagementSystem: "Yes",
+        // },
+        // codeOfConduct: {
+        //   codeOfConduct: "Yes",
+        //   codeOfConductRiskManagementTopics: "Yes",
+        //   codeOfConductTraining: "Yes",
+        // },
       },
       environmental: {
         waste: {
@@ -677,6 +778,8 @@ export default defineComponent({
     postEuTaxonomyDataForFinancialsResponse: null,
     humanizeString: humanizeString,
     lksgQuestions,
+    lksgKpis,
+    impactTopicNames,
   }),
   props: {
     companyID: {
@@ -704,23 +807,30 @@ export default defineComponent({
       }
     },
     postLkSGData() {
-      console.log('SUBMIT', this.Model)
+      console.log("SUBMIT", this.Model);
     },
     addNewProductionSite() {
-      this.listOfProductionSites.push(
-          {id: Math.random(), listOfGoodsOrServices: []}
-      )
+      this.listOfProductionSites.push({
+        id: Math.random(),
+        listOfGoodsOrServices: [],
+        listOfGoodsOrServicesString: "",
+      });
     },
     addNewItemsTolistOfProductionSites(index: number) {
-      const items = this.newItemsTolistOfProductionSites.split(';').map(item => item.trim())
-      this.listOfProductionSites[index].listOfGoodsOrServices = [...this.listOfProductionSites[index].listOfGoodsOrServices, ...items]
-      this.newItemsTolistOfProductionSites = ''
+      const items = this.listOfProductionSites[index].listOfGoodsOrServicesString.split(";").map((item) => item.trim());
+      this.listOfProductionSites[index].listOfGoodsOrServices = [
+        ...this.listOfProductionSites[index].listOfGoodsOrServices,
+        ...items,
+      ];
+      this.listOfProductionSites[index].listOfGoodsOrServicesString = "";
     },
     removeItemFromlistOfProductionSites(id: number) {
       this.listOfProductionSites = this.listOfProductionSites.filter((el) => el.id !== id);
     },
     removeItemFromlistOfGoodsOrServices(index: number, item: string) {
-      this.listOfProductionSites[index].listOfGoodsOrServices = this.listOfProductionSites[index].listOfGoodsOrServices.filter((el) => el !== item);
+      this.listOfProductionSites[index].listOfGoodsOrServices = this.listOfProductionSites[
+        index
+      ].listOfGoodsOrServices.filter((el) => el !== item);
     },
   },
 });

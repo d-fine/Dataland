@@ -136,7 +136,7 @@ import {
   companyDataExplanations,
   gicsSectors
 } from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
-import UploadFormHeader from "@/utils/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 
 export default defineComponent({
   name: "CreateCompany",
