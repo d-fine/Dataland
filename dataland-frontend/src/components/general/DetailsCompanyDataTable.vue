@@ -1,5 +1,5 @@
 <template>
-  <DataTable responsiveLayout="scroll" :value="dataToDisplay">
+  <DataTable responsiveLayout="scroll" :value="listOfProductionSitesNames">
     <Column
       v-for="col of columns"
       :field="col.field"
@@ -33,31 +33,35 @@ export default defineComponent({
   components: { DataTable, Column },
   data() {
     return {
-      dataToDisplay: [] as TypeOfProductionSitesNames[],
-      columns: [] as { field: string; header: string }[],
+      listOfProductionSitesNames: [] as TypeOfProductionSitesNames[],
       listOfProductionSitesConvertedNames: {} as TypeOfProductionSitesConvertedNames,
+      columns: [] as { field: string; header: string }[],
     };
   },
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {
-      detailDataForKpi: TypeOfProductionSitesNames[];
+      listOfProductionSitesNames: TypeOfProductionSitesNames[];
       listOfProductionSitesConvertedNames: TypeOfProductionSitesConvertedNames;
     };
-    this.dataToDisplay = dialogRefData.detailDataForKpi;
+    this.listOfProductionSitesNames = dialogRefData.listOfProductionSitesNames;
     this.listOfProductionSitesConvertedNames = dialogRefData.listOfProductionSitesConvertedNames;
   },
   methods: {
+    /**
+     * Gets the keys from a production site type to define the columns that the displayed table in this vue component
+     * should have.
+     */
     generateColsNames(): void {
-      if (this.dataToDisplay.length && Array.isArray(this.dataToDisplay)) {
-        for (const key of Object.keys(this.dataToDisplay[0])) {
+      if (this.listOfProductionSitesNames.length && Array.isArray(this.listOfProductionSitesNames)) {
+        for (const key of Object.keys(this.listOfProductionSitesNames[0])) {
           this.columns.push({ field: `${key}`, header: `${key}` });
         }
       }
     },
   },
   watch: {
-    dataToDisplay() {
+    listOfProductionSitesNames() {
       this.generateColsNames();
     },
   },

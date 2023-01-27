@@ -93,6 +93,12 @@ describe("As a user, I expect the search functionality on the /companies page to
     }
   );
 
+  /**
+   * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
+   * format and the url includes the search term
+   *
+   * @param inputValue the text to enter into the search bar
+   */
   function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
     const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
     cy.get("input[id=search_bar_top]")
@@ -110,6 +116,11 @@ describe("As a user, I expect the search functionality on the /companies page to
     "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
     { scrollBehavior: false },
     () => {
+      /**
+       * Verifies that the tooltip of the Perm ID in the search table header contains the expected text
+       *
+       * @param permIdTextInt the text expected in the tooltip
+       */
       function checkPermIdToolTip(permIdTextInt: string): void {
         cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
         cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
@@ -117,6 +128,9 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.get(".p-tooltip").should("not.exist");
       }
 
+      /**
+       * Verifies that the view button redirects to the view framework data page
+       */
       function checkViewButtonWorks(): void {
         cy.get("table.p-datatable-table")
           .contains("td", "VIEW")

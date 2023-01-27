@@ -10,14 +10,31 @@ const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedRepo
 const nullRatio = 0.1;
 const undefinedRatio = 0.25;
 
+/**
+ * Randomly returns the specified value or null
+ *
+ * @param value the value to return
+ * @returns the value or null
+ */
 export function valueOrNull<T>(value: T): T | null {
   return Math.random() > nullRatio ? value : null;
 }
 
+/**
+ * Randomly returns the specified value or undefined
+ *
+ * @param value the value to return
+ * @returns the value or undefined
+ */
 export function valueOrUndefined<T>(value: T): T | undefined {
   return Math.random() > undefinedRatio ? value : undefined;
 }
 
+/**
+ * Generates a random non-empty set of reports that can be referenced
+ *
+ * @returns a random non-empty set of reports
+ */
 export function generateReferencedReports(): ReferencedReports {
   const availableReports = faker.helpers.arrayElements(possibleReports);
   if (availableReports.length == 0) availableReports.push(possibleReports[0]);
@@ -34,6 +51,14 @@ export function generateReferencedReports(): ReferencedReports {
   return referencedReports;
 }
 
+/**
+ * Randomly returns a datapoint with the specified value (chosen at random between 0 and 99999 if not specified) or
+ * undefined
+ *
+ * @param reports the reports that can be referenced as data sources
+ * @param value the value of the datapoint to generate (chosen at random between 0 and 99999 if not specified)
+ * @returns the generated datapoint or undefined
+ */
 export function generateNumericOrEmptyDatapoint(
   reports: ReferencedReports,
   value: number | null = valueOrNull(faker.datatype.number())
@@ -42,12 +67,25 @@ export function generateNumericOrEmptyDatapoint(
   return generateDatapoint(value, reports);
 }
 
+/**
+ * Randomly generates a Yes / No / Na / undefined datapoint
+ *
+ * @param reports the reports that can be referenced as data sources
+ * @returns the generated datapoint or undefined
+ */
 export function generateYesNoOrEmptyDatapoint(reports: ReferencedReports): DataPointYesNo | undefined {
   const value = valueOrNull(randomYesNoUndefined());
   if (value === undefined) return undefined;
   return generateDatapoint(value, reports);
 }
 
+/**
+ * Generates a datapoint with the given value or a datapoint with no value reported at random
+ *
+ * @param value the decimal value of the datapoint to generate (is ignored at random)
+ * @param reports the reports that can be referenced as data sources
+ * @returns the generated datapoint or undefined
+ */
 export function generateDatapointOrNotReportedAtRandom(
   value: number | undefined,
   reports: ReferencedReports
@@ -56,6 +94,13 @@ export function generateDatapointOrNotReportedAtRandom(
   return generateDatapoint(valueOrNull(value), reports);
 }
 
+/**
+ * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
+ *
+ * @param value the decimal value of the datapoint to generate
+ * @param reports the reports that can be referenced as data sources
+ * @returns the generated datapoint
+ */
 export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedReports): Y {
   const qualityBucket =
     value === null
@@ -82,6 +127,14 @@ export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedRepo
   } as Y;
 }
 
+/**
+ * Generates the CSV mapping for a single (decimal) datapoint
+ *
+ * @param dataPointName the name of the datapoint
+ * @param dataPointGetter a function that can be used to access the datapoint given the current fixture element
+ * @param valueConverter a conversion function for formatting the number (i.e. that converts the decimal number to a percentage string)
+ * @returns the CSV mapping for the datapoint
+ */
 export function getCsvDataPointMapping<T>(
   dataPointName: string,
   dataPointGetter: (row: T) => DataPointBigDecimal | undefined,

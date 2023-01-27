@@ -26,6 +26,12 @@ describeIf(
       });
     });
 
+    /**
+     * Rounds a number to two decimal places.
+     *
+     * @param inputNumber The number which should be rounded
+     * @returns the rounded number
+     */
     function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
       return Math.round(inputNumber * 100) / 100;
     }
@@ -33,6 +39,7 @@ describeIf(
     /**
      * This function uploads fixture data of one company and the associated data via API. Afterwards the result is
      * checked using the provided verifier.
+     *
      * @param fixtureData the company and its associated data
      * @param euTaxonomyPageVerifier the verify method for the EU Taxonomy Page
      */

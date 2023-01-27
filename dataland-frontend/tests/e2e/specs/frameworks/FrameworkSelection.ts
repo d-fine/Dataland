@@ -28,7 +28,13 @@ describe("The shared header of the framework pages should act as expected", { sc
       const financialsDropdownItem = "EU Taxonomy for financial companies";
       const lksgDropdownItem = "LkSG";
 
-      function interceptFrameworkPageLoad(trigger: () => void): void {
+      /**
+       * Wraps an interception with a wait-statement around a function that sends a request to the metadata-endpoint
+       * of the backend.
+       *
+       * @param trigger The function which sends a request to the metadata-endpoint of the backend
+       */
+      function interceptAndWaitForMetaDataRequest(trigger: () => void): void {
         const metaDataAlias = "retrieveMetaData";
         cy.intercept("**/api/metadata**").as(metaDataAlias);
         trigger();
@@ -36,35 +42,67 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.wait(3000);
       }
 
-      function selectCompanyViaUniqueSearchRequest(framework: string, companyName: string): void {
-        cy.visit(`/companies?input=${companyName}&framework=${framework}`);
-        interceptFrameworkPageLoad(() => {
+      /**
+       * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
+       * in the search results table.
+       *
+       * @param frameworkQueryParam The query param set as framework filter
+       * @param searchStringQueryParam The query param set as search string
+       */
+      function visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
+        frameworkQueryParam: string,
+        searchStringQueryParam: string
+      ): void {
+        cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
+        interceptAndWaitForMetaDataRequest(() => {
           const companySelector = "a span:contains( VIEW)";
           cy.get(companySelector).first().scrollIntoView();
           cy.get(companySelector).first().click({ force: true });
         });
       }
 
-      function selectCompanyViaAutocompleteOnCompaniesPage(framework: string, companyName: string): void {
-        cy.visit(`/companies?framework=${framework}`);
-        searchCompanyViaLocalSearchBarAndSelect(companyName);
+      /**
+       * Visits the search page with the framework query param set, type a search string into the search bar and click
+       * the first suggestion.
+       *
+       * @param frameworkQueryParam The query param set as framework filter
+       * @param searchStringForSearchBar The search string to type into the search bar
+       */
+      function selectCompanyViaAutocompleteOnCompaniesPage(
+        frameworkQueryParam: string,
+        searchStringForSearchBar: string
+      ): void {
+        cy.visit(`/companies?framework=${frameworkQueryParam}`);
+        searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(searchStringForSearchBar);
       }
 
-      function searchCompanyViaLocalSearchBarAndSelect(
-        companyName: string,
+      /**
+       * Visits the search page with the framework query param set, type a search string into the search bar and click
+       * the first suggestion.
+       *
+       * @param searchString The search string to type into the search bar
+       * @param searchBarSelector The selector to select the correct search bar from the DOM
+       */
+      function searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(
+        searchString: string,
         searchBarSelector = "input#search_bar_top"
       ): void {
         cy.get(searchBarSelector).click();
-        cy.get(searchBarSelector).type(companyName, { force: true });
-        interceptFrameworkPageLoad(() => {
+        cy.get(searchBarSelector).type(searchString, { force: true });
+        interceptAndWaitForMetaDataRequest(() => {
           const companySelector = ".p-autocomplete-item";
           cy.get(companySelector).first().scrollIntoView();
           cy.get(companySelector).first().click({ force: true });
         });
       }
 
-      function validateDropdown(expectedDropdownText: string): void {
-        cy.get(dropdownSelector).find(".p-dropdown-label").should("have.text", expectedDropdownText);
+      /**
+       * Validates if the dropdown label and the items in the dropdown equal the expected values.
+       *
+       * @param expectedDropdownLabel The expected label of the dropdown
+       */
+      function validateDropdown(expectedDropdownLabel: string): void {
+        cy.get(dropdownSelector).find(".p-dropdown-label").should("have.text", expectedDropdownLabel);
         cy.get(dropdownSelector).click();
         const expectedDropdownItems = new Set<string>([financialsDropdownItem, lksgDropdownItem]);
         cy.get(dropdownItemsSelector)
@@ -77,38 +115,60 @@ describe("The shared header of the framework pages should act as expected", { sc
           });
       }
 
-      function dropdownSelect(frameworkToSelect: string): void {
+      /**
+       * Opens the dropdown and selects a specific framework.
+       *
+       * @param frameworkToSelect The framework/item that shall be selected
+       */
+      function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(dropdownSelector).click();
-        interceptFrameworkPageLoad(() => {
+        interceptAndWaitForMetaDataRequest(() => {
           cy.get(`${dropdownItemsSelector}:contains(${frameworkToSelect})`).click({ force: true });
         });
       }
 
+      /**
+       * Validates if the framework view page for EU Taxonomy data for financial companies is currently displayed.
+       */
       function validateFinancialsPage(): void {
         cy.url().should("contain", `/frameworks/eutaxonomy-financials`);
         cy.get("h2").should("contain", "EU Taxonomy Data");
       }
 
+      /**
+       * Validates if the framework view page for EU Taxonomy data for non-financial companies is currently displayed.
+       */
       function validateNonFinancialsPage(): void {
         cy.url().should("contain", `/frameworks/eutaxonomy-non-financials`);
         cy.get("h2").should("contain", "EU Taxonomy Data");
       }
 
+      /**
+       * Validates if the framework view page for LkSG data is currently displayed.
+       */
       function validateLksgPage(): void {
         cy.url().should("contain", `/frameworks/lksg`);
         cy.get("h2").should("contain", "LkSG data");
       }
 
-      function uploadLksgAndFinancialCompany(): void {
-        let preparedFixtures: Array<FixtureData<LksgData>>;
+      /**
+       * Uploads a specific company and LkSG dataset from the prepared fixtures, then EU Taxonomy data for financial
+       * companies for that company.
+       */
+      function uploadCompanyAndLksgDataAndEuTaxonomyFinancialsDataViaApi(): void {
+        let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
         cy.fixture("CompanyInformationWithLksgPreparedFixtures")
           .then(function (jsonContent) {
-            preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+            lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
           })
           .then(() => {
-            const fixture = getPreparedFixture(lksgAndFinancialCompanyName, preparedFixtures);
-            return getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-              return uploadCompanyAndLksgDataViaApi(token, fixture.companyInformation, fixture.t).then((uploadIds) => {
+            const singleLksgPreparedFixture = getPreparedFixture(lksgAndFinancialCompanyName, lksgPreparedFixtures);
+            return getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+              return uploadCompanyAndLksgDataViaApi(
+                token,
+                singleLksgPreparedFixture.companyInformation,
+                singleLksgPreparedFixture.t
+              ).then((uploadIds) => {
                 return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                   token,
                   uploadIds.companyId,
@@ -119,48 +179,54 @@ describe("The shared header of the framework pages should act as expected", { sc
           });
       }
 
-      function uploadNonFinancialCompany(): void {
-        getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+      /**
+       * Uploads a company with a specific name and an EU Taxonomy dataset for financial companies for that company.
+       */
+      function uploadCompanyAndEuTaxonomyNonFinancialsDatasetViaApi(): void {
+        getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
           const companyInformation = generateCompanyInformation();
           companyInformation.companyName = nonFinancialCompanyName;
-          await uploadCompanyViaApi(token, companyInformation).then(async (storedCompany) => {
+          return uploadCompanyViaApi(token, companyInformation).then((storedCompany) => {
             const nonFinancialDataSet = generateEuTaxonomyDataForNonFinancials();
-            await uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, nonFinancialDataSet);
+            return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, nonFinancialDataSet);
           });
         });
       }
 
       before(() => {
-        uploadLksgAndFinancialCompany();
+        uploadCompanyAndLksgDataAndEuTaxonomyFinancialsDataViaApi();
 
-        uploadNonFinancialCompany();
+        uploadCompanyAndEuTaxonomyNonFinancialsDatasetViaApi();
       });
 
       it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         selectCompanyViaAutocompleteOnCompaniesPage("eutaxonomy-financials", lksgAndFinancialCompanyName);
         validateFinancialsPage();
-        selectCompanyViaUniqueSearchRequest("eutaxonomy-financials", lksgAndFinancialCompanyName);
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult("eutaxonomy-financials", lksgAndFinancialCompanyName);
         validateFinancialsPage();
         validateDropdown(financialsDropdownItem);
-        dropdownSelect(lksgDropdownItem);
+        selectFrameworkInDropdown(lksgDropdownItem);
         validateLksgPage();
         validateDropdown(lksgDropdownItem);
-        dropdownSelect(financialsDropdownItem);
+        selectFrameworkInDropdown(financialsDropdownItem);
         validateFinancialsPage();
 
         selectCompanyViaAutocompleteOnCompaniesPage("lksg", lksgAndFinancialCompanyName);
         validateLksgPage();
-        selectCompanyViaUniqueSearchRequest("lksg", lksgAndFinancialCompanyName);
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult("lksg", lksgAndFinancialCompanyName);
         validateLksgPage();
         validateDropdown(lksgDropdownItem);
       });
 
       it("Check that from a framework page you can search a company without this framework", () => {
         cy.ensureLoggedIn();
-        selectCompanyViaUniqueSearchRequest("lksg", lksgAndFinancialCompanyName);
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult("lksg", lksgAndFinancialCompanyName);
         validateLksgPage();
-        searchCompanyViaLocalSearchBarAndSelect(nonFinancialCompanyName, "input#framework_data_search_bar_standard");
+        searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(
+          nonFinancialCompanyName,
+          "input#framework_data_search_bar_standard"
+        );
         validateNonFinancialsPage();
       });
     }

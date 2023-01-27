@@ -32,6 +32,13 @@ describe(
   () => {
     type UploadFunction<T> = (token: string, companyId: string, dataset: T) => Promise<DataMetaInformation>;
 
+    /**
+     * A higher-level helper function for bulk data upload. Creates all provided companies and uses
+     * the uploaderOneFrameworkDataset function to upload the datasets
+     *
+     * @param companiesWithFrameworkData a list of companies with datasets to upload
+     * @param uploadOneFrameworkDataset a function that uploads a single dataset
+     */
     function prepopulate<T>(
       companiesWithFrameworkData: Array<FixtureData<T>>,
       uploadOneFrameworkDataset: UploadFunction<T>
@@ -44,6 +51,14 @@ describe(
       });
     }
 
+    /**
+     * Uses the Dataland API to verify that the number of companies that contain at least one dataset of the
+     * provided data type equal the expected number.
+     * It also asserts that the total number of datasets of the provided data type equals that number.
+     *
+     * @param dataType the datatype to filter by
+     * @param expectedNumberOfCompanies is the expected number of companies
+     */
     function checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
       dataType: DataTypeEnum,
       expectedNumberOfCompanies: number

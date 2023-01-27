@@ -12,6 +12,12 @@ before(function () {
   });
 });
 
+/**
+ * Retrieves the first company from the fake fixture dataset that has values for both
+ * reportingObligation and assurance
+ *
+ * @returns the found dataset
+ */
 function getCompanyWithReportingObligationAndAssurance(): FixtureData<EuTaxonomyDataForNonFinancials> {
   return companiesWithEuTaxonomyDataForNonFinancials.filter((it) => {
     return it.t.reportingObligation !== undefined && it.t.assurance !== undefined;
