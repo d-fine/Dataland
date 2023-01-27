@@ -19,7 +19,7 @@
         </template>
       </Column>
       <Column v-if="isProperlyImplemented" field="year" header="YEAR" :sortable="true"></Column>
-      <Column v-if="isProperlyImplemented" field="status" header="STATUS" :sortable="true" sortField="status.text">
+      <Column field="status" header="STATUS" :sortable="true" sortField="status.text">
         <template #body="{ data }">
           <span :class="`p-badge badge-${data.status.color} m-0`">{{ data.status.text }}</span>
         </template>

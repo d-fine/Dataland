@@ -22,7 +22,10 @@
                   </router-link>
                 </div>
               </div>
-              <div v-if="!waitingForData" class="mt-2 flex justify-content-between">
+              <div
+                class="mt-2 flex justify-content-between"
+                :class="waitingForData ? 'invisible' : ''"
+              >
                 <div>
                   <span>Approved datasets: </span>
                   <span class="p-badge badge-green">{{ this.numApproved }}</span>
@@ -45,14 +48,13 @@
             />
           </div>
           <DatasetOverviewTable
-              v-if="datasetTableInfos.length > 0"
               :dataset-table-infos="datasetTableInfos"
               :is-properly-implemented="isProperlyImplemented"
+              :class="(datasetTableInfos.length > 0) ? '' : 'hidden'"
           />
-          <div v-else-if="waitingForData" class="inline-loading meta-data-height text-center">
+          <div v-if="waitingForData" class="inline-loading meta-data-height text-center">
             <p class="font-medium text-xl">Loading datasets...</p>
             <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-            <!--TODO loading circle-->
           </div>
         </TheContent>
       </TabPanel>
@@ -60,6 +62,12 @@
     <DatalandFooter />
   </AuthenticationWrapper>
 </template>
+
+<style scoped>
+.invisible {
+  visibility: hidden;
+}
+</style>
 
 <script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -98,7 +106,7 @@ export default defineComponent({
       numPending: 0,
       numRejected: 0,
       activeTabIndex: 1,
-      isProperlyImplemented: true,
+      isProperlyImplemented: false,
     };
   },
   setup() {
@@ -107,7 +115,7 @@ export default defineComponent({
     };
   },
   created() {
-    this.requestDataMetaDataForCurrentUser().then(() => { this.waitingForData = false; });
+    void this.requestDataMetaDataForCurrentUser();
   },
   watch: {
     datasetTableInfos() {
@@ -151,6 +159,7 @@ export default defineComponent({
               )
           )
       );
+      this.waitingForData = false;
     },
     countDatasetStatus(status: DatasetStatus): number {
       return this.datasetTableInfos.filter((info) => info.status.text === status.text).length;
