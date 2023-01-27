@@ -35,7 +35,7 @@ class CloudEventMessageHandler(
             .setType(type)
             .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
             .build(CloudEventMessageUtils.AMQP_ATTR_PREFIX)
-        return message
+        return convertMessage(message)
     }
 
     fun buildCEMessageAndSendToQueue(input: String, type: String = "TestType", correlationId: String, queue: String){
