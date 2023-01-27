@@ -21,6 +21,9 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Performs a go-back operation on the vue router
+     */
     goBack(): void {
       this.$router.go(-1);
     },

@@ -23,7 +23,6 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 import { defineComponent, inject } from "vue";
 import { CompanyInformation } from "@clients/backend";
 import Keycloak from "keycloak-js";
@@ -59,6 +58,10 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Uses the dataland API to retrieve information about the company identified by the local
+     * companyId object.
+     */
     async getCompanyInformation() {
       try {
         this.waitingForData = true;
@@ -74,9 +77,6 @@ export default defineComponent({
         console.error(error);
         this.companyInformation = null;
       }
-    },
-    orderOfMagnitudeSuffix(value: number): string {
-      return convertCurrencyNumbersToNotationWithLetters(value);
     },
   },
 });

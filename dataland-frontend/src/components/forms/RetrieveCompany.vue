@@ -70,6 +70,13 @@ export default defineComponent({
     additionalCompanies: null,
   }),
   methods: {
+    /**
+     * Uses the Dataland API to retrieve all companies matching the companyName in the Form or
+     * all companies without restrictions if the all parameter is set to true.
+     * The companies are stored in the response property of the component.
+     *
+     * @param all whether to retrieve all companies or just companies matching companyName
+     */
     async getCompanyByName(all = false) {
       try {
         this.loading = false;

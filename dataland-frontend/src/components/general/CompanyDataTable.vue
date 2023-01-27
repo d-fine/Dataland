@@ -6,11 +6,11 @@
   <div>
     <div class="card">
       <DataTable
-        :value="dataToDisplay"
+        :value="kpiDataObjectsToDisplay"
         rowGroupMode="subheader"
-        groupRowsBy="group"
-        dataKey="group"
-        sortField="group"
+        groupRowsBy="subAreaKey"
+        dataKey="subAreaKey"
+        sortField="subAreaKey"
         :sortOrder="1"
         sortMode="single"
         responsiveLayout="scroll"
@@ -22,44 +22,45 @@
           bodyClass="headers-bg flex"
           headerStyle="width: 30vw;"
           headerClass="horizontal-headers-size"
-          field="kpi"
+          field="kpiKey"
           header="KPIs"
         >
           <template #body="slotProps">
             <span class="col-10">{{
-              kpisNames[slotProps.data.kpi] ? kpisNames[slotProps.data.kpi] : slotProps.data.kpi
+              kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : slotProps.data.kpiKey
             }}</span>
             <em
               class="material-icons info-icon col-2"
               aria-hidden="true"
-              title="kpisNames[slotProps.data.kpi] ? kpisNames[slotProps.data.kpi] : ''"
+              title="kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : ''"
               v-tooltip.top="{
-                value: hintsForKpis[slotProps.data.kpi] ? hintsForKpis[slotProps.data.kpi] : '',
+                value: kpiInfoMappings[slotProps.data.kpiKey] ? kpiInfoMappings[slotProps.data.kpiKey] : '',
               }"
               >info</em
             >
           </template>
         </Column>
-        <Column v-for="col of dataSetColumns" :field="col" :header="col.split('-')[0]" :key="col">
+        <Column
+          v-for="dataDate of dataDatesOfDataSets"
+          :field="dataDate"
+          :header="dataDate.split('-')[0]"
+          :key="dataDate"
+        >
           <template #body="{ data }">
             <a
-              v-if="Array.isArray(data[col]) && data[col].length"
-              @click="
-                () => {
-                  openModalAndDisplayArrayOfKpiValues(data[col], kpisNames[data.kpi]);
-                }
-              "
+              v-if="Array.isArray(data[dataDate]) && data[dataDate].length"
+              @click="openModalAndDisplayListOfProductionSites(data[dataDate], kpiNameMappings[data.kpiKey])"
               class="link"
-              >Show "{{ kpisNames[data.kpi] }}"
+              >Show "{{ kpiNameMappings[data.kpiKey] }}"
               <em class="material-icons" aria-hidden="true" title=""> dataset </em>
             </a>
-            <span v-else>{{ Array.isArray(data[col]) ? "" : data[col] }}</span>
+            <span v-else>{{ Array.isArray(data[dataDate]) ? "" : data[dataDate] }}</span>
           </template>
         </Column>
 
-        <Column field="group" header="Impact Area"></Column>
+        <Column field="subAreaKey" header="Impact Area"></Column>
         <template #groupheader="slotProps">
-          <span>{{ slotProps.data.group ? impactTopicNames[slotProps.data.group] : "" }}</span>
+          <span>{{ slotProps.data.subAreaKey ? subAreaNameMappings[slotProps.data.subAreaKey] : "" }}</span>
         </template>
       </DataTable>
     </div>
@@ -83,29 +84,29 @@ export default defineComponent({
   },
   data() {
     return {
-      dataToDisplay: [],
+      kpiDataObjectsToDisplay: [],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames,
     };
   },
   props: {
-    dataSet: {
+    kpiDataObjects: {
       type: Array,
       default: () => [],
     },
-    dataSetColumns: {
+    dataDatesOfDataSets: {
       type: Array,
       default: () => [],
     },
-    kpisNames: {
+    kpiNameMappings: {
       type: Object,
       default: () => ({}),
     },
-    hintsForKpis: {
+    kpiInfoMappings: {
       type: Object,
       default: () => ({}),
     },
-    impactTopicNames: {
+    subAreaNameMappings: {
       type: Object,
       default: () => ({}),
     },
@@ -115,17 +116,23 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.dataToDisplay = this.dataSet;
+    this.kpiDataObjectsToDisplay = this.kpiDataObjects;
   },
   methods: {
-    openModalAndDisplayArrayOfKpiValues(onShowData: [], onShowDataTitle: string) {
+    /**
+     * Opens a modal to display a table with the provided list of production sites
+     *
+     * @param listOfProductionSites An array consisting of production sites
+     * @param modalTitle The title for the modal, which is derived from the key of the KPI
+     */
+    openModalAndDisplayListOfProductionSites(listOfProductionSites: [], modalTitle: string) {
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
-          header: onShowDataTitle,
+          header: modalTitle,
           modal: true,
         },
         data: {
-          detailDataForKpi: onShowData,
+          listOfProductionSitesNames: listOfProductionSites,
           listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
         },
       });

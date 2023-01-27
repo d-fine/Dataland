@@ -95,6 +95,9 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Sends the user to the dataland home page
+     */
     returnToHome() {
       void this.$router.push("/");
     },

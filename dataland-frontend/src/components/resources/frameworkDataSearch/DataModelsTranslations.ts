@@ -1,4 +1,4 @@
-export const lksgKpis = {
+export const lksgKpiNameMappings = {
   dataDate: "Data Date",
   companyLegalForm: "Company Legal Form",
   vatIdentificationNumber: "VAT Identification Number",
@@ -133,7 +133,7 @@ export const lksgKpis = {
   inHouseProductionOrContractProcessing: "Is in-house production or is Contract Processing",
 };
 
-export const lksgQuestions = {
+export const lksgKpiInfoMappings = {
   dataDate: "The date until for which the information collected is valid",
   lksgInScope: "Does your company fall within the scope of the LkSG according to §1 LkSG?",
   vatIdentificationNumber: "Value-added tax identification number",
@@ -351,7 +351,7 @@ export const listOfProductionSitesConvertedNames = {
   listOfGoodsOrServices: "List Of Goods Or Services",
 };
 
-export const impactTopicNames = {
+export const lksgSubAreaNameMappings = {
   childLabour: "Child labour",
   evidenceCertificatesAndAttestations: "Evidence, certificates and attestations",
   forcedLabourSlaveryAndDebtBondage: "Forced labour, slavery and debt bondage",

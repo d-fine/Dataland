@@ -5,11 +5,11 @@
   </div>
   <div v-if="lksgData && !waitingForData">
     <CompanyDataTable
-      :dataSet="kpisDataObjects"
-      :dataSetColumns="listOfDatesToDisplayAsColumns"
-      :kpisNames="lksgKpis"
-      :hintsForKpis="lksgQuestions"
-      :impactTopicNames="impactTopicNames"
+      :kpiDataObjects="kpiDataObjects"
+      :dataDatesOfDataSets="listOfDatesToDisplayAsColumns"
+      :kpiNameMappings="lksgKpiNameMappings"
+      :kpiInfoMappings="lksgKpiInfoMappings"
+      :subAreaNameMappings="lksgSubAreaNameMappings"
       tableDataTitle="LkSG data"
     />
   </div>
@@ -23,9 +23,9 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
-  impactTopicNames,
-  lksgKpis,
-  lksgQuestions,
+  lksgSubAreaNameMappings,
+  lksgKpiNameMappings,
+  lksgKpiInfoMappings,
 } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
@@ -34,22 +34,22 @@ export default defineComponent({
   data() {
     return {
       waitingForData: true,
-      lksgData: [] as Array<LksgData> | undefined,
-      listOfDatesToDisplayAsColumns: [] as string[],
-      kpisDataObjects: [],
-      lksgKpis,
-      lksgQuestions,
-      impactTopicNames,
+      lksgData: [] as Array<LksgData>,
+      listOfDatesToDisplayAsColumns: [] as Array<string>,
+      kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
+      lksgKpiNameMappings,
+      lksgKpiInfoMappings,
+      lksgSubAreaNameMappings,
     };
   },
   props: {
     companyId: {
       type: String,
-      default: () => "",
     },
   },
   watch: {
     companyId() {
+      this.listOfDatesToDisplayAsColumns = [];
       void this.fetchDataForAllDataIds();
     },
   },
@@ -62,6 +62,9 @@ export default defineComponent({
     void this.fetchDataForAllDataIds();
   },
   methods: {
+    /**
+     * Fetches all LkSG datasets for the current company and converts them to the requried frontend format.
+     */
     async fetchDataForAllDataIds() {
       try {
         this.waitingForData = true;
@@ -69,31 +72,49 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
         this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))).data;
-        this.convertLksgDataToFrontendFormat();
+        this.convertLksgDataToFrontendFormat(this.lksgData);
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
       }
     },
 
-    appendKpiValues(kpi: string, kpiValues: string, topic: string, dataDate: string): void {
-      if (kpi === "totalRevenue") {
-        kpiValues = this.convertToMillions(parseFloat(kpiValues));
+    /**
+     * Creates kpi data objects to pass them to the data table.
+     *
+     * @param kpiKey The field name of a kpi
+     * @param kpiValue The corresponding value to the kpiKey
+     * @param subAreaKey The sub area to which the kpi belongs
+     * @param dataDateOfLksgDataset The value of the date kpi of an LkSG dataset
+     */
+    createKpiDataObjects(
+      kpiKey: string,
+      kpiValue: object | string,
+      subAreaKey: string,
+      dataDateOfLksgDataset: string
+    ): void {
+      if (kpiKey === "totalRevenue" && typeof kpiValue === "string") {
+        kpiValue = this.convertToMillions(parseFloat(kpiValue));
       }
       let indexOfExistingItem = -1;
-      const singleKpiDataObject = {
-        kpi: kpi,
-        group: topic == "general" ? `_${topic}` : topic,
-        [dataDate ? dataDate : ""]: kpiValues,
+      const kpiDataObject = {
+        subAreaKey: subAreaKey == "general" ? `_${subAreaKey}` : subAreaKey,
+        kpiKey: kpiKey,
+        [dataDateOfLksgDataset]: kpiValue,
       };
-      indexOfExistingItem = this.kpisDataObjects.findIndex((item) => item.kpi === kpi);
+      indexOfExistingItem = this.kpiDataObjects.findIndex(
+        (singleKpiDataObject) => singleKpiDataObject.kpiKey === kpiKey
+      );
       if (indexOfExistingItem !== -1) {
-        Object.assign(this.kpisDataObjects[indexOfExistingItem], singleKpiDataObject);
+        Object.assign(this.kpiDataObjects[indexOfExistingItem], kpiDataObject);
       } else {
-        this.kpisDataObjects.push(singleKpiDataObject);
+        this.kpiDataObjects.push(kpiDataObject);
       }
     },
 
+    /**
+     * Sorts dates to ensure that LkSG datasets are displayed chronologically in the table of all LkSG datasets.
+     */
     sortDatesToDisplayAsColumns(): void {
       this.listOfDatesToDisplayAsColumns.sort((dateA, dateB) => {
         if (Date.parse(dateA) < Date.parse(dateB)) {
@@ -104,17 +125,19 @@ export default defineComponent({
       });
     },
 
-    convertLksgDataToFrontendFormat(): void {
-      this.listOfDatesToDisplayAsColumns = [];
-      this.lksgData?.forEach((oneLksgDataSet) => {
-        const dataDate = oneLksgDataSet.social?.general?.dataDate ?? "";
-        if (dataDate) {
-          this.listOfDatesToDisplayAsColumns.push(dataDate);
-        }
-        for (const area of Object.values(oneLksgDataSet)) {
-          for (const [topic, topicValues] of Object.entries(area)) {
-            for (const [kpi, kpiValues] of Object.entries(topicValues as LksgData)) {
-              this.appendKpiValues(kpi, kpiValues as string, topic, dataDate);
+    /**
+     * Retrieves and converts values from an array of LkSG datasets in order to make it displayable in the frontend.
+     *
+     * @param lksgData The LkSG dataset that shall be converted
+     */
+    convertLksgDataToFrontendFormat(lksgData: Array<LksgData>): void {
+      lksgData.forEach((oneLksgDataset) => {
+        const dataDateOfLksgDataset = oneLksgDataset.social?.general?.dataDate ?? "";
+        this.listOfDatesToDisplayAsColumns.push(dataDateOfLksgDataset);
+        for (const areaObject of Object.values(oneLksgDataset)) {
+          for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
+            for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
+              this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataDateOfLksgDataset);
             }
           }
         }
@@ -122,8 +145,14 @@ export default defineComponent({
       this.sortDatesToDisplayAsColumns();
     },
 
-    convertToMillions(value: number): string {
-      return `${(value / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
+    /**
+     * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
+     *
+     * @param inputNumber The numbert to convert
+     * @returns a string with the converted number and "MM" at the end
+     */
+    convertToMillions(inputNumber: number): string {
+      return `${(inputNumber / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
     },
   },
 });

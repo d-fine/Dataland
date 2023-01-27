@@ -7,8 +7,8 @@
  *
  * @param  {number} rawNumber is the number that needs to be rounded
  * @param  {number} precision is the number that defines how many digits should be considered after the decimal point
+ * @returns rawNumber rounded to precision digits
  */
-
 export function roundNumber(rawNumber: number, precision: number): number {
   const multiplier = Math.pow(10, precision || 0);
   return Math.round(rawNumber * multiplier) / multiplier;
@@ -19,6 +19,7 @@ export function roundNumber(rawNumber: number, precision: number): number {
  *
  * @param  {number} numberOfBytes is the number of bytes
  * @param  {number} precision is the number that defines how many digits should be considered after the decimal point
+ * @returns a human-readable string of the number of bytes
  */
 export function formatBytesUserFriendly(numberOfBytes: number, precision: number): string {
   if (!+numberOfBytes) return "0 Bytes";

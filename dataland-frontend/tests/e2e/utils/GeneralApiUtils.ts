@@ -7,6 +7,13 @@ export interface UploadIds {
   dataId: string;
 }
 
+/**
+ * Gets stored companies that have at least one dataset with the provided data type
+ *
+ * @param token The API bearer token to use
+ * @param dataType Data type for which the returned companies should have at least one dataset
+ * @returns an array of stored companies
+ */
 export async function getStoredCompaniesForDataType(token: string, dataType: DataTypeEnum): Promise<StoredCompany[]> {
   const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
     undefined,
@@ -15,6 +22,14 @@ export async function getStoredCompaniesForDataType(token: string, dataType: Dat
   return response.data;
 }
 
+/**
+ * Counts the number of stored companies which contain at least one dataset with the provided data type and the
+ * total number of datasets for that datatype
+ *
+ * @param token The API bearer token to use
+ * @param dataType The data type to use while counting companies and number of datasets for that data type
+ * @returns an object which contains the resulting number of companies and number of datasets
+ */
 export async function countCompaniesAndDataSetsForDataType(
   token: string,
   dataType: DataTypeEnum
@@ -31,13 +46,20 @@ export async function countCompaniesAndDataSetsForDataType(
   };
 }
 
+/**
+ * Intercepts all requests to the backend, checks if a certain allow-flag is set in the headers, then checks if the
+ * response has a status code greater or equal 500, and throws an error depending on the allow-flag
+ */
 export function interceptAllAndCheckFor500Errors(): void {
-  const handler: RouteHandler = (req) => {
-    const allow500 = req.headers["DATALAND-ALLOW-5XX"] === "true";
-    delete req.headers["DATALAND-ALLOW-5XX"];
-    req.continue((res) => {
-      if (res.statusCode >= 500 && !allow500) {
-        assert(false, `Received a ${res.statusCode} Response from the Dataland backend (request to ${req.url})`);
+  const handler: RouteHandler = (incomingRequest) => {
+    const is500ResponseAllowed = incomingRequest.headers["DATALAND-ALLOW-5XX"] === "true";
+    delete incomingRequest.headers["DATALAND-ALLOW-5XX"];
+    incomingRequest.continue((response) => {
+      if (response.statusCode >= 500 && !is500ResponseAllowed) {
+        assert(
+          false,
+          `Received a ${response.statusCode} Response from the Dataland backend (request to ${incomingRequest.url})`
+        );
       }
     });
   };
@@ -45,6 +67,13 @@ export function interceptAllAndCheckFor500Errors(): void {
   cy.intercept("/api-keys/**", handler);
 }
 
+/**
+ * Generic function to retrieve the first prepared fixture whose company name equals the provided search string
+ *
+ * @param name Search string to look for in the prepared fixtures
+ * @param preparedFixtures The parsed array of prepared fixtures
+ * @returns the first prepared fixture whose name equals the provided search string
+ */
 export function getPreparedFixture<T>(name: string, preparedFixtures: FixtureData<T>[]): FixtureData<T> {
   const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
   if (!preparedFixture) {

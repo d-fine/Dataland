@@ -3,6 +3,12 @@ import { shallowMount, mount, VueWrapper } from "@vue/test-utils";
 import App from "@/App.vue";
 import { createRouter, createWebHistory, Router } from "vue-router";
 
+/**
+ * Mounts the main vue component with the specified router
+ *
+ * @param routerToBeUsedWithMount the router to be used
+ * @returns the mounted component
+ */
 function mountAppWithRouter(routerToBeUsedWithMount: Router): VueWrapper {
   return mount(App, {
     global: {
