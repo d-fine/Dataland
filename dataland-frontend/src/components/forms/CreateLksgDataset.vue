@@ -18,20 +18,20 @@
             <FormKit type="group" name="social" label="social">
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="general" class="anchor title">{{ impactTopicNames._general }}</h4>
+                  <h4 id="general" class="anchor title">{{ lksgSubAreaNameMappings._general }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   <p>Please input all relevant basic information about the dataset</p>
                 </div>
 
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="general" :label="impactTopicNames._general">
+                  <FormKit type="group" name="general" :label="lksgSubAreaNameMappings._general">
                     <div class="form-field">
-                      <UploadFormHeader :name="lksgKpis.dataDate" :explanation="lksgQuestions.dataDate" />
+                      <UploadFormHeader :name="lksgKpiNameMappings.dataDate" :explanation="lksgKpiInfoMappings.dataDate" />
                       <FormKit type="date" help="Enter date" />
                     </div>
 
                     <div class="form-field">
-                      <UploadFormHeader :name="lksgKpis.lksgInScope" :explanation="lksgQuestions.lksgInScope" />
+                      <UploadFormHeader :name="lksgKpiNameMappings.lksgInScope" :explanation="lksgKpiInfoMappings.lksgInScope" />
                       <FormKit
                         type="radio"
                         name="lksgInScope"
@@ -51,24 +51,24 @@
 
                     <div class="form-field">
                       <UploadFormHeader
-                        :name="lksgKpis.companyLegalForm"
-                        :explanation="lksgQuestions.companyLegalForm"
+                        :name="lksgKpiNameMappings.companyLegalForm"
+                        :explanation="lksgKpiInfoMappings.companyLegalForm"
                       />
                       <FormKit type="text" name="companyLegalForm" />
                     </div>
 
                     <div class="form-field">
                       <UploadFormHeader
-                        :name="lksgKpis.vatIdentificationNumber"
-                        :explanation="lksgQuestions.vatIdentificationNumber"
+                        :name="lksgKpiNameMappings.vatIdentificationNumber"
+                        :explanation="lksgKpiInfoMappings.vatIdentificationNumber"
                       />
                       <FormKit type="number" name="VATidentificationNumber" step="1" />
                     </div>
 
                     <div class="form-field">
                       <UploadFormHeader
-                        :name="lksgKpis.numberOfEmployees"
-                        :explanation="lksgQuestions.numberOfEmployees"
+                        :name="lksgKpiNameMappings.numberOfEmployees"
+                        :explanation="lksgKpiInfoMappings.numberOfEmployees"
                       />
                       <FormKit
                         type="number"
@@ -81,8 +81,8 @@
 
                     <div class="form-field">
                       <UploadFormHeader
-                        :name="lksgKpis.shareOfTemporaryWorkers"
-                        :explanation="lksgQuestions.shareOfTemporaryWorkers"
+                        :name="lksgKpiNameMappings.shareOfTemporaryWorkers"
+                        :explanation="lksgKpiInfoMappings.shareOfTemporaryWorkers"
                       />
                       <FormKit
                         type="number"
@@ -96,7 +96,7 @@
                     </div>
 
                     <div class="form-field">
-                      <UploadFormHeader :name="lksgKpis.totalRevenue" :explanation="lksgQuestions.totalRevenue" />
+                      <UploadFormHeader :name="lksgKpiNameMappings.totalRevenue" :explanation="lksgKpiInfoMappings.totalRevenue" />
                       <div class="next-to-each-other">
                         <FormKit type="number" name="totalRevenue" placeholder="Value" step="1" />
                         <FormKit type="select" name="unit" placeholder="Unit" :options="['CHF', 'USD']" />
@@ -105,8 +105,8 @@
 
                     <div class="form-field">
                       <UploadFormHeader
-                        :name="lksgKpis.totalRevenueCurrency"
-                        :explanation="lksgQuestions.totalRevenueCurrency"
+                        :name="lksgKpiNameMappings.totalRevenueCurrency"
+                        :explanation="lksgKpiInfoMappings.totalRevenueCurrency"
                       />
                       <FormKit
                         type="text"
@@ -121,7 +121,7 @@
                     <div class="form-field">
                       <UploadFormHeader
                         :name="'Is your company a manufacturing company?'"
-                        :explanation="lksgQuestions.listOfProductionSites"
+                        :explanation="lksgKpiInfoMappings.listOfProductionSites"
                       />
                       <FormKit
                         type="radio"
@@ -153,8 +153,8 @@
 
                           <div class="form-field">
                             <UploadFormHeader
-                              :name="lksgKpis.productionSiteName"
-                              :explanation="lksgQuestions.productionSiteName"
+                              :name="lksgKpiNameMappings.productionSiteName"
+                              :explanation="lksgKpiInfoMappings.productionSiteName"
                             />
                             <FormKit type="text" name="productionSiteName" />
                           </div>
@@ -162,8 +162,8 @@
                           <!-- Is in-house production or is Contract Processing  -->
                           <div class="form-field">
                             <UploadFormHeader
-                              :name="lksgKpis.inHouseProductionOrContractProcessing"
-                              :explanation="lksgQuestions.inHouseProductionOrContractProcessing"
+                              :name="lksgKpiNameMappings.inHouseProductionOrContractProcessing"
+                              :explanation="lksgKpiInfoMappings.inHouseProductionOrContractProcessing"
                             />
                             <FormKit
                               type="radio"
@@ -185,8 +185,8 @@
                           <!-- Addresses Of Production Sites  -->
                           <div class="form-field">
                             <UploadFormHeader
-                              :name="lksgKpis.addressesOfProductionSites"
-                              :explanation="lksgQuestions.addressesOfProductionSites"
+                              :name="lksgKpiNameMappings.addressesOfProductionSites"
+                              :explanation="lksgKpiInfoMappings.addressesOfProductionSites"
                             />
 
                             <FormKit type="text" name="StreetHouseNumber" placeholder="Street, House number" />
@@ -206,8 +206,8 @@
                                 aria-hidden="true"
                                 title="listOfGoodsOrServices"
                                 v-tooltip.top="{
-                                  value: lksgQuestions['listOfGoodsOrServices']
-                                    ? lksgQuestions['listOfGoodsOrServices']
+                                  value: lksgKpiInfoMappings['listOfGoodsOrServices']
+                                    ? lksgKpiInfoMappings['listOfGoodsOrServices']
                                     : '',
                                 }"
                                 >info</em
@@ -256,12 +256,12 @@
 
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="childLabour" class="anchor title">{{ impactTopicNames.childLabour }}</h4>
+                  <h4 id="childLabour" class="anchor title">{{ lksgSubAreaNameMappings.childLabour }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="childLabour" :label="impactTopicNames.childLabour">
+                  <FormKit type="group" name="childLabour" :label="lksgSubAreaNameMappings.childLabour">
                     <YesNoComponent :name="'employeeUnder18'" />
                     <YesNoComponent :name="'employeeUnder15'" />
                     <YesNoComponent :name="'employeeUnder18Apprentices'" />
@@ -278,7 +278,7 @@
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
                   <h4 id="forcedLabourSlaveryAndDebtBondage" class="anchor title">
-                    {{ impactTopicNames.forcedLabourSlaveryAndDebtBondage }}
+                    {{ lksgSubAreaNameMappings.forcedLabourSlaveryAndDebtBondage }}
                   </h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
@@ -287,7 +287,7 @@
                   <FormKit
                     type="group"
                     name="forcedLabourSlaveryAndDebtBondage"
-                    :label="impactTopicNames.forcedLabourSlaveryAndDebtBondage"
+                    :label="lksgSubAreaNameMappings.forcedLabourSlaveryAndDebtBondage"
                   >
                     <YesNoComponent :name="'forcedLabourAndSlaveryPrevention'" />
                     <YesNoComponent :name="'forcedLabourAndSlaveryPreventionEmploymentContracts'" />
@@ -306,7 +306,7 @@
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
                   <h4 id="evidenceCertificatesAndAttestations" class="anchor title">
-                    {{ impactTopicNames.evidenceCertificatesAndAttestations }}
+                    {{ lksgSubAreaNameMappings.evidenceCertificatesAndAttestations }}
                   </h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
@@ -315,7 +315,7 @@
                   <FormKit
                     type="group"
                     name="evidenceCertificatesAndAttestations"
-                    :label="impactTopicNames.evidenceCertificatesAndAttestations"
+                    :label="lksgSubAreaNameMappings.evidenceCertificatesAndAttestations"
                   >
                     <YesNoComponent :name="'iso26000'" />
                     <YesNoComponent :name="'sa8000Certification'" />
@@ -346,12 +346,12 @@
 
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="grievanceMechanism" class="anchor title">{{ impactTopicNames.grievanceMechanism }}</h4>
+                  <h4 id="grievanceMechanism" class="anchor title">{{ lksgSubAreaNameMappings.grievanceMechanism }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="grievanceMechanism" :label="impactTopicNames.grievanceMechanism">
+                  <FormKit type="group" name="grievanceMechanism" :label="lksgSubAreaNameMappings.grievanceMechanism">
                     <YesNoComponent :name="'grievanceHandlingMechanism'" />
                     <YesNoComponent :name="'grievanceHandlingMechanismUsedForReporting'" />
                     <YesNoComponent :name="'legalProceedings'" />
@@ -361,12 +361,12 @@
 
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="osh" class="anchor title">{{ impactTopicNames.osh }}</h4>
+                  <h4 id="osh" class="anchor title">{{ lksgSubAreaNameMappings.osh }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="osh" :label="impactTopicNames.osh">
+                  <FormKit type="group" name="osh" :label="lksgSubAreaNameMappings.osh">
                     <YesNoComponent :name="'oshMonitoring'" />
                     <YesNoComponent :name="'oshPolicy'" />
                     <YesNoComponent :name="'oshPolicyPersonalProtectiveEquipment'" />
@@ -390,12 +390,12 @@
 
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="freedomOfAssociation" class="anchor title">{{ impactTopicNames.freedomOfAssociation }}</h4>
+                  <h4 id="freedomOfAssociation" class="anchor title">{{ lksgSubAreaNameMappings.freedomOfAssociation }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="freedomOfAssociation" :label="impactTopicNames.freedomOfAssociation">
+                  <FormKit type="group" name="freedomOfAssociation" :label="lksgSubAreaNameMappings.freedomOfAssociation">
                     <YesNoComponent :name="'freedomOfAssociation'" />
                     <YesNoComponent :name="'discriminationForTradeUnionMembers'" />
                     <YesNoComponent :name="'freedomOfOperationForTradeUnion'" />
@@ -407,12 +407,12 @@
 
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="humanRights" class="anchor title">{{ impactTopicNames.humanRights }}</h4>
+                  <h4 id="humanRights" class="anchor title">{{ lksgSubAreaNameMappings.humanRights }}</h4>
                   <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                 </div>
 
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="humanRights" :label="impactTopicNames.humanRights">
+                  <FormKit type="group" name="humanRights" :label="lksgSubAreaNameMappings.humanRights">
                     <YesNoComponent :name="'diversityAndInclusionRole'" />
                     <YesNoComponent :name="'preventionOfMistreatments'" />
                     <YesNoComponent :name="'equalOpportunitiesOfficer'" />
@@ -431,7 +431,7 @@
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
                   <h4 id="socialAndEmployeeMatters" class="anchor title">
-                    {{ impactTopicNames.socialAndEmployeeMatters }}
+                    {{ lksgSubAreaNameMappings.socialAndEmployeeMatters }}
                   </h4>
                   <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                 </div>
@@ -440,7 +440,7 @@
                   <FormKit
                     type="group"
                     name="socialAndEmployeeMatters"
-                    :label="impactTopicNames.socialAndEmployeeMatters"
+                    :label="lksgSubAreaNameMappings.socialAndEmployeeMatters"
                   >
                     <YesNoComponent :name="'responsibilitiesForFairWorkingConditions'" />
                   </FormKit>
@@ -449,11 +449,11 @@
 
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="environment" class="anchor title">{{ impactTopicNames.environment }}</h4>
+                  <h4 id="environment" class="anchor title">{{ lksgSubAreaNameMappings.environment }}</h4>
                   <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                 </div>
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="environment" :label="impactTopicNames.environment">
+                  <FormKit type="group" name="environment" :label="lksgSubAreaNameMappings.environment">
                     <YesNoComponent :name="'responsibilitiesForTheEnvironment'" />
                   </FormKit>
                 </div>
@@ -461,11 +461,11 @@
 
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="osh_governance" class="anchor title">{{ impactTopicNames.osh }}</h4>
+                  <h4 id="osh_governance" class="anchor title">{{ lksgSubAreaNameMappings.osh }}</h4>
                   <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                 </div>
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="osh" :label="impactTopicNames.osh">
+                  <FormKit type="group" name="osh" :label="lksgSubAreaNameMappings.osh">
                     <YesNoComponent :name="'responsibilitiesForOccupationalSafety'" />
                   </FormKit>
                 </div>
@@ -473,11 +473,11 @@
 
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="riskManagement" class="anchor title">{{ impactTopicNames.riskManagement }}</h4>
+                  <h4 id="riskManagement" class="anchor title">{{ lksgSubAreaNameMappings.riskManagement }}</h4>
                   <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                 </div>
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="riskManagement" :label="impactTopicNames.riskManagement">
+                  <FormKit type="group" name="riskManagement" :label="lksgSubAreaNameMappings.riskManagement">
                     <YesNoComponent :name="'riskManagementSystem'" />
                   </FormKit>
                 </div>
@@ -485,11 +485,11 @@
 
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="codeOfConduct" class="anchor title">{{ impactTopicNames.codeOfConduct }}</h4>
+                  <h4 id="codeOfConduct" class="anchor title">{{ lksgSubAreaNameMappings.codeOfConduct }}</h4>
                   <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                 </div>
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="codeOfConduct" :label="impactTopicNames.codeOfConduct">
+                  <FormKit type="group" name="codeOfConduct" :label="lksgSubAreaNameMappings.codeOfConduct">
                     <YesNoComponent :name="'codeOfConduct'" />
                     <YesNoComponent :name="'codeOfConductRiskManagementTopics'" />
                     <YesNoComponent :name="'codeOfConductTraining'" />
@@ -503,12 +503,12 @@
             <FormKit type="group" name="environmental" label="environmental">
               <div class="uploadFormSection grid">
                 <div id="topicLabel" class="col-3 topicLabel">
-                  <h4 id="waste" class="anchor title">{{ impactTopicNames.waste }}</h4>
+                  <h4 id="waste" class="anchor title">{{ lksgSubAreaNameMappings.waste }}</h4>
                   <div class="p-badge badge-green"><span>ENVIRONMENTAL</span></div>
                 </div>
 
                 <div id="formFields" class="col-9 formFields">
-                  <FormKit type="group" name="waste" :label="impactTopicNames.socialAndEmployeeMatters">
+                  <FormKit type="group" name="waste" :label="lksgSubAreaNameMappings.socialAndEmployeeMatters">
                     <YesNoComponent :name="'mercuryAndMercuryWasteHandling'" />
                     <YesNoComponent :name="'mercuryAndMercuryWasteHandlingPolicy'" />
                     <YesNoComponent :name="'chemicalHandling'" />
@@ -590,9 +590,9 @@ import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import {
-  lksgQuestions,
-  lksgKpis,
-  impactTopicNames,
+  lksgKpiInfoMappings,
+  lksgKpiNameMappings,
+  lksgSubAreaNameMappings,
 } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
@@ -777,9 +777,9 @@ export default defineComponent({
     },
     postEuTaxonomyDataForFinancialsResponse: null,
     humanizeString: humanizeString,
-    lksgQuestions,
-    lksgKpis,
-    impactTopicNames,
+    lksgKpiInfoMappings,
+    lksgKpiNameMappings,
+    lksgSubAreaNameMappings,
   }),
   props: {
     companyID: {
