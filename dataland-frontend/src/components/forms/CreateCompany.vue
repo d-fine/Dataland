@@ -209,6 +209,12 @@ export default defineComponent({
     gicsSectors,
   }),
   methods: {
+    /**
+     * Adds a CompanyIdentifier to the array of identifiers
+     *
+     * @param identifierType the type of the identifier as specified in CompanyIdentifierIdentifierTypeEnum
+     * @param identifierValue the value of the identifier
+     */
     addIdentifier(identifierType: CompanyIdentifierIdentifierTypeEnum, identifierValue: string): void {
       if (identifierValue !== "") {
         const newIdentifier = {
@@ -218,6 +224,9 @@ export default defineComponent({
         this.identifiers.push(newIdentifier);
       }
     },
+    /**
+     * Creates a new array of identifiers using the currently existing values
+     */
     collectIdentifiers(): void {
       this.identifiers = new Array<CompanyIdentifier>();
       this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Lei, this.lei);
@@ -227,6 +236,10 @@ export default defineComponent({
       this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Duns, this.duns);
       this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber, this.companyRegistrationNumber);
     },
+    /**
+     * Adds the value from the input field for company alternative names to the corresponding array.
+     * Empty strings and duplicates are ignored and the input field value is reset.
+     */
     addCompanyAlternativeName(): void {
       if (
         this.enteredCompanyAlternativeName !== "" &&
@@ -236,9 +249,19 @@ export default defineComponent({
       }
       this.enteredCompanyAlternativeName = "";
     },
+    /**
+     * Removes the n-th company alternative name from the corresponding array
+     *
+     * @param index specifies the n-th alternative name to be removed
+     */
     removeAlternativeName(index: number): void {
       this.companyAlternativeNames.splice(index - 1, 1);
     },
+    /**
+     * Builds a CompanyInformation object using the currently entered inputs and returns it
+     *
+     * @returns the CompanyInformation object build
+     */
     getCompanyInformation(): CompanyInformation {
       this.addCompanyAlternativeName();
       this.collectIdentifiers();
@@ -255,6 +278,9 @@ export default defineComponent({
         website: this.website,
       } as CompanyInformation;
     },
+    /**
+     * Scrolls to the top of the page
+     */
     toTop(): void {
       window.scrollTo({
         top: 0,
@@ -262,6 +288,9 @@ export default defineComponent({
         behavior: "smooth",
       });
     },
+    /**
+     * Posts the entered company information to the backend
+     */
     async postCompanyInformation() {
       this.messageCounter++;
       try {
