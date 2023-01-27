@@ -28,8 +28,7 @@ class QaService(@Autowired var cloudEventBuilder: CloudEventMessageHandler,
     @RabbitListener(queues = ["upload_queue"])
     fun receive(message: Message) {
         val dataId = cloudEventBuilder.bodyToString(message)
-        //val correlationId = message.messageProperties.messageId
-        val correlationId ="231"
+        val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         print("TestFunktion QA Service")
         println(message)
         val messageResult =  String(message.body)

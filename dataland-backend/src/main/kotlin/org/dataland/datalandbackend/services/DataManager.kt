@@ -116,25 +116,14 @@ class DataManager(
     @RabbitHandler
     fun logginOfStoredDataSet(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
-        val correlationId = message.messageProperties.messageId
+        val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         logger.info(
             "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId"
         )
         println("CorrelationID: $correlationId")
 
     }
-    /*
-    @RabbitListener(queues = ["storage_queue"])
-    //@RabbitHandler
-     fun testfunction(message: Message) {
-        //val decodeMessage = objectMapper.w (message, Object)
-        print("TestFunktion Datamanager")
-        print(message)
-        val messageResult =  String(message.body)
-        println("Decode Test $messageResult")
-        //return decodeMessage
-    }
-*/
+
     /**
      * Method to make the data manager get the data of a single entry from the data store
      * @param dataId to identify the stored data

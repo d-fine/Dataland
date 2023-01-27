@@ -35,8 +35,7 @@ class DatabaseDataStore(
     @RabbitListener(queues = ["storage_queue"])
     fun insertDataSet(message : Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
-        //val correlationId = message.messageProperties. messageId
-        val correlationId = "234"
+        val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         val data = dataInformationHashMap.map[dataId]
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         try {dataItemRepository.save(DataItem(dataId, data!!))
