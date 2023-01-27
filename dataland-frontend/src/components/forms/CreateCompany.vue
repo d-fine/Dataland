@@ -2,6 +2,7 @@
   <Card class="col-5 col-offset-1">
     <template #title>Create a Company </template>
     <template #content>
+      <!-- ToDo: styling of the page is off-->
       <div class="grid uploadFormWrapper">
         <FormKit
           v-model="formInputsModel"
@@ -17,27 +18,32 @@
             type="text"
             :placeholder="companyDataNames.companyName"
             validation="required"
+            validation-label="Company Name"
           />
           <div class="grid align-items-center">
             <div>
               <div class="grid align-items-center">
-                <UploadFormHeader :name="companyDataNames.companyAlternativeNames" :explanation="companyDataExplanations.companyAlternativeNames" />
-                <PrimeButton @click="addCompanyAlternativeName" label="ADD" class="p-button-text" icon="pi pi-plus"></PrimeButton>
+                <UploadFormHeader
+                  :name="companyDataNames.companyAlternativeNames"
+                  :explanation="companyDataExplanations.companyAlternativeNames"
+                />
+                <PrimeButton
+                  @click="addCompanyAlternativeName"
+                  label="ADD"
+                  class="p-button-text"
+                  icon="pi pi-plus"
+                ></PrimeButton>
               </div>
               <FormKit v-model="enteredCompanyAlternativeName" type="text" placeholder="Company alternative name" />
             </div>
-
-            <!--PrimeButton @click="addCompanyAlternativeName" icon="pi pi-plus"></PrimeButton-->
           </div>
 
-          <FormKit v-model="companyAlternativeNames" type="list" name="companyAlternativeNames">
-            <template v-for="index in companyAlternativeNames.length" :key="index">
-              <div class="grid align-items-baseline">
-                <FormKit type="text" />
-                <PrimeButton @click="removeAlternativeName(index)" icon="pi pi-trash"></PrimeButton>
-              </div>
-            </template>
-          </FormKit>
+          <template v-for="index in companyAlternativeNames.length" :key="index">
+            <div class="grid align-items-baseline">
+              <div class="font-medium text-3l">{{ companyAlternativeNames[index - 1] }}</div>
+              <PrimeButton @click="removeAlternativeName(index)" icon="pi pi-trash"></PrimeButton>
+            </div>
+          </template>
 
           <div class="grid align-items-center">
             <div>
@@ -45,18 +51,26 @@
                 :name="companyDataNames.headquarters"
                 :explanation="companyDataExplanations.headquarters"
               />
-              <FormKit v-model="headquarters" type="text" placeholder="City" validation="required" />
+              <FormKit
+                v-model="headquarters"
+                type="text"
+                placeholder="City"
+                validation="required"
+                validation-label="Headquarters"
+              />
             </div>
             <div>
               <UploadFormHeader
                 :name="companyDataNames.countryCode"
                 :explanation="companyDataExplanations.countryCode"
               />
+              <!-- ToDo: the options are not searchable at the moment-->
               <FormKit
                 v-model="countryCode"
                 type="select"
                 placeholder="Select"
                 validation="required"
+                validation-label="Country Code"
                 :options="allCountryCodes"
               />
             </div>
@@ -78,8 +92,12 @@
           />
           <FormKit v-model="companyLegalForm" type="text" :placeholder="companyDataNames.companyLegalForm" />
 
+          <UploadFormHeader :name="companyDataNames.website" :explanation="companyDataExplanations.website" />
+          <FormKit v-model="website" type="text" :placeholder="companyDataNames.website" />
+
           <h4>Identifier</h4>
 
+          <!-- ToDo: there is no live update to check if an identifier is already in use-->
           <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
           <FormKit v-model="isin" type="text" :placeholder="companyDataNames.isin" />
 
@@ -92,6 +110,16 @@
           <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
           <FormKit v-model="duns" type="text" :placeholder="companyDataNames.duns" />
 
+          <UploadFormHeader
+            :name="companyDataNames.companyRegistrationNumber"
+            :explanation="companyDataExplanations.companyRegistrationNumber"
+          />
+          <FormKit
+            v-model="companyRegistrationNumber"
+            type="text"
+            :placeholder="companyDataNames.companyRegistrationNumber"
+          />
+
           <h4>GICS classification</h4>
 
           <UploadFormHeader :name="companyDataNames.sector" :explanation="companyDataExplanations.sector" />
@@ -99,19 +127,16 @@
             v-model="sector"
             type="select"
             placeholder="Please choose"
+            validation="required"
+            validation-label="Sector"
             :options="gicsSectors"
           />
 
-          <FormKit type="submit" label="ADD COMPANY" name="addCompany" />
+          <FormKit type="submit" label="ADD COMPANY" name="addCompany" message="Hallo ein Test" />
         </FormKit>
         <template v-if="postCompanyProcessed">
-          <SuccessUpload
-            v-if="postCompanyResponse"
-            msg="company"
-            :messageCount="messageCount"
-            :data="postCompanyResponse.data"
-          />
-          <FailedUpload v-else msg="company" :messageCount="messageCount" />
+          <SuccessUpload v-if="uploadSucceded" :message="message" :messageId="messageCounter" />
+          <FailedUpload v-else :message="message" :messageId="messageCounter" />
         </template>
       </div>
     </template>
@@ -134,9 +159,10 @@ import Tooltip from "primevue/tooltip";
 import {
   companyDataNames,
   companyDataExplanations,
-  gicsSectors
+  gicsSectors,
 } from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import { AxiosError } from "axios";
 
 export default defineComponent({
   name: "CreateCompany",
@@ -157,8 +183,6 @@ export default defineComponent({
     };
   },
   data: () => ({
-    //ToDo tooltips are missing
-    contentTest: "This is the content",
     companyName: "",
     companyAlternativeNames: [] as Array<string>,
     companyLegalForm: "",
@@ -170,13 +194,16 @@ export default defineComponent({
     ticker: "",
     permId: "",
     duns: "",
-    identifiers: [] as Array<CompanyIdentifier>,
+    companyRegistrationNumber: "",
     sector: "",
+    website: "",
+    identifiers: [] as Array<CompanyIdentifier>,
     enteredCompanyAlternativeName: "",
     allCountryCodes: getAllCountryCodes(),
-    postCompanyResponse: null,
-    messageCount: 0,
     postCompanyProcessed: false,
+    message: "",
+    uploadSucceded: false,
+    messageCounter: 0,
     companyDataExplanations,
     companyDataNames,
     gicsSectors,
@@ -191,23 +218,30 @@ export default defineComponent({
         this.identifiers.push(newIdentifier);
       }
     },
+    collectIdentifiers(): void {
+      this.identifiers = new Array<CompanyIdentifier>();
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Lei, this.lei);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Isin, this.isin);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Ticker, this.ticker);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.PermId, this.permId);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Duns, this.duns);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber, this.companyRegistrationNumber);
+    },
     addCompanyAlternativeName(): void {
-      //ToDo change the companyAlternativeNames to a set to avoid duplicate entries
-      if (this.enteredCompanyAlternativeName !== "") {
+      if (
+        this.enteredCompanyAlternativeName !== "" &&
+        !this.companyAlternativeNames.includes(this.enteredCompanyAlternativeName)
+      ) {
         this.companyAlternativeNames.push(this.enteredCompanyAlternativeName);
-        this.enteredCompanyAlternativeName = "";
       }
+      this.enteredCompanyAlternativeName = "";
     },
     removeAlternativeName(index: number): void {
       this.companyAlternativeNames.splice(index - 1, 1);
     },
     getCompanyInformation(): CompanyInformation {
       this.addCompanyAlternativeName();
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Lei, this.lei);
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Isin, this.isin);
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Ticker, this.ticker);
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.PermId, this.permId);
-      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Duns, this.duns);
+      this.collectIdentifiers();
       return {
         companyName: this.companyName,
         companyAlternativeNames: this.companyAlternativeNames,
@@ -218,38 +252,47 @@ export default defineComponent({
         identifiers: this.identifiers,
         countryCode: this.countryCode,
         isTeaserCompany: false,
+        website: this.website,
       } as CompanyInformation;
     },
+    toTop(): void {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    },
     async postCompanyInformation() {
-      //ToDo displaying of error/success was transferred from original script should be replaced by a more sensible version
+      this.messageCounter++;
       try {
-        this.messageCount++;
-        console.log("Posting data");
         const company = this.getCompanyInformation();
-        console.log("Constructed Company Object:");
-        console.log(company);
-        const companyDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getCompanyDataControllerApi();
-        this.postCompanyResponse = await companyDataControllerApi.postCompany(company);
-        this.$formkit.reset("createCompanyForm");
-        //ToDo after submission the boxes showing the alternative names get emptied but not removed
-        this.companyAlternativeNames = new Array<string>();
+        if (this.identifiers.length === 0) {
+          this.message = "Please specify at least one company identifier.";
+          this.uploadSucceded = false;
+        } else {
+          const companyDataControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getCompanyDataControllerApi();
+          await companyDataControllerApi.postCompany(company);
+          this.$formkit.reset("createCompanyForm");
+          this.companyAlternativeNames = new Array<string>();
+          this.message = "Upload successfully executed.";
+          this.uploadSucceded = true;
+        }
       } catch (error) {
         console.error(error);
-        this.postCompanyResponse = null;
+        if (error instanceof AxiosError) {
+          this.message = "An error occurred: " + error.message;
+        } else {
+          this.message =
+            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+        }
+        this.uploadSucceded = false;
       } finally {
         this.postCompanyProcessed = true;
+        this.toTop();
       }
     },
   },
 });
 </script>
-<style scoped lang="scss">
-.anchor {
-  scroll-margin-top: 300px;
-}
-.formkit-icon {
-  max-width: 5em;
-}
-</style>

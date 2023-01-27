@@ -1,7 +1,6 @@
 <template>
   <div class="col-12 text-left">
     <DataTable
-      v-if="displayedDatasetTableInfos.length > 0"
       :value="displayedDatasetTableInfos"
       id="dataset-overview-table"
       class="table-cursor mt-1"
@@ -14,12 +13,12 @@
       @row-click="rerouteRowClick"
     >
       <Column field="companyName" header="COMPANY" :sortable="true"></Column>
-      <Column :field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType">
+      <Column field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType">
         <template #body="{ data }">
           {{ humanizeString(data.dataType) }}
         </template>
       </Column>
-      <Column field="year" header="YEAR" :sortable="true" class="hidden"></Column>
+      <Column v-if="isProperlyImplemented" field="year" header="YEAR" :sortable="true"></Column>
       <Column field="status" header="STATUS" :sortable="true" sortField="status.text">
         <template #body="{ data }">
           <span :class="`p-badge badge-${data.status.color} m-0`">{{ data.status.text }}</span>
@@ -91,6 +90,9 @@ export default defineComponent({
       type: Array,
       default: [],
     },
+    isProperlyImplemented: {
+      type: Boolean,
+    }
   },
   watch: {
     searchBarInput() {
@@ -112,6 +114,7 @@ export default defineComponent({
       return datasetTableEntry.status.text === DatasetStatus.Requested.text;
     },
     applySearchFilter(): void {
+      // TODO implement this properly
       this.displayedDatasetTableInfos = this.datasetTableInfos.filter((info) =>
         (info as DatasetTableInfo).companyName.toLowerCase().includes(this.searchBarInput.toLowerCase())
       ) as DatasetTableInfo[];
