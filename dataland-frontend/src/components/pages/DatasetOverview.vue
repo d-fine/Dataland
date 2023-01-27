@@ -5,9 +5,7 @@
       <TabPanel header="AVAILABLE DATASETS"> </TabPanel>
       <TabPanel header="MY DATASETS">
         <TheContent class="p-3 min-h-screen paper-section relative">
-          <div
-            class="col-12 flex flex-row justify-content-between align-items-end"
-          >
+          <div class="col-12 flex flex-row justify-content-between align-items-end">
             <div
               v-if="isProperlyImplemented"
               id="dataset-summary"
@@ -22,10 +20,7 @@
                   </router-link>
                 </div>
               </div>
-              <div
-                class="mt-2 flex justify-content-between"
-                :class="waitingForData ? 'invisible' : ''"
-              >
+              <div class="mt-2 flex justify-content-between" :class="waitingForData ? 'invisible' : ''">
                 <div>
                   <span>Approved datasets: </span>
                   <span class="p-badge badge-green">{{ this.numApproved }}</span>
@@ -48,9 +43,9 @@
             />
           </div>
           <DatasetOverviewTable
-              :dataset-table-infos="datasetTableInfos"
-              :is-properly-implemented="isProperlyImplemented"
-              :class="(datasetTableInfos.length > 0) ? '' : 'hidden'"
+            :dataset-table-infos="datasetTableInfos"
+            :is-properly-implemented="isProperlyImplemented"
+            :class="datasetTableInfos.length > 0 ? '' : 'hidden'"
           />
           <div v-if="waitingForData" class="inline-loading meta-data-height text-center">
             <p class="font-medium text-xl">Loading datasets...</p>
