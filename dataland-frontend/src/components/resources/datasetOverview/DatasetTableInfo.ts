@@ -4,7 +4,7 @@ export class DatasetTableInfo {
     readonly dataType: string,
     readonly year: number,
     readonly status: DatasetStatus,
-    readonly submissionDate: string,
+    readonly uploadTimeInSeconds: number,
     readonly companyId: string
   ) {}
 }

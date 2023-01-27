@@ -14,18 +14,22 @@
       @row-click="rerouteRowClick"
     >
       <Column field="companyName" header="COMPANY" :sortable="true"></Column>
-      <Column :field="dataType" header="DATA FRAMEWORK" :sortable="true">
+      <Column :field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType">
         <template #body="{ data }">
           {{ humanizeString(data.dataType) }}
         </template>
       </Column>
       <Column field="year" header="YEAR" :sortable="true" class="hidden"></Column>
-      <Column field="status" header="STATUS" :sortable="true">
+      <Column field="status" header="STATUS" :sortable="true" sortField="status.text">
         <template #body="{ data }">
           <span :class="`p-badge badge-${data.status.color} m-0`">{{ data.status.text }}</span>
         </template>
       </Column>
-      <Column field="submissionDate" header="SUBMISSION DATE" :sortable="true"></Column>
+      <Column field="uploadTimeInSeconds" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInSeconds">
+        <template #body="{ data }">
+          <span>{{ convertDate(data.uploadTimeInSeconds) }}</span>
+        </template>
+      </Column>
       <Column field="companyName" header="" class="d-bg-white d-datatable-column-right">
         <template #header>
           <span class="w-12 p-input-icon-left">
@@ -65,6 +69,7 @@ import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { DatasetStatus, DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
+import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
@@ -75,9 +80,10 @@ export default defineComponent({
   },
   data() {
     return {
-      humanizeString: humanizeString,
       searchBarInput: "",
       displayedDatasetTableInfos: [] as DatasetTableInfo[],
+      humanizeString: humanizeString,
+      convertDate: convertUnixTimeInMsToDateString,
     };
   },
   props: {

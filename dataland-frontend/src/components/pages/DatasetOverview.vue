@@ -62,7 +62,6 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 import { StoredCompany } from "@clients/backend";
 import { DatasetStatus, DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
-import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
@@ -133,7 +132,7 @@ export default defineComponent({
                 dataMetaInfo.dataType,
                 2023,
                 DatasetStatus.Approved,
-                convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime),
+                dataMetaInfo.uploadTime * 1000,
                 company.companyId
               )
           )
