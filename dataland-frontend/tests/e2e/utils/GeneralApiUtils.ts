@@ -47,7 +47,6 @@ export async function countCompaniesAndDataSetsForDataType(
 }
 
 /**
- * TODO  talk with Marc about this and why it is needed
  * Intercepts all requests to the backend, checks if a certain allow-flag is set in the headers, then checks if the
  * response has a status code greater or equal 500, and throws an error depending on the allow-flag
  */
@@ -65,7 +64,7 @@ export function interceptAllAndCheckFor500Errors(): void {
     });
   };
   cy.intercept("/api/**", handler);
-  cy.intercept("/api-keys/**", handler); // TODO I think this line of code might be redundant.  this url-route should be covered by the interception above
+  cy.intercept("/api-keys/**", handler);
 }
 
 /**
