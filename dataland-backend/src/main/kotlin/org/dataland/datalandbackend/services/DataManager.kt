@@ -10,6 +10,7 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandinternalstorage.models.StorageHashMap
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +35,7 @@ class DataManager(
     @Autowired var companyManager: CompanyManager,
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
-    @Autowired var cloudEventBuilder: CloudEventMessageHandler,
+    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     var metaDataInformationHashMap : HashMap<String, StorableDataSet>,
     @Autowired var dataInformationHashMap : StorageHashMap
 
@@ -76,7 +77,7 @@ class DataManager(
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         metaDataInformationHashMap.put(dataId, storableDataSet)
-        cloudEventBuilder.buildCEMessageAndSendToQueue(dataId, "New data - QA necessary", correlationId,"upload_queue")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "New data - QA necessary", correlationId,"upload_queue")
         return dataId
     }
 
@@ -103,7 +104,7 @@ class DataManager(
     ): String{
         val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
         dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
-        cloudEventBuilder.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId, "storage_queue")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId, "storage_queue")
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
                     " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId"
@@ -113,9 +114,12 @@ class DataManager(
 
     @RabbitListener(queues = ["stored_queue"])
     @RabbitHandler
-    fun testFunktion(dataId: String) {
-        println(dataId)
-        println("tESTFUNKTIONFSDSDDSFFFFFFFFFFFFFFFFFFFFFF")
+    fun logginOfStoredDataSet(message: Message) {
+        val dataId = cloudEventMessageHandler.bodyToString(message)
+        val correlationId = message.messageProperties.messageId
+        logger.info(
+            "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId"
+        )
 
     }
     /**
