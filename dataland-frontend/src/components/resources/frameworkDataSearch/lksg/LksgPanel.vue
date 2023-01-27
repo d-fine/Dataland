@@ -34,9 +34,9 @@ export default defineComponent({
   data() {
     return {
       waitingForData: true,
-      lksgData: [] as Array<LksgData> | undefined,
-      listOfDatesToDisplayAsColumns: [] as string[],
-      kpiDataObjects: [],
+      lksgData: [] as Array<LksgData>,
+      listOfDatesToDisplayAsColumns: [] as Array<string>,
+      kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       lksgKpiNameMappings,
       lksgKpiInfoMappings,
       lksgSubAreaNameMappings,
@@ -87,15 +87,20 @@ export default defineComponent({
      * @param subAreaKey The sub area to which the kpi belongs
      * @param dataDateOfLksgDataset The value of the date kpi of an LkSG dataset
      */
-    createKpiDataObjects(kpiKey: string, kpiValue: object, subAreaKey: string, dataDateOfLksgDataset: string): void {
-      if (kpiKey === "totalRevenue") {
+    createKpiDataObjects(
+      kpiKey: string,
+      kpiValue: object | string,
+      subAreaKey: string,
+      dataDateOfLksgDataset: string
+    ): void {
+      if (kpiKey === "totalRevenue" && typeof kpiValue === "string") {
         kpiValue = this.convertToMillions(parseFloat(kpiValue));
       }
       let indexOfExistingItem = -1;
       const kpiDataObject = {
         subAreaKey: subAreaKey == "general" ? `_${subAreaKey}` : subAreaKey,
         kpiKey: kpiKey,
-        [dataDateOfLksgDataset ? dataDateOfLksgDataset : ""]: kpiValue, // TODO not needed since already set to "" in convert function?!
+        [dataDateOfLksgDataset]: kpiValue,
       };
       indexOfExistingItem = this.kpiDataObjects.findIndex(
         (singleKpiDataObject) => singleKpiDataObject.kpiKey === kpiKey
@@ -130,8 +135,8 @@ export default defineComponent({
         const dataDateOfLksgDataset = oneLksgDataset.social?.general?.dataDate ?? "";
         this.listOfDatesToDisplayAsColumns.push(dataDateOfLksgDataset);
         for (const areaObject of Object.values(oneLksgDataset)) {
-          for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object)) {
-            for (const [kpiKey, kpiValue] of Object.entries(subAreaObject as object)) {
+          for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
+            for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
               this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataDateOfLksgDataset);
             }
           }
