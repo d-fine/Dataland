@@ -12,8 +12,8 @@
       :rowHover="true"
       @row-click="rerouteRowClick"
     >
-      <Column field="companyName" header="COMPANY" :sortable="true"></Column>
-      <Column field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType">
+      <Column field="companyName" header="COMPANY" :sortable="true" class="w-3"></Column>
+      <Column field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType" class="w-3">
         <template #body="{ data }">
           {{ humanizeString(data.dataType) }}
         </template>
@@ -24,12 +24,12 @@
           <span :class="`p-badge badge-${data.status.color} m-0`">{{ data.status.text }}</span>
         </template>
       </Column>
-      <Column field="uploadTimeInSeconds" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInSeconds">
+      <Column field="uploadTimeInSeconds" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInSeconds" class="w-2">
         <template #body="{ data }">
           <span>{{ convertDate(data.uploadTimeInSeconds) }}</span>
         </template>
       </Column>
-      <Column field="companyName" header="" class="d-bg-white d-datatable-column-right">
+      <Column field="companyName" header="" class="w-2 d-bg-white d-datatable-column-right">
         <template #header>
           <span class="w-12 p-input-icon-left">
             <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
