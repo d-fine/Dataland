@@ -22,7 +22,7 @@
                   </router-link>
                 </div>
               </div>
-              <div v-if="isDataLoaded" class="mt-2 flex justify-content-between">
+              <div v-if="!waitingForData" class="mt-2 flex justify-content-between">
                 <div>
                   <span>Approved datasets: </span>
                   <span class="p-badge badge-green">{{ this.numApproved }}</span>
@@ -49,6 +49,11 @@
               :dataset-table-infos="datasetTableInfos"
               :is-properly-implemented="isProperlyImplemented"
           />
+          <div v-else-if="waitingForData" class="inline-loading meta-data-height text-center">
+            <p class="font-medium text-xl">Loading datasets...</p>
+            <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+            <!--TODO loading circle-->
+          </div>
         </TheContent>
       </TabPanel>
     </TabView>
@@ -88,12 +93,12 @@ export default defineComponent({
   data() {
     return {
       datasetTableInfos: [] as DatasetTableInfo[],
-      isDataLoaded: false,
+      waitingForData: true,
       numApproved: 0,
       numPending: 0,
       numRejected: 0,
       activeTabIndex: 1,
-      isProperlyImplemented: false
+      isProperlyImplemented: true,
     };
   },
   setup() {
@@ -102,7 +107,7 @@ export default defineComponent({
     };
   },
   created() {
-    this.requestDataMetaDataForCurrentUser().then(() => { this.isDataLoaded = true; });
+    this.requestDataMetaDataForCurrentUser().then(() => { this.waitingForData = false; });
   },
   watch: {
     datasetTableInfos() {
