@@ -1,10 +1,10 @@
 <template>
   <ViewFrameworkBase
     :companyID="companyID"
-    dataType="eutaxonomy-non-financials"
+    :dataType="DataTypeEnum.EutaxonomyNonFinancials"
     @updateDataId="handleReceivedListOfDataIds"
   >
-    <template v-if="listOfReceivedEuTaxoNonFinanicalsDataIds.length > 0">
+    <template v-if="dataIdToDisplay">
       <div class="grid">
         <div class="col-12 text-left">
           <h2 class="mb-0">EU Taxonomy Data</h2>
@@ -15,15 +15,15 @@
         </div>
       </div>
       <div class="grid">
-        <div class="col-7">
-          <EuTaxonomyPanelNonFinancials :dataID="listOfReceivedEuTaxoNonFinanicalsDataIds[0]" />
+        <div v-if="dataIdToDisplay" class="col-7">
+          <EuTaxonomyPanelNonFinancials :dataID="dataIdToDisplay" />
         </div>
       </div>
     </template>
-    <div v-if="loading" class="col-12 text-left">
+    <div v-if="waitingForDataIdsAndChoosingDataIdToDisplay" class="col-12 text-left">
       <h2>Checking if EU-taxonomy data for non financial companies available...</h2>
     </div>
-    <div v-if="!loading && listOfReceivedEuTaxoNonFinanicalsDataIds.length === 0" class="col-12 text-left">
+    <div v-if="!waitingForDataIdsAndChoosingDataIdToDisplay && !dataIdToDisplay" class="col-12 text-left">
       <h2>No EU-Taxonomy data for non financial companies present</h2>
     </div>
   </ViewFrameworkBase>
@@ -35,6 +35,8 @@ import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import { defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import { useRoute } from "vue-router";
+import { DataTypeEnum} from "@clients/backend";
 
 export default defineComponent({
   name: "ViewEuTaxonomyNonFinancials",
@@ -46,19 +48,32 @@ export default defineComponent({
   },
   data() {
     return {
-      loading: true,
+      waitingForDataIdsAndChoosingDataIdToDisplay: true,
       listOfReceivedEuTaxoNonFinanicalsDataIds: [] as string[],
+      dataIdToDisplay: "",
+      route: useRoute(),
+      DataTypeEnum
     };
   },
   methods: {
     /**
+     * TODO adjust
      * Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
      *
      * @param receivedEuTaxoNonFinanicalsDataIds Received EU Taxonomy for non financial companies data IDs
      */
     handleReceivedListOfDataIds(receivedEuTaxoNonFinanicalsDataIds: []) {
       this.listOfReceivedEuTaxoNonFinanicalsDataIds = receivedEuTaxoNonFinanicalsDataIds;
-      this.loading = false;
+      this.chooseDataIdToDisplayBasedOnQueryParam();
+      this.waitingForDataIdsAndChoosingDataIdToDisplay = false
+    },
+    chooseDataIdToDisplayBasedOnQueryParam() {
+      const singleQueryDataId = this.route.query.dataId as string;
+      if (singleQueryDataId) {
+        this.dataIdToDisplay = singleQueryDataId;
+      } else {
+        this.dataIdToDisplay = this.listOfReceivedEuTaxoNonFinanicalsDataIds[0];
+      }
     },
   },
 });

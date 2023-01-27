@@ -14,68 +14,63 @@
             <div id="euTaxonomyContainer" class="grid">
               <div id="euTaxonomyLabel" class="col-3 text-left topicLabel">
                 <h3>EU Taxonomy</h3>
-                <p>Overiew of all existing and missing EU Taxonomy datasets for this company.</p>
+                <p>Overview of all existing and missing EU Taxonomy datasets for this company.</p>
               </div>
-              <div class="col-6 text-left uploadForm">
-                <div id="eutaxonomyDataSetsContainer" class="mt-6">
-                  Eu Taxonomy Data Sets:
-                  <div v-if="waitingForData" class="inline-loading meta-data-height text-center">
-                    <p class="font-medium text-xl">Loading...</p>
-                    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-                  </div>
-                  <div v-else v-for="(dataMetaInfo, index) in listOfEuTaxonomyMetaInfo" :key="index">
-                    <span>{{
-                      "- upload Time in Unix time: " + dataMetaInfo.uploadTime + ", dataId: " + dataMetaInfo.dataId
-                    }}</span>
-                  </div>
+              <div class="col-6 text-left">
+                <div id="eutaxonomyDataSetsContainer">
+                  <h4>Eu Taxonomy Data Sets:</h4>
+
+                  <MetaInfoPerCompanyAndFramework
+                    title="Non-Financials"
+                    :framework-url-path="DataTypeEnum.EutaxonomyNonFinancials"
+                    description="Overview of all existing and missing SFDR datasets for this company"
+                    :companyId="companyID"
+                    :isWaitingForData="waitingForData"
+                    :listOfFrameworkData="listOfEuTaxonomyNonFinancialsMetaInfo"
+                  />
+
+                  <hr />
+
+                  <MetaInfoPerCompanyAndFramework
+                    title="Financials"
+                    :framework-url-path="DataTypeEnum.EutaxonomyFinancials"
+                    description="Overview of all existing and missing SFDR datasets for this company"
+                    :companyId="companyID"
+                    :isWaitingForData="waitingForData"
+                    :listOfFrameworkData="listOfEuTaxonomyFinancialsMetaInfo"
+                  />
                 </div>
               </div>
             </div>
 
             <div id="sfdrContainer" class="grid mt-6">
-              <div id="sfdrLabel" class="col-3 text-left topicLabel">
+              <div id="sfdrLabel" class="col-3 text-left">
                 <h3>SFDR</h3>
-                <p>Overiew of all existing and missing SFDR datasets for this company.</p>
+                <p>Overview of all existing and missing SFDR datasets for this company.</p>
               </div>
-              <div class="col-6 text-left uploadForm">
-                <div id="sfdrDataSetsContainer" class="mt-6">
-                  Sfdr Datasets:
-
-                  <div v-if="waitingForData" class="inline-loading meta-data-height text-center">
-                    <p class="font-medium text-xl">Loading...</p>
-                    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-                  </div>
-
-                  <div v-for="(dataMetaInfo, index) in listOfSfdrMetaInfo" :key="index">
-                    <span>{{
-                      "- upload Time in Unix time: " + dataMetaInfo.uploadTime + ", dataId: " + dataMetaInfo.dataId
-                    }}</span>
-                  </div>
-                </div>
-              </div>
+              <MetaInfoPerCompanyAndFramework
+                title="SFDR"
+                :isFrontendUploadFormExisting="false"
+                :framework-url-path="DataTypeEnum.Sfdr"
+                description="Overview of all existing and missing SFDR datasets for this company"
+                :companyId="companyID"
+                :isWaitingForData="waitingForData"
+                :listOfFrameworkData="listOfSfdrMetaInfo"
+              />
             </div>
 
             <div id="lksgContainer" class="grid mt-6">
-              <div id="lksgLabel" class="col-3 text-left topicLabel">
+              <div id="lksgLabel" class="col-3 text-left">
                 <h3>LkSG</h3>
-                <p>Overiew of all existing and missing LkSG datasets for this company.</p>
+                <p>Overview of all existing and missing LkSG datasets for this company.</p>
               </div>
-              <div class="col-6 text-left uploadForm">
-                <div id="lksgDataSetsContainer" class="mt-6">
-                  LkSG Datasets:
-
-                  <div v-if="waitingForData" class="inline-loading meta-data-height text-center">
-                    <p class="font-medium text-xl">Loading...</p>
-                    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-                  </div>
-
-                  <div v-for="(dataMetaInfo, index) in listOfLksgMetaInfo" :key="index">
-                    <span>{{
-                      "- upload Time in Unix time: " + dataMetaInfo.uploadTime + ", dataId: " + dataMetaInfo.dataId
-                    }}</span>
-                  </div>
-                </div>
-              </div>
+              <MetaInfoPerCompanyAndFramework
+                title="LkSG"
+                :framework-url-path="DataTypeEnum.Lksg"
+                :companyId="companyID"
+                :isWaitingForData="waitingForData"
+                :listOfFrameworkData="listOfLksgMetaInfo"
+              />
             </div>
           </div>
         </template>
@@ -95,7 +90,8 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import Card from "primevue/card";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import { DataMetaInformation } from "@clients/backend";
+import {DataMetaInformation, DataTypeEnum} from "@clients/backend";
+import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 
 export default defineComponent({
   name: "Choose Framework",
@@ -106,6 +102,7 @@ export default defineComponent({
     BackButton,
     TheContent,
     Card,
+    MetaInfoPerCompanyAndFramework,
   },
   setup() {
     return {
@@ -120,9 +117,11 @@ export default defineComponent({
   data() {
     return {
       waitingForData: true,
-      listOfEuTaxonomyMetaInfo: [] as Array<DataMetaInformation>,
+      listOfEuTaxonomyNonFinancialsMetaInfo: [] as Array<DataMetaInformation>,
+      listOfEuTaxonomyFinancialsMetaInfo: [] as Array<DataMetaInformation>,
       listOfSfdrMetaInfo: [] as Array<DataMetaInformation>,
       listOfLksgMetaInfo: [] as Array<DataMetaInformation>,
+      DataTypeEnum
     };
   },
   props: {
@@ -140,14 +139,17 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfAllDataMetaInfo = response.data;
-        this.listOfEuTaxonomyMetaInfo = listOfAllDataMetaInfo.filter((dataMetaInfo: DataMetaInformation) =>
-          dataMetaInfo.dataType.startsWith("eutaxonomy-")
+        this.listOfEuTaxonomyNonFinancialsMetaInfo = listOfAllDataMetaInfo.filter(
+          (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyNonFinancials
+        );
+        this.listOfEuTaxonomyFinancialsMetaInfo = listOfAllDataMetaInfo.filter(
+          (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyFinancials
         );
         this.listOfSfdrMetaInfo = listOfAllDataMetaInfo.filter(
-          (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === "sfdr"
+          (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Sfdr
         );
         this.listOfLksgMetaInfo = listOfAllDataMetaInfo.filter(
-          (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === "lksg"
+          (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Lksg
         );
         this.waitingForData = false;
       } catch (error) {

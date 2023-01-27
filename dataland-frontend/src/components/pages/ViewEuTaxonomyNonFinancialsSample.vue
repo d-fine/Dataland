@@ -108,7 +108,7 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
           this.companyID,
-          "eutaxonomy-non-financials"
+          DataTypeEnum.EutaxonomyNonFinancials
         );
         const filteredData = apiResponse.data.filter((dataItem) => {
           if (dataItem.dataType === DataTypeEnum.EutaxonomyNonFinancials) {

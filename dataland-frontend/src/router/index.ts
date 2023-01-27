@@ -27,6 +27,8 @@ const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
+import { DataTypeEnum} from "@clients/backend";
+
 
 const routes = [
   {
@@ -35,7 +37,8 @@ const routes = [
     component: WelcomeDataland,
   },
   {
-    path: "/samples/eutaxonomy-non-financials",
+    path: `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
+
     name: "Eu Taxonomy For Non-Financials Sample",
     component: ViewEuTaxonomyNonFinancialsSample,
   },
@@ -56,19 +59,19 @@ const routes = [
     component: ChooseFrameworkForDataUpload,
   },
   {
-    path: "/companies/:companyID/frameworks/eutaxonomy-non-financials/upload",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
     props: true,
     name: "Upload Eu Taxonomy Data For Non-Financials",
     component: UploadEuTaxonomyDataForNonFinancials,
   },
   {
-    path: "/companies/:companyID/frameworks/eutaxonomy-financials/upload",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
     props: true,
     name: "Upload Eu Taxonomy Data For Financials",
     component: UploadEuTaxonomyDataForFinancials,
   },
   {
-    path: "/companies/:companyID/frameworks/lksg/upload",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}/upload`,
     props: true,
     name: "Upload lkSG Data",
     component: UploadLkSG,
@@ -85,19 +88,19 @@ const routes = [
     component: CompanyInformation,
   },
   {
-    path: "/companies/:companyID/frameworks/eutaxonomy-non-financials",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
     props: true,
     name: "Company EU Taxonomy for non financials",
     component: ViewEuTaxonomyNonFinancials,
   },
   {
-    path: "/companies/:companyID/frameworks/eutaxonomy-financials",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
     props: true,
     name: "Company EU Taxonomy for financials",
     component: ViewEuTaxonomyFinancials,
   },
   {
-    path: "/companies/:companyID/frameworks/lksg",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}`,
     props: true,
     name: "Company lksg",
     component: ViewLksg,
