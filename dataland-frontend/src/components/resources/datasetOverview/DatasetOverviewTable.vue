@@ -24,7 +24,13 @@
           <span :class="`p-badge badge-${data.status.color} m-0`">{{ data.status.text }}</span>
         </template>
       </Column>
-      <Column field="uploadTimeInSeconds" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInSeconds" class="w-2">
+      <Column
+        field="uploadTimeInSeconds"
+        header="SUBMISSION DATE"
+        :sortable="true"
+        sortField="uploadTimeInSeconds"
+        class="w-2"
+      >
         <template #body="{ data }">
           <span>{{ convertDate(data.uploadTimeInSeconds) }}</span>
         </template>
@@ -92,7 +98,7 @@ export default defineComponent({
     },
     isProperlyImplemented: {
       type: Boolean,
-    }
+    },
   },
   watch: {
     searchBarInput() {
@@ -121,7 +127,7 @@ export default defineComponent({
     },
     rerouteRowClick(event: { data: DatasetTableInfo }) {
       void this.$router.push(this.getTableRowLinkTarget(event.data));
-    }
+    },
   },
 });
 </script>
