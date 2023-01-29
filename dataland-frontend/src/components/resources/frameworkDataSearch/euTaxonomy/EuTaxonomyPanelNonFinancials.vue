@@ -95,7 +95,7 @@ export default defineComponent({
   components: { TaxoCard, TaxoInfoCard },
   data() {
     return {
-      kpiDataObjects: null as EuTaxonomyDataForNonFinancials | null | undefined,
+      dataSet: null as EuTaxonomyDataForNonFinancials | null | undefined,
       waitingForData: true,
     };
   },
