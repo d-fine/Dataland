@@ -433,9 +433,6 @@ input[type="checkbox"], input[type="radio"]{
   .next-to-each-other {
     display: flex;
     gap: 1rem;
-    .formkit-outer {
-      width: calc(33% - 0.5em);
-    }
   }
   .yes-no-radio {
     fieldset.formkit-fieldset {
@@ -502,6 +499,20 @@ input[type="checkbox"], input[type="radio"]{
     background: $upload-form-bg;
     border-radius: $upload-form-radius;
     padding: $upload-form-padding;
+  }
+  .formkit-message {
+    &[data-message-type="ui"] {
+      text-align: center;
+      width: 100%;
+      padding: 2rem;
+      border: 1px solid $input-error;
+    }
+  }
+  .hidden-input {
+    .formkit-wrapper {
+      visibility: hidden;
+      height: 0;
+    }
   }
   .form-list-item {
     color: $input-label-color;

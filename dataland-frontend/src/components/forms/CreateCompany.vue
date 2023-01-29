@@ -1,9 +1,9 @@
 <template>
-  <Card class="col-5 col-offset-1">
+  <Card>
     <template #title>Create a Company </template>
     <template #content>
       <!-- ToDo: styling of the page is off-->
-      <div class="grid uploadFormWrapper">
+      <div class="uploadFormWrapper">
         <FormKit
           v-model="formInputsModel"
           :actions="false"
@@ -20,32 +20,34 @@
             validation="required"
             validation-label="Company Name"
           />
-          <div class="grid align-items-center">
-            <div>
-              <div class="grid align-items-center">
-                <UploadFormHeader
-                  :name="companyDataNames.companyAlternativeNames"
-                  :explanation="companyDataExplanations.companyAlternativeNames"
-                />
-                <PrimeButton
-                  @click="addCompanyAlternativeName"
-                  label="ADD"
-                  class="p-button-text"
-                  icon="pi pi-plus"
-                ></PrimeButton>
-              </div>
-              <FormKit v-model="enteredCompanyAlternativeName" type="text" placeholder="Company alternative name" />
-            </div>
+          <div class="flex align-items-center form-field-label">
+            <UploadFormHeader
+              :name="companyDataNames.companyAlternativeNames"
+              :explanation="companyDataExplanations.companyAlternativeNames"
+            />
+            <PrimeButton
+              :disabled="this.enteredCompanyAlternativeName === ''"
+              @click="addCompanyAlternativeName"
+              label="Add"
+              class="p-button-text"
+              icon="pi pi-plus"
+            ></PrimeButton>
           </div>
+          <FormKit v-model="enteredCompanyAlternativeName" type="text" placeholder="Company alternative name" />
 
           <template v-for="index in companyAlternativeNames.length" :key="index">
-            <div class="grid align-items-baseline">
-              <div class="font-medium text-3l">{{ companyAlternativeNames[index - 1] }}</div>
-              <PrimeButton @click="removeAlternativeName(index)" icon="pi pi-trash"></PrimeButton>
-            </div>
+            <span class="form-list-item">
+              {{ companyAlternativeNames[index - 1] }}
+              <em @click="removeAlternativeName(index)" class="material-icons">close</em>
+            </span>
+            <!--            -->
+            <!--            <div class="align-items-baseline">-->
+            <!--              <div class="font-medium text-3l">{{ companyAlternativeNames[index - 1] }}</div>-->
+            <!--              <PrimeButton @click="removeAlternativeName(index)" icon="pi pi-trash"></PrimeButton>-->
+            <!--            </div>-->
           </template>
 
-          <div class="grid align-items-center">
+          <div class="next-to-each-other">
             <div>
               <UploadFormHeader
                 :name="companyDataNames.headquarters"
@@ -132,7 +134,7 @@
             :options="gicsSectors"
           />
 
-          <FormKit type="submit" label="ADD COMPANY" name="addCompany" message="Hallo ein Test" />
+          <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
         </FormKit>
         <template v-if="postCompanyProcessed">
           <SuccessUpload v-if="uploadSucceded" :message="message" :messageId="messageCounter" />
