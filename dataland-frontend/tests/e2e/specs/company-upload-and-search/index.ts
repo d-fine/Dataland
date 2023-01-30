@@ -1,5 +1,5 @@
 /**
- * As a User I want to be able to search for companies in dataland.
+ * As a User I want to be able to search for companies in Dataland.
  * I also want to be able to create new companies.
  */
 describe("Taxonomy Company Metadata tests", () => {
