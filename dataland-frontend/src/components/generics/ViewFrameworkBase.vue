@@ -13,7 +13,7 @@
           </div>
         </div>
       </MarginWrapper>
-      <MarginWrapper class="text-left surface-0" style="margin-right: 0rem">
+      <MarginWrapper v-if="noFailure" class="text-left surface-0" style="margin-right: 0rem">
         <Dropdown
           id="frameworkDataDropdown"
           v-model="chosenDataTypeInDropdown"
@@ -27,7 +27,7 @@
           @change="redirectToViewPageForChosenFramework"
         />
       </MarginWrapper>
-      <MarginWrapper style="margin-right: 0rem">
+      <MarginWrapper v-if="noFailure" style="margin-right: 0rem">
         <slot></slot>
       </MarginWrapper>
     </TheContent>
@@ -85,6 +85,7 @@ export default defineComponent({
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
+      noFailure: true,
     };
   },
   created() {
@@ -152,6 +153,7 @@ export default defineComponent({
         });
         this.$emit("updateDataId", listOfDataIdsToEmit);
       } catch (error) {
+        this.noFailure = false;
         console.error(error);
       }
     },

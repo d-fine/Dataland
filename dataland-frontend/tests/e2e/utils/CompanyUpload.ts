@@ -15,9 +15,9 @@ import { faker } from "@faker-js/faker";
 export function fillCompanyUploadFields(companyName: string): void {
   cy.get("input[name=companyName]").type(companyName, { force: true });
   cy.get("input[name=alternativeName]").type("Another Name", { force: true });
-  cy.get("button[name=addAlternativeName]").click();
+  cy.get("button[name=addAlternativeName]").click({ force: true });
   cy.get("input[name=headquarters]").type("Capitol City", { force: true });
-  cy.get("input[name=countryCode]").select("DE", { force: true });
+  cy.get("select[name=countryCode]").select("DE", { force: true });
   cy.get("input[name=headquartersPostalCode]").type("123456", { force: true });
   cy.get("input[name=companyLegalForm]").type("Enterprise Ltd.", { force: true });
   cy.get("input[name=website]").type("www.company.com", { force: true });
@@ -26,7 +26,7 @@ export function fillCompanyUploadFields(companyName: string): void {
   cy.get("input[name=permId]").type(`PermValueId:${crypto.randomUUID()}`, { force: true });
   cy.get("input[name=duns]").type(`DunsValueId:${crypto.randomUUID()}`, { force: true });
   cy.get("input[name=companyRegistrationNumber]").type(`RegValueId:${crypto.randomUUID()}`, { force: true });
-  cy.get("input[name=sector]").select("Energy");
+  cy.get("select[name=sector]").select("Energy");
 }
 
 /**
@@ -40,14 +40,10 @@ export function uploadCompanyViaFormAndGetId(companyName: string): Cypress.Chain
   fillCompanyUploadFields(companyName);
   cy.intercept("**/api/companies").as("postCompany");
   cy.get('button[name="addCompany"]').click();
-  return cy
-    .wait("@postCompany")
-    .get("body")
-    .should("contain", "success")
-    .get("span[title=companyId]")
-    .then<string>(($companyID): string => {
-      return $companyID.text();
-    });
+  return cy.wait("@postCompany").then((interception) => {
+    const test = interception.response!.body as StoredCompany;
+    return test.companyId;
+  });
 }
 
 /**

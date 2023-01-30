@@ -2,15 +2,8 @@
   <Card>
     <template #title>Create a Company </template>
     <template #content>
-      <!-- ToDo: styling of the page is off-->
       <div class="uploadFormWrapper">
-        <FormKit
-          v-model="formInputsModel"
-          :actions="false"
-          type="form"
-          id="createCompanyForm"
-          @submit="postCompanyInformation"
-        >
+        <FormKit :actions="false" type="form" id="createCompanyForm" @submit="postCompanyInformation">
           <h4>Name & location</h4>
           <UploadFormHeader :name="companyDataNames.companyName" :explanation="companyDataExplanations.companyName" />
           <FormKit
@@ -35,18 +28,18 @@
               icon="pi pi-plus"
             ></PrimeButton>
           </div>
-          <FormKit v-model="enteredCompanyAlternativeName" type="text" placeholder="Company alternative name" />
+          <FormKit
+            name="alternativeName"
+            v-model="enteredCompanyAlternativeName"
+            type="text"
+            placeholder="Company alternative name"
+          />
 
           <template v-for="index in companyAlternativeNames.length" :key="index">
             <span class="form-list-item">
               {{ companyAlternativeNames[index - 1] }}
               <em @click="removeAlternativeName(index)" class="material-icons">close</em>
             </span>
-            <!--            -->
-            <!--            <div class="align-items-baseline">-->
-            <!--              <div class="font-medium text-3l">{{ companyAlternativeNames[index - 1] }}</div>-->
-            <!--              <PrimeButton @click="removeAlternativeName(index)" icon="pi pi-trash"></PrimeButton>-->
-            <!--            </div>-->
           </template>
 
           <div class="next-to-each-other">
@@ -69,7 +62,6 @@
                 :name="companyDataNames.countryCode"
                 :explanation="companyDataExplanations.countryCode"
               />
-              <!-- ToDo: the options are not searchable at the moment-->
               <FormKit
                 name="countryCode"
                 v-model="countryCode"
@@ -97,7 +89,12 @@
             :name="companyDataNames.companyLegalForm"
             :explanation="companyDataExplanations.companyLegalForm"
           />
-          <FormKit name="companyLegalForm" v-model="companyLegalForm" type="text" :placeholder="companyDataNames.companyLegalForm" />
+          <FormKit
+            name="companyLegalForm"
+            v-model="companyLegalForm"
+            type="text"
+            :placeholder="companyDataNames.companyLegalForm"
+          />
 
           <UploadFormHeader :name="companyDataNames.website" :explanation="companyDataExplanations.website" />
           <FormKit name="website" v-model="website" type="text" :placeholder="companyDataNames.website" />
@@ -186,6 +183,7 @@ export default defineComponent({
   directives: {
     tooltip: Tooltip,
   },
+  emits: ["companyCreated"],
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -288,16 +286,6 @@ export default defineComponent({
       } as CompanyInformation;
     },
     /**
-     * Scrolls to the top of the page
-     */
-    toTop(): void {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    },
-    /**
      * Posts the entered company information to the backend
      */
     async postCompanyInformation() {
@@ -311,10 +299,12 @@ export default defineComponent({
           const companyDataControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)()
           ).getCompanyDataControllerApi();
-          await companyDataControllerApi.postCompany(company);
+          const response = await companyDataControllerApi.postCompany(company);
+          const newCompanyId = response.data.companyId;
+          this.$emit("companyCreated", newCompanyId);
           this.$formkit.reset("createCompanyForm");
           this.companyAlternativeNames = new Array<string>();
-          this.message = "Upload successfully executed.";
+          this.message = "New company has the ID: " + newCompanyId;
           this.uploadSucceded = true;
         }
       } catch (error) {
@@ -328,7 +318,6 @@ export default defineComponent({
         this.uploadSucceded = false;
       } finally {
         this.postCompanyProcessed = true;
-        this.toTop();
       }
     },
   },
