@@ -120,6 +120,9 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Finds the datasets the logged in user is responsible for and creates corresponding table entries
+     */
     requestDataMetaDataForCurrentUser: async function (): Promise<void> {
       const companyDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
@@ -150,15 +153,24 @@ export default defineComponent({
                 2023,
                 DatasetStatus.Approved,
                 dataMetaInfo.uploadTime * 1000,
-                company.companyId
+                company.companyId,
+                dataMetaInfo.dataId,
               )
           )
       );
       this.waitingForData = false;
     },
+    /**
+     * Counts datasets with a specific status
+     *
+     * @param status the status for which datasets shall be counted
+     */
     countDatasetStatus(status: DatasetStatus): number {
       return this.datasetTableInfos.filter((info) => info.status.text === status.text).length;
     },
+    /**
+     * Routes to companies page when AVAILABLE DATASET tab is clicked
+     */
     handleTabChange(): void {
       if (this.activeTabIndex == 0) {
         void this.$router.push("/companies");

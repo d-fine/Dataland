@@ -2,7 +2,7 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-import { LksgData } from "@clients/backend";
+import { DataTypeEnum, LksgData } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
@@ -131,7 +131,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * Validates if the framework view page for EU Taxonomy data for financial companies is currently displayed.
        */
       function validateFinancialsPage(): void {
-        cy.url().should("contain", `/frameworks/eutaxonomy-financials`);
+        cy.url().should("contain", `/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
         cy.get("h2").should("contain", "EU Taxonomy Data");
       }
 
@@ -139,7 +139,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * Validates if the framework view page for EU Taxonomy data for non-financial companies is currently displayed.
        */
       function validateNonFinancialsPage(): void {
-        cy.url().should("contain", `/frameworks/eutaxonomy-non-financials`);
+        cy.url().should("contain", `/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
         cy.get("h2").should("contain", "EU Taxonomy Data");
       }
 
@@ -147,7 +147,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * Validates if the framework view page for LkSG data is currently displayed.
        */
       function validateLksgPage(): void {
-        cy.url().should("contain", `/frameworks/lksg`);
+        cy.url().should("contain", `/frameworks/${DataTypeEnum.Lksg}`);
         cy.get("h2").should("contain", "LkSG data");
       }
 

@@ -36,7 +36,7 @@ import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearc
 import { defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { useRoute } from "vue-router";
-import { DataTypeEnum} from "@clients/backend";
+import { DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewEuTaxonomyFinancials",
@@ -52,7 +52,7 @@ export default defineComponent({
       listOfReceivedEuTaxoFinancialsDataIds: [] as string[],
       dataIdToDisplay: "",
       route: useRoute(),
-      DataTypeEnum
+      DataTypeEnum,
     };
   },
   methods: {

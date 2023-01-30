@@ -102,8 +102,8 @@ describeIf(
 
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
-          cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
-          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+          cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
+          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Lksg}`);
           cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
             cy.get(`h1`).should("contain", companyInformation.companyName);
 
@@ -161,7 +161,7 @@ describeIf(
                 .click({ force: true })
                 .type(nameOfSomeCompanyWithLksgData);
               cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-                cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
+                cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
                 cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}");
                 cy.wait("@retrieveLksgData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
                   cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
@@ -185,8 +185,8 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
           return uploadAnotherLksgDataSetToExistingCompany(uploadIds, true).then(() => {
-            cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
-            cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+            cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
+            cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Lksg}`);
             cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
               cy.get("table")
                 .find(`tr:contains("Data Date")`)
@@ -219,8 +219,8 @@ describeIf(
           for (let i = 3; i <= numberOfLksgDataSetsForCompany; i++) {
             currentChainable = currentChainable.then(uploadAnotherLksgDataSetToExistingCompany);
           }
-          cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
-          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+          cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
+          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Lksg}`);
           cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
             cy.get("table")
               .find(`tr:contains("Data Date")`)

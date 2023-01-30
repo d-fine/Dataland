@@ -36,7 +36,7 @@ import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSe
 import { defineComponent } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { useRoute } from "vue-router";
-import { DataTypeEnum} from "@clients/backend";
+import { DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewEuTaxonomyNonFinancials",
@@ -52,7 +52,7 @@ export default defineComponent({
       listOfReceivedEuTaxoNonFinanicalsDataIds: [] as string[],
       dataIdToDisplay: "",
       route: useRoute(),
-      DataTypeEnum
+      DataTypeEnum,
     };
   },
   methods: {
@@ -65,7 +65,7 @@ export default defineComponent({
     handleReceivedListOfDataIds(receivedEuTaxoNonFinanicalsDataIds: []) {
       this.listOfReceivedEuTaxoNonFinanicalsDataIds = receivedEuTaxoNonFinanicalsDataIds;
       this.chooseDataIdToDisplayBasedOnQueryParam();
-      this.waitingForDataIdsAndChoosingDataIdToDisplay = false
+      this.waitingForDataIdsAndChoosingDataIdToDisplay = false;
     },
     chooseDataIdToDisplayBasedOnQueryParam() {
       const singleQueryDataId = this.route.query.dataId as string;

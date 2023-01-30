@@ -9,10 +9,16 @@
 
       <div v-else>
         <div v-for="(dataMetaInfo, index) in listOfFrameworkData" :key="index">
-          <p class="cursor-pointer text-primary font-semibold" @click="redirectToViewPage(dataMetaInfo)">{{ title }}</p>
+          <p
+            :class="[isFrontendViewPageExisting ? ['text-primary', 'cursor-pointer'] : '']"
+            class="font-semibold"
+            @click="redirectToViewPageIfEnabledInFrontend(dataMetaInfo)"
+          >
+            {{ dynamicDatasetTitle }}
+          </p>
           <p>{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</p>
         </div>
-        <p class="mt-5">{{ createButtonTitle }}</p>
+        <p class="mt-5">{{ dynamicButtonTitle }}</p>
         <PrimeButton
           class="uppercase p-button p-button-sm d-letters mt-3"
           :disabled="!isFrontendUploadFormExisting"
@@ -45,6 +51,10 @@ export default defineComponent({
     title: {
       type: String,
     },
+    isFrontendViewPageExisting: {
+      type: Boolean,
+      default: true,
+    },
     isFrontendUploadFormExisting: {
       type: Boolean,
       default: true,
@@ -71,7 +81,14 @@ export default defineComponent({
   },
 
   computed: {
-    createButtonTitle() {
+    dynamicDatasetTitle() {
+      if (this.isFrontendViewPageExisting) {
+        return this.title;
+      } else {
+        return `${this.title} (only viewable via API)`;
+      }
+    },
+    dynamicButtonTitle() {
       if (this.listOfFrameworkData) {
         if (this.listOfFrameworkData.length === 0) {
           return "Be the first to create this dataset";
@@ -82,15 +99,17 @@ export default defineComponent({
     },
   },
   methods: {
-    redirectToViewPage(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
-      const frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend = [DataTypeEnum.Lksg];
-      let dataIdQueryParamToSet: string;
-      if (frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend.includes(dataMetaInfoOfClickedDataSet.dataType)) {
-        dataIdQueryParamToSet = "";
-      } else {
-        dataIdQueryParamToSet = `?dataId=${dataMetaInfoOfClickedDataSet.dataId}`;
+    redirectToViewPageIfEnabledInFrontend(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
+      if (this.isFrontendViewPageExisting) {
+        const frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend = [DataTypeEnum.Lksg];
+        let dataIdQueryParamToSet: string;
+        if (frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend.includes(dataMetaInfoOfClickedDataSet.dataType)) {
+          dataIdQueryParamToSet = "";
+        } else {
+          dataIdQueryParamToSet = `?dataId=${dataMetaInfoOfClickedDataSet.dataId}`;
+        }
+        this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${dataIdQueryParamToSet}`);
       }
-      this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${dataIdQueryParamToSet}`);
     },
 
     redirectToUploadForm() {

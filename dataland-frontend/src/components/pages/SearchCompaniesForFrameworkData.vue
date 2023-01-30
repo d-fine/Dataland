@@ -418,6 +418,10 @@ export default defineComponent({
         this.searchBarId = "search_bar_scrolled";
       });
     },
+
+    /**
+     * Routes to my datasets page when MY DATASETS tab is clicked
+     */
     handleTabChange(): void {
       if (this.activeTabIndex == 1) {
         void this.$router.push("/datasets");

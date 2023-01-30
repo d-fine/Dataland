@@ -33,7 +33,7 @@ describe("As a user, I expect the footer section to be present and contain relev
       "/companies",
       "/companies/upload",
       "/companies-only-search",
-      "/samples/eutaxonomy-non-financials",
+      `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
     ];
 
     /**
@@ -51,7 +51,7 @@ describe("As a user, I expect the footer section to be present and contain relev
     });
 
     const frameworksToCheck = Object.values(DataTypeEnum).filter(
-      (frameworkName) => ["lksg", "sfdr", "sme"].indexOf(frameworkName) === -1
+      (frameworkName) => ([DataTypeEnum.Sfdr, DataTypeEnum.Sme] as DataTypeEnum[]).indexOf(frameworkName) === -1
     );
     frameworksToCheck.forEach((framework) => {
       it(`Checks that the footer is present on ${framework}`, () => {

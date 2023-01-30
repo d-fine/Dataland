@@ -28,18 +28,17 @@
                 </div>
               </div>
 
-              <div id="option2Container" class="grid">
-                <div id="option2Label" class="col-3 p-3">
-                  <h4 id="option2Title">Option 02</h4>
-                  <h3>Add a new company</h3>
-                  <p>
-                    If you want to add a dataset for a new company, you first have to create the company. To create a
-                    new company, all mandatory * fields must be filled.
-                  </p>
-                </div>
-                <div id="createCompanyForm" class="col-9 d-card">
-                  <CreateCompany />
-                </div>
+            <div id="option2Container" class="grid">
+              <div id="option2Label" class="col-3 p-3">
+                <h4 id="option2Title">Option 02</h4>
+                <h3>Add a new company</h3>
+                <p>
+                  If you want to add a dataset for a new company, you first have to create the company. To create a new
+                  company, all mandatory * fields must be filled.
+                </p>
+              </div>
+              <div id="createCompanyForm" class="col-9 p-3">
+                <CreateCompany @companyCreated="handleCompanyCreated" />
               </div>
             </div>
           </div>
@@ -58,6 +57,7 @@ import BackButton from "@/components/general/BackButton.vue";
 import Card from "primevue/card";
 import CreateCompany from "@/components/forms/CreateCompany.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
+import { TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS } from "@/utils/Constants";
 
 export default defineComponent({
   name: "Choose Company",
@@ -87,6 +87,11 @@ export default defineComponent({
       if (emptyDivBetweenOptionContainers) {
         emptyDivBetweenOptionContainers.scrollIntoView({ behavior: "smooth" });
       }
+    },
+    handleCompanyCreated(companyId: string) {
+      setTimeout(() => {
+        void this.$router.push(`/companies/${companyId}/frameworks/upload`);
+      }, TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS);
     },
   },
 });
