@@ -131,7 +131,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * Validates if the framework view page for EU Taxonomy data for financial companies is currently displayed.
        */
       function validateFinancialsPage(): void {
-        cy.url().should("contain", `/frameworks/eutaxonomy-financials`);
+        cy.url().should("contain", `/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
         cy.get("h2").should("contain", "EU Taxonomy Data");
       }
 

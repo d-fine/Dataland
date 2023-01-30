@@ -5,10 +5,10 @@ describe("As a user I expect to be redirected to the login page if I am unauthen
     "/companies/upload",
     "/companies-only-search",
     "/companies",
-    "/companies/:companyID/frameworks/eutaxonomy-financials",
+    `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
-    "/companies/:companyID/frameworks/eutaxonomy-financials/upload",
+    `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
   ];
 
   pages.forEach((page) => {

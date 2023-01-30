@@ -4,7 +4,7 @@ import {
   DataPointBigDecimal,
   EuTaxonomyDataForFinancialsControllerApi,
   Configuration,
-  DataMetaInformation,
+  DataMetaInformation, DataTypeEnum,
 } from "@clients/backend";
 import { FixtureData } from "../fixtures/FixtureUtils";
 import Chainable = Cypress.Chainable;
@@ -15,7 +15,7 @@ import Chainable = Cypress.Chainable;
  * @returns the resulting cypress chainable
  */
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
-  cy.intercept("**/api/data/eutaxonomy-financials").as("postCompanyAssociatedData");
+  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click();
   return cy.wait("@postCompanyAssociatedData").get("body").should("contain", "success");
 }
