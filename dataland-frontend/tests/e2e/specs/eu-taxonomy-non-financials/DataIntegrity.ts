@@ -4,7 +4,10 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
-import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import {
+  uploadEuTaxonomyDataForNonFinancialsViaForm,
+  uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
+} from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 
 describeIf(
@@ -94,5 +97,27 @@ describeIf(
         cy.get(".font-medium.text-3xl").should("not.contain", "€");
       });
     });
+
+    it(
+      "Upload EU Taxonomy Dataset via form with no values for revenue and assure that it can be viewed on the framework " +
+        "data view page with an appropriate message shown for the missing revenue data",
+      () => {
+        const companyName = "Missing field company";
+        const missingDataMessage = "No data has been reported";
+        getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
+            uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
+            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
+            cy.visitAndCheckAppMount(
+              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+            );
+            cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
+              cy.get("h1[class='mb-0']").contains(companyName);
+              cy.get("body").should("contain", "Eligible Revenue").should("contain", missingDataMessage);
+            });
+          });
+        });
+      }
+    );
   }
 );
