@@ -32,17 +32,17 @@ if (runPrepopulation) {
 if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./landing-page");
   require("./swagger-ui");
-  require("./company-metadata/SearchCompaniesForFrameworkDataDropdownFilter");
-  require("./company-metadata/CompaniesOnlySearch");
+  require("./company-upload-and-search/CompanyUpload");
+  require("./company-upload-and-search/CompaniesOnlySearch");
   require("./user-api-key");
 }
 
 if (cypressTestGroup === 102) {
-  require("./company-metadata/CompaniesOnlySearch");
+  require("./search-company-framework-data/CompaniesOnlySearch");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
-  require("./frameworks");
+  require("./framework-view-and-upload-journey");
   require("./eu-taxonomy-non-financials");
   require("./eu-taxonomy-financials");
   require("./lksg");
@@ -58,8 +58,8 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
-  require("./company-metadata/SearchPagination");
-  require("./company-metadata/CompanyUpload");
-  require("./company-metadata/SearchCompaniesForFrameworkData");
+  require("./search-company-framework-data/SearchPagination");
+  require("./search-company-framework-data/SearchCompaniesForFrameworkData");
+  require("./search-company-framework-data/SearchCompaniesForFrameworkDataDropdownFilter");
   require("./data-request/DataRequestProcess");
 }
