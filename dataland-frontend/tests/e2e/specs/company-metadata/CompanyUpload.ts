@@ -7,6 +7,7 @@ import {
 } from "@e2e/utils/CompanyUpload";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import {DataTypeEnum} from "@clients/backend";
 
 describeIf(
   "As a user, I want to be able to upload new companies via an upload form if I have the rights",
@@ -42,13 +43,13 @@ describeIf(
           return uploadCompanyViaApi(token, generateDummyCompanyInformation("Permission check company")).then(
             (storedCompany) => {
               cy.visitAndCheckAppMount(
-                `/companies/${storedCompany.companyId}/frameworks/eutaxonomy-non-financials/upload`
+                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`
               );
               cy.get("select[name=assurance]").select("Limited Assurance");
               cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
                 force: true,
               });
-              cy.intercept("**/api/data/eutaxonomy-non-financials").as("postCompanyAssociatedData");
+              cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
               cy.get('button[name="postEUData"]').click({ force: true });
               cy.wait("@postCompanyAssociatedData").get("body").should("contain", "Sorry");
             }

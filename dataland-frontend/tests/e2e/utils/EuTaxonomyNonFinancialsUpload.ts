@@ -1,6 +1,6 @@
 import {
   Configuration,
-  DataMetaInformation,
+  DataMetaInformation, DataTypeEnum,
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsControllerApi,
@@ -15,7 +15,7 @@ import Chainable = Cypress.Chainable;
  * @returns the id of the dataset that has been uploaded
  */
 export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): Cypress.Chainable<string> {
-  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/eutaxonomy-non-financials/upload`);
+  cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
     force: true,
@@ -26,7 +26,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): 
       cy.wrap($element).type(inputNumber.toString(), { force: true });
     });
   }
-  cy.intercept("**/api/data/eutaxonomy-non-financials").as("postCompanyAssociatedData");
+  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click({ force: true });
   return cy
     .wait("@postCompanyAssociatedData")
