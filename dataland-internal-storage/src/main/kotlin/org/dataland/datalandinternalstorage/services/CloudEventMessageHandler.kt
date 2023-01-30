@@ -20,13 +20,19 @@ import org.springframework.amqp.core.MessageProperties as AMQPMessageProperties
  * (ref https://swagger.io/docs/specification/describing-responses/)
  */
 
+/**
+ * Handling of messages in the CloudEvents format
+ * @param rabbitTemplate
+ * @param objectMapper
+ * @param converter service for converting CloudEvents message to object treatable by RabbitMQ
+ */
+
 @Component("CloudEventMessageHandler")
 class CloudEventMessageHandler(
     private val rabbitTemplate: RabbitTemplate,
     @Autowired var objectMapper: ObjectMapper,
     var converter: MessagingMessageConverter? = MessagingMessageConverter()
 ){
-
     private fun constructCEMessage(input: String, type: String, correlationId: String): MessageMQ {
         val input2 = input.toByteArray()
         val message = CloudEventMessageBuilder
@@ -38,10 +44,22 @@ class CloudEventMessageHandler(
         return convertMessage(message)
     }
 
+    /**
+     * Method constructing a CloudEvents message and sending it to a RabbitMQ message queue
+     * @param input the payload of the message to be constructed
+     * @param type criterion to distinguish different messages to RabbitMQ apart from used queue
+     * @param correlationId to be used as ID in header of CloudEvents message
+     * @param queue RabbitMQ message queue to send the constructed message to
+     */
     fun buildCEMessageAndSendToQueue(input: String, type: String = "TestType", correlationId: String, queue: String){
         val messageInput = constructCEMessage(input, type, correlationId)
         rabbitTemplate.send(queue, messageInput)
     }
+
+    /**
+     * Method to extract the byte payload of a RabbitMQ message as string
+     * @param message RabbitMQ message whose payload is to be extracted
+     */
     fun bodyToString(message: MessageMQ) : String{
         return String(message.body)
     }

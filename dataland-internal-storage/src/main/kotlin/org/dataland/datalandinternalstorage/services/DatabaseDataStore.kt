@@ -15,6 +15,10 @@ import java.rmi.ServerException
 
 /**
  * Simple implementation of a data store using a postgres database
+ * @param dataItemRepository
+ * @param dataInformationHashMap backend map for temporarily storing data information
+ * @param cloudEventMessageHandler service for managing CloudEvents messages
+ * @param rabbitTemplate
  */
 @ComponentScan(basePackages = ["org.dataland"])
 @Component
@@ -27,9 +31,8 @@ class DatabaseDataStore(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     /**
-     * Insterts data into a database
-     * @param message a message object retrieved from the message queue
-     * @return id associated with the stored data
+     * Method to insert data into a database
+     * @param message Message retrieved from storage_queue
      */
     //@RabbitHandler
     @RabbitListener(queues = ["storage_queue"])
@@ -39,7 +42,7 @@ class DatabaseDataStore(
         val data = dataInformationHashMap.map[dataId]
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         try {dataItemRepository.save(DataItem(dataId, data!!))
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data sucessfully stored", correlationId ,"stored_queue")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data successfully stored", correlationId ,"stored_queue")
         } catch (e: ServerException) {
             val internalMessage = "Error storing data." +
                     " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
