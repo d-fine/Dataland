@@ -8,7 +8,6 @@ describe("Taxonomy Company Metadata tests", () => {
    */
   require("./SearchPagination");
   require("./CompanyUpload");
-  require("./FrameworkDataUpload");
   require("./SearchCompaniesForFrameworkData");
   require("./SearchCompaniesForFrameworkDataDropdownFilter");
   require("./CompaniesOnlySearch");
