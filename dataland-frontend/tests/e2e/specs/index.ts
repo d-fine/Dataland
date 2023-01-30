@@ -32,13 +32,12 @@ if (runPrepopulation) {
 if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./landing-page");
   require("./swagger-ui");
-  require("./company-upload-and-search/CompanyUpload");
-  require("./company-upload-and-search/CompaniesOnlySearch");
+  require("./company-upload-and-search");
   require("./user-api-key");
 }
 
 if (cypressTestGroup === 102) {
-  require("./search-company-framework-data/CompaniesOnlySearch");
+  require("./company-upload-and-search/CompaniesOnlySearch");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
@@ -58,8 +57,6 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {
-  require("./search-company-framework-data/SearchPagination");
-  require("./search-company-framework-data/SearchCompaniesForFrameworkData");
-  require("./search-company-framework-data/SearchCompaniesForFrameworkDataDropdownFilter");
-  require("./data-request/DataRequestProcess");
+  require("./search-company-framework-data");
+  require("./data-request");
 }
