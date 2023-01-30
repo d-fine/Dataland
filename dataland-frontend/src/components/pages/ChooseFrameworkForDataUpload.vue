@@ -4,21 +4,20 @@
     <TheContent>
       <BackButton id="backButton" label="CHOOSE COMPANY" />
       <CompanyInformation :companyID="companyID" />
-      <Card class="col-12">
+      <Card class="col-12 text-left page-wrapper-card">
         <template #title>
           New Dataset - Framework
-          <hr />
         </template>
         <template #content>
-          <div class="uploadFormWrapper">
-            <div id="euTaxonomyContainer" class="grid">
-              <div id="euTaxonomyLabel" class="col-3 text-left topicLabel">
+          <div class="uploadFormWrapper grid">
+            <div id="euTaxonomyContainer" class="col-9 flex">
+              <div id="euTaxonomyLabel" class="col-3 p-3">
                 <h3>EU Taxonomy</h3>
                 <p>Overview of all existing and missing EU Taxonomy datasets for this company.</p>
               </div>
-              <div class="col-6 text-left">
+              <div class="col-9 d-card">
                 <div id="eutaxonomyDataSetsContainer">
-                  <h4>Eu Taxonomy Data Sets:</h4>
+                  <h4 class="bottom-border-section-dots">Eu Taxonomy Data Sets:</h4>
 
                   <MetaInfoPerCompanyAndFramework
                     title="Non-Financials"
@@ -27,9 +26,8 @@
                     :companyId="companyID"
                     :isWaitingForData="waitingForData"
                     :listOfFrameworkData="listOfEuTaxonomyNonFinancialsMetaInfo"
+                    class="bottom-border-section-dots"
                   />
-
-                  <hr />
 
                   <MetaInfoPerCompanyAndFramework
                     title="Financials"
@@ -43,34 +41,38 @@
               </div>
             </div>
 
-            <div id="sfdrContainer" class="grid mt-6">
-              <div id="sfdrLabel" class="col-3 text-left">
+            <div id="sfdrContainer" class="col-9 flex top-border-section">
+              <div id="sfdrLabel" class="col-3 p-3">
                 <h3>SFDR</h3>
                 <p>Overview of all existing and missing SFDR datasets for this company.</p>
               </div>
-              <MetaInfoPerCompanyAndFramework
-                title="SFDR"
-                :isFrontendUploadFormExisting="false"
-                :framework-url-path="DataTypeEnum.Sfdr"
-                description="Overview of all existing and missing SFDR datasets for this company"
-                :companyId="companyID"
-                :isWaitingForData="waitingForData"
-                :listOfFrameworkData="listOfSfdrMetaInfo"
-              />
+              <div class="col-9 d-card">
+                <MetaInfoPerCompanyAndFramework
+                  title="SFDR"
+                  :isFrontendUploadFormExisting="false"
+                  :framework-url-path="DataTypeEnum.Sfdr"
+                  description="Overview of all existing and missing SFDR datasets for this company"
+                  :companyId="companyID"
+                  :isWaitingForData="waitingForData"
+                  :listOfFrameworkData="listOfSfdrMetaInfo"
+                />
+              </div>
             </div>
 
-            <div id="lksgContainer" class="grid mt-6">
-              <div id="lksgLabel" class="col-3 text-left">
+            <div id="lksgContainer" class="col-9 flex top-border-section">
+              <div id="lksgLabel" class="col-3">
                 <h3>LkSG</h3>
                 <p>Overview of all existing and missing LkSG datasets for this company.</p>
               </div>
-              <MetaInfoPerCompanyAndFramework
-                title="LkSG"
-                :framework-url-path="DataTypeEnum.Lksg"
-                :companyId="companyID"
-                :isWaitingForData="waitingForData"
-                :listOfFrameworkData="listOfLksgMetaInfo"
-              />
+              <div class="col-9 d-card">
+                <MetaInfoPerCompanyAndFramework
+                  title="LkSG"
+                  :framework-url-path="DataTypeEnum.Lksg"
+                  :companyId="companyID"
+                  :isWaitingForData="waitingForData"
+                  :listOfFrameworkData="listOfLksgMetaInfo"
+                />
+              </div>
             </div>
           </div>
         </template>

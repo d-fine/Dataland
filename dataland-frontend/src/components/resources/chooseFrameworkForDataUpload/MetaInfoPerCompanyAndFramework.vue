@@ -1,10 +1,10 @@
 <template>
-  <div class="col-6 text-left">
-    <div id="lksgDataSetsContainer">
+  <div>
+    <div>
       <h4>{{ title + " Datasets:" }}</h4>
-      <div v-if="isWaitingForData" class="inline-loading meta-data-height text-center">
+      <div v-if="isWaitingForData" class="inline-loading text-center">
         <p class="font-medium text-xl">Loading...</p>
-        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f"/>
+        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
 
       <div v-else>
@@ -14,11 +14,11 @@
         </div>
         <p class="mt-5">{{ createButtonTitle }}</p>
         <PrimeButton
-            class="uppercase p-button p-button-sm d-letters mt-3"
-            :disabled="!isFrontendUploadFormExisting"
-            label="Create Dataset"
-            icon="pi pi-plus"
-            @click="redirectToUploadForm"
+          class="uppercase p-button p-button-sm d-letters mt-3"
+          :disabled="!isFrontendUploadFormExisting"
+          label="Create Dataset"
+          icon="pi pi-plus"
+          @click="redirectToUploadForm"
         />
         <div v-if="!isFrontendUploadFormExisting">
           <p>
@@ -32,14 +32,14 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
-import {convertUnixTimeInMsToDateString} from "@/utils/DateFormatUtils";
+import { defineComponent } from "vue";
+import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import PrimeButton from "primevue/button";
-import {DataMetaInformation, DataTypeEnum} from "@clients/backend";
+import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "MetaInfoPerComanyAndFramework",
-  components: {PrimeButton},
+  components: { PrimeButton },
 
   props: {
     title: {
@@ -83,13 +83,12 @@ export default defineComponent({
   },
   methods: {
     redirectToViewPage(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
-      const frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend = [DataTypeEnum.Lksg]
-      let dataIdQueryParamToSet: string
+      const frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend = [DataTypeEnum.Lksg];
+      let dataIdQueryParamToSet: string;
       if (frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend.includes(dataMetaInfoOfClickedDataSet.dataType)) {
-        dataIdQueryParamToSet = ""
-      }
-      else {
-        dataIdQueryParamToSet = `?dataId=${dataMetaInfoOfClickedDataSet.dataId}`
+        dataIdQueryParamToSet = "";
+      } else {
+        dataIdQueryParamToSet = `?dataId=${dataMetaInfoOfClickedDataSet.dataId}`;
       }
       this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${dataIdQueryParamToSet}`);
     },

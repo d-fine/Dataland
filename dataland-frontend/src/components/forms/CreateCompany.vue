@@ -1,8 +1,7 @@
 <template>
-  <Card>
+  <Card class="bg-white">
     <template #title>Create a Company </template>
     <template #content>
-      <!-- ToDo: styling of the page is off-->
       <div class="uploadFormWrapper">
         <FormKit
           v-model="formInputsModel"
@@ -288,16 +287,6 @@ export default defineComponent({
       } as CompanyInformation;
     },
     /**
-     * Scrolls to the top of the page
-     */
-    toTop(): void {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    },
-    /**
      * Posts the entered company information to the backend
      */
     async postCompanyInformation() {
@@ -328,7 +317,6 @@ export default defineComponent({
         this.uploadSucceded = false;
       } finally {
         this.postCompanyProcessed = true;
-        this.toTop();
       }
     },
   },

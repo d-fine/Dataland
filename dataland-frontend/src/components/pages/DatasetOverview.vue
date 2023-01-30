@@ -47,7 +47,7 @@
             :is-properly-implemented="isProperlyImplemented"
             :class="datasetTableInfos.length > 0 ? '' : 'hidden'"
           />
-          <div v-if="waitingForData" class="inline-loading meta-data-height text-center">
+          <div v-if="waitingForData" class="inline-loading text-center">
             <p class="font-medium text-xl">Loading datasets...</p>
             <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
           </div>
