@@ -14,6 +14,7 @@
           <h4>Name & location</h4>
           <UploadFormHeader :name="companyDataNames.companyName" :explanation="companyDataExplanations.companyName" />
           <FormKit
+            name="companyName"
             v-model="companyName"
             type="text"
             :placeholder="companyDataNames.companyName"
@@ -28,6 +29,7 @@
             <PrimeButton
               :disabled="this.enteredCompanyAlternativeName === ''"
               @click="addCompanyAlternativeName"
+              name="addAlternativeName"
               label="Add"
               class="p-button-text"
               icon="pi pi-plus"
@@ -54,6 +56,7 @@
                 :explanation="companyDataExplanations.headquarters"
               />
               <FormKit
+                name="headquarters"
                 v-model="headquarters"
                 type="text"
                 placeholder="City"
@@ -68,6 +71,7 @@
               />
               <!-- ToDo: the options are not searchable at the moment-->
               <FormKit
+                name="countryCode"
                 v-model="countryCode"
                 type="select"
                 placeholder="Select"
@@ -83,6 +87,7 @@
             :explanation="companyDataExplanations.headquartersPostalCode"
           />
           <FormKit
+            name="headquartersPostalCode"
             v-model="headquartersPostalCode"
             type="text"
             :placeholder="companyDataNames.headquartersPostalCode"
@@ -92,31 +97,32 @@
             :name="companyDataNames.companyLegalForm"
             :explanation="companyDataExplanations.companyLegalForm"
           />
-          <FormKit v-model="companyLegalForm" type="text" :placeholder="companyDataNames.companyLegalForm" />
+          <FormKit name="companyLegalForm" v-model="companyLegalForm" type="text" :placeholder="companyDataNames.companyLegalForm" />
 
           <UploadFormHeader :name="companyDataNames.website" :explanation="companyDataExplanations.website" />
-          <FormKit v-model="website" type="text" :placeholder="companyDataNames.website" />
+          <FormKit name="website" v-model="website" type="text" :placeholder="companyDataNames.website" />
 
           <h4>Identifier</h4>
 
           <!-- ToDo: there is no live update to check if an identifier is already in use-->
           <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
-          <FormKit v-model="isin" type="text" :placeholder="companyDataNames.isin" />
+          <FormKit name="isin" v-model="isin" type="text" :placeholder="companyDataNames.isin" />
 
           <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker" />
-          <FormKit v-model="ticker" type="text" :placeholder="companyDataNames.ticker" />
+          <FormKit name="ticker" v-model="ticker" type="text" :placeholder="companyDataNames.ticker" />
 
           <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId" />
-          <FormKit v-model="permId" type="text" :placeholder="companyDataNames.permId" />
+          <FormKit name="permId" v-model="permId" type="text" :placeholder="companyDataNames.permId" />
 
           <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
-          <FormKit v-model="duns" type="text" :placeholder="companyDataNames.duns" />
+          <FormKit name="duns" v-model="duns" type="text" :placeholder="companyDataNames.duns" />
 
           <UploadFormHeader
             :name="companyDataNames.companyRegistrationNumber"
             :explanation="companyDataExplanations.companyRegistrationNumber"
           />
           <FormKit
+            name="companyRegistrationNumber"
             v-model="companyRegistrationNumber"
             type="text"
             :placeholder="companyDataNames.companyRegistrationNumber"
@@ -126,6 +132,7 @@
 
           <UploadFormHeader :name="companyDataNames.sector" :explanation="companyDataExplanations.sector" />
           <FormKit
+            name="sector"
             v-model="sector"
             type="select"
             placeholder="Please choose"
