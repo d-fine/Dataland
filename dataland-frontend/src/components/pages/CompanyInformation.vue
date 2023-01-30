@@ -20,6 +20,7 @@
     </div>
     <div v-else>
       <div class="col-12">
+        <!--TODO or just display generic error message?-->
         <h1 class="mb-0">No company with this ID present</h1>
       </div>
     </div>

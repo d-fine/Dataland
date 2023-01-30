@@ -110,6 +110,11 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Computes the path a row click should lead to depending on the selected dataset and its status
+     *
+     * @param datasetTableInfo relevant dataset information
+     */
     getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
       if (this.isDatasetRejected(datasetTableInfo)) {
         return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/upload`;
@@ -122,15 +127,28 @@ export default defineComponent({
         return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}${queryParameters}`;
       }
     },
+    /**
+     * Checks if the status of th egiven DatasetTableInfo equals Rejected
+     *
+     * @param datasetTableEntry the DatasetTableEntry to check the status of
+     */
     isDatasetRejected(datasetTableEntry: DatasetTableInfo): boolean {
       return datasetTableEntry.status.text === DatasetStatus.Requested.text;
     },
+    /**
+     * Filter the given datasets for the search string in the company name
+     */
     applySearchFilter(): void {
       // TODO implement this properly
       this.displayedDatasetTableInfos = this.datasetTableInfos.filter((info) =>
         (info as DatasetTableInfo).companyName.toLowerCase().includes(this.searchBarInput.toLowerCase())
       ) as DatasetTableInfo[];
     },
+    /**
+     * Depending on the dataset status, this routes to the dataset view page or an upload page
+     *
+     * @param event an event that stores the DatasetTableInfo of the on clicked row
+     */
     rerouteRowClick(event: { data: DatasetTableInfo }) {
       void this.$router.push(this.getTableRowLinkTarget(event.data));
     },
