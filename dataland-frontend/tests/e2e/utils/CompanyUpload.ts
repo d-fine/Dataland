@@ -9,36 +9,37 @@ import { faker } from "@faker-js/faker";
 
 /**
  * Fills the company for a company with the specified name with dummy values.
- * The dummy value for the sector may be overwritten
  *
  * @param companyName the company name to fill into the form
- * @param sector overrides the dummy sector if specified
  */
-export function fillCompanyUploadFields(companyName: string, sector?: string): void {
+export function fillCompanyUploadFields(companyName: string): void {
   cy.get("input[name=companyName]").type(companyName, { force: true });
-  cy.get("input[name=headquarters]").type("Capitol City", { force: true });
-  cy.get("input[name=sector]").type(sector ?? "Handmade", { force: true });
-  cy.get("input[name=countryCode]").type("DE", { force: true });
-  cy.get("select[name=identifierType]").select("ISIN");
-  cy.get("input[name=identifierValue]").type(`IsinValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=alternativeName]").type("Another Name", { force: true });
   cy.get("button[name=addAlternativeName]").click();
-  cy.get("input[name=0]").type(`Another Name`, { force: true });
+  cy.get("input[name=headquarters]").type("Capitol City", { force: true });
+  cy.get("input[name=countryCode]").select("DE", { force: true });
+  cy.get("input[name=headquartersPostalCode]").type("123456", { force: true });
+  cy.get("input[name=companyLegalForm]").type("Enterprise Ltd.", { force: true });
+  cy.get("input[name=website]").type("www.company.com", { force: true });
+  cy.get("input[name=isin]").type(`IsinValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=ticker]").type(`TickerValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=permId]").type(`PermValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=duns]").type(`DunsValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=companyRegistrationNumber]").type(`RegValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=sector]").select("Energy");
 }
 
 /**
- * Creates a company with the provided name and dummy values via the frontend.
- * The dummy value for the sector may be overwritten. Retrieves the Id of the newly created company
+ * Creates a company with the provided name and dummy values via the frontend and returns the ID of the newly created company.
  *
  * @param companyName the name of the company to create
- * @param sector overrides the dummy sector if specified
- * @returns a cypress chainable containing the id of the newly created company
+ * @returns a cypress chainable containing the ID of the newly created company
  */
-export function uploadCompanyViaFormAndGetId(companyName: string, sector?: string): Cypress.Chainable<string> {
+export function uploadCompanyViaFormAndGetId(companyName: string): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount("/companies/upload");
-  cy.get('button[name="postCompanyData"]').should("be.disabled");
-  fillCompanyUploadFields(companyName, sector);
+  fillCompanyUploadFields(companyName);
   cy.intercept("**/api/companies").as("postCompany");
-  cy.get('button[name="postCompanyData"]').click();
+  cy.get('button[name="addCompany"]').click();
   return cy
     .wait("@postCompany")
     .get("body")
