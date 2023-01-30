@@ -50,6 +50,7 @@
               </div>
               <MetaInfoPerCompanyAndFramework
                 title="SFDR"
+                :isFrontendViewPageExisting="false"
                 :isFrontendUploadFormExisting="false"
                 :framework-url-path="DataTypeEnum.Sfdr"
                 description="Overview of all existing and missing SFDR datasets for this company"
@@ -90,7 +91,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import Card from "primevue/card";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import {DataMetaInformation, DataTypeEnum} from "@clients/backend";
+import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 
 export default defineComponent({
@@ -121,7 +122,7 @@ export default defineComponent({
       listOfEuTaxonomyFinancialsMetaInfo: [] as Array<DataMetaInformation>,
       listOfSfdrMetaInfo: [] as Array<DataMetaInformation>,
       listOfLksgMetaInfo: [] as Array<DataMetaInformation>,
-      DataTypeEnum
+      DataTypeEnum,
     };
   },
   props: {

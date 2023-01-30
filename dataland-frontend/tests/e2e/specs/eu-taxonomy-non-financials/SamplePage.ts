@@ -1,4 +1,5 @@
 import { getBaseUrl } from "@e2e/utils/Cypress";
+import { DataTypeEnum } from "@clients/backend";
 
 describe("As a user, I expect the sample page to be functional and reachable without logging in", () => {
   it("Check that the sample section works properly without authentication", () => {
@@ -21,7 +22,7 @@ describe("As a user, I expect the sample page to be functional and reachable wit
       })
       .then(() => {
         cy.url()
-          .should("include", "/eutaxonomy-non-financials")
+          .should("include", `/${DataTypeEnum.EutaxonomyNonFinancials}`)
           .get("h2")
           .should("contain.text", "EU Taxonomy Data")
           .get(".p-button.p-button-rounded")

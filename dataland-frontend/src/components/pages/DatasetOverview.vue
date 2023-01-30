@@ -150,7 +150,8 @@ export default defineComponent({
                 2023,
                 DatasetStatus.Approved,
                 dataMetaInfo.uploadTime * 1000,
-                company.companyId
+                company.companyId,
+                dataMetaInfo.dataId,
               )
           )
       );

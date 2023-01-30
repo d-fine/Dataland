@@ -20,8 +20,7 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
 import { defineComponent } from "vue";
-import { DataTypeEnum} from "@clients/backend";
-
+import { DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewLksg",
@@ -35,7 +34,7 @@ export default defineComponent({
     return {
       loading: true,
       receivedLksgDataIds: [] as string[],
-      DataTypeEnum
+      DataTypeEnum,
     };
   },
   methods: {

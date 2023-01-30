@@ -75,6 +75,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { DatasetStatus, DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
+import { DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
@@ -113,7 +114,12 @@ export default defineComponent({
       if (this.isDatasetRejected(datasetTableInfo)) {
         return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/upload`;
       } else {
-        return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}`;
+        const dataTypesWithSingleView = [DataTypeEnum.Lksg] as DataTypeEnum[];
+        let queryParameters = ""
+        if (!dataTypesWithSingleView.includes(datasetTableInfo.dataType)) {
+          queryParameters = `?dataId=${datasetTableInfo.dataId}`;
+        }
+        return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}${queryParameters}`;
       }
     },
     isDatasetRejected(datasetTableEntry: DatasetTableInfo): boolean {
