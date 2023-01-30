@@ -9,4 +9,5 @@ describe("Taxonomy Company Metadata tests", () => {
   require("./SearchPagination");
   require("./SearchCompaniesForFrameworkData");
   require("./SearchCompaniesForFrameworkDataDropdownFilter");
+  require("./ViewMyDatasets");
 });
