@@ -4,21 +4,27 @@
       <h4>{{ title + " Datasets:" }}</h4>
       <div v-if="isWaitingForData" class="inline-loading meta-data-height text-center">
         <p class="font-medium text-xl">Loading...</p>
-        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f"/>
+        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
 
       <div v-else>
         <div v-for="(dataMetaInfo, index) in listOfFrameworkData" :key="index">
-          <p class="cursor-pointer text-primary font-semibold" @click="redirectToViewPage(dataMetaInfo)">{{ title }}</p>
+          <p
+            :class="[isFrontendViewPageExisting ? ['text-primary', 'cursor-pointer'] : '']"
+            class="font-semibold"
+            @click="redirectToViewPageIfEnabledInFrontend(dataMetaInfo)"
+          >
+            {{ dynamicDatasetTitle }}
+          </p>
           <p>{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</p>
         </div>
-        <p class="mt-5">{{ createButtonTitle }}</p>
+        <p class="mt-5">{{ dynamicButtonTitle }}</p>
         <PrimeButton
-            class="uppercase p-button p-button-sm d-letters mt-3"
-            :disabled="!isFrontendUploadFormExisting"
-            label="Create Dataset"
-            icon="pi pi-plus"
-            @click="redirectToUploadForm"
+          class="uppercase p-button p-button-sm d-letters mt-3"
+          :disabled="!isFrontendUploadFormExisting"
+          label="Create Dataset"
+          icon="pi pi-plus"
+          @click="redirectToUploadForm"
         />
         <div v-if="!isFrontendUploadFormExisting">
           <p>
@@ -32,18 +38,22 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
-import {convertUnixTimeInMsToDateString} from "@/utils/DateFormatUtils";
+import { defineComponent } from "vue";
+import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import PrimeButton from "primevue/button";
-import {DataMetaInformation, DataTypeEnum} from "@clients/backend";
+import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "MetaInfoPerComanyAndFramework",
-  components: {PrimeButton},
+  components: { PrimeButton },
 
   props: {
     title: {
       type: String,
+    },
+    isFrontendViewPageExisting: {
+      type: Boolean,
+      default: true,
     },
     isFrontendUploadFormExisting: {
       type: Boolean,
@@ -71,7 +81,14 @@ export default defineComponent({
   },
 
   computed: {
-    createButtonTitle() {
+    dynamicDatasetTitle() {
+      if (this.isFrontendViewPageExisting) {
+        return this.title;
+      } else {
+        return `${this.title} (only viewable via API)`;
+      }
+    },
+    dynamicButtonTitle() {
       if (this.listOfFrameworkData) {
         if (this.listOfFrameworkData.length === 0) {
           return "Be the first to create this dataset";
@@ -82,16 +99,17 @@ export default defineComponent({
     },
   },
   methods: {
-    redirectToViewPage(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
-      const frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend = [DataTypeEnum.Lksg]
-      let dataIdQueryParamToSet: string
-      if (frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend.includes(dataMetaInfoOfClickedDataSet.dataType)) {
-        dataIdQueryParamToSet = ""
+    redirectToViewPageIfEnabledInFrontend(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
+      if (this.isFrontendViewPageExisting) {
+        const frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend = [DataTypeEnum.Lksg];
+        let dataIdQueryParamToSet: string;
+        if (frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend.includes(dataMetaInfoOfClickedDataSet.dataType)) {
+          dataIdQueryParamToSet = "";
+        } else {
+          dataIdQueryParamToSet = `?dataId=${dataMetaInfoOfClickedDataSet.dataId}`;
+        }
+        this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${dataIdQueryParamToSet}`);
       }
-      else {
-        dataIdQueryParamToSet = `?dataId=${dataMetaInfoOfClickedDataSet.dataId}`
-      }
-      this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${dataIdQueryParamToSet}`);
     },
 
     redirectToUploadForm() {
