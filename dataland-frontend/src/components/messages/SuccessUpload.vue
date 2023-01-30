@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Message severity="success" :sticky="false" :life="5000" :closable="false" :key:="messageId">
+    <Message severity="success" :sticky="true" :key:="messageId">
+      <h4>Upload successfully executed.</h4>
       <h4>{{ message }}</h4>
     </Message>
   </div>
