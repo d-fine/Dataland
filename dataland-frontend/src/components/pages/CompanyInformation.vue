@@ -4,7 +4,7 @@
       <p class="font-medium text-xl">Loading company information...</p>
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
-    <div v-if="companyInformation && !waitingForData" class="meta-data-height grid align-items-end text-left">
+    <div v-else-if="companyInformation && !waitingForData" class="meta-data-height grid align-items-end text-left">
       <div class="col-12">
         <h1 class="mb-0">{{ companyInformation.companyName }}</h1>
       </div>
@@ -16,6 +16,11 @@
       <div class="col-4">
         <span>Sector: </span>
         <span class="font-semibold">{{ companyInformation.sector }}</span>
+      </div>
+    </div>
+    <div v-else>
+      <div class="col-12">
+        <h1 class="mb-0">No company with this ID present</h1>
       </div>
     </div>
   </TheContent>
@@ -75,6 +80,7 @@ export default defineComponent({
         }
       } catch (error) {
         console.error(error);
+        this.waitingForData = false;
         this.companyInformation = null;
       }
     },
