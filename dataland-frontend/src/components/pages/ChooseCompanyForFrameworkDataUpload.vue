@@ -44,7 +44,7 @@
                 </p>
               </div>
               <div id="createCompanyForm" class="col-6 text-left">
-                <CreateCompany />
+                <CreateCompany @companyCreated="handleCompanyCreated" />
               </div>
             </div>
           </div>
@@ -63,6 +63,7 @@ import BackButton from "@/components/general/BackButton.vue";
 import Card from "primevue/card";
 import CreateCompany from "@/components/forms/CreateCompany.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
+import { TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS } from "@/utils/Constants";
 
 export default defineComponent({
   name: "Choose Company",
@@ -92,6 +93,11 @@ export default defineComponent({
       if (emptyDivBetweenOptionContainers) {
         emptyDivBetweenOptionContainers.scrollIntoView({ behavior: "smooth" });
       }
+    },
+    handleCompanyCreated(companyId: string) {
+      setTimeout(() => {
+        void this.$router.push(`/companies/${companyId}/frameworks/upload`);
+      }, TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS);
     },
   },
 });
