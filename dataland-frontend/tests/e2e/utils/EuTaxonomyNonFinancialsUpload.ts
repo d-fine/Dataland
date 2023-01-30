@@ -1,6 +1,7 @@
 import {
   Configuration,
-  DataMetaInformation, DataTypeEnum,
+  DataMetaInformation,
+  DataTypeEnum,
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsControllerApi,

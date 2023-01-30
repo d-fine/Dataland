@@ -27,8 +27,7 @@ const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import("@/components/pages/ChooseFrameworkForDataUpload.vue");
-import { DataTypeEnum} from "@clients/backend";
-
+import { DataTypeEnum } from "@clients/backend";
 
 const routes = [
   {

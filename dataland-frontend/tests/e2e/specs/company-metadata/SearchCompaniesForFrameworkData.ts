@@ -171,7 +171,9 @@ describe("As a user, I expect the search functionality on the /companies page to
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
       cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
-          cy.visitAndCheckAppMount(`/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
+          cy.visitAndCheckAppMount(
+            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+          );
           cy.get("input[id=framework_data_search_bar_standard]")
             .should("not.be.disabled")
             .type(inputValue)

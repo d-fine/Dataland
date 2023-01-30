@@ -7,7 +7,7 @@ import {
 } from "@e2e/utils/CompanyUpload";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import {DataTypeEnum} from "@clients/backend";
+import { DataTypeEnum } from "@clients/backend";
 
 describeIf(
   "As a user, I want to be able to upload new companies via an upload form if I have the rights",

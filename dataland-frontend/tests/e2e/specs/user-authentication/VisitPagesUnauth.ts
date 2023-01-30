@@ -1,4 +1,4 @@
-import {DataTypeEnum} from "@clients/backend";
+import { DataTypeEnum } from "@clients/backend";
 
 describe("As a user I expect to be redirected to the login page if I am unauthenticated", () => {
   const pages = [

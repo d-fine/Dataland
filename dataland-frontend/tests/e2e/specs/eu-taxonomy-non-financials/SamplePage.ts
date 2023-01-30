@@ -1,5 +1,5 @@
 import { getBaseUrl } from "@e2e/utils/Cypress";
-import {DataTypeEnum} from "@clients/backend";
+import { DataTypeEnum } from "@clients/backend";
 
 describe("As a user, I expect the sample page to be functional and reachable without logging in", () => {
   it("Check that the sample section works properly without authentication", () => {

@@ -4,7 +4,8 @@ import {
   DataPointBigDecimal,
   EuTaxonomyDataForFinancialsControllerApi,
   Configuration,
-  DataMetaInformation, DataTypeEnum,
+  DataMetaInformation,
+  DataTypeEnum,
 } from "@clients/backend";
 import { FixtureData } from "../fixtures/FixtureUtils";
 import Chainable = Cypress.Chainable;

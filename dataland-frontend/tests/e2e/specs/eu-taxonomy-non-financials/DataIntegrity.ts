@@ -3,7 +3,7 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-import {DataTypeEnum, EuTaxonomyDataForNonFinancials} from "@clients/backend";
+import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 
@@ -55,7 +55,9 @@ describeIf(
           return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, fixtureData.t).then(
             () => {
               cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
-              cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
+              cy.visitAndCheckAppMount(
+                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+              );
               cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
                 euTaxonomyPageVerifier();
               });
