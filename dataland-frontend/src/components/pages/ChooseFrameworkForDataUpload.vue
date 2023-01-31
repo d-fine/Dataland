@@ -19,6 +19,7 @@
 
                   <MetaInfoPerCompanyAndFramework
                     title="Non-Financials"
+                    :isFrontendUploadFormExisting="false"
                     :framework-url-path="DataTypeEnum.EutaxonomyNonFinancials"
                     description="Overview of all existing and missing SFDR datasets for this company"
                     :companyId="companyID"
@@ -29,6 +30,7 @@
 
                   <MetaInfoPerCompanyAndFramework
                     title="Financials"
+                    :isFrontendUploadFormExisting="false"
                     :framework-url-path="DataTypeEnum.EutaxonomyFinancials"
                     description="Overview of all existing and missing SFDR datasets for this company"
                     :companyId="companyID"
