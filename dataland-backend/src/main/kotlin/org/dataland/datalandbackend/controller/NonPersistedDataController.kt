@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Hidden
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import org.dataland.datalandbackend.api.NonPersistedDataApi
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation

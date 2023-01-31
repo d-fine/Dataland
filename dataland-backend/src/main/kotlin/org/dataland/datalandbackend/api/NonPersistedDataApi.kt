@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataMetaInformation
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*
 /**
  * Defines the restful dataland-backend API regarding data exchange
  */
-
 @RequestMapping("/internal/nonpersisted")
 interface NonPersistedDataApi {
 
