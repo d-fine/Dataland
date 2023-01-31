@@ -29,6 +29,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMa
 class WebSecurityConfig(
     private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
     @Value("\${dataland.authorization.publiclinks:}") private val publicLinks: String,
+    @Value("\${dataland.authorization.internallinks:}") private val internalLinks: String,
     private val context: ApplicationContext
 ) {
     /**
@@ -66,10 +67,11 @@ class WebSecurityConfig(
 
     @Suppress("SpreadOperator")
     private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
-        val publicLinkMatchers = publicLinks.split(",").map { antMatcher(it) }.toTypedArray()
+        val linksString = if (internalLinks.isEmpty()) publicLinks else "$publicLinks,$internalLinks"
+        val linkMatchers = linksString.split(",").map { antMatcher(it) }.toTypedArray()
         http
             .authorizeHttpRequests()
-            .requestMatchers(*publicLinkMatchers).permitAll()
+            .requestMatchers(*linkMatchers).permitAll()
             .anyRequest().fullyAuthenticated()
             .and()
             .csrf().disable()

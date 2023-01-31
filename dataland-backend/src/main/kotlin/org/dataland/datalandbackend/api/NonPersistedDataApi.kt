@@ -3,13 +3,7 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import io.swagger.v3.oas.annotations.security.SecurityRequirements
-import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.CompanyAssociatedData
-import org.dataland.datalandbackend.model.DataMetaInformation
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -31,12 +25,6 @@ interface NonPersistedDataApi {
     value = ["/{dataId}"],
     produces = ["application/json"]
 )
-@PreAuthorize("true")
-        /**
-         * A method to retrieve specific data identified by its ID
-         * @param dataId identifier used to uniquely specify data in the data store
-         * @return the complete data stored under the provided data ID with the associated company ID
-         */
 fun getCompanyAssociatedDataForInternalStorage(@PathVariable("dataId") dataId: String):
         ResponseEntity<String>
 }
