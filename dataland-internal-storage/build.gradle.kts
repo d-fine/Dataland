@@ -47,6 +47,8 @@ dependencies {
     implementation("io.cloudevents:cloudevents-json-jackson:2.4.1")
     implementation("io.cloudevents:cloudevents-core:2.3.0")
     implementation("org.springframework.cloud:spring-cloud-function-context:4.0.0")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
 openApi {

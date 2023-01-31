@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
-@RequestMapping("/data/sfdr")
+@RequestMapping("/public/data/sfdr")
 @RestController
 class SfdrDataController(
     @Autowired var myDataManager: DataManager,

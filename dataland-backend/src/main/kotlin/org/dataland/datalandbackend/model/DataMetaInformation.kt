@@ -22,5 +22,8 @@ data class DataMetaInformation(
     val uploadTime: Long,
 
     @field:JsonProperty(required = true)
-    val companyId: String
+    val companyId: String,
+
+    @field:JsonProperty(required = true)
+    val isQualityAssured: String
 )

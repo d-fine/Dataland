@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
-@RequestMapping("/data/lksg")
+@RequestMapping("/public/data/lksg")
 @RestController
 class LksgDataController(
     @Autowired var myDataManager: DataManager,

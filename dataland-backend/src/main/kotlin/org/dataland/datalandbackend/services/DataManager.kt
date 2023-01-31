@@ -1,11 +1,13 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandinternalstorage.services.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandinternalstorage.models.StorageHashMap
@@ -76,26 +78,40 @@ class DataManager(
                 "Correlation ID: $correlationId"
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        metaDataInformationHashMap.put(dataId, storableDataSet)
+        val messageInput = "${System.getenv("PROXY_PRIMARY_URL")}/api/data/${storableDataSet.dataType}/$dataId"
+        print(messageInput)
+        storeMetaDataInformation(dataId, storableDataSet.dataType, storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "New data - QA necessary", correlationId,"upload_queue")
         return dataId
     }
 
     @RabbitListener(queues = ["qa_queue"])
-    private fun receive(dataId: String?) {
+    private fun updateMetaDataAfterQA(dataId: String?) {
         if (!dataId.isNullOrEmpty()) {
-            val metaInformation = metaDataInformationHashMap[dataId]!!
-            val company = companyManager.getCompanyById(metaInformation.companyId)
-            metaDataManager.storeDataMetaInformation(
-                dataId,
-                metaInformation.dataType,
-                metaInformation.uploaderUserId,
-                metaInformation.uploadTime,
-                company
-            )
+            val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
+            storeMetaDataInformation(dataId, DataType.valueOf(metaInformation.dataType), metaInformation.uploaderUserId, metaInformation.uploadTime,metaInformation.company, "Yes")
         }
         metaDataInformationHashMap.remove(dataId)
     }
+
+    private fun storeMetaDataInformation(
+        dataId: String,
+        dataType: DataType,
+        uploaderUserId: String,
+        uploadTime: Long,
+        company: StoredCompanyEntity,
+        qualityAssuredYesNo: String,
+    ) {
+        metaDataManager.storeDataMetaInformation(
+            dataId,
+            dataType,
+            uploaderUserId,
+            uploadTime,
+            company,
+            qualityAssuredYesNo,
+        )
+    }
+
     @RabbitHandler
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
@@ -104,6 +120,7 @@ class DataManager(
     ): String{
         val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
         dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
+        println(dataInformationHashMap.map[dataId])
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId, "storage_queue")
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
@@ -120,7 +137,7 @@ class DataManager(
         logger.info(
             "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId"
         )
-        println("CorrelationID: $correlationId")
+        //dataInformationHashMap.map.remove(dataId)
 
     }
 
@@ -133,7 +150,7 @@ class DataManager(
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        val dataAsString = getDataFromStorage(dataId, correlationId)
+        var dataAsString = getDataFromStorage(dataId, correlationId)
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
                 "Dataset not found",

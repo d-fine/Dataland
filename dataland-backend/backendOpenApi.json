@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "/api"
+      "url": "/api/public/"
     }
   ],
   "tags": [
@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/invite": {
+    "/public/invite": {
       "post": {
         "tags": [
           "invite-controller"
@@ -98,7 +98,7 @@
         ]
       }
     },
-    "/data/sme": {
+    "/public/data/sme": {
       "post": {
         "tags": [
           "sme-data-controller"
@@ -159,7 +159,7 @@
         ]
       }
     },
-    "/data/sfdr": {
+    "/public/data/sfdr": {
       "post": {
         "tags": [
           "sfdr-data-controller"
@@ -220,7 +220,7 @@
         ]
       }
     },
-    "/data/lksg": {
+    "/public/data/lksg": {
       "post": {
         "tags": [
           "lksg-data-controller"
@@ -281,7 +281,7 @@
         ]
       }
     },
-    "/data/eutaxonomy-non-financials": {
+    "/public/data/eutaxonomy-non-financials": {
       "post": {
         "tags": [
           "eu-taxonomy-data-for-non-financials-controller"
@@ -342,7 +342,7 @@
         ]
       }
     },
-    "/data/eutaxonomy-financials": {
+    "/public/data/eutaxonomy-financials": {
       "post": {
         "tags": [
           "eu-taxonomy-data-for-financials-controller"
@@ -403,7 +403,7 @@
         ]
       }
     },
-    "/companies": {
+    "/public/companies": {
       "get": {
         "tags": [
           "company-data-controller"
@@ -574,7 +574,117 @@
         ]
       }
     },
-    "/metadata": {
+    "/data": {
+      "get": {
+        "tags": [
+          "storage-controller"
+        ],
+        "summary": "Request data by id.",
+        "description": "Requests data by id.",
+        "operationId": "selectDataById",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "correlationId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "storage-controller"
+        ],
+        "summary": "Upload data.",
+        "description": "Upload data and get data id.",
+        "operationId": "insertData",
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Message"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/InsertDataResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/metadata": {
       "get": {
         "tags": [
           "meta-data-controller"
@@ -648,7 +758,7 @@
         ]
       }
     },
-    "/metadata/{dataId}": {
+    "/public/metadata/{dataId}": {
       "get": {
         "tags": [
           "meta-data-controller"
@@ -711,7 +821,7 @@
         ]
       }
     },
-    "/data/sme/{dataId}": {
+    "/public/data/sme/{dataId}": {
       "get": {
         "tags": [
           "sme-data-controller"
@@ -772,7 +882,7 @@
         ]
       }
     },
-    "/data/sfdr/{dataId}": {
+    "/public/data/sfdr/{dataId}": {
       "get": {
         "tags": [
           "sfdr-data-controller"
@@ -833,7 +943,7 @@
         ]
       }
     },
-    "/data/lksg/{dataId}": {
+    "/public/data/lksg/{dataId}": {
       "get": {
         "tags": [
           "lksg-data-controller"
@@ -894,7 +1004,7 @@
         ]
       }
     },
-    "/data/eutaxonomy-non-financials/{dataId}": {
+    "/public/data/eutaxonomy-non-financials/{dataId}": {
       "get": {
         "tags": [
           "eu-taxonomy-data-for-non-financials-controller"
@@ -955,7 +1065,7 @@
         ]
       }
     },
-    "/data/eutaxonomy-financials/{dataId}": {
+    "/public/data/eutaxonomy-financials/{dataId}": {
       "get": {
         "tags": [
           "eu-taxonomy-data-for-financials-controller"
@@ -1016,7 +1126,7 @@
         ]
       }
     },
-    "/companies/{companyId}": {
+    "/public/companies/{companyId}": {
       "get": {
         "tags": [
           "company-data-controller"
@@ -1079,7 +1189,7 @@
         ]
       }
     },
-    "/companies/teaser": {
+    "/public/companies/teaser": {
       "get": {
         "tags": [
           "company-data-controller"
@@ -1135,7 +1245,7 @@
         ]
       }
     },
-    "/companies/meta-information": {
+    "/public/companies/meta-information": {
       "get": {
         "tags": [
           "company-data-controller"
@@ -1186,6 +1296,58 @@
             "dataland-api-key": []
           }
         ]
+      }
+    },
+    "/internal/nonpersisted/{dataId}": {
+      "get": {
+        "tags": [
+          "non-persisted-data-controller"
+        ],
+        "summary": "Retrieve specific data from the hashmap of the backend.",
+        "description": "Data identified by the provided data ID is retrieved.",
+        "operationId": "getCompanyAssociatedDataForInternalStorage",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/actuator": {
@@ -1614,6 +1776,7 @@
           "companyId",
           "dataId",
           "dataType",
+          "isQualityAssured",
           "uploadTime"
         ],
         "type": "object",
@@ -1632,6 +1795,9 @@
             "format": "int64"
           },
           "companyId": {
+            "type": "string"
+          },
+          "isQualityAssured": {
             "type": "string"
           }
         }
@@ -2854,6 +3020,902 @@
             "items": {
               "$ref": "#/components/schemas/DataMetaInformation"
             }
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "exchangeName": {
+            "type": "string"
+          },
+          "routingKey": {
+            "type": "string"
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "messageProperties": {
+            "$ref": "#/components/schemas/MessageProperties"
+          },
+          "body": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "byte"
+            }
+          }
+        }
+      },
+      "MessageProperties": {
+        "type": "object",
+        "properties": {
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "messageId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "appId": {
+            "type": "string"
+          },
+          "clusterId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "replyTo": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          },
+          "contentEncoding": {
+            "type": "string"
+          },
+          "contentLength": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "deliveryMode": {
+            "type": "string",
+            "enum": [
+              "NON_PERSISTENT",
+              "PERSISTENT"
+            ]
+          },
+          "expiration": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "redelivered": {
+            "type": "boolean"
+          },
+          "receivedExchange": {
+            "type": "string"
+          },
+          "receivedRoutingKey": {
+            "type": "string"
+          },
+          "receivedUserId": {
+            "type": "string"
+          },
+          "deliveryTag": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "messageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "consumerTag": {
+            "type": "string"
+          },
+          "consumerQueue": {
+            "type": "string"
+          },
+          "receivedDelay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "receivedDeliveryMode": {
+            "type": "string",
+            "enum": [
+              "NON_PERSISTENT",
+              "PERSISTENT"
+            ]
+          },
+          "finalRetryForMessageWithNoId": {
+            "type": "boolean"
+          },
+          "publishSequenceNumber": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastInBatch": {
+            "type": "boolean"
+          },
+          "projectionUsed": {
+            "type": "boolean"
+          },
+          "inferredArgumentType": {
+            "type": "object",
+            "properties": {
+              "typeName": {
+                "type": "string"
+              }
+            }
+          },
+          "targetMethod": {
+            "type": "object",
+            "properties": {
+              "parameters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "modifiers": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "declaredAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "synthetic": {
+                      "type": "boolean"
+                    },
+                    "annotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "annotatedType": {
+                      "type": "object",
+                      "properties": {
+                        "annotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "declaredAnnotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "type": {
+                          "type": "object",
+                          "properties": {
+                            "typeName": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "parameterizedType": {
+                      "type": "object",
+                      "properties": {
+                        "typeName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "varArgs": {
+                      "type": "boolean"
+                    },
+                    "namePresent": {
+                      "type": "boolean"
+                    },
+                    "declaringExecutable": {
+                      "type": "object",
+                      "properties": {
+                        "declaredAnnotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "modifiers": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "typeParameters": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "bounds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "typeName": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "genericDeclaration": {
+                                "type": "object"
+                              },
+                              "annotatedBounds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "annotations": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object"
+                                      }
+                                    },
+                                    "declaredAnnotations": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object"
+                                      }
+                                    },
+                                    "type": {
+                                      "type": "object",
+                                      "properties": {
+                                        "typeName": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    },
+                                    "annotatedOwnerType": {
+                                      "type": "object",
+                                      "properties": {
+                                        "annotations": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object"
+                                          }
+                                        },
+                                        "declaredAnnotations": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object"
+                                          }
+                                        },
+                                        "type": {
+                                          "type": "object",
+                                          "properties": {
+                                            "typeName": {
+                                              "type": "string"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "typeName": {
+                                "type": "string"
+                              },
+                              "annotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "declaredAnnotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "synthetic": {
+                          "type": "boolean"
+                        },
+                        "varArgs": {
+                          "type": "boolean"
+                        },
+                        "annotatedParameterTypes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "annotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "declaredAnnotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "type": {
+                                "type": "object",
+                                "properties": {
+                                  "typeName": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "annotatedOwnerType": {
+                                "type": "object",
+                                "properties": {
+                                  "annotations": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object"
+                                    }
+                                  },
+                                  "declaredAnnotations": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": {
+                                    "type": "object",
+                                    "properties": {
+                                      "typeName": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "parameterCount": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "parameterAnnotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "genericParameterTypes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "typeName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "genericExceptionTypes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "typeName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "annotatedReturnType": {
+                          "type": "object",
+                          "properties": {
+                            "annotations": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "declaredAnnotations": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "type": {
+                              "type": "object",
+                              "properties": {
+                                "typeName": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "annotatedReceiverType": {
+                          "type": "object",
+                          "properties": {
+                            "annotations": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "declaredAnnotations": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "type": {
+                              "type": "object",
+                              "properties": {
+                                "typeName": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "annotatedExceptionTypes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "annotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "declaredAnnotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "type": {
+                                "type": "object",
+                                "properties": {
+                                  "typeName": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "annotatedOwnerType": {
+                                "type": "object",
+                                "properties": {
+                                  "annotations": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object"
+                                    }
+                                  },
+                                  "declaredAnnotations": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": {
+                                    "type": "object",
+                                    "properties": {
+                                      "typeName": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "annotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "accessible": {
+                          "type": "boolean",
+                          "deprecated": true
+                        }
+                      }
+                    },
+                    "implicit": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "declaredAnnotations": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "modifiers": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "typeParameters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "bounds": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "typeName": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "annotatedBounds": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "annotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          },
+                          "declaredAnnotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          },
+                          "type": {
+                            "type": "object",
+                            "properties": {
+                              "typeName": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "annotatedOwnerType": {
+                            "type": "object",
+                            "properties": {
+                              "annotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "declaredAnnotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "type": {
+                                "type": "object",
+                                "properties": {
+                                  "typeName": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "typeName": {
+                      "type": "string"
+                    },
+                    "annotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "declaredAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              },
+              "synthetic": {
+                "type": "boolean"
+              },
+              "accessible": {
+                "type": "boolean",
+                "deprecated": true
+              },
+              "varArgs": {
+                "type": "boolean"
+              },
+              "parameterCount": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "parameterAnnotations": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "genericParameterTypes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "typeName": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "genericExceptionTypes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "typeName": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "default": {
+                "type": "boolean"
+              },
+              "genericReturnType": {
+                "type": "object",
+                "properties": {
+                  "typeName": {
+                    "type": "string"
+                  }
+                }
+              },
+              "bridge": {
+                "type": "boolean"
+              },
+              "defaultValue": {
+                "type": "object"
+              },
+              "annotatedReturnType": {
+                "type": "object",
+                "properties": {
+                  "annotations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "declaredAnnotations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "type": {
+                    "type": "object",
+                    "properties": {
+                      "typeName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "annotatedParameterTypes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "annotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "declaredAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "type": {
+                      "type": "object",
+                      "properties": {
+                        "typeName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "annotatedOwnerType": {
+                      "type": "object",
+                      "properties": {
+                        "annotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "declaredAnnotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "type": {
+                          "type": "object",
+                          "properties": {
+                            "typeName": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "annotatedReceiverType": {
+                "type": "object",
+                "properties": {
+                  "annotations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "declaredAnnotations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "type": {
+                    "type": "object",
+                    "properties": {
+                      "typeName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "annotatedExceptionTypes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "annotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "declaredAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "type": {
+                      "type": "object",
+                      "properties": {
+                        "typeName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "annotatedOwnerType": {
+                      "type": "object",
+                      "properties": {
+                        "annotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "declaredAnnotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "type": {
+                          "type": "object",
+                          "properties": {
+                            "typeName": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "annotations": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "targetBean": {
+            "type": "object"
+          },
+          "replyToAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "delay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "xdeathHeader": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "InsertDataResponse": {
+        "required": [
+          "dataId"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
           }
         }
       },

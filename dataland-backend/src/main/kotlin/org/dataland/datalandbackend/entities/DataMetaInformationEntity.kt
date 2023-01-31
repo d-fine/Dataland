@@ -35,6 +35,9 @@ data class DataMetaInformationEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     var company: StoredCompanyEntity,
+
+    @Column(name = "is_quality_assured", nullable = false)
+    var isQualityAssured: String,
 ) : ApiModelConversion<DataMetaInformation> {
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
@@ -48,6 +51,7 @@ data class DataMetaInformationEntity(
             uploaderUserId = if (displayUploaderUserId) this.uploaderUserId else null,
             uploadTime = this.uploadTime,
             companyId = company.companyId,
+            isQualityAssured = isQualityAssured
         )
     }
 }

@@ -32,6 +32,7 @@ class DataMetaInformationManager(
         uploaderUserId: String,
         uploadTime: Long,
         company: StoredCompanyEntity,
+        isQualityAssured: String,
     ): DataMetaInformationEntity {
         val dataMetaInformationEntity = DataMetaInformationEntity(
             dataId = dataId,
@@ -39,6 +40,7 @@ class DataMetaInformationManager(
             uploaderUserId = uploaderUserId,
             uploadTime = uploadTime,
             company = company,
+            isQualityAssured = isQualityAssured
         )
 
         return dataMetaInformationRepository.save(dataMetaInformationEntity)

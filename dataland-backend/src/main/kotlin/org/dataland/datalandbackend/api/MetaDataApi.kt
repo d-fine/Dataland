@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam
  * Defines the restful dataland-backend API regarding meta data searches.
  */
 
-@RequestMapping("/metadata")
+@RequestMapping("/public/metadata")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "dataland-api-key")
 @SecurityRequirement(name = "default-oauth")

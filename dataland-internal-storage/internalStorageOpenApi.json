@@ -1102,13 +1102,6 @@
           "targetBean": {
             "type": "object"
           },
-          "replyToAddress": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "delay": {
-            "type": "integer",
-            "format": "int32"
-          },
           "xdeathHeader": {
             "type": "array",
             "items": {
@@ -1117,6 +1110,13 @@
                 "type": "object"
               }
             }
+          },
+          "replyToAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "delay": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
