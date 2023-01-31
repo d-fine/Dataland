@@ -89,12 +89,12 @@ export default defineComponent({
      */
     createKpiDataObjects(
       kpiKey: string,
-      kpiValue: object | string,
+      kpiValue: object | string | number,
       subAreaKey: string,
       dataDateOfLksgDataset: string
     ): void {
-      if (kpiKey === "totalRevenue") {
-        kpiValue = this.convertToMillions(parseFloat(kpiValue as string));
+      if (kpiKey === "totalRevenue" && typeof kpiValue === "number") {
+        kpiValue = this.convertToMillions(kpiValue);
       }
       let indexOfExistingItem = -1;
       const kpiDataObject = {
