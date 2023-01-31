@@ -4,7 +4,7 @@
     <TheContent>
       <BackButton id="backButton" label="MY DATASETS" />
       <Card class="col-12 text-left page-wrapper-card">
-        <template #title> New Dataset - Company </template>
+        <template #title> New Dataset - Company</template>
         <template #content>
           <div class="grid">
             <div class="col-9">
@@ -28,17 +28,18 @@
                 </div>
               </div>
 
-            <div id="option2Container" class="grid">
-              <div id="option2Label" class="col-3 p-3">
-                <h4 id="option2Title">Option 02</h4>
-                <h3>Add a new company</h3>
-                <p>
-                  If you want to add a dataset for a new company, you first have to create the company. To create a new
-                  company, all mandatory * fields must be filled.
-                </p>
-              </div>
-              <div id="createCompanyForm" class="col-9 p-3">
-                <CreateCompany @companyCreated="handleCompanyCreated" />
+              <div id="option2Container" ref="option2Container" class="grid">
+                <div id="option2Label" class="col-3 p-3">
+                  <h4 id="option2Title">Option 02</h4>
+                  <h3>Add a new company</h3>
+                  <p>
+                    If you want to add a dataset for a new company, you first have to create the company. To create a
+                    new company, all mandatory * fields must be filled.
+                  </p>
+                </div>
+                <div id="createCompanyForm" class="col-9 p-3">
+                  <CreateCompany @companyCreated="handleCompanyCreated" />
+                </div>
               </div>
             </div>
           </div>
@@ -72,7 +73,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      emptyDivBetweenOptionContainers: ref(),
+      option2Container: ref(),
     };
   },
   props: {
@@ -83,9 +84,9 @@ export default defineComponent({
 
   methods: {
     autoScrollToCreateACompanyForm() {
-      const emptyDivBetweenOptionContainers = this.emptyDivBetweenOptionContainers;
-      if (emptyDivBetweenOptionContainers) {
-        emptyDivBetweenOptionContainers.scrollIntoView({ behavior: "smooth" });
+      const option2Container = this.option2Container;
+      if (option2Container) {
+        option2Container.scrollIntoView({ behavior: "smooth" });
       }
     },
     handleCompanyCreated(companyId: string) {
