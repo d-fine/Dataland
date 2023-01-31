@@ -29,6 +29,9 @@ import kotlin.collections.HashMap
  * @param companyManager service for managing company data
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
+ * @param cloudEventMessageHandler service for managing CloudEvents messages
+ * @param metaDataInformationHashMap mpa for temporarily storing meta data information in memory
+ * @param dataInformationHashMap map for temporarily storing data information in memory
 */
 @ComponentScan(basePackages = ["org.dataland"])
 @Component("DataManager")
@@ -124,18 +127,22 @@ class DataManager(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId, "storage_queue")
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                    " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId"
+                    " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId."
         )
-        return(dataId )
+        return(dataId)
     }
 
+    /**
+     * Method to log success notification associated to certain dataId and correlationId
+     * @param message Message retrieved from stored_queue
+     */
     @RabbitListener(queues = ["stored_queue"])
     @RabbitHandler
-    fun logginOfStoredDataSet(message: Message) {
+    fun loggingOfStoredDataSet(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         logger.info(
-            "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId"
+            "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId."
         )
         //dataInformationHashMap.map.remove(dataId)
 
@@ -145,6 +152,7 @@ class DataManager(
      * Method to make the data manager get the data of a single entry from the data store
      * @param dataId to identify the stored data
      * @param dataType to check the correctness of the type of the retrieved data
+     * @param correlationId to use in combination with dataId to retrieve data and assert type
      * @return data set associated with the data ID provided in the input
      */
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {

@@ -18,24 +18,37 @@ class ConsumerApplication
 fun main(args: Array<String>) {
     runApplication<ConsumerApplication>(*args)
 }
+
+/**
+ * Implementation of a QA Service reacting on the upload_queue and forwarding message to qa_queue
+ * @param cloudEventMessageHandler service for managing CloudEvents messages
+ * @param rabbitTemplate
+ */
 @Component
 @ComponentScan(basePackages = ["org.dataland"])
 //@RabbitListener(queues = ["upload_queue"])
-class QaService(@Autowired var cloudEventBuilder: CloudEventMessageHandler,
-                val rabbitTemplate: RabbitTemplate) {
+class QaService(
+    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
+    val rabbitTemplate: RabbitTemplate
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
+
+    /**
+     * Method to retrieve message from upload_queue and constructing new one for qa_queue
+     * @param message Message retrieved from upload_queue
+     */
     //@RabbitHandler
     @RabbitListener(queues = ["upload_queue"])
     fun receive(message: Message) {
-        val dataId = cloudEventBuilder.bodyToString(message)
+        val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        print("TestFunktion QA Service")
+        print("TestFunction QA Service")
         println(message)
         val messageResult =  String(message.body)
         println("Decode Test $messageResult")
-        logger.info("Received data upload with DataId: $dataId on qa message queue with Correlation Id: $correlationId")
         if (!dataId.isNullOrEmpty()){
-            cloudEventBuilder.buildCEMessageAndSendToQueue(dataId, "QA Process Completed", correlationId,"qa_queue")
+            logger.info("Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "QA Process Completed", correlationId,"qa_queue")
         }
     }
 }
