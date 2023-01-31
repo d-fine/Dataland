@@ -2,13 +2,8 @@ package org.dataland.keycloakAdapter.auth
 
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.oauth2.jwt.Jwt
 
-/**
- * A wrapper around spring boots authentication object that exposes
- * commonly required user information in an easy-to-user manner
- */
-class DatalandAuthentication(val authentication: Authentication) {
+sealed class DatalandAuthentication: Authentication {
     companion object {
         /**
          * Builds a new DatalandAuthentication object from the Spring Boot Authentication
@@ -26,26 +21,26 @@ class DatalandAuthentication(val authentication: Authentication) {
          */
         fun fromContextOrNull(): DatalandAuthentication? {
             val auth = SecurityContextHolder.getContext().authentication
-            return if (auth == null) null
-            else DatalandAuthentication(auth)
+            return if (auth is DatalandAuthentication) auth
+            else null
         }
     }
 
-    val username: String
+    abstract val userId: String
+
+    val roles: Set<DatalandRealmRole>
         get() {
-            if (authentication.principal is Jwt) {
-                val jwt: Jwt = authentication.principal as Jwt
-                return jwt.getClaimAsString("preferred_username")
-            } else {
-                throw UnsupportedOperationException("Cannot get the username of a user logged in via API key")
-            }
+            val allApiKeyRoles = authorities.map { it.toString() }
+            return DatalandRealmRole.values().filter { allApiKeyRoles.contains(it.toString()) }.toSet()
         }
 
-    val userId: String = authentication.name
-    val roles: Set<DatalandRealmRoles> = computeRealmRoles()
-
-    private fun computeRealmRoles(): Set<DatalandRealmRoles> {
-        val allAuthorities = authentication.authorities.map { it.toString() }.toSet()
-        return DatalandRealmRoles.values().filter { allAuthorities.contains(it.toString()) }.toSet()
+    private var authenticated = false
+    override fun setAuthenticated(isAuthenticated: Boolean) {
+        authenticated = isAuthenticated
     }
+
+    override fun getDetails(): Any? = null
+    override fun getPrincipal(): String = userId
+    override fun getName(): String = userId
+    override fun isAuthenticated() = authenticated
 }

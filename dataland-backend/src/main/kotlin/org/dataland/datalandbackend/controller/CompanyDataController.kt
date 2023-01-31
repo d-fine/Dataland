@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.services.CompanyManager
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandLegacyAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -28,7 +28,7 @@ class CompanyDataController(
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
         return ResponseEntity.ok(
             companyManager.addCompany(companyInformation)
-                .toApiModel(DatalandAuthentication.fromContext())
+                .toApiModel(DatalandLegacyAuthentication.fromContext())
         )
     }
 
@@ -53,7 +53,7 @@ class CompanyDataController(
                     countryCodes ?: setOf(),
                     sectors ?: setOf(),
                 ),
-                DatalandAuthentication.fromContextOrNull()
+                DatalandLegacyAuthentication.fromContextOrNull()
             )
         )
     }
@@ -70,7 +70,7 @@ class CompanyDataController(
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
         return ResponseEntity.ok(
             companyManager
-                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull())
+                .getCompanyApiModelById(companyId, DatalandLegacyAuthentication.fromContextOrNull())
         )
     }
 

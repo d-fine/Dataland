@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandLegacyAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import java.time.Instant
@@ -32,7 +32,7 @@ abstract class DataController<T>(
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
-        val userId = DatalandAuthentication.fromContext().userId
+        val userId = DatalandLegacyAuthentication.fromContext().userId
         val uploadTime = Instant.now().epochSecond
         logger.info(
             "Received a request from user $userId to post company associated data of type $dataType" +

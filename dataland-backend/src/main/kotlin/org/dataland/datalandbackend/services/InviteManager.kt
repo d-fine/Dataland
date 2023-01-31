@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.model.InviteResult
 import org.dataland.datalandbackend.repositories.InviteMetaInfoRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.InvitationEmailGenerator
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandLegacyAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -94,7 +94,7 @@ class InviteManager(
         fileId: String,
         inviteResult: InviteResult
     ): InviteMetaInfoEntity {
-        val userId = DatalandAuthentication.fromContext().userId
+        val userId = DatalandLegacyAuthentication.fromContext().userId
         val timestampInEpochSeconds = Instant.now().epochSecond.toString()
         val newInviteMetaInfoEntity = InviteMetaInfoEntity(
             inviteId, userId, fileId, timestampInEpochSeconds,

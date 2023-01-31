@@ -1,18 +1,22 @@
 package org.dataland.keycloakAdapter.config
 
-import org.dataland.keycloakAdapter.support.apikey.ApiKeyAuthenticationManager
-import org.dataland.keycloakAdapter.support.keycloak.KeycloakJwtAuthenticationConverter
+import jakarta.servlet.http.HttpServletRequest
+import org.dataland.keycloakAdapter.support.apikey.ApiKeyAuthenticationProvider
+import org.dataland.keycloakAdapter.support.keycloak.KeycloakJwtAuthenticationProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
+import org.springframework.security.authentication.AuthenticationManagerResolver
+import org.springframework.security.authentication.AuthenticationProvider
+import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.oauth2.jwt.JwtDecoder
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter
-import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter
@@ -27,9 +31,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMa
 @Profile("!unprotected")
 @EnableMethodSecurity
 class WebSecurityConfig(
-    private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
+    private val jwtDecoder: JwtDecoder,
     @Value("\${dataland.authorization.publiclinks:}") private val publicLinks: String,
-    private val context: ApplicationContext
+    @Value("\${dataland.apikeymanager.base-url}") private val apiKeyManagerBaseUrl: String,
+    @Value("\${org.dataland.authorization.apikey.enable:false}") private val enableApiKeyAuthentication: Boolean,
 ) {
     /**
      * Defines the Session Authentication Strategy
@@ -45,23 +50,24 @@ class WebSecurityConfig(
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        if (context.containsBean("apiKeyAuthenticationManager")) {
-            val apiKeyAuthenticationManager =
-                context.getBean("apiKeyAuthenticationManager") as ApiKeyAuthenticationManager
-            val apiKeyFilter = RequestHeaderAuthenticationFilter()
-            apiKeyFilter.setPrincipalRequestHeader("dataland-api-key")
-            apiKeyFilter.setExceptionIfHeaderMissing(false)
-            apiKeyFilter.setAuthenticationFailureHandler(
-                context.getBean(ApiKeyAuthenticationFailureHandler::class.java)
-            )
-            apiKeyFilter.setAuthenticationManager(apiKeyAuthenticationManager)
-            http.addFilterBefore(apiKeyFilter, AnonymousAuthenticationFilter::class.java)
-        }
-
         authorizePublicLinksAndAddJwtConverter(http)
         updatePolicies(http)
-
         return http.build()
+    }
+
+    @Bean
+    fun tokenAuthenticationManagerResolver(): AuthenticationManagerResolver<HttpServletRequest> {
+        val jwtAuthenticationProvider = KeycloakJwtAuthenticationProvider(jwtDecoder)
+        val authProviders = mutableListOf<AuthenticationProvider>(jwtAuthenticationProvider)
+
+        if (enableApiKeyAuthentication) {
+            val apiKeyAuthenticationProvider = ApiKeyAuthenticationProvider(apiKeyManagerBaseUrl)
+            authProviders.add(0, apiKeyAuthenticationProvider)
+        }
+
+        val datalandAuthenticationManager = ProviderManager(authProviders)
+
+        return AuthenticationManagerResolver { datalandAuthenticationManager }
     }
 
     @Suppress("SpreadOperator")
@@ -72,8 +78,9 @@ class WebSecurityConfig(
             .requestMatchers(*publicLinkMatchers).permitAll()
             .anyRequest().fullyAuthenticated()
             .and()
+            .logout().disable()
             .csrf().disable()
-            .oauth2ResourceServer().jwt().jwtAuthenticationConverter(keycloakJwtAuthenticationConverter)
+            .oauth2ResourceServer().authenticationManagerResolver(tokenAuthenticationManagerResolver())
     }
 
     private fun updatePolicies(http: HttpSecurity) {
