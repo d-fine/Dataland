@@ -3015,7 +3015,7 @@
             "type": "string"
           },
           "isInHouseProductionOrIsContractProcessing": {
-            "$ref": "#/components/schemas/YesNo"
+            "type": "string"
           },
           "country": {
             "type": "string"

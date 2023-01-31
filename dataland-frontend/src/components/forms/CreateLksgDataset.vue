@@ -1,8 +1,6 @@
 <template>
   <Card class="col-12 page-wrapper-card">
-    <template #title
-      >New Dataset - LkSG
-    </template>
+    <template #title>New Dataset - LkSG </template>
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -232,7 +230,6 @@
                               />
                               <FormKit
                                 type="radio"
-                                :ignore="true"
                                 name="isInHouseProductionOrIsContractProcessing"
                                 :validation-label="lksgKpiNameMappings.inHouseProductionOrContractProcessing"
                                 :options="['In-house Production', 'Contract Processing']"
@@ -256,45 +253,37 @@
                                 :explanation="lksgKpiInfoMappings.addressesOfProductionSites"
                               />
 
-                              <FormKit type="group" name="address" label="address" :ignore="true">
+                              <FormKit
+                                type="text"
+                                name="streetAndHouseNumber"
+                                validation="required"
+                                :validation-label="lksgKpiNameMappings.addressesOfProductionSites"
+                                placeholder="Street, House number"
+                              />
+                              <div class="next-to-each-other">
+                                <FormKit
+                                  type="select"
+                                  name="country"
+                                  validation-label="Country"
+                                  validation="required"
+                                  placeholder="Country"
+                                  :options="allCountry"
+                                />
                                 <FormKit
                                   type="text"
-                                  name="StreetHouseNumber"
+                                  name="city"
+                                  validation-label="City"
                                   validation="required"
-                                  :validation-label="lksgKpiNameMappings.addressesOfProductionSites"
-                                  placeholder="Street, House number"
+                                  placeholder="City"
                                 />
-                                <div class="next-to-each-other">
-                                  <FormKit
-                                    type="select"
-                                    v-model="listOfProductionSites[index].selectedCountryCode"
-                                    name="Country"
-                                    validation-label="Country"
-                                    validation="required"
-                                    placeholder="Country"
-                                    :options="allCountry"
-                                    @change="getCities(index)"
-                                  />
-                                  <FormKit
-                                    v-if="
-                                      listOfProductionSites[index].selectedCountryCode &&
-                                      listOfProductionSites[index].citiesForCountry.length
-                                    "
-                                    type="select"
-                                    name="City"
-                                    validation-label="City"
-                                    placeholder="City"
-                                    :options="listOfProductionSites[index].citiesForCountry"
-                                  />
-                                  <FormKit
-                                    type="text"
-                                    validation="required"
-                                    validation-label="Postcode"
-                                    name="Postcode"
-                                    placeholder="Postcode"
-                                  />
-                                </div>
-                              </FormKit>
+                                <FormKit
+                                  type="text"
+                                  validation="required"
+                                  validation-label="Postcode"
+                                  name="postalCode"
+                                  placeholder="postalCode"
+                                />
+                              </div>
                             </div>
 
                             <div class="form-field">
@@ -691,7 +680,7 @@ import {
   lksgKpiNameMappings,
   lksgSubAreaNameMappings,
 } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
-import { getAllCountryNamesWithCodes, getCitiesForCountry } from "@/utils/CountryCodeConverter";
+import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
 
 export default defineComponent({
@@ -713,9 +702,6 @@ export default defineComponent({
         id: 0,
         listOfGoodsOrServices: [],
         listOfGoodsOrServicesString: "",
-        selectedCountryCode: "",
-        citiesForCountry: [] as Array<string>,
-        adres: "",
       },
     ],
     allCountry: getAllCountryNamesWithCodes(),
@@ -763,9 +749,6 @@ export default defineComponent({
             id: 0,
             listOfGoodsOrServices: [],
             listOfGoodsOrServicesString: "",
-            selectedCountryCode: "",
-            citiesForCountry: [] as Array<string>,
-            adres: "",
           },
         ];
         this.dataDate = "";
@@ -803,9 +786,6 @@ export default defineComponent({
         id: Math.random(),
         listOfGoodsOrServices: [],
         listOfGoodsOrServicesString: "",
-        selectedCountryCode: "",
-        citiesForCountry: [],
-        adres: "",
       });
     },
     addNewItemsTolistOfProductionSites(index: number) {
@@ -823,11 +803,6 @@ export default defineComponent({
       this.listOfProductionSites[index].listOfGoodsOrServices = this.listOfProductionSites[
         index
       ].listOfGoodsOrServices.filter((el) => el !== item);
-    },
-    async getCities(index: number) {
-      this.listOfProductionSites[index].citiesForCountry = await getCitiesForCountry(
-        this.listOfProductionSites[index].selectedCountryCode
-      );
     },
   },
 });

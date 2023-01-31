@@ -29,14 +29,3 @@ export function getAllCountryCodes(): Array<string> {
 export function getAllCountryNamesWithCodes(): object {
   return countries.getNames("en");
 }
-
-/**
- * Returns the cities by its country code
- *
- * @returns the english names of the cities
- */
-export async function getCitiesForCountry(countryCode: string): Promise<Array<string>> {
-  const allCountriesCodesAndCities = await import("@/assets/data/cities.json").then(module => module.default) as object;
-  const citiesForCountry: string[] = allCountriesCodesAndCities[countryCode] ? allCountriesCodesAndCities[countryCode] : [];
-  return citiesForCountry;
-}

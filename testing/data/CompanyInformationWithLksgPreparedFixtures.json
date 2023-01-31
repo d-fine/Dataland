@@ -38,7 +38,7 @@
 					"listOfProductionSites": [
 						{
 							"name": "Ludolf OHG",
-							"isInHouseProductionOrIsContractProcessing": "Yes",
+							"isInHouseProductionOrIsContractProcessing": "In-house Production",
 							"city": "Nord Carlland",
 							"postalCode": "02137",
 							"listOfGoodsOrServices": [
@@ -194,7 +194,7 @@
 					"listOfProductionSites": [
 						{
 							"name": "Kleinmann-Orth",
-							"isInHouseProductionOrIsContractProcessing": "No",
+							"isInHouseProductionOrIsContractProcessing": "Contract Processing",
 							"city": "West Melanie",
 							"streetAndHouseNumber": "Heymannstr. 49c",
 							"postalCode": "88398",
@@ -204,7 +204,7 @@
 						},
 						{
 							"name": "Pöge, Greger und Hengmith",
-							"isInHouseProductionOrIsContractProcessing": "No",
+							"isInHouseProductionOrIsContractProcessing": "Contract Processing",
 							"postalCode": "86659",
 							"listOfGoodsOrServices": [
 								"Electronic Soft Shoes",
@@ -215,14 +215,14 @@
 							]
 						},
 						{
-							"isInHouseProductionOrIsContractProcessing": "No",
+							"isInHouseProductionOrIsContractProcessing": "Contract Processing",
 							"country": "Tansania",
 							"city": "Devinscheid",
 							"listOfGoodsOrServices": []
 						},
 						{
 							"name": "Lakomy UG",
-							"isInHouseProductionOrIsContractProcessing": "Yes",
+							"isInHouseProductionOrIsContractProcessing": "In-house Production",
 							"country": "Oman",
 							"postalCode": "70310",
 							"listOfGoodsOrServices": []
@@ -380,7 +380,7 @@
 						},
 						{
 							"name": "Nodler-Lauckner",
-							"isInHouseProductionOrIsContractProcessing": "No",
+							"isInHouseProductionOrIsContractProcessing": "Contract Processing",
 							"streetAndHouseNumber": "Hegelstr. 45a",
 							"listOfGoodsOrServices": [
 								"Fantastic Cotton Hat",
@@ -540,7 +540,7 @@
 					"totalRevenueCurrency": "CHF",
 					"listOfProductionSites": [
 						{
-							"isInHouseProductionOrIsContractProcessing": "Yes",
+							"isInHouseProductionOrIsContractProcessing": "In-house Production",
 							"country": "Irak",
 							"city": "West Yarendorf",
 							"streetAndHouseNumber": "In der Felderhütten 48",
@@ -564,7 +564,7 @@
 						},
 						{
 							"name": "Goldbeck, Bürger und Freigang",
-							"isInHouseProductionOrIsContractProcessing": "Yes",
+							"isInHouseProductionOrIsContractProcessing": "In-house Production",
 							"country": "Deutschland",
 							"postalCode": "85290",
 							"listOfGoodsOrServices": [

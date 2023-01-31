@@ -28,7 +28,7 @@ export default {
     AuthenticationWrapper,
     CompanyInformation,
     DatalandFooter,
-    BackButton
+    BackButton,
   },
   props: {
     companyID: {

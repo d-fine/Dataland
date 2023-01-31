@@ -17,7 +17,10 @@ export function generateProductionSite(): ProductionSite {
 
   return {
     name: randomStringOrUndefined(faker.company.name()),
-    isInHouseProductionOrIsContractProcessing: randomYesNoUndefined(),
+    isInHouseProductionOrIsContractProcessing: faker.helpers.arrayElement([
+      "In-house Production",
+      "Contract Processing",
+    ]),
     country: randomStringOrUndefined(faker.address.country()),
     city: randomStringOrUndefined(faker.address.city()),
     streetAndHouseNumber: randomStringOrUndefined(faker.address.street() + " " + faker.address.buildingNumber()),
