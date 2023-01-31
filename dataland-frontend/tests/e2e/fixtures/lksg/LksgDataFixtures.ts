@@ -3,6 +3,7 @@ import { LksgData, ProductionSite } from "@clients/backend";
 import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
+import { randomStringOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a random production site
@@ -10,26 +11,17 @@ import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtur
  * @returns a random production site
  */
 export function generateProductionSite(): ProductionSite {
-  const fakeSiteName = faker.company.name();
-  const yesNo = randomYesNoUndefined();
-  const fullFormattedFakeAddress =
-    faker.address.street() +
-    " " +
-    faker.address.buildingNumber() +
-    ", " +
-    faker.address.zipCode() +
-    " " +
-    faker.address.city() +
-    ", " +
-    faker.address.country();
   const fakeGoodsOrServices = Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
     return faker.commerce.productName();
   });
 
   return {
-    name: fakeSiteName,
-    isInHouseProductionOrIsContractProcessing: yesNo,
-    address: fullFormattedFakeAddress,
+    name: randomStringOrUndefined(faker.company.name()),
+    isInHouseProductionOrIsContractProcessing: randomYesNoUndefined(),
+    country: randomStringOrUndefined(faker.address.country()),
+    city: randomStringOrUndefined(faker.address.city()),
+    streetAndHouseNumber: randomStringOrUndefined(faker.address.street() + " " + faker.address.buildingNumber()),
+    postalCode: randomStringOrUndefined(faker.address.zipCode()),
     listOfGoodsOrServices: fakeGoodsOrServices,
   };
 }
