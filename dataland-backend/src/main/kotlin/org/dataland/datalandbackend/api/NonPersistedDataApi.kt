@@ -31,6 +31,7 @@ interface NonPersistedDataApi {
     value = ["/{dataId}"],
     produces = ["application/json"]
 )
+@PreAuthorize("true")
         /**
          * A method to retrieve specific data identified by its ID
          * @param dataId identifier used to uniquely specify data in the data store
