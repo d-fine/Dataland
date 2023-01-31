@@ -120,7 +120,7 @@ export default defineComponent({
         return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/upload`;
       } else {
         const dataTypesWithSingleView = [DataTypeEnum.Lksg] as DataTypeEnum[];
-        let queryParameters = ""
+        let queryParameters = "";
         if (!dataTypesWithSingleView.includes(datasetTableInfo.dataType)) {
           queryParameters = `?dataId=${datasetTableInfo.dataId}`;
         }
@@ -148,6 +148,7 @@ export default defineComponent({
      * Depending on the dataset status, this routes to the dataset view page or an upload page
      *
      * @param event an event that stores the DatasetTableInfo of the on clicked row
+     * @param event.data
      */
     rerouteRowClick(event: { data: DatasetTableInfo }) {
       void this.$router.push(this.getTableRowLinkTarget(event.data));

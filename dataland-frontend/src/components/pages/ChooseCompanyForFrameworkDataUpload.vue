@@ -4,7 +4,7 @@
     <TheContent>
       <BackButton id="backButton" label="MY DATASETS" />
       <Card class="col-12 text-left page-wrapper-card">
-        <template #title> New Dataset - Company</template>
+        <template #title>New Dataset - Company</template>
         <template #content>
           <div class="grid">
             <div class="col-9">
@@ -37,7 +37,7 @@
                     new company, all mandatory * fields must be filled.
                   </p>
                 </div>
-                <div id="createCompanyForm" class="col-9 p-3">
+                <div id="createCompanyForm" class="col-9 d-card">
                   <CreateCompany @companyCreated="handleCompanyCreated" />
                 </div>
               </div>

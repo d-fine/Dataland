@@ -126,6 +126,7 @@ export default defineComponent({
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      */
     openModalAndDisplayListOfProductionSites(listOfProductionSites: [], modalTitle: string) {
+      console.log('listOfProductionSites', listOfProductionSites)
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
           header: modalTitle,
