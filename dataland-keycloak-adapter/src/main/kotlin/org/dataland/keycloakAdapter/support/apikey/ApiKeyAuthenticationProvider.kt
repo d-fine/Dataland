@@ -16,12 +16,17 @@ import org.springframework.security.oauth2.server.resource.authentication.Bearer
 import java.io.IOException
 import java.lang.IllegalStateException
 
-class ApiKeyAuthenticationProvider(val apiKeyManagerBaseUrl: String): AuthenticationProvider{
+/**
+ * This provider supports login via API-Keys provided as bearer tokens.
+ * Generates a DatalandApiKeyAuthentication upon successful validation of the Api-Key
+ * via the token introspection endpoint
+ */
+class ApiKeyAuthenticationProvider(val apiKeyManagerBaseUrl: String) : AuthenticationProvider {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun authenticate(authentication: Authentication): DatalandApiKeyAuthentication? {
-        val bearerToken = authentication as BearerTokenAuthenticationToken;
+        val bearerToken = authentication as BearerTokenAuthenticationToken
         logger.trace("Received request for authentication with bearer token ${bearerToken.token}")
 
         try {

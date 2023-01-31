@@ -4,8 +4,11 @@ import org.dataland.datalandbackend.model.email.Email
 import org.dataland.datalandbackend.model.email.EmailAttachment
 import org.dataland.datalandbackend.model.email.EmailContact
 import org.dataland.datalandbackend.model.email.EmailContent
+import org.dataland.datalandbackendutils.exceptions.ApiKeyAuthenticationNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
-import org.dataland.keycloakAdapter.auth.DatalandLegacyAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandApiKeyAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.web.multipart.MultipartFile
 
 /**
@@ -43,10 +46,16 @@ object InvitationEmailGenerator {
     }
 
     private fun buildUserInfo(isSubmitterNameHidden: Boolean): String {
-        val user = DatalandLegacyAuthentication.fromContext()
-        return when (isSubmitterNameHidden) {
-            true -> "Anonymous user"
-            else -> "User ${user.username} (Keycloak id: ${user.userId})"
+        return when (val user = DatalandAuthentication.fromContext()) {
+            is DatalandJwtAuthentication -> {
+                when (isSubmitterNameHidden) {
+                    true -> "Anonymous user"
+                    else -> "User ${user.username} (Keycloak id: ${user.userId})"
+                }
+            }
+            is DatalandApiKeyAuthentication -> {
+                throw ApiKeyAuthenticationNotSupportedException()
+            }
         }
     }
 

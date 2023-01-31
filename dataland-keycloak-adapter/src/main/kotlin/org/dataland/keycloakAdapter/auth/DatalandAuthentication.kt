@@ -3,7 +3,10 @@ package org.dataland.keycloakAdapter.auth
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 
-sealed class DatalandAuthentication: Authentication {
+/**
+ * A base class for all dataland-related authentication objects (like API-Key / JWT authentication)
+ */
+sealed class DatalandAuthentication : Authentication {
     companion object {
         /**
          * Builds a new DatalandAuthentication object from the Spring Boot Authentication

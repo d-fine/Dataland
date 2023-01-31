@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.keycloakAdapter.auth.DatalandLegacyAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -112,7 +112,7 @@ class CompanyManager(
     @Transactional
     fun searchCompaniesAndGetApiModel(
         filter: CompanySearchFilter,
-        viewingUser: DatalandLegacyAuthentication? = null
+        viewingUser: DatalandAuthentication? = null
     ): List<StoredCompany> {
         val searchFilterForJPA = StoredCompanySearchFilter(
             searchString = filter.searchString,
@@ -170,7 +170,7 @@ class CompanyManager(
      * @return the StoredCompany object of the retrieved company
      */
     @Transactional
-    fun getCompanyApiModelById(companyId: String, viewingUser: DatalandLegacyAuthentication? = null): StoredCompany {
+    fun getCompanyApiModelById(companyId: String, viewingUser: DatalandAuthentication? = null): StoredCompany {
         val searchResult = getCompanyById(companyId)
         return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel(viewingUser)
     }

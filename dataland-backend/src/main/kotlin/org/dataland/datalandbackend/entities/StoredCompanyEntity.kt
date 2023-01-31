@@ -10,7 +10,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
-import org.dataland.keycloakAdapter.auth.DatalandLegacyAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 
 /**
  * The entity storing data regarding a company stored in dataland
@@ -54,7 +54,7 @@ data class StoredCompanyEntity(
     var isTeaserCompany: Boolean
 ) : ApiModelConversion<StoredCompany> {
     @JsonValue
-    override fun toApiModel(viewingUser: DatalandLegacyAuthentication?): StoredCompany {
+    override fun toApiModel(viewingUser: DatalandAuthentication?): StoredCompany {
         return StoredCompany(
             companyId = companyId,
             companyInformation = CompanyInformation(

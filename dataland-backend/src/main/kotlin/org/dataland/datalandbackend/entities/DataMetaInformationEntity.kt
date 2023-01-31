@@ -10,7 +10,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.keycloakAdapter.auth.DatalandLegacyAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 
 /**
@@ -37,7 +37,7 @@ data class DataMetaInformationEntity(
     var company: StoredCompanyEntity,
 ) : ApiModelConversion<DataMetaInformation> {
 
-    override fun toApiModel(viewingUser: DatalandLegacyAuthentication?): DataMetaInformation {
+    override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
         val displayUploaderUserId = viewingUser != null && (
             viewingUser.roles.contains(DatalandRealmRole.ROLE_ADMIN) ||
                 viewingUser.userId == this.uploaderUserId

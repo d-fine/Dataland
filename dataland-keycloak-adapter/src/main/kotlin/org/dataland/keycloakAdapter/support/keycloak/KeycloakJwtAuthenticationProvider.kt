@@ -12,9 +12,13 @@ import org.springframework.security.oauth2.jwt.JwtException
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken
 
+/**
+ * This provider supports login via JWTs provided as bearer tokens.
+ * Generates a DatalandJwtAuthentication upon successful validation of the JWT.
+ */
 class KeycloakJwtAuthenticationProvider(val jwtDecoder: JwtDecoder) : AuthenticationProvider {
     private val logger = LoggerFactory.getLogger(javaClass)
-    override fun authenticate(authentication: Authentication): DatalandJwtAuthentication? {
+    override fun authenticate(authentication: Authentication): DatalandJwtAuthentication {
         val bearerToken = authentication as BearerTokenAuthenticationToken
         logger.trace("Received request for authentication with bearer token ${bearerToken.token}")
         val jwt = decodeAndValidateJwt(bearerToken)
