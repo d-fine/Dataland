@@ -93,8 +93,8 @@ export default defineComponent({
       subAreaKey: string,
       dataDateOfLksgDataset: string
     ): void {
-      if (kpiKey === "totalRevenue" && typeof kpiValue === "string") {
-        kpiValue = this.convertToMillions(parseFloat(kpiValue));
+      if (kpiKey === "totalRevenue") {
+        kpiValue = this.convertToMillions(parseFloat(kpiValue as string));
       }
       let indexOfExistingItem = -1;
       const kpiDataObject = {
