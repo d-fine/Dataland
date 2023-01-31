@@ -5,9 +5,7 @@
       <BackButton id="backButton" label="CHOOSE COMPANY" />
       <CompanyInformation :companyID="companyID" />
       <Card class="col-12 text-left page-wrapper-card">
-        <template #title>
-          New Dataset - Framework
-        </template>
+        <template #title> New Dataset - Framework </template>
         <template #content>
           <div class="uploadFormWrapper grid">
             <div id="euTaxonomyContainer" class="col-9 flex">

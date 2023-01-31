@@ -36,7 +36,6 @@ export function fillCompanyUploadFields(companyName: string): void {
  * @returns a cypress chainable containing the ID of the newly created company
  */
 export function uploadCompanyViaFormAndGetId(companyName: string): Cypress.Chainable<string> {
-  cy.visitAndCheckAppMount("/companies/upload");
   fillCompanyUploadFields(companyName);
   cy.intercept("**/api/companies").as("postCompany");
   cy.get('button[name="addCompany"]').click();
