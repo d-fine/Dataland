@@ -3017,7 +3017,16 @@
           "isInHouseProductionOrIsContractProcessing": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "address": {
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "streetAndHouseNumber": {
+            "type": "string"
+          },
+          "postalCode": {
             "type": "string"
           },
           "listOfGoodsOrServices": {
