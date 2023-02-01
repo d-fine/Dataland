@@ -73,7 +73,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      option2Container: ref(),
+      option2Container: ref<Element>(),
     };
   },
   props: {

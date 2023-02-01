@@ -84,7 +84,7 @@ export default defineComponent({
      * Executes a router push to upload overview page of the given company
      *
      * @param event object containing the stored company
-     * @param event.value the companyId to be pushed to
+     * @param event.value the stored company object
      */
     pushToChooseFrameworkForDataUploadPageForItem(event: { value: StoredCompany }) {
       void this.$router.push(`/companies/${event.value.companyId}/frameworks/upload`);

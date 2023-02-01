@@ -129,7 +129,7 @@ export default defineComponent({
       }
     },
     /**
-     * Checks if the status of th given DatasetTableInfo equals Rejected
+     * Checks if the status of the given DatasetTableInfo equals Rejected
      *
      * @param datasetTableEntry the DatasetTableEntry to check the status of
      * @returns a boolean reflecting if the data set is rejected or not
