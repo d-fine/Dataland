@@ -36,7 +36,7 @@ dependencies {
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
-    implementation(project(":dataland-internal-storage"))
+    implementation(project(":dataland-backend-utils"))
 
 }
 jacoco {

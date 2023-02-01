@@ -2,7 +2,7 @@ package org.dataland.datalanddummyqaservice
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
-import org.dataland.datalandinternalstorage.services.CloudEventMessageHandler
+import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 import org.springframework.amqp.core.Message
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate

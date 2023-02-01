@@ -45,11 +45,7 @@ dependencies {
     runtimeOnly(libs.database.h2)
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
-    //implementation(project(":dataland-backend-utils"))
-    implementation("io.cloudevents:cloudevents-api:2.4.1")
-    implementation("io.cloudevents:cloudevents-json-jackson:2.4.1")
-    implementation("io.cloudevents:cloudevents-core:2.3.0")
-    implementation("org.springframework.cloud:spring-cloud-function-context:4.0.0")
+    implementation(project(":dataland-backend-utils"))
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("org.springframework.boot:spring-boot-starter-security")
 }

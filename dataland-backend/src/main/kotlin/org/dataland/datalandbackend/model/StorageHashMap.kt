@@ -1,4 +1,4 @@
-package org.dataland.datalandinternalstorage.models
+package org.dataland.datalandbackend.model
 
 import org.springframework.stereotype.Component
 

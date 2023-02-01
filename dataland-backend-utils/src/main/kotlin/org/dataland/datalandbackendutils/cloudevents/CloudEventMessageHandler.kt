@@ -1,4 +1,4 @@
-package org.dataland.datalandinternalstorage.services
+package org.dataland.datalandbackendutils.cloudevents
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.amqp.rabbit.core.RabbitTemplate
