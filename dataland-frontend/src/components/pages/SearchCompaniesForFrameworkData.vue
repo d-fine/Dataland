@@ -407,7 +407,7 @@ export default defineComponent({
     /**
      * Expands the searchbar that got collapsed when the user scrolled down
      */
-    toggleSearchBar() {
+    async toggleSearchBar() {
       this.searchBarToggled = true;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
       const height = this.searchBarAndFiltersContainer?.clientHeight;
@@ -415,9 +415,8 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
-      this.$nextTick(() => {
-        this.searchBarId = "search_bar_scrolled";
-      });
+      await this.$nextTick();
+      this.searchBarId = "search_bar_scrolled";
     },
 
     /**

@@ -111,7 +111,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.getMetaInfoAboutAllDataSetsForCurrentCompany();
+    void this.getMetaInfoAboutAllDataSetsForCurrentCompany();
   },
 
   data() {

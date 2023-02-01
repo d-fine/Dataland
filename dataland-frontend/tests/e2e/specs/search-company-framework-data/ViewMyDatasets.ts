@@ -14,18 +14,34 @@ describe(
     const newDatasetButtonSelector = "button[aria-label='New Dataset']";
     const searchBarSelector = "input";
 
+    /**
+     * Generates a new company object and uploads it via API
+     *
+     * @param companyName name of the generated company
+     */
     function uploadCompanyWithLksgDataset(companyName: string): void {
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         const companyInformation = generateCompanyInformation();
         companyInformation.companyName = companyName;
-        uploadCompanyAndLksgDataViaApi(token, companyInformation, generateLksgData());
+        return uploadCompanyAndLksgDataViaApi(token, companyInformation, generateLksgData());
       });
     }
 
+    /**
+     * Get the selector for a tab given by input number
+     *
+     * @param tabIndex number identifying the tab
+     * @returns the selector to choose a tab
+     */
     function getTabSelector(tabIndex: number): string {
       return `.p-tabview-header[data-index="${tabIndex}"`;
     }
 
+    /**
+     * Validates the tab bar identified by the input
+     *
+     * @param activeTabIndex number identifying the tab bar
+     */
     function validateTabBar(activeTabIndex: number): void {
       cy.get(getTabSelector(0)).should("have.text", "AVAILABLE DATASETS");
       cy.get(getTabSelector(1)).should("have.text", "MY DATASETS");

@@ -124,6 +124,7 @@ export default defineComponent({
      * Finds the datasets the logged in user is responsible for and creates corresponding table entries
      */
     requestDataMetaDataForCurrentUser: async function (): Promise<void> {
+      let userId: string | undefined;
       const companyDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
       ).getCompanyDataControllerApi();
@@ -137,7 +138,10 @@ export default defineComponent({
           true
         )
       ).data;
-      const userId = (await assertDefined(this.getKeycloakPromise)()).idTokenParsed!.sub;
+      const response = await assertDefined(this.getKeycloakPromise)();
+      if (response.idTokenParsed) {
+        userId = response.idTokenParsed.sub;
+      }
       this.datasetTableInfos = companiesMetaInfos.flatMap((company: StoredCompany) =>
         company.dataRegisteredByDataland
           .filter(
