@@ -12,54 +12,51 @@ describe(
   "As a user, I expect the search functionality on the /companies page to behave as I expect",
   { scrollBehavior: false },
   function () {
+    describeIf(
+      "",
+      {
+        executionEnvironments: ["developmentLocal", "ci"],
+        dataEnvironments: ["fakeFixtures"],
+      },
+      () => {
         const newDatasetButtonSelector = "button[aria-label='New Dataset']";
         const searchBarSelector = "input";
 
-    /**
-     * Generates a new company object and uploads it via API
-     *
-     * @param companyName name of the generated company
-     */
-    function uploadCompanyWithLksgDataset(companyName: string): void {
-      getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        const companyInformation = generateCompanyInformation();
-        companyInformation.companyName = companyName;
-        return uploadCompanyAndLksgDataViaApi(token, companyInformation, generateLksgData());
-      });
-    }
+        /**
+         * Generates a new company object and uploads it via API
+         *
+         * @param companyName name of the generated company
+         */
+        function uploadCompanyWithLksgDataset(companyName: string): void {
+          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+            const companyInformation = generateCompanyInformation();
+            companyInformation.companyName = companyName;
+            return uploadCompanyAndLksgDataViaApi(token, companyInformation, generateLksgData());
+          });
+        }
 
-    /**
-     * Get the selector for a tab given by input number
-     *
-     * @param tabIndex number identifying the tab
-     * @returns the selector to choose a tab
-     */
-    function getTabSelector(tabIndex: number): string {
-        return `.p-tabview-header[data-index="${tabIndex}"] a`;
-    }
+        /**
+         * Get the selector for a tab given by input number
+         *
+         * @param tabIndex number identifying the tab
+         * @returns the selector to choose a tab
+         */
+        function getTabSelector(tabIndex: number): string {
+          return `.p-tabview-header[data-index="${tabIndex}"]`;
+        }
 
-  /**
-   * Get the selector for a tab header given by input number
-   *
-   * @param tabIndex number identifying the tab
-   * @returns the selector to choose a tab
-   */
-  function getTabSelectorHeader(tabIndex: number): string {
-      return `.p-tabview-header[data-index="${tabIndex}"]`;
-  }
-
-    /**
-     * Validates the tab bar identified by the input
-     *
-     * @param activeTabIndex number identifying the tab bar
-     */
-    function validateTabBar(activeTabIndex: number): void {
-      cy.get(getTabSelectorHeader(0)).should("have.text", "AVAILABLE DATASETS");
-      cy.get(getTabSelectorHeader(1)).should("have.text", "MY DATASETS");
-      const inactiveTabIndex = (activeTabIndex + 1) % 2;
-      cy.get(getTabSelectorHeader(activeTabIndex)).should("have.class", "p-highlight");
-      cy.get(getTabSelectorHeader(inactiveTabIndex)).should("not.have.class", "p-highlight");
-    }
+        /**
+         * Validates the tab bar identified by the input
+         *
+         * @param activeTabIndex number identifying the tab bar
+         */
+        function validateTabBar(activeTabIndex: number): void {
+          cy.get(getTabSelector(0)).should("have.text", "AVAILABLE DATASETS");
+          cy.get(getTabSelector(1)).should("have.text", "MY DATASETS");
+          const inactiveTabIndex = (activeTabIndex + 1) % 2;
+          cy.get(getTabSelector(activeTabIndex)).should("have.class", "p-highlight");
+          cy.get(getTabSelector(inactiveTabIndex)).should("not.have.class", "p-highlight");
+        }
 
         it("Check page content", function () {
           cy.ensureLoggedIn(uploader_name, uploader_pw);
@@ -67,7 +64,7 @@ describe(
           validateTabBar(0);
           const companiesInterceptAlias = "companies";
           cy.intercept("**/api/companies*onlyCurrentUserAsUploader*").as(companiesInterceptAlias);
-          cy.get(getTabSelector(1)).click({force: true});
+          cy.get(getTabSelector(1)).click();
           cy.wait(`@${companiesInterceptAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number });
           cy.url().should("contain", "/datasets");
           validateTabBar(1);
@@ -147,5 +144,6 @@ describe(
 
         // TODO check overview panel (link, does counting work?)
       }
-
+    );
+  }
 );
