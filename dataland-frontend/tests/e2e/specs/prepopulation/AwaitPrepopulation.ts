@@ -34,7 +34,7 @@ describe("I want to ensure that the prepopulation has finished before executing 
       },
     },
     () => {
-      cy.wait(5000)
+      cy.wait(5000) // TODO rather wait for specific stuff than random timespans
         .then(() => getKeycloakToken(reader_name, reader_pw))
         .then(async (token) => {
           const financialResponse = await countCompaniesAndDataSetsForDataType(
