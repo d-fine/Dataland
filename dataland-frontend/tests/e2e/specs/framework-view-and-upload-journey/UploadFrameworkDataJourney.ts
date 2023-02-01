@@ -7,8 +7,6 @@ import {
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum } from "@clients/backend";
 
-before(function () {});
-
 describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
   beforeEach(function () {
     cy.ensureLoggedIn(uploader_name, uploader_pw);
