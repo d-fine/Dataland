@@ -202,7 +202,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             .click({ scrollBehavior: false })
             .type(companyName, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-            cy.wait(1000);
+            cy.wait(1000); // TODO rather wait for specific stuff than random timespans
             cy.get(".p-autocomplete-item").should("not.exist");
           });
           cy.visit(`/companies?input=${companyName}`)
