@@ -22,7 +22,7 @@ export function calculateDaysFromNow(endDateInMilliseconds: number): number {
 /**
  * Transforms the given unix time in milliseconds to a date string
  *
- * @param unixTimeInMs the unix time in milliseconds to
+ * @param unixTimeInMs the unix time in milliseconds
  * @returns a date string representing the given unix time
  */
 export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
