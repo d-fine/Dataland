@@ -12,7 +12,6 @@
             name="createLkSGForm"
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
-            #default="{ state: { valid } }"
           >
             <FormKit
               type="hidden"
@@ -663,6 +662,7 @@
 
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
+import { FormKitNode } from "@formkit/core";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { defineComponent, inject } from "vue";
@@ -726,15 +726,18 @@ export default defineComponent({
   watch: {
     dataDate: function (newValue: Date) {
       if (newValue) {
-        this.convertedDataDate = `${newValue.getFullYear()}-${("0" + newValue.getMonth() + 1).slice(-2)}-${(
-          "0" + newValue.getDate()
-        ).slice(-2)}`;
+        this.convertedDataDate = `${newValue.getFullYear()}-${("0" + (newValue.getMonth() + 1).toString()).slice(
+          -2
+        )}-${-2}-${("0" + newValue.getDate().toString()).slice(-2)}`;
       } else {
         this.convertedDataDate = "";
       }
     },
   },
   methods: {
+    /**
+     * Sends data to add LkSG data
+     */
     async postLkSGData(): Promise<void> {
       this.messageCounter++;
       try {
@@ -767,20 +770,33 @@ export default defineComponent({
         this.postLkSGDataProcessed = true;
       }
     },
-    checkCustomInputs(node) {
+
+    /**
+     * Checks which inputs are not filled correctly
+     *
+     * @param node - single form field
+     */
+    checkCustomInputs(node: FormKitNode) {
       console.log("lkSGDataModel", this.lkSGDataModel);
-      const invalidElements = [];
-      node.walk((child) => {
+      const invalidElements: HTMLElement[] = [];
+      node.walk((child: FormKitNode) => {
         // Check if this child has errors
         if ((child.ledger.value("blocking") || child.ledger.value("errors")) && child.type !== "group") {
           // We found an input with validation errors
-          invalidElements.push(document.getElementById(child.props.id));
+          if (typeof child.props.id === "string") {
+            const invalidElement = document.getElementById(child.props.id);
+            if (invalidElement) {
+              invalidElements.push(invalidElement);
+            }
+          }
         }
       }, true);
-
-      console.log("invalidElements", invalidElements);
-      invalidElements.find((el) => el !== null).scrollIntoView({ behavior: "smooth", block: "center" });
+      invalidElements.find((el) => el !== null)?.scrollIntoView({ behavior: "smooth", block: "center" });
     },
+
+    /**
+     * Adds a new Object to the ProductionSite array
+     */
     addNewProductionSite() {
       this.listOfProductionSites.push({
         id: Math.random(),
@@ -788,6 +804,21 @@ export default defineComponent({
         listOfGoodsOrServicesString: "",
       });
     },
+
+    /**
+     * Remove Object from ProductionSite array
+     *
+     * @param id - the id of the object in the array
+     */
+    removeItemFromlistOfProductionSites(id: number) {
+      this.listOfProductionSites = this.listOfProductionSites.filter((el) => el.id !== id);
+    },
+
+    /**
+     * Adds a new item to the list of Production Sites Goods Or Services
+     *
+     * @param index - index of the element in the listOfProductionSites array
+     */
     addNewItemsTolistOfProductionSites(index: number) {
       const items = this.listOfProductionSites[index].listOfGoodsOrServicesString.split(";").map((item) => item.trim());
       this.listOfProductionSites[index].listOfGoodsOrServices = [
@@ -796,9 +827,13 @@ export default defineComponent({
       ];
       this.listOfProductionSites[index].listOfGoodsOrServicesString = "";
     },
-    removeItemFromlistOfProductionSites(id: number) {
-      this.listOfProductionSites = this.listOfProductionSites.filter((el) => el.id !== id);
-    },
+
+    /**
+     * Remove item from list of Production Sites Goods Or Services
+     *
+     * @param index - index of the element in the listOfProductionSites array
+     * @param item - which item is to be deleted
+     */
     removeItemFromlistOfGoodsOrServices(index: number, item: string) {
       this.listOfProductionSites[index].listOfGoodsOrServices = this.listOfProductionSites[
         index
