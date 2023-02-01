@@ -7,113 +7,114 @@ import { faker } from "@faker-js/faker";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { DataTypeEnum } from "@clients/backend";
 
-describe("As a user, I expect the search functionality on the /companies page to behave as I expect", {scrollBehavior: false}, function () {
-  const newDatasetButtonSelector = "button[aria-label='New Dataset']";
-  const searchBarSelector = "input";
+describe(
+  "As a user, I expect the search functionality on the /companies page to behave as I expect",
+  { scrollBehavior: false },
+  function () {
+    const newDatasetButtonSelector = "button[aria-label='New Dataset']";
+    const searchBarSelector = "input";
 
-  function uploadCompanyWithLksgDataset(companyName: string): void {
-    getKeycloakToken(uploader_name, uploader_pw).then(token => {
-      const companyInformation = generateCompanyInformation();
-      companyInformation.companyName = companyName;
-      uploadCompanyAndLksgDataViaApi(token, companyInformation, generateLksgData());
+    function uploadCompanyWithLksgDataset(companyName: string): void {
+      getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        const companyInformation = generateCompanyInformation();
+        companyInformation.companyName = companyName;
+        uploadCompanyAndLksgDataViaApi(token, companyInformation, generateLksgData());
+      });
+    }
+
+    function getTabSelector(tabIndex: number): string {
+      return `.p-tabview-header[data-index="${tabIndex}"`;
+    }
+
+    function validateTabBar(activeTabIndex: number): void {
+      cy.get(getTabSelector(0)).should("have.text", "AVAILABLE DATASETS");
+      cy.get(getTabSelector(1)).should("have.text", "MY DATASETS");
+      const inactiveTabIndex = (activeTabIndex + 1) % 2;
+      cy.get(getTabSelector(activeTabIndex)).should("have.class", "p-highlight");
+      cy.get(getTabSelector(inactiveTabIndex)).should("not.have.class", "p-highlight");
+    }
+
+    it("Check page content", function () {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.visitAndCheckAppMount("/companies");
+      validateTabBar(0);
+      const companiesInterceptAlias = "companies";
+      cy.intercept("**/api/companies*onlyCurrentUserAsUploader*").as(companiesInterceptAlias);
+      cy.get(getTabSelector(1)).click();
+      cy.wait(`@${companiesInterceptAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number });
+      cy.url().should("contain", "/datasets");
+      validateTabBar(1);
+
+      cy.get(newDatasetButtonSelector).should("exist");
+
+      const expectedHeaders = ["COMPANY", "DATA FRAMEWORK", "STATUS", "SUBMISSION DATE"];
+      expectedHeaders.forEach((value) => {
+        cy.get(`table th:contains(${value})`).should("exist");
+      });
+      const unexpectedHeaders = ["YEAR"];
+      unexpectedHeaders.forEach((value) => {
+        cy.get(`table th:contains(${value})`).should("not.exist");
+      });
+      cy.get("th").each((element) => {
+        if (!expectedHeaders.includes(element.text())) {
+          expect(element.html()).to.contain("<input");
+        }
+      });
     });
+
+    it("Check if new dataset button leads to choose company page and if the back button works as expected", () => {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.visit("/datasets");
+      validateTabBar(1);
+      cy.get(newDatasetButtonSelector).click();
+      cy.url().should("contain", "/companies/choose");
+      cy.get("[title='back_button']").click();
+      cy.url().should("contain", "/datasets");
+    });
+
+    const newCompanyName = `Overview Search ${faker.company.bsNoun()}`;
+    it("Check if search filter works as expected", () => {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.visit("/datasets");
+      cy.get(searchBarSelector).type(newCompanyName);
+      cy.get("tbody td").then((elements) => {
+        expect(elements.length).to.equal(1);
+      });
+      uploadCompanyWithLksgDataset(newCompanyName);
+      cy.reload();
+      cy.visit("/datasets");
+      cy.get(searchBarSelector).type(newCompanyName);
+      cy.get("tbody td").then((elements) => {
+        expect(elements.length).to.equal(5);
+      });
+      cy.get("tbody td").first().should("contain", newCompanyName);
+    });
+
+    it("Check if the table rows look as expected", () => {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.visit("/datasets");
+      cy.get(searchBarSelector).type(newCompanyName);
+      const expectedRowContents = [`COMPANY${newCompanyName}`, `DATA FRAMEWORK${humanizeString(DataTypeEnum.Lksg)}`];
+      cy.get("tbody td").each((element, index) => {
+        if (index < expectedRowContents.length) {
+          expect(element.text()).to.equal(expectedRowContents[index]);
+        } else if (index == 3) {
+          expect(Date.parse(element.text().substring(15)).toString()).not.to.equal(NaN.toString());
+        } else if (index == 4) {
+          expect(element.text()).to.contain("VIEW");
+        }
+      });
+      cy.get("tbody td a").click();
+      cy.url().should("contain", `/frameworks/${DataTypeEnum.Lksg}`);
+    });
+
+    it("Check that a user who has no dataset associated with him has no table displayed", () => {
+      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.get("table").should("not.exist");
+    });
+
+    // TODO behaviour for data reader: only no NEW DATASET button but empty table in this case
+
+    // TODO check overview panel (link, does counting work?)
   }
-
-  function getTabSelector(tabIndex: number): string {
-    return `.p-tabview-header[data-index="${tabIndex}"`;
-  }
-
-  function validateTabBar(activeTabIndex: number): void {
-    cy.get(getTabSelector(0)).should("have.text", "AVAILABLE DATASETS");
-    cy.get(getTabSelector(1)).should("have.text", "MY DATASETS");
-    const inactiveTabIndex = (activeTabIndex + 1) % 2;
-    cy.get(getTabSelector(activeTabIndex)).should("have.class", "p-highlight");
-    cy.get(getTabSelector(inactiveTabIndex)).should("not.have.class", "p-highlight");
-  }
-
-  it("Check page content", function () {
-    cy.ensureLoggedIn(uploader_name, uploader_pw);
-    cy.visitAndCheckAppMount("/companies");
-    validateTabBar(0);
-    const companiesInterceptAlias = "companies";
-    cy.intercept("**/api/companies*onlyCurrentUserAsUploader*").as(companiesInterceptAlias);
-    cy.get(getTabSelector(1)).click();
-    cy.wait(`@${companiesInterceptAlias}`, {timeout: Cypress.env("long_timeout_in_ms") as number});
-    cy.url().should("contain", "/datasets");
-    validateTabBar(1);
-
-    cy.get(newDatasetButtonSelector).should("exist");
-
-    const expectedHeaders = ["COMPANY", "DATA FRAMEWORK", "STATUS", "SUBMISSION DATE"];
-    expectedHeaders.forEach(value => {
-      cy.get(`table th:contains(${value})`).should("exist");
-    });
-    const unexpectedHeaders = ["YEAR"];
-    unexpectedHeaders.forEach(value => {
-      cy.get(`table th:contains(${value})`).should("not.exist");
-    });
-    cy.get("th").each(element => {
-      if(!expectedHeaders.includes(element.text())) {
-        expect(element.html()).to.contain("<input")
-      }
-    });
-  });
-
-  it("Check if new dataset button leads to choose company page and if the back button works as expected", () => {
-    cy.ensureLoggedIn(uploader_name, uploader_pw);
-    cy.visit("/datasets");
-    validateTabBar(1);
-    cy.get(newDatasetButtonSelector).click();
-    cy.url().should("contain", "/companies/choose");
-    cy.get("[title='back_button']").click();
-    cy.url().should("contain", "/datasets");
-  });
-
-  const newCompanyName = `Overview Search ${faker.company.bsNoun()}`;
-  it("Check if search filter works as expected", () => {
-    cy.ensureLoggedIn(uploader_name, uploader_pw);
-    cy.visit("/datasets");
-    cy.get(searchBarSelector).type(newCompanyName);
-    cy.get("tbody td").then(elements => {
-      expect(elements.length).to.equal(1);
-    });
-    uploadCompanyWithLksgDataset(newCompanyName);
-    cy.reload();
-    cy.visit("/datasets");
-    cy.get(searchBarSelector).type(newCompanyName);
-    cy.get("tbody td").then(elements => {
-      expect(elements.length).to.equal(5);
-    });
-    cy.get("tbody td").first().should("contain", newCompanyName);
-  });
-
-  it("Check if the table rows look as expected", () => {
-    cy.ensureLoggedIn(uploader_name, uploader_pw);
-    cy.visit("/datasets");
-    cy.get(searchBarSelector).type(newCompanyName);
-    const expectedRowContents = [
-      `COMPANY${newCompanyName}`,
-      `DATA FRAMEWORK${humanizeString(DataTypeEnum.Lksg)}`
-    ];
-    cy.get("tbody td").each((element, index) => {
-      if (index < expectedRowContents.length) {
-        expect(element.text()).to.equal(expectedRowContents[index]);
-      } else if (index == 3) {
-        expect(Date.parse(element.text().substring(15)).toString()).not.to.equal(NaN.toString());
-      } else if (index == 4) {
-        expect(element.text()).to.contain("VIEW");
-      }
-    });
-    cy.get("tbody td a").click();
-    cy.url().should("contain", `/frameworks/${DataTypeEnum.Lksg}`)
-  });
-
-  it("Check that a user who has no dataset associated with him has no table displayed", () => {
-    cy.ensureLoggedIn(admin_name, admin_pw);
-    cy.get("table").should("not.exist");
-  });
-
-  // TODO behaviour for data reader: only no NEW DATASET button but empty table in this case
-
-  // TODO check overview panel (link, does counting work?)
-});
+);

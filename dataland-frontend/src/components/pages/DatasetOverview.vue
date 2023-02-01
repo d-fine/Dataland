@@ -154,7 +154,7 @@ export default defineComponent({
                 DatasetStatus.Approved,
                 dataMetaInfo.uploadTime * 1000,
                 company.companyId,
-                dataMetaInfo.dataId,
+                dataMetaInfo.dataId
               )
           )
       );

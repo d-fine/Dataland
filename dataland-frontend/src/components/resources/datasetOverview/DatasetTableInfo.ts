@@ -8,7 +8,7 @@ export class DatasetTableInfo {
     readonly status: DatasetStatus,
     readonly uploadTimeInSeconds: number,
     readonly companyId: string,
-    readonly dataId: string,
+    readonly dataId: string
   ) {}
 }
 
