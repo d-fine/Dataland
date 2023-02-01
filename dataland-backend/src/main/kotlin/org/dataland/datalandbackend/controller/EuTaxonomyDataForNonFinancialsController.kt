@@ -44,4 +44,9 @@ class EuTaxonomyDataForNonFinancialsController(
     ): ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData)
     }
+
+    @Operation(operationId = "getAllCompanyEuTaxonomyDataForNonFinancials")
+    override fun getAllCompanyData(companyId: String): ResponseEntity<List<EuTaxonomyDataForNonFinancials>> {
+        return super.getAllCompanyData(companyId)
+    }
 }

@@ -28,6 +28,11 @@ describe("As a user, I want to be able to search companies existing on Dataland"
     cy.get("table.p-datatable-table").contains("th", "SECTOR");
   });
 
+  /**
+   * Returns the first company from the fake fixture that has at least one alternative name
+   *
+   * @returns the matching company from the fake fixtures
+   */
   function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForFinancials> {
     return companiesWithEuTaxonomyDataForFinancials.filter((it) => {
       return (
@@ -59,7 +64,7 @@ describe("As a user, I want to be able to search companies existing on Dataland"
       .should("have.value", inputValue);
     cy.intercept("**/api/companies*").as("retrieveCompany");
     cy.get("button[name=getCompanies]").click();
-    cy.wait("@retrieveCompany", { timeout: 60 * 1000 }).then(() => {
+    cy.wait("@retrieveCompany", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
       cy.get("td").contains(companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName);
     });
   });

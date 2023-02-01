@@ -11,117 +11,146 @@ import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtur
 import { randomEuroValue, randomNumber } from "@e2e/fixtures/common/NumberFixtures";
 import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 
+/**
+ * Generates a random SFDR dataset
+ *
+ * @returns a random SFDR dataset
+ */
 export function generateSfdrData(): SfdrData {
-  const sfdr: SfdrData = {};
   const reports = generateReferencedReports();
-
-  sfdr.fiscalYear = randomFiscalYearDeviationOrUndefined();
-  sfdr.fiscalYearEnd = randomFutureDate();
-  sfdr.annualReport = faker.datatype.string();
-  sfdr.groupLevelAnnualReport = randomYesNoNaUndefined();
-  sfdr.annualReport = faker.datatype.string();
-  sfdr.annualReportDate = randomFutureDate();
-  sfdr.annualReportCurrency = generateIso4217CurrencyCode();
-  sfdr.sustainabilityReport = faker.datatype.string();
-  sfdr.groupLevelSustainabilityReport = randomYesNoNaUndefined();
-  sfdr.sustainabilityReportDate = randomFutureDate();
-  sfdr.sustainabilityReportCurrency = generateIso4217CurrencyCode();
-  sfdr.integratedReport = faker.datatype.string();
-  sfdr.groupLevelIntegratedReport = randomYesNoNaUndefined();
-  sfdr.integratedReportDate = randomFutureDate();
-  sfdr.integratedReportCurrency = generateIso4217CurrencyCode();
-  sfdr.esefReport = faker.datatype.string();
-  sfdr.groupLevelEsefReport = randomYesNoNaUndefined();
-  sfdr.esefReportDate = randomFutureDate();
-  sfdr.esefReportCurrency = generateIso4217CurrencyCode();
-  sfdr.scopeOfEntities = randomYesNoNaUndefined();
-  sfdr.scope1 = generateNumericOrEmptyDatapoint(reports);
-  sfdr.scope2 = generateNumericOrEmptyDatapoint(reports);
-  sfdr.scope3 = generateNumericOrEmptyDatapoint(reports);
-  sfdr.enterpriseValue = generateNumericOrEmptyDatapoint(reports, randomEuroValue());
-  sfdr.totalRevenue = generateNumericOrEmptyDatapoint(reports, randomEuroValue());
-  sfdr.fossilFuelSectorExposure = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.renewableEnergyProduction = generateNumericOrEmptyDatapoint(reports);
-  sfdr.renewableEnergyConsumption = generateNumericOrEmptyDatapoint(reports);
-  sfdr.nonRenewableEnergyConsumption = generateNumericOrEmptyDatapoint(reports);
-  sfdr.nonRenewableEnergyProduction = generateNumericOrEmptyDatapoint(reports);
-  sfdr.highImpactClimateSectorEnergyConsumptionNaceA = generateNumericOrEmptyDatapoint(reports);
-  sfdr.highImpactClimateSectorEnergyConsumptionNaceB = generateNumericOrEmptyDatapoint(reports);
-  sfdr.highImpactClimateSectorEnergyConsumptionNaceC = generateNumericOrEmptyDatapoint(reports);
-  sfdr.highImpactClimateSectorEnergyConsumptionNaceD = generateNumericOrEmptyDatapoint(reports);
-  sfdr.highImpactClimateSectorEnergyConsumptionNaceE = generateNumericOrEmptyDatapoint(reports);
-  sfdr.highImpactClimateSectorEnergyConsumptionNaceF = generateNumericOrEmptyDatapoint(reports);
-  sfdr.highImpactClimateSectorEnergyConsumptionNaceG = generateNumericOrEmptyDatapoint(reports);
-  sfdr.highImpactClimateSectorEnergyConsumptionNaceH = generateNumericOrEmptyDatapoint(reports);
-  sfdr.highImpactClimateSectorEnergyConsumptionNaceL = generateNumericOrEmptyDatapoint(reports);
-  sfdr.totalHighImpactClimateSectorEnergyConsumption = generateNumericOrEmptyDatapoint(reports);
-  sfdr.primaryForestAndWoodedLandOfNativeSpeciesExposure = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.protectedAreasExposure = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.rareOrEndangeredEcosystemsExposure = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.emissionsToWater = generateNumericOrEmptyDatapoint(reports);
-  sfdr.hazardousWaste = generateNumericOrEmptyDatapoint(reports);
-  sfdr.humanRightsPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.humanRightsLegalProceedings = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.iloCoreLabourStandards = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.environmentalPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.corruptionLegalProceedings = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.transparencyDisclosurePolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.humanRightsDueDiligencePolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.childForcedDiscriminationPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.iso14001 = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.briberyCorruptionPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.fairBusinessMarketingAdvertisingPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.technologiesExpertiseTransferPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.fairCompetitionPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.violationOfTaxRulesAndRegulation = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.unGlobalCompactPrinciplesCompliancePolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.oecdGuidelinesForMultinationalEnterprisesPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.averageGrossHourlyEarningsMaleEmployees = generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100));
-  sfdr.averageGrossHourlyEarningsFemaleEmployees = generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100));
-  sfdr.femaleBoardMembers = generateNumericOrEmptyDatapoint(reports);
-  sfdr.maleBoardMembers = generateNumericOrEmptyDatapoint(reports);
-  sfdr.controversialWeaponsExposure = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.inorganicPollutants = generateNumericOrEmptyDatapoint(reports);
-  sfdr.airPollutants = generateNumericOrEmptyDatapoint(reports);
-  sfdr.ozoneDepletionSubstances = generateNumericOrEmptyDatapoint(reports);
-  sfdr.carbonReductionInitiatives = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.nonRenewableEnergyConsumptionFossilFuels = generateNumericOrEmptyDatapoint(reports);
-  sfdr.nonRenewableEnergyConsumptionCrudeOil = generateNumericOrEmptyDatapoint(reports);
-  sfdr.nonRenewableEnergyConsumptionNaturalGas = generateNumericOrEmptyDatapoint(reports);
-  sfdr.nonRenewableEnergyConsumptionLignite = generateNumericOrEmptyDatapoint(reports);
-  sfdr.nonRenewableEnergyConsumptionCoal = generateNumericOrEmptyDatapoint(reports);
-  sfdr.nonRenewableEnergyConsumptionNuclearEnergy = generateNumericOrEmptyDatapoint(reports);
-  sfdr.nonRenewableEnergyConsumptionOther = generateNumericOrEmptyDatapoint(reports);
-  sfdr.waterConsumption = generateNumericOrEmptyDatapoint(reports);
-  sfdr.waterReused = generateNumericOrEmptyDatapoint(reports);
-  sfdr.waterManagementPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.waterStressAreaExposure = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.manufactureOfAgrochemicalPesticidesProducts = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.landDegradationDesertificationSoilSealingExposure = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.sustainableAgriculturePolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.sustainableOceansAndSeasPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.wasteNonRecycled = generateNumericOrEmptyDatapoint(reports);
-  sfdr.threatenedSpeciesExposure = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.biodiversityProtectionPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.deforestationPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.securitiesNotCertifiedAsGreen = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.workplaceAccidentPreventionPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.rateOfAccidents = generateNumericOrEmptyDatapoint(reports);
-  sfdr.workdaysLost = generateNumericOrEmptyDatapoint(reports, randomNumber(10000));
-  sfdr.supplierCodeOfConduct = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.grievanceHandlingMechanism = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.whistleblowerProtectionPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.reportedIncidentsOfDiscrimination = generateNumericOrEmptyDatapoint(reports);
-  sfdr.sanctionsIncidentsOfDiscrimination = generateNumericOrEmptyDatapoint(reports);
-  sfdr.ceoToEmployeePayGap = generateNumericOrEmptyDatapoint(reports);
-  sfdr.humanRightsDueDiligence = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.traffickingInHumanBeingsPolicy = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.reportedChildLabourIncidents = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.reportedForcedOrCompulsoryLabourIncidents = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.reportedIncidentsOfHumanRights = generateNumericOrEmptyDatapoint(reports);
-  sfdr.reportedCasesOfBriberyCorruption = generateYesNoOrEmptyDatapoint(reports);
-  sfdr.reportedConvictionsOfBriberyCorruption = generateNumericOrEmptyDatapoint(reports);
-  sfdr.reportedFinesOfBriberyCorruption = generateNumericOrEmptyDatapoint(reports, randomEuroValue());
-  sfdr.referencedReports = reports;
-  return sfdr;
+  return {
+    social: {
+      general: {
+        fiscalYear: randomFiscalYearDeviationOrUndefined(),
+        fiscalYearEnd: randomFutureDate(),
+        groupLevelAnnualReport: randomYesNoNaUndefined(),
+        annualReport: faker.datatype.string(),
+        annualReportDate: randomFutureDate(),
+        annualReportCurrency: generateIso4217CurrencyCode(),
+        sustainabilityReport: faker.datatype.string(),
+        groupLevelSustainabilityReport: randomYesNoNaUndefined(),
+        sustainabilityReportDate: randomFutureDate(),
+        sustainabilityReportCurrency: generateIso4217CurrencyCode(),
+        integratedReport: faker.datatype.string(),
+        groupLevelIntegratedReport: randomYesNoNaUndefined(),
+        integratedReportDate: randomFutureDate(),
+        integratedReportCurrency: generateIso4217CurrencyCode(),
+        esefReport: faker.datatype.string(),
+        groupLevelEsefReport: randomYesNoNaUndefined(),
+        esefReportDate: randomFutureDate(),
+        esefReportCurrency: generateIso4217CurrencyCode(),
+        scopeOfEntities: randomYesNoNaUndefined(),
+      },
+      socialAndEmployeeMatters: {
+        humanRightsLegalProceedings: generateYesNoOrEmptyDatapoint(reports),
+        iloCoreLabourStandards: generateYesNoOrEmptyDatapoint(reports),
+        environmentalPolicy: generateYesNoOrEmptyDatapoint(reports),
+        corruptionLegalProceedings: generateYesNoOrEmptyDatapoint(reports),
+        transparencyDisclosurePolicy: generateYesNoOrEmptyDatapoint(reports),
+        humanRightsDueDiligencePolicy: generateYesNoOrEmptyDatapoint(reports),
+        childForcedDiscriminationPolicy: generateYesNoOrEmptyDatapoint(reports),
+        iso14001: generateYesNoOrEmptyDatapoint(reports),
+        briberyCorruptionPolicy: generateYesNoOrEmptyDatapoint(reports),
+        fairBusinessMarketingAdvertisingPolicy: generateYesNoOrEmptyDatapoint(reports),
+        technologiesExpertiseTransferPolicy: generateYesNoOrEmptyDatapoint(reports),
+        fairCompetitionPolicy: generateYesNoOrEmptyDatapoint(reports),
+        violationOfTaxRulesAndRegulation: generateYesNoOrEmptyDatapoint(reports),
+        unGlobalCompactPrinciplesCompliancePolicy: generateYesNoOrEmptyDatapoint(reports),
+        oecdGuidelinesForMultinationalEnterprisesPolicy: generateYesNoOrEmptyDatapoint(reports),
+        averageGrossHourlyEarningsMaleEmployees: generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
+        averageGrossHourlyEarningsFemaleEmployees: generateNumericOrEmptyDatapoint(reports, randomEuroValue(0, 100)),
+        femaleBoardMembers: generateNumericOrEmptyDatapoint(reports),
+        maleBoardMembers: generateNumericOrEmptyDatapoint(reports),
+        controversialWeaponsExposure: generateYesNoOrEmptyDatapoint(reports),
+        workplaceAccidentPreventionPolicy: generateYesNoOrEmptyDatapoint(reports),
+        rateOfAccidents: generateNumericOrEmptyDatapoint(reports),
+        workdaysLost: generateNumericOrEmptyDatapoint(reports, randomNumber(10000)),
+        supplierCodeOfConduct: generateYesNoOrEmptyDatapoint(reports),
+        grievanceHandlingMechanism: generateYesNoOrEmptyDatapoint(reports),
+        whistleblowerProtectionPolicy: generateYesNoOrEmptyDatapoint(reports),
+        reportedIncidentsOfDiscrimination: generateNumericOrEmptyDatapoint(reports),
+        sanctionsIncidentsOfDiscrimination: generateNumericOrEmptyDatapoint(reports),
+        ceoToEmployeePayGap: generateNumericOrEmptyDatapoint(reports),
+      },
+      humanRights: {
+        humanRightsPolicy: generateYesNoOrEmptyDatapoint(reports),
+        humanRightsDueDiligence: generateYesNoOrEmptyDatapoint(reports),
+        traffickingInHumanBeingsPolicy: generateYesNoOrEmptyDatapoint(reports),
+        reportedChildLabourIncidents: generateYesNoOrEmptyDatapoint(reports),
+        reportedForcedOrCompulsoryLabourIncidents: generateYesNoOrEmptyDatapoint(reports),
+        reportedIncidentsOfHumanRights: generateNumericOrEmptyDatapoint(reports),
+      },
+      greenSecurities: {
+        securitiesNotCertifiedAsGreen: generateYesNoOrEmptyDatapoint(reports),
+      },
+      anticorruptionAndAntibribery: {
+        reportedCasesOfBriberyCorruption: generateYesNoOrEmptyDatapoint(reports),
+        reportedConvictionsOfBriberyCorruption: generateNumericOrEmptyDatapoint(reports),
+        reportedFinesOfBriberyCorruption: generateNumericOrEmptyDatapoint(reports, randomEuroValue()),
+      },
+    },
+    environmental: {
+      greenhouseGasEmissions: {
+        scope1: generateNumericOrEmptyDatapoint(reports),
+        scope2: generateNumericOrEmptyDatapoint(reports),
+        scope3: generateNumericOrEmptyDatapoint(reports),
+        enterpriseValue: generateNumericOrEmptyDatapoint(reports, randomEuroValue()),
+        totalRevenue: generateNumericOrEmptyDatapoint(reports, randomEuroValue()),
+        fossilFuelSectorExposure: generateYesNoOrEmptyDatapoint(reports),
+      },
+      energyPerformance: {
+        renewableEnergyProduction: generateNumericOrEmptyDatapoint(reports),
+        renewableEnergyConsumption: generateNumericOrEmptyDatapoint(reports),
+        nonRenewableEnergyConsumption: generateNumericOrEmptyDatapoint(reports),
+        nonRenewableEnergyProduction: generateNumericOrEmptyDatapoint(reports),
+        highImpactClimateSectorEnergyConsumptionNaceA: generateNumericOrEmptyDatapoint(reports),
+        highImpactClimateSectorEnergyConsumptionNaceB: generateNumericOrEmptyDatapoint(reports),
+        highImpactClimateSectorEnergyConsumptionNaceC: generateNumericOrEmptyDatapoint(reports),
+        highImpactClimateSectorEnergyConsumptionNaceD: generateNumericOrEmptyDatapoint(reports),
+        highImpactClimateSectorEnergyConsumptionNaceE: generateNumericOrEmptyDatapoint(reports),
+        highImpactClimateSectorEnergyConsumptionNaceF: generateNumericOrEmptyDatapoint(reports),
+        highImpactClimateSectorEnergyConsumptionNaceG: generateNumericOrEmptyDatapoint(reports),
+        highImpactClimateSectorEnergyConsumptionNaceH: generateNumericOrEmptyDatapoint(reports),
+        highImpactClimateSectorEnergyConsumptionNaceL: generateNumericOrEmptyDatapoint(reports),
+        totalHighImpactClimateSectorEnergyConsumption: generateNumericOrEmptyDatapoint(reports),
+        nonRenewableEnergyConsumptionFossilFuels: generateNumericOrEmptyDatapoint(reports),
+        nonRenewableEnergyConsumptionCrudeOil: generateNumericOrEmptyDatapoint(reports),
+        nonRenewableEnergyConsumptionNaturalGas: generateNumericOrEmptyDatapoint(reports),
+        nonRenewableEnergyConsumptionLignite: generateNumericOrEmptyDatapoint(reports),
+        nonRenewableEnergyConsumptionCoal: generateNumericOrEmptyDatapoint(reports),
+        nonRenewableEnergyConsumptionNuclearEnergy: generateNumericOrEmptyDatapoint(reports),
+        nonRenewableEnergyConsumptionOther: generateNumericOrEmptyDatapoint(reports),
+      },
+      biodiversity: {
+        primaryForestAndWoodedLandOfNativeSpeciesExposure: generateYesNoOrEmptyDatapoint(reports),
+        protectedAreasExposure: generateYesNoOrEmptyDatapoint(reports),
+        rareOrEndangeredEcosystemsExposure: generateYesNoOrEmptyDatapoint(reports),
+      },
+      water: {
+        emissionsToWater: generateNumericOrEmptyDatapoint(reports),
+        waterConsumption: generateNumericOrEmptyDatapoint(reports),
+        waterReused: generateNumericOrEmptyDatapoint(reports),
+        waterManagementPolicy: generateYesNoOrEmptyDatapoint(reports),
+        waterStressAreaExposure: generateYesNoOrEmptyDatapoint(reports),
+      },
+      waste: {
+        hazardousWaste: generateNumericOrEmptyDatapoint(reports),
+        manufactureOfAgrochemicalPesticidesProducts: generateYesNoOrEmptyDatapoint(reports),
+        landDegradationDesertificationSoilSealingExposure: generateYesNoOrEmptyDatapoint(reports),
+        sustainableAgriculturePolicy: generateYesNoOrEmptyDatapoint(reports),
+        sustainableOceansAndSeasPolicy: generateYesNoOrEmptyDatapoint(reports),
+        wasteNonRecycled: generateNumericOrEmptyDatapoint(reports),
+        threatenedSpeciesExposure: generateYesNoOrEmptyDatapoint(reports),
+        biodiversityProtectionPolicy: generateYesNoOrEmptyDatapoint(reports),
+        deforestationPolicy: generateYesNoOrEmptyDatapoint(reports),
+      },
+      emissions: {
+        inorganicPollutants: generateNumericOrEmptyDatapoint(reports),
+        airPollutants: generateNumericOrEmptyDatapoint(reports),
+        ozoneDepletionSubstances: generateNumericOrEmptyDatapoint(reports),
+        carbonReductionInitiatives: generateYesNoOrEmptyDatapoint(reports),
+      },
+    },
+    referencedReports: reports,
+  };
 }

@@ -81,6 +81,7 @@ import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "CreateApiKeyCard",
@@ -95,7 +96,7 @@ export default defineComponent({
     expiryTimeDropdown: "",
     isExpiryDateValid: true,
     minDate: new Date(new Date().getTime() + 86400000),
-    customDateInMilliseconds: null,
+    customDateInMilliseconds: null as null | number,
     days: [
       { label: "7 days", value: 7 },
       { label: "30 days", value: 30 },
@@ -106,19 +107,29 @@ export default defineComponent({
     ],
   }),
   methods: {
+    /**
+     * Called when the user selects a new expiry date from the dropdown.
+     * Updates the local expiry date based on the selected value or the value of the date time selector if "custom" was selected
+     *
+     * @param event the selection event
+     */
     setExpiryTimeDays(event: HTMLSelectElement) {
       if (event.value === "noExpiry") {
         this.expiryTimeDays = null;
       } else if (event.value === "custom") {
         this.expiryTimeDays = this.customDateInMilliseconds
-          ? calculateDaysFromNow(this.customDateInMilliseconds as unknown as number)
+          ? calculateDaysFromNow(this.customDateInMilliseconds)
           : null;
       } else {
-        this.expiryTimeDays = event.value as unknown as number;
+        this.expiryTimeDays = parseInt(event.value);
       }
       this.isExpiryDateValid = true;
     },
 
+    /**
+     * Called when the user clicks on generate api key. Validates that the expiry time is set and emits
+     * the "generateApiKey" event to trigger api-key generation
+     */
     checkDateAndEmitGenerateApiKey() {
       if (this.expiryTimeDays) {
         this.$emit("generateApiKey", this.expiryTimeDays);
@@ -131,12 +142,12 @@ export default defineComponent({
   },
   computed: {
     expiryDateFormated(): string {
-      return formatExpiryDate(this.expiryTimeDays as unknown as number);
+      return formatExpiryDate(assertDefined(this.expiryTimeDays));
     },
   },
   watch: {
-    customDateInMilliseconds: function () {
-      this.expiryTimeDays = calculateDaysFromNow(this.customDateInMilliseconds as unknown as number);
+    customDateInMilliseconds: function (newValue: number) {
+      this.expiryTimeDays = calculateDaysFromNow(newValue);
       this.isExpiryDateValid = true;
     },
   },

@@ -1,6 +1,10 @@
 <template>
-  <ViewFrameworkBase :companyID="companyID" dataType="eutaxonomy-financials" @updateDataId="receiveDataId">
-    <template v-if="frameworkDataId">
+  <ViewFrameworkBase
+    :companyID="companyID"
+    dataType="eutaxonomy-financials"
+    @updateDataId="handleReceivedListOfDataIds"
+  >
+    <template v-if="listOfReceivedEuTaxoFinancialsDataIds.length > 0">
       <div class="grid">
         <div class="col-12 text-left">
           <h2 class="mb-0">EU Taxonomy Data</h2>
@@ -12,15 +16,15 @@
       </div>
       <div class="grid">
         <div class="col-7">
-          <EuTaxonomyPanelFinancials :dataID="frameworkDataId" />
+          <EuTaxonomyPanelFinancials :dataID="listOfReceivedEuTaxoFinancialsDataIds[0]" />
         </div>
       </div>
     </template>
-    <div v-if="frameworkDataId === null" class="col-12 text-left">
-      <h2>No EU-Taxonomy data for financial companies present</h2>
+    <div v-if="loading" class="col-12 text-left">
+      <h2>Checking if EU-taxonomy data for financial companies available...</h2>
     </div>
-    <div v-if="frameworkDataId === undefined" class="col-12 text-left">
-      <h2>Loading...</h2>
+    <div v-if="!loading && listOfReceivedEuTaxoFinancialsDataIds.length === 0" class="col-12 text-left">
+      <h2>No EU-Taxonomy data for financial companies present</h2>
     </div>
   </ViewFrameworkBase>
   <DatalandFooter />
@@ -42,12 +46,19 @@ export default defineComponent({
   },
   data() {
     return {
-      frameworkDataId: undefined,
+      loading: true,
+      listOfReceivedEuTaxoFinancialsDataIds: [] as string[],
     };
   },
   methods: {
-    receiveDataId(id: undefined) {
-      this.frameworkDataId = id;
+    /**
+     * Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
+     *
+     * @param receivedEuTaxoFinancialsDataIds Received EU Taxonomy for financial companies data IDs
+     */
+    handleReceivedListOfDataIds(receivedEuTaxoFinancialsDataIds: []) {
+      this.listOfReceivedEuTaxoFinancialsDataIds = receivedEuTaxoFinancialsDataIds;
+      this.loading = false;
     },
   },
 });

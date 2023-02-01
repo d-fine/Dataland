@@ -41,4 +41,9 @@ class LksgDataController(
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData)
     }
+
+    @Operation(operationId = "getAllCompanyLksgData")
+    override fun getAllCompanyData(companyId: String): ResponseEntity<List<LksgData>> {
+        return super.getAllCompanyData(companyId)
+    }
 }

@@ -6,8 +6,10 @@ import { humanizeString } from "@/utils/StringHumanizer";
 /**
  * Contains getter methods to provide pre-defined options to standardize multiple Vue-components that should behave in
  * a similar way
+ *
+ * @param componentName the name of the vue component to generate standard options for
+ * @returns a set of pre-defined options for the defineCopmonent method
  */
-
 export function getComponentOptionsForDatalandInfoCard(componentName: string): ComponentOptionsWithObjectProps {
   return {
     name: componentName,

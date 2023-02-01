@@ -91,6 +91,10 @@ export default defineComponent({
     void this.queryCompany();
   },
   methods: {
+    /**
+     * Uses the dataland API to retrieve the companyId of the first teaser company and the dataId
+     * of the eutaxonomy-non-financials framework of that company.
+     */
     async queryCompany() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(

@@ -133,6 +133,10 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Creates a new EuTaxonomy-Non-Financials framework entry for the current company
+     * with the data entered in the form by using the Dataland API
+     */
     async postEuTaxonomyDataForNonFinancials() {
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;

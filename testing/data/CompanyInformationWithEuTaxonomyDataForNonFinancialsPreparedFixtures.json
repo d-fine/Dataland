@@ -3,88 +3,102 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Esser GmbH & Co. KG",
-				"Neubert UG",
-				"Hohenberger-Caspers"
+				"Forkel-Dauer",
+				"Heinemann UG",
+				"Hoffman-Sonnabend",
+				"Roggatz Gruppe"
 			],
-			"companyLegalForm": "vortals",
-			"headquarters": "Saphiradorf",
-			"headquartersPostalCode": "97624",
-			"sector": "eyeballs",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"headquarters": "West Miloburg",
+			"headquartersPostalCode": "11551",
+			"sector": "e-markets",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "27kfwc3ri"
+					"identifierValue": "3mpdr0zyh"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "jf652t7pzsgo"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "02wsrp1h7txt9lr6ucvc"
+					"identifierValue": "iz26mrooyqt2"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "11aum7stea"
+					"identifierValue": "hm95at5vct"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "j85s1iv"
+					"identifierValue": "h1tqtxw"
 				}
 			],
-			"countryCode": "IS",
+			"countryCode": "KN",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"AnnualReport": {
-					"reference": "https://xn--mitreiend-lnge-5fb9f.info/feinsinnig-pilz.pdf",
-					"reportDate": "2022-05-15",
-					"currency": "LVL"
+					"reference": "http://gern-schiff.com/ma%C3%9Fgeschneidert-religion.pdf",
+					"reportDate": "2022-12-26",
+					"currency": "XAG"
+				},
+				"SustainabilityReport": {
+					"reference": "https://irre-hand.ch/entspannt-k%C3%A4se.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-11-23",
+					"currency": "GEL"
+				},
+				"IntegratedReport": {
+					"reference": "http://vielschichtig-dampfmaschine.info/luxuri%C3%B6s-telefon.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-03-14",
+					"currency": "KWD"
+				},
+				"ESEFReport": {
+					"reference": "https://xn--gnnerhaft-eisen-8sb.info/popul%C3%A4r-imperialismus.pdf",
+					"reportDate": "2022-08-01",
+					"currency": "MDL"
 				}
 			},
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-02-16",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Marquart, Thränhardt und Brehmer",
-				"dataSource": {
-					"page": 987,
-					"report": "AnnualReport",
-					"tagName": "infrastructures"
-				}
+				"assurance": "LimitedAssurance"
 			},
-			"scopeOfEntities": "NA",
 			"reportingObligation": "Yes",
-			"numberOfEmployees": 2043,
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.4392,
+					"value": 0.0965,
 					"dataSource": {
-						"page": 523,
-						"report": "AnnualReport",
-						"tagName": "portals"
+						"page": 1032,
+						"report": "IntegratedReport",
+						"tagName": "methodologies"
 					},
-					"quality": "Audited",
-					"comment": "back up primary pixel"
+					"quality": "Incomplete",
+					"comment": "copy multi-byte monitor"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.8863,
-					"quality": "Estimated"
+					"value": 0.5523,
+					"dataSource": {
+						"page": 279,
+						"report": "AnnualReport",
+						"tagName": "web services"
+					},
+					"quality": "Estimated",
+					"comment": "synthesize bluetooth hard drive"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.5916,
+					"value": 0.825,
 					"dataSource": {
-						"page": 231,
-						"report": "AnnualReport",
-						"tagName": "supply-chains"
+						"page": 1184,
+						"report": "ESEFReport",
+						"tagName": "content"
 					},
 					"quality": "Audited",
-					"comment": "override solid state protocol"
+					"comment": "reboot mobile transmitter"
 				}
 			}
 		}
@@ -93,92 +107,105 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Bielert, Soller und Goy",
-				"Gerhardt-Zümsande",
-				"Bak GmbH",
-				"Splinter-Karst"
+				"Roschinsky OHG",
+				"Somssich-Obergföll"
 			],
-			"headquarters": "Savoialand",
-			"headquartersPostalCode": "39006",
-			"sector": "metrics",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"headquarters": "Sandraland",
+			"headquartersPostalCode": "88314",
+			"sector": "action-items",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "oyblu9g4pry6e3g13dsn"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "mm9u4eqffx"
+					"identifierType": "Isin",
+					"identifierValue": "0q4i4ujbz1q0"
 				}
 			],
-			"countryCode": "BJ",
+			"countryCode": "BY",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"AnnualReport": {
-					"reference": "http://geschickt-durchfall.name/plausibel-erde.pdf",
-					"currency": "GIP"
+					"reference": "http://putzig-meer.com/sachkundig-hotel.pdf",
+					"currency": "CHF"
+				},
+				"SustainabilityReport": {
+					"reference": "https://kreativ-kopf.ch/tugendhaft-tier.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-11-27",
+					"currency": "XBA"
+				},
+				"IntegratedReport": {
+					"reference": "https://xn--zusammenhngend-molekl-e2b77c.net/arbeitsam-kind.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-08-21",
+					"currency": "ETB"
+				},
+				"ESEFReport": {
+					"reference": "http://erprobt-pop.ch/stilsicher-sonne.pdf",
+					"isGroupLevel": "NA",
+					"currency": "COP"
 				}
 			},
-			"fiscalYearEnd": "2022-11-01",
+			"fiscalYearEnd": "2022-11-04",
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
+			"numberOfEmployees": 26740,
 			"opex": {
 				"totalAmount": {
-					"value": 994712.45,
+					"value": 137424.17,
 					"dataSource": {
-						"page": 225,
-						"report": "AnnualReport",
-						"tagName": "architectures"
+						"page": 82,
+						"report": "SustainabilityReport",
+						"tagName": "functionalities"
 					},
 					"quality": "Reported",
-					"comment": "quantify virtual circuit"
+					"comment": "parse neural application"
 				},
 				"eligiblePercentage": {
-					"value": 0.6481,
-					"quality": "Estimated"
+					"value": 0.2723,
+					"dataSource": {
+						"page": 881,
+						"report": "IntegratedReport",
+						"tagName": "e-tailers"
+					},
+					"quality": "Reported",
+					"comment": "connect auxiliary port"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 122371.64,
+					"value": 410353.14,
 					"dataSource": {
-						"page": 1119,
-						"report": "AnnualReport",
-						"tagName": "ROI"
+						"page": 485,
+						"report": "IntegratedReport",
+						"tagName": "blockchains"
 					},
-					"quality": "Audited",
-					"comment": "generate cross-platform monitor"
+					"quality": "Incomplete",
+					"comment": "program online matrix"
 				},
 				"eligiblePercentage": {
-					"value": 0.8255,
+					"value": 0.4411,
 					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 233159.07,
+					"value": 855231.04,
 					"dataSource": {
-						"page": 985,
+						"page": 174,
 						"report": "AnnualReport",
 						"tagName": "systems"
 					},
 					"quality": "Reported",
-					"comment": "back up online alarm"
+					"comment": "generate multi-byte port"
 				},
 				"eligiblePercentage": {
-					"value": 0.3553,
-					"dataSource": {
-						"page": 372,
-						"report": "AnnualReport",
-						"tagName": "convergence"
-					},
-					"quality": "Audited",
-					"comment": "synthesize mobile program"
+					"value": 0.9889,
+					"quality": "Incomplete"
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-import { getCompanyAndDataIds } from "@e2e/utils/ApiUtils";
+import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
 import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
@@ -86,13 +86,19 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.intercept("**/api/companies*").as("searchCompany");
       cy.get("input[id=search_bar_top]").type("b");
       cy.get(".p-autocomplete-item").contains("View all results").click();
-      cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+      cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
         verifyTaxonomySearchResultTable();
         cy.url().should("include", "/companies?input=b");
       });
     }
   );
 
+  /**
+   * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
+   * format and the url includes the search term
+   *
+   * @param inputValue the text to enter into the search bar
+   */
   function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
     const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
     cy.get("input[id=search_bar_top]")
@@ -110,6 +116,11 @@ describe("As a user, I expect the search functionality on the /companies page to
     "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
     { scrollBehavior: false },
     () => {
+      /**
+       * Verifies that the tooltip of the Perm ID in the search table header contains the expected text
+       *
+       * @param permIdTextInt the text expected in the tooltip
+       */
       function checkPermIdToolTip(permIdTextInt: string): void {
         cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
         cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
@@ -117,6 +128,9 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.get(".p-tooltip").should("not.exist");
       }
 
+      /**
+       * Verifies that the view button redirects to the view framework data page
+       */
       function checkViewButtonWorks(): void {
         cy.get("table.p-datatable-table")
           .contains("td", "VIEW")
@@ -155,7 +169,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     const inputValue = "A company name";
 
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-      cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           cy.visitAndCheckAppMount(`/companies/${storedCompanies[0].companyId}/frameworks/eutaxonomy-non-financials`);
           cy.get("input[id=framework_data_search_bar_standard]")
@@ -171,13 +185,13 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Click on an autocomplete-suggestion and check if forwarded to company framework data view page", () => {
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-      cy.browserThen(getCompanyAndDataIds(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
+      cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
           const searchString = storedCompanies[0].companyInformation.companyName.substring(0, 4);
           cy.visitAndCheckAppMount("/companies");
           cy.intercept("**/api/companies*").as("searchCompany");
           cy.get("input[id=search_bar_top]").click({ force: true }).type(searchString);
-          cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             cy.get(".p-autocomplete-item")
               .eq(0)
               .click({ force: true })
@@ -198,11 +212,12 @@ describe("As a user, I expect the search functionality on the /companies page to
       const primevueHighlightedSuggestionClass = "p-focus";
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
       cy.visitAndCheckAppMount("/companies");
+      verifyTaxonomySearchResultTable();
       cy.intercept("**/api/companies*").as("searchCompany");
       cy.get("input[id=search_bar_top]")
         .click({ force: true })
         .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
-      cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+      cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
         cy.get("ul[class=p-autocomplete-items]");
         cy.get("input[id=search_bar_top]").type("{downArrow}");
         cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
@@ -218,7 +233,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           .url()
           .should("include", "/companies/")
           .url()
-          .should("include", "/frameworks/eutaxonomy");
+          .should("include", "/frameworks/");
       });
     }
   );
@@ -244,7 +259,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.visitAndCheckAppMount("/companies");
         cy.intercept("**/api/companies*").as("searchCompany");
         cy.get("input[id=search_bar_top]").click({ force: true }).type(highlightedSubString);
-        cy.wait("@searchCompany", { timeout: 2 * 1000 }).then(() => {
+        cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
           cy.get(".p-autocomplete-item")
             .eq(0)
             .get("span[class='font-semibold']")

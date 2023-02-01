@@ -1,0 +1,19 @@
+@mixin icon-override($icon) {
+  background: none !important;
+  font-family: 'Material Icons Round';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-indent: 0 !important;
+  text-align: center;
+
+  &:before {
+    content: $icon;
+  }
+}
