@@ -39,7 +39,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.intercept("**/api/metadata**").as(metaDataAlias);
         trigger();
         cy.wait(`@${metaDataAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") as number });
-        cy.wait(3000);
+        cy.wait(3000); // TODO rather wait for specific stuff than random timespans
       }
 
       /**
