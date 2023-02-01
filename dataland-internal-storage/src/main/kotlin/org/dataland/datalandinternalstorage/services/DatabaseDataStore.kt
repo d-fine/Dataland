@@ -45,6 +45,7 @@ class DatabaseDataStore(
         val dataId = cloudEventMessageHandler.bodyToString(message)
         println("Received DataId in DataBaseDataStore: $dataId")
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
+        println(correlationId)
         val data = retrieveDataViaApiCallToTemporaryStore(dataId)
         println("Received DataID $dataId")
         println("DataDataDataStoreStoreStore: $data")

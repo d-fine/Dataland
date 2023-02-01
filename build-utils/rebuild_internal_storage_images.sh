@@ -11,7 +11,7 @@ source ./*github_env.log
 set +o allexport
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_internal_storage_test \
-          ./dataland-internal-storage/DockerfileTest ./dataland-internal-storage/ \
+          ./dataland-internal-storage/DockerfileTest ./dataland-internal-storage/ ./dataland-backend/backendOpenApi.json \
           ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_internal_storage_production \

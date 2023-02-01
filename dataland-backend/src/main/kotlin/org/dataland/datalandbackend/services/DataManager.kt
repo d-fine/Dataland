@@ -81,8 +81,6 @@ class DataManager(
                 "Correlation ID: $correlationId"
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        val messageInput = "${System.getenv("PROXY_PRIMARY_URL")}/api/data/${storableDataSet.dataType}/$dataId"
-        print(messageInput)
         storeMetaDataInformation(dataId, storableDataSet.dataType, storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "New data - QA necessary", correlationId,"upload_queue")
         return dataId
@@ -137,7 +135,7 @@ class DataManager(
      * @param message Message retrieved from stored_queue
      */
     @RabbitListener(queues = ["stored_queue"])
-    @RabbitHandler
+    //@RabbitHandler
     fun loggingOfStoredDataSet(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()

@@ -17,11 +17,7 @@ class ConfigurationBackendControllerApi {
     @Bean
     fun getApiBackendClient(): NonPersistedDataControllerApi {
         return NonPersistedDataControllerApi(
-            basePath = if (isInternalStorageInsideDockerContainer()) {
-                "http://backend:8080/backend"
-            } else {
-                "http://localhost:8082/backend"
-            }
+                "http://localhost:8080/api"
         )
     }
 

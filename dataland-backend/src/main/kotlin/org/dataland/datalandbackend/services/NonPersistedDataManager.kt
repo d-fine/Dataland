@@ -33,11 +33,12 @@ import kotlin.collections.HashMap
 @ComponentScan(basePackages = ["org.dataland"])
 @Component("NonPersistedDataManager")
 class NonPersistedDataManager(
-    @Autowired var dataInformationHashMap : StorageHashMap
+    @Autowired var dataInformationHashMap : StorageHashMap,
+    @Autowired var objectMapper: ObjectMapper
 
 ) {
     //TODO fix type missmatch
     fun selectDataSetForInternalStorage(dataId: String): String {
-        return dataInformationHashMap.map[dataId]!!
+        return objectMapper.writeValueAsString(dataInformationHashMap.map[dataId]!!)
     }
 }
