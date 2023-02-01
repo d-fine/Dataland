@@ -3015,9 +3015,18 @@
             "type": "string"
           },
           "isInHouseProductionOrIsContractProcessing": {
-            "$ref": "#/components/schemas/YesNo"
+            "type": "string"
           },
-          "address": {
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "streetAndHouseNumber": {
+            "type": "string"
+          },
+          "postalCode": {
             "type": "string"
           },
           "listOfGoodsOrServices": {

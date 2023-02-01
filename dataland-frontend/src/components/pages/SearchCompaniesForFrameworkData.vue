@@ -98,7 +98,6 @@ import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/F
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { defineComponent, ref } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
@@ -122,7 +121,6 @@ export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
   components: {
     FrameworkDataSearchFilters,
-    MarginWrapper,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
@@ -211,8 +209,11 @@ export default defineComponent({
     },
   },
   methods: {
-    redirectToChooseCompanyPage() {
-      this.$router.push("/companies/choose");
+    /**
+     * Executes router push to the choose company page
+     */
+    async redirectToChooseCompanyPage() {
+      await this.$router.push("/companies/choose");
     },
 
     /**

@@ -200,9 +200,12 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        selectCompanyViaAutocompleteOnCompaniesPage("eutaxonomy-financials", lksgAndFinancialCompanyName);
+        selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.EutaxonomyFinancials, lksgAndFinancialCompanyName);
         validateFinancialsPage();
-        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult("eutaxonomy-financials", lksgAndFinancialCompanyName);
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
+          DataTypeEnum.EutaxonomyFinancials,
+          lksgAndFinancialCompanyName
+        );
         validateFinancialsPage();
         validateDropdown(financialsDropdownItem);
         selectFrameworkInDropdown(lksgDropdownItem);
@@ -211,16 +214,16 @@ describe("The shared header of the framework pages should act as expected", { sc
         selectFrameworkInDropdown(financialsDropdownItem);
         validateFinancialsPage();
 
-        selectCompanyViaAutocompleteOnCompaniesPage("lksg", lksgAndFinancialCompanyName);
+        selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
         validateLksgPage();
-        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult("lksg", lksgAndFinancialCompanyName);
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
         validateLksgPage();
         validateDropdown(lksgDropdownItem);
       });
 
       it("Check that from a framework page you can search a company without this framework", () => {
         cy.ensureLoggedIn();
-        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult("lksg", lksgAndFinancialCompanyName);
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
         validateLksgPage();
         searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(
           nonFinancialCompanyName,

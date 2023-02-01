@@ -70,15 +70,31 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * The input string is stored in the variable latestValidSearchString if it is a string and not empty
+     *
+     * @param currentSearchString input to be checked (can be of type string or object)
+     */
     saveCurrentSearchStringIfValid(currentSearchString: string | object) {
       if (currentSearchString && typeof currentSearchString === "string") {
         this.latestValidSearchString = currentSearchString;
       }
     },
+    /**
+     * Executes a router push to upload overview page of the given company
+     *
+     * @param event object containing the stored company
+     * @param event.value the companyId to be pushed to
+     */
     pushToChooseFrameworkForDataUploadPageForItem(event: { value: StoredCompany }) {
       void this.$router.push(`/companies/${event.value.companyId}/frameworks/upload`);
     },
-
+    /**
+     * Queries the getCompanies endpoint and writes the response to the variable autoCompleteArray
+     *
+     * @param companyName object containing the search query for the getCompanies endpoint
+     * @param companyName.query the query for the getCompany endpoint
+     */
     async searchCompanyName(companyName: { query: string }) {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
@@ -88,7 +104,6 @@ export default defineComponent({
         this.autocompleteArray = response.data;
       } catch (error) {
         console.error(error);
-      } finally {
       }
     },
   },

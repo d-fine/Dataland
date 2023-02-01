@@ -11,9 +11,15 @@ data class ProductionSite(
     val name: String? = null,
 
     @field:JsonProperty()
-    val isInHouseProductionOrIsContractProcessing: YesNo? = null,
+    val isInHouseProductionOrIsContractProcessing: String? = null,
 
-    val address: String? = null,
+    val country: String? = null,
+
+    val city: String? = null,
+
+    val streetAndHouseNumber: String? = null,
+
+    val postalCode: String? = null,
 
     val listOfGoodsOrServices: List<String>? = null
 )

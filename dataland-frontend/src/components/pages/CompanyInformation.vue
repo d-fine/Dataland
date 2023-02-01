@@ -1,10 +1,10 @@
 <template>
   <TheContent>
-    <div v-if="waitingForData" class="inline-loading meta-data-height text-center">
+    <div v-if="waitingForData" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading company information...</p>
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
-    <div v-else-if="companyInformation && !waitingForData" class="meta-data-height grid align-items-end text-left">
+    <div v-else-if="companyInformation && !waitingForData" class="grid align-items-end text-left">
       <div class="col-12">
         <h1 class="mb-0">{{ companyInformation.companyName }}</h1>
       </div>
@@ -92,12 +92,5 @@ export default defineComponent({
 <style scoped>
 .inline-loading {
   width: 450px;
-}
-.meta-data-height {
-  height: 110px;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0;
 }
 </style>

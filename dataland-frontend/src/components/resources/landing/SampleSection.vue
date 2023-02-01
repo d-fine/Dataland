@@ -36,7 +36,9 @@
 <script lang="ts">
 import PrimeButton from "primevue/button";
 import { DataTypeEnum } from "@clients/backend";
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "SampleSection",
   components: { PrimeButton },
   data() {
@@ -44,5 +46,5 @@ export default {
       DataTypeEnum,
     };
   },
-};
+});
 </script>

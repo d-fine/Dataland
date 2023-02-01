@@ -347,7 +347,10 @@ export const lksgKpiInfoMappings = {
 export const listOfProductionSitesConvertedNames = {
   name: "Name",
   isInHouseProductionOrIsContractProcessing: "Is In-house Production Or Is Contract Processing",
-  address: "Address",
+  country: "Country",
+  city: "City",
+  streetAndHouseNumber: "Street and house number",
+  postalCode: "Postal Code",
   listOfGoodsOrServices: "List Of Goods Or Services",
 };
 

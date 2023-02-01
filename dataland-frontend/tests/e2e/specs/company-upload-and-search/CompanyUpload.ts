@@ -22,6 +22,7 @@ describeIf(
       () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         const companyName = "Test company XX";
+        cy.visitAndCheckAppMount("/companies/upload");
         uploadCompanyViaFormAndGetId(companyName).then((companyId) => {
           cy.visitAndCheckAppMount(`/companies/${companyId}`);
           cy.get("body").should("contain", companyName);

@@ -67,6 +67,10 @@ export default defineComponent({
       this.chooseDataIdToDisplayBasedOnQueryParam();
       this.waitingForDataIdsAndChoosingDataIdToDisplay = false;
     },
+    /**
+     * ToDo this is a code duplicate and exists also in ViewEuTaxonomyNonFinancials.vue
+     * Displays either the data set using the ID from the query param or if that is not available the first data set from the list of received data sets.
+     */
     chooseDataIdToDisplayBasedOnQueryParam() {
       const singleQueryDataId = this.route.query.dataId as string;
       if (singleQueryDataId) {

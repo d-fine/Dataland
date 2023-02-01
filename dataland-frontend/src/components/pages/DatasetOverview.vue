@@ -47,7 +47,7 @@
             :is-properly-implemented="isProperlyImplemented"
             :class="datasetTableInfos.length > 0 ? '' : 'hidden'"
           />
-          <div v-if="waitingForData" class="inline-loading meta-data-height text-center">
+          <div v-if="waitingForData" class="inline-loading text-center">
             <p class="font-medium text-xl">Loading datasets...</p>
             <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
           </div>
@@ -164,6 +164,7 @@ export default defineComponent({
      * Counts datasets with a specific status
      *
      * @param status the status for which datasets shall be counted
+     * @returns the length of the data set table
      */
     countDatasetStatus(status: DatasetStatus): number {
       return this.datasetTableInfos.filter((info) => info.status.text === status.text).length;

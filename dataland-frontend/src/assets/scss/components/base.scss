@@ -122,6 +122,9 @@ body {
   color: $bg-text-primary !important;
   background-color: $main-color !important
 }
+.bg-white {
+  background-color: $white !important
+}
 // --- //
 .fs-xs { font-size: $fs-xs} // 12px
 .fs-sm{ font-size: $fs-sm}  // 14px

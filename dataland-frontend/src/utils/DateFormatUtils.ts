@@ -19,7 +19,12 @@ export function calculateDaysFromNow(endDateInMilliseconds: number): number {
   const daysFromNow = (endDateInMilliseconds - currentUtcDateInMilliseconds) / msPerDay;
   return Math.ceil(daysFromNow);
 }
-
+/**
+ * Transforms the given unix time in milliseconds to a date string
+ *
+ * @param unixTimeInMs the unix time in milliseconds to
+ * @returns a date string representing the given unix time
+ */
 export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
   return new Date(unixTimeInMs).toLocaleDateString("en-gb", dateFormatOptions);
 }

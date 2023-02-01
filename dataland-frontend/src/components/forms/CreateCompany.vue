@@ -1,5 +1,5 @@
 <template>
-  <Card>
+  <Card class="bg-white">
     <template #title>Create a Company </template>
     <template #content>
       <div class="uploadFormWrapper">

@@ -12,7 +12,8 @@ const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 const monthAndDayOfLksgPreparedFixtures = "-01-01";
 
 describeIf(
-  "As a user, I expect LkSG data that I upload for a company to be displayed correctly",
+  "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
+    "correctly in the frontend",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],
@@ -242,5 +243,7 @@ describeIf(
         });
       });
     });
+
+    // TODO LkSG upload form upload needs to be covered here.
   }
 );
