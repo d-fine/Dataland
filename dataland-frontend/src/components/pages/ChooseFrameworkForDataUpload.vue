@@ -135,6 +135,10 @@ export default defineComponent({
 
   watch: {},
   methods: {
+    /**
+     * Gets all data meta information of the company identified by the variable companyId and fills the lists for
+     * data meta information of the various frameworks
+     */
     async getMetaInfoAboutAllDataSetsForCurrentCompany() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(

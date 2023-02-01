@@ -95,7 +95,7 @@ export default defineComponent({
   props: {
     datasetTableInfos: {
       type: Array,
-      default: [],
+      default: [] as DatasetTableInfo[],
     },
     isProperlyImplemented: {
       type: Boolean,
