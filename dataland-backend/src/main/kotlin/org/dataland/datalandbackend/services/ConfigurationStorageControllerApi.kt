@@ -10,7 +10,7 @@ import java.io.File
  * environment
  */
 @Configuration
-class ConfigurationStorageControlloerApi {
+class ConfigurationStorageControllerApi {
     /**
      * The bean to configure the internal client StorageControllerApi
      */

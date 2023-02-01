@@ -3,6 +3,7 @@ package org.dataland.datalandinternalstorage.services
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataControllerApi
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.slf4j.LoggerFactory
@@ -31,25 +32,25 @@ import org.springframework.security.core.context.SecurityContextHolder
 class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
     val rabbitTemplate: RabbitTemplate
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val client = OkHttpClient()
     /**
      * Method to insert data into a database
      * @param message Message retrieved from storage_queue
      */
-    //@RabbitHandler
     @RabbitListener(queues = ["storage_queue"])
     fun insertDataSet(message : Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
+        println("Received DataId in DataBaseDataStore: $dataId")
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         val data = retrieveDataViaApiCallToTemporaryStore(dataId)
         println("Received DataID $dataId")
         println("DataDataDataStoreStoreStore: $data")
         //val data = dataInformationHashMap.map[dataId]
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
-        try {dataItemRepository.save(DataItem(dataId, data!!))
+        try {dataItemRepository.save(DataItem(dataId, data))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data successfully stored", correlationId ,"stored_queue")
         } catch (e: ServerException) {
             val internalMessage = "Error storing data." +
@@ -63,20 +64,8 @@ class DatabaseDataStore(
             )*/
         }
     }
-    private fun retrieveDataViaApiCallToTemporaryStore(dataId: String): String?{
-        val url = "https://${System.getenv("PROXY_PRIMARY_URL")}/api/internal/nonpersisted/$dataId"
-        println("Request URL!!!!!!!!!! $url")
-        val request = Request.Builder()
-            .url(url)
-            .build()
-        val response = client.newCall(request)
-            .execute()
-        val data = parseApiResponse(response)
-        return data
-    }
-    private fun parseApiResponse(response: Response): String{
-        val data = response.body?.string() ?:""
-        return data
+    private fun retrieveDataViaApiCallToTemporaryStore(dataId: String): String{
+        return nonPersistedDataClient.getCompanyAssociatedDataForInternalStorage(dataId)
     }
 
     /**

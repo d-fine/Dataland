@@ -3890,10 +3890,6 @@
           "targetBean": {
             "type": "object"
           },
-          "delay": {
-            "type": "integer",
-            "format": "int32"
-          },
           "replyToAddress": {
             "$ref": "#/components/schemas/Address"
           },
@@ -3905,6 +3901,10 @@
                 "type": "object"
               }
             }
+          },
+          "delay": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

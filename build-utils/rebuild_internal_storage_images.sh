@@ -3,6 +3,7 @@ set -euxo pipefail
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_internal_storage_base \
           ./dataland-internal-storage/DatalandInternalStorageBaseDockerfile ./dataland-internal-storage/ \
+          ./dataland-backend/backendOpenApi.json \
           ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
 
 set -o allexport
@@ -14,5 +15,5 @@ set +o allexport
           ./build.gradle.kts ./gradle.properties ./settings.gradle.kts
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_internal_storage_production \
-          ./dataland-internal-storage/Dockerfile ./dataland-internal-storage/ \
+          ./dataland-internal-storage/Dockerfile ./dataland-internal-storage/ ./dataland-backend/backendOpenApi.json \
           ./build.gradle.kts ./gradle.properties ./settings.gradle.kts

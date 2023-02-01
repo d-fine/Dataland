@@ -34,6 +34,8 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -67,3 +69,45 @@ jacoco {
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
+    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json")
+        .path
+    outputDir.set("$buildDir/clients/backend")
+    packageName.set(backendClientDestinationPackage)
+    modelPackage.set("$backendClientDestinationPackage.model")
+    apiPackage.set("$backendClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false
+        )
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true"
+        )
+    )
+}
+
+tasks.register("generateClients") {
+    dependsOn("generateBackendClient")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateClients")
+}
+
+sourceSets {
+    val main by getting
+    main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
+}
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
+    }
+}
+
