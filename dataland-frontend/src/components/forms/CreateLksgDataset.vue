@@ -728,7 +728,7 @@ export default defineComponent({
       if (newValue) {
         this.convertedDataDate = `${newValue.getFullYear()}-${("0" + (newValue.getMonth() + 1).toString()).slice(
           -2
-        )}-${-2}-${("0" + newValue.getDate().toString()).slice(-2)}`;
+        )}-${("0" + newValue.getDate().toString()).slice(-2)}`;
       } else {
         this.convertedDataDate = "";
       }
@@ -777,7 +777,6 @@ export default defineComponent({
      * @param node - single form field
      */
     checkCustomInputs(node: FormKitNode) {
-      console.log("lkSGDataModel", this.lkSGDataModel);
       const invalidElements: HTMLElement[] = [];
       node.walk((child: FormKitNode) => {
         // Check if this child has errors
