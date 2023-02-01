@@ -114,6 +114,7 @@ export default defineComponent({
      * Computes the path a row click should lead to depending on the selected dataset and its status
      *
      * @param datasetTableInfo relevant dataset information
+     * @returns the path depending on the status of the data set
      */
     getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
       if (this.isDatasetRejected(datasetTableInfo)) {
@@ -128,9 +129,10 @@ export default defineComponent({
       }
     },
     /**
-     * Checks if the status of th egiven DatasetTableInfo equals Rejected
+     * Checks if the status of th given DatasetTableInfo equals Rejected
      *
      * @param datasetTableEntry the DatasetTableEntry to check the status of
+     * @returns a boolean reflecting if the data set is rejected or not
      */
     isDatasetRejected(datasetTableEntry: DatasetTableInfo): boolean {
       return datasetTableEntry.status.text === DatasetStatus.Requested.text;
@@ -145,10 +147,10 @@ export default defineComponent({
       ) as DatasetTableInfo[];
     },
     /**
-     * Depending on the dataset status, this routes to the dataset view page or an upload page
+     * Depending on the dataset status, executes a router push to either the dataset view page or an upload page
      *
      * @param event an event that stores the DatasetTableInfo of the on clicked row
-     * @param event.data
+     * @param event.data the DatasetTableInfo to be pushed to
      */
     rerouteRowClick(event: { data: DatasetTableInfo }) {
       void this.$router.push(this.getTableRowLinkTarget(event.data));

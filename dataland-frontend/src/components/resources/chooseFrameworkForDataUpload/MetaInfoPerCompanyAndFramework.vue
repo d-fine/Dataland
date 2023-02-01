@@ -50,6 +50,7 @@ export default defineComponent({
   props: {
     title: {
       type: String,
+      required: true,
     },
     isFrontendViewPageExisting: {
       type: Boolean,
@@ -61,6 +62,7 @@ export default defineComponent({
     },
     frameworkUrlPath: {
       type: String,
+      required: true,
     },
     isWaitingForData: {
       type: Boolean,
@@ -68,9 +70,11 @@ export default defineComponent({
     },
     companyId: {
       type: String,
+      required: true,
     },
     listOfFrameworkData: {
       type: Array,
+      required: true,
     },
   },
 
@@ -88,32 +92,38 @@ export default defineComponent({
         return `${this.title} (only viewable via API)`;
       }
     },
-    dynamicButtonTitle() {
-      if (this.listOfFrameworkData) {
-        if (this.listOfFrameworkData.length === 0) {
-          return "Be the first to create this dataset";
-        } else {
-          return `Create another dataset for ${this.title}`;
-        }
+    dynamicButtonTitle(): string {
+      if (this.listOfFrameworkData.length === 0) {
+        return "Be the first to create this dataset";
+      } else {
+        return `Create another dataset for ${this.title}`;
       }
     },
   },
   methods: {
-    redirectToViewPageIfEnabledInFrontend(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
+    /**
+     * Executes a router push to the page of the given data set if the framework it belongs to is enabled in the frontend
+     *
+     * @param dataMetaInfoOfClickedDataSet the meta information of the data set in question
+     */
+    async redirectToViewPageIfEnabledInFrontend(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
       if (this.isFrontendViewPageExisting) {
-        const frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend = [DataTypeEnum.Lksg];
         let dataIdQueryParamToSet: string;
-        if (frameworksWhichCanDisplayMultipleDatasetsAtOnceInFrontend.includes(dataMetaInfoOfClickedDataSet.dataType)) {
+        if (dataMetaInfoOfClickedDataSet.dataType === DataTypeEnum.Lksg) {
           dataIdQueryParamToSet = "";
         } else {
           dataIdQueryParamToSet = `?dataId=${dataMetaInfoOfClickedDataSet.dataId}`;
         }
-        this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${dataIdQueryParamToSet}`);
+        await this.$router.push(
+          `/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${dataIdQueryParamToSet}`
+        );
       }
     },
-
-    redirectToUploadForm() {
-      this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}/upload`);
+    /**
+     * Executes a router push to the upload page of a given company and framework
+     */
+    async redirectToUploadForm() {
+      await this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}/upload`);
     },
   },
 });
