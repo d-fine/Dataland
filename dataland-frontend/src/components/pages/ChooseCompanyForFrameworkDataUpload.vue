@@ -61,7 +61,7 @@ import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/C
 import { TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS } from "@/utils/Constants";
 
 export default defineComponent({
-  name: "Choose Company",
+  name: "ChooseCompany",
   components: {
     AuthenticationWrapper,
     BackButton,
@@ -83,12 +83,19 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Scrolls to the create company form section of the page
+     */
     autoScrollToCreateACompanyForm() {
-      const option2Container = this.option2Container;
-      if (option2Container) {
-        option2Container.scrollIntoView({ behavior: "smooth" });
+      if (this.option2Container) {
+        this.option2Container.scrollIntoView({ behavior: "smooth" });
       }
     },
+    /**
+     * Executes a router push to the upload overview page of a given company
+     *
+     * @param companyId the ID of company in question
+     */
     handleCompanyCreated(companyId: string) {
       setTimeout(() => {
         void this.$router.push(`/companies/${companyId}/frameworks/upload`);

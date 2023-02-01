@@ -97,7 +97,7 @@ import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 
 export default defineComponent({
-  name: "Choose Framework",
+  name: "ChooseFramework",
   components: {
     CompanyInformation,
     AuthenticationWrapper,

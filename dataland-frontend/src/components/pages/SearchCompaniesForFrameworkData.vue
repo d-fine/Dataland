@@ -122,7 +122,6 @@ export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
   components: {
     FrameworkDataSearchFilters,
-    MarginWrapper,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
@@ -211,8 +210,11 @@ export default defineComponent({
     },
   },
   methods: {
-    redirectToChooseCompanyPage() {
-      this.$router.push("/companies/choose");
+    /**
+     * Executes router push to the choose company page
+     */
+    async redirectToChooseCompanyPage() {
+      await this.$router.push("/companies/choose");
     },
 
     /**

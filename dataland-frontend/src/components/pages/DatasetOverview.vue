@@ -164,6 +164,7 @@ export default defineComponent({
      * Counts datasets with a specific status
      *
      * @param status the status for which datasets shall be counted
+     * @returns the length of the data set table
      */
     countDatasetStatus(status: DatasetStatus): number {
       return this.datasetTableInfos.filter((info) => info.status.text === status.text).length;
