@@ -40,7 +40,6 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    var metaDataInformationHashMap : HashMap<String, StorableDataSet>,
     @Autowired var dataInformationHashMap : StorageHashMap
 
 ) {
@@ -87,13 +86,15 @@ class DataManager(
     }
 
     @RabbitListener(queues = ["qa_queue"])
-    private fun updateMetaDataAfterQA(dataId: String?) {
+    @RabbitHandler
+    fun updateMetaDataAfterQA(message: Message) {
+        val dataId = cloudEventMessageHandler.bodyToString(message)
+        val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         if (!dataId.isNullOrEmpty()) {
-            //val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            //storeMetaDataInformation(dataId, DataType.valueOf(metaInformation.dataType), metaInformation.uploaderUserId, metaInformation.uploadTime,metaInformation.company, "Yes")
+            val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
+            storeMetaDataInformation(dataId, DataType.valueOf(metaInformation.dataType), metaInformation.uploaderUserId, metaInformation.uploadTime,metaInformation.company, "Yes")
+        logger.info("Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId")
         }
-        //logger.info("QA Service sent a message - job done. DataId $dataId")
-        metaDataInformationHashMap.remove(dataId)
     }
 
     private fun storeMetaDataInformation(
