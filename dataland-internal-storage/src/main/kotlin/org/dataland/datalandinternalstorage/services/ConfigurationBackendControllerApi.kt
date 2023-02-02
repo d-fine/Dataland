@@ -17,7 +17,7 @@ class ConfigurationBackendControllerApi {
     @Bean
     fun getApiBackendClient(): NonPersistedDataControllerApi {
         return NonPersistedDataControllerApi(
-                "http://localhost:8080/api"
+                "http://host.docker.internal:8080/api"
         )
     }
 

@@ -67,7 +67,9 @@ class WebSecurityConfig(
 
     @Suppress("SpreadOperator")
     private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
-        val linksString = if (internalLinks.isEmpty()) publicLinks else "$publicLinks,$internalLinks"
+        //TODO repair the string merge
+        //val linksString = if (internalLinks.isEmpty()) publicLinks else "$publicLinks,$internalLinks"
+        val linksString = publicLinks
         val linkMatchers = linksString.split(",").map { antMatcher(it) }.toTypedArray()
         http
             .authorizeHttpRequests()

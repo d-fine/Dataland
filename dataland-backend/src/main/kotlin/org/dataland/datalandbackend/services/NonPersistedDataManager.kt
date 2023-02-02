@@ -21,7 +21,7 @@ class NonPersistedDataManager(
     @Autowired var objectMapper: ObjectMapper
 
 ) {
-    //TODO fix type missmatch
+    //TODO fix type missmatch, check why objectmapper is necessary
     fun selectDataSetForInternalStorage(dataId: String): String {
         return objectMapper.writeValueAsString(dataInformationHashMap.map[dataId]!!)
     }
