@@ -56,6 +56,7 @@
 
               <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
                 <PrimeButton
+                  v-if="hasUserUploaderRights"
                   class="uppercase p-button p-button-sm d-letters mr-3"
                   label="New Dataset"
                   icon="pi pi-plus"
@@ -98,7 +99,7 @@ import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/F
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
-import { defineComponent, ref } from "vue";
+import { defineComponent, inject, ref } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
@@ -108,14 +109,20 @@ import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { useFiltersStore } from "@/stores/filters";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import Keycloak from "keycloak-js";
+import { ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { checkIfUserHasUploaderRights, getKeycloakRolesForUser } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   setup() {
     return {
-      searchBarAndFiltersContainer: ref(),
+      searchBarAndFiltersContainer: ref<Element>(),
       frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
       frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
       searchResults: ref(),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   name: "SearchCompaniesForFrameworkData",
@@ -131,9 +138,10 @@ export default defineComponent({
     TabView,
     TabPanel,
   },
-  created() {
+  async created() {
     window.addEventListener("scroll", this.windowScrollHandler);
     this.scanQueryParams(this.route);
+    await this.checkIfUserHasUploaderRightsAndSetFlag();
   },
   data() {
     return {
@@ -163,6 +171,7 @@ export default defineComponent({
         this.handleScroll();
       },
       activeTabIndex: 0,
+      hasUserUploaderRights: null as null | boolean,
     };
   },
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
@@ -209,6 +218,10 @@ export default defineComponent({
     },
   },
   methods: {
+    async checkIfUserHasUploaderRightsAndSetFlag() {
+      this.hasUserUploaderRights = await checkIfUserHasUploaderRights(this.getKeycloakPromise);
+    },
+
     /**
      * Executes router push to the choose company page
      */
@@ -409,12 +422,9 @@ export default defineComponent({
      */
     async toggleSearchBar() {
       this.searchBarToggled = true;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-      const height = this.searchBarAndFiltersContainer?.clientHeight;
-      window.scrollBy(0, -height);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
+      this.hiddenSearchBarHeight = this.searchBarAndFiltersContainer!.clientHeight;
+      window.scrollBy(0, -this.hiddenSearchBarHeight);
       await this.$nextTick();
       this.searchBarId = "search_bar_scrolled";
     },
