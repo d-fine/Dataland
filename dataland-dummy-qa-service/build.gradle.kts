@@ -12,6 +12,7 @@ val jacocoClasses by extra(
     }
 )
 val jacocoVersion: String by project
+val openApiGeneratorTimeOutThresholdInSeconds: String by project
 
 plugins {
     kotlin("jvm")
@@ -36,8 +37,18 @@ dependencies {
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
+    implementation("io.swagger.core.v3:swagger-annotations:2.2.8")
     implementation(project(":dataland-backend-utils"))
 
+}
+
+openApi {
+    outputFileName.set("$projectDir/dummyQaService.json")
+    apiDocsUrl.set("http://localhost:8584/api-keys/v3/api-docs")
+    customBootRun {
+        args.set(listOf("--server.port=8584"))
+    }
+    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 jacoco {
     toolVersion = jacocoVersion

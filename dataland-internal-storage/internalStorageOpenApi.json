@@ -56,6 +56,26 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -83,6 +103,26 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/InsertDataResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -135,6 +175,26 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -163,6 +223,26 @@
               "application/json": {
                 "schema": {
                   "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -197,6 +277,26 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -225,6 +325,26 @@
               "application/json": {
                 "schema": {
                   "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -1102,6 +1222,13 @@
           "targetBean": {
             "type": "object"
           },
+          "replyToAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "delay": {
+            "type": "integer",
+            "format": "int32"
+          },
           "xdeathHeader": {
             "type": "array",
             "items": {
@@ -1110,13 +1237,6 @@
                 "type": "object"
               }
             }
-          },
-          "replyToAddress": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "delay": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
@@ -1139,6 +1259,34 @@
           },
           "templated": {
             "type": "boolean"
+          }
+        }
+      },
+      "ErrorDetails": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "number"
+          },
+          "errorType": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetails"
+            }
           }
         }
       }

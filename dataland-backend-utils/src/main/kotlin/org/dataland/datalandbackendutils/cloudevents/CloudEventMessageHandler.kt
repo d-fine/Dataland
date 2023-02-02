@@ -31,8 +31,8 @@ import org.springframework.amqp.core.MessageProperties as AMQPMessageProperties
 class CloudEventMessageHandler(
     private val rabbitTemplate: RabbitTemplate,
     @Autowired var objectMapper: ObjectMapper,
-    var converter: MessagingMessageConverter? = MessagingMessageConverter()
 ){
+    var converter: MessagingMessageConverter? = MessagingMessageConverter()
     private fun constructCEMessage(input: String, type: String, correlationId: String): MessageMQ {
         val input2 = input.toByteArray()
         val message = CloudEventMessageBuilder

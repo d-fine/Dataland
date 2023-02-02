@@ -287,8 +287,6 @@ services:
     networks:
       - internal
     image: ghcr.io/d-fine/dataland/dataland_dummy_qa_service_test:${DATALAND_DUMMY_QA_SERVICE_TEST_VERSION}
-    depends_on:
-      - rabbitmq
 networks:
   internal:
   external:

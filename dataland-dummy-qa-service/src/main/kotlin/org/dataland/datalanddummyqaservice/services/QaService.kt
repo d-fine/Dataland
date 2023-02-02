@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
  * @param rabbitTemplate
  */
 @Component
-@ComponentScan(basePackages = ["org.dataland"])
+@ComponentScan("org.dataland")
 //@RabbitListener(queues = ["upload_queue"])
 class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
@@ -37,15 +37,11 @@ class QaService(
      * Method to retrieve message from upload_queue and constructing new one for qa_queue
      * @param message Message retrieved from upload_queue
      */
-    //@RabbitHandler
+    @RabbitHandler
     @RabbitListener(queues = ["upload_queue"])
     fun receive(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        print("TestFunction QA Service")
-        println(message)
-        val messageResult =  String(message.body)
-        println("Decode Test $messageResult")
         if (!dataId.isNullOrEmpty()){
             logger.info("Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "QA Process Completed", correlationId,"qa_queue")
