@@ -135,10 +135,10 @@ export default defineComponent({
     TabView,
     TabPanel,
   },
-  created() {
+  async created() {
     window.addEventListener("scroll", this.windowScrollHandler);
+    this.hasUserUploaderRights = await checkIfUserHasUploaderRights(this.getKeycloakPromise);
     void this.scanQueryParams(this.route);
-    void this.checkIfUserHasUploaderRightsAndSetFlag();
   },
   data() {
     return {
@@ -215,14 +215,6 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Derives the roles from the resolved Keycloak-promise of a logged in user and checks if the role for uploading data
-     * is included. A component-variable is then set to the boolean-result of that check.
-     */
-    async checkIfUserHasUploaderRightsAndSetFlag() {
-      this.hasUserUploaderRights = await checkIfUserHasUploaderRights(this.getKeycloakPromise);
-    },
-
     /**
      * Executes router push to the choose company page
      */
