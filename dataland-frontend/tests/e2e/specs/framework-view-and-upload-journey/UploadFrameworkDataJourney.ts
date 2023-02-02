@@ -5,81 +5,214 @@ import {
   uploadCompanyViaFormAndGetId,
 } from "@e2e/utils/CompanyUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataTypeEnum } from "@clients/backend";
+import { DataTypeEnum, StoredCompany } from "@clients/backend";
+import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "../../utils/EuTaxonomyFinancialsUpload";
+import { uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
+import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
+import { generateEuTaxonomyDataForFinancials } from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures"; //TODO @s everywhere here
+import { verifyTaxonomySearchResultTable } from "../../utils/VerifyingElements";
 
 describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
   beforeEach(function () {
     cy.ensureLoggedIn(uploader_name, uploader_pw);
   });
 
-  it("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
-    const uniqueCompanyMarkerA = Date.now().toString() + "abc";
-    const uniqueCompanyMarkerB = Date.now().toString() + "xyz";
-    const testCompanyNameForApiUpload =
-      "New-Api-Created-Company-For-UploadFrameworkDataJourenyTest-" + uniqueCompanyMarkerA;
-    const testCompanyNameForFormUpload =
-      "Form-Created-Company-For-UploadFrameworkDataJourneyTest-" + uniqueCompanyMarkerB;
-    getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-      return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload)).then(() => {
-        const primevueHighlightedSuggestionClass = "p-focus";
-        cy.visitAndCheckAppMount("/companies");
-        cy.get('button[aria-label="New Dataset"]').click({ force: true });
+  const uniqueCompanyMarkerA = Date.now().toString() + "AAA";
+  const uniqueCompanyMarkerB = Date.now().toString() + "BBB";
+  const testCompanyNameForApiUpload = "Api-Created-Company-For-UploadFrameworkDataJourneyTest-" + uniqueCompanyMarkerA;
+  const testCompanyNameForFormUpload =
+    "Form-Created-Company-For-UploadFrameworkDataJourneyTest-" + uniqueCompanyMarkerB;
 
-        cy.intercept("**/api/companies*").as("searchCompanyName");
-        cy.get("input[id=company_search_bar_standard]").click({ force: true }).type(uniqueCompanyMarkerA);
-        cy.wait("@searchCompanyName", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-          cy.get("ul[class=p-autocomplete-items]").should("exist");
-          cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
-          cy.get("input[id=company_search_bar_standard]").type("{downArrow}");
-          cy.get(".p-autocomplete-item")
-            .eq(0)
-            .should("have.class", primevueHighlightedSuggestionClass)
-            .should("contain.text", testCompanyNameForApiUpload);
-          cy.get("input[id=company_search_bar_standard]").type("{esc}");
-          cy.get("div[id=option1Container")
-            .find("span:contains(Add it)") //check if scroll TODO
-            .click({ force: true });
-          cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
-          return uploadCompanyViaFormAndGetId(testCompanyNameForFormUpload).then((companyId) => {
-            cy.wait("@retrieveExistingDatasetsForCompany", {
-              timeout: Cypress.env("short_timeout_in_ms") as number,
-            }).then(() => {
-              cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/upload");
-              cy.intercept("**/api/companies/" + companyId).as("getCompanyInformation");
-              cy.get("div[id=lksgContainer]").find('button[aria-label="Create Dataset"]').click();
-              cy.wait("@getCompanyInformation", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-                cy.url().should(
-                  "eq",
-                  getBaseUrl() + "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload"
-                );
-                cy.get("h1").should("contain", testCompanyNameForFormUpload);
-              });
-            });
-          });
+  const uniqueCompanyMarkerC = Date.now().toString() + "CCC";
+  const testCompanyNameForManyDatasetsCompany =
+    "Api-Created-Company-With-Many-FrameworkDatasets" + uniqueCompanyMarkerC;
+  let dataIdOfFirstEuTaxoFinancialsUpload: string;
+  let dataIdOfSecondEuTaxoFinancialsUpload: string;
+  let storedCompanyForManyDatasetsCompany: StoredCompany;
+
+  before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
+    getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+      return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload))
+        .then(() => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany));
+        })
+        .then((storedCompany) => {
+          storedCompanyForManyDatasetsCompany = storedCompany;
+          return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+            token,
+            storedCompanyForManyDatasetsCompany.companyId,
+            generateEuTaxonomyDataForFinancials()
+          );
+        })
+        .then((dataMetaInformationOfFirstUpload) => {
+          dataIdOfFirstEuTaxoFinancialsUpload = dataMetaInformationOfFirstUpload.dataId;
+          return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+            token,
+            storedCompanyForManyDatasetsCompany.companyId,
+            generateEuTaxonomyDataForFinancials()
+          );
+        })
+        .then((dataMetaInformationOfSecondUpload) => {
+          dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
+          return uploadOneLksgDatasetViaApi(token, storedCompanyForManyDatasetsCompany.companyId, generateLksgData());
         });
-      });
     });
   });
+
+  it("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
+    const primevueHighlightedSuggestionClass = "p-focus";
+    let latestScrollPosition = 0;
+    cy.visitAndCheckAppMount("/companies");
+    verifyTaxonomySearchResultTable();
+
+    cy.get('button[aria-label="New Dataset"]')
+      .click({ force: true })
+      .url()
+      .should("eq", getBaseUrl() + "/companies/choose");
+
+    cy.intercept("**/api/companies*").as("searchCompanyName");
+    cy.get("input[id=company_search_bar_standard]").click({ force: true }).type(uniqueCompanyMarkerA);
+    cy.wait("@searchCompanyName", { timeout: Cypress.env("short_timeout_in_ms") as number });
+    cy.get("ul[class=p-autocomplete-items]").should("exist");
+    cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
+    cy.get("input[id=company_search_bar_standard]").type("{downArrow}");
+    cy.get(".p-autocomplete-item")
+      .eq(0)
+      .should("have.class", primevueHighlightedSuggestionClass)
+      .should("contain.text", testCompanyNameForApiUpload);
+    cy.get("input[id=company_search_bar_standard]").type("{esc}");
+    cy.window()
+      .its("scrollY")
+      .then((scrollYPosition) => {
+        latestScrollPosition = scrollYPosition;
+      });
+    cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
+    cy.window().its("scrollY").should("be.gt", latestScrollPosition);
+    cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
+    uploadCompanyViaFormAndGetId(testCompanyNameForFormUpload).then((companyId) => {
+      cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
+      cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/upload");
+      cy.intercept("**/api/companies/" + companyId).as("getCompanyInformation");
+      cy.get("div[id=lksgContainer]").find('button[aria-label="Create Dataset"]').click();
+      cy.wait("@getCompanyInformation", { timeout: Cypress.env("short_timeout_in_ms") as number });
+      cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload");
+      cy.get("h1").should("contain", testCompanyNameForFormUpload);
+    });
+  });
+
+  /**
+   * Checks if on the "ChoosingFrameworkForDataUpload"-page the expected texts and buttons are displayed based on the
+   * uploaded company having two Eu-Taxo-Financials datasets and one LkSG dataset uploaded for it.
+   *
+   * @param uploadedTestCompanyName bears the company name of the prior uploaded company so that it can be checked
+   * if the company name appears as title
+   */
+  function verifyChoosingFrameworkPageForUploadedTestCompanyWithManyDatasets(uploadedTestCompanyName: string): void {
+    cy.contains("h1", uploadedTestCompanyName);
+
+    cy.get("div[id=eutaxonomyDataSetsContainer]").contains("Be the first to create this dataset");
+    cy.get("div[id=eutaxonomyDataSetsContainer]").contains("Create another dataset for Financials");
+    cy.get("div[id=eutaxonomyDataSetsContainer]").contains(
+      "Uploading data for this framework is currently not enabled on the Dataland frontend."
+    );
+    cy.get("div[id=eutaxonomyDataSetsContainer]")
+      .find('button.p-disabled[aria-label="Create Dataset"]')
+      .should("exist");
+
+    cy.get("div[id=sfdrContainer]").contains("Be the first to create this dataset");
+    cy.get("div[id=sfdrContainer]").contains(
+      "Uploading data for this framework is currently not enabled on the Dataland frontend."
+    );
+    cy.get("div[id=sfdrContainer]").find('button.p-disabled[aria-label="Create Dataset"]').should("exist");
+
+    cy.get("div[id=lksgContainer]").contains("Create another dataset for LkSG");
+    cy.get("div[id=lksgContainer]").find('button.p-disabled[aria-label="Create Dataset"]').should("not.exist");
+    cy.get("div[id=lksgContainer]").find('button.p-button[aria-label="Create Dataset"]').should("exist");
+  }
+
+  /**
+   * Checks if on the "ChoosingFrameworkForDataUpload"-page the links for the already existing datasets lead to
+   * the correct framework-view-pages.
+   * For the Eu-Taxo-Financials datasets it expects the correct data IDs to be attached to the url as query params
+   * and for the LkSG dataset it expects no query param to be attached to the url since for LkSG all datasets can
+   * be viewed on one single framework-view-page.
+   *
+   * @param storedCompanyForTest the prior uploaded stored company which bears the company ID and the company name
+   * that should be used in the cypress tests
+   * @param dataIdOfFirstUploadedEuTaxoFinancialsDataset the data ID of the Eu-Taxo-Financial dataset that was
+   * uploaded first in the before-function
+   * @param dataIdOfSecondUploadedEuTaxoFinancialsDataset the data ID of the Eu-Taxo-Financial dataset that was
+   * uploaded second in the before-function
+   */
+  function checkIfLinksToExistingDatasetsWorkAsExpected(
+    storedCompanyForTest: StoredCompany,
+    dataIdOfFirstUploadedEuTaxoFinancialsDataset: string,
+    dataIdOfSecondUploadedEuTaxoFinancialsDataset: string
+  ): void {
+    cy.get("div[id=eutaxonomyDataSetsContainer")
+      .find(`p.text-primary:contains(Financials)`)
+      .eq(0)
+      .click({ force: true });
+    cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
+      .url()
+      .should(
+        "eq",
+        getBaseUrl() +
+          `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}?dataId=${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
+      );
+    cy.go("back");
+    cy.get("div[id=eutaxonomyDataSetsContainer")
+      .find(`p.text-primary:contains(Financials)`)
+      .eq(1)
+      .click({ force: true });
+    cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
+      .url()
+      .should(
+        "eq",
+        getBaseUrl() +
+          `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}?dataId=${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
+      );
+    cy.go("back");
+
+    cy.get("div[id=lksgContainer").find(`p.text-primary:contains(LkSG)`).click({ force: true });
+    cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
+      .url()
+      .should("eq", getBaseUrl() + `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+  }
 
   it(
     "Go through the whole dataset creation process for an existing company, which already has framework data for multiple frameworks," +
       " and verify pages and elements",
     function () {
-      /* TODO
-            - Before: Create Company with lots of framework data for it
-            - Click on CREATE DATASET on search page and assure that you get redirected to the ChooseCompanyPage
-            - Choose that company via keys on the autocomplete dropdown and assure that you are redirected to the ChooseFrameworkPage
-            - Now verify the ChooseCompanyPage (are the existing datasets displayed?)
-            - Click on the latest non-lksg dataset and check if you get redirected to the exact framework-view-page for it, and not the older one
-            - Click on one existing lksg dataset and check if you get redirected to the general lksg view page for that company
-      */
-      const uniqueCompanyMarker = Date.now().toString() + "17gjas59";
-      const testCompanyName = "Api-Created-Company-With-Many-FrameworkData" + uniqueCompanyMarker;
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then(() => {
-          cy.visitAndCheckAppMount("/companies");
-        });
-      });
+      cy.visitAndCheckAppMount("/companies");
+      verifyTaxonomySearchResultTable();
+      cy.get('button[aria-label="New Dataset"]').click({ force: true });
+      cy.get("input[id=company_search_bar_standard]")
+        .should("exist")
+        .url()
+        .should("eq", getBaseUrl() + "/companies/choose");
+      cy.intercept("**/api/companies*").as("searchCompanyName");
+      cy.get("input[id=company_search_bar_standard]")
+        .click({ force: true })
+        .type(testCompanyNameForManyDatasetsCompany);
+      cy.wait("@searchCompanyName", { timeout: Cypress.env("short_timeout_in_ms") as number });
+      cy.get("ul[class=p-autocomplete-items]").should("exist");
+      cy.get("input[id=company_search_bar_standard]").type("{downArrow}");
+      cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
+      cy.get("input[id=company_search_bar_standard]").type("{enter}");
+      cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
+      cy.url().should(
+        "eq",
+        getBaseUrl() + `/companies/${storedCompanyForManyDatasetsCompany.companyId}/frameworks/upload`
+      );
+
+      verifyChoosingFrameworkPageForUploadedTestCompanyWithManyDatasets(testCompanyNameForManyDatasetsCompany);
+
+      checkIfLinksToExistingDatasetsWorkAsExpected(
+        storedCompanyForManyDatasetsCompany,
+        dataIdOfFirstEuTaxoFinancialsUpload,
+        dataIdOfSecondEuTaxoFinancialsUpload
+      );
     }
   );
 });

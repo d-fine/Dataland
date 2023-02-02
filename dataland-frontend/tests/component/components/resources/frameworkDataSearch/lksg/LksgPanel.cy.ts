@@ -9,11 +9,11 @@ describe("Component test for LksgPanel", () => {
       data() {
         return {
           waitingForData: false,
-          lksgData: [pseudoLksgData as LksgData] as LksgData[],
+          lksgData: [pseudoLksgData as LksgData],
         };
       },
       created() {
-        (this.convertLksgDataToFrontendFormat as ((lksgData: LksgData[]) => void))(this.lksgData);
+        this.convertLksgDataToFrontendFormat(this.lksgData);
       },
     });
     cy.get("td:contains('1.23 MM')").should("exist");
