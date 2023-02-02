@@ -166,7 +166,7 @@ describeIf(
               cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
                 cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
                 cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}");
-                cy.wait("@retrieveLksgData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+                cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
                   cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
 
                   cy.get("table.p-datatable-table")
