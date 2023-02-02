@@ -112,7 +112,7 @@ import TabView from "primevue/tabview";
 export default defineComponent({
   setup() {
     return {
-      searchBarAndFiltersContainer: ref(),
+      searchBarAndFiltersContainer: ref<Element>(),
       frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
       frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
       searchResults: ref(),
@@ -409,12 +409,9 @@ export default defineComponent({
      */
     async toggleSearchBar() {
       this.searchBarToggled = true;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-      const height = this.searchBarAndFiltersContainer?.clientHeight;
-      window.scrollBy(0, -height);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
+      this.hiddenSearchBarHeight = this.searchBarAndFiltersContainer!.clientHeight;
+      window.scrollBy(0, -this.hiddenSearchBarHeight);
       await this.$nextTick();
       this.searchBarId = "search_bar_scrolled";
     },
