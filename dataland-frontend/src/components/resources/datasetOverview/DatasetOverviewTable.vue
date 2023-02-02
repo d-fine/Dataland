@@ -18,12 +18,6 @@
           {{ humanizeString(data.dataType) }}
         </template>
       </Column>
-      <Column v-if="isProperlyImplemented" field="year" header="YEAR" :sortable="true"></Column>
-      <Column field="status" header="STATUS" :sortable="true" sortField="status.text">
-        <template #body="{ data }">
-          <span :class="`p-badge badge-${data.status.color} m-0`">{{ data.status.text }}</span>
-        </template>
-      </Column>
       <Column
         field="uploadTimeInSeconds"
         header="SUBMISSION DATE"
@@ -45,7 +39,7 @@
         <template #body="{ data }">
           <router-link :to="getTableRowLinkTarget(data)" class="text-primary no-underline font-bold">
             <div class="text-right">
-              <span>{{ isDatasetRejected(data) ? "ADD NEW DATASET" : "VIEW" }}</span>
+              <span>VIEW</span>
               <span class="ml-3">></span>
             </div>
           </router-link>
@@ -72,7 +66,7 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { DatasetStatus, DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import { DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import { DataTypeEnum } from "@clients/backend";
@@ -97,9 +91,6 @@ export default defineComponent({
       type: Array,
       default: [] as DatasetTableInfo[],
     },
-    isProperlyImplemented: {
-      type: Boolean,
-    },
   },
   watch: {
     searchBarInput() {
@@ -117,25 +108,12 @@ export default defineComponent({
      * @returns the path depending on the status of the data set
      */
     getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
-      if (this.isDatasetRejected(datasetTableInfo)) {
-        return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/upload`;
-      } else {
-        const dataTypesWithSingleView = [DataTypeEnum.Lksg] as DataTypeEnum[];
-        let queryParameters = "";
-        if (!dataTypesWithSingleView.includes(datasetTableInfo.dataType)) {
-          queryParameters = `?dataId=${datasetTableInfo.dataId}`;
-        }
-        return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}${queryParameters}`;
+      const dataTypesWithSingleView = [DataTypeEnum.Lksg] as DataTypeEnum[];
+      let queryParameters = "";
+      if (!dataTypesWithSingleView.includes(datasetTableInfo.dataType)) {
+        queryParameters = `?dataId=${datasetTableInfo.dataId}`;
       }
-    },
-    /**
-     * Checks if the status of the given DatasetTableInfo equals Rejected
-     *
-     * @param datasetTableEntry the DatasetTableEntry to check the status of
-     * @returns a boolean reflecting if the data set is rejected or not
-     */
-    isDatasetRejected(datasetTableEntry: DatasetTableInfo): boolean {
-      return datasetTableEntry.status.text === DatasetStatus.Requested.text;
+      return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}${queryParameters}`;
     },
     /**
      * Filter the given datasets for the search string in the company name

@@ -6,35 +6,6 @@
       <TabPanel header="MY DATASETS">
         <TheContent class="p-3 min-h-screen paper-section relative">
           <div class="col-12 flex flex-row justify-content-between align-items-end">
-            <div
-              v-if="isProperlyImplemented"
-              id="dataset-summary"
-              class="col-6 surface-card shadow-1 p-3 border-round-sm border-round flex flex-column"
-            >
-              <div class="flex flex-row justify-content-between">
-                <div class="text-left font-semibold">Overview</div>
-                <div class="text-right">
-                  <!--TODO? link (where does it lead?)-->
-                  <router-link to="/account" class="text-primary no-underline font-semibold">
-                    <span>Account balance</span><span class="ml-3">></span>
-                  </router-link>
-                </div>
-              </div>
-              <div class="mt-2 flex justify-content-between" :class="waitingForData ? 'invisible' : ''">
-                <div>
-                  <span>Approved datasets: </span>
-                  <span class="p-badge badge-green">{{ this.numApproved }}</span>
-                </div>
-                <div>
-                  <span>Pending datasets: </span>
-                  <span class="p-badge badge-orange">{{ this.numPending }}</span>
-                </div>
-                <div>
-                  <span>Rejected datasets: </span>
-                  <span class="p-badge badge-red">{{ this.numRejected }}</span>
-                </div>
-              </div>
-            </div>
             <PrimeButton
               v-if="hasUserUploaderRights"
               class="uppercase p-button p-button-sm d-letters mr-3"
@@ -45,7 +16,6 @@
           </div>
           <DatasetOverviewTable
             :dataset-table-infos="datasetTableInfos"
-            :is-properly-implemented="isProperlyImplemented"
             :class="datasetTableInfos.length > 0 ? '' : 'hidden'"
           />
           <div v-if="waitingForData" class="inline-loading text-center">
@@ -59,12 +29,6 @@
   </AuthenticationWrapper>
 </template>
 
-<style scoped>
-.invisible {
-  visibility: hidden;
-}
-</style>
-
 <script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
@@ -77,7 +41,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 import { DataMetaInformation, StoredCompany } from "@clients/backend";
-import { DatasetStatus, DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import { DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
@@ -99,11 +63,7 @@ export default defineComponent({
     return {
       datasetTableInfos: [] as DatasetTableInfo[],
       waitingForData: true,
-      numApproved: 0,
-      numPending: 0,
-      numRejected: 0,
       activeTabIndex: 1,
-      isProperlyImplemented: false,
       hasUserUploaderRights: null as boolean | null,
     };
   },
@@ -115,13 +75,6 @@ export default defineComponent({
   async created() {
     await this.checkIfUserHasUploaderRightsAndSetFlag(this.getKeycloakPromise);
     await this.requestDataMetaDataForCurrentUser();
-  },
-  watch: {
-    datasetTableInfos() {
-      this.numApproved = this.countDatasetStatus(DatasetStatus.Approved);
-      this.numPending = this.countDatasetStatus(DatasetStatus.Pending);
-      this.numRejected = this.countDatasetStatus(DatasetStatus.Rejected);
-    },
   },
   methods: {
     async checkIfUserHasUploaderRightsAndSetFlag() {
@@ -162,8 +115,6 @@ export default defineComponent({
               new DatasetTableInfo(
                 company.companyInformation.companyName,
                 dataMetaInfo.dataType,
-                2023,
-                DatasetStatus.Approved,
                 dataMetaInfo.uploadTime * 1000,
                 company.companyId,
                 dataMetaInfo.dataId
@@ -171,15 +122,6 @@ export default defineComponent({
           )
       );
       this.waitingForData = false;
-    },
-    /**
-     * Counts datasets with a specific status
-     *
-     * @param status the status for which datasets shall be counted
-     * @returns the length of the data set table
-     */
-    countDatasetStatus(status: DatasetStatus): number {
-      return this.datasetTableInfos.filter((info) => info.status.text === status.text).length;
     },
     /**
      * Routes to companies page when AVAILABLE DATASET tab is clicked
