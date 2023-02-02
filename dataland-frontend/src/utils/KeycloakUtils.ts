@@ -1,19 +1,40 @@
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 
-export async function waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter: () => Promise<Keycloak>) {
+/**
+ * Asserts that the provided getter-function to get a Keycloak-promise is defined, then executes that getter-function
+ * and returns the Keycloak-promise
+ *
+ * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Ppomise
+ * @returns the Keycloak-promise returned by the getter-function
+ */
+export async function waitForAndReturnResolvedKeycloakPromise(
+  keycloakPromiseGetter: () => Promise<Keycloak>
+): Promise<Keycloak> {
   const keycloakPromiseGetterAsserted: () => Promise<Keycloak> = assertDefined(keycloakPromiseGetter);
-  return await keycloakPromiseGetterAsserted();
+  return keycloakPromiseGetterAsserted();
 }
 
-export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promise<Keycloak>) {
+/**
+ * Derives the roles from the resolved Keycloak-promise of a logged in user and returns them.
+ *
+ * @param keycloakPromiseGetter the getter-function which returns a Keycloak-promise
+ * @returns a promise, which resolves to an array containing the roles of the user as strings
+ */
+export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promise<Keycloak>): Promise<Array<string>> {
   const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
   if (resolvedKeycloakPromise.realmAccess) {
-    const roles = resolvedKeycloakPromise.realmAccess.roles;
-    return roles;
-  }
+    return resolvedKeycloakPromise.realmAccess.roles;
+  } else throw new Error("Authentication error: Roles for user could not be derived.");
 }
 
+/**
+ * Derives the roles from the resolved Keycloak-promise of a logged in user and checks if the role for uploading data
+ * is included.
+ *
+ * @param keycloakPromiseGetter the getter-function which returns a Keycloak-promise
+ * @returns a promise, which resolves to a boolean
+ */
 export async function checkIfUserHasUploaderRights(keycloakPromiseGetter?: () => Promise<Keycloak>): Promise<boolean> {
   if (keycloakPromiseGetter) {
     const roles = await getKeycloakRolesForUser(keycloakPromiseGetter);
@@ -22,5 +43,5 @@ export async function checkIfUserHasUploaderRights(keycloakPromiseGetter?: () =>
     } else {
       return false;
     }
-  } else return false;
+  } else throw new Error("Authentication error: The getter-function needed by this method is undefined.");
 }

@@ -109,11 +109,8 @@ import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { useFiltersStore } from "@/stores/filters";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
-import { ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { checkIfUserHasUploaderRights, getKeycloakRolesForUser } from "@/utils/KeycloakUtils";
+import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   setup() {
@@ -138,10 +135,10 @@ export default defineComponent({
     TabView,
     TabPanel,
   },
-  async created() {
+  created() {
     window.addEventListener("scroll", this.windowScrollHandler);
-    this.scanQueryParams(this.route);
-    await this.checkIfUserHasUploaderRightsAndSetFlag();
+    void this.scanQueryParams(this.route);
+    void this.checkIfUserHasUploaderRightsAndSetFlag();
   },
   data() {
     return {
@@ -218,6 +215,10 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Derives the roles from the resolved Keycloak-promise of a logged in user and checks if the role for uploading data
+     * is included. A component-variable is then set to the boolean-result of that check.
+     */
     async checkIfUserHasUploaderRightsAndSetFlag() {
       this.hasUserUploaderRights = await checkIfUserHasUploaderRights(this.getKeycloakPromise);
     },
@@ -423,7 +424,9 @@ export default defineComponent({
     async toggleSearchBar() {
       this.searchBarToggled = true;
       this.scrollEmittedByToggleSearchBar = true;
-      this.hiddenSearchBarHeight = this.searchBarAndFiltersContainer!.clientHeight;
+      if (this.searchBarAndFiltersContainer) {
+        this.hiddenSearchBarHeight = this.searchBarAndFiltersContainer.clientHeight;
+      }
       window.scrollBy(0, -this.hiddenSearchBarHeight);
       await this.$nextTick();
       this.searchBarId = "search_bar_scrolled";
