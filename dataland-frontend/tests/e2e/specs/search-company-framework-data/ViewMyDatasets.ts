@@ -104,10 +104,17 @@ describe(
           cy.get("table").parent().parent().parent().should("have.class", "hidden");
         });
 
-        const newCompanyName = `Overview Search ${faker.company.bsNoun()}`;
+        it("Check that a user who has no upload permission has no new dataset button displayed", () => {
+          cy.ensureLoggedIn(admin_name, admin_pw);
+          cy.visit("/datasets");
+          cy.get(newDatasetButtonSelector).should("not.exist");
+        });
+
+        let newCompanyName = "";
         it("Check if search filter works as expected", () => {
           cy.ensureLoggedIn(uploader_name, uploader_pw);
           cy.visit("/datasets");
+          newCompanyName = `Overview Search ${faker.company.bsNoun()}`;
           cy.get(searchBarSelector).type(newCompanyName);
           cy.get("tbody td").then((elements) => {
             expect(elements.length).to.equal(1);
