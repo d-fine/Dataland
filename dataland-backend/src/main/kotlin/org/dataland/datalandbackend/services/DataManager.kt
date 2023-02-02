@@ -145,7 +145,7 @@ class DataManager(
         logger.info(
             "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId."
         )
-        //dataInformationHashMap.map.remove(dataId)
+        dataInformationHashMap.map.remove(dataId)
 
     }
 
