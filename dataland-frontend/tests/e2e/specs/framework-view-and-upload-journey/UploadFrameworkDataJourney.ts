@@ -7,7 +7,7 @@ import {
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, StoredCompany } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "../../utils/EuTaxonomyFinancialsUpload";
-import { uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
+import { uploadLksgDataViaForm, uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
 import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
 import { generateEuTaxonomyDataForFinancials } from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures"; //TODO @s everywhere here
 import { verifyTaxonomySearchResultTable } from "../../utils/VerifyingElements";
@@ -97,6 +97,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.wait("@getCompanyInformation", { timeout: Cypress.env("short_timeout_in_ms") as number });
       cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload");
       cy.get("h1").should("contain", testCompanyNameForFormUpload);
+      uploadLksgDataViaForm(companyId);
     });
   });
 
