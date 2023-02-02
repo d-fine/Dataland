@@ -4,7 +4,7 @@ export class DatasetTableInfo {
   constructor(
     readonly companyName: string,
     readonly dataType: DataTypeEnum,
-    readonly year: number,
+    readonly uploadTimeInMs: number,
     readonly companyId: string,
     readonly dataId: string
   ) {}

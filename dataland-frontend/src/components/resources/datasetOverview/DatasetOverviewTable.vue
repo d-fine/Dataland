@@ -19,14 +19,14 @@
         </template>
       </Column>
       <Column
-        field="uploadTimeInSeconds"
+        field="uploadTimeInMs"
         header="SUBMISSION DATE"
         :sortable="true"
-        sortField="uploadTimeInSeconds"
+        sortField="uploadTimeInMs"
         class="w-2"
       >
         <template #body="{ data }">
-          <span>{{ convertDate(data.uploadTimeInSeconds) }}</span>
+          <span>{{ convertDate(data.uploadTimeInMs) }}</span>
         </template>
       </Column>
       <Column field="companyName" header="" class="w-2 d-bg-white d-datatable-column-right">
