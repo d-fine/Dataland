@@ -25,7 +25,7 @@ export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promi
   const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
   if (resolvedKeycloakPromise.realmAccess) {
     return resolvedKeycloakPromise.realmAccess.roles;
-  } else throw new Error("Authentication error: Roles for user could not be derived.");
+  } else return [];
 }
 
 /**
@@ -43,5 +43,5 @@ export async function checkIfUserHasUploaderRights(keycloakPromiseGetter?: () =>
     } else {
       return false;
     }
-  } else throw new Error("Authentication error: The getter-function needed by this method is undefined.");
+  } else return false;
 }
