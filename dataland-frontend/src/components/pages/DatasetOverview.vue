@@ -36,6 +36,7 @@
               </div>
             </div>
             <PrimeButton
+              v-if="hasUserUploaderRights"
               class="uppercase p-button p-button-sm d-letters mr-3"
               label="New Dataset"
               icon="pi pi-plus"
@@ -75,11 +76,12 @@ import DatasetOverviewTable from "@/components/resources/datasetOverview/Dataset
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
-import { StoredCompany } from "@clients/backend";
+import { DataMetaInformation, StoredCompany } from "@clients/backend";
 import { DatasetStatus, DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
+import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "DatasetOverview",
@@ -102,6 +104,7 @@ export default defineComponent({
       numRejected: 0,
       activeTabIndex: 1,
       isProperlyImplemented: false,
+      hasUserUploaderRights: null as boolean | null,
     };
   },
   setup() {
@@ -109,8 +112,9 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  created() {
-    void this.requestDataMetaDataForCurrentUser();
+  async created() {
+    await this.checkIfUserHasUploaderRightsAndSetFlag(this.getKeycloakPromise);
+    await this.requestDataMetaDataForCurrentUser();
   },
   watch: {
     datasetTableInfos() {
@@ -120,6 +124,10 @@ export default defineComponent({
     },
   },
   methods: {
+    async checkIfUserHasUploaderRightsAndSetFlag() {
+      this.hasUserUploaderRights = await checkIfUserHasUploaderRights(this.getKeycloakPromise);
+    },
+
     /**
      * Finds the datasets the logged in user is responsible for and creates corresponding table entries
      */
@@ -138,19 +146,19 @@ export default defineComponent({
           true
         )
       ).data;
-      const response = await assertDefined(this.getKeycloakPromise)();
-      if (response.idTokenParsed) {
-        userId = response.idTokenParsed.sub;
+      const resolvedKeycloakPromise = await assertDefined(this.getKeycloakPromise)();
+      if (resolvedKeycloakPromise.idTokenParsed) {
+        userId = resolvedKeycloakPromise.idTokenParsed.sub;
       }
       this.datasetTableInfos = companiesMetaInfos.flatMap((company: StoredCompany) =>
         company.dataRegisteredByDataland
           .filter(
-            (dataMetaInfo) =>
+            (dataMetaInfo: DataMetaInformation) =>
               dataMetaInfo.uploaderUserId == userId &&
               ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)
           )
           .map(
-            (dataMetaInfo) =>
+            (dataMetaInfo: DataMetaInformation) =>
               new DatasetTableInfo(
                 company.companyInformation.companyName,
                 dataMetaInfo.dataType,
