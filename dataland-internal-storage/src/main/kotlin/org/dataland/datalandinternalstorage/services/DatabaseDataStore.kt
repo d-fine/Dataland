@@ -10,13 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 import java.rmi.ServerException
 
 /**
  * Simple implementation of a data store using a postgres database
  * @param dataItemRepository
- * @param dataInformationHashMap backend map for temporarily storing data information
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param rabbitTemplate
  */

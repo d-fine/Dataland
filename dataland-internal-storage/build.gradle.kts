@@ -47,7 +47,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation(project(":dataland-backend-utils"))
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
 openApi {
