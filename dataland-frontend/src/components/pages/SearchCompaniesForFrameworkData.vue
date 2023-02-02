@@ -243,13 +243,13 @@ export default defineComponent({
         if (this.latestScrollPosition > windowScrollY) {
           //ScrollUP event
           this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop >= 50;
+          this.pageScrolled = document.documentElement.scrollTop >= 60;
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         } else {
           //ScrollDOWN event
           this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop > 102;
+          this.pageScrolled = document.documentElement.scrollTop > 152;
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         }
