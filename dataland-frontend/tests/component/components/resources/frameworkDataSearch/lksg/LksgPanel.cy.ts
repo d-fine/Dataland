@@ -13,7 +13,7 @@ describe("Component test for LksgPanel", () => {
         };
       },
       created() {
-        this.convertLksgDataToFrontendFormat(this.lksgData);
+        void this.convertLksgDataToFrontendFormat(this.lksgData);
       },
     });
     cy.get("td:contains('1.23 MM')").should("exist");
