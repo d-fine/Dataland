@@ -8,6 +8,7 @@ export default defineConfig({
   optimizeDeps: {
     include: [
       "@vue/test-utils",
+      "cypress/vue",
       "vue-router",
       "keycloak-js",
       "vue",
@@ -23,8 +24,14 @@ export default defineConfig({
       "primevue/tabview",
       "primevue/tabpanel",
       "primevue/inputtext",
+      "primevue/dynamicdialog",
+      "primevue/dialog",
+      "primevue/textarea",
+      "primevue/dropdown",
+      "primevue/calendar",
       "@formkit/vue",
       "axios",
+      "i18n-iso-countries",
     ],
   },
   plugins: [
