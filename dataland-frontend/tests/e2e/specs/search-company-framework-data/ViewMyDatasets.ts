@@ -62,6 +62,7 @@ describe(
           cy.ensureLoggedIn(uploader_name, uploader_pw);
           cy.visitAndCheckAppMount("/companies");
           validateTabBar(0);
+          cy.wait(3000);
           const companiesInterceptAlias = "companies";
           cy.intercept("**/api/companies*onlyCurrentUserAsUploader*").as(companiesInterceptAlias);
           cy.get(getTabSelector(1)).click();
