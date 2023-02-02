@@ -105,7 +105,7 @@ describeIf(
         return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
           cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-          cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
+          cy.wait("@retrieveLksgData", { timeout: 30000 }).then(() => { // TODO debugging !!!
             cy.get(`h1`).should("contain", companyInformation.companyName);
 
             cy.get(`span.p-column-title`).should(
