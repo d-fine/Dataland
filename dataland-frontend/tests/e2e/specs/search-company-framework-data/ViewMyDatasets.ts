@@ -72,7 +72,7 @@ describe(
 
           cy.get(newDatasetButtonSelector).should("exist");
 
-          const expectedHeaders = ["COMPANY", "DATA FRAMEWORK", "STATUS", "SUBMISSION DATE"];
+          const expectedHeaders = ["COMPANY", "DATA FRAMEWORK", "SUBMISSION DATE"];
           expectedHeaders.forEach((value) => {
             cy.get(`table th:contains(${value})`).should("exist");
           });
@@ -99,7 +99,9 @@ describe(
 
         it("Check that a user who has no dataset associated with him has no table displayed", () => {
           cy.ensureLoggedIn(admin_name, admin_pw);
-          cy.get("table").should("not.exist");
+          cy.visit("/datasets");
+          cy.get(newDatasetButtonSelector).should("exist");
+          cy.get("table").parent().parent().parent().should("have.class", "hidden");
         });
 
         const newCompanyName = `Overview Search ${faker.company.bsNoun()}`;
@@ -115,7 +117,7 @@ describe(
           cy.visit("/datasets");
           cy.get(searchBarSelector).type(newCompanyName);
           cy.get("tbody td").then((elements) => {
-            expect(elements.length).to.equal(5);
+            expect(elements.length).to.equal(4);
           });
           cy.get("tbody td").first().should("contain", newCompanyName);
         });
@@ -131,9 +133,9 @@ describe(
           cy.get("tbody td").each((element, index) => {
             if (index < expectedRowContents.length) {
               expect(element.text()).to.equal(expectedRowContents[index]);
-            } else if (index == 3) {
+            } else if (index == 2) {
               expect(Date.parse(element.text().substring(15)).toString()).not.to.equal(NaN.toString());
-            } else if (index == 4) {
+            } else if (index == 3) {
               expect(element.text()).to.contain("VIEW");
             }
           });
@@ -142,8 +144,6 @@ describe(
         });
 
         // TODO behaviour for data reader: only no NEW DATASET button but empty table in this case
-
-        // TODO check overview panel (link, does counting work?)
       }
     );
   }
