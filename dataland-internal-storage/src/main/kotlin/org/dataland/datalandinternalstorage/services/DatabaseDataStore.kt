@@ -46,8 +46,8 @@ class DatabaseDataStore(
         val data = nonPersistedDataClient.getCompanyAssociatedDataForInternalStorage(dataId)
         logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
-        dataItemRepository.save(DataItem(dataId, data))
         try {
+            dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data successfully stored", correlationId ,"stored_queue")
         } catch (e: ServerException) {
             val internalMessage = "Error storing data." +
