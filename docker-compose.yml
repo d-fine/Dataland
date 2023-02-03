@@ -276,7 +276,7 @@ services:
       - "15672:15672"
     volumes:
       - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
-      - ./rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
