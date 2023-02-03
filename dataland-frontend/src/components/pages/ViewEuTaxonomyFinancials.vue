@@ -64,7 +64,7 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Handles changes in the provided data IDs
+     * Handles changes in the provided data IDs by storing and picking a dataset to display
      *
      * @param receivedEuTaxoFinanicalsDataIds Received EU Taxonomy for financial companies data IDs
      */
