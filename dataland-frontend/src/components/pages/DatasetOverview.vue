@@ -72,19 +72,11 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  created() {
-    void this.checkIfUserHasUploaderRightsAndSetFlag();
-    void this.requestDataMetaDataForCurrentUser();
+  async created() {
+    this.hasUserUploaderRights = await checkIfUserHasUploaderRights(this.getKeycloakPromise);
+    void (await this.requestDataMetaDataForCurrentUser());
   },
   methods: {
-    /**
-     * Derives the roles from the resolved Keycloak-promise of a logged in user and checks if the role for uploading data
-     * is included. A component-variable is then set to the boolean-result of that check.
-     */
-    async checkIfUserHasUploaderRightsAndSetFlag() {
-      this.hasUserUploaderRights = await checkIfUserHasUploaderRights(this.getKeycloakPromise);
-    }, // TODO this method is a duplicate. It can also be found in SearchCompaniesForFrameworkData.vue.  We could try to avoid that somehow.
-
     /**
      * Finds the datasets the logged in user is responsible for and creates corresponding table entries
      */

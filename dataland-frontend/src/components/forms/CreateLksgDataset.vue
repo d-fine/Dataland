@@ -55,7 +55,7 @@
                         />
                       </div>
 
-                      <div class="form-field">
+                      <div class="form-field" data-test="lksgInScope">
                         <UploadFormHeader
                           :name="lksgKpiNameMappings.lksgInScope"
                           :explanation="lksgKpiInfoMappings.lksgInScope"
@@ -119,7 +119,7 @@
                           name="shareOfTemporaryWorkers"
                           :validation-label="lksgKpiNameMappings.shareOfTemporaryWorkers"
                           placeholder="Value %"
-                          step="1"
+                          step="0.01"
                           min="0"
                           validation="required|number|between:0,100"
                           :inner-class="{
@@ -164,7 +164,7 @@
                         />
                       </div>
 
-                      <div class="form-field">
+                      <div class="form-field" data-test="IsYourCompanyManufacturingCompany">
                         <UploadFormHeader
                           :name="'Is your company a manufacturing company?'"
                           :explanation="lksgKpiInfoMappings.listOfProductionSites"
@@ -200,10 +200,12 @@
                       >
                         <FormKit type="group" v-for="(item, index) in listOfProductionSites" :key="item.id">
                           <div
+                            data-test="productionSiteSection"
                             class="productionSiteSection"
                             :class="isYourCompanyManufacturingCompany === 'No' ? 'p-disabled' : ''"
                           >
                             <em
+                              data-test="removeItemFromlistOfProductionSites"
                               @click="removeItemFromlistOfProductionSites(item.id)"
                               class="material-icons close-section"
                               >close</em
@@ -222,7 +224,7 @@
                               />
                             </div>
 
-                            <div class="form-field">
+                            <div class="form-field" data-test="isInHouseProductionOrIsContractProcessing">
                               <UploadFormHeader
                                 :name="lksgKpiNameMappings.inHouseProductionOrContractProcessing"
                                 :explanation="lksgKpiInfoMappings.inHouseProductionOrContractProcessing"
@@ -308,6 +310,7 @@
                                 ></PrimeButton>
                               </div>
                               <FormKit
+                                data-test="listOfGoodsOrServices"
                                 type="text"
                                 :ignore="true"
                                 v-model="listOfProductionSites[index].listOfGoodsOrServicesString"
@@ -337,6 +340,7 @@
                           </div>
                         </FormKit>
                         <PrimeButton
+                          data-test="ADD-NEW-Production-Site-button"
                           label="ADD NEW Production Site"
                           class="p-button-text"
                           :disabled="isYourCompanyManufacturingCompany === 'No'"
@@ -626,13 +630,13 @@
               <div class="col-3"></div>
 
               <div class="col-9">
-                <PrimeButton type="submit" label="ADD DATA" />
+                <PrimeButton data-test="submitButton" type="submit" label="ADD DATA" />
               </div>
             </div>
           </FormKit>
 
           <div v-if="postLkSGDataProcessed">
-            <SuccessUpload v-if="uploadSucceded" :message="message" :messageId="messageCounter" />
+            <SuccessUpload v-if="uploadSucceded" :messageId="messageCounter" />
             <FailedUpload v-else :message="message" :messageId="messageCounter" />
           </div>
         </div>
@@ -843,6 +847,6 @@ export default defineComponent({
 </script>
 <style scoped lang="scss">
 .anchor {
-  scroll-margin-top: 300px;
+  scroll-margin-top: 100px;
 }
 </style>

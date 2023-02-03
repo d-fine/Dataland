@@ -13,11 +13,7 @@ describe("As a user, I expect the back button to work properly", () => {
           cy.visitAndCheckAppMount(
             `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
           );
-          cy.get("span.text-primary[title=back_button]")
-            .parent(".cursor-pointer.grid.align-items-center")
-            .click()
-            .url()
-            .should("include", "/companies");
+          cy.contains("span", "BACK").click().url().should("include", "/companies");
         }
       );
     });

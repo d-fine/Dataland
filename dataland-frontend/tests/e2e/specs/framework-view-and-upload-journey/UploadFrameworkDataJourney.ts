@@ -7,11 +7,12 @@ import {
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, StoredCompany } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "../../utils/EuTaxonomyFinancialsUpload";
-import { uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
+import { uploadLksgDataViaForm, uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
 import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
 import { generateEuTaxonomyDataForFinancials } from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures"; //TODO @s everywhere here
-import { verifyTaxonomySearchResultTable } from "../../utils/VerifyingElements";
+import { verifyTaxonomySearchResultTable } from "../../utils/VerifyingElements"; // TODO add @ instead of ...
 
+// TODO wrong description from copy-pasting
 describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
   beforeEach(function () {
     cy.ensureLoggedIn(uploader_name, uploader_pw);
@@ -89,6 +90,8 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
     cy.window().its("scrollY").should("be.gt", latestScrollPosition);
     cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
+
+    // TODO upload vie Form test starting from here
     uploadCompanyViaFormAndGetId(testCompanyNameForFormUpload).then((companyId) => {
       cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
       cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/upload");
@@ -97,6 +100,8 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.wait("@getCompanyInformation", { timeout: Cypress.env("short_timeout_in_ms") as number });
       cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload");
       cy.get("h1").should("contain", testCompanyNameForFormUpload);
+      uploadLksgDataViaForm(); // TODO   should we put this test to lksg specific tests?
+
     });
   });
 

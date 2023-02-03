@@ -29,14 +29,10 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): 
   }
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click({ force: true });
-  return cy
-    .wait("@postCompanyAssociatedData")
-    .get("body")
-    .should("contain", "success")
-    .get("span[title=dataId]")
-    .then<string>(($dataId): string => {
-      return $dataId.text();
-    });
+  cy.wait("@postCompanyAssociatedData");
+  return cy.contains("h4", "dataId").then<string>(($dataId): string => {
+    return $dataId.text();
+  });
 }
 
 /**
