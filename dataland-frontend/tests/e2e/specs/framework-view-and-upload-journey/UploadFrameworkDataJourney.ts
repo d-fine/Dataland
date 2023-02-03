@@ -46,6 +46,8 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         })
         .then((dataMetaInformationOfFirstUpload) => {
           dataIdOfFirstEuTaxoFinancialsUpload = dataMetaInformationOfFirstUpload.dataId;
+          // TODO the second dataset must be uploaded some seconds after the first one! this needs to be assured so that
+          // TODO the first dataset in the overview is actually the older one!
           return uploadOneEuTaxonomyFinancialsDatasetViaApi(
             token,
             storedCompanyForManyDatasetsCompany.companyId,
@@ -99,7 +101,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       cy.wait("@getCompanyInformation", { timeout: Cypress.env("short_timeout_in_ms") as number });
       cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload");
       cy.get("h1").should("contain", testCompanyNameForFormUpload);
-      uploadLksgDataViaForm(); // TODO   should we put this test to lksg specific tests?
+      uploadLksgDataViaForm(); // TODO   should we put this test to lksg specific tests? this is an lksg specific test!
     });
   });
 

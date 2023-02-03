@@ -18,19 +18,5 @@ describeIf(
         cy.get("body").should("contain", companyName);
       });
     });
-    /*
-    it("Log in as data reader, fill the company upload form and assure that upload fails because of insufficient rights", () => {
-      cy.ensureLoggedIn();
-      const companyName = "Test company";
-      cy.visitAndCheckAppMount("/companies/upload");
-      cy.contains("div", "Create a Company");
-      fillCompanyUploadFields(companyName);*/
-    // cy.intercept("**/api/companies").as("postCompany");
-    /*
-      cy.get('button[name="addCompany"]').click();
-      cy.wait("@postCompany");
-      cy.get("body").should("contain", "Sorry");
-    }); */ // TODO this test does not make sense anymore since the upload form won't appear if you are logged in as reader
-    // TODO we could change this test so that it checks if you get an error message if you visit the company upload page as reader
   }
 );

@@ -139,6 +139,17 @@ export default defineComponent({
 
   watch: {},
   methods: {
+    // TODO jsdoc
+    sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfo: Array<DataMetaInformation>): Array<DataMetaInformation> {
+      return listOfDataMetaInfo.sort((dataMetaInfoA, dataMetaInfoB) => {
+        if (dataMetaInfoA.uploadTime > dataMetaInfoB.uploadTime) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    },
+
     /**
      * Gets all data meta information of the company identified by the variable companyId and fills the lists for
      * data meta information of the various frameworks
@@ -150,17 +161,26 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfAllDataMetaInfo = response.data;
-        this.listOfEuTaxonomyNonFinancialsMetaInfo = listOfAllDataMetaInfo.filter(
-          (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyNonFinancials
+        console.log(listOfAllDataMetaInfo);
+        this.listOfEuTaxonomyNonFinancialsMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
+          listOfAllDataMetaInfo.filter(
+            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyNonFinancials
+          )
         );
-        this.listOfEuTaxonomyFinancialsMetaInfo = listOfAllDataMetaInfo.filter(
-          (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyFinancials
+        this.listOfEuTaxonomyFinancialsMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
+          listOfAllDataMetaInfo.filter(
+            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyFinancials
+          )
         );
-        this.listOfSfdrMetaInfo = listOfAllDataMetaInfo.filter(
-          (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Sfdr
+        this.listOfSfdrMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
+          listOfAllDataMetaInfo.filter(
+            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Sfdr
+          )
         );
-        this.listOfLksgMetaInfo = listOfAllDataMetaInfo.filter(
-          (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Lksg
+        this.listOfLksgMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
+          listOfAllDataMetaInfo.filter(
+            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Lksg
+          )
         );
         this.waitingForData = false;
       } catch (error) {
