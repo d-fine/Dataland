@@ -18,8 +18,7 @@
         <span class="font-semibold">{{ companyInformation.sector }}</span>
       </div>
     </div>
-    <div v-else class="col-12">
-      <!--TODO this message might be possibly wrong? Show a more generic message?-->
+    <div v-else-if="companyIdDoesNotExist" class="col-12">
       <h1 class="mb-0">No company with this ID present</h1>
     </div>
   </TheContent>
@@ -45,6 +44,7 @@ export default defineComponent({
     return {
       companyInformation: null as CompanyInformation | null,
       waitingForData: true,
+      companyIdDoesNotExist: false,
     };
   },
   props: {
@@ -79,9 +79,15 @@ export default defineComponent({
         }
       } catch (error) {
         console.error(error);
+        if(this.getErrorText(error).includes("404")) {
+          this.companyIdDoesNotExist = true;
+        }
         this.waitingForData = false;
         this.companyInformation = null;
       }
+    },
+    getErrorText(error: any) {
+      return typeof error ===  "string" ? error : error instanceof Error ? error.message : "";
     },
   },
 });

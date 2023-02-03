@@ -6,14 +6,13 @@ import {
 } from "@e2e/utils/CompanyUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, StoredCompany } from "@clients/backend";
-import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "../../utils/EuTaxonomyFinancialsUpload";
-import { uploadLksgDataViaForm, uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
-import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
-import { generateEuTaxonomyDataForFinancials } from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures"; //TODO @s everywhere here
-import { verifyTaxonomySearchResultTable } from "../../utils/VerifyingElements"; // TODO add @ instead of ...
+import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { uploadLksgDataViaForm, uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
+import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
+import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
+import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
 
-// TODO wrong description from copy-pasting
-describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
+describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   beforeEach(function () {
     cy.ensureLoggedIn(uploader_name, uploader_pw);
   });
