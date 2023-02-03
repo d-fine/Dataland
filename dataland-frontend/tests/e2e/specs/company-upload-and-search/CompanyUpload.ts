@@ -23,9 +23,7 @@ describeIf(
       cy.ensureLoggedIn();
       const companyName = "Test company";
       cy.visitAndCheckAppMount("/companies/upload");
-      cy.wait(10000)
-      // TODO add wait with long timeout
-
+      cy.contains("div", "Create a Company");
       fillCompanyUploadFields(companyName);
       cy.intercept("**/api/companies").as("postCompany");
       cy.get('button[name="addCompany"]').click();
