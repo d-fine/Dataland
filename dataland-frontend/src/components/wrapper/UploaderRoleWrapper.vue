@@ -17,7 +17,7 @@ import TheContent from "@/components/generics/TheContent.vue";
 
 export default defineComponent({
   name: "UploaderRoleWrapper",
-  components: {TheContent},
+  components: { TheContent },
   data() {
     return {
       hasUserUploaderRights: null as boolean | null,
