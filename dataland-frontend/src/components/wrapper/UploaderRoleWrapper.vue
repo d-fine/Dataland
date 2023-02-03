@@ -3,7 +3,9 @@
     <slot></slot>
   </div>
   <div v-else>
-    <h1>You can not visit this site because you have no uploader status.</h1>
+    <TheContent>
+      <h1>You can not visit this site because you have no uploader status.</h1>
+    </TheContent>
   </div>
 </template>
 
@@ -11,9 +13,11 @@
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
+import TheContent from "@/components/generics/TheContent.vue";
 
 export default defineComponent({
   name: "UploaderRoleWrapper",
+  components: {TheContent},
   data() {
     return {
       hasUserUploaderRights: null as boolean | null,
