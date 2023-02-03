@@ -167,11 +167,10 @@ describeIf(
                 .click({ force: true })
                 .type(nameOfSomeCompanyWithLksgData);
               cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+                cy.get("ul[class=p-autocomplete-items]").should("exist");
                 cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
-                cy.wait(5000); // TODO debugging
                 cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}");
-                cy.wait(5000); // TODO debugging
-                cy.wait("@retrieveLksgData", { timeout: 50000 as number }).then(() => {
+                cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
                   cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
 
                   cy.get("table.p-datatable-table")
