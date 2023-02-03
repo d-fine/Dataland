@@ -3,7 +3,7 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
+import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi, ProductionSite } from "@clients/backend";
 import { uploadOneLksgDatasetViaApi, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { getPreparedFixture, getStoredCompaniesForDataType, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
@@ -144,7 +144,7 @@ describeIf(
             if (listOfProductionSites.length < 2) {
               throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
             }
-            listOfProductionSites.forEach((productionSite) => {
+            listOfProductionSites.forEach((productionSite: ProductionSite) => {
               if (productionSite.streetAndHouseNumber) {
                 cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.streetAndHouseNumber})`);
               }
@@ -168,7 +168,7 @@ describeIf(
                 .click({ force: true })
                 .type(nameOfSomeCompanyWithLksgData)
                 .wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
-              cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}");
+              cy.get(".p-autocomplete-item").contains(nameOfSomeCompanyWithLksgData).click();
               cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
               cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
               cy.get("table.p-datatable-table")

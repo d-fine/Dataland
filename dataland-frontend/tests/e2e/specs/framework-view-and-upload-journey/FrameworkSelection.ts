@@ -6,7 +6,7 @@ import { DataTypeEnum, LksgData } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
-import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
+import { getPreparedFixture, getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
@@ -230,6 +230,29 @@ describe("The shared header of the framework pages should act as expected", { sc
           "input#framework_data_search_bar_standard"
         );
         validateNonFinancialsPage();
+      });
+
+      it("Check if invalid company ID or invalid data ID lead to displayed error message on framework view page", () => {
+        cy.ensureLoggedIn();
+        const someInvalidCompanyId = "12345-some-invalid-companyId";
+        const someInvalidDataId = "789-some-invalid-dataId-987";
+        cy.visit(`/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`);
+        cy.contains("h1", "No company with this ID present");
+        getKeycloakToken().then((token: string) => {
+          return getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials).then(
+            (listOfStoredCompaniesWithAtLeastOneEuTaxoFinancialsDataset) => {
+              const companyIdOfSomeStoredCompany =
+                listOfStoredCompaniesWithAtLeastOneEuTaxoFinancialsDataset[0].companyId;
+              cy.visit(
+                `/companies/${companyIdOfSomeStoredCompany}/frameworks/${DataTypeEnum.EutaxonomyFinancials}?dataId=${someInvalidDataId}`
+              );
+              cy.contains(
+                "h2",
+                "There is no EU-Taxonomy data for financial companies available for the data ID you provided in the URL."
+              );
+            }
+          );
+        });
       });
     }
   );
