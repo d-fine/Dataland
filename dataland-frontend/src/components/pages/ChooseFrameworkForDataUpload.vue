@@ -142,6 +142,8 @@ export default defineComponent({
     // TODO jsdoc
     /**
      *  abc
+     *
+     * @param listOfDataMetaInfo
      */
     sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfo: Array<DataMetaInformation>): Array<DataMetaInformation> {
       return listOfDataMetaInfo.sort((dataMetaInfoA, dataMetaInfoB) => {

@@ -7,7 +7,7 @@ import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi, Productio
 import { uploadOneLksgDatasetViaApi, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { getPreparedFixture, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
-import {generateDummyCompanyInformation} from "../../utils/CompanyUpload";
+import { generateDummyCompanyInformation } from "../../utils/CompanyUpload";
 // TODO @ instead of ..
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 const monthAndDayOfLksgPreparedFixtures = "-01-01";
@@ -160,27 +160,29 @@ describeIf(
               .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
               .should("exist");
 
-              return uploadCompanyAndLksgDataViaApi(token, generateDummyCompanyInformation("askfkjakjg46kjhdskjg"), generateLksgData())
-                  .then(( ) => { // TODO working on fixing this random failing test
-                const name = "askfkjakjg46kjhdskjg"
-                cy.intercept("**/api/companies*").as("searchCompany");
-                cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
-                cy.scrollTo("top");
-                cy.get("input[id=framework_data_search_bar_standard]")
-                    .click({ force: true })
-                    .type(name)
-                    .wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
-                cy.get(".p-autocomplete-item").contains(name).click({ force: true });
-                cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-                cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
-                cy.get("table.p-datatable-table")
-                    .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
-                    .should("not.exist");
-              })
+            const someRandomCompanyName = "some-random-company-name-sj48jg3" + Date.now().toString() + "388fj";
+            return uploadCompanyAndLksgDataViaApi(
+              token,
+              generateDummyCompanyInformation(someRandomCompanyName),
+              generateLksgData()
+            ).then(() => {
+              cy.intercept("**/api/companies*").as("searchCompany");
+              cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
+              cy.get("input[id=framework_data_search_bar_standard]")
+                .click({ force: true })
+                .type(someRandomCompanyName)
+                .wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
+              cy.get(".p-autocomplete-item").contains(someRandomCompanyName).click({ force: true });
+              cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+              cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
+              cy.get("table.p-datatable-table")
+                .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+                .should("not.exist");
             });
           });
         });
       });
+    });
 
     it("Check Lksg view page for company with two Lksg data sets reported for the same year", () => {
       const preparedFixture = getPreparedFixture("two-lksg-data-sets-in-same-year", preparedFixtures);
