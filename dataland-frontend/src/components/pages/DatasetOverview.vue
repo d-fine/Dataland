@@ -22,6 +22,9 @@
             <p class="font-medium text-xl">Loading datasets...</p>
             <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
           </div>
+          <div v-else-if="datasetTableInfos.length === 0">
+            <h1 class="mb-0">No datasets uploaded</h1>
+          </div>
         </TheContent>
       </TabPanel>
     </TabView>
