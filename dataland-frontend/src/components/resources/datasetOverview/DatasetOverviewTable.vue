@@ -113,7 +113,6 @@ export default defineComponent({
      * Filter the given datasets for the search string in the company name
      */
     applySearchFilter(): void {
-      // TODO implement this properly
       this.displayedDatasetTableInfos = this.datasetTableInfos.filter((info) =>
         (info as DatasetTableInfo).companyName.toLowerCase().includes(this.searchBarInput.toLowerCase())
       ) as DatasetTableInfo[];

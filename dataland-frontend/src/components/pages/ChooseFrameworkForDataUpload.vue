@@ -139,11 +139,11 @@ export default defineComponent({
 
   watch: {},
   methods: {
-    // TODO jsdoc
     /**
-     *  abcd
+     *  Sorts a list of data meta information by their uploading time
      *
-     * @param listOfDataMetaInfo
+     * @param listOfDataMetaInfo the list of data meta information to be sorted
+     * @returns the sorted list of data meta information
      */
     sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfo: Array<DataMetaInformation>): Array<DataMetaInformation> {
       return listOfDataMetaInfo.sort((dataMetaInfoA, dataMetaInfoB) => {
