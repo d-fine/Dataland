@@ -64,8 +64,7 @@ export default defineComponent({
   },
   methods: {
     /**
-     * TODO adjust
-     * Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
+     * Handles changes in the provided data IDs
      *
      * @param receivedEuTaxoFinanicalsDataIds Received EU Taxonomy for financial companies data IDs
      */

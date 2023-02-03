@@ -149,8 +149,6 @@ describe(
           cy.get("tbody td a").click();
           cy.url().should("contain", `/frameworks/${DataTypeEnum.Lksg}`);
         });
-
-        // TODO behaviour for data reader: only no NEW DATASET button but empty table in this case
       }
     );
   }
