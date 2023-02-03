@@ -3,7 +3,7 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import {Configuration, DataTypeEnum, LksgData, LksgDataControllerApi, ProductionSite} from "@clients/backend";
+import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi, ProductionSite } from "@clients/backend";
 import { uploadOneLksgDatasetViaApi, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { getPreparedFixture, getStoredCompaniesForDataType, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
@@ -169,7 +169,6 @@ describeIf(
                 .type(nameOfSomeCompanyWithLksgData)
                 .wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
               cy.get(".p-autocomplete-item").contains(nameOfSomeCompanyWithLksgData).click();
-              // cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}"); TODO debugging
               cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
               cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
               cy.get("table.p-datatable-table")
