@@ -1,8 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
@@ -77,9 +76,13 @@ class DataManager(
                 "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId"
         )
+
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        storeMetaDataInformation(dataId, storableDataSet.dataType, storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No")
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "New data - QA necessary", correlationId, "upload_queue")
+        val updatedMetaData = DataMetaInformationEntity(dataId,storableDataSet.dataType.toString(),
+            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No")
+        metaDataManager.storeDataMetaInformation(updatedMetaData, "No")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "New data - QA necessary", correlationId,
+            "upload_queue")
         return dataId
     }
 
@@ -94,27 +97,10 @@ class DataManager(
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         if (dataId.isNotEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            storeMetaDataInformation(dataId, DataType.valueOf(metaInformation.dataType), metaInformation.uploaderUserId, metaInformation.uploadTime, metaInformation.company, "Yes")
-            logger.info("Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId")
+            metaDataManager.storeDataMetaInformation(metaInformation, "Yes")
+            logger.info("Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
+                    correlationId)
         }
-    }
-
-    private fun storeMetaDataInformation(
-        dataId: String,
-        dataType: DataType,
-        uploaderUserId: String,
-        uploadTime: Long,
-        company: StoredCompanyEntity,
-        qualityAssuredYesNo: String,
-    ) {
-        metaDataManager.storeDataMetaInformation(
-            dataId,
-            dataType,
-            uploaderUserId,
-            uploadTime,
-            company,
-            qualityAssuredYesNo,
-        )
     }
 
     @RabbitHandler

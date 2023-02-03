@@ -1,10 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -23,25 +20,20 @@ class DataMetaInformationManager(
 
     /**
      * Method to associate data information with a specific company
-     * @param company The company to associate the data meta information with
-     * @param dataId The id of the dataset to associate with the company
-     * @param dataType The dataType of the dataId
+     * @param updatedMetaData The data meta information which should be stored
+     * @param isQualityAssured Flag whether the data was quality assured or not
      */
     @Transactional
     fun storeDataMetaInformation(
-        dataId: String,
-        dataType: DataType,
-        uploaderUserId: String,
-        uploadTime: Long,
-        company: StoredCompanyEntity,
+        updatedMetaData: DataMetaInformationEntity,
         isQualityAssured: String,
     ): DataMetaInformationEntity {
         val dataMetaInformationEntity = DataMetaInformationEntity(
-            dataId = dataId,
-            dataType = dataType.name,
-            uploaderUserId = uploaderUserId,
-            uploadTime = uploadTime,
-            company = company,
+            dataId = updatedMetaData.dataId,
+            dataType = updatedMetaData.dataType,
+            uploaderUserId = updatedMetaData.uploaderUserId,
+            uploadTime = updatedMetaData.uploadTime,
+            company = updatedMetaData.company,
             isQualityAssured = isQualityAssured
         )
 
