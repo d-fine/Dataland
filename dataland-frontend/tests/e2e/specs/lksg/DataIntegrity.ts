@@ -163,18 +163,19 @@ describeIf(
               const nameOfSomeCompanyWithLksgData = listOfStoredCompanies[0].companyInformation.companyName;
               cy.intercept("**/api/companies*").as("searchCompany");
               cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
+              cy.scrollTo("top")
               cy.get("input[id=framework_data_search_bar_standard]")
                 .click({ force: true })
-                .type(nameOfSomeCompanyWithLksgData);
-              cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number })
-              cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}");
-              cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+                .type(nameOfSomeCompanyWithLksgData)
+                .wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number })
+              cy.get("input[id=framework_data_search_bar_standard]")
+                .type("{downArrow}")
+                .type("{enter}");
+              cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
               cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
               cy.get("table.p-datatable-table")
-                  .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
-                  .should("not.exist");
-
-
+                .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+                .should("not.exist");
             });
           });
         });
