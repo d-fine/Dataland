@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,12 +23,10 @@ class EuTaxonomyDataForNonFinancialsController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired var myRabbitTemplate: RabbitTemplate
 ) : DataController<EuTaxonomyDataForNonFinancials>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    myRabbitTemplate,
     EuTaxonomyDataForNonFinancials::class.java
 ) {
     @Operation(operationId = "getCompanyAssociatedEuTaxonomyDataForNonFinancials")
