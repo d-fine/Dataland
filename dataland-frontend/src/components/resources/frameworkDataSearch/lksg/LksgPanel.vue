@@ -126,7 +126,7 @@ export default defineComponent({
     },
 
     /**
-     * Retrieves and converts values from an array of LkSG datasets in order to make it displayable in the frontend.
+     * Retrieves and converts the stored array of LkSG datasets in order to make it displayable in the frontend.
      */
     convertLksgDataToFrontendFormat(): void {
       this.lksgData.forEach((oneLksgDataset) => {
