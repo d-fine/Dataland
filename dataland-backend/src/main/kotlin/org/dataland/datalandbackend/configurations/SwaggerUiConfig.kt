@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Configuration
 class SwaggerUiConfig {
     @Bean
     fun publicApi(): GroupedOpenApi? {
-        return GroupedOpenApi.builder().group("internal").pathsToMatch("/**/internal/**").build()
+        return GroupedOpenApi.builder().group("internal").pathsToMatch("/internal/**").build()
     }
 
     @Bean
     fun adminApi(): GroupedOpenApi? {
-        return GroupedOpenApi.builder().group("public").pathsToMatch("/**/public/**").build()
+        return GroupedOpenApi.builder().group("public").pathsToMatch("/public/**").build()
     }
 
 }
