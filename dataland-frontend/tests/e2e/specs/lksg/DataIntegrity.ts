@@ -168,8 +168,9 @@ describeIf(
                 .click({ force: true })
                 .type(nameOfSomeCompanyWithLksgData)
                 .wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
+              cy.wait(10000) // TODO debugging
               cy.get(".p-autocomplete-item").contains(nameOfSomeCompanyWithLksgData).click( {force: true});
-              cy.wait(120000) // TODO debugging
+              cy.wait(12000) // TODO debugging
               // TODO debugging
               cy.log(nameOfSomeCompanyWithLksgData)
               cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
