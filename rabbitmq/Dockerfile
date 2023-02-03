@@ -1,0 +1,5 @@
+FROM rabbitmq:3.7-management
+COPY ./rabbitmq/custom_entrypoint.sh ./custom_entrypoint.sh
+COPY ./rabbitmq/definitions.json /etc/rabbitmq/definitions.json
+COPY ./rabbitmq/rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
+ENTRYPOINT ["./custom_entrypoint.sh"]
