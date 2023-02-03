@@ -72,7 +72,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
         this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))).data;
-        this.convertLksgDataToFrontendFormat(this.lksgData);
+        this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -126,12 +126,10 @@ export default defineComponent({
     },
 
     /**
-     * Retrieves and converts values from an array of LkSG datasets in order to make it displayable in the frontend.
-     *
-     * @param lksgData The LkSG dataset that shall be converted
+     * Retrieves and converts the stored array of LkSG datasets in order to make it displayable in the frontend.
      */
-    convertLksgDataToFrontendFormat(lksgData: Array<LksgData>): void {
-      lksgData.forEach((oneLksgDataset) => {
+    convertLksgDataToFrontendFormat(): void {
+      this.lksgData.forEach((oneLksgDataset) => {
         const dataDateOfLksgDataset = oneLksgDataset.social?.general?.dataDate ?? "";
         this.listOfDatesToDisplayAsColumns.push(dataDateOfLksgDataset);
         for (const areaObject of Object.values(oneLksgDataset)) {
