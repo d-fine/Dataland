@@ -76,10 +76,12 @@ export default defineComponent({
     };
   },
   created() {
-    void checkIfUserHasUploaderRights(this.getKeycloakPromise).then((hasUserUploaderRights) => {
-      this.hasUserUploaderRights = hasUserUploaderRights;
-    });
-    void this.requestDataMetaDataForCurrentUser();
+    checkIfUserHasUploaderRights(this.getKeycloakPromise)
+      .then((hasUserUploaderRights) => {
+        this.hasUserUploaderRights = hasUserUploaderRights;
+      })
+      .catch((error) => console.log(error));
+    this.requestDataMetaDataForCurrentUser().catch((error) => console.log(error));
   },
   methods: {
     /**

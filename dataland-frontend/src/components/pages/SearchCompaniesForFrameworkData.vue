@@ -137,10 +137,12 @@ export default defineComponent({
   },
   created() {
     window.addEventListener("scroll", this.windowScrollHandler);
-    void checkIfUserHasUploaderRights(this.getKeycloakPromise).then((hasUserUploaderRights) => {
-      this.hasUserUploaderRights = hasUserUploaderRights;
-    });
-    void this.scanQueryParams(this.route);
+    checkIfUserHasUploaderRights(this.getKeycloakPromise)
+      .then((hasUserUploaderRights) => {
+        this.hasUserUploaderRights = hasUserUploaderRights;
+      })
+      .catch((error) => console.log(error));
+    this.scanQueryParams(this.route);
   },
   data() {
     return {
