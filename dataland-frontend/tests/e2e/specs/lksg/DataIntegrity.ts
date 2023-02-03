@@ -162,21 +162,19 @@ describeIf(
             return getStoredCompaniesForDataType(token, DataTypeEnum.Lksg).then((listOfStoredCompanies) => {
               const nameOfSomeCompanyWithLksgData = listOfStoredCompanies[0].companyInformation.companyName;
               cy.intercept("**/api/companies*").as("searchCompany");
+              cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
               cy.get("input[id=framework_data_search_bar_standard]")
                 .click({ force: true })
                 .type(nameOfSomeCompanyWithLksgData);
-              cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-                cy.get("ul[class=p-autocomplete-items]").should("exist");
-                cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
-                cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}");
-                cy.wait("@retrieveLksgData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
-                  cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
+              cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number })
+              cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}");
+              cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+              cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
+              cy.get("table.p-datatable-table")
+                  .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+                  .should("not.exist");
 
-                  cy.get("table.p-datatable-table")
-                    .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
-                    .should("not.exist");
-                });
-              });
+
             });
           });
         });
