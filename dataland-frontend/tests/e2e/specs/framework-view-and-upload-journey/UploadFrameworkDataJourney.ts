@@ -46,8 +46,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         })
         .then((dataMetaInformationOfFirstUpload) => {
           dataIdOfFirstEuTaxoFinancialsUpload = dataMetaInformationOfFirstUpload.dataId;
-          // TODO the second dataset must be uploaded some seconds after the first one! this needs to be assured so that
-          // TODO the first dataset in the overview is actually the older one!
           return cy
             .wait(2000)
             .then(() => {

@@ -7,8 +7,8 @@ import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi, Productio
 import { uploadOneLksgDatasetViaApi, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { getPreparedFixture, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
-import { generateDummyCompanyInformation } from "../../utils/CompanyUpload";
-// TODO @ instead of ..
+import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
+
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 const monthAndDayOfLksgPreparedFixtures = "-01-01";
 
