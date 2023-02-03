@@ -79,15 +79,21 @@ export default defineComponent({
         }
       } catch (error) {
         console.error(error);
-        if(this.getErrorText(error).includes("404")) {
+        if (this.getErrorMessage(error).includes("404")) {
           this.companyIdDoesNotExist = true;
         }
         this.waitingForData = false;
         this.companyInformation = null;
       }
     },
-    getErrorText(error: any) {
-      return typeof error ===  "string" ? error : error instanceof Error ? error.message : "";
+    /**
+     * Tries to find a message in an error
+     *
+     * @param error the error to extract a message from
+     * @returns the extracted message
+     */
+    getErrorMessage(error: unknown) {
+      return typeof error === "string" ? error : error instanceof Error ? error.message : "";
     },
   },
 });
