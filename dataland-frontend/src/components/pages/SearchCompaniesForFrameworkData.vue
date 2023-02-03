@@ -135,9 +135,11 @@ export default defineComponent({
     TabView,
     TabPanel,
   },
-  async created() {
+  created() {
     window.addEventListener("scroll", this.windowScrollHandler);
-    this.hasUserUploaderRights = await checkIfUserHasUploaderRights(this.getKeycloakPromise);
+    void checkIfUserHasUploaderRights(this.getKeycloakPromise).then((hasUserUploaderRights) => {
+      this.hasUserUploaderRights = hasUserUploaderRights;
+    });
     void this.scanQueryParams(this.route);
   },
   data() {

@@ -75,9 +75,11 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  async created() {
-    this.hasUserUploaderRights = await checkIfUserHasUploaderRights(this.getKeycloakPromise);
-    void (await this.requestDataMetaDataForCurrentUser());
+  created() {
+    void checkIfUserHasUploaderRights(this.getKeycloakPromise).then((hasUserUploaderRights) => {
+      this.hasUserUploaderRights = hasUserUploaderRights;
+    });
+    void this.requestDataMetaDataForCurrentUser();
   },
   methods: {
     /**
