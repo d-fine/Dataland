@@ -281,6 +281,9 @@ services:
     volumes:
       - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    environment:
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s

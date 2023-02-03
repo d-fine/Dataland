@@ -2,8 +2,8 @@
   "rabbit_version": "3.7.28",
   "users": [
     {
-      "name": "admin",
-      "password_hash": "JPnaL2uPzfq0vDolvtZz58p95DGyTOTLgeHie7Y2pwfJObxA",
+      "name": "RABBITMQ_USER_PLACEHOLDER",
+      "password_hash": "RABBITMQ_PASS_HASH_PLACEHOLDER",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "administrator"
     }
@@ -15,7 +15,7 @@
   ],
   "permissions": [
     {
-      "user": "admin",
+      "user": "RABBITMQ_USER_PLACEHOLDER",
       "vhost": "/",
       "configure": ".*",
       "write": ".*",
