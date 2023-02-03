@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section min-h-screen">
-      <MarginWrapper class="text-left mt-2 surface-0" style="margin-right: 0rem">
+      <MarginWrapper class="text-left surface-0" style="margin-right: 0rem">
         <BackButton />
         <FrameworkDataSearchBar class="mt-2" ref="frameworkDataSearchBar" @search-confirmed="handleSearchConfirm" />
       </MarginWrapper>
@@ -31,6 +31,7 @@
         <slot></slot>
       </MarginWrapper>
     </TheContent>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -49,6 +50,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import Dropdown from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -61,6 +63,7 @@ export default defineComponent({
     Dropdown,
     AuthenticationWrapper,
     CompanyInformation,
+    DatalandFooter,
   },
   emits: ["updateDataId"],
   props: {

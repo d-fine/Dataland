@@ -14,19 +14,17 @@
       <h2>No LkSG data</h2>
     </div>
   </ViewFrameworkBase>
-  <DatalandFooter />
 </template>
 
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { defineComponent } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewLksg",
-  components: { ViewFrameworkBase, LksgPanel, DatalandFooter },
+  components: { ViewFrameworkBase, LksgPanel },
   props: {
     companyID: {
       type: String,

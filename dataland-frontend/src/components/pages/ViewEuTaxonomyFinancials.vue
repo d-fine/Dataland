@@ -1,52 +1,24 @@
 <template>
-  <ViewFrameworkBase
-    :companyID="companyID"
-    :dataType="DataTypeEnum.EutaxonomyFinancials"
-    @updateDataId="handleReceivedListOfDataIds"
+  <ViewSingleDatasetDisplayBase
+    :company-id="companyID"
+    :data-type="DataTypeEnum.EutaxonomyFinancials"
+    v-model:data-id-to-display="dataIdToDisplay"
+    data-descriptor="EU-Taxonomy data for financial companies"
+    title="EU Taxonomy Data"
   >
-    <template v-if="dataIdToDisplay">
-      <div class="grid">
-        <div class="col-12 text-left">
-          <h2 class="mb-0">EU Taxonomy Data</h2>
-        </div>
-        <div class="col-6 text-left">
-          <p class="font-semibold m-0">2021</p>
-          <p class="font-semibold text-gray-800 mt-0">Data from company report.</p>
-        </div>
-      </div>
-      <div class="grid">
-        <div class="col-7">
-          <EuTaxonomyPanelFinancials :dataID="dataIdToDisplay" />
-        </div>
-      </div>
-    </template>
-    <div v-if="waitingForDataIdsAndChoosingDataIdToDisplay" class="col-12 text-left">
-      <h2>Checking if EU-taxonomy data for financial companies available...</h2>
-    </div>
-    <div
-      v-if="!waitingForDataIdsAndChoosingDataIdToDisplay && listOfReceivedEuTaxoFinancialsDataIds.length === 0"
-      class="col-12 text-left"
-    >
-      <h2>No EU-Taxonomy data for financial companies present</h2>
-    </div>
-    <div v-if="!isQueryParamDataIdValid">
-      <h2>There is no EU-Taxonomy data for financial companies available for the data ID you provided in the URL.</h2>
-    </div>
-  </ViewFrameworkBase>
-  <DatalandFooter />
+    <EuTaxonomyPanelFinancials :dataID="dataIdToDisplay" />
+  </ViewSingleDatasetDisplayBase>
 </template>
 
 <script lang="ts">
-import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { defineComponent } from "vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
-import { useRoute } from "vue-router";
+import ViewSingleDatasetDisplayBase from "@/components/generics/ViewSingleDatasetDisplayBase.vue";
 import { DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewEuTaxonomyFinancials",
-  components: { ViewFrameworkBase, EuTaxonomyPanelFinancials, DatalandFooter },
+  components: { ViewSingleDatasetDisplayBase, EuTaxonomyPanelFinancials },
   props: {
     companyID: {
       type: String,
@@ -54,41 +26,9 @@ export default defineComponent({
   },
   data() {
     return {
-      waitingForDataIdsAndChoosingDataIdToDisplay: true,
-      listOfReceivedEuTaxoFinancialsDataIds: [] as string[],
       dataIdToDisplay: "",
-      route: useRoute(),
-      isQueryParamDataIdValid: true,
       DataTypeEnum,
     };
-  },
-  methods: {
-    /**
-     * Handles changes in the provided data IDs by storing and picking a dataset to display
-     *
-     * @param receivedEuTaxoFinanicalsDataIds Received EU Taxonomy for financial companies data IDs
-     */
-    handleReceivedListOfDataIds(receivedEuTaxoFinanicalsDataIds: []) {
-      this.listOfReceivedEuTaxoFinancialsDataIds = receivedEuTaxoFinanicalsDataIds;
-      this.chooseDataIdToDisplayBasedOnQueryParam();
-      this.waitingForDataIdsAndChoosingDataIdToDisplay = false;
-    },
-    /**
-     * ToDo this is a code duplicate and exists also in ViewEuTaxonomyNonFinancials.vue
-     * Displays either the data set using the ID from the query param or if that is not available the first data set from the list of received data sets.
-     */
-    chooseDataIdToDisplayBasedOnQueryParam() {
-      const singleQueryDataId = this.route.query.dataId as string;
-      if (singleQueryDataId) {
-        if (this.listOfReceivedEuTaxoFinancialsDataIds.includes(singleQueryDataId)) {
-          this.dataIdToDisplay = singleQueryDataId;
-        } else {
-          this.isQueryParamDataIdValid = false;
-        }
-      } else {
-        this.dataIdToDisplay = this.listOfReceivedEuTaxoFinancialsDataIds[0];
-      }
-    },
   },
 });
 </script>
