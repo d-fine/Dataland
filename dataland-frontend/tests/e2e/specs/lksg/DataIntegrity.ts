@@ -169,6 +169,7 @@ describeIf(
                 .type(nameOfSomeCompanyWithLksgData)
                 .wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
               cy.get(".p-autocomplete-item").contains(nameOfSomeCompanyWithLksgData).click();
+              cy.wait(120000) // TODO debugging
               cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
               cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
               cy.get("table.p-datatable-table")
