@@ -10,7 +10,7 @@
       :kpiNameMappings="lksgKpiNameMappings"
       :kpiInfoMappings="lksgKpiInfoMappings"
       :subAreaNameMappings="lksgSubAreaNameMappings"
-      tableDataTitle="LkSG data"
+      tableDataTitle="LkSG Data"
     />
   </div>
 </template>
