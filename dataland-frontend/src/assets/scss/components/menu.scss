@@ -35,6 +35,7 @@
         text-decoration: none;
         &:hover {
           color: $jumpLinks-hover;
+          cursor: pointer;
         }
       }
     }
