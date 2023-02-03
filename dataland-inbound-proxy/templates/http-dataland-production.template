@@ -29,8 +29,8 @@ server {
       include utils/apiKeysErrors.conf;
     }
 
-    location /api/ {
-      proxy_pass http://backend:8080/api/;
+    location /api/public/ {
+      proxy_pass http://backend:8080/api/public/;
       include utils/proxy.conf;
       include utils/apiErrors.conf;
     }
