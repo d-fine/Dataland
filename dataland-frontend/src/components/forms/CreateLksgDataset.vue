@@ -708,6 +708,7 @@ export default defineComponent({
         listOfGoodsOrServicesString: "",
       },
     ],
+    idCounter: 0,
     allCountry: getAllCountryNamesWithCodes(),
     dataDate: "",
     convertedDataDate: "",
@@ -758,6 +759,7 @@ export default defineComponent({
             listOfGoodsOrServicesString: "",
           },
         ];
+        this.idCounter = 0;
         this.dataDate = "";
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
@@ -801,8 +803,9 @@ export default defineComponent({
      * Adds a new Object to the ProductionSite array
      */
     addNewProductionSite() {
+      this.idCounter++;
       this.listOfProductionSites.push({
-        id: Math.random(),
+        id: this.idCounter,
         listOfGoodsOrServices: [],
         listOfGoodsOrServicesString: "",
       });
