@@ -41,9 +41,9 @@ if (cypressTestGroup === 102) {
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
- // require("./framework-view-and-upload-journey");  TODO reactivate when done debugging
- // require("./eu-taxonomy-non-financials");TODO reactivate when done debugging
- // require("./eu-taxonomy-financials");TODO reactivate when done debugging
+  // require("./framework-view-and-upload-journey");  TODO reactivate when done debugging
+  // require("./eu-taxonomy-non-financials");TODO reactivate when done debugging
+  // require("./eu-taxonomy-financials");TODO reactivate when done debugging
   require("./lksg");
 }
 
