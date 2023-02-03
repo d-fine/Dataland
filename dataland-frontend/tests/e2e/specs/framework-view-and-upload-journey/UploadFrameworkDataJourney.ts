@@ -12,7 +12,6 @@ import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
 import { generateEuTaxonomyDataForFinancials } from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures"; //TODO @s everywhere here
 import { verifyTaxonomySearchResultTable } from "../../utils/VerifyingElements"; // TODO add @ instead of ...
 
-
 // TODO wrong description from copy-pasting
 describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
   beforeEach(function () {
@@ -91,6 +90,8 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
     cy.window().its("scrollY").should("be.gt", latestScrollPosition);
     cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
+
+    // TODO upload vie Form test starting from here
     uploadCompanyViaFormAndGetId(testCompanyNameForFormUpload).then((companyId) => {
       cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
       cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/upload");
@@ -99,8 +100,8 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.wait("@getCompanyInformation", { timeout: Cypress.env("short_timeout_in_ms") as number });
       cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload");
       cy.get("h1").should("contain", testCompanyNameForFormUpload);
-     // uploadLksgDataViaForm(companyId); // TODO  one arugment too much??   +    we should put this test to lksg specific
-      // tests maybe
+      uploadLksgDataViaForm(); // TODO   should we put this test to lksg specific tests?
+
     });
   });
 
