@@ -89,6 +89,8 @@ services:
       MAILJET_API_ID: ${MAILJET_API_ID}
       INVITATION_REQUEST_RECEIVERS: ${INVITATION_REQUEST_RECEIVERS}
       INVITATION_REQUEST_CC: ${INVITATION_REQUEST_CC}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
   backend-db:
     restart: always
     profiles: ["production", "testing", "development"]
@@ -161,6 +163,8 @@ services:
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
     depends_on:
       - internal-storage-db
   internal-storage-db:
@@ -284,6 +288,9 @@ services:
       retries: 3
   dummy-qa-service:
     profiles: ["production", "testing", "development"]
+    environment:
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
     networks:
       - internal
     image: ghcr.io/d-fine/dataland/dataland_dummy_qa_service_test:${DATALAND_DUMMY_QA_SERVICE_TEST_VERSION}

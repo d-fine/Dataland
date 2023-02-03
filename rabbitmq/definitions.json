@@ -1,9 +1,9 @@
 {
-  "rabbit_version": "3.7.6",
+  "rabbit_version": "3.7.28",
   "users": [
     {
-      "name": "other_guest",
-      "password_hash": "MQdLugKr3mH+/F80LFlcmSCmW7PzRIs2mhkw+K84COXmhIot",
+      "name": "admin",
+      "password_hash": "JPnaL2uPzfq0vDolvtZz58p95DGyTOTLgeHie7Y2pwfJObxA",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "administrator"
     }
@@ -15,7 +15,7 @@
   ],
   "permissions": [
     {
-      "user": "other_guest",
+      "user": "admin",
       "vhost": "/",
       "configure": ".*",
       "write": ".*",
@@ -33,6 +33,13 @@
   "policies": [],
   "queues": [
     {
+      "name": "stored_queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
       "name": "qa_queue",
       "vhost": "/",
       "durable": true,
@@ -48,13 +55,6 @@
     },
     {
       "name": "storage_queue",
-      "vhost": "/",
-      "durable": true,
-      "auto_delete": false,
-      "arguments": {}
-    },
-    {
-      "name": "stored_queue",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,

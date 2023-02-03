@@ -37,6 +37,8 @@ expected_vars=( \
   PROXY_LETSENCRYPT_PATH \
   INVITATION_REQUEST_RECEIVERS \
   INVITATION_REQUEST_CC \
+  RABBITMQ_USER \
+  RABBITMQ_PASS
 )
 
 for var in "${expected_vars[@]}"

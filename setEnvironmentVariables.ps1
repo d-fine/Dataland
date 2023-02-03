@@ -39,3 +39,5 @@
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_LINKEDIN_SECRET", "#", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PROXY_PRIMARY_URL", "local-dev.dataland.com", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("PROXY_LETSENCRYPT_PATH", "/etc/letsencrypt/local-dev.dataland.com", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("RABBITMQ_USER", "admin", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("RABBITMQ_PASS", "dataland", [System.EnvironmentVariableTarget]::User)
