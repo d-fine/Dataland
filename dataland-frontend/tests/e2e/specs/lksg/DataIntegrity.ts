@@ -11,6 +11,9 @@ import Chainable = Cypress.Chainable;
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 const monthAndDayOfLksgPreparedFixtures = "-01-01";
 
+
+// TODO this title says that lksg upload form will be used here in this test file, so it should not be used in
+// UploadFrameworkDataJourney.ts maybe
 describeIf(
   "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
     "correctly in the frontend",
@@ -165,7 +168,9 @@ describeIf(
                 .type(nameOfSomeCompanyWithLksgData);
               cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
                 cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
+                cy.wait(5000) // TODO debugging
                 cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}");
+                cy.wait(5000) // TODO debugging
                 cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
                   cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
 

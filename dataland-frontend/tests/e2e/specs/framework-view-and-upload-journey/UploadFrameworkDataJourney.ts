@@ -10,8 +10,10 @@ import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "../../utils/EuTaxono
 import { uploadLksgDataViaForm, uploadOneLksgDatasetViaApi } from "../../utils/LksgUpload";
 import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures";
 import { generateEuTaxonomyDataForFinancials } from "../../fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures"; //TODO @s everywhere here
-import { verifyTaxonomySearchResultTable } from "../../utils/VerifyingElements";
+import { verifyTaxonomySearchResultTable } from "../../utils/VerifyingElements"; // TODO add @ instead of ...
 
+
+// TODO wrong description from copy-pasting
 describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
   beforeEach(function () {
     cy.ensureLoggedIn(uploader_name, uploader_pw);
