@@ -101,7 +101,6 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload");
       cy.get("h1").should("contain", testCompanyNameForFormUpload);
       uploadLksgDataViaForm(); // TODO   should we put this test to lksg specific tests?
-
     });
   });
 

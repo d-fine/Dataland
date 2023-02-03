@@ -23,8 +23,14 @@
     <div v-if="waitingForDataIdsAndChoosingDataIdToDisplay" class="col-12 text-left">
       <h2>Checking if EU-taxonomy data for financial companies available...</h2>
     </div>
-    <div v-if="!waitingForDataIdsAndChoosingDataIdToDisplay && !dataIdToDisplay" class="col-12 text-left">
+    <div
+      v-if="!waitingForDataIdsAndChoosingDataIdToDisplay && listOfReceivedEuTaxoFinancialsDataIds.length === 0"
+      class="col-12 text-left"
+    >
       <h2>No EU-Taxonomy data for financial companies present</h2>
+    </div>
+    <div v-if="!isQueryParamDataIdValid">
+      <h2>There is no EU-Taxonomy data for financial companies available for the data ID you provided in the URL.</h2>
     </div>
   </ViewFrameworkBase>
   <DatalandFooter />
@@ -52,6 +58,7 @@ export default defineComponent({
       listOfReceivedEuTaxoFinancialsDataIds: [] as string[],
       dataIdToDisplay: "",
       route: useRoute(),
+      isQueryParamDataIdValid: true,
       DataTypeEnum,
     };
   },
@@ -74,7 +81,11 @@ export default defineComponent({
     chooseDataIdToDisplayBasedOnQueryParam() {
       const singleQueryDataId = this.route.query.dataId as string;
       if (singleQueryDataId) {
-        this.dataIdToDisplay = singleQueryDataId;
+        if (this.listOfReceivedEuTaxoFinancialsDataIds.includes(singleQueryDataId)) {
+          this.dataIdToDisplay = singleQueryDataId;
+        } else {
+          this.isQueryParamDataIdValid = false;
+        }
       } else {
         this.dataIdToDisplay = this.listOfReceivedEuTaxoFinancialsDataIds[0];
       }

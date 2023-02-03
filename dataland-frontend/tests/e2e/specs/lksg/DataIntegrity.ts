@@ -11,7 +11,6 @@ import Chainable = Cypress.Chainable;
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 const monthAndDayOfLksgPreparedFixtures = "-01-01";
 
-
 // TODO this title says that lksg upload form will be used here in this test file, so it should not be used in
 // UploadFrameworkDataJourney.ts maybe
 describeIf(
