@@ -19,6 +19,10 @@ class NonPersistedDataManager(
 
 ) {
     // TODO fix type missmatch, check why objectmapper is necessary
+    /**
+     * This method retrieves data from the temporal storage
+     * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
+     */
     fun selectDataSetForInternalStorage(dataId: String): String {
         return objectMapper.writeValueAsString(dataInformationHashMap.map[dataId]!!)
     }

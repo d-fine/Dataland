@@ -27,6 +27,10 @@ interface NonPersistedDataApi {
         value = ["/{dataId}"],
         produces = ["application/json"]
     )
+            /**
+             * This method retrieves data entries from the temporary storage
+             * @param dataId filters the requested data to a specific entry.
+             */
     fun getCompanyAssociatedDataForInternalStorage(@PathVariable("dataId") dataId: String):
         ResponseEntity<String>
 }

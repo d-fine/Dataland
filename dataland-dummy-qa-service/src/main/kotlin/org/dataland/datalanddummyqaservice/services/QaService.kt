@@ -12,9 +12,14 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 
+/**
+ * This class holds the function to start the dummy QA service
+ */
 @SpringBootApplication
 class ConsumerApplication
-
+/**
+ * This class holds the function to run the dummy QA service
+ */
 fun main(args: Array<String>) {
     runApplication<ConsumerApplication>(*args)
 }
@@ -42,9 +47,11 @@ class QaService(
     fun receive(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        if (!dataId.isNullOrEmpty()){
-            logger.info("Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "QA Process Completed", correlationId,"qa_queue")
+        if (dataId.isNotEmpty()){
+            logger.info("Received data upload with DataId: $dataId on QA message queue with Correlation Id: " +
+                    "$correlationId")
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "QA Process Completed", correlationId,
+                "qa_queue")
         }
     }
 }

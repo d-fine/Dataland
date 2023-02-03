@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
@@ -82,6 +83,10 @@ class DataManager(
         return dataId
     }
 
+    /**
+     * Method that listens to the qa_queue and updates the metadata information after successful qa process
+     * @param message is the message delivered on the message queue
+     */
     @RabbitListener(queues = ["qa_queue"])
     @RabbitHandler
     fun updateMetaDataAfterQA(message: Message) {
@@ -121,7 +126,8 @@ class DataManager(
         val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
         dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
         logger.info(dataInformationHashMap.map[dataId])
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId, "storage_queue")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId,
+            "storage_queue")
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
                 " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId."

@@ -48,7 +48,8 @@ class DatabaseDataStore(
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         try {
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data successfully stored", correlationId ,"stored_queue")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data successfully stored", correlationId ,
+            "stored_queue")
         } catch (e: ServerException) {
             val internalMessage = "Error storing data." +
                     " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
