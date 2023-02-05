@@ -1,7 +1,7 @@
 <template>
-  <LandingLogin />
-  <SampleSection />
-  <MarketingSection />
+  <LandingLogin :isMobile="isMobile" />
+  <SampleSection v-if="!isMobile" />
+  <MarketingSection :isMobile="isMobile" />
   <DatalandFooter />
 </template>
 
@@ -21,7 +21,11 @@ export default defineComponent({
       authenticated: inject<boolean>("authenticated"),
     };
   },
-
+  props: {
+    isMobile: {
+      type: Boolean,
+    },
+  },
   mounted() {
     void this.checkAuthenticatedAndRedirectIfLoggedIn();
   },
