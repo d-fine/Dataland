@@ -2,7 +2,7 @@
   <LandingLogin :isMobile="isMobile" />
   <SampleSection v-if="!isMobile" />
   <MarketingSection :isMobile="isMobile" />
-  <DatalandFooter />
+  <DatalandFooter :isMobile="isMobile" />
 </template>
 
 <script lang="ts">
