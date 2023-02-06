@@ -17,23 +17,24 @@ import org.springframework.stereotype.Component
 @Component
 class ApiKeyAuthenticationFailureHandler(
     @Value("\${dataland.expose-error-stack-trace-to-api:false}")
-    val displayDetailedErrorMessage: Boolean
+    val displayDetailedErrorMessage: Boolean,
 ) : AuthenticationFailureHandler {
 
     override fun onAuthenticationFailure(
         request: HttpServletRequest?,
         response: HttpServletResponse?,
-        exception: AuthenticationException?
+        exception: AuthenticationException?,
     ) {
         val unauthorizedMessage = "Unauthorized"
         val error = ErrorDetails(
             errorType = "unauthorized",
             summary = "Unauthorized",
-            message = if (displayDetailedErrorMessage)
+            message = if (displayDetailedErrorMessage) {
                 exception?.message ?: unauthorizedMessage
-            else
-                unauthorizedMessage,
-            httpStatus = HttpStatus.UNAUTHORIZED.value().toBigDecimal()
+            } else {
+                unauthorizedMessage
+            },
+            httpStatus = HttpStatus.UNAUTHORIZED.value().toBigDecimal(),
         )
         response!!.contentType = "application/json"
         response.status = HttpServletResponse.SC_UNAUTHORIZED
