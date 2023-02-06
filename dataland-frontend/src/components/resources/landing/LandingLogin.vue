@@ -1,7 +1,7 @@
 <template>
   <div class="surface-ground pb-8">
     <div class="m-0">
-      <div v-if="!isMobile" class="grid align-items-center m-0 third-section">
+      <div data-test="landing-page-top-info-message" v-if="!isMobile" class="grid align-items-center m-0 third-section">
         <div class="col-9 col-offset-1">
           <p class="text-white text-left text-xl pl-3 pr-3">
             This preview page is intended to give a first impression of Dataland's goals and has no further
@@ -10,30 +10,30 @@
         </div>
       </div>
       <div class="grid align-items-center m-0">
-        <div :class="[!isMobile ? ['col-5 text-left col-offset-1'] : 'mobile-logo']">
+        <div data-test="landing-page-top-logo" :class="[!isMobile ? ['col-5 text-left col-offset-1'] : 'mobile-logo']">
           <router-link to="/">
             <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pt-2" />
           </router-link>
         </div>
-        <div v-if="!isMobile" class="col-2 col-offset-3">
+        <div data-test="landing-page-login-button" v-if="!isMobile" class="col-2 col-offset-3">
           <UserAuthenticationButtons />
         </div>
       </div>
 
-      <h2 v-if="isMobile" class="font-light d-letters text-4xl m-6 text-left">
+      <h2 data-test="landing-page-mobile-description"  v-if="isMobile" class="font-light d-letters text-4xl m-6 text-left">
         We are working to make the website display properly on mobile. <br />
         For now, however, we invite you to the desktop version.
       </h2>
 
-      <div class="grid align-items-center m-0" :class="{ isMobile: isMobile }">
+      <div data-test="landing-page-graphic-vision" class="grid align-items-center m-0" :class="{ isMobile: isMobile }">
         <div v-if="!isMobile" class="col-5 col-offset-1">
           <h1 class="text-left text-6xl font-normal">THE ALTERNATIVE TO DATA MONOPOLIES</h1>
         </div>
-        <div :class="[!isMobile ? ['col-4', 'col-offset-1'] : '']">
+        <div data-test="landing-page-graphic-vision-img" :class="[!isMobile ? ['col-4', 'col-offset-1'] : '']">
           <img alt="Dataland logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto" />
         </div>
       </div>
-      <div v-if="!isMobile" class="grid m-0">
+      <div data-test="landing-page-create-account" v-if="!isMobile" class="grid m-0">
         <div class="col-4 col-offset-4">
           <Card class="d-card">
             <template #title>
