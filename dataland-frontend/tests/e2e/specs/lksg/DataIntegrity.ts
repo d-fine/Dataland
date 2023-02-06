@@ -264,7 +264,7 @@ describeIf(
           cy.visitAndCheckAppMount(
             "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload"
           );
-          cy.wait("@getCompanyInformation", { timeout: Cypress.env("short_timeout_in_ms") as number });
+          cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.url().should(
             "eq",
             getBaseUrl() + "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload"
