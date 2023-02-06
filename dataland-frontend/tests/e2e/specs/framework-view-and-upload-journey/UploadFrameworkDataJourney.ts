@@ -47,18 +47,23 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         .then((dataMetaInformationOfFirstUpload) => {
           dataIdOfFirstEuTaxoFinancialsUpload = dataMetaInformationOfFirstUpload.dataId;
           const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 2000;
-          return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps);
-        })
-        .then(() => {
-          return uploadOneEuTaxonomyFinancialsDatasetViaApi(
-            token,
-            storedCompanyForManyDatasetsCompany.companyId,
-            generateEuTaxonomyDataForFinancials()
-          );
-        })
-        .then((dataMetaInformationOfSecondUpload) => {
-          dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
-          return uploadOneLksgDatasetViaApi(token, storedCompanyForManyDatasetsCompany.companyId, generateLksgData());
+          return cy
+            .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
+            .then(() => {
+              return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+                token,
+                storedCompanyForManyDatasetsCompany.companyId,
+                generateEuTaxonomyDataForFinancials()
+              );
+            })
+            .then((dataMetaInformationOfSecondUpload) => {
+              dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
+              return uploadOneLksgDatasetViaApi(
+                token,
+                storedCompanyForManyDatasetsCompany.companyId,
+                generateLksgData()
+              );
+            });
         });
     });
   });
