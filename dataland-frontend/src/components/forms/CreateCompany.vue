@@ -109,7 +109,6 @@
               validationVisibility: 'live',
             }"
           >
-            <!-- ToDo: there is no live update to check if an identifier is already in use-->
             <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
             <FormKit
               name="isin"
