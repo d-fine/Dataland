@@ -97,6 +97,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       });
     cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
     cy.window().its("scrollY").should("be.gt", latestScrollPosition);
+    cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
     uploadCompanyViaFormAndGetId(testCompanyNameForFormUpload).then((companyId) => {
       cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
       cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/upload");
