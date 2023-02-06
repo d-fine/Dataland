@@ -22,9 +22,11 @@ class CompanyReportParserTest {
         val validDataRow = fullDataRow()
         Assertions.assertEquals(
             dataPointParser.buildSingleCompanyReportReference(
-                csvMapping, validDataRow, "rezept"
+                csvMapping,
+                validDataRow,
+                "rezept",
             ),
-            CompanyReportReference(report = "AnnualReport", page = 123, tagName = "here")
+            CompanyReportReference(report = "AnnualReport", page = 123, tagName = "here"),
         )
     }
 
@@ -34,9 +36,11 @@ class CompanyReportParserTest {
         val rowWithNoReport = emptyDataRow()
         Assertions.assertEquals(
             dataPointParser.buildSingleCompanyReportReference(
-                csvMapping, rowWithNoReport, "rezept"
+                csvMapping,
+                rowWithNoReport,
+                "rezept",
             ),
-            null
+            null,
         )
     }
 

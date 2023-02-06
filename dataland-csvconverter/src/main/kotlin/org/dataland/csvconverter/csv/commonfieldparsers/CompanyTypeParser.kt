@@ -17,8 +17,8 @@ class CompanyTypeParser {
     private val companyTypeCsvParser = EnumCsvParser(
         mapOf(
             "1" to "IS",
-            "2" to "FS"
-        )
+            "2" to "FS",
+        ),
     )
 
     /**
