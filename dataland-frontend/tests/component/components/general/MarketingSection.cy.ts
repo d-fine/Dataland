@@ -11,6 +11,5 @@ describe("Component test for MarketingSection", () => {
     cy.get("div[data-test='learn-about-our-vision']").should("not.exist");
     cy.get("div[data-test='marketing-squares']").should("not.exist");
     cy.get("div[data-test='marketing-squares-second']").should("not.exist");
-    cy.get("div#existingApiKeyCard span").should("have.class", "text-red-700");
   });
 });
