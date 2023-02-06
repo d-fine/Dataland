@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
  * This class provides the method required for parsing the top-level company reports
  */
 class CompanyReportParser(
-    private val yesNoNaParser: EnumCsvParser<YesNoNa>
+    private val yesNoNaParser: EnumCsvParser<YesNoNa>,
 ) {
 
     private val columnMapReportTitles = mapOf(
@@ -50,25 +50,27 @@ class CompanyReportParser(
 
     private fun buildSingleCompanyReport(
         csvLineData: Map<String, String>,
-        baseString: String
+        baseString: String,
     ): CompanyReport? {
         val reportMap = buildMapForSpecificReport(baseString)
-        if (!reportMap.checkIfAnyFieldHasValue(reportMap.keys.toList(), csvLineData))
+        if (!reportMap.checkIfAnyFieldHasValue(reportMap.keys.toList(), csvLineData)) {
             return null
+        }
 
         return CompanyReport(
             reference = reportMap.getCsvValueAllowingNull(baseString, csvLineData)
                 ?: throw IllegalArgumentException(
                     "Report reference for $baseString has not been defined " +
-                        "but some other values have. This should not happen"
+                        "but some other values have. This should not happen",
                 ),
             isGroupLevel = reportMap.getCsvValueAllowingNull("${baseString}GroupLevel", csvLineData)
                 .let { yesNoNaParser.parseAllowingNull("${baseString}GroupLevel", it) },
             reportDate = reportMap.getCsvValueAllowingNull("${baseString}Date", csvLineData)
                 ?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) },
             currency = reportMap.getCsvValueAllowingNull(
-                "${baseString}Currency", csvLineData
-            )
+                "${baseString}Currency",
+                csvLineData,
+            ),
         )
     }
 }
