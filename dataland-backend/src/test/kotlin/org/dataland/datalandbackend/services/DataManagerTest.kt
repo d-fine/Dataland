@@ -5,8 +5,10 @@ import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.StorageHashMap
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
+import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -18,13 +20,11 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.Instant
-import java.util.*
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -33,11 +33,12 @@ class DataManagerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val companyManager: CompanyManager,
-    val rabbitTemplate: RabbitTemplate
+    @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired val dataInformationHashMap : StorageHashMap,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
-    val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient, rabbitTemplate)
+    val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient,cloudEventMessageHandler,dataInformationHashMap)
     val correlationId = IdUtils.generateUUID()
     val dataUUId = "JustSomeUUID"
 

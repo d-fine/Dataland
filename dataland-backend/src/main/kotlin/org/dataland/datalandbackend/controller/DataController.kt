@@ -26,7 +26,6 @@ abstract class DataController<T>(
     var dataManager: DataManager,
     var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,
-    private val rabbitTemplate: RabbitTemplate,
     private val clazz: Class<T>,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
@@ -49,7 +48,7 @@ abstract class DataController<T>(
                 "Correlation ID: $correlationId"
         )
         // postToQaQueue("Request to store data with Correlation ID: $correlationId")
-        //TODO Check that No can be used here as an argument and if it can be changed to a variable
+        // TODO Check that No can be used here as an argument and if it can be changed to a variable
         return ResponseEntity.ok(
             DataMetaInformation(dataIdOfPostedData, dataType, userId, uploadTime, companyAssociatedData.companyId, "No")
         )
@@ -96,10 +95,6 @@ abstract class DataController<T>(
                 "Correlation ID '$correlationId'"
         )
         return ResponseEntity.ok(companyAssociatedData)
-    }
-    //ToDo can be deleted?
-    private fun postToQaQueue(input: String) {
-        rabbitTemplate.convertAndSend("qa_queue", input)
     }
 
     override fun getAllCompanyData(companyId: String): ResponseEntity<List<T>> {

@@ -1,4 +1,4 @@
-/*package org.dataland.datalandbackend.configurations
+package org.dataland.datalandbackend.configurations
 
 import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.context.annotation.Bean
@@ -10,14 +10,10 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SwaggerUiConfig {
     @Bean
-    fun publicApi(): GroupedOpenApi? {
-        return GroupedOpenApi.builder().group("admin").pathsToExclude("/api/public/**").pathsToMatch("/api/internal/**").build()
-    }
-
-    @Bean
+            /**
+             * This method returns all public endpoints to be displayed in the swagger ui
+             */
     fun adminApi(): GroupedOpenApi? {
-        return GroupedOpenApi.builder().group("public").pathsToExclude("/api/internal/**").pathsToMatch("/api/public/**").build()
+        return GroupedOpenApi.builder().group("public").pathsToMatch("/public/**").build()
     }
-
 }
-*/

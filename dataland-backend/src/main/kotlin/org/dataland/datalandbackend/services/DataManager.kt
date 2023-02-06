@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
@@ -19,8 +19,6 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
-import kotlin.collections.HashMap
-
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -29,7 +27,6 @@ import kotlin.collections.HashMap
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
- * @param metaDataInformationHashMap mpa for temporarily storing meta data information in memory
  * @param dataInformationHashMap map for temporarily storing data information in memory
 */
 @ComponentScan(basePackages = ["org.dataland"])
@@ -40,7 +37,7 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var dataInformationHashMap : StorageHashMap
+    @Autowired var dataInformationHashMap: StorageHashMap
 
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -79,40 +76,31 @@ class DataManager(
                 "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId"
         )
+
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        storeMetaDataInformation(dataId, storableDataSet.dataType, storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No")
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "New data - QA necessary", correlationId,"upload_queue")
+        val updatedMetaData = DataMetaInformationEntity(dataId,storableDataSet.dataType.toString(),
+            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No")
+        metaDataManager.storeDataMetaInformation(updatedMetaData, "No")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "New data - QA necessary", correlationId,
+            "upload_queue")
         return dataId
     }
 
+    /**
+     * Method that listens to the qa_queue and updates the metadata information after successful qa process
+     * @param message is the message delivered on the message queue
+     */
     @RabbitListener(queues = ["qa_queue"])
     @RabbitHandler
     fun updateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        if (!dataId.isNullOrEmpty()) {
+        if (dataId.isNotEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            storeMetaDataInformation(dataId, DataType.valueOf(metaInformation.dataType), metaInformation.uploaderUserId, metaInformation.uploadTime,metaInformation.company, "Yes")
-        logger.info("Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId")
+            metaDataManager.storeDataMetaInformation(metaInformation, "Yes")
+            logger.info("Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
+                    correlationId)
         }
-    }
-
-    private fun storeMetaDataInformation(
-        dataId: String,
-        dataType: DataType,
-        uploaderUserId: String,
-        uploadTime: Long,
-        company: StoredCompanyEntity,
-        qualityAssuredYesNo: String,
-    ) {
-        metaDataManager.storeDataMetaInformation(
-            dataId,
-            dataType,
-            uploaderUserId,
-            uploadTime,
-            company,
-            qualityAssuredYesNo,
-        )
     }
 
     @RabbitHandler
@@ -120,14 +108,15 @@ class DataManager(
         storableDataSet: StorableDataSet,
         companyName: String,
         correlationId: String
-    ): String{
+    ): String {
         val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
         dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
         logger.info(dataInformationHashMap.map[dataId])
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId, "storage_queue")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId,
+            "storage_queue")
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                    " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId."
+                " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId."
         )
         return(dataId)
     }
@@ -137,7 +126,7 @@ class DataManager(
      * @param message Message retrieved from stored_queue
      */
     @RabbitListener(queues = ["stored_queue"])
-    //@RabbitHandler
+    // @RabbitHandler
     fun loggingOfStoredDataSet(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -146,7 +135,6 @@ class DataManager(
             "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId."
         )
         dataInformationHashMap.map.remove(dataId)
-
     }
 
     /**
@@ -159,7 +147,7 @@ class DataManager(
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        var dataAsString = getDataFromStorage(dataId, correlationId)
+        val dataAsString = getDataFromStorage(dataId, correlationId)
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
                 "Dataset not found",

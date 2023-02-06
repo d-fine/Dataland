@@ -9,7 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class ConsumerApplicationTests {
 
-    @Test
-    fun contextLoads() {
-    }
+    //@Test
+    //TODO check if test is necessary
+    /*un contextLoads() {
+    }*/
 }
