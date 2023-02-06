@@ -5,4 +5,4 @@ FROM eclipse-temurin:17.0.5_8-jre-alpine
 COPY --from=builder /app/dataland-dummy-qa-service/build/libs/dataland-dummy-qa-service-0.0.1-SNAPSHOT.jar /jar/dataland-dummy-qa-service.jar
 CMD ["java","-jar","/jar/dataland-dummy-qa-service.jar"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:15672/ | tee /dev/stderr | grep -q 'RabbitMQ Management' || false
+#HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:15672/ | tee /dev/stderr | grep -q 'RabbitMQ Management' || false

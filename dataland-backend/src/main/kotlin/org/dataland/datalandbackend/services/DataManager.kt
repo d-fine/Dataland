@@ -6,13 +6,13 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
 import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
-import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.ComponentScan
@@ -68,7 +68,6 @@ class DataManager(
      * @return ID of the newly stored data in the data store
      */
     @Transactional
-    @RabbitHandler
     fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
@@ -91,7 +90,6 @@ class DataManager(
      * @param message is the message delivered on the message queue
      */
     @RabbitListener(queues = ["qa_queue"])
-    @RabbitHandler
     fun updateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -100,10 +98,15 @@ class DataManager(
             metaDataManager.storeDataMetaInformation(metaInformation, "Yes")
             logger.info("Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
                     correlationId)
+        } else{val internalMessage = "Error updating metadata data. Correlation ID: $correlationId"
+            logger.error(internalMessage)
+            throw InternalServerErrorApiException(
+                "Update of meta data failed", "The update of the metadataset failed",
+                internalMessage
+            )
         }
     }
 
-    @RabbitHandler
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
         companyName: String,
@@ -126,15 +129,23 @@ class DataManager(
      * @param message Message retrieved from stored_queue
      */
     @RabbitListener(queues = ["stored_queue"])
-    // @RabbitHandler
     fun loggingOfStoredDataSet(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        logger.info("Internal Storage sent a message - job done")
-        logger.info(
-            "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId."
-        )
-        dataInformationHashMap.map.remove(dataId)
+        if (dataId.isNotEmpty()) {
+            logger.info("Internal Storage sent a message - job done")
+            logger.info(
+                "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId."
+            )
+            dataInformationHashMap.map.remove(dataId)
+        } else{val internalMessage = "Error storing data. Correlation ID: $correlationId"
+            logger.error(internalMessage)
+            throw InternalServerErrorApiException(
+                "Storing of dataset failed", "The storing of the dataset failed",
+                internalMessage
+            )
+
+        }
     }
 
     /**
