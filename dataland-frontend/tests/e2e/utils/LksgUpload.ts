@@ -49,7 +49,7 @@ export function uploadCompanyAndLksgDataViaApi(
     }
   );
 }
-//TODO this test is extremely slow when I watch it locally .  could we increase the typing and clicking speed to avoid to make our CI very slow?
+
 /**
  * Uploads a single LKSG data entry for a company via form
  */
