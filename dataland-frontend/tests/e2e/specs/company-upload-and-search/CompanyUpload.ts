@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploadCompanyViaFormAndGetId } from "@e2e/utils/CompanyUpload";
+import { uploadCompanyViaForm } from "@e2e/utils/CompanyUpload";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 describeIf(
@@ -13,8 +13,8 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       const companyName = "Test company XX";
       cy.visitAndCheckAppMount("/companies/upload");
-      uploadCompanyViaFormAndGetId(companyName).then((companyId) => {
-        cy.visitAndCheckAppMount(`/companies/${companyId}`);
+      uploadCompanyViaForm(companyName).then((company) => {
+        cy.visitAndCheckAppMount(`/companies/${company.companyId}`);
         cy.get("body").should("contain", companyName);
       });
     });

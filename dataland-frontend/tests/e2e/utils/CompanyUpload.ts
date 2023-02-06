@@ -30,12 +30,12 @@ export function fillCompanyUploadFields(companyName: string): void {
 }
 
 /**
- * Creates a company with the provided name and dummy values via the frontend and returns the ID of the newly created company.
+ * Creates a company with the provided name and dummy values via the frontend and returns the company meta information of the newly created company.
  *
  * @param companyName the name of the company to create
- * @returns a cypress chainable containing the ID of the newly created company
+ * @returns a cypress chainable containing the company meta information of the newly created company
  */
-export function uploadCompanyViaFormAndGetId(companyName: string): Cypress.Chainable<string> {
+export function uploadCompanyViaForm(companyName: string): Cypress.Chainable<StoredCompany> {
   Cypress.Keyboard.defaults({
     keystrokeDelay: 0,
   });
@@ -43,8 +43,7 @@ export function uploadCompanyViaFormAndGetId(companyName: string): Cypress.Chain
   cy.intercept("**/api/companies").as("postCompany");
   cy.get('button[name="addCompany"]').click();
   return cy.wait("@postCompany").then((interception) => {
-    const test = interception.response!.body as StoredCompany;
-    return test.companyId;
+    return interception.response!.body as StoredCompany;
   });
 }
 

@@ -1,16 +1,13 @@
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import {
-  generateDummyCompanyInformation,
-  uploadCompanyViaApi,
-  uploadCompanyViaFormAndGetId,
-} from "@e2e/utils/CompanyUpload";
+import { generateDummyCompanyInformation, uploadCompanyViaApi, uploadCompanyViaForm } from "@e2e/utils/CompanyUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataTypeEnum, StoredCompany } from "@clients/backend";
+import { CompanyIdentifierIdentifierTypeEnum, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { assertDefined } from "../../../../src/utils/TypeScriptUtils";
 
 describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   beforeEach(function () {
@@ -98,9 +95,20 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
     cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
     cy.window().its("scrollY").should("be.gt", latestScrollPosition);
     cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
-    uploadCompanyViaFormAndGetId(testCompanyNameForFormUpload).then((companyId) => {
+    uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
       cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-      cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/upload");
+      cy.url().should("eq", getBaseUrl() + "/companies/" + company.companyId + "/frameworks/upload");
+      cy.visit("/companies/choose");
+      const identifierDoesExistMessage = "There already exists a company with this ID";
+      cy.contains(identifierDoesExistMessage).should("not.exist");
+      cy.get("input[name='isin']").type(
+        assertDefined(
+          company.companyInformation.identifiers.find(
+            (id) => id.identifierType == CompanyIdentifierIdentifierTypeEnum.Isin
+          )
+        ).identifierValue
+      );
+      cy.contains(identifierDoesExistMessage).should("exist");
     });
   });
 
