@@ -641,22 +641,28 @@
           </div>
         </div>
 
-        <div id="jumpLinks" class="col-3 p-3 text-left jumpLinks">
+        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
           <h4 id="topicTitles" class="title">On this page</h4>
           <ul>
-            <li><a href="#general">General</a></li>
-            <li><a href="#childLabour">Child labour</a></li>
-            <li><a href="#forcedLabourSlaveryAndDebtBondage">Forced labour, slavery and debt bondage</a></li>
-            <li><a href="#evidenceCertificatesAndAttestations">Evidence, certificates and attestations</a></li>
-            <li><a href="#grievanceMechanism">Grievance mechanism</a></li>
-            <li><a href="#osh">OSH</a></li>
-            <li><a href="#freedomOfAssociation">Freedom of association</a></li>
-            <li><a href="#humanRights">Human rights</a></li>
-            <li><a href="#socialAndEmployeeMatters">Social and employee matters</a></li>
-            <li><a href="#environment">Environment</a></li>
-            <li><a href="#riskManagement">Risk management</a></li>
-            <li><a href="#codeOfConduct">Code of Conduct</a></li>
-            <li><a href="#waste">Waste</a></li>
+            <li><a @click="smoothScroll('#general')">General</a></li>
+            <li><a @click="smoothScroll('#childLabour')">Child labour</a></li>
+            <li>
+              <a @click="smoothScroll('#forcedLabourSlaveryAndDebtBondage')">Forced labour, slavery and debt bondage</a>
+            </li>
+            <li>
+              <a @click="smoothScroll('#evidenceCertificatesAndAttestations')"
+                >Evidence, certificates and attestations</a
+              >
+            </li>
+            <li><a @click="smoothScroll('#grievanceMechanism')">Grievance mechanism</a></li>
+            <li><a @click="smoothScroll('#osh')">OSH</a></li>
+            <li><a @click="smoothScroll('#freedomOfAssociation')">Freedom of association</a></li>
+            <li><a @click="smoothScroll('#humanRights')">Human rights</a></li>
+            <li><a @click="smoothScroll('#socialAndEmployeeMatters')">Social and employee matters</a></li>
+            <li><a @click="smoothScroll('#environment')">Environment</a></li>
+            <li><a @click="smoothScroll('#riskManagement')">Risk management</a></li>
+            <li><a @click="smoothScroll('#codeOfConduct')">Code of Conduct</a></li>
+            <li><a @click="smoothScroll('#waste')">Waste</a></li>
           </ul>
         </div>
       </div>
@@ -715,13 +721,13 @@ export default defineComponent({
     lkSGDataModel: {},
     message: "",
     uploadSucceded: false,
-
     postLkSGDataProcessed: false,
     messageCounter: 0,
-
     lksgKpiInfoMappings,
     lksgKpiNameMappings,
     lksgSubAreaNameMappings,
+    elementPosition: 0,
+    scrollListener: (): null => null,
   }),
   props: {
     companyID: {
@@ -738,6 +744,24 @@ export default defineComponent({
         this.convertedDataDate = "";
       }
     },
+  },
+  mounted() {
+    const element = this.$refs.jumpLinks as HTMLElement;
+    this.elementPosition = element.getBoundingClientRect().top;
+    this.scrollListener = (): null => {
+      if (window.scrollY > this.elementPosition) {
+        element.style.position = "fixed";
+        element.style.top = "60px";
+      } else {
+        element.style.position = "relative";
+        element.style.top = "0";
+      }
+      return null;
+    };
+    window.addEventListener("scroll", this.scrollListener);
+  },
+  unmounted() {
+    window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
     /**
@@ -844,6 +868,30 @@ export default defineComponent({
       this.listOfProductionSites[index].listOfGoodsOrServices = this.listOfProductionSites[
         index
       ].listOfGoodsOrServices.filter((el) => el !== item);
+    },
+    /**
+     * Smooth scroling
+     *
+     * @param target - target element
+     */
+    smoothScroll(target: string) {
+      const targetElement = document.querySelector(target) as HTMLElement;
+      const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - 100;
+      const startPosition = window.scrollY;
+      const distance = targetPosition - startPosition;
+      const duration = 300;
+      let startTime = null as unknown as number;
+
+      const animation = (currentTime: number): void => {
+        if (!startTime) {
+          startTime = currentTime;
+        }
+        const elapsedTime = currentTime - startTime;
+        const scrollPosition = distance * (elapsedTime / duration) + startPosition;
+        window.scrollTo(0, scrollPosition);
+        if (elapsedTime < duration) requestAnimationFrame(animation);
+      };
+      requestAnimationFrame(animation);
     },
   },
 });

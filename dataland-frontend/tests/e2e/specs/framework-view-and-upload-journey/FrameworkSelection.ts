@@ -148,7 +148,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function validateLksgPage(): void {
         cy.url().should("contain", `/frameworks/${DataTypeEnum.Lksg}`);
-        cy.get("h2").should("contain", "LkSG data");
+        cy.get("h2").should("contain", "LkSG Data");
       }
 
       /**
