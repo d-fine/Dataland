@@ -57,7 +57,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("com.github.node-gradle.node") version "3.5.1" apply false
     id("org.springframework.boot") version "3.0.1" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.1.0"
     kotlin("jvm") version "1.8.0"
     kotlin("plugin.spring") version "1.8.0" apply false
     id("org.sonarqube") version "3.4.0.2513"
@@ -82,11 +82,11 @@ sonarqube {
             "**/test/**," +
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
-                "./dataland-frontend/src/main.ts"
+                "./dataland-frontend/src/main.ts",
         )
         property(
             "sonar.sources",
-            subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> }
+            subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> },
         )
     }
 }
@@ -99,10 +99,10 @@ tasks.jacocoTestReport {
     dependsOn(tasks.build)
     dependsOn(subprojects.flatMap { it.tasks.filter { it.name == "compileKotlin" } })
     sourceDirectories.setFrom(
-        subprojects.flatMap { project -> project.properties["jacocoSources"] as Iterable<*> }
+        subprojects.flatMap { project -> project.properties["jacocoSources"] as Iterable<*> },
     )
     classDirectories.setFrom(
-        subprojects.flatMap { project -> project.properties["jacocoClasses"] as Iterable<*> }
+        subprojects.flatMap { project -> project.properties["jacocoClasses"] as Iterable<*> },
     )
     reports {
         xml.required.set(true)
