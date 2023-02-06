@@ -93,7 +93,8 @@ export default defineComponent({
      * @returns the extracted message
      */
     getErrorMessage(error: unknown) {
-      return typeof error === "string" ? error : error instanceof Error ? error.message : "";
+      const noStringMessage = error instanceof Error ? error.message : "";
+      return typeof error === "string" ? error : noStringMessage;
     },
   },
 });
