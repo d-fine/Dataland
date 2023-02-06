@@ -12,7 +12,6 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
-import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.ComponentScan
@@ -68,7 +67,6 @@ class DataManager(
      * @return ID of the newly stored data in the data store
      */
     @Transactional
-    @RabbitHandler
     fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
@@ -91,7 +89,6 @@ class DataManager(
      * @param message is the message delivered on the message queue
      */
     @RabbitListener(queues = ["qa_queue"])
-    @RabbitHandler
     fun updateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -103,7 +100,6 @@ class DataManager(
         }
     }
 
-    @RabbitHandler
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
         companyName: String,
@@ -126,7 +122,6 @@ class DataManager(
      * @param message Message retrieved from stored_queue
      */
     @RabbitListener(queues = ["stored_queue"])
-    // @RabbitHandler
     fun loggingOfStoredDataSet(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()

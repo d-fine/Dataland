@@ -1,6 +1,5 @@
 package org.dataland.datalanddummyqaservice
 
-import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 import org.springframework.amqp.core.Message
@@ -31,7 +30,6 @@ fun main(args: Array<String>) {
  */
 @Component
 @ComponentScan("org.dataland")
-//@RabbitListener(queues = ["upload_queue"])
 class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     val rabbitTemplate: RabbitTemplate
@@ -42,7 +40,6 @@ class QaService(
      * Method to retrieve message from upload_queue and constructing new one for qa_queue
      * @param message Message retrieved from upload_queue
      */
-    @RabbitHandler
     @RabbitListener(queues = ["upload_queue"])
     fun receive(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
