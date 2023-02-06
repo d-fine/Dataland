@@ -54,6 +54,9 @@ export function uploadCompanyAndLksgDataViaApi(
  * Uploads a single LKSG data entry for a company via form
  */
 export function uploadLksgDataViaForm(): void {
+  Cypress.Keyboard.defaults({
+    keystrokeDelay: 0,
+  });
   const yesNoInputs = [
     "employeeUnder18",
     "employeeUnder15",
