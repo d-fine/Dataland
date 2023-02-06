@@ -271,13 +271,10 @@ export default defineComponent({
           await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
         ).getCompanies(node.value as string)
       ).data;
-      return (
-        fetchedCompanies.filter(
-          (it: StoredCompany) =>
-            it.companyInformation.identifiers.filter(
-              (id) => id.identifierType == identifierType && id.identifierValue == (node.value as string)
-            ).length > 0
-        ).length == 0
+      return !fetchedCompanies.some((it: StoredCompany) =>
+        it.companyInformation.identifiers.some(
+          (id) => id.identifierType == identifierType && id.identifierValue == (node.value as string)
+        )
       );
     },
     /**

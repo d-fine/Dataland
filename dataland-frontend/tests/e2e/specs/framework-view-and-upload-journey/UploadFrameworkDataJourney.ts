@@ -109,6 +109,8 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         ).identifierValue
       );
       cy.contains(identifierDoesExistMessage).should("exist");
+      cy.get("input[name='isin']").type("thisshouldnotexist");
+      cy.contains(identifierDoesExistMessage).should("not.exist");
     });
   });
 
