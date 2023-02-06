@@ -43,7 +43,6 @@
   </div>
 </template>
 
-<!-- TODO does not apply when scoped. why? -->
 <style>
 #dataset-overview-table tr:hover {
   cursor: pointer;

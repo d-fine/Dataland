@@ -29,20 +29,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       const lksgDropdownItem = "LkSG";
 
       /**
-       * Wraps an interception with a wait-statement around a function that sends a request to the metadata-endpoint
-       * of the backend.
-       *
-       * @param trigger The function which sends a request to the metadata-endpoint of the backend
-       */
-      function interceptAndWaitForMetaDataRequest(trigger: () => void): void {
-        const metaDataAlias = "retrieveMetaData";
-        cy.intercept("**/api/metadata**").as(metaDataAlias);
-        trigger();
-        cy.wait(`@${metaDataAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") as number });
-        cy.wait(3000); // TODO rather wait for specific stuff than random timespans
-      }
-
-      /**
        * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
        * in the search results table.
        *
@@ -54,11 +40,9 @@ describe("The shared header of the framework pages should act as expected", { sc
         searchStringQueryParam: string
       ): void {
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
-        interceptAndWaitForMetaDataRequest(() => {
-          const companySelector = "a span:contains( VIEW)";
-          cy.get(companySelector).first().scrollIntoView();
-          cy.get(companySelector).first().click({ force: true });
-        });
+        const companySelector = "a span:contains( VIEW)";
+        cy.get(companySelector).first().scrollIntoView();
+        cy.get(companySelector).first().click({ force: true });
       }
 
       /**
@@ -89,11 +73,9 @@ describe("The shared header of the framework pages should act as expected", { sc
       ): void {
         cy.get(searchBarSelector).click();
         cy.get(searchBarSelector).type(searchString, { force: true });
-        interceptAndWaitForMetaDataRequest(() => {
-          const companySelector = ".p-autocomplete-item";
-          cy.get(companySelector).first().scrollIntoView();
-          cy.get(companySelector).first().click({ force: true });
-        });
+        const companySelector = ".p-autocomplete-item";
+        cy.get(companySelector).first().scrollIntoView();
+        cy.get(companySelector).first().click({ force: true });
       }
 
       /**
@@ -102,6 +84,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param expectedDropdownLabel The expected label of the dropdown
        */
       function validateDropdown(expectedDropdownLabel: string): void {
+        cy.get("h2:contains('Checking if')").should("not.exist");
         cy.get(dropdownSelector).find(".p-dropdown-label").should("have.text", expectedDropdownLabel);
         cy.get(dropdownSelector).click();
         const expectedDropdownItems = new Set<string>([financialsDropdownItem, lksgDropdownItem]);
@@ -122,9 +105,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(dropdownSelector).click();
-        interceptAndWaitForMetaDataRequest(() => {
-          cy.get(`${dropdownItemsSelector}:contains(${frameworkToSelect})`).click({ force: true });
-        });
+        cy.get(`${dropdownItemsSelector}:contains(${frameworkToSelect})`).click({ force: true });
       }
 
       /**
