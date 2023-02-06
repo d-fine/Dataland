@@ -56,14 +56,16 @@
 </style>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import { DataTypeEnum } from "@clients/backend";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
@@ -80,6 +82,11 @@ export default defineComponent({
       convertDate: convertUnixTimeInMsToDateString,
     };
   },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   props: {
     datasetTableInfos: {
       type: Array,
@@ -88,7 +95,7 @@ export default defineComponent({
   },
   watch: {
     searchBarInput() {
-      this.applySearchFilter();
+      void this.applySearchFilter();
     },
     datasetTableInfos() {
       this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
@@ -112,10 +119,11 @@ export default defineComponent({
     /**
      * Filter the given datasets for the search string in the company name
      */
-    applySearchFilter(): void {
-      this.displayedDatasetTableInfos = this.datasetTableInfos.filter((info) =>
-        (info as DatasetTableInfo).companyName.toLowerCase().includes(this.searchBarInput.toLowerCase())
-      ) as DatasetTableInfo[];
+    async applySearchFilter(): Promise<void> {
+      this.displayedDatasetTableInfos = await getMyDatasetTableInfos(
+        assertDefined(this.getKeycloakPromise),
+        this.searchBarInput
+      );
     },
     /**
      * Depending on the dataset status, executes a router push to either the dataset view page or an upload page

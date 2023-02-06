@@ -40,12 +40,9 @@ import { defineComponent, inject } from "vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import PrimeButton from "primevue/button";
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
-import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
-import { DataMetaInformation, StoredCompany } from "@clients/backend";
-import { DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
-import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
@@ -88,42 +85,7 @@ export default defineComponent({
      * Finds the datasets the logged in user is responsible for and creates corresponding table entries
      */
     requestDataMetaDataForCurrentUser: async function (): Promise<void> {
-      let userId: string | undefined;
-      const companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
-      ).getCompanyDataControllerApi();
-      const companiesMetaInfos = (
-        await companyDataControllerApi.getCompanies(
-          undefined,
-          new Set(ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS),
-          undefined,
-          undefined,
-          undefined,
-          true
-        )
-      ).data;
-      const resolvedKeycloakPromise = await assertDefined(this.getKeycloakPromise)();
-      if (resolvedKeycloakPromise.idTokenParsed) {
-        userId = resolvedKeycloakPromise.idTokenParsed.sub;
-      }
-      this.datasetTableInfos = companiesMetaInfos.flatMap((company: StoredCompany) =>
-        company.dataRegisteredByDataland
-          .filter(
-            (dataMetaInfo: DataMetaInformation) =>
-              dataMetaInfo.uploaderUserId == userId &&
-              ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)
-          )
-          .map(
-            (dataMetaInfo: DataMetaInformation) =>
-              new DatasetTableInfo(
-                company.companyInformation.companyName,
-                dataMetaInfo.dataType,
-                dataMetaInfo.uploadTime * 1000,
-                company.companyId,
-                dataMetaInfo.dataId
-              )
-          )
-      );
+      this.datasetTableInfos = await getMyDatasetTableInfos(assertDefined(this.getKeycloakPromise));
       this.waitingForData = false;
     },
     /**
