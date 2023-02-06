@@ -7,7 +7,7 @@ import {
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, StoredCompany } from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { uploadLksgDataViaForm, uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
+import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
@@ -97,18 +97,9 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       });
     cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
     cy.window().its("scrollY").should("be.gt", latestScrollPosition);
-    cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
-
-    // TODO upload vie Form test starting from here
     uploadCompanyViaFormAndGetId(testCompanyNameForFormUpload).then((companyId) => {
       cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
       cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/upload");
-      cy.intercept("**/api/companies/" + companyId).as("getCompanyInformation");
-      cy.get("div[id=lksgContainer]").find('button[aria-label="Create Dataset"]').click();
-      cy.wait("@getCompanyInformation", { timeout: Cypress.env("short_timeout_in_ms") as number });
-      cy.url().should("eq", getBaseUrl() + "/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload");
-      cy.get("h1").should("contain", testCompanyNameForFormUpload);
-      uploadLksgDataViaForm(); // TODO   should we put this test to lksg specific tests? this is an lksg specific test!
     });
   });
 
