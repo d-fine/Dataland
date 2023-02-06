@@ -101,29 +101,63 @@
 
           <h4>Identifier</h4>
 
-          <!-- ToDo: there is no live update to check if an identifier is already in use-->
-          <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
-          <FormKit name="isin" v-model="isin" type="text" :placeholder="companyDataNames.isin" />
-
-          <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker" />
-          <FormKit name="ticker" v-model="ticker" type="text" :placeholder="companyDataNames.ticker" />
-
-          <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId" />
-          <FormKit name="permId" v-model="permId" type="text" :placeholder="companyDataNames.permId" />
-
-          <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
-          <FormKit name="duns" v-model="duns" type="text" :placeholder="companyDataNames.duns" />
-
-          <UploadFormHeader
-            :name="companyDataNames.companyRegistrationNumber"
-            :explanation="companyDataExplanations.companyRegistrationNumber"
-          />
           <FormKit
-            name="companyRegistrationNumber"
-            v-model="companyRegistrationNumber"
-            type="text"
-            :placeholder="companyDataNames.companyRegistrationNumber"
-          />
+            type="group"
+            :config="{
+              validationMessages: { identifierDoesNotExistValidator: 'There already exists a company with this ID' },
+              validationRules: { identifierDoesNotExistValidator },
+              validationVisibility: 'live',
+            }"
+          >
+            <!-- ToDo: there is no live update to check if an identifier is already in use-->
+            <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
+            <FormKit
+              name="isin"
+              v-model="isin"
+              type="text"
+              :placeholder="companyDataNames.isin"
+              validation="identifierDoesNotExistValidator:Isin"
+            />
+
+            <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker" />
+            <FormKit
+              name="ticker"
+              v-model="ticker"
+              type="text"
+              :placeholder="companyDataNames.ticker"
+              validation="identifierDoesNotExistValidator:Ticker"
+            />
+
+            <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId" />
+            <FormKit
+              name="permId"
+              v-model="permId"
+              type="text"
+              :placeholder="companyDataNames.permId"
+              validation="identifierDoesNotExistValidator:PermId"
+            />
+
+            <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
+            <FormKit
+              name="duns"
+              v-model="duns"
+              type="text"
+              :placeholder="companyDataNames.duns"
+              validation="identifierDoesNotExistValidator:Duns"
+            />
+
+            <UploadFormHeader
+              :name="companyDataNames.companyRegistrationNumber"
+              :explanation="companyDataExplanations.companyRegistrationNumber"
+            />
+            <FormKit
+              name="companyRegistrationNumber"
+              v-model="companyRegistrationNumber"
+              type="text"
+              :placeholder="companyDataNames.companyRegistrationNumber"
+              validation="identifierDoesNotExistValidator:CompanyRegistrationNumber"
+            />
+          </FormKit>
 
           <h4>GICS classification</h4>
 
@@ -154,7 +188,12 @@ import { FormKit } from "@formkit/vue";
 import Card from "primevue/card";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
+import {
+  CompanyInformation,
+  CompanyIdentifier,
+  CompanyIdentifierIdentifierTypeEnum,
+  StoredCompany,
+} from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import PrimeButton from "primevue/button";
 import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
@@ -169,6 +208,7 @@ import {
 } from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { AxiosError } from "axios";
+import { FormKitNode } from "@formkit/core";
 
 export default defineComponent({
   name: "CreateCompany",
@@ -216,6 +256,31 @@ export default defineComponent({
     gicsSectors,
   }),
   methods: {
+    /**
+     * Validates if there is already a company with an identifier of value of a FormKit input field
+     *
+     * @param node the node corresponding the FormKit input field
+     * @param identifierType the type of the identifier to check
+     * @returns true if and only if there is no company with the in the node specified identifier of the specified type
+     */
+    async identifierDoesNotExistValidator(
+      node: FormKitNode,
+      identifierType: CompanyIdentifierIdentifierTypeEnum
+    ): Promise<boolean> {
+      const fetchedCompanies = (
+        await (
+          await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
+        ).getCompanies(node.value as string)
+      ).data;
+      return (
+        fetchedCompanies.filter(
+          (it: StoredCompany) =>
+            it.companyInformation.identifiers.filter(
+              (id) => id.identifierType == identifierType && id.identifierValue == (node.value as string)
+            ).length > 0
+        ).length == 0
+      );
+    },
     /**
      * Adds a CompanyIdentifier to the array of identifiers
      *
