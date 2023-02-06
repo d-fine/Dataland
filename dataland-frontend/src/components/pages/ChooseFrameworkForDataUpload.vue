@@ -166,7 +166,6 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfAllDataMetaInfo = response.data;
-        console.log(listOfAllDataMetaInfo);
         this.listOfEuTaxonomyNonFinancialsMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
           listOfAllDataMetaInfo.filter(
             (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyNonFinancials
