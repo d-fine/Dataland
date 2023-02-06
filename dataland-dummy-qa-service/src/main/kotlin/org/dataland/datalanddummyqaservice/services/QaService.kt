@@ -2,9 +2,9 @@ package org.dataland.datalanddummyqaservice
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.springframework.amqp.core.Message
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -26,13 +26,11 @@ fun main(args: Array<String>) {
 /**
  * Implementation of a QA Service reacting on the upload_queue and forwarding message to qa_queue
  * @param cloudEventMessageHandler service for managing CloudEvents messages
- * @param rabbitTemplate
  */
 @Component
 @ComponentScan("org.dataland")
 class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    val rabbitTemplate: RabbitTemplate
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -49,6 +47,13 @@ class QaService(
                     "$correlationId")
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "QA Process Completed", correlationId,
                 "qa_queue")
+        } else{//TODO Discuss if this kind of error handling makes sense
+            val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
+            logger.error(internalMessage)
+            throw InternalServerErrorApiException(
+                "Error receiving data for QA process", "The reception of data failed",
+                internalMessage
+            )
         }
     }
 }

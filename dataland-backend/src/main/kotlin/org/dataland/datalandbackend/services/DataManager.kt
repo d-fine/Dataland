@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
 import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -97,6 +98,12 @@ class DataManager(
             metaDataManager.storeDataMetaInformation(metaInformation, "Yes")
             logger.info("Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
                     correlationId)
+        } else{val internalMessage = "Error updating metadata data. Correlation ID: $correlationId"
+            logger.error(internalMessage)
+            throw InternalServerErrorApiException(
+                "Update of meta data failed", "The update of the metadataset failed",
+                internalMessage
+            )
         }
     }
 
@@ -125,11 +132,20 @@ class DataManager(
     fun loggingOfStoredDataSet(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        logger.info("Internal Storage sent a message - job done")
-        logger.info(
-            "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId."
-        )
-        dataInformationHashMap.map.remove(dataId)
+        if (dataId.isNotEmpty()) {
+            logger.info("Internal Storage sent a message - job done")
+            logger.info(
+                "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId."
+            )
+            dataInformationHashMap.map.remove(dataId)
+        } else{val internalMessage = "Error storing data. Correlation ID: $correlationId"
+            logger.error(internalMessage)
+            throw InternalServerErrorApiException(
+                "Storing of dataset failed", "The storing of the dataset failed",
+                internalMessage
+            )
+
+        }
     }
 
     /**
