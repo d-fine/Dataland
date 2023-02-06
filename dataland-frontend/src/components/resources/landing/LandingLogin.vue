@@ -25,7 +25,7 @@
         For now, however, we invite you to the desktop version.
       </h2>
 
-      <div class="grid align-items-center m-0" :class="{ 'isMobile': isMobile }">
+      <div class="grid align-items-center m-0" :class="{ isMobile: isMobile }">
         <div v-if="!isMobile" class="col-5 col-offset-1">
           <h1 class="text-left text-6xl font-normal">THE ALTERNATIVE TO DATA MONOPOLIES</h1>
         </div>
