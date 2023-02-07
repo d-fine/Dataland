@@ -271,21 +271,16 @@ services:
       SCRIPT_NAME: "/pgadmin"
   rabbitmq:
     profiles: ["production", "testing", "development"]
-    image: rabbitmq:3.7-management
+    image: ghcr.io/d-fine/dataland/dataland_rabbitmq:${DATALAND_RABBITMQ_VERSION}
     container_name: rabbitmq
     networks:
       - internal
     ports:
       - "5672:5672"
       - "15672:15672"
-    volumes:
-      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
-      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
-    healthcheck:
-      test: rabbitmq-diagnostics -q ping
-      interval: 30s
-      timeout: 30s
-      retries: 3
+    environment:
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}
   dummy-qa-service:
     profiles: ["production", "testing", "development"]
     environment:

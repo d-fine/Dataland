@@ -7,7 +7,6 @@ import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
-import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.stereotype.Component
@@ -19,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
  * @param dataItemRepository
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  */
-//@RabbitListener(queues = ["storage_queue"])
 @Component
 class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
@@ -34,8 +32,6 @@ class DatabaseDataStore(
      */
 
     @RabbitListener(queues = ["storage_queue"])
-    @RabbitHandler
-    //TODO remove rabbithandler
     fun insertDataSet(message : Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
