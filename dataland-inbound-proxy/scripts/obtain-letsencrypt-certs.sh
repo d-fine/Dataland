@@ -1,7 +1,7 @@
 #!/bin/bash
 # option pipefail does not work with bash in an nginx container
 set -eux
-
+echo "Getting Certificates after Boot"
 while ! curl http://localhost/.well-known/d-statuscheck 2>/dev/null | grep -q UP; do
   echo "Waiting for NGINX to finish booting..."
   sleep 1;
