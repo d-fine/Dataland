@@ -1222,12 +1222,12 @@
           "targetBean": {
             "type": "object"
           },
-          "replyToAddress": {
-            "$ref": "#/components/schemas/Address"
-          },
           "delay": {
             "type": "integer",
             "format": "int32"
+          },
+          "replyToAddress": {
+            "$ref": "#/components/schemas/Address"
           },
           "xdeathHeader": {
             "type": "array",

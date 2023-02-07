@@ -64,7 +64,7 @@ class CloudEventMessageHandler(
         return String(message.body)
     }
 
-    private fun convertMessage(message: MessageResult<ByteArray>) :MessageMQ{
+    fun convertMessage(message: MessageResult<ByteArray>) :MessageMQ{
         return converter!!.toMessage(message, AMQPMessageProperties())
     }
 
