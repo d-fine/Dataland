@@ -32,7 +32,7 @@
       </div>
       <div class="grid m-0">
         <div class="col-offset-1 col-11 text-left">
-          <p>Copyright &#169; 2022 Dataland</p>
+          <p>Copyright &#169; 2023 Dataland</p>
         </div>
       </div>
     </div>

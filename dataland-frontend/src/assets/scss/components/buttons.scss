@@ -126,3 +126,21 @@
     margin-right: 0.5rem;
   }
 }
+
+.link {
+  color: $main-color;
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+  display: flex;
+  &:hover {
+    color: darken($main-color, 20%);
+    text-decoration: underline;
+  }
+  &:active {
+    color: lighten($main-color, 10%);
+  }
+  &:focus {
+    box-shadow: 0 0 0 .2rem $btn-focus-border-color;
+  }
+}

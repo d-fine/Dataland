@@ -31,6 +31,11 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Redirects to the /companies page if the user is logged in. Does nothing otherwise
+     *
+     * @returns a promise of the redirect operation (or a resolved promise if no redirect needs to occur)
+     */
     checkAuthenticatedAndRedirectIfLoggedIn(): Promise<NavigationFailure | void | undefined> {
       if (this.authenticated === true) {
         return this.$router.push({ path: "/companies", replace: true });

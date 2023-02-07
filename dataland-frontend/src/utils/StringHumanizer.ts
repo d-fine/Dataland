@@ -5,7 +5,8 @@
 /**
  * convert camel case string to sentence case string using regex
  *
- * @param  {string} rawText      is the string to be converted to a human-readable string
+ * @param rawText is the string to be converted to a human-readable string
+ * @returns the converted string in "sentence-case"
  */
 function convertCamelCaseToSentenceCase(rawText: string): string {
   // Split the sting to words
@@ -17,7 +18,8 @@ function convertCamelCaseToSentenceCase(rawText: string): string {
 /**
  * get the representable text from the mapping object
  *
- * @param  {string} rawText      is the string to be converted to a human-readable string
+ * @param rawText is the string to be converted to a human-readable string
+ * @returns the converted string
  */
 function humanizeViaMapping(rawText: string): string {
   const mappingObject: { [key: string]: string } = {
@@ -40,6 +42,7 @@ function humanizeViaMapping(rawText: string): string {
     na: "N/A",
     "eutaxonomy-financials": "EU Taxonomy for financial companies",
     "eutaxonomy-non-financials": "EU Taxonomy for non-financial companies",
+    lksg: "LkSG",
   };
   const lowerCaseText = rawText.toLowerCase();
   return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : "";
@@ -48,7 +51,8 @@ function humanizeViaMapping(rawText: string): string {
 /**
  * convert string to a human-readable text
  *
- * @param  {string} rawText      is the string to be converted to a human-readable string
+ * @param rawText is the string to be converted to a human-readable string
+ * @returns the converted string
  */
 export function humanizeString(rawText: string | null | undefined): string {
   if (!rawText) {

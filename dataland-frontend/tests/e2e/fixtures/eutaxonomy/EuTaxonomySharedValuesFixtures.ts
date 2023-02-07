@@ -15,6 +15,11 @@ import { randomPastDateOrUndefined } from "@e2e/fixtures/common/DateFixtures";
 import { randomNumberOrUndefined } from "@e2e/fixtures/common/NumberFixtures";
 import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 
+/**
+ * Fills in random values for fields shared between the eutaxonomy frameworks
+ *
+ * @param input the framework object to fill in data for
+ */
 export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials): void {
   input.referencedReports = generateReferencedReports();
   input.fiscalYearDeviation = randomFiscalYearDeviationOrUndefined();
@@ -26,6 +31,13 @@ export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxo
   input.activityLevelReporting = randomYesNoUndefined();
 }
 
+/**
+ * A helper function that extracts a report by name from an eutaxonomy dataset if it exists
+ *
+ * @param row the dataset to extract the report form
+ * @param reportName the name of the report to look for
+ * @returns the company report object if it exists, undefined otherwise.
+ */
 function getReportIfExists(
   row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>,
   reportName: string
@@ -38,6 +50,12 @@ function getReportIfExists(
     : undefined;
 }
 
+/**
+ * Returns the CSV mapping for a type of company report
+ *
+ * @param reportName the name of the report to generate csv mappings for
+ * @returns the generated CSV mapping
+ */
 function getCsvReportMapping(
   reportName: string
 ): Array<DataPoint<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>, string>> {
@@ -67,6 +85,12 @@ function getCsvReportMapping(
   ];
 }
 
+/**
+ * Returns the CSV mapping of fields that are shared between the eutaxonomy frameworks
+ *
+ * @param isfs the value of the IS/FS column
+ * @returns the generated CSV mapping
+ */
 export function getCsvSharedEuTaxonomyValuesMapping(
   isfs: number
 ): Array<DataPoint<FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>, string | number>> {

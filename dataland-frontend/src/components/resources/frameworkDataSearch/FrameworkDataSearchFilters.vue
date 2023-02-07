@@ -59,7 +59,7 @@
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodes";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
@@ -113,44 +113,56 @@ export default defineComponent({
   computed: {
     selectedCountriesInt: {
       get(): Array<CountryCodeSelectableItem> {
-        return this.availableCountries.filter((it) => this.selectedCountryCodes.includes(it.countryCode));
+        return this.availableCountries.filter((countryCodeSelectableItem) =>
+          this.selectedCountryCodes.includes(countryCodeSelectableItem.countryCode)
+        );
       },
       set(newValue: Array<CountryCodeSelectableItem>) {
         this.$emit(
           "update:selectedCountryCodes",
-          newValue.map((it) => it.countryCode)
+          newValue.map((countryCodeSelectableItem) => countryCodeSelectableItem.countryCode)
         );
       },
     },
     selectedFrameworksInt: {
       get(): Array<FrameworkSelectableItem> {
-        return this.availableFrameworks.filter((it) => this.selectedFrameworks.includes(it.frameworkDataType));
+        return this.availableFrameworks.filter((frameworkSelectableItem) =>
+          this.selectedFrameworks.includes(frameworkSelectableItem.frameworkDataType)
+        );
       },
       set(newValue: Array<FrameworkSelectableItem>) {
         this.$emit(
           "update:selectedFrameworks",
-          newValue.map((it) => it.frameworkDataType)
+          newValue.map((frameworkSelectableItem) => frameworkSelectableItem.frameworkDataType)
         );
       },
     },
     selectedSectorsInt: {
       get(): Array<SelectableItem> {
-        return this.availableSectors.filter((it) => this.selectedSectors.includes(it.displayName));
+        return this.availableSectors.filter((selectableItem) =>
+          this.selectedSectors.includes(selectableItem.displayName)
+        );
       },
       set(newValue: Array<SelectableItem>) {
         this.$emit(
           "update:selectedSectors",
-          newValue.map((it) => it.displayName)
+          newValue.map((selectableItem) => selectableItem.displayName)
         );
       },
     },
   },
   methods: {
+    /**
+     * Resets all the filters to their default values (i.e. select all frameworks but no countries / sectors)
+     */
     resetFilters() {
       this.selectedFrameworksInt = this.availableFrameworks.filter((it) => !it.disabled);
       this.selectedCountriesInt = [];
       this.selectedSectorsInt = [];
     },
+    /**
+     * A helper function that closes all the dropdown filters
+     */
     closeAllOpenDropDowns() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.countryFilter?.$refs.multiselect.hide();
@@ -159,45 +171,50 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.frameworkFilter?.$refs.multiselect.hide();
     },
+    /**
+     * Uses the Dataland API to obtain available company search filters and fills in the
+     * availableCountries and availableSectors elements in the format expected by the dropdown filters
+     */
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
       ).getCompanyDataControllerApi();
 
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
-      this.availableCountries = [...(availableSearchFilters.data.countryCodes || [])].map((it) => {
+      this.availableCountries = [...(availableSearchFilters.data.countryCodes || [])].map((countryCode) => {
         return {
-          countryCode: it,
-          displayName: getCountryNameFromCountryCode(it),
+          countryCode: countryCode,
+          displayName: getCountryNameFromCountryCode(countryCode),
           disabled: false,
         };
       });
-      this.availableSectors = [...(availableSearchFilters.data.sectors || [])].map((it) => {
-        return { displayName: it, disabled: false };
+      this.availableSectors = [...(availableSearchFilters.data.sectors || [])].map((sector) => {
+        return { displayName: sector, disabled: false };
       });
     },
+    /**
+     * Populates the availableFrameworks property in the format expected by the dropdown filter
+     */
     retrieveAvailableFrameworks() {
-      this.availableFrameworks = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.map((it) => {
+      this.availableFrameworks = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.map((dataTypeEnum) => {
         return {
-          frameworkDataType: it,
-          displayName: humanizeString(it),
+          frameworkDataType: dataTypeEnum,
+          displayName: humanizeString(dataTypeEnum),
           disabled: false,
         };
       });
-      this.availableFrameworks.push(
-        {
-          frameworkDataType: "sfdr" as DataTypeEnum,
-          displayName: "SFDR",
-          disabled: true,
-        },
-        {
-          frameworkDataType: "lksg" as DataTypeEnum,
-          displayName: "LkSG",
-          disabled: true,
-        }
-      );
+      this.availableFrameworks.push({
+        frameworkDataType: "sfdr" as DataTypeEnum,
+        displayName: "SFDR",
+        disabled: true,
+      });
     },
-    retrieveAvailableFilterOptions() {
+    /**
+     * Initializes the availableCountries, availableSectors and avaialbleFrameworks properties for the dropdown filters
+     *
+     * @returns a promise as this function needs to request the Dataland api
+     */
+    async retrieveAvailableFilterOptions() {
       this.retrieveAvailableFrameworks();
       return this.retrieveCountryAndSectorFilterOptions();
     },

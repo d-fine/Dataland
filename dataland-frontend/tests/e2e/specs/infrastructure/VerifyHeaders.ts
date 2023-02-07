@@ -2,12 +2,22 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { getBaseUrl } from "@e2e/utils/Cypress";
 
 describe("As a developer, I want to ensure that security relevant headers are set.", () => {
+  /**
+   * Verifies the presence of common security headers in the provided response
+   *
+   * @param response the response to check
+   */
   function checkCommonHeaders(response: Cypress.Response<unknown>): void {
     expect(response.headers).to.have.property("referrer-policy", "no-referrer");
     expect(response.headers).to.have.property("strict-transport-security", "max-age=31536000; includeSubDomains");
     expect(response.headers).to.have.property("x-content-type-options", "nosniff");
   }
 
+  /**
+   * Verifies that the content-security-policy header of the Dataland webpage matches the provided expected header
+   *
+   * @param expectedHeader the expected CSP header
+   */
   function checkCommonCspHeaders(expectedHeader: string): void {
     const urlsToCheck = [`${getBaseUrl()}/`, `${getBaseUrl()}/keycloak/realms/datalandsecurity`];
     urlsToCheck.forEach((url): void => {

@@ -3,6 +3,16 @@ export interface StringSplitSearchMatch {
   highlight: boolean;
 }
 
+/**
+ * A helper function for the search highlighting. Splits a string into segments based on the searchString.
+ * Segments matching the searchString are marked as highlighted.
+ * (i.e. using input "this is a test" with searchString "a" will return the split "this is " + "a" + " test"
+ * with the segment "a" being marked as highlighted
+ *
+ * @param rawText the text to split
+ * @param searchString the search string to split by
+ * @returns a list of segments that make up rawText.
+ */
 export function splitStringBySearchMatch(rawText: string, searchString: string): Array<StringSplitSearchMatch> {
   if (searchString == "") return [{ text: rawText, highlight: false }];
   const ret = [];

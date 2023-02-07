@@ -95,7 +95,7 @@ export default defineComponent({
   components: { TaxoCard, TaxoInfoCard },
   data() {
     return {
-      dataSet: null as EuTaxonomyDataForNonFinancials | null | undefined,
+      kpiDataObjects: null as EuTaxonomyDataForNonFinancials | null | undefined,
       waitingForData: true,
     };
   },
@@ -119,6 +119,10 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Uses the Dataland API to retrieve the eutaxonomy-non-financials dataset identified by this components
+     * dataID and stores it in this components dataSet attribute
+     */
     async getCompanyEuDataset() {
       try {
         this.waitingForData = true;

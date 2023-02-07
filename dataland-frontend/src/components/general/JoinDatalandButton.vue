@@ -27,6 +27,9 @@ export default defineComponent({
     };
   },
   methods: {
+    /**
+     * Redirects the user to the dataland registration page
+     */
     register() {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {

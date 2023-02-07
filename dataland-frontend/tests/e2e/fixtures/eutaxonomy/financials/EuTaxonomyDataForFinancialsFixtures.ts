@@ -16,6 +16,12 @@ import { FixtureData, DataPoint, ReferencedReports } from "@e2e/fixtures/Fixture
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { parse } from "json2csv";
 
+/**
+ * Generates random insurance company KPIs
+ *
+ * @param referencedReports he reports that can be referenced as data sources
+ * @returns random insurance company KPIs
+ */
 export function generateInsuranceKpis(referencedReports: ReferencedReports): InsuranceKpis {
   const taxonomyEligibleNonLifeInsuranceActivities = randomPercentageValue();
   return {
@@ -25,7 +31,12 @@ export function generateInsuranceKpis(referencedReports: ReferencedReports): Ins
     ),
   };
 }
-
+/**
+ * Generates random credit institution KPIs
+ *
+ * @param referencedReports he reports that can be referenced as data sources
+ * @returns random credit institution KPIs
+ */
 export function generateCreditInstitutionKpis(referencedReports: ReferencedReports): CreditInstitutionKpis {
   let tradingPortfolioAndInterbankLoans = undefined;
   let interbankLoans = undefined;
@@ -51,6 +62,12 @@ export function generateCreditInstitutionKpis(referencedReports: ReferencedRepor
   };
 }
 
+/**
+ * Generates random investment firm KPIs
+ *
+ * @param referencedReports he reports that can be referenced as data sources
+ * @returns random investment firm KPIs
+ */
 export function generateInvestmentFirmKpis(referencedReports: ReferencedReports): InvestmentFirmKpis {
   const greenAssetRatioInvestmentFirm = randomPercentageValue();
   return {
@@ -58,6 +75,12 @@ export function generateInvestmentFirmKpis(referencedReports: ReferencedReports)
   };
 }
 
+/**
+ * Generates a single eutaxonomy-financials fixture for a company with the given financial services types
+ *
+ * @param financialServicesTypes the financial services of the company to generate data for
+ * @returns a random eutaxonomy-financials fixture
+ */
 export function generateEuTaxonomyDataForFinancialsWithTypes(
   financialServicesTypes: Array<EuTaxonomyDataForFinancialsFinancialServicesTypesEnum>
 ): EuTaxonomyDataForFinancials {
@@ -83,6 +106,11 @@ export function generateEuTaxonomyDataForFinancialsWithTypes(
   return returnBase;
 }
 
+/**
+ * Generates a single eutaxonomy-financials fixture
+ *
+ * @returns a random eutaxonomy-financials fixture
+ */
 export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancials {
   const financialServicesTypes = faker.helpers.arrayElements(
     Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum)
@@ -90,6 +118,12 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
   return generateEuTaxonomyDataForFinancialsWithTypes(financialServicesTypes);
 }
 
+/**
+ * Generates a random set of eligibility KPIS
+ *
+ * @param reports the reports that can be referenced as data sources
+ * @returns a random set of eligibility KPI´s
+ */
 export function generateEligibilityKpis(reports: ReferencedReports): EligibilityKpis {
   const taxonomyEligibleEconomicActivity = randomPercentageValue();
   const taxonomyNonEligibleEconomicActivity = randomPercentageValue();
@@ -106,6 +140,12 @@ export function generateEligibilityKpis(reports: ReferencedReports): Eligibility
   };
 }
 
+/**
+ * Creates a CSV mapping helper for the elgibility kpis of a single company type
+ *
+ * @param type the company type to generate the CSV mapping for
+ * @returns the CSV mapping
+ */
 export function getCsvEligibilityKpiMapping(
   type: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
 ): Array<DataPoint<FixtureData<EuTaxonomyDataForFinancials>, string | number>> {
@@ -138,6 +178,12 @@ export function getCsvEligibilityKpiMapping(
   ];
 }
 
+/**
+ * Exports the eutaxonomy-financials data to CSV
+ *
+ * @param companyInformationWithEuTaxonomyDataForFinancials the data to export
+ * @returns the generated CSV as a string
+ */
 export function generateCSVDataForFinancials(
   companyInformationWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>
 ): string {

@@ -22,6 +22,11 @@
     border: solid $message-info-border;
     color: $message-info-text
   }
+  &.p-message-bordered-success {
+    background: $message-bordered-success-bg;
+    border: solid $message-bordered-success-border;
+    color: $message-bordered-success-text
+  }
   &.p-message-success {
     background: $message-success-bg;
     border: solid $message-success-border;

@@ -8,13 +8,6 @@
             aria-hidden="true"
             style="z-index: 20; color: #958d7c"
           />
-          <i
-            v-if="loading"
-            class="pi pi-spinner pi-spin"
-            aria-hidden="true"
-            style="z-index: 20; color: #e67f3f; right: 0.5rem"
-          />
-          <i v-else aria-hidden="true" />
           <AutoComplete
             :inputId="searchBarId"
             ref="autocomplete"
@@ -145,34 +138,61 @@ export default defineComponent({
     };
   },
   methods: {
+    /**
+     * Sets the wereKeysPressed variable to true
+     */
     noteThatAKeyWasPressed() {
       this.wereKeysPressed = true;
     },
 
+    /**
+     * Updates the local search string if the new search string is well-defined
+     *
+     * @param currentSearchString the potentially new search string
+     */
     saveCurrentSearchStringIfValid(currentSearchString: string | object) {
       if (currentSearchString && typeof currentSearchString === "string") {
         this.latestValidSearchString = currentSearchString;
       }
     },
 
+    /**
+     * Called on button presses of the up/down keys and updates the index of the currently selected element.
+     */
     getCurrentFocusedOptionIndex() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.currentFocusedOptionIndex = this.autocomplete.focusedOptionIndex as number;
     },
 
+    /**
+     * Resets the currently selected index variable
+     */
     setCurrentFocusedOptionIndexToDefault() {
       this.currentFocusedOptionIndex = -1;
     },
 
+    /**
+     * Focuses the search bar
+     */
     focusOnSearchBar() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.autocomplete.$refs.focusInput.focus();
     },
 
+    /**
+     * Called when an item is selected from the dropdown. Navigates to the view framework page for the selected company
+     *
+     * @param event the click event
+     * @param event.value the company that was clicked on
+     */
     pushToViewDataPageForItem(event: { value: DataSearchStoredCompany }) {
       void this.$router.push(getRouterLinkTargetFramework(event.value));
     },
 
+    /**
+     * Called when enter is pressed in the search bar. Performs a company search with the new search bar text
+     * if no specific company is highlighted
+     */
     executeSearchIfNoItemFocused() {
       if (this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -183,6 +203,9 @@ export default defineComponent({
         void this.queryCompany();
       }
     },
+    /**
+     * Performs the company search if the parent component indicated it wants to receive the complete search results
+     */
     async queryCompany() {
       if (this.emitSearchResultsArray) {
         this.loading = true;
@@ -198,8 +221,14 @@ export default defineComponent({
         this.loading = false;
       }
     },
+    /**
+     * This function is called to obtain search suggestions for the dropdown. Uses the Dataland API to search
+     * companies by the current search bar input (and selected filters).
+     *
+     * @param companyName the autocomplete suggestion event
+     * @param companyName.query the query text entered into the search bar
+     */
     async searchCompanyName(companyName: { query: string }) {
-      this.loading = true;
       this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
         companyName.query,
         true,
@@ -209,7 +238,6 @@ export default defineComponent({
         assertDefined(this.getKeycloakPromise)()
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumOfDisplayedAutocompleteEntries);
-      this.loading = false;
     },
   },
 });
@@ -240,8 +268,8 @@ export default defineComponent({
   align-items: center;
 }
 
-.p-focus {
-  color: #fff !important;
-  background: #e67f3f !important;
+.p-autocomplete-loader {
+  color: #e67f3f;
+  right: 0.5rem;
 }
 </style>

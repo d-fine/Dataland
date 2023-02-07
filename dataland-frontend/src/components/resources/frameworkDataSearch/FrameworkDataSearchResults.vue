@@ -46,7 +46,7 @@
       <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="d-bg-white w-2" />
       <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="d-bg-white w-2">
         <template #body="{ data }">
-          {{ buildLocationString(data.companyInformation.headquarters, data.companyInformation.countryCode) }}
+          {{ data.companyInformation.headquarters }}, {{ data.companyInformation.countryCode }}
         </template>
       </Column>
       <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
@@ -67,7 +67,6 @@
 <script lang="ts">
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import { convertCurrencyNumbersToNotationWithLetters } from "@/utils/CurrencyConverter";
 import Tooltip from "primevue/tooltip";
 import {
   DataSearchStoredCompany,
@@ -92,22 +91,38 @@ export default defineComponent({
     },
   },
   methods: {
-    orderOfMagnitudeSuffix(value: number) {
-      return convertCurrencyNumbersToNotationWithLetters(value, 2) + " €";
-    },
-    buildLocationString(headquarters: string, countryCode: string) {
-      return headquarters + ", " + countryCode;
-    },
+    /**
+     * Navigates to the view framework data page on a click on the row of the company
+     *
+     * @param event the row click event
+     * @param event.data the company the user clicked on
+     * @returns the promise of the router push action
+     */
     goToData(event: { data: DataSearchStoredCompany }) {
       return this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
     },
+    /**
+     * A wrapper around th getRouterLinkTargetFramework function so it can be used in the vue template
+     *
+     * @param companyData the company to get the link for
+     * @returns a link to the view framework data page for the company
+     */
     getRouterLinkTargetFrameworkInt(companyData: DataSearchStoredCompany) {
       return getRouterLinkTargetFramework(companyData);
     },
+    /**
+     * Resets the pagination of the dataTable
+     */
     resetPagination() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       if (this.$refs.dataTable) this.$refs.dataTable.resetPage();
     },
+    /**
+     * Called when the id of the first row is updated (i.e. when the user navigates to the next page)
+     * Scrolls back to the top and propagates the event
+     *
+     * @param event the new number of the first row
+     */
     firstUpdated(event: never) {
       window.scrollTo(0, 0);
       this.$emit("update:first", event);
