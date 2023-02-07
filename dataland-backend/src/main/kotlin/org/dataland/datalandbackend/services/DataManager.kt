@@ -35,7 +35,7 @@ class DataManager(
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
         dataType: DataType,
-        correlationId: String
+        correlationId: String,
     ) {
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
         if (DataType.valueOf(dataMetaInformation.dataType) != dataType) {
@@ -43,12 +43,12 @@ class DataManager(
                 "Requested data $dataId not of type $dataType",
                 "The data with the id: $dataId is registered as type" +
                     " ${dataMetaInformation.dataType} by Dataland instead of your requested" +
-                    " type $dataType."
+                    " type $dataType.",
             )
         }
         logger.info(
             "Requesting Data with ID $dataId and expected type $dataType from framework data storage. " +
-                "Correlation ID: $correlationId"
+                "Correlation ID: $correlationId",
         )
     }
 
@@ -63,7 +63,7 @@ class DataManager(
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
                 "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
-                "Correlation ID: $correlationId"
+                "Correlation ID: $correlationId",
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         metaDataManager.storeDataMetaInformation(
@@ -71,7 +71,7 @@ class DataManager(
             storableDataSet.dataType,
             storableDataSet.uploaderUserId,
             storableDataSet.uploadTime,
-            company
+            company,
         )
         return dataId
     }
@@ -79,7 +79,7 @@ class DataManager(
     private fun storeDataSet(
         storableDataSet: StorableDataSet,
         companyName: String,
-        correlationId: String
+        correlationId: String,
     ): String {
         val dataId: String
         try {
@@ -89,14 +89,15 @@ class DataManager(
                 " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
             logger.error(internalMessage)
             throw InternalServerErrorApiException(
-                "Upload to Storage failed", "The upload of the dataset to the Storage failed",
+                "Upload to Storage failed",
+                "The upload of the dataset to the Storage failed",
                 internalMessage,
-                e
+                e,
             )
         }
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId"
+                " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId",
         )
         return dataId
     }
@@ -114,7 +115,7 @@ class DataManager(
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
                 "Dataset not found",
-                "No dataset with the id: $dataId could be found in the data store."
+                "No dataset with the id: $dataId could be found in the data store.",
             )
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
@@ -131,7 +132,7 @@ class DataManager(
         } catch (e: ServerException) {
             logger.error(
                 "Error requesting data. Received ServerException with Message:" +
-                    " ${e.message}. Correlation ID: $correlationId"
+                    " ${e.message}. Correlation ID: $correlationId",
             )
             throw e
         }

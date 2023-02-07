@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
  * --- API model ---
  * Fields of a generic data point and its source
  */
-data class DataPoint <T>(
+data class DataPoint<T>(
     val value: T? = null,
 
     @field:JsonProperty(required = true)
