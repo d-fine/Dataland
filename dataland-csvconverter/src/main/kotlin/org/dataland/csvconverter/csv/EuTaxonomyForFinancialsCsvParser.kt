@@ -133,11 +133,7 @@ class EuTaxonomyForFinancialsCsvParser(
                 "investmentNonNfrd",
             ),
         )
-        return if (eligibilityKpis.checkIfAllFieldsAreNull()) {
-            null
-        } else {
-            eligibilityKpis
-        }
+        return if (eligibilityKpis.checkIfAllFieldsAreNull()) null else eligibilityKpis
     }
 
     private fun buildEligibilityKpis(
@@ -156,36 +152,22 @@ class EuTaxonomyForFinancialsCsvParser(
         return presentKpis
     }
 
-    private fun buildCreditInstitutionKpis(
-        row: Map<String, String>,
-    ): CreditInstitutionKpis? {
+    private fun buildCreditInstitutionKpis(row: Map<String, String>): CreditInstitutionKpis? {
         val creditInstitutionKpis = CreditInstitutionKpis(
             tradingPortfolio = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials,
-                row,
-                "tradingPortfolio",
+                columnMappingEuTaxonomyForFinancials, row, "tradingPortfolio",
             ),
             interbankLoans = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials,
-                row,
-                "interbankLoans",
+                columnMappingEuTaxonomyForFinancials, row, "interbankLoans",
             ),
             tradingPortfolioAndInterbankLoans = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials,
-                row,
-                "tradingPortfolioAndInterbankLoans",
+                columnMappingEuTaxonomyForFinancials, row, "tradingPortfolioAndInterbankLoans",
             ),
             greenAssetRatio = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials,
-                row,
-                "greenAssetRatioCreditInstitution",
+                columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioCreditInstitution",
             ),
         )
-        return if (creditInstitutionKpis.checkIfAllFieldsAreNull()) {
-            null
-        } else {
-            creditInstitutionKpis
-        }
+        return if (creditInstitutionKpis.checkIfAllFieldsAreNull()) null else creditInstitutionKpis
     }
 
     private fun buildInvestmentFirmKpis(row: Map<String, String>): InvestmentFirmKpis? {
@@ -196,11 +178,7 @@ class EuTaxonomyForFinancialsCsvParser(
                 "greenAssetRatioInvestmentFirm",
             ),
         )
-        return if (investmentFirmKpis.checkIfAllFieldsAreNull()) {
-            null
-        } else {
-            investmentFirmKpis
-        }
+        return if (investmentFirmKpis.checkIfAllFieldsAreNull()) null else investmentFirmKpis
     }
 
     private fun buildInsuranceKpis(row: Map<String, String>): InsuranceKpis? {
@@ -211,11 +189,7 @@ class EuTaxonomyForFinancialsCsvParser(
                 "taxonomyEligibleNonLifeInsuranceActivities",
             ),
         )
-        return if (insuranceKpis.checkIfAllFieldsAreNull()) {
-            null
-        } else {
-            insuranceKpis
-        }
+        return if (insuranceKpis.checkIfAllFieldsAreNull()) null else insuranceKpis
     }
 
     /**

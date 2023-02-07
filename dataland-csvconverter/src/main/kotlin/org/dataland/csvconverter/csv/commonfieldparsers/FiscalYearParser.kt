@@ -37,10 +37,6 @@ class FiscalYearParser {
      */
     fun getFiscalYearEnd(csvLineData: Map<String, String>): LocalDate? {
         val fiscalYearEndString = columnMappingFiscalYear.getCsvValueAllowingNull("fiscalYearEnd", csvLineData)
-        return if (fiscalYearEndString.isNullOrBlank()) {
-            null
-        } else {
-            LocalDate.parse(fiscalYearEndString)
-        }
+        return if (fiscalYearEndString.isNullOrBlank()) null else LocalDate.parse(fiscalYearEndString)
     }
 }
