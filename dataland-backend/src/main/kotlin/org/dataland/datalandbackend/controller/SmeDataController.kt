@@ -22,17 +22,18 @@ import org.springframework.web.bind.annotation.RestController
 class SmeDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myObjectMapper: ObjectMapper
+    @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<SmeData>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    SmeData::class.java
+    SmeData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedSmeData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SmeData>> {
         return super.getCompanyAssociatedData(dataId)
     }
+
     @Operation(operationId = "postCompanyAssociatedSmeData")
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SmeData>):
         ResponseEntity<DataMetaInformation> {
