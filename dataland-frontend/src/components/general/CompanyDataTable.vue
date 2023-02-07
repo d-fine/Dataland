@@ -54,13 +54,41 @@
               >Show "{{ kpiNameMappings[data.kpiKey] }}"
               <em class="material-icons" aria-hidden="true" title=""> dataset </em>
             </a>
+            <template v-else-if="typeof data[dataDate] === 'object' && data[dataDate] !== null">
+              <table class="detail-table">
+                <template v-for="(value, key, index) in data[dataDate]" :key="index + key">
+                  <tr v-if="typeof value === 'string'">
+                    <td class="key-td">{{ key }}</td>
+                    <td class="value-td">{{ value }}</td>
+                  </tr>
+                  <template v-if="typeof value === 'object' && value !== null">
+                    <tr>
+                      <td rowspan="4" class="key-td text-center">{{ key }}</td>
+                    </tr>
+                    <tr v-for="(value, key, index) in value" :key="index + key">
+                      <td class="internal-key-td">{{ key }}</td>
+                      <td class="internal-value-td">{{ value }}</td>
+                    </tr>
+                  </template>
+                </template>
+              </table>
+            </template>
+
+            <template v-else-if="typeof data[dataDate] === 'string' && isValidHttpUrl(data[dataDate])">
+              <a :href="data[dataDate]" class="link">Link</a>
+            </template>
+
             <span v-else>{{ Array.isArray(data[dataDate]) ? "" : data[dataDate] }}</span>
           </template>
         </Column>
 
         <Column field="subAreaKey" header="Impact Area"></Column>
         <template #groupheader="slotProps">
-          <span>{{ slotProps.data.subAreaKey ? subAreaNameMappings[slotProps.data.subAreaKey] : "" }}</span>
+          <span>{{
+            subAreaNameMappings[slotProps.data.subAreaKey]
+              ? subAreaNameMappings[slotProps.data.subAreaKey]
+              : slotProps.data.subAreaKey
+          }}</span>
         </template>
       </DataTable>
     </div>
@@ -75,6 +103,7 @@ import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 import DynamicDialog from "primevue/dynamicdialog";
+import { isValidHttpUrl } from "@/utils/TypeCheck";
 
 export default defineComponent({
   name: "CompanyDataTable",
@@ -87,6 +116,7 @@ export default defineComponent({
       kpiDataObjectsToDisplay: [],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames,
+      isValidHttpUrl: isValidHttpUrl,
     };
   },
   props: {
@@ -157,6 +187,20 @@ export default defineComponent({
     margin-right: 0.25rem;
     float: right;
     cursor: pointer;
+  }
+}
+.detail-table {
+  background-color: var(--surface-0);
+  tr {
+    &:hover {
+      background-color: transparent;
+    }
+    .key-td {
+      background-color: var(--surface-300);
+    }
+    .internal-key-td {
+      background-color: var(--surface-100);
+    }
   }
 }
 </style>

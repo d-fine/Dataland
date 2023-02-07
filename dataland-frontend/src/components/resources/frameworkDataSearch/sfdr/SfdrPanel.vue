@@ -1,23 +1,23 @@
 <template>
   <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Loading LkSG Data...</p>
+    <p class="font-medium text-xl">Loading Sfdr Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="lksgData && !waitingForData">
+  <div v-if="sfdrData && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
       :dataDatesOfDataSets="listOfDatesToDisplayAsColumns"
       :kpiNameMappings="kpisNameMappings"
       :kpiInfoMappings="kpisInfoMappings"
       :subAreaNameMappings="subAreasNameMappings"
-      tableDataTitle="LkSG data"
+      tableDataTitle="SFDR data"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { LksgData } from "@clients/backend";
+import { SfdrData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -29,12 +29,12 @@ import {
 } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
-  name: "LksgPanel",
+  name: "SfdrPanel",
   components: { CompanyDataTable },
   data() {
     return {
       waitingForData: true,
-      lksgData: [] as Array<LksgData>,
+      sfdrData: [] as Array<SfdrData>,
       listOfDatesToDisplayAsColumns: [] as Array<string>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       kpisNameMappings,
@@ -63,16 +63,17 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Fetches all LkSG datasets for the current company and converts them to the requried frontend format.
+     * Fetches all Sfdr datasets for the current company and converts them to the requried frontend format.
      */
     async fetchDataForAllDataIds() {
       try {
         this.waitingForData = true;
-        const lksgDataControllerApi = await new ApiClientProvider(
+        const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
-        ).getLksgDataControllerApi();
-        this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))).data;
-        this.convertLksgDataToFrontendFormat(this.lksgData);
+        ).getSfdrDataControllerApi();
+        this.sfdrData = (await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))).data;
+        this.convertSfdrDataToFrontendFormat(this.sfdrData);
+        console.log("sfdrData", this.sfdrData);
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -85,13 +86,13 @@ export default defineComponent({
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
      * @param subAreaKey The sub area to which the kpi belongs
-     * @param dataDateOfLksgDataset The value of the date kpi of an LkSG dataset
+     * @param dataDateOfSfdrDataset The value of the date kpi of an Sfdr dataset
      */
     createKpiDataObjects(
       kpiKey: string,
       kpiValue: object | string,
       subAreaKey: string,
-      dataDateOfLksgDataset: string
+      dataDateOfSfdrDataset: string
     ): void {
       if (kpiKey === "totalRevenue" && typeof kpiValue === "string") {
         kpiValue = this.convertToMillions(parseFloat(kpiValue));
@@ -100,7 +101,7 @@ export default defineComponent({
       const kpiDataObject = {
         subAreaKey: subAreaKey == "general" ? `_${subAreaKey}` : subAreaKey,
         kpiKey: kpiKey,
-        [dataDateOfLksgDataset]: kpiValue,
+        [dataDateOfSfdrDataset]: kpiValue,
       };
       indexOfExistingItem = this.kpiDataObjects.findIndex(
         (singleKpiDataObject) => singleKpiDataObject.kpiKey === kpiKey
@@ -113,7 +114,7 @@ export default defineComponent({
     },
 
     /**
-     * Sorts dates to ensure that LkSG datasets are displayed chronologically in the table of all LkSG datasets.
+     * Sorts dates to ensure that Sfdr datasets are displayed chronologically in the table of all Sfdr datasets.
      */
     sortDatesToDisplayAsColumns(): void {
       this.listOfDatesToDisplayAsColumns.sort((dateA, dateB) => {
@@ -126,18 +127,18 @@ export default defineComponent({
     },
 
     /**
-     * Retrieves and converts values from an array of LkSG datasets in order to make it displayable in the frontend.
+     * Retrieves and converts values from an array of SDFG datasets in order to make it displayable in the frontend.
      *
-     * @param lksgData The LkSG dataset that shall be converted
+     * @param sfdrData The Sfdr dataset that shall be converted
      */
-    convertLksgDataToFrontendFormat(lksgData: Array<LksgData>): void {
-      lksgData.forEach((oneLksgDataset) => {
-        const dataDateOfLksgDataset = oneLksgDataset.social?.general?.dataDate ?? "";
-        this.listOfDatesToDisplayAsColumns.push(dataDateOfLksgDataset);
-        for (const areaObject of Object.values(oneLksgDataset)) {
+    convertSfdrDataToFrontendFormat(sfdrData: Array<SfdrData>): void {
+      sfdrData.forEach((oneSfdrDataset) => {
+        const dataDateOfSfdrDataset = oneSfdrDataset.social?.general?.fiscalYearEnd ?? "";
+        this.listOfDatesToDisplayAsColumns.push(dataDateOfSfdrDataset);
+        for (const areaObject of Object.values(oneSfdrDataset)) {
           for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
             for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
-              this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataDateOfLksgDataset);
+              this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataDateOfSfdrDataset);
             }
           }
         }
