@@ -13,7 +13,7 @@ COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
 COPY dataland-frontend/src/assets/images /var/www/images
 
 RUN chmod -R +x /docker-entrypoint.d && chmod -R +x /scripts
-RUN ln -s /scripts/reload-certificates.sh /etc/letsencrypt/renewal-hooks/deploy/reload-certificates.sh
+RUN mkdir -p /etc/letsencrypt/renewal-hooks/deploy/ && ln -s /scripts/reload-certificates.sh /etc/letsencrypt/renewal-hooks/deploy/reload-certificates.sh
 
 VOLUME /etc/letsencrypt
 
