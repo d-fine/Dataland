@@ -55,7 +55,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
       "contain",
       "If you don't have access to your API Key you can generate a new one"
     );
-    cy.get('[id="apiKeyUsageInfoMessage"]').should("contain", "In order to use the API Key");
+    cy.get('[id="apiKeyUsageInfoMessage"]').should("contain", "You can use the API-Keys as bearer-tokens");
     cy.get('[data-test="action-button"]').should("contain", "REGENERATE API KEY").click();
     cy.get("div#regenerateApiKeyModal").should("be.visible").find('[data-test="regenerateApiKeyCancelButton"]').click();
     cy.get("div#regenerateApiKeyModal").should("not.exist");
