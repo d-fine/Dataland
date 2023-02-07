@@ -16,9 +16,9 @@ dependencyResolutionManagement {
         create("libs") {
             library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
-            library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.1")
-            library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.9.1")
-            library("junit-jupiter-api", "org.junit.jupiter:junit-jupiter-api:5.9.1")
+            library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.2")
+            library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.9.2")
+            library("junit-jupiter-api", "org.junit.jupiter:junit-jupiter-api:5.9.2")
 
             library("moshi-kotlin", "com.squareup.moshi:moshi-kotlin:1.14.0")
             library("moshi-adapters", "com.squareup.moshi:moshi-adapters:1.14.0")
