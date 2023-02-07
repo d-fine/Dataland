@@ -2,9 +2,6 @@ FROM nginx:1.23.3
 # Install certbot and cron and delete default nginx config
 RUN apt-get update && apt-get install -y certbot cron && rm -rf /etc/nginx/* && mkdir -p /etc/nginx/conf.d && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Add CronJob for certificate renewal (Add 00:00 on every day)
-RUN echo '0 0 * * * root  sleep $(shuf -i 0-86400 -n1); sh /scripts/renew-certificates.sh' > /etc/cron.d/certbot-renew
-
 COPY dataland-inbound-proxy/config /etc/nginx
 COPY dataland-inbound-proxy/templates/http-letsencrypt.template /etc/nginx/templates/http-letsencrypt.template
 COPY dataland-inbound-proxy/dhparam.pem /certs/dhparam.pem
@@ -16,6 +13,7 @@ COPY dataland-inbound-proxy/robots.txt /var/www/html/robots.txt
 COPY dataland-frontend/src/assets/images /var/www/images
 
 RUN chmod -R +x /docker-entrypoint.d && chmod -R +x /scripts
+RUN ln -s /scripts/reload-certificates.sh /etc/letsencrypt/renewal-hooks/deploy/reload-certificates.sh
 
 VOLUME /etc/letsencrypt
 
