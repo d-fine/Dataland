@@ -272,7 +272,6 @@ services:
   rabbitmq:
     profiles: ["production", "testing", "development"]
     image: ghcr.io/d-fine/dataland/dataland_rabbitmq:${DATALAND_RABBITMQ_VERSION}
-    container_name: rabbitmq
     networks:
       - internal
     ports:
