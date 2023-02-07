@@ -156,9 +156,7 @@ class EuTaxonomyForFinancialsCsvParser(
         return presentKpis
     }
 
-    private fun buildCreditInstitutionKpis(
-        row: Map<String, String>,
-    ): CreditInstitutionKpis? {
+    private fun buildCreditInstitutionKpis(row: Map<String, String>): CreditInstitutionKpis? {
         val creditInstitutionKpis = CreditInstitutionKpis(
             tradingPortfolio = dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForFinancials, row, "tradingPortfolio",
