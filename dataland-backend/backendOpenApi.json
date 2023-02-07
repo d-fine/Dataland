@@ -799,9 +799,6 @@
           },
           {
             "default-bearer-auth": []
-          },
-          {
-            "dataland-api-key": []
           }
         ]
       }
@@ -921,9 +918,6 @@
           },
           {
             "default-bearer-auth": []
-          },
-          {
-            "dataland-api-key": []
           }
         ]
       }
@@ -1043,9 +1037,6 @@
           },
           {
             "default-bearer-auth": []
-          },
-          {
-            "dataland-api-key": []
           }
         ]
       }
@@ -1165,9 +1156,6 @@
           },
           {
             "default-bearer-auth": []
-          },
-          {
-            "dataland-api-key": []
           }
         ]
       }
@@ -1287,9 +1275,6 @@
           },
           {
             "default-bearer-auth": []
-          },
-          {
-            "dataland-api-key": []
           }
         ]
       }
