@@ -200,42 +200,34 @@ class MetaDataControllerTest {
             mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, TechnicalUser.Admin
         )[0].actualStoredDataMetaInfo!!
 
-        val uploaderUserId = TechnicalUser.Uploader.technicalUserId
-        val adminUserId = TechnicalUser.Admin.technicalUserId
-
         validateReaderAccessToUserId(metaInfoOfUploaderUpload, metaInfoOfAdminUpload)
-        validateUploaderAccessToUserId(metaInfoOfUploaderUpload, metaInfoOfAdminUpload, uploaderUserId)
+        validateUploaderAccessToUserId(metaInfoOfUploaderUpload, metaInfoOfAdminUpload)
         validateAdminAccessToUserId(
             metaInfoOfUploaderUpload,
-            metaInfoOfAdminUpload,
-            uploaderUserId,
-            adminUserId
+            metaInfoOfAdminUpload
         )
     }
 
     private fun validateAdminAccessToUserId(
         testUploadDataUploaderMetaInfo: DataMetaInformation,
         testUploadDataAdminMetaInfo: DataMetaInformation,
-        uploaderUserId: String,
-        adminUserId: String
     ) {
         expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, TechnicalUser.Admin, uploaderUserId,
+            testUploadDataUploaderMetaInfo, TechnicalUser.Admin, TechnicalUser.Uploader.technicalUserId,
             "Admins should be able to view uploaderUserids for all users"
         )
         expectUserIdToBe(
-            testUploadDataAdminMetaInfo, TechnicalUser.Admin, adminUserId,
+            testUploadDataAdminMetaInfo, TechnicalUser.Admin, TechnicalUser.Admin.technicalUserId,
             "Admins should be able to view uploaderUserids for all users"
         )
     }
 
     private fun validateUploaderAccessToUserId(
         testUploadDataUploaderMetaInfo: DataMetaInformation,
-        testUploadDataAdminMetaInfo: DataMetaInformation,
-        uploaderUserId: String
+        testUploadDataAdminMetaInfo: DataMetaInformation
     ) {
         expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, TechnicalUser.Uploader, uploaderUserId,
+            testUploadDataUploaderMetaInfo, TechnicalUser.Uploader, TechnicalUser.Uploader.technicalUserId,
             "Expected user id to be present if the user requests data about an upload he performed himself"
         )
         expectUserIdToBe(
