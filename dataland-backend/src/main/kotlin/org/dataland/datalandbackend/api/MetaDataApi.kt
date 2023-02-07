@@ -23,6 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-oauth")
 interface MetaDataApi {
 
+    /**
+     * A method to search for meta info about data sets registered by Dataland
+     * @param companyId filters the requested meta info to a specific company.
+     * @param dataType filters the requested meta info to a specific data type.
+     * @return a list of matching DataMetaInformation
+     */
     @Operation(
         summary = "Search in Dataland for meta info about data.",
         description = "Meta info about data sets registered by Dataland can be retrieved.",
@@ -36,15 +42,14 @@ interface MetaDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
-    /**
-     * A method to search for meta info about data sets registered by Dataland
-     * @param companyId filters the requested meta info to a specific company.
-     * @param dataType filters the requested meta info to a specific data type.
-     * @return a list of matching DataMetaInformation
-     */
     fun getListOfDataMetaInfo(@RequestParam companyId: String? = null, @RequestParam dataType: DataType? = null):
         ResponseEntity<List<DataMetaInformation>>
 
+    /**
+     * A method to retrieve meta info about a specific data set
+     * @param dataId as unique identifier for a specific data set
+     * @return the DataMetaInformation for the specified data set
+     */
     @Operation(
         summary = "Look up meta info about a specific data set.",
         description = "Meta info about a specific data set registered by Dataland " +
@@ -60,10 +65,5 @@ interface MetaDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
-    /**
-     * A method to retrieve meta info about a specific data set
-     * @param dataId as unique identifier for a specific data set
-     * @return the DataMetaInformation for the specified data set
-     */
     fun getDataMetaInfo(@PathVariable dataId: String): ResponseEntity<DataMetaInformation>
 }

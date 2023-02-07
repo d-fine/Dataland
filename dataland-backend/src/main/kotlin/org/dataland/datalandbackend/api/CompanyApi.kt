@@ -27,6 +27,11 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-oauth")
 interface CompanyApi {
 
+    /**
+     * A method to create a new company entry in dataland
+     * @param companyInformation includes the company information
+     * @return information about the stored company, including the generated company ID
+     */
     @Operation(
         summary = "Add a new company.",
         description = "A new company is added using the provided information, the generated company ID is returned.",
@@ -41,28 +46,12 @@ interface CompanyApi {
         consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
-    /**
-     * A method to create a new company entry in dataland
-     * @param companyInformation includes the company information
-     * @return information about the stored company, including the generated company ID
-     */
-    fun postCompany(@Valid @RequestBody companyInformation: CompanyInformation):
+    fun postCompany(
+        @Valid @RequestBody
+        companyInformation: CompanyInformation,
+    ):
         ResponseEntity<StoredCompany>
 
-    @Operation(
-        summary = "Retrieve specific companies by different filters or just all companies from the data store.",
-        description = "Companies identified via the provided company name/identifier are retrieved and filtered by" +
-            "countryCode, sector and available framework data. Empty/Unspecified filters are ignored."
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved companies.")
-        ]
-    )
-    @GetMapping(
-        produces = ["application/json"]
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
     /**
      * A method to retrieve specific companies identified by different filters
      * If the filters are not set, all companies in the data store are returned.
@@ -75,6 +64,20 @@ interface CompanyApi {
      * @param sectors If set & non-empty, this function only returns companies that belong to a sector in the set
      * @return information about all companies matching the search criteria
      */
+    @Operation(
+        summary = "Retrieve specific companies by different filters or just all companies from the data store.",
+        description = "Companies identified via the provided company name/identifier are retrieved and filtered by" +
+            "countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved companies."),
+        ],
+    )
+    @GetMapping(
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanies(
         @RequestParam searchString: String? = null,
         @RequestParam dataTypes: Set<DataType>? = null,
@@ -84,6 +87,10 @@ interface CompanyApi {
     ):
         ResponseEntity<List<StoredCompany>>
 
+    /**
+     * A method used to retrieve all available distinct values for framework type, country code & sector
+     * to be used by the search UI
+     */
     @Operation(
         summary = "Retrieve available distinct values for company search filters",
         description = "Distinct values for the parameter countryCode and sector are returned",
@@ -98,12 +105,13 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    /**
-     * A method used to retrieve all available distinct values for framework type, country code & sector
-     * to be used by the search UI
-     */
     fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues>
 
+    /**
+     * A method to retrieve company information for one specific company identified by its company Id
+     * @param companyId identifier of the company in dataland
+     * @return information about the company
+     */
     @Operation(
         summary = "Retrieve company information.",
         description = "Company information behind the given company Id is retrieved.",
@@ -118,13 +126,12 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
-    /**
-     * A method to retrieve company information for one specific company identified by its company Id
-     * @param companyId identifier of the company in dataland
-     * @return information about the company
-     */
     fun getCompanyById(@PathVariable("companyId") companyId: String): ResponseEntity<StoredCompany>
 
+    /**
+     * A method to get the teaser company IDs.
+     * @return a list of all company IDs currently set as teaser companies
+     */
     @Operation(
         summary = "Get the company IDs of the teaser companies.",
         description = "A list of all company IDs that are currently set as teaser companies (accessible without " +
@@ -139,10 +146,5 @@ interface CompanyApi {
         value = ["/teaser"],
         produces = ["application/json"],
     )
-
-    /**
-     * A method to get the teaser company IDs.
-     * @return a list of all company IDs currently set as teaser companies
-     */
     fun getTeaserCompanies(): List<String>
 }

@@ -19,6 +19,13 @@ import org.springframework.web.multipart.MultipartFile
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface InviteApi {
+    /**
+     * A method to initiate an invitation request to Dataland from the infos of the uploaded excel file
+     * @param excelFile is the Excel file which contains the invite info
+     * @param isSubmitterNameHidden flag that decides if info about the submitter shall be
+     * included
+     * @return a response object with info about the result and the success of the invite process
+     */
     @Operation(
         summary = "Create a Dataland invite.",
         description = "Create a Dataland invite by uploading an Excel file containing the invite info.",
@@ -34,13 +41,6 @@ interface InviteApi {
         consumes = ["multipart/form-data"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    /**
-     * A method to initiate an invitation request to Dataland from the infos of the uploaded excel file
-     * @param excelFile is the Excel file which contains the invite info
-     * @param isSubmitterNameHidden flag that decides if info about the submitter shall be
-     * included
-     * @return a response object with info about the result and the success of the invite process
-     */
     fun submitInvite(
         @RequestPart("excelFile") excelFile: MultipartFile,
         @RequestParam isSubmitterNameHidden: Boolean,
