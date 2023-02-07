@@ -22,7 +22,7 @@ class KeycloakJwtAuthenticationProvider(val jwtDecoder: JwtDecoder) : Authentica
         val bearerToken = authentication as BearerTokenAuthenticationToken
         logger.trace("Received request for authentication with bearer token ${bearerToken.token}")
         val jwt = decodeAndValidateJwt(bearerToken)
-        logger.trace("JWT validated: {}. Continuing authentication", jwt)
+        logger.trace("JWT validated: ${jwt}. Continuing authentication")
         val jwtAuthentication = DatalandJwtAuthentication(jwt)
         jwtAuthentication.isAuthenticated = true
         return jwtAuthentication

@@ -1,4 +1,4 @@
-import {ApiKeyAndMetaInfo} from "@clients/apikeymanager";
+import { ApiKeyAndMetaInfo } from "@clients/apikeymanager";
 
 describe("As a user I expect my api key will be generated correctly", () => {
   /**
