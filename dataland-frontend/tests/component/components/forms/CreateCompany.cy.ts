@@ -21,4 +21,15 @@ describe("Component test for CreateCompany", () => {
     expect(wrapper.vm.uploadSucceded).to.be.false;
     expect(wrapper.vm.postCompanyProcessed).to.be.true;
   });
+
+  it("Check if removing an alternative company name works", () => {
+    void wrapper.setData({
+      companyAlternativeNames: ["No1", "No2", "No3"],
+    });
+    wrapper.vm.removeAlternativeName(2);
+    const expectedValues = ["No1", "No3"]
+    wrapper.vm.companyAlternativeNames.forEach((name, index) => {
+      expect(name).to.equal(expectedValues[index])
+    });
+  });
 });
