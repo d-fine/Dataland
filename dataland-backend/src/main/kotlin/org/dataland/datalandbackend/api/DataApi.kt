@@ -24,16 +24,16 @@ import org.springframework.web.bind.annotation.RequestBody
 interface DataApi<T> {
     @Operation(
         summary = "Upload new data set.",
-        description = "The uploaded data is added to the data store, the generated data id is returned."
+        description = "The uploaded data is added to the data store, the generated data id is returned.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully added data to the data store.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully added data to the data store."),
+        ],
     )
     @PostMapping(
         produces = ["application/json"],
-        consumes = ["application/json"]
+        consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     /**
@@ -46,16 +46,16 @@ interface DataApi<T> {
 
     @Operation(
         summary = "Retrieve specific data from the data store.",
-        description = "Data identified by the provided data ID is retrieved."
+        description = "Data identified by the provided data ID is retrieved.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+        ],
     )
     @GetMapping(
         value = ["/{dataId}"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     /**
@@ -68,16 +68,16 @@ interface DataApi<T> {
 
     @Operation(
         summary = "Retrieve company framework information.",
-        description = "Company framework information behind the given company ID is retrieved."
+        description = "Company framework information behind the given company ID is retrieved.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company framework information.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company framework information."),
+        ],
     )
     @GetMapping(
         value = ["/company/{companyId}"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     /**

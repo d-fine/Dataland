@@ -29,16 +29,16 @@ interface CompanyApi {
 
     @Operation(
         summary = "Add a new company.",
-        description = "A new company is added using the provided information, the generated company ID is returned."
+        description = "A new company is added using the provided information, the generated company ID is returned.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully added company.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully added company."),
+        ],
     )
     @PostMapping(
         produces = ["application/json"],
-        consumes = ["application/json"]
+        consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     /**
@@ -80,22 +80,22 @@ interface CompanyApi {
         @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,
         @RequestParam sectors: Set<String>? = null,
-        @RequestParam onlyCompanyNames: Boolean = false
+        @RequestParam onlyCompanyNames: Boolean = false,
     ):
         ResponseEntity<List<StoredCompany>>
 
     @Operation(
         summary = "Retrieve available distinct values for company search filters",
-        description = "Distinct values for the parameter countryCode and sector are returned"
+        description = "Distinct values for the parameter countryCode and sector are returned",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved values.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved values."),
+        ],
     )
     @GetMapping(
         value = ["/meta-information"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     /**
@@ -106,16 +106,16 @@ interface CompanyApi {
 
     @Operation(
         summary = "Retrieve company information.",
-        description = "Company information behind the given company Id is retrieved."
+        description = "Company information behind the given company Id is retrieved.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company information.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company information."),
+        ],
     )
     @GetMapping(
         value = ["/{companyId}"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     /**
@@ -128,16 +128,16 @@ interface CompanyApi {
     @Operation(
         summary = "Get the company IDs of the teaser companies.",
         description = "A list of all company IDs that are currently set as teaser companies (accessible without " +
-            "authentication)."
+            "authentication).",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully returned teaser companies.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully returned teaser companies."),
+        ],
     )
     @GetMapping(
         value = ["/teaser"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
 
     /**

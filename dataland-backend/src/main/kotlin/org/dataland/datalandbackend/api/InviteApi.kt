@@ -21,17 +21,17 @@ import org.springframework.web.multipart.MultipartFile
 interface InviteApi {
     @Operation(
         summary = "Create a Dataland invite.",
-        description = "Create a Dataland invite by uploading an Excel file containing the invite info."
+        description = "Create a Dataland invite by uploading an Excel file containing the invite info.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully created an invite.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully created an invite."),
+        ],
     )
     @PostMapping(
         value = ["/invite"],
         produces = ["application/json"],
-        consumes = ["multipart/form-data"]
+        consumes = ["multipart/form-data"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     /**
@@ -43,7 +43,7 @@ interface InviteApi {
      */
     fun submitInvite(
         @RequestPart("excelFile") excelFile: MultipartFile,
-        @RequestParam isSubmitterNameHidden: Boolean
+        @RequestParam isSubmitterNameHidden: Boolean,
     ):
         ResponseEntity<InviteMetaInfoEntity>
 }

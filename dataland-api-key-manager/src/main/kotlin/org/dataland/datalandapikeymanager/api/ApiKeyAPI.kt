@@ -21,16 +21,16 @@ interface ApiKeyAPI {
     @Operation(
         summary = "Generate a new API key.",
         description = "Generates and persists a new API key for the requesting user with an expiry date based on " +
-            "the number of valid days in the request param."
+            "the number of valid days in the request param.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved new api key.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved new api key."),
+        ],
     )
     @GetMapping(
         value = ["/generateApiKey"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     @SecurityRequirement(name = "default-bearer-auth")
@@ -42,21 +42,21 @@ interface ApiKeyAPI {
      * @return new API key for the user together with meta info associated with that API key
      */
     fun generateApiKey(
-        @RequestParam(required = false) daysValid: Int?
+        @RequestParam(required = false) daysValid: Int?,
     ): ResponseEntity<ApiKeyAndMetaInfo>
 
     @Operation(
         summary = "Get API key meta info of a specific user.",
-        description = "Gets meta info about the API key status of a user based on the Keycloak user ID."
+        description = "Gets meta info about the API key status of a user based on the Keycloak user ID.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved API key status for the user ID.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved API key status for the user ID."),
+        ],
     )
     @GetMapping(
         value = ["/getApiKeyMetaInfoForUser"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     @SecurityRequirement(name = "default-bearer-auth")
@@ -71,16 +71,16 @@ interface ApiKeyAPI {
 
     @Operation(
         summary = "Validate an API key.",
-        description = "Checks if an API key is valid and returns the validation results together with its meta info."
+        description = "Checks if an API key is valid and returns the validation results together with its meta info.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "API key validation process finished.")
-        ]
+            ApiResponse(responseCode = "200", description = "API key validation process finished."),
+        ],
     )
     @GetMapping(
         value = ["/validateApiKey"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     /**
      * A method to validate an API key
@@ -93,16 +93,16 @@ interface ApiKeyAPI {
     @Operation(
         summary = "Revoke an existing API key.",
         description = "Checks if API key exists in storage for the requesting user and revokes it. If there is no " +
-            "API key registered for the user, this is reported in the response."
+            "API key registered for the user, this is reported in the response.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "API key revokement process finished.")
-        ]
+            ApiResponse(responseCode = "200", description = "API key revokement process finished."),
+        ],
     )
     @PostMapping(
         value = ["/revokeApiKey"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     /**
      * A method to revoke the API key of the requesting user.

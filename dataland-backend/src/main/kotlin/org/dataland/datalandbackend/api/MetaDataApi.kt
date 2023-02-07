@@ -25,15 +25,15 @@ interface MetaDataApi {
 
     @Operation(
         summary = "Search in Dataland for meta info about data.",
-        description = "Meta info about data sets registered by Dataland can be retrieved."
+        description = "Meta info about data sets registered by Dataland can be retrieved.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved meta info.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta info."),
+        ],
     )
     @GetMapping(
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     /**
@@ -48,16 +48,16 @@ interface MetaDataApi {
     @Operation(
         summary = "Look up meta info about a specific data set.",
         description = "Meta info about a specific data set registered by Dataland " +
-            "and identified by its data ID is retrieved."
+            "and identified by its data ID is retrieved.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved specific meta info.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved specific meta info."),
+        ],
     )
     @GetMapping(
         value = ["/{dataId}"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     /**

@@ -16,16 +16,16 @@ interface StorageAPI {
 
     @Operation(
         summary = "Request data by id.",
-        description = "Requests data by id."
+        description = "Requests data by id.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data."),
+        ],
     )
     @GetMapping(
         value = ["/data"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
     /**
      * A method to retrieve data from the internal storage using the dataID
@@ -37,13 +37,13 @@ interface StorageAPI {
 
     @Operation(
         summary = "Upload data.",
-        description = "Upload data and get data id."
+        description = "Upload data and get data id.",
     )
     @ApiResponses(
-        value = [ApiResponse(responseCode = "200", description = "Successfully retrieved data.")]
+        value = [ApiResponse(responseCode = "200", description = "Successfully retrieved data.")],
     )
     @PostMapping(
-        value = ["/data"]
+        value = ["/data"],
     )
     /**
      * A method to store data in the internal storage
