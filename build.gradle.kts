@@ -53,7 +53,7 @@ dependencies {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
-    id("com.github.jk1.dependency-license-report") version "2.0"
+    id("com.github.jk1.dependency-license-report") version "2.1"
     id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("com.github.node-gradle.node") version "3.5.1" apply false
     id("org.springframework.boot") version "3.0.1" apply false
@@ -66,7 +66,7 @@ plugins {
     id("org.springdoc.openapi-gradle-plugin") version "1.6.0" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
     id("org.openapi.generator") version "6.2.1" apply false
-    id("com.github.ben-manes.versions") version "0.44.0"
+    id("com.github.ben-manes.versions") version "0.45.0"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.8.0" apply false
 }
 
