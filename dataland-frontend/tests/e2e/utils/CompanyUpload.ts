@@ -17,7 +17,7 @@ export function fillCompanyUploadFields(companyName: string): void {
   cy.get("input[name=alternativeName]").type("Name to remove", { force: true });
   cy.get("button[name=addAlternativeName]").click({ force: true });
   cy.get(`span.form-list-item em`).click();
-  cy.get('span.form-list-item').should("not.exist");
+  cy.get("span.form-list-item").should("not.exist");
   cy.get("input[name=alternativeName]").type("Another Name", { force: true });
   cy.get("button[name=addAlternativeName]").click({ force: true });
   cy.get("input[name=headquarters]").type("Capitol City", { force: true });

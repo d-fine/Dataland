@@ -14,4 +14,11 @@ describe("Component test for CreateCompany", () => {
     expect(wrapper.vm.gicsSectors).to.be.an("array").that.is.not.empty;
     expect(wrapper.vm.messageCounter).to.equal(0);
   });
+
+  it("Check that an error message is displayed when trying to upload a company without any identifiers", () => {
+    void wrapper.setData({ identifiers: [] });
+    wrapper.vm.postCompanyInformation();
+    expect(wrapper.vm.uploadSucceded).to.be.false;
+    expect(wrapper.vm.postCompanyProcessed).to.be.true;
+  });
 });
