@@ -17,7 +17,7 @@ describe("Component test for CreateCompany", () => {
 
   it("Check that an error message is displayed when trying to upload a company without any identifiers", () => {
     void wrapper.setData({ identifiers: [] });
-    void wrapper.vm.postCompanyInformation();
+    void (wrapper.vm.postCompanyInformation as () => Promise<void>)();
     expect(wrapper.vm.uploadSucceded).to.be.false;
     expect(wrapper.vm.postCompanyProcessed).to.be.true;
   });
@@ -26,7 +26,7 @@ describe("Component test for CreateCompany", () => {
     void wrapper.setData({
       companyAlternativeNames: ["No1", "No2", "No3"],
     });
-    wrapper.vm.removeAlternativeName(2);
+    (wrapper.vm.removeAlternativeName as (index: number) => void)(2);
     const expectedValues = ["No1", "No3"];
     (wrapper.vm.companyAlternativeNames as string[]).forEach((name: string, index: number) => {
       expect(name).to.equal(expectedValues[index]);
