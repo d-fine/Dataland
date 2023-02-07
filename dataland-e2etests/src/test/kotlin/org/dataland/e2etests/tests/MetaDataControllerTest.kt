@@ -34,7 +34,8 @@ class MetaDataControllerTest {
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val uploadedMetaInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneTestCompanyInformation), 1
+            mapOf(testDataType to listOfOneTestCompanyInformation),
+            1,
         )[0].actualStoredDataMetaInfo!!
         apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
         val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
@@ -43,13 +44,13 @@ class MetaDataControllerTest {
         assertEquals(
             expectedDataMetaInformation,
             actualDataMetaInformation.copy(uploadTime = 0),
-            "The meta info of the posted eu taxonomy data does not match the retrieved meta info."
+            "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
         )
 
         val timeDiffFromUploadToNow = actualDataMetaInformation.uploadTime - Instant.now().epochSecond
         assertTrue(
             abs(timeDiffFromUploadToNow) < 60,
-            "The server-upload-time and the local upload time differ too much."
+            "The server-upload-time and the local upload time differ too much.",
         )
     }
 
@@ -67,14 +68,15 @@ class MetaDataControllerTest {
         val initialSizeOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo()
         apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
-            numberOfDataSetsToPostPerCompany
+            numberOfDataSetsToPostPerCompany,
         )
         val sizeOfListOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo()
         val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + totalNumberOfDataSetsPerFramework
         assertEquals(
-            expectedSizeOfDataMetaInfo, sizeOfListOfDataMetaInfo,
+            expectedSizeOfDataMetaInfo,
+            sizeOfListOfDataMetaInfo,
             "The list with all data meta info is expected to increase by $totalNumberOfDataSetsPerFramework to " +
-                "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo."
+                "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
         )
     }
 
@@ -82,14 +84,15 @@ class MetaDataControllerTest {
     fun `post companies and eu taxonomy data and check meta info search with filter on company ID`() {
         val companyIdOfFirstUploadedCompany = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
-            numberOfDataSetsToPostPerCompany
+            numberOfDataSetsToPostPerCompany,
         )[0].actualStoredCompany.companyId
         val listOfDataMetaInfoForFirstCompanyId =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyIdOfFirstUploadedCompany)
         assertEquals(
-            numberOfDataSetsToPostPerCompany, listOfDataMetaInfoForFirstCompanyId.size,
+            numberOfDataSetsToPostPerCompany,
+            listOfDataMetaInfoForFirstCompanyId.size,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
-                "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets."
+                "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
         )
     }
 
@@ -100,18 +103,19 @@ class MetaDataControllerTest {
         apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(
                 testDataType to listOfTestCompanyInformation,
-                DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation
+                DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation,
             ),
-            numberOfDataSetsToPostPerCompany
+            numberOfDataSetsToPostPerCompany,
         )
         val listSizeDataMetaInfoForEuTaxoFinancials = apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType)
         val expectedListSizeDataMetaInfoForEuTaxoFinancials = initListSizeDataMetaInfoForEuTaxoFinancials +
             totalNumberOfDataSetsPerFramework
         assertEquals(
-            expectedListSizeDataMetaInfoForEuTaxoFinancials, listSizeDataMetaInfoForEuTaxoFinancials,
+            expectedListSizeDataMetaInfoForEuTaxoFinancials,
+            listSizeDataMetaInfoForEuTaxoFinancials,
             "The meta info list for all EU Taxonomy Data for Non-Financials is expected to increase by " +
                 "$totalNumberOfDataSetsPerFramework to $expectedListSizeDataMetaInfoForEuTaxoFinancials, " +
-                "but has the size $listSizeDataMetaInfoForEuTaxoFinancials."
+                "but has the size $listSizeDataMetaInfoForEuTaxoFinancials.",
         )
     }
 
@@ -119,16 +123,18 @@ class MetaDataControllerTest {
     fun `post companies and eu taxonomy data and check meta info search with filters on company ID and data type`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfTestCompanyInformation,), numberOfDataSetsToPostPerCompany
+            mapOf(testDataType to listOfTestCompanyInformation),
+            numberOfDataSetsToPostPerCompany,
         )
         val sizeOfListOfDataMetaInfoPerCompanyIdAndDataType = apiAccessor.getNumberOfDataMetaInfo(
             listOfUploadInfo[0].actualStoredCompany.companyId,
-            testDataType
+            testDataType,
         )
         assertEquals(
-            numberOfDataSetsToPostPerCompany, sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
+            numberOfDataSetsToPostPerCompany,
+            sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
-                "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets."
+                "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
         )
     }
 
@@ -136,21 +142,23 @@ class MetaDataControllerTest {
     fun `post a dummy teaser company and data for it and confirm unauthorized meta info access succeeds`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneTeaserTestCompanyInformation), 1
+            mapOf(testDataType to listOfOneTeaserTestCompanyInformation),
+            1,
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val dataMetaInformation = apiAccessor.unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
         assertEquals(
             DataMetaInformation(testDataId, testDataType, 0, listOfUploadInfo[0].actualStoredCompany.companyId, null),
             dataMetaInformation.copy(uploadTime = 0),
-            "The meta info of the posted eu taxonomy data does not match the retrieved meta info."
+            "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
         )
     }
 
     @Test
     fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info access is denied`() {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(DataTypeEnum.eutaxonomyMinusFinancials to listOfOneNonTeaserTestCompanyInformation), 1
+            mapOf(DataTypeEnum.eutaxonomyMinusFinancials to listOfOneNonTeaserTestCompanyInformation),
+            1,
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val exception = assertThrows<IllegalArgumentException> {
@@ -164,7 +172,8 @@ class MetaDataControllerTest {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
 
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneTeaserTestCompanyInformation), 1
+            mapOf(testDataType to listOfOneTeaserTestCompanyInformation),
+            1,
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
@@ -174,7 +183,7 @@ class MetaDataControllerTest {
                 .map { it.copy(uploadTime = 0) }
                 .contains(expectedMetaInformation),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
-                "match the retrieved meta info."
+                "match the retrieved meta info.",
         )
     }
 
@@ -182,7 +191,8 @@ class MetaDataControllerTest {
     fun `post a dummy company and taxonomy data for it and confirm unauthorized meta info search is denied`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val testCompanyId = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1
+            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
+            1,
         )[0].actualStoredCompany.companyId
         val exception = assertThrows<IllegalArgumentException> {
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
@@ -194,10 +204,14 @@ class MetaDataControllerTest {
     fun `post two companies with data and check that the access to the uploaderUserId field is restricted`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val metaInfoOfUploaderUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, UserType.Uploader
+            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
+            1,
+            UserType.Uploader,
         )[0].actualStoredDataMetaInfo!!
         val metaInfoOfAdminUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, UserType.Admin
+            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
+            1,
+            UserType.Admin,
         )[0].actualStoredDataMetaInfo!!
 
         val uploaderUserId = apiAccessor.tokenHandler.getUserIdForTechnicalUsers(UserType.Uploader)
@@ -209,7 +223,7 @@ class MetaDataControllerTest {
             metaInfoOfUploaderUpload,
             metaInfoOfAdminUpload,
             uploaderUserId,
-            adminUserId
+            adminUserId,
         )
     }
 
@@ -217,44 +231,56 @@ class MetaDataControllerTest {
         testUploadDataUploaderMetaInfo: DataMetaInformation,
         testUploadDataAdminMetaInfo: DataMetaInformation,
         uploaderUserId: String,
-        adminUserId: String
+        adminUserId: String,
     ) {
         expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, UserType.Admin, uploaderUserId,
-            "Admins should be able to view uploaderUserids for all users"
+            testUploadDataUploaderMetaInfo,
+            UserType.Admin,
+            uploaderUserId,
+            "Admins should be able to view uploaderUserids for all users",
         )
         expectUserIdToBe(
-            testUploadDataAdminMetaInfo, UserType.Admin, adminUserId,
-            "Admins should be able to view uploaderUserids for all users"
+            testUploadDataAdminMetaInfo,
+            UserType.Admin,
+            adminUserId,
+            "Admins should be able to view uploaderUserids for all users",
         )
     }
 
     private fun validateUploaderAccessToUserId(
         testUploadDataUploaderMetaInfo: DataMetaInformation,
         testUploadDataAdminMetaInfo: DataMetaInformation,
-        uploaderUserId: String
+        uploaderUserId: String,
     ) {
         expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, UserType.Uploader, uploaderUserId,
-            "Expected user id to be present if the user requests data about an upload he performed himself"
+            testUploadDataUploaderMetaInfo,
+            UserType.Uploader,
+            uploaderUserId,
+            "Expected user id to be present if the user requests data about an upload he performed himself",
         )
         expectUserIdToBe(
-            testUploadDataAdminMetaInfo, UserType.Uploader, null,
-            "Data Uploaders should not be able to view the user id of uploads of other users"
+            testUploadDataAdminMetaInfo,
+            UserType.Uploader,
+            null,
+            "Data Uploaders should not be able to view the user id of uploads of other users",
         )
     }
 
     private fun validateReaderAccessToUserId(
         testUploadDataUploaderMetaInfo: DataMetaInformation,
-        testUploadDataAdminMetaInfo: DataMetaInformation
+        testUploadDataAdminMetaInfo: DataMetaInformation,
     ) {
         expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, UserType.Reader, null,
-            "A reader should not see any uploader ids"
+            testUploadDataUploaderMetaInfo,
+            UserType.Reader,
+            null,
+            "A reader should not see any uploader ids",
         )
         expectUserIdToBe(
-            testUploadDataAdminMetaInfo, UserType.Reader, null,
-            "A reader should not see any uploader ids"
+            testUploadDataAdminMetaInfo,
+            UserType.Reader,
+            null,
+            "A reader should not see any uploader ids",
         )
     }
 
@@ -262,7 +288,7 @@ class MetaDataControllerTest {
         dataMetaInformation: DataMetaInformation,
         requestingUserType: UserType,
         expectedUploaderId: String?,
-        msg: String
+        msg: String,
     ) {
         apiAccessor.tokenHandler.obtainTokenForUserType(requestingUserType)
 

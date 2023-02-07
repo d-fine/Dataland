@@ -40,7 +40,7 @@ class EuTaxonomyForFinancialsCsvParser(
         "tradingPortfolioAndInterbankLoans" to "Trading portfolio & on-demand interbank loans",
         "taxonomyEligibleNonLifeInsuranceActivities" to "Taxonomy-eligible non-life insurance economic activities",
         "greenAssetRatioCreditInstitution" to "Green Asset Ratio Credit Institution",
-        "greenAssetRatioInvestmentFirm" to "Green Asset Ratio Investment Firm"
+        "greenAssetRatioInvestmentFirm" to "Green Asset Ratio Investment Firm",
     )
 
     private val financialServicesParser = EnumCsvParser(
@@ -49,7 +49,7 @@ class EuTaxonomyForFinancialsCsvParser(
             "2" to FinancialServicesType.InsuranceOrReinsurance,
             "3" to FinancialServicesType.AssetManagement,
             "4" to FinancialServicesType.InvestmentFirm,
-        )
+        ),
     )
 
     /**
@@ -61,9 +61,10 @@ class EuTaxonomyForFinancialsCsvParser(
         return EnumSet.copyOf(
             split.map {
                 financialServicesParser.parse(
-                    "Financial Services Type", it.trim()
+                    "Financial Services Type",
+                    it.trim(),
                 )
-            }
+            },
         )
     }
 
@@ -107,33 +108,41 @@ class EuTaxonomyForFinancialsCsvParser(
         val eligibilityColumnMapping = buildEligibilityColumnMapping(type)
         val eligibilityKpis = EligibilityKpis(
             taxonomyEligibleActivity = dataPointParser.buildPercentageDataPoint(
-                eligibilityColumnMapping, row,
-                "taxonomyEligibleActivity"
+                eligibilityColumnMapping,
+                row,
+                "taxonomyEligibleActivity",
             ),
             taxonomyNonEligibleActivity = dataPointParser.buildPercentageDataPoint(
-                eligibilityColumnMapping, row,
-                "taxonomyNonEligibleActivity"
+                eligibilityColumnMapping,
+                row,
+                "taxonomyNonEligibleActivity",
             ),
             banksAndIssuers = dataPointParser.buildPercentageDataPoint(
-                eligibilityColumnMapping, row,
-                "banksAndIssuers"
+                eligibilityColumnMapping,
+                row,
+                "banksAndIssuers",
             ),
             derivatives = dataPointParser.buildPercentageDataPoint(
-                eligibilityColumnMapping, row,
-                "derivatives"
+                eligibilityColumnMapping,
+                row,
+                "derivatives",
             ),
             investmentNonNfrd = dataPointParser.buildPercentageDataPoint(
-                eligibilityColumnMapping, row,
-                "investmentNonNfrd"
+                eligibilityColumnMapping,
+                row,
+                "investmentNonNfrd",
             ),
         )
-        return if (eligibilityKpis.checkIfAllFieldsAreNull()) null
-        else eligibilityKpis
+        return if (eligibilityKpis.checkIfAllFieldsAreNull()) {
+            null
+        } else {
+            eligibilityKpis
+        }
     }
 
     private fun buildEligibilityKpis(
         row: Map<String, String>,
-        types: EnumSet<FinancialServicesType>
+        types: EnumSet<FinancialServicesType>,
     ): Map<FinancialServicesType, EligibilityKpis> {
         val presentKpis = FinancialServicesType.values()
             .mapNotNull { fsType -> buildSingleEligibilityKpis(row, fsType)?.let { fsType to it } }
@@ -141,54 +150,74 @@ class EuTaxonomyForFinancialsCsvParser(
         if (!types.containsAll(presentKpis.keys)) {
             throw IllegalArgumentException(
                 "EligibilityKpi values have been specified for ${presentKpis.keys}" +
-                    " but the company is only of types $types"
+                    " but the company is only of types $types",
             )
         }
         return presentKpis
     }
 
     private fun buildCreditInstitutionKpis(
-        row: Map<String, String>
+        row: Map<String, String>,
     ): CreditInstitutionKpis? {
         val creditInstitutionKpis = CreditInstitutionKpis(
             tradingPortfolio = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials, row,
-                "tradingPortfolio"
+                columnMappingEuTaxonomyForFinancials,
+                row,
+                "tradingPortfolio",
             ),
             interbankLoans = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials, row,
-                "interbankLoans"
+                columnMappingEuTaxonomyForFinancials,
+                row,
+                "interbankLoans",
             ),
             tradingPortfolioAndInterbankLoans = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials, row, "tradingPortfolioAndInterbankLoans"
+                columnMappingEuTaxonomyForFinancials,
+                row,
+                "tradingPortfolioAndInterbankLoans",
             ),
             greenAssetRatio = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioCreditInstitution"
+                columnMappingEuTaxonomyForFinancials,
+                row,
+                "greenAssetRatioCreditInstitution",
             ),
         )
-        return if (creditInstitutionKpis.checkIfAllFieldsAreNull()) null
-        else creditInstitutionKpis
+        return if (creditInstitutionKpis.checkIfAllFieldsAreNull()) {
+            null
+        } else {
+            creditInstitutionKpis
+        }
     }
 
     private fun buildInvestmentFirmKpis(row: Map<String, String>): InvestmentFirmKpis? {
         val investmentFirmKpis = InvestmentFirmKpis(
             greenAssetRatio = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioInvestmentFirm"
+                columnMappingEuTaxonomyForFinancials,
+                row,
+                "greenAssetRatioInvestmentFirm",
             ),
         )
-        return if (investmentFirmKpis.checkIfAllFieldsAreNull()) null
-        else investmentFirmKpis
+        return if (investmentFirmKpis.checkIfAllFieldsAreNull()) {
+            null
+        } else {
+            investmentFirmKpis
+        }
     }
 
     private fun buildInsuranceKpis(row: Map<String, String>): InsuranceKpis? {
         val insuranceKpis = InsuranceKpis(
             taxonomyEligibleNonLifeInsuranceActivities = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials, row, "taxonomyEligibleNonLifeInsuranceActivities"
+                columnMappingEuTaxonomyForFinancials,
+                row,
+                "taxonomyEligibleNonLifeInsuranceActivities",
             ),
         )
-        return if (insuranceKpis.checkIfAllFieldsAreNull()) null
-        else insuranceKpis
+        return if (insuranceKpis.checkIfAllFieldsAreNull()) {
+            null
+        } else {
+            insuranceKpis
+        }
     }
+
     /**
      Assembles all partial information into one EuTaxonomyDataForFinancials object
      */

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component
 @Component
 class KeycloakGrantedAuthoritiesConverter : Converter<Jwt, Collection<GrantedAuthority?>> {
     private val logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * the convert method
      */

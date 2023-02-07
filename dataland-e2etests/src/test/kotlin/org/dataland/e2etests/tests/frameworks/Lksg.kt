@@ -17,7 +17,7 @@ class Lksg {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneLksgDataSet,
-            apiAccessor.lksgUploaderFunction
+            apiAccessor.lksgUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForLksgData

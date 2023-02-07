@@ -14,7 +14,7 @@ import org.dataland.datalandbackend.annotations.DataType as DataTypeAnnotation
  */
 data class DataType @JsonCreator constructor(
     @JsonValue
-    val name: String
+    val name: String,
 ) {
     companion object {
         private val allowedDataTypes = DataTypesExtractor().getAllDataTypes()
@@ -43,7 +43,7 @@ data class DataType @JsonCreator constructor(
         if (!allowedDataTypes.contains(name)) {
             throw InvalidInputApiException(
                 "$name is not a recognised dataType",
-                "$name is not a valid dataType. Please consult the API Reference to find a list of allowed values"
+                "$name is not a valid dataType. Please consult the API Reference to find a list of allowed values",
             )
         }
     }
