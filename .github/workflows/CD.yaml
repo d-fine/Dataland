@@ -125,6 +125,7 @@ jobs:
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
           RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
+          RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
