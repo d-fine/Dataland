@@ -2,8 +2,8 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -73,7 +73,7 @@ class DataControllerTest {
     @Test
     fun `post data as a user type which does not have the rights to do so and receive an error code 403`() {
         val testCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
