@@ -3,7 +3,7 @@ FROM nginx:1.23.3
 RUN apt-get update && apt-get install -y certbot cron && rm -rf /etc/nginx/* && mkdir -p /etc/nginx/conf.d && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Add CronJob for certificate renewal (Add 00:00 on every day)
-RUN echo "0 0 * * * root sh /scripts/renew-certificates.sh" > /etc/cron.d/certbot-renew
+RUN echo '0 0 * * * root  sleep $(shuf -i 0-86400 -n1);sh /scripts/renew-certificates.sh' > /etc/cron.d/certbot-renew
 
 COPY dataland-inbound-proxy/config /etc/nginx
 COPY dataland-inbound-proxy/templates/http-letsencrypt.template /etc/nginx/templates/http-letsencrypt.template
