@@ -4,7 +4,7 @@
       <div class="grid m-0">
         <div class="lg:col-4 md:col-4 col-12 legend">
           <div class="grid text-left">
-            <div class="col-12 m-0 p-0">
+            <div class="col-12">
               <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pt-2" />
             </div>
             <div class="col-12">
