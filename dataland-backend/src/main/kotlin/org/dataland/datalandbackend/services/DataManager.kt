@@ -89,8 +89,7 @@ class DataManager(
                 " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
             logger.error(internalMessage)
             throw InternalServerErrorApiException(
-                "Upload to Storage failed",
-                "The upload of the dataset to the Storage failed",
+                "Upload to Storage failed", "The upload of the dataset to the Storage failed",
                 internalMessage,
                 e,
             )

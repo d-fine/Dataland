@@ -161,24 +161,16 @@ class EuTaxonomyForFinancialsCsvParser(
     ): CreditInstitutionKpis? {
         val creditInstitutionKpis = CreditInstitutionKpis(
             tradingPortfolio = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials,
-                row,
-                "tradingPortfolio",
+                columnMappingEuTaxonomyForFinancials, row, "tradingPortfolio",
             ),
             interbankLoans = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials,
-                row,
-                "interbankLoans",
+                columnMappingEuTaxonomyForFinancials, row, "interbankLoans",
             ),
             tradingPortfolioAndInterbankLoans = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials,
-                row,
-                "tradingPortfolioAndInterbankLoans",
+                columnMappingEuTaxonomyForFinancials, row, "tradingPortfolioAndInterbankLoans",
             ),
             greenAssetRatio = dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForFinancials,
-                row,
-                "greenAssetRatioCreditInstitution",
+                columnMappingEuTaxonomyForFinancials, row, "greenAssetRatioCreditInstitution",
             ),
         )
         return if (creditInstitutionKpis.checkIfAllFieldsAreNull()) {

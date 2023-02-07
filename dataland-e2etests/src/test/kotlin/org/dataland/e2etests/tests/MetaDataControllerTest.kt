@@ -34,8 +34,7 @@ class MetaDataControllerTest {
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val uploadedMetaInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneTestCompanyInformation),
-            1,
+            mapOf(testDataType to listOfOneTestCompanyInformation), 1,
         )[0].actualStoredDataMetaInfo!!
         apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
         val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)

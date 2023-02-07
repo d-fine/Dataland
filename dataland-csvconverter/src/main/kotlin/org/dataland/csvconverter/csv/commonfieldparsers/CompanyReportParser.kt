@@ -68,8 +68,7 @@ class CompanyReportParser(
             reportDate = reportMap.getCsvValueAllowingNull("${baseString}Date", csvLineData)
                 ?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) },
             currency = reportMap.getCsvValueAllowingNull(
-                "${baseString}Currency",
-                csvLineData,
+                "${baseString}Currency", csvLineData,
             ),
         )
     }
