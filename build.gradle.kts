@@ -47,7 +47,7 @@ tasks.dependencyUpdates.configure {
 
 dependencies {
     detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.20.0")
-    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.0")
+    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.10")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -58,8 +58,8 @@ plugins {
     id("com.github.node-gradle.node") version "3.5.1" apply false
     id("org.springframework.boot") version "3.0.1" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.1.0"
-    kotlin("jvm") version "1.8.0"
-    kotlin("plugin.spring") version "1.8.0" apply false
+    kotlin("jvm") version "1.8.10"
+    kotlin("plugin.spring") version "1.8.10" apply false
     id("org.sonarqube") version "3.4.0.2513"
     // TODO the "sonarqube" task fails with this version as well as the latest.  do I need SONAR_TOKEN ?
     jacoco
@@ -67,7 +67,7 @@ plugins {
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
     id("org.openapi.generator") version "6.2.1" apply false
     id("com.github.ben-manes.versions") version "0.45.0"
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.8.0" apply false
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.8.10" apply false
 }
 
 sonarqube {
