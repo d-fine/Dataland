@@ -41,12 +41,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    testImplementation(project(mapOf("path" to ":dataland-backend")))
+    testImplementation(project(mapOf("path" to ":dataland-backend")))
+    testImplementation(project(mapOf("path" to ":dataland-csvconverter")))
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation(project(":dataland-backend-utils"))
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 openApi {
@@ -58,6 +62,14 @@ openApi {
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
+tasks.test {
+    useJUnitPlatform()
+
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+    }
+}
+
 jacoco {
     toolVersion = jacocoVersion
     applyTo(tasks.bootRun.get())
@@ -66,6 +78,7 @@ jacoco {
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
+
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
     input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json")
@@ -107,4 +120,3 @@ ktlint {
         exclude("**/openApiClient/**")
     }
 }
-

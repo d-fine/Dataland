@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.amqp.rabbit.annotation.RabbitListener
-import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.stereotype.Component
 import java.rmi.ServerException
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -18,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
  * Simple implementation of a data store using a postgres database
  * @param dataItemRepository
  * @param cloudEventMessageHandler service for managing CloudEvents messages
- * @param rabbitTemplate
  */
 @Component
 class DatabaseDataStore(
@@ -26,7 +24,6 @@ class DatabaseDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
-    val rabbitTemplate: RabbitTemplate
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     /**

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @ComponentScan(basePackages = ["org.dataland"])
 @Component("StorageController")
 class StorageController(
-    @Autowired val dataStore: DatabaseDataStore,
+        @Autowired val dataStore: DatabaseDataStore,
 ) : StorageAPI {
     private val logger = LoggerFactory.getLogger(javaClass)
 
