@@ -65,7 +65,7 @@ plugins {
     jacoco
     id("org.springdoc.openapi-gradle-plugin") version "1.6.0" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
-    id("org.openapi.generator") version "6.2.1" apply false
+    id("org.openapi.generator") version "6.3.0" apply false
     id("com.github.ben-manes.versions") version "0.45.0"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.8.10" apply false
 }
