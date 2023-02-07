@@ -88,7 +88,7 @@ interface ApiKeyAPI {
      * @return API key meta info which also includes the result of the validation process
      */
 
-    fun validateApiKey(@RequestParam apiKey: String,): ResponseEntity<ApiKeyMetaInfo>
+    fun validateApiKey(@RequestParam apiKey: String): ResponseEntity<ApiKeyMetaInfo>
 
     @Operation(
         summary = "Revoke an existing API key.",
