@@ -203,11 +203,6 @@ export default defineComponent({
           disabled: false,
         };
       });
-      this.availableFrameworks.push({
-        frameworkDataType: "sfdr" as DataTypeEnum,
-        displayName: "SFDR",
-        disabled: true,
-      });
     },
     /**
      * Initializes the availableCountries, availableSectors and avaialbleFrameworks properties for the dropdown filters

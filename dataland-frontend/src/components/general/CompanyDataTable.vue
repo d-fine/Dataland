@@ -19,18 +19,18 @@
         v-model:expandedRowGroups="expandedRowGroups"
       >
         <Column
-          bodyClass="headers-bg flex"
+          bodyClass="headers-bg"
           headerStyle="width: 30vw;"
           headerClass="horizontal-headers-size"
           field="kpiKey"
           header="KPIs"
         >
           <template #body="slotProps">
-            <span class="col-10">{{
+            <span class="table-left-label">{{
               kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : slotProps.data.kpiKey
             }}</span>
             <em
-              class="material-icons info-icon col-2"
+              class="material-icons info-icon"
               aria-hidden="true"
               title="kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : ''"
               v-tooltip.top="{
@@ -58,15 +58,17 @@
               <table class="detail-table">
                 <template v-for="(value, key, index) in data[dataDate]" :key="index + key">
                   <tr v-if="typeof value === 'string'">
-                    <td class="key-td">{{ key }}</td>
+                    <td class="key-td">{{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}</td>
                     <td class="value-td">{{ value }}</td>
                   </tr>
                   <template v-if="typeof value === 'object' && value !== null">
                     <tr>
-                      <td rowspan="4" class="key-td text-center">{{ key }}</td>
+                      <td rowspan="4" class="key-td text-center">
+                        {{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}
+                      </td>
                     </tr>
                     <tr v-for="(value, key, index) in value" :key="index + key">
-                      <td class="internal-key-td">{{ key }}</td>
+                      <td class="internal-key-td">{{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}</td>
                       <td class="internal-value-td">{{ value }}</td>
                     </tr>
                   </template>

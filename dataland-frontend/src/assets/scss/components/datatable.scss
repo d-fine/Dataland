@@ -18,6 +18,14 @@
     tr {
       border-color: lighten($table-border-dark, 45%);
     }
+    .info-icon {
+      float: right;
+      max-width: 20%;
+    }
+    .table-left-label {
+      float: left;
+      max-width: 80%;
+    }
   }
   .p-sortable-column {
     .p-sortable-column-icon {
@@ -32,7 +40,12 @@
       }
     }
   }
-  .headers-bg { background-color: $tables-headers-bg }
+  .headers-bg {
+    background-color: $tables-headers-bg;
+    min-width: 20vw;
+    max-width: 30vw;
+    display: table-cell;
+  }
   .p-rowgroup-header { background-color: $table-background-hover-color-light }
   .p-datatable-thead {
     tr {
