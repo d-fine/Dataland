@@ -109,7 +109,7 @@ describe("As a user I want to be able to register for an account and be able to 
     logout();
   });
 
-  /* TODO comment out test to check if it's only this one having problems  .
+  /* TODO comment out test to check if it's only this one having problems  ..
   describe("Checks that TOTP-Based 2FA works", () => {
     it("Should be possible to setup 2FA on the newly created account", () => {
       cy.task("getEmail").then((returnEmail) => {
