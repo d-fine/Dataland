@@ -73,7 +73,7 @@ interface CompanyApi {
      * this function only returns companies that have a country code contained in the set
      * @param sectors If set & non-empty, this function only returns companies that belong to a sector in the set
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
-     * @param onlyCurrentUserAsUploader boolean determining if the search should only find dataset metainfos of datasets
+     * @param onlyCurrentUserAsUploader boolean determining if the search should only find companies with datasets
      * uploaded by the current user
      * @return information about all companies matching the search criteria
      */
