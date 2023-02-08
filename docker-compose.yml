@@ -283,6 +283,10 @@ services:
     environment:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:15672/ | tee /dev/stderr | grep -q 'RabbitMQ Management' || false" ]
+      interval: 30s
+      timeout: 3s
   dummy-qa-service:
     profiles: ["production", "testing", "development"]
     environment:
