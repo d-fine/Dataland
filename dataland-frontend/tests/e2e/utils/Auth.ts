@@ -29,7 +29,7 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
        "youtubeRequest"
    );
   cy.visitAndCheckAppMount("/")
-    // TODO waiting for the youtube POST request to finish s
+    // TODO waiting for the youtube POST request to finish
     .wait("@youtubeRequest", { timeout: Cypress.env("medium_timeout_in_ms") as number })
     .get("button[name='login_dataland_button']")
     .click()
