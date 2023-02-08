@@ -13,7 +13,6 @@
   </div>
   <div class="grid align-items-center m-0">
     <div class="col-offset-1 col-10">
-
     </div>
   </div>
   <div class="grid m-0 pt-6">
