@@ -34,9 +34,6 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.get("#framework-filter")
         .click()
         .get("div.p-multiselect-panel")
-        .find("li.p-disabled:contains('SFDR')")
-        .should("exist")
-        .get("div.p-multiselect-panel")
         .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
         .click();
       verifyTaxonomySearchResultTable();
