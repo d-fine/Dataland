@@ -1,5 +1,6 @@
 #!/bin/bash
 # Ensure /certs director is present and permissions are configured accordingly
+echo Generating Dummy Certificates to allow nginx boot
 mkdir -p /certs
 chown -R root:root /certs
 chmod -R 600 /certs
