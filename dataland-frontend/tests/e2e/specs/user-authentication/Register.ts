@@ -11,6 +11,7 @@ describe("As a user I want to be able to register for an account and be able to 
     cy.visitAndCheckAppMount("/")
       // TODO waiting for the youtube POST request to finish
       .wait("@postYoutubeStatistics", { timeout: Cypress.env("long_timeout_in_ms") as number })
+        .wait(20000)
       .get("button[name='join_dataland_button']")
       .click()
       .get("#email")
@@ -46,7 +47,8 @@ describe("As a user I want to be able to register for an account and be able to 
     cy.visitAndCheckAppMount("/")
       // TODO waiting for the youtube POST request to finish
       .wait("@postYoutubeStatistics", { timeout: Cypress.env("long_timeout_in_ms") as number })
-      .get("button[name='join_dataland_button']")
+        .wait(20000)
+        .get("button[name='join_dataland_button']")
       .click()
       .get("#email")
       .should("exist")
