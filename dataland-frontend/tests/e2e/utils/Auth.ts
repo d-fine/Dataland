@@ -25,7 +25,7 @@ export function logout(): void {
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
  */
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
-  cy.intercept("https://www.youtube-nocookie.com").as("postYoutubeStatistics");
+  cy.intercept("https://www.youtube-nocookie.com/**").as("postYoutubeStatistics");
   cy.visitAndCheckAppMount("/")
     // TODO waiting for the youtube POST request to finish
     .wait("@postYoutubeStatistics", { timeout: Cypress.env("long_timeout_in_ms") as number })

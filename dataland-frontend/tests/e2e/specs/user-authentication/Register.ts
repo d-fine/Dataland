@@ -7,7 +7,7 @@ describe("As a user I want to be able to register for an account and be able to 
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 
   it("Checks that the Dataland password-policy gets respected", () => {
-    cy.intercept("https://www.youtube-nocookie.com").as("postYoutubeStatistics");
+    cy.intercept("https://www.youtube-nocookie.com/**").as("postYoutubeStatistics");
     cy.visitAndCheckAppMount("/")
       // TODO waiting for the youtube POST request to finish
       .wait("@postYoutubeStatistics", { timeout: Cypress.env("long_timeout_in_ms") as number })
@@ -42,7 +42,7 @@ describe("As a user I want to be able to register for an account and be able to 
   it("Checks that registering works", () => {
     cy.task("setEmail", email);
     cy.task("setPassword", randomHexPassword);
-    cy.intercept("https://www.youtube-nocookie.com").as("postYoutubeStatistics");
+    cy.intercept("https://www.youtube-nocookie.com/**").as("postYoutubeStatistics");
     cy.visitAndCheckAppMount("/")
       // TODO waiting for the youtube POST request to finish
       .wait("@postYoutubeStatistics", { timeout: Cypress.env("long_timeout_in_ms") as number })
