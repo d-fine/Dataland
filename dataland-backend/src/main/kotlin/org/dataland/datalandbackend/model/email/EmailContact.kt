@@ -8,7 +8,7 @@ import com.mailjet.client.transactional.TransactionalEmail
  */
 data class EmailContact(
     val email: String,
-    val name: String? = null
+    val name: String? = null,
 ) {
     /**
      * Defines whether to hide the requester's name in the email or to show it

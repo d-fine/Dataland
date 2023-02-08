@@ -17,7 +17,7 @@ class Sfdr {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneSfdrDataSet,
-            apiAccessor.sfdrUploaderFunction
+            apiAccessor.sfdrUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForSfdrData

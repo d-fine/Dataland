@@ -35,7 +35,7 @@ class DataRetrievalViaApiKeyTest {
             userIdInReceivedApiKeyMetaInfo,
             "The Keycloak user ID in the received API key meta info was $userIdInReceivedApiKeyMetaInfo and " +
                 "does not equal the expected Keycloak user ID $expectedUserIdForUserType for the technical " +
-                "user type $userType."
+                "user type $userType.",
         )
     }
 
@@ -47,27 +47,27 @@ class DataRetrievalViaApiKeyTest {
             rolesInReceivedApiKeyMetaInfo,
             "The Keycloak roles in the received API key meta info were $rolesInReceivedApiKeyMetaInfo and " +
                 "do not equal the expected Keycloak roles $expectedRolesForUserType for the technical" +
-                "user type $userType"
+                "user type $userType",
         )
     }
 
     private fun assertExpiryDate(daysValid: Int? = null, receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo) {
         val expectedExpiryDateForApiKey = datesHandler.calculateExpectedExpiryDateSimpleFormatted(daysValid)
         val expiryDateInReceivedApiKeyMetaInfo = datesHandler.convertUnixTimeToSimpleFormattedDate(
-            receivedApiKeyMetaInfoFromValidation.expiryDate
+            receivedApiKeyMetaInfoFromValidation.expiryDate,
         )
         assertEquals(
             expectedExpiryDateForApiKey,
             expiryDateInReceivedApiKeyMetaInfo,
             "The expiry date in the received API key meta info was $expiryDateInReceivedApiKeyMetaInfo and " +
-                "does not equal the expected expiry date $expectedExpiryDateForApiKey."
+                "does not equal the expected expiry date $expectedExpiryDateForApiKey.",
         )
     }
 
     private fun doAssertionsAfterApiKeyValidation(
         userType: UserType,
         daysValid: Int? = null,
-        receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo
+        receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo,
     ) {
         assertUserId(userType, receivedApiKeyMetaInfoFromValidation)
         assertRoles(userType, receivedApiKeyMetaInfoFromValidation)
@@ -76,7 +76,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             "The API key you provided was successfully validated.",
             receivedApiKeyMetaInfoFromValidation.validationMessage,
-            "The received validation message does not match the expected one."
+            "The received validation message does not match the expected one.",
         )
     }
 
@@ -97,7 +97,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             expectedStoredCompany,
             downloadedStoredCompany,
-            "The received company $downloadedStoredCompany does not equal the expected company $expectedStoredCompany"
+            "The received company $downloadedStoredCompany does not equal the expected company $expectedStoredCompany",
         )
     }
 
@@ -109,7 +109,7 @@ class DataRetrievalViaApiKeyTest {
             .getCompanyInformationWithoutIdentifiers(1).first().copy(isTeaserCompany = false)
         val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
             testCompanyInformationNonTeaser,
-            testDataEuTaxonomyNonFinancials
+            testDataEuTaxonomyNonFinancials,
         )
         apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, 1)
         val downloadedCompanyAssociatedDataEuTaxonomyDataForNonFinancials =
@@ -119,7 +119,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["companyId"], testDataEuTaxonomyNonFinancials),
             downloadedCompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal."
+            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
         )
     }
 
@@ -141,7 +141,8 @@ class DataRetrievalViaApiKeyTest {
                 apiAccessor.companyDataControllerApi.getCompanyById(companyId).companyId
             }
         assertEquals(
-            "Client error : 401 ", exception.message,
+            "Client error : 401 ",
+            exception.message,
         )
     }
 
@@ -174,7 +175,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             expectedApiKeyMetaInfo,
             apiKeyMetaInfo,
-            "Message for a non existing API key was not as expected"
+            "Message for a non existing API key was not as expected",
         )
     }
 
@@ -189,7 +190,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             expectedApiKeyMetaInfo,
             apiKeyMetaInfo,
-            "Message for an API key with a wrong secret was not as expected"
+            "Message for an API key with a wrong secret was not as expected",
         )
     }
 
@@ -203,7 +204,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             expectedRevokeResponse,
             actualRevokeResponse,
-            "The API key was somehow not successfully revoked."
+            "The API key was somehow not successfully revoked.",
         )
     }
 
@@ -219,7 +220,7 @@ class DataRetrievalViaApiKeyTest {
         assertEquals(
             expectedRevokeResponse,
             actualRevokeResponse,
-            "Revoking the API key somehow did not result in a fail message."
+            "Revoking the API key somehow did not result in a fail message.",
         )
     }
 
@@ -232,7 +233,7 @@ class DataRetrievalViaApiKeyTest {
                 apiKeyAndMetaInfo.apiKeyMetaInfo,
                 apiKeyMetaInfoFromEndpoint,
                 "The API key meta info from the generation process does not equal the API key meta info that is " +
-                    "returned for the respective keycloak user."
+                    "returned for the respective keycloak user.",
             )
         }
     }

@@ -12,5 +12,5 @@ data class EuTaxonomyDetailsPerCashFlowType(
 
     val alignedPercentage: DataPoint<BigDecimal>? = null,
 
-    val eligiblePercentage: DataPoint<BigDecimal>? = null
+    val eligiblePercentage: DataPoint<BigDecimal>? = null,
 )

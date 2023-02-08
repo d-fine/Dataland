@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class KeycloakJwtAuthenticationConverter(
-    val grantedAuthoritiesConverter: KeycloakGrantedAuthoritiesConverter
+    val grantedAuthoritiesConverter: KeycloakGrantedAuthoritiesConverter,
 ) : Converter<Jwt, AbstractAuthenticationToken> {
 
     /**

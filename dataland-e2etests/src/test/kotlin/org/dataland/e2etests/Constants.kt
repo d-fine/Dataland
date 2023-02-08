@@ -31,5 +31,5 @@ val MUTUAL_ROLES_DATALAND_USERS =
 val FRONTEND_DISPLAYED_FRAMEWORKS = listOf(
     DataTypeEnum.eutaxonomyMinusFinancials,
     DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-    DataTypeEnum.lksg
+    DataTypeEnum.lksg,
 )

@@ -12,13 +12,14 @@ class InternalServerErrorApiException(
     val publicSummary: String,
     val publicMessage: String,
     internalMessage: String,
-    internalCause: Throwable? = null
+    internalCause: Throwable? = null,
 ) : SingleApiException(internalMessage, internalCause) {
 
     constructor(internalMessage: String, internalCause: Throwable? = null) : this(
         "An internal server error occurred",
         "An unexpected internal server error occurred. Please contact support if this error persists",
-        internalMessage, internalCause
+        internalMessage,
+        internalCause,
     )
 
     override fun getErrorResponse(): ErrorDetails {
@@ -26,7 +27,7 @@ class InternalServerErrorApiException(
             errorType = "internal-server-error",
             summary = publicSummary,
             message = publicMessage,
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
         )
     }
 }

@@ -9,7 +9,7 @@ data class EmailContent(
     val subject: String,
     val textContent: String,
     val htmlContent: String,
-    val attachments: List<EmailAttachment>
+    val attachments: List<EmailAttachment>,
 )
 
 /**

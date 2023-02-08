@@ -18,16 +18,16 @@ class EuTaxonomyNonFinancials {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneEuTaxonomyNonFinancialsDataSet,
-            apiAccessor.euTaxonomyNonFinancialsUploaderFunction
+            apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val listOfDataMetaInfoForTestCompany = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
             receivedDataMetaInformation!!.companyId,
-            receivedDataMetaInformation.dataType
+            receivedDataMetaInformation.dataType,
         )
         Assertions.assertTrue(
             listOfDataMetaInfoForTestCompany.contains(receivedDataMetaInformation),
-            "The all-data-sets-list of the posted company does not contain the posted data set."
+            "The all-data-sets-list of the posted company does not contain the posted data set.",
         )
     }
 
@@ -36,7 +36,7 @@ class EuTaxonomyNonFinancials {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneEuTaxonomyNonFinancialsDataSet,
-            apiAccessor.euTaxonomyNonFinancialsUploaderFunction
+            apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials

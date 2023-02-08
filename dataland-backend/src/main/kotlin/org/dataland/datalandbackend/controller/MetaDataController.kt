@@ -23,14 +23,14 @@ class MetaDataController(
         ResponseEntity<List<DataMetaInformation>> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
         return ResponseEntity.ok(
-            dataMetaInformationManager.searchDataMetaInfo(companyId ?: "", dataType).map { it.toApiModel(currentUser) }
+            dataMetaInformationManager.searchDataMetaInfo(companyId ?: "", dataType).map { it.toApiModel(currentUser) },
         )
     }
 
     override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
         return ResponseEntity.ok(
-            dataMetaInformationManager.getDataMetaInformationByDataId(dataId).toApiModel(currentUser)
+            dataMetaInformationManager.getDataMetaInformationByDataId(dataId).toApiModel(currentUser),
         )
     }
 }

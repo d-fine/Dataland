@@ -21,7 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class CompanyManagerTest(
     @Autowired val objectMapper: ObjectMapper,
-    @Autowired val testCompanyManager: CompanyManager
+    @Autowired val testCompanyManager: CompanyManager,
 ) {
     val testDataProvider = TestDataProvider(objectMapper)
     val testCompanyList = testDataProvider.getCompanyInformation(4)
@@ -41,7 +41,7 @@ class CompanyManagerTest(
             StoredCompany(testCompanyId, testCompanyData, mutableListOf()),
             testCompanyManager.getCompanyApiModelById(testCompanyId),
             "The company behind the company ID in the post-response " +
-                "does not contain company information of the posted company."
+                "does not contain company information of the posted company.",
         )
     }
 
@@ -52,7 +52,7 @@ class CompanyManagerTest(
             allCompaniesInStore.all {
                 testCompanyList.any { testCompany -> testCompany.companyName == it.companyInformation.companyName }
             },
-            "Not all the companyInformation of the posted companies could be found in the stored companies."
+            "Not all the companyInformation of the posted companies could be found in the stored companies.",
         )
     }
 
@@ -63,11 +63,11 @@ class CompanyManagerTest(
                 CompanySearchFilter(
                     searchString = company.companyName,
                     onlyCompanyNames = true,
-                )
+                ),
             )
             assertTrue(
                 searchResponse.any { it.companyInformation.companyName == company.companyName },
-                "The posted company could not be retrieved by searching for its name."
+                "The posted company could not be retrieved by searching for its name.",
             )
         }
     }
@@ -77,7 +77,7 @@ class CompanyManagerTest(
             CompanySearchFilter(
                 searchString = identifier.identifierValue,
                 onlyCompanyNames = false,
-            )
+            ),
         )
             .toMutableList()
         // The response list is filtered to exclude results that match in account of another identifier having
@@ -92,7 +92,7 @@ class CompanyManagerTest(
         assertTrue(
             searchResponse.all { results -> results.companyInformation.identifiers.any { it == identifier } },
             "The search by identifier returns at least one company that does not contain the looked" +
-                "for value $identifier."
+                "for value $identifier.",
         )
     }
 
@@ -112,7 +112,7 @@ class CompanyManagerTest(
         for (companyInformation in testCompanyList) {
             if (companyInformation.companyName.contains(searchString)) {
                 throw IllegalArgumentException(
-                    "The company name ${companyInformation.companyName} includes the searchString $searchString."
+                    "The company name ${companyInformation.companyName} includes the searchString $searchString.",
                 )
             }
             for (identifier in companyInformation.identifiers) {
@@ -121,8 +121,9 @@ class CompanyManagerTest(
         }
         val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(CompanySearchFilter(searchString))
         assertEquals(
-            occurencesOfSearchString, searchResponse.size,
-            "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
+            occurencesOfSearchString,
+            searchResponse.size,
+            "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}.",
         )
     }
 
@@ -136,11 +137,12 @@ class CompanyManagerTest(
             }
         }
         val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(searchString = searchString, onlyCompanyNames = true)
+            CompanySearchFilter(searchString = searchString, onlyCompanyNames = true),
         )
         assertEquals(
-            occurencesOfSearchString, searchResponse.size,
-            "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}."
+            occurencesOfSearchString,
+            searchResponse.size,
+            "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}.",
         )
     }
 
@@ -148,7 +150,7 @@ class CompanyManagerTest(
     fun `search for name substring to check the ordering of results`() {
         val searchString = testCompanyList.first().companyName.take(1)
         val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(searchString = searchString, onlyCompanyNames = true)
+            CompanySearchFilter(searchString = searchString, onlyCompanyNames = true),
         )
         val responsesStartingWith =
             searchResponse.takeWhile { it.companyInformation.companyName.startsWith(searchString) }
@@ -157,12 +159,12 @@ class CompanyManagerTest(
             otherResponses.none { it.companyInformation.companyName.startsWith(searchString) },
             "Expected to have matches ordered by starting with search string followed by all other results." +
                 "However, at least one of the matches in the other results starts with the search string " +
-                "($searchString)."
+                "($searchString).",
         )
         assertTrue(
             responsesStartingWith.isNotEmpty(),
             "No matches starting with the search string " +
-                "$searchString were returned. At least one was expected."
+                "$searchString were returned. At least one was expected.",
         )
     }
 }
