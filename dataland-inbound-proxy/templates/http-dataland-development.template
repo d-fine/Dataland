@@ -49,6 +49,11 @@ server {
       include utils/proxy.conf;
     }
 
+    location /qa/actuator/health {
+      proxy_pass http://dummy-qa-service:8080/qa/actuator/health;
+      include utils/proxy.conf;
+    }
+
     location /images/ {
       root /var/www;
     }
