@@ -7,4 +7,4 @@ COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./.git/ ./.git
 RUN ./gradlew dataland-dummy-qa-service:bootJar --no-daemon --stacktrace
 
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://dummy-qa-service:8080/qa/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/qa/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false

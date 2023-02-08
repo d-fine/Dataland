@@ -29,6 +29,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation("org.testng:testng:7.7.0")
     implementation("junit:junit:4.13.1")
