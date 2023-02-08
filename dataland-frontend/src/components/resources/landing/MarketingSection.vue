@@ -13,7 +13,14 @@
   </div>
   <div class="grid align-items-center m-0">
     <div class="col-offset-1 col-10">
-
+      <div class="video-container">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/XTNBYTtPNLY?color=white&modestbranding=1&=rel=0"
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
     </div>
   </div>
   <div class="grid m-0 pt-6">
