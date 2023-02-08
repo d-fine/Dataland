@@ -7,12 +7,10 @@ describe("As a user I want to be able to register for an account and be able to 
   const randomHexPassword = [...passwordBytes].map((x): string => x.toString(16).padStart(2, "0")).join("");
 
   it("Checks that the Dataland password-policy gets respected", () => {
-    cy.intercept("https://www.youtube-nocookie.com/**", {fixture: "ApiKeyInfoMockWithKey.json"}).as(
-        "youtubeRequest"
-    );
+    cy.intercept("https://www.youtube-nocookie.com/**", { fixture: "ApiKeyInfoMockWithKey.json" }).as("youtubeRequest");
     cy.visitAndCheckAppMount("/")
-        // TODO waiting for the youtube POST request to finish
-        .wait("@youtubeRequest", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+      // TODO waiting for the youtube POST request to finish
+      .wait("@youtubeRequest", { timeout: Cypress.env("medium_timeout_in_ms") as number })
       .get("button[name='join_dataland_button']")
       .click()
       .get("#email")
@@ -44,13 +42,11 @@ describe("As a user I want to be able to register for an account and be able to 
   it("Checks that registering works", () => {
     cy.task("setEmail", email);
     cy.task("setPassword", randomHexPassword);
-    cy.intercept("https://www.youtube-nocookie.com/**", {fixture: "ApiKeyInfoMockWithKey.json"}).as(
-        "youtubeRequest"
-    );
+    cy.intercept("https://www.youtube-nocookie.com/**", { fixture: "ApiKeyInfoMockWithKey.json" }).as("youtubeRequest");
     cy.visitAndCheckAppMount("/")
-        // TODO waiting for the youtube POST request to finish
-        .wait("@youtubeRequest", { timeout: Cypress.env("medium_timeout_in_ms") as number })
-        .get("button[name='join_dataland_button']")
+      // TODO waiting for the youtube POST request to finish
+      .wait("@youtubeRequest", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+      .get("button[name='join_dataland_button']")
       .click()
       .get("#email")
       .should("exist")
