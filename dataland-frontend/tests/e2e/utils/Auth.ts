@@ -71,8 +71,9 @@ export function ensureLoggedIn(username?: string, password?: string): void {
         cy.visit("/")
           .url()
           .should("eq", getBaseUrl() + "/companies");
-        cy.wait(10000) // TODO try this to ensure that page is fully loaded, maybe then requests aren't aborted
+        cy.wait(10000); // TODO try this to ensure that page is fully loaded, maybe then requests aren't aborted
       },
+      cacheAcrossSpecs: true,
     }
   );
 }
