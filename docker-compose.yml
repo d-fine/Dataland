@@ -284,7 +284,7 @@ services:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}
     healthcheck:
-      test: rabbitmq-diagnostics -q pin
+      test: rabbitmq-diagnostics -q ping
       interval: 30s
       timeout: 3s
   dummy-qa-service:
