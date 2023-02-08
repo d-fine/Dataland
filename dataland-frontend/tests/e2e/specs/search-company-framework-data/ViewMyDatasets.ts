@@ -1,4 +1,4 @@
-import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
@@ -105,7 +105,7 @@ describe(
         });
 
         it("Check that a user who has no upload permission has no new dataset button displayed", () => {
-          cy.ensureLoggedIn(admin_name, admin_pw);
+          cy.ensureLoggedIn(reader_name, reader_pw);
           cy.visit("/datasets");
           cy.get(newDatasetButtonSelector).should("not.exist");
         });
