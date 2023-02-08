@@ -9,7 +9,7 @@ val jacocoClasses by extra(
                 exclude("**/openApiClient/**")
             }.files
         }
-    }
+    },
 )
 
 plugins {
@@ -57,14 +57,14 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
 
     additionalProperties.set(
         mapOf(
-            "removeEnumValuePrefix" to false
-        )
+            "removeEnumValuePrefix" to false,
+        ),
     )
     configOptions.set(
         mapOf(
             "dateLibrary" to "java17",
-            "useTags" to "true"
-        )
+            "useTags" to "true",
+        ),
     )
 }
 
@@ -80,8 +80,8 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     configOptions.set(
         mapOf(
             "dateLibrary" to "java17",
-            "useTags" to "true"
-        )
+            "useTags" to "true",
+        ),
     )
 }
 

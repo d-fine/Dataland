@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus
  */
 class HttpStatusIntegerSerializer : JsonSerializer<HttpStatus>() {
     override fun serialize(value: HttpStatus?, gen: JsonGenerator, serializers: SerializerProvider) {
-        if (value == null) gen.writeNull()
-        else gen.writeNumber(value.value())
+        if (value == null) {
+            gen.writeNull()
+        } else {
+            gen.writeNumber(value.value())
+        }
     }
 }

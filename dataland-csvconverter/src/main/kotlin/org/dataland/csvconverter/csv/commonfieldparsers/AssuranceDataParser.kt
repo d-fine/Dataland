@@ -19,23 +19,24 @@ class AssuranceDataParser(private val dataPointParser: DataPointParser) {
         "assurance" to "Assurance",
         "assuranceProvider" to "Assurance Provider",
         "assurancePage" to "Assurance Page",
-        "assuranceReport" to "Assurance Report"
+        "assuranceReport" to "Assurance Report",
     )
 
     private val assuranceOptionsParser = EnumCsvParser<AssuranceOptions>(
         mapOf(
             "reasonable" to AssuranceOptions.ReasonableAssurance,
             "limited" to AssuranceOptions.LimitedAssurance,
-            "none" to AssuranceOptions.None
-        )
+            "none" to AssuranceOptions.None,
+        ),
     )
 
     /**
      * This method builds the single assurance data
      */
     fun buildSingleAssuranceData(row: Map<String, String>): AssuranceData? {
-        if (!columnMappingAssurance.checkIfAnyFieldHasValue(columnMappingAssurance.keys.toList(), row))
+        if (!columnMappingAssurance.checkIfAnyFieldHasValue(columnMappingAssurance.keys.toList(), row)) {
             return null
+        }
 
         return AssuranceData(
             assurance = columnMappingAssurance
@@ -45,8 +46,8 @@ class AssuranceDataParser(private val dataPointParser: DataPointParser) {
             dataSource = dataPointParser.buildSingleCompanyReportReference(
                 columnMappingAssurance,
                 row,
-                "assurance"
-            )
+                "assurance",
+            ),
         )
     }
 }

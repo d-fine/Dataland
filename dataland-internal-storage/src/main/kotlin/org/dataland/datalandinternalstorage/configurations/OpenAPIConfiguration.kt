@@ -10,8 +10,8 @@ import io.swagger.v3.oas.annotations.servers.Server
 @OpenAPIDefinition(
     info = Info(
         title = "Dataland internal storage API documentation",
-        version = "1.0.0"
+        version = "1.0.0",
     ),
-    servers = [Server(url = "/internal-storage")]
+    servers = [Server(url = "/internal-storage")],
 )
 interface OpenAPIConfiguration

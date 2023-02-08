@@ -17,5 +17,5 @@ data class StoredCompany(
     val companyInformation: CompanyInformation,
 
     @field:JsonProperty(required = true)
-    val dataRegisteredByDataland: List<DataMetaInformation>
+    val dataRegisteredByDataland: List<DataMetaInformation>,
 )

@@ -12,7 +12,7 @@ class DataTypesExtractorTest {
         Assertions.assertEquals(
             expectedTypes.toSet(),
             dataTypes.toSet(),
-            "Found $dataTypes instead of the expected $expectedTypes"
+            "Found $dataTypes instead of the expected $expectedTypes",
         )
     }
 }

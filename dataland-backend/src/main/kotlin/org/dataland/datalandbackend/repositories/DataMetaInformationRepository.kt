@@ -24,9 +24,9 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
             "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
             "OR dataMetaInformation.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
             "(:#{#searchFilter.companyIdFilterLength} = 0 " +
-            "OR dataMetaInformation.company.companyId = :#{#searchFilter.companyIdFilter})"
+            "OR dataMetaInformation.company.companyId = :#{#searchFilter.companyIdFilter})",
     )
     fun searchDataMetaInformation(
-        @Param("searchFilter") searchFilter: DataMetaInformationSearchFilter
+        @Param("searchFilter") searchFilter: DataMetaInformationSearchFilter,
     ): List<DataMetaInformationEntity>
 }

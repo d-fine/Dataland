@@ -27,5 +27,5 @@ data class ErrorDetails(
     @Hidden
     @JsonProperty("stackTrace")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    val stackTrace: String? = null
+    val stackTrace: String? = null,
 )

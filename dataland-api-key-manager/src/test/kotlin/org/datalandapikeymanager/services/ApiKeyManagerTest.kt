@@ -37,7 +37,7 @@ class ApiKeyManagerTest(
         Assertions.assertEquals(
             "The API key you provided for your Dataland account is expired.",
             responseMessage,
-            "The expired api key was unexpectedly validated."
+            "The expired api key was unexpectedly validated.",
         )
     }
 }

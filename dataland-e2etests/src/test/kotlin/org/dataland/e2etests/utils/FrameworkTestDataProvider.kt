@@ -33,7 +33,7 @@ object LocalDateAdapter {
     fun toJson(value: LocalDate) = value.toString()
 }
 
-class FrameworkTestDataProvider <T> (private val clazz: Class<T>) {
+class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
 
     private val jsonFilesForTesting = mapOf(
         EuTaxonomyDataForNonFinancials::class.java to
@@ -45,7 +45,7 @@ class FrameworkTestDataProvider <T> (private val clazz: Class<T>) {
         SfdrData::class.java to
             File("./build/resources/CompanyInformationWithSfdrData.json"),
         SmeData::class.java to
-            File("./build/resources/CompanyInformationWithSmeData.json")
+            File("./build/resources/CompanyInformationWithSmeData.json"),
     )
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
@@ -80,5 +80,5 @@ class FrameworkTestDataProvider <T> (private val clazz: Class<T>) {
 }
 data class CompanyInformationWithT<T>(
     @Json var companyInformation: CompanyInformation,
-    @Json var t: T
+    @Json var t: T,
 )

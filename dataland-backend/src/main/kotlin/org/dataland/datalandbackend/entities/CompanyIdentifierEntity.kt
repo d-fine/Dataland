@@ -37,7 +37,7 @@ data class CompanyIdentifierEntity(
     var company: StoredCompanyEntity?,
 
     @Transient
-    private var isNew: Boolean = false
+    private var isNew: Boolean = false,
 ) : Persistable<CompanyIdentifierEntityId>, ApiModelConversion<CompanyIdentifier> {
     override fun getId(): CompanyIdentifierEntityId = CompanyIdentifierEntityId(identifierValue, identifierType)
     override fun isNew(): Boolean = isNew

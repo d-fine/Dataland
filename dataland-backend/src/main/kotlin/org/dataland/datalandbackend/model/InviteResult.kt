@@ -8,5 +8,5 @@ package org.dataland.datalandbackend.model
  */
 data class InviteResult(
     val isInviteSuccessful: Boolean,
-    val inviteResultMessage: String
+    val inviteResultMessage: String,
 )
