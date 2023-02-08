@@ -48,30 +48,35 @@ class ApiKeyAuthenticationProvider(val apiKeyManagerBaseUrl: String) : Authentic
     }
 
     private fun validateApiKeyViaEndpoint(customToken: String): ApiKeyMetaInfo {
-        var apiKeyMetaInfo = ApiKeyMetaInfo()
-        try {
+        return catchApiExceptionsAndConvertToInternalAuthExceptions {
             logger.trace("Sending API-Token to API-Token-Service for introspection")
-            apiKeyMetaInfo = ApiKeyControllerApi(basePath = apiKeyManagerBaseUrl).validateApiKey(customToken)
+            val apiKeyMetaInfo = ApiKeyControllerApi(basePath = apiKeyManagerBaseUrl).validateApiKey(customToken)
             logger.trace("Received API-Key Meta-Information {}", apiKeyMetaInfo)
             if (apiKeyMetaInfo.active == null || apiKeyMetaInfo.active == false) {
                 logger.trace("API-Token came back invalid, throwing error to cancel authentication")
                 throw BadCredentialsException(apiKeyMetaInfo.validationMessage)
             }
-        } catch (ex: IllegalStateException) {
-            handleAuthenticationException(ex)
-        } catch (ex: IOException) {
-            handleAuthenticationException(ex)
-        } catch (ex: UnsupportedOperationException) {
-            handleAuthenticationException(ex)
-        } catch (ex: ClientException) {
-            handleAuthenticationException(ex)
-        } catch (ex: ServerException) {
-            handleAuthenticationException(ex)
+            apiKeyMetaInfo
         }
-        return apiKeyMetaInfo
     }
 
-    private fun handleAuthenticationException(ex: Exception) {
+    private fun <T> catchApiExceptionsAndConvertToInternalAuthExceptions(authFunction: () -> T): T {
+        return try {
+            authFunction()
+        } catch (ex: IllegalStateException) {
+            throwInternalAuthExceptionBasedOn(ex)
+        } catch (ex: IOException) {
+            throwInternalAuthExceptionBasedOn(ex)
+        } catch (ex: UnsupportedOperationException) {
+            throwInternalAuthExceptionBasedOn(ex)
+        } catch (ex: ClientException) {
+            throwInternalAuthExceptionBasedOn(ex)
+        } catch (ex: ServerException) {
+            throwInternalAuthExceptionBasedOn(ex)
+        }
+    }
+
+    private fun <T> throwInternalAuthExceptionBasedOn(ex: Exception): T {
         val validationServiceCouldNotBeQueriedText = "API-KEY Validation Service could not be queried"
         throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
     }
