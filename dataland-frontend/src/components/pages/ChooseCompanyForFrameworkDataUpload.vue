@@ -3,7 +3,7 @@
     <TheHeader />
     <UploaderRoleWrapper>
       <TheContent>
-        <BackButton id="backButton" label="MY DATASETS" />
+        <BackButton id="backButton" label="BACK" />
         <Card class="col-12 text-left page-wrapper-card">
           <template #title>New Dataset - Company</template>
           <template #content>
