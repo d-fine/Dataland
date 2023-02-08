@@ -27,7 +27,7 @@ export function logout(): void {
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
   cy.intercept("https://www.youtube-nocookie.com/**", { fixture: "ApiKeyInfoMockWithKey.json" }).as("youtubeRequest");
   cy.visitAndCheckAppMount("/")
-    // TODO waiting for the youtube POST request to finish
+    // TODO waiting for the youtube POST request to finishs
     .wait("@youtubeRequest", { timeout: Cypress.env("medium_timeout_in_ms") as number })
     .get("button[name='login_dataland_button']")
     .click()
