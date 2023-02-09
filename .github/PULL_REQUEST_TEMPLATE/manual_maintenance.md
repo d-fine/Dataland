@@ -25,17 +25,22 @@ The following known issues need to be reviewed in case a compatible version is a
 ### Dockerfile updates
 Update versions in the following dockerfiles
 - [ ] `./dataland-api-key-manager/Dockerfile`
+- [ ] `./dataland-api-key-manager/DockerfileBase`
 - [ ] `./dataland-api-key-manager/DockerfileTest`
+- [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-backend/DockerfileBase`
 - [ ] `./dataland-backend/DockerfileTest`
-- [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-csvconverter/Dockerfile`
+- [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
+- [ ] `./dataland-internal-storage/Dockerfile`
+- [ ] `./dataland-internal-storage/DockerfileTest`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
 - [ ] `./dataland-inbound-proxy/DockerfileBase`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
+- [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db and frontend-dev
