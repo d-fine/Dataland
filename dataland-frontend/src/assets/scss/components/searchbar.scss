@@ -2,24 +2,8 @@
   padding-left: 0.75rem !important;
 }
 
-.d-framework-searchbar-input {
-  padding-left: 3rem !important;
-}
-
 .d-framework-searchbar-panel {
-  max-height: 500px !important;
-}
-
-.d-framework-searchbar-panel .p-autocomplete-items {
-  padding: 0 !important;
-}
-
-.d-framework-searchbar-panel .p-autocomplete-item {
-  height: 3.5rem !important;
-  padding: 0 !important;
-  display: flex;
-  align-content: center;
-  align-items: center;
+  max-height: 500px !important; // TODO this is a duplicate! there is already d-framework-searchbar-panel in form.scss
 }
 
 .p-autocomplete-loader {
