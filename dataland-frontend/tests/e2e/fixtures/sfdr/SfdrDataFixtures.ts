@@ -16,13 +16,13 @@ import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/Fisca
  *
  * @returns a random SFDR dataset
  */
-export function generateSfdrData(): SfdrData {
+export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
   const reports = generateReferencedReports();
   return {
     social: {
       general: {
         fiscalYear: randomFiscalYearDeviationOrUndefined(),
-        fiscalYearEnd: randomFutureDate(),
+        fiscalYearEnd: fiscalYearEnd === undefined ? randomFutureDate() : fiscalYearEnd,
         groupLevelAnnualReport: randomYesNoNaUndefined(),
         annualReport: faker.datatype.string(),
         annualReportDate: randomFutureDate(),

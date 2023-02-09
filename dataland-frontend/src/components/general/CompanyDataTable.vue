@@ -56,6 +56,10 @@
             </a>
             <template v-else-if="typeof data[dataDate] === 'object' && data[dataDate] !== null">
               <table class="detail-table">
+                <th style="display: none"></th>
+                <caption style="display: none">
+                  Details Table
+                </caption>
                 <template v-for="(value, key, index) in data[dataDate]" :key="index + key">
                   <tr v-if="typeof value === 'string'">
                     <td class="key-td">{{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}</td>
