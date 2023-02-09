@@ -49,14 +49,14 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     generatorName.set("typescript-axios")
     additionalProperties.set(
         mapOf(
-            "removeEnumValuePrefix" to false
-        )
+            "removeEnumValuePrefix" to false,
+        ),
     )
     configOptions.set(
         mapOf(
             "withInterfaces" to "true",
-            "withSeparateModelsAndApi" to "true"
-        )
+            "withSeparateModelsAndApi" to "true",
+        ),
     )
     dependsOn("getBackendOpenApiSpec")
 }
@@ -71,14 +71,14 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     generatorName.set("typescript-axios")
     additionalProperties.set(
         mapOf(
-            "removeEnumValuePrefix" to false
-        )
+            "removeEnumValuePrefix" to false,
+        ),
     )
     configOptions.set(
         mapOf(
             "withInterfaces" to "true",
-            "withSeparateModelsAndApi" to "true"
-        )
+            "withSeparateModelsAndApi" to "true",
+        ),
     )
 }
 

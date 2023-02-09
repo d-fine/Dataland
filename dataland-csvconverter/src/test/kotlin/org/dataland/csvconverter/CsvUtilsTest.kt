@@ -20,17 +20,17 @@ class CsvUtilsTest {
     fun `test that the percentage parsing works as expected`() {
         assertEquals(
             "0.0125".toBigDecimal().stripTrailingZeros(),
-            testMapping.readCsvPercentage(testColumnName, constructRow("1,25%"))
+            testMapping.readCsvPercentage(testColumnName, constructRow("1,25%")),
         )
 
         assertEquals(
             "0.35".toBigDecimal().stripTrailingZeros(),
-            testMapping.readCsvPercentage(testColumnName, constructRow("35%"))
+            testMapping.readCsvPercentage(testColumnName, constructRow("35%")),
         )
 
         assertEquals(
             "0.325".toBigDecimal().stripTrailingZeros(),
-            testMapping.readCsvPercentage(testColumnName, constructRow("32,5 %"))
+            testMapping.readCsvPercentage(testColumnName, constructRow("32,5 %")),
         )
     }
 
@@ -51,12 +51,12 @@ class CsvUtilsTest {
     fun `test that the decimal parsing works as expected`() {
         assertEquals(
             "123332.456".toBigDecimal().stripTrailingZeros(),
-            testMapping.readCsvDecimal(testColumnName, constructRow("123.332,456"))
+            testMapping.readCsvDecimal(testColumnName, constructRow("123.332,456")),
         )
 
         assertEquals(
             "123400000".toBigDecimal().stripTrailingZeros(),
-            testMapping.readCsvDecimal(testColumnName, constructRow("123,4 "), CsvUtils.SCALE_FACTOR_ONE_MILLION)
+            testMapping.readCsvDecimal(testColumnName, constructRow("123,4 "), CsvUtils.SCALE_FACTOR_ONE_MILLION),
         )
     }
 
@@ -74,11 +74,11 @@ class CsvUtilsTest {
     fun `test that the long parsing works as expected`() {
         assertEquals(
             12345L,
-            testMapping.readCsvLong(testColumnName, constructRow("12345"))
+            testMapping.readCsvLong(testColumnName, constructRow("12345")),
         )
         assertEquals(
             0L,
-            testMapping.readCsvLong(testColumnName, constructRow("0"))
+            testMapping.readCsvLong(testColumnName, constructRow("0")),
         )
     }
 

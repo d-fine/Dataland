@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class EmailSender(
-    mailServerUrl: String = "https://api.eu.mailjet.com"
+    mailServerUrl: String = "https://api.eu.mailjet.com",
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 

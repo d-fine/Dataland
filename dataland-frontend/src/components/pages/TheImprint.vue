@@ -12,7 +12,7 @@
         <BackButton />
       </MarginWrapper>
       <MarginWrapper class="text-left pl-2">
-        <div class="col-6 text-justify">
+        <div class="lg:col-6 md:col-12 sm:col-12 text-justify">
           <h2>Imprint</h2>
           <p>
             Diese Beta-Version von Dataland ist ein Gemeinschaftsprojekt der d-fine GmbH, der PricewaterhouseCoopers

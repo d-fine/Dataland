@@ -13,5 +13,5 @@ data class RevokeApiKeyResponse(
     val revokementProcessSuccessful: Boolean,
 
     @field:JsonProperty(required = true)
-    val revokementProcessMessage: String
+    val revokementProcessMessage: String,
 )

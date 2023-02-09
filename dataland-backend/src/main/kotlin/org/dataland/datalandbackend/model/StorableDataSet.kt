@@ -16,7 +16,7 @@ data class StorableDataSet(
     val dataType: DataType,
     val uploaderUserId: String,
     val uploadTime: Long,
-    val data: String
+    val data: String,
 ) {
     /**
      * Checks the consistency of this dataset retrieved from the store
@@ -31,7 +31,7 @@ data class StorableDataSet(
             throw InternalServerErrorApiException(
                 "Dataland-Internal inconsistency regarding dataset ${metaDataEntry.dataId}",
                 "We are having some internal issues with the dataset ${metaDataEntry.dataId}, please contact support.",
-                "The meta-data of dataset ${metaDataEntry.dataId} differs between the data store and the database"
+                "The meta-data of dataset ${metaDataEntry.dataId} differs between the data store and the database",
             )
         }
     }

@@ -27,12 +27,13 @@ class LksgDataController(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    LksgData::class.java
+    LksgData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedLksgData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<LksgData>> {
         return super.getCompanyAssociatedData(dataId)
     }
+
     @Operation(operationId = "postCompanyAssociatedLksgData")
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<LksgData>):
         ResponseEntity<DataMetaInformation> {

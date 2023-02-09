@@ -11,8 +11,9 @@ open class EnumCsvParser<T>(private val valueMap: Map<String, T>) {
      * @param input The input that is supposed to be parsed
      */
     fun parse(columnReference: String, input: String?): T {
-        if (input == null)
+        if (input == null) {
             throw createException("null", columnReference)
+        }
 
         return valueMap[input] ?: throw createException(input, columnReference)
     }
@@ -29,7 +30,7 @@ open class EnumCsvParser<T>(private val valueMap: Map<String, T>) {
     private fun createException(illegalInput: String, columnReference: String?): IllegalArgumentException {
         return IllegalArgumentException(
             "Received illegal value $illegalInput for column: $columnReference." +
-                " Allowed values are ${valueMap.keys}"
+                " Allowed values are ${valueMap.keys}",
         )
     }
 }

@@ -42,7 +42,7 @@ class ApiKeyUtility {
         if (receivedApiKey.count { it.toString() == "_" } != numberOfUnderscoreDelimitersExpectedInApiKey) {
             throw InvalidInputApiException(
                 apiKeyInvalidFormatSummary,
-                validateApiKeyDelimitersExceptionMessage
+                validateApiKeyDelimitersExceptionMessage,
             )
         }
     }
@@ -51,7 +51,7 @@ class ApiKeyUtility {
         if (!regexFor80HexCharacters.matches(potentialApiKeySecret)) {
             throw InvalidInputApiException(
                 apiKeyInvalidFormatSummary,
-                validateApiKeySecretExceptionMessage
+                validateApiKeySecretExceptionMessage,
             )
         }
     }
@@ -85,7 +85,7 @@ class ApiKeyUtility {
         val apiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + apiKeySecret
 
         return calculateCrc32Value(
-            apiKeyWithoutCrc32Value.toByteArray(charset)
+            apiKeyWithoutCrc32Value.toByteArray(charset),
         ).toString()
     }
 

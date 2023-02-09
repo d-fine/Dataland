@@ -20,7 +20,7 @@ object InvitationEmailGenerator {
         val regexForValidEmail = Regex("^[a-zA-Z0-9_.!-]+@[a-zA-Z0-9-]+.[a-z]{2,3}\$")
         if (!regexForValidEmail.matches(emailAddress)) {
             throw InternalServerErrorApiException(
-                "The email addresses provided by the environment have a wrong format."
+                "The email addresses provided by the environment have a wrong format.",
             )
         }
     }
@@ -38,7 +38,7 @@ object InvitationEmailGenerator {
         return EmailAttachment(
             "$fileName.xlsx",
             fileToAttach.bytes,
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         )
     }
 
@@ -61,7 +61,7 @@ object InvitationEmailGenerator {
             "Dataland Invitation Request",
             message,
             message,
-            listOf(attachment)
+            listOf(attachment),
         )
         return Email(sender, receivers, cc, content)
     }

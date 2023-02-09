@@ -12,7 +12,7 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
     private val testCompanyInformationWithEuTaxonomyData =
         objectMapper.readValue(
             jsonFile,
-            object : TypeReference<List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>>>() {}
+            object : TypeReference<List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>>>() {},
         )
 
     fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {

@@ -25,5 +25,5 @@ data class DataMetaInformation(
     val companyId: String,
 
     @field:JsonProperty(required = true)
-    val isQualityAssured: String
+    val isQualityAssured: String,
 )

@@ -27,7 +27,7 @@ class EuTaxonomyDataForNonFinancialsController(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    EuTaxonomyDataForNonFinancials::class.java
+    EuTaxonomyDataForNonFinancials::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedEuTaxonomyDataForNonFinancials")
     override fun getCompanyAssociatedData(dataId: String):
@@ -37,7 +37,7 @@ class EuTaxonomyDataForNonFinancialsController(
 
     @Operation(operationId = "postCompanyAssociatedEuTaxonomyDataForNonFinancials")
     override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForNonFinancials>
+        companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForNonFinancials>,
     ): ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData)
     }

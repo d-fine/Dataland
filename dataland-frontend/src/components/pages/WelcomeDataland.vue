@@ -1,12 +1,14 @@
 <template>
-  <LandingLogin />
-  <SampleSection />
-  <MarketingSection />
-  <DatalandFooter />
+  <LandingLogin v-if="!isMobile" />
+  <LandingLoginMobile v-if="isMobile" />
+  <SampleSection v-if="!isMobile" />
+  <MarketingSection :isMobile="isMobile" />
+  <DatalandFooter :isMobile="isMobile" />
 </template>
 
 <script lang="ts">
 import LandingLogin from "@/components/resources/landing/LandingLogin.vue";
+import LandingLoginMobile from "@/components/resources/landing/LandingLoginMobile.vue";
 import MarketingSection from "@/components/resources/landing/MarketingSection.vue";
 import SampleSection from "@/components/resources/landing/SampleSection.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
@@ -15,13 +17,17 @@ import { NavigationFailure } from "vue-router";
 
 export default defineComponent({
   name: "WelcomeDataland",
-  components: { SampleSection, MarketingSection, LandingLogin, DatalandFooter },
+  components: { SampleSection, MarketingSection, LandingLogin, LandingLoginMobile, DatalandFooter },
   setup() {
     return {
       authenticated: inject<boolean>("authenticated"),
     };
   },
-
+  props: {
+    isMobile: {
+      type: Boolean,
+    },
+  },
   mounted() {
     void this.checkAuthenticatedAndRedirectIfLoggedIn();
   },

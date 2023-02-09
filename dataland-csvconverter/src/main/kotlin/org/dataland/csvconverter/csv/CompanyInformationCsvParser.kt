@@ -44,7 +44,7 @@ class CompanyInformationCsvParser {
             identifiers = getCompanyIdentifiers(row),
             countryCode = companyInformationColumnMapping.getCsvValue("countryCode", row),
             isTeaserCompany = companyInformationColumnMapping.getCsvValueAllowingNull("isTeaserCompany", row)
-                .equals("Yes", true)
+                .equals("Yes", true),
         )
     }
 
@@ -53,7 +53,7 @@ class CompanyInformationCsvParser {
             companyInformationColumnMapping.getCsvValueAllowingNull(identifierType.name, csvLineData)?.let {
                 CompanyIdentifier(
                     identifierValue = it,
-                    identifierType = identifierType
+                    identifierType = identifierType,
                 )
             }
         }.sortedBy { it.identifierType.name }

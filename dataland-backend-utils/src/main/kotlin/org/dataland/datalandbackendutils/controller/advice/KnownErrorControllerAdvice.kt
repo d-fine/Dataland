@@ -22,15 +22,15 @@ import org.springframework.web.servlet.NoHandlerFoundException
 @ControllerAdvice
 class KnownErrorControllerAdvice(
     @Value("\${dataland.expose-error-stack-trace-to-api:false}")
-    private val trace: Boolean
+    private val trace: Boolean,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private fun prepareResponse(error: ErrorDetails, exception: Exception): ResponseEntity<ErrorResponse> {
         val returnedError = if (trace) error.copy(stackTrace = ExceptionUtils.getStackTrace(exception)) else error
         return ResponseEntity.status(error.httpStatus).body(
             ErrorResponse(
-                errors = listOf(returnedError)
-            )
+                errors = listOf(returnedError),
+            ),
         )
     }
 
@@ -44,9 +44,9 @@ class KnownErrorControllerAdvice(
                 errorType = "message-not-readable",
                 summary = "Message not readable",
                 message = ex.message ?: "Message not readable",
-                httpStatus = HttpStatus.BAD_REQUEST
+                httpStatus = HttpStatus.BAD_REQUEST,
             ),
-            ex
+            ex,
         )
     }
 
@@ -55,7 +55,7 @@ class KnownErrorControllerAdvice(
      */
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException::class)
     fun handleAccessDeniedException(
-        ex: org.springframework.security.access.AccessDeniedException
+        ex: org.springframework.security.access.AccessDeniedException,
     ): ResponseEntity<ErrorResponse> {
         return prepareResponse(
             ErrorDetails(
@@ -63,9 +63,9 @@ class KnownErrorControllerAdvice(
                 summary = "Access Denied",
                 message = "Access to this resource has been denied. " +
                     "Please contact support if you believe this to be an error",
-                httpStatus = HttpStatus.FORBIDDEN
+                httpStatus = HttpStatus.FORBIDDEN,
             ),
-            ex
+            ex,
         )
     }
 
@@ -79,9 +79,9 @@ class KnownErrorControllerAdvice(
                 errorType = "route-not-found",
                 summary = "Route not found",
                 message = "The requested route ${ex.requestURL} could not be located",
-                httpStatus = HttpStatus.NOT_FOUND
+                httpStatus = HttpStatus.NOT_FOUND,
             ),
-            ex
+            ex,
         )
     }
 
@@ -97,9 +97,9 @@ class KnownErrorControllerAdvice(
                 summary = "Method ${ex.method} not allowed.",
                 message = "The HTTP-Method ${ex.method} is not allowed. Please refer to the API documentation " +
                     "for a list of supported HTTP methods",
-                httpStatus = HttpStatus.METHOD_NOT_ALLOWED
+                httpStatus = HttpStatus.METHOD_NOT_ALLOWED,
             ),
-            ex
+            ex,
         )
     }
 

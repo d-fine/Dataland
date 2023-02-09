@@ -30,7 +30,7 @@ class WebSecurityConfig(
     private val keycloakJwtAuthenticationConverter: KeycloakJwtAuthenticationConverter,
     @Value("\${dataland.authorization.publiclinks:}") private val publicLinks: String,
     @Value("\${dataland.authorization.internallinks:}") private val internalLinks: String,
-    private val context: ApplicationContext
+    private val context: ApplicationContext,
 ) {
     /**
      * Defines the Session Authentication Strategy
@@ -53,7 +53,7 @@ class WebSecurityConfig(
             apiKeyFilter.setPrincipalRequestHeader("dataland-api-key")
             apiKeyFilter.setExceptionIfHeaderMissing(false)
             apiKeyFilter.setAuthenticationFailureHandler(
-                context.getBean(ApiKeyAuthenticationFailureHandler::class.java)
+                context.getBean(ApiKeyAuthenticationFailureHandler::class.java),
             )
             apiKeyFilter.setAuthenticationManager(apiKeyAuthenticationManager)
             http.addFilterBefore(apiKeyFilter, AnonymousAuthenticationFilter::class.java)

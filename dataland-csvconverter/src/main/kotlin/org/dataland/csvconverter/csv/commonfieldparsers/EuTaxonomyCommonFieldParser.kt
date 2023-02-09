@@ -13,7 +13,7 @@ import java.math.BigDecimal
  */
 class EuTaxonomyCommonFieldParser(
     private val yesNoNaParser: EnumCsvParser<YesNoNa>,
-    private val yesNoParser: EnumCsvParser<YesNo>
+    private val yesNoParser: EnumCsvParser<YesNo>,
 ) {
     private val columnMappingEuTaxonomyUtils = mapOf(
         "scopeOfEntities" to "Scope of Entities",

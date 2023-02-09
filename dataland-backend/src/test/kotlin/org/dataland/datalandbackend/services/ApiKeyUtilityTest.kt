@@ -21,7 +21,7 @@ class ApiKeyUtilityTest {
         val parsedApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + apiKeySecret
 
         return EncodingUtils.calculateCrc32Value(
-            parsedApiKeyWithoutCrc32Value.toByteArray()
+            parsedApiKeyWithoutCrc32Value.toByteArray(),
         ).toString()
     }
 
@@ -35,7 +35,8 @@ class ApiKeyUtilityTest {
         val apiKey = testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value
         val parsedApiKey = apiKeyUtility.parseApiKey(apiKey)
         val expectedParsedApiKey = ParsedApiKey(
-            testKeycloakUserId, testApiKeySecret
+            testKeycloakUserId,
+            testApiKeySecret,
         )
         assertEquals(expectedParsedApiKey, parsedApiKey)
     }
@@ -59,7 +60,7 @@ class ApiKeyUtilityTest {
             badUserId + "_" + testApiKeySecret + "_" + getCrc(badUserId, testApiKeySecret)
         parseBrokenApiKeyAndAssertThrownMessage(
             apiKeyWithInvalidBase64CharacterInUserId,
-            apiKeyUtility.validateKeycloakUserIdExceptionMessage
+            apiKeyUtility.validateKeycloakUserIdExceptionMessage,
         )
     }
 
@@ -72,7 +73,7 @@ class ApiKeyUtilityTest {
 
         parseBrokenApiKeyAndAssertThrownMessage(
             apiKeyWithOneTooManyCharacterInApiKeySecret,
-            apiKeyUtility.validateApiKeySecretExceptionMessage
+            apiKeyUtility.validateApiKeySecretExceptionMessage,
         )
     }
 
@@ -82,7 +83,8 @@ class ApiKeyUtilityTest {
             testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + (testApiKeyCrc32Value + 1L)
 
         parseBrokenApiKeyAndAssertThrownMessage(
-            apiKeyWithWrongCrc32Value, apiKeyUtility.validateApiKeyChecksumWrongValueExceptionMessage
+            apiKeyWithWrongCrc32Value,
+            apiKeyUtility.validateApiKeyChecksumWrongValueExceptionMessage,
         )
     }
 
