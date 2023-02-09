@@ -53,7 +53,7 @@ class InviteControllerTest {
         assertTrue(
             clientError.body?.let {
                 it is String && it.contains("authentication-method-not-supported-for-this-request")
-            } ?: false
+            } ?: false,
         )
     }
 }

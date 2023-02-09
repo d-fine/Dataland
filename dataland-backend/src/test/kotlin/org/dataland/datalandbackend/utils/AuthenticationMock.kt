@@ -9,7 +9,7 @@ object AuthenticationMock {
     fun mockJwtAuthentication(
         username: String,
         userId: String,
-        roles: Set<DatalandRealmRole>
+        roles: Set<DatalandRealmRole>,
     ): DatalandJwtAuthentication {
         val jwt = Mockito.mock(Jwt::class.java)
         Mockito.`when`(jwt.getClaimAsString("preferred_username")).thenReturn(username)

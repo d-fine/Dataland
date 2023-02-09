@@ -80,7 +80,7 @@ class InviteManager(
     fun submitInvitation(excelFile: MultipartFile, isSubmitterNameHidden: Boolean): InviteMetaInfoEntity {
         if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException(
-                "The chosen authentication method is not supported for this request. Please authenticate using a JWT."
+                "The chosen authentication method is not supported for this request. Please authenticate using a JWT.",
             )
         }
 

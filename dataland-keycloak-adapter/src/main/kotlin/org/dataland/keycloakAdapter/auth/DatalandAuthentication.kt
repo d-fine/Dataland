@@ -24,8 +24,11 @@ sealed class DatalandAuthentication : Authentication {
          */
         fun fromContextOrNull(): DatalandAuthentication? {
             val auth = SecurityContextHolder.getContext().authentication
-            return if (auth is DatalandAuthentication) auth
-            else null
+            return if (auth is DatalandAuthentication) {
+                auth as? DatalandAuthentication
+            } else {
+                null
+            }
         }
     }
 

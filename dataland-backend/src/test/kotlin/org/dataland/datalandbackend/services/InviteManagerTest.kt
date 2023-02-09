@@ -27,15 +27,19 @@ class InviteManagerTest {
         "forward your Excel file by sending an email to a Dataland administrator."
 
     @Mock lateinit var mockEmail: Email
+
     @Mock lateinit var mockEmailSender: EmailSender
+
     @Mock lateinit var mockInviteMetaInfoRepository: InviteMetaInfoRepository
+
     @Mock lateinit var mockSecurityContext: SecurityContext
+
     @InjectMocks lateinit var inviteManager: InviteManager
 
     @Test
     fun `check for correct email error handling`() {
         Mockito.`when`(mockEmailSender.sendEmail(any(Email::class.java) ?: mockEmail)).thenReturn(
-            false
+            false,
         )
 
         Mockito.`when`(mockInviteMetaInfoRepository.save(any(InviteMetaInfoEntity::class.java)))
@@ -44,7 +48,7 @@ class InviteManagerTest {
         val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
             "mocked_uploader",
             "mocked_uploader_id",
-            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
+            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
         )
         Mockito.`when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         SecurityContextHolder.setContext(mockSecurityContext)

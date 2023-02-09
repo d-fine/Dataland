@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
  */
 class DatalandApiKeyAuthentication(
     private val apiKey: String,
-    val apiKeyMetaInformation: ApiKeyMetaInfo
+    val apiKeyMetaInformation: ApiKeyMetaInfo,
 ) : DatalandAuthentication() {
     override val userId: String
         get() = apiKeyMetaInformation.keycloakUserId!!

@@ -17,7 +17,7 @@ class CompanyUploader {
         return AuthenticationMock.mockJwtAuthentication(
             "mocked_uploader",
             "mocked_uploader_id",
-            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
+            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
         )
     }
 
@@ -26,12 +26,13 @@ class CompanyUploader {
         objectMapper: ObjectMapper,
         companyInformation: CompanyInformation,
     ): StoredCompany {
+        val mockAuthentication = getMockUploaderAuthentication()
         val request = mockMvc.perform(
             MockMvcRequestBuilders.post("/companies")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(companyInformation))
-                .with(authentication(mockAuthentication))
+                .with(authentication(mockAuthentication)),
         )
             .andExpectAll(
                 MockMvcResultMatchers.status().isOk,

@@ -104,7 +104,7 @@ class ApiAccessor {
         listOfCompanyInformation: List<CompanyInformation>,
         listOfFrameworkData: List<T>,
         frameworkDataUploadFunction: (companyId: String, frameworkData: T) -> DataMetaInformation,
-        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader
+        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
@@ -130,38 +130,38 @@ class ApiAccessor {
         dataType: DataTypeEnum,
         listOfCompanyInformation: List<CompanyInformation>,
         numberOfDataSetsPerCompany: Int,
-        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader
+        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
     ): List<UploadInfo> {
         return when (dataType) {
             DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderForLksgData.getTData(numberOfDataSetsPerCompany),
                 lksgUploaderFunction,
-                uploadingTechnicalUser
+                uploadingTechnicalUser,
             )
             DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany),
                 sfdrUploaderFunction,
-                uploadingTechnicalUser
+                uploadingTechnicalUser,
             )
             DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany),
                 smeUploaderFunction,
-                uploadingTechnicalUser
+                uploadingTechnicalUser,
             )
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerCompany),
                 euTaxonomyNonFinancialsUploaderFunction,
-                uploadingTechnicalUser
+                uploadingTechnicalUser,
             )
             DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
                 euTaxonomyFinancialsUploaderFunction,
-                uploadingTechnicalUser
+                uploadingTechnicalUser,
             )
         }
     }
@@ -169,7 +169,7 @@ class ApiAccessor {
     fun uploadCompanyAndFrameworkDataForMultipleFrameworks(
         companyInformationPerFramework: Map<DataTypeEnum, List<CompanyInformation>>,
         numberOfDataSetsPerCompany: Int,
-        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader
+        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         companyInformationPerFramework.keys.forEach {
@@ -178,8 +178,8 @@ class ApiAccessor {
                     it,
                     companyInformationPerFramework[it]!!,
                     numberOfDataSetsPerCompany,
-                    uploadingTechnicalUser
-                )
+                    uploadingTechnicalUser,
+                ),
             )
         }
         return listOfUploadInfo
