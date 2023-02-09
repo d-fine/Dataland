@@ -77,11 +77,15 @@ class DataManager(
         )
 
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        val updatedMetaData = DataMetaInformationEntity(dataId,storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No")
+        val updatedMetaData = DataMetaInformationEntity(
+            dataId, storableDataSet.dataType.toString(),
+            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No"
+        )
         metaDataManager.storeDataMetaInformation(updatedMetaData, "No")
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "New data - QA necessary", correlationId,
-            "upload_queue")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            dataId, "New data - QA necessary", correlationId,
+            "upload_queue"
+        )
         return dataId
     }
 
@@ -96,9 +100,12 @@ class DataManager(
         if (dataId.isNotEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaDataManager.storeDataMetaInformation(metaInformation, "Yes")
-            logger.info("Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
-                    correlationId)
-        } else{val internalMessage = "Error updating metadata data. Correlation ID: $correlationId"
+            logger.info(
+                "Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
+                    correlationId
+            )
+        } else {
+            val internalMessage = "Error updating metadata data. Correlation ID: $correlationId"
             logger.error(internalMessage)
             throw InternalServerErrorApiException(
                 "Update of meta data failed", "The update of the metadataset failed",
@@ -115,8 +122,10 @@ class DataManager(
         val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
         dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
         logger.info(dataInformationHashMap.map[dataId])
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data to be stored", correlationId,
-            "storage_queue")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            dataId, "Data to be stored", correlationId,
+            "storage_queue"
+        )
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
                 " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId."
@@ -138,13 +147,13 @@ class DataManager(
                 "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId."
             )
             dataInformationHashMap.map.remove(dataId)
-        } else{val internalMessage = "Error storing data. Correlation ID: $correlationId"
+        } else {
+            val internalMessage = "Error storing data. Correlation ID: $correlationId"
             logger.error(internalMessage)
             throw InternalServerErrorApiException(
                 "Storing of dataset failed", "The storing of the dataset failed",
                 internalMessage
             )
-
         }
     }
 

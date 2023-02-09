@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SwaggerUiConfig {
     @Bean
-            /**
-             * This method returns all public endpoints to be displayed in the swagger ui
-             */
+    /**
+     * This method returns all public endpoints to be displayed in the swagger ui
+     */
     fun adminApi(): GroupedOpenApi? {
         return GroupedOpenApi.builder().group("public").pathsToMatch("/public/**").build()
     }
