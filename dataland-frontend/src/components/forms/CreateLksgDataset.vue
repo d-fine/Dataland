@@ -710,7 +710,7 @@ export default defineComponent({
     listOfProductionSites: [
       {
         id: 0,
-        listOfGoodsOrServices: [],
+        listOfGoodsOrServices: [] as string[],
         listOfGoodsOrServicesString: "",
       },
     ],
