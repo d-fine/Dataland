@@ -9,8 +9,8 @@ class EnumCsvParserTest {
     private val myParser = EnumCsvParser(
         mapOf(
             "1" to "one",
-            "kekse" to "cookies"
-        )
+            "kekse" to "cookies",
+        ),
     )
 
     @Test

@@ -21,7 +21,7 @@ class ConfigurationStorageControlloerApi {
                 "http://internal-storage:8080/internal-storage"
             } else {
                 "http://localhost:8082/internal-storage"
-            }
+            },
         )
     }
 

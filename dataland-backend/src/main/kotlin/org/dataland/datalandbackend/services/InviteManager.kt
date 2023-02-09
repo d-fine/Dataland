@@ -20,7 +20,7 @@ import java.time.Instant
 @Component("FileManager")
 class InviteManager(
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val inviteMetaInfoRepository: InviteMetaInfoRepository
+    @Autowired private val inviteMetaInfoRepository: InviteMetaInfoRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -42,7 +42,7 @@ class InviteManager(
 
     private fun storeOneExcelFileAndReturnFileId(
         singleExcelFile: MultipartFile,
-        associatedInviteId: String
+        associatedInviteId: String,
     ): String {
         val fileId = IdUtils.generateUUID()
         logger.info("Storing Excel file with file ID $fileId for invite ID $associatedInviteId.")
@@ -53,7 +53,7 @@ class InviteManager(
 
     private fun removeFileFromStorage(fileId: String, associatedInviteId: String) {
         logger.info(
-            "Removing Excel file with file ID $fileId, which was originally stored for invite ID $associatedInviteId"
+            "Removing Excel file with file ID $fileId, which was originally stored for invite ID $associatedInviteId",
         )
         temporaryFileStore.remove(fileId)
         logger.info("Removed Excel file from in-memory-storage.")
@@ -63,7 +63,7 @@ class InviteManager(
         file: MultipartFile,
         isSubmitterNameHidden: Boolean,
         fileId: String,
-        associatedInviteId: String
+        associatedInviteId: String,
     ): InviteResult {
         logger.info("Sending E-Mails with invite Excel file ID $fileId for invite with ID $associatedInviteId.")
         val email = InvitationEmailGenerator.generate(file, isSubmitterNameHidden)
@@ -100,14 +100,17 @@ class InviteManager(
     private fun storeMetaInfoAboutInviteInDatabase(
         inviteId: String,
         fileId: String,
-        inviteResult: InviteResult
+        inviteResult: InviteResult,
     ): InviteMetaInfoEntity {
         val userId = DatalandAuthentication.fromContext().userId
         val timestampInEpochSeconds = Instant.now().epochSecond.toString()
         val newInviteMetaInfoEntity = InviteMetaInfoEntity(
-            inviteId, userId, fileId, timestampInEpochSeconds,
+            inviteId,
+            userId,
+            fileId,
+            timestampInEpochSeconds,
             inviteResult.isInviteSuccessful,
-            inviteResult.inviteResultMessage
+            inviteResult.inviteResultMessage,
         )
         return inviteMetaInfoRepository.save(newInviteMetaInfoEntity)
     }

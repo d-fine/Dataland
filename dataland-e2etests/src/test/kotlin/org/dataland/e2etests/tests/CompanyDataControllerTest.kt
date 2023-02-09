@@ -19,13 +19,14 @@ class CompanyDataControllerTest {
     fun `post a dummy company and check if post was successful`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         assertEquals(
-            uploadInfo.inputCompanyInformation, uploadInfo.actualStoredCompany.companyInformation,
+            uploadInfo.inputCompanyInformation,
+            uploadInfo.actualStoredCompany.companyInformation,
             "The company information in the post-response does not match " +
-                "the actual information of the company to be posted."
+                "the actual information of the company to be posted.",
         )
         assertTrue(
             uploadInfo.actualStoredCompany.companyId.isNotEmpty(),
-            "No valid company Id was assigned to the posted company."
+            "No valid company Id was assigned to the posted company.",
         )
     }
 
@@ -35,12 +36,13 @@ class CompanyDataControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val expectedStoredCompany = StoredCompany(
             uploadInfo.actualStoredCompany.companyId,
-            uploadInfo.inputCompanyInformation, emptyList()
+            uploadInfo.inputCompanyInformation,
+            emptyList(),
         )
         assertEquals(
             expectedStoredCompany,
             apiAccessor.companyDataControllerApi.getCompanyById(uploadInfo.actualStoredCompany.companyId),
-            "Dataland does not contain the posted company."
+            "Dataland does not contain the posted company.",
         )
     }
 
@@ -48,15 +50,16 @@ class CompanyDataControllerTest {
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val getCompaniesOnlyByNameResponse = apiAccessor.getCompaniesOnlyByName(
-            uploadInfo.actualStoredCompany.companyInformation.companyName
+            uploadInfo.actualStoredCompany.companyInformation.companyName,
         )
         val expectedCompany = StoredCompany(
             uploadInfo.actualStoredCompany.companyId,
-            uploadInfo.actualStoredCompany.companyInformation, emptyList()
+            uploadInfo.actualStoredCompany.companyInformation,
+            emptyList(),
         )
         assertTrue(
             getCompaniesOnlyByNameResponse.contains(expectedCompany),
-            "Dataland does not contain the posted company."
+            "Dataland does not contain the posted company.",
         )
     }
 
@@ -71,11 +74,11 @@ class CompanyDataControllerTest {
         val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
             distinctValues.sectors!!.containsAll(listOfTestCompanyInformation.map { it.sector }),
-            "The list of all occurring sectors does not contain the sectors of the posted companies."
+            "The list of all occurring sectors does not contain the sectors of the posted companies.",
         )
         assertTrue(
             distinctValues.countryCodes!!.containsAll(listOfTestCompanyInformation.map { it.countryCode }),
-            "The list of all occurring country codes does not contain the country codes of the posted companies."
+            "The list of all occurring country codes does not contain the country codes of the posted companies.",
         )
     }
 
@@ -85,14 +88,14 @@ class CompanyDataControllerTest {
             .generateOneCompanyInformationPerBackendOnlyFramework()
         apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation,
-            1
+            1,
         )
         val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
             distinctValues.sectors!!.intersect(
-                mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation.map { it.value[0].sector }.toSet()
+                mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation.map { it.value[0].sector }.toSet(),
             ).isEmpty(),
-            "At least one sector of the frontend-excluded data sets appears in the distinct sector value list."
+            "At least one sector of the frontend-excluded data sets appears in the distinct sector value list.",
         )
     }
 
@@ -101,11 +104,11 @@ class CompanyDataControllerTest {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
             sectors = setOf(uploadInfo.actualStoredCompany.companyInformation.sector),
-            countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode)
+            countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
         )
         assertTrue(
             getCompaniesByCountryCodeAndSectorResponse.contains(uploadInfo.actualStoredCompany),
-            "The posted company could not be found in the query results when querying for its country code and sector."
+            "The posted company could not be found in the query results when querying for its country code and sector.",
         )
     }
 
@@ -114,12 +117,12 @@ class CompanyDataControllerTest {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
             sectors = setOf("${uploadInfo.actualStoredCompany.companyInformation.sector}a"),
-            countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode)
+            countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
         )
         assertFalse(
             getCompaniesByCountryCodeAndSectorResponse.contains(uploadInfo.actualStoredCompany),
             "The posted company is in the query results," +
-                " even though the country code filter was set to a different country code."
+                " even though the country code filter was set to a different country code.",
 
         )
     }
@@ -130,8 +133,9 @@ class CompanyDataControllerTest {
         val listOfUploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(3)
         val allCompaniesListSizeAfter = apiAccessor.getNumberOfStoredCompanies()
         assertEquals(
-            listOfUploadInfo.size, allCompaniesListSizeAfter - allCompaniesListSizeBefore,
-            "The size of the all-companies-list did not increase by ${listOfUploadInfo.size}."
+            listOfUploadInfo.size,
+            allCompaniesListSizeAfter - allCompaniesListSizeBefore,
+            "The size of the all-companies-list did not increase by ${listOfUploadInfo.size}.",
         )
     }
 
@@ -142,9 +146,9 @@ class CompanyDataControllerTest {
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
                 searchString = uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
-                onlyCompanyNames = false
+                onlyCompanyNames = false,
             ).any { it.companyId == uploadInfo.actualStoredCompany.companyId },
-            "The posted company could not be found in the query results when querying for its first identifiers value."
+            "The posted company could not be found in the query results when querying for its first identifiers value.",
         )
     }
 
@@ -152,16 +156,17 @@ class CompanyDataControllerTest {
     fun `post a dummy company as teaser company and test if it is retrievable by company ID as unauthorized user`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(true)
         val getCompanyByIdResponse = apiAccessor.unauthorizedCompanyDataControllerApi.getCompanyById(
-            uploadInfo.actualStoredCompany.companyId
+            uploadInfo.actualStoredCompany.companyId,
         )
         val expectedStoredTeaserCompany = StoredCompany(
             companyId = uploadInfo.actualStoredCompany.companyId,
             companyInformation = uploadInfo.inputCompanyInformation,
-            dataRegisteredByDataland = emptyList()
+            dataRegisteredByDataland = emptyList(),
         )
         assertEquals(
-            expectedStoredTeaserCompany, getCompanyByIdResponse,
-            "The posted company does not equal the teaser company."
+            expectedStoredTeaserCompany,
+            getCompanyByIdResponse,
+            "The posted company does not equal the teaser company.",
         )
     }
 
@@ -170,12 +175,12 @@ class CompanyDataControllerTest {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
         val exception = assertThrows<IllegalArgumentException> {
             apiAccessor.unauthorizedCompanyDataControllerApi.getCompanyById(
-                uploadInfo.actualStoredCompany.companyId
+                uploadInfo.actualStoredCompany.companyId,
             )
         }
         assertTrue(
             exception.message!!.contains("Unauthorized access failed"),
-            "The exception message does not say that an unauthorized access was the cause."
+            "The exception message does not say that an unauthorized access was the cause.",
         )
     }
 
@@ -190,8 +195,9 @@ class CompanyDataControllerTest {
                     .companyId
             }
         assertEquals(
-            "Client error : 403 ", exception.message,
-            "The exception message does not say that a 403 client error was the cause."
+            "Client error : 403 ",
+            exception.message,
+            "The exception message does not say that a 403 client error was the cause.",
         )
     }
 }

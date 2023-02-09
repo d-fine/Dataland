@@ -21,68 +21,71 @@ import org.springframework.web.bind.annotation.RequestBody
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface DataApi<T> {
-    @Operation(
-        summary = "Upload new data set.",
-        description = "The uploaded data is added to the data store, the generated data id is returned."
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully added data to the data store.")
-        ]
-    )
-    @PostMapping(
-        produces = ["application/json"],
-        consumes = ["application/json"]
-    )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
     /**
      * A method to store data via Dataland into a data store
      * @param companyAssociatedData consisting of the ID of the company and the data to be stored
      * @return meta info about the stored data including the ID of the created entry in the data store
      */
-    fun postCompanyAssociatedData(@Valid @RequestBody companyAssociatedData: CompanyAssociatedData<T>):
-        ResponseEntity<DataMetaInformation>
-
     @Operation(
-        summary = "Retrieve specific data from the data store.",
-        description = "Data identified by the provided data ID is retrieved."
+        summary = "Upload new data set.",
+        description = "The uploaded data is added to the data store, the generated data id is returned.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully added data to the data store."),
+        ],
     )
-    @GetMapping(
-        value = ["/{dataId}"],
-        produces = ["application/json"]
+    @PostMapping(
+        produces = ["application/json"],
+        consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun postCompanyAssociatedData(
+        @Valid @RequestBody
+        companyAssociatedData: CompanyAssociatedData<T>,
+    ):
+        ResponseEntity<DataMetaInformation>
+
     /**
      * A method to retrieve specific data identified by its ID
      * @param dataId identifier used to uniquely specify data in the data store
      * @return the complete data stored under the provided data ID with the associated company ID
      */
-    fun getCompanyAssociatedData(@PathVariable("dataId") dataId: String):
-        ResponseEntity<CompanyAssociatedData<T>>
-
     @Operation(
-        summary = "Retrieve company framework information.",
-        description = "Company framework information behind the given company ID is retrieved."
+        summary = "Retrieve specific data from the data store.",
+        description = "Data identified by the provided data ID is retrieved.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company framework information.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+        ],
     )
     @GetMapping(
-        value = ["/company/{companyId}"],
-        produces = ["application/json"]
+        value = ["/{dataId}"],
+        produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    fun getCompanyAssociatedData(@PathVariable("dataId") dataId: String):
+        ResponseEntity<CompanyAssociatedData<T>>
+
     /**
      * A method to retrieve company framework information for one specific company identified by its company ID
      * @param companyId identifier of the company in dataland
      * @return company framework data
      */
+    @Operation(
+        summary = "Retrieve company framework information.",
+        description = "Company framework information behind the given company ID is retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company framework information."),
+        ],
+    )
+    @GetMapping(
+        value = ["/company/{companyId}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     fun getAllCompanyData(@PathVariable("companyId") companyId: String): ResponseEntity<List<T>>
 }

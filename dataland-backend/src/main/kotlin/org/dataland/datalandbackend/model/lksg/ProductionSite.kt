@@ -15,5 +15,5 @@ data class ProductionSite(
 
     val address: String? = null,
 
-    val listOfGoodsOrServices: List<String>? = null
+    val listOfGoodsOrServices: List<String>? = null,
 )

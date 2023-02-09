@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.RestController
 class EuTaxonomyDataForNonFinancialsController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myObjectMapper: ObjectMapper
+    @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<EuTaxonomyDataForNonFinancials>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    EuTaxonomyDataForNonFinancials::class.java
+    EuTaxonomyDataForNonFinancials::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedEuTaxonomyDataForNonFinancials")
     override fun getCompanyAssociatedData(dataId: String):
@@ -37,7 +37,7 @@ class EuTaxonomyDataForNonFinancialsController(
 
     @Operation(operationId = "postCompanyAssociatedEuTaxonomyDataForNonFinancials")
     override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForNonFinancials>
+        companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForNonFinancials>,
     ): ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData)
     }

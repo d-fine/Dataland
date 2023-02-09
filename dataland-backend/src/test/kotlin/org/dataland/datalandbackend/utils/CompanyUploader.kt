@@ -24,9 +24,8 @@ class CompanyUploader {
     internal fun uploadCompany(
         mockMvc: MockMvc,
         objectMapper: ObjectMapper,
-        companyInformation: CompanyInformation
+        companyInformation: CompanyInformation,
     ): StoredCompany {
-        val mockAuthentication = getMockUploaderAuthentication()
         val request = mockMvc.perform(
             MockMvcRequestBuilders.post("/companies")
                 .accept(MediaType.APPLICATION_JSON)
@@ -36,11 +35,11 @@ class CompanyUploader {
         )
             .andExpectAll(
                 MockMvcResultMatchers.status().isOk,
-                MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON)
+                MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
             ).andReturn()
         return objectMapper.readValue(
             request.response.contentAsString,
-            object : TypeReference<StoredCompany>() {}
+            object : TypeReference<StoredCompany>() {},
         )
     }
 }

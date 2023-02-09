@@ -19,8 +19,8 @@ import org.springframework.context.annotation.Import
         KnownErrorControllerAdvice::class,
         UnknownErrorControllerAdvice::class,
         DefaultResponseSchemaCustomizer::class,
-        RequestRejectedExceptionHandler::class
-    ]
+        RequestRejectedExceptionHandler::class,
+    ],
 )
 @ComponentScan(basePackages = ["org.dataland"])
 class DatalandApiKeyManager : OpenAPIConfiguration

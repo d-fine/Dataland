@@ -42,7 +42,7 @@ class CsvToJsonConverter {
         dataPointParser,
         assuranceDataParser,
         fiscalYearParser,
-        companyReportParser
+        companyReportParser,
     )
     private val euTaxonomyForNonFinancialsCsvParser = EuTaxonomyForNonFinancialsCsvParser(
         euTaxonomyCommonFieldParser,
@@ -50,7 +50,7 @@ class CsvToJsonConverter {
         dataPointParser,
         assuranceDataParser,
         fiscalYearParser,
-        companyReportParser
+        companyReportParser,
     )
 
     /**
@@ -59,7 +59,7 @@ class CsvToJsonConverter {
     private fun <T> buildListOfCompanyInformationWithFrameworkData(
         csv: List<Map<String, String>>,
         companyParser: CompanyInformationCsvParser,
-        dataParser: CsvFrameworkParser<T>
+        dataParser: CsvFrameworkParser<T>,
     ): List<CompanyInformationWithData<T>> {
         return csv
             .mapNotNull {
@@ -67,7 +67,7 @@ class CsvToJsonConverter {
                 if (dataParser.validateLine(company, it)) {
                     CompanyInformationWithData(
                         company,
-                        dataParser.buildData(it)
+                        dataParser.buildData(it),
                     )
                 } else {
                     null

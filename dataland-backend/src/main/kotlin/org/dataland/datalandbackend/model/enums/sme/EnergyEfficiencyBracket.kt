@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema
  * An enum with the possible values for the energy efficiency brackets of a company in the SME framework
  */
 @Schema(
-    enumAsRef = true
+    enumAsRef = true,
 )
 enum class EnergyEfficiencyBracket {
     LessThanOnePercent,
@@ -15,5 +15,5 @@ enum class EnergyEfficiencyBracket {
     TenToFifteenPercent,
     FifteenToTwentyPercent,
     TwentyToTwentyfivePercent,
-    MoreThanTwentyfivePercent
+    MoreThanTwentyfivePercent,
 }

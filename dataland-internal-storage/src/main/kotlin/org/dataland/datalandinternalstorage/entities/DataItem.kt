@@ -15,5 +15,5 @@ data class DataItem(
     @Column(name = "data_id")
     val id: String,
     @Column(name = "data", columnDefinition = "TEXT")
-    val data: String
+    val data: String,
 )

@@ -22,47 +22,47 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-oauth")
 interface MetaDataApi {
 
-    @Operation(
-        summary = "Search in Dataland for meta info about data.",
-        description = "Meta info about data sets registered by Dataland can be retrieved."
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved meta info.")
-        ]
-    )
-    @GetMapping(
-        produces = ["application/json"]
-    )
-    @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     /**
      * A method to search for meta info about data sets registered by Dataland
      * @param companyId filters the requested meta info to a specific company.
      * @param dataType filters the requested meta info to a specific data type.
      * @return a list of matching DataMetaInformation
      */
-    fun getListOfDataMetaInfo(@RequestParam companyId: String? = null, @RequestParam dataType: DataType? = null):
-        ResponseEntity<List<DataMetaInformation>>
-
     @Operation(
-        summary = "Look up meta info about a specific data set.",
-        description = "Meta info about a specific data set registered by Dataland " +
-            "and identified by its data ID is retrieved."
+        summary = "Search in Dataland for meta info about data.",
+        description = "Meta info about data sets registered by Dataland can be retrieved.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved specific meta info.")
-        ]
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta info."),
+        ],
     )
     @GetMapping(
-        value = ["/{dataId}"],
-        produces = ["application/json"]
+        produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
+    fun getListOfDataMetaInfo(@RequestParam companyId: String? = null, @RequestParam dataType: DataType? = null):
+        ResponseEntity<List<DataMetaInformation>>
+
     /**
      * A method to retrieve meta info about a specific data set
      * @param dataId as unique identifier for a specific data set
      * @return the DataMetaInformation for the specified data set
      */
+    @Operation(
+        summary = "Look up meta info about a specific data set.",
+        description = "Meta info about a specific data set registered by Dataland " +
+            "and identified by its data ID is retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved specific meta info."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataId}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     fun getDataMetaInfo(@PathVariable dataId: String): ResponseEntity<DataMetaInformation>
 }

@@ -4,7 +4,6 @@ Note: To create a PR using this template add the query parameter `template=manua
 ## Dataland
 ### Skipped updates
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
-- [ ] ktlint 0.45.2 (higher version is not compatible with jlleitschuh plugin)
 - [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.21.0 (Failed to compile)
 - [ ] sonarqube 3.4.0.2513 not update to 3.5.X, due to issues in file resolving mechanism
 - [ ] Cypress 11.2.0 not updated to 12.X.X, due to introduction of spurious errors in the CI

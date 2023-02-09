@@ -29,7 +29,7 @@ class DataControllerTest {
     fun `post a dummy company and a data set for it and check if that dummy data set can be retrieved`() {
         val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
             testCompanyInformation,
-            testDataEuTaxonomyNonFinancials
+            testDataEuTaxonomyNonFinancials,
         )
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
@@ -37,23 +37,26 @@ class DataControllerTest {
         assertEquals(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["companyId"], testDataEuTaxonomyNonFinancials),
             companyAssociatedDataEuTaxonomyDataForNonFinancials,
-            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal."
+            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
         )
     }
 
     @Test
     fun `post a dummy company as teaser company and a data set for it and test if unauthorized access is possible`() {
         val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
-            testCompanyInformationTeaser, testDataEuTaxonomyNonFinancials
+            testCompanyInformationTeaser,
+            testDataEuTaxonomyNonFinancials,
         )
         val getDataByIdResponse = apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
             .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
         val expectedCompanyAssociatedData = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
-            mapOfIds["companyId"]!!, testDataEuTaxonomyNonFinancials
+            mapOfIds["companyId"]!!,
+            testDataEuTaxonomyNonFinancials,
         )
         assertEquals(
-            expectedCompanyAssociatedData, getDataByIdResponse,
-            "The posted data does not equal the expected test data."
+            expectedCompanyAssociatedData,
+            getDataByIdResponse,
+            "The posted data does not equal the expected test data.",
         )
     }
 
@@ -61,7 +64,7 @@ class DataControllerTest {
     fun `post a dummy company and a data set for it and test if unauthorized access is denied`() {
         val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
             testCompanyInformationNonTeaser,
-            testDataEuTaxonomyNonFinancials
+            testDataEuTaxonomyNonFinancials,
         )
         val exception = assertThrows<IllegalArgumentException> {
             apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
@@ -80,8 +83,8 @@ class DataControllerTest {
                     .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
                         CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
                             testCompanyId,
-                            testDataEuTaxonomyNonFinancials
-                        )
+                            testDataEuTaxonomyNonFinancials,
+                        ),
                     )
             }
         assertEquals("Client error : 403 ", exception.message)

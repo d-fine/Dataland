@@ -8,5 +8,5 @@ package org.dataland.datalandbackend.model
  */
 data class CompanyAvailableDistinctValues(
     val countryCodes: Set<String>,
-    val sectors: Set<String>
+    val sectors: Set<String>,
 )

@@ -50,7 +50,7 @@ class ApiAccessor {
             val companyAssociatedEuTaxonomyNonFinancialsData =
                 CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, euTaxonomyNonFinancialsData)
             dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                companyAssociatedEuTaxonomyNonFinancialsData
+                companyAssociatedEuTaxonomyNonFinancialsData,
             )
         }
 
@@ -63,7 +63,7 @@ class ApiAccessor {
             val companyAssociatedEuTaxonomyFinancialsData =
                 CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, euTaxonomyFinancialsData)
             dataControllerApiForEuTaxonomyFinancials.postCompanyAssociatedEuTaxonomyDataForFinancials(
-                companyAssociatedEuTaxonomyFinancialsData
+                companyAssociatedEuTaxonomyFinancialsData,
             )
         }
 
@@ -74,7 +74,7 @@ class ApiAccessor {
     val lksgUploaderFunction = { companyId: String, lksgData: LksgData ->
         val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, lksgData)
         dataControllerApiForLksgData.postCompanyAssociatedLksgData(
-            companyAssociatedLksgData
+            companyAssociatedLksgData,
         )
     }
 
@@ -85,7 +85,7 @@ class ApiAccessor {
     val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData ->
         val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, sfdrData)
         dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
-            companyAssociatedSfdrData
+            companyAssociatedSfdrData,
         )
     }
 
@@ -96,7 +96,7 @@ class ApiAccessor {
     val smeUploaderFunction = { companyId: String, smeData: SmeData ->
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, smeData)
         dataControllerApiForSmeData.postCompanyAssociatedSmeData(
-            companyAssociatedSmeData
+            companyAssociatedSmeData,
         )
     }
 
@@ -117,8 +117,8 @@ class ApiAccessor {
                     UploadInfo(
                         companyInformation,
                         receivedStoredCompany,
-                        receivedDataMetaInformation
-                    )
+                        receivedDataMetaInformation,
+                    ),
                 )
             }
         }
@@ -134,17 +134,20 @@ class ApiAccessor {
     ): List<UploadInfo> {
         return when (dataType) {
             DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation, testDataProviderForLksgData.getTData(numberOfDataSetsPerCompany),
+                listOfCompanyInformation,
+                testDataProviderForLksgData.getTData(numberOfDataSetsPerCompany),
                 lksgUploaderFunction,
                 uploadingTechnicalUser
             )
             DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation, testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany),
+                listOfCompanyInformation,
+                testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany),
                 sfdrUploaderFunction,
                 uploadingTechnicalUser
             )
             DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation, testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany),
+                listOfCompanyInformation,
+                testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany),
                 smeUploaderFunction,
                 uploadingTechnicalUser
             )
@@ -155,7 +158,8 @@ class ApiAccessor {
                 uploadingTechnicalUser
             )
             DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
-                listOfCompanyInformation, testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
+                listOfCompanyInformation,
+                testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
                 euTaxonomyFinancialsUploaderFunction,
                 uploadingTechnicalUser
             )
@@ -183,13 +187,13 @@ class ApiAccessor {
 
     fun uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
         companyInformation: CompanyInformation,
-        euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials
+        euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials,
     ):
         Map<String, String> {
         val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
             listOf(companyInformation),
             listOf(euTaxonomyDataForNonFinancials),
-            euTaxonomyNonFinancialsUploaderFunction
+            euTaxonomyNonFinancialsUploaderFunction,
         )
         val companyId = listOfUploadInfo[0].actualStoredCompany.companyId
         val dataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
@@ -206,8 +210,8 @@ class ApiAccessor {
             listOfUploadInfos.add(
                 UploadInfo(
                     companyInformation,
-                    companyDataControllerApi.postCompany(companyInformation)
-                )
+                    companyDataControllerApi.postCompany(companyInformation),
+                ),
             )
         }
         return listOfUploadInfos
@@ -231,7 +235,7 @@ class ApiAccessor {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         return companyDataControllerApi.getCompanies(
             searchString,
-            onlyCompanyNames = true
+            onlyCompanyNames = true,
         )
     }
 
@@ -252,6 +256,6 @@ data class UploadInfo(
 
     val actualStoredCompany: StoredCompany,
 
-    val actualStoredDataMetaInfo: DataMetaInformation? = null
+    val actualStoredDataMetaInfo: DataMetaInformation? = null,
 
 )
