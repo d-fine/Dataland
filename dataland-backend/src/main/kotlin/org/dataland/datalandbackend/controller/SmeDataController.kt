@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.model.CompanyAssociatedData
+import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.sme.SmeData
 import org.dataland.datalandbackend.services.DataManager
@@ -40,7 +41,7 @@ class SmeDataController(
     }
 
     @Operation(operationId = "getAllCompanySmeData")
-    override fun getAllCompanyData(companyId: String): ResponseEntity<List<SmeData>> {
+    override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<SmeData>>> {
         return super.getAllCompanyData(companyId)
     }
 }
