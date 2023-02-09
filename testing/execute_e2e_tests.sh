@@ -40,6 +40,10 @@ docker exec dala-e2e-test-internal-storage-1 pkill -f spring
 timeout 90 sh -c "docker logs dala-e2e-test-internal-storage-1 --follow" > /dev/null
 docker cp dala-e2e-test-internal-storage-1:/app/dataland-internal-storage/build/jacoco/bootRun.exec ./internal-storage-bootRun-${CYPRESS_TEST_GROUP}.exec
 
+docker exec rabbitmq pkill -f spring
+timeout 90 sh -c "docker logs rabbitmq --follow" > /dev/null
+docker cp rabbitmq:/app/dataland-dummy-qa-service/build/jacoco/bootRun.exec ./dummy-qa-service-bootRun-${CYPRESS_TEST_GROUP}.exec
+
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.
 docker logs dala-e2e-test-backend-1 | grep "Searching for known Datatypes"
@@ -50,6 +54,7 @@ pg_isready -d backend -h "localhost" -p 5433
 pg_isready -d keycloak -h "localhost" -p 5434
 pg_isready -d api_key_manager -h "localhost" -p 5435
 pg_isready -d internal_storage -h "localhost" -p 5436
+# TODO add admin access for rabbitMQ ?
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`
