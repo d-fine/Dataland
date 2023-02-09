@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.StorageHashMap
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
@@ -24,6 +25,10 @@ class NonPersistedDataManager(
      * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
      */
     fun selectDataSetForInternalStorage(dataId: String): String {
-        return objectMapper.writeValueAsString(dataInformationHashMap.map[dataId]!!)
+        val hashMapValue = dataInformationHashMap.map[dataId]
+        hashMapValue ?.let{
+            return objectMapper.writeValueAsString(hashMapValue)
+        }
+        throw ResourceNotFoundApiException("Non-persisted data ID not found", "Dataland does not know the non-persisted data id $dataId")
     }
 }
