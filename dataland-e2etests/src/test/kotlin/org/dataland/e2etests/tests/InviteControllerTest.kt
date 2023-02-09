@@ -40,7 +40,7 @@ class InviteControllerTest {
     }
 
     @Test
-    fun `post invite request authenticating via API-Keys and check if it gets rejected`() {
+    fun `post invite request authenticating via api key and check if it gets rejected`() {
         apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(TechnicalUser.Uploader)
         val file: File = File.createTempFile("test", ".xlsx")
         val exception =
