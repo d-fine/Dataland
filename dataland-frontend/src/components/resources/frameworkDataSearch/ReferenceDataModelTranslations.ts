@@ -40,7 +40,7 @@ export const gicsSectors = [
   "Consumer Discretionary",
   "Consumer Staples",
   "Health Care",
-  "Financials",
+  "Financial Services",
   "Information Technology",
   "Communication Services",
   "Utilities",
