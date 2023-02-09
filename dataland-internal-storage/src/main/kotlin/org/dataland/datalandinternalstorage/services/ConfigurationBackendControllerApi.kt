@@ -14,11 +14,11 @@ class ConfigurationBackendControllerApi {
     /**
      * The bean to configure the internal client StorageControllerApi
      */
-    //TODO Check if this is still true for deployement to a server
+    // TODO Check if this is still true for deployement to a server
     @Bean
     fun getApiBackendClient(): NonPersistedDataControllerApi {
         return NonPersistedDataControllerApi(
-                "http://host.docker.internal:8080/api"
+            "http://host.docker.internal:8080/api",
         )
     }
 

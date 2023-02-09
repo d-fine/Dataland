@@ -51,7 +51,7 @@ data class DataMetaInformationEntity(
             uploaderUserId = if (displayUploaderUserId) this.uploaderUserId else null,
             uploadTime = this.uploadTime,
             companyId = company.companyId,
-            isQualityAssured = isQualityAssured
+            isQualityAssured = isQualityAssured,
         )
     }
 }

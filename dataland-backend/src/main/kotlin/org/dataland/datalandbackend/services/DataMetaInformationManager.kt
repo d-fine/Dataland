@@ -34,7 +34,7 @@ class DataMetaInformationManager(
             uploaderUserId = updatedMetaData.uploaderUserId,
             uploadTime = updatedMetaData.uploadTime,
             company = updatedMetaData.company,
-            isQualityAssured = isQualityAssured
+            isQualityAssured = isQualityAssured,
         )
 
         return dataMetaInformationRepository.save(dataMetaInformationEntity)

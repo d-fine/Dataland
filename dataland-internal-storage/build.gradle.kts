@@ -91,14 +91,14 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
 
     additionalProperties.set(
         mapOf(
-            "removeEnumValuePrefix" to false
-        )
+            "removeEnumValuePrefix" to false,
+        ),
     )
     configOptions.set(
         mapOf(
             "withInterfaces" to "true",
-            "withSeparateModelsAndApi" to "true"
-        )
+            "withSeparateModelsAndApi" to "true",
+        ),
     )
 }
 

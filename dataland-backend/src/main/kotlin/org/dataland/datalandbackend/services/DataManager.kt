@@ -37,7 +37,7 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var dataInformationHashMap: StorageHashMap
+    @Autowired var dataInformationHashMap: StorageHashMap,
 
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -78,12 +78,12 @@ class DataManager(
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         val updatedMetaData = DataMetaInformationEntity(
             dataId, storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No"
+            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No",
         )
         metaDataManager.storeDataMetaInformation(updatedMetaData, "No")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "New data - QA necessary", correlationId,
-            "upload_queue"
+            "upload_queue",
         )
         return dataId
     }
@@ -101,14 +101,14 @@ class DataManager(
             metaDataManager.storeDataMetaInformation(metaInformation, "Yes")
             logger.info(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
-                    correlationId
+                    correlationId,
             )
         } else {
             val internalMessage = "Error updating metadata data. Correlation ID: $correlationId"
             logger.error(internalMessage)
             throw InternalServerErrorApiException(
                 "Update of meta data failed", "The update of the metadataset failed",
-                internalMessage
+                internalMessage,
             )
         }
     }
@@ -122,7 +122,7 @@ class DataManager(
         dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "Data to be stored", correlationId,
-            "storage_queue"
+            "storage_queue",
         )
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
@@ -142,7 +142,7 @@ class DataManager(
         if (dataId.isNotEmpty()) {
             logger.info("Internal Storage sent a message - job done")
             logger.info(
-                "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId."
+                "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId.",
             )
             dataInformationHashMap.map.remove(dataId)
         } else {
@@ -150,7 +150,7 @@ class DataManager(
             logger.error(internalMessage)
             throw InternalServerErrorApiException(
                 "Storing of dataset failed", "The storing of the dataset failed",
-                internalMessage
+                internalMessage,
             )
         }
     }

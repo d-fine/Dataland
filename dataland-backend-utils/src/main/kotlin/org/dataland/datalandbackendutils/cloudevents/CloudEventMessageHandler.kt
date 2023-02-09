@@ -10,9 +10,8 @@ import org.springframework.messaging.MessageHeaders
 import org.springframework.stereotype.Component
 import org.springframework.util.MimeTypeUtils
 import org.springframework.amqp.core.Message as MessageMQ
-import org.springframework.messaging.Message as MessageResult
 import org.springframework.amqp.core.MessageProperties as AMQPMessageProperties
-
+import org.springframework.messaging.Message as MessageResult
 
 /**
  * This class ensures that the errorResponse is mapped as the default response
@@ -31,7 +30,7 @@ import org.springframework.amqp.core.MessageProperties as AMQPMessageProperties
 class CloudEventMessageHandler(
     private val rabbitTemplate: RabbitTemplate,
     @Autowired var objectMapper: ObjectMapper,
-){
+) {
     var converter: MessagingMessageConverter? = MessagingMessageConverter()
     private fun constructCEMessage(input: String, type: String, correlationId: String): MessageMQ {
         val input2 = input.toByteArray()
@@ -51,7 +50,7 @@ class CloudEventMessageHandler(
      * @param correlationId to be used as ID in header of CloudEvents message
      * @param queue RabbitMQ message queue to send the constructed message to
      */
-    fun buildCEMessageAndSendToQueue(input: String, type: String = "TestType", correlationId: String, queue: String){
+    fun buildCEMessageAndSendToQueue(input: String, type: String = "TestType", correlationId: String, queue: String) {
         val messageInput = constructCEMessage(input, type, correlationId)
         rabbitTemplate.send(queue, messageInput)
     }
@@ -60,14 +59,11 @@ class CloudEventMessageHandler(
      * Method to extract the byte payload of a RabbitMQ message as string
      * @param message RabbitMQ message whose payload is to be extracted
      */
-    fun bodyToString(message: MessageMQ) : String{
+    fun bodyToString(message: MessageMQ): String {
         return String(message.body)
     }
 
-    fun convertMessage(message: MessageResult<ByteArray>) :MessageMQ{
+    fun convertMessage(message: MessageResult<ByteArray>): MessageMQ {
         return converter!!.toMessage(message, AMQPMessageProperties())
     }
-
 }
-
-
