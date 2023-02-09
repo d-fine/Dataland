@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.model.CompanyAssociatedData
+import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.services.DataManager
@@ -43,7 +44,7 @@ class EuTaxonomyDataForNonFinancialsController(
     }
 
     @Operation(operationId = "getAllCompanyEuTaxonomyDataForNonFinancials")
-    override fun getAllCompanyData(companyId: String): ResponseEntity<List<EuTaxonomyDataForNonFinancials>> {
+    override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<EuTaxonomyDataForNonFinancials>>> {
         return super.getAllCompanyData(companyId)
     }
 }

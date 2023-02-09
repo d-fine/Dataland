@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.CompanyAssociatedData
+import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -81,9 +82,9 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     /**
-     * A method to retrieve company framework information for one specific company identified by its company ID
+     * A method to retrieve company framework data and meta information for one specific company identified by its company ID
      * @param companyId identifier of the company in dataland
-     * @return company framework data
+     * @return company framework data and meta information
      */
-    fun getAllCompanyData(@PathVariable("companyId") companyId: String): ResponseEntity<List<T>>
+    fun getAllCompanyData(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataAndMetaInformation<T>>>
 }

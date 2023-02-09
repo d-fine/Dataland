@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { LksgData } from "@clients/backend";
+import { DataAndMetaInformationLksgData, LksgData} from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -71,7 +71,9 @@ export default defineComponent({
         const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))).data;
+        this.lksgData = ((await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId)))
+          .data as DataAndMetaInformationLksgData[])
+          .map(it => it.data);
         this.convertLksgDataToFrontendFormat(this.lksgData);
         this.waitingForData = false;
       } catch (error) {
