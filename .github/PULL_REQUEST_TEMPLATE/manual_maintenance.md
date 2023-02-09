@@ -27,7 +27,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-api-key-manager/Dockerfile`
 - [ ] `./dataland-api-key-manager/DockerfileTest`
 - [ ] `./dataland-backend/DockerfileBase`
-  [ ] `./dataland-backend/DockerfileTest`
+- [ ] `./dataland-backend/DockerfileTest`
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-csvconverter/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
