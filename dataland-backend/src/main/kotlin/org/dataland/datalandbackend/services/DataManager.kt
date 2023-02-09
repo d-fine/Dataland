@@ -120,7 +120,6 @@ class DataManager(
     ): String {
         val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
         dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
-        logger.info(dataInformationHashMap.map[dataId])
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "Data to be stored", correlationId,
             "storage_queue"
