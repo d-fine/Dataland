@@ -107,6 +107,7 @@ describe(
         it("Check that a user who has no upload permission has no new dataset button displayed", () => {
           cy.ensureLoggedIn(reader_name, reader_pw);
           cy.visit("/datasets");
+          cy.contains("No datasets uploaded").should("exist");
           cy.get(newDatasetButtonSelector).should("not.exist");
         });
 
