@@ -43,15 +43,16 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      autocomplete: ref(),
+      autocomplete: ref<HTMLFormElement>(),
     };
   },
   name: "ComapniesOnlySearchBar",
   components: { AutoComplete, SearchResultHighlighter },
 
   mounted() {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    this.autocomplete.$refs.focusInput.focus();
+    const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
+    const inputOfAutocompleteComponent = autocompleteRefsObject.focusInput as HTMLInputElement;
+    inputOfAutocompleteComponent.focus();
   },
 
   data: function () {
