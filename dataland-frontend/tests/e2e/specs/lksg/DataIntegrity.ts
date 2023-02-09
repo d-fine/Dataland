@@ -73,7 +73,7 @@ describeIf(
      * of one already existing LkSG dataset for that company
      * @param isNewLksgDataSetInSameYear is a flag that decides if the new LkSG dataset should have a date which has
      * the same year as the already existing LkSG dataset
-     * @returns an object which contains the companyId of the already existing comapny and the dataId of the newly
+     * @returns an object which contains the companyId of the already existing company and the dataId of the newly
      * uploaded LkSG dataset
      */
     function uploadAnotherLksgDataSetToExistingCompany(

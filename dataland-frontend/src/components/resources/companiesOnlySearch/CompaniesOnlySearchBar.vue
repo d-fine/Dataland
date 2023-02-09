@@ -46,7 +46,7 @@ export default defineComponent({
       autocomplete: ref<HTMLFormElement>(),
     };
   },
-  name: "ComapniesOnlySearchBar",
+  name: "CompaniesOnlySearchBar",
   components: { AutoComplete, SearchResultHighlighter },
 
   mounted() {
