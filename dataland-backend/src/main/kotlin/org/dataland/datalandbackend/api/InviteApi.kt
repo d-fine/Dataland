@@ -19,21 +19,6 @@ import org.springframework.web.multipart.MultipartFile
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface InviteApi {
-    @Operation(
-        summary = "Create a Dataland invite.",
-        description = "Create a Dataland invite by uploading an Excel file containing the invite info."
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully created an invite.")
-        ]
-    )
-    @PostMapping(
-        value = ["/public/invite"],
-        produces = ["application/json"],
-        consumes = ["multipart/form-data"]
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
     /**
      * A method to initiate an invitation request to Dataland from the infos of the uploaded excel file
      * @param excelFile is the Excel file which contains the invite info
@@ -41,9 +26,24 @@ interface InviteApi {
      * included
      * @return a response object with info about the result and the success of the invite process
      */
+    @Operation(
+        summary = "Create a Dataland invite.",
+        description = "Create a Dataland invite by uploading an Excel file containing the invite info.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully created an invite."),
+        ],
+    )
+    @PostMapping(
+        value = ["/public/invite"],
+        produces = ["application/json"],
+        consumes = ["multipart/form-data"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun submitInvite(
         @RequestPart("excelFile") excelFile: MultipartFile,
-        @RequestParam isSubmitterNameHidden: Boolean
+        @RequestParam isSubmitterNameHidden: Boolean,
     ):
         ResponseEntity<InviteMetaInfoEntity>
 }

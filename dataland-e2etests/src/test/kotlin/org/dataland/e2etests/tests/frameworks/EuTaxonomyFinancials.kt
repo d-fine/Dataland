@@ -18,7 +18,7 @@ class EuTaxonomyFinancials {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneEuTaxonomyFinancialsDataSet,
-            apiAccessor.euTaxonomyFinancialsUploaderFunction
+            apiAccessor.euTaxonomyFinancialsUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForEuTaxonomyFinancials
@@ -30,8 +30,8 @@ class EuTaxonomyFinancials {
         Assertions.assertEquals(
             euTaxonomyFinancialsDataSetWithSortedFinancialServicesTypes,
             downloadedAssociatedData.data?.copy(
-                financialServicesTypes = downloadedAssociatedData.data?.financialServicesTypes?.sorted()
-            )
+                financialServicesTypes = downloadedAssociatedData.data?.financialServicesTypes?.sorted(),
+            ),
         )
     }
 }

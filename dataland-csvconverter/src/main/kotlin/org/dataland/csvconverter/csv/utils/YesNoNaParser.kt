@@ -11,8 +11,8 @@ class YesNoNaParser : EnumCsvParser<YesNoNa>(
     mapOf(
         "Yes" to YesNoNa.Yes,
         "No" to YesNoNa.No,
-        "N/A" to YesNoNa.NA
-    )
+        "N/A" to YesNoNa.NA,
+    ),
 )
 
 /**
@@ -23,5 +23,5 @@ class YesNoParser : EnumCsvParser<YesNo>(
     mapOf(
         "Yes" to YesNo.Yes,
         "No" to YesNo.No,
-    )
+    ),
 )

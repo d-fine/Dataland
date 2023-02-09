@@ -7,5 +7,5 @@ enum class FinancialServicesType {
     CreditInstitution,
     InsuranceOrReinsurance,
     AssetManagement,
-    InvestmentFirm
+    InvestmentFirm,
 }

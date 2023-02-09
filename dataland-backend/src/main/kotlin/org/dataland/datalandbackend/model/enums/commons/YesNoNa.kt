@@ -7,6 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema
  * should be no datapoint instances using this enum.
  */
 @Schema(
-    enumAsRef = true
+    enumAsRef = true,
 )
 enum class YesNoNa { Yes, No, NA }

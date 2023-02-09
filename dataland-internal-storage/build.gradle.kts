@@ -9,7 +9,7 @@ val jacocoClasses by extra(
                 exclude("**/openApiClient/**")
             }.files
         }
-    }
+    },
 )
 val jacocoVersion: String by project
 val openApiGeneratorTimeOutThresholdInSeconds: String by project

@@ -27,12 +27,13 @@ class SfdrDataController(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    SfdrData::class.java
+    SfdrData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedSfdrData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SfdrData>> {
         return super.getCompanyAssociatedData(dataId)
     }
+
     @Operation(operationId = "postCompanyAssociatedSfdrData")
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SfdrData>):
         ResponseEntity<DataMetaInformation> {

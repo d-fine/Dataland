@@ -27,12 +27,13 @@ class SmeDataController(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    SmeData::class.java
+    SmeData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedSmeData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SmeData>> {
         return super.getCompanyAssociatedData(dataId)
     }
+
     @Operation(operationId = "postCompanyAssociatedSmeData")
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SmeData>):
         ResponseEntity<DataMetaInformation> {

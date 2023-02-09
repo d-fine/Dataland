@@ -16,13 +16,15 @@ class GeneralTestDataProvider {
 
     fun generateCompanyInformation(companyName: String, sector: String): CompanyInformation {
         return CompanyInformation(
-            companyName, "DummyCity", sector,
+            companyName,
+            "DummyCity",
+            sector,
             (
                 listOf(
-                    CompanyIdentifier(CompanyIdentifier.IdentifierType.permId, getRandomAlphaNumericString())
+                    CompanyIdentifier(CompanyIdentifier.IdentifierType.permId, getRandomAlphaNumericString()),
                 )
                 ),
-            "DE"
+            "DE",
         )
     }
 

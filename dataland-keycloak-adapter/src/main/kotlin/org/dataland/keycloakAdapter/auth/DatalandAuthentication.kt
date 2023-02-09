@@ -26,8 +26,11 @@ class DatalandAuthentication(val authentication: Authentication) {
          */
         fun fromContextOrNull(): DatalandAuthentication? {
             val auth = SecurityContextHolder.getContext().authentication
-            return if (auth == null) null
-            else DatalandAuthentication(auth)
+            return if (auth == null) {
+                null
+            } else {
+                DatalandAuthentication(auth)
+            }
         }
     }
 

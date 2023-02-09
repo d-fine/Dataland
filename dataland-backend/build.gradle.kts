@@ -9,7 +9,7 @@ val jacocoClasses by extra(
                 exclude("**/openApiClient/**")
             }.files
         }
-    }
+    },
 )
 val jacocoVersion: String by project
 val openApiGeneratorTimeOutThresholdInSeconds: String by project
@@ -105,14 +105,14 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
 
     additionalProperties.set(
         mapOf(
-            "removeEnumValuePrefix" to false
-        )
+            "removeEnumValuePrefix" to false,
+        ),
     )
     configOptions.set(
         mapOf(
             "withInterfaces" to "true",
-            "withSeparateModelsAndApi" to "true"
-        )
+            "withSeparateModelsAndApi" to "true",
+        ),
     )
 }
 

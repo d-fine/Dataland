@@ -28,17 +28,23 @@ class InviteManagerTest {
         "forward your Excel file by sending an email to a Dataland administrator."
 
     @Mock lateinit var mockEmail: Email
+
     @Mock lateinit var mockEmailSender: EmailSender
+
     @Mock lateinit var mockInviteMetaInfoRepository: InviteMetaInfoRepository
+
     @Mock lateinit var mockSecurityContext: SecurityContext
+
     @Mock lateinit var mockAuthentication: Authentication
+
     @Mock lateinit var mockJwt: Jwt
+
     @InjectMocks lateinit var inviteManager: InviteManager
 
     @Test
     fun `check for correct email error handling`() {
         Mockito.`when`(mockEmailSender.sendEmail(any(Email::class.java) ?: mockEmail)).thenReturn(
-            false
+            false,
         )
 
         Mockito.`when`(mockInviteMetaInfoRepository.save(any(InviteMetaInfoEntity::class.java)))

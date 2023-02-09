@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus
 class InvalidInputApiException(
     val summary: String,
     override val message: String,
-    cause: Throwable? = null
+    cause: Throwable? = null,
 ) : SingleApiException(message, cause) {
 
     override fun getErrorResponse(): ErrorDetails {
@@ -17,7 +17,7 @@ class InvalidInputApiException(
             errorType = "invalid-input",
             summary = summary,
             message = message,
-            httpStatus = HttpStatus.BAD_REQUEST
+            httpStatus = HttpStatus.BAD_REQUEST,
         )
     }
 }

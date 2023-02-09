@@ -17,7 +17,7 @@ class Sme {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneSmeDataSet,
-            apiAccessor.smeUploaderFunction
+            apiAccessor.smeUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForSmeData

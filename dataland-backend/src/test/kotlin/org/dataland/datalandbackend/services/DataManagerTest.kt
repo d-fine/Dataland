@@ -57,7 +57,7 @@ class DataManagerTest(
             DataType("eutaxonomy-non-financials"),
             "USER_ID_OF_AN_UPLOADING_USER",
             Instant.now().epochSecond,
-            euTaxonomyDataForNonFinancialsAsString
+            euTaxonomyDataForNonFinancialsAsString,
         )
     }
 
@@ -85,7 +85,7 @@ class DataManagerTest(
         assertEquals(
             "The data with the id: $dataId is registered as type eutaxonomy-non-financials by " +
                 "Dataland instead of your requested type eutaxonomy-financials.",
-            thrown.message
+            thrown.message,
         )
     }
 
@@ -114,18 +114,18 @@ class DataManagerTest(
         }
         assertEquals(
             "The meta-data of dataset $dataId differs between the data store and the database",
-            thrown.message
+            thrown.message,
         )
     }
 
     private fun getExpectedDataTypeName(
         storableDataSet: StorableDataSet,
         dataId: String,
-        unexpectedDataTypeName: String
+        unexpectedDataTypeName: String,
     ): String {
         val expectedDataTypeName = storableDataSet.dataType.name
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
-            objectMapper.writeValueAsString(storableDataSet.copy(dataType = DataType(unexpectedDataTypeName)))
+            objectMapper.writeValueAsString(storableDataSet.copy(dataType = DataType(unexpectedDataTypeName))),
         )
         return expectedDataTypeName
     }
@@ -146,7 +146,7 @@ class DataManagerTest(
         }
         assertEquals(
             "The meta-data of dataset $dataId differs between the data store and the database",
-            thrown.message
+            thrown.message,
         )
     }
 }

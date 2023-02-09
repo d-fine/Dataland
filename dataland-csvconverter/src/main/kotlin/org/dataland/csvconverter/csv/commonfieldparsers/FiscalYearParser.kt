@@ -20,9 +20,10 @@ class FiscalYearParser {
     private val fiscalYearDeviationParser = EnumCsvParser(
         mapOf(
             "No Deviation" to FiscalYearDeviation.NoDeviation,
-            "Deviation" to FiscalYearDeviation.Deviation
-        )
+            "Deviation" to FiscalYearDeviation.Deviation,
+        ),
     )
+
     /**
      * Method to retrieve information about the deviation of the fiscal year from the csv file
      */
@@ -36,9 +37,6 @@ class FiscalYearParser {
      */
     fun getFiscalYearEnd(csvLineData: Map<String, String>): LocalDate? {
         val fiscalYearEndString = columnMappingFiscalYear.getCsvValueAllowingNull("fiscalYearEnd", csvLineData)
-        return if (fiscalYearEndString.isNullOrBlank())
-            null
-        else
-            LocalDate.parse(fiscalYearEndString)
+        return if (fiscalYearEndString.isNullOrBlank()) null else LocalDate.parse(fiscalYearEndString)
     }
 }

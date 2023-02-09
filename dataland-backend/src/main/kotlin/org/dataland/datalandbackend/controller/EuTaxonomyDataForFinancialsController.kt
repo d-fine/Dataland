@@ -27,7 +27,7 @@ class EuTaxonomyDataForFinancialsController(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    EuTaxonomyDataForFinancials::class.java
+    EuTaxonomyDataForFinancials::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedEuTaxonomyDataForFinancials")
     override fun getCompanyAssociatedData(dataId: String):

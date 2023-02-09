@@ -48,22 +48,23 @@ class EuTaxonomyForNonFinancialsCsvParser(
                 columnMappingEuTaxonomyForNonFinancials,
                 csvLineData,
                 "total$type",
-                CsvUtils.SCALE_FACTOR_ONE_MILLION
+                CsvUtils.SCALE_FACTOR_ONE_MILLION,
             ),
             alignedPercentage =
             dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForNonFinancials,
                 csvLineData,
-                "aligned$type"
+                "aligned$type",
             ),
             eligiblePercentage =
             dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForNonFinancials,
                 csvLineData,
-                "eligible$type"
-            )
+                "eligible$type",
+            ),
         )
     }
+
     /**
      Assembles all partial information into one EuTaxonomyDataForNonFinancials object
      */

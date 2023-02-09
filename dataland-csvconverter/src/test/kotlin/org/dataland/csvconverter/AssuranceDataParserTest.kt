@@ -24,7 +24,7 @@ class AssuranceDataParserTest {
         assuranceProvider: String,
         assuranceReport: String,
         assurancePage: String,
-        assuranceTag: String
+        assuranceTag: String,
     ): Map<String, String> {
         return mapOf(
             "assurance" to assurance,
@@ -41,7 +41,8 @@ class AssuranceDataParserTest {
         assertEquals(
             AssuranceData(
                 assurance = AssuranceOptions.ReasonableAssurance,
-                provider = "Baker", CompanyReportReference(report = "AnnualReport", page = 123, tagName = "here")
+                provider = "Baker",
+                CompanyReportReference(report = "AnnualReport", page = 123, tagName = "here"),
             ),
             assuranceParser
                 .buildSingleAssuranceData(row),

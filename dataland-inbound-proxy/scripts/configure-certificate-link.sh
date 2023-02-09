@@ -2,7 +2,7 @@
 
 # This script checks if LetsEncrypt certificates are available
 # and rewrites the symlink for the nginx certificates accordingly
-
+echo "Configuring Certificate Folder"
 if [ -f "/certs/custom/privkey.pem" ]; then
   echo "Found custom certificates folder. Rewriting symlink"
   rm /certs/dataland

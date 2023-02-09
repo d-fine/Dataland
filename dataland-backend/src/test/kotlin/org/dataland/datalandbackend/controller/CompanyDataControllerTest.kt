@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @ActiveProfiles(profiles = ["unprotected"])
 internal class CompanyDataControllerTest(
     @Autowired var mockMvc: MockMvc,
-    @Autowired var objectMapper: ObjectMapper
+    @Autowired var objectMapper: ObjectMapper,
 ) {
 
     val testDataProvider = TestDataProvider(objectMapper)
@@ -42,11 +42,11 @@ internal class CompanyDataControllerTest(
         mockMvc.perform(
             get("/companies/${storedCompany.companyId}")
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON),
         )
             .andExpectAll(
                 status().isOk,
-                content().contentType(MediaType.APPLICATION_JSON)
+                content().contentType(MediaType.APPLICATION_JSON),
             )
     }
 }
