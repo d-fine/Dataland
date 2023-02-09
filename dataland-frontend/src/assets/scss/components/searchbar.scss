@@ -2,11 +2,57 @@
   padding-left: 0.75rem !important;
 }
 
-.d-framework-searchbar-panel {
-  max-height: 500px !important; // TODO this is a duplicate! there is already d-framework-searchbar-panel in form.scss
-}
-
 .p-autocomplete-loader {
   color: #e67f3f;
   right: 0.5rem;
+}
+
+.d-framework-data-search-dropdown {
+  .p-multiselect-item {
+    color: $input-text-color;
+    border: none;
+    font-weight: 400;
+
+    &.p-highlight {
+      background: $table-background-color;
+      color: $main-color;
+    }
+
+    &.p-disabled {
+      color: $brown-lighter;
+
+      &::after {
+        content: "(Not available)";
+        margin-left: 0.2rem;
+        font-weight: $light-bold-weight;
+        color: $input-text-color;
+      }
+    }
+  }
+  .p-multiselect-close {
+    display: none;
+  }
+}
+
+.d-framework-searchbar-panel {
+  // this important is to overwrite styles injected to panel directly
+  max-height: 50vh !important;
+  .p-autocomplete-items {
+    background:$input-text-bg;
+    padding: 0;
+    .p-autocomplete-item {
+      height: 3.5rem;
+      padding: 0;
+      display: flex;
+      align-content: center;
+      align-items: center;
+      &:not(.p-disabled):hover {
+        background: $dropdown-options-bg;
+      }
+      &.p-focus {
+        color: $fill-dropdown-select-text-color;
+        background-color: $fill-dropdown-select-bg-color;
+      }
+    }
+  }
 }
