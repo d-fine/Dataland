@@ -1,7 +1,7 @@
 package org.dataland.datalanddummyqaservice
 
-import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener

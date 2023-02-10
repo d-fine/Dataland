@@ -5,12 +5,12 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
-import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener

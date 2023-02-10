@@ -1,4 +1,4 @@
-// dataland-backend-utils
+// dataland-message-queue-utils
 
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
@@ -23,17 +23,14 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
 }
 
-// apply(plugin = "io.spring.dependency-management")
-
 dependencies {
-    implementation(libs.springdoc.openapi.ui)
-    implementation(libs.okhttp)
-    implementation(libs.slf4j.api)
-    implementation("org.springframework.security:spring-security-crypto")
-    implementation("org.springframework.security:spring-security-web")
-    implementation("jakarta.servlet:jakarta.servlet-api")
-    implementation(libs.bcpkix.jdk15on)
-    implementation(libs.bcprov.jdk15on)
+    implementation("org.springframework.amqp:spring-rabbit")
+    implementation("io.cloudevents:cloudevents-api:2.4.1")
+    implementation("io.cloudevents:cloudevents-json-jackson:2.4.1")
+    implementation("io.cloudevents:cloudevents-core:2.3.0")
+    implementation("org.springframework.cloud:spring-cloud-function-context:4.0.0")
+    implementation("org.springframework.amqp:spring-amqp")
+    testImplementation("org.springframework.amqp:spring-rabbit-test")
 }
 
 tasks.bootJar {
