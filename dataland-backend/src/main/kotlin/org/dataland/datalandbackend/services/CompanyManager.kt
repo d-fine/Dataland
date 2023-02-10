@@ -121,7 +121,7 @@ class CompanyManager(
             dataTypeFilter = filter.dataTypeFilter.map { it.name },
             sectorFilter = filter.sectorFilter.toList(),
             countryCodeFilter = filter.countryCodeFilter.toList(),
-            uploaderIdFilter = getUploaderIdFilter(filter.onlyCompanyNames),
+            uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
         )
         val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA)
         val sortingMap = filteredAndSortedResults.mapIndexed {
