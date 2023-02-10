@@ -60,7 +60,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "11.1.0"
     kotlin("jvm") version "1.8.10"
     kotlin("plugin.spring") version "1.8.10" apply false
-    id("org.sonarqube") version "3.5.0.2730"
+    id("org.sonarqube") version "3.4.0.2513"
     // TODO the "sonarqube" task fails with this version as well as the latest.  do I need SONAR_TOKEN ?
     jacoco
     id("org.springdoc.openapi-gradle-plugin") version "1.6.0" apply false
