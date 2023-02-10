@@ -44,7 +44,7 @@ function humanizeViaMapping(rawText: string): string {
     "eutaxonomy-non-financials": "EU Taxonomy for non-financial companies",
     lksg: "LkSG",
     inhouseproduction: "In-house Production",
-    contractprocessing: "Contract Processing"
+    contractprocessing: "Contract Processing",
   };
   const lowerCaseText = rawText.toLowerCase();
   return lowerCaseText in mappingObject ? mappingObject[lowerCaseText] : "";

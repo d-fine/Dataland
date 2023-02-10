@@ -730,8 +730,18 @@ export default defineComponent({
     lksgSubAreaNameMappings,
     elementPosition: 0,
     scrollListener: (): null => null,
-    isInHouseProductionOrContractProcessingMap: Object.fromEntries(new Map<string, string>([[InHouseProductionOrContractProcessing.InHouseProduction, humanizeString(InHouseProductionOrContractProcessing.InHouseProduction)],
-      [InHouseProductionOrContractProcessing.ContractProcessing, humanizeString(InHouseProductionOrContractProcessing.ContractProcessing)]]))
+    isInHouseProductionOrContractProcessingMap: Object.fromEntries(
+      new Map<string, string>([
+        [
+          InHouseProductionOrContractProcessing.InHouseProduction,
+          humanizeString(InHouseProductionOrContractProcessing.InHouseProduction),
+        ],
+        [
+          InHouseProductionOrContractProcessing.ContractProcessing,
+          humanizeString(InHouseProductionOrContractProcessing.ContractProcessing),
+        ],
+      ])
+    ),
   }),
   props: {
     companyID: {
