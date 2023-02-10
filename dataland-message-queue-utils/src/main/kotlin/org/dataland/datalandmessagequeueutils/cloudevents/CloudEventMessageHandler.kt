@@ -1,4 +1,4 @@
-package org.dataland.datalandbackendutils.cloudevents
+package org.dataland.datalandmessagequeueutils.cloudevents
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.amqp.rabbit.core.RabbitTemplate

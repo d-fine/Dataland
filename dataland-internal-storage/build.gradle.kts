@@ -49,6 +49,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation(project(":dataland-backend-utils"))
+    implementation(project(":dataland-message-queue-utils"))
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

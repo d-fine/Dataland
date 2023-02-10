@@ -10,6 +10,7 @@ include(
     "dataland-keycloak:dataland_theme:login",
     "dataland-keycloak-adapter",
     "dataland-dummy-qa-service",
+    "dataland-message-queue-utils",
 )
 
 dependencyResolutionManagement {

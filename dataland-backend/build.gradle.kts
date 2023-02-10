@@ -55,7 +55,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:4.11.0")
     implementation(project(":dataland-keycloak-adapter"))
     implementation("com.mailjet:mailjet-client:5.2.1")
-    testImplementation("org.springframework.amqp:spring-rabbit-test")
+    implementation(project(":dataland-message-queue-utils"))
 }
 
 openApi {
