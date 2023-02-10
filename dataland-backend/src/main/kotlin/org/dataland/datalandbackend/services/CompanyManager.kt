@@ -57,7 +57,7 @@ class CompanyManager(
             dataRegisteredByDataland = mutableListOf(),
             countryCode = companyInformation.countryCode,
             isTeaserCompany = companyInformation.isTeaserCompany,
-            website = companyInformation.website
+            website = companyInformation.website,
         )
 
         return companyRepository.save(newCompanyEntity)
@@ -121,9 +121,11 @@ class CompanyManager(
             dataTypeFilter = filter.dataTypeFilter.map { it.name },
             sectorFilter = filter.sectorFilter.toList(),
             countryCodeFilter = filter.countryCodeFilter.toList(),
-            uploaderIdFilter = if (filter.onlyCurrentUserAsUploader)
+            uploaderIdFilter = if (filter.onlyCurrentUserAsUploader) {
                 listOf(DatalandAuthentication.fromContext().userId)
-            else listOf(),
+            } else {
+                listOf()
+            },
         )
         val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA)
         val sortingMap = filteredAndSortedResults.mapIndexed {

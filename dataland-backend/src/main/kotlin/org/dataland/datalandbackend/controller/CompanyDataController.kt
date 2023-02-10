@@ -43,7 +43,7 @@ class CompanyDataController(
         logger.info(
             "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
                 "='$onlyCompanyNames', dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors', " +
-                "onlyCurrentUserAsUploader='$onlyCurrentUserAsUploader'"
+                "onlyCurrentUserAsUploader='$onlyCurrentUserAsUploader'",
         )
         return ResponseEntity.ok(
             companyManager.searchCompaniesAndGetApiModel(
@@ -53,7 +53,7 @@ class CompanyDataController(
                     dataTypes ?: setOf(),
                     countryCodes ?: setOf(),
                     sectors ?: setOf(),
-                    onlyCurrentUserAsUploader
+                    onlyCurrentUserAsUploader,
                 ),
                 DatalandAuthentication.fromContextOrNull(),
             ),
