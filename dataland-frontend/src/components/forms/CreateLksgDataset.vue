@@ -233,7 +233,7 @@
                                 type="radio"
                                 name="isInHouseProductionOrIsContractProcessing"
                                 :validation-label="lksgKpiNameMappings.inHouseProductionOrContractProcessing"
-                                :options="['In-house Production', 'Contract Processing']"
+                                :options="isInHouseProductionOrContractProcessingMap"
                                 validation="required"
                                 :outer-class="{
                                   'yes-no-radio': true,
@@ -692,6 +692,8 @@ import {
 } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
+import { humanizeString } from "@/utils/StringHumanizer";
+import { InHouseProductionOrContractProcessing } from "@clients/backend";
 
 export default defineComponent({
   setup() {
@@ -728,6 +730,8 @@ export default defineComponent({
     lksgSubAreaNameMappings,
     elementPosition: 0,
     scrollListener: (): null => null,
+    isInHouseProductionOrContractProcessingMap: Object.fromEntries(new Map<string, string>([[InHouseProductionOrContractProcessing.InHouseProduction, humanizeString(InHouseProductionOrContractProcessing.InHouseProduction)],
+      [InHouseProductionOrContractProcessing.ContractProcessing, humanizeString(InHouseProductionOrContractProcessing.ContractProcessing)]]))
   }),
   props: {
     companyID: {
