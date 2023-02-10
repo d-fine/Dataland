@@ -2527,6 +2527,13 @@
           }
         }
       },
+      "InHouseProductionOrContractProcessing": {
+        "type": "string",
+        "enum": [
+          "InHouseProduction",
+          "ContractProcessing"
+        ]
+      },
       "LksgChildLabour": {
         "type": "object",
         "properties": {
@@ -3015,7 +3022,7 @@
             "type": "string"
           },
           "isInHouseProductionOrIsContractProcessing": {
-            "type": "string"
+            "$ref": "#/components/schemas/InHouseProductionOrContractProcessing"
           },
           "country": {
             "type": "string"

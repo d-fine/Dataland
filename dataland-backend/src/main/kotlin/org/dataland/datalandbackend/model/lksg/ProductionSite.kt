@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.lksg
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.enums.lksg.InHouseProductionOrContractProcessing
 
 /**
  * --- API model ---
@@ -10,7 +11,7 @@ data class ProductionSite(
     val name: String? = null,
 
     @field:JsonProperty()
-    val isInHouseProductionOrIsContractProcessing: String? = null,
+    val isInHouseProductionOrIsContractProcessing: InHouseProductionOrContractProcessing? = null,
 
     val country: String? = null,
 
