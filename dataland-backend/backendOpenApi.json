@@ -1986,7 +1986,7 @@
           "companyId",
           "dataId",
           "dataType",
-          "isQualityAssured",
+          "qualityStatus",
           "uploadTime"
         ],
         "type": "object",
@@ -2007,10 +2007,17 @@
           "companyId": {
             "type": "string"
           },
-          "isQualityAssured": {
-            "type": "string"
+          "qualityStatus": {
+            "$ref": "#/components/schemas/DatasetQualityStatus"
           }
         }
+      },
+      "DatasetQualityStatus": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Accepted"
+        ]
       },
       "CompanyAssociatedDataSfdrData": {
         "type": "object",
