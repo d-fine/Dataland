@@ -1,5 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { LksgData, ProductionSite } from "@clients/backend";
+import {
+  InHouseProductionOrContractProcessing,
+  LksgData,
+  ProductionSite
+} from "@clients/backend";
 import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
@@ -18,8 +22,8 @@ export function generateProductionSite(): ProductionSite {
   return {
     name: randomStringOrUndefined(faker.company.name()),
     isInHouseProductionOrIsContractProcessing: faker.helpers.arrayElement([
-      "In-house Production",
-      "Contract Processing",
+      InHouseProductionOrContractProcessing.InHouseProduction,
+      InHouseProductionOrContractProcessing.ContractProcessing,
     ]),
     country: randomStringOrUndefined(faker.address.country()),
     city: randomStringOrUndefined(faker.address.city()),
