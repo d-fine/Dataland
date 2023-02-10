@@ -22,11 +22,11 @@ class InviteController(
 
     override fun submitInvite(
         excelFile: MultipartFile,
-        isSubmitterNameHidden: Boolean
+        isSubmitterNameHidden: Boolean,
     ): ResponseEntity<InviteMetaInfoEntity> {
         logger.info(
             "Received a request to submit an invite. " +
-                "Hiding the requester is set to $isSubmitterNameHidden."
+                "Hiding the requester is set to $isSubmitterNameHidden.",
         )
         return ResponseEntity.ok(inviteManager.submitInvitation(excelFile, isSubmitterNameHidden))
     }

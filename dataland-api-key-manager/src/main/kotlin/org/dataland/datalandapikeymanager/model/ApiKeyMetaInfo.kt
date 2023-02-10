@@ -26,7 +26,7 @@ data class ApiKeyMetaInfo(
     val active: Boolean? = null,
 
     @field:JsonProperty(required = false)
-    val validationMessage: String? = null
+    val validationMessage: String? = null,
 ) {
     constructor(apiKeyEntity: ApiKeyEntity, active: Boolean?, validationMessage: String?) :
         this(
@@ -34,6 +34,6 @@ data class ApiKeyMetaInfo(
             apiKeyEntity.keycloakRoles,
             apiKeyEntity.expiryDate,
             active,
-            validationMessage
+            validationMessage,
         )
 }

@@ -56,7 +56,7 @@ data class StoredCompanyEntity(
     var isTeaserCompany: Boolean,
 
     @Column(name = "website")
-    var website: String?
+    var website: String?,
 ) : ApiModelConversion<StoredCompany> {
     @JsonValue
     override fun toApiModel(viewingUser: DatalandAuthentication?): StoredCompany {
@@ -74,7 +74,7 @@ data class StoredCompanyEntity(
                 isTeaserCompany = isTeaserCompany,
                 website = website,
             ),
-            dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList()
+            dataRegisteredByDataland = dataRegisteredByDataland.map { it.toApiModel(viewingUser) }.toMutableList(),
         )
     }
 }

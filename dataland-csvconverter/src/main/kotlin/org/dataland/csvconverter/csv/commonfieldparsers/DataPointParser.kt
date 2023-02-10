@@ -15,7 +15,7 @@ import java.math.BigDecimal
  * This class provides methods to create data points
  */
 class DataPointParser(
-    private val companyReportParser: CompanyReportParser
+    private val companyReportParser: CompanyReportParser,
 ) {
 
     private val qualityOptionCsvParser = EnumCsvParser<QualityOptions>(
@@ -24,8 +24,8 @@ class DataPointParser(
             "Reported" to QualityOptions.Reported,
             "Estimated" to QualityOptions.Estimated,
             "Incomplete" to QualityOptions.Incomplete,
-            "N/A" to QualityOptions.NA
-        )
+            "N/A" to QualityOptions.NA,
+        ),
     )
 
     private fun buildMapForSpecificDatapoint(generalMap: Map<String, String>, baseString: String): Map<String, String> {
@@ -50,11 +50,12 @@ class DataPointParser(
     fun buildSingleCompanyReportReference(
         generalMap: Map<String, String>,
         row: Map<String, String>,
-        baseString: String
+        baseString: String,
     ): CompanyReportReference? {
         val reportColumnMapping = buildMapForSpecificReport(generalMap, baseString)
-        if (!reportColumnMapping.checkIfAnyFieldHasValue(reportColumnMapping.keys.toList(), row))
+        if (!reportColumnMapping.checkIfAnyFieldHasValue(reportColumnMapping.keys.toList(), row)) {
             return null
+        }
 
         return CompanyReportReference(
             report = reportColumnMapping
@@ -62,12 +63,12 @@ class DataPointParser(
                 ?.let { companyReportParser.getReverseReportNameMapping(it) }
                 ?: throw IllegalArgumentException(
                     "Expected a report for $baseString as a corresponding page" +
-                        " has been specified but no report was found"
+                        " has been specified but no report was found",
                 ),
             page = buildMapForSpecificDatapoint(generalMap, baseString)
                 .readCsvLong("${baseString}Page", row),
             tagName = buildMapForSpecificDatapoint(generalMap, baseString)
-                .getCsvValueAllowingNull("${baseString}Tag", row)
+                .getCsvValueAllowingNull("${baseString}Tag", row),
         )
     }
 
@@ -75,11 +76,12 @@ class DataPointParser(
         generalMap: Map<String, String>,
         row: Map<String, String>,
         baseString: String,
-        valueFunction: (datapointColumnMapping: Map<String, String>) -> T?
+        valueFunction: (datapointColumnMapping: Map<String, String>) -> T?,
     ): DataPoint<T>? {
         val datapointColumnMapping = buildMapForSpecificDatapoint(generalMap, baseString)
-        if (!datapointColumnMapping.checkIfAnyFieldHasValue(datapointColumnMapping.keys.toList(), row))
+        if (!datapointColumnMapping.checkIfAnyFieldHasValue(datapointColumnMapping.keys.toList(), row)) {
             return null
+        }
 
         return DataPoint(
             value = valueFunction(datapointColumnMapping),
@@ -88,7 +90,7 @@ class DataPointParser(
                 .let { qualityOptionCsvParser.parse("${baseString}Quality", it) },
             comment = datapointColumnMapping
                 .getCsvValueAllowingNull("${baseString}Comment", row),
-            dataSource = buildSingleCompanyReportReference(generalMap, row, baseString)
+            dataSource = buildSingleCompanyReportReference(generalMap, row, baseString),
         )
     }
 
@@ -99,7 +101,7 @@ class DataPointParser(
         generalMap: Map<String, String>,
         row: Map<String, String>,
         baseString: String,
-        valueScaleFactor: BigDecimal
+        valueScaleFactor: BigDecimal,
     ):
         DataPoint<BigDecimal>? {
         return buildDataPoint(generalMap, row, baseString) {

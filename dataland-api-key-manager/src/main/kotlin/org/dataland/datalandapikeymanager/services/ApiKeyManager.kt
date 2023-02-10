@@ -49,7 +49,7 @@ class ApiKeyManager(
         if (daysValid != null && daysValid <= 0) {
             throw InvalidInputApiException(
                 "If set, the value of daysValid must be a positive integer.",
-                "If set, the value of daysValid must be a positive integer but it was $daysValid"
+                "If set, the value of daysValid must be a positive integer but it was $daysValid",
             )
         }
     }
@@ -92,7 +92,7 @@ class ApiKeyManager(
         val apiKeyEntity = ApiKeyEntity(encodedSecret, apiKeyMetaInfo)
         apiKeyRepository.save(apiKeyEntity)
         logger.info(
-            "Generated Api Key with encoded secret value $encodedSecret and meta info $apiKeyMetaInfo."
+            "Generated Api Key with encoded secret value $encodedSecret and meta info $apiKeyMetaInfo.",
         )
         return ApiKeyAndMetaInfo(apiKeyUtility.convertToApiKey(parsedApiKey), apiKeyMetaInfo)
     }
@@ -118,7 +118,7 @@ class ApiKeyManager(
                     active = true,
                     keycloakUserId = keycloakUserId,
                     expiryDate = apiKeyEntityOfKeycloakUser.expiryDate,
-                    keycloakRoles = apiKeyEntityOfKeycloakUser.keycloakRoles
+                    keycloakRoles = apiKeyEntityOfKeycloakUser.keycloakRoles,
                 )
             } else { ApiKeyMetaInfo(active = false, validationMessage = validationMessageExpiredApiKey) }
         }
@@ -133,13 +133,13 @@ class ApiKeyManager(
         val receivedAndParsedApiKey = apiKeyUtility.parseApiKey(receivedApiKey)
 
         val apiKeyEntityOptional = apiKeyRepository.findById(
-            receivedAndParsedApiKey.keycloakUserId
+            receivedAndParsedApiKey.keycloakUserId,
         )
 
         if (apiKeyEntityOptional.isEmpty) {
             logger.info(
                 "Dataland user with the encoded Keycloak user Id" +
-                    "${receivedAndParsedApiKey.keycloakUserId} has no API key registered."
+                    "${receivedAndParsedApiKey.keycloakUserId} has no API key registered.",
             )
             return ApiKeyMetaInfo(active = false, validationMessage = validationMessageNoApiKeyRegistered)
         }

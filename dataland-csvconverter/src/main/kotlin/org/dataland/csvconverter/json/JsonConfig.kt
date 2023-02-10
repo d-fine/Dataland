@@ -29,7 +29,7 @@ object JsonConfig {
         objectMapper.writerWithDefaultPrettyPrinter()
             .writeValue(
                 File(fileName),
-                input
+                input,
             )
     }
 }

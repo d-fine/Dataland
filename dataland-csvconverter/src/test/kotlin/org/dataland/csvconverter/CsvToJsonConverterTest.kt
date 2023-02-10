@@ -28,12 +28,12 @@ class CsvToJsonConverterTest {
             "Size mismatch: the parsed list contains " +
                 "${actualCompanyInformationWithEuTaxonomyDataForNonFinancials.size} " +
                 "and the read list contains " +
-                "${expectedCompanyInformationWithEuTaxonomyDataForNonFinancials.size} elements."
+                "${expectedCompanyInformationWithEuTaxonomyDataForNonFinancials.size} elements.",
         )
         assertEquals(
             expectedCompanyInformationWithEuTaxonomyDataForNonFinancials,
             actualCompanyInformationWithEuTaxonomyDataForNonFinancials,
-            "The list of read and parsed company information did not match."
+            "The list of read and parsed company information did not match.",
         )
     }
 
@@ -50,12 +50,12 @@ class CsvToJsonConverterTest {
             "Size mismatch: the parsed list contains " +
                 "${actualCompanyInformationWithEuTaxonomyDataForFinancials.size} " +
                 "and the read list contains " +
-                "${expectedCompanyInformationWithEuTaxonomyDataForFinancials.size} elements."
+                "${expectedCompanyInformationWithEuTaxonomyDataForFinancials.size} elements.",
         )
         assertEquals(
             expectedCompanyInformationWithEuTaxonomyDataForFinancials,
             actualCompanyInformationWithEuTaxonomyDataForFinancials,
-            "The list of read and parsed company information did not match."
+            "The list of read and parsed company information did not match.",
         )
     }
 }

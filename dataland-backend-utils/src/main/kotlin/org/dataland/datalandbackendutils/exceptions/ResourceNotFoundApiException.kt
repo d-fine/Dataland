@@ -10,14 +10,14 @@ import org.springframework.http.HttpStatus
 class ResourceNotFoundApiException(
     val summary: String,
     override val message: String,
-    cause: Throwable? = null
+    cause: Throwable? = null,
 ) : SingleApiException(message, cause) {
     override fun getErrorResponse(): ErrorDetails {
         return ErrorDetails(
             errorType = "resource-not-found",
             summary = summary,
             message = message,
-            httpStatus = HttpStatus.NOT_FOUND
+            httpStatus = HttpStatus.NOT_FOUND,
         )
     }
 }

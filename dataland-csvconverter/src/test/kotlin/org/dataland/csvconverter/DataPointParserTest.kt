@@ -22,7 +22,7 @@ class DataPointParserTest {
                 "recipe report" to "",
                 page to "",
                 "recipe comment" to "",
-                "recipe tag" to ""
+                "recipe tag" to "",
             )
         }
         fun fullDataRow(): MutableMap<String, String> {
@@ -32,7 +32,7 @@ class DataPointParserTest {
                 "recipe report" to "Annual Report",
                 page to "123",
                 "recipe comment" to "it's great",
-                "recipe tag" to "here"
+                "recipe tag" to "here",
             )
         }
     }
@@ -46,12 +46,17 @@ class DataPointParserTest {
         val validDataRow = fullDataRow()
         Assertions.assertEquals(
             dataPointParser.buildDecimalDataPoint(
-                csvMapping, validDataRow, "rezept", BigDecimal.ONE
+                csvMapping,
+                validDataRow,
+                "rezept",
+                BigDecimal.ONE,
             ),
             DataPoint(
-                value = 111.toBigDecimal(), quality = QualityOptions.Reported,
-                CompanyReportReference(report = "AnnualReport", page = 123, tagName = "here"), comment = "it's great"
-            )
+                value = 111.toBigDecimal(),
+                quality = QualityOptions.Reported,
+                CompanyReportReference(report = "AnnualReport", page = 123, tagName = "here"),
+                comment = "it's great",
+            ),
         )
     }
 
@@ -61,9 +66,12 @@ class DataPointParserTest {
         val rowWithNoData = emptyDataRow()
         Assertions.assertEquals(
             dataPointParser.buildDecimalDataPoint(
-                csvMapping, rowWithNoData, "rezept", BigDecimal.ONE
+                csvMapping,
+                rowWithNoData,
+                "rezept",
+                BigDecimal.ONE,
             ),
-            null
+            null,
         )
     }
 

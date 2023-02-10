@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional
 @Component("CompanyManager")
 class CompanyManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
-    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository
+    @Autowired private val companyIdentifierRepository: CompanyIdentifierRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -43,7 +43,7 @@ class CompanyManager(
 
     private fun createStoredCompanyEntityWithoutForeignReferences(
         companyId: String,
-        companyInformation: CompanyInformation
+        companyInformation: CompanyInformation,
     ): StoredCompanyEntity {
         val newCompanyEntity = StoredCompanyEntity(
             companyId = companyId,
@@ -65,7 +65,7 @@ class CompanyManager(
 
     private fun createAndAssociateIdentifiers(
         savedCompanyEntity: StoredCompanyEntity,
-        companyInformation: CompanyInformation
+        companyInformation: CompanyInformation,
     ): List<CompanyIdentifierEntity> {
         val newIdentifiers = companyInformation.identifiers.map {
             CompanyIdentifierEntity(
@@ -80,7 +80,7 @@ class CompanyManager(
             if (cause is ConstraintViolationException && cause.constraintName == "company_identifiers_pkey") {
                 throw InvalidInputApiException(
                     "Company identifier already used",
-                    "Could not insert company as one company identifier is already used to identify another company"
+                    "Could not insert company as one company identifier is already used to identify another company",
                 )
             }
             throw ex
@@ -113,7 +113,7 @@ class CompanyManager(
     @Transactional
     fun searchCompaniesAndGetApiModel(
         filter: CompanySearchFilter,
-        viewingUser: DatalandAuthentication? = null
+        viewingUser: DatalandAuthentication? = null,
     ): List<StoredCompany> {
         val searchFilterForJPA = StoredCompanySearchFilter(
             searchString = filter.searchString,

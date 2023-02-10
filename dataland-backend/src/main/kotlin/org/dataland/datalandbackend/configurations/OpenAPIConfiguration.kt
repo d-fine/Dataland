@@ -15,20 +15,20 @@ import io.swagger.v3.oas.annotations.servers.Server
 @OpenAPIDefinition(
     info = Info(
         title = "Dataland Backend API documentation",
-        version = "1.0.0"
+        version = "1.0.0",
     ),
-    servers = [Server(url = "/api")]
+    servers = [Server(url = "/api")],
 )
 @SecurityScheme(
     name = "default-bearer-auth",
     scheme = "bearer",
     type = SecuritySchemeType.HTTP,
-    `in` = SecuritySchemeIn.HEADER
+    `in` = SecuritySchemeIn.HEADER,
 )
 @SecurityScheme(
     name = "dataland-api-key",
     type = SecuritySchemeType.APIKEY,
-    `in` = SecuritySchemeIn.HEADER
+    `in` = SecuritySchemeIn.HEADER,
 )
 @SecurityScheme(
     name = "default-oauth",
@@ -36,8 +36,8 @@ import io.swagger.v3.oas.annotations.servers.Server
     flows = OAuthFlows(
         authorizationCode = OAuthFlow(
             authorizationUrl = "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth",
-            tokenUrl = "/keycloak/realms/datalandsecurity/protocol/openid-connect/token"
-        )
-    )
+            tokenUrl = "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
+        ),
+    ),
 )
 interface OpenAPIConfiguration

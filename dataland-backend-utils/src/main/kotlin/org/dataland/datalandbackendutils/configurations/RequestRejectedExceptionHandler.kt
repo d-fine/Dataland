@@ -23,12 +23,12 @@ class RequestRejectedExceptionHandler(
     @Value("\${dataland.expose-error-stack-trace-to-api:false}")
     private val trace: Boolean,
     @Autowired
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) : RequestRejectedHandler {
     override fun handle(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        ex: RequestRejectedException
+        ex: RequestRejectedException,
     ) {
         val responseObject = ErrorResponse(
             errors = listOf(
@@ -37,9 +37,9 @@ class RequestRejectedExceptionHandler(
                     summary = "Your request has been rejected",
                     message = ex.message ?: "Your request has been rejected by our internal firewall",
                     httpStatus = HttpStatus.BAD_REQUEST,
-                    stackTrace = if (trace) ExceptionUtils.getStackTrace(ex) else null
+                    stackTrace = if (trace) ExceptionUtils.getStackTrace(ex) else null,
                 ),
-            )
+            ),
         )
         val responseString = objectMapper.writeValueAsString(responseObject)
         val printWriter = response.writer

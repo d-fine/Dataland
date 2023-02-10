@@ -56,7 +56,7 @@ class CompanyInformationCsvParser {
             companyInformationColumnMapping.getCsvValueAllowingNull(identifierType.name, csvLineData)?.let {
                 CompanyIdentifier(
                     identifierValue = it,
-                    identifierType = identifierType
+                    identifierType = identifierType,
                 )
             }
         }.sortedBy { it.identifierType.name }

@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 @ControllerAdvice
 class UnknownErrorControllerAdvice(
     @Value("\${dataland.expose-error-stack-trace-to-api:false}")
-    val trace: Boolean
+    val trace: Boolean,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * Handles all exceptions returning a generic Internal server error response.
      * This is intended as a fallback error handler
@@ -33,7 +34,7 @@ class UnknownErrorControllerAdvice(
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
             summary = "An internal server error occurred",
             message = "An unexpected internal server error occurred. Please contact support if this error persists",
-            stackTrace = if (trace) ExceptionUtils.getStackTrace(ex) else null
+            stackTrace = if (trace) ExceptionUtils.getStackTrace(ex) else null,
         )
         logger.error("An unknown internal server error occurred: $preparedError", ex)
         return ResponseEntity

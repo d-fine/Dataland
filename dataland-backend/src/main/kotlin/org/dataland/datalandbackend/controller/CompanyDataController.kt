@@ -28,7 +28,7 @@ class CompanyDataController(
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
         return ResponseEntity.ok(
             companyManager.addCompany(companyInformation)
-                .toApiModel(DatalandAuthentication.fromContext())
+                .toApiModel(DatalandAuthentication.fromContext()),
         )
     }
 
@@ -38,7 +38,7 @@ class CompanyDataController(
         countryCodes: Set<String>?,
         sectors: Set<String>?,
         onlyCompanyNames: Boolean,
-        onlyCurrentUserAsUploader: Boolean
+        onlyCurrentUserAsUploader: Boolean,
     ): ResponseEntity<List<StoredCompany>> {
         logger.info(
             "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
@@ -55,8 +55,8 @@ class CompanyDataController(
                     sectors ?: setOf(),
                     onlyCurrentUserAsUploader
                 ),
-                DatalandAuthentication.fromContextOrNull()
-            )
+                DatalandAuthentication.fromContextOrNull(),
+            ),
         )
     }
 
@@ -65,14 +65,14 @@ class CompanyDataController(
             CompanyAvailableDistinctValues(
                 countryCodes = companyManager.getDistinctCountryCodes(),
                 sectors = companyManager.getDistinctSectors(),
-            )
+            ),
         )
     }
 
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
         return ResponseEntity.ok(
             companyManager
-                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull())
+                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
         )
     }
 

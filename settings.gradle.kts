@@ -8,7 +8,7 @@ include(
     "dataland-frontend",
     "dataland-csvconverter",
     "dataland-keycloak:dataland_theme:login",
-    "dataland-keycloak-adapter"
+    "dataland-keycloak-adapter",
 )
 
 dependencyResolutionManagement {

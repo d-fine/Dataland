@@ -47,7 +47,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "WHEN lower(max(alternativeName)) = :#{#searchFilter.searchStringLower} THEN 2 " +
             "WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 3 " +
             "WHEN lower(max(alternativeName)) LIKE :#{#searchFilter.searchStringLower}% THEN 4 ELSE 5 END) ASC, " +
-            "company.companyName ASC"
+            "company.companyName ASC",
     )
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
 
@@ -58,7 +58,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         "SELECT DISTINCT company.countryCode FROM StoredCompanyEntity company " +
             "LEFT JOIN company.dataRegisteredByDataland data " +
             "WHERE " +
-            "data.dataType NOT IN ('sfdr', 'sme')"
+            "data.dataType NOT IN ('sfdr', 'sme')",
     )
     fun fetchDistinctCountryCodes(): Set<String>
 
@@ -69,7 +69,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         "SELECT DISTINCT company.sector FROM StoredCompanyEntity company " +
             "LEFT JOIN company.dataRegisteredByDataland data " +
             "WHERE " +
-            "data.dataType NOT IN ('sfdr', 'sme')"
+            "data.dataType NOT IN ('sfdr', 'sme')",
     )
     fun fetchDistinctSectors(): Set<String>
 
@@ -78,7 +78,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.identifiers WHERE company in :companies"
+            "LEFT JOIN FETCH company.identifiers WHERE company in :companies",
     )
     @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value = "false"))
     fun fetchIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
@@ -88,7 +88,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.companyAlternativeNames WHERE company in :companies"
+            "LEFT JOIN FETCH company.companyAlternativeNames WHERE company in :companies",
     )
     @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value = "false"))
     fun fetchAlternativeNames(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
@@ -98,7 +98,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company in :companies"
+            "LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company in :companies",
     )
     @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value = "false"))
     fun fetchCompanyAssociatedByDataland(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>

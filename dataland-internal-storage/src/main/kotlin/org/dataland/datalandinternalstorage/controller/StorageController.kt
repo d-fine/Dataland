@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @Component("StorageController")
 class StorageController(
-    @Autowired val dataStore: DatabaseDataStore
+    @Autowired val dataStore: DatabaseDataStore,
 ) : StorageAPI {
     private val logger = LoggerFactory.getLogger(javaClass)
 
