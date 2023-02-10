@@ -121,11 +121,7 @@ class CompanyManager(
             dataTypeFilter = filter.dataTypeFilter.map { it.name },
             sectorFilter = filter.sectorFilter.toList(),
             countryCodeFilter = filter.countryCodeFilter.toList(),
-            uploaderIdFilter = if (filter.onlyCurrentUserAsUploader) {
-                listOf(DatalandAuthentication.fromContext().userId)
-            } else {
-                listOf()
-            },
+            uploaderIdFilter = getUploaderIdFilter(filter.onlyCompanyNames),
         )
         val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA)
         val sortingMap = filteredAndSortedResults.mapIndexed {
@@ -136,6 +132,14 @@ class CompanyManager(
         val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy { sortingMap[it.companyId]!! }
 
         return results.map { it.toApiModel(viewingUser) }
+    }
+
+    private fun getUploaderIdFilter(onlyCurrentUserAsUploader: Boolean): List<String> {
+        return if (onlyCurrentUserAsUploader) {
+            listOf(DatalandAuthentication.fromContext().userId)
+        } else {
+            listOf()
+        }
     }
 
     private fun fetchAllStoredCompanyFields(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
