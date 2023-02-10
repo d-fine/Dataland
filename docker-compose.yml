@@ -278,15 +278,12 @@ services:
   rabbitmq:
     profiles: ["production", "testing", "development"]
     image: ghcr.io/d-fine/dataland/dataland_rabbitmq:${DATALAND_RABBITMQ_VERSION}
-#    container_name: rabbitmq
     networks:
       - internal
     ports:
       - "5672:5672"
-#      - "15672:15672"
     expose:
       - "15672"
-#      - "5672"
     environment:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}
