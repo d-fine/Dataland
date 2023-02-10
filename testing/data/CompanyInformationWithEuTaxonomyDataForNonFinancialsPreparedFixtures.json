@@ -2,95 +2,94 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [],
-			"headquarters": "West Cedricstadt",
-			"sector": "technologies",
+			"companyAlternativeNames": [
+				"Kovacs, Ihly und Salow",
+				"Lohre, Jellinghaus und Pöge",
+				"Moller UG",
+				"Wittich-Holzdeppe"
+			],
+			"headquarters": "West Efeburg",
+			"headquartersPostalCode": "77289",
+			"sector": "bandwidth",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "4j5nqq99vz0a4kb"
+					"identifierValue": "k481huq7kl8xjor"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "rkekpxse0"
+					"identifierValue": "zr2da6g5l"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "qd85t8xqub03oinnqw8p"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "fkg3m3l15d"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "gq3pqhm"
+					"identifierValue": "eh2tduyf6gq8hpq6r1ra"
 				}
 			],
-			"countryCode": "NE",
-			"isTeaserCompany": false
+			"countryCode": "SO",
+			"isTeaserCompany": false,
+			"website": "http://menschlich-masse.net"
 		},
 		"t": {
 			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "https://dumm-pocken.com/monatlich-busen.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-12-15",
+					"currency": "MDL"
+				},
 				"SustainabilityReport": {
-					"reference": "http://xn--groherzig-anarchie-xqb.org/umwerfend-monarchie.pdf",
-					"reportDate": "2022-06-17",
-					"currency": "LSL"
+					"reference": "https://sagenhaft-weizen.com/vollkommen-pulver.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "AFN"
 				},
 				"AnnualReport": {
-					"reference": "https://autonom-frucht.ch/respektiert-arch%C3%A4ologie.pdf",
-					"isGroupLevel": "No",
-					"currency": "CVE"
-				},
-				"IntegratedReport": {
-					"reference": "http://xn--gtig-abtreibung-zvb.org/vorbildlich-granit.pdf",
-					"reportDate": "2023-01-01",
-					"currency": "XPT"
+					"reference": "http://lebenslustig-tier.ch/gewinnend-kreide.pdf",
+					"isGroupLevel": "NA",
+					"currency": "KWD"
 				},
 				"ESEFReport": {
-					"reference": "http://feurig-schnee.com/jovial-geschwindigkeit.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-05-19",
-					"currency": "CNY"
+					"reference": "https://lockig-sorghum.de/nat%C3%BCrlich-schraube.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-02-18",
+					"currency": "BYN"
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-10-10",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Tasche-Stube"
+				"assurance": "LimitedAssurance",
+				"provider": "Vey-Bielert"
 			},
 			"scopeOfEntities": "NA",
-			"numberOfEmployees": 27163,
-			"activityLevelReporting": "Yes",
+			"numberOfEmployees": 92207,
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.8075,
+					"value": 0.9738,
 					"dataSource": {
-						"page": 190,
-						"report": "IntegratedReport",
-						"tagName": "solutions"
+						"page": 534,
+						"report": "ESEFReport",
+						"tagName": "methodologies"
 					},
-					"quality": "Incomplete",
-					"comment": "back up back-end sensor"
+					"quality": "Reported",
+					"comment": "navigate cross-platform port"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.7181,
-					"dataSource": {
-						"page": 504,
-						"report": "AnnualReport",
-						"tagName": "synergies"
-					},
-					"quality": "Reported",
-					"comment": "index virtual system"
+					"value": 0.29,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.9486,
-					"quality": "Incomplete"
+					"value": 0.2834,
+					"dataSource": {
+						"page": 1187,
+						"report": "AnnualReport",
+						"tagName": "e-tailers"
+					},
+					"quality": "Reported",
+					"comment": "calculate cross-platform system"
 				}
 			}
 		}
@@ -99,128 +98,121 @@
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Höhne-Riedel"
+				"Ludolf, Kallensee und Hudak",
+				"May GmbH"
 			],
-			"companyLegalForm": "AG",
-			"headquarters": "Efedorf",
-			"headquartersPostalCode": "70708",
-			"sector": "models",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"headquarters": "Alt Klaas",
+			"sector": "users",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "48nmupfs1ogsu4t"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "7tal37dd5"
+					"identifierValue": "gfpxultkuwu9pm3"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "er68qbgzn24p"
+					"identifierValue": "qfd7tw81y38m"
 				},
 				{
-					"identifierType": "PermId",
-					"identifierValue": "149qm2rnj7"
+					"identifierType": "Lei",
+					"identifierValue": "5s6du7uee6z4uvc088zi"
 				}
 			],
-			"countryCode": "QA",
+			"countryCode": "KY",
 			"isTeaserCompany": false,
-			"website": "https://außergewöhnlich-gott.com"
+			"website": "https://wirksam-leber.org"
 		},
 		"t": {
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "https://beeindruckend-epistemologie.com/schlau-grundkonzept.pdf",
-					"reportDate": "2022-08-28",
-					"currency": "KWD"
+				"SustainabilityReport": {
+					"reference": "http://fundiert-wein.ch/beruhigt-busen.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-10-13",
+					"currency": "TMT"
 				},
 				"AnnualReport": {
-					"reference": "http://kooperativ-vagina.info/pikant-schlafzimmer.pdf",
+					"reference": "https://fantasiereich-platin.net/bew%C3%A4hrt-tuberkulose.pdf",
+					"isGroupLevel": "No",
+					"currency": "INR"
+				},
+				"IntegratedReport": {
+					"reference": "http://routiniert-palast.org/wirksam-wissenschaft.pdf",
 					"isGroupLevel": "Yes",
-					"currency": "SHP"
-				},
-				"ESEFReport": {
-					"reference": "https://xn--wandelbar-prhistorie-mzb.net/gl%C3%A4nzend-jugendliche.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-11-21",
-					"currency": "CZK"
-				},
-				"SustainabilityReport": {
-					"reference": "https://enigmatisch-nagel.com/reizend-knie.pdf",
-					"reportDate": "2022-03-31",
-					"currency": "LRD"
+					"reportDate": "2022-11-25",
+					"currency": "NIO"
 				}
 			},
-			"fiscalYearEnd": "2022-09-09",
+			"fiscalYearEnd": "2022-10-19",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"provider": "Huth, Baganz und Tepper"
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "Yes",
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 801192.65,
+					"value": 227147.95,
 					"dataSource": {
-						"page": 80,
-						"report": "IntegratedReport",
+						"page": 469,
+						"report": "SustainabilityReport",
+						"tagName": "systems"
+					},
+					"quality": "Estimated",
+					"comment": "hack online driver"
+				},
+				"eligiblePercentage": {
+					"value": 0.4068,
+					"dataSource": {
+						"page": 1054,
+						"report": "SustainabilityReport",
 						"tagName": "communities"
 					},
 					"quality": "Estimated",
-					"comment": "override optical application"
-				},
-				"eligiblePercentage": {
-					"value": 0.7791,
-					"dataSource": {
-						"page": 550,
-						"report": "AnnualReport",
-						"tagName": "bandwidth"
-					},
-					"quality": "Reported",
-					"comment": "parse virtual port"
+					"comment": "input optical bandwidth"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 417518.03,
+					"value": 360242.84,
 					"dataSource": {
-						"page": 981,
-						"report": "AnnualReport",
-						"tagName": "supply-chains"
+						"page": 498,
+						"report": "IntegratedReport",
+						"tagName": "partnerships"
 					},
-					"quality": "Reported",
-					"comment": "back up neural interface"
+					"quality": "Audited",
+					"comment": "generate back-end application"
 				},
 				"eligiblePercentage": {
-					"value": 0.4348,
+					"value": 0.5945,
 					"dataSource": {
-						"page": 1132,
+						"page": 548,
 						"report": "IntegratedReport",
-						"tagName": "e-services"
+						"tagName": "eyeballs"
 					},
 					"quality": "Reported",
-					"comment": "override solid state matrix"
+					"comment": "reboot online monitor"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 448741.91,
+					"value": 687650.93,
 					"dataSource": {
-						"page": 231,
+						"page": 370,
 						"report": "IntegratedReport",
-						"tagName": "e-commerce"
+						"tagName": "users"
 					},
 					"quality": "Incomplete",
-					"comment": "reboot wireless matrix"
+					"comment": "synthesize cross-platform port"
 				},
 				"eligiblePercentage": {
-					"value": 0.0082,
+					"value": 0.6301,
 					"dataSource": {
-						"page": 990,
-						"report": "ESEFReport",
-						"tagName": "vortals"
+						"page": 372,
+						"report": "SustainabilityReport",
+						"tagName": "paradigms"
 					},
-					"quality": "Estimated",
-					"comment": "navigate virtual hard drive"
+					"quality": "Audited",
+					"comment": "copy neural firewall"
 				}
 			}
 		}
