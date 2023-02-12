@@ -104,10 +104,12 @@ abstract class DataController<T>(
                 "Generated correlation ID '$correlationId' for the received request with company ID: $companyId."
             )
             val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
-            frameworkData.add(DataAndMetaInformation(
-                it.toApiModel(DatalandAuthentication.fromContext()),
-                objectMapper.readValue(dataAsString, clazz)
-            ))
+            frameworkData.add(
+                DataAndMetaInformation(
+                    it.toApiModel(DatalandAuthentication.fromContext()),
+                    objectMapper.readValue(dataAsString, clazz)
+                )
+            )
         }
         return ResponseEntity.ok(frameworkData)
     }
