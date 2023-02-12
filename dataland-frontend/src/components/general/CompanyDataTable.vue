@@ -110,7 +110,7 @@ import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTabl
 import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 import DynamicDialog from "primevue/dynamicdialog";
 import { sanitizeHref } from "@/utils/DataTableDisplay";
-import { isValidHttpUrl } from "@/utils/TypeCheck";
+import { isValidHttpUrl } from "@/utils/UrlValid";
 
 export default defineComponent({
   name: "CompanyDataTable",

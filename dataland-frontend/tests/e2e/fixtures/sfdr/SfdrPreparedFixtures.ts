@@ -11,7 +11,10 @@ type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>
  * @returns the prepared fixtures
  */
 export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
-  const manipulatorFunctions: Array<generatorFunction> = [manipulateFixtureForSfdr];
+  const manipulatorFunctions: Array<generatorFunction> = [
+    manipulateFixtureForOneSfdr,
+    manipulateFixtureForTwoSfdrDataSetsInDifferentYears,
+  ];
   const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
     generateSfdrData,
     manipulatorFunctions.length
@@ -29,7 +32,19 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForSfdr(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "company-with-sfdr-data-set";
+function manipulateFixtureForOneSfdr(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "company-with-one-sfdr-data-set";
+  return input;
+}
+
+/**
+ * Sets the company name and the date in the fixture data to a specific string
+ *
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForTwoSfdrDataSetsInDifferentYears(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "two-sfdr-data-sets-in-different-years";
+  input.t.social!.general!.fiscalYearEnd = "2020-01-03";
   return input;
 }
