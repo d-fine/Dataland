@@ -6,7 +6,7 @@
   <div v-if="sfdrData && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :dataDatesOfDataSets="listOfDatesToDisplayAsColumns"
+      :DataDateOfDataSets="listOfDataDateToDisplayAsColumns"
       :kpiNameMappings="kpisNameMappings"
       :kpiInfoMappings="kpisInfoMappings"
       :subAreaNameMappings="subAreasNameMappings"
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { SfdrData } from "@clients/backend";
+import { SfdrData, DataAndMetaInformationSfdrData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -35,7 +35,7 @@ export default defineComponent({
     return {
       waitingForData: true,
       sfdrData: [] as Array<SfdrData>,
-      listOfDatesToDisplayAsColumns: [] as Array<string>,
+      listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       kpisNameMappings,
       kpisInfoMappings,
@@ -49,7 +49,7 @@ export default defineComponent({
   },
   watch: {
     companyId() {
-      this.listOfDatesToDisplayAsColumns = [];
+      this.listOfDataDateToDisplayAsColumns = [];
       void this.fetchDataForAllDataIds();
     },
   },
@@ -73,7 +73,6 @@ export default defineComponent({
         ).getSfdrDataControllerApi();
         this.sfdrData = (await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))).data;
         this.convertSfdrDataToFrontendFormat(this.sfdrData);
-        console.log("sfdrData", this.sfdrData);
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -86,22 +85,19 @@ export default defineComponent({
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
      * @param subAreaKey The sub area to which the kpi belongs
-     * @param dataDateOfSfdrDataset The value of the date kpi of an Sfdr dataset
+     * @param dataIdOfSfdrDataset The value of the data Id of an Sfdr dataset
      */
     createKpiDataObjects(
       kpiKey: string,
       kpiValue: object | string,
       subAreaKey: string,
-      dataDateOfSfdrDataset: string
+      dataIdOfSfdrDataset: string
     ): void {
-      if (kpiKey === "totalRevenue" && typeof kpiValue === "string") {
-        kpiValue = this.convertToMillions(parseFloat(kpiValue));
-      }
       let indexOfExistingItem = -1;
       const kpiDataObject = {
         subAreaKey: subAreaKey == "general" ? `_${subAreaKey}` : subAreaKey,
         kpiKey: kpiKey,
-        [dataDateOfSfdrDataset]: kpiValue,
+        [dataIdOfSfdrDataset]: kpiValue,
       };
       indexOfExistingItem = this.kpiDataObjects.findIndex(
         (singleKpiDataObject) => singleKpiDataObject.kpiKey === kpiKey
@@ -117,7 +113,7 @@ export default defineComponent({
      * Sorts dates to ensure that Sfdr datasets are displayed chronologically in the table of all Sfdr datasets.
      */
     sortDatesToDisplayAsColumns(): void {
-      this.listOfDatesToDisplayAsColumns.sort((dateA, dateB) => {
+      this.listOfDataDateToDisplayAsColumns.sort((dateA, dateB) => {
         if (Date.parse(dateA) < Date.parse(dateB)) {
           return 1;
         } else {
@@ -131,29 +127,25 @@ export default defineComponent({
      *
      * @param sfdrData The Sfdr dataset that shall be converted
      */
-    convertSfdrDataToFrontendFormat(sfdrData: Array<SfdrData>): void {
-      sfdrData.forEach((oneSfdrDataset) => {
-        const dataDateOfSfdrDataset = oneSfdrDataset.social?.general?.fiscalYearEnd ?? "";
-        this.listOfDatesToDisplayAsColumns.push(dataDateOfSfdrDataset);
-        for (const areaObject of Object.values(oneSfdrDataset)) {
-          for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
-            for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
-              this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataDateOfSfdrDataset);
+    convertSfdrDataToFrontendFormat(sfdrData: Array<DataAndMetaInformationSfdrData>): void {
+      if (sfdrData.length) {
+        sfdrData.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
+          const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
+          const dataDateOfSfdrDataset = oneSfdrDataset.data.social?.general?.fiscalYearEnd ?? "";
+          this.listOfDataDateToDisplayAsColumns.push({
+            dataId: dataIdOfSfdrDataset,
+            dataDate: dataDateOfSfdrDataset,
+          });
+          for (const areaObject of Object.values(oneSfdrDataset.data)) {
+            for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
+              for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
+                this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataIdOfSfdrDataset);
+              }
             }
           }
-        }
-      });
+        });
+      }
       this.sortDatesToDisplayAsColumns();
-    },
-
-    /**
-     * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
-     *
-     * @param inputNumber The numbert to convert
-     * @returns a string with the converted number and "MM" at the end
-     */
-    convertToMillions(inputNumber: number): string {
-      return `${(inputNumber / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
     },
   },
 });

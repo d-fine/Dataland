@@ -14,7 +14,6 @@ export function exportFixturesSfdrData(): void {
     JSON.stringify(companyInformationWithSfdrData, null, "\t")
   );
   const preparedFixtureSfdrData = generateSfdrPreparedFixtures();
-  cy.log('<--------------preparedFixtures', preparedFixtureSfdrData)
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithSfdrPreparedFixtures.json",
     JSON.stringify(preparedFixtureSfdrData, null, "\t")

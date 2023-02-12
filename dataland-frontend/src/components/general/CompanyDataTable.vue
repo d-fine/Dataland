@@ -41,26 +41,26 @@
           </template>
         </Column>
         <Column
-          v-for="dataDate of dataDatesOfDataSets"
-          :field="dataDate"
-          :header="dataDate.split('-')[0]"
-          :key="dataDate"
+          v-for="dataDate of DataDateOfDataSets"
+          :field="dataDate.dataId"
+          :header="dataDate.dataDate?.split('-')[0]"
+          :key="dataDate.dataId"
         >
           <template #body="{ data }">
             <a
-              v-if="Array.isArray(data[dataDate]) && data[dataDate].length"
-              @click="openModalAndDisplayListOfProductionSites(data[dataDate], kpiNameMappings[data.kpiKey])"
+              v-if="Array.isArray(data[dataDate.dataId]) && data[dataDate.dataId].length"
+              @click="openModalAndDisplayListOfProductionSites(data[dataDate.dataId], kpiNameMappings[data.kpiKey])"
               class="link"
               >Show "{{ kpiNameMappings[data.kpiKey] }}"
               <em class="material-icons" aria-hidden="true" title=""> dataset </em>
             </a>
-            <template v-else-if="typeof data[dataDate] === 'object' && data[dataDate] !== null">
+            <template v-else-if="typeof data[dataDate.dataId] === 'object' && data[dataDate.dataId] !== null">
               <table class="detail-table">
                 <th style="display: none"></th>
                 <caption style="display: none">
                   Details Table
                 </caption>
-                <template v-for="(value, key, index) in data[dataDate]" :key="index + key">
+                <template v-for="(value, key, index) in data[dataDate.dataId]" :key="index + key">
                   <tr v-if="typeof value === 'string'">
                     <td class="key-td">{{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}</td>
                     <td class="value-td">{{ value }}</td>
@@ -80,11 +80,11 @@
               </table>
             </template>
 
-            <template v-else-if="typeof data[dataDate] === 'string' && isValidHttpUrl(data[dataDate])">
-              <a :href="data[dataDate]" class="link">Link</a>
+            <template v-else-if="typeof data[dataDate.dataId] === 'string' && isValidHttpUrl(data[dataDate.dataId])">
+              <a :href="data[dataDate.dataId]" class="link">Link</a>
             </template>
 
-            <span v-else>{{ Array.isArray(data[dataDate]) ? "" : data[dataDate] }}</span>
+            <span v-else>{{ Array.isArray(data[dataDate.dataId]) ? "" : data[dataDate.dataId] }}</span>
           </template>
         </Column>
 
@@ -130,7 +130,7 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    dataDatesOfDataSets: {
+    DataDateOfDataSets: {
       type: Array,
       default: () => [],
     },
