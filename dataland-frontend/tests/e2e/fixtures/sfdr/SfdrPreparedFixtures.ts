@@ -11,9 +11,7 @@ type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>
  * @returns the prepared fixtures
  */
 export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
-  const manipulatorFunctions: Array<generatorFunction> = [
-    manipulateFixtureForSfdr,
-  ];
+  const manipulatorFunctions: Array<generatorFunction> = [manipulateFixtureForSfdr];
   const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
     generateSfdrData,
     manipulatorFunctions.length
