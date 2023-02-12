@@ -21,6 +21,7 @@ import { SfdrData, DataAndMetaInformationSfdrData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { sortDatesToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
   subAreasNameMappings,
@@ -31,6 +32,11 @@ import {
 export default defineComponent({
   name: "SfdrPanel",
   components: { CompanyDataTable },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   data() {
     return {
       waitingForData: true,
@@ -46,17 +52,6 @@ export default defineComponent({
     companyId: {
       type: String,
     },
-  },
-  watch: {
-    companyId() {
-      this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchDataForAllDataIds();
-    },
-  },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
   },
   created() {
     void this.fetchDataForAllDataIds();
@@ -110,19 +105,6 @@ export default defineComponent({
     },
 
     /**
-     * Sorts dates to ensure that Sfdr datasets are displayed chronologically in the table of all Sfdr datasets.
-     */
-    sortDatesToDisplayAsColumns(): void {
-      this.listOfDataDateToDisplayAsColumns.sort((dateA, dateB) => {
-        if (Date.parse(dateA) < Date.parse(dateB)) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-    },
-
-    /**
      * Retrieves and converts values from an array of SDFG datasets in order to make it displayable in the frontend.
      *
      * @param sfdrData The Sfdr dataset that shall be converted
@@ -145,7 +127,13 @@ export default defineComponent({
           }
         });
       }
-      this.sortDatesToDisplayAsColumns();
+      this.listOfDataDateToDisplayAsColumns = sortDatesToDisplayAsColumns(this.listOfDataDateToDisplayAsColumns);
+    },
+  },
+  watch: {
+    companyId() {
+      this.listOfDataDateToDisplayAsColumns = [];
+      void this.fetchDataForAllDataIds();
     },
   },
 });

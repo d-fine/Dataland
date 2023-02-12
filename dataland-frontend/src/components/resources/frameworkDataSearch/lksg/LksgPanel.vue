@@ -21,6 +21,7 @@ import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { sortDatesToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
   subAreasNameMappings,
@@ -113,19 +114,6 @@ export default defineComponent({
     },
 
     /**
-     * Sorts dates to ensure that LkSG datasets are displayed chronologically in the table of all LkSG datasets.
-     */
-    sortDatesToDisplayAsColumns(): void {
-      this.listOfDataDateToDisplayAsColumns.sort((dateA, dateB) => {
-        if (Date.parse(dateA) < Date.parse(dateB)) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-    },
-
-    /**
      * Retrieves and converts values from an array of LkSG datasets in order to make it displayable in the frontend.
      *
      * @param lksgData The LkSG dataset that shall be converted
@@ -148,7 +136,7 @@ export default defineComponent({
           }
         });
       }
-      this.sortDatesToDisplayAsColumns();
+      this.listOfDataDateToDisplayAsColumns = sortDatesToDisplayAsColumns(this.listOfDataDateToDisplayAsColumns);
     },
 
     /**

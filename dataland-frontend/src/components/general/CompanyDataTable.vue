@@ -55,7 +55,7 @@
               <em class="material-icons" aria-hidden="true" title=""> dataset </em>
             </a>
             <template v-else-if="typeof data[dataDate.dataId] === 'object' && data[dataDate.dataId] !== null">
-              <table class="detail-table">
+              <table class="detail-table" aria-describedby="Details Table">
                 <th style="display: none"></th>
                 <caption style="display: none">
                   Details Table
@@ -81,7 +81,7 @@
             </template>
 
             <template v-else-if="typeof data[dataDate.dataId] === 'string' && isValidHttpUrl(data[dataDate.dataId])">
-              <a :href="data[dataDate.dataId]" class="link">Link</a>
+              <a :href="sanitizeHref(data[dataDate.dataId])" class="link">Link</a>
             </template>
 
             <span v-else>{{ Array.isArray(data[dataDate.dataId]) ? "" : data[dataDate.dataId] }}</span>
@@ -109,6 +109,7 @@ import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 import DynamicDialog from "primevue/dynamicdialog";
+import { sanitizeHref } from "@/utils/DataTableDisplay";
 import { isValidHttpUrl } from "@/utils/TypeCheck";
 
 export default defineComponent({
@@ -119,6 +120,7 @@ export default defineComponent({
   },
   data() {
     return {
+      sanitizeHref: sanitizeHref,
       kpiDataObjectsToDisplay: [],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames,
