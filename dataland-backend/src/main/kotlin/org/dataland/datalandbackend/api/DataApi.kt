@@ -82,7 +82,8 @@ interface DataApi<T> {
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     /**
-     * A method to retrieve company framework data and meta information for one specific company identified by its company ID
+     * A method to retrieve company framework data and meta information
+     * for one specific company identified by its company ID
      * @param companyId identifier of the company in dataland
      * @return company framework data and meta information
      */
