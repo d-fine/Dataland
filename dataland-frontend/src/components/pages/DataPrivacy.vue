@@ -12,7 +12,7 @@
         <BackButton />
       </MarginWrapper>
       <MarginWrapper class="text-left pl-2">
-        <div class="col-6 text-justify">
+        <div class="lg:col-6 md:col-12 sm:col-12 text-justify">
           <h2>Data Privacy</h2>
           <p>Soon you will find our data privacy information here.</p>
         </div>
