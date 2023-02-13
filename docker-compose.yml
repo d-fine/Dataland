@@ -166,6 +166,7 @@ services:
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS: ${RABBITMQ_PASS}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://host.docker.internal:8080/api}
     depends_on:
       - internal-storage-db
   internal-storage-db:

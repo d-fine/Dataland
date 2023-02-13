@@ -172,6 +172,7 @@ jobs:
           RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
+          INTERNAL_BACKEND_URL: "http://backend:8080/api"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v3
