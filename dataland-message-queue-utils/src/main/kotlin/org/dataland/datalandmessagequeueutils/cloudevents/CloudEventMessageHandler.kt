@@ -23,7 +23,6 @@ import org.springframework.messaging.Message as MessageResult
  * Handling of messages in the CloudEvents format
  * @param rabbitTemplate
  * @param objectMapper
- * @param converter service for converting CloudEvents message to object treatable by RabbitMQ
  */
 
 @Component("CloudEventMessageHandler")
@@ -63,7 +62,7 @@ class CloudEventMessageHandler(
         return String(message.body)
     }
 
-    fun convertMessage(message: MessageResult<ByteArray>): MessageMQ {
+    private fun convertMessage(message: MessageResult<ByteArray>): MessageMQ {
         return converter!!.toMessage(message, AMQPMessageProperties())
     }
 }

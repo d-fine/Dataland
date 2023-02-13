@@ -29,6 +29,9 @@ class NonPersistedDataManager(
         hashMapValue ?.let {
             return objectMapper.writeValueAsString(hashMapValue)
         }
-        throw ResourceNotFoundApiException("Non-persisted data ID not found", "Dataland does not know the non-persisted data id $dataId")
+        throw ResourceNotFoundApiException(
+            "Non-persisted data ID not found",
+            "Dataland does not know the non-persisted data id $dataId",
+        )
     }
 }

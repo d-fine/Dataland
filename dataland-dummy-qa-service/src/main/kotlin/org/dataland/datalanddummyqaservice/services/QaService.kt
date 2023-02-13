@@ -21,7 +21,7 @@ class ConsumerApplication
  * This class holds the function to run the dummy QA service
  */
 fun main(args: Array<String>) {
-    runApplication<ConsumerApplication>(*args)
+    runApplication<ConsumerApplication>(args = args)
 }
 
 /**
@@ -46,7 +46,7 @@ class QaService(
         if (dataId.isNotEmpty()) {
             logger.info(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: " +
-                    "$correlationId",
+                    correlationId,
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 dataId, "QA Process Completed", correlationId,
