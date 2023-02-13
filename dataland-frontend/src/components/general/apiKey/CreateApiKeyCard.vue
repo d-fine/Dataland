@@ -79,7 +79,7 @@ import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
-import { formatExpiryDate, calculateDaysFromNow } from "@/utils/DateFormatUtils";
+import { calculateExpiryDateAsDateString, calculateDaysFromNow } from "@/utils/DateFormatUtils";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -142,7 +142,7 @@ export default defineComponent({
   },
   computed: {
     expiryDateFormated(): string {
-      return formatExpiryDate(assertDefined(this.expiryTimeDays));
+      return calculateExpiryDateAsDateString(assertDefined(this.expiryTimeDays));
     },
   },
   watch: {

@@ -254,7 +254,7 @@ export default defineComponent({
      *
      * @param daysValid the number of days the api key is valid for
      */
-    async generateApiKey(daysValid: number) {
+    async generateApiKey(daysValid?: number) {
       try {
         this.waitingForData = true;
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);

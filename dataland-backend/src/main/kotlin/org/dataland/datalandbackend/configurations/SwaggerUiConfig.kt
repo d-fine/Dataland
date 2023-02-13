@@ -16,6 +16,8 @@ class SwaggerUiConfig {
      */
     @Bean
     fun publicApi(): GroupedOpenApi? {
-        return GroupedOpenApi.builder().group("public").pathsToExclude("/internal/**").addOpenApiCustomizer(DataTypeSchemaCustomizer()).build()
+        return GroupedOpenApi.builder().group("public").pathsToExclude("/internal/**").addOpenApiCustomizer(
+            DataTypeSchemaCustomizer(),
+        ).build()
     }
 }

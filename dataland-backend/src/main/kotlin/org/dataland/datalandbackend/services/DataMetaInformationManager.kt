@@ -21,23 +21,12 @@ class DataMetaInformationManager(
     /**
      * Method to associate data information with a specific company
      * @param updatedMetaData The data meta information which should be stored
-     * @param isQualityAssured Flag whether the data was quality assured or not
      */
     @Transactional
     fun storeDataMetaInformation(
         updatedMetaData: DataMetaInformationEntity,
-        isQualityAssured: String,
     ): DataMetaInformationEntity {
-        val dataMetaInformationEntity = DataMetaInformationEntity(
-            dataId = updatedMetaData.dataId,
-            dataType = updatedMetaData.dataType,
-            uploaderUserId = updatedMetaData.uploaderUserId,
-            uploadTime = updatedMetaData.uploadTime,
-            company = updatedMetaData.company,
-            isQualityAssured = isQualityAssured,
-        )
-
-        return dataMetaInformationRepository.save(dataMetaInformationEntity)
+        return dataMetaInformationRepository.save(updatedMetaData)
     }
 
     /**

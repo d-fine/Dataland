@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
+import org.dataland.datalandbackend.model.enums.data.DatasetQualityStatus
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -78,9 +79,9 @@ class DataManager(
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         val updatedMetaData = DataMetaInformationEntity(
             dataId, storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, "No",
+            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, DatasetQualityStatus.Pending,
         )
-        metaDataManager.storeDataMetaInformation(updatedMetaData, "No")
+        metaDataManager.storeDataMetaInformation(updatedMetaData)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "New data - QA necessary", correlationId,
             "upload_queue",
@@ -98,7 +99,9 @@ class DataManager(
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         if (dataId.isNotEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            metaDataManager.storeDataMetaInformation(metaInformation, "Yes")
+            metaDataManager.storeDataMetaInformation(
+                metaInformation.copy(qualityStatus = DatasetQualityStatus.Accepted),
+            )
             logger.info(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
                     correlationId,

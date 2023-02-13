@@ -1,11 +1,13 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent>
-      <div class="grid">
-        <CreateCompany />
-      </div>
-    </TheContent>
+    <UploaderRoleWrapper>
+      <TheContent>
+        <div class="grid">
+          <CreateCompany />
+        </div>
+      </TheContent>
+    </UploaderRoleWrapper>
     <DatalandFooter />
   </AuthenticationWrapper>
 </template>
@@ -16,10 +18,12 @@ import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CreateCompany from "@/components/forms/CreateCompany.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
 
 export default {
   name: "UploadCompany",
   components: {
+    UploaderRoleWrapper,
     CreateCompany,
     TheContent,
     TheHeader,

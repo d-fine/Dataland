@@ -17,7 +17,7 @@ class CompanyUploader {
         companyInformation: CompanyInformation,
     ): StoredCompany {
         val request = mockMvc.perform(
-            MockMvcRequestBuilders.post("/companies")
+            MockMvcRequestBuilders.post("/public/companies")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(companyInformation)),

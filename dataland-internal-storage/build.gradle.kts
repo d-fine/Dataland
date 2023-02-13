@@ -43,6 +43,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.10")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation(project(":dataland-backend-utils"))
