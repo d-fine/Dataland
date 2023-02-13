@@ -24,7 +24,7 @@ class DataMetaInformationManager(
      */
     @Transactional
     fun storeDataMetaInformation(
-        updatedMetaData: DataMetaInformationEntity
+        updatedMetaData: DataMetaInformationEntity,
     ): DataMetaInformationEntity {
         return dataMetaInformationRepository.save(updatedMetaData)
     }

@@ -51,6 +51,7 @@ openApi {
     }
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
+
 jacoco {
     toolVersion = jacocoVersion
     applyTo(tasks.bootRun.get())

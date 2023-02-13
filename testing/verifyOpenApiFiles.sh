@@ -17,9 +17,9 @@ echo "sha1sum before regenerate: $sha1SumBeforeRegenerate"
 echo "sha1sum after regenerate: $sha1SumAfterRegenerate"
 
 if [[ "$sha1SumBeforeRegenerate" == "$sha1SumAfterRegenerate" ]]; then
-  echo "apiKey Files OK!"
+  echo "OpenApi Files OK!"
   exit 0
 else
-  echo "apiKey Files not OK!"
+  echo "OpenApi Files not OK!"
   exit 1
 fi

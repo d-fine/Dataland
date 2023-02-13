@@ -35,17 +35,10 @@ interface StorageAPI {
     )
     fun selectDataById(dataId: String, correlationId: String): ResponseEntity<String>
 
-
-    /**
-     * A method to store data in the internal storage
-     * @param correlationId the correlation ID of the data post request
-     * @param body the data stored body to be stored
-     */
     /**
      * A method to store data in the internal storage
      * @param message is a message object retrieved from the message queue
      */
-
     @Operation(
         summary = "Upload data.",
         description = "Upload data and get data id.",
