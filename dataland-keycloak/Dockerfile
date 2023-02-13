@@ -7,7 +7,7 @@ COPY ./dataland-keycloak/dataland_theme/login ./dataland-keycloak/dataland_theme
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
      ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 
-FROM quay.io/keycloak/keycloak:20.0.2
+FROM quay.io/keycloak/keycloak:20.0.3
 
 ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://keycloak-db/keycloak

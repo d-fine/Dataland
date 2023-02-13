@@ -50,9 +50,9 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.mockito:mockito-core:4.11.0")
+    testImplementation("org.mockito:mockito-core:5.1.1")
     implementation(project(":dataland-keycloak-adapter"))
-    implementation("com.mailjet:mailjet-client:5.2.1")
+    implementation("com.mailjet:mailjet-client:5.2.2")
 }
 
 openApi {
