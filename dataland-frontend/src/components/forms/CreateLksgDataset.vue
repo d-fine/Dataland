@@ -37,14 +37,16 @@
                           :name="lksgKpiNameMappings.dataDate"
                           :explanation="lksgKpiInfoMappings.dataDate"
                         />
-                        <Calendar
-                          data-test="lksgDataDate"
-                          inputId="icon"
-                          v-model="dataDate"
-                          :showIcon="true"
-                          dateFormat="D, M dd, yy"
-                          :maxDate="new Date()"
-                        />
+                        <div class="lg:col-4 md:col-6 col-12">
+                          <Calendar
+                            data-test="lksgDataDate"
+                            inputId="icon"
+                            v-model="dataDate"
+                            :showIcon="true"
+                            dateFormat="D, M dd, yy"
+                            :maxDate="new Date()"
+                          />
+                        </div>
 
                         <FormKit
                           type="text"
