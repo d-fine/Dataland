@@ -11,3 +11,21 @@ countries.registerLocale(countriesEn);
 export function getCountryNameFromCountryCode(countryCode: string): string {
   return countries.getName(countryCode, "en");
 }
+
+/**
+ * Returns country identifiers
+ *
+ * @returns the countryCodes
+ */
+export function getAllCountryCodes(): Array<string> {
+  return Object.keys(countries.getNames("en")).sort();
+}
+
+/**
+ * Returns the english names and country identifiers
+ *
+ * @returns the english names of the countries and the countryCodes
+ */
+export function getAllCountryNamesWithCodes(): object {
+  return countries.getNames("en");
+}

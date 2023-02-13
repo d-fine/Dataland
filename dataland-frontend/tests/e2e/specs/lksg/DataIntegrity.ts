@@ -1,18 +1,24 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
-import { uploadOneLksgDatasetViaApi, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
-import { getPreparedFixture, getStoredCompaniesForDataType, UploadIds } from "@e2e/utils/GeneralApiUtils";
+import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi, ProductionSite } from "@clients/backend";
+import {
+  uploadOneLksgDatasetViaApi,
+  uploadCompanyAndLksgDataViaApi,
+  uploadLksgDataViaForm,
+} from "@e2e/utils/LksgUpload";
+import { getPreparedFixture, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 const monthAndDayOfLksgPreparedFixtures = "-01-01";
 
 describeIf(
-  "As a user, I expect LkSG data that I upload for a company to be displayed correctly",
+  "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
+    "correctly in the frontend",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],
@@ -67,7 +73,7 @@ describeIf(
      * of one already existing LkSG dataset for that company
      * @param isNewLksgDataSetInSameYear is a flag that decides if the new LkSG dataset should have a date which has
      * the same year as the already existing LkSG dataset
-     * @returns an object which contains the companyId of the already existing comapny and the dataId of the newly
+     * @returns an object which contains the companyId of the already existing company and the dataId of the newly
      * uploaded LkSG dataset
      */
     function uploadAnotherLksgDataSetToExistingCompany(
@@ -102,8 +108,8 @@ describeIf(
 
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
-          cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
-          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+          cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
+          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Lksg}`);
           cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
             cy.get(`h1`).should("contain", companyInformation.companyName);
 
@@ -141,8 +147,10 @@ describeIf(
             if (listOfProductionSites.length < 2) {
               throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
             }
-            listOfProductionSites.forEach((productionSite) => {
-              cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.address!})`);
+            listOfProductionSites.forEach((productionSite: ProductionSite) => {
+              if (productionSite.streetAndHouseNumber) {
+                cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.streetAndHouseNumber})`);
+              }
             });
             cy.get("div.p-dialog").find("span.p-dialog-header-close-icon").click();
 
@@ -154,23 +162,24 @@ describeIf(
               .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
               .should("exist");
 
-            return getStoredCompaniesForDataType(token, DataTypeEnum.Lksg).then((listOfStoredCompanies) => {
-              const nameOfSomeCompanyWithLksgData = listOfStoredCompanies[0].companyInformation.companyName;
+            const someRandomCompanyName = "some-random-company-name-sj48jg3" + Date.now().toString() + "388fj";
+            return uploadCompanyAndLksgDataViaApi(
+              token,
+              generateDummyCompanyInformation(someRandomCompanyName),
+              generateLksgData()
+            ).then(() => {
               cy.intercept("**/api/companies*").as("searchCompany");
+              cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
               cy.get("input[id=framework_data_search_bar_standard]")
                 .click({ force: true })
-                .type(nameOfSomeCompanyWithLksgData);
-              cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-                cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
-                cy.get("input[id=framework_data_search_bar_standard]").type("{downArrow}").type("{enter}");
-                cy.wait("@retrieveLksgData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-                  cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
-
-                  cy.get("table.p-datatable-table")
-                    .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
-                    .should("not.exist");
-                });
-              });
+                .type(someRandomCompanyName)
+                .wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
+              cy.get(".p-autocomplete-item").contains(someRandomCompanyName).click({ force: true });
+              cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+              cy.url().should("include", "/companies/").url().should("include", "/frameworks/");
+              cy.get("table.p-datatable-table")
+                .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+                .should("not.exist");
             });
           });
         });
@@ -185,8 +194,8 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
           return uploadAnotherLksgDataSetToExistingCompany(uploadIds, true).then(() => {
-            cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
-            cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+            cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
+            cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Lksg}`);
             cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
               cy.get("table")
                 .find(`tr:contains("Data Date")`)
@@ -219,8 +228,8 @@ describeIf(
           for (let i = 3; i <= numberOfLksgDataSetsForCompany; i++) {
             currentChainable = currentChainable.then(uploadAnotherLksgDataSetToExistingCompany);
           }
-          cy.intercept("**/api/data/lksg/company/*").as("retrieveLksgData");
-          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+          cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
+          cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Lksg}`);
           cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
             cy.get("table")
               .find(`tr:contains("Data Date")`)
@@ -241,6 +250,28 @@ describeIf(
           });
         });
       });
+    });
+
+    it("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
+      const uniqueCompanyMarker = Date.now().toString();
+      const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
+      getKeycloakToken(uploader_name, uploader_pw)
+        .then((token: string) => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+        })
+        .then((storedCompany) => {
+          cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+          cy.visitAndCheckAppMount(
+            "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload"
+          );
+          cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+          cy.url().should(
+            "eq",
+            getBaseUrl() + "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload"
+          );
+          cy.get("h1").should("contain", testCompanyName);
+          uploadLksgDataViaForm();
+        });
     });
   }
 );

@@ -34,6 +34,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "OR (company.sector in :#{#searchFilter.sectorFilter})) AND " +
             "(:#{#searchFilter.countryCodeFilterSize} = 0 " +
             "OR (company.countryCode in :#{#searchFilter.countryCodeFilter})) AND " +
+            "(:#{#searchFilter.uploaderIdFilterSize} = 0 " +
+            "OR (data.uploaderUserId in :#{#searchFilter.uploaderIdFilter})) AND " +
             "(:#{#searchFilter.searchStringLength} = 0 " +
             "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
             "(lower(alternativeName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +

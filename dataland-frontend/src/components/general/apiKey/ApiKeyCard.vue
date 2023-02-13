@@ -40,7 +40,7 @@
 <script lang="ts">
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
-import { dateFormatOptions } from "@/utils/DateFormatUtils";
+import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import { defineComponent } from "vue";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 
@@ -62,15 +62,9 @@ export default defineComponent({
   computed: {
     whenKeyExpire() {
       if (this.expiryDateInMilliseconds && this.expiryDateInMilliseconds >= Date.now()) {
-        return `The API Key will expire on ${new Date(this.expiryDateInMilliseconds).toLocaleDateString(
-          "en-gb",
-          dateFormatOptions
-        )}`;
+        return `The API Key will expire on ${convertUnixTimeInMsToDateString(this.expiryDateInMilliseconds)}`;
       } else if (this.expiryDateInMilliseconds && this.expiryDateInMilliseconds < Date.now()) {
-        return `The API Key expired on ${new Date(this.expiryDateInMilliseconds).toLocaleDateString(
-          "en-gb",
-          dateFormatOptions
-        )}`;
+        return `The API Key expired on ${convertUnixTimeInMsToDateString(this.expiryDateInMilliseconds)}`;
       } else {
         return "The API Key has no defined expiry date";
       }

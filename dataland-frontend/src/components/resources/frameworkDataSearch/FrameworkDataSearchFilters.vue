@@ -204,7 +204,7 @@ export default defineComponent({
         };
       });
       this.availableFrameworks.push({
-        frameworkDataType: "sfdr" as DataTypeEnum,
+        frameworkDataType: DataTypeEnum.Sfdr,
         displayName: "SFDR",
         disabled: true,
       });

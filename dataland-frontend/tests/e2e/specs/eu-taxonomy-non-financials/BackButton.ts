@@ -13,16 +13,12 @@ describe("As a user, I expect the back button to work properly", () => {
           cy.intercept("**/api/companies/**").as("getCompany");
           cy.intercept("**/api/metadata**").as("getMetaDataForCompany");
           cy.visitAndCheckAppMount(
-            "/companies/" + storedCompanies[0].companyId + "/frameworks/eutaxonomy-non-financials"
+            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
           );
           cy.wait("@getCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.wait("@getMetaDataForCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
 
-          cy.get("span.text-primary[title=back_button]")
-            .parent(".cursor-pointer.grid.align-items-center")
-            .click()
-            .url()
-            .should("include", "/companies");
+          cy.contains("span", "BACK").click().url().should("include", "/companies");
         }
       );
     });

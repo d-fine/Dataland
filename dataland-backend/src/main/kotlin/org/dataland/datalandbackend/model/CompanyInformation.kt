@@ -14,22 +14,20 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param identifiers under which the company is registered (LEI, PermID, ...)
  * @param countryCode of the country of origin
  * @param isTeaserCompany flag to indicate if the company is a teaser company or not
+ * @param website the url under which the company website can be reached
  */
 data class CompanyInformation(
     @field:JsonProperty(required = true)
     val companyName: String,
 
-    @field:JsonProperty(required = false)
-    val companyAlternativeNames: List<String>? = null,
+    val companyAlternativeNames: List<String>?,
 
-    @field:JsonProperty(required = false)
-    val companyLegalForm: String? = null,
+    val companyLegalForm: String?,
 
     @field:JsonProperty(required = true)
     val headquarters: String,
 
-    @field:JsonProperty(required = false)
-    val headquartersPostalCode: String? = null,
+    val headquartersPostalCode: String?,
 
     @field:JsonProperty(required = true)
     val sector: String,
@@ -42,4 +40,6 @@ data class CompanyInformation(
 
     @get:JsonProperty(value = "isTeaserCompany")
     val isTeaserCompany: Boolean = false,
+
+    val website: String?,
 )

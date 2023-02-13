@@ -111,10 +111,10 @@
         <SuccessUpload
           v-if="postEuTaxonomyDataForFinancialsResponse"
           msg="EU Taxonomy Data"
-          :data="postEuTaxonomyDataForFinancialsResponse.data"
-          :messageCount="messageCount"
+          :message="postEuTaxonomyDataForFinancialsResponse.data"
+          :messageId="messageCount"
         />
-        <FailedUpload v-else msg="EU Taxonomy Data" :messageCount="messageCount" />
+        <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
       </template>
     </template>
   </Card>
