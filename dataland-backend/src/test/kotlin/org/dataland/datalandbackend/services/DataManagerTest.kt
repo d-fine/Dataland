@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
-import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -17,6 +16,7 @@ import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerE
 import org.dataland.datalandinternalstorage.openApiClient.model.InsertDataResponse
 import org.dataland.datalandinternalstorage.openApiClient.model.Message
 import org.dataland.datalandinternalstorage.openApiClient.model.MessageProperties
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -35,12 +35,12 @@ class DataManagerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val companyManager: CompanyManager,
-    @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired val dataInformationHashMap: StorageHashMap,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
+    val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
-    val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient, cloudEventMessageHandler, dataInformationHashMap)
+    val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient, mockCloudEventMessageHandler, dataInformationHashMap)
     val correlationId = IdUtils.generateUUID()
     val dataUUId = "JustSomeUUID"
 
