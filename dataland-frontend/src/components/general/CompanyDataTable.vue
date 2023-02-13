@@ -80,8 +80,8 @@
               </table>
             </template>
 
-            <template v-else-if="typeof data[dataDate.dataId] === 'string' && isValidHttpUrl(data[dataDate.dataId])">
-              <a :href="$sanitizeURL(data[dataDate.dataId])" class="link">Link</a>
+            <template v-else-if="typeof data[dataDate.dataId] === 'string' && data[dataDate.dataId].endsWith('.pdf')">
+              <span @click="handleLinkClick(data[dataDate.dataId])" class="link">Link</span>
             </template>
 
             <span v-else>{{ Array.isArray(data[dataDate.dataId]) ? "" : data[dataDate.dataId] }}</span>
@@ -109,7 +109,7 @@ import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 import DynamicDialog from "primevue/dynamicdialog";
-import { isValidHttpUrl } from "@/utils/UrlValid";
+import axios from "axios";
 
 export default defineComponent({
   name: "CompanyDataTable",
@@ -122,7 +122,6 @@ export default defineComponent({
       kpiDataObjectsToDisplay: [],
       expandedRowGroups: ["_general"],
       listOfProductionSitesConvertedNames,
-      isValidHttpUrl: isValidHttpUrl,
     };
   },
   props: {
@@ -172,6 +171,29 @@ export default defineComponent({
           listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
         },
       });
+    },
+    /**
+     * Function to download report
+     *
+     * @param url url to report
+     */
+    async handleLinkClick(url: string) {
+      try {
+        const cleanUrl = url.replace(/[^a-zA-Z0-9.:/?#&=_-]+/g, "");
+        const response = await axios.get(cleanUrl, {
+          responseType: "blob",
+        });
+
+        const blob = new Blob([response.data], {
+          type: "application/pdf",
+        });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "report.pdf";
+        link.click();
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 });
