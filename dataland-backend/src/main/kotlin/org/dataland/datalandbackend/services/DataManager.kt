@@ -99,7 +99,9 @@ class DataManager(
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         if (dataId.isNotEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            metaDataManager.storeDataMetaInformation(metaInformation.copy(qualityStatus = DatasetQualityStatus.Accepted))
+            metaDataManager.storeDataMetaInformation(
+                metaInformation.copy(qualityStatus = DatasetQualityStatus.Accepted),
+            )
             logger.info(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
                     correlationId,

@@ -8,12 +8,12 @@ import org.dataland.datalandbackend.model.StorageHashMap
 import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.services.CompanyManager
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandinternalstorage.DatalandInternalStorage
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandinternalstorage.utils.TestDataProvider
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
@@ -37,11 +37,16 @@ class DatabaseDataStoreTest(
 ) {
     val mockDataItemRepository: DataItemRepository = mock(DataItemRepository::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
-    val databaseDataStore = DatabaseDataStore(mockDataItemRepository, cloudEventMessageHandler, nonPersistedDataClient, objectMapper)
+    val databaseDataStore = DatabaseDataStore(
+        mockDataItemRepository, cloudEventMessageHandler, nonPersistedDataClient,
+        objectMapper,
+    )
     val dataId = "JustSomeUUID"
 
-    val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-    val storableNFEuTaxonomyDataSetAsString: String = objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
+    val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
+        addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
+    val storableNFEuTaxonomyDataSetAsString: String =
+        objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
 
     val messageForDataId = Message(dataId.toByteArray())
 
