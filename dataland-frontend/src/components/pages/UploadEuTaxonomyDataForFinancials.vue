@@ -1,18 +1,20 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent>
-      <MarginWrapper>
-        <div class="grid align-items-end">
-          <div class="col-9">
-            <CompanyInformation :companyID="companyID" />
+    <UploaderRoleWrapper>
+      <TheContent>
+        <MarginWrapper>
+          <div class="grid align-items-end">
+            <div class="col-9">
+              <CompanyInformation :companyID="companyID" />
+            </div>
           </div>
-        </div>
-      </MarginWrapper>
-      <MarginWrapper bg-class="paper-section" class="text-left">
-        <CreateEUTaxonomyForFinancials :companyID="companyID" />
-      </MarginWrapper>
-    </TheContent>
+        </MarginWrapper>
+        <MarginWrapper bg-class="paper-section" class="text-left">
+          <CreateEUTaxonomyForFinancials :companyID="companyID" />
+        </MarginWrapper>
+      </TheContent>
+    </UploaderRoleWrapper>
     <DatalandFooter />
   </AuthenticationWrapper>
 </template>
@@ -25,10 +27,12 @@ import CreateEUTaxonomyForFinancials from "@/components/forms/CreateEUTaxonomyFo
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
 
 export default {
   name: "UploadEuTaxonomyDataForFinancials",
   components: {
+    UploaderRoleWrapper,
     CreateEUTaxonomyForFinancials,
     TheContent,
     TheHeader,

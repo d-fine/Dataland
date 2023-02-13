@@ -171,7 +171,9 @@ describe("As a user, I expect the search functionality on the /companies page to
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
       cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
-          cy.visitAndCheckAppMount(`/companies/${storedCompanies[0].companyId}/frameworks/eutaxonomy-non-financials`);
+          cy.visitAndCheckAppMount(
+            `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+          );
           cy.get("input[id=framework_data_search_bar_standard]")
             .should("not.be.disabled")
             .type(inputValue)
@@ -218,7 +220,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .click({ force: true })
         .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
       cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-        cy.get("ul[class=p-autocomplete-items]");
+        cy.get("ul[class=p-autocomplete-items]").should("exist");
         cy.get("input[id=search_bar_top]").type("{downArrow}");
         cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
         cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
