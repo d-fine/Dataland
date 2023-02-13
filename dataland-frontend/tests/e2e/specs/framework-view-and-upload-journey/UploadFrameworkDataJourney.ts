@@ -7,7 +7,7 @@ import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
-import { assertDefined } from "../../../../src/utils/TypeScriptUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   beforeEach(function () {
