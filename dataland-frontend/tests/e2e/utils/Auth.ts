@@ -72,7 +72,6 @@ export function ensureLoggedIn(username?: string, password?: string): void {
         cy.visit("/")
           .url()
           .should("eq", getBaseUrl() + "/companies");
-        cy.wait(10000);
       },
       cacheAcrossSpecs: true,
     }
