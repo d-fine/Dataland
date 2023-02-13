@@ -40,7 +40,7 @@ docker exec dala-e2e-test-internal-storage-1 pkill -f spring
 timeout 90 sh -c "docker logs dala-e2e-test-internal-storage-1 --follow" > /dev/null
 docker cp dala-e2e-test-internal-storage-1:/app/dataland-internal-storage/build/jacoco/bootRun.exec ./internal-storage-bootRun-${CYPRESS_TEST_GROUP}.exec
 
-docker exec rabbitmq pkill -f spring
+docker exec dataland-e2e-test-dummy-qa-service-1 pkill -f spring
 timeout 90 sh -c "docker logs rabbitmq --follow" > /dev/null
 docker cp rabbitmq:/app/dataland-dummy-qa-service/build/jacoco/bootRun.exec ./dummy-qa-service-bootRun-${CYPRESS_TEST_GROUP}.exec
 
