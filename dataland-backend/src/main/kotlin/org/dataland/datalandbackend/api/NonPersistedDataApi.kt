@@ -14,23 +14,23 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/internal/nonpersisted")
 interface NonPersistedDataApi {
 
-    @Operation(
-        summary = "Retrieve specific data from the hashmap of the backend.",
-        description = "Data identified by the provided data ID is retrieved."
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set.")
-        ]
-    )
-    @GetMapping(
-        value = ["/{dataId}"],
-        produces = ["application/json"]
-    )
     /**
      * This method retrieves data entries from the temporary storage
      * @param dataId filters the requested data to a specific entry.
      */
+    @Operation(
+        summary = "Retrieve specific data from the hashmap of the backend.",
+        description = "Data identified by the provided data ID is retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataId}"],
+        produces = ["application/json"],
+    )
     fun getCompanyAssociatedDataForInternalStorage(@PathVariable("dataId") dataId: String):
         ResponseEntity<String>
 }

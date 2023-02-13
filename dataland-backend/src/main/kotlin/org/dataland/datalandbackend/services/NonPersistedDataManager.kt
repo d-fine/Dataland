@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 @Component("NonPersistedDataManager")
 class NonPersistedDataManager(
     @Autowired var dataInformationHashMap: StorageHashMap,
-    @Autowired var objectMapper: ObjectMapper
+    @Autowired var objectMapper: ObjectMapper,
 
 ) {
     // TODO fix type missmatch, check why objectmapper is necessary
@@ -26,7 +26,7 @@ class NonPersistedDataManager(
      */
     fun selectDataSetForInternalStorage(dataId: String): String {
         val hashMapValue = dataInformationHashMap.map[dataId]
-        hashMapValue ?.let{
+        hashMapValue ?.let {
             return objectMapper.writeValueAsString(hashMapValue)
         }
         throw ResourceNotFoundApiException("Non-persisted data ID not found", "Dataland does not know the non-persisted data id $dataId")

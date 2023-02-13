@@ -41,6 +41,7 @@ services:
     ports:
       - "127.0.0.1:6789:6789"
       - "127.0.0.1:5433-5436:5433-5436"
+      - "127.0.0.1:5672:5672"
   api-key-manager:
     restart: always
     profiles: ["production", "testing", "development"]
@@ -160,10 +161,6 @@ services:
     networks:
       - internal
       - internal-storage-db
-    expose:
-      - "8080"
-    ports:
-      - "127.0.0.1:8082:8080"
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
@@ -278,12 +275,12 @@ services:
   rabbitmq:
     profiles: ["production", "testing", "development"]
     image: ghcr.io/d-fine/dataland/dataland_rabbitmq:${DATALAND_RABBITMQ_VERSION}
-    container_name: rabbitmq
     networks:
       - internal
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+#    ports:
+#      - "5672:5672"
+#    expose:
+#      - "15672"
     environment:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}

@@ -20,7 +20,7 @@ class ConfigurationStorageControllerApi {
             basePath = if (isBackendInsideDockerContainer()) {
                 "http://internal-storage:8080/internal-storage"
             } else {
-                "http://localhost:8082/internal-storage"
+                "https://local-dev.dataland.com/internal-storage"
             },
         )
     }

@@ -1,17 +1,17 @@
 package org.dataland.datalandinternalstorage.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataControllerApi
-import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.rmi.ServerException
-import com.fasterxml.jackson.databind.ObjectMapper
 
 /**
  * Simple implementation of a data store using a postgres database
@@ -26,13 +26,14 @@ class DatabaseDataStore(
     @Autowired var objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * Method to insert data into a database
      * @param message Message retrieved from storage_queue
      */
 
     @RabbitListener(queues = ["storage_queue"])
-    fun insertDataSet(message : Message) {
+    fun insertDataSet(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
@@ -41,17 +42,19 @@ class DatabaseDataStore(
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         try {
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "Data successfully stored", correlationId ,
-            "stored_queue")
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataId, "Data successfully stored", correlationId,
+                "stored_queue",
+            )
         } catch (e: ServerException) {
             val internalMessage = "Error storing data." +
-                    " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
+                " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
             logger.error(internalMessage)
-            //TODO check that the error messages are applicable
+            // TODO check that the error messages are applicable
             throw InternalServerErrorApiException(
                 "Upload to Storage failed", "The upload of the dataset to the Storage failed",
                 internalMessage,
-                e
+                e,
             )
         }
     }

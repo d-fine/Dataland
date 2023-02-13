@@ -6,12 +6,12 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
 import org.dataland.datalandbackend.model.enums.data.DatasetQualityStatus
-import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
@@ -38,7 +38,7 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var dataInformationHashMap: StorageHashMap
+    @Autowired var dataInformationHashMap: StorageHashMap,
 
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -79,12 +79,12 @@ class DataManager(
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         val updatedMetaData = DataMetaInformationEntity(
             dataId, storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, DatasetQualityStatus.Pending
+            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, DatasetQualityStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(updatedMetaData)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "New data - QA necessary", correlationId,
-            "upload_queue"
+            "upload_queue",
         )
         return dataId
     }
@@ -102,14 +102,14 @@ class DataManager(
             metaDataManager.storeDataMetaInformation(metaInformation.copy(qualityStatus = DatasetQualityStatus.Accepted))
             logger.info(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
-                    correlationId
+                    correlationId,
             )
         } else {
             val internalMessage = "Error updating metadata data. Correlation ID: $correlationId"
             logger.error(internalMessage)
             throw InternalServerErrorApiException(
                 "Update of meta data failed", "The update of the metadataset failed",
-                internalMessage
+                internalMessage,
             )
         }
     }
@@ -123,7 +123,7 @@ class DataManager(
         dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "Data to be stored", correlationId,
-            "storage_queue"
+            "storage_queue",
         )
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
@@ -143,7 +143,7 @@ class DataManager(
         if (dataId.isNotEmpty()) {
             logger.info("Internal Storage sent a message - job done")
             logger.info(
-                "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId."
+                "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId.",
             )
             dataInformationHashMap.map.remove(dataId)
         } else {
@@ -151,7 +151,7 @@ class DataManager(
             logger.error(internalMessage)
             throw InternalServerErrorApiException(
                 "Storing of dataset failed", "The storing of the dataset failed",
-                internalMessage
+                internalMessage,
             )
         }
     }

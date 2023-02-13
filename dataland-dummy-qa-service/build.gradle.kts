@@ -9,7 +9,7 @@ val jacocoClasses by extra(
                 exclude("**/openApiClient/**")
             }.files
         }
-    }
+    },
 )
 val jacocoVersion: String by project
 val openApiGeneratorTimeOutThresholdInSeconds: String by project
@@ -39,8 +39,8 @@ dependencies {
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
     implementation("io.swagger.core.v3:swagger-annotations:2.2.8")
+    implementation(project(":dataland-message-queue-utils"))
     implementation(project(":dataland-backend-utils"))
-
 }
 
 openApi {

@@ -8,7 +8,7 @@ import org.springframework.amqp.core.Message
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
-//TODO check if here /public should also be added
+// TODO check if here /public should also be added
 /**
  * Defines the restful internal storage API.
  */
@@ -35,11 +35,17 @@ interface StorageAPI {
     )
     fun selectDataById(dataId: String, correlationId: String): ResponseEntity<String>
 
+
     /**
      * A method to store data in the internal storage
      * @param correlationId the correlation ID of the data post request
      * @param body the data stored body to be stored
      */
+    /**
+     * A method to store data in the internal storage
+     * @param message is a message object retrieved from the message queue
+     */
+
     @Operation(
         summary = "Upload data.",
         description = "Upload data and get data id.",
@@ -50,10 +56,6 @@ interface StorageAPI {
     @PostMapping(
         value = ["/data"],
     )
-    /**
-     * A method to store data in the internal storage
-     * @param message is a message object retrieved from the message queue
-     */
     fun insertData(message: Message):
         ResponseEntity<InsertDataResponse>
 }

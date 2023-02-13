@@ -1,10 +1,10 @@
 package org.dataland.datalanddummyqaservice
 
-import org.springframework.amqp.rabbit.annotation.RabbitListener
-import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
-import org.springframework.amqp.core.Message
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Message
+import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component
  */
 @SpringBootApplication
 class ConsumerApplication
+
 /**
  * This class holds the function to run the dummy QA service
  */
@@ -42,17 +43,21 @@ class QaService(
     fun receive(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        if (dataId.isNotEmpty()){
-            logger.info("Received data upload with DataId: $dataId on QA message queue with Correlation Id: " +
-                    "$correlationId")
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "QA Process Completed", correlationId,
-                "qa_queue")
-        } else{//TODO Discuss if this kind of error handling makes sense
+        if (dataId.isNotEmpty()) {
+            logger.info(
+                "Received data upload with DataId: $dataId on QA message queue with Correlation Id: " +
+                    "$correlationId",
+            )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataId, "QA Process Completed", correlationId,
+                "qa_queue",
+            )
+        } else { // TODO Discuss if this kind of error handling makes sense
             val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
             logger.error(internalMessage)
             throw InternalServerErrorApiException(
                 "Error receiving data for QA process", "The reception of data failed",
-                internalMessage
+                internalMessage,
             )
         }
     }

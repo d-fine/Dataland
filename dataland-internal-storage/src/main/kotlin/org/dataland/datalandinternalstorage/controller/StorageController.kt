@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @ComponentScan(basePackages = ["org.dataland"])
 @Component("StorageController")
 class StorageController(
-        @Autowired val dataStore: DatabaseDataStore,
+    @Autowired val dataStore: DatabaseDataStore,
 ) : StorageAPI {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -27,8 +27,8 @@ class StorageController(
         logger.info("Selecting data from database with (data id: $dataId) and (correlation id: $correlationId).")
         return ResponseEntity.ok(dataStore.selectDataSet(dataId))
     }
-    override fun insertData(message :Message): ResponseEntity<InsertDataResponse> {
-        //logger.info("Inserting data into database with (correlation id: $correlationId).")
+    override fun insertData(message: Message): ResponseEntity<InsertDataResponse> {
+        // logger.info("Inserting data into database with (correlation id: $correlationId).")
         return ResponseEntity.ok(InsertDataResponse(dataStore.insertDataSet(message).toString()))
     }
 }
