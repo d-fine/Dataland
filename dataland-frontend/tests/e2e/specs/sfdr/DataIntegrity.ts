@@ -87,7 +87,7 @@ describeIf(
     }
 
     it("Check Sfdr view page for company with one Sfdr data set", () => {
-      const preparedFixture = getPreparedFixture("company-with-sfdr-data-set", preparedFixtures);
+      const preparedFixture = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const sfdrData = preparedFixture.t;
 
@@ -121,12 +121,12 @@ describeIf(
       const companyInformation = preparedFixture.companyInformation;
       const sfdrData = preparedFixture.t;
       const fiscalYearEndAsString = getYearFromSfdrDate(sfdrData.social!.general!.fiscalYearEnd!);
-      const numberOfSfdrDataSetsForCompany = 2;
+      const numberOfSfdrDataSetsForCompany = 4;
 
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyAndSfdrDataViaApi(token, companyInformation, sfdrData).then((uploadIds) => {
           let currentChainable: Chainable<UploadIds> = uploadAnotherSfdrDataSetToExistingCompany(uploadIds);
-          for (let i = 1; i <= numberOfSfdrDataSetsForCompany; i++) {
+          for (let i = 3; i <= numberOfSfdrDataSetsForCompany; i++) {
             currentChainable = currentChainable.then(uploadAnotherSfdrDataSetToExistingCompany);
           }
           cy.intercept("**/api/data/sfdr/company/*").as("retrieveSfdrData");
