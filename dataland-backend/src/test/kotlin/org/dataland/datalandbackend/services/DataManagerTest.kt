@@ -35,15 +35,12 @@ class DataManagerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val companyManager: CompanyManager,
-    @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired val dataInformationHashMap: StorageHashMap,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
+    val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
-    val dataManager = DataManager(
-        objectMapper, companyManager, dataMetaInformationManager,
-        mockStorageClient, cloudEventMessageHandler, dataInformationHashMap,
-    )
+    val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient, mockCloudEventMessageHandler, dataInformationHashMap)
     val correlationId = IdUtils.generateUUID()
     val dataUUId = "JustSomeUUID"
 
