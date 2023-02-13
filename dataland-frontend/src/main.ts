@@ -26,6 +26,10 @@ function instantiateVueApp(): void {
   app.use(PrimeVue);
   app.use(pinia);
   app.config.unwrapInjectedRef = true;
+  app.config.globalProperties.$sanitizeURL = function (url: string): string {
+    console.log("$sanitizeURL", url);
+    return url.replace(/[^a-zA-Z0-9.:/?#&=_-]+/g, "");
+  };
   app.mount("#app");
 }
 

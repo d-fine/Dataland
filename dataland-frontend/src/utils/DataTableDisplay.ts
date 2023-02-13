@@ -15,13 +15,3 @@ export function sortDatesToDisplayAsColumns(
     }
   });
 }
-
-/**
- * Function to safe pass link to href attr
- *
- * @param  href link in string to check is it safe href
- * @returns href safe href string
- */
-export function sanitizeHref(href: string): string {
-  return href.replace(/[^a-zA-Z0-9.:/?#&=_-]+/g, "");
-}
