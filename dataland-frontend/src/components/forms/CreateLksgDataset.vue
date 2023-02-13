@@ -89,6 +89,7 @@
                           :validation-label="lksgKpiNameMappings.vatIdentificationNumber"
                           validation="required|length:3"
                           name="vatIdentificationNumber"
+                          :inner-class="{ short: true }"
                         />
                       </div>
 
@@ -159,7 +160,7 @@
                           placeholder="Currency"
                           validation="required"
                           :inner-class="{
-                            medium: true,
+                            short: true,
                           }"
                         />
                       </div>
