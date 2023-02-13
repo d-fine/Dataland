@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section min-h-screen">
-      <MarginWrapper class="text-left mt-2 surface-0" style="margin-right: 0rem">
+      <MarginWrapper class="text-left surface-0" style="margin-right: 0rem">
         <BackButton />
         <FrameworkDataSearchBar class="mt-2" ref="frameworkDataSearchBar" @search-confirmed="handleSearchConfirm" />
       </MarginWrapper>
@@ -13,7 +13,7 @@
           </div>
         </div>
       </MarginWrapper>
-      <MarginWrapper class="text-left surface-0" style="margin-right: 0rem">
+      <MarginWrapper v-if="noFailure" class="text-left surface-0" style="margin-right: 0rem">
         <Dropdown
           id="frameworkDataDropdown"
           v-model="chosenDataTypeInDropdown"
@@ -27,10 +27,11 @@
           @change="redirectToViewPageForChosenFramework"
         />
       </MarginWrapper>
-      <MarginWrapper style="margin-right: 0rem">
+      <MarginWrapper v-if="noFailure" style="margin-right: 0rem">
         <slot></slot>
       </MarginWrapper>
     </TheContent>
+    <DatalandFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -49,6 +50,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import Dropdown from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import DatalandFooter from "@/components/general/DatalandFooter.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -61,6 +63,7 @@ export default defineComponent({
     Dropdown,
     AuthenticationWrapper,
     CompanyInformation,
+    DatalandFooter,
   },
   emits: ["updateDataId"],
   props: {
@@ -85,6 +88,7 @@ export default defineComponent({
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
+      noFailure: true,
     };
   },
   created() {
@@ -152,6 +156,7 @@ export default defineComponent({
         });
         this.$emit("updateDataId", listOfDataIdsToEmit);
       } catch (error) {
+        this.noFailure = false;
         console.error(error);
       }
     },

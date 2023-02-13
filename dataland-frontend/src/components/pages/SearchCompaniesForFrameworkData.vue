@@ -1,77 +1,91 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="pl-0 pt-0 min-h-screen paper-section relative">
-      <div
-        class="col-12 bg-white"
-        :class="[searchBarToggled && pageScrolled ? ['d-search-toggle', 'fixed'] : '']"
-        ref="searchBarAndFiltersContainer"
-      >
-        <div class="pt-4" />
-        <MarginWrapper>
-          <FrameworkDataSearchBar
-            v-model="currentSearchBarInput"
-            ref="frameworkDataSearchBar"
-            :filter="currentCombinedFilter"
-            :searchBarId="searchBarId"
-            :emit-search-results-array="true"
-            @search-confirmed="handleSearchConfirmed"
-            @companies-received="handleCompanyQuery"
-          />
+    <TabView class="col-12" v-model:activeIndex="activeTabIndex" @tab-change="handleTabChange">
+      <TabPanel header="AVAILABLE DATASETS">
+        <TheContent class="pl-0 pt-0 min-h-screen paper-section relative">
           <div
-            :class="[
-              pageScrolled && !searchBarToggled
-                ? ['grid', 'col-12', 'align-items-center', 'bg-white', 'd-search-toggle', 'fixed', 'd-shadow-bottom']
-                : 'flex',
-            ]"
+            id="searchBarAndFiltersContainer"
+            class="w-full bg-white pt-4"
+            :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
+            ref="searchBarAndFiltersContainer"
           >
-            <div :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']">
-              <span class="mr-3 font-semibold">Search Data for Companies</span>
-              <PrimeButton
-                name="search_bar_collapse"
-                icon="pi pi-search"
-                class="p-button-rounded surface-ground border-none m-2"
-                @click="toggleSearchBar"
-              >
-                <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-              </PrimeButton>
-            </div>
-            <FrameworkDataSearchFilters
-              class="ml-3"
-              ref="frameworkDataSearchFilters"
-              :show-heading="!pageScrolled || searchBarToggled"
-              v-model:selected-country-codes="currentFilteredCountryCodes"
-              v-model:selected-frameworks="currentFilteredFrameworks"
-              v-model:selected-sectors="currentFilteredSectors"
+            <FrameworkDataSearchBar
+              id="frameworkDataSearchBar"
+              ref="frameworkDataSearchBar"
+              class="pl-4 m-0"
+              v-model="currentSearchBarInput"
+              :filter="currentCombinedFilter"
+              :searchBarId="searchBarId"
+              :emit-search-results-array="true"
+              @search-confirmed="handleSearchConfirmed"
+              @companies-received="handleCompanyQuery"
             />
-            <span v-show="!pageScrolled" class="d-page-display">{{ currentlyVisiblePageText }}</span>
+
+            <div
+              id="searchFiltersPanel"
+              class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
+              :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
+            >
+              <div class="flex" id="searchFiltersContainer">
+                <div
+                  id="scrolledSearchToggler"
+                  :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"
+                >
+                  <span class="mr-3 font-semibold">Search Data for Companies</span>
+                  <PrimeButton
+                    name="search_bar_collapse"
+                    icon="pi pi-search"
+                    class="p-button-rounded surface-ground border-none m-2"
+                    @click="toggleSearchBar"
+                  >
+                    <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+                  </PrimeButton>
+                </div>
+
+                <FrameworkDataSearchFilters
+                  id="frameworkDataSearchFilters"
+                  class="ml-3"
+                  ref="frameworkDataSearchFilters"
+                  :show-heading="!pageScrolled || searchBarToggled"
+                  v-model:selected-country-codes="currentFilteredCountryCodes"
+                  v-model:selected-frameworks="currentFilteredFrameworks"
+                  v-model:selected-sectors="currentFilteredSectors"
+                />
+              </div>
+
+              <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
+                <PrimeButton
+                  v-if="hasUserUploaderRights"
+                  class="uppercase p-button p-button-sm d-letters mr-3"
+                  label="New Dataset"
+                  icon="pi pi-plus"
+                  @click="redirectToChooseCompanyPage"
+                />
+                <span>{{ currentlyVisiblePageText }}</span>
+              </div>
+            </div>
           </div>
-        </MarginWrapper>
-      </div>
-      <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading...</p>
-        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-      </div>
-      <FrameworkDataSearchResults
-        v-if="!waitingForSearchResults"
-        ref="searchResults"
-        :rows-per-page="rowsPerPage"
-        :data="resultsArray"
-        @update:first="setFirstShownRow"
-      />
-    </TheContent>
+
+          <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
+            <p class="font-medium text-xl">Loading...</p>
+            <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+          </div>
+
+          <FrameworkDataSearchResults
+            v-if="!waitingForSearchResults"
+            ref="searchResults"
+            :rows-per-page="rowsPerPage"
+            :data="resultsArray"
+            @update:first="setFirstShownRow"
+          />
+        </TheContent>
+      </TabPanel>
+      <TabPanel header="MY DATASETS"> </TabPanel>
+    </TabView>
     <DatalandFooter />
   </AuthenticationWrapper>
 </template>
-
-<style scoped>
-.d-page-display {
-  margin-left: auto;
-  margin-top: auto;
-  margin-bottom: 0;
-  color: #5a4f36;
-}
-</style>
 
 <script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -85,8 +99,7 @@ import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/F
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { RouteLocationNormalizedLoaded, useRoute } from "vue-router";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, inject, ref } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
@@ -94,20 +107,24 @@ import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { useFiltersStore } from "@/stores/filters";
+import TabPanel from "primevue/tabpanel";
+import TabView from "primevue/tabview";
+import Keycloak from "keycloak-js";
+import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   setup() {
     return {
-      searchBarAndFiltersContainer: ref(),
+      searchBarAndFiltersContainer: ref<Element>(),
       frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
       frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
       searchResults: ref(),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   name: "SearchCompaniesForFrameworkData",
   components: {
     FrameworkDataSearchFilters,
-    MarginWrapper,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
@@ -115,9 +132,16 @@ export default defineComponent({
     PrimeButton,
     FrameworkDataSearchResults,
     DatalandFooter,
+    TabView,
+    TabPanel,
   },
   created() {
     window.addEventListener("scroll", this.windowScrollHandler);
+    checkIfUserHasUploaderRights(this.getKeycloakPromise)
+      .then((hasUserUploaderRights) => {
+        this.hasUserUploaderRights = hasUserUploaderRights;
+      })
+      .catch((error) => console.log(error));
     this.scanQueryParams(this.route);
   },
   data() {
@@ -147,6 +171,8 @@ export default defineComponent({
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
+      activeTabIndex: 0,
+      hasUserUploaderRights: null as null | boolean,
     };
   },
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
@@ -194,6 +220,13 @@ export default defineComponent({
   },
   methods: {
     /**
+     * Executes router push to the choose company page
+     */
+    async redirectToChooseCompanyPage() {
+      await this.$router.push("/companies/choose");
+    },
+
+    /**
      * Updates the local variable indicating which row of the datatable is currently displayed at the top
      *
      * @param value the index of the new row displayed on top
@@ -220,13 +253,13 @@ export default defineComponent({
         if (this.latestScrollPosition > windowScrollY) {
           //ScrollUP event
           this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop >= 50;
+          this.pageScrolled = document.documentElement.scrollTop >= 60;
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         } else {
           //ScrollDOWN event
           this.latestScrollPosition = windowScrollY;
-          this.pageScrolled = document.documentElement.scrollTop > 100;
+          this.pageScrolled = document.documentElement.scrollTop > 152;
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         }
@@ -384,15 +417,24 @@ export default defineComponent({
     /**
      * Expands the searchbar that got collapsed when the user scrolled down
      */
-    toggleSearchBar() {
+    async toggleSearchBar() {
       this.searchBarToggled = true;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-      const height = this.searchBarAndFiltersContainer?.clientHeight;
-      window.scrollBy(0, -height);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      this.hiddenSearchBarHeight = height;
       this.scrollEmittedByToggleSearchBar = true;
+      if (this.searchBarAndFiltersContainer) {
+        this.hiddenSearchBarHeight = this.searchBarAndFiltersContainer.clientHeight;
+      }
+      window.scrollBy(0, -this.hiddenSearchBarHeight);
+      await this.$nextTick();
       this.searchBarId = "search_bar_scrolled";
+    },
+
+    /**
+     * Routes to my datasets page when MY DATASETS tab is clicked
+     */
+    handleTabChange(): void {
+      if (this.activeTabIndex == 1) {
+        void this.$router.push("/datasets");
+      }
     },
   },
   unmounted() {
@@ -400,3 +442,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.d-search-toggle {
+  z-index: 99;
+  top: 4rem;
+}
+.d-search-filters-panel {
+  height: 5rem;
+}
+</style>
