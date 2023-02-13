@@ -52,7 +52,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito:mockito-core:5.1.1")
     implementation(project(":dataland-keycloak-adapter"))
-    implementation("com.mailjet:mailjet-client:5.2.1")
+    implementation("com.mailjet:mailjet-client:5.2.2")
 }
 
 openApi {
