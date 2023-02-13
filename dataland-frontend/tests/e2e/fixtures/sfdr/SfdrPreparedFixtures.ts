@@ -34,6 +34,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  */
 function manipulateFixtureForOneSfdr(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "company-with-one-sfdr-data-set";
+  input.t.social!.general!.annualReport = "/test_pdf.pdf";
   return input;
 }
 
