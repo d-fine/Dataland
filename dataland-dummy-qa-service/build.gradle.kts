@@ -45,7 +45,7 @@ dependencies {
 
 openApi {
     outputFileName.set("$projectDir/dummyQaService.json")
-    apiDocsUrl.set("http://localhost:8584/api-keys/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8584/qa/v3/api-docs")
     customBootRun {
         args.set(listOf("--server.port=8584"))
     }
