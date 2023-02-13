@@ -108,7 +108,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
     );
     const responseData: Array<StoredCompany> = response.data;
     mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(
-      filterCompaniesForDatasetWithDisplayableQualityStatus(responseData)
+      filterCompaniesForAcceptedDataset(responseData)
     );
   } catch (error) {
     console.error(error);
@@ -123,7 +123,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
  * @param companies the companies to filter
  * @returns the filtered companies
  */
-function filterCompaniesForDatasetWithDisplayableQualityStatus(companies: StoredCompany[]): StoredCompany[] {
+function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCompany[] {
   return companies.filter((company) =>
     company.dataRegisteredByDataland.some(
         dataMetaInfo => dataMetaInfo.qualityStatus == DatasetQualityStatus.Accepted
