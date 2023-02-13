@@ -29,5 +29,5 @@ class DatalandBackend : OpenAPIConfiguration
  * Main function to be executed for running the spring boot dataland backend process
  */
 fun main(args: Array<String>) {
-    runApplication<DatalandBackend>(*args)
+    runApplication<DatalandBackend>(args = args)
 }
