@@ -3,93 +3,91 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Kovacs, Ihly und Salow",
-				"Lohre, Jellinghaus und Pöge",
-				"Moller UG",
-				"Wittich-Holzdeppe"
+				"Huckestein-Blochwitz",
+				"Mertens KG"
 			],
-			"headquarters": "West Efeburg",
-			"headquartersPostalCode": "77289",
-			"sector": "bandwidth",
+			"headquarters": "Bad Ceylinstadt",
+			"headquartersPostalCode": "25205",
+			"sector": "e-tailers",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "k481huq7kl8xjor"
+					"identifierValue": "7tb69kbupp55rzl"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "zr2da6g5l"
+					"identifierValue": "s7unakn5t"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "k05bp1lnga6n"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "eh2tduyf6gq8hpq6r1ra"
+					"identifierValue": "wmnj3ivxhk9413pl3aj2"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "kaz6msi4g0"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "2818ixo"
 				}
 			],
-			"countryCode": "SO",
+			"countryCode": "MM",
 			"isTeaserCompany": false,
-			"website": "http://menschlich-masse.net"
+			"website": "https://fulminant-sexismus.com"
 		},
 		"t": {
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "https://dumm-pocken.com/monatlich-busen.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-12-15",
-					"currency": "MDL"
-				},
-				"SustainabilityReport": {
-					"reference": "https://sagenhaft-weizen.com/vollkommen-pulver.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "AFN"
-				},
-				"AnnualReport": {
-					"reference": "http://lebenslustig-tier.ch/gewinnend-kreide.pdf",
-					"isGroupLevel": "NA",
-					"currency": "KWD"
-				},
 				"ESEFReport": {
-					"reference": "https://lockig-sorghum.de/nat%C3%BCrlich-schraube.pdf",
+					"reference": "https://ratlos-blindheit.info/beherzt-fu%C3%9F.pdf",
 					"isGroupLevel": "NA",
-					"reportDate": "2022-02-18",
-					"currency": "BYN"
+					"reportDate": "2022-02-20",
+					"currency": "LAK"
+				},
+				"IntegratedReport": {
+					"reference": "https://xn--weich-mdchen-mcb.net/begeisternd-sozialismus.pdf",
+					"reportDate": "2022-06-23",
+					"currency": "BDT"
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-10-07",
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"provider": "Vey-Bielert"
+				"dataSource": {
+					"page": 470,
+					"report": "ESEFReport",
+					"tagName": "schemas"
+				}
 			},
-			"scopeOfEntities": "NA",
-			"numberOfEmployees": 92207,
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "No",
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.9738,
-					"dataSource": {
-						"page": 534,
-						"report": "ESEFReport",
-						"tagName": "methodologies"
-					},
-					"quality": "Reported",
-					"comment": "navigate cross-platform port"
+					"value": 0.2201,
+					"quality": "Estimated"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.29,
+					"value": 0.315,
 					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.2834,
+					"value": 0.7027,
 					"dataSource": {
-						"page": 1187,
-						"report": "AnnualReport",
-						"tagName": "e-tailers"
+						"page": 68,
+						"report": "IntegratedReport",
+						"tagName": "web services"
 					},
-					"quality": "Reported",
-					"comment": "calculate cross-platform system"
+					"quality": "Audited",
+					"comment": "reboot open-source firewall"
 				}
 			}
 		}
@@ -97,122 +95,96 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Ludolf, Kallensee und Hudak",
-				"May GmbH"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"headquarters": "Alt Klaas",
-			"sector": "users",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"headquarters": "Dingelstedtscheid",
+			"headquartersPostalCode": "02705",
+			"sector": "systems",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "gfpxultkuwu9pm3"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "qfd7tw81y38m"
-				},
-				{
 					"identifierType": "Lei",
-					"identifierValue": "5s6du7uee6z4uvc088zi"
+					"identifierValue": "7t6em9huclbvckio71iq"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "5z5xu22ogj"
 				}
 			],
-			"countryCode": "KY",
+			"countryCode": "KE",
 			"isTeaserCompany": false,
-			"website": "https://wirksam-leber.org"
+			"website": "http://auffällig-medikation.name"
 		},
 		"t": {
 			"referencedReports": {
 				"SustainabilityReport": {
-					"reference": "http://fundiert-wein.ch/beruhigt-busen.pdf",
+					"reference": "https://freidenkend-wille.name/vern%C3%BCnftig-sexismus.pdf",
 					"isGroupLevel": "Yes",
-					"reportDate": "2022-10-13",
-					"currency": "TMT"
-				},
-				"AnnualReport": {
-					"reference": "https://fantasiereich-platin.net/bew%C3%A4hrt-tuberkulose.pdf",
-					"isGroupLevel": "No",
-					"currency": "INR"
-				},
-				"IntegratedReport": {
-					"reference": "http://routiniert-palast.org/wirksam-wissenschaft.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-11-25",
-					"currency": "NIO"
+					"reportDate": "2022-04-29",
+					"currency": "UYU"
 				}
 			},
-			"fiscalYearEnd": "2022-10-19",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Huth, Baganz und Tepper"
+				"assurance": "LimitedAssurance",
+				"provider": "Hilgendorf-Kahles",
+				"dataSource": {
+					"page": 805,
+					"report": "SustainabilityReport",
+					"tagName": "synergies"
+				}
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 227147.95,
-					"dataSource": {
-						"page": 469,
-						"report": "SustainabilityReport",
-						"tagName": "systems"
-					},
-					"quality": "Estimated",
-					"comment": "hack online driver"
+					"value": 516735.31,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.4068,
-					"dataSource": {
-						"page": 1054,
-						"report": "SustainabilityReport",
-						"tagName": "communities"
-					},
-					"quality": "Estimated",
-					"comment": "input optical bandwidth"
+					"value": 0.6428,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 360242.84,
+					"value": 53219.42,
 					"dataSource": {
-						"page": 498,
-						"report": "IntegratedReport",
-						"tagName": "partnerships"
-					},
-					"quality": "Audited",
-					"comment": "generate back-end application"
-				},
-				"eligiblePercentage": {
-					"value": 0.5945,
-					"dataSource": {
-						"page": 548,
-						"report": "IntegratedReport",
-						"tagName": "eyeballs"
+						"page": 945,
+						"report": "SustainabilityReport",
+						"tagName": "paradigms"
 					},
 					"quality": "Reported",
-					"comment": "reboot online monitor"
+					"comment": "transmit cross-platform card"
+				},
+				"eligiblePercentage": {
+					"value": 0.0544,
+					"dataSource": {
+						"page": 590,
+						"report": "SustainabilityReport",
+						"tagName": "supply-chains"
+					},
+					"quality": "Audited",
+					"comment": "hack 1080p panel"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 687650.93,
+					"value": 70094.09,
 					"dataSource": {
-						"page": 370,
-						"report": "IntegratedReport",
-						"tagName": "users"
+						"page": 992,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
 					},
-					"quality": "Incomplete",
-					"comment": "synthesize cross-platform port"
+					"quality": "Reported",
+					"comment": "synthesize bluetooth program"
 				},
 				"eligiblePercentage": {
-					"value": 0.6301,
+					"value": 0.1189,
 					"dataSource": {
-						"page": 372,
+						"page": 991,
 						"report": "SustainabilityReport",
-						"tagName": "paradigms"
+						"tagName": "niches"
 					},
-					"quality": "Audited",
-					"comment": "copy neural firewall"
+					"quality": "Reported",
+					"comment": "connect open-source circuit"
 				}
 			}
 		}
