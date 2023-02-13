@@ -9,7 +9,6 @@ describe("As a user I want to be able to register for an account and be able to 
   it("Checks that the Dataland password-policy gets respected", () => {
     cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false });
     cy.visitAndCheckAppMount("/")
-      // TODO waiting for the youtube POST request to finish
       .get("button[name='join_dataland_button']")
       .click()
       .get("#email")
@@ -43,7 +42,6 @@ describe("As a user I want to be able to register for an account and be able to 
     cy.task("setPassword", randomHexPassword);
     cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false });
     cy.visitAndCheckAppMount("/")
-      // TODO waiting for the youtube POST request to finish
       .get("button[name='join_dataland_button']")
       .click()
       .get("#email")
