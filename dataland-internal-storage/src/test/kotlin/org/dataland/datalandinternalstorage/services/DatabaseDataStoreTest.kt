@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.StorageHashMap
 import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.services.CompanyManager
-import org.dataland.datalandbackendutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandinternalstorage.DatalandInternalStorage
 import org.dataland.datalandinternalstorage.entities.DataItem
