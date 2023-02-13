@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @Component("DataMetaInformationManager")
 class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
-    @Autowired private val companyManager: CompanyManager
+    @Autowired private val companyManager: CompanyManager,
 ) {
 
     /**
@@ -54,7 +54,7 @@ class DataMetaInformationManager(
         if (dataMetaInformationDbResponse.isEmpty) {
             throw ResourceNotFoundApiException(
                 "Dataset not found",
-                "No dataset with the id: $dataId could be found in the data store."
+                "No dataset with the id: $dataId could be found in the data store.",
             )
         }
         return dataMetaInformationDbResponse.get()
@@ -67,14 +67,15 @@ class DataMetaInformationManager(
      * @return a list of meta info about data depending on the filters:
      */
     fun searchDataMetaInfo(companyId: String, dataType: DataType?): List<DataMetaInformationEntity> {
-        if (companyId != "")
+        if (companyId != "") {
             companyManager.verifyCompanyIdExists(companyId)
+        }
         val dataTypeFilter = dataType?.name ?: ""
         return dataMetaInformationRepository.searchDataMetaInformation(
             DataMetaInformationSearchFilter(
                 dataTypeFilter = dataTypeFilter,
-                companyIdFilter = companyId
-            )
+                companyIdFilter = companyId,
+            ),
         )
     }
 }

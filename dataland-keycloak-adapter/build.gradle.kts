@@ -9,7 +9,7 @@ val jacocoClasses by extra(
                 exclude("**/openApiClient/**")
             }.files
         }
-    }
+    },
 )
 val jacocoVersion: String by project
 
@@ -66,8 +66,8 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     configOptions.set(
         mapOf(
             "dateLibrary" to "java17",
-            "useTags" to "true"
-        )
+            "useTags" to "true",
+        ),
     )
 }
 

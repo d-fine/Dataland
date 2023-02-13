@@ -9,7 +9,7 @@ val jacocoClasses by extra(
                 exclude("**/openApiClient/**")
             }.files
         }
-    }
+    },
 )
 val jacocoVersion: String by project
 val openApiGeneratorTimeOutThresholdInSeconds: String by project
@@ -41,7 +41,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     runtimeOnly(libs.database.postgres)
     runtimeOnly(libs.database.h2)
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.10")
 }
 
 openApi {

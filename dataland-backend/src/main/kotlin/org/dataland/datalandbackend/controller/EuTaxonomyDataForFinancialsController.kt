@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.RestController
 class EuTaxonomyDataForFinancialsController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myObjectMapper: ObjectMapper
+    @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<EuTaxonomyDataForFinancials>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    EuTaxonomyDataForFinancials::class.java
+    EuTaxonomyDataForFinancials::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedEuTaxonomyDataForFinancials")
     override fun getCompanyAssociatedData(dataId: String):

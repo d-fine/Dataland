@@ -67,6 +67,7 @@ services:
       POSTGRES_DB: api_key_manager
       POSTGRES_USER: api_key_manager
       POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
+      PGUSER: api_key_manager
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
@@ -101,6 +102,7 @@ services:
       POSTGRES_DB: backend
       POSTGRES_USER: backend
       POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
+      PGUSER: backend
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
@@ -132,7 +134,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:18.12.1
+    image: node:19.6.0
     networks:
       - internal
     volumes:
@@ -175,6 +177,7 @@ services:
       POSTGRES_DB: internal_storage
       POSTGRES_USER: internal_storage
       POSTGRES_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
+      PGUSER: internal_storage
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
@@ -191,6 +194,7 @@ services:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      PGUSER: keycloak
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s

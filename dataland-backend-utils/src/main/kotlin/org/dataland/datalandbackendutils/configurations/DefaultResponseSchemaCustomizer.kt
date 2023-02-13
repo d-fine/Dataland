@@ -26,8 +26,8 @@ class DefaultResponseSchemaCustomizer : OpenApiCustomizer {
         .content(
             Content().addMediaType(
                 org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
-                MediaType().schema(errorResponseSchema)
-            )
+                MediaType().schema(errorResponseSchema),
+            ),
         )
         .description("An error occurred")
 

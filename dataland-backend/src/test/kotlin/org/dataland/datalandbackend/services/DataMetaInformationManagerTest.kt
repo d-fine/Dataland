@@ -23,7 +23,7 @@ class DataMetaInformationManagerTest(
         }
         assertEquals(
             "Dataland does not know the company ID nonExistingCompanyId",
-            thrown.message
+            thrown.message,
         )
     }
 
@@ -35,7 +35,7 @@ class DataMetaInformationManagerTest(
         }
         assertEquals(
             "No dataset with the id: nonExistingDataId could be found in the data store.",
-            thrown.message
+            thrown.message,
         )
     }
 }

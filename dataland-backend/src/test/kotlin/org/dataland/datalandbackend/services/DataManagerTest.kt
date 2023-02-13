@@ -48,7 +48,7 @@ class DataManagerTest(
             DataType("eutaxonomy-non-financials"),
             "USER_ID_OF_AN_UPLOADING_USER",
             Instant.now().epochSecond,
-            euTaxonomyDataForNonFinancialsAsString
+            euTaxonomyDataForNonFinancialsAsString,
         )
     }
 
@@ -57,7 +57,7 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenThrow(
-            ServerException::class.java
+            ServerException::class.java,
         )
         assertThrows<InternalServerErrorApiException> {
             dataManager.addDataSet(storableDataSet, correlationId)
@@ -69,7 +69,7 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenReturn(
-            InsertDataResponse(dataUUId)
+            InsertDataResponse(dataUUId),
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenThrow(ServerException::class.java)
@@ -83,7 +83,7 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenReturn(
-            InsertDataResponse(dataUUId)
+            InsertDataResponse(dataUUId),
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         val thrown = assertThrows<InvalidInputApiException> {
@@ -92,7 +92,7 @@ class DataManagerTest(
         assertEquals(
             "The data with the id: $dataId is registered as type eutaxonomy-non-financials by " +
                 "Dataland instead of your requested type eutaxonomy-financials.",
-            thrown.message
+            thrown.message,
         )
     }
 
@@ -101,7 +101,7 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenReturn(
-            InsertDataResponse(dataUUId)
+            InsertDataResponse(dataUUId),
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn("")
@@ -116,7 +116,7 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenReturn(
-            InsertDataResponse(dataUUId)
+            InsertDataResponse(dataUUId),
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
         val expectedDataTypeName = getExpectedDataTypeName(storableDataSet, dataId, "eutaxonomy-financials")
@@ -125,18 +125,18 @@ class DataManagerTest(
         }
         assertEquals(
             "The meta-data of dataset $dataId differs between the data store and the database",
-            thrown.message
+            thrown.message,
         )
     }
 
     private fun getExpectedDataTypeName(
         storableDataSet: StorableDataSet,
         dataId: String,
-        unexpectedDataTypeName: String
+        unexpectedDataTypeName: String,
     ): String {
         val expectedDataTypeName = storableDataSet.dataType.name
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
-            objectMapper.writeValueAsString(storableDataSet.copy(dataType = DataType(unexpectedDataTypeName)))
+            objectMapper.writeValueAsString(storableDataSet.copy(dataType = DataType(unexpectedDataTypeName))),
         )
         return expectedDataTypeName
     }
@@ -146,12 +146,12 @@ class DataManagerTest(
         val storableDataSet = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinacialsForIt()
         val storableDataSetAsString = objectMapper.writeValueAsString(storableDataSet)
         `when`(mockStorageClient.insertData(correlationId, storableDataSetAsString)).thenReturn(
-            InsertDataResponse(dataUUId)
+            InsertDataResponse(dataUUId),
         )
         val dataId = dataManager.addDataSet(storableDataSet, correlationId)
 
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
-            objectMapper.writeValueAsString(storableDataSet.copy(uploaderUserId = "NOT_WHATS_EXPECTED"))
+            objectMapper.writeValueAsString(storableDataSet.copy(uploaderUserId = "NOT_WHATS_EXPECTED")),
         )
 
         val thrown = assertThrows<InternalServerErrorApiException> {
@@ -159,7 +159,7 @@ class DataManagerTest(
         }
         assertEquals(
             "The meta-data of dataset $dataId differs between the data store and the database",
-            thrown.message
+            thrown.message,
         )
     }
 }

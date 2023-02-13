@@ -4,10 +4,8 @@ Note: To create a PR using this template add the query parameter `template=manua
 ## Dataland
 ### Skipped updates
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
-- [ ] ktlint 0.45.2 (higher version is not compatible with jlleitschuh plugin)
-- [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.21.0 (Failed to compile)
+- [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.22.0 (Failed to compile)
 - [ ] sonarqube 3.4.0.2513 not update to 3.5.X, due to issues in file resolving mechanism
-- [ ] Cypress 11.2.0 not updated to 12.X.X, due to introduction of spurious errors in the CI
 
 ### Gradle update
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
@@ -27,17 +25,22 @@ The following known issues need to be reviewed in case a compatible version is a
 ### Dockerfile updates
 Update versions in the following dockerfiles
 - [ ] `./dataland-api-key-manager/Dockerfile`
+- [ ] `./dataland-api-key-manager/DockerfileBase`
 - [ ] `./dataland-api-key-manager/DockerfileTest`
-- [ ] `./dataland-backend/DockerfileBase`
-  [ ] `./dataland-backend/DockerfileTest`
 - [ ] `./dataland-backend/Dockerfile`
+- [ ] `./dataland-backend/DockerfileBase`
+- [ ] `./dataland-backend/DockerfileTest`
 - [ ] `./dataland-csvconverter/Dockerfile`
+- [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
+- [ ] `./dataland-internal-storage/Dockerfile`
+- [ ] `./dataland-internal-storage/DockerfileTest`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
 - [ ] `./dataland-inbound-proxy/DockerfileBase`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
+- [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db and frontend-dev

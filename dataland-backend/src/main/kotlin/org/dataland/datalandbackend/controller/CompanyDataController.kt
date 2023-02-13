@@ -28,7 +28,7 @@ class CompanyDataController(
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
         return ResponseEntity.ok(
             companyManager.addCompany(companyInformation)
-                .toApiModel(DatalandAuthentication.fromContext())
+                .toApiModel(DatalandAuthentication.fromContext()),
         )
     }
 
@@ -37,12 +37,12 @@ class CompanyDataController(
         dataTypes: Set<DataType>?,
         countryCodes: Set<String>?,
         sectors: Set<String>?,
-        onlyCompanyNames: Boolean
+        onlyCompanyNames: Boolean,
     ): ResponseEntity<List<StoredCompany>> {
         logger.info(
             "Received a request to get companies with " +
                 "searchString='$searchString', onlyCompanyNames='$onlyCompanyNames', dataTypes='$dataTypes', " +
-                "countryCodes='$countryCodes', sectors='$sectors'"
+                "countryCodes='$countryCodes', sectors='$sectors'",
         )
         return ResponseEntity.ok(
             companyManager.searchCompaniesAndGetApiModel(
@@ -53,8 +53,8 @@ class CompanyDataController(
                     countryCodes ?: setOf(),
                     sectors ?: setOf(),
                 ),
-                DatalandAuthentication.fromContextOrNull()
-            )
+                DatalandAuthentication.fromContextOrNull(),
+            ),
         )
     }
 
@@ -63,14 +63,14 @@ class CompanyDataController(
             CompanyAvailableDistinctValues(
                 countryCodes = companyManager.getDistinctCountryCodes(),
                 sectors = companyManager.getDistinctSectors(),
-            )
+            ),
         )
     }
 
     override fun getCompanyById(companyId: String): ResponseEntity<StoredCompany> {
         return ResponseEntity.ok(
             companyManager
-                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull())
+                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()),
         )
     }
 

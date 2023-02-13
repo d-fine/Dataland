@@ -11,7 +11,7 @@ import java.util.UUID
  */
 @Component
 class DatabaseDataStore(
-    @Autowired private var dataItemRepository: DataItemRepository
+    @Autowired private var dataItemRepository: DataItemRepository,
 ) {
 
     /**

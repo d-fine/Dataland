@@ -14,7 +14,7 @@ plugins {
 
 node {
     download.set(true)
-    version.set("18.12.1")
+    version.set("19.6.0")
 }
 
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
@@ -49,14 +49,14 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     generatorName.set("typescript-axios")
     additionalProperties.set(
         mapOf(
-            "removeEnumValuePrefix" to false
-        )
+            "removeEnumValuePrefix" to false,
+        ),
     )
     configOptions.set(
         mapOf(
             "withInterfaces" to "true",
-            "withSeparateModelsAndApi" to "true"
-        )
+            "withSeparateModelsAndApi" to "true",
+        ),
     )
     dependsOn("getBackendOpenApiSpec")
 }
@@ -71,14 +71,14 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     generatorName.set("typescript-axios")
     additionalProperties.set(
         mapOf(
-            "removeEnumValuePrefix" to false
-        )
+            "removeEnumValuePrefix" to false,
+        ),
     )
     configOptions.set(
         mapOf(
             "withInterfaces" to "true",
-            "withSeparateModelsAndApi" to "true"
-        )
+            "withSeparateModelsAndApi" to "true",
+        ),
     )
 }
 

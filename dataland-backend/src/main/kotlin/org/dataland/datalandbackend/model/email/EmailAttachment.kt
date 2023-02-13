@@ -10,7 +10,7 @@ import java.io.ByteArrayInputStream
 data class EmailAttachment(
     val filename: String,
     val content: ByteArray,
-    val contentType: String
+    val contentType: String,
 )
 
 /**
@@ -23,8 +23,8 @@ fun TransactionalEmail.TransactionalEmailBuilder.attachments(attachments: Collec
             Attachment.fromInputStream(
                 ByteArrayInputStream(it.content),
                 it.filename,
-                it.contentType
-            )
+                it.contentType,
+            ),
         )
     }
     return this

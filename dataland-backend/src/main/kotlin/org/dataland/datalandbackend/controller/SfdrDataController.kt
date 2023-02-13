@@ -23,17 +23,18 @@ import org.springframework.web.bind.annotation.RestController
 class SfdrDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
-    @Autowired var myObjectMapper: ObjectMapper
+    @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<SfdrData>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
-    SfdrData::class.java
+    SfdrData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedSfdrData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SfdrData>> {
         return super.getCompanyAssociatedData(dataId)
     }
+
     @Operation(operationId = "postCompanyAssociatedSfdrData")
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SfdrData>):
         ResponseEntity<DataMetaInformation> {

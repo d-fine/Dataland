@@ -10,5 +10,5 @@ import org.dataland.datalandbackend.model.CompanyInformation
  */
 data class CompanyInformationWithData<T>(
     val companyInformation: CompanyInformation,
-    val t: T
+    val t: T,
 )

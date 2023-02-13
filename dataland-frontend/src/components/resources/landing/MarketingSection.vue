@@ -1,5 +1,5 @@
 <template>
-  <div class="grid m-0">
+  <div data-test="learn-about-our-vision" v-if="!isMobile" class="grid m-0">
     <div class="col-5 col-offset-1 pt-5 text-left">
       <h2 class="uppercase font-light d-letters text-4xl">Learn about our vision</h2>
     </div>
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <div class="grid m-0 pt-6">
+  <div data-test="marketing-squares" v-if="!isMobile" class="grid m-0 pt-6">
     <div class="col-offset-1 col-5 p-0 top-left-blue-border">
       <img src="@/assets/images/elements/flow_diagramm.svg" alt="Flow Diagramm" class="pl-0 w-full" />
     </div>
@@ -39,7 +39,7 @@
       </div>
     </div>
   </div>
-  <div class="grid m-0 pb-6">
+  <div data-test="marketing-squares-second" v-if="!isMobile" class="grid m-0 pb-6">
     <div class="col-5 col-offset-1 p-0 surface-700">
       <div class="grid mt-6">
         <div class="col-8 col-offset-1 align-content-center">
@@ -65,5 +65,10 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "MarketingSection",
+  props: {
+    isMobile: {
+      type: Boolean,
+    },
+  },
 });
 </script>
