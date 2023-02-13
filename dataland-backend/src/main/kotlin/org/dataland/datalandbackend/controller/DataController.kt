@@ -107,8 +107,8 @@ abstract class DataController<T>(
             frameworkData.add(
                 DataAndMetaInformation(
                     it.toApiModel(DatalandAuthentication.fromContext()),
-                    objectMapper.readValue(dataAsString, clazz)
-                )
+                    objectMapper.readValue(dataAsString, clazz),
+                ),
             )
         }
         return ResponseEntity.ok(frameworkData)
