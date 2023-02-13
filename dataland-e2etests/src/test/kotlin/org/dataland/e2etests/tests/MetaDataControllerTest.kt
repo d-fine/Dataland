@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.DatasetQualityStatus
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -39,7 +40,8 @@ class MetaDataControllerTest {
         apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
         val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
         val expectedDataMetaInformation =
-            DataMetaInformation(uploadedMetaInfo.dataId, testDataType, 0, uploadedMetaInfo.companyId, "Yes")
+            DataMetaInformation(uploadedMetaInfo.dataId, testDataType, 0,
+                uploadedMetaInfo.companyId, DatasetQualityStatus.accepted)
         assertEquals(
             expectedDataMetaInformation,
             actualDataMetaInformation.copy(uploadTime = 0),
@@ -146,7 +148,8 @@ class MetaDataControllerTest {
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val dataMetaInformation = apiAccessor.unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
         assertEquals(
-            DataMetaInformation(testDataId, testDataType, 0, listOfUploadInfo[0].actualStoredCompany.companyId, "Yes"),
+            DataMetaInformation(testDataId, testDataType, 0,
+                listOfUploadInfo[0].actualStoredCompany.companyId, DatasetQualityStatus.accepted),
             dataMetaInformation.copy(uploadTime = 0),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
         )
@@ -175,13 +178,14 @@ class MetaDataControllerTest {
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
-        val expectedMetaInformation = DataMetaInformation(testDataId, testDataType, 0, testCompanyId, "Yes")
+        val expectedMetaInformation = DataMetaInformation(testDataId, testDataType, 0,
+            testCompanyId, DatasetQualityStatus.accepted)
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
                 .map { it.copy(uploadTime = 0) }
                 .contains(expectedMetaInformation),
-            "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
-                "match the retrieved meta info.",
+            "The meta info of the posted eu taxonomy data that was associated with the teaser company " +
+                    "does not match the retrieved meta info.",
         )
     }
 

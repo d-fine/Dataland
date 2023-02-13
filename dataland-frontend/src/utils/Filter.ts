@@ -7,7 +7,5 @@ import { DataMetaInformation, DatasetQualityStatus } from "@clients/backend";
  * @returns the filtered meta info and data pairs
  */
 export function filterForAcceptedDatasets(metaInfosAndData: DataMetaInformation[]): DataMetaInformation[] {
-    return metaInfosAndData.filter(
-        metaInfoAndData => metaInfoAndData.qualityStatus == DatasetQualityStatus.Accepted
-    );
+  return metaInfosAndData.filter((metaInfoAndData) => metaInfoAndData.qualityStatus == DatasetQualityStatus.Accepted);
 }

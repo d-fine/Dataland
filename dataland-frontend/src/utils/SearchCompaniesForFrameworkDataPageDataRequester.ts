@@ -107,9 +107,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
       onlyCompanyNames
     );
     const responseData: Array<StoredCompany> = response.data;
-    mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(
-      filterCompaniesForAcceptedDataset(responseData)
-    );
+    mappedResponse = mapStoredCompanyToFrameworkDataSearchPage(filterCompaniesForAcceptedDataset(responseData));
   } catch (error) {
     console.error(error);
   }
