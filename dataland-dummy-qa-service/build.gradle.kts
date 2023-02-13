@@ -43,6 +43,15 @@ dependencies {
     implementation(project(":dataland-backend-utils"))
 }
 
+openApi {
+    outputFileName.set("$projectDir/dummyQaService.json")
+    apiDocsUrl.set("http://localhost:8584/qa/v3/api-docs")
+    customBootRun {
+        args.set(listOf("--server.port=8584"))
+    }
+    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
+}
+
 jacoco {
     toolVersion = jacocoVersion
     applyTo(tasks.bootRun.get())
