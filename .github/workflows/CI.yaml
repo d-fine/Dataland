@@ -80,6 +80,8 @@ jobs:
       - name: verify OpenApi Files
         if: always()
         run: testing/verifyOpenApiFiles.sh
+        env:
+          INTERNAL_BACKEND_URL: "http://backend:8080/api"
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v3
