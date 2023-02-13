@@ -125,9 +125,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
  */
 function filterCompaniesForDatasetWithDisplayableQualityStatus(companies: StoredCompany[]): StoredCompany[] {
   return companies.filter((company) =>
-    company.dataRegisteredByDataland.some(
-        dataMetaInfo => dataMetaInfo.qualityStatus == DatasetQualityStatus.Accepted
-    )
+    company.dataRegisteredByDataland.some((dataMetaInfo) => dataMetaInfo.qualityStatus == DatasetQualityStatus.Accepted)
   );
 }
 
