@@ -5,6 +5,7 @@ WORKDIR /app
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend
+COPY ./dataland-dummy-qa-service/ ./dataland-dummy-qa-service
 COPY ./dataland-e2etests/ ./dataland-e2etests
 COPY ./testing/ ./testing
 COPY ./.git/ ./.git
