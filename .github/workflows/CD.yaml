@@ -61,7 +61,7 @@ jobs:
         with:
           name: frontendApiClient
           path: ./dataland-frontend/build/clients/backend/
-  build-prod-and-deploy:
+  deploy-to-server-with-latest-built-images:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
@@ -126,12 +126,12 @@ jobs:
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
-          subfolder: 'build-prod-and-deploy'
+          subfolder: 'deploy-to-server-with-latest-built-images'
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
-      - build-prod-and-deploy
+      - deploy-to-server-with-latest-built-images
       - upload-dataland-frontend-client
     env:
       REALDATA: ${{ github.event.inputs.realData }}

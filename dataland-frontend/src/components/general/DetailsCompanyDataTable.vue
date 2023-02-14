@@ -11,7 +11,7 @@
         <ul v-if="Array.isArray(data[col.field])">
           <li :key="el" v-for="el in data[col.field]">{{ el }}</li>
         </ul>
-        <span v-else>{{ data[col.field] }}</span>
+        <span v-else>{{ humanizeStringIfNeccessary(col.field, data[col.field]) }}</span>
       </template>
     </Column>
   </DataTable>
@@ -26,6 +26,7 @@ import {
   TypeOfProductionSitesNames,
   TypeOfProductionSitesConvertedNames,
 } from "@/components/resources/frameworkDataSearch/DataModelsTypes";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -58,6 +59,20 @@ export default defineComponent({
           this.columns.push({ field: `${key}`, header: `${key}` });
         }
       }
+    },
+    /**
+     * Humanizes a string if the corresponding key is listed as to be humanized
+     *
+     * @param key decides if the value is to be humanized
+     * @param value string to be possibly humanized
+     * @returns a humanized input of the value parameter if the k
+     */
+    humanizeStringIfNeccessary(key: string, value: string): string {
+      const keysWithValuesToBeHumanized = ["isInHouseProductionOrIsContractProcessing"];
+      if (keysWithValuesToBeHumanized.includes(key)) {
+        return humanizeString(value);
+      }
+      return value;
     },
   },
   watch: {

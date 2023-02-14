@@ -3,4 +3,6 @@
  */
 describe("Tests for shared header for the page of framework data", () => {
   require("./FrameworkSelection");
+  require("./UploadFrameworkDataJourney");
+  require("./RoleChecks");
 });

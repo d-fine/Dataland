@@ -1,15 +1,17 @@
 .p-card {
   background: $card-background;
   color: $card-text;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 32px 8px rgba(30, 30, 31, 0.08);
-  .p-card-body {
-    padding: $spacing-sm
+  &.page-wrapper-card {
+    .p-card-title {
+      text-align: left;
+      padding: 1rem 0;
+      margin: 1rem 0;
+      border-bottom: 1px solid $input-separator;
+    }
   }
   .p-card-title {
     font-size: $fs-xl;
     font-weight: $fw-bold;
-    margin-bottom: $spacing-xxs
   }
   .p-card-subtitle {
     font-weight: $fw-bold;
@@ -23,6 +25,30 @@
   .p-card-footer {
     padding: $spacing-sm 0 0 0
   }
+}
+.d-card {
+  background: $white;
+  padding: $spacing-sm;
+  box-shadow: 0 0 3px 3px $shadow-color;
+  border-radius: $upload-form-radius;
+}
+
+.top-border-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $input-separator;
+}
+
+.bottom-border-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid $input-separator;
+}
+
+.bottom-border-section-dots {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px dotted $input-separator;
 }
 
 .p-progressbar {

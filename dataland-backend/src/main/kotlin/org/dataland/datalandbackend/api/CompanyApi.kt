@@ -55,12 +55,14 @@ interface CompanyApi {
      * A method to retrieve specific companies identified by different filters
      * If the filters are not set, all companies in the data store are returned.
      * @param searchString string used for substring matching
-     * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @param dataTypes If set & non-empty,
      * this function only returns companies that have data for the specified dataTypes
      * @param countryCodes If set & non-empty,
      * this function only returns companies that have a country code contained in the set
      * @param sectors If set & non-empty, this function only returns companies that belong to a sector in the set
+     * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
+     * @param onlyCurrentUserAsUploader boolean determining if the search should only find companies with datasets
+     * uploaded by the current user
      * @return information about all companies matching the search criteria
      */
     @Operation(
@@ -83,6 +85,7 @@ interface CompanyApi {
         @RequestParam countryCodes: Set<String>? = null,
         @RequestParam sectors: Set<String>? = null,
         @RequestParam onlyCompanyNames: Boolean = false,
+        @RequestParam onlyCurrentUserAsUploader: Boolean = false,
     ):
         ResponseEntity<List<StoredCompany>>
 

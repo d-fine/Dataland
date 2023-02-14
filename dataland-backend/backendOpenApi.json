@@ -448,6 +448,14 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "onlyCurrentUserAsUploader",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -2453,6 +2461,13 @@
           }
         }
       },
+      "InHouseProductionOrContractProcessing": {
+        "type": "string",
+        "enum": [
+          "InHouseProduction",
+          "ContractProcessing"
+        ]
+      },
       "LksgChildLabour": {
         "type": "object",
         "properties": {
@@ -2941,9 +2956,18 @@
             "type": "string"
           },
           "isInHouseProductionOrIsContractProcessing": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/InHouseProductionOrContractProcessing"
           },
-          "address": {
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "streetAndHouseNumber": {
+            "type": "string"
+          },
+          "postalCode": {
             "type": "string"
           },
           "listOfGoodsOrServices": {
@@ -3273,7 +3297,8 @@
               "Isin",
               "PermId",
               "Ticker",
-              "Duns"
+              "Duns",
+              "CompanyRegistrationNumber"
             ]
           },
           "identifierValue": {
@@ -3319,6 +3344,9 @@
             }
           },
           "countryCode": {
+            "type": "string"
+          },
+          "website": {
             "type": "string"
           },
           "isTeaserCompany": {
