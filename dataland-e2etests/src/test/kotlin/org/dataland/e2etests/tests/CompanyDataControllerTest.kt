@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.utils.ApiAccessor
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.util.UUID
 
 class CompanyDataControllerTest {
 
@@ -198,6 +200,28 @@ class CompanyDataControllerTest {
             "Client error : 403 ",
             exception.message,
             "The exception message does not say that a 403 client error was the cause.",
+        )
+    }
+
+    @Test
+    fun `post a dummy company twice and receive the expected error code`() {
+        val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getCompanyInformationWithoutIdentifiers(1).first()
+        val randomIsin = CompanyIdentifier(
+            identifierValue = UUID.randomUUID().toString(),
+            identifierType = CompanyIdentifier.IdentifierType.isin,
+        )
+        val randomizedCompanyInformation = testCompanyInformation.copy(identifiers = listOf(randomIsin))
+        apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Uploader)
+        apiAccessor.companyDataControllerApi.postCompany(randomizedCompanyInformation)
+        val exception =
+            assertThrows<Exception> {
+                apiAccessor.companyDataControllerApi.postCompany(randomizedCompanyInformation)
+            }
+        assertEquals(
+            "Client error : 400 ",
+            exception.message,
+            "The exception message does not say that a 400 client error was the cause.",
         )
     }
 }
