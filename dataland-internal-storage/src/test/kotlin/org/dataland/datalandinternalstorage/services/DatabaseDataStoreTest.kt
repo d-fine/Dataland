@@ -22,11 +22,14 @@ import org.springframework.boot.test.context.SpringBootTest
 @Transactional
 class DatabaseDataStoreTest(
     @Autowired val nonPersistedDataClient: NonPersistedDataControllerApi,
-    @Autowired val objectMapper: ObjectMapper
+    @Autowired val objectMapper: ObjectMapper,
 ) {
     val mockDataItemRepository: DataItemRepository = mock(DataItemRepository::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-    val databaseDataStore = DatabaseDataStore(mockDataItemRepository, mockCloudEventMessageHandler, nonPersistedDataClient, objectMapper)
+    val databaseDataStore = DatabaseDataStore(
+        mockDataItemRepository, mockCloudEventMessageHandler,
+        nonPersistedDataClient, objectMapper,
+    )
     val dataId = "TestDataId"
     val data = "TestDataForTestDataId"
     val correlationId = "TestCorrelationId"

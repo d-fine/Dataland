@@ -52,7 +52,7 @@ class QaService(
                 dataId, "QA Process Completed", correlationId,
                 "qa_queue",
             )
-        } else { // TODO Discuss if this kind of error handling makes sense
+        } else {
             val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
             logger.error(internalMessage)
             throw InternalServerErrorApiException(

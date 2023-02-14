@@ -40,7 +40,10 @@ class DataManagerTest(
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
-    val dataManager = DataManager(objectMapper, companyManager, dataMetaInformationManager, mockStorageClient, mockCloudEventMessageHandler, dataInformationHashMap)
+    val dataManager = DataManager(
+        objectMapper, companyManager, dataMetaInformationManager,
+        mockStorageClient, mockCloudEventMessageHandler, dataInformationHashMap,
+    )
     val correlationId = IdUtils.generateUUID()
     val dataUUId = "JustSomeUUID"
 

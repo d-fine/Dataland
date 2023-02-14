@@ -8,7 +8,6 @@ import org.springframework.amqp.core.Message
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
-// TODO check if here /public should also be added
 /**
  * Defines the restful internal storage API.
  */
