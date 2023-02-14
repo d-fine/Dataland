@@ -3,7 +3,7 @@
     <p class="font-medium text-xl">Loading LkSG Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="lksgData && !waitingForData">
+  <div v-if="lksgDataAndMetaInfo && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
       :DataDateOfDataSets="listOfDataDateToDisplayAsColumns"
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
+import { DataAndMetaInformationLksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -35,7 +35,7 @@ export default defineComponent({
   data() {
     return {
       waitingForData: true,
-      lksgData: [] as Array<LksgData>,
+      lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
       listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       kpisNameMappings,
@@ -72,7 +72,9 @@ export default defineComponent({
         const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))).data;
+        this.lksgDataAndMetaInfo = (
+          await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
+        ).data;
         this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
@@ -117,8 +119,8 @@ export default defineComponent({
      * Retrieves and converts the stored array of LkSG datasets in order to make it displayable in the frontend.
      */
     convertLksgDataToFrontendFormat(): void {
-      if (this.lksgData.length) {
-        this.lksgData.forEach((oneLksgDataset) => {
+      if (this.lksgDataAndMetaInfo.length) {
+        this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
           const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
           const dataDateOfLksgDataset = oneLksgDataset.data.social?.general?.dataDate ?? "";
           this.listOfDataDateToDisplayAsColumns.push({

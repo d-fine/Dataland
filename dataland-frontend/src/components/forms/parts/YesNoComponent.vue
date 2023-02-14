@@ -24,10 +24,7 @@
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import {
-  kpisNameMappings,
-  kpisInfoMappings,
-} from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+import { kpisNameMappings, kpisInfoMappings } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
   name: "YesNoComponent",

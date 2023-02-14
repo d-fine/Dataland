@@ -33,10 +33,7 @@
                   <div class="col-9 formFields">
                     <FormKit type="group" name="general" :label="subAreasNameMappings._general">
                       <div class="form-field">
-                        <UploadFormHeader
-                          :name="kpisNameMappings.dataDate"
-                          :explanation="kpisInfoMappings.dataDate"
-                        />
+                        <UploadFormHeader :name="kpisNameMappings.dataDate" :explanation="kpisInfoMappings.dataDate" />
                         <div class="lg:col-4 md:col-6 col-12">
                           <Calendar
                             data-test="lksgDataDate"
