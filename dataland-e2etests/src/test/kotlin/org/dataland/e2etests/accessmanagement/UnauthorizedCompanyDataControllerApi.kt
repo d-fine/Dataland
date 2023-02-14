@@ -18,7 +18,7 @@ class UnauthorizedCompanyDataControllerApi {
 
     private fun buildGetCompanyByIdRequest(companyId: String): Request {
         return Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_BACKEND/companies/$companyId")
+            .url("$BASE_PATH_TO_DATALAND_BACKEND/public/companies/$companyId")
             .get()
             .build()
     }

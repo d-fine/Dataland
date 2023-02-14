@@ -25,18 +25,15 @@
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="general" class="anchor title">{{ lksgSubAreaNameMappings._general }}</h4>
+                    <h4 id="general" class="anchor title">{{ subAreasNameMappings._general }}</h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                     <p>Please input all relevant basic information about the dataset</p>
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="general" :label="lksgSubAreaNameMappings._general">
+                    <FormKit type="group" name="general" :label="subAreasNameMappings._general">
                       <div class="form-field">
-                        <UploadFormHeader
-                          :name="lksgKpiNameMappings.dataDate"
-                          :explanation="lksgKpiInfoMappings.dataDate"
-                        />
+                        <UploadFormHeader :name="kpisNameMappings.dataDate" :explanation="kpisInfoMappings.dataDate" />
                         <div class="lg:col-4 md:col-6 col-12">
                           <Calendar
                             data-test="lksgDataDate"
@@ -59,12 +56,12 @@
 
                       <div class="form-field" data-test="lksgInScope">
                         <UploadFormHeader
-                          :name="lksgKpiNameMappings.lksgInScope"
-                          :explanation="lksgKpiInfoMappings.lksgInScope"
+                          :name="kpisNameMappings.lksgInScope"
+                          :explanation="kpisInfoMappings.lksgInScope"
                         />
                         <FormKit
                           type="radio"
-                          :validation-label="lksgKpiNameMappings.lksgInScope"
+                          :validation-label="kpisNameMappings.lksgInScope"
                           name="lksgInScope"
                           :options="['Yes', 'No']"
                           :outer-class="{
@@ -83,12 +80,12 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="lksgKpiNameMappings.vatIdentificationNumber"
-                          :explanation="lksgKpiInfoMappings.vatIdentificationNumber"
+                          :name="kpisNameMappings.vatIdentificationNumber"
+                          :explanation="kpisInfoMappings.vatIdentificationNumber"
                         />
                         <FormKit
                           type="text"
-                          :validation-label="lksgKpiNameMappings.vatIdentificationNumber"
+                          :validation-label="kpisNameMappings.vatIdentificationNumber"
                           validation="required|length:3"
                           name="vatIdentificationNumber"
                           :inner-class="{ short: true }"
@@ -97,13 +94,13 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="lksgKpiNameMappings.numberOfEmployees"
-                          :explanation="lksgKpiInfoMappings.numberOfEmployees"
+                          :name="kpisNameMappings.numberOfEmployees"
+                          :explanation="kpisInfoMappings.numberOfEmployees"
                         />
                         <FormKit
                           type="number"
                           name="numberOfEmployees"
-                          :validation-label="lksgKpiNameMappings.numberOfEmployees"
+                          :validation-label="kpisNameMappings.numberOfEmployees"
                           placeholder="Value"
                           validation="required|number"
                           step="1"
@@ -114,13 +111,13 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="lksgKpiNameMappings.shareOfTemporaryWorkers"
-                          :explanation="lksgKpiInfoMappings.shareOfTemporaryWorkers"
+                          :name="kpisNameMappings.shareOfTemporaryWorkers"
+                          :explanation="kpisInfoMappings.shareOfTemporaryWorkers"
                         />
                         <FormKit
                           type="number"
                           name="shareOfTemporaryWorkers"
-                          :validation-label="lksgKpiNameMappings.shareOfTemporaryWorkers"
+                          :validation-label="kpisNameMappings.shareOfTemporaryWorkers"
                           placeholder="Value %"
                           step="0.01"
                           min="0"
@@ -133,13 +130,13 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="lksgKpiNameMappings.totalRevenue"
-                          :explanation="lksgKpiInfoMappings.totalRevenue"
+                          :name="kpisNameMappings.totalRevenue"
+                          :explanation="kpisInfoMappings.totalRevenue"
                         />
                         <FormKit
                           type="number"
                           min="0"
-                          :validation-label="lksgKpiNameMappings.totalRevenue"
+                          :validation-label="kpisNameMappings.totalRevenue"
                           validation="required|number|min:0"
                           name="totalRevenue"
                           placeholder="Value"
@@ -152,13 +149,13 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="lksgKpiNameMappings.totalRevenueCurrency"
-                          :explanation="lksgKpiInfoMappings.totalRevenueCurrency"
+                          :name="kpisNameMappings.totalRevenueCurrency"
+                          :explanation="kpisInfoMappings.totalRevenueCurrency"
                         />
                         <FormKit
                           type="text"
                           name="totalRevenueCurrency"
-                          :validation-label="lksgKpiNameMappings.totalRevenueCurrency"
+                          :validation-label="kpisNameMappings.totalRevenueCurrency"
                           placeholder="Currency"
                           validation="required"
                           :inner-class="{
@@ -170,14 +167,14 @@
                       <div class="form-field" data-test="IsYourCompanyManufacturingCompany">
                         <UploadFormHeader
                           :name="'Is your company a manufacturing company?'"
-                          :explanation="lksgKpiInfoMappings.listOfProductionSites"
+                          :explanation="kpisInfoMappings.listOfProductionSites"
                         />
                         <FormKit
                           type="radio"
                           :ignore="true"
                           id="IsYourCompanyManufacturingCompany"
                           name="IsYourCompanyManufacturingCompany"
-                          :validation-label="lksgKpiNameMappings.totalRevenueCurrency"
+                          :validation-label="kpisNameMappings.totalRevenueCurrency"
                           :options="['Yes', 'No']"
                           v-model="isYourCompanyManufacturingCompany"
                           validation="required"
@@ -197,7 +194,7 @@
                       <FormKit
                         type="list"
                         v-if="isYourCompanyManufacturingCompany !== 'No'"
-                        :validation-label="lksgKpiNameMappings.totalRevenueCurrency"
+                        :validation-label="kpisNameMappings.totalRevenueCurrency"
                         name="listOfProductionSites"
                         label="listOfProductionSites"
                       >
@@ -216,12 +213,12 @@
 
                             <div class="form-field">
                               <UploadFormHeader
-                                :name="lksgKpiNameMappings.productionSiteName"
-                                :explanation="lksgKpiInfoMappings.productionSiteName"
+                                :name="kpisNameMappings.productionSiteName"
+                                :explanation="kpisInfoMappings.productionSiteName"
                               />
                               <FormKit
                                 type="text"
-                                :validation-label="lksgKpiNameMappings.productionSiteName"
+                                :validation-label="kpisNameMappings.productionSiteName"
                                 name="name"
                                 validation="required"
                               />
@@ -229,13 +226,13 @@
 
                             <div class="form-field" data-test="isInHouseProductionOrIsContractProcessing">
                               <UploadFormHeader
-                                :name="lksgKpiNameMappings.inHouseProductionOrContractProcessing"
-                                :explanation="lksgKpiInfoMappings.inHouseProductionOrContractProcessing"
+                                :name="kpisNameMappings.inHouseProductionOrContractProcessing"
+                                :explanation="kpisInfoMappings.inHouseProductionOrContractProcessing"
                               />
                               <FormKit
                                 type="radio"
                                 name="isInHouseProductionOrIsContractProcessing"
-                                :validation-label="lksgKpiNameMappings.inHouseProductionOrContractProcessing"
+                                :validation-label="kpisNameMappings.inHouseProductionOrContractProcessing"
                                 :options="isInHouseProductionOrContractProcessingMap"
                                 validation="required"
                                 :outer-class="{
@@ -253,15 +250,15 @@
 
                             <div class="form-field">
                               <UploadFormHeader
-                                :name="lksgKpiNameMappings.addressesOfProductionSites"
-                                :explanation="lksgKpiInfoMappings.addressesOfProductionSites"
+                                :name="kpisNameMappings.addressesOfProductionSites"
+                                :explanation="kpisInfoMappings.addressesOfProductionSites"
                               />
 
                               <FormKit
                                 type="text"
                                 name="streetAndHouseNumber"
                                 validation="required"
-                                :validation-label="lksgKpiNameMappings.addressesOfProductionSites"
+                                :validation-label="kpisNameMappings.addressesOfProductionSites"
                                 placeholder="Street, House number"
                               />
                               <div class="next-to-each-other">
@@ -298,8 +295,8 @@
                                   aria-hidden="true"
                                   title="listOfGoodsOrServices"
                                   v-tooltip.top="{
-                                    value: lksgKpiInfoMappings['listOfGoodsOrServices']
-                                      ? lksgKpiInfoMappings['listOfGoodsOrServices']
+                                    value: kpisInfoMappings['listOfGoodsOrServices']
+                                      ? kpisInfoMappings['listOfGoodsOrServices']
                                       : '',
                                   }"
                                   >info</em
@@ -357,7 +354,7 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="childLabour" class="anchor title">{{ lksgSubAreaNameMappings.childLabour }}</h4>
+                    <h4 id="childLabour" class="anchor title">{{ subAreasNameMappings.childLabour }}</h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
@@ -379,7 +376,7 @@
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="forcedLabourSlaveryAndDebtBondage" class="anchor title">
-                      {{ lksgSubAreaNameMappings.forcedLabourSlaveryAndDebtBondage }}
+                      {{ subAreasNameMappings.forcedLabourSlaveryAndDebtBondage }}
                     </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
@@ -403,7 +400,7 @@
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="evidenceCertificatesAndAttestations" class="anchor title">
-                      {{ lksgSubAreaNameMappings.evidenceCertificatesAndAttestations }}
+                      {{ subAreasNameMappings.evidenceCertificatesAndAttestations }}
                     </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
@@ -440,7 +437,7 @@
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="grievanceMechanism" class="anchor title">
-                      {{ lksgSubAreaNameMappings.grievanceMechanism }}
+                      {{ subAreasNameMappings.grievanceMechanism }}
                     </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
@@ -456,7 +453,7 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 p-3 topicLabel">
-                    <h4 id="osh" class="anchor title">{{ lksgSubAreaNameMappings.osh }}</h4>
+                    <h4 id="osh" class="anchor title">{{ subAreasNameMappings.osh }}</h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
@@ -486,7 +483,7 @@
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="freedomOfAssociation" class="anchor title">
-                      {{ lksgSubAreaNameMappings.freedomOfAssociation }}
+                      {{ subAreasNameMappings.freedomOfAssociation }}
                     </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
@@ -504,7 +501,7 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="humanRights" class="anchor title">{{ lksgSubAreaNameMappings.humanRights }}</h4>
+                    <h4 id="humanRights" class="anchor title">{{ subAreasNameMappings.humanRights }}</h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
@@ -526,7 +523,7 @@
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="socialAndEmployeeMatters" class="anchor title">
-                      {{ lksgSubAreaNameMappings.socialAndEmployeeMatters }}
+                      {{ subAreasNameMappings.socialAndEmployeeMatters }}
                     </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
@@ -540,7 +537,7 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="environment" class="anchor title">{{ lksgSubAreaNameMappings.environment }}</h4>
+                    <h4 id="environment" class="anchor title">{{ subAreasNameMappings.environment }}</h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -552,7 +549,7 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="osh_governance" class="anchor title">{{ lksgSubAreaNameMappings.osh }}</h4>
+                    <h4 id="osh_governance" class="anchor title">{{ subAreasNameMappings.osh }}</h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -564,7 +561,7 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="riskManagement" class="anchor title">{{ lksgSubAreaNameMappings.riskManagement }}</h4>
+                    <h4 id="riskManagement" class="anchor title">{{ subAreasNameMappings.riskManagement }}</h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -576,7 +573,7 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 p-3 topicLabel">
-                    <h4 id="codeOfConduct" class="anchor title">{{ lksgSubAreaNameMappings.codeOfConduct }}</h4>
+                    <h4 id="codeOfConduct" class="anchor title">{{ subAreasNameMappings.codeOfConduct }}</h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -592,7 +589,7 @@
               <FormKit type="group" name="environmental" label="environmental">
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="waste" class="anchor title">{{ lksgSubAreaNameMappings.waste }}</h4>
+                    <h4 id="waste" class="anchor title">{{ subAreasNameMappings.waste }}</h4>
                     <div class="p-badge badge-green"><span>ENVIRONMENTAL</span></div>
                   </div>
 
@@ -689,9 +686,9 @@ import Calendar from "primevue/calendar";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import {
-  lksgKpiInfoMappings,
-  lksgKpiNameMappings,
-  lksgSubAreaNameMappings,
+  kpisInfoMappings,
+  kpisNameMappings,
+  subAreasNameMappings,
 } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
@@ -728,9 +725,9 @@ export default defineComponent({
     uploadSucceded: false,
     postLkSGDataProcessed: false,
     messageCounter: 0,
-    lksgKpiInfoMappings,
-    lksgKpiNameMappings,
-    lksgSubAreaNameMappings,
+    kpisInfoMappings,
+    kpisNameMappings,
+    subAreasNameMappings,
     elementPosition: 0,
     scrollListener: (): null => null,
     isInHouseProductionOrContractProcessingMap: Object.fromEntries(

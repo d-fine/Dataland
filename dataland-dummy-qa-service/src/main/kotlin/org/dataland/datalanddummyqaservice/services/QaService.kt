@@ -1,7 +1,7 @@
-package org.dataland.datalanddummyqaservice
+package org.dataland.datalanddummyqaservice.services
 
-import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
@@ -55,9 +55,8 @@ class QaService(
         } else {
             val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
             logger.error(internalMessage)
-            throw InternalServerErrorApiException(
-                "Error receiving data for QA process", "The reception of data failed",
-                internalMessage,
+            throw MessageQueueException(
+                "Error receiving data for QA process: $internalMessage",
             )
         }
     }

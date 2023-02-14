@@ -41,6 +41,7 @@ class MalformedRawRequestTests {
         tokenHandler.obtainTokenForUserType(UserType.Uploader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
+            .addPathSegment("public")
             .addPathSegment("companies")
             .build()
         val request = Request.Builder()
@@ -60,6 +61,7 @@ class MalformedRawRequestTests {
         tokenHandler.obtainTokenForUserType(UserType.Uploader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
+            .addPathSegment("public")
             .addPathSegment("data")
             .addPathSegment("eutaxonomy-non-financials")
             .build()
@@ -80,6 +82,7 @@ class MalformedRawRequestTests {
         tokenHandler.obtainTokenForUserType(UserType.Reader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
+            .addPathSegment("public")
             .addPathSegment("companies")
             .build()
         val request = Request.Builder()
@@ -97,6 +100,7 @@ class MalformedRawRequestTests {
         tokenHandler.obtainTokenForUserType(UserType.Reader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
+            .addPathSegment("public")
             .addPathSegment("companies")
             .build()
         val request = Request.Builder()
@@ -137,6 +141,7 @@ class MalformedRawRequestTests {
         tokenHandler.obtainTokenForUserType(UserType.Reader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
+            .addPathSegment("public")
             .addPathSegment("companies")
             .addQueryParameter("dataTypes", "this-datatype-does-not-exist")
             .build()

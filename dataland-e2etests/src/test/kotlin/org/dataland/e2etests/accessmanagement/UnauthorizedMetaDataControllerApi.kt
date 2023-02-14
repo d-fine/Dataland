@@ -29,7 +29,7 @@ class UnauthorizedMetaDataControllerApi {
 
     private fun buildGetDataMetaInfoRequest(dataId: String): Request {
         return Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_BACKEND/metadata/$dataId")
+            .url("$BASE_PATH_TO_DATALAND_BACKEND/public/metadata/$dataId")
             .get()
             .build()
     }
@@ -37,6 +37,7 @@ class UnauthorizedMetaDataControllerApi {
     private fun buildGetListOfDataMetaInfoRequest(companyId: String, dataType: DataTypeEnum): Request {
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
+            .addPathSegment("public")
             .addPathSegment("metadata")
             .addQueryParameter("companyId", companyId)
             .addQueryParameter("dataType", dataType.value)

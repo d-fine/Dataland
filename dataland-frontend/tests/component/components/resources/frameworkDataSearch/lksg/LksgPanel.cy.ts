@@ -9,7 +9,7 @@ describe("Component test for LksgPanel", () => {
       data() {
         return {
           waitingForData: false,
-          lksgData: [pseudoLksgData as LksgData],
+          lksgDataAndMetaInfo: [{ metaInfo: {}, data: pseudoLksgData as LksgData }],
         };
       },
       created() {

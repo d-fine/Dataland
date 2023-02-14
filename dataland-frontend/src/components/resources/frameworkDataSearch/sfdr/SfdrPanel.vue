@@ -1,23 +1,23 @@
 <template>
   <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Loading LkSG Data...</p>
+    <p class="font-medium text-xl">Loading Sfdr Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="lksgDataAndMetaInfo && !waitingForData">
+  <div v-if="sfdrData && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
       :DataDateOfDataSets="listOfDataDateToDisplayAsColumns"
       :kpiNameMappings="kpisNameMappings"
       :kpiInfoMappings="kpisInfoMappings"
       :subAreaNameMappings="subAreasNameMappings"
-      tableDataTitle="LkSG Data"
+      tableDataTitle="SFDR data"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData, DatasetQualityStatus } from "@clients/backend";
+import { SfdrData, DataAndMetaInformationSfdrData, DatasetQualityStatus } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -30,12 +30,17 @@ import {
 } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
-  name: "LksgPanel",
+  name: "SfdrPanel",
   components: { CompanyDataTable },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   data() {
     return {
       waitingForData: true,
-      lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
+      sfdrData: [] as Array<SfdrData>,
       listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       kpisNameMappings,
@@ -48,37 +53,24 @@ export default defineComponent({
       type: String,
     },
   },
-  watch: {
-    companyId() {
-      this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchAllAcceptedDatasets();
-    },
-  },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
   created() {
     void this.fetchAllAcceptedDatasets();
   },
   methods: {
     /**
-     * Fetches all accepted LkSG datasets for the current company and converts them to the requried frontend format.
+     * Fetches all accepted Sfdr datasets for the current company and converts them to the required frontend format.
      */
     async fetchAllAcceptedDatasets() {
       try {
         this.waitingForData = true;
-        const lksgDataControllerApi = await new ApiClientProvider(
+        const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
-        ).getLksgDataControllerApi();
-        this.lksgDataAndMetaInfo = (
-          await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
-        ).data.filter(
-          (dataAndMetaInfo: DataAndMetaInformationLksgData) =>
+        ).getSfdrDataControllerApi();
+        this.sfdrData = (await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))).data.filter(
+          (dataAndMetaInfo: DataAndMetaInformationSfdrData) =>
             dataAndMetaInfo.metaInfo.qualityStatus == DatasetQualityStatus.Accepted
         );
-        this.convertLksgDataToFrontendFormat();
+        this.convertSfdrDataToFrontendFormat(this.sfdrData);
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -91,22 +83,19 @@ export default defineComponent({
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
      * @param subAreaKey The sub area to which the kpi belongs
-     * @param dataIdOfLksgDataset The value of the date kpi of an LkSG dataset
+     * @param dataIdOfSfdrDataset The value of the data Id of an Sfdr dataset
      */
     createKpiDataObjects(
       kpiKey: string,
-      kpiValue: object | string | number,
+      kpiValue: object | string,
       subAreaKey: string,
-      dataIdOfLksgDataset: string
+      dataIdOfSfdrDataset: string
     ): void {
-      if (kpiKey === "totalRevenue" && typeof kpiValue === "number") {
-        kpiValue = this.convertToMillions(kpiValue);
-      }
       let indexOfExistingItem = -1;
       const kpiDataObject = {
         subAreaKey: subAreaKey == "general" ? `_${subAreaKey}` : subAreaKey,
         kpiKey: kpiKey,
-        [dataIdOfLksgDataset]: kpiValue,
+        [dataIdOfSfdrDataset]: kpiValue,
       };
       indexOfExistingItem = this.kpiDataObjects.findIndex(
         (singleKpiDataObject) => singleKpiDataObject.kpiKey === kpiKey
@@ -119,21 +108,23 @@ export default defineComponent({
     },
 
     /**
-     * Retrieves and converts the stored array of LkSG datasets in order to make it displayable in the frontend.
+     * Retrieves and converts values from an array of SDFG datasets in order to make it displayable in the frontend.
+     *
+     * @param sfdrData The Sfdr dataset that shall be converted
      */
-    convertLksgDataToFrontendFormat(): void {
-      if (this.lksgDataAndMetaInfo.length) {
-        this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
-          const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
-          const dataDateOfLksgDataset = oneLksgDataset.data.social?.general?.dataDate ?? "";
+    convertSfdrDataToFrontendFormat(sfdrData: Array<DataAndMetaInformationSfdrData>): void {
+      if (sfdrData.length) {
+        sfdrData.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
+          const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
+          const dataDateOfSfdrDataset = oneSfdrDataset.data.social?.general?.fiscalYearEnd ?? "";
           this.listOfDataDateToDisplayAsColumns.push({
-            dataId: dataIdOfLksgDataset,
-            dataDate: dataDateOfLksgDataset,
+            dataId: dataIdOfSfdrDataset,
+            dataDate: dataDateOfSfdrDataset,
           });
-          for (const areaObject of Object.values(oneLksgDataset.data)) {
+          for (const areaObject of Object.values(oneSfdrDataset.data)) {
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
               for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
-                this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataIdOfLksgDataset);
+                this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataIdOfSfdrDataset);
               }
             }
           }
@@ -141,15 +132,11 @@ export default defineComponent({
       }
       this.listOfDataDateToDisplayAsColumns = sortDatesToDisplayAsColumns(this.listOfDataDateToDisplayAsColumns);
     },
-
-    /**
-     * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
-     *
-     * @param inputNumber The numbert to convert
-     * @returns a string with the converted number and "MM" at the end
-     */
-    convertToMillions(inputNumber: number): string {
-      return `${(inputNumber / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
+  },
+  watch: {
+    companyId() {
+      this.listOfDataDateToDisplayAsColumns = [];
+      void this.fetchAllAcceptedDatasets();
     },
   },
 });

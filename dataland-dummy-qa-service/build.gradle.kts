@@ -38,18 +38,7 @@ dependencies {
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
-    implementation("io.swagger.core.v3:swagger-annotations:2.2.8")
     implementation(project(":dataland-message-queue-utils"))
-    implementation(project(":dataland-backend-utils"))
-}
-
-openApi {
-    outputFileName.set("$projectDir/dummyQaServiceOpenApi.json")
-    apiDocsUrl.set("http://localhost:8584/qa/v3/api-docs")
-    customBootRun {
-        args.set(listOf("--server.port=8584"))
-    }
-    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
 jacoco {
