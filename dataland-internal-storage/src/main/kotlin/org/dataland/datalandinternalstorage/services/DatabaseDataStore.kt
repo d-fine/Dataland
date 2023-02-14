@@ -28,7 +28,6 @@ class DatabaseDataStore(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-
     /**
      * Method to store data into the database in case there is a message on the storage_queue
      * @param message Message retrieved from storage_queue
@@ -56,18 +55,18 @@ class DatabaseDataStore(
         try {
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    dataId, "Data successfully stored", correlationId,
-                    "stored_queue",
+                dataId, "Data successfully stored", correlationId,
+                "stored_queue",
             )
         } catch (e: ServerException) {
             val internalMessage = "Error storing data." +
-                    " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
+                " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
             logger.error(internalMessage)
             // TODO check that the error messages are applicable
             throw InternalServerErrorApiException(
-                    "Upload to Storage failed", "The upload of the dataset to the Storage failed",
-                    internalMessage,
-                    e,
+                "Upload to Storage failed", "The upload of the dataset to the Storage failed",
+                internalMessage,
+                e,
             )
         }
     }

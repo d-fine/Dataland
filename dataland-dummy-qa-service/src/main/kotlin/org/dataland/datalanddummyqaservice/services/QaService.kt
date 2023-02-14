@@ -1,4 +1,4 @@
-package org.dataland.datalanddummyqaservice
+package org.dataland.datalanddummyqaservice.services
 
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler

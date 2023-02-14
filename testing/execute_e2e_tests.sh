@@ -41,7 +41,7 @@ timeout 90 sh -c "docker logs dala-e2e-test-internal-storage-1 --follow" > /dev/
 docker cp dala-e2e-test-internal-storage-1:/app/dataland-internal-storage/build/jacoco/bootRun.exec ./internal-storage-bootRun-${CYPRESS_TEST_GROUP}.exec
 
 docker exec dala-e2e-test-dummy-qa-service-1 pkill -f spring
-timeout 90 sh -c "docker logs dataland-e2e-test-dummy-qa-service-1 --follow" > /dev/null
+timeout 90 sh -c "docker logs dala-e2e-test-dummy-qa-service-1 --follow" > /dev/null
 docker cp dala-e2e-test-dummy-qa-service-1:/app/dataland-dummy-qa-service/build/jacoco/bootRun.exec ./dummy-qa-service-bootRun-${CYPRESS_TEST_GROUP}.exec
 
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
@@ -55,6 +55,7 @@ pg_isready -d keycloak -h "localhost" -p 5434
 pg_isready -d api_key_manager -h "localhost" -p 5435
 pg_isready -d internal_storage -h "localhost" -p 5436
 # TODO add admin access for rabbitMQ ?
+# TODO i think these are the connections for the databases and rabbitmq doesn't have one, if iam not mistaken
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`

@@ -17,7 +17,7 @@ class ConfigurationBackendControllerApi {
     @Bean
     fun getApiBackendClient(): NonPersistedDataControllerApi {
         return NonPersistedDataControllerApi(
-            System.getenv("INTERNAL_BACKEND_URL")
+            System.getenv("INTERNAL_BACKEND_URL"),
         )
     }
 }
