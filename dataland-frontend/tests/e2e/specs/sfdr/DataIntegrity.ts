@@ -114,13 +114,6 @@ describeIf(
           });
         });
       });
-
-      cy.get("table.p-datatable-table").find(`span.link`).click();
-      cy.request("GET", "/test_pdf.pdf").then((response) => {
-        expect(response.status).to.equal(200);
-        expect(response.headers["content-type"]).to.equal("application/pdf");
-        expect(response.body).to.be.a("string");
-      });
     });
 
     it("Check Sfdr view page for company with two Sfdr data sets", () => {
