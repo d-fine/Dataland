@@ -86,7 +86,7 @@
               <div class="text-900 font-medium text-xl text-left">API Key usage info</div>
               <div class="block text-600 mb-2 mt-4 text-left">
                 You can use the API-Keys as bearer-tokens by including them in the authorization header of any requests
-                you make to dataland (i.e., "Authorization: Bearer &lt;ApiKeyValue&gt;").
+                you make to dataland (i.e., "Authorization: Bearer &lt;API Key&gt;").
               </div>
             </div>
           </div>
