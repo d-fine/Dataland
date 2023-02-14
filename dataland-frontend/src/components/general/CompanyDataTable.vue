@@ -19,20 +19,20 @@
         v-model:expandedRowGroups="expandedRowGroups"
       >
         <Column
-          bodyClass="headers-bg flex"
+          bodyClass="headers-bg"
           headerStyle="width: 30vw;"
           headerClass="horizontal-headers-size"
           field="kpiKey"
           header="KPIs"
         >
           <template #body="slotProps">
-            <span class="col-10">{{
+            <span class="table-left-label">{{
               kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : slotProps.data.kpiKey
             }}</span>
             <em
-              class="material-icons info-icon col-2"
+              class="material-icons info-icon"
               aria-hidden="true"
-              title="kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : ''"
+              :title="kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : ''"
               v-tooltip.top="{
                 value: kpiInfoMappings[slotProps.data.kpiKey] ? kpiInfoMappings[slotProps.data.kpiKey] : '',
               }"
@@ -41,26 +41,57 @@
           </template>
         </Column>
         <Column
-          v-for="dataDate of dataDatesOfDataSets"
-          :field="dataDate"
-          :header="dataDate.split('-')[0]"
-          :key="dataDate"
+          v-for="dataDate of DataDateOfDataSets"
+          headerClass="horizontal-headers-size"
+          :field="dataDate.dataId"
+          :header="dataDate.dataDate?.split('-')[0]"
+          :key="dataDate.dataId"
         >
           <template #body="{ data }">
             <a
-              v-if="Array.isArray(data[dataDate]) && data[dataDate].length"
-              @click="openModalAndDisplayListOfProductionSites(data[dataDate], kpiNameMappings[data.kpiKey])"
+              v-if="Array.isArray(data[dataDate.dataId]) && data[dataDate.dataId].length"
+              @click="openModalAndDisplayListOfProductionSites(data[dataDate.dataId], kpiNameMappings[data.kpiKey])"
               class="link"
               >Show "{{ kpiNameMappings[data.kpiKey] }}"
               <em class="material-icons" aria-hidden="true" title=""> dataset </em>
             </a>
-            <span v-else>{{ Array.isArray(data[dataDate]) ? "" : data[dataDate] }}</span>
+            <template v-else-if="typeof data[dataDate.dataId] === 'object' && data[dataDate.dataId] !== null">
+              <table class="detail-table" aria-describedby="Details Table">
+                <th style="display: none"></th>
+                <caption style="display: none">
+                  Details Table
+                </caption>
+                <template v-for="(value, key, index) in data[dataDate.dataId]" :key="index + key">
+                  <tr v-if="typeof value === 'string'">
+                    <td class="key-td">{{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}</td>
+                    <td class="value-td">{{ value }}</td>
+                  </tr>
+                  <template v-if="typeof value === 'object' && value !== null">
+                    <tr>
+                      <td rowspan="4" class="key-td text-center">
+                        {{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}
+                      </td>
+                    </tr>
+                    <tr v-for="(value, key, index) in value" :key="index + key">
+                      <td class="internal-key-td">{{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}</td>
+                      <td class="internal-value-td">{{ value }}</td>
+                    </tr>
+                  </template>
+                </template>
+              </table>
+            </template>
+
+            <span v-else>{{ Array.isArray(data[dataDate.dataId]) ? "" : data[dataDate.dataId] }}</span>
           </template>
         </Column>
 
         <Column field="subAreaKey" header="Impact Area"></Column>
         <template #groupheader="slotProps">
-          <span>{{ slotProps.data.subAreaKey ? subAreaNameMappings[slotProps.data.subAreaKey] : "" }}</span>
+          <span>{{
+            subAreaNameMappings[slotProps.data.subAreaKey]
+              ? subAreaNameMappings[slotProps.data.subAreaKey]
+              : slotProps.data.subAreaKey
+          }}</span>
         </template>
       </DataTable>
     </div>
@@ -94,7 +125,7 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    dataDatesOfDataSets: {
+    DataDateOfDataSets: {
       type: Array,
       default: () => [],
     },
@@ -145,9 +176,6 @@ export default defineComponent({
 .p-rowgroup-footer td {
   font-weight: 500;
 }
-.horizontal-headers-size {
-  width: 500px;
-}
 ::v-deep(.p-rowgroup-header) {
   span {
     font-weight: 500;
@@ -157,6 +185,20 @@ export default defineComponent({
     margin-right: 0.25rem;
     float: right;
     cursor: pointer;
+  }
+}
+.detail-table {
+  background-color: var(--surface-0);
+  tr {
+    &:hover {
+      background-color: transparent;
+    }
+    .key-td {
+      background-color: var(--surface-300);
+    }
+    .internal-key-td {
+      background-color: var(--surface-100);
+    }
   }
 }
 </style>

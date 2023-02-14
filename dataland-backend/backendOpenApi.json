@@ -804,7 +804,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SmeData"
+                    "$ref": "#/components/schemas/DataAndMetaInformationSmeData"
                   }
                 }
               }
@@ -929,7 +929,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SfdrData"
+                    "$ref": "#/components/schemas/DataAndMetaInformationSfdrData"
                   }
                 }
               }
@@ -1054,7 +1054,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/LksgData"
+                    "$ref": "#/components/schemas/DataAndMetaInformationLksgData"
                   }
                 }
               }
@@ -1179,7 +1179,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/EuTaxonomyDataForNonFinancials"
+                    "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyDataForNonFinancials"
                   }
                 }
               }
@@ -1304,7 +1304,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/EuTaxonomyDataForFinancials"
+                    "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyDataForFinancials"
                   }
                 }
               }
@@ -3502,6 +3502,81 @@
             "items": {
               "$ref": "#/components/schemas/DataMetaInformation"
             }
+          }
+        }
+      },
+      "DataAndMetaInformationSmeData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SmeData"
+          }
+        }
+      },
+      "DataAndMetaInformationSfdrData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SfdrData"
+          }
+        }
+      },
+      "DataAndMetaInformationLksgData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LksgData"
+          }
+        }
+      },
+      "DataAndMetaInformationEuTaxonomyDataForNonFinancials": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EuTaxonomyDataForNonFinancials"
+          }
+        }
+      },
+      "DataAndMetaInformationEuTaxonomyDataForFinancials": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EuTaxonomyDataForFinancials"
           }
         }
       },
