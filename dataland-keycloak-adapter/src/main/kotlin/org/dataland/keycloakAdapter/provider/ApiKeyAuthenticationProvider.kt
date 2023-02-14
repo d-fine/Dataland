@@ -1,4 +1,4 @@
-package org.dataland.keycloakAdapter.support.apikey
+package org.dataland.keycloakAdapter.auth.provider
 
 import org.dataland.datalandapikeymanager.openApiClient.api.ApiKeyControllerApi
 import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientException

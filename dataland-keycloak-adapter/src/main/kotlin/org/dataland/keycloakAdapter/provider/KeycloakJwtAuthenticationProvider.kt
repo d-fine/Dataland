@@ -1,4 +1,4 @@
-package org.dataland.keycloakAdapter.support.keycloak
+package org.dataland.keycloakAdapter.auth.provider
 
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory

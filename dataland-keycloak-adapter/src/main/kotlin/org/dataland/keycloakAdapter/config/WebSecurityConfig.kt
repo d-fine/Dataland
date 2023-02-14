@@ -1,8 +1,8 @@
 package org.dataland.keycloakAdapter.config
 
 import jakarta.servlet.http.HttpServletRequest
-import org.dataland.keycloakAdapter.support.apikey.ApiKeyAuthenticationProvider
-import org.dataland.keycloakAdapter.support.keycloak.KeycloakJwtAuthenticationProvider
+import org.dataland.keycloakAdapter.auth.provider.ApiKeyAuthenticationProvider
+import org.dataland.keycloakAdapter.auth.provider.KeycloakJwtAuthenticationProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
