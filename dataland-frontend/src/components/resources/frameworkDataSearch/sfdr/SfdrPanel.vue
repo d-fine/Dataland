@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { SfdrData, DataAndMetaInformationSfdrData } from "@clients/backend";
+import { SfdrData, DataAndMetaInformationSfdrData, DatasetQualityStatus } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -54,19 +54,22 @@ export default defineComponent({
     },
   },
   created() {
-    void this.fetchDataForAllDataIds();
+    void this.fetchAllAcceptedDatasets();
   },
   methods: {
     /**
-     * Fetches all Sfdr datasets for the current company and converts them to the requried frontend format.
+     * Fetches all accepted Sfdr datasets for the current company and converts them to the required frontend format.
      */
-    async fetchDataForAllDataIds() {
+    async fetchAllAcceptedDatasets() {
       try {
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getSfdrDataControllerApi();
-        this.sfdrData = (await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))).data;
+        this.sfdrData = (await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))).data.filter(
+          (dataAndMetaInfo: DataAndMetaInformationSfdrData) =>
+            dataAndMetaInfo.metaInfo.qualityStatus == DatasetQualityStatus.Accepted
+        );
         this.convertSfdrDataToFrontendFormat(this.sfdrData);
         this.waitingForData = false;
       } catch (error) {
@@ -133,7 +136,7 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchDataForAllDataIds();
+      void this.fetchAllAcceptedDatasets();
     },
   },
 });
