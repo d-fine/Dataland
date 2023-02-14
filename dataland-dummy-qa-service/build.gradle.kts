@@ -41,15 +41,6 @@ dependencies {
     implementation(project(":dataland-message-queue-utils"))
 }
 
-openApi {
-    outputFileName.set("$projectDir/dummyQaServiceOpenApi.json")
-    apiDocsUrl.set("http://localhost:8584/qa/v3/api-docs")
-    customBootRun {
-        args.set(listOf("--server.port=8584"))
-    }
-    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
-}
-
 jacoco {
     toolVersion = jacocoVersion
     applyTo(tasks.bootRun.get())
