@@ -16,4 +16,5 @@ data class CompanySearchFilter(
     val dataTypeFilter: Set<DataType> = setOf(),
     val countryCodeFilter: Set<String> = setOf(),
     val sectorFilter: Set<String> = setOf(),
+    val onlyCurrentUserAsUploader: Boolean = false,
 )

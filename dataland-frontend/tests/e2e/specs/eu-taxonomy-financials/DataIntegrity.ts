@@ -10,6 +10,7 @@ import {
   EuTaxonomyDataForFinancials,
   EligibilityKpis,
   DataPointBigDecimal,
+  DataTypeEnum,
 } from "@clients/backend";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -50,10 +51,14 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany): void => {
-            cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-financials/upload`);
+            cy.visitAndCheckAppMount(
+              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
+            );
             fillEuTaxonomyForFinancialsUploadForm(testData);
             submitEuTaxonomyFinancialsUploadForm();
-            cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-financials`);
+            cy.visitAndCheckAppMount(
+              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
+            );
           }
         );
       });
@@ -74,7 +79,9 @@ describeIf(
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany) => {
             return uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, testData).then(() => {
-              cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/eutaxonomy-financials`);
+              cy.visitAndCheckAppMount(
+                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
+              );
             });
           }
         );

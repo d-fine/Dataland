@@ -19,7 +19,7 @@
             {{ modelValue[0].displayName }}
           </template>
           <template v-else>{{ filterName }}</template>
-          <span v-if="this.modelValue.length > 0" class="p-badge p-component p-badge-no-gutter ml-1">
+          <span v-if="this.modelValue.length > 0" class="p-badge p-component p-badge-no-gutter ml-1 round">
             {{ modelValue.length }}</span
           >
           <svg class="ml-2" xmlns="http://www.w3.org/2000/svg" width="10" height="7" xml:space="preserve">

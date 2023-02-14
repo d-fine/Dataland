@@ -10,7 +10,7 @@
       :kpiNameMappings="kpisNameMappings"
       :kpiInfoMappings="kpisInfoMappings"
       :subAreaNameMappings="subAreasNameMappings"
-      tableDataTitle="LkSG data"
+      tableDataTitle="LkSG Data"
     />
   </div>
 </template>
@@ -73,7 +73,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
         this.lksgData = (await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))).data;
-        this.convertLksgDataToFrontendFormat(this.lksgData);
+        this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -90,12 +90,12 @@ export default defineComponent({
      */
     createKpiDataObjects(
       kpiKey: string,
-      kpiValue: object | string,
+      kpiValue: object | string | number,
       subAreaKey: string,
       dataIdOfLksgDataset: string
     ): void {
-      if (kpiKey === "totalRevenue" && typeof kpiValue === "string") {
-        kpiValue = this.convertToMillions(parseFloat(kpiValue));
+      if (kpiKey === "totalRevenue" && typeof kpiValue === "number") {
+        kpiValue = this.convertToMillions(kpiValue);
       }
       let indexOfExistingItem = -1;
       const kpiDataObject = {
@@ -114,13 +114,11 @@ export default defineComponent({
     },
 
     /**
-     * Retrieves and converts values from an array of LkSG datasets in order to make it displayable in the frontend.
-     *
-     * @param lksgData The LkSG dataset that shall be converted
+     * Retrieves and converts the stored array of LkSG datasets in order to make it displayable in the frontend.
      */
-    convertLksgDataToFrontendFormat(lksgData: Array<DataAndMetaInformationLksgData>): void {
-      if (lksgData.length) {
-        lksgData.forEach((oneLksgDataset) => {
+    convertLksgDataToFrontendFormat(): void {
+      if (this.lksgData.length) {
+        this.lksgData.forEach((oneLksgDataset) => {
           const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
           const dataDateOfLksgDataset = oneLksgDataset.data.social?.general?.dataDate ?? "";
           this.listOfDataDateToDisplayAsColumns.push({

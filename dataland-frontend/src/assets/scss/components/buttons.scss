@@ -96,29 +96,36 @@
   &.p-button-text {
     background-color: transparent;
     color: $btn-primary-bg;
-    border-color: transparent;
+    border: 0;
     &:enabled:hover {
-      background: lighten($btn-primary-bg, 40%);
+      color: darken($btn-primary-bg, 30%);
+      background: transparent;
+      border: 0;
     }
     &:enabled:active {
-      background: lighten($btn-primary-bg, 30%);
+      background: transparent;
+      border: 0;
     }
     &.p-button-danger {
       color: $btn-danger-bg;
       &:enabled:hover {
-        background: lighten($btn-danger-bg, 40%);
+        background: transparent;
+        border: 0;
       }
       &:enabled:active {
-        background: lighten($btn-danger-bg, 30%);
+        background: transparent;
+        border: 0;
       }
     }
     &.p-button-success {
       color: $btn-success-bg;
       &:enabled:hover {
-        background: lighten($btn-success-bg, 40%);
+        background: transparent;
+        border: 0;
       }
       &:enabled:active {
-        background: lighten($btn-success-bg, 30%);
+        background: transparent;
+        border: 0;
       }
     }
   }

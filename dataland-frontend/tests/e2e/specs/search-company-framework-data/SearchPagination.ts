@@ -12,7 +12,7 @@ describe("As a user, I expect there to be multiple result pages if there are man
       .type("{enter}")
       .should("have.value", inputValueThatWillResultInZeroMatches);
     cy.get("div.p-paginator").should("not.exist");
-    cy.get("span[class=d-page-display]").should("contain.text", "No results");
+    cy.contains("span", "No results");
   });
 
   it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
@@ -26,7 +26,7 @@ describe("As a user, I expect there to be multiple result pages if there are man
       .should("have.value", inputValue);
     cy.get("table.p-datatable-table").should("exist");
     cy.get(".p-paginator-current").should("contain.text", "Showing 1 to 100 of").contains("entries");
-    cy.get("span[class=d-page-display]").should("contain.text", "1-100 of");
+    cy.contains("span", "1-100 of");
   });
 
   it("Search for all companies, go to page 2 of the search results, then run a another query and verify that paginator and the page text are reset", () => {
@@ -42,6 +42,6 @@ describe("As a user, I expect there to be multiple result pages if there are man
       .type("{enter}")
       .should("have.value", inputValue);
     cy.get(".p-paginator-current").should("contain.text", "Showing 1 to 100 of").contains("entries");
-    cy.get("span[class=d-page-display]").should("contain.text", "1-100 of");
+    cy.contains("span", "1-100 of");
   });
 });

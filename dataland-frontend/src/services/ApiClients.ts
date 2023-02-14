@@ -26,16 +26,9 @@ export class ApiClientProvider {
   async getConfiguration(): Promise<Configuration | undefined> {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
-      const refreshed = await keycloak.updateToken(5);
-      if (refreshed) {
-        console.log("Token was successfully refreshed");
-      } else {
-        console.log("Token is still valid");
-      }
-      console.log("Using Token");
+      await keycloak.updateToken(5);
       return new Configuration({ accessToken: keycloak.token });
     } else {
-      console.log("Not Using Token");
       return undefined;
     }
   }
