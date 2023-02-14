@@ -5,19 +5,21 @@
 }
 form {
   text-align: left;
-  [data-type="text"], [data-type="select"] {
+  [data-type="text"], [data-type="select"], [data-type="number"] {
     .formkit-inner {
       font-size: $input-text-fs;
       border-radius: 0;
-      width: 100%;
       background:$input-text-bg;
       border-style: solid;
       border-width: 0 0 1px 0;
       border-color: $input-text-border;
       box-shadow: none;
-      &:focus {
+      &:focus-within {
         outline: none;
         border-bottom: 1px solid $input-text-border-hover;
+      }
+      .formkit-input {
+        line-height: normal;
       }
     }
   }
@@ -332,6 +334,7 @@ input[type="checkbox"], input[type="radio"]{
     color: $bg-text-primary;
     padding: .5rem;
     border-radius: 0;
+    width: 300px;
   }
   &.p-tooltip-right .p-tooltip-arrow {
     border-right-color: $input-label-color
@@ -347,59 +350,149 @@ input[type="checkbox"], input[type="radio"]{
   }
 }
 
-.d-framework-searchbar-input-icon {
-  padding-left: 0.75rem;
-}
-
-.d-framework-data-search-dropdown {
-  .p-multiselect-item {
-    color: $input-text-color;
-    border: none;
-    font-weight: 400;
-
-    &.p-highlight {
-      background: $table-background-color;
-      color: $main-color;
-    }
-
-    &.p-disabled {
-      color: $brown-lighter;
-
-      &::after {
-        content: "(Not available)";
-        margin-left: 0.2rem;
-        font-weight: $light-bold-weight;
-        color: $input-text-color;
-      }
-    }
+.uploadFormWrapper {
+  input[type=checkbox], input[type=radio] {
+    display: grid;
+    place-content: center;
+    margin: 0;
+    height: 18px;
+    width: 18px;
+    background-color: white;
+    border: 2px solid $input-label-color;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-right: 10px;
   }
-  .p-multiselect-close {
+  input[type=checkbox]::before, input[type=radio]::before {
+    content: "";
+    width: 5px;
+    height: 7px;
+    border: solid $input-label-color;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
     display: none;
   }
-}
-
-.d-framework-searchbar-panel {
-  // this important is to overwrite styles injected to panel directly
-  max-height: 50vh !important;
-  .p-autocomplete-items {
-    background:$input-text-bg;
-    padding: 0;
-    .p-autocomplete-item {
-      height: 3.5rem;
+  input[type=checkbox]:checked::before, input[type=radio]:checked::before {
+    display: block;
+  }
+  .short { width: 33%; }
+  .medium { width: 66%; }
+  .next-to-each-other {
+    display: flex;
+    gap: 1rem;
+  }
+  .yes-no-radio {
+    fieldset.formkit-fieldset {
+      border: 0;
       padding: 0;
+    }
+    .formkit-options {
       display: flex;
-      align-content: center;
-      align-items: center;
-      &:not(.p-disabled):hover {
-        background: $dropdown-options-bg;
-      }
-      &.p-focus {
-        color: $fill-dropdown-select-text-color;
-        background-color: $fill-dropdown-select-bg-color;
+      padding: .5rem 0 0 0;
+      .formkit-option:nth-child(2n) {
+        margin-left: 10%;
       }
     }
   }
+  .formkit-wrapper, .formkit-fieldset {
+    max-width: 100%;
+  }
+  .title {
+    margin: .25rem 0;
+  }
+  .form-field-label {
+    display: flex;
+    align-items: center;
+    .info-icon {
+      margin-left: .5rem;
+    }
+    button {
+      margin-left: auto;
+    }
+    h5 {
+      margin: .5rem 0;
+    }
+  }
+  p {
+    margin: .25rem;
+  }
+  .p-calendar {
+    width: 100%;
+    .p-button {
+      margin: 0;
+    }
+  }
+  .productionSiteSection {
+    border: 1px solid $input-text-border;
+    padding: 1rem;
+    border-radius: .5rem;
+    margin: 2rem 0;
+    position: relative;
+    .close-section {
+      position: absolute;
+      right: -15px;
+      left: auto;
+      top: -15px;
+      background: white;
+      border: 1px solid;
+      border-radius: 50%;
+      text-align: center;
+      display: flex;
+      padding: 3px;
+      cursor: pointer;
+    }
+  }
+  .formFields {
+    background: $upload-form-bg;
+    border-radius: $upload-form-radius;
+    padding: $upload-form-padding;
+  }
+  .formkit-message {
+    &[data-message-type="ui"] {
+      text-align: center;
+      width: 100%;
+      padding: 2rem;
+      border: 1px solid $input-error;
+    }
+  }
+  .hidden-input {
+    .formkit-wrapper {
+      visibility: hidden;
+      height: 0;
+    }
+  }
+  .form-list-item {
+    color: $input-label-color;
+    background: $el-list-item-bg;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    margin: $spacing-xxxs;
+    text-align: center;
+    min-width: 1.5rem;
+    border-radius: 1rem;
+    padding: .25rem 1rem;
+    border: 1px solid $input-label-color;
+    display: inline-flex;
+    align-items: center;
+    em {
+      margin-left: .5rem;
+      cursor: pointer;
+      &:hover {
+        color: darken($input-label-color, 20%);
+      }
+    }
+  }
+  .uploadFormSection {
+    margin-bottom: 1.5rem;
+    .form-field:not(:last-child) {
+      margin: 0 0 1rem 0;
+      padding: 0 0 1rem 0;
+      border-bottom: 1px solid $input-separator;
+    }
+  }
 }
+
 .p-checkbox .p-checkbox-box {
   border: 2px solid #ced4da;
   background: #f6f5ef;

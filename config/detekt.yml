@@ -122,7 +122,7 @@ complexity:
     constructorThreshold: 7
     ignoreDefaultParameters: false
     ignoreDataClasses: true
-    ignoreAnnotatedParameter: []
+    ignoreAnnotatedParameter: ["RequestParam"]
   MethodOverloading:
     active: false
     threshold: 6

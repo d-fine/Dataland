@@ -19,17 +19,24 @@ export function calculateDaysFromNow(endDateInMilliseconds: number): number {
   const daysFromNow = (endDateInMilliseconds - currentUtcDateInMilliseconds) / msPerDay;
   return Math.ceil(daysFromNow);
 }
+/**
+ * Transforms the given unix time in milliseconds to a date string
+ *
+ * @param unixTimeInMs the unix time in milliseconds
+ * @returns a date string representing the given unix time
+ */
+export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
+  return new Date(unixTimeInMs).toLocaleDateString("en-gb", dateFormatOptions);
+}
 
 /**
- * Calculates a date expiryTimeDays in the future and returns it in the format like "Wed, 25 Jan 2023, 10:38"
+ * Calculates an expiry date in the future based on the number of valid days from now
  *
  * @param expiryTimeDays the time in days to move into the future
- * @returns the date expiryTimeDays in the future in the format of "Wed, 25 Jan 2023, 10:38"
+ * @returns the resulting expiry date in the future in the format of "Wed, 25 Jan 2023, 10:38"
  */
-export function formatExpiryDate(expiryTimeDays: number): string {
+export function calculateExpiryDateAsDateString(expiryTimeDays: number): string {
   const currentUtcDateInMilliseconds = new Date().getTime();
-  return new Date(currentUtcDateInMilliseconds + expiryTimeDays * msPerDay).toLocaleDateString(
-    "en-gb",
-    dateFormatOptions
-  );
+  const expiryUtcDateInMilliseconds = currentUtcDateInMilliseconds + expiryTimeDays * msPerDay;
+  return convertUnixTimeInMsToDateString(expiryUtcDateInMilliseconds);
 }

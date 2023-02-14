@@ -2,6 +2,7 @@ import { Interception } from "cypress/types/net-stubbing";
 import { describeIf } from "@e2e/support/TestUtility";
 import { InviteMetaInfoEntity } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
+import { getBaseUrl } from "@e2e/utils/Cypress";
 
 describe("As a user I expect a data request page where I can download an excel template, fill it, and submit it", (): void => {
   describeIf(
@@ -159,7 +160,6 @@ describe("As a user I expect a data request page where I can download an excel t
 
       it(`Test overriding and removing files from the upload box`, { scrollBehavior: false }, () => {
         const overrideFile = "override_file.xlsx";
-        cy.wait(2000);
         uploadDummyExcelFile(overrideFile);
         uploadBoxEntryShouldBe(overrideFile);
 
@@ -209,9 +209,9 @@ describe("As a user I expect a data request page where I can download an excel t
         });
 
         cy.get('button[name="back_to_home_button"]').click();
-        cy.wait(3000);
+        cy.url().should("eq", getBaseUrl() + "/companies");
         cy.get("img.d-triangle-down").click().get("a#profile-picture-dropdown-data-request-button").click();
-        cy.wait(2000);
+        cy.url().should("eq", getBaseUrl() + "/requests");
         uploadBoxShouldBeEmpty();
         uploadDummyExcelFile("test.xlsx");
         setHideUsernameCheckbox(true);

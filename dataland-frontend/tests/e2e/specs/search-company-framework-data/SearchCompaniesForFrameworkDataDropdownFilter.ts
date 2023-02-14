@@ -5,7 +5,7 @@ import {
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
@@ -38,7 +38,13 @@ describe("As a user, I expect the search functionality on the /companies page to
         .click();
       verifyTaxonomySearchResultTable();
       cy.url()
-        .should("eq", getBaseUrl() + "/companies?framework=eutaxonomy-non-financials&framework=lksg&framework=sfdr")
+        .should(
+          "eq",
+          getBaseUrl() +
+            `/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
+            `&framework=${DataTypeEnum.Lksg}` +
+            `&framework=${DataTypeEnum.Sfdr}`
+        )
         .get("div.p-multiselect-panel")
         .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
         .click();
@@ -49,7 +55,13 @@ describe("As a user, I expect the search functionality on the /companies page to
         .find("li.p-highlight:contains('EU Taxonomy for non-financial companies')")
         .click();
       verifyTaxonomySearchResultTable();
-      cy.url().should("eq", getBaseUrl() + "/companies?framework=eutaxonomy-financials&framework=lksg&framework=sfdr");
+      cy.url().should(
+        "eq",
+        getBaseUrl() +
+          `/companies?framework=${DataTypeEnum.EutaxonomyFinancials}` +
+          `&framework=${DataTypeEnum.Lksg}` +
+          `&framework=${DataTypeEnum.Sfdr}`
+      );
     }
   );
   it(
@@ -118,7 +130,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
     cy.ensureLoggedIn();
     cy.visit(
-      `/companies?sector=${demoCompanyToTestFor.sector}&countryCode=${demoCompanyToTestFor.countryCode}&framework=eutaxonomy-non-financials`
+      `/companies?sector=${demoCompanyToTestFor.sector}&countryCode=${demoCompanyToTestFor.countryCode}&framework=${DataTypeEnum.EutaxonomyNonFinancials}`
     )
       .get("span:contains('RESET')")
       .eq(0)
@@ -193,7 +205,8 @@ describe("As a user, I expect the search functionality on the /companies page to
             .click({ scrollBehavior: false })
             .type(companyName, { scrollBehavior: false });
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-            cy.wait(1000);
+            const timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches = 1000;
+            cy.wait(timeInMillisecondsToAllowPotentialDropdownToAppearIfThereAreMatches);
             cy.get(".p-autocomplete-item").should("not.exist");
           });
           cy.visit(`/companies?input=${companyName}`)
@@ -226,15 +239,15 @@ describe("As a user, I expect the search functionality on the /companies page to
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should("exist");
-          cy.visit(`/companies?input=${companyName}&framework=eutaxonomy-financials`)
+          cy.visit(`/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyFinancials}`)
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
             .should("exist");
-          cy.visit(`/companies?input=${companyName}&framework=eutaxonomy-non-financials`)
+          cy.visit(`/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyNonFinancials}`)
             .get("div[class='col-12 text-left']")
             .should("contain.text", "Sorry! Your search didn't return any results.");
           cy.visit(
-            `/companies?input=${companyName}&framework=eutaxonomy-non-financials&framework=eutaxonomy-financials`
+            `/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyNonFinancials}&framework=${DataTypeEnum.EutaxonomyFinancials}`
           )
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(companyName)
@@ -285,7 +298,7 @@ describe("As a user, I expect the search functionality on the /companies page to
               );
             });
           });
-          checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, "eutaxonomy-financials");
+          checkFirstAutoCompleteSuggestion(companyNameFinancialPrefix, DataTypeEnum.EutaxonomyFinancials);
 
           const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
           const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
@@ -302,7 +315,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             );
           });
 
-          checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, "eutaxonomy-non-financials");
+          checkFirstAutoCompleteSuggestion(companyNameNonFinancialPrefix, DataTypeEnum.EutaxonomyNonFinancials);
         }
       );
     }

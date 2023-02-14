@@ -22,6 +22,13 @@ const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/Ap
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewLksg = (): Promise<RouteComponent> => import("@/components/pages/ViewLksg.vue");
 const ViewSfdr = (): Promise<RouteComponent> => import("@/components/pages/ViewSfdr.vue");
+const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
+const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
+const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
+  import("@/components/pages/ChooseCompanyForFrameworkDataUpload.vue");
+const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
+  import("@/components/pages/ChooseFrameworkForDataUpload.vue");
+import { DataTypeEnum } from "@clients/backend";
 
 const routes = [
   {
@@ -33,7 +40,8 @@ const routes = [
     },
   },
   {
-    path: "/samples/eutaxonomy-non-financials",
+    path: `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
+
     name: "Eu Taxonomy For Non-Financials Sample",
     component: ViewEuTaxonomyNonFinancialsSample,
   },
@@ -43,16 +51,33 @@ const routes = [
     component: UploadCompany,
   },
   {
-    path: "/companies/:companyID/frameworks/eutaxonomy-non-financials/upload",
+    path: "/companies/choose",
+    name: "Choose Company",
+    component: ChooseCompanyForFrameworkDataUpload,
+  },
+  {
+    path: "/companies/:companyID/frameworks/upload",
+    props: true,
+    name: "Choose Framework",
+    component: ChooseFrameworkForDataUpload,
+  },
+  {
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
     props: true,
     name: "Upload Eu Taxonomy Data For Non-Financials",
     component: UploadEuTaxonomyDataForNonFinancials,
   },
   {
-    path: "/companies/:companyID/frameworks/eutaxonomy-financials/upload",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
     props: true,
     name: "Upload Eu Taxonomy Data For Financials",
     component: UploadEuTaxonomyDataForFinancials,
+  },
+  {
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}/upload`,
+    props: true,
+    name: "Upload lkSG Data",
+    component: UploadLkSG,
   },
   {
     path: "/companies",
@@ -66,25 +91,25 @@ const routes = [
     component: CompanyInformation,
   },
   {
-    path: "/companies/:companyID/frameworks/eutaxonomy-non-financials",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
     props: true,
     name: "Company EU Taxonomy for non financials",
     component: ViewEuTaxonomyNonFinancials,
   },
   {
-    path: "/companies/:companyID/frameworks/eutaxonomy-financials",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
     props: true,
     name: "Company EU Taxonomy for financials",
     component: ViewEuTaxonomyFinancials,
   },
   {
-    path: "/companies/:companyID/frameworks/lksg",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}`,
     props: true,
     name: "Company lksg",
     component: ViewLksg,
   },
   {
-    path: "/companies/:companyID/frameworks/sfdr",
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.Sfdr}`,
     props: true,
     name: "Company sfdr",
     component: ViewSfdr,
@@ -93,6 +118,11 @@ const routes = [
     path: "/companies-only-search",
     name: "Search Companies",
     component: SearchCompanies,
+  },
+  {
+    path: "/datasets",
+    name: "Dataset Overview",
+    component: DatasetOverview,
   },
   {
     path: "/requests",

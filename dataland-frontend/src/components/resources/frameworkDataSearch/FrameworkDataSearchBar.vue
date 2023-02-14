@@ -68,7 +68,7 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      autocomplete: ref(),
+      autocomplete: ref<HTMLFormElement>(),
     };
   },
   name: "FrameworkDataSearchBar",
@@ -133,7 +133,6 @@ export default defineComponent({
       latestValidSearchString: "",
       autocompleteArray: [] as Array<object>,
       autocompleteArrayDisplayed: [] as Array<object>,
-      loading: false,
       route: useRoute(),
     };
   },
@@ -175,8 +174,9 @@ export default defineComponent({
      * Focuses the search bar
      */
     focusOnSearchBar() {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.autocomplete.$refs.focusInput.focus();
+      const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
+      const inputOfAutocompleteComponent = autocompleteRefsObject.focusInput as HTMLInputElement;
+      inputOfAutocompleteComponent.focus();
     },
 
     /**
@@ -208,7 +208,6 @@ export default defineComponent({
      */
     async queryCompany() {
       if (this.emitSearchResultsArray) {
-        this.loading = true;
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
           this.searchBarInput,
           false,
@@ -218,7 +217,6 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         );
         this.$emit("companies-received", resultsArray);
-        this.loading = false;
       }
     },
     /**
@@ -242,34 +240,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-.d-framework-searchbar-input-icon {
-  padding-left: 0.75rem !important;
-}
-
-.d-framework-searchbar-input {
-  padding-left: 3rem !important;
-}
-
-.d-framework-searchbar-panel {
-  max-height: 500px !important;
-}
-
-.d-framework-searchbar-panel .p-autocomplete-items {
-  padding: 0 !important;
-}
-
-.d-framework-searchbar-panel .p-autocomplete-item {
-  height: 3.5rem !important;
-  padding: 0 !important;
-  display: flex;
-  align-content: center;
-  align-items: center;
-}
-
-.p-autocomplete-loader {
-  color: #e67f3f;
-  right: 0.5rem;
-}
-</style>

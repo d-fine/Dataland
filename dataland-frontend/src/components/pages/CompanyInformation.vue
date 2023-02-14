@@ -1,10 +1,10 @@
 <template>
   <TheContent>
-    <div v-if="waitingForData" class="inline-loading meta-data-height text-center">
+    <div v-if="waitingForData" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading company information...</p>
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
-    <div v-if="companyInformation && !waitingForData" class="meta-data-height grid align-items-end text-left">
+    <div v-else-if="companyInformation && !waitingForData" class="grid align-items-end text-left">
       <div class="col-12">
         <h1 class="mb-0">{{ companyInformation.companyName }}</h1>
       </div>
@@ -17,6 +17,9 @@
         <span>Sector: </span>
         <span class="font-semibold">{{ companyInformation.sector }}</span>
       </div>
+    </div>
+    <div v-else-if="companyIdDoesNotExist" class="col-12">
+      <h1 class="mb-0">No company with this ID present</h1>
     </div>
   </TheContent>
 </template>
@@ -41,6 +44,7 @@ export default defineComponent({
     return {
       companyInformation: null as CompanyInformation | null,
       waitingForData: true,
+      companyIdDoesNotExist: false,
     };
   },
   props: {
@@ -75,8 +79,22 @@ export default defineComponent({
         }
       } catch (error) {
         console.error(error);
+        if (this.getErrorMessage(error).includes("404")) {
+          this.companyIdDoesNotExist = true;
+        }
+        this.waitingForData = false;
         this.companyInformation = null;
       }
+    },
+    /**
+     * Tries to find a message in an error
+     *
+     * @param error the error to extract a message from
+     * @returns the extracted message
+     */
+    getErrorMessage(error: unknown) {
+      const noStringMessage = error instanceof Error ? error.message : "";
+      return typeof error === "string" ? error : noStringMessage;
     },
   },
 });
@@ -85,12 +103,5 @@ export default defineComponent({
 <style scoped>
 .inline-loading {
   width: 450px;
-}
-.meta-data-height {
-  height: 110px;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0;
 }
 </style>
