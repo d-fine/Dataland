@@ -62,7 +62,6 @@ jobs:
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
           INVITATION_REQUEST_CC: "dev.null@dataland.com"
-          INTERNAL_BACKEND_URL: "http://backend:8080/api"
       - name: Execute Frontend Component Tests
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
         if: always()
@@ -81,8 +80,6 @@ jobs:
       - name: verify OpenApi Files
         if: always()
         run: testing/verifyOpenApiFiles.sh
-        env:
-          INTERNAL_BACKEND_URL: "http://backend:8080/api"
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v3
@@ -175,7 +172,6 @@ jobs:
           RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
-          INTERNAL_BACKEND_URL: "http://backend:8080/api"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v3
