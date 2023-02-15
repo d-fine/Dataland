@@ -134,7 +134,6 @@ describe("As a user, I expect the search functionality on the /companies page to
       function checkViewButtonWorks(): void {
         cy.get("table.p-datatable-table")
           .contains("td", "VIEW")
-          .contains("a", "VIEW")
           .click()
           .url()
           .should("include", "/frameworks");
