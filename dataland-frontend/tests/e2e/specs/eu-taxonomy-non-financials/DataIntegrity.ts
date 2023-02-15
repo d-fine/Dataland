@@ -57,7 +57,7 @@ describeIf(
         ).then((storedCompany) => {
           return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, fixtureData.t).then(
             () => {
-              cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
+              cy.intercept(`**/api/public/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
@@ -107,7 +107,7 @@ describeIf(
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
             uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
-            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
+            cy.intercept(`**/api/public/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
             );

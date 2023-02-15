@@ -28,7 +28,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     { scrollBehavior: false },
     () => {
       cy.ensureLoggedIn();
-      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+      cy.intercept("**/api/public/companies/meta-information").as("companies-meta-information");
       cy.visit("/companies").wait("@companies-meta-information");
       verifyTaxonomySearchResultTable();
       cy.get("#framework-filter")
@@ -76,7 +76,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       const demoCompanyToTestForCountryName = getCountryNameFromCountryCode(demoCompanyToTestFor.countryCode);
 
       cy.ensureLoggedIn();
-      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+      cy.intercept("**/api/public/companies/meta-information").as("companies-meta-information");
       cy.visit(
         `/companies?input=${demoCompanyToTestFor.companyName}&countryCode=${demoCompanyWithDifferentCountryCode.countryCode}`
       )
@@ -107,7 +107,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       )!.companyInformation;
 
       cy.ensureLoggedIn();
-      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+      cy.intercept("**/api/public/companies/meta-information").as("companies-meta-information");
       cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
         .wait("@companies-meta-information")
         .get("div[class='col-12 text-left']")
@@ -143,7 +143,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     { scrollBehavior: false },
     () => {
       cy.ensureLoggedIn();
-      cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+      cy.intercept("**/api/public/companies/meta-information").as("companies-meta-information");
       cy.visit("/companies").wait("@companies-meta-information");
       verifyTaxonomySearchResultTable();
       cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
@@ -188,7 +188,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName, sector));
           });
           cy.visit(`/companies`);
-          cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
+          cy.intercept("**/api/public/companies/meta-information").as("getFilterOptions");
           verifyTaxonomySearchResultTable();
           cy.wait("@getFilterOptions", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             verifyTaxonomySearchResultTable();
@@ -200,7 +200,7 @@ describe("As a user, I expect the search functionality on the /companies page to
               .find("li:contains('No results found')")
               .should("exist");
           });
-          cy.intercept("**/api/companies*").as("searchCompany");
+          cy.intercept("**/api/public/companies*").as("searchCompany");
           cy.get("input[id=search_bar_top]")
             .click({ scrollBehavior: false })
             .type(companyName, { scrollBehavior: false });
@@ -233,7 +233,7 @@ describe("As a user, I expect the search functionality on the /companies page to
               });
             });
           });
-          cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
+          cy.intercept("**/api/public/companies/meta-information").as("companies-meta-information");
           cy.visit(`/companies?input=${companyName}`)
             .wait("@companies-meta-information")
             .get("td[class='d-bg-white w-3 d-datatable-column-left']")
@@ -264,7 +264,7 @@ describe("As a user, I expect the search functionality on the /companies page to
        */
       function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
         cy.visit(`/companies?framework=${frameworkToFilterFor}`);
-        cy.intercept("**/api/companies*").as("searchCompany");
+        cy.intercept("**/api/public/companies*").as("searchCompany");
         verifyTaxonomySearchResultTable();
         cy.get("input[id=search_bar_top]")
           .click({ scrollBehavior: false })

@@ -16,7 +16,7 @@ import Chainable = Cypress.Chainable;
  * @returns the resulting cypress chainable
  */
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
-  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
+  cy.intercept(`**/api/public/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click();
   return cy.wait("@postCompanyAssociatedData").get("body").should("contain", "success");
 }

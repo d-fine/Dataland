@@ -85,7 +85,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .url()
           .should("eq", getBaseUrl() + "/companies/choose");
 
-        cy.intercept("**/api/companies*").as("searchCompanyName");
+        cy.intercept("**/api/public/companies*").as("searchCompanyName");
         cy.get("input[id=company_search_bar_standard]").click({ force: true }).type(uniqueCompanyMarkerA);
         cy.wait("@searchCompanyName", { timeout: Cypress.env("short_timeout_in_ms") as number });
         cy.get("ul[class=p-autocomplete-items]").should("exist");
@@ -103,7 +103,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           });
         cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
         cy.window().its("scrollY").should("be.gt", latestScrollPosition);
-        cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
+        cy.intercept("**/api/public/metadata*").as("retrieveExistingDatasetsForCompany");
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
           cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.url().should("eq", getBaseUrl() + "/companies/" + company.companyId + "/frameworks/upload");
@@ -216,14 +216,14 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             .should("exist")
             .url()
             .should("eq", getBaseUrl() + "/companies/choose");
-          cy.intercept("**/api/companies*").as("searchCompanyName");
+          cy.intercept("**/api/public/companies*").as("searchCompanyName");
           cy.get("input[id=company_search_bar_standard]")
             .click({ force: true })
             .type(testCompanyNameForManyDatasetsCompany);
           cy.wait("@searchCompanyName", { timeout: Cypress.env("short_timeout_in_ms") as number });
           cy.get("ul[class=p-autocomplete-items]").should("exist");
           cy.get("input[id=company_search_bar_standard]").type("{downArrow}");
-          cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
+          cy.intercept("**/api/public/metadata*").as("retrieveExistingDatasetsForCompany");
           cy.get("input[id=company_search_bar_standard]").type("{enter}");
           cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
           cy.url().should(

@@ -28,7 +28,7 @@ describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy
   it("tooltips are present and contain text as expected", function () {
     const NFRDText = "Non financial disclosure directive";
     const AssuranceText = "Level of Assurance specifies the confidence level";
-    cy.intercept("**/api/companies/*").as("retrieveCompany");
+    cy.intercept("**/api/public/companies/*").as("retrieveCompany");
     cy.ensureLoggedIn();
     getKeycloakToken(reader_name, reader_pw).then((token) => {
       cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(

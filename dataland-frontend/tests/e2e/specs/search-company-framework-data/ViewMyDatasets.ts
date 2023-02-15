@@ -64,7 +64,7 @@ describe(
           validateTabBar(0);
           cy.wait(3000);
           const companiesInterceptAlias = "companies";
-          cy.intercept("**/api/companies*onlyCurrentUserAsUploader*").as(companiesInterceptAlias);
+          cy.intercept("**/api/public/companies*onlyCurrentUserAsUploader*").as(companiesInterceptAlias);
           cy.get(getTabSelector(1)).click();
           cy.wait(`@${companiesInterceptAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number });
           cy.url().should("contain", "/datasets");
