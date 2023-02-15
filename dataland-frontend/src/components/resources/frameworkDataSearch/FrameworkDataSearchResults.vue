@@ -50,10 +50,8 @@
         </template>
       </Column>
       <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
-        <template #body="{ data }">
-          <router-link :to="getRouterLinkTargetFrameworkInt(data)" class="text-primary no-underline font-bold"
-            ><span> VIEW</span> <span class="ml-3">></span>
-          </router-link>
+        <template #body>
+          <span class="text-primary no-underline font-bold"><span> VIEW</span> <span class="ml-3">></span> </span>
         </template>
       </Column>
     </DataTable>
