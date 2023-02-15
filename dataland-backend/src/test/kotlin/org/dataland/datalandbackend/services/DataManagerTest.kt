@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import org.springframework.amqp.core.Message as AMQPMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -166,5 +167,21 @@ class DataManagerTest(
             "The meta-data of dataset $dataId differs between the data store and the database",
             thrown.message,
         )
+    }
+
+    @Test
+    fun `check an exception is thrown in updating of meta data when dataId is empty`() {
+        val thrown = assertThrows<InternalServerErrorApiException> {
+            dataManager.updateMetaDataAfterQA(AMQPMessage(storableNFEuTaxonomyDataSetAsString.toByteArray()))
+        }
+        assertEquals("The update of the metadataset failed", thrown.publicMessage)
+    }
+
+    @Test
+    fun `check an exception is thrown in logging of stored data when dataId is empty`() {
+        val thrown = assertThrows<InternalServerErrorApiException> {
+            dataManager.loggingOfStoredDataSet(AMQPMessage(storableNFEuTaxonomyDataSetAsString.toByteArray()))
+        }
+        assertEquals("The storing of the dataset failed", thrown.publicMessage)
     }
 }
