@@ -12,7 +12,7 @@ import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.enums.data.DatasetQualityStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRoles
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 
 /**
  * The database entity for storing metadata regarding data uploaded to dataland
@@ -43,7 +43,7 @@ data class DataMetaInformationEntity(
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
         val displayUploaderUserId = viewingUser != null && (
-            viewingUser.roles.contains(DatalandRealmRoles.ROLE_ADMIN) ||
+            viewingUser.roles.contains(DatalandRealmRole.ROLE_ADMIN) ||
                 viewingUser.userId == this.uploaderUserId
             )
         return DataMetaInformation(
