@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody
  */
 
 @SecurityRequirement(name = "default-bearer-auth")
-@SecurityRequirement(name = "dataland-api-key")
 @SecurityRequirement(name = "default-oauth")
 interface DataApi<T> {
     /**

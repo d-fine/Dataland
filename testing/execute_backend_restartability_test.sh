@@ -13,7 +13,7 @@ fi
 curl -X 'GET' \
   'https://localhost/api/public/companies' \
   -H 'accept: application/json' \
-  -H "dataland-api-key: $api_key" \
+  -H "Authorization: Bearer $api_key" \
   -H "Host: local-dev.dataland.com" \
   --insecure
 docker compose --project-name dala-e2e-test --profile testing down
@@ -22,6 +22,6 @@ timeout 240 bash -c "wait_for_service_name_list_to_be_healthy api-key-manager ba
 curl -X 'GET' \
   'https://localhost/api/public/companies' \
   -H 'accept: application/json' \
-  -H "dataland-api-key: $api_key" \
+  -H "Authorization: Bearer $api_key" \
   -H "Host: local-dev.dataland.com" \
   --insecure

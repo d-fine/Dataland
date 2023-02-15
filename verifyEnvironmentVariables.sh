@@ -39,7 +39,8 @@ expected_vars=( \
   INVITATION_REQUEST_CC \
   RABBITMQ_USER \
   RABBITMQ_PASS \
-  RABBITMQ_PASS_HASH
+  RABBITMQ_PASS_HASH \
+  INTERNAL_BACKEND_URL
 )
 
 for var in "${expected_vars[@]}"
