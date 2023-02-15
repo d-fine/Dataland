@@ -2,13 +2,11 @@ package org.dataland.keycloakAdapter.auth
 
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.oauth2.jwt.Jwt
 
 /**
- * A wrapper around spring boots authentication object that exposes
- * commonly required user information in an easy-to-user manner
+ * A base class for all dataland-related authentication objects (like API-Key / JWT authentication)
  */
-class DatalandAuthentication(val authentication: Authentication) {
+sealed class DatalandAuthentication : Authentication {
     companion object {
         /**
          * Builds a new DatalandAuthentication object from the Spring Boot Authentication
@@ -26,29 +24,29 @@ class DatalandAuthentication(val authentication: Authentication) {
          */
         fun fromContextOrNull(): DatalandAuthentication? {
             val auth = SecurityContextHolder.getContext().authentication
-            return if (auth == null) {
+            return if (auth is DatalandAuthentication) {
+                auth as? DatalandAuthentication
+            } else {
                 null
-            } else {
-                DatalandAuthentication(auth)
             }
         }
     }
 
-    val username: String
+    abstract val userId: String
+
+    val roles: Set<DatalandRealmRole>
         get() {
-            if (authentication.principal is Jwt) {
-                val jwt: Jwt = authentication.principal as Jwt
-                return jwt.getClaimAsString("preferred_username")
-            } else {
-                throw UnsupportedOperationException("Cannot get the username of a user logged in via API key")
-            }
+            val allUserRoles = authorities.map { it.toString() }
+            return DatalandRealmRole.values().filter { allUserRoles.contains(it.toString()) }.toSet()
         }
 
-    val userId: String = authentication.name
-    val roles: Set<DatalandRealmRoles> = computeRealmRoles()
-
-    private fun computeRealmRoles(): Set<DatalandRealmRoles> {
-        val allAuthorities = authentication.authorities.map { it.toString() }.toSet()
-        return DatalandRealmRoles.values().filter { allAuthorities.contains(it.toString()) }.toSet()
+    private var authenticated = false
+    override fun setAuthenticated(isAuthenticated: Boolean) {
+        authenticated = isAuthenticated
     }
+
+    override fun getDetails(): Any? = null
+    override fun getPrincipal(): String = userId
+    override fun getName(): String = userId
+    override fun isAuthenticated() = authenticated
 }
