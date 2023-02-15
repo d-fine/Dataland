@@ -212,7 +212,7 @@ class CompanyDataControllerTest {
             identifierType = CompanyIdentifier.IdentifierType.isin,
         )
         val randomizedCompanyInformation = testCompanyInformation.copy(identifiers = listOf(randomIsin))
-        apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         apiAccessor.companyDataControllerApi.postCompany(randomizedCompanyInformation)
         val exception =
             assertThrows<Exception> {
