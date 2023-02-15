@@ -8,18 +8,15 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
-import org.springframework.amqp.core.Message as AMQPMessage
 import org.springframework.boot.test.context.SpringBootTest
-
+import org.springframework.amqp.core.Message as AMQPMessage
 
 @SpringBootTest(classes = [DatalandDummyQaService::class])
-class QaServiceTest(
-) {
+class QaServiceTest {
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val qaService = QaService(mockCloudEventMessageHandler)
 
     val dataAsString = "TestData"
-
 
     @Test
     fun `check an exception is thrown in reading out message from upload queue when dataId is empty`() {
