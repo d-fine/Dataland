@@ -73,6 +73,10 @@ tasks.test {
     }
 }
 
+jacoco {
+    toolVersion = jacocoVersion
+}
+
 tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
     into("$buildDir/resources")
