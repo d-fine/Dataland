@@ -42,3 +42,4 @@
 [Environment]::SetEnvironmentVariable("RABBITMQ_USER", "admin", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("RABBITMQ_PASS", "dataland", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("RABBITMQ_PASS_HASH", "1s3+3kZqRTAgidTV6NE+adO3ja5NFNQZHa9MBwhJ0Kx7Fw6F", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("INTERNAL_BACKEND_URL", "http://host.docker.internal:8080/api", [System.EnvironmentVariableTarget]::User)

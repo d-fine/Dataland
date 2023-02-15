@@ -97,7 +97,7 @@ class DataManager(
     fun updateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        if (dataId.isNotEmpty()) {
+        if (!dataId.isNullOrEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaDataManager.storeDataMetaInformation(
                 metaInformation.copy(qualityStatus = DatasetQualityStatus.Accepted),
@@ -142,10 +142,10 @@ class DataManager(
     fun loggingOfStoredDataSet(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        if (dataId.isNotEmpty()) {
+        if (!dataId.isNullOrEmpty()) {
             logger.info("Internal Storage sent a message - job done")
             logger.info(
-                "Dataset with dataId $dataId was sucessfully stored. Correlation ID: $correlationId.",
+                "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
             )
             dataInformationHashMap.map.remove(dataId)
         } else {
