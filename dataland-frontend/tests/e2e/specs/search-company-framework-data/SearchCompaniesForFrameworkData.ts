@@ -132,11 +132,7 @@ describe("As a user, I expect the search functionality on the /companies page to
        * Verifies that the view button redirects to the view framework data page
        */
       function checkViewButtonWorks(): void {
-        cy.get("table.p-datatable-table")
-          .contains("td", "VIEW")
-          .click()
-          .url()
-          .should("include", "/frameworks");
+        cy.get("table.p-datatable-table").contains("td", "VIEW").click().url().should("include", "/frameworks");
       }
 
       cy.visitAndCheckAppMount("/companies");
