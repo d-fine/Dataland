@@ -75,8 +75,8 @@ class WebSecurityConfig(
 
     @Suppress("SpreadOperator")
     private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
-        val links = publicLinks.split(",") + internalLinks.split(",")
-        val linkMatchers = links.map { antMatcher(it) }.toTypedArray()
+        val linksList = listStringToList(publicLinks) + listStringToList(internalLinks)
+        val linkMatchers = linksList.map { antMatcher(it) }.toTypedArray()
         http
             .authorizeHttpRequests()
             .requestMatchers(*linkMatchers).permitAll()
@@ -85,6 +85,12 @@ class WebSecurityConfig(
             .logout().disable()
             .csrf().disable()
             .oauth2ResourceServer().authenticationManagerResolver(tokenAuthenticationManagerResolver())
+    }
+
+    private fun listStringToList(listString: String) = if (listString.isNotEmpty()) {
+        listString.split(",")
+    } else {
+        emptyList()
     }
 
     private fun updatePolicies(http: HttpSecurity) {
