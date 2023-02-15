@@ -39,7 +39,9 @@ describe("The shared header of the framework pages should act as expected", { sc
         frameworkQueryParam: string,
         searchStringQueryParam: string
       ): void {
+        cy.intercept("**/api/companies*").as("companyLoad");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
+        cy.wait("@companyLoad", { timeout: Cypress.env("long_timeout_in_ms") as number });
         const companySelector = "a span:contains( VIEW)";
         cy.get(companySelector).first().scrollIntoView();
         cy.get(companySelector).first().click({ force: true });
