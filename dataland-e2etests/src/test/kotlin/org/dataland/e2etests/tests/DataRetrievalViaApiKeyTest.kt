@@ -5,10 +5,11 @@ import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyRespon
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
-import org.dataland.e2etests.accessmanagement.ApiKeyHandler
+import org.dataland.e2etests.auth.ApiKeyAuthenticationHelper
+import org.dataland.e2etests.auth.GlobalAuth
+import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DatesHandler
-import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -19,7 +20,7 @@ class DataRetrievalViaApiKeyTest {
 
     private val apiAccessor = ApiAccessor()
 
-    private val apiKeyHandler = ApiKeyHandler()
+    private val apiKeyHelper = ApiKeyAuthenticationHelper()
 
     private val datesHandler = DatesHandler()
 
@@ -27,27 +28,27 @@ class DataRetrievalViaApiKeyTest {
         return ApiKeyMetaInfo(null, null, null, false, validationMessage)
     }
 
-    private fun assertUserId(userType: UserType, receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo) {
-        val expectedUserIdForUserType = apiAccessor.tokenHandler.getUserIdForTechnicalUsers(userType)
+    private fun assertUserId(technicalUser: TechnicalUser, receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo) {
+        val expectedUserIdForUserType = technicalUser.technicalUserId
         val userIdInReceivedApiKeyMetaInfo = receivedApiKeyMetaInfoFromValidation.keycloakUserId
         assertEquals(
             expectedUserIdForUserType,
             userIdInReceivedApiKeyMetaInfo,
             "The Keycloak user ID in the received API key meta info was $userIdInReceivedApiKeyMetaInfo and " +
                 "does not equal the expected Keycloak user ID $expectedUserIdForUserType for the technical " +
-                "user type $userType.",
+                "user type $technicalUser.",
         )
     }
 
-    private fun assertRoles(userType: UserType, receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo) {
-        val expectedRolesForUserType = apiAccessor.tokenHandler.getRolesForTechnicalUsers(userType)
+    private fun assertRoles(technicalUser: TechnicalUser, receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo) {
+        val expectedRolesForUserType = technicalUser.roles
         val rolesInReceivedApiKeyMetaInfo = receivedApiKeyMetaInfoFromValidation.keycloakRoles
         assertEquals(
             expectedRolesForUserType,
             rolesInReceivedApiKeyMetaInfo,
             "The Keycloak roles in the received API key meta info were $rolesInReceivedApiKeyMetaInfo and " +
                 "do not equal the expected Keycloak roles $expectedRolesForUserType for the technical" +
-                "user type $userType",
+                "user type $technicalUser",
         )
     }
 
@@ -65,12 +66,12 @@ class DataRetrievalViaApiKeyTest {
     }
 
     private fun doAssertionsAfterApiKeyValidation(
-        userType: UserType,
+        technicalUser: TechnicalUser,
         daysValid: Int? = null,
         receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo,
     ) {
-        assertUserId(userType, receivedApiKeyMetaInfoFromValidation)
-        assertRoles(userType, receivedApiKeyMetaInfoFromValidation)
+        assertUserId(technicalUser, receivedApiKeyMetaInfoFromValidation)
+        assertRoles(technicalUser, receivedApiKeyMetaInfoFromValidation)
         assertExpiryDate(daysValid, receivedApiKeyMetaInfoFromValidation)
         assertTrue(receivedApiKeyMetaInfoFromValidation.active!!)
         assertEquals(
@@ -81,8 +82,8 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @AfterEach
-    fun `delete the API key from Backend client to esnure clean state`() {
-        apiKeyHandler.deleteApiKeyFromBackendClient()
+    fun `delete the API key from Backend client to ensure clean state`() {
+        GlobalAuth.setBearerToken(null)
     }
 
     @Test
@@ -91,7 +92,7 @@ class DataRetrievalViaApiKeyTest {
         val companyId = uploadInfo.actualStoredCompany.companyId
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
 
-        apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, 1)
+        apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(TechnicalUser.Reader, 1)
         val downloadedStoredCompany = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
 
         assertEquals(
@@ -111,7 +112,7 @@ class DataRetrievalViaApiKeyTest {
             testCompanyInformationNonTeaser,
             testDataEuTaxonomyNonFinancials,
         )
-        apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, 1)
+        apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(TechnicalUser.Reader, 1)
         val downloadedCompanyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
@@ -125,51 +126,54 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `create a non teaser company get it with a valid API key revoke the API key and try to get the company`() {
-        val userType = UserType.Reader
+        val technicalUser = TechnicalUser.Reader
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(false)
         val companyId = uploadInfo.actualStoredCompany.companyId
         val expectedStoredCompany = StoredCompany(companyId, uploadInfo.inputCompanyInformation, emptyList())
 
-        apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(userType, 1)
+        val apiKey = apiKeyHelper.obtainApikeyForTechnicalUser(technicalUser, 1)
+        GlobalAuth.setBearerToken(apiKey.apiKey)
         val downloadedStoredCompany = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
         assertEquals(expectedStoredCompany, downloadedStoredCompany)
 
-        apiKeyHandler.revokeApiKeyForUserTypeAndRevokeBearerTokens(userType)
-
+        apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
+        GlobalAuth.setBearerToken(apiKey.apiKey)
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.companyDataControllerApi.getCompanyById(companyId).companyId
             }
         assertEquals(
-            "Client error : 401 ",
-            exception.message,
+            "Client error : 401 ", exception.message,
         )
     }
 
     @Test
     fun `generate an API key which is valid for a certain amount of days and then validate it`() {
         val daysValid = 2
-        val userType = UserType.Reader
-        val apiKeyToValidate = apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(userType, daysValid).apiKey
-        val apiKeyMetaInfo = apiKeyHandler.validateApiKeyAndReturnMetaInfo(apiKeyToValidate)
-        doAssertionsAfterApiKeyValidation(userType, daysValid, apiKeyMetaInfo)
+        val technicalUser = TechnicalUser.Reader
+        val apiKeyToValidate = apiKeyHelper
+            .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValid).apiKey
+        val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyToValidate)
+        doAssertionsAfterApiKeyValidation(technicalUser, daysValid, apiKeyMetaInfo)
     }
 
     @Test
     fun `generate an API key which is valid forever then validate it`() {
         val daysValid = null
-        val userType = UserType.Reader
-        val apiKeyToValidate = apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(userType, daysValid).apiKey
-        val apiKeyMetaInfo = apiKeyHandler.validateApiKeyAndReturnMetaInfo(apiKeyToValidate)
-        doAssertionsAfterApiKeyValidation(userType, daysValid, apiKeyMetaInfo)
+        val technicalUser = TechnicalUser.Reader
+        val apiKeyToValidate = apiKeyHelper
+            .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValid).apiKey
+        val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyToValidate)
+        doAssertionsAfterApiKeyValidation(technicalUser, daysValid, apiKeyMetaInfo)
     }
 
     @Test
     fun `validate a non existing API key`() {
-        val userType = UserType.Reader
-        val apiKeyToRevokeAndValidate = apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(userType, 1).apiKey
-        apiKeyHandler.revokeApiKeyForUserTypeAndRevokeBearerTokens(userType)
-        val apiKeyMetaInfo = apiKeyHandler.validateApiKeyAndReturnMetaInfo(apiKeyToRevokeAndValidate)
+        val technicalUser = TechnicalUser.Reader
+        val apiKeyToRevokeAndValidate = apiKeyHelper
+            .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, 1).apiKey
+        apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
+        val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyToRevokeAndValidate)
         val expectedValidationMessage = "Your Dataland account has no API key registered. Please generate one."
         val expectedApiKeyMetaInfo = buildApiKeyMetaInfoForFailedValidation(expectedValidationMessage)
         assertEquals(
@@ -181,10 +185,10 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `validate an API key which has the right format but a wrong secret `() {
-        apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(UserType.Reader, 1)
+        apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(TechnicalUser.Reader, 1)
         val apiKeyWithWrongSecret = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_" +
             "f7d037b92dd8c15022a9761853bcd88d014aab6d34c53705d61d6174a4589ee464c5adee09c9494e_3573499914"
-        val apiKeyMetaInfo = apiKeyHandler.validateApiKeyAndReturnMetaInfo(apiKeyWithWrongSecret)
+        val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyWithWrongSecret)
         val expectedValidationMessage = "The API key you provided for your Dataland account is not correct."
         val expectedApiKeyMetaInfo = buildApiKeyMetaInfoForFailedValidation(expectedValidationMessage)
         assertEquals(
@@ -196,9 +200,9 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `generate an API key and then revoke it`() {
-        val userType = UserType.Reader
-        apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(userType, 1)
-        val actualRevokeResponse = apiKeyHandler.revokeApiKeyForUserTypeAndRevokeBearerTokens(userType)
+        val technicalUser = TechnicalUser.Reader
+        apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, 1)
+        val actualRevokeResponse = apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
         val expectedRevokeMessage = "The API key for your Dataland account was successfully revoked."
         val expectedRevokeResponse = RevokeApiKeyResponse(true, expectedRevokeMessage)
         assertEquals(
@@ -210,10 +214,10 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `generate an API key revoke it once so that it is gone then revoke it a second time`() {
-        val userType = UserType.Reader
-        apiKeyHandler.obtainApiKeyForUserTypeAndRevokeBearerTokens(userType, 1)
-        apiKeyHandler.revokeApiKeyForUserTypeAndRevokeBearerTokens(userType)
-        val actualRevokeResponse = apiKeyHandler.revokeApiKeyForUserTypeAndRevokeBearerTokens(userType)
+        val technicalUser = TechnicalUser.Reader
+        apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, 1)
+        apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
+        val actualRevokeResponse = apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
         val expectedRevokeMessage = "Your Dataland account has no API key registered. " +
             "Therefore no revokement took place."
         val expectedRevokeResponse = RevokeApiKeyResponse(false, expectedRevokeMessage)
@@ -226,9 +230,9 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `generate an API key per technichal user and get the meta info about that API key for that user`() {
-        UserType.values().forEach { userType ->
-            val apiKeyAndMetaInfo = apiKeyHandler.obtainApiKeyForUserType(userType)
-            val apiKeyMetaInfoFromEndpoint = apiKeyHandler.getApiKeyMetaInfoForUserType(userType)
+        TechnicalUser.values().forEach { userType ->
+            val apiKeyAndMetaInfo = apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(userType)
+            val apiKeyMetaInfoFromEndpoint = apiKeyHelper.getApiKeyMetaInformationForTechnicalUser(userType)
             assertEquals(
                 apiKeyAndMetaInfo.apiKeyMetaInfo,
                 apiKeyMetaInfoFromEndpoint,

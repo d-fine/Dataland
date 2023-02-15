@@ -4,8 +4,8 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.UserType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -35,7 +35,7 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its company Id`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
-        apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val expectedStoredCompany = StoredCompany(
             uploadInfo.actualStoredCompany.companyId,
             uploadInfo.inputCompanyInformation,
@@ -144,7 +144,7 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if it can be searched for by identifier`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
                 searchString = uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
@@ -190,7 +190,7 @@ class CompanyDataControllerTest {
     fun `post a dummy company as a user type which does not have the rights to do so and receive an error code 403`() {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(1).first()
-        apiAccessor.tokenHandler.obtainTokenForUserType(UserType.Reader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)

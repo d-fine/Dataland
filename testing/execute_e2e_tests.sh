@@ -3,6 +3,7 @@ set -euxo pipefail
 source "$(dirname "$0")"/../deployment/docker_utils.sh
 
 #Start E2E Test and wait for E2E Test completion
+docker compose --project-name dala-e2e-test --profile testing pull -q
 docker compose --project-name dala-e2e-test --profile testing up -d || exit
 timeout 2400 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
 
