@@ -56,8 +56,6 @@ services:
     environment:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
   api-key-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -273,15 +271,12 @@ services:
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
   rabbitmq:
+    restart: always
     profiles: ["production", "testing", "development"]
     image: ghcr.io/d-fine/dataland/dataland_rabbitmq:${DATALAND_RABBITMQ_VERSION}
     container_name: rabbitmq
     networks:
       - internal
-#    ports:
-#      - "5672:5672"
-#    expose:
-#      - "15672"
     environment:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}
