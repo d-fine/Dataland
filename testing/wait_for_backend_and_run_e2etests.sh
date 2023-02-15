@@ -7,10 +7,10 @@ set -euxo pipefail
 is_infrastructure_up () {
   declare -A services
   services["backend"]=https://local-dev.dataland.com/api/actuator/health/ping
-  services["internal-storage"]=http://local-dev.dataland.com/internal-storage/actuator/health/ping
-  services["keycloak"]=http://local-dev.dataland.com/keycloak/realms/datalandsecurity/
-  services["api-key-manager"]=http://local-dev.dataland.com/api-keys/actuator/health/ping
-  services["qa-service"]=http://local-dev.dataland.com/qa/actuator/health/ping
+  services["internal-storage"]=https://local-dev.dataland.com/internal-storage/actuator/health/ping
+  services["keycloak"]=https://local-dev.dataland.com/keycloak/realms/datalandsecurity/
+  services["api-key-manager"]=https://local-dev.dataland.com/api-keys/actuator/health/ping
+  services["qa-service"]=https://local-dev.dataland.com/qa/actuator/health/ping
 
   for service in "${!services[@]}"; do
     if ! curl -L ${services[$service]} 2>/dev/null | grep -q 'UP\|alive\|datalandsecurity'; then
