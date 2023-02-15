@@ -52,10 +52,13 @@ Requests can be authorized via two different methods:
 - Option B: Automatically obtain a bearer token from KeyCloak by entering `dataland-public` for `client_id`and leaving `client_secret`empty (in the `default-oauth` section). Swagger will then redirect you two the KeyCloak Login form for authentication.
 
 ## Run Cypress Tests locally
-* start the docker-compose stack with the "development" profile. Set the env-variables (see above). 
-* start the backend - e.g. in IntelliJ or using gradle. Use the spring profile "development"
-* start the cypress UI by using `npm run cypress`
-* Select `E2E Testing` or `Component Testing` and run the tests
+* start the local stack using "startDevelopmentStack.sh". Set the env-variables (see above). 
+* The backend will be started automatically. You can kill it and run it from the IDE if you like (e.g. for Debugging)
+* Either use cypress while watching the browser:
+  * start the cypress UI by using `npm run cypress`
+  * Select `E2E Testing` or `Component Testing` and run the tests
+* Or se cypress without visible browser (more robust):
+  * run `npm run testpipeline -- --env EXECUTION_ENVIRONMENT=""` 
 
 ## Licenses
 This project makes use of open source dependencies. To see a list gradle dependencies along with their 

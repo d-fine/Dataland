@@ -55,7 +55,6 @@ openApi {
 
 jacoco {
     toolVersion = jacocoVersion
-    applyTo(tasks.bootRun.get())
 }
 
 gitProperties {
