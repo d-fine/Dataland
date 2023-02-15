@@ -108,8 +108,9 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(dropdownSelector).click();
+        cy.intercept("**/api/data*").as("dataLoad");
         cy.get(`${dropdownItemsSelector}:contains(${frameworkToSelect})`).click({ force: true });
-        cy.wait(5000);
+        cy.wait("@dataLoad", { timeout: Cypress.env("long_timeout_in_ms") as number });
       }
 
       /**
@@ -170,7 +171,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         uploadCompanyAndEuTaxonomyNonFinancialsDatasetViaApi();
       });
 
-      it.only("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
+      it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.EutaxonomyFinancials, lksgAndFinancialCompanyName);
         validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy Data");
