@@ -5,7 +5,7 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { Configuration, SfdrDataControllerApi, SfdrData } from "@clients/backend";
 import { uploadCompanyAndSfdrDataViaApi, uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { getPreparedFixture, UploadIds } from "@e2e/utils/GeneralApiUtils";
-import { generateSfdrData } from "../../fixtures/sfdr/SfdrDataFixtures";
+import { generateSfdrData } from "@e2e/fixtures/sfdr/SfdrDataFixtures";
 import Chainable = Cypress.Chainable;
 
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-11-12";
@@ -82,11 +82,11 @@ describeIf(
         const fiscalYearEndAsString = sfdrData.social!.general!.fiscalYearEnd as string;
         return getYearFromSfdrDate(fiscalYearEndAsString);
       } else {
-        throw Error(`No Sfdr dataset could be retrieved for the provided dataId ${dataId}`);
+        throw Error(`No SFDR dataset could be retrieved for the provided dataId ${dataId}`);
       }
     }
 
-    it("Check Sfdr view page for company with one Sfdr data set", () => {
+    it("Check Sfdr view page for company with one SFDR data set", () => {
       const preparedFixture = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const sfdrData = preparedFixture.t;

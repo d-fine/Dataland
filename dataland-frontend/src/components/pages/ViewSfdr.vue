@@ -8,10 +8,10 @@
       </div>
     </template>
     <div v-if="loading" class="col-12 text-left">
-      <h2>Checking if Sfdr data available...</h2>
+      <h2>Checking if SFDR data is available...</h2>
     </div>
     <div v-if="!loading && receivedSfdrDataIds.length === 0" class="col-12 text-left">
-      <h2>No Sfdr data</h2>
+      <h2>No SFDR data</h2>
     </div>
   </ViewFrameworkBase>
 </template>

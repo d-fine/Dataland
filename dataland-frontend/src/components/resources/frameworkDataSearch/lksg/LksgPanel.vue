@@ -6,7 +6,7 @@
   <div v-if="lksgDataAndMetaInfo && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :DataDateOfDataSets="listOfDataDateToDisplayAsColumns"
+      :dataDateOfDataSets="listOfDataDateToDisplayAsColumns"
       :kpiNameMappings="lksgKpisNameMappings"
       :kpiInfoMappings="lksgKpisInfoMappings"
       :subAreaNameMappings="lksgSubAreasNameMappings"

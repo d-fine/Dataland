@@ -41,7 +41,7 @@
           </template>
         </Column>
         <Column
-          v-for="dataDate of DataDateOfDataSets"
+          v-for="dataDate of dataDateOfDataSets"
           headerClass="horizontal-headers-size"
           :field="dataDate.dataId"
           :header="dataDate.dataDate?.split('-')[0]"
@@ -125,7 +125,7 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    DataDateOfDataSets: {
+    dataDateOfDataSets: {
       type: Array,
       default: () => [],
     },

@@ -6,7 +6,7 @@
   <div v-if="sfdrData && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :DataDateOfDataSets="listOfDataDateToDisplayAsColumns"
+      :dataDateOfDataSets="listOfDataDateToDisplayAsColumns"
       :kpiNameMappings="sfdrKpisNameMappings"
       :kpiInfoMappings="sfdrKpisInfoMappings"
       :subAreaNameMappings="sfdrSubAreasNameMappings"
