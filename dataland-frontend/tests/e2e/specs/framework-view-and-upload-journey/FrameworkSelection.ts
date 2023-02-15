@@ -40,7 +40,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         searchStringQueryParam: string
       ): void {
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
-        const companySelector = "a span:contains( VIEW)";
+        const companySelector = "span:contains(VIEW)";
         cy.get(companySelector).first().scrollIntoView();
         cy.get(companySelector).first().click({ force: true });
       }
