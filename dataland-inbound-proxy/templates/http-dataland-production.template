@@ -29,6 +29,11 @@ server {
       include utils/apiKeysErrors.conf;
     }
 
+    location /api/actuator/health {
+      proxy_pass http://backend:8080/api/actuator/health;
+      include utils/proxy.conf;
+    }
+
     location /api/ {
       proxy_pass http://backend:8080/api/public/;
       include utils/proxy.conf;
