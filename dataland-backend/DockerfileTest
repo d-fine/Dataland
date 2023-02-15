@@ -1,6 +1,11 @@
 ARG DATALAND_BACKEND_BASE_VERSION
-FROM ghcr.io/d-fine/dataland/dataland_backend_base:${DATALAND_BACKEND_BASE_VERSION}
+FROM ghcr.io/d-fine/dataland/dataland_backend_base:${DATALAND_BACKEND_BASE_VERSION} as builder
 
-CMD ./gradlew :dataland-backend:bootRun --args='--spring.profiles.active=ci' --no-daemon --stacktrace
+FROM eclipse-temurin:17.0.5_8-jre-alpine
+COPY --from=builder /app/dataland-backend/build/libs/dataland-backend-0.0.1-SNAPSHOT.jar /jar/dataland-backend.jar
+RUN wget https://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.8.8/jacoco-0.8.8.zip && \
+    unzip -j ./jacoco-0.8.8.zip "lib/jacocoagent.jar" -d /jar/ && \
+    rm ./jacoco-0.8.8.zip
+CMD ["java","-jar","/jar/dataland-backend.jar","-javaagent:/jar/jacocoagent.jar=excludes=org.springframework.*,"]
 
 HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/api/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
