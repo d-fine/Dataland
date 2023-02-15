@@ -29,17 +29,17 @@ docker exec -i dala-e2e-test-api-key-manager-db-1 /bin/bash -c "PGPASSWORD=${API
 docker exec -i dala-e2e-test-internal-storage-db-1 /bin/bash -c "PGPASSWORD=${INTERNAL_STORAGE_DB_PASSWORD} pg_dump --username internal_storage internal_storage" > ./dbdumps/${CYPRESS_TEST_GROUP}/backend-db.sql || true
 
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
-docker exec dala-e2e-test-backend-1 pkill -f spring
+docker exec dala-e2e-test-backend-1 pkill -f java
 timeout 90 sh -c "docker logs dala-e2e-test-backend-1 --follow" > /dev/null
-docker cp dala-e2e-test-backend-1:/app/dataland-backend/build/jacoco/bootRun.exec ./backend-bootRun-${CYPRESS_TEST_GROUP}.exec
+docker cp dala-e2e-test-backend-1:/jacoco.exec ./backend-bootRun-${CYPRESS_TEST_GROUP}.exec
 
-docker exec dala-e2e-test-api-key-manager-1 pkill -f spring
+docker exec dala-e2e-test-api-key-manager-1 pkill -f java
 timeout 90 sh -c "docker logs dala-e2e-test-api-key-manager-1 --follow" > /dev/null
-docker cp dala-e2e-test-api-key-manager-1:/app/dataland-api-key-manager/build/jacoco/bootRun.exec ./api-key-manager-bootRun-${CYPRESS_TEST_GROUP}.exec
+docker cp dala-e2e-test-api-key-manager-1:/jacoco.exec ./api-key-manager-bootRun-${CYPRESS_TEST_GROUP}.exec
 
-docker exec dala-e2e-test-internal-storage-1 pkill -f spring
+docker exec dala-e2e-test-internal-storage-1 pkill -f java
 timeout 90 sh -c "docker logs dala-e2e-test-internal-storage-1 --follow" > /dev/null
-docker cp dala-e2e-test-internal-storage-1:/app/dataland-internal-storage/build/jacoco/bootRun.exec ./internal-storage-bootRun-${CYPRESS_TEST_GROUP}.exec
+docker cp dala-e2e-test-internal-storage-1:/jacoco.exec ./internal-storage-bootRun-${CYPRESS_TEST_GROUP}.exec
 
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.

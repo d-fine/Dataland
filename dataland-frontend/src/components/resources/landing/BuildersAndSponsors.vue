@@ -9,13 +9,6 @@
           <img src="@/assets/images/logos/dfine.svg" alt="d-fine GmbH" class="d-small-logo" />
         </div>
       </div>
-      <div>
-        <p class="uppercase mb-0">Supported by</p>
-        <img src="@/assets/images/elements/orange_short_line.svg" alt="short orange line" />
-        <div class="imgs-in-line">
-          <img src="@/assets/images/logos/t_systems_logo.svg" alt="T-Systems" class="d-small-logo" />
-        </div>
-      </div>
     </div>
   </div>
 </template>
