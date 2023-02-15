@@ -7,9 +7,9 @@
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
       :DataDateOfDataSets="listOfDataDateToDisplayAsColumns"
-      :kpiNameMappings="kpisNameMappings"
-      :kpiInfoMappings="kpisInfoMappings"
-      :subAreaNameMappings="subAreasNameMappings"
+      :kpiNameMappings="sfdrKpisNameMappings"
+      :kpiInfoMappings="sfdrKpisInfoMappings"
+      :subAreaNameMappings="sfdrSubAreasNameMappings"
       tableDataTitle="SFDR data"
     />
   </div>
@@ -24,10 +24,10 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortDatesToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
-  subAreasNameMappings,
-  kpisNameMappings,
-  kpisInfoMappings,
-} from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+  sfdrSubAreasNameMappings,
+  sfdrKpisNameMappings,
+  sfdrKpisInfoMappings,
+} from "@/components/resources/frameworkDataSearch/sfdr/DataModelsTranslations";
 
 export default defineComponent({
   name: "SfdrPanel",
@@ -43,9 +43,9 @@ export default defineComponent({
       sfdrData: [] as Array<SfdrData>,
       listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
-      kpisNameMappings,
-      kpisInfoMappings,
-      subAreasNameMappings,
+      sfdrKpisNameMappings,
+      sfdrKpisInfoMappings,
+      sfdrSubAreasNameMappings,
     };
   },
   props: {
