@@ -31,6 +31,15 @@ export function valueOrUndefined<T>(value: T): T | undefined {
 }
 
 /**
+ * Generates a random link to a pdf document
+ *
+ * @returns random link to a pdf document
+ */
+export function generateLinkToPdf(): string {
+  return new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href;
+}
+
+/**
  * Generates a random non-empty set of reports that can be referenced
  *
  * @returns a random non-empty set of reports
@@ -42,7 +51,7 @@ export function generateReferencedReports(): ReferencedReports {
   const referencedReports: ReferencedReports = {};
   availableReports.forEach((reportName) => {
     referencedReports[reportName] = {
-      reference: new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href,
+      reference: generateLinkToPdf(),
       isGroupLevel: randomYesNoNaUndefined(),
       reportDate: randomPastDateOrUndefined(),
       currency: faker.finance.currencyCode(),
