@@ -7,6 +7,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
@@ -17,7 +18,6 @@ import java.io.File
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.UUID
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 
 object BigDecimalAdapter {
     @FromJson
@@ -82,7 +82,8 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
                     identifierValue = UUID.randomUUID().toString(),
                     identifierType = CompanyIdentifier.IdentifierType.isin,
                 )
-                it.companyInformation.copy(identifiers = listOf(randomIsin)) }
+                it.companyInformation.copy(identifiers = listOf(randomIsin))
+            }
     }
 
     fun getTData(numberOfDataSets: Int): List<T> {
