@@ -37,7 +37,6 @@ class UnauthorizedMetaDataControllerApi {
     private fun buildGetListOfDataMetaInfoRequest(companyId: String, dataType: DataTypeEnum): Request {
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
-            .addPathSegment("public")
             .addPathSegment("metadata")
             .addQueryParameter("companyId", companyId)
             .addQueryParameter("dataType", dataType.value)
