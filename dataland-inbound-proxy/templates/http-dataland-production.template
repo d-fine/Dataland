@@ -29,11 +29,6 @@ server {
       include utils/apiKeysErrors.conf;
     }
 
-    location /api/actuator/health {
-      proxy_pass http://backend:8080/api/actuator/health;
-      include utils/proxy.conf;
-    }
-
     location /api/ {
       proxy_pass http://backend:8080/api/;
       include utils/proxy.conf;
@@ -41,8 +36,7 @@ server {
     }
 
     location /api/internal/ {
-
-        }
+    }
 
     location /internal-storage/actuator/health {
       proxy_pass http://internal-storage:8080/internal-storage/actuator/health;
