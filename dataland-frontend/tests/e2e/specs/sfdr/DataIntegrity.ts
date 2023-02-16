@@ -93,7 +93,7 @@ describeIf(
 
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         return uploadCompanyAndSfdrDataViaApi(token, companyInformation, sfdrData).then((uploadIds) => {
-          cy.intercept("**/api/public/data/sfdr/company/*").as("retrieveSfdrData");
+          cy.intercept("**/api/data/sfdr/company/*").as("retrieveSfdrData");
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/sfdr`);
           cy.wait("@retrieveSfdrData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
             cy.get(`h1`).should("contain", companyInformation.companyName);
@@ -129,7 +129,7 @@ describeIf(
           for (let i = 3; i <= numberOfSfdrDataSetsForCompany; i++) {
             currentChainable = currentChainable.then(uploadAnotherSfdrDataSetToExistingCompany);
           }
-          cy.intercept("**/api/public/data/sfdr/company/*").as("retrieveSfdrData");
+          cy.intercept("**/api/data/sfdr/company/*").as("retrieveSfdrData");
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/sfdr`);
           cy.wait("@retrieveSfdrData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
             cy.get("table")

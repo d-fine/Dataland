@@ -34,7 +34,7 @@ internal class MetaDataControllerTest(
         val testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
         val storedCompany = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
         mockMvc.perform(
-            get("/public/metadata?companyId=${storedCompany.companyId}")
+            get("/metadata?companyId=${storedCompany.companyId}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON),
         )

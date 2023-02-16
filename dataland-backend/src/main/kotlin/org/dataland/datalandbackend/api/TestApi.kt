@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  * An API interface purely used for testing
  */
 @Hidden
-@RequestMapping("/public/testing")
+@RequestMapping("/testing")
 interface TestApi {
     /**
      * A dummy function that returns a 500 response to test the internal server error handling behaviour

@@ -27,7 +27,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): 
       cy.wrap($element).type(inputNumber.toString(), { force: true });
     });
   }
-  cy.intercept(`**/api/public/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
+  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
   cy.get('button[name="postEUData"]').click({ force: true });
   cy.wait("@postCompanyAssociatedData");
   return cy.contains("h4", "dataId").then<string>(($dataId): string => {

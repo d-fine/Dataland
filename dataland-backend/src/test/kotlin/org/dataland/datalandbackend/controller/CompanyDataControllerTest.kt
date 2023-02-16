@@ -40,7 +40,7 @@ internal class CompanyDataControllerTest(
     fun `meta info about a specific company can be retrieved by its company Id`() {
         val storedCompany = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
         mockMvc.perform(
-            get("/public/companies/${storedCompany.companyId}")
+            get("/companies/${storedCompany.companyId}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON),
         )

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam
 /**
  * Defines the restful dataland-backend API regarding company data.
  */
-@RequestMapping("/public/companies")
+@RequestMapping("/companies")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface CompanyApi {

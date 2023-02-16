@@ -20,7 +20,7 @@ class UnauthorizedEuTaxonomyDataNonFinancialsControllerApi {
 
     private fun buildGetCompanyAssociatedDataEuTaxonomyDataForNonFinancialsRequest(dataId: String): Request {
         return Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_BACKEND/public/data/eutaxonomy-non-financials/$dataId")
+            .url("$BASE_PATH_TO_DATALAND_BACKEND/data/eutaxonomy-non-financials/$dataId")
             .get()
             .build()
     }

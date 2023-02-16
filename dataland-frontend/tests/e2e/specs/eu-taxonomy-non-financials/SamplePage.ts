@@ -5,13 +5,13 @@ describe("As a user, I expect the sample page to be functional and reachable wit
   it("Check that the sample section works properly without authentication", () => {
     cy.visitAndCheckAppMount("/");
     cy.get("h2").should("contain.text", "Explore Dataland");
-    cy.intercept("**/api/public/companies/teaser")
+    cy.intercept("**/api/companies/teaser")
       .as("getTeaserCompanies")
-      .intercept("**/api/public/metadata*")
+      .intercept("**/api/metadata*")
       .as("getMetaDataOfFirstTeaserCompany")
-      .intercept("**/api/public/companies/*")
+      .intercept("**/api/companies/*")
       .as("getCompanyById")
-      .intercept("**/api/public/data/**")
+      .intercept("**/api/data/**")
       .as("getDataById")
       .get("button[name=eu_taxonomy_sample_button]")
       .should("be.visible")

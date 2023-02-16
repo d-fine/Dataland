@@ -29,7 +29,7 @@ class UnauthorizedMetaDataControllerApi {
 
     private fun buildGetDataMetaInfoRequest(dataId: String): Request {
         return Request.Builder()
-            .url("$BASE_PATH_TO_DATALAND_BACKEND/public/metadata/$dataId")
+            .url("$BASE_PATH_TO_DATALAND_BACKEND/metadata/$dataId")
             .get()
             .build()
     }
