@@ -215,7 +215,8 @@ class CompanyDataControllerTest {
         val randomizedCompanyInformation = testCompanyInformation.copy(identifiers = listOf(randomIsin))
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         apiAccessor.companyDataControllerApi.postCompany(randomizedCompanyInformation)
-        val response = apiAccessor.companyDataControllerApi.postCompanyWithHttpInfo(randomizedCompanyInformation) as ClientError
+        val response = apiAccessor.companyDataControllerApi.postCompanyWithHttpInfo(randomizedCompanyInformation)
+            as ClientError
 
         assertEquals(
             400,
