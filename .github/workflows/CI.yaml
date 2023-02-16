@@ -50,7 +50,7 @@ jobs:
           java-version: 17
           cache: gradle
       - name: install dependencies
-        run: sudo apt install jq
+        run: sudo apt install jd
         if: always()
       - name: assemble project
         run: ./gradlew assemble --no-daemon --stacktrace
