@@ -85,7 +85,7 @@ export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
         securitiesNotCertifiedAsGreen: generateYesNoOrEmptyDatapoint(reports),
       },
       anticorruptionAndAntibribery: {
-        reportedCasesOfBriberyCorruption: generateYesNoOrEmptyDatapoint(reports),
+        reportedCasesOfBriberyCorruption: generateNumericOrEmptyDatapoint(reports),
         reportedConvictionsOfBriberyCorruption: generateNumericOrEmptyDatapoint(reports),
         reportedFinesOfBriberyCorruption: generateNumericOrEmptyDatapoint(reports, randomEuroValue()),
       },

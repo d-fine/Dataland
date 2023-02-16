@@ -112,6 +112,9 @@ export const sfdrKpisNameMappings = {
   tagName: "Tag Name",
   page: "Page",
   raport: "Raport",
+  supplierCodeOfConduct: "Supplier Code Of Conduct",
+  grievanceHandlingMechanism: "Grievance Handling Mechanism",
+  totalRevenue: "Total Revenue",
 };
 
 export const sfdrKpisInfoMappings = {
@@ -259,6 +262,12 @@ export const sfdrKpisInfoMappings = {
   waterReused: "Amount of water reused/reclaimed by the company",
   waterStressAreaExposure:
     "Does the company has sites located in areas of high water stress without a water management policy?",
+  supplierCodeOfConduct:
+    "Does your company have a Supplier Code Of Conduct? If yes, please provide us with the Supplier Code Of Conduct.",
+  grievanceHandlingMechanism:
+    "Has your company implemented a grievance mechanism (e.g., anonymous whistleblowing system) to protect human and environmental rights in your business?",
+  totalRevenue:
+    "Total Revenue in MM (Millions) for the financial year. i.e., Income arising in the course of an entity's ordinary activities., the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time",
 };
 
 export const sfdrSubAreasNameMappings = {

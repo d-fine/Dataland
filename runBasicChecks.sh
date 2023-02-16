@@ -41,7 +41,7 @@ commands[frontend_component_tests]="npm --prefix ./dataland-frontend run testcom
 tests="ktlint detekt eslint dependency frontend_compilation cypress_compilation fixture_compilation e2e_compilation"
 if [[ $mode == full ]]; then
   if curl -L https://local-dev.dataland.com/api/actuator/health/ping 2>/dev/null | grep -q UP; then
-    echo "ERROR: The backend is currently running. This will interfere with the generation of the new OpenAPI specs."
+    echo "ERROR: The backend is currently running. This will interfere with the cleanup."
     echo "Shut down the running process and restart the script."
     exit 1
   fi

@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.submodels
 
 import org.dataland.datalandbackend.model.DataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
 /**
@@ -9,7 +8,7 @@ import java.math.BigDecimal
  * Fields of the SFDR questionnaire regarding the impact topic "Anti-corruption and anti-bribery"
  */
 data class SfdrAnticorruptionAndAntibribery(
-    val reportedCasesOfBriberyCorruption: DataPoint<YesNo>?,
+    val reportedCasesOfBriberyCorruption: DataPoint<BigDecimal>?,
 
     val reportedConvictionsOfBriberyCorruption: DataPoint<BigDecimal>?,
 
