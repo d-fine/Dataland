@@ -135,7 +135,7 @@ describe("As a user I expect a data request page where I can download an excel t
       beforeEach(() => {
         cy.ensureLoggedIn();
         cy.visitAndCheckAppMount("/requests");
-        cy.intercept("**/api/public/invite*").as(inviteInterceptionAlias);
+        cy.intercept("**/api/invite*").as(inviteInterceptionAlias);
       });
 
       it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
@@ -148,7 +148,7 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.intercept("**/Dataland_Request_Template.xlsx").as(downloadAlias);
         cy.get(downloadLinkSelector).click();
         cy.wait(`@${downloadAlias}`);
-        cy.readFile("./public/Dataland_Request_Template.xlsx", "binary", {
+        cy.readFile("./Dataland_Request_Template.xlsx", "binary", {
           timeout: Cypress.env("medium_timeout_in_ms") as number,
         }).then((expectedExcelTemplateBinary) => {
           cy.readFile(expectedPathToDownloadedExcelTemplate, "binary", {

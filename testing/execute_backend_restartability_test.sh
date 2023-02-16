@@ -11,7 +11,7 @@ if [[ "$api_key" =~ "^Unable to extract token" ]]; then
   return 1
 fi
 curl -X 'GET' \
-  'https://localhost/api/public/companies' \
+  'https://localhost/api/companies' \
   -H 'accept: application/json' \
   -H "Authorization: Bearer $api_key" \
   -H "Host: local-dev.dataland.com" \
@@ -20,7 +20,7 @@ docker compose --project-name dala-e2e-test --profile testing down
 CYPRESS_TEST_GROUP=102 CYPRESS_SINGLE_POPULATE="true" CYPRESS_AWAIT_PREPOPULATION_RETRIES=3 ./testing/execute_e2e_tests.sh
 timeout 240 bash -c "wait_for_service_name_list_to_be_healthy api-key-manager backend-db"
 curl -X 'GET' \
-  'https://localhost/api/public/companies' \
+  'https://localhost/api/companies' \
   -H 'accept: application/json' \
   -H "Authorization: Bearer $api_key" \
   -H "Host: local-dev.dataland.com" \
