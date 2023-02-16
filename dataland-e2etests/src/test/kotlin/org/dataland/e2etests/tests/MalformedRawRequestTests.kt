@@ -41,7 +41,6 @@ class MalformedRawRequestTests {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
             .toHttpUrl().newBuilder()
-            .addPathSegment("public")
             .addPathSegment("companies")
             .build()
         val request = Request.Builder()
