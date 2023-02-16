@@ -3,7 +3,7 @@ set -euxo pipefail
 
 function getOpenApiSha1Sum() {
   ls
-  find * -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1Formatted.json' shell {} \;
+  find * -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1' shell {} \;
   ls
   find * -name "*OpenApi.jsonFormatted.json" -type f | \
   sort -u | \

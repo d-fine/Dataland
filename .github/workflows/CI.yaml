@@ -52,11 +52,11 @@ jobs:
       - name: install dependencies
         run: sudo apt install jq
         if: always()
-      - name: assemble project
-        run: ./gradlew assemble --no-daemon --stacktrace
       - name: verify OpenApi Files
         if: always()
         run: testing/verifyOpenApiFiles.sh
+      - name: assemble project
+        run: ./gradlew assemble --no-daemon --stacktrace
       - name: Execute linting and detekt
         run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
         if: always()
