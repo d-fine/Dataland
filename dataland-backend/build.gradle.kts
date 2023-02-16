@@ -75,7 +75,6 @@ tasks.test {
 
 jacoco {
     toolVersion = jacocoVersion
-    applyTo(tasks.bootRun.get())
 }
 
 tasks.register<Copy>("getTestData") {
