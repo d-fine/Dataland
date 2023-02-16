@@ -39,11 +39,7 @@ class MetaDataControllerTest {
         )[0].actualStoredDataMetaInfo!!
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
-        val expectedDataMetaInformation =
-            DataMetaInformation(
-                uploadedMetaInfo.dataId, testDataType, 0,
-                uploadedMetaInfo.companyId, DatasetQualityStatus.accepted,
-            )
+        val expectedDataMetaInformation = buildDataMetaInformation(uploadedMetaInfo, testDataType)
         assertEquals(
             expectedDataMetaInformation,
             actualDataMetaInformation.copy(uploadTime = 0),
@@ -56,6 +52,14 @@ class MetaDataControllerTest {
             "The server-upload-time and the local upload time differ too much.",
         )
     }
+
+    private fun buildDataMetaInformation(
+        uploadedMetaInfo: DataMetaInformation,
+        testDataType: DataTypeEnum,
+    ) = DataMetaInformation(
+        uploadedMetaInfo.dataId, testDataType, 0,
+        uploadedMetaInfo.companyId, DatasetQualityStatus.accepted,
+    )
 
     @Test
     fun `search for a company that does not exist and check that a 404 error is returned`() {

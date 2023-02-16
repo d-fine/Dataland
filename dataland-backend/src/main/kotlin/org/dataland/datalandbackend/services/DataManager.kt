@@ -103,8 +103,7 @@ class DataManager(
                 metaInformation.copy(qualityStatus = DatasetQualityStatus.Accepted),
             )
             logger.info(
-                "Received quality assurance for data upload with DataId: $dataId with Correlation Id: " +
-                    correlationId,
+                "Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId",
             )
         } else {
             val internalMessage = "Error updating metadata data. Correlation ID: $correlationId"

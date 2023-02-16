@@ -1,5 +1,12 @@
 <template>
-  <PrimeDialog id="revokeModal" :modal="true" header="Header" footer="Footer" v-model:visible="viewDeleteConfirmation">
+  <PrimeDialog
+    id="revokeModal"
+    :dismissableMask="true"
+    :modal="true"
+    header="Header"
+    footer="Footer"
+    v-model:visible="viewDeleteConfirmation"
+  >
     <template #header>
       <h2 class="m-0">Delete API Key</h2>
     </template>

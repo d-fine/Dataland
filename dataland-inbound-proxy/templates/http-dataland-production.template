@@ -36,6 +36,7 @@ server {
     }
 
     location /api/internal/ {
+        return 301 https://${PROXY_PRIMARY_URL}/nocontent;
     }
 
     location /internal-storage/actuator/health {
