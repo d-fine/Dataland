@@ -16,6 +16,8 @@ import org.dataland.datalandbackend.openApiClient.model.SmeData
 import java.io.File
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 
 object BigDecimalAdapter {
     @FromJson
@@ -71,6 +73,16 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
     fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
         return testCompanyInformationWithTData.slice(0 until requiredQuantity)
             .map { it.companyInformation.copy(identifiers = emptyList()) }
+    }
+
+    fun getCompanyInformationWithRandomIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
+        return testCompanyInformationWithTData.slice(0 until requiredQuantity)
+            .map {
+                val randomIsin = CompanyIdentifier(
+                    identifierValue = UUID.randomUUID().toString(),
+                    identifierType = CompanyIdentifier.IdentifierType.isin,
+                )
+                it.companyInformation.copy(identifiers = listOf(randomIsin)) }
     }
 
     fun getTData(numberOfDataSets: Int): List<T> {

@@ -2,7 +2,6 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.UUID
 
 class CompanyDataControllerTest {
 
@@ -207,15 +205,10 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company twice and receive the expected error code and message`() {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first()
-        val randomIsin = CompanyIdentifier(
-            identifierValue = UUID.randomUUID().toString(),
-            identifierType = CompanyIdentifier.IdentifierType.isin,
-        )
-        val randomizedCompanyInformation = testCompanyInformation.copy(identifiers = listOf(randomIsin))
+            .getCompanyInformationWithRandomIdentifiers(1).first()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        apiAccessor.companyDataControllerApi.postCompany(randomizedCompanyInformation)
-        val response = apiAccessor.companyDataControllerApi.postCompanyWithHttpInfo(randomizedCompanyInformation)
+        apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)
+        val response = apiAccessor.companyDataControllerApi.postCompanyWithHttpInfo(testCompanyInformation)
             as ClientError
 
         assertEquals(
