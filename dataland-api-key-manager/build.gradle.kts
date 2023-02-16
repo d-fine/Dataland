@@ -67,7 +67,6 @@ tasks.test {
 }
 jacoco {
     toolVersion = jacocoVersion
-    applyTo(tasks.bootRun.get())
 }
 
 gitProperties {

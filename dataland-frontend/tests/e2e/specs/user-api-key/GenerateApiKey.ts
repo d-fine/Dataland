@@ -34,7 +34,6 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="7 days"]').click();
     cy.get("#expiryTimeWrapper").should("contain.text", `The API Key will expire on`);
-
     cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click({ force: true });
     cy.get("#expiryTimeWrapper").should("not.exist");
@@ -110,8 +109,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
       "contain",
       "If you don't have access to your API Key you can generate a new one"
     );
-    cy.get('[id="apiKeyUsageInfoMessage"]').should("contain", "In order to use the API Key");
-
+    cy.get('[id="apiKeyUsageInfoMessage"]').should("contain", "You can use the API-Keys as bearer-tokens");
     cy.get('[data-test="action-button"]').should("contain", "REGENERATE API KEY").click();
     cy.get("div#regenerateApiKeyModal").should("be.visible").find('[data-test="regenerateApiKeyCancelButton"]').click();
     cy.get("div#regenerateApiKeyModal").should("not.exist");

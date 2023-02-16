@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.email.EmailContact
 import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.web.multipart.MultipartFile
 
 /**
@@ -43,7 +44,7 @@ object InvitationEmailGenerator {
     }
 
     private fun buildUserInfo(isSubmitterNameHidden: Boolean): String {
-        val user = DatalandAuthentication.fromContext()
+        val user = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
         return when (isSubmitterNameHidden) {
             true -> "Anonymous user"
             else -> "User ${user.username} (Keycloak id: ${user.userId})"
