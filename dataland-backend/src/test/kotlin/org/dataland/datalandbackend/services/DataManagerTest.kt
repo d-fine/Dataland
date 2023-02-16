@@ -176,13 +176,14 @@ class DataManagerTest(
             "The meta-data of dataset $dataId differs between the data store and the database", thrown.message,
         )
     }
-    private fun buildReturnOfMockDataSelect(storableDataSetForNonFinancials: StorableDataSet): String{
+    private fun buildReturnOfMockDataSelect(storableDataSetForNonFinancials: StorableDataSet): String {
         return objectMapper.writeValueAsString(
             storableDataSetForNonFinancials.copy(
                 uploaderUserId = "NOT_WHATS_EXPECTED",
             ),
         )
     }
+
     @Test
     fun `check an exception is thrown in updating of meta data when dataId is empty`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
