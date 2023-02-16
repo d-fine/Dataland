@@ -28,7 +28,6 @@ class StorageController(
         return ResponseEntity.ok(dataStore.selectDataSet(dataId))
     }
     override fun insertData(message: Message): ResponseEntity<InsertDataResponse> {
-        // logger.info("Inserting data into database with (correlation id: $correlationId).")
         return ResponseEntity.ok(InsertDataResponse(dataStore.temporaryToPersistentStorage(message).toString()))
     }
 }
