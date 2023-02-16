@@ -39,8 +39,10 @@ describe("The shared header of the framework pages should act as expected", { sc
         frameworkQueryParam: string,
         searchStringQueryParam: string
       ): void {
+        cy.intercept("**/api/companies*").as("companyLoad");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
-        const companySelector = "a span:contains( VIEW)";
+        cy.wait("@companyLoad", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        const companySelector = "span:contains(VIEW)";
         cy.get(companySelector).first().scrollIntoView();
         cy.get(companySelector).first().click({ force: true });
       }
@@ -106,30 +108,18 @@ describe("The shared header of the framework pages should act as expected", { sc
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(dropdownSelector).click();
         cy.get(`${dropdownItemsSelector}:contains(${frameworkToSelect})`).click({ force: true });
+        cy.wait(3000);
       }
 
       /**
-       * Validates if the framework view page for EU Taxonomy data for financial companies is currently displayed.
+       * Validates if the framework view page is currently displayed.
+       *
+       * @param framework the framework type as DataTypeEnum
+       * @param header the h2 header to check for
        */
-      function validateFinancialsPage(): void {
-        cy.url().should("contain", `/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
-        cy.get("h2").should("contain", "EU Taxonomy Data");
-      }
-
-      /**
-       * Validates if the framework view page for EU Taxonomy data for non-financial companies is currently displayed.
-       */
-      function validateNonFinancialsPage(): void {
-        cy.url().should("contain", `/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
-        cy.get("h2").should("contain", "EU Taxonomy Data");
-      }
-
-      /**
-       * Validates if the framework view page for LkSG data is currently displayed.
-       */
-      function validateLksgPage(): void {
-        cy.url().should("contain", `/frameworks/${DataTypeEnum.Lksg}`);
-        cy.get("h2").should("contain", "LkSG Data");
+      function validateFrameworkPage(framework: DataTypeEnum, header: string): void {
+        cy.url().should("contain", `/frameworks/${framework}`);
+        cy.get("h2").should("contain", header);
       }
 
       /**
@@ -182,35 +172,35 @@ describe("The shared header of the framework pages should act as expected", { sc
       it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.EutaxonomyFinancials, lksgAndFinancialCompanyName);
-        validateFinancialsPage();
+        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy Data");
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
           DataTypeEnum.EutaxonomyFinancials,
           lksgAndFinancialCompanyName
         );
-        validateFinancialsPage();
+        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy Data");
         validateDropdown(financialsDropdownItem);
         selectFrameworkInDropdown(lksgDropdownItem);
-        validateLksgPage();
+        validateFrameworkPage(DataTypeEnum.Lksg, "LkSG Data");
         validateDropdown(lksgDropdownItem);
         selectFrameworkInDropdown(financialsDropdownItem);
-        validateFinancialsPage();
+        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy Data");
 
         selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
-        validateLksgPage();
+        validateFrameworkPage(DataTypeEnum.Lksg, "LkSG Data");
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
-        validateLksgPage();
+        validateFrameworkPage(DataTypeEnum.Lksg, "LkSG Data");
         validateDropdown(lksgDropdownItem);
       });
 
       it("Check that from a framework page you can search a company without this framework", () => {
         cy.ensureLoggedIn();
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
-        validateLksgPage();
+        validateFrameworkPage(DataTypeEnum.Lksg, "LkSG Data");
         searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(
           nonFinancialCompanyName,
           "input#framework_data_search_bar_standard"
         );
-        validateNonFinancialsPage();
+        validateFrameworkPage(DataTypeEnum.EutaxonomyNonFinancials, "EU Taxonomy Data");
       });
 
       it("Check if invalid company ID or invalid data ID lead to displayed error message on framework view page", () => {

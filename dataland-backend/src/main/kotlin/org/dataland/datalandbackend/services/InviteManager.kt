@@ -5,7 +5,9 @@ import org.dataland.datalandbackend.model.InviteResult
 import org.dataland.datalandbackend.repositories.InviteMetaInfoRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.InvitationEmailGenerator
+import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -76,6 +78,12 @@ class InviteManager(
      * @return a response model object with info about the invite process
      */
     fun submitInvitation(excelFile: MultipartFile, isSubmitterNameHidden: Boolean): InviteMetaInfoEntity {
+        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
+            throw AuthenticationMethodNotSupportedException(
+                "The chosen authentication method is not supported for this request. Please authenticate using a JWT.",
+            )
+        }
+
         val inviteId = IdUtils.generateUUID()
         val fileId = storeOneExcelFileAndReturnFileId(excelFile, inviteId)
         val inviteResult = if (!checkFilename(excelFile)) {
