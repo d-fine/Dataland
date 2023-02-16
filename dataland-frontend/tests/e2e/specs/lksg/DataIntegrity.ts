@@ -152,7 +152,7 @@ describeIf(
                 cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.streetAndHouseNumber})`);
               }
             });
-            cy.get("div.p-dialog").find("span.p-dialog-header-close-icon").click();
+            cy.get("div.p-dialog-mask").click({ force: true });
 
             cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
             cy.get(".p-tooltip").should("be.visible").contains("The date until for which");

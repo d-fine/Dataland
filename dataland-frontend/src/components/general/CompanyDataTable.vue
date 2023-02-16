@@ -130,6 +130,7 @@ export default defineComponent({
         props: {
           header: modalTitle,
           modal: true,
+          dismissableMask: true,
         },
         data: {
           listOfProductionSitesNames: listOfProductionSites,

@@ -17,7 +17,7 @@ describe("As a user, I expect the back button to work properly", () => {
           );
           cy.wait("@getCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.wait("@getMetaDataForCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-
+          cy.wait(2000);
           cy.contains("span", "BACK").click().url().should("include", "/companies");
         }
       );
