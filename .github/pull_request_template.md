@@ -13,5 +13,4 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] The new feature is manually used/tested/observed on dev server
   - [ ] All implemented Social Logins have been tested manually in the UI
-- [ ] If any work on the UI is to be merged, those changes were also documented in the Figma 
-- 8
+- [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
