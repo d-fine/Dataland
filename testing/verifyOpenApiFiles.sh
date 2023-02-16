@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 function getOpenApiSha1Sum() {
-  find * -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $.formatted.json' shell {} \;
+  find * -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1.formatted.json' shell {} \;
   find * -name "*OpenApi.json.formatted.json" -type f | \
   sort -u | \
   xargs sha1sum | \
