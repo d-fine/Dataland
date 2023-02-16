@@ -158,28 +158,26 @@ class DataManagerTest(
 
     @Test
     fun `check that an exception is thrown if the received data from the storage has an unexpected uploading user`() {
-        val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
-            addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val messageForDataSetAndCorrelationId = buildDummyMessage(storableEuTaxonomyDataSetForNonFinancials)
+        val storableDataSetForNonFinancials = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
+        val messageForDataSetAndCorrelationId = buildDummyMessage(storableDataSetForNonFinancials)
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
-        val dataId = dataManager.addDataSet(storableEuTaxonomyDataSetForNonFinancials, correlationId)
+        val dataId = dataManager.addDataSet(storableDataSetForNonFinancials, correlationId)
 
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
             objectMapper.writeValueAsString(
-                storableEuTaxonomyDataSetForNonFinancials.copy(
+                storableDataSetForNonFinancials.copy(
                     uploaderUserId = "NOT_WHATS_EXPECTED",
                 ),
             ),
         )
 
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.getDataSet(dataId, storableEuTaxonomyDataSetForNonFinancials.dataType, correlationId)
+            dataManager.getDataSet(dataId, storableDataSetForNonFinancials.dataType, correlationId)
         }
         assertEquals(
-            "The meta-data of dataset $dataId differs between the data store and the database",
-            thrown.message,
+            "The meta-data of dataset $dataId differs between the data store and the database", thrown.message,
         )
     }
 

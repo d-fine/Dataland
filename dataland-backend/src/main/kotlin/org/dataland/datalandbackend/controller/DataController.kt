@@ -41,9 +41,7 @@ abstract class DataController<T>(
                 "for companyId '${companyAssociatedData.companyId}'",
         )
         val correlationId = generatedCorrelationId(companyAssociatedData.companyId)
-        val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
-
-        val dataIdOfPostedData = dataManager.addDataSet(datasetToStore, correlationId)
+        val dataIdOfPostedData = storeDataInStorage(companyAssociatedData, userId, uploadTime, correlationId)
         logger.info(
             "Posted company associated data for companyId '${companyAssociatedData.companyId}'. " +
                 "Correlation ID: $correlationId",
@@ -54,6 +52,16 @@ abstract class DataController<T>(
                 companyAssociatedData.companyId, DatasetQualityStatus.Pending,
             ),
         )
+    }
+
+    private fun storeDataInStorage(
+        companyAssociatedData: CompanyAssociatedData<T>,
+        userId: String,
+        uploadTime: Long,
+        correlationId: String,
+    ): String {
+        val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
+        return dataManager.addDataSet(datasetToStore, correlationId)
     }
 
     private fun buildDatasetToStore(
