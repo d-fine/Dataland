@@ -66,14 +66,26 @@ export function ensureLoggedIn(username?: string, password?: string): void {
   cy.session(
     [username, password],
     () => {
+      console.log("Session not ok - logging in again");
       login(username, password);
     },
     {
       validate: () => {
-        cy.visit("/")
+        cy.visit("/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step1.html")
           .url()
-          .should("eq", getBaseUrl() + "/companies");
-        cy.wait(2000);
+          .should(
+            "eq",
+            getBaseUrl() + "/keycloak/realms/datalandsecurity/protocol/openid-connect/3p-cookies/step2.html"
+          );
+        cy.window()
+          .then((window): boolean => {
+            if ("hasAccess" in window) {
+              return window.hasAccess as boolean;
+            } else {
+              return false;
+            }
+          })
+          .should("be.true");
       },
       cacheAcrossSpecs: true,
     }
