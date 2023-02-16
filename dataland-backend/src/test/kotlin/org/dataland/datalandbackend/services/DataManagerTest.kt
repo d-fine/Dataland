@@ -78,7 +78,8 @@ class DataManagerTest(
             objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val messageForDataSetAndCorrelationId = Message(
             messageProperties = MessageProperties(correlationId = correlationId),
-            body = listOf(storableNFEuTaxonomyDataSetAsString.toByteArray()),)
+            body = listOf(storableNFEuTaxonomyDataSetAsString.toByteArray()),
+        )
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
@@ -100,7 +101,8 @@ class DataManagerTest(
             objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val messageForDataSetAndCorrelationId = Message(
             messageProperties = MessageProperties(correlationId = correlationId),
-            body = listOf(storableNFEuTaxonomyDataSetAsString.toByteArray()),)
+            body = listOf(storableNFEuTaxonomyDataSetAsString.toByteArray()),
+        )
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
@@ -123,7 +125,8 @@ class DataManagerTest(
             objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val messageForDataSetAndCorrelationId = Message(
             messageProperties = MessageProperties(correlationId = correlationId),
-            body = listOf(storableNFEuTaxonomyDataSetAsString.toByteArray()),)
+            body = listOf(storableNFEuTaxonomyDataSetAsString.toByteArray()),
+        )
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
@@ -143,7 +146,8 @@ class DataManagerTest(
             objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val messageForDataSetAndCorrelationId = Message(
             messageProperties = MessageProperties(correlationId = correlationId),
-            body = listOf(storableNFEuTaxonomyDataSetAsString.toByteArray()),)
+            body = listOf(storableNFEuTaxonomyDataSetAsString.toByteArray()),
+        )
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
@@ -181,7 +185,8 @@ class DataManagerTest(
             objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val messageForDataSetAndCorrelationId = Message(
             messageProperties = MessageProperties(correlationId = correlationId),
-            body = listOf(storableNFEuTaxonomyDataSetAsString.toByteArray()),)
+            body = listOf(storableNFEuTaxonomyDataSetAsString.toByteArray()),
+        )
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
