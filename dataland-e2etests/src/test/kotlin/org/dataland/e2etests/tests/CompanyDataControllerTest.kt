@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -204,7 +205,7 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company twice and receive the expected error code`() {
+    fun `post a dummy company twice and receive the expected error code and message`() {
         val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(1).first()
         val randomIsin = CompanyIdentifier(
@@ -214,14 +215,16 @@ class CompanyDataControllerTest {
         val randomizedCompanyInformation = testCompanyInformation.copy(identifiers = listOf(randomIsin))
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         apiAccessor.companyDataControllerApi.postCompany(randomizedCompanyInformation)
-        val exception =
-            assertThrows<Exception> {
-                apiAccessor.companyDataControllerApi.postCompany(randomizedCompanyInformation)
-            }
+        val response = apiAccessor.companyDataControllerApi.postCompanyWithHttpInfo(randomizedCompanyInformation) as ClientError
+
         assertEquals(
-            "Client error : 400 ",
-            exception.message,
-            "The exception message does not say that a 400 client error was the cause.",
+            400,
+            response.statusCode,
+            "The status code is ${response.statusCode} instead of the expected 400.",
+        )
+        assertTrue(
+            response.body.toString().contains("Could not insert company as one company identifier is already used"),
+            "The response message is not as expected.",
         )
     }
 }
