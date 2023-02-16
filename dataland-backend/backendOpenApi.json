@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "/pai"
+      "url": "/api"
     }
   ],
   "tags": [
