@@ -36,11 +36,9 @@ describe("As a developer, I want to ensure that cypress behaves as expected", ()
       it("Test that the testing endpoints are not available", () => {
         cy.getKeycloakToken(reader_name, reader_pw).then((token) =>
           wrapPromiseToCypressPromise(
-            fetch("/api/testing/getDummy500Response", { headers: { Authorization: `Bearer ${token}` } }).then(
-              (r) => {
-                assert(r.status == 404, "Expected a 404 response");
-              }
-            )
+            fetch("/api/testing/getDummy500Response", { headers: { Authorization: `Bearer ${token}` } }).then((r) => {
+              assert(r.status == 404, "Expected a 404 response");
+            })
           )
         );
       });
