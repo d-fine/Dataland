@@ -51,6 +51,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito:mockito-core:5.1.1")
+    testImplementation("org.springframework.security:spring-security-test")
     implementation(project(":dataland-keycloak-adapter"))
     implementation("com.mailjet:mailjet-client:5.2.2")
 }
@@ -74,7 +75,6 @@ tasks.test {
 
 jacoco {
     toolVersion = jacocoVersion
-    applyTo(tasks.bootRun.get())
 }
 
 tasks.register<Copy>("getTestData") {

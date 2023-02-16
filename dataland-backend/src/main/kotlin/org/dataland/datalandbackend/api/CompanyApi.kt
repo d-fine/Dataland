@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam
  */
 @RequestMapping("/companies")
 @SecurityRequirement(name = "default-bearer-auth")
-@SecurityRequirement(name = "dataland-api-key")
 @SecurityRequirement(name = "default-oauth")
 interface CompanyApi {
 

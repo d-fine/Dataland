@@ -1,4 +1,4 @@
-package org.dataland.e2etests.accessmanagement
+package org.dataland.e2etests.unauthorizedApiControllers
 
 import com.squareup.moshi.JsonAdapter
 import okhttp3.OkHttpClient

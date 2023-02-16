@@ -5,6 +5,6 @@ package org.dataland.keycloakAdapter.auth
  * Datalandsecurity realm. Can be used in conjunction with the
  * Authentication.hasRole extension function to check if a user has a certain role
  */
-enum class DatalandRealmRoles {
+enum class DatalandRealmRole {
     ROLE_USER, ROLE_UPLOADER, ROLE_ADMIN
 }
