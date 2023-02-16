@@ -96,6 +96,7 @@
 
     <PrimeDialog
       id="regenerateApiKeyModal"
+      :dismissableMask="true"
       :modal="true"
       header="Header"
       footer="Footer"
