@@ -6,15 +6,16 @@ import { shallowMount } from "@vue/test-utils";
 
 describe("Component test for ViewFrameworkBase", () => {
   it("Should display only accepted datasets", () => {
+    const approvedDatasetId = "dataset-1";
     cy.intercept("**/api/metadata*", {
       statusCode: 200,
       body: [
         {
-          dataId: "1",
+          dataId: approvedDatasetId,
           qualityStatus: DatasetQualityStatus.Accepted,
         },
         {
-          dataId: "2",
+          dataId: "dataset-2",
           qualityStatus: DatasetQualityStatus.Pending,
         },
       ],
@@ -43,8 +44,8 @@ describe("Component test for ViewFrameworkBase", () => {
     });
     cy.wait(1000).then(() => {
       const firstUpdateDataIdEmit = (assertDefined(wrapper.emitted().updateDataId) as string[][][])[0][0];
-      expect(firstUpdateDataIdEmit.length).to.equal(1);
-      expect(firstUpdateDataIdEmit[0]).to.equal("1");
+      expect(firstUpdateDataIdEmit).to.have.length(1);
+      expect(firstUpdateDataIdEmit[0]).to.equal(approvedDatasetId);
     });
   });
 });
