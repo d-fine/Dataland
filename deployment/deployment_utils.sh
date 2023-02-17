@@ -63,5 +63,5 @@ wait_for_docker_containers_healthy_remote () {
   target_server_url="$1"
   location="$2"
   docker_compose_profile="$3"
-  ssh ubuntu@"$target_server_url" "cd \"$location\"; source ./dataland-keycloak/deployment_utils.sh; timeout 240 bash -c \"wait_for_services_healthy_in_compose_profile $docker_compose_profile\""
+  ssh ubuntu@"$target_server_url" "cd \"$location\"; source ./dataland-keycloak/deployment_utils.sh; timeout 360 bash -c \"wait_for_services_healthy_in_compose_profile $docker_compose_profile\""
 }
