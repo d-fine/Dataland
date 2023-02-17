@@ -1,4 +1,4 @@
-export const lksgKpiNameMappings = {
+export const lksgKpisNameMappings = {
   dataDate: "Data Date",
   companyLegalForm: "Company Legal Form",
   vatIdentificationNumber: "VAT Identification Number",
@@ -133,7 +133,7 @@ export const lksgKpiNameMappings = {
   inHouseProductionOrContractProcessing: "Is in-house production or is Contract Processing",
 };
 
-export const lksgKpiInfoMappings = {
+export const lksgKpisInfoMappings = {
   dataDate: "The date until for which the information collected is valid",
   lksgInScope: "Does your company fall within the scope of the LkSG according to §1 LkSG?",
   vatIdentificationNumber: "Value-added tax identification number",
@@ -354,18 +354,25 @@ export const listOfProductionSitesConvertedNames = {
   listOfGoodsOrServices: "List Of Goods Or Services",
 };
 
-export const lksgSubAreaNameMappings = {
+export const lksgSubAreasNameMappings = {
+  anticorruptionAndAntibribery: "Anti-corruption and anti-bribery",
+  biodiversity: "Biodiversity",
   childLabour: "Child labour",
+  emissions: "Emissions",
+  energyPerformance: "Energy performance",
   evidenceCertificatesAndAttestations: "Evidence, certificates and attestations",
   forcedLabourSlaveryAndDebtBondage: "Forced labour, slavery and debt bondage",
   freedomOfAssociation: "Freedom of association",
   _general: "General",
+  greenhouseGasEmissions: "Greenhouse gas emissions",
+  greenSecurities: "Green securities",
   grievanceMechanism: "Grievance mechanism",
   humanRights: "Human rights",
   osh: "OSH",
   codeOfConduct: "Code Of Conduct",
   riskManagement: "Risk management",
   socialAndEmployeeMatters: "Social and employee matters",
+  water: "Water",
   waste: "Waste",
   environment: "Environment",
 };

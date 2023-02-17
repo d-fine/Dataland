@@ -34,16 +34,16 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.get("#framework-filter")
         .click()
         .get("div.p-multiselect-panel")
-        .find("li.p-disabled:contains('SFDR')")
-        .should("exist")
-        .get("div.p-multiselect-panel")
         .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
         .click();
       verifyTaxonomySearchResultTable();
       cy.url()
         .should(
           "eq",
-          getBaseUrl() + `/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}&framework=${DataTypeEnum.Lksg}`
+          getBaseUrl() +
+            `/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
+            `&framework=${DataTypeEnum.Lksg}` +
+            `&framework=${DataTypeEnum.Sfdr}`
         )
         .get("div.p-multiselect-panel")
         .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
@@ -57,7 +57,10 @@ describe("As a user, I expect the search functionality on the /companies page to
       verifyTaxonomySearchResultTable();
       cy.url().should(
         "eq",
-        getBaseUrl() + `/companies?framework=${DataTypeEnum.EutaxonomyFinancials}&framework=${DataTypeEnum.Lksg}`
+        getBaseUrl() +
+          `/companies?framework=${DataTypeEnum.EutaxonomyFinancials}` +
+          `&framework=${DataTypeEnum.Lksg}` +
+          `&framework=${DataTypeEnum.Sfdr}`
       );
     }
   );
