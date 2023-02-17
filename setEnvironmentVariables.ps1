@@ -19,7 +19,7 @@
 [Environment]::SetEnvironmentVariable("KEYCLOAK_READER_PASSWORD", "test", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_READER_SALT", "6ZN+5rRT/wQcQqvNhXIsfA==", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_READER_VALUE", "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ==", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVarintellable("KEYCLOAK_UPLOADER_PASSWORD", "test", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("KEYCLOAK_UPLOADER_PASSWORD", "test", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_UPLOADER_SALT", "6ZN+5rRT/wQcQqvNhXIsfA==", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_UPLOADER_VALUE", "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ==", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_DATALAND_ADMIN_PASSWORD", "test", [System.EnvironmentVariableTarget]::User)
