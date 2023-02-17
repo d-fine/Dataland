@@ -17,12 +17,12 @@ describe("Component test for Sfdr", () => {
           data: { social: { general: { fiscalYearEnd: "2024-01-01" } } },
         },
       ],
-    }).as("alias");
+    });
     mount(SfdrPanel, {
       setup() {
         return {
           getKeycloakPromise: (): Promise<Keycloak> => {
-            return Promise.resolve(new Keycloak());
+            return Promise.resolve({} as Keycloak);
           },
         };
       },

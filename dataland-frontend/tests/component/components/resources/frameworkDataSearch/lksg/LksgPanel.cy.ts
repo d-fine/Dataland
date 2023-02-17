@@ -33,12 +33,12 @@ describe("Component test for LksgPanel", () => {
           data: { social: { general: { dataDate: "2024-01-01" } } },
         },
       ],
-    }).as("alias");
+    });
     mount(LksgPanel, {
       setup() {
         return {
           getKeycloakPromise: (): Promise<Keycloak> => {
-            return Promise.resolve(new Keycloak());
+            return Promise.resolve({} as Keycloak);
           },
         };
       },

@@ -13,7 +13,6 @@ class ConfigurationBackendControllerApi {
     /**
      * The bean to configure the internal client StorageControllerApi
      */
-    // TODO Check if this is still true for deployment to a server
     @Bean
     fun getApiBackendClient(): NonPersistedDataControllerApi {
         return NonPersistedDataControllerApi(
