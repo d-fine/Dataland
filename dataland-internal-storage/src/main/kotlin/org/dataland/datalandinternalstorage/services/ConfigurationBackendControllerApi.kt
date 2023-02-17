@@ -15,8 +15,10 @@ class ConfigurationBackendControllerApi {
      */
     @Bean
     fun getApiBackendClient(): NonPersistedDataControllerApi {
+        val backendContainerUrl = "http://backend:8080/api"
+        val internalBackendUrlFromEnv = System.getenv("INTERNAL_BACKEND_URL")
         return NonPersistedDataControllerApi(
-            System.getenv("INTERNAL_BACKEND_URL") ?: "http://backend:8080/api",
+            internalBackendUrlFromEnv?.ifBlank { backendContainerUrl } ?: backendContainerUrl,
         )
     }
 }
