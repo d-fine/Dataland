@@ -16,6 +16,7 @@ describeIf(
       uploadCompanyViaForm(companyName).then((company) => {
         cy.wait(5000);
         cy.visitAndCheckAppMount(`/companies/${company.companyId}`);
+        cy.wait(5000);
         cy.get("body").should("contain", companyName);
       });
     });
