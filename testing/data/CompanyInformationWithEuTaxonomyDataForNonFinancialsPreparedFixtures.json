@@ -2,187 +2,184 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"headquarters": "Thrieneburg",
-			"sector": "synergies",
+			"companyAlternativeNames": [
+				"Huckestein-Evers"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"headquarters": "Nord Mathildeland",
+			"headquartersPostalCode": "91296",
+			"sector": "functionalities",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "5lyyr0pbmsvbuao"
+					"identifierValue": "1iz41w0df9fnxdg"
 				},
 				{
-					"identifierType": "Duns",
-					"identifierValue": "dql04fo34"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "tfy7nsxrbz"
+					"identifierType": "Ticker",
+					"identifierValue": "om53ax5"
 				}
 			],
-			"countryCode": "MF",
+			"countryCode": "GE",
 			"isTeaserCompany": false,
-			"website": "https://beispielgebend-hurrikan.info"
+			"website": "http://einfach-gesellschaft.info"
 		},
 		"t": {
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "https://empathisch-wissenschaftler.org/farbenfroh-mars.pdf",
+				"AnnualReport": {
+					"reference": "https://uralt-platin.org/agil-tisch.pdf",
 					"isGroupLevel": "NA",
-					"reportDate": "2023-02-16",
-					"currency": "MVR"
+					"reportDate": "2022-07-06",
+					"currency": "KRW"
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-07-09",
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.705,
+					"value": 0.2414,
 					"dataSource": {
-						"page": 806,
-						"report": "IntegratedReport",
-						"tagName": "bandwidth"
+						"page": 562,
+						"report": "AnnualReport",
+						"tagName": "infomediaries"
 					},
-					"quality": "Incomplete",
-					"comment": "override 1080p panel"
+					"quality": "Estimated",
+					"comment": "copy digital port"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.5638,
-					"dataSource": {
-						"page": 1120,
-						"report": "IntegratedReport",
-						"tagName": "platforms"
-					},
-					"quality": "Reported",
-					"comment": "index online feed"
+					"value": 0.3397,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.9312,
-					"quality": "Estimated"
+					"value": 0.3215,
+					"dataSource": {
+						"page": 684,
+						"report": "AnnualReport",
+						"tagName": "blockchains"
+					},
+					"quality": "Audited",
+					"comment": "navigate virtual bandwidth"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2021-Q2"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Cordes KG"
+				"Brinkmann-Helpling"
 			],
-			"companyLegalForm": "GmbH",
-			"headquarters": "Nord Niklas",
-			"sector": "mindshare",
+			"companyLegalForm": "GmbH & Co. KG",
+			"headquarters": "Bad Nadine",
+			"sector": "e-business",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "bxcwifjwam0pqufge7fb"
+					"identifierType": "Isin",
+					"identifierValue": "k5tdsslqmh1m"
 				},
 				{
-					"identifierType": "PermId",
-					"identifierValue": "dwafzczr0x"
+					"identifierType": "Lei",
+					"identifierValue": "pgskspflm5xcdg0mm15c"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "9zil4sh"
+					"identifierValue": "iceu4kz"
 				}
 			],
-			"countryCode": "CR",
-			"isTeaserCompany": false
+			"countryCode": "TC",
+			"isTeaserCompany": false,
+			"website": "http://transzendent-telefon.org"
 		},
 		"t": {
 			"referencedReports": {
 				"ESEFReport": {
-					"reference": "https://monumental-wille.org/vern%C3%BCnftig-aids.pdf",
-					"isGroupLevel": "NA",
-					"currency": "BYN"
-				},
-				"SustainabilityReport": {
-					"reference": "http://xn--geheimnisvoll-milchstrae-s7b.de/epochemachend-liberalismus.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "INR"
+					"reference": "https://xn--y-frmig-tanz-6ib.name/relevant-teppich.pdf",
+					"reportDate": "2022-12-07",
+					"currency": "TTD"
 				},
 				"AnnualReport": {
-					"reference": "https://xn--zh-fu-pqa4a.com/fett-feuer.pdf",
-					"isGroupLevel": "NA",
-					"currency": "HUF"
+					"reference": "http://harmonisch-blume.com/flott-fu%C3%9Fball.pdf",
+					"reportDate": "2022-10-21",
+					"currency": "XPT"
+				},
+				"SustainabilityReport": {
+					"reference": "https://xn--hochmtig-elektronik-99b.org/richtungsgebend-anderes.pdf",
+					"currency": "MUR"
+				},
+				"IntegratedReport": {
+					"reference": "https://friedlich-verben.org/galant-m%C3%B6bel.pdf",
+					"isGroupLevel": "No",
+					"currency": "XAU"
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-01-03",
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "None"
 			},
 			"scopeOfEntities": "Yes",
-			"reportingObligation": "Yes",
-			"numberOfEmployees": 10924,
+			"numberOfEmployees": 4570,
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 653239.11,
+					"value": 666547.92,
 					"dataSource": {
-						"page": 700,
-						"report": "SustainabilityReport",
-						"tagName": "e-tailers"
+						"page": 838,
+						"report": "IntegratedReport",
+						"tagName": "blockchains"
 					},
-					"quality": "Audited",
-					"comment": "hack multi-byte feed"
+					"quality": "Incomplete",
+					"comment": "calculate haptic monitor"
 				},
 				"eligiblePercentage": {
-					"value": 0.0237,
-					"dataSource": {
-						"page": 1010,
-						"report": "AnnualReport",
-						"tagName": "e-tailers"
-					},
-					"quality": "Reported",
-					"comment": "copy solid state application"
+					"value": 0.658,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 645669.94,
-					"dataSource": {
-						"page": 431,
-						"report": "ESEFReport",
-						"tagName": "users"
-					},
-					"quality": "Audited",
-					"comment": "calculate neural interface"
+					"value": 406163.89,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.3906,
+					"value": 0.6199,
 					"dataSource": {
-						"page": 961,
-						"report": "AnnualReport",
-						"tagName": "e-markets"
+						"page": 777,
+						"report": "ESEFReport",
+						"tagName": "markets"
 					},
-					"quality": "Estimated",
-					"comment": "calculate bluetooth firewall"
+					"quality": "Reported",
+					"comment": "quantify haptic circuit"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 834748.8,
+					"value": 536563.45,
 					"dataSource": {
-						"page": 1154,
+						"page": 392,
 						"report": "SustainabilityReport",
-						"tagName": "markets"
+						"tagName": "relationships"
 					},
-					"quality": "Audited",
-					"comment": "synthesize 1080p hard drive"
+					"quality": "Reported",
+					"comment": "copy redundant system"
 				},
 				"eligiblePercentage": {
-					"value": 0.6847,
-					"quality": "Incomplete"
+					"value": 0.6521,
+					"dataSource": {
+						"page": 732,
+						"report": "AnnualReport",
+						"tagName": "experiences"
+					},
+					"quality": "Reported",
+					"comment": "compress cross-platform pixel"
 				}
 			}
 		},

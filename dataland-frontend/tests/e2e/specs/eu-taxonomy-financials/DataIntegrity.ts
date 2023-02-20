@@ -133,7 +133,7 @@ describeIf(
     }
 
     /**
-     * Verifies that the frontend correctly displays the insurance firm KPIs
+     * Verifies that the frontend correctly displays the insurenace firm KPIs
      *
      * @param testData the dataset used as the source of truth
      */
@@ -258,7 +258,7 @@ describeIf(
     //   uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
     //     testData.companyInformation,
     //     testData.t,
-//         testData.reportingPeriod
+    //         testData.reportingPeriod
     //   );
     //   checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
     //   cy.get("body").should("not.contain", "Trading portfolio");
@@ -271,7 +271,7 @@ describeIf(
     //   uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
     //     testData.companyInformation,
     //     testData.t,
-//         testData.reportingPeriod
+    //         testData.reportingPeriod
     //   );
     //   checkInsuranceValues(testData.t);
     //   checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);

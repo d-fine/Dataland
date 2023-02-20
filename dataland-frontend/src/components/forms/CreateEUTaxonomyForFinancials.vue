@@ -1,7 +1,6 @@
 <template>
   <Card class="col-12 page-wrapper-card">
     <template #title>Create EU Taxonomy Dataset for a Financial Company/Service</template>
-    {{ JSON.stringify(this.files.files) }}
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -22,7 +21,33 @@
               disabled="true"
             />
             <div class="uploadFormSection grid">
-              <FormKit type="text" name="reportingPeriod" label="Reporting Period" placeholder="Reporting Period" />
+              <div class="col-3 p-3 topicLabel">
+                <h4 id="uploadReports" class="anchor title">Reporting Period</h4>
+                Reporting Period
+              </div>
+              <div class="col-9 formFields uploaded-files">
+                <UploadFormHeader
+                  :name="euTaxonomyKpiNameMappings.reportDate"
+                  :explanation="euTaxonomyKpiInfoMappings.reportDate"
+                />
+                <div class="lg:col-6 md:col-6 col-12 p-0">
+                  <Calendar
+                    data-test="reportingPeriod"
+                    v-model="reportingPeriod"
+                    inputId="icon"
+                    :showIcon="true"
+                    view="year"
+                    dateFormat="yy"
+                  />
+                </div>
+
+                <FormKit
+                  type="text"
+                  v-model="reportingPeriodYear"
+                  name="reportingPeriod"
+                  :outer-class="{ 'hidden-input': true }"
+                />
+              </div>
               <FormKit type="group" name="data" label="data">
                 <FormKit v-model="computedFinancialServicesTypes" type="hidden" name="financialServicesTypes" />
                 <div class="col-3 p-3 topicLabel">
@@ -514,6 +539,7 @@ export default defineComponent({
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
       fiscalYearEnd: "",
+      reportingPeriod: new Date(),
       convertedFiscalYearEnd: "",
       assuranceData: [
         { label: "None", value: "None" },
@@ -580,6 +606,9 @@ export default defineComponent({
   computed: {
     shadowFormInputsModel() {
       return JSON.parse(JSON.stringify(this.formInputsModel)) as CompanyAssociatedDataEuTaxonomyDataForFinancials;
+    },
+    reportingPeriodYear(): number {
+      return this.reportingPeriod.getFullYear();
     },
   },
   mounted() {

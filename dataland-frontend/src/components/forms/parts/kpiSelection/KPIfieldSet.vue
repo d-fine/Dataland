@@ -16,7 +16,7 @@
         name="value"
         validation-label=""
         placeholder="Value %"
-        step="0.001"
+        step="any"
         min="0"
         validation="required|number|between:0,100"
         :inner-class="{

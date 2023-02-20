@@ -33,7 +33,6 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
-  cy.get(`input[name="reportingPeriod"]`).type("2023");
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
     .get("div.p-multiselect-panel")
@@ -109,7 +108,7 @@ function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined):
  */
 function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
   if (value !== undefined && value.value !== undefined) {
-    const eligibleRevenue = value.value.toFixed(2).toString();
+    const eligibleRevenue = value.value.toString();
     if (divTag === "") {
       cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(eligibleRevenue);
       cy.get(`[data-test="${inputsTag}"]`).find('input[name="page"]').type(eligibleRevenue);

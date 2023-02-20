@@ -44,12 +44,15 @@ export default defineComponent({
   props: {
     title: {
       type: String,
+      default: "",
     },
     total: {
       type: Number,
+      default: 0,
     },
     percent: {
       type: Number,
+      default: 0,
     },
   },
   computed: {
@@ -75,9 +78,5 @@ export default defineComponent({
 .d-card {
   border-radius: 0.5rem;
   box-shadow: 0 0 32px 8px rgba(30, 30, 31, 0.08);
-}
-
-.d-card > .p-card-body > .p-card-content {
-  padding: 0;
 }
 </style>

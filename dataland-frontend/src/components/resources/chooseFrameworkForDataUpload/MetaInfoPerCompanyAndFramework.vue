@@ -57,7 +57,7 @@ import { getDatasetStatus } from "@/components/resources/datasetOverview/Dataset
 import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
 
 export default defineComponent({
-  name: "MetaInfoPerComanyAndFramework",
+  name: "MetaInfoPerCompanyAndFramework",
   components: { PrimeButton, DatasetStatusBadge },
 
   props: {

@@ -5,7 +5,7 @@
   <TheContent v-else class="paper-section flex">
     <MiddleCenterDiv class="col-12">
       <div class="col-6 md:col-8 lg:col-12">
-        <h2>You can not visit this site because you have no uploader status.</h2>
+        <h1>You can not visit this site because you have no uploader status.</h1>
       </div>
     </MiddleCenterDiv>
   </TheContent>
