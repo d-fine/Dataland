@@ -276,6 +276,8 @@ services:
     profiles: ["production", "testing", "development"]
     image: ghcr.io/d-fine/dataland/dataland_rabbitmq:${DATALAND_RABBITMQ_VERSION}
     container_name: rabbitmq
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
     networks:
       - internal
     environment:
@@ -312,6 +314,8 @@ volumes:
   api_key_manager_data:
     driver: local
   internal_storage_data:
+    driver: local
+  rabbitmq_data:
     driver: local
   letsencrypt:
     driver: local
