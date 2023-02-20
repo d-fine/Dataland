@@ -41,6 +41,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       ): void {
         cy.intercept("**/api/companies*").as("companyLoad");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
+        cy.wait(10000);
         cy.wait("@companyLoad", { timeout: Cypress.env("long_timeout_in_ms") as number });
         const companySelector = "span:contains(VIEW)";
         cy.get(companySelector).first().scrollIntoView();
@@ -118,6 +119,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param header the h2 header to check for
        */
       function validateFrameworkPage(framework: DataTypeEnum, header: string): void {
+        cy.wait(5000);
         cy.url().should("contain", `/frameworks/${framework}`);
         cy.get("h2").should("contain", header);
       }
@@ -208,6 +210,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         const someInvalidCompanyId = "12345-some-invalid-companyId";
         const someInvalidDataId = "789-some-invalid-dataId-987";
         cy.visit(`/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`);
+        cy.wait(10000);
         cy.contains("h1", "No company with this ID present");
         getKeycloakToken().then((token: string) => {
           return getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials).then(
