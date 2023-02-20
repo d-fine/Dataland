@@ -20,7 +20,7 @@
 
                     <MetaInfoPerCompanyAndFramework
                       title="Non-Financials"
-                      :isFrontendUploadFormExisting="false"
+                      :isFrontendUploadFormExisting="true"
                       :framework-url-path="DataTypeEnum.EutaxonomyNonFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"
@@ -30,7 +30,7 @@
 
                     <MetaInfoPerCompanyAndFramework
                       title="Financials"
-                      :isFrontendUploadFormExisting="false"
+                      :isFrontendUploadFormExisting="true"
                       :framework-url-path="DataTypeEnum.EutaxonomyFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"

@@ -60,7 +60,7 @@ body {
     color: var(--yellow-700);
     background: var(--yellow-100);
   }
-  &.badge-green {
+  &.badge-green, &.p-badge-success {
     color: var(--green-700);
     background: var(--green-100);
   }

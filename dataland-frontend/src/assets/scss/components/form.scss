@@ -446,6 +446,8 @@ input[type="checkbox"], input[type="radio"]{
     background: $upload-form-bg;
     border-radius: $upload-form-radius;
     padding: $upload-form-padding;
+    margin-left: auto;
+    margin-bottom: 1rem;
   }
   .formkit-message {
     &[data-message-type="ui"] {
@@ -488,6 +490,25 @@ input[type="checkbox"], input[type="radio"]{
       margin: 0 0 1rem 0;
       padding: 0 0 1rem 0;
       border-bottom: 1px solid $input-separator;
+    }
+  }
+}
+
+.uploaded-files {
+  .p-fileupload {
+    .p-fileupload-content {
+      border: none;
+      padding: 0;
+      align-items: center;
+      .file-upload-item {
+        margin: 2rem 0;
+      }
+      button {
+        margin-left: auto;
+        width: 25px;
+        height: 25px;
+        padding: 0;
+      }
     }
   }
 }
