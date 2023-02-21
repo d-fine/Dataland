@@ -4,13 +4,7 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import {
-  StoredCompany,
-  CompanyInformation,
-  DataMetaInformation,
-  DataTypeEnum,
-  QAStatus,
-} from "@clients/backend";
+import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum, QAStatus } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import { useFiltersStore } from "@/stores/filters";

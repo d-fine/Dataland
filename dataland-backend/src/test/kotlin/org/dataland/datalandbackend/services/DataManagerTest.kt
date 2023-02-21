@@ -20,7 +20,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.`when`
 import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
@@ -210,17 +212,19 @@ class DataManagerTest(
     }
 
     @Test
-    fun `check an exception is thrown during temporarily storing a data set when sending notification to message queue fails`() {
+    fun `check an exception is thrown during storing a data set when sending notification to message queue fails`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
-                addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
+            addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val company = companyManager.getCompanyById(storableEuTaxonomyDataSetForNonFinancials.companyId)
 
         `when`(spyDataManager.generateRandomDataId()).thenReturn(dataUUId)
 
-        `when`(mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, "Data to be stored", correlationId, "storage_queue",)
+        `when`(
+            mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataUUId, "Data to be stored", correlationId, "storage_queue",
+            ),
         ).thenThrow(
-            AmqpException::class.java
+            AmqpException::class.java,
         )
 
         assertThrows<AmqpException> {
@@ -231,16 +235,20 @@ class DataManagerTest(
     @Test
     fun `check an exception is thrown during adding a data set when sending notification to message queue fails`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
-                addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
+            addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val company = companyManager.getCompanyById(storableEuTaxonomyDataSetForNonFinancials.companyId)
-        `when`(spyDataManager.storeDataSet(
-                storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId)
+        `when`(
+            spyDataManager.storeDataSet(
+                storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId,
+            ),
         ).thenReturn(dataUUId)
 
-        `when`(mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, "New data - QA necessary", correlationId, "upload_queue",)
+        `when`(
+            mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataUUId, "New data - QA necessary", correlationId, "upload_queue",
+            ),
         ).thenThrow(
-            AmqpException::class.java
+            AmqpException::class.java,
         )
 
         assertThrows<AmqpException> {
