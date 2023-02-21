@@ -8,7 +8,7 @@
       </div>
     </template>
     <div v-if="loading" class="col-12 text-left">
-      <h2>Checking if LkSG data available...</h2>
+      <h2>Checking if LkSG data is available...</h2>
     </div>
     <div v-if="!loading && receivedLksgDataIds.length === 0" class="col-12 text-left">
       <h2>No LkSG data</h2>

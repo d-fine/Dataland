@@ -49,9 +49,6 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: install dependencies
-        run: sudo apt install jq
-        if: always()
       - name: assemble project
         run: ./gradlew assemble --no-daemon --stacktrace
       - name: Execute linting and detekt

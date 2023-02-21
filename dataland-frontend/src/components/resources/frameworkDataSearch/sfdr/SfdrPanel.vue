@@ -3,7 +3,7 @@
     <p class="font-medium text-xl">Loading Sfdr Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="sfdrData && !waitingForData">
+  <div v-if="sfdrDataAndMetaInfo && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
       :DataDateOfDataSets="listOfDataDateToDisplayAsColumns"
@@ -17,17 +17,17 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { SfdrData, DataAndMetaInformationSfdrData, DatasetQualityStatus } from "@clients/backend";
+import { DataAndMetaInformationSfdrData, DatasetQualityStatus } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortDatesToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
-  subAreasNameMappings,
-  kpisNameMappings,
-  kpisInfoMappings,
-} from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+  sfdrKpisNameMappings,
+  sfdrKpisInfoMappings,
+  sfdrSubAreasNameMappings,
+} from "@/components/resources/frameworkDataSearch/sfdr/DataModelsTranslations";
 
 export default defineComponent({
   name: "SfdrPanel",
@@ -40,12 +40,12 @@ export default defineComponent({
   data() {
     return {
       waitingForData: true,
-      sfdrData: [] as Array<SfdrData>,
+      sfdrDataAndMetaInfo: [] as Array<DataAndMetaInformationSfdrData>,
       listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
-      kpisNameMappings,
-      kpisInfoMappings,
-      subAreasNameMappings,
+      sfdrKpisNameMappings,
+      sfdrKpisInfoMappings,
+      sfdrSubAreasNameMappings,
     };
   },
   props: {
@@ -66,11 +66,13 @@ export default defineComponent({
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getSfdrDataControllerApi();
-        this.sfdrData = (await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))).data.filter(
+        this.sfdrDataAndMetaInfo = (
+          await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))
+        ).data.filter(
           (dataAndMetaInfo: DataAndMetaInformationSfdrData) =>
             dataAndMetaInfo.metaInfo.qualityStatus == DatasetQualityStatus.Accepted
         );
-        this.convertSfdrDataToFrontendFormat(this.sfdrData);
+        this.convertSfdrDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -109,12 +111,10 @@ export default defineComponent({
 
     /**
      * Retrieves and converts values from an array of SDFG datasets in order to make it displayable in the frontend.
-     *
-     * @param sfdrData The Sfdr dataset that shall be converted
      */
-    convertSfdrDataToFrontendFormat(sfdrData: Array<DataAndMetaInformationSfdrData>): void {
-      if (sfdrData.length) {
-        sfdrData.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
+    convertSfdrDataToFrontendFormat(): void {
+      if (this.sfdrDataAndMetaInfo.length) {
+        this.sfdrDataAndMetaInfo.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
           const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
           const dataDateOfSfdrDataset = oneSfdrDataset.data.social?.general?.fiscalYearEnd ?? "";
           this.listOfDataDateToDisplayAsColumns.push({
