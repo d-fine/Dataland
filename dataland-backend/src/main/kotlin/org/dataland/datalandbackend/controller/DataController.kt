@@ -33,22 +33,21 @@ abstract class DataController<T>(
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
+        val companyId = companyAssociatedData.companyId
+        val reportingPeriod = companyAssociatedData.reportingPeriod
         val userId = DatalandAuthentication.fromContext().userId
         val uploadTime = Instant.now().epochSecond
         logger.info(
             "Received a request from user $userId to post company associated data of type $dataType " +
-                "for companyId '${companyAssociatedData.companyId}'",
+                "for companyId '${companyId}' and the reporting period ${reportingPeriod}",
         )
-        val correlationId = generatedCorrelationId(companyAssociatedData.companyId)
+        val correlationId = generatedCorrelationId(companyId)
         val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
 
         val dataIdOfPostedData = dataManager.addDataSet(datasetToStore, correlationId)
-        logger.info(
-            "Posted company associated data for companyId '${companyAssociatedData.companyId}'. " +
-                "Correlation ID: $correlationId",
-        )
+        logger.info("Posted company associated data for companyId '${companyId}'. Correlation ID: $correlationId")
         return ResponseEntity.ok(
-            DataMetaInformation(dataIdOfPostedData, dataType, userId, uploadTime, companyAssociatedData.companyId),
+            DataMetaInformation(dataIdOfPostedData, companyId, dataType, userId, uploadTime, reportingPeriod ),
         )
     }
 
@@ -57,14 +56,14 @@ abstract class DataController<T>(
         userId: String,
         uploadTime: Long,
     ): StorableDataSet {
-        val datasetToStore = StorableDataSet(
+        return StorableDataSet(
             companyId = companyAssociatedData.companyId,
             dataType = dataType,
             uploaderUserId = userId,
             uploadTime = uploadTime,
+            reportingPeriod = companyAssociatedData.reportingPeriod,
             data = objectMapper.writeValueAsString(companyAssociatedData.data),
         )
-        return datasetToStore
     }
 
     private fun generatedCorrelationId(companyId: String): String {
@@ -76,17 +75,17 @@ abstract class DataController<T>(
     }
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
-        val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
+        val dataMetaInformationEntity = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        val companyId = dataMetaInformationEntity.company.companyId
+        val reportingPeriod = dataMetaInformationEntity.reportingPeriod
         val correlationId = generatedCorrelationId(companyId)
         logger.info(
             "Received a request to get company data with dataId '$dataId' for companyId '$companyId'. ",
         )
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
-            data = objectMapper.readValue(
-                dataManager.getDataSet(dataId, dataType, correlationId).data,
-                clazz,
-            ),
+            reportingPeriod = reportingPeriod,
+            data = objectMapper.readValue(dataManager.getDataSet(dataId, dataType, correlationId).data, clazz,),
         )
         logger.info(
             "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +

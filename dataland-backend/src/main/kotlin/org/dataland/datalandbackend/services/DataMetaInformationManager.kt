@@ -31,6 +31,7 @@ class DataMetaInformationManager(
         dataType: DataType,
         uploaderUserId: String,
         uploadTime: Long,
+        reportingPeriod: String,
         company: StoredCompanyEntity,
     ): DataMetaInformationEntity {
         val dataMetaInformationEntity = DataMetaInformationEntity(
@@ -38,6 +39,7 @@ class DataMetaInformationManager(
             dataType = dataType.name,
             uploaderUserId = uploaderUserId,
             uploadTime = uploadTime,
+            reportingPeriod = reportingPeriod,
             company = company,
         )
 

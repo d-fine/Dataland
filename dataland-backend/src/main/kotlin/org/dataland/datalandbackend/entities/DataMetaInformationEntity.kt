@@ -23,6 +23,10 @@ data class DataMetaInformationEntity(
     @Column(name = "data_id")
     val dataId: String,
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    var company: StoredCompanyEntity,
+
     @Column(name = "data_type", nullable = false)
     var dataType: String,
 
@@ -32,22 +36,23 @@ data class DataMetaInformationEntity(
     @Column(name = "upload_time", nullable = false)
     var uploadTime: Long,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    var company: StoredCompanyEntity,
+    @Column(name = "reporting_period", nullable = false)
+    var reportingPeriod: String,
+
 ) : ApiModelConversion<DataMetaInformation> {
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
         val displayUploaderUserId = viewingUser != null && (
             viewingUser.roles.contains(DatalandRealmRole.ROLE_ADMIN) ||
-                viewingUser.userId == this.uploaderUserId
+                viewingUser.userId == uploaderUserId
             )
         return DataMetaInformation(
             dataId = dataId,
-            dataType = DataType.valueOf(dataType),
-            uploaderUserId = if (displayUploaderUserId) this.uploaderUserId else null,
-            uploadTime = this.uploadTime,
             companyId = company.companyId,
+            dataType = DataType.valueOf(dataType),
+            uploaderUserId = if (displayUploaderUserId) uploaderUserId else null,
+            uploadTime = uploadTime,
+            reportingPeriod = reportingPeriod
         )
     }
 }

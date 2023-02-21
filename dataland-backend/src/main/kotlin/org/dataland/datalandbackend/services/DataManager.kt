@@ -71,6 +71,7 @@ class DataManager(
             storableDataSet.dataType,
             storableDataSet.uploaderUserId,
             storableDataSet.uploadTime,
+            storableDataSet.reportingPeriod,
             company,
         )
         return dataId
