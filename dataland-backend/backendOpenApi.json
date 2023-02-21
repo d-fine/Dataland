@@ -750,7 +750,7 @@
         ]
       }
     },
-    "/data/sme/company/{companyId}": {
+    "/data/sme/companies/{companyId}": {
       "get": {
         "tags": [
           "sme-data-controller"
@@ -764,11 +764,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company framework information.",
+            "description": "Successfully retrieved framework datasets with meta info.",
             "content": {
               "application/json": {
                 "schema": {
@@ -869,7 +877,7 @@
         ]
       }
     },
-    "/data/sfdr/company/{companyId}": {
+    "/data/sfdr/companies/{companyId}": {
       "get": {
         "tags": [
           "sfdr-data-controller"
@@ -883,11 +891,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company framework information.",
+            "description": "Successfully retrieved framework datasets with meta info.",
             "content": {
               "application/json": {
                 "schema": {
@@ -988,7 +1004,7 @@
         ]
       }
     },
-    "/data/lksg/company/{companyId}": {
+    "/data/lksg/companies/{companyId}": {
       "get": {
         "tags": [
           "lksg-data-controller"
@@ -1002,11 +1018,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company framework information.",
+            "description": "Successfully retrieved framework datasets with meta info.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1107,7 +1131,7 @@
         ]
       }
     },
-    "/data/eutaxonomy-non-financials/company/{companyId}": {
+    "/data/eutaxonomy-non-financials/companies/{companyId}": {
       "get": {
         "tags": [
           "eu-taxonomy-data-for-non-financials-controller"
@@ -1121,11 +1145,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company framework information.",
+            "description": "Successfully retrieved framework datasets with meta info.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1226,7 +1258,7 @@
         ]
       }
     },
-    "/data/eutaxonomy-financials/company/{companyId}": {
+    "/data/eutaxonomy-financials/companies/{companyId}": {
       "get": {
         "tags": [
           "eu-taxonomy-data-for-financials-controller"
@@ -1240,11 +1272,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved company framework information.",
+            "description": "Successfully retrieved framework datasets with meta info.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1713,6 +1753,9 @@
           "companyId": {
             "type": "string"
           },
+          "reportingPeriod": {
+            "type": "string"
+          },
           "data": {
             "$ref": "#/components/schemas/SmeData"
           }
@@ -1876,11 +1919,15 @@
           "companyId",
           "dataId",
           "dataType",
+          "reportingPeriod",
           "uploadTime"
         ],
         "type": "object",
         "properties": {
           "dataId": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "dataType": {
@@ -1893,7 +1940,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "companyId": {
+          "reportingPeriod": {
             "type": "string"
           }
         }
@@ -1902,6 +1949,9 @@
         "type": "object",
         "properties": {
           "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           },
           "data": {
@@ -2456,6 +2506,9 @@
           "companyId": {
             "type": "string"
           },
+          "reportingPeriod": {
+            "type": "string"
+          },
           "data": {
             "$ref": "#/components/schemas/LksgData"
           }
@@ -3006,6 +3059,9 @@
           "companyId": {
             "type": "string"
           },
+          "reportingPeriod": {
+            "type": "string"
+          },
           "data": {
             "$ref": "#/components/schemas/EuTaxonomyDataForNonFinancials"
           }
@@ -3071,6 +3127,9 @@
         "type": "object",
         "properties": {
           "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           },
           "data": {
