@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 
 /**
