@@ -21,6 +21,14 @@
               :model-value="companyID"
               disabled="true"
             />
+            <FormKit
+                type="hidden"
+                name="reportingPeriod"
+                label="Reporting Period"
+                placeholder="Reporting Period"
+                v-model="yearOfDataDate"
+                disabled="true"
+            />
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
@@ -1159,6 +1167,7 @@ export default defineComponent({
     allCountry: getAllCountryNamesWithCodes(),
     dataDate: "",
     convertedDataDate: "",
+    yearOfDataDate: "",
     lkSGDataModel: {},
     message: "",
     uploadSucceded: false,
@@ -1190,10 +1199,13 @@ export default defineComponent({
   watch: {
     dataDate: function (newValue: Date) {
       if (newValue) {
-        this.convertedDataDate = `${newValue.getFullYear()}-${("0" + (newValue.getMonth() + 1).toString()).slice(
+        this.yearOfDataDate = newValue.getFullYear().toString()
+        this.convertedDataDate = `${this.yearOfDataDate}-${("0" + (newValue.getMonth() + 1).toString()).slice(
           -2
         )}-${("0" + newValue.getDate().toString()).slice(-2)}`;
+
       } else {
+        this.yearOfDataDate = "";
         this.convertedDataDate = "";
       }
     },
