@@ -7,5 +7,3 @@ COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-message-queue-utils/ ./dataland-message-queue-utils/
 COPY ./.git/ ./.git
 RUN ./gradlew dataland-qa-service:bootJar --no-daemon --stacktrace
-
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/qa/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
