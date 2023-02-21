@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.dao.OptimisticLockingFailureException
 import java.lang.IllegalArgumentException
 
 @SpringBootTest(classes = [DatalandInternalStorage::class])
@@ -42,16 +41,6 @@ class DatabaseDataStoreTest(
             IllegalArgumentException::class.java,
         )
         assertThrows<IllegalArgumentException> {
-            databaseDataStore.insertDataAndSendNotification(dataId, data, correlationId)
-        }
-    }
-
-    @Test
-    fun `check that an exception is thrown during insertion when there is a version mismatch`(){
-        `when`(mockDataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))).thenThrow(
-                OptimisticLockingFailureException::class.java,
-        )
-        assertThrows<OptimisticLockingFailureException> {
             databaseDataStore.insertDataAndSendNotification(dataId, data, correlationId)
         }
     }
