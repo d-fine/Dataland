@@ -283,6 +283,9 @@ services:
     environment:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}
+#    TODO: remove exposure of management ports again after nginx issue is solved
+    ports:
+      - "127.0.0.1:15672:15672"
     healthcheck:
       test: rabbitmq-diagnostics -q alarms
       interval: 30s
