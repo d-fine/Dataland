@@ -100,6 +100,7 @@ export default defineConfig({
             });
             return config
         },
+        experimentalSessionAndOrigin: true,
         supportFile: "tests/e2e/support/index.ts",
     },
     component: {
