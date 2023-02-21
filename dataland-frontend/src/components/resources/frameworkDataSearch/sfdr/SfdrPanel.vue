@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationSfdrData } from "@clients/backend";
+import { DataAndMetaInformationSfdrData, DatasetQualityStatus} from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -111,8 +111,6 @@ export default defineComponent({
 
     /**
      * Retrieves and converts values from an array of SDFG datasets in order to make it displayable in the frontend.
-     *
-     * @param sfdrDataAndMetaInfo The Sfdr dataset that shall be converted
      */
     convertSfdrDataToFrontendFormat(): void {
       if (this.sfdrDataAndMetaInfo.length) {
