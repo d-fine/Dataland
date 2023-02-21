@@ -52,8 +52,8 @@ tasks.test {
 
 jacoco {
     toolVersion = jacocoVersion
-    applyTo(tasks.bootRun.get())
 }
+
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
