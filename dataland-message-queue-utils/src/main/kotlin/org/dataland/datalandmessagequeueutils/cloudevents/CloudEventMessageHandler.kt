@@ -14,12 +14,6 @@ import org.springframework.amqp.core.MessageProperties as AMQPMessageProperties
 import org.springframework.messaging.Message as MessageResult
 
 /**
- * This class ensures that the errorResponse is mapped as the default response
- * for non-explicitly set response codes as suggested in the swagger-docs
- * (ref https://swagger.io/docs/specification/describing-responses/)
- */
-
-/**
  * Handling of messages in the CloudEvents format
  * @param rabbitTemplate
  * @param objectMapper
