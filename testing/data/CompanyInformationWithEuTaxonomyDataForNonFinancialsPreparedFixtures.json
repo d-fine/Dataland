@@ -3,91 +3,103 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Huckestein-Blochwitz",
-				"Mertens KG"
+				"Koenig, Kühnel und Dragu",
+				"Strausa-Oberem"
 			],
-			"headquarters": "Bad Ceylinstadt",
-			"headquartersPostalCode": "25205",
-			"sector": "e-tailers",
+			"companyLegalForm": "AG",
+			"headquarters": "Vogelgsangburg",
+			"headquartersPostalCode": "71281",
+			"sector": "interfaces",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "7tb69kbupp55rzl"
+					"identifierValue": "i8sn955i6cfwg1h"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "s7unakn5t"
+					"identifierValue": "p2g43yxs3"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "k05bp1lnga6n"
+					"identifierValue": "s4ll5b9idj3v"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "wmnj3ivxhk9413pl3aj2"
+					"identifierValue": "2hfgv3conwc3h79ji1wr"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "kaz6msi4g0"
+					"identifierValue": "9ui1gzzexx"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "2818ixo"
+					"identifierValue": "eza5nlg"
 				}
 			],
-			"countryCode": "MM",
+			"countryCode": "CG",
 			"isTeaserCompany": false,
-			"website": "https://fulminant-sexismus.com"
+			"website": "https://außerordentlich-geologie.org"
 		},
 		"t": {
 			"referencedReports": {
 				"ESEFReport": {
-					"reference": "https://ratlos-blindheit.info/beherzt-fu%C3%9F.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-02-20",
-					"currency": "LAK"
+					"reference": "http://kultiviert-physik.com/gutm%C3%BCtig-teppich.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-09-22",
+					"currency": "SVC"
 				},
-				"IntegratedReport": {
-					"reference": "https://xn--weich-mdchen-mcb.net/begeisternd-sozialismus.pdf",
-					"reportDate": "2022-06-23",
-					"currency": "BDT"
+				"AnnualReport": {
+					"reference": "http://musterhaft-brot.info/gro%C3%9Fz%C3%BCgig-bibliographie.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-03-15",
+					"currency": "KPW"
 				}
 			},
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-10-07",
 			"assurance": {
-				"assurance": "LimitedAssurance",
+				"assurance": "ReasonableAssurance",
 				"dataSource": {
-					"page": 470,
+					"page": 291,
 					"report": "ESEFReport",
-					"tagName": "schemas"
+					"tagName": "systems"
 				}
 			},
-			"scopeOfEntities": "No",
+			"scopeOfEntities": "Yes",
 			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.2201,
-					"quality": "Estimated"
+					"value": 0.5873,
+					"dataSource": {
+						"page": 561,
+						"report": "ESEFReport",
+						"tagName": "e-services"
+					},
+					"quality": "Audited",
+					"comment": "generate digital hard drive"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.315,
-					"quality": "Estimated"
+					"value": 0.9613,
+					"dataSource": {
+						"page": 144,
+						"report": "AnnualReport",
+						"tagName": "methodologies"
+					},
+					"quality": "Reported",
+					"comment": "override wireless bus"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.7027,
+					"value": 0.3905,
 					"dataSource": {
-						"page": 68,
-						"report": "IntegratedReport",
-						"tagName": "web services"
+						"page": 410,
+						"report": "AnnualReport",
+						"tagName": "platforms"
 					},
-					"quality": "Audited",
-					"comment": "reboot open-source firewall"
+					"quality": "Reported",
+					"comment": "quantify mobile program"
 				}
 			}
 		}
@@ -95,96 +107,109 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"headquarters": "Dingelstedtscheid",
-			"headquartersPostalCode": "02705",
-			"sector": "systems",
+			"companyAlternativeNames": [
+				"Gruszecki-Häfner",
+				"Metzger, Keutel und Kowalick"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"headquarters": "Lenialand",
+			"headquartersPostalCode": "90711",
+			"sector": "vortals",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "7t6em9huclbvckio71iq"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "7wrvh4iim5dqjjz"
 				},
 				{
-					"identifierType": "PermId",
-					"identifierValue": "5z5xu22ogj"
+					"identifierType": "Duns",
+					"identifierValue": "chgd4giup"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "dyc5ya7juhep"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "zwtr3uqtmeju0pszqz9n"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "fvc4pqw"
 				}
 			],
-			"countryCode": "KE",
+			"countryCode": "PA",
 			"isTeaserCompany": false,
-			"website": "http://auffällig-medikation.name"
+			"website": "http://friedvoll-kartoffel.de"
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "https://freidenkend-wille.name/vern%C3%BCnftig-sexismus.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-04-29",
-					"currency": "UYU"
+				"AnnualReport": {
+					"reference": "https://vermittelnd-mais.com/mobil-agnostizismus.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-06-22",
+					"currency": "XCD"
+				},
+				"IntegratedReport": {
+					"reference": "http://xn--mitreiend-junge-vib.ch/theoretisch-arch%C3%A4ologie.pdf",
+					"reportDate": "2022-10-18",
+					"currency": "KMF"
 				}
 			},
+			"fiscalYearEnd": "2022-12-13",
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"provider": "Hilgendorf-Kahles",
-				"dataSource": {
-					"page": 805,
-					"report": "SustainabilityReport",
-					"tagName": "synergies"
-				}
+				"provider": "Holinski-Kúhn"
 			},
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
+			"numberOfEmployees": 69713,
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 516735.31,
-					"quality": "Estimated"
+					"value": 130233.53,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.6428,
+					"value": 0.642,
 					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 53219.42,
-					"dataSource": {
-						"page": 945,
-						"report": "SustainabilityReport",
-						"tagName": "paradigms"
-					},
-					"quality": "Reported",
-					"comment": "transmit cross-platform card"
+					"value": 57178.21,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.0544,
+					"value": 0.2248,
 					"dataSource": {
-						"page": 590,
-						"report": "SustainabilityReport",
-						"tagName": "supply-chains"
+						"page": 1038,
+						"report": "AnnualReport",
+						"tagName": "methodologies"
 					},
-					"quality": "Audited",
-					"comment": "hack 1080p panel"
+					"quality": "Estimated",
+					"comment": "quantify solid state capacitor"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 70094.09,
+					"value": 425753.39,
 					"dataSource": {
-						"page": 992,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
+						"page": 820,
+						"report": "AnnualReport",
+						"tagName": "markets"
 					},
-					"quality": "Reported",
-					"comment": "synthesize bluetooth program"
+					"quality": "Incomplete",
+					"comment": "hack neural panel"
 				},
 				"eligiblePercentage": {
-					"value": 0.1189,
+					"value": 0.9543,
 					"dataSource": {
-						"page": 991,
-						"report": "SustainabilityReport",
-						"tagName": "niches"
+						"page": 225,
+						"report": "AnnualReport",
+						"tagName": "communities"
 					},
-					"quality": "Reported",
-					"comment": "connect open-source circuit"
+					"quality": "Incomplete",
+					"comment": "override optical port"
 				}
 			}
 		}

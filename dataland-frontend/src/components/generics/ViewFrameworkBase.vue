@@ -51,7 +51,7 @@ import Dropdown from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
-import { DatasetQualityStatus } from "@clients/backend";
+import { QAStatus } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -148,7 +148,7 @@ export default defineComponent({
         const listOfDataMetaInfoForCompany = apiResponse.data;
         const listOfDataIdsToEmit = [] as string[];
         listOfDataMetaInfoForCompany
-          .filter((dataMetaInfo) => dataMetaInfo.qualityStatus == DatasetQualityStatus.Accepted)
+          .filter((dataMetaInfo) => dataMetaInfo.qaStatus == QAStatus.Accepted)
           .forEach((dataMetaInfo) => {
             if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)) {
               this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo.dataType);

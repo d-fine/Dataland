@@ -1,5 +1,5 @@
 import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
-import { DatasetQualityStatus } from "@clients/backend";
+import { QAStatus } from "@clients/backend";
 import { mount } from "cypress/vue";
 import Keycloak from "keycloak-js";
 
@@ -9,11 +9,11 @@ describe("Component test for Sfdr", () => {
       statusCode: 200,
       body: [
         {
-          metaInfo: { dataId: "1", qualityStatus: DatasetQualityStatus.Accepted },
+          metaInfo: { dataId: "1", qaStatus: QAStatus.Accepted },
           data: { social: { general: { fiscalYearEnd: "2023-01-01" } } },
         },
         {
-          metaInfo: { dataId: "2", qualityStatus: DatasetQualityStatus.Pending },
+          metaInfo: { dataId: "2", qaStatus: QAStatus.Pending },
           data: { social: { general: { fiscalYearEnd: "2024-01-01" } } },
         },
       ],

@@ -1,5 +1,5 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
-import { DatasetQualityStatus } from "@clients/backend";
+import { QAStatus } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "../../../../src/utils/TypeScriptUtils";
 import { shallowMount } from "@vue/test-utils";
@@ -12,11 +12,11 @@ describe("Component test for ViewFrameworkBase", () => {
       body: [
         {
           dataId: approvedDatasetId,
-          qualityStatus: DatasetQualityStatus.Accepted,
+          qaStatus: QAStatus.Accepted,
         },
         {
           dataId: "dataset-2",
-          qualityStatus: DatasetQualityStatus.Pending,
+          qaStatus: QAStatus.Pending,
         },
       ],
     });

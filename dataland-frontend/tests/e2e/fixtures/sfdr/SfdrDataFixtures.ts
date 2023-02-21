@@ -1,15 +1,16 @@
-import { faker } from "@faker-js/faker";
 import { SfdrData } from "@clients/backend";
 import {
   generateNumericOrEmptyDatapoint,
   generateYesNoOrEmptyDatapoint,
   generateReferencedReports,
+  generateLinkToPdf,
 } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomYesNoNaUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { randomEuroValue, randomNumber } from "@e2e/fixtures/common/NumberFixtures";
 import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
+import { randomStringOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a random SFDR dataset
@@ -25,18 +26,18 @@ export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
         fiscalYear: randomFiscalYearDeviationOrUndefined(),
         fiscalYearEnd: fiscalYearEnd === undefined ? randomFutureDate() : fiscalYearEnd,
         groupLevelAnnualReport: randomYesNoNaUndefined(),
-        annualReport: faker.datatype.string(),
+        annualReport: randomStringOrUndefined(generateLinkToPdf()),
         annualReportDate: randomFutureDate(),
         annualReportCurrency: generateIso4217CurrencyCode(),
-        sustainabilityReport: faker.datatype.string(),
+        sustainabilityReport: randomStringOrUndefined(generateLinkToPdf()),
         groupLevelSustainabilityReport: randomYesNoNaUndefined(),
         sustainabilityReportDate: randomFutureDate(),
         sustainabilityReportCurrency: generateIso4217CurrencyCode(),
-        integratedReport: faker.datatype.string(),
+        integratedReport: randomStringOrUndefined(generateLinkToPdf()),
         groupLevelIntegratedReport: randomYesNoNaUndefined(),
         integratedReportDate: randomFutureDate(),
         integratedReportCurrency: generateIso4217CurrencyCode(),
-        esefReport: faker.datatype.string(),
+        esefReport: randomStringOrUndefined(generateLinkToPdf()),
         groupLevelEsefReport: randomYesNoNaUndefined(),
         esefReportDate: randomFutureDate(),
         esefReportCurrency: generateIso4217CurrencyCode(),
@@ -85,7 +86,7 @@ export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
         securitiesNotCertifiedAsGreen: generateYesNoOrEmptyDatapoint(reports),
       },
       anticorruptionAndAntibribery: {
-        reportedCasesOfBriberyCorruption: generateYesNoOrEmptyDatapoint(reports),
+        reportedCasesOfBriberyCorruption: generateNumericOrEmptyDatapoint(reports),
         reportedConvictionsOfBriberyCorruption: generateNumericOrEmptyDatapoint(reports),
         reportedFinesOfBriberyCorruption: generateNumericOrEmptyDatapoint(reports, randomEuroValue()),
       },

@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
-import org.dataland.datalandbackend.model.enums.data.DatasetQualityStatus
+import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -13,6 +13,7 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.AmqpException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
@@ -79,13 +80,21 @@ class DataManager(
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         val updatedMetaData = DataMetaInformationEntity(
             dataId, storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, DatasetQualityStatus.Pending,
+            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, QAStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(updatedMetaData)
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, "New data - QA necessary", correlationId,
-            "upload_queue",
-        )
+        try{
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                    dataId, "New data - QA necessary", correlationId,
+                    "upload_queue",
+            )
+        }
+        catch (exception: AmqpException) {
+            val internalMessage = "Error sending message to upload_queue." +
+                    " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
+            logger.error(internalMessage)
+            throw AmqpException(internalMessage, exception)
+        }
         return dataId
     }
 
@@ -100,7 +109,7 @@ class DataManager(
         if (!dataId.isNullOrEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaDataManager.storeDataMetaInformation(
-                metaInformation.copy(qualityStatus = DatasetQualityStatus.Accepted),
+                metaInformation.copy(qaStatus = QAStatus.Accepted),
             )
             logger.info(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId",
@@ -115,22 +124,34 @@ class DataManager(
         }
     }
 
-    private fun storeDataSet(
+    fun storeDataSet(
         storableDataSet: StorableDataSet,
         companyName: String,
         correlationId: String,
     ): String {
-        val dataId = "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
+        val dataId = generateRandomDataId()
         dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, "Data to be stored", correlationId,
-            "storage_queue",
-        )
-        logger.info(
-            "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId.",
-        )
+        try{
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                    dataId, "Data to be stored", correlationId,
+                    "storage_queue",
+            )
+            logger.info(
+                    "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
+                            " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId.",
+            )
+        }
+        catch (exception: AmqpException) {
+            val internalMessage = "Error sending message to storage_queue." +
+                    " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
+            logger.error(internalMessage)
+            throw AmqpException(internalMessage, exception)
+        }
         return(dataId)
+    }
+
+    fun generateRandomDataId(): String {
+        return "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
     }
 
     /**

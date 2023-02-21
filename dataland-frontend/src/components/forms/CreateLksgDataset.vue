@@ -25,15 +25,18 @@
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="general" class="anchor title">{{ subAreasNameMappings._general }}</h4>
+                    <h4 id="general" class="anchor title">{{ lksgSubAreasNameMappings._general }}</h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                     <p>Please input all relevant basic information about the dataset</p>
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="general" :label="subAreasNameMappings._general">
+                    <FormKit type="group" name="general" :label="lksgSubAreasNameMappings._general">
                       <div class="form-field">
-                        <UploadFormHeader :name="kpisNameMappings.dataDate" :explanation="kpisInfoMappings.dataDate" />
+                        <UploadFormHeader
+                          :name="lksgKpisNameMappings.dataDate"
+                          :explanation="lksgKpisInfoMappings.dataDate"
+                        />
                         <div class="lg:col-4 md:col-6 col-12">
                           <Calendar
                             data-test="lksgDataDate"
@@ -56,12 +59,12 @@
 
                       <div class="form-field" data-test="lksgInScope">
                         <UploadFormHeader
-                          :name="kpisNameMappings.lksgInScope"
-                          :explanation="kpisInfoMappings.lksgInScope"
+                          :name="lksgKpisNameMappings.lksgInScope"
+                          :explanation="lksgKpisInfoMappings.lksgInScope"
                         />
                         <FormKit
                           type="radio"
-                          :validation-label="kpisNameMappings.lksgInScope"
+                          :validation-label="lksgKpisNameMappings.lksgInScope"
                           name="lksgInScope"
                           :options="['Yes', 'No']"
                           :outer-class="{
@@ -80,12 +83,12 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="kpisNameMappings.vatIdentificationNumber"
-                          :explanation="kpisInfoMappings.vatIdentificationNumber"
+                          :name="lksgKpisNameMappings.vatIdentificationNumber"
+                          :explanation="lksgKpisInfoMappings.vatIdentificationNumber"
                         />
                         <FormKit
                           type="text"
-                          :validation-label="kpisNameMappings.vatIdentificationNumber"
+                          :validation-label="lksgKpisNameMappings.vatIdentificationNumber"
                           validation="required|length:3"
                           name="vatIdentificationNumber"
                           :inner-class="{ short: true }"
@@ -94,13 +97,13 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="kpisNameMappings.numberOfEmployees"
-                          :explanation="kpisInfoMappings.numberOfEmployees"
+                          :name="lksgKpisNameMappings.numberOfEmployees"
+                          :explanation="lksgKpisInfoMappings.numberOfEmployees"
                         />
                         <FormKit
                           type="number"
                           name="numberOfEmployees"
-                          :validation-label="kpisNameMappings.numberOfEmployees"
+                          :validation-label="lksgKpisNameMappings.numberOfEmployees"
                           placeholder="Value"
                           validation="required|number"
                           step="1"
@@ -111,13 +114,13 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="kpisNameMappings.shareOfTemporaryWorkers"
-                          :explanation="kpisInfoMappings.shareOfTemporaryWorkers"
+                          :name="lksgKpisNameMappings.shareOfTemporaryWorkers"
+                          :explanation="lksgKpisInfoMappings.shareOfTemporaryWorkers"
                         />
                         <FormKit
                           type="number"
                           name="shareOfTemporaryWorkers"
-                          :validation-label="kpisNameMappings.shareOfTemporaryWorkers"
+                          :validation-label="lksgKpisNameMappings.shareOfTemporaryWorkers"
                           placeholder="Value %"
                           step="0.01"
                           min="0"
@@ -130,13 +133,13 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="kpisNameMappings.totalRevenue"
-                          :explanation="kpisInfoMappings.totalRevenue"
+                          :name="lksgKpisNameMappings.totalRevenue"
+                          :explanation="lksgKpisInfoMappings.totalRevenue"
                         />
                         <FormKit
                           type="number"
                           min="0"
-                          :validation-label="kpisNameMappings.totalRevenue"
+                          :validation-label="lksgKpisNameMappings.totalRevenue"
                           validation="required|number|min:0"
                           name="totalRevenue"
                           placeholder="Value"
@@ -149,13 +152,13 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="kpisNameMappings.totalRevenueCurrency"
-                          :explanation="kpisInfoMappings.totalRevenueCurrency"
+                          :name="lksgKpisNameMappings.totalRevenueCurrency"
+                          :explanation="lksgKpisInfoMappings.totalRevenueCurrency"
                         />
                         <FormKit
                           type="text"
                           name="totalRevenueCurrency"
-                          :validation-label="kpisNameMappings.totalRevenueCurrency"
+                          :validation-label="lksgKpisNameMappings.totalRevenueCurrency"
                           placeholder="Currency"
                           validation="required"
                           :inner-class="{
@@ -167,14 +170,14 @@
                       <div class="form-field" data-test="IsYourCompanyManufacturingCompany">
                         <UploadFormHeader
                           :name="'Is your company a manufacturing company?'"
-                          :explanation="kpisInfoMappings.listOfProductionSites"
+                          :explanation="lksgKpisInfoMappings.listOfProductionSites"
                         />
                         <FormKit
                           type="radio"
                           :ignore="true"
                           id="IsYourCompanyManufacturingCompany"
                           name="IsYourCompanyManufacturingCompany"
-                          :validation-label="kpisNameMappings.totalRevenueCurrency"
+                          :validation-label="lksgKpisNameMappings.totalRevenueCurrency"
                           :options="['Yes', 'No']"
                           v-model="isYourCompanyManufacturingCompany"
                           validation="required"
@@ -194,7 +197,7 @@
                       <FormKit
                         type="list"
                         v-if="isYourCompanyManufacturingCompany !== 'No'"
-                        :validation-label="kpisNameMappings.totalRevenueCurrency"
+                        :validation-label="lksgKpisNameMappings.totalRevenueCurrency"
                         name="listOfProductionSites"
                         label="listOfProductionSites"
                       >
@@ -213,12 +216,12 @@
 
                             <div class="form-field">
                               <UploadFormHeader
-                                :name="kpisNameMappings.productionSiteName"
-                                :explanation="kpisInfoMappings.productionSiteName"
+                                :name="lksgKpisNameMappings.productionSiteName"
+                                :explanation="lksgKpisInfoMappings.productionSiteName"
                               />
                               <FormKit
                                 type="text"
-                                :validation-label="kpisNameMappings.productionSiteName"
+                                :validation-label="lksgKpisNameMappings.productionSiteName"
                                 name="name"
                                 validation="required"
                               />
@@ -226,13 +229,13 @@
 
                             <div class="form-field" data-test="isInHouseProductionOrIsContractProcessing">
                               <UploadFormHeader
-                                :name="kpisNameMappings.inHouseProductionOrContractProcessing"
-                                :explanation="kpisInfoMappings.inHouseProductionOrContractProcessing"
+                                :name="lksgKpisNameMappings.inHouseProductionOrContractProcessing"
+                                :explanation="lksgKpisInfoMappings.inHouseProductionOrContractProcessing"
                               />
                               <FormKit
                                 type="radio"
                                 name="isInHouseProductionOrIsContractProcessing"
-                                :validation-label="kpisNameMappings.inHouseProductionOrContractProcessing"
+                                :validation-label="lksgKpisNameMappings.inHouseProductionOrContractProcessing"
                                 :options="isInHouseProductionOrContractProcessingMap"
                                 validation="required"
                                 :outer-class="{
@@ -250,15 +253,15 @@
 
                             <div class="form-field">
                               <UploadFormHeader
-                                :name="kpisNameMappings.addressesOfProductionSites"
-                                :explanation="kpisInfoMappings.addressesOfProductionSites"
+                                :name="lksgKpisNameMappings.addressesOfProductionSites"
+                                :explanation="lksgKpisInfoMappings.addressesOfProductionSites"
                               />
 
                               <FormKit
                                 type="text"
                                 name="streetAndHouseNumber"
                                 validation="required"
-                                :validation-label="kpisNameMappings.addressesOfProductionSites"
+                                :validation-label="lksgKpisNameMappings.addressesOfProductionSites"
                                 placeholder="Street, House number"
                               />
                               <div class="next-to-each-other">
@@ -295,8 +298,8 @@
                                   aria-hidden="true"
                                   title="listOfGoodsOrServices"
                                   v-tooltip.top="{
-                                    value: kpisInfoMappings['listOfGoodsOrServices']
-                                      ? kpisInfoMappings['listOfGoodsOrServices']
+                                    value: lksgKpisInfoMappings['listOfGoodsOrServices']
+                                      ? lksgKpisInfoMappings['listOfGoodsOrServices']
                                       : '',
                                   }"
                                   >info</em
@@ -354,21 +357,63 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="childLabour" class="anchor title">{{ subAreasNameMappings.childLabour }}</h4>
+                    <h4 id="childLabour" class="anchor title">{{ lksgSubAreasNameMappings.childLabour }}</h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="childLabour">
-                      <YesNoComponent :name="'employeeUnder18'" />
-                      <YesNoComponent :name="'employeeUnder15'" />
-                      <YesNoComponent :name="'employeeUnder18Apprentices'" />
-                      <YesNoComponent :name="'employmentUnderLocalMinimumAgePrevention'" />
-                      <YesNoComponent :name="'employmentUnderLocalMinimumAgePreventionEmploymentContracts'" />
-                      <YesNoComponent :name="'employmentUnderLocalMinimumAgePreventionJobDescription'" />
-                      <YesNoComponent :name="'employmentUnderLocalMinimumAgePreventionIdentityDocuments'" />
-                      <YesNoComponent :name="'employmentUnderLocalMinimumAgePreventionTraining'" />
-                      <YesNoComponent :name="'employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['employeeUnder18']"
+                        :info="lksgKpisInfoMappings['employeeUnder18']"
+                        :name="'employeeUnder18'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['employeeUnder15']"
+                        :info="lksgKpisInfoMappings['employeeUnder15']"
+                        :name="'employeeUnder15'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['employeeUnder18Apprentices']"
+                        :info="lksgKpisInfoMappings['employeeUnder18Apprentices']"
+                        :name="'employeeUnder18Apprentices'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePrevention']"
+                        :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePrevention']"
+                        :name="'employmentUnderLocalMinimumAgePrevention'"
+                      />
+                      <YesNoComponent
+                        :displayName="
+                          lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionEmploymentContracts']
+                        "
+                        :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionEmploymentContracts']"
+                        :name="'employmentUnderLocalMinimumAgePreventionEmploymentContracts'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionJobDescription']"
+                        :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionJobDescription']"
+                        :name="'employmentUnderLocalMinimumAgePreventionJobDescription'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionIdentityDocuments']"
+                        :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionIdentityDocuments']"
+                        :name="'employmentUnderLocalMinimumAgePreventionIdentityDocuments'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionTraining']"
+                        :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionTraining']"
+                        :name="'employmentUnderLocalMinimumAgePreventionTraining'"
+                      />
+                      <YesNoComponent
+                        :displayName="
+                          lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge']
+                        "
+                        :info="
+                          lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge']
+                        "
+                        :name="'employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge'"
+                      />
                     </FormKit>
                   </div>
                 </div>
@@ -376,23 +421,65 @@
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="forcedLabourSlaveryAndDebtBondage" class="anchor title">
-                      {{ subAreasNameMappings.forcedLabourSlaveryAndDebtBondage }}
+                      {{ lksgSubAreasNameMappings.forcedLabourSlaveryAndDebtBondage }}
                     </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="forcedLabourSlaveryAndDebtBondage">
-                      <YesNoComponent :name="'forcedLabourAndSlaveryPrevention'" />
-                      <YesNoComponent :name="'forcedLabourAndSlaveryPreventionEmploymentContracts'" />
-                      <YesNoComponent :name="'forcedLabourAndSlaveryPreventionIdentityDocuments'" />
-                      <YesNoComponent :name="'forcedLabourAndSlaveryPreventionFreeMovement'" />
-                      <YesNoComponent :name="'forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets'" />
-                      <YesNoComponent :name="'forcedLabourAndSlaveryPreventionTraining'" />
-                      <YesNoComponent :name="'documentedWorkingHoursAndWages'" />
-                      <YesNoComponent :name="'adequateLivingWage'" />
-                      <YesNoComponent :name="'regularWagesProcessFlow'" />
-                      <YesNoComponent :name="'fixedHourlyWages'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPrevention']"
+                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPrevention']"
+                        :name="'forcedLabourAndSlaveryPrevention'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionEmploymentContracts']"
+                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionEmploymentContracts']"
+                        :name="'forcedLabourAndSlaveryPreventionEmploymentContracts'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionIdentityDocuments']"
+                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionIdentityDocuments']"
+                        :name="'forcedLabourAndSlaveryPreventionIdentityDocuments'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionFreeMovement']"
+                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionFreeMovement']"
+                        :name="'forcedLabourAndSlaveryPreventionFreeMovement'"
+                      />
+                      <YesNoComponent
+                        :displayName="
+                          lksgKpisNameMappings['forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets']
+                        "
+                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets']"
+                        :name="'forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionTraining']"
+                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionTraining']"
+                        :name="'forcedLabourAndSlaveryPreventionTraining'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['documentedWorkingHoursAndWages']"
+                        :info="lksgKpisInfoMappings['documentedWorkingHoursAndWages']"
+                        :name="'documentedWorkingHoursAndWages'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['adequateLivingWage']"
+                        :info="lksgKpisInfoMappings['adequateLivingWage']"
+                        :name="'adequateLivingWage'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['regularWagesProcessFlow']"
+                        :info="lksgKpisInfoMappings['regularWagesProcessFlow']"
+                        :name="'regularWagesProcessFlow'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['fixedHourlyWages']"
+                        :info="lksgKpisInfoMappings['fixedHourlyWages']"
+                        :name="'fixedHourlyWages'"
+                      />
                     </FormKit>
                   </div>
                 </div>
@@ -400,36 +487,128 @@
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="evidenceCertificatesAndAttestations" class="anchor title">
-                      {{ subAreasNameMappings.evidenceCertificatesAndAttestations }}
+                      {{ lksgSubAreasNameMappings.evidenceCertificatesAndAttestations }}
                     </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="evidenceCertificatesAndAttestations">
-                      <YesNoComponent :name="'iso26000'" />
-                      <YesNoComponent :name="'sa8000Certification'" />
-                      <YesNoComponent :name="'smetaSocialAuditConcept'" />
-                      <YesNoComponent :name="'betterWorkProgramCertificate'" />
-                      <YesNoComponent :name="'iso45001Certification'" />
-                      <YesNoComponent :name="'iso14000Certification'" />
-                      <YesNoComponent :name="'emasCertification'" />
-                      <YesNoComponent :name="'iso37001Certification'" />
-                      <YesNoComponent :name="'iso37301Certification'" />
-                      <YesNoComponent :name="'riskManagementSystemCertification'" />
-                      <YesNoComponent :name="'amforiBsciAuditReport'" />
-                      <YesNoComponent :name="'initiativeClauseSocialCertification'" />
-                      <YesNoComponent :name="'responsibleBusinessAssociationCertification'" />
-                      <YesNoComponent :name="'fairLabourAssociationCertification'" />
-                      <YesNoComponent :name="'fairWorkingConditionsPolicy'" />
-                      <YesNoComponent :name="'fairAndEthicalRecruitmentPolicy'" />
-                      <YesNoComponent :name="'equalOpportunitiesAndNondiscriminationPolicy'" />
-                      <YesNoComponent :name="'healthAndSafetyPolicy'" />
-                      <YesNoComponent :name="'complaintsAndGrievancesPolicy'" />
-                      <YesNoComponent :name="'forcedLabourPolicy'" />
-                      <YesNoComponent :name="'childLabourPolicy'" />
-                      <YesNoComponent :name="'environmentalImpactPolicy'" />
-                      <YesNoComponent :name="'supplierCodeOfConduct'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['iso26000']"
+                        :info="lksgKpisInfoMappings['iso26000']"
+                        :name="'iso26000'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['sa8000Certification']"
+                        :info="lksgKpisInfoMappings['sa8000Certification']"
+                        :name="'sa8000Certification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['smetaSocialAuditConcept']"
+                        :info="lksgKpisInfoMappings['smetaSocialAuditConcept']"
+                        :name="'smetaSocialAuditConcept'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['betterWorkProgramCertificate']"
+                        :info="lksgKpisInfoMappings['betterWorkProgramCertificate']"
+                        :name="'betterWorkProgramCertificate'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['iso45001Certification']"
+                        :info="lksgKpisInfoMappings['iso45001Certification']"
+                        :name="'iso45001Certification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['iso14000Certification']"
+                        :info="lksgKpisInfoMappings['iso14000Certification']"
+                        :name="'iso14000Certification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['emasCertification']"
+                        :info="lksgKpisInfoMappings['emasCertification']"
+                        :name="'emasCertification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['iso37001Certification']"
+                        :info="lksgKpisInfoMappings['iso37001Certification']"
+                        :name="'iso37001Certification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['iso37301Certification']"
+                        :info="lksgKpisInfoMappings['iso37301Certification']"
+                        :name="'iso37301Certification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['riskManagementSystemCertification']"
+                        :info="lksgKpisInfoMappings['riskManagementSystemCertification']"
+                        :name="'riskManagementSystemCertification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['amforiBsciAuditReport']"
+                        :info="lksgKpisInfoMappings['amforiBsciAuditReport']"
+                        :name="'amforiBsciAuditReport'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['initiativeClauseSocialCertification']"
+                        :info="lksgKpisInfoMappings['initiativeClauseSocialCertification']"
+                        :name="'initiativeClauseSocialCertification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['responsibleBusinessAssociationCertification']"
+                        :info="lksgKpisInfoMappings['responsibleBusinessAssociationCertification']"
+                        :name="'responsibleBusinessAssociationCertification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['fairLabourAssociationCertification']"
+                        :info="lksgKpisInfoMappings['fairLabourAssociationCertification']"
+                        :name="'fairLabourAssociationCertification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['fairWorkingConditionsPolicy']"
+                        :info="lksgKpisInfoMappings['fairWorkingConditionsPolicy']"
+                        :name="'fairWorkingConditionsPolicy'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['fairAndEthicalRecruitmentPolicy']"
+                        :info="lksgKpisInfoMappings['fairAndEthicalRecruitmentPolicy']"
+                        :name="'fairAndEthicalRecruitmentPolicy'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['equalOpportunitiesAndNondiscriminationPolicy']"
+                        :info="lksgKpisInfoMappings['equalOpportunitiesAndNondiscriminationPolicy']"
+                        :name="'equalOpportunitiesAndNondiscriminationPolicy'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['healthAndSafetyPolicy']"
+                        :info="lksgKpisInfoMappings['healthAndSafetyPolicy']"
+                        :name="'healthAndSafetyPolicy'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['complaintsAndGrievancesPolicy']"
+                        :info="lksgKpisInfoMappings['complaintsAndGrievancesPolicy']"
+                        :name="'complaintsAndGrievancesPolicy'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['forcedLabourPolicy']"
+                        :info="lksgKpisInfoMappings['forcedLabourPolicy']"
+                        :name="'forcedLabourPolicy'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['childLabourPolicy']"
+                        :info="lksgKpisInfoMappings['childLabourPolicy']"
+                        :name="'childLabourPolicy'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['environmentalImpactPolicy']"
+                        :info="lksgKpisInfoMappings['environmentalImpactPolicy']"
+                        :name="'environmentalImpactPolicy'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['supplierCodeOfConduct']"
+                        :info="lksgKpisInfoMappings['supplierCodeOfConduct']"
+                        :name="'supplierCodeOfConduct'"
+                      />
                     </FormKit>
                   </div>
                 </div>
@@ -437,45 +616,125 @@
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="grievanceMechanism" class="anchor title">
-                      {{ subAreasNameMappings.grievanceMechanism }}
+                      {{ lksgSubAreasNameMappings.grievanceMechanism }}
                     </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="grievanceMechanism">
-                      <YesNoComponent :name="'grievanceHandlingMechanism'" />
-                      <YesNoComponent :name="'grievanceHandlingMechanismUsedForReporting'" />
-                      <YesNoComponent :name="'legalProceedings'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['grievanceHandlingMechanism']"
+                        :info="lksgKpisInfoMappings['grievanceHandlingMechanism']"
+                        :name="'grievanceHandlingMechanism'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['grievanceHandlingMechanismUsedForReporting']"
+                        :info="lksgKpisInfoMappings['grievanceHandlingMechanismUsedForReporting']"
+                        :name="'grievanceHandlingMechanismUsedForReporting'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['legalProceedings']"
+                        :info="lksgKpisInfoMappings['legalProceedings']"
+                        :name="'legalProceedings'"
+                      />
                     </FormKit>
                   </div>
                 </div>
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 p-3 topicLabel">
-                    <h4 id="osh" class="anchor title">{{ subAreasNameMappings.osh }}</h4>
+                    <h4 id="osh" class="anchor title">{{ lksgSubAreasNameMappings.osh }}</h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="osh">
-                      <YesNoComponent :name="'oshMonitoring'" />
-                      <YesNoComponent :name="'oshPolicy'" />
-                      <YesNoComponent :name="'oshPolicyPersonalProtectiveEquipment'" />
-                      <YesNoComponent :name="'oshPolicyMachineSafety'" />
-                      <YesNoComponent :name="'oshPolicyDisasterBehaviouralResponse'" />
-                      <YesNoComponent :name="'oshPolicyAccidentsBehaviouralResponse'" />
-                      <YesNoComponent :name="'oshPolicyWorkplaceErgonomics'" />
-                      <YesNoComponent :name="'oshPolicyHandlingChemicalsAndOtherHazardousSubstances'" />
-                      <YesNoComponent :name="'oshPolicyFireProtection'" />
-                      <YesNoComponent :name="'oshPolicyWorkingHours'" />
-                      <YesNoComponent :name="'oshPolicyTrainingAddressed'" />
-                      <YesNoComponent :name="'oshPolicyTraining'" />
-                      <YesNoComponent :name="'oshManagementSystem'" />
-                      <YesNoComponent :name="'oshManagementSystemInternationalCertification'" />
-                      <YesNoComponent :name="'oshManagementSystemNationalCertification'" />
-                      <YesNoComponent :name="'workplaceAccidentsUnder10'" />
-                      <YesNoComponent :name="'oshTraining'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshMonitoring']"
+                        :info="lksgKpisInfoMappings['oshMonitoring']"
+                        :name="'oshMonitoring'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicy']"
+                        :info="lksgKpisInfoMappings['oshPolicy']"
+                        :name="'oshPolicy'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicyPersonalProtectiveEquipment']"
+                        :info="lksgKpisInfoMappings['oshPolicyPersonalProtectiveEquipment']"
+                        :name="'oshPolicyPersonalProtectiveEquipment'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicyMachineSafety']"
+                        :info="lksgKpisInfoMappings['oshPolicyMachineSafety']"
+                        :name="'oshPolicyMachineSafety'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicyDisasterBehaviouralResponse']"
+                        :info="lksgKpisInfoMappings['oshPolicyDisasterBehaviouralResponse']"
+                        :name="'oshPolicyDisasterBehaviouralResponse'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicyAccidentsBehaviouralResponse']"
+                        :info="lksgKpisInfoMappings['oshPolicyAccidentsBehaviouralResponse']"
+                        :name="'oshPolicyAccidentsBehaviouralResponse'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicyWorkplaceErgonomics']"
+                        :info="lksgKpisInfoMappings['oshPolicyWorkplaceErgonomics']"
+                        :name="'oshPolicyWorkplaceErgonomics'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicyHandlingChemicalsAndOtherHazardousSubstances']"
+                        :info="lksgKpisInfoMappings['oshPolicyHandlingChemicalsAndOtherHazardousSubstances']"
+                        :name="'oshPolicyHandlingChemicalsAndOtherHazardousSubstances'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicyFireProtection']"
+                        :info="lksgKpisInfoMappings['oshPolicyFireProtection']"
+                        :name="'oshPolicyFireProtection'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicyWorkingHours']"
+                        :info="lksgKpisInfoMappings['oshPolicyWorkingHours']"
+                        :name="'oshPolicyWorkingHours'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicyTrainingAddressed']"
+                        :info="lksgKpisInfoMappings['oshPolicyTrainingAddressed']"
+                        :name="'oshPolicyTrainingAddressed'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshPolicyTraining']"
+                        :info="lksgKpisInfoMappings['oshPolicyTraining']"
+                        :name="'oshPolicyTraining'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshManagementSystem']"
+                        :info="lksgKpisInfoMappings['oshManagementSystem']"
+                        :name="'oshManagementSystem'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshManagementSystemInternationalCertification']"
+                        :info="lksgKpisInfoMappings['oshManagementSystemInternationalCertification']"
+                        :name="'oshManagementSystemInternationalCertification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshManagementSystemNationalCertification']"
+                        :info="lksgKpisInfoMappings['oshManagementSystemNationalCertification']"
+                        :name="'oshManagementSystemNationalCertification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['workplaceAccidentsUnder10']"
+                        :info="lksgKpisInfoMappings['workplaceAccidentsUnder10']"
+                        :name="'workplaceAccidentsUnder10'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['oshTraining']"
+                        :info="lksgKpisInfoMappings['oshTraining']"
+                        :name="'oshTraining'"
+                      />
                     </FormKit>
                   </div>
                 </div>
@@ -483,37 +742,87 @@
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="freedomOfAssociation" class="anchor title">
-                      {{ subAreasNameMappings.freedomOfAssociation }}
+                      {{ lksgSubAreasNameMappings.freedomOfAssociation }}
                     </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="freedomOfAssociation">
-                      <YesNoComponent :name="'freedomOfAssociation'" />
-                      <YesNoComponent :name="'discriminationForTradeUnionMembers'" />
-                      <YesNoComponent :name="'freedomOfOperationForTradeUnion'" />
-                      <YesNoComponent :name="'freedomOfAssociationTraining'" />
-                      <YesNoComponent :name="'worksCouncil'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['freedomOfAssociation']"
+                        :info="lksgKpisInfoMappings['freedomOfAssociation']"
+                        :name="'freedomOfAssociation'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['discriminationForTradeUnionMembers']"
+                        :info="lksgKpisInfoMappings['discriminationForTradeUnionMembers']"
+                        :name="'discriminationForTradeUnionMembers'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['freedomOfOperationForTradeUnion']"
+                        :info="lksgKpisInfoMappings['freedomOfOperationForTradeUnion']"
+                        :name="'freedomOfOperationForTradeUnion'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['freedomOfAssociationTraining']"
+                        :info="lksgKpisInfoMappings['freedomOfAssociationTraining']"
+                        :name="'freedomOfAssociationTraining'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['worksCouncil']"
+                        :info="lksgKpisInfoMappings['worksCouncil']"
+                        :name="'worksCouncil'"
+                      />
                     </FormKit>
                   </div>
                 </div>
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="humanRights" class="anchor title">{{ subAreasNameMappings.humanRights }}</h4>
+                    <h4 id="humanRights" class="anchor title">{{ lksgSubAreasNameMappings.humanRights }}</h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="humanRights">
-                      <YesNoComponent :name="'diversityAndInclusionRole'" />
-                      <YesNoComponent :name="'preventionOfMistreatments'" />
-                      <YesNoComponent :name="'equalOpportunitiesOfficer'" />
-                      <YesNoComponent :name="'riskOfHarmfulPollution'" />
-                      <YesNoComponent :name="'unlawfulEvictionAndTakingOfLand'" />
-                      <YesNoComponent :name="'useOfPrivatePublicSecurityForces'" />
-                      <YesNoComponent :name="'useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['diversityAndInclusionRole']"
+                        :info="lksgKpisInfoMappings['diversityAndInclusionRole']"
+                        :name="'diversityAndInclusionRole'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['preventionOfMistreatments']"
+                        :info="lksgKpisInfoMappings['preventionOfMistreatments']"
+                        :name="'preventionOfMistreatments'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['equalOpportunitiesOfficer']"
+                        :info="lksgKpisInfoMappings['equalOpportunitiesOfficer']"
+                        :name="'equalOpportunitiesOfficer'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['riskOfHarmfulPollution']"
+                        :info="lksgKpisInfoMappings['riskOfHarmfulPollution']"
+                        :name="'riskOfHarmfulPollution'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['unlawfulEvictionAndTakingOfLand']"
+                        :info="lksgKpisInfoMappings['unlawfulEvictionAndTakingOfLand']"
+                        :name="'unlawfulEvictionAndTakingOfLand'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['useOfPrivatePublicSecurityForces']"
+                        :info="lksgKpisInfoMappings['useOfPrivatePublicSecurityForces']"
+                        :name="'useOfPrivatePublicSecurityForces'"
+                      />
+                      <YesNoComponent
+                        :displayName="
+                          lksgKpisNameMappings['useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights']
+                        "
+                        :info="lksgKpisInfoMappings['useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights']"
+                        :name="'useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights'"
+                      />
                     </FormKit>
                   </div>
                 </div>
@@ -523,64 +832,92 @@
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="socialAndEmployeeMatters" class="anchor title">
-                      {{ subAreasNameMappings.socialAndEmployeeMatters }}
+                      {{ lksgSubAreasNameMappings.socialAndEmployeeMatters }}
                     </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="socialAndEmployeeMatters">
-                      <YesNoComponent :name="'responsibilitiesForFairWorkingConditions'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['responsibilitiesForFairWorkingConditions']"
+                        :info="lksgKpisInfoMappings['responsibilitiesForFairWorkingConditions']"
+                        :name="'responsibilitiesForFairWorkingConditions'"
+                      />
                     </FormKit>
                   </div>
                 </div>
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="environment" class="anchor title">{{ subAreasNameMappings.environment }}</h4>
+                    <h4 id="environment" class="anchor title">{{ lksgSubAreasNameMappings.environment }}</h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
                     <FormKit type="group" name="environment">
-                      <YesNoComponent :name="'responsibilitiesForTheEnvironment'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['responsibilitiesForTheEnvironment']"
+                        :info="lksgKpisInfoMappings['responsibilitiesForTheEnvironment']"
+                        :name="'responsibilitiesForTheEnvironment'"
+                      />
                     </FormKit>
                   </div>
                 </div>
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="osh_governance" class="anchor title">{{ subAreasNameMappings.osh }}</h4>
+                    <h4 id="osh_governance" class="anchor title">{{ lksgSubAreasNameMappings.osh }}</h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
                     <FormKit type="group" name="osh">
-                      <YesNoComponent :name="'responsibilitiesForOccupationalSafety'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['responsibilitiesForOccupationalSafety']"
+                        :info="lksgKpisInfoMappings['responsibilitiesForOccupationalSafety']"
+                        :name="'responsibilitiesForOccupationalSafety'"
+                      />
                     </FormKit>
                   </div>
                 </div>
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="riskManagement" class="anchor title">{{ subAreasNameMappings.riskManagement }}</h4>
+                    <h4 id="riskManagement" class="anchor title">{{ lksgSubAreasNameMappings.riskManagement }}</h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
                     <FormKit type="group" name="riskManagement">
-                      <YesNoComponent :name="'riskManagementSystem'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['riskManagementSystem']"
+                        :info="lksgKpisInfoMappings['riskManagementSystem']"
+                        :name="'riskManagementSystem'"
+                      />
                     </FormKit>
                   </div>
                 </div>
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 p-3 topicLabel">
-                    <h4 id="codeOfConduct" class="anchor title">{{ subAreasNameMappings.codeOfConduct }}</h4>
+                    <h4 id="codeOfConduct" class="anchor title">{{ lksgSubAreasNameMappings.codeOfConduct }}</h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
                     <FormKit type="group" name="codeOfConduct">
-                      <YesNoComponent :name="'codeOfConduct'" />
-                      <YesNoComponent :name="'codeOfConductRiskManagementTopics'" />
-                      <YesNoComponent :name="'codeOfConductTraining'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['codeOfConduct']"
+                        :info="lksgKpisInfoMappings['codeOfConduct']"
+                        :name="'codeOfConduct'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['codeOfConductRiskManagementTopics']"
+                        :info="lksgKpisInfoMappings['codeOfConductRiskManagementTopics']"
+                        :name="'codeOfConductRiskManagementTopics'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['codeOfConductTraining']"
+                        :info="lksgKpisInfoMappings['codeOfConductTraining']"
+                        :name="'codeOfConductTraining'"
+                      />
                     </FormKit>
                   </div>
                 </div>
@@ -589,35 +926,137 @@
               <FormKit type="group" name="environmental" label="environmental">
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="waste" class="anchor title">{{ subAreasNameMappings.waste }}</h4>
+                    <h4 id="waste" class="anchor title">{{ lksgSubAreasNameMappings.waste }}</h4>
                     <div class="p-badge badge-green"><span>ENVIRONMENTAL</span></div>
                   </div>
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="waste">
-                      <YesNoComponent :name="'mercuryAndMercuryWasteHandling'" />
-                      <YesNoComponent :name="'mercuryAndMercuryWasteHandlingPolicy'" />
-                      <YesNoComponent :name="'chemicalHandling'" />
-                      <YesNoComponent :name="'environmentalManagementSystem'" />
-                      <YesNoComponent :name="'environmentalManagementSystemInternationalCertification'" />
-                      <YesNoComponent :name="'environmentalManagementSystemNationalCertification'" />
-                      <YesNoComponent :name="'legalRestrictedWaste'" />
-                      <YesNoComponent :name="'legalRestrictedWasteProcesses'" />
-                      <YesNoComponent :name="'mercuryAddedProductsHandling'" />
-                      <YesNoComponent :name="'mercuryAddedProductsHandlingRiskOfExposure'" />
-                      <YesNoComponent :name="'mercuryAddedProductsHandlingRiskOfDisposal'" />
-                      <YesNoComponent :name="'mercuryAndMercuryCompoundsProductionAndUse'" />
-                      <YesNoComponent :name="'mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure'" />
-                      <YesNoComponent :name="'persistentOrganicPollutantsProductionAndUse'" />
-                      <YesNoComponent :name="'persistentOrganicPollutantsProductionAndUseRiskOfExposure'" />
-                      <YesNoComponent :name="'persistentOrganicPollutantsProductionAndUseRiskOfDisposal'" />
-                      <YesNoComponent :name="'persistentOrganicPollutantsProductionAndUseTransboundaryMovements'" />
-                      <YesNoComponent :name="'persistentOrganicPollutantsProductionAndUseRiskForImportingState'" />
-                      <YesNoComponent :name="'hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein'" />
-                      <YesNoComponent :name="'hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein'" />
-                      <YesNoComponent :name="'hazardousWasteDisposal'" />
-                      <YesNoComponent :name="'hazardousWasteDisposalRiskOfImport'" />
-                      <YesNoComponent :name="'hazardousAndOtherWasteImport'" />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['mercuryAndMercuryWasteHandling']"
+                        :info="lksgKpisInfoMappings['mercuryAndMercuryWasteHandling']"
+                        :name="'mercuryAndMercuryWasteHandling'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['mercuryAndMercuryWasteHandlingPolicy']"
+                        :info="lksgKpisInfoMappings['mercuryAndMercuryWasteHandlingPolicy']"
+                        :name="'mercuryAndMercuryWasteHandlingPolicy'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['chemicalHandling']"
+                        :info="lksgKpisInfoMappings['chemicalHandling']"
+                        :name="'chemicalHandling'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['environmentalManagementSystem']"
+                        :info="lksgKpisInfoMappings['environmentalManagementSystem']"
+                        :name="'environmentalManagementSystem'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['environmentalManagementSystemInternationalCertification']"
+                        :info="lksgKpisInfoMappings['environmentalManagementSystemInternationalCertification']"
+                        :name="'environmentalManagementSystemInternationalCertification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['environmentalManagementSystemNationalCertification']"
+                        :info="lksgKpisInfoMappings['environmentalManagementSystemNationalCertification']"
+                        :name="'environmentalManagementSystemNationalCertification'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['legalRestrictedWaste']"
+                        :info="lksgKpisInfoMappings['legalRestrictedWaste']"
+                        :name="'legalRestrictedWaste'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['legalRestrictedWasteProcesses']"
+                        :info="lksgKpisInfoMappings['legalRestrictedWasteProcesses']"
+                        :name="'legalRestrictedWasteProcesses'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['mercuryAddedProductsHandling']"
+                        :info="lksgKpisInfoMappings['mercuryAddedProductsHandling']"
+                        :name="'mercuryAddedProductsHandling'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['mercuryAddedProductsHandlingRiskOfExposure']"
+                        :info="lksgKpisInfoMappings['mercuryAddedProductsHandlingRiskOfExposure']"
+                        :name="'mercuryAddedProductsHandlingRiskOfExposure'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['mercuryAddedProductsHandlingRiskOfDisposal']"
+                        :info="lksgKpisInfoMappings['mercuryAddedProductsHandlingRiskOfDisposal']"
+                        :name="'mercuryAddedProductsHandlingRiskOfDisposal'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['mercuryAndMercuryCompoundsProductionAndUse']"
+                        :info="lksgKpisInfoMappings['mercuryAndMercuryCompoundsProductionAndUse']"
+                        :name="'mercuryAndMercuryCompoundsProductionAndUse'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure']"
+                        :info="lksgKpisInfoMappings['mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure']"
+                        :name="'mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUse']"
+                        :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUse']"
+                        :name="'persistentOrganicPollutantsProductionAndUse'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseRiskOfExposure']"
+                        :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseRiskOfExposure']"
+                        :name="'persistentOrganicPollutantsProductionAndUseRiskOfExposure'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseRiskOfDisposal']"
+                        :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseRiskOfDisposal']"
+                        :name="'persistentOrganicPollutantsProductionAndUseRiskOfDisposal'"
+                      />
+                      <YesNoComponent
+                        :displayName="
+                          lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseTransboundaryMovements']
+                        "
+                        :info="
+                          lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseTransboundaryMovements']
+                        "
+                        :name="'persistentOrganicPollutantsProductionAndUseTransboundaryMovements'"
+                      />
+                      <YesNoComponent
+                        :displayName="
+                          lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseRiskForImportingState']
+                        "
+                        :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseRiskForImportingState']"
+                        :name="'persistentOrganicPollutantsProductionAndUseRiskForImportingState'"
+                      />
+                      <YesNoComponent
+                        :displayName="
+                          lksgKpisNameMappings['hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein']
+                        "
+                        :info="lksgKpisInfoMappings['hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein']"
+                        :name="'hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein'"
+                      />
+                      <YesNoComponent
+                        :displayName="
+                          lksgKpisNameMappings['hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein']
+                        "
+                        :info="lksgKpisInfoMappings['hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein']"
+                        :name="'hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['hazardousWasteDisposal']"
+                        :info="lksgKpisInfoMappings['hazardousWasteDisposal']"
+                        :name="'hazardousWasteDisposal'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['hazardousWasteDisposalRiskOfImport']"
+                        :info="lksgKpisInfoMappings['hazardousWasteDisposalRiskOfImport']"
+                        :name="'hazardousWasteDisposalRiskOfImport'"
+                      />
+                      <YesNoComponent
+                        :displayName="lksgKpisNameMappings['hazardousAndOtherWasteImport']"
+                        :info="lksgKpisInfoMappings['hazardousAndOtherWasteImport']"
+                        :name="'hazardousAndOtherWasteImport'"
+                      />
                     </FormKit>
                   </div>
                 </div>
@@ -686,10 +1125,10 @@ import Calendar from "primevue/calendar";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import {
-  kpisInfoMappings,
-  kpisNameMappings,
-  subAreasNameMappings,
-} from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+  lksgKpisInfoMappings,
+  lksgKpisNameMappings,
+  lksgSubAreasNameMappings,
+} from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
 import { humanizeString } from "@/utils/StringHumanizer";
@@ -725,9 +1164,9 @@ export default defineComponent({
     uploadSucceded: false,
     postLkSGDataProcessed: false,
     messageCounter: 0,
-    kpisInfoMappings,
-    kpisNameMappings,
-    subAreasNameMappings,
+    lksgKpisInfoMappings,
+    lksgKpisNameMappings,
+    lksgSubAreasNameMappings,
     elementPosition: 0,
     scrollListener: (): null => null,
     isInHouseProductionOrContractProcessingMap: Object.fromEntries(

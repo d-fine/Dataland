@@ -1,4 +1,4 @@
-// dataland-dummy-qa-service
+// dataland-qa-service
 
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)

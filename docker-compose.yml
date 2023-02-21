@@ -275,7 +275,6 @@ services:
     restart: always
     profiles: ["production", "testing", "development"]
     image: ghcr.io/d-fine/dataland/dataland_rabbitmq:${DATALAND_RABBITMQ_VERSION}
-    container_name: rabbitmq
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
@@ -290,10 +289,10 @@ services:
       test: rabbitmq-diagnostics -q alarms
       interval: 30s
       timeout: 3s
-  dummy-qa-service:
+  qa-service:
     restart: always
     profiles: ["production", "testing", "development"]
-    image: ghcr.io/d-fine/dataland/dataland_dummy_qa_service_test:${DATALAND_DUMMY_QA_SERVICE_TEST_VERSION}
+    image: ghcr.io/d-fine/dataland/dataland_qa_service_test:${DATALAND_QA_SERVICE_TEST_VERSION}
     networks:
       - internal
     expose:

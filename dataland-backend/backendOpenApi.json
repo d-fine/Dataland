@@ -1928,7 +1928,7 @@
           "companyId",
           "dataId",
           "dataType",
-          "qualityStatus",
+          "qaStatus",
           "uploadTime"
         ],
         "type": "object",
@@ -1949,12 +1949,12 @@
           "companyId": {
             "type": "string"
           },
-          "qualityStatus": {
-            "$ref": "#/components/schemas/DatasetQualityStatus"
+          "qaStatus": {
+            "$ref": "#/components/schemas/QAStatus"
           }
         }
       },
-      "DatasetQualityStatus": {
+      "QAStatus": {
         "type": "string",
         "enum": [
           "Pending",
@@ -2072,7 +2072,7 @@
         "type": "object",
         "properties": {
           "reportedCasesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointBigDecimal"
           },
           "reportedConvictionsOfBriberyCorruption": {
             "$ref": "#/components/schemas/DataPointBigDecimal"

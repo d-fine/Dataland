@@ -9,7 +9,7 @@ include(
     "dataland-csvconverter",
     "dataland-keycloak:dataland_theme:login",
     "dataland-keycloak-adapter",
-    "dataland-dummy-qa-service",
+    "dataland-qa-service",
     "dataland-message-queue-utils",
 )
 
