@@ -2072,7 +2072,7 @@
         "type": "object",
         "properties": {
           "reportedCasesOfBriberyCorruption": {
-            "$ref": "#/components/schemas/DataPointYesNo"
+            "$ref": "#/components/schemas/DataPointBigDecimal"
           },
           "reportedConvictionsOfBriberyCorruption": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
