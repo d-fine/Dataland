@@ -51,7 +51,7 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchDataForAllDataIds();
+      void this.fetchAllAcceptedDatasets();
     },
   },
   setup() {
