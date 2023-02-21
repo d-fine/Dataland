@@ -1,10 +1,10 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="lksgKpiNameMappings[name]" :explanation="lksgKpiInfoMappings[name]" />
+    <UploadFormHeader :name="displayName" :explanation="info" />
     <FormKit
       type="radio"
       :name="name"
-      :validation-label="lksgKpiNameMappings[name]"
+      :validation-label="displayName"
       :options="['Yes', 'No']"
       :outer-class="{
         'yes-no-radio': true,
@@ -24,20 +24,18 @@
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import {
-  lksgKpiNameMappings,
-  lksgKpiInfoMappings,
-} from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
   name: "YesNoComponent",
   components: { UploadFormHeader, FormKit },
-  data: () => ({
-    lksgKpiNameMappings,
-    lksgKpiInfoMappings,
-  }),
   props: {
     name: {
+      type: String,
+    },
+    info: {
+      type: String,
+    },
+    displayName: {
       type: String,
     },
   },

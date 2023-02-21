@@ -19,20 +19,20 @@
         v-model:expandedRowGroups="expandedRowGroups"
       >
         <Column
-          bodyClass="headers-bg flex"
+          bodyClass="headers-bg"
           headerStyle="width: 30vw;"
           headerClass="horizontal-headers-size"
           field="kpiKey"
           header="KPIs"
         >
           <template #body="slotProps">
-            <span class="col-10">{{
+            <span class="table-left-label">{{
               kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : slotProps.data.kpiKey
             }}</span>
             <em
-              class="material-icons info-icon col-2"
+              class="material-icons info-icon"
               aria-hidden="true"
-              title="kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : ''"
+              :title="kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : ''"
               v-tooltip.top="{
                 value: kpiInfoMappings[slotProps.data.kpiKey] ? kpiInfoMappings[slotProps.data.kpiKey] : '',
               }"
@@ -41,26 +41,35 @@
           </template>
         </Column>
         <Column
-          v-for="dataDate of dataDatesOfDataSets"
-          :field="dataDate"
-          :header="dataDate.split('-')[0]"
-          :key="dataDate"
+          v-for="dataDate of dataDateOfDataSets"
+          headerClass="horizontal-headers-size"
+          :field="dataDate.dataId"
+          :header="dataDate.dataDate?.split('-')[0]"
+          :key="dataDate.dataId"
         >
           <template #body="{ data }">
             <a
-              v-if="Array.isArray(data[dataDate]) && data[dataDate].length"
-              @click="openModalAndDisplayListOfProductionSites(data[dataDate], kpiNameMappings[data.kpiKey])"
+              v-if="Array.isArray(data[dataDate.dataId]) && data[dataDate.dataId].length"
+              @click="openModalAndDisplayListOfProductionSites(data[dataDate.dataId], kpiNameMappings[data.kpiKey])"
               class="link"
               >Show "{{ kpiNameMappings[data.kpiKey] }}"
               <em class="material-icons" aria-hidden="true" title=""> dataset </em>
             </a>
-            <span v-else>{{ Array.isArray(data[dataDate]) ? "" : data[dataDate] }}</span>
+            <template v-else-if="typeof data[dataDate.dataId] === 'object' && data[dataDate.dataId] !== null">
+              {{ data[dataDate.dataId].value ?? "" }}
+            </template>
+
+            <span v-else>{{ Array.isArray(data[dataDate.dataId]) ? "" : data[dataDate.dataId] }}</span>
           </template>
         </Column>
 
         <Column field="subAreaKey" header="Impact Area"></Column>
         <template #groupheader="slotProps">
-          <span>{{ slotProps.data.subAreaKey ? subAreaNameMappings[slotProps.data.subAreaKey] : "" }}</span>
+          <span>{{
+            subAreaNameMappings[slotProps.data.subAreaKey]
+              ? subAreaNameMappings[slotProps.data.subAreaKey]
+              : slotProps.data.subAreaKey
+          }}</span>
         </template>
       </DataTable>
     </div>
@@ -73,7 +82,7 @@ import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import DynamicDialog from "primevue/dynamicdialog";
 
 export default defineComponent({
@@ -94,7 +103,7 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    dataDatesOfDataSets: {
+    dataDateOfDataSets: {
       type: Array,
       default: () => [],
     },
@@ -145,9 +154,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .p-rowgroup-footer td {
   font-weight: 500;
-}
-.horizontal-headers-size {
-  width: 500px;
 }
 ::v-deep(.p-rowgroup-header) {
   span {

@@ -117,6 +117,7 @@ describe("As a user I want to be able to register for an account and be able to 
           const password = returnPassword as string;
           login(username, password);
           cy.visitAndCheckAppMount("/companies")
+            .wait(1000)
             .get("div[id='profile-picture-dropdown-toggle']")
             .click()
             .get("a[id='profile-picture-dropdown-settings-button']")

@@ -18,6 +18,14 @@
     tr {
       border-color: lighten($table-border-dark, 45%);
     }
+    .info-icon {
+      float: right;
+      max-width: 20%;
+    }
+    .table-left-label {
+      float: left;
+      max-width: 80%;
+    }
   }
   .p-sortable-column {
     .p-sortable-column-icon {
@@ -32,7 +40,17 @@
       }
     }
   }
-  .headers-bg { background-color: $tables-headers-bg }
+  .headers-bg {
+    background-color: $tables-headers-bg;
+    display: table-cell;
+  }
+  .horizontal-headers-size {
+    min-width: 100px;
+    max-width: 500px;
+  }
+  .auto-headers-size {
+    width: auto;
+  }
   .p-rowgroup-header { background-color: $table-background-hover-color-light }
   .p-datatable-thead {
     tr {
