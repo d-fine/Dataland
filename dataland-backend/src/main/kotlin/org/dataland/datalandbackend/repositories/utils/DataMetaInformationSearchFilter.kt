@@ -7,10 +7,14 @@ package org.dataland.datalandbackend.repositories.utils
 data class DataMetaInformationSearchFilter(
     val companyIdFilter: String,
     val dataTypeFilter: String,
+    val reportingPeriodFilter: String,
 ) {
+    val companyIdFilterLength: Int
+        get() = companyIdFilter.length
+
     val dataTypeFilterLength: Int
         get() = dataTypeFilter.length
 
-    val companyIdFilterLength: Int
-        get() = companyIdFilter.length
+    val reportingPeriodFilterLength: Int
+        get() = reportingPeriodFilter.length
 }

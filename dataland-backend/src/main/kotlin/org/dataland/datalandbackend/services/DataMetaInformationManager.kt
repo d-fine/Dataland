@@ -66,17 +66,20 @@ class DataMetaInformationManager(
      * Method to make the data manager search for meta info
      * @param companyId if not empty, it filters the requested meta info to a specific company
      * @param dataType if not empty, it filters the requested meta info to a specific data type
+     * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
      * @return a list of meta info about data depending on the filters:
      */
-    fun searchDataMetaInfo(companyId: String, dataType: DataType?): List<DataMetaInformationEntity> {
+    fun searchDataMetaInfo(companyId: String, dataType: DataType?, reportingPeriod: String? = null): List<DataMetaInformationEntity> {
         if (companyId != "") {
             companyManager.verifyCompanyIdExists(companyId)
         }
         val dataTypeFilter = dataType?.name ?: ""
+        val reportingPeriodFilter = reportingPeriod ?: ""
         return dataMetaInformationRepository.searchDataMetaInformation(
             DataMetaInformationSearchFilter(
-                dataTypeFilter = dataTypeFilter,
                 companyIdFilter = companyId,
+                dataTypeFilter = dataTypeFilter,
+                reportingPeriodFilter = reportingPeriodFilter,
             ),
         )
     }

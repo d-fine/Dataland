@@ -62,7 +62,7 @@ class DataManager(
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
-                "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
+                "'${storableDataSet.companyId}', Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId",
         )
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
@@ -96,8 +96,8 @@ class DataManager(
             )
         }
         logger.info(
-            "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId",
+            "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID '${storableDataSet.companyId}'," +
+                " Company Name $companyName, and received data ID '$dataId' from storage. Correlation ID: $correlationId",
         )
         return dataId
     }

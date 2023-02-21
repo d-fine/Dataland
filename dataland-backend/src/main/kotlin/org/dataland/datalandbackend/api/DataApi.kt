@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * Defines the restful dataland-backend API regarding data exchange
@@ -70,23 +71,28 @@ interface DataApi<T> {
         ResponseEntity<CompanyAssociatedData<T>>
 
     /**
-     * A method to retrieve company framework information for one specific company identified by its company ID
-     * @param companyId identifier of the company in dataland
-     * @return company framework data
+     * A method to retrieve framework datasets together with their meta info for one specific company identified by its
+     * company ID, optionally filtered to one specific reporting period
+     * @param companyId identifier of the company in Dataland
+     * @param reportingPeriod identifies a specific reporting period (e.g. a year or quarter)
+     * @return a list of all datasets for this company, framework and
      */
     @Operation(
-        summary = "Retrieve company framework information.",
-        description = "Company framework information behind the given company ID is retrieved.",
+        summary = "Retrieve framework datasets with meta info.",
+        description = "All framework datasets with meta info for the given company ID are retrieved.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company framework information."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved framework datasets with meta info."),
         ],
     )
     @GetMapping(
-        value = ["/company/{companyId}"],
+        value = ["/companies/{companyId}"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
-    fun getAllCompanyData(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataAndMetaInformation<T>>>
+    fun getAllCompanyData(
+        @PathVariable("companyId") companyId: String,
+        @RequestParam reportingPeriod: String? = null,
+    ): ResponseEntity<List<DataAndMetaInformation<T>>>
 }

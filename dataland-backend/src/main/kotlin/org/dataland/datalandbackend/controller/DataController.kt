@@ -38,16 +38,16 @@ abstract class DataController<T>(
         val userId = DatalandAuthentication.fromContext().userId
         val uploadTime = Instant.now().epochSecond
         logger.info(
-            "Received a request from user $userId to post company associated data of type $dataType " +
-                "for companyId '${companyId}' and the reporting period ${reportingPeriod}",
+            "Received a request from user '$userId' to post company associated data of type $dataType " +
+                "for company ID '$companyId' and the reporting period $reportingPeriod",
         )
         val correlationId = generatedCorrelationId(companyId)
         val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
 
         val dataIdOfPostedData = dataManager.addDataSet(datasetToStore, correlationId)
-        logger.info("Posted company associated data for companyId '${companyId}'. Correlation ID: $correlationId")
+        logger.info("Posted company associated data for companyId '$companyId'. Correlation ID: $correlationId")
         return ResponseEntity.ok(
-            DataMetaInformation(dataIdOfPostedData, companyId, dataType, userId, uploadTime, reportingPeriod ),
+            DataMetaInformation(dataIdOfPostedData, companyId, dataType, userId, uploadTime, reportingPeriod),
         )
     }
 
@@ -85,7 +85,7 @@ abstract class DataController<T>(
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = reportingPeriod,
-            data = objectMapper.readValue(dataManager.getDataSet(dataId, dataType, correlationId).data, clazz,),
+            data = objectMapper.readValue(dataManager.getDataSet(dataId, dataType, correlationId).data, clazz),
         )
         logger.info(
             "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +
@@ -94,22 +94,24 @@ abstract class DataController<T>(
         return ResponseEntity.ok(companyAssociatedData)
     }
 
-    override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<T>>> {
-        val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
-        val frameworkData = mutableListOf<DataAndMetaInformation<T>>()
-        metaInfos.forEach {
+    override fun getAllCompanyData(companyId: String, reportingPeriod: String?): ResponseEntity<List<DataAndMetaInformation<T>>> {
+        val reportingPeriodInLogMessage = reportingPeriod ?: "all reporting periods"
+        logger.info(
+            "Received a request to get all datasets together with meta info for framework '$dataType', " +
+                "companyId '$companyId' and reporting period '$reportingPeriodInLogMessage'",
+        )
+        val listOfDataMetaInfoEntities = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType, reportingPeriod)
+        val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
+        listOfDataMetaInfoEntities.forEach {
             val correlationId = generatedCorrelationId(companyId)
-            logger.info(
-                "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
-            )
             val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
-            frameworkData.add(
+            listOfFrameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
                     it.toApiModel(DatalandAuthentication.fromContext()),
                     objectMapper.readValue(dataAsString, clazz),
                 ),
             )
         }
-        return ResponseEntity.ok(frameworkData)
+        return ResponseEntity.ok(listOfFrameworkDataAndMetaInfo)
     }
 }

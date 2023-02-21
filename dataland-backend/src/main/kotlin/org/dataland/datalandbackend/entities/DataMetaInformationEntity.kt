@@ -52,7 +52,7 @@ data class DataMetaInformationEntity(
             dataType = DataType.valueOf(dataType),
             uploaderUserId = if (displayUploaderUserId) uploaderUserId else null,
             uploadTime = uploadTime,
-            reportingPeriod = reportingPeriod
+            reportingPeriod = reportingPeriod,
         )
     }
 }
