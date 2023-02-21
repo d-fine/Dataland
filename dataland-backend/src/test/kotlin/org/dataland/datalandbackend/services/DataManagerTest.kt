@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.spy
+import org.mockito.Mockito.`when`
 import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
@@ -212,8 +212,7 @@ class DataManagerTest(
     }
 
     @Test
-    fun `check an exception is thrown during temp storing a data set when sending notification to message queue fails`()
-    {
+    fun `check an exception is thrown during temp storing a data set when sending notification to message queue fails`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val company = companyManager.getCompanyById(storableEuTaxonomyDataSetForNonFinancials.companyId)

@@ -46,9 +46,11 @@ class DatabaseDataStoreTest(
     }
 
     @Test
-    fun `check that an exception is thrown when sending a success notification to message queue fails`(){
-        `when`(mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "Data successfully stored", correlationId, "stored_queue")
+    fun `check that an exception is thrown when sending a success notification to message queue fails`() {
+        `when`(
+            mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataId, "Data successfully stored", correlationId, "stored_queue",
+            ),
         ).thenThrow(
             AmqpException::class.java,
         )

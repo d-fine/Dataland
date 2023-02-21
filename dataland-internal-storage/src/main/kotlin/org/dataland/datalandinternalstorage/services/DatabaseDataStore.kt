@@ -54,24 +54,22 @@ class DatabaseDataStore(
     fun insertDataAndSendNotification(dataId: String, data: String, correlationId: String) {
         try {
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
-        }
-        catch (exception: IllegalArgumentException) {
+        } catch (exception: IllegalArgumentException) {
             val internalMessage = "Error storing data." +
-                    " Received IllegalArgumentException with message: ${exception.message}." +
-                    " Correlation ID: $correlationId."
+                " Received IllegalArgumentException with message: ${exception.message}." +
+                " Correlation ID: $correlationId."
             logger.error(internalMessage)
             throw IllegalArgumentException(internalMessage, exception)
         }
 
         try {
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    dataId, "Data successfully stored", correlationId,
-                    "stored_queue",
+                dataId, "Data successfully stored", correlationId,
+                "stored_queue",
             )
-        }
-        catch (exception: AmqpException) {
+        } catch (exception: AmqpException) {
             val internalMessage = "Error sending message to stored_queue." +
-                    " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
+                " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
             logger.error(internalMessage)
             throw AmqpException(internalMessage, exception)
         }

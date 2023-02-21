@@ -143,8 +143,8 @@ class DataManager(
             )
             logger.info(
                 "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID " +
-                        "${storableDataSet.companyId}. Company Name $companyName received ID $dataId from storage. " +
-                        "Correlation ID: $correlationId.",
+                    "${storableDataSet.companyId}. Company Name $companyName received ID $dataId from storage. " +
+                    "Correlation ID: $correlationId.",
             )
         } catch (exception: AmqpException) {
             val internalMessage = "Error sending message to storage_queue." +
