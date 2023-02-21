@@ -14,7 +14,7 @@
             class="font-semibold"
             @click="redirectToViewPageIfEnabledInFrontend(dataMetaInfo)"
           >
-            {{ dynamicDatasetTitle }}
+            {{ getDynamicDatasetTitle(dataMetaInfo) }}
           </p>
           <p>{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</p>
         </div>
@@ -85,13 +85,6 @@ export default defineComponent({
   },
 
   computed: {
-    dynamicDatasetTitle() {
-      if (this.isFrontendViewPageExisting) {
-        return this.title;
-      } else {
-        return `${this.title} (only viewable via API)`;
-      }
-    },
     dynamicButtonTitle(): string {
       if (this.listOfFrameworkData.length === 0) {
         return "Be the first to create this dataset";
@@ -101,6 +94,15 @@ export default defineComponent({
     },
   },
   methods: {
+    getDynamicDatasetTitle(dataMetaInfo: DataMetaInformation): string {
+      const baseTitle = `${this.title} - ${dataMetaInfo.reportingPeriod}`
+        if (this.isFrontendViewPageExisting) {
+          return baseTitle
+        } else {
+          return `${baseTitle} (only viewable via API)`;
+        }
+    },
+
     /**
      * Executes a router push to the page of the given data set if the framework it belongs to is enabled in the frontend
      *
