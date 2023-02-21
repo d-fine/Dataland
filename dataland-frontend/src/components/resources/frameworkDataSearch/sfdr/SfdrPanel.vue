@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationSfdrData, DatasetQualityStatus } from "@clients/backend";
+import { DataAndMetaInformationSfdrData, QAStatus } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -69,8 +69,7 @@ export default defineComponent({
         this.sfdrDataAndMetaInfo = (
           await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))
         ).data.filter(
-          (dataAndMetaInfo: DataAndMetaInformationSfdrData) =>
-            dataAndMetaInfo.metaInfo.qualityStatus == DatasetQualityStatus.Accepted
+          (dataAndMetaInfo: DataAndMetaInformationSfdrData) => dataAndMetaInfo.metaInfo.qaStatus == QAStatus.Accepted
         );
         this.convertSfdrDataToFrontendFormat();
         this.waitingForData = false;

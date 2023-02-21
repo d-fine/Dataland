@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.enums.data.DatasetQualityStatus
+import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -49,7 +49,7 @@ abstract class DataController<T>(
         return ResponseEntity.ok(
             DataMetaInformation(
                 dataIdOfPostedData, dataType, userId, uploadTime,
-                companyAssociatedData.companyId, DatasetQualityStatus.Pending,
+                companyAssociatedData.companyId, QAStatus.Pending,
             ),
         )
     }

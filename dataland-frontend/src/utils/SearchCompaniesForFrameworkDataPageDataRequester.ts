@@ -4,13 +4,7 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import {
-  StoredCompany,
-  CompanyInformation,
-  DataMetaInformation,
-  DataTypeEnum,
-  DatasetQualityStatus,
-} from "@clients/backend";
+import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum, QAStatus } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import { useFiltersStore } from "@/stores/filters";
@@ -123,7 +117,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
  */
 function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCompany[] {
   return companies.filter((company) =>
-    company.dataRegisteredByDataland.some((dataMetaInfo) => dataMetaInfo.qualityStatus == DatasetQualityStatus.Accepted)
+    company.dataRegisteredByDataland.some((dataMetaInfo) => dataMetaInfo.qaStatus == QAStatus.Accepted)
   );
 }
 

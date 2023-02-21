@@ -1,5 +1,5 @@
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
-import { DataAndMetaInformationLksgData, DatasetQualityStatus, LksgData } from "@clients/backend";
+import { DataAndMetaInformationLksgData, QAStatus, LksgData } from "@clients/backend";
 import { mount } from "cypress/vue";
 import Keycloak from "keycloak-js";
 
@@ -25,11 +25,11 @@ describe("Component test for LksgPanel", () => {
       statusCode: 200,
       body: [
         {
-          metaInfo: { dataId: "1", qualityStatus: DatasetQualityStatus.Accepted },
+          metaInfo: { dataId: "1", qaStatus: QAStatus.Accepted },
           data: { social: { general: { dataDate: "2023-01-01" } } },
         },
         {
-          metaInfo: { dataId: "2", qualityStatus: DatasetQualityStatus.Pending },
+          metaInfo: { dataId: "2", qaStatus: QAStatus.Pending },
           data: { social: { general: { dataDate: "2024-01-01" } } },
         },
       ],

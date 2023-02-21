@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.model.enums.data.DatasetQualityStatus
+import org.dataland.datalandbackend.model.enums.data.QAStatus
 
 /**
  * --- API model ---
@@ -26,5 +26,5 @@ data class DataMetaInformation(
     val companyId: String,
 
     @field:JsonProperty(required = true)
-    val qualityStatus: DatasetQualityStatus,
+    val qaStatus: QAStatus,
 )

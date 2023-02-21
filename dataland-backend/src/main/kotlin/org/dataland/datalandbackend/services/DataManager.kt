@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.StorageHashMap
-import org.dataland.datalandbackend.model.enums.data.DatasetQualityStatus
+import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -80,7 +80,7 @@ class DataManager(
         val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
         val updatedMetaData = DataMetaInformationEntity(
             dataId, storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, DatasetQualityStatus.Pending,
+            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, QAStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(updatedMetaData)
         try {
@@ -108,7 +108,7 @@ class DataManager(
         if (!dataId.isNullOrEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaDataManager.storeDataMetaInformation(
-                metaInformation.copy(qualityStatus = DatasetQualityStatus.Accepted),
+                metaInformation.copy(qaStatus = QAStatus.Accepted),
             )
             logger.info(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId",

@@ -3,7 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.DatasetQualityStatus
+import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -58,7 +58,7 @@ class MetaDataControllerTest {
         testDataType: DataTypeEnum,
     ) = DataMetaInformation(
         uploadedMetaInfo.dataId, testDataType, 0,
-        uploadedMetaInfo.companyId, DatasetQualityStatus.accepted,
+        uploadedMetaInfo.companyId, QAStatus.accepted,
     )
 
     @Test
@@ -151,7 +151,7 @@ class MetaDataControllerTest {
         assertEquals(
             DataMetaInformation(
                 testDataId, testDataType, 0,
-                listOfUploadInfo[0].actualStoredCompany.companyId, DatasetQualityStatus.accepted,
+                listOfUploadInfo[0].actualStoredCompany.companyId, QAStatus.accepted,
             ),
             dataMetaInformation.copy(uploadTime = 0),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
@@ -181,7 +181,7 @@ class MetaDataControllerTest {
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
         val expectedMetaInformation = DataMetaInformation(
             testDataId, testDataType, 0,
-            testCompanyId, DatasetQualityStatus.accepted,
+            testCompanyId, QAStatus.accepted,
         )
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)

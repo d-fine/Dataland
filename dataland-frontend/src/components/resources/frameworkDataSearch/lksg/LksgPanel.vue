@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData, DatasetQualityStatus } from "@clients/backend";
+import { DataAndMetaInformationLksgData, QAStatus } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -75,8 +75,7 @@ export default defineComponent({
         this.lksgDataAndMetaInfo = (
           await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
         ).data.filter(
-          (dataAndMetaInfo: DataAndMetaInformationLksgData) =>
-            dataAndMetaInfo.metaInfo.qualityStatus == DatasetQualityStatus.Accepted
+          (dataAndMetaInfo: DataAndMetaInformationLksgData) => dataAndMetaInfo.metaInfo.qaStatus == QAStatus.Accepted
         );
         this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
