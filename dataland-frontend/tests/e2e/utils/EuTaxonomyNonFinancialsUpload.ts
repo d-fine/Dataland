@@ -59,12 +59,14 @@ export function getFirstEuTaxonomyNonFinancialsDatasetFromFixtures(): Chainable<
 export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
   token: string,
   companyId: string,
-  data?: EuTaxonomyDataForFinancials
+  reportingPeriod: string,
+  data: EuTaxonomyDataForFinancials
 ): Promise<DataMetaInformation> {
   const dataMetaInformation = await new EuTaxonomyDataForNonFinancialsControllerApi(
     new Configuration({ accessToken: token })
   ).postCompanyAssociatedEuTaxonomyDataForNonFinancials({
     companyId,
+    reportingPeriod,
     data,
   });
   return dataMetaInformation.data;

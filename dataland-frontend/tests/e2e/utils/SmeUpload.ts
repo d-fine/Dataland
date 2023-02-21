@@ -9,12 +9,14 @@ import { Configuration, DataMetaInformation, SmeData, SmeDataControllerApi } fro
 export async function uploadOneSmeDataset(
   token: string,
   companyId: string,
+  reportingPeriod: string,
   data: SmeData
 ): Promise<DataMetaInformation> {
   const response = await new SmeDataControllerApi(
     new Configuration({ accessToken: token })
   ).postCompanyAssociatedSmeData({
     companyId,
+    reportingPeriod,
     data,
   });
   return response.data;

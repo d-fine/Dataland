@@ -109,12 +109,14 @@ export function getFirstEuTaxonomyFinancialsDatasetFromFixtures(): Chainable<EuT
 export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
   token: string,
   companyId: string,
+  reportingPeriod: string,
   data: EuTaxonomyDataForFinancials
 ): Promise<DataMetaInformation> {
   const response = await new EuTaxonomyDataForFinancialsControllerApi(
     new Configuration({ accessToken: token })
   ).postCompanyAssociatedEuTaxonomyDataForFinancials({
     companyId,
+    reportingPeriod,
     data,
   });
   return response.data;
