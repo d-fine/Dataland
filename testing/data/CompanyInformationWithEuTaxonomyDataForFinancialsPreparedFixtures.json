@@ -2,41 +2,64 @@
 	{
 		"companyInformation": {
 			"companyName": "asset-management-insurance-company",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"headquarters": "Süd Livland",
-			"headquartersPostalCode": "60340",
-			"sector": "supply-chains",
+			"companyAlternativeNames": [
+				"Baganz-Hilgendorf",
+				"Everts-Thiomas",
+				"Nagel OHG",
+				"Schuldt, Tang und Wyludda"
+			],
+			"headquarters": "West Ronja",
+			"headquartersPostalCode": "02768",
+			"sector": "metrics",
 			"identifiers": [
 				{
+					"identifierType": "Duns",
+					"identifierValue": "lmcndlfbm"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "0mwvve9iam5y"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "socsajvpzx"
+				},
+				{
 					"identifierType": "Ticker",
-					"identifierValue": "cg57i6a"
+					"identifierValue": "il71do3"
 				}
 			],
-			"countryCode": "IQ",
-			"isTeaserCompany": false,
-			"website": "http://intuitiv-kind.org"
+			"countryCode": "VI",
+			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
+				"ESEFReport": {
+					"reference": "http://lehrreich-tag.info/elanvoll-hunger.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-06-19",
+					"currency": "XAF"
+				},
 				"IntegratedReport": {
-					"reference": "https://liberal-atheismus.name/quicklebendig-anatomie.pdf",
-					"isGroupLevel": "NA",
-					"currency": "PLN"
+					"reference": "https://furios-zeitalter.com/schillernd-l%C3%A4nge.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "XAF"
+				},
+				"AnnualReport": {
+					"reference": "https://flexibel-haut.net/narrensicher-erde.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "RSD"
 				},
 				"SustainabilityReport": {
-					"reference": "https://zahnlos-autor.info/problemlos-religion.pdf",
+					"reference": "http://wachsam-geschichte.org/vers%C3%B6hnlich-autor.pdf",
 					"isGroupLevel": "NA",
-					"currency": "AZN"
+					"currency": "SRD"
 				}
 			},
-			"fiscalYearEnd": "2022-03-27",
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "LimitedAssurance"
 			},
-			"scopeOfEntities": "NA",
-			"numberOfEmployees": 92232,
-			"activityLevelReporting": "Yes",
+			"reportingObligation": "No",
 			"financialServicesTypes": [
 				"AssetManagement",
 				"InsuranceOrReinsurance"
@@ -44,299 +67,272 @@
 			"eligibilityKpis": {
 				"AssetManagement": {
 					"banksAndIssuers": {
-						"value": 0.186,
-						"quality": "Estimated"
-					},
-					"derivatives": {
-						"value": 0.9538,
+						"value": 0.8688,
 						"dataSource": {
-							"page": 734,
-							"report": "IntegratedReport",
-							"tagName": "technologies"
+							"page": 544,
+							"report": "ESEFReport",
+							"tagName": "portals"
 						},
 						"quality": "Reported",
-						"comment": "program multi-byte circuit"
+						"comment": "bypass virtual matrix"
+					},
+					"derivatives": {
+						"value": 0.1391,
+						"quality": "Incomplete"
 					},
 					"investmentNonNfrd": {
-						"value": 0.9885,
+						"value": 0.0435,
 						"dataSource": {
-							"page": 695,
-							"report": "IntegratedReport",
-							"tagName": "experiences"
-						},
-						"quality": "Estimated",
-						"comment": "navigate open-source bandwidth"
-					},
-					"taxonomyEligibleActivity": {
-						"value": 0.3473,
-						"dataSource": {
-							"page": 921,
-							"report": "IntegratedReport",
-							"tagName": "e-services"
+							"page": 1164,
+							"report": "SustainabilityReport",
+							"tagName": "platforms"
 						},
 						"quality": "Incomplete",
-						"comment": "program multi-byte alarm"
+						"comment": "compress open-source card"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.0081,
+						"dataSource": {
+							"page": 535,
+							"report": "AnnualReport",
+							"tagName": "markets"
+						},
+						"quality": "Incomplete",
+						"comment": "generate bluetooth capacitor"
 					},
 					"taxonomyNonEligibleActivity": {
-						"value": 0.8493,
+						"value": 0.6237,
 						"quality": "Estimated"
 					}
 				},
 				"InsuranceOrReinsurance": {
 					"banksAndIssuers": {
-						"value": 0.0078,
-						"dataSource": {
-							"page": 895,
-							"report": "IntegratedReport",
-							"tagName": "partnerships"
-						},
-						"quality": "Reported",
-						"comment": "program redundant program"
-					},
-					"derivatives": {
-						"value": 0.5366,
+						"value": 0.8351,
 						"quality": "Estimated"
 					},
-					"investmentNonNfrd": {
-						"value": 0.0208,
+					"derivatives": {
+						"value": 0.3769,
 						"dataSource": {
-							"page": 123,
-							"report": "IntegratedReport",
+							"page": 702,
+							"report": "SustainabilityReport",
 							"tagName": "paradigms"
 						},
 						"quality": "Audited",
-						"comment": "index cross-platform card"
+						"comment": "override haptic application"
+					},
+					"investmentNonNfrd": {
+						"value": 0.9891,
+						"dataSource": {
+							"page": 257,
+							"report": "IntegratedReport",
+							"tagName": "ROI"
+						},
+						"quality": "Reported",
+						"comment": "index haptic monitor"
 					},
 					"taxonomyEligibleActivity": {
-						"value": 0.9956,
+						"value": 0.0618,
 						"quality": "Incomplete"
 					},
 					"taxonomyNonEligibleActivity": {
-						"value": 0.7426,
+						"value": 0.6416,
 						"dataSource": {
-							"page": 10,
-							"report": "SustainabilityReport",
-							"tagName": "deliverables"
+							"page": 168,
+							"report": "IntegratedReport",
+							"tagName": "metrics"
 						},
-						"quality": "Reported",
-						"comment": "parse neural firewall"
+						"quality": "Incomplete",
+						"comment": "reboot solid state pixel"
 					}
 				}
 			},
 			"insuranceKpis": {
 				"taxonomyEligibleNonLifeInsuranceActivities": {
-					"value": 0.7266,
-					"dataSource": {
-						"page": 868,
-						"report": "SustainabilityReport",
-						"tagName": "e-tailers"
-					},
-					"quality": "Reported",
-					"comment": "copy virtual panel"
+					"value": 0.9026,
+					"quality": "Estimated"
 				}
 			}
-		}
+		},
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
 			"companyName": "credit-institution-dual-field-submission",
 			"companyAlternativeNames": [
-				"Bouschen OHG",
-				"Herold-Gummelt",
-				"Höhne, Hehl und Dörre",
-				"Wolfarth-Bachmann"
+				"Marten OHG",
+				"Möhsner, Terlecki und Schönebeck",
+				"Ophey AG"
 			],
-			"companyLegalForm": "Sole Trader",
-			"headquarters": "Bad Matteo",
-			"headquartersPostalCode": "93138",
-			"sector": "paradigms",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"headquarters": "Femkestadt",
+			"sector": "applications",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "k3lsyrhel"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "m8fac5ee26w613k"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "dfe1vfa029707zjzx9dj"
+					"identifierValue": "2heruf0s76q9p1rpkby4"
 				}
 			],
-			"countryCode": "NE",
+			"countryCode": "FR",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"AnnualReport": {
-					"reference": "https://jugendlich-mund.ch/eitel-sessel.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "LSL"
-				},
 				"IntegratedReport": {
-					"reference": "https://erstaunlich-liter.info/enthusiastisch-fu%C3%9F.pdf",
+					"reference": "https://lohnenswert-theater.com/umschw%C3%A4rmt-wissenschaftler.pdf",
+					"reportDate": "2022-05-10",
+					"currency": "VND"
+				},
+				"ESEFReport": {
+					"reference": "https://scharf-axt.info/wunderlich-element.pdf",
 					"isGroupLevel": "Yes",
-					"reportDate": "2022-07-02",
-					"currency": "RSD"
+					"reportDate": "2023-01-28",
+					"currency": "DZD"
 				}
 			},
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-06-15",
 			"assurance": {
 				"assurance": "None"
 			},
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
+			"numberOfEmployees": 52496,
 			"financialServicesTypes": [
 				"CreditInstitution"
 			],
 			"eligibilityKpis": {
 				"CreditInstitution": {
 					"banksAndIssuers": {
-						"value": 0.0442,
+						"value": 0.0712,
 						"dataSource": {
-							"page": 330,
-							"report": "AnnualReport",
-							"tagName": "solutions"
+							"page": 865,
+							"report": "IntegratedReport",
+							"tagName": "e-markets"
 						},
-						"quality": "Reported",
-						"comment": "compress virtual application"
+						"quality": "Estimated",
+						"comment": "compress cross-platform transmitter"
 					},
 					"derivatives": {
-						"value": 0.237,
-						"dataSource": {
-							"page": 602,
-							"report": "IntegratedReport",
-							"tagName": "e-tailers"
-						},
-						"quality": "Audited",
-						"comment": "hack bluetooth program"
+						"value": 0.9088,
+						"quality": "Incomplete"
 					},
 					"investmentNonNfrd": {
-						"value": 0.7088,
+						"value": 0.2979,
 						"dataSource": {
-							"page": 539,
-							"report": "AnnualReport",
-							"tagName": "interfaces"
+							"page": 776,
+							"report": "IntegratedReport",
+							"tagName": "supply-chains"
 						},
 						"quality": "Incomplete",
-						"comment": "calculate multi-byte array"
+						"comment": "navigate virtual monitor"
 					},
 					"taxonomyEligibleActivity": {
-						"value": 0.8339,
+						"value": 0.5778,
 						"dataSource": {
-							"page": 608,
-							"report": "IntegratedReport",
-							"tagName": "portals"
+							"page": 218,
+							"report": "ESEFReport",
+							"tagName": "ROI"
 						},
-						"quality": "Audited",
-						"comment": "parse haptic transmitter"
+						"quality": "Reported",
+						"comment": "hack multi-byte bandwidth"
 					},
 					"taxonomyNonEligibleActivity": {
-						"value": 0.9136,
-						"quality": "Estimated"
+						"value": 0.1982,
+						"dataSource": {
+							"page": 597,
+							"report": "IntegratedReport",
+							"tagName": "users"
+						},
+						"quality": "Incomplete",
+						"comment": "compress cross-platform array"
 					}
 				}
 			},
 			"creditInstitutionKpis": {
 				"interbankLoans": {
-					"value": 0.9989,
-					"dataSource": {
-						"page": 437,
-						"report": "AnnualReport",
-						"tagName": "schemas"
-					},
-					"quality": "Estimated",
-					"comment": "program redundant firewall"
+					"value": 0.4985,
+					"quality": "Estimated"
 				},
 				"tradingPortfolio": {
-					"value": 0.0007,
+					"value": 0.1709,
 					"dataSource": {
-						"page": 1,
-						"report": "AnnualReport",
-						"tagName": "infrastructures"
+						"page": 591,
+						"report": "ESEFReport",
+						"tagName": "architectures"
 					},
 					"quality": "Audited",
-					"comment": "synthesize 1080p feed"
+					"comment": "generate optical program"
 				},
 				"greenAssetRatio": {
-					"value": 0.1026,
+					"value": 0.1296,
 					"dataSource": {
-						"page": 118,
-						"report": "AnnualReport",
-						"tagName": "channels"
+						"page": 104,
+						"report": "ESEFReport",
+						"tagName": "initiatives"
 					},
 					"quality": "Audited",
-					"comment": "generate haptic transmitter"
+					"comment": "compress virtual array"
 				}
 			}
-		}
+		},
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
 			"companyName": "credit-institution-single-field-submission",
 			"companyAlternativeNames": [
-				"Brandt, Achilles und Rosbach",
-				"Ritter-Boyde",
-				"Wilhelm, Hauke und Cordes"
+				"Dittmar-Mathies"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"headquarters": "Achkinadzeburg",
-			"headquartersPostalCode": "90949",
-			"sector": "markets",
+			"companyLegalForm": "GmbH",
+			"headquarters": "Neu Laraland",
+			"headquartersPostalCode": "27954",
+			"sector": "functionalities",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "wk1jqw4l3orfh60"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "toc7u2p4d"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "o52xmbi55c8a"
+					"identifierType": "Lei",
+					"identifierValue": "hq7e7gtmiug6r3dovsrx"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "t8jmlihb4h"
+					"identifierValue": "ol0ryuv5p5"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "8ni1f63"
+					"identifierValue": "s36jbkm"
 				}
 			],
-			"countryCode": "AM",
+			"countryCode": "TZ",
 			"isTeaserCompany": false,
-			"website": "http://hochgradig-baum.name"
+			"website": "http://anerkannt-kind.net"
 		},
 		"t": {
 			"referencedReports": {
-				"AnnualReport": {
-					"reference": "http://unvoreingenommen-schnee.com/poetisch-menschenrecht.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "WST"
+				"IntegratedReport": {
+					"reference": "http://xn--friedfertig-ma-egb.ch/gesch%C3%A4ftig-herz.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-04-26",
+					"currency": "KYD"
 				},
 				"SustainabilityReport": {
-					"reference": "https://wild-schaukelstuhl.com/au%C3%9Ferordentlich-tsunami.pdf",
-					"currency": "NOK"
-				},
-				"IntegratedReport": {
-					"reference": "http://menschlich-zinn.info/notorisch-see.pdf",
-					"reportDate": "2022-10-31",
-					"currency": "HKD"
-				},
-				"ESEFReport": {
-					"reference": "https://leistungsbereit-freiheit.info/fein-baum.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-05-23",
-					"currency": "MZN"
+					"reference": "http://spontan-zeh.info/kennerisch-dame.pdf",
+					"currency": "KYD"
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-10-07",
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"provider": "Leist-Zimmermann"
+				"dataSource": {
+					"page": 776,
+					"report": "SustainabilityReport",
+					"tagName": "vortals"
+				}
 			},
 			"scopeOfEntities": "Yes",
 			"reportingObligation": "Yes",
-			"numberOfEmployees": 30811,
+			"numberOfEmployees": 48477,
 			"activityLevelReporting": "No",
 			"financialServicesTypes": [
 				"CreditInstitution"
@@ -344,288 +340,332 @@
 			"eligibilityKpis": {
 				"CreditInstitution": {
 					"banksAndIssuers": {
-						"value": 0.9959,
-						"dataSource": {
-							"page": 385,
-							"report": "IntegratedReport",
-							"tagName": "action-items"
-						},
-						"quality": "Incomplete",
-						"comment": "hack auxiliary protocol"
+						"value": 0.929,
+						"quality": "Incomplete"
 					},
 					"derivatives": {
-						"value": 0.082,
+						"value": 0.0412,
 						"dataSource": {
-							"page": 521,
+							"page": 688,
 							"report": "IntegratedReport",
-							"tagName": "solutions"
+							"tagName": "convergence"
 						},
-						"quality": "Reported",
-						"comment": "calculate digital feed"
+						"quality": "Audited",
+						"comment": "program bluetooth array"
 					},
 					"investmentNonNfrd": {
-						"value": 0.5114,
+						"value": 0.1825,
 						"dataSource": {
-							"page": 632,
-							"report": "ESEFReport",
-							"tagName": "initiatives"
+							"page": 866,
+							"report": "SustainabilityReport",
+							"tagName": "deliverables"
 						},
-						"quality": "Reported",
-						"comment": "copy cross-platform matrix"
+						"quality": "Audited",
+						"comment": "program primary bus"
 					},
 					"taxonomyEligibleActivity": {
-						"value": 0.0521,
-						"dataSource": {
-							"page": 1109,
-							"report": "AnnualReport",
-							"tagName": "applications"
-						},
-						"quality": "Estimated",
-						"comment": "compress back-end microchip"
+						"value": 0.3363,
+						"quality": "Estimated"
 					},
 					"taxonomyNonEligibleActivity": {
-						"value": 0.0499,
-						"quality": "Incomplete"
+						"value": 0.6148,
+						"dataSource": {
+							"page": 172,
+							"report": "IntegratedReport",
+							"tagName": "e-services"
+						},
+						"quality": "Audited",
+						"comment": "generate redundant bus"
 					}
 				}
 			},
 			"creditInstitutionKpis": {
 				"tradingPortfolioAndInterbankLoans": {
-					"value": 0.7384,
-					"quality": "Incomplete"
-				},
-				"greenAssetRatio": {
-					"value": 0.6475,
+					"value": 0.8248,
 					"dataSource": {
-						"page": 651,
-						"report": "ESEFReport",
-						"tagName": "infrastructures"
+						"page": 660,
+						"report": "IntegratedReport",
+						"tagName": "functionalities"
 					},
 					"quality": "Incomplete",
-					"comment": "compress haptic monitor"
+					"comment": "synthesize mobile monitor"
+				},
+				"greenAssetRatio": {
+					"value": 0.0892,
+					"dataSource": {
+						"page": 1045,
+						"report": "SustainabilityReport",
+						"tagName": "communities"
+					},
+					"quality": "Audited",
+					"comment": "quantify digital monitor"
 				}
 			}
-		}
+		},
+		"reportingPeriod": "2020-Q1"
 	},
 	{
 		"companyInformation": {
 			"companyName": "insurance-company",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH & Co. KG",
-			"headquarters": "Ost Elina",
-			"headquartersPostalCode": "08371",
-			"sector": "partnerships",
+			"companyAlternativeNames": [
+				"Hajek GmbH",
+				"Ringer, Tillack und Fink"
+			],
+			"companyLegalForm": "GmbH",
+			"headquarters": "Lenscheid",
+			"sector": "web-readiness",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "7u8aryesqylet3f"
+					"identifierType": "Isin",
+					"identifierValue": "jgxl8bgu3zoa"
 				},
 				{
-					"identifierType": "Lei",
-					"identifierValue": "viqwn5bxoxxa9esotrkc"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "oig9p83"
+					"identifierType": "PermId",
+					"identifierValue": "w7shi9mrq1"
 				}
 			],
-			"countryCode": "VI",
+			"countryCode": "IO",
 			"isTeaserCompany": false,
-			"website": "https://grazil-gerste.com"
+			"website": "http://emotional-autor.name"
 		},
 		"t": {
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "http://xn--nrdlich-schwert-8sb.org/unb%C3%A4ndig-bett.pdf",
-					"isGroupLevel": "NA",
-					"currency": "BWP"
+				"SustainabilityReport": {
+					"reference": "http://xn--feinfhlig-elektrizitt-p2b05c.net/steil-musiker.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "LBP"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-09-29",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 665,
-					"report": "ESEFReport",
-					"tagName": "action-items"
-				}
+				"assurance": "ReasonableAssurance",
+				"provider": "Saumweber, Tepper und Kinzy"
 			},
-			"scopeOfEntities": "NA",
+			"scopeOfEntities": "No",
 			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
+			"numberOfEmployees": 56510,
+			"activityLevelReporting": "Yes",
 			"financialServicesTypes": [
 				"InsuranceOrReinsurance"
 			],
 			"eligibilityKpis": {
 				"InsuranceOrReinsurance": {
 					"banksAndIssuers": {
-						"value": 0.067,
-						"quality": "Incomplete"
+						"quality": "NA"
 					},
 					"derivatives": {
-						"value": 0.2995,
-						"quality": "Estimated"
+						"value": 0.4425,
+						"dataSource": {
+							"page": 329,
+							"report": "SustainabilityReport",
+							"tagName": "e-markets"
+						},
+						"quality": "Audited",
+						"comment": "bypass auxiliary transmitter"
 					},
 					"investmentNonNfrd": {
-						"value": 0.0665,
-						"dataSource": {
-							"page": 56,
-							"report": "ESEFReport",
-							"tagName": "eyeballs"
-						},
-						"quality": "Reported",
-						"comment": "compress primary array"
+						"quality": "NA"
 					},
 					"taxonomyEligibleActivity": {
-						"value": 0.8061,
-						"quality": "Incomplete"
+						"quality": "NA"
 					},
 					"taxonomyNonEligibleActivity": {
-						"value": 0.6772,
-						"quality": "Estimated"
+						"value": 0.5753,
+						"dataSource": {
+							"page": 637,
+							"report": "SustainabilityReport",
+							"tagName": "vortals"
+						},
+						"quality": "Audited",
+						"comment": "program auxiliary array"
 					}
 				}
 			},
 			"insuranceKpis": {
 				"taxonomyEligibleNonLifeInsuranceActivities": {
-					"value": 0.9137,
-					"dataSource": {
-						"page": 1151,
-						"report": "ESEFReport",
-						"tagName": "relationships"
-					},
-					"quality": "Reported",
-					"comment": "generate open-source program"
+					"quality": "NA"
 				}
 			}
-		}
+		},
+		"reportingPeriod": "2022"
 	},
 	{
 		"companyInformation": {
 			"companyName": "asset-management-company",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH",
-			"headquarters": "Aschenbroichland",
-			"sector": "architectures",
+			"companyAlternativeNames": [
+				"Kaiser GmbH",
+				"Schwanbeck AG"
+			],
+			"headquarters": "Fassbenderburg",
+			"sector": "niches",
 			"identifiers": [
 				{
-					"identifierType": "Ticker",
-					"identifierValue": "1qtoxar"
+					"identifierType": "Duns",
+					"identifierValue": "8skdfttm0"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "ox8a32lzrml8w0f4ng15"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "9p847ylyn7"
 				}
 			],
-			"countryCode": "IM",
-			"isTeaserCompany": false,
-			"website": "http://erfahren-wahrheit.name"
+			"countryCode": "PT",
+			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"SustainabilityReport": {
-					"reference": "https://effektiv-karte.name/weltbekannt-politik.pdf",
+					"reference": "http://vorzeigenswert-spiel.name/freigiebig-pocken.pdf",
 					"isGroupLevel": "Yes",
-					"currency": "BYN"
+					"reportDate": "2022-07-23",
+					"currency": "GBP"
 				},
 				"ESEFReport": {
-					"reference": "http://xn--mitreiend-verben-llb.name/leidenschaftlich-nationalsozialismus.pdf",
-					"reportDate": "2022-10-07",
-					"currency": "GIP"
+					"reference": "http://xn--delizis-mond-9ib.org/intensiv-musiker.pdf",
+					"currency": "FJD"
+				},
+				"IntegratedReport": {
+					"reference": "http://xn--persnlich-magnetismus-kec.ch/vers%C3%B6hnlich-schaf.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-03-05",
+					"currency": "BZD"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-01-25",
+			"fiscalYearEnd": "2022-10-17",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"dataSource": {
+					"page": 267,
+					"report": "SustainabilityReport",
+					"tagName": "eyeballs"
+				}
 			},
 			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
-			"numberOfEmployees": 1063,
-			"activityLevelReporting": "Yes",
+			"numberOfEmployees": 91559,
 			"financialServicesTypes": [
 				"AssetManagement"
 			],
 			"eligibilityKpis": {
 				"AssetManagement": {
 					"banksAndIssuers": {
-						"value": 0.5687,
-						"quality": "Incomplete"
-					},
-					"derivatives": {
-						"value": 0.7914,
-						"quality": "Estimated"
-					},
-					"investmentNonNfrd": {
-						"value": 0.7923,
-						"quality": "Incomplete"
-					},
-					"taxonomyEligibleActivity": {
-						"value": 0.8877,
-						"quality": "Incomplete"
-					},
-					"taxonomyNonEligibleActivity": {
-						"value": 0.4859,
+						"value": 0.1127,
 						"dataSource": {
-							"page": 778,
+							"page": 1058,
 							"report": "SustainabilityReport",
-							"tagName": "e-commerce"
+							"tagName": "eyeballs"
 						},
 						"quality": "Reported",
-						"comment": "hack 1080p application"
+						"comment": "reboot auxiliary protocol"
+					},
+					"derivatives": {
+						"value": 0.1037,
+						"dataSource": {
+							"page": 304,
+							"report": "SustainabilityReport",
+							"tagName": "users"
+						},
+						"quality": "Reported",
+						"comment": "index open-source alarm"
+					},
+					"investmentNonNfrd": {
+						"value": 0.662,
+						"dataSource": {
+							"page": 522,
+							"report": "SustainabilityReport",
+							"tagName": "markets"
+						},
+						"quality": "Reported",
+						"comment": "calculate 1080p hard drive"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.8985,
+						"dataSource": {
+							"page": 500,
+							"report": "SustainabilityReport",
+							"tagName": "mindshare"
+						},
+						"quality": "Audited",
+						"comment": "compress bluetooth transmitter"
+					},
+					"taxonomyNonEligibleActivity": {
+						"value": 0.9563,
+						"dataSource": {
+							"page": 1015,
+							"report": "IntegratedReport",
+							"tagName": "interfaces"
+						},
+						"quality": "Incomplete",
+						"comment": "quantify haptic system"
 					}
 				}
 			}
-		}
+		},
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company-for-all-types",
 			"companyAlternativeNames": [
-				"Kowalick, Ruckdeschel und Brettschneider",
-				"Kulma-Wischek",
-				"Seigel, Knetsch und Diedrich"
+				"Drews, Kruger und Wakan",
+				"Nussbeck, Jaros und Kurschilgen",
+				"Trampeli-Figura"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"headquarters": "Ost Hugoland",
-			"headquartersPostalCode": "45199",
-			"sector": "action-items",
+			"companyLegalForm": "Sole Trader",
+			"headquarters": "Nikoscheid",
+			"headquartersPostalCode": "06095",
+			"sector": "platforms",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "o41tp23ucohebj8"
+					"identifierValue": "nb61plgqjyr9qkw"
 				},
 				{
-					"identifierType": "Isin",
-					"identifierValue": "b39f2u0mxcgh"
+					"identifierType": "Duns",
+					"identifierValue": "oejl8nftz"
 				},
 				{
-					"identifierType": "Lei",
-					"identifierValue": "aub3e97ihair3c834f19"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "spyv2d7"
+					"identifierType": "PermId",
+					"identifierValue": "8tdaghz9n7"
 				}
 			],
-			"countryCode": "IN",
+			"countryCode": "BR",
 			"isTeaserCompany": false,
-			"website": "https://dringend-regen.org"
+			"website": "https://einzigartig-radio.org"
 		},
 		"t": {
 			"referencedReports": {
 				"AnnualReport": {
-					"reference": "http://quicklebendig-spiel.info/belebend-liberalismus.pdf",
+					"reference": "http://friedselig-judentum.com/herausfordernd-substantiv.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-04-27",
+					"currency": "KWD"
+				},
+				"IntegratedReport": {
+					"reference": "https://krank-bewusstsein.de/mond%C3%A4n-daumen.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "XBB"
+				},
+				"SustainabilityReport": {
+					"reference": "https://xn--bildhbsch-leber-3vb.de/wendig-laden.pdf",
 					"isGroupLevel": "No",
-					"reportDate": "2022-07-24",
-					"currency": "BOB"
+					"currency": "SAR"
+				},
+				"ESEFReport": {
+					"reference": "https://maximal-zionismus.ch/allerbest-tuberkulose.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-12-15",
+					"currency": "VND"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-11-01",
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-02-04",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance"
 			},
-			"scopeOfEntities": "NA",
+			"scopeOfEntities": "Yes",
 			"reportingObligation": "No",
-			"numberOfEmployees": 50748,
 			"financialServicesTypes": [
 				"CreditInstitution",
 				"AssetManagement",
@@ -635,231 +675,256 @@
 			"eligibilityKpis": {
 				"CreditInstitution": {
 					"banksAndIssuers": {
-						"value": 0.0516,
+						"value": 0.9022,
+						"quality": "Estimated"
+					},
+					"derivatives": {
+						"value": 0.8226,
 						"dataSource": {
-							"page": 125,
+							"page": 804,
+							"report": "ESEFReport",
+							"tagName": "users"
+						},
+						"quality": "Audited",
+						"comment": "hack digital panel"
+					},
+					"investmentNonNfrd": {
+						"value": 0.3849,
+						"dataSource": {
+							"page": 1037,
+							"report": "IntegratedReport",
+							"tagName": "e-services"
+						},
+						"quality": "Estimated",
+						"comment": "program multi-byte driver"
+					},
+					"taxonomyEligibleActivity": {
+						"value": 0.9732,
+						"dataSource": {
+							"page": 302,
 							"report": "AnnualReport",
 							"tagName": "infrastructures"
 						},
-						"quality": "Audited",
-						"comment": "parse bluetooth alarm"
-					},
-					"derivatives": {
-						"value": 0.6767,
-						"dataSource": {
-							"page": 466,
-							"report": "AnnualReport",
-							"tagName": "e-business"
-						},
-						"quality": "Audited",
-						"comment": "calculate solid state pixel"
-					},
-					"investmentNonNfrd": {
-						"value": 0.9362,
-						"dataSource": {
-							"page": 363,
-							"report": "AnnualReport",
-							"tagName": "e-tailers"
-						},
-						"quality": "Audited",
-						"comment": "input 1080p card"
-					},
-					"taxonomyEligibleActivity": {
-						"value": 0.7618,
-						"dataSource": {
-							"page": 785,
-							"report": "AnnualReport",
-							"tagName": "technologies"
-						},
-						"quality": "Audited",
-						"comment": "bypass haptic circuit"
+						"quality": "Reported",
+						"comment": "copy primary firewall"
 					},
 					"taxonomyNonEligibleActivity": {
-						"value": 0.1426,
+						"value": 0.8866,
 						"dataSource": {
-							"page": 689,
+							"page": 1050,
 							"report": "AnnualReport",
-							"tagName": "initiatives"
+							"tagName": "functionalities"
 						},
-						"quality": "Audited",
-						"comment": "navigate cross-platform interface"
+						"quality": "Reported",
+						"comment": "override multi-byte firewall"
 					}
 				},
 				"AssetManagement": {
 					"banksAndIssuers": {
-						"value": 0.5608,
+						"value": 0.651,
 						"dataSource": {
-							"page": 103,
-							"report": "AnnualReport",
-							"tagName": "synergies"
+							"page": 37,
+							"report": "SustainabilityReport",
+							"tagName": "ROI"
 						},
-						"quality": "Audited",
-						"comment": "calculate virtual application"
+						"quality": "Reported",
+						"comment": "input auxiliary circuit"
 					},
 					"derivatives": {
-						"value": 0.792,
+						"value": 0.5662,
 						"dataSource": {
-							"page": 884,
-							"report": "AnnualReport",
-							"tagName": "vortals"
+							"page": 655,
+							"report": "SustainabilityReport",
+							"tagName": "e-tailers"
 						},
 						"quality": "Estimated",
-						"comment": "parse neural alarm"
+						"comment": "quantify online bus"
 					},
 					"investmentNonNfrd": {
-						"value": 0.5917,
-						"quality": "Estimated"
+						"value": 0.7665,
+						"dataSource": {
+							"page": 480,
+							"report": "AnnualReport",
+							"tagName": "methodologies"
+						},
+						"quality": "Incomplete",
+						"comment": "generate multi-byte bus"
 					},
 					"taxonomyEligibleActivity": {
-						"value": 0.7176,
-						"quality": "Estimated"
+						"value": 0.319,
+						"dataSource": {
+							"page": 245,
+							"report": "AnnualReport",
+							"tagName": "eyeballs"
+						},
+						"quality": "Audited",
+						"comment": "override optical microchip"
 					},
 					"taxonomyNonEligibleActivity": {
-						"value": 0.9067,
-						"quality": "Incomplete"
+						"value": 0.3449,
+						"dataSource": {
+							"page": 729,
+							"report": "ESEFReport",
+							"tagName": "networks"
+						},
+						"quality": "Audited",
+						"comment": "program neural interface"
 					}
 				},
 				"InsuranceOrReinsurance": {
 					"banksAndIssuers": {
-						"value": 0.4657,
-						"quality": "Estimated"
+						"value": 0.0376,
+						"dataSource": {
+							"page": 1023,
+							"report": "ESEFReport",
+							"tagName": "technologies"
+						},
+						"quality": "Reported",
+						"comment": "generate 1080p capacitor"
 					},
 					"derivatives": {
-						"value": 0.3427,
+						"value": 0.9024,
 						"dataSource": {
-							"page": 852,
-							"report": "AnnualReport",
-							"tagName": "users"
+							"page": 730,
+							"report": "IntegratedReport",
+							"tagName": "technologies"
 						},
-						"quality": "Audited",
-						"comment": "back up digital interface"
+						"quality": "Incomplete",
+						"comment": "parse mobile program"
 					},
 					"investmentNonNfrd": {
-						"value": 0.2998,
+						"value": 0.3398,
 						"dataSource": {
-							"page": 748,
+							"page": 771,
 							"report": "AnnualReport",
-							"tagName": "portals"
+							"tagName": "infrastructures"
 						},
-						"quality": "Reported",
-						"comment": "synthesize neural transmitter"
+						"quality": "Incomplete",
+						"comment": "quantify auxiliary hard drive"
 					},
 					"taxonomyEligibleActivity": {
-						"value": 0.5096,
+						"value": 0.9407,
 						"dataSource": {
-							"page": 1092,
-							"report": "AnnualReport",
-							"tagName": "supply-chains"
+							"page": 982,
+							"report": "IntegratedReport",
+							"tagName": "solutions"
 						},
 						"quality": "Estimated",
-						"comment": "parse virtual capacitor"
+						"comment": "quantify digital feed"
 					},
 					"taxonomyNonEligibleActivity": {
-						"value": 0.1515,
-						"dataSource": {
-							"page": 823,
-							"report": "AnnualReport",
-							"tagName": "schemas"
-						},
-						"quality": "Reported",
-						"comment": "bypass back-end port"
+						"value": 0.9751,
+						"quality": "Incomplete"
 					}
 				},
 				"InvestmentFirm": {
 					"banksAndIssuers": {
-						"value": 0.0448,
-						"quality": "Estimated"
-					},
-					"derivatives": {
-						"value": 0.0282,
+						"value": 0.7853,
 						"dataSource": {
-							"page": 384,
-							"report": "AnnualReport",
-							"tagName": "infrastructures"
+							"page": 652,
+							"report": "SustainabilityReport",
+							"tagName": "supply-chains"
 						},
 						"quality": "Audited",
-						"comment": "program cross-platform driver"
+						"comment": "connect open-source matrix"
+					},
+					"derivatives": {
+						"value": 0.4563,
+						"dataSource": {
+							"page": 639,
+							"report": "ESEFReport",
+							"tagName": "ROI"
+						},
+						"quality": "Reported",
+						"comment": "synthesize redundant circuit"
 					},
 					"investmentNonNfrd": {
-						"value": 0.8343,
-						"quality": "Estimated"
+						"value": 0.8829,
+						"dataSource": {
+							"page": 41,
+							"report": "AnnualReport",
+							"tagName": "architectures"
+						},
+						"quality": "Incomplete",
+						"comment": "copy optical panel"
 					},
 					"taxonomyEligibleActivity": {
-						"value": 0.7012,
-						"dataSource": {
-							"page": 1113,
-							"report": "AnnualReport",
-							"tagName": "e-business"
-						},
-						"quality": "Estimated",
-						"comment": "index open-source interface"
+						"value": 0.2162,
+						"quality": "Incomplete"
 					},
 					"taxonomyNonEligibleActivity": {
-						"value": 0.317,
+						"value": 0.7182,
 						"dataSource": {
-							"page": 544,
-							"report": "AnnualReport",
-							"tagName": "platforms"
+							"page": 1197,
+							"report": "SustainabilityReport",
+							"tagName": "infomediaries"
 						},
-						"quality": "Estimated",
-						"comment": "program online bandwidth"
+						"quality": "Reported",
+						"comment": "compress neural transmitter"
 					}
 				}
 			},
 			"creditInstitutionKpis": {
 				"interbankLoans": {
-					"value": 0.3888,
+					"value": 0.3751,
 					"dataSource": {
-						"page": 746,
-						"report": "AnnualReport",
-						"tagName": "schemas"
-					},
-					"quality": "Reported",
-					"comment": "transmit 1080p sensor"
-				},
-				"tradingPortfolio": {
-					"value": 0.3931,
-					"quality": "Estimated"
-				},
-				"tradingPortfolioAndInterbankLoans": {
-					"value": 0.1953,
-					"dataSource": {
-						"page": 421,
-						"report": "AnnualReport",
-						"tagName": "users"
+						"page": 41,
+						"report": "ESEFReport",
+						"tagName": "mindshare"
 					},
 					"quality": "Audited",
-					"comment": "navigate primary pixel"
+					"comment": "connect back-end transmitter"
+				},
+				"tradingPortfolio": {
+					"value": 0.0128,
+					"dataSource": {
+						"page": 890,
+						"report": "ESEFReport",
+						"tagName": "schemas"
+					},
+					"quality": "Audited",
+					"comment": "parse online matrix"
+				},
+				"tradingPortfolioAndInterbankLoans": {
+					"value": 0.2752,
+					"quality": "Incomplete"
 				},
 				"greenAssetRatio": {
-					"value": 0.6584,
+					"value": 0.9592,
 					"dataSource": {
-						"page": 1155,
-						"report": "AnnualReport",
-						"tagName": "functionalities"
+						"page": 899,
+						"report": "IntegratedReport",
+						"tagName": "portals"
 					},
-					"quality": "Reported",
-					"comment": "override digital array"
+					"quality": "Audited",
+					"comment": "input digital bandwidth"
 				}
 			},
 			"insuranceKpis": {
 				"taxonomyEligibleNonLifeInsuranceActivities": {
-					"value": 0.3054,
+					"value": 0.8736,
 					"dataSource": {
-						"page": 759,
+						"page": 366,
 						"report": "AnnualReport",
-						"tagName": "channels"
+						"tagName": "infomediaries"
 					},
 					"quality": "Audited",
-					"comment": "program digital transmitter"
+					"comment": "calculate redundant transmitter"
 				}
 			},
 			"investmentFirmKpis": {
 				"greenAssetRatio": {
-					"value": 0.5976,
-					"quality": "Estimated"
+					"value": 0.9931,
+					"dataSource": {
+						"page": 1040,
+						"report": "ESEFReport",
+						"tagName": "content"
+					},
+					"quality": "Reported",
+					"comment": "bypass redundant interface"
 				}
 			}
-		}
+		},
+		"reportingPeriod": "2022"
 	}
 ]
