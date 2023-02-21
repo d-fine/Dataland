@@ -8,6 +8,7 @@ export function logout(): void {
   cy.visitAndCheckAppMount("/companies")
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
+    .wait(1000)
     .get("a[id='profile-picture-dropdown-toggle']")
     .click()
     .url()

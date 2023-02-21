@@ -6,10 +6,10 @@
   <div v-if="lksgDataAndMetaInfo && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :DataDateOfDataSets="listOfDataDateToDisplayAsColumns"
-      :kpiNameMappings="kpisNameMappings"
-      :kpiInfoMappings="kpisInfoMappings"
-      :subAreaNameMappings="subAreasNameMappings"
+      :dataDateOfDataSets="listOfDataDateToDisplayAsColumns"
+      :kpiNameMappings="lksgKpisNameMappings"
+      :kpiInfoMappings="lksgKpisInfoMappings"
+      :subAreaNameMappings="lksgSubAreasNameMappings"
       tableDataTitle="LkSG Data"
     />
   </div>
@@ -17,17 +17,17 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData, DatasetQualityStatus } from "@clients/backend";
+import { DataAndMetaInformationLksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortDatesToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
-  subAreasNameMappings,
-  kpisNameMappings,
-  kpisInfoMappings,
-} from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+  lksgSubAreasNameMappings,
+  lksgKpisNameMappings,
+  lksgKpisInfoMappings,
+} from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -38,9 +38,9 @@ export default defineComponent({
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
       listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
-      kpisNameMappings,
-      kpisInfoMappings,
-      subAreasNameMappings,
+      lksgKpisNameMappings,
+      lksgKpisInfoMappings,
+      lksgSubAreasNameMappings,
     };
   },
   props: {
@@ -51,7 +51,7 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchAllAcceptedDatasets();
+      void this.fetchDataForAllDataIds();
     },
   },
   setup() {

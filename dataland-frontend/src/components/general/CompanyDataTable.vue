@@ -41,7 +41,7 @@
           </template>
         </Column>
         <Column
-          v-for="dataDate of DataDateOfDataSets"
+          v-for="dataDate of dataDateOfDataSets"
           headerClass="horizontal-headers-size"
           :field="dataDate.dataId"
           :header="dataDate.dataDate?.split('-')[0]"
@@ -56,29 +56,7 @@
               <em class="material-icons" aria-hidden="true" title=""> dataset </em>
             </a>
             <template v-else-if="typeof data[dataDate.dataId] === 'object' && data[dataDate.dataId] !== null">
-              <table class="detail-table" aria-describedby="Details Table">
-                <th style="display: none"></th>
-                <caption style="display: none">
-                  Details Table
-                </caption>
-                <template v-for="(value, key, index) in data[dataDate.dataId]" :key="index + key">
-                  <tr v-if="typeof value === 'string'">
-                    <td class="key-td">{{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}</td>
-                    <td class="value-td">{{ value }}</td>
-                  </tr>
-                  <template v-if="typeof value === 'object' && value !== null">
-                    <tr>
-                      <td rowspan="4" class="key-td text-center">
-                        {{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}
-                      </td>
-                    </tr>
-                    <tr v-for="(value, key, index) in value" :key="index + key">
-                      <td class="internal-key-td">{{ kpiNameMappings[key] ? kpiNameMappings[key] : key }}</td>
-                      <td class="internal-value-td">{{ value }}</td>
-                    </tr>
-                  </template>
-                </template>
-              </table>
+              {{ data[dataDate.dataId].value ?? "" }}
             </template>
 
             <span v-else>{{ Array.isArray(data[dataDate.dataId]) ? "" : data[dataDate.dataId] }}</span>
@@ -104,7 +82,7 @@ import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
+import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import DynamicDialog from "primevue/dynamicdialog";
 
 export default defineComponent({
@@ -125,7 +103,7 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    DataDateOfDataSets: {
+    dataDateOfDataSets: {
       type: Array,
       default: () => [],
     },
@@ -186,20 +164,6 @@ export default defineComponent({
     margin-right: 0.25rem;
     float: right;
     cursor: pointer;
-  }
-}
-.detail-table {
-  background-color: var(--surface-0);
-  tr {
-    &:hover {
-      background-color: transparent;
-    }
-    .key-td {
-      background-color: var(--surface-300);
-    }
-    .internal-key-td {
-      background-color: var(--surface-100);
-    }
   }
 }
 </style>
