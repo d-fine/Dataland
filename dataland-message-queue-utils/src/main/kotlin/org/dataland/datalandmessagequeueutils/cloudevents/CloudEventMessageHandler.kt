@@ -14,12 +14,6 @@ import org.springframework.amqp.core.MessageProperties as AMQPMessageProperties
 import org.springframework.messaging.Message as MessageResult
 
 /**
- * This class ensures that the errorResponse is mapped as the default response
- * for non-explicitly set response codes as suggested in the swagger-docs
- * (ref https://swagger.io/docs/specification/describing-responses/)
- */
-
-/**
  * Handling of messages in the CloudEvents format
  * @param rabbitTemplate
  * @param objectMapper
@@ -30,11 +24,12 @@ class CloudEventMessageHandler(
     private val rabbitTemplate: RabbitTemplate,
     @Autowired var objectMapper: ObjectMapper,
 ) {
-    var converter: MessagingMessageConverter? = MessagingMessageConverter()
-    private fun constructCEMessage(input: String, type: String, correlationId: String): MessageMQ {
-        val input2 = input.toByteArray()
+    var converter: MessagingMessageConverter = MessagingMessageConverter()
+
+    private fun buildCEMessage(body: String, type: String, correlationId: String): MessageMQ {
+        val bodyInBytes = body.toByteArray()
         val message = CloudEventMessageBuilder
-            .withData(input2)
+            .withData(bodyInBytes)
             .setId(correlationId)
             .setType(type)
             .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
@@ -44,13 +39,13 @@ class CloudEventMessageHandler(
 
     /**
      * Method constructing a CloudEvents message and sending it to a RabbitMQ message queue
-     * @param input the payload of the message to be constructed
+     * @param body the payload of the message to be constructed
      * @param type criterion to distinguish different messages to RabbitMQ apart from used queue
      * @param correlationId to be used as ID in header of CloudEvents message
      * @param queue RabbitMQ message queue to send the constructed message to
      */
-    fun buildCEMessageAndSendToQueue(input: String, type: String = "TestType", correlationId: String, queue: String) {
-        val messageInput = constructCEMessage(input, type, correlationId)
+    fun buildCEMessageAndSendToQueue(body: String, type: String, correlationId: String, queue: String) {
+        val messageInput = buildCEMessage(body, type, correlationId)
         rabbitTemplate.send(queue, messageInput)
     }
 
@@ -63,6 +58,6 @@ class CloudEventMessageHandler(
     }
 
     private fun convertMessage(message: MessageResult<ByteArray>): MessageMQ {
-        return converter!!.toMessage(message, AMQPMessageProperties())
+        return converter.toMessage(message, AMQPMessageProperties())
     }
 }
