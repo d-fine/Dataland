@@ -45,8 +45,8 @@ export function uploadCompanyViaForm(companyName: string): Cypress.Chainable<Sto
   });
   fillCompanyUploadFields(companyName);
   cy.intercept("**/api/companies").as("postCompany");
-  cy.get('button[name="addCompany"]').click();
   cy.wait(1000);
+  cy.get('button[name="addCompany"]').click();
   return cy.wait("@postCompany").then((interception) => {
     return interception.response!.body as StoredCompany;
   });
