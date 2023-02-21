@@ -29,7 +29,6 @@ dependencies {
     implementation("io.cloudevents:cloudevents-core:2.3.0")
     implementation("org.springframework.cloud:spring-cloud-function-context:4.0.0")
     implementation("org.springframework.amqp:spring-amqp")
-    testImplementation("org.springframework.amqp:spring-rabbit-test")
 }
 
 tasks.bootJar {
