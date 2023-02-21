@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.services
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.AmqpException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,10 +32,18 @@ class QaService(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: " +
                     correlationId,
             )
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "QA Process Completed", correlationId,
-                "qa_queue",
-            )
+            try{
+                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                        dataId, "QA Process Completed", correlationId,
+                        "qa_queue",
+                )
+            }
+            catch (exception: AmqpException) {
+                val internalMessage = "Error sending message to qa_queue." +
+                        " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
+                logger.error(internalMessage)
+                throw AmqpException(internalMessage, exception)
+            }
         } else {
             val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
             logger.error(internalMessage)

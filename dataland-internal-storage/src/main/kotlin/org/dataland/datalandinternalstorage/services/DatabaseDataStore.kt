@@ -2,17 +2,18 @@ package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataControllerApi
-import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.AmqpException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.stereotype.Component
-import java.rmi.ServerException
+import java.lang.IllegalArgumentException
 
 /**
  * Simple implementation of a data store using a postgres database
@@ -54,20 +55,33 @@ class DatabaseDataStore(
     fun insertDataAndSendNotification(dataId: String, data: String, correlationId: String) {
         try {
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "Data successfully stored", correlationId,
-                "stored_queue",
-            )
-        } catch (e: ServerException) {
+        }
+        catch (exception: IllegalArgumentException) {
             val internalMessage = "Error storing data." +
-                " Received ServerException with Message: ${e.message}. Correlation ID: $correlationId"
+                    " Received IllegalArgumentException with message: ${exception.message}." +
+                    " Correlation ID: $correlationId."
             logger.error(internalMessage)
-            // TODO check that the error messages are applicable
-            throw InternalServerErrorApiException(
-                "Upload to Storage failed", "The upload of the dataset to the Storage failed",
-                internalMessage,
-                e,
+            throw IllegalArgumentException(internalMessage, exception)
+        }
+        catch (exception: OptimisticLockingFailureException) {
+            val internalMessage = "Error storing data." +
+                    " Received OptimisticLockingFailureException with message: ${exception.message}." +
+                    " Correlation ID: $correlationId."
+            logger.error(internalMessage)
+            throw OptimisticLockingFailureException(internalMessage, exception)
+        }
+
+        try {
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                    dataId, "Data successfully stored", correlationId,
+                    "stored_queue",
             )
+        }
+        catch (exception: AmqpException) {
+            val internalMessage = "Error sending message to stored_queue." +
+                    " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
+            logger.error(internalMessage)
+            throw AmqpException(internalMessage, exception)
         }
     }
 
