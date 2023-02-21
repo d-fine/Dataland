@@ -1,15 +1,15 @@
 <template>
   <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-    <p class="font-medium text-xl">Loading Sfdr Data...</p>
+    <p class="font-medium text-xl">Loading SFDR Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="sfdrDataAndMetaInfo && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :DataDateOfDataSets="listOfDataDateToDisplayAsColumns"
-      :kpiNameMappings="kpisNameMappings"
-      :kpiInfoMappings="kpisInfoMappings"
-      :subAreaNameMappings="subAreasNameMappings"
+      :dataDateOfDataSets="listOfDataDateToDisplayAsColumns"
+      :kpiNameMappings="sfdrKpisNameMappings"
+      :kpiInfoMappings="sfdrKpisInfoMappings"
+      :subAreaNameMappings="sfdrSubAreasNameMappings"
       tableDataTitle="SFDR data"
     />
   </div>
@@ -24,9 +24,9 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortDatesToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
+  sfdrSubAreasNameMappings,
   sfdrKpisNameMappings,
   sfdrKpisInfoMappings,
-  sfdrSubAreasNameMappings,
 } from "@/components/resources/frameworkDataSearch/sfdr/DataModelsTranslations";
 
 export default defineComponent({
