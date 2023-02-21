@@ -123,6 +123,12 @@ class DataManager(
         }
     }
 
+    /**
+     * Method to temporarily store a data set via the hash map and send a notification to the storage_queue
+     * @param storableDataSet The data set to store
+     * @param companyName The name of the company corresponding to the data set to store
+     * @param correlationId
+     */
     fun storeDataSet(
         storableDataSet: StorableDataSet,
         companyName: String,
@@ -136,8 +142,9 @@ class DataManager(
                 "storage_queue",
             )
             logger.info(
-                "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID ${storableDataSet.companyId}," +
-                    " Company Name $companyName received ID $dataId from storage. Correlation ID: $correlationId.",
+                "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID " +
+                    "${storableDataSet.companyId}. Company Name $companyName received ID $dataId from storage. " +
+                    "Correlation ID: $correlationId.",
             )
         } catch (exception: AmqpException) {
             val internalMessage = "Error sending message to storage_queue." +
@@ -148,6 +155,9 @@ class DataManager(
         return(dataId)
     }
 
+    /**
+     * Method to generate a random Data ID
+     */
     fun generateRandomDataId(): String {
         return "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
     }

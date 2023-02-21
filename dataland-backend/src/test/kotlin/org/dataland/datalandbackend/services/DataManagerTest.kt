@@ -212,7 +212,7 @@ class DataManagerTest(
     }
 
     @Test
-    fun `check an exception is thrown during temporarily storing a data set when sending notification to message queue fails`() {
+    fun `check an exception is thrown during storing a data set when sending notification to message queue fails`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val company = companyManager.getCompanyById(storableEuTaxonomyDataSetForNonFinancials.companyId)

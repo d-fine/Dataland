@@ -93,7 +93,7 @@ class CompanyManager(
      * @return information of the newly created entry in the company data store of Dataland,
      * including the generated company ID
      */
-    @Transactional
+    @Transactional(rollbackFor = [InvalidInputApiException::class])
     fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
         val companyId = IdUtils.generateUUID()
         logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")

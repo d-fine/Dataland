@@ -10,13 +10,13 @@
   ],
   "vhosts": [
     {
-      "name": "/"
+      "name": "vhost"
     }
   ],
   "permissions": [
     {
       "user": "RABBITMQ_USER_PLACEHOLDER",
-      "vhost": "/",
+      "vhost": "vhost",
       "configure": ".*",
       "write": ".*",
       "read": ".*"
@@ -34,28 +34,28 @@
   "queues": [
     {
       "name": "stored_queue",
-      "vhost": "/",
+      "vhost": "vhost",
       "durable": true,
       "auto_delete": false,
       "arguments": {}
     },
     {
       "name": "qa_queue",
-      "vhost": "/",
+      "vhost": "vhost",
       "durable": true,
       "auto_delete": false,
       "arguments": {}
     },
     {
       "name": "upload_queue",
-      "vhost": "/",
+      "vhost": "vhost",
       "durable": true,
       "auto_delete": false,
       "arguments": {}
     },
     {
       "name": "storage_queue",
-      "vhost": "/",
+      "vhost": "vhost",
       "durable": true,
       "auto_delete": false,
       "arguments": {}
