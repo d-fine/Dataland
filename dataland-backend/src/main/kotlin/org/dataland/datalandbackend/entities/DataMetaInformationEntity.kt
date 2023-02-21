@@ -10,7 +10,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.enums.data.DatasetQualityStatus
+import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 
@@ -38,7 +38,7 @@ data class DataMetaInformationEntity(
     var company: StoredCompanyEntity,
 
     @Column(name = "quality_status", nullable = false)
-    var qualityStatus: DatasetQualityStatus,
+    var qualityStatus: QAStatus,
 ) : ApiModelConversion<DataMetaInformation> {
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
