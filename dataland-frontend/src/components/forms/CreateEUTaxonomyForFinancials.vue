@@ -26,111 +26,312 @@
                   <h4 id="general" class="anchor title">Upload company reports</h4>
                   <p>Please upload all relevant reports for this dataset in the PDF format.</p>
                 </div>
-
+                <!-- Select company reports -->
                 <div class="col-9 formFields uploaded-files">
-                  <h4 class="mt-0">Select company reports</h4>
+                  <h3 class="mt-0">Select company reports</h3>
                   <FileUpload
-                      name="demo[]"
-                      url="./upload"
-                      accept=".pdf, .xlsx"
-                      @select="onSelectedFiles"
-                      :maxFileSize="maxFileSize"
-                      invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
-                      :fileLimit="1"
-                      :auto="true"
+                    name="demo[]"
+                    url="./upload"
+                    accept=".pdf, .xlsx"
+                    @select="onSelectedFiles"
+                    :maxFileSize="maxFileSize"
+                    invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
+                    :fileLimit="1"
+                    :auto="true"
                   >
-                  <template #header="{ chooseCallback }">
-                    <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
-                      <div class="flex gap-2">
-                        <PrimeButton @click="chooseCallback()" icon="pi pi-upload" class="m-0" label="UPLOAD REPORTS" />
+                    <template #header="{ chooseCallback }">
+                      <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
+                        <div class="flex gap-2">
+                          <PrimeButton
+                            @click="chooseCallback()"
+                            icon="pi pi-upload"
+                            class="m-0"
+                            label="UPLOAD REPORTS"
+                            :disabled="this.files.length"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </template>
-                  <template #content="{ uploadedFiles, removeUploadedFileCallback }">
-                    <div v-if="uploadedFiles.length > 0">
-                        <div v-for="(file, index) of uploadedFiles" :key="file.name + file.type + file.size" class="flex w-full align-items-center file-upload-item">
+                    </template>
+                    <template #content="{ uploadedFiles, removeUploadedFileCallback }">
+                      <div v-if="uploadedFiles.length > 0">
+                        <div
+                          v-for="(file, index) of uploadedFiles"
+                          :key="file.name + file.type + file.size"
+                          class="flex w-full align-items-center file-upload-item"
+                        >
                           <span class="font-semibold flex-1">{{ file.name }}</span>
                           <div class="mx-2 text-black-alpha-50">{{ formatSize(file.size) }}</div>
                           <Badge value="Completed" class="mt-3" severity="success" />
-                          <PrimeButton icon="pi pi-times" @click="removeUploadedFileCallback(index)" class="p-button-rounded" />
+                          <PrimeButton
+                            icon="pi pi-times"
+                            @click="onRemoveTemplatingFile(file, removeUploadedFileCallback, index)"
+                            class="p-button-rounded"
+                          />
                         </div>
-                    </div>
-                  </template>
+                      </div>
+                    </template>
                   </FileUpload>
-
                 </div>
 
+                <div class="uploadFormSection">
+                <!-- Select company reports -->
                 <div v-if="files[0]?.name" class="col-9 formFields">
-                  <h4 class="mt-0">{{ files[0].name }}</h4>
+                  <div class="form-field-label">
+                    <h3 class="mt-0">{{ files[0].name }}</h3>
+
+                    <PrimeButton
+                        @click="onRemoveTemplatingFile(files[0], removeUploadedFileCallback, 0)"
+                        label="REMOVED"
+                        class="p-button-text"
+                        icon="pi pi-trash"
+                    ></PrimeButton>
+                  </div>
+
+                  <!-- Date of the report -->
                   <div class="form-field">
-                    <div class="lg:col-6 md:col-6 col-12">
+                    <UploadFormHeader
+                        name="Date of the report"
+                        explanation="Date of the report"
+                    />
+                    <div class="lg:col-6 md:col-6 col-12 p-0">
                       <Calendar
-                          data-test="lksgDataDate"
-                          inputId="icon"
-                          :showIcon="true"
-                          dateFormat="D, M dd, yy"
-                          :maxDate="new Date()"
+                        data-test="dateOfTheReport"
+                        inputId="icon"
+                        :showIcon="true"
+                        dateFormat="D, M dd, yy"
+                        :maxDate="new Date()"
                       />
                     </div>
 
                     <FormKit
-                        type="text"
-                        validation="required"
-                        name="dataDate"
-                        :outer-class="{ 'hidden-input': true }"
+                      type="text"
+                      validation="required"
+                      name="dateOfTheReport"
+                      :outer-class="{ 'hidden-input': true }"
                     />
+                  </div>
+
+                  <!-- Currency used in the report -->
+                  <div class="form-field" data-test="currencyUsedInTheReport">
+                    <UploadFormHeader
+                        name="Currency used in the report"
+                        explanation="Currency used in the report"
+                    />
+                    <div class="lg:col-6 md:col-6 col-12 p-0">
+                    <FormKit
+                        type="text"
+                        name="currencyUsedInTheReport"
+                        validation="required"
+                        validation-label="Currency used in the report"
+                        placeholder="Currency used in the report"
+                    />
+                    </div>
+
+                  </div>
+                  <div class="form-field">
+                    <CheckBoxCustom name="integratedReportIsOnAGroupLevel" explanation="Integrated report is on a group level" />
+                  </div>
+
+                </div>
+                </div>
+
+                <div class="uploadFormSection">
+
+                  <div class="col-3 p-3 topicLabel">
+                    <h4 id="general" class="anchor title">Basic information</h4>
+                  </div>
+                  <!-- Basic information -->
+                  <div class="col-9 formFields">
+                    <h3 class="mt-0">Basic information</h3>
+                    <CheckBoxCustom name="fiscalYearIsDeviating" explanation="Fiscal year is deviating" />
+
+                    <!-- The date the fiscal year ends -->
+                    <div class="form-field">
+                      <UploadFormHeader
+                          name="The date the fiscal year ends"
+                          explanation="The date the fiscal year ends"
+                      />
+                      <div class="lg:col-6 md:col-6 col-12 p-0">
+                        <Calendar
+                            inputId="icon"
+                            :showIcon="true"
+                            dateFormat="D, M dd, yy"
+                            :maxDate="new Date()"
+                        />
+                      </div>
+
+                      <FormKit
+                          type="text"
+                          validation="required"
+                          name="dateTheFiscalYearEnds"
+                          :outer-class="{ 'hidden-input': true }"
+                      />
+                    </div>
+
+                    <!-- Scope of entities -->
+                    <div class="form-field">
+                      <CheckBoxCustom name="scopeOfEntities *" explanation="Scope of entities *" />
+                    </div>
+
+                    <!-- EU Taxonomy activity level reporting -->
+                    <div class="form-field">
+                      <CheckBoxCustom name="euTaxonomyActivityLevelReporting" explanation="EU Taxonomy activity level reporting *" />
+                    </div>
+
+                    <!-- Number of employees -->
+                    <div class="form-field">
+                      <UploadFormHeader
+                          name="Number of employees"
+                          explanation="Number of employees"
+                      />
+                      <FormKit
+                          type="number"
+                          name="numberOfEmployees"
+                          validation-label="Number of employees"
+                          placeholder="Value"
+                          validation="required|number"
+                          step="1"
+                          min="0"
+                          :inner-class="{ short: true }"
+                      />
+                    </div>
+
                   </div>
                 </div>
 
 
+                  <div class="uploadFormSection">
 
-                  <!-- rest -->
+                    <div class="col-3 p-3 topicLabel">
+                      <h4 id="general" class="anchor title">NFRD & Assurance</h4>
+                    </div>
+                    <!-- NFRD & Assurance -->
+                  <div class="col-9 formFields">
+                    <h3 class="mt-0">NFRD</h3>
 
-                  <FormKit
-                    type="select"
-                    name="financialServicesTypes"
-                    multiple
-                    validation="required"
-                    label="Financial Services Types"
-                    placeholder="Please choose"
-                    :options="{
-                      CreditInstitution: humanizeString('CreditInstitution'),
-                      InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),
-                      AssetManagement: humanizeString('AssetManagement'),
-                      InvestmentFirm: humanizeString('InvestmentFirm'),
-                    }"
-                    help="Select all that apply by holding command (macOS) or control (PC)."
-                  />
-                  <FormKit type="group" name="assurance" label="Assurance">
-                    <FormKit
-                      type="select"
-                      name="assurance"
-                      label="Assurance"
-                      placeholder="Please choose"
-                      :options="{
-                        None: humanizeString('None'),
-                        LimitedAssurance: humanizeString('LimitedAssurance'),
-                        ReasonableAssurance: humanizeString('ReasonableAssurance'),
-                      }"
-                    />
-                  </FormKit>
-                  <FormKit
-                    type="radio"
-                    name="reportingObligation"
-                    label="Reporting Obligation"
-                    :options="['Yes', 'No']"
-                    :outer-class="{
-                      'formkit-outer': false,
-                    }"
-                    :inner-class="{
-                      'formkit-inner': false,
-                    }"
-                    :input-class="{
-                      'formkit-input': false,
-                      'p-radiobutton:': true,
-                    }"
-                  />
+                    <!-- Scope of entities -->
+                    <div class="form-field">
+                      <CheckBoxCustom name="mandatoryNFRD" explanation="NFRD is mandatory *" />
+                    </div>
+
+                    <!-- The date the fiscal year ends -->
+                    <div class="form-field">
+                      <UploadFormHeader
+                          name="The date the fiscal year ends"
+                          explanation="The date the fiscal year ends"
+                      />
+                      <div class="lg:col-6 md:col-6 col-12 p-0">
+                        <Calendar
+                            inputId="icon"
+                            :showIcon="true"
+                            dateFormat="D, M dd, yy"
+                            :maxDate="new Date()"
+                        />
+                      </div>
+
+                      <FormKit
+                          type="text"
+                          validation="required"
+                          name="dateTheFiscalYearEnds"
+                          :outer-class="{ 'hidden-input': true }"
+                      />
+                    </div>
+
+                    <!-- Scope of entities -->
+                    <div class="form-field">
+                      <CheckBoxCustom name="scopeOfEntities *" explanation="Scope of entities *" />
+                    </div>
+
+                    <!-- EU Taxonomy activity level reporting -->
+                    <div class="form-field">
+                      <CheckBoxCustom name="euTaxonomyActivityLevelReporting" explanation="EU Taxonomy activity level reporting *" />
+                    </div>
+
+                    <!-- Number of employees -->
+                    <div class="form-field">
+                      <UploadFormHeader
+                          name="Number of employees"
+                          explanation="Number of employees"
+                      />
+                      <FormKit
+                          type="number"
+                          name="numberOfEmployees"
+                          validation-label="Number of employees"
+                          placeholder="Value"
+                          validation="required|number"
+                          step="1"
+                          min="0"
+                          :inner-class="{ short: true }"
+                      />
+                    </div>
+
+                  </div>
+
+
+
+                  <!-- Level of assurance -->
+                  <div class="col-9 formFields">
+                    <h3 class="mt-0">Level of assurance</h3>
+
+                    <!-- Level of assurance -->
+                    <div class="form-field">
+                      <UploadFormHeader
+                          name="Level of assurance *"
+                          explanation="Level of assurance"
+                      />
+                      <FormKit
+                          type="select"
+                          name="levelOfAssurance"
+                          validation-label="Level of assurance"
+                          validation="required"
+                      />
+                    </div>
+
+                    <!-- Assurance provider -->
+                    <div class="form-field">
+                      <UploadFormHeader
+                          name="Assurance provider *"
+                          explanation="Assurance provider"
+                      />
+                      <FormKit
+                          type="text"
+                          name="assuranceProvider"
+                          validation-label="Assurance provider"
+                          validation="required"
+                      />
+                    </div>
+
+                    <!-- Data source -->
+                    <div class="form-field">
+                      <UploadFormHeader
+                          name="Data source *"
+                          explanation="Data source"
+                      />
+                      <FormKit
+                          type="select"
+                          name="dataSource"
+                          validation-label="Data source"
+                          validation="required"
+                          :options="files"
+                      />
+                    </div>
+
+                  </div>
+
+                  </div>
+
+
+
+                <div class="form-field">
+                </div>
+
+
               </div>
+
+
+
+
+              <!-- rest -->
               <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
                 <template
                   v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement', 'InvestmentFirm']"
@@ -192,7 +393,7 @@
 <script lang="ts">
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { FormKit } from "@formkit/vue";
-import FileUpload from 'primevue/fileupload';
+import FileUpload from "primevue/fileupload";
 import PrimeButton from "primevue/button";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
@@ -205,6 +406,7 @@ import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import CheckBoxCustom from "@/components/forms/parts/CheckBoxCustom.vue";
 
 export default defineComponent({
   setup() {
@@ -223,6 +425,7 @@ export default defineComponent({
     FileUpload,
     PrimeButton,
     Calendar,
+    CheckBoxCustom,
   },
 
   data: () => ({
@@ -274,21 +477,28 @@ export default defineComponent({
     },
 
     onSelectedFiles(event) {
-      console.log('event', event)
+      console.log("event", event);
       this.files = event.files;
     },
 
-    formatSize(bytes) {
-      if (bytes === 0) {
-        return '0 B';
-      }
-      let k = 1000,
-          dm = 3,
-          sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-          i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    onRemoveTemplatingFile(file, fileRemoveCallback: void, index: number) {
+      fileRemoveCallback(index);
+      this.files = this.files.filter( (el) => {
+        return el.name !== file.name;
+      })
+
     },
 
+    formatSize(bytes: number) {
+      if (bytes === 0) {
+        return "0 B";
+      }
+      const k = 1000,
+        dm = 3,
+        sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+        i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)).toString() + " " + sizes[i];
+    },
   },
 });
 </script>
