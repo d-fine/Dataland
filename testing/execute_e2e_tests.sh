@@ -41,9 +41,9 @@ docker exec dala-e2e-test-internal-storage-1 pkill -f java
 timeout 90 sh -c "docker logs dala-e2e-test-internal-storage-1 --follow" > /dev/null
 docker cp dala-e2e-test-internal-storage-1:/jacoco.exec ./internal-storage-bootRun-${CYPRESS_TEST_GROUP}.exec
 
-docker exec dala-e2e-test-dummy-qa-service-1 pkill -f spring
-timeout 90 sh -c "docker logs dala-e2e-test-dummy-qa-service-1 --follow" > /dev/null
-docker cp dala-e2e-test-dummy-qa-service-1:/app/dataland-dummy-qa-service/build/jacoco/bootRun.exec ./dummy-qa-service-bootRun-${CYPRESS_TEST_GROUP}.exec
+docker exec dala-e2e-test-qa-service-1 pkill -f spring
+timeout 90 sh -c "docker logs dala-e2e-test-qa-service-1 --follow" > /dev/null
+docker cp dala-e2e-test-qa-service-1:/app/dataland-qa-service/build/jacoco/bootRun.exec ./qa-service-bootRun-${CYPRESS_TEST_GROUP}.exec
 
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.

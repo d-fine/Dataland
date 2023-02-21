@@ -1,4 +1,4 @@
-package org.dataland.datalanddummyqaservice.services
+package org.dataland.datalandqaservice.services
 
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 
 /**
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  */
 @Component
-@ComponentScan("org.dataland")
 class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
 ) {
