@@ -5,7 +5,6 @@ import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.StorageHashMap
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
@@ -38,14 +37,13 @@ class DataManagerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val companyManager: CompanyManager,
-    @Autowired val dataInformationHashMap: StorageHashMap,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
     val dataManager = DataManager(
         objectMapper, companyManager, dataMetaInformationManager,
-        mockStorageClient, mockCloudEventMessageHandler, dataInformationHashMap,
+        mockStorageClient, mockCloudEventMessageHandler,
     )
     val spyDataManager: DataManager = spy(dataManager)
     val correlationId = IdUtils.generateUUID()

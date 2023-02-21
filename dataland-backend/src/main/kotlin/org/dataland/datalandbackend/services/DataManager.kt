@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.StorageHashMap
 import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -29,7 +28,6 @@ import java.util.*
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
- * @param dataInformationHashMap map for temporarily storing data information in memory
 */
 @ComponentScan(basePackages = ["org.dataland"])
 @Component("DataManager")
@@ -39,10 +37,9 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var dataInformationHashMap: StorageHashMap,
-
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val dataInformationHashMap = mutableMapOf<String, String>()
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
@@ -124,6 +121,20 @@ class DataManager(
     }
 
     /**
+     * This method retrieves data from the temporal storage
+     * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
+     */
+    fun selectDataSetForInternalStorage(dataId: String): String {
+        val rawValue = dataInformationHashMap.getOrElse(dataId) {
+            throw ResourceNotFoundApiException(
+                "Non-persisted data ID not found",
+                "Dataland does not know the non-persisted data id $dataId",
+            )
+        }
+        return objectMapper.writeValueAsString(rawValue)
+    }
+
+    /**
      * Method to temporarily store a data set via the hash map and send a notification to the storage_queue
      * @param storableDataSet The data set to store
      * @param companyName The name of the company corresponding to the data set to store
@@ -135,7 +146,7 @@ class DataManager(
         correlationId: String,
     ): String {
         val dataId = generateRandomDataId()
-        dataInformationHashMap.map.put(dataId, objectMapper.writeValueAsString(storableDataSet))
+        dataInformationHashMap[dataId] = objectMapper.writeValueAsString(storableDataSet)
         try {
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 dataId, "Data to be stored", correlationId,
@@ -175,7 +186,7 @@ class DataManager(
             logger.info(
                 "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
             )
-            dataInformationHashMap.map.remove(dataId)
+            dataInformationHashMap.remove(dataId)
         } else {
             val internalMessage = "Error storing data. Correlation ID: $correlationId"
             logger.error(internalMessage)
