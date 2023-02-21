@@ -47,9 +47,9 @@ class DatabaseDataStoreTest(
     }
 
     @Test
-    fun `check that an exception is thrown during insertion when there is a version mismatch`(){
+    fun `check that an exception is thrown during insertion when there is a version mismatch`() {
         `when`(mockDataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))).thenThrow(
-                OptimisticLockingFailureException::class.java,
+            OptimisticLockingFailureException::class.java,
         )
         assertThrows<OptimisticLockingFailureException> {
             databaseDataStore.insertDataAndSendNotification(dataId, data, correlationId)
@@ -57,9 +57,11 @@ class DatabaseDataStoreTest(
     }
 
     @Test
-    fun `check that an exception is thrown when sending a success notification to message queue fails`(){
-        `when`(mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "Data successfully stored", correlationId, "stored_queue")
+    fun `check that an exception is thrown when sending a success notification to message queue fails`() {
+        `when`(
+            mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataId, "Data successfully stored", correlationId, "stored_queue",
+            ),
         ).thenThrow(
             AmqpException::class.java,
         )

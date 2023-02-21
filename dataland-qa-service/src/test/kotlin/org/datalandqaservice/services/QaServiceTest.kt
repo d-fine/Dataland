@@ -36,12 +36,14 @@ class QaServiceTest {
     }
 
     @Test
-    fun `check that an exception is thrown when sending a success notification to message queue fails`(){
+    fun `check that an exception is thrown when sending a success notification to message queue fails`() {
         val message = buildDummyMessage(dataAsString)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         `when`(mockCloudEventMessageHandler.bodyToString(message)).thenReturn(dataId)
-        `when`(mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "QA Process Completed", correlationId, "qa_queue",)
+        `when`(
+            mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataId, "QA Process Completed", correlationId, "qa_queue",
+            ),
         ).thenThrow(
             AmqpException::class.java,
         )

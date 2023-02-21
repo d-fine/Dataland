@@ -75,8 +75,7 @@ export default defineComponent({
         this.lksgDataAndMetaInfo = (
           await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
         ).data.filter(
-          (dataAndMetaInfo: DataAndMetaInformationLksgData) =>
-            dataAndMetaInfo.metaInfo.qaStatus == QAStatus.Accepted
+          (dataAndMetaInfo: DataAndMetaInformationLksgData) => dataAndMetaInfo.metaInfo.qaStatus == QAStatus.Accepted
         );
         this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;

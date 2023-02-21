@@ -32,15 +32,14 @@ class QaService(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: " +
                     correlationId,
             )
-            try{
+            try {
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                        dataId, "QA Process Completed", correlationId,
-                        "qa_queue",
+                    dataId, "QA Process Completed", correlationId,
+                    "qa_queue",
                 )
-            }
-            catch (exception: AmqpException) {
+            } catch (exception: AmqpException) {
                 val internalMessage = "Error sending message to qa_queue." +
-                        " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
+                    " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
                 logger.error(internalMessage)
                 throw AmqpException(internalMessage, exception)
             }
