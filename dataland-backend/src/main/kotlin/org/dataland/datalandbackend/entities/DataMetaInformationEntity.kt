@@ -38,7 +38,7 @@ data class DataMetaInformationEntity(
     var company: StoredCompanyEntity,
 
     @Column(name = "quality_status", nullable = false)
-    var qualityStatus: QAStatus,
+    var qaStatus: QAStatus,
 ) : ApiModelConversion<DataMetaInformation> {
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
@@ -52,7 +52,7 @@ data class DataMetaInformationEntity(
             uploaderUserId = if (displayUploaderUserId) this.uploaderUserId else null,
             uploadTime = this.uploadTime,
             companyId = company.companyId,
-            qualityStatus = qualityStatus,
+            qaStatus = qaStatus,
         )
     }
 }

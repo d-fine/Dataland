@@ -100,7 +100,7 @@ class DataManager(
         if (!dataId.isNullOrEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaDataManager.storeDataMetaInformation(
-                metaInformation.copy(qualityStatus = QAStatus.Accepted),
+                metaInformation.copy(qaStatus = QAStatus.Accepted),
             )
             logger.info(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId",
