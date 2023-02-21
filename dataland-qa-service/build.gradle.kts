@@ -27,19 +27,16 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
+    implementation(project(":dataland-backend-utils"))
+    implementation(project(":dataland-message-queue-utils"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
-    implementation("org.testng:testng:7.7.0")
-    implementation("junit:junit:4.13.1")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.amqp:spring-rabbit-test")
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
-    implementation(project(":dataland-message-queue-utils"))
-    implementation(project(":dataland-backend-utils"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.amqp:spring-rabbit-test")
 }
 
 tasks.test {
