@@ -1,9 +1,9 @@
-package org.datalanddummyqaservice.services
+package org.datalandqaservice.services
 
-import org.dataland.datalanddummyqaservice.DatalandDummyQaService
-import org.dataland.datalanddummyqaservice.services.QaService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
+import org.dataland.datalandqaservice.DatalandQaService
+import org.dataland.datalandqaservice.services.QaService
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -11,7 +11,7 @@ import org.mockito.Mockito.mock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.amqp.core.Message as AMQPMessage
 
-@SpringBootTest(classes = [DatalandDummyQaService::class])
+@SpringBootTest(classes = [DatalandQaService::class])
 class QaServiceTest {
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val qaService = QaService(mockCloudEventMessageHandler)

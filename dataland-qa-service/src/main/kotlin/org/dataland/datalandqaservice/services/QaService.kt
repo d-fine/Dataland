@@ -1,4 +1,4 @@
-package org.dataland.datalanddummyqaservice.services
+package org.dataland.datalandqaservice.services
 
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  */
 @Component
-@ComponentScan("org.dataland")
 class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
 ) {

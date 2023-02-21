@@ -1,0 +1,4 @@
+ARG DATALAND_QA_SERVICE_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_qa_service_base:${DATALAND_QA_SERVICE_BASE_VERSION}
+
+CMD ./gradlew :dataland-qa-service:bootRun --args='--spring.profiles.active=ci' --no-daemon --stacktrace
