@@ -275,7 +275,6 @@ services:
     restart: always
     profiles: ["production", "testing", "development"]
     image: ghcr.io/d-fine/dataland/dataland_rabbitmq:${DATALAND_RABBITMQ_VERSION}
-    container_name: rabbitmq
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
