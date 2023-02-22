@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import java.time.Instant
@@ -91,7 +92,7 @@ abstract class DataController<T>(
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        if (!isDataViewableByUser(metaInfo, DatalandAuthentication.fromContext().userId)) {
+        if (!isDataViewableByUser(metaInfo, DatalandAuthentication.fromContext())) {
             throw InvalidInputApiException("Access denied", "You are trying to access a unreviewed dataset")
         }
         val companyId = metaInfo.company.companyId
@@ -113,9 +114,9 @@ abstract class DataController<T>(
     override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
         val frameworkData = mutableListOf<DataAndMetaInformation<T>>()
-        val userId = DatalandAuthentication.fromContext().userId
+        val authentication = DatalandAuthentication.fromContext()
         metaInfos
-            .filter { isDataViewableByUser(it, userId) }
+            .filter { isDataViewableByUser(it, authentication) }
             .forEach {
                 val correlationId = generatedCorrelationId(companyId)
                 logger.info(
@@ -132,7 +133,9 @@ abstract class DataController<T>(
         return ResponseEntity.ok(frameworkData)
     }
 
-    private fun isDataViewableByUser(dataMetaInfo: DataMetaInformationEntity, userId: String): Boolean {
-        return dataMetaInfo.qaStatus == QAStatus.Accepted || dataMetaInfo.uploaderUserId == userId
+    private fun isDataViewableByUser(dataMetaInfo: DataMetaInformationEntity, authentication: DatalandAuthentication): Boolean {
+        return dataMetaInfo.qaStatus == QAStatus.Accepted ||
+            dataMetaInfo.uploaderUserId == authentication.userId ||
+            authentication.roles.contains(DatalandRealmRole.ROLE_ADMIN)
     }
 }
