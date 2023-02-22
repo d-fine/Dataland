@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataApi
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
@@ -10,6 +11,7 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
@@ -88,17 +90,18 @@ abstract class DataController<T>(
     }
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
-        val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
+        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        if (!isDataViewableByUser(metaInfo, DatalandAuthentication.fromContext().userId)) {
+            throw InvalidInputApiException("Access denied", "You are trying to access a unreviewed dataset")
+        }
+        val companyId = metaInfo.company.companyId
         val correlationId = generatedCorrelationId(companyId)
         logger.info(
             "Received a request to get company data with dataId '$dataId' for companyId '$companyId'. ",
         )
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
-            data = objectMapper.readValue(
-                dataManager.getDataSet(dataId, dataType, correlationId).data,
-                clazz,
-            ),
+            data = objectMapper.readValue(dataManager.getDataSet(dataId, dataType, correlationId).data, clazz),
         )
         logger.info(
             "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +
@@ -110,7 +113,10 @@ abstract class DataController<T>(
     override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
         val frameworkData = mutableListOf<DataAndMetaInformation<T>>()
-        metaInfos.forEach {
+        val userId = DatalandAuthentication.fromContext().userId
+        metaInfos
+            .filter { isDataViewableByUser(it, userId) }
+            .forEach {
             val correlationId = generatedCorrelationId(companyId)
             logger.info(
                 "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
@@ -124,5 +130,9 @@ abstract class DataController<T>(
             )
         }
         return ResponseEntity.ok(frameworkData)
+    }
+
+    private fun isDataViewableByUser(dataMetaInfo: DataMetaInformationEntity, userId: String): Boolean {
+        return dataMetaInfo.qaStatus == QAStatus.Accepted || dataMetaInfo.uploaderUserId == userId
     }
 }
