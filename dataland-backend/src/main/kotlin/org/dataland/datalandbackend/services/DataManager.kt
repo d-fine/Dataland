@@ -35,16 +35,14 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Value("\${spring.rabbitmq.upload-queue:}") private val uploadQueue: String,
-    @Value("\${spring.rabbitmq.storage-queue:}") private val storageQueue: String,
-) {companion object {
+) { companion object {
     private const val qaQueue = ("\${spring.rabbitmq.qa-queue}")
     private const val storedQueue = ("\${spring.rabbitmq.stored-queue}")
+    private const val uploadQueue = ("\${spring.rabbitmq.upload-queue}")
+    private const val storageQueue = ("\${spring.rabbitmq.storage-queue}")
 }
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInformationHashMap = mutableMapOf<String, String>()
-
-
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
