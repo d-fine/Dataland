@@ -1,6 +1,7 @@
 package org.dataland.datalandinternalstorage.services
 
 import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataControllerApi
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -9,16 +10,15 @@ import org.springframework.context.annotation.Configuration
  * environment
  */
 @Configuration
-class ConfigurationBackendControllerApi {
+class ConfigurationBackendControllerApi (
+    @Value("\${dataland.backend.base-url:http://backend:8080/api}")
+    private val backendBaseUrl: String,
+) {
     /**
      * The bean to configure the internal client StorageControllerApi
      */
     @Bean
     fun getApiBackendClient(): NonPersistedDataControllerApi {
-        val backendContainerUrl = "http://backend:8080/api"
-        val internalBackendUrlFromEnv = System.getenv("INTERNAL_BACKEND_URL")
-        return NonPersistedDataControllerApi(
-            internalBackendUrlFromEnv?.ifBlank { backendContainerUrl } ?: backendContainerUrl,
-        )
+        return NonPersistedDataControllerApi(basePath = backendBaseUrl)
     }
 }
