@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataApi
-import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
@@ -55,10 +54,6 @@ abstract class DataController<T>(
         return correlationId
     }
 
-    private fun getQadDatasetWithLatestUploadTime(listOfDataMetaInfoEntities: List<DataMetaInformationEntity>): DataMetaInformationEntity {
-        return listOfDataMetaInfoEntities.maxBy { it.uploadTime }
-    }
-
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
         val companyId = companyAssociatedData.companyId
@@ -105,10 +100,7 @@ abstract class DataController<T>(
             "Received a request to get all datasets together with meta info for framework '$dataType', " +
                 "companyId '$companyId' and reporting period '$reportingPeriodInLogMessage'",
         )
-        var listOfDataMetaInfoEntities = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType, reportingPeriod)
-        if (reportingPeriod != null && !showVersionHistoryForReportingPeriod) {
-            listOfDataMetaInfoEntities = listOf(getQadDatasetWithLatestUploadTime(listOfDataMetaInfoEntities))
-        }
+        var listOfDataMetaInfoEntities = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType, showVersionHistoryForReportingPeriod, reportingPeriod)
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         listOfDataMetaInfoEntities.forEach {
             val correlationId = generatedCorrelationId(companyId)

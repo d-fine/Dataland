@@ -62,25 +62,56 @@ class DataMetaInformationManager(
         return dataMetaInformationDbResponse.get()
     }
 
-    /**
+    private fun getQadDatasetWithLatestUploadTime(listOfDataMetaInfoEntities: List<DataMetaInformationEntity>): DataMetaInformationEntity {
+        return listOfDataMetaInfoEntities.maxBy { it.uploadTime }
+    }
+
+    /** TODO
      * Method to make the data manager search for meta info
      * @param companyId if not empty, it filters the requested meta info to a specific company
      * @param dataType if not empty, it filters the requested meta info to a specific data type
      * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
      * @return a list of meta info about data depending on the filters:
      */
-    fun searchDataMetaInfo(companyId: String, dataType: DataType?, reportingPeriod: String? = null): List<DataMetaInformationEntity> {
+    fun searchDataMetaInfo(companyId: String, dataType: DataType?, showVersionHistoryForReportingPeriod: Boolean, reportingPeriod: String?): List<DataMetaInformationEntity> {
         if (companyId != "") {
             companyManager.verifyCompanyIdExists(companyId)
         }
         val dataTypeFilter = dataType?.name ?: ""
         val reportingPeriodFilter = reportingPeriod ?: ""
-        return dataMetaInformationRepository.searchDataMetaInformation(
+        val interimResult = dataMetaInformationRepository.searchDataMetaInformation(
             DataMetaInformationSearchFilter(
                 companyIdFilter = companyId,
                 dataTypeFilter = dataTypeFilter,
                 reportingPeriodFilter = reportingPeriodFilter,
             ),
         )
+        var result: List<DataMetaInformationEntity> = interimResult
+
+        // Condition: We only want the following stuff to happen, if the degrees of freedom "companyId" and "dataType" are set:
+        if (companyId != "" && dataTypeFilter != "") {
+            // Case 1: Reporting period is passed, and "latest" should be shown
+            if (reportingPeriod != null && !showVersionHistoryForReportingPeriod) {
+                result = listOf(getQadDatasetWithLatestUploadTime(interimResult))
+            }
+
+            // Case 2: Reporting period  is not passed, but "latest" should be shown per reporting period
+            if (reportingPeriod == null && !showVersionHistoryForReportingPeriod) {
+                var resultList = mutableListOf<DataMetaInformationEntity>()
+
+                val listOfDistinctReportingPeriods =
+                    interimResult.map { dataMetaInformationEntity -> dataMetaInformationEntity.reportingPeriod }.distinct()
+
+                // Get the latest dataset for each distinct reporting period
+                listOfDistinctReportingPeriods.forEach { singleReportinPeriod ->
+                    val listOfMetaInfoForSingleReportingPeriod = interimResult.filter {
+                            dataMetaInformationEntity ->
+                        dataMetaInformationEntity.reportingPeriod == singleReportinPeriod
+                    }
+                    resultList.add(getQadDatasetWithLatestUploadTime(listOfMetaInfoForSingleReportingPeriod))
+                }
+            }
+        }
+        return result
     }
 }

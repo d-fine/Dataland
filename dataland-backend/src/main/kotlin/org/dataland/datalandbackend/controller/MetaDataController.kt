@@ -19,11 +19,21 @@ class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
 ) : MetaDataApi {
 
-    override fun getListOfDataMetaInfo(companyId: String?, dataType: DataType?):
+    override fun getListOfDataMetaInfo(
+        companyId: String?,
+        dataType: DataType?,
+        showVersionHistoryForReportingPeriod: Boolean,
+        reportingPeriod: String?,
+    ):
         ResponseEntity<List<DataMetaInformation>> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
         return ResponseEntity.ok(
-            dataMetaInformationManager.searchDataMetaInfo(companyId ?: "", dataType).map { it.toApiModel(currentUser) },
+            dataMetaInformationManager.searchDataMetaInfo(
+                companyId ?: "",
+                dataType,
+                showVersionHistoryForReportingPeriod,
+                reportingPeriod,
+            ).map { it.toApiModel(currentUser) },
         )
     }
 
