@@ -3,226 +3,243 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Borgschulze, Maurer und Malek",
-				"Hartz, Maier und Blaschek",
-				"Leiwesmeier-Sutschet"
+				"Balck, Marner und Nannen",
+				"Weidlich-Gunkel"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"headquarters": "Pfingstenscheid",
-			"headquartersPostalCode": "18150",
-			"sector": "e-commerce",
+			"companyLegalForm": "GmbH & Co. KG",
+			"headquarters": "Connordorf",
+			"headquartersPostalCode": "19257",
+			"sector": "bandwidth",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "1aoem4ml0g1ebqv"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "n2ogu06jt"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "f8fd6jchym0a"
+				},
+				{
 					"identifierType": "Lei",
-					"identifierValue": "jgiqktkjgjfbi67pzaci"
+					"identifierValue": "usr0kpfuoyn08efzxyp4"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "q1pgjr01d0"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "h4jvmix"
 				}
 			],
-			"countryCode": "LS",
-			"isTeaserCompany": false,
-			"website": "https://umsichtig-erdbeben.org"
+			"countryCode": "VE",
+			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "http://ernsthaft-gesellschaft.name/treuherzig-gebirge.pdf",
-					"isGroupLevel": "NA",
-					"currency": "SAR"
+				"SustainabilityReport": {
+					"reference": "https://exzellent-wind.de/parallel-kn%C3%B6chel.pdf",
+					"reportDate": "2022-03-05",
+					"currency": "XPF"
 				},
 				"AnnualReport": {
-					"reference": "https://xn--bewhrt-tuberkulose-ntb.org/geschmeidig-handgelenk.pdf",
-					"isGroupLevel": "No",
-					"currency": "LVL"
+					"reference": "http://xn--wunderschn-kartoffel-cbc.name/pfiffig-wasserfall.pdf",
+					"currency": "RWF"
 				},
+				"ESEFReport": {
+					"reference": "http://krank-meer.com/signifikant-parkhaus.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-06-29",
+					"currency": "THB"
+				},
+				"IntegratedReport": {
+					"reference": "http://aufbauend-lunge.com/beherrscht-krankheiten.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-05-20",
+					"currency": "ZAR"
+				}
+			},
+			"fiscalYearEnd": "2023-02-20",
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
+			"activityLevelReporting": "No",
+			"opex": {
+				"eligiblePercentage": {
+					"value": 0.8042,
+					"dataSource": {
+						"page": 847,
+						"report": "ESEFReport",
+						"tagName": "e-services"
+					},
+					"quality": "Reported",
+					"comment": "reboot redundant panel"
+				}
+			},
+			"capex": {
+				"eligiblePercentage": {
+					"value": 0.519,
+					"dataSource": {
+						"page": 627,
+						"report": "SustainabilityReport",
+						"tagName": "methodologies"
+					},
+					"quality": "Reported",
+					"comment": "override cross-platform interface"
+				}
+			},
+			"revenue": {
+				"eligiblePercentage": {
+					"value": 0.2027,
+					"dataSource": {
+						"page": 62,
+						"report": "AnnualReport",
+						"tagName": "content"
+					},
+					"quality": "Reported",
+					"comment": "calculate mobile alarm"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"companyAlternativeNames": [
+				"Burger, Hess und Hasler",
+				"Holz-Hauke",
+				"Schöckel-Wenk",
+				"Strogies KG"
+			],
+			"headquarters": "Kúhnertstadt",
+			"headquartersPostalCode": "53699",
+			"sector": "interfaces",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "tzp5st3obffyr3j"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "4m16494ft"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "860mmgr0vzq2jnl5q6wx"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "5rzlii45fg"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "y5hgcmd"
+				}
+			],
+			"countryCode": "BN",
+			"isTeaserCompany": false,
+			"website": "https://kreativ-kaffee.com"
+		},
+		"t": {
+			"referencedReports": {
 				"SustainabilityReport": {
-					"reference": "https://bezaubernd-sonne.net/ehrlich-kaffee.pdf",
-					"currency": "XBD"
+					"reference": "http://xn--warmherzig-glcksspiel-lic.com/entschlossen-grundkonzept.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-06-07",
+					"currency": "INR"
+				},
+				"IntegratedReport": {
+					"reference": "http://prominent-polytheismus.com/klein-bibliographie.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-02-02",
+					"currency": "GHS"
+				},
+				"AnnualReport": {
+					"reference": "https://wahrhaftig-regen.ch/narrensicher-pluto.pdf",
+					"isGroupLevel": "NA",
+					"currency": "BDT"
+				},
+				"ESEFReport": {
+					"reference": "http://xn--hbsch-magen-thb.name/zuversichtlich-rassismus.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "NPR"
 				}
 			},
 			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "No",
-			"opex": {
-				"eligiblePercentage": {
-					"value": 0.6695,
-					"dataSource": {
-						"page": 473,
-						"report": "SustainabilityReport",
-						"tagName": "niches"
-					},
-					"quality": "Incomplete",
-					"comment": "compress cross-platform interface"
-				}
-			},
-			"capex": {
-				"eligiblePercentage": {
-					"value": 0.354,
-					"dataSource": {
-						"page": 1169,
-						"report": "SustainabilityReport",
-						"tagName": "web services"
-					},
-					"quality": "Incomplete",
-					"comment": "program 1080p sensor"
-				}
-			},
-			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.1918,
-					"dataSource": {
-						"page": 936,
-						"report": "AnnualReport",
-						"tagName": "vortals"
-					},
-					"quality": "Audited",
-					"comment": "override bluetooth protocol"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Moedl, Otto und Geiger",
-				"Sattelmaier KG",
-				"Thiomas, Karst und Erlei"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"headquarters": "Ost Lutzstadt",
-			"headquartersPostalCode": "44257",
-			"sector": "blockchains",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "ruu0sci4tr4ukxr"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "34at6740m"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "f6kxoep2l8wq"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "wobkhg39frzlhkyb95o5"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "zhloiip0ps"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "t48vwx1"
-				}
-			],
-			"countryCode": "LI",
-			"isTeaserCompany": false,
-			"website": "https://routiniert-sozialismus.name"
-		},
-		"t": {
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "http://zeitlos-globalisierung.info/furchtlos-pflanze.pdf",
-					"reportDate": "2022-04-12",
-					"currency": "GIP"
-				},
-				"IntegratedReport": {
-					"reference": "https://sympathisch-magnetismus.name/ausdrucksstark-geschwindigkeit.pdf",
-					"isGroupLevel": "NA",
-					"currency": "LBP"
-				},
-				"ESEFReport": {
-					"reference": "https://leistungsstark-meteorologie.info/engagiert-schrift.pdf",
-					"isGroupLevel": "NA",
-					"currency": "VES"
-				},
-				"AnnualReport": {
-					"reference": "http://xn--wnschenswert-gold-22b.net/gern-schusswaffe.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-07-06",
-					"currency": "VUV"
-				}
-			},
-			"fiscalYearEnd": "2023-02-05",
-			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Newton-Voelkel"
-			},
+			"scopeOfEntities": "NA",
 			"reportingObligation": "Yes",
-			"numberOfEmployees": 19674,
-			"activityLevelReporting": "Yes",
+			"numberOfEmployees": 58361,
 			"opex": {
 				"totalAmount": {
-					"value": 936992.11,
+					"value": 931194.75,
 					"dataSource": {
-						"page": 524,
-						"report": "SustainabilityReport",
-						"tagName": "channels"
+						"page": 1185,
+						"report": "IntegratedReport",
+						"tagName": "metrics"
 					},
-					"quality": "Audited",
-					"comment": "back up multi-byte array"
+					"quality": "Estimated",
+					"comment": "connect mobile port"
 				},
 				"eligiblePercentage": {
-					"value": 0.4076,
+					"value": 0.4822,
 					"dataSource": {
-						"page": 920,
-						"report": "SustainabilityReport",
-						"tagName": "technologies"
+						"page": 406,
+						"report": "IntegratedReport",
+						"tagName": "schemas"
 					},
-					"quality": "Audited",
-					"comment": "quantify optical capacitor"
+					"quality": "Incomplete",
+					"comment": "override auxiliary transmitter"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 100763.89,
+					"value": 449480.06,
 					"dataSource": {
-						"page": 554,
-						"report": "SustainabilityReport",
-						"tagName": "markets"
+						"page": 224,
+						"report": "IntegratedReport",
+						"tagName": "eyeballs"
 					},
 					"quality": "Audited",
-					"comment": "index solid state protocol"
+					"comment": "quantify primary circuit"
 				},
 				"eligiblePercentage": {
-					"value": 0.6652,
-					"dataSource": {
-						"page": 695,
-						"report": "ESEFReport",
-						"tagName": "infrastructures"
-					},
-					"quality": "Audited",
-					"comment": "program 1080p program"
+					"value": 0.1547,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 110626.67,
+					"value": 463394.69,
 					"dataSource": {
-						"page": 120,
+						"page": 493,
 						"report": "IntegratedReport",
-						"tagName": "users"
-					},
-					"quality": "Reported",
-					"comment": "back up multi-byte card"
-				},
-				"eligiblePercentage": {
-					"value": 0.015,
-					"dataSource": {
-						"page": 141,
-						"report": "IntegratedReport",
-						"tagName": "supply-chains"
+						"tagName": "methodologies"
 					},
 					"quality": "Audited",
-					"comment": "program multi-byte circuit"
+					"comment": "back up optical hard drive"
+				},
+				"eligiblePercentage": {
+					"value": 0.857,
+					"dataSource": {
+						"page": 317,
+						"report": "IntegratedReport",
+						"tagName": "initiatives"
+					},
+					"quality": "Audited",
+					"comment": "reboot solid state transmitter"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2023"
 	}
 ]

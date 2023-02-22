@@ -1,5 +1,6 @@
 import { CompanyInformation, CompanyReport } from "@clients/backend";
 import { generateCompanyInformation } from "./CompanyFixtures";
+import {getRandomReportingPeriod} from "@common/ReportingPeriodFixtures";
 
 export type ReferencedReports = { [key: string]: CompanyReport };
 
@@ -7,13 +8,6 @@ export interface FixtureData<T> {
   companyInformation: CompanyInformation;
   t: T;
   reportingPeriod: string,
-}
-
-const randomReportingPeriodOptions = ["2019", "2020", "2021", "2022", "2023", "2019-Q3", "2020-Q1", "2021-Q2"];
-
-export function getRandomReportingPeriod(){
-  const randomIndex = Math.floor(Math.random() * randomReportingPeriodOptions.length);
-  return randomReportingPeriodOptions[randomIndex]
 }
 
 /**

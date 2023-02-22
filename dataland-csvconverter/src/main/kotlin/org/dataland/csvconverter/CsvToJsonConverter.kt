@@ -11,6 +11,7 @@ import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
 import org.dataland.csvconverter.csv.commonfieldparsers.DataPointParser
 import org.dataland.csvconverter.csv.commonfieldparsers.EuTaxonomyCommonFieldParser
 import org.dataland.csvconverter.csv.commonfieldparsers.FiscalYearParser
+import org.dataland.csvconverter.csv.commonfieldparsers.ReportingPeriodParser
 import org.dataland.csvconverter.csv.utils.YesNoNaParser
 import org.dataland.csvconverter.csv.utils.YesNoParser
 import org.dataland.csvconverter.json.JsonConfig
@@ -52,13 +53,13 @@ class CsvToJsonConverter {
         fiscalYearParser,
         companyReportParser,
     )
+    private val reportingPeriodParser = ReportingPeriodParser()
 
     /**
      * Function to parse company-associated framework data from a CSV file
      */
     private fun <T> buildListOfCompanyInformationWithFrameworkData(
         csv: List<Map<String, String>>,
-        companyParser: CompanyInformationCsvParser,
         dataParser: CsvFrameworkParser<T>,
     ): List<CompanyInformationWithData<T>> {
         return csv
@@ -68,6 +69,7 @@ class CsvToJsonConverter {
                     CompanyInformationWithData(
                         company,
                         dataParser.buildData(it),
+                        reportingPeriodParser.getReportingPeriod(it)
                     )
                 } else {
                     null
@@ -79,13 +81,13 @@ class CsvToJsonConverter {
      * Parses data for the EuTaxonomyForNonFinancials framework from the CSV
      */
     fun parseEuTaxonomyNonFinancialData(): List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> =
-        buildListOfCompanyInformationWithFrameworkData(rawCsvData, companyParser, euTaxonomyForNonFinancialsCsvParser)
+        buildListOfCompanyInformationWithFrameworkData(rawCsvData, euTaxonomyForNonFinancialsCsvParser)
 
     /**
      * Parses data for the EuTaxonomyForFinancials framework from the CSV
      */
     fun parseEuTaxonomyFinancialData(): List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> =
-        buildListOfCompanyInformationWithFrameworkData(rawCsvData, companyParser, euTaxonomyForFinancialsCsvParser)
+        buildListOfCompanyInformationWithFrameworkData(rawCsvData, euTaxonomyForFinancialsCsvParser)
 
     /**
      * Method to read a given csv file

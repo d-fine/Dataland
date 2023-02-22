@@ -147,5 +147,10 @@ export function getCsvSharedEuTaxonomyValuesMapping(
       "Assurance",
       (row): CompanyReportReference | undefined => row.t.assurance?.dataSource
     ),
+    {
+      label: "Reporting Period",
+      value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>): string | undefined =>
+        row.reportingPeriod,
+    }
   ];
 }
