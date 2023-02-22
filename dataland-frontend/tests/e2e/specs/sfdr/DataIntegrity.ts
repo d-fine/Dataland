@@ -5,7 +5,7 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { Configuration, SfdrDataControllerApi, SfdrData } from "@clients/backend";
 import { uploadCompanyAndSfdrDataViaApi, uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { getPreparedFixture, UploadIds } from "@e2e/utils/GeneralApiUtils";
-import { generateSfdrData } from "../../fixtures/sfdr/SfdrDataFixtures";
+import { generateSfdrData } from "@e2e/fixtures/sfdr/SfdrDataFixtures";
 import Chainable = Cypress.Chainable;
 
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-11-12";
