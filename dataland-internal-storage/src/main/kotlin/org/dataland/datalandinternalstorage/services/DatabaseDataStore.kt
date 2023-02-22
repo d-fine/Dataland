@@ -17,6 +17,8 @@ import java.lang.IllegalArgumentException
  * Simple implementation of a data store using a postgres database
  * @param dataItemRepository
  * @param cloudEventMessageHandler service for managing CloudEvents messages
+ * @param nonPersistedDataClient the service for retrieving data from the temporary storage
+ * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
 class DatabaseDataStore(

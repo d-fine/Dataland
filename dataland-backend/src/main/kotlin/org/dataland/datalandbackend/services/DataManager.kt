@@ -65,7 +65,8 @@ class DataManager(
      * @return ID of the newly stored data in the data store
      */
     @Transactional
-    fun addDataSetToTemporaryStorageAndSendRequestQAMessage(storableDataSet: StorableDataSet, correlationId: String): String {
+    fun addDataSetToTemporaryStorageAndSendRequestQAMessage(storableDataSet: StorableDataSet, correlationId: String):
+        String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
@@ -164,7 +165,8 @@ class DataManager(
 
     /**
      * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
-     * stored in the persisted database. Further it logs success notification associated containing dataId and correlationId
+     * stored in the persisted database. Further it logs success notification associated containing dataId and
+     * correlationId
      * @param message Message retrieved from stored_queue
      */
     @RabbitListener(queues = ["stored_queue"])
