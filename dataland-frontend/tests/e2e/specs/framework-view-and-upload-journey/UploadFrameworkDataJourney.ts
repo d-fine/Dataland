@@ -210,7 +210,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           " and verify pages and elements",
         function () {
           cy.visitAndCheckAppMount("/companies");
-          //cy.wait(10000);
           verifyTaxonomySearchResultTable();
           cy.get('button[aria-label="New Dataset"]').click({ force: true });
           cy.get("input[id=company_search_bar_standard]")
