@@ -10,6 +10,7 @@ import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.lang.IllegalArgumentException
 
@@ -26,7 +27,11 @@ class DatabaseDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
-) {
+   // @Value("\${spring.rabbitmq.storage-queue:}") private val storageQueue: String,
+    @Value("\${spring.rabbitmq.stored-queue}") private val storedQueue: String,
+) {companion object {
+    private const val storageQueue = ("\${spring.rabbitmq.storage-queue}")
+}
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -35,7 +40,7 @@ class DatabaseDataStore(
      * @param message Message retrieved from storage_queue
      */
 
-    @RabbitListener(queues = ["storage_queue"])
+    @RabbitListener(queues = [storageQueue])
     fun listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -57,7 +62,7 @@ class DatabaseDataStore(
         try {
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "Data successfully stored", correlationId, "stored_queue",
+                dataId, "Data successfully stored", correlationId, storedQueue,
             )
         } catch (exception: IllegalArgumentException) {
             val internalMessage = "Error storing data." +

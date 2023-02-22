@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -34,9 +35,19 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-) {
+    @Value("\${spring.rabbitmq.upload-queue:}") private val uploadQueue: String,
+    //@Value("\${spring.rabbitmq.qa-queue:}") private const val qaQueue: String,
+    @Value("\${spring.rabbitmq.storage-queue:}") private val storageQueue: String,
+   // @Value("\${spring.rabbitmq.stored-queue}") private val storedQueue: String,
+) {companion object {
+    //@Value("\${spring.rabbitmq.storage-queue:}") private const val storageQueue2: String,
+    private const val qaQueue = ("\${spring.rabbitmq.qa-queue}")
+    private const val storedQueue = ("\${spring.rabbitmq.stored-queue}")
+}
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInformationHashMap = mutableMapOf<String, String>()
+
+
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
@@ -84,7 +95,7 @@ class DataManager(
         metaDataManager.storeDataMetaInformation(metaData)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "New data - QA necessary", correlationId,
-            "upload_queue",
+            uploadQueue,
         )
         return dataId
     }
@@ -93,7 +104,7 @@ class DataManager(
      * Method that listens to the qa_queue and updates the metadata information after successful qa process
      * @param message is the message delivered on the message queue
      */
-    @RabbitListener(queues = ["qa_queue"])
+    @RabbitListener(queues = [qaQueue])
     fun listenToMessageQueueAndUpdateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -145,7 +156,7 @@ class DataManager(
         dataInformationHashMap[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "Data to be stored", correlationId,
-            "storage_queue",
+            storageQueue,
         )
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID in temporary store" +
@@ -169,7 +180,7 @@ class DataManager(
      * correlationId
      * @param message Message retrieved from stored_queue
      */
-    @RabbitListener(queues = ["stored_queue"])
+    @RabbitListener(queues = [storedQueue])
     fun listenToStoredQueueAndRemoveStoredItemFromTemporaryStore(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
