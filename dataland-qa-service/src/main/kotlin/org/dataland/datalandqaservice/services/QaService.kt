@@ -31,22 +31,26 @@ class QaService(
             logger.info(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
             )
-            try {
-                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    dataId, "QA Process Completed", correlationId, "qa_queue",
-                )
-            } catch (exception: AmqpException) {
-                val internalMessage = "Error sending message to qa_queue." +
-                    " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
-                logger.error(internalMessage)
-                throw AmqpException(internalMessage, exception)
-            }
+            sendMessageToQueue(dataId, "QA Process Completed", correlationId, "qa_queue")
         } else {
             val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
             logger.error(internalMessage)
             throw MessageQueueException(
                 "Error receiving data for QA process: $internalMessage",
             )
+        }
+    }
+
+    private fun sendMessageToQueue(dataId: String, type: String, correlationId: String, messageQueue: String) {
+        try {
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataId, type, correlationId, messageQueue,
+            )
+        } catch (exception: AmqpException) {
+            val internalMessage = "Error sending message to $messageQueue." +
+                " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
+            logger.error(internalMessage)
+            throw AmqpException(internalMessage, exception)
         }
     }
 }
