@@ -169,7 +169,6 @@ jobs:
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
           INVITATION_REQUEST_CC: "dev.null@dataland.com"
-          INTERNAL_BACKEND_API: "http://backend:8080/api"
           RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
