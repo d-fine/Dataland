@@ -289,7 +289,7 @@ services:
   qa-service:
     restart: always
     profiles: ["production", "testing", "development"]
-    image: ghcr.io/d-fine/dataland/dataland_qa_service_test:${DATALAND_QA_SERVICE_TEST_VERSION}
+    image: ${QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_qa_service_test:${DATALAND_QA_SERVICE_TEST_VERSION}}
     networks:
       - internal
     expose:
