@@ -133,7 +133,8 @@ abstract class DataController<T>(
         return ResponseEntity.ok(frameworkData)
     }
 
-    private fun isDataViewableByUser(dataMetaInfo: DataMetaInformationEntity, authentication: DatalandAuthentication): Boolean {
+    private fun isDataViewableByUser(dataMetaInfo: DataMetaInformationEntity, authentication: DatalandAuthentication):
+        Boolean {
         return dataMetaInfo.qaStatus == QAStatus.Accepted ||
             dataMetaInfo.uploaderUserId == authentication.userId ||
             authentication.roles.contains(DatalandRealmRole.ROLE_ADMIN)
