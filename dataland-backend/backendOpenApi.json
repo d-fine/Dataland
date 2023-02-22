@@ -585,6 +585,22 @@
             "schema": {
               "$ref": "#/components/schemas/DataTypeEnum"
             }
+          },
+          {
+            "name": "showVersionHistoryForReportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -766,6 +782,14 @@
             }
           },
           {
+            "name": "showVersionHistoryForReportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "reportingPeriod",
             "in": "query",
             "required": false,
@@ -890,6 +914,14 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "showVersionHistoryForReportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -1020,6 +1052,14 @@
             }
           },
           {
+            "name": "showVersionHistoryForReportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "reportingPeriod",
             "in": "query",
             "required": false,
@@ -1147,6 +1187,14 @@
             }
           },
           {
+            "name": "showVersionHistoryForReportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "reportingPeriod",
             "in": "query",
             "required": false,
@@ -1271,6 +1319,14 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "showVersionHistoryForReportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
             }
           },
           {
