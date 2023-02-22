@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -25,8 +26,8 @@ class EuTaxonomyNonFinancials {
             receivedDataMetaInformation!!.companyId,
             receivedDataMetaInformation.dataType,
         )
-        Assertions.assertTrue(
-            listOfDataMetaInfoForTestCompany.component1().dataId.contains(receivedDataMetaInformation.dataId),
+        Assertions.assertEquals(
+            listOfDataMetaInfoForTestCompany.component1().dataId, receivedDataMetaInformation.dataId,
             "The expected data id was not found in the metadata database for the respective company.",
         )
     }
