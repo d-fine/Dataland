@@ -117,18 +117,18 @@ abstract class DataController<T>(
         metaInfos
             .filter { isDataViewableByUser(it, userId) }
             .forEach {
-            val correlationId = generatedCorrelationId(companyId)
-            logger.info(
-                "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
-            )
-            val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
-            frameworkData.add(
-                DataAndMetaInformation(
-                    it.toApiModel(DatalandAuthentication.fromContext()),
-                    objectMapper.readValue(dataAsString, clazz),
-                ),
-            )
-        }
+                val correlationId = generatedCorrelationId(companyId)
+                logger.info(
+                    "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
+                )
+                val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
+                frameworkData.add(
+                    DataAndMetaInformation(
+                        it.toApiModel(DatalandAuthentication.fromContext()),
+                        objectMapper.readValue(dataAsString, clazz),
+                    ),
+                )
+            }
         return ResponseEntity.ok(frameworkData)
     }
 
