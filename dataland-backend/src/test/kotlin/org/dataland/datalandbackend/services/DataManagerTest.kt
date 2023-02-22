@@ -78,7 +78,7 @@ class DataManagerTest(
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
-        val dataId = dataManager.addDataSet(storableEuTaxonomyDataSetForNonFinancials, correlationId)
+        val dataId = dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(storableEuTaxonomyDataSetForNonFinancials, correlationId)
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenThrow(ServerException::class.java)
         assertThrows<ServerException> {
             dataManager.getDataSet(
@@ -96,7 +96,7 @@ class DataManagerTest(
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
-        val dataId = dataManager.addDataSet(storableEuTaxonomyDataSetForNonFinancials, correlationId)
+        val dataId = dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(storableEuTaxonomyDataSetForNonFinancials, correlationId)
         val thrown = assertThrows<InvalidInputApiException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-financials"), correlationId)
         }
@@ -115,7 +115,7 @@ class DataManagerTest(
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
-        val dataId = dataManager.addDataSet(storableEuTaxonomyDataSetForNonFinancials, correlationId)
+        val dataId = dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(storableEuTaxonomyDataSetForNonFinancials, correlationId)
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn("")
         val thrown = assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
@@ -131,7 +131,7 @@ class DataManagerTest(
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
-        val dataId = dataManager.addDataSet(storableEuTaxonomyDataSetForNonFinancials, correlationId)
+        val dataId = dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(storableEuTaxonomyDataSetForNonFinancials, correlationId)
         val expectedDataTypeName = getExpectedDataTypeName(
             storableEuTaxonomyDataSetForNonFinancials, dataId,
             "eutaxonomy-financials",
@@ -164,7 +164,7 @@ class DataManagerTest(
         `when`(mockStorageClient.insertData(messageForDataSetAndCorrelationId)).thenReturn(
             InsertDataResponse(dataUUId),
         )
-        val dataId = dataManager.addDataSet(storableDataSetForNonFinancials, correlationId)
+        val dataId = dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(storableDataSetForNonFinancials, correlationId)
 
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
             buildReturnOfMockDataSelect(storableDataSetForNonFinancials),
@@ -192,7 +192,7 @@ class DataManagerTest(
         val storableNFEuTaxonomyDataSetAsString: String =
             objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.updateMetaDataAfterQA(AMQPMessage(storableNFEuTaxonomyDataSetAsString.toByteArray()))
+            dataManager.listenToMessageQueueAndUpdateMetaDataAfterQA(AMQPMessage(storableNFEuTaxonomyDataSetAsString.toByteArray()))
         }
         assertEquals("The update of the metadataset failed", thrown.publicMessage)
     }
@@ -204,7 +204,7 @@ class DataManagerTest(
         val storableNFEuTaxonomyDataSetAsString: String =
             objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.loggingOfStoredDataSet(AMQPMessage(storableNFEuTaxonomyDataSetAsString.toByteArray()))
+            dataManager.listenToStoredQueueAndRemoveStoredItemFromTemporaryStore(AMQPMessage(storableNFEuTaxonomyDataSetAsString.toByteArray()))
         }
         assertEquals("The storing of the dataset failed", thrown.publicMessage)
     }
@@ -226,7 +226,7 @@ class DataManagerTest(
         )
 
         assertThrows<AmqpException> {
-            spyDataManager.storeDataSet(storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId)
+            spyDataManager.storeDataSetInTemporaryStoreAndSendDataReceivedMessage(storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId)
         }
     }
 
@@ -236,7 +236,7 @@ class DataManagerTest(
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val company = companyManager.getCompanyById(storableEuTaxonomyDataSetForNonFinancials.companyId)
         `when`(
-            spyDataManager.storeDataSet(
+            spyDataManager.storeDataSetInTemporaryStoreAndSendDataReceivedMessage(
                 storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId,
             ),
         ).thenReturn(dataUUId)
@@ -250,7 +250,7 @@ class DataManagerTest(
         )
 
         assertThrows<AmqpException> {
-            spyDataManager.addDataSet(storableEuTaxonomyDataSetForNonFinancials, correlationId)
+            spyDataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(storableEuTaxonomyDataSetForNonFinancials, correlationId)
         }
     }
 }

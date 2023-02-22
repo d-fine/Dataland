@@ -41,7 +41,7 @@ class DatabaseDataStoreTest(
             IllegalArgumentException::class.java,
         )
         assertThrows<IllegalArgumentException> {
-            databaseDataStore.insertDataAndSendNotification(dataId, data, correlationId)
+            databaseDataStore.insertDataAndSendMessage(dataId, data, correlationId)
         }
     }
 
@@ -55,7 +55,7 @@ class DatabaseDataStoreTest(
             AmqpException::class.java,
         )
         assertThrows<AmqpException> {
-            databaseDataStore.insertDataAndSendNotification(dataId, data, correlationId)
+            databaseDataStore.insertDataAndSendMessage(dataId, data, correlationId)
         }
     }
 }
