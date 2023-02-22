@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan
  * Class to define the spring boot application
  */
 @SpringBootApplication
-@ComponentScan("org.dataland")
+@ComponentScan(basePackages = ["org.dataland"])
 class DatalandQaService
 
 /**
