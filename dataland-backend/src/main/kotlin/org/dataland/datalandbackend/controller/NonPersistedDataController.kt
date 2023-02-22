@@ -16,6 +16,6 @@ class NonPersistedDataController(
 ) : NonPersistedDataApi {
 
     override fun getCompanyAssociatedDataForInternalStorage(dataId: String): ResponseEntity<String> {
-        return ResponseEntity.ok(dataManager.selectDataSetForInternalStorage(dataId))
+        return ResponseEntity.ok(dataManager.selectDataSetFromTemporaryStorage(dataId))
     }
 }

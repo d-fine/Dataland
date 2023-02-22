@@ -27,7 +27,7 @@ class EuTaxonomyNonFinancials {
         )
         Assertions.assertTrue(
             listOfDataMetaInfoForTestCompany.component1().dataId.contains(receivedDataMetaInformation.dataId),
-            "The all-data-sets-list of the posted company does not contain the posted data set.",
+            "The expected data id was not found in the metadata database for the respective company.",
         )
     }
 
