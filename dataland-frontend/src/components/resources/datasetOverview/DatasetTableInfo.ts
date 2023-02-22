@@ -9,7 +9,8 @@ export class DatasetTableInfo {
     readonly dataType: DataTypeEnum,
     readonly uploadTimeInMs: number,
     readonly companyId: string,
-    readonly dataId: string
+    readonly dataId: string,
+    readonly dataReportingPeriod: string
   ) {}
 }
 
@@ -53,7 +54,8 @@ export async function getMyDatasetTableInfos(
             dataMetaInfo.dataType,
             dataMetaInfo.uploadTime * 1000,
             company.companyId,
-            dataMetaInfo.dataId
+            dataMetaInfo.dataId,
+            dataMetaInfo.reportingPeriod
           )
       )
   );

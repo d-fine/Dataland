@@ -31,26 +31,6 @@ abstract class DataController<T>(
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
-        ResponseEntity<DataMetaInformation> {
-        val companyId = companyAssociatedData.companyId
-        val reportingPeriod = companyAssociatedData.reportingPeriod
-        val userId = DatalandAuthentication.fromContext().userId
-        val uploadTime = Instant.now().epochSecond
-        logger.info(
-            "Received a request from user '$userId' to post company associated data of type $dataType " +
-                "for company ID '$companyId' and the reporting period $reportingPeriod",
-        )
-        val correlationId = generatedCorrelationId(companyId)
-        val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
-
-        val dataIdOfPostedData = dataManager.addDataSet(datasetToStore, correlationId)
-        logger.info("Posted company associated data for companyId '$companyId'. Correlation ID: $correlationId")
-        return ResponseEntity.ok(
-            DataMetaInformation(dataIdOfPostedData, companyId, dataType, userId, uploadTime, reportingPeriod),
-        )
-    }
-
     private fun buildDatasetToStore(
         companyAssociatedData: CompanyAssociatedData<T>,
         userId: String,
@@ -74,6 +54,26 @@ abstract class DataController<T>(
         return correlationId
     }
 
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
+        ResponseEntity<DataMetaInformation> {
+        val companyId = companyAssociatedData.companyId
+        val reportingPeriod = companyAssociatedData.reportingPeriod
+        val userId = DatalandAuthentication.fromContext().userId
+        val uploadTime = Instant.now().epochSecond
+        logger.info(
+            "Received a request from user '$userId' to post company associated data of type $dataType " +
+                "for company ID '$companyId' and the reporting period $reportingPeriod",
+        )
+        val correlationId = generatedCorrelationId(companyId)
+        val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
+
+        val dataIdOfPostedData = dataManager.addDataSet(datasetToStore, correlationId)
+        logger.info("Posted company associated data for companyId '$companyId'. Correlation ID: $correlationId")
+        return ResponseEntity.ok(
+            DataMetaInformation(dataIdOfPostedData, companyId, dataType, userId, uploadTime, reportingPeriod),
+        )
+    }
+
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val dataMetaInformationEntity = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         val companyId = dataMetaInformationEntity.company.companyId
@@ -94,13 +94,13 @@ abstract class DataController<T>(
         return ResponseEntity.ok(companyAssociatedData)
     }
 
-    override fun getAllCompanyData(companyId: String, reportingPeriod: String?): ResponseEntity<List<DataAndMetaInformation<T>>> {
+    override fun getFrameworkDatasetsForCompany(companyId: String, showVersionHistoryForReportingPeriod: Boolean, reportingPeriod: String?): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val reportingPeriodInLogMessage = reportingPeriod ?: "all reporting periods"
         logger.info(
             "Received a request to get all datasets together with meta info for framework '$dataType', " +
                 "companyId '$companyId' and reporting period '$reportingPeriodInLogMessage'",
         )
-        val listOfDataMetaInfoEntities = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType, reportingPeriod)
+        var listOfDataMetaInfoEntities = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType, showVersionHistoryForReportingPeriod, reportingPeriod)
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         listOfDataMetaInfoEntities.forEach {
             val correlationId = generatedCorrelationId(companyId)

@@ -41,7 +41,12 @@ interface MetaDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
-    fun getListOfDataMetaInfo(@RequestParam companyId: String? = null, @RequestParam dataType: DataType? = null):
+    fun getListOfDataMetaInfo(
+        @RequestParam companyId: String? = null,
+        @RequestParam dataType: DataType? = null,
+        @RequestParam showVersionHistoryForReportingPeriod: Boolean = false, // TODO could be an enum  "latest" and "history"
+        @RequestParam reportingPeriod: String? = null,
+    ):
         ResponseEntity<List<DataMetaInformation>>
 
     /**

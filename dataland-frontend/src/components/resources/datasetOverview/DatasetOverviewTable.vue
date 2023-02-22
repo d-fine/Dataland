@@ -18,6 +18,7 @@
           {{ humanizeString(data.dataType) }}
         </template>
       </Column>
+      <Column field="dataReportingPeriod" header="REPORTING PERIOD" :sortable="true"></Column>
       <Column field="uploadTimeInMs" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInMs" class="w-2">
         <template #body="{ data }">
           <span>{{ convertDate(data.uploadTimeInMs) }}</span>

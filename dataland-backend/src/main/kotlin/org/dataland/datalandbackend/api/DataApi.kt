@@ -70,10 +70,12 @@ interface DataApi<T> {
     fun getCompanyAssociatedData(@PathVariable("dataId") dataId: String):
         ResponseEntity<CompanyAssociatedData<T>>
 
+    // TODO At the very end cleanup: check if docs here are still correct
     /**
      * A method to retrieve framework datasets together with their meta info for one specific company identified by its
      * company ID, optionally filtered to one specific reporting period
      * @param companyId identifier of the company in Dataland
+     * @param showVersionHistoryForReportingPeriod TODO
      * @param reportingPeriod identifies a specific reporting period (e.g. a year or quarter)
      * @return a list of all datasets for this company, framework and
      */
@@ -91,8 +93,9 @@ interface DataApi<T> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
-    fun getAllCompanyData(
+    fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,
+        @RequestParam showVersionHistoryForReportingPeriod: Boolean = false, // TODO could be an enum or Set of strings with options "latest" and "history"; I did use Boolean for now to avoid problems with OpenApiSpec => discuss later
         @RequestParam reportingPeriod: String? = null,
     ): ResponseEntity<List<DataAndMetaInformation<T>>>
 }
