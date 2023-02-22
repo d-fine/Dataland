@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component
 @Component
 class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    //@Value("\${spring.rabbitmq.upload-queue:}") private val uploadQueue: String,
     @Value("\${spring.rabbitmq.qa-queue:}") private val qaQueue: String,
 ) {companion object {
     private const val uploadQueue = ("\${spring.rabbitmq.upload-queue}")

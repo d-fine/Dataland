@@ -27,7 +27,6 @@ class DatabaseDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
-   // @Value("\${spring.rabbitmq.storage-queue:}") private val storageQueue: String,
     @Value("\${spring.rabbitmq.stored-queue}") private val storedQueue: String,
 ) {companion object {
     private const val storageQueue = ("\${spring.rabbitmq.storage-queue}")

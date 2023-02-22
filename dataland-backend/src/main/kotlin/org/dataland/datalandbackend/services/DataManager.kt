@@ -36,11 +36,8 @@ class DataManager(
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Value("\${spring.rabbitmq.upload-queue:}") private val uploadQueue: String,
-    //@Value("\${spring.rabbitmq.qa-queue:}") private const val qaQueue: String,
     @Value("\${spring.rabbitmq.storage-queue:}") private val storageQueue: String,
-   // @Value("\${spring.rabbitmq.stored-queue}") private val storedQueue: String,
 ) {companion object {
-    //@Value("\${spring.rabbitmq.storage-queue:}") private const val storageQueue2: String,
     private const val qaQueue = ("\${spring.rabbitmq.qa-queue}")
     private const val storedQueue = ("\${spring.rabbitmq.stored-queue}")
 }
