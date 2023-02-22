@@ -12,11 +12,9 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.AmqpException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -29,7 +27,6 @@ import java.util.*
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
 */
-@ComponentScan(basePackages = ["org.dataland"])
 @Component("DataManager")
 class DataManager(
     @Autowired var objectMapper: ObjectMapper,
@@ -62,40 +59,33 @@ class DataManager(
     }
 
     /**
-     * Method to make the data manager add data to a data store and store meta data in Dataland
+     * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
+     * relevant message queues
      * @param storableDataSet contains all the inputs needed by Dataland
      * @return ID of the newly stored data in the data store
      */
     @Transactional
-    fun addDataSet(storableDataSet: StorableDataSet, correlationId: String): String {
+    fun addDataSetToTemporaryStorageAndSendRequestQAMessage(storableDataSet: StorableDataSet, correlationId: String): String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
                 "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId",
         )
-        val dataId: String = storeDataSet(storableDataSet, company.companyName, correlationId)
-        val updatedMetaData = DataMetaInformationEntity(
+        val dataId: String = storeDataSetInTemporaryStoreAndSendDataReceivedMessage(
+            storableDataSet,
+            company.companyName, correlationId,
+        )
+        val metaData = DataMetaInformationEntity(
             dataId, storableDataSet.dataType.toString(),
             storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, QAStatus.Pending,
         )
-        metaDataManager.storeDataMetaInformation(updatedMetaData)
-        sendMessageToQueue(dataId, "New data - QA necessary", correlationId, "upload_queue")
+        metaDataManager.storeDataMetaInformation(metaData)
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            dataId, "New data - QA necessary", correlationId,
+            "upload_queue",
+        )
         return dataId
-    }
-
-    private fun sendMessageToQueue(dataId: String, type: String, correlationId: String, messageQueue: String) {
-        try {
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, type, correlationId,
-                messageQueue,
-            )
-        } catch (exception: AmqpException) {
-            val internalMessage = "Error sending message to $messageQueue." +
-                " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
-            logger.error(internalMessage)
-            throw AmqpException(internalMessage, exception)
-        }
     }
 
     /**
@@ -103,12 +93,13 @@ class DataManager(
      * @param message is the message delivered on the message queue
      */
     @RabbitListener(queues = ["qa_queue"])
-    fun updateMetaDataAfterQA(message: Message) {
+    fun listenToMessageQueueAndUpdateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         if (!dataId.isNullOrEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            metaDataManager.storeDataMetaInformation(metaInformation.copy(qaStatus = QAStatus.Accepted))
+            metaInformation.qaStatus = QAStatus.Accepted
+            metaDataManager.storeDataMetaInformation(metaInformation)
             logger.info(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId",
             )
@@ -123,33 +114,38 @@ class DataManager(
     }
 
     /**
-     * This method retrieves data from the temporal storage
+     * This method retrieves data from the temporary storage
      * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
+     * * @return stringified data entry from the temporary store
      */
-    fun selectDataSetForInternalStorage(dataId: String): String {
+    fun selectDataSetFromTemporaryStorage(dataId: String): String {
         val rawValue = dataInformationHashMap.getOrElse(dataId) {
             throw ResourceNotFoundApiException(
-                "Non-persisted data ID not found",
-                "Dataland does not know the non-persisted data id $dataId",
+                "Data ID not found in temporary storage",
+                "Dataland does not know the data id $dataId",
             )
         }
         return objectMapper.writeValueAsString(rawValue)
     }
 
     /**
-     * Method to temporarily store a data set via the hash map and send a notification to the storage_queue
+     * Method to temporarily store a data set in a hash map and send a message to the storage_queue
      * @param storableDataSet The data set to store
      * @param companyName The name of the company corresponding to the data set to store
-     * @param correlationId
+     * @param correlationId The correlation id of the request initiating the storing of data
+     * @return ID of the stored data set
      */
-    fun storeDataSet(
+    fun storeDataSetInTemporaryStoreAndSendDataReceivedMessage(
         storableDataSet: StorableDataSet,
         companyName: String,
         correlationId: String,
     ): String {
         val dataId = generateRandomDataId()
         dataInformationHashMap[dataId] = objectMapper.writeValueAsString(storableDataSet)
-        sendMessageToQueue(dataId, "Data to be stored", correlationId, "storage_queue")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            dataId, "Data to be stored", correlationId,
+            "storage_queue",
+        )
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID in temporary store" +
                 "${storableDataSet.companyId}. Company Name $companyName received ID $dataId from storage. " +
@@ -160,17 +156,19 @@ class DataManager(
 
     /**
      * Method to generate a random Data ID
+     * @return generated UUID
      */
     fun generateRandomDataId(): String {
         return "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
     }
 
     /**
-     * Method to log success notification associated to certain dataId and correlationId
+     * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
+     * stored in the persisted database. Further it logs success notification associated containing dataId and correlationId
      * @param message Message retrieved from stored_queue
      */
     @RabbitListener(queues = ["stored_queue"])
-    fun loggingOfStoredDataSet(message: Message) {
+    fun listenToStoredQueueAndRemoveStoredItemFromTemporaryStore(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         if (!dataId.isNullOrEmpty()) {

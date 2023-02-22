@@ -1,6 +1,8 @@
 package org.dataland.datalandmessagequeueutils.cloudevents
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.slf4j.LoggerFactory
+import org.springframework.amqp.AmqpException
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.support.converter.MessagingMessageConverter
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,6 +27,7 @@ class CloudEventMessageHandler(
     @Autowired var objectMapper: ObjectMapper,
 ) {
     var converter: MessagingMessageConverter = MessagingMessageConverter()
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     private fun buildCEMessage(body: String, type: String, correlationId: String): MessageMQ {
         val bodyInBytes = body.toByteArray()
@@ -42,11 +45,19 @@ class CloudEventMessageHandler(
      * @param body the payload of the message to be constructed
      * @param type criterion to distinguish different messages to RabbitMQ apart from used queue
      * @param correlationId to be used as ID in header of CloudEvents message
-     * @param queue RabbitMQ message queue to send the constructed message to
+     * @param messageQueue RabbitMQ message queue to send the constructed message to
      */
-    fun buildCEMessageAndSendToQueue(body: String, type: String, correlationId: String, queue: String) {
+    fun buildCEMessageAndSendToQueue(body: String, type: String, correlationId: String, messageQueue: String) {
         val messageInput = buildCEMessage(body, type, correlationId)
-        rabbitTemplate.send(queue, messageInput)
+
+        try {
+            rabbitTemplate.send(messageQueue, messageInput)
+        } catch (exception: AmqpException) {
+            val internalMessage = "Error sending message to $messageQueue." +
+                " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
+            logger.error(internalMessage)
+            throw AmqpException(internalMessage, exception)
+        }
     }
 
     /**
