@@ -12,6 +12,7 @@ class EuTaxonomyFinancials {
         .copy(financialServicesTypes = listOfOneEuTaxonomyFinancialsDataSet[0].financialServicesTypes?.sorted())
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderEuTaxonomyForFinancials
         .getCompanyInformationWithoutIdentifiers(1)
+    private val listOfTenEuTaxonomyFinancialsDataSets = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(10)
 
     @Test
     fun `post a company with EuTaxonomyForFinancials data and check if the data can be retrieved correctly`() {
@@ -32,6 +33,17 @@ class EuTaxonomyFinancials {
             downloadedAssociatedData.data?.copy(
                 financialServicesTypes = downloadedAssociatedData.data?.financialServicesTypes?.sorted(),
             ),
+        )
+    }
+
+    @Test
+    fun `Upload multiple framework data sets under the same reporting data and check that the latest and the version history can be retrieved`(){
+
+        // Upload 10 identical data sets for the same company
+        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+            listOfCompanyInformation = listOfOneCompanyInformation,
+            listOfFrameworkData = listOfTenEuTaxonomyFinancialsDataSets,
+            frameworkDataUploadFunction = apiAccessor.euTaxonomyFinancialsUploaderFunction
         )
     }
 }
