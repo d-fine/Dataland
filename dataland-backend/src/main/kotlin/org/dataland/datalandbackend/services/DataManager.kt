@@ -38,6 +38,7 @@ class DataManager(
 ) {
     @Value("\${spring.rabbitmq.upload-queue}")
     private val uploadQueue = ""
+
     @Value("\${spring.rabbitmq.storage-queue}")
     private var storageQueue = ""
 
