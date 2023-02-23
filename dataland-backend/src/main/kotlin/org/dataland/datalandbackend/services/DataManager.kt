@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -34,13 +35,9 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
+    @Value("\${spring.rabbitmq.upload-queue}") val uploadQueue: String,
+    @Value("\${spring.rabbitmq.storage-queue}") val storageQueue: String,
 ) {
-    companion object {
-        private const val qaQueue = "qa_queue"
-        private const val storedQueue = "stored_queue"
-        private const val uploadQueue = "upload_queue"
-        private const val storageQueue = "storage_queue"
-    }
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInformationHashMap = mutableMapOf<String, String>()
 
@@ -99,7 +96,7 @@ class DataManager(
      * Method that listens to the qa_queue and updates the metadata information after successful qa process
      * @param message is the message delivered on the message queue
      */
-    @RabbitListener(queues = [qaQueue])
+    @RabbitListener(queues = ["\${spring.rabbitmq.qa-queue}"])
     fun listenToMessageQueueAndUpdateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -175,7 +172,7 @@ class DataManager(
      * correlationId
      * @param message Message retrieved from stored_queue
      */
-    @RabbitListener(queues = [storedQueue])
+    @RabbitListener(queues = ["\${spring.rabbitmq.stored-queue}"])
     fun listenToStoredQueueAndRemoveStoredItemFromTemporaryStore(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
