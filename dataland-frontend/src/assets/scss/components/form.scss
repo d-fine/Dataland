@@ -392,8 +392,10 @@ input[type="checkbox"], input[type="radio"]{
   input[type=checkbox]:checked::before, input[type=radio]:checked::before {
     display: block;
   }
+  .w-100 { width: 100px; }
   .short { width: 33%; }
   .medium { width: 66%; }
+  .long { width: 100%; }
   .next-to-each-other {
     display: flex;
     gap: 1rem;

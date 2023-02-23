@@ -253,16 +253,17 @@
                           name="Number of employees"
                           explanation="Number of employees"
                       />
+                      <div class="lg:col-4 md:col-6 col-12 p-0">
                       <FormKit
                           type="number"
                           name="numberOfEmployees"
                           validation-label="Number of employees"
-                          placeholder="Value"
+                          placeholder="Number"
                           validation="required|number"
                           step="1"
                           min="0"
-                          :inner-class="{ short: true }"
                       />
+                      </div>
                     </div>
 
                   </div>
@@ -279,12 +280,15 @@
                           name="Level of assurance *"
                           explanation="Level of assurance"
                       />
+                      <div class="lg:col-4 md:col-6 col-12 p-0">
                       <FormKit
                           type="select"
                           name="levelOfAssurance"
+                          placeholder="None"
                           validation-label="Level of assurance"
                           validation="required"
                       />
+                      </div>
                     </div>
 
                     <!-- Assurance provider -->
@@ -296,6 +300,7 @@
                       <FormKit
                           type="text"
                           name="assuranceProvider"
+                          placeholder="Assurance provider"
                           validation-label="Assurance provider"
                           validation="required"
                       />
@@ -307,18 +312,68 @@
                           name="Data source *"
                           explanation="Data source"
                       />
-                      <FormKit
-                          type="select"
-                          name="dataSource"
-                          validation-label="Data source"
-                          validation="required"
-                          :options="files"
-                      />
+                      <div class="next-to-each-other">
+                        <FormKit
+                            outer-class="flex-1"
+                            type="select"
+                            name="page"
+                            placeholder="Select a report"
+                            validation-label="Select a report"
+                            validation="required"
+                            :options="files"
+                        />
+                        <FormKit
+                            outer-class="w-100"
+                            type="number"
+                            name="page"
+                            placeholder="Page"
+                            validation-label="Page"
+                            validation="required"
+                        />
+                      </div>
                     </div>
 
                   </div>
 
                   </div>
+
+                <div class="uploadFormSection">
+
+                  <div class="col-3 p-3 topicLabel">
+                    <h4 id="general" class="anchor title">Add KPIs</h4>
+                    <p>Select at least one company type to add the related section of KPIs.</p>
+                  </div>
+
+                  <!-- Add KPIs -->
+                  <div class="col-9 formFields">
+
+                    <!-- Data source -->
+                    <div class="form-field">
+                      <UploadFormHeader
+                          name="Company type *"
+                          explanation="Company type *"
+                      />
+                      <FormKit
+                          type="select"
+                          name="companyType"
+                          validation-label="Company type"
+                          validation="required"
+                          :options="files"
+                      />
+
+
+                      <PrimeButton
+                          @click=""
+                          class="m-0"
+                          label="ADD RELATED KPIS"
+                          :disabled="valid"
+                      />
+
+                    </div>
+
+                  </div>
+
+                </div>
 
 
 
