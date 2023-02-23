@@ -46,9 +46,9 @@ class ApiAccessor {
     val testDataProviderForEuTaxonomyDataForNonFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
     val euTaxonomyNonFinancialsUploaderFunction =
-        { companyId: String, euTaxonomyNonFinancialsData: EuTaxonomyDataForNonFinancials ->
+        { companyId: String, euTaxonomyNonFinancialsData: EuTaxonomyDataForNonFinancials, reportingPeriod: String ->
             val companyAssociatedEuTaxonomyNonFinancialsData =
-                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, "", euTaxonomyNonFinancialsData)
+                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, reportingPeriod, euTaxonomyNonFinancialsData)
             dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
                 companyAssociatedEuTaxonomyNonFinancialsData,
             )
@@ -59,9 +59,9 @@ class ApiAccessor {
     val testDataProviderEuTaxonomyForFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForFinancials::class.java)
     val euTaxonomyFinancialsUploaderFunction =
-        { companyId: String, euTaxonomyFinancialsData: EuTaxonomyDataForFinancials ->
+        { companyId: String, euTaxonomyFinancialsData: EuTaxonomyDataForFinancials, reportingPeriod: String ->
             val companyAssociatedEuTaxonomyFinancialsData =
-                CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, "", euTaxonomyFinancialsData)
+                CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, reportingPeriod, euTaxonomyFinancialsData)
             dataControllerApiForEuTaxonomyFinancials.postCompanyAssociatedEuTaxonomyDataForFinancials(
                 companyAssociatedEuTaxonomyFinancialsData,
             )
@@ -71,8 +71,8 @@ class ApiAccessor {
         LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForLksgData =
         FrameworkTestDataProvider(LksgData::class.java)
-    val lksgUploaderFunction = { companyId: String, lksgData: LksgData ->
-        val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, "", lksgData)
+    val lksgUploaderFunction = { companyId: String, lksgData: LksgData, reportingPeriod: String ->
+        val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, reportingPeriod, lksgData)
         dataControllerApiForLksgData.postCompanyAssociatedLksgData(
             companyAssociatedLksgData,
         )
@@ -82,8 +82,8 @@ class ApiAccessor {
         SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForSfdrData =
         FrameworkTestDataProvider(SfdrData::class.java)
-    val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData ->
-        val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, "", sfdrData)
+    val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData, reportingPeriod: String ->
+        val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, reportingPeriod, sfdrData)
         dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
             companyAssociatedSfdrData,
         )
@@ -93,8 +93,8 @@ class ApiAccessor {
         SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForSmeData =
         FrameworkTestDataProvider(SmeData::class.java)
-    val smeUploaderFunction = { companyId: String, smeData: SmeData ->
-        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "", smeData)
+    val smeUploaderFunction = { companyId: String, smeData: SmeData, reportingPeriod: String ->
+        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, reportingPeriod, smeData)
         dataControllerApiForSmeData.postCompanyAssociatedSmeData(
             companyAssociatedSmeData,
         )
@@ -103,8 +103,9 @@ class ApiAccessor {
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         listOfCompanyInformation: List<CompanyInformation>,
         listOfFrameworkData: List<T>,
-        frameworkDataUploadFunction: (companyId: String, frameworkData: T) -> DataMetaInformation,
+        frameworkDataUploadFunction: (companyId: String, frameworkData: T, reportingPeriod: String) -> DataMetaInformation,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
+        reportingPeriod: String = ""
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
@@ -112,7 +113,7 @@ class ApiAccessor {
             val receivedStoredCompany = companyDataControllerApi.postCompany(companyInformation)
             listOfFrameworkData.forEach { frameworkDataSet ->
                 val receivedDataMetaInformation =
-                    frameworkDataUploadFunction(receivedStoredCompany.companyId, frameworkDataSet)
+                    frameworkDataUploadFunction(receivedStoredCompany.companyId, frameworkDataSet, reportingPeriod)
                 listOfUploadInfo.add(
                     UploadInfo(
                         companyInformation,
@@ -169,7 +170,7 @@ class ApiAccessor {
             )
         }
     }
-
+// TODO: Add ReportingPeriod for this function
     fun uploadCompanyAndFrameworkDataForMultipleFrameworks(
         companyInformationPerFramework: Map<DataTypeEnum, List<CompanyInformation>>,
         numberOfDataSetsPerCompany: Int,

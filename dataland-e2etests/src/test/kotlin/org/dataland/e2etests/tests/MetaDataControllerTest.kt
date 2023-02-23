@@ -1,15 +1,16 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.*
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.UploadInfo
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -99,7 +100,8 @@ class MetaDataControllerTest {
     @Test
     fun `post companies and eu taxonomy data and check meta info search with filter on data type`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
-        val initListSizeDataMetaInfoForEuTaxoFinancials = apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType)
+        val initListSizeDataMetaInfoForEuTaxoFinancials =
+            apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showVersionHistoryForReportingPeriod = true)
         apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(
                 testDataType to listOfTestCompanyInformation,
@@ -107,7 +109,8 @@ class MetaDataControllerTest {
             ),
             numberOfDataSetsToPostPerCompany,
         )
-        val listSizeDataMetaInfoForEuTaxoFinancials = apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType)
+        val listSizeDataMetaInfoForEuTaxoFinancials =
+            apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showVersionHistoryForReportingPeriod = true)
         val expectedListSizeDataMetaInfoForEuTaxoFinancials = initListSizeDataMetaInfoForEuTaxoFinancials +
                 totalNumberOfDataSetsPerFramework
         assertEquals(
@@ -218,6 +221,113 @@ class MetaDataControllerTest {
         validateAdminAccessToUserId(
             metaInfoOfUploaderUpload,
             metaInfoOfAdminUpload,
+        )
+    }
+
+    @Test
+    fun `Ensure that Version History field works metadata endpoint of meta data controller`() {
+//        Get a data set of an arbitrary framework. Upload it multiple times changing ReportingPeriod, uploadTime and a data point in between.
+//        Ensure that only the data set with the latest upload_time is returned or all depending on showVersionHistory flag.
+        val companyInformation =
+            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1)[0]
+        val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
+        val reportingPeriod1 = "2022"
+        val listOfUploadInfo2022first =
+            firstUploadForVersionHistory(companyInformation, frameWorkData, reportingPeriod1)
+        val companyId = listOfUploadInfo2022first.actualStoredCompany.companyId
+//        Wait to ensure that uploadTime changes
+//        TODO: Shorten sleep time when upload time was switched from second to milli
+        Thread.sleep(1000)
+        subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
+        Thread.sleep(1000)
+//        Override number of employees to identify the final uploaded dataset
+        val finalFrameWorkData = frameWorkData.copy(numberOfEmployees = BigDecimal.valueOf(3))
+        subsequentUploadForVersionHistory(companyId, finalFrameWorkData, reportingPeriod1)
+        val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
+        val resultWithoutVersioning =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod1)
+        val resultWithVersioning =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod1)
+
+        val activeDataSet =
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
+                resultWithoutVersioning[0].dataId
+            )
+
+        assertEquals(
+            3, resultWithVersioning.size,
+            "Metadata of three versions of uploaded datasets should be available, instead its ${resultWithoutVersioning.size}.",
+        )
+        assertEquals(
+            1,
+            resultWithoutVersioning.size,
+            "Metadata of a single, active version should be available. Instead its ${resultWithVersioning.size}"
+        )
+        assertTrue(
+            (resultWithoutVersioning[0].uploadTime == resultWithVersioning.maxOfOrNull { it.uploadTime }),
+            "The active result should be the one with the highest uploadTime but it isn't."
+        )
+        assertTrue(
+            (activeDataSet.data!!.numberOfEmployees == BigDecimal.valueOf(3)),
+            "The active dataset should have been manipulated to have a numberOfEmployees of three but the retrieved active data set does not."
+        )
+    }
+
+    @Test
+    fun `Ensure that reportingPeriod works on metadata endpoint of meta data controller`() {
+//        Upload multiple versions of a dataset under different reporting Periods. Ensure that only a single one is active
+//        per reporting period and that the active one is the latest one uploaded for this reporting period
+        val companyInformation =
+            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1)[0]
+        val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
+        val reportingPeriod1 = "2022"
+        val reportingPeriod2 = "2023"
+        val firstUploadInfo = firstUploadForVersionHistory(companyInformation, frameWorkData, reportingPeriod1)
+        val companyId = firstUploadInfo.actualStoredCompany.companyId
+//        TODO: Shorten sleep time when upload time was switched from second to milli
+        Thread.sleep(1000)
+        val final2022metadata = subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
+        Thread.sleep(1000)
+        subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod2)
+        Thread.sleep(1000)
+        val final2023metadata = subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod2)
+        val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
+        val result2022WithoutVersioning =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod1)
+        val result2023WithoutVersioning =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod2)
+        assertTrue(
+            (result2023WithoutVersioning.size == 1 && result2022WithoutVersioning.size == 1 && result2023WithoutVersioning[0].dataId != result2022WithoutVersioning[0].dataId),
+            "Without versioning, metadata of only a single active dataset should be returned per reporting period and they should point to different data sets. But this is not the case."
+        )
+        assertTrue(
+            (final2022metadata.dataId == result2022WithoutVersioning[0].dataId && final2023metadata.dataId == result2023WithoutVersioning[0].dataId),
+            "The active data set of the reporting period should be the last uploaded one but this is not the case."
+        )
+    }
+
+    private fun firstUploadForVersionHistory(
+        companyInformation: CompanyInformation,
+        frameWorkData: EuTaxonomyDataForNonFinancials,
+        reportingPeriod: String
+    ): UploadInfo {
+        return apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+            listOf(companyInformation),
+            listOf(frameWorkData),
+            apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            reportingPeriod = reportingPeriod
+        )[0]
+    }
+
+    private fun subsequentUploadForVersionHistory(
+        companyId: String,
+        frameWorkData: EuTaxonomyDataForNonFinancials,
+        reportingPeriod: String
+    ): DataMetaInformation {
+        val body =
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, reportingPeriod, frameWorkData)
+        return apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            body
         )
     }
 
