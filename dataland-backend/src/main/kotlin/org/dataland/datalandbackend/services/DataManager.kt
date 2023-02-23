@@ -43,7 +43,7 @@ class DataManager(
     private val storageQueue = ""
 
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val dataInformationHashMap = mutableMapOf<String, String>()
+    private val dataInMemoryStorage = mutableMapOf<String, String>()
 
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
@@ -125,7 +125,7 @@ class DataManager(
      * * @return stringified data entry from the temporary store
      */
     fun selectDataSetFromTemporaryStorage(dataId: String): String {
-        val rawValue = dataInformationHashMap.getOrElse(dataId) {
+        val rawValue = dataInMemoryStorage.getOrElse(dataId) {
             throw ResourceNotFoundApiException(
                 "Data ID not found in temporary storage",
                 "Dataland does not know the data id $dataId",
@@ -147,7 +147,7 @@ class DataManager(
         correlationId: String,
     ): String {
         val dataId = generateRandomDataId()
-        dataInformationHashMap[dataId] = objectMapper.writeValueAsString(storableDataSet)
+        dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "Data to be stored", correlationId,
             storageQueue,
@@ -183,7 +183,7 @@ class DataManager(
             logger.info(
                 "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
             )
-            dataInformationHashMap.remove(dataId)
+            dataInMemoryStorage.remove(dataId)
         } else {
             val internalMessage = "Error storing data. Correlation ID: $correlationId"
             logger.error(internalMessage)
