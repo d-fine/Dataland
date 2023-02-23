@@ -17,8 +17,9 @@ import org.springframework.stereotype.Component
 @Component
 class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Value("\${spring.rabbitmq.qa-queue}") val qaQueue: String,
 ) {
+    @Value("\${spring.rabbitmq.qa-queue}")
+    private val qaQueue = ""
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**

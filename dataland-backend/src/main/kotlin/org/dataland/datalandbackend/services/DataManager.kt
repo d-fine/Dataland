@@ -35,9 +35,12 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Value("\${spring.rabbitmq.upload-queue}") val uploadQueue: String,
-    @Value("\${spring.rabbitmq.storage-queue}") val storageQueue: String,
 ) {
+    @Value("\${spring.rabbitmq.upload-queue}")
+    private val uploadQueue = ""
+    @Value("\${spring.rabbitmq.storage-queue}")
+    private var storageQueue = ""
+
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInformationHashMap = mutableMapOf<String, String>()
 
