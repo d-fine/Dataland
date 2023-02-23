@@ -5,14 +5,11 @@
 echo "Configuring Certificate Folder"
 if [ -f "/certs/custom/privkey.pem" ]; then
   echo "Found custom certificates folder. Rewriting symlink"
-  rm /certs/dataland
-  ln -s /certs/custom /certs/dataland
+  ln -sTf /certs/custom /certs/dataland
 elif [ -f "$PROXY_LETSENCRYPT_PATH/privkey.pem" ]; then
   echo "LetsEncrypt is there. Rewriting symlink"
-  rm /certs/dataland
-  ln -s $PROXY_LETSENCRYPT_PATH /certs/dataland
+  ln -sTf $PROXY_LETSENCRYPT_PATH /certs/dataland
 else
   echo "LetsEncrypt is NOT there. Rewriting symlink"
-  rm /certs/dataland
-  ln -s /certs/dummy /certs/dataland
+  ln -sTf /certs/dummy /certs/dataland
 fi
