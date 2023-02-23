@@ -92,7 +92,7 @@ abstract class DataController<T>(
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        if (!isDataViewableByUser(metaInfo, DatalandAuthentication.fromContext())) {
+        if (!isDataViewableByUser(metaInfo, DatalandAuthentication.fromContextOrNull())) {
             throw InvalidInputApiException("Access denied", "You are trying to access a unreviewed dataset")
         }
         val companyId = metaInfo.company.companyId
@@ -114,7 +114,7 @@ abstract class DataController<T>(
     override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
         val frameworkData = mutableListOf<DataAndMetaInformation<T>>()
-        val authentication = DatalandAuthentication.fromContext()
+        val authentication = DatalandAuthentication.fromContextOrNull()
         metaInfos
             .filter { isDataViewableByUser(it, authentication) }
             .forEach {
@@ -125,7 +125,7 @@ abstract class DataController<T>(
                 val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
                 frameworkData.add(
                     DataAndMetaInformation(
-                        it.toApiModel(DatalandAuthentication.fromContext()),
+                        it.toApiModel(authentication),
                         objectMapper.readValue(dataAsString, clazz),
                     ),
                 )
@@ -133,10 +133,11 @@ abstract class DataController<T>(
         return ResponseEntity.ok(frameworkData)
     }
 
-    private fun isDataViewableByUser(dataMetaInfo: DataMetaInformationEntity, authentication: DatalandAuthentication):
+    private fun isDataViewableByUser(dataMetaInfo: DataMetaInformationEntity, authentication: DatalandAuthentication?):
         Boolean {
         return dataMetaInfo.qaStatus == QAStatus.Accepted ||
-            dataMetaInfo.uploaderUserId == authentication.userId ||
-            authentication.roles.contains(DatalandRealmRole.ROLE_ADMIN)
+            dataMetaInfo.uploaderUserId == authentication?.userId ||
+            authentication?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false ||
+            (dataMetaInfo.company.isTeaserCompany && dataMetaInfo.qaStatus == QAStatus.Accepted)
     }
 }

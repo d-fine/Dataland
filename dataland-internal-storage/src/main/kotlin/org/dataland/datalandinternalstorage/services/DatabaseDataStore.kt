@@ -26,10 +26,11 @@ class DatabaseDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
-) { companion object {
-    private const val storageQueue = ("\${spring.rabbitmq.storage-queue}")
-    private const val storedQueue = ("\${spring.rabbitmq.stored-queue}")
-}
+) {
+    companion object {
+        private const val storageQueue = "storage_queue"
+        private const val storedQueue = "stored_queue"
+    }
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
