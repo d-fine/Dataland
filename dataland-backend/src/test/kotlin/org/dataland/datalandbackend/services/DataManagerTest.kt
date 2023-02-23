@@ -43,7 +43,7 @@ class DataManagerTest(
     val testDataProvider = TestDataProvider(objectMapper)
     val dataManager = DataManager(
         objectMapper, companyManager, dataMetaInformationManager,
-        mockStorageClient, mockCloudEventMessageHandler,
+        mockStorageClient, mockCloudEventMessageHandler, "dummy-queue-name", "dummy-queue-name"
     )
     val spyDataManager: DataManager = spy(dataManager)
     val correlationId = IdUtils.generateUUID()
@@ -141,15 +141,13 @@ class DataManagerTest(
             storableEuTaxonomyDataSetForNonFinancials, correlationId,
         )
         val expectedDataTypeName = getExpectedDataTypeName(
-            storableEuTaxonomyDataSetForNonFinancials, dataId,
-            "eutaxonomy-financials",
+            storableEuTaxonomyDataSetForNonFinancials, dataId, "eutaxonomy-financials",
         )
         val thrown = assertThrows<InternalServerErrorApiException> {
             dataManager.getDataSet(dataId, DataType(expectedDataTypeName), correlationId)
         }
         assertEquals(
-            "The meta-data of dataset $dataId differs between the data store and the database",
-            thrown.message,
+            "The meta-data of dataset $dataId differs between the data store and the database", thrown.message,
         )
     }
 
@@ -261,7 +259,6 @@ class DataManagerTest(
                 storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId,
             ),
         ).thenReturn(dataUUId)
-
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 dataUUId, "New data - QA necessary", correlationId, "upload_queue",
@@ -269,7 +266,6 @@ class DataManagerTest(
         ).thenThrow(
             AmqpException::class.java,
         )
-
         assertThrows<AmqpException> {
             spyDataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(
                 storableEuTaxonomyDataSetForNonFinancials, correlationId,

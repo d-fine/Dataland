@@ -124,10 +124,7 @@ abstract class DataController<T>(
                 )
                 val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
                 frameworkData.add(
-                    DataAndMetaInformation(
-                        it.toApiModel(authentication),
-                        objectMapper.readValue(dataAsString, clazz),
-                    ),
+                    DataAndMetaInformation(it.toApiModel(authentication), objectMapper.readValue(dataAsString, clazz)),
                 )
             }
         return ResponseEntity.ok(frameworkData)
@@ -137,7 +134,6 @@ abstract class DataController<T>(
         Boolean {
         return dataMetaInfo.qaStatus == QAStatus.Accepted ||
             dataMetaInfo.uploaderUserId == authentication?.userId ||
-            authentication?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false ||
-            (dataMetaInfo.company.isTeaserCompany && dataMetaInfo.qaStatus == QAStatus.Accepted)
+            authentication?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
     }
 }

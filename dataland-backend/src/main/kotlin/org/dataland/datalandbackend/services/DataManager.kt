@@ -77,8 +77,7 @@ class DataManager(
                 "Correlation ID: $correlationId",
         )
         val dataId: String = storeDataSetInTemporaryStoreAndSendDataReceivedMessage(
-            storableDataSet,
-            company.companyName, correlationId,
+            storableDataSet, company.companyName, correlationId,
         )
         val metaData = DataMetaInformationEntity(
             dataId, storableDataSet.dataType.toString(),
@@ -86,8 +85,7 @@ class DataManager(
         )
         metaDataManager.storeDataMetaInformation(metaData)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, "New data - QA necessary", correlationId,
-            uploadQueue,
+            dataId, "New data - QA necessary", correlationId, uploadQueue,
         )
         return dataId
     }
