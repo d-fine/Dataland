@@ -236,7 +236,7 @@ class DataManagerTest(
 
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, "Data to be stored", correlationId, "storage_queue",
+                dataUUId, "Data to be stored", correlationId, "",
             ),
         ).thenThrow(
             AmqpException::class.java,
@@ -261,7 +261,7 @@ class DataManagerTest(
         ).thenReturn(dataUUId)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, "New data - QA necessary", correlationId, "upload_queue",
+                dataUUId, "New data - QA necessary", correlationId, "",
             ),
         ).thenThrow(
             AmqpException::class.java,
