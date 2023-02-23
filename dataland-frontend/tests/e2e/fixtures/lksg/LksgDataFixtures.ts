@@ -21,7 +21,7 @@ export function generateProductionSite(): ProductionSite {
       InHouseProductionOrContractProcessing.InHouseProduction,
       InHouseProductionOrContractProcessing.ContractProcessing,
     ]),
-    country: randomStringOrUndefined(faker.address.country()),
+    country: randomStringOrUndefined(faker.address.countryCode()),
     city: randomStringOrUndefined(faker.address.city()),
     streetAndHouseNumber: randomStringOrUndefined(faker.address.street() + " " + faker.address.buildingNumber()),
     postalCode: randomStringOrUndefined(faker.address.zipCode()),

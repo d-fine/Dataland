@@ -1,13 +1,13 @@
 import { CompanyInformation, CompanyReport } from "@clients/backend";
 import { generateCompanyInformation } from "./CompanyFixtures";
-import {getRandomReportingPeriod} from "@common/ReportingPeriodFixtures";
+import { getRandomReportingPeriod } from "@common/ReportingPeriodFixtures";
 
 export type ReferencedReports = { [key: string]: CompanyReport };
 
 export interface FixtureData<T> {
   companyInformation: CompanyInformation;
   t: T;
-  reportingPeriod: string,
+  reportingPeriod: string;
 }
 
 /**
@@ -24,7 +24,7 @@ export function generateFixtureDataset<T>(frameworkDataGenerator: () => T, numEl
     fixtureDataset.push({
       companyInformation: generateCompanyInformation(),
       t: frameworkDataGenerator(),
-      reportingPeriod: getRandomReportingPeriod()
+      reportingPeriod: getRandomReportingPeriod(),
     });
   }
   return fixtureDataset;

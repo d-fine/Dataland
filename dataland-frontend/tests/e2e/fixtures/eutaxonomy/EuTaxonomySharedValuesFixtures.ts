@@ -151,6 +151,6 @@ export function getCsvSharedEuTaxonomyValuesMapping(
       label: "Reporting Period",
       value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>): string | undefined =>
         row.reportingPeriod,
-    }
+    },
   ];
 }

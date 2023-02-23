@@ -95,12 +95,12 @@ export default defineComponent({
   },
   methods: {
     getDynamicDatasetTitle(dataMetaInfo: DataMetaInformation): string {
-      const baseTitle = `${this.title} - ${dataMetaInfo.reportingPeriod}`
-        if (this.isFrontendViewPageExisting) {
-          return baseTitle
-        } else {
-          return `${baseTitle} (only viewable via API)`;
-        }
+      const baseTitle = `${this.title} - ${dataMetaInfo.reportingPeriod}`;
+      if (this.isFrontendViewPageExisting) {
+        return baseTitle;
+      } else {
+        return `${baseTitle} (only viewable via API)`;
+      }
     },
 
     /**

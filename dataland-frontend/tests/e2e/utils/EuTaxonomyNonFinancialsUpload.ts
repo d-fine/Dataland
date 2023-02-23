@@ -54,6 +54,7 @@ export function getFirstEuTaxonomyNonFinancialsDatasetFromFixtures(): Chainable<
  *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
+ * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
  */
 export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(

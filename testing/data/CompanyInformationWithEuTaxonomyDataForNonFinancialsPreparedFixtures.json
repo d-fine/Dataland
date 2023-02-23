@@ -3,243 +3,218 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Balck, Marner und Nannen",
-				"Weidlich-Gunkel"
+				"Birkemeyer KG",
+				"Normann AG"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"headquarters": "Connordorf",
-			"headquartersPostalCode": "19257",
-			"sector": "bandwidth",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"headquarters": "Nord Fabrice",
+			"headquartersPostalCode": "32773",
+			"sector": "convergence",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "1aoem4ml0g1ebqv"
+					"identifierValue": "abi1jwggmidsawn"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "n2ogu06jt"
+					"identifierValue": "j9nucqbig"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "f8fd6jchym0a"
+					"identifierValue": "2aq4efu2dqqf"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "usr0kpfuoyn08efzxyp4"
+					"identifierValue": "5usu3oqmncrqog8dlyrn"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "q1pgjr01d0"
+					"identifierValue": "a1hl1jdgle"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "h4jvmix"
+					"identifierValue": "k97elko"
 				}
 			],
-			"countryCode": "VE",
+			"countryCode": "TO",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "https://exzellent-wind.de/parallel-kn%C3%B6chel.pdf",
-					"reportDate": "2022-03-05",
-					"currency": "XPF"
-				},
 				"AnnualReport": {
-					"reference": "http://xn--wunderschn-kartoffel-cbc.name/pfiffig-wasserfall.pdf",
-					"currency": "RWF"
-				},
-				"ESEFReport": {
-					"reference": "http://krank-meer.com/signifikant-parkhaus.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-06-29",
-					"currency": "THB"
+					"reference": "https://xn--glamours-zahl-omb.name/geachtet-leber.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "JMD"
 				},
 				"IntegratedReport": {
-					"reference": "http://aufbauend-lunge.com/beherrscht-krankheiten.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-05-20",
-					"currency": "ZAR"
+					"reference": "http://heldenhaft-sessel.com/diszipliniert-sprache.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-07-08",
+					"currency": "BDT"
 				}
 			},
-			"fiscalYearEnd": "2023-02-20",
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-03-02",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"dataSource": {
+					"page": 207,
+					"report": "AnnualReport",
+					"tagName": "action-items"
+				}
 			},
-			"scopeOfEntities": "Yes",
+			"scopeOfEntities": "No",
 			"reportingObligation": "No",
-			"activityLevelReporting": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.8042,
-					"dataSource": {
-						"page": 847,
-						"report": "ESEFReport",
-						"tagName": "e-services"
-					},
-					"quality": "Reported",
-					"comment": "reboot redundant panel"
+					"value": 0.7247,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.519,
-					"dataSource": {
-						"page": 627,
-						"report": "SustainabilityReport",
-						"tagName": "methodologies"
-					},
-					"quality": "Reported",
-					"comment": "override cross-platform interface"
+					"value": 0.7002,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.2027,
+					"value": 0.1042,
 					"dataSource": {
-						"page": 62,
-						"report": "AnnualReport",
-						"tagName": "content"
+						"page": 1135,
+						"report": "IntegratedReport",
+						"tagName": "web services"
 					},
-					"quality": "Reported",
-					"comment": "calculate mobile alarm"
+					"quality": "Incomplete",
+					"comment": "input solid state sensor"
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020-Q1"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Burger, Hess und Hasler",
-				"Holz-Hauke",
-				"Schöckel-Wenk",
-				"Strogies KG"
+				"Daimer, Stang und Burger",
+				"Gehrig Gruppe",
+				"Krauel, Strege und Kahl",
+				"Unterpaintner-Achilles"
 			],
-			"headquarters": "Kúhnertstadt",
-			"headquartersPostalCode": "53699",
-			"sector": "interfaces",
+			"companyLegalForm": "GmbH",
+			"headquarters": "Judithstadt",
+			"headquartersPostalCode": "67937",
+			"sector": "content",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "tzp5st3obffyr3j"
+					"identifierValue": "4adm0jpd9a5d1vu"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "4m16494ft"
+					"identifierValue": "yhkjkhxzh"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "pebtk03p0x8d"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "860mmgr0vzq2jnl5q6wx"
+					"identifierValue": "k7bk17ajoamh5zzbg5at"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "5rzlii45fg"
+					"identifierValue": "3o229ptlie"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "y5hgcmd"
+					"identifierValue": "0tlwnq6"
 				}
 			],
-			"countryCode": "BN",
-			"isTeaserCompany": false,
-			"website": "https://kreativ-kaffee.com"
+			"countryCode": "GM",
+			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"SustainabilityReport": {
-					"reference": "http://xn--warmherzig-glcksspiel-lic.com/entschlossen-grundkonzept.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-06-07",
-					"currency": "INR"
-				},
-				"IntegratedReport": {
-					"reference": "http://prominent-polytheismus.com/klein-bibliographie.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-02-02",
-					"currency": "GHS"
-				},
-				"AnnualReport": {
-					"reference": "https://wahrhaftig-regen.ch/narrensicher-pluto.pdf",
-					"isGroupLevel": "NA",
-					"currency": "BDT"
-				},
-				"ESEFReport": {
-					"reference": "http://xn--hbsch-magen-thb.name/zuversichtlich-rassismus.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "NPR"
+					"reference": "https://unfassbar-plazenta.net/kurz-liberalismus.pdf",
+					"reportDate": "2022-10-31",
+					"currency": "IDR"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 78,
+					"report": "SustainabilityReport",
+					"tagName": "bandwidth"
+				}
 			},
-			"scopeOfEntities": "NA",
 			"reportingObligation": "Yes",
-			"numberOfEmployees": 58361,
+			"numberOfEmployees": 51927,
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 931194.75,
+					"value": 473098.7,
 					"dataSource": {
-						"page": 1185,
-						"report": "IntegratedReport",
-						"tagName": "metrics"
+						"page": 135,
+						"report": "SustainabilityReport",
+						"tagName": "applications"
 					},
-					"quality": "Estimated",
-					"comment": "connect mobile port"
+					"quality": "Audited",
+					"comment": "calculate haptic firewall"
 				},
 				"eligiblePercentage": {
-					"value": 0.4822,
-					"dataSource": {
-						"page": 406,
-						"report": "IntegratedReport",
-						"tagName": "schemas"
-					},
-					"quality": "Incomplete",
-					"comment": "override auxiliary transmitter"
+					"value": 0.5378,
+					"quality": "Estimated"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 449480.06,
+					"value": 930756.69,
 					"dataSource": {
-						"page": 224,
-						"report": "IntegratedReport",
-						"tagName": "eyeballs"
+						"page": 1040,
+						"report": "SustainabilityReport",
+						"tagName": "supply-chains"
 					},
 					"quality": "Audited",
-					"comment": "quantify primary circuit"
+					"comment": "index open-source feed"
 				},
 				"eligiblePercentage": {
-					"value": 0.1547,
-					"quality": "Estimated"
+					"value": 0.7164,
+					"dataSource": {
+						"page": 555,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
+					},
+					"quality": "Audited",
+					"comment": "input open-source driver"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 463394.69,
+					"value": 817100.69,
 					"dataSource": {
-						"page": 493,
-						"report": "IntegratedReport",
-						"tagName": "methodologies"
+						"page": 999,
+						"report": "SustainabilityReport",
+						"tagName": "supply-chains"
 					},
-					"quality": "Audited",
-					"comment": "back up optical hard drive"
+					"quality": "Estimated",
+					"comment": "hack 1080p bandwidth"
 				},
 				"eligiblePercentage": {
-					"value": 0.857,
+					"value": 0.7728,
 					"dataSource": {
-						"page": 317,
-						"report": "IntegratedReport",
-						"tagName": "initiatives"
+						"page": 147,
+						"report": "SustainabilityReport",
+						"tagName": "action-items"
 					},
-					"quality": "Audited",
-					"comment": "reboot solid state transmitter"
+					"quality": "Estimated",
+					"comment": "parse auxiliary application"
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2021"
 	}
 ]

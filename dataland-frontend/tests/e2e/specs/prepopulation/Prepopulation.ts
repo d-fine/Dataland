@@ -30,7 +30,12 @@ describe(
   },
 
   () => {
-    type UploadFunction<T> = (token: string, companyId: string, reportingPeriod: string, dataset: T) => Promise<DataMetaInformation>;
+    type UploadFunction<T> = (
+      token: string,
+      companyId: string,
+      reportingPeriod: string,
+      dataset: T
+    ) => Promise<DataMetaInformation>;
 
     /**
      * A higher-level helper function for bulk data upload. Creates all provided companies and uses
