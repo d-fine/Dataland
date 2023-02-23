@@ -26,7 +26,10 @@ class DatabaseDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
-) {
+) { companion object {
+    private const val storageQueue = ("\${spring.rabbitmq.storage-queue}")
+    private const val storedQueue = ("\${spring.rabbitmq.stored-queue}")
+}
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -35,7 +38,7 @@ class DatabaseDataStore(
      * @param message Message retrieved from storage_queue
      */
 
-    @RabbitListener(queues = ["storage_queue"])
+    @RabbitListener(queues = [storageQueue])
     fun listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -57,7 +60,7 @@ class DatabaseDataStore(
         try {
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "Data successfully stored", correlationId, "stored_queue",
+                dataId, "Data successfully stored", correlationId, storedQueue,
             )
         } catch (exception: IllegalArgumentException) {
             val internalMessage = "Error storing data." +
