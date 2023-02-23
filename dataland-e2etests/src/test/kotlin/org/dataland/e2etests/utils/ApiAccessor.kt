@@ -48,7 +48,7 @@ class ApiAccessor {
     val euTaxonomyNonFinancialsUploaderFunction =
         { companyId: String, euTaxonomyNonFinancialsData: EuTaxonomyDataForNonFinancials ->
             val companyAssociatedEuTaxonomyNonFinancialsData =
-                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, euTaxonomyNonFinancialsData)
+                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, "", euTaxonomyNonFinancialsData)
             dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
                 companyAssociatedEuTaxonomyNonFinancialsData,
             )
@@ -61,7 +61,7 @@ class ApiAccessor {
     val euTaxonomyFinancialsUploaderFunction =
         { companyId: String, euTaxonomyFinancialsData: EuTaxonomyDataForFinancials ->
             val companyAssociatedEuTaxonomyFinancialsData =
-                CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, euTaxonomyFinancialsData)
+                CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, "", euTaxonomyFinancialsData)
             dataControllerApiForEuTaxonomyFinancials.postCompanyAssociatedEuTaxonomyDataForFinancials(
                 companyAssociatedEuTaxonomyFinancialsData,
             )
@@ -72,7 +72,7 @@ class ApiAccessor {
     val testDataProviderForLksgData =
         FrameworkTestDataProvider(LksgData::class.java)
     val lksgUploaderFunction = { companyId: String, lksgData: LksgData ->
-        val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, lksgData)
+        val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, "", lksgData)
         dataControllerApiForLksgData.postCompanyAssociatedLksgData(
             companyAssociatedLksgData,
         )
@@ -83,7 +83,7 @@ class ApiAccessor {
     val testDataProviderForSfdrData =
         FrameworkTestDataProvider(SfdrData::class.java)
     val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData ->
-        val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, sfdrData)
+        val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, "", sfdrData)
         dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
             companyAssociatedSfdrData,
         )
@@ -94,7 +94,7 @@ class ApiAccessor {
     val testDataProviderForSmeData =
         FrameworkTestDataProvider(SmeData::class.java)
     val smeUploaderFunction = { companyId: String, smeData: SmeData ->
-        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, smeData)
+        val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, "", smeData)
         dataControllerApiForSmeData.postCompanyAssociatedSmeData(
             companyAssociatedSmeData,
         )
@@ -139,24 +139,28 @@ class ApiAccessor {
                 lksgUploaderFunction,
                 uploadingTechnicalUser,
             )
+
             DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany),
                 sfdrUploaderFunction,
                 uploadingTechnicalUser,
             )
+
             DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany),
                 smeUploaderFunction,
                 uploadingTechnicalUser,
             )
+
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerCompany),
                 euTaxonomyNonFinancialsUploaderFunction,
                 uploadingTechnicalUser,
             )
+
             DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
@@ -189,7 +193,7 @@ class ApiAccessor {
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials,
     ):
-        Map<String, String> {
+            Map<String, String> {
         val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
             listOf(companyInformation),
             listOf(euTaxonomyDataForNonFinancials),
@@ -205,8 +209,7 @@ class ApiAccessor {
         val listOfCompanyInformation = testDataProviderEuTaxonomyForFinancials
             .getCompanyInformationWithoutIdentifiers(numCompanies)
         val listOfUploadInfos = mutableListOf<UploadInfo>()
-        listOfCompanyInformation.forEach {
-                companyInformation ->
+        listOfCompanyInformation.forEach { companyInformation ->
             listOfUploadInfos.add(
                 UploadInfo(
                     companyInformation,
@@ -244,9 +247,17 @@ class ApiAccessor {
         return companyDataControllerApi.getCompanies().size
     }
 
-    fun getNumberOfDataMetaInfo(companyId: String? = null, dataType: DataTypeEnum? = null): Int {
+    fun getNumberOfDataMetaInfo(
+        companyId: String? = null,
+        dataType: DataTypeEnum? = null,
+        showVersionHistoryForReportingPeriod: Boolean? = null
+    ): Int {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        return metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType).size
+        return metaDataControllerApi.getListOfDataMetaInfo(
+            companyId,
+            dataType,
+            showVersionHistoryForReportingPeriod
+        ).size
     }
 }
 
@@ -258,4 +269,4 @@ data class UploadInfo(
 
     val actualStoredDataMetaInfo: DataMetaInformation? = null,
 
-)
+    )

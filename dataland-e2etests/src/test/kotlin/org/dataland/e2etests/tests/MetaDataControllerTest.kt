@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import kotlin.math.abs
 
 class MetaDataControllerTest {
@@ -38,11 +40,12 @@ class MetaDataControllerTest {
         )[0].actualStoredDataMetaInfo!!
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
+        val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         val expectedDataMetaInformation =
-            DataMetaInformation(uploadedMetaInfo.dataId, testDataType, 0, uploadedMetaInfo.companyId, null)
+            DataMetaInformation(uploadedMetaInfo.dataId, uploadedMetaInfo.companyId, testDataType, uploadTime, "", null)
         assertEquals(
             expectedDataMetaInformation,
-            actualDataMetaInformation.copy(uploadTime = 0),
+            actualDataMetaInformation.copy(uploadTime = uploadTime),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
         )
 
@@ -64,17 +67,17 @@ class MetaDataControllerTest {
 
     @Test
     fun `post companies and eu taxonomy data and check meta info search with empty filters`() {
-        val initialSizeOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo()
+        val initialSizeOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showVersionHistoryForReportingPeriod = true)
         apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
             numberOfDataSetsToPostPerCompany,
         )
-        val sizeOfListOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo()
+        val sizeOfListOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showVersionHistoryForReportingPeriod = true)
         val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + totalNumberOfDataSetsPerFramework
         assertEquals(
             expectedSizeOfDataMetaInfo, sizeOfListOfDataMetaInfo,
             "The list with all data meta info is expected to increase by $totalNumberOfDataSetsPerFramework to " +
-                "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
+                    "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
         )
     }
 
@@ -89,7 +92,7 @@ class MetaDataControllerTest {
         assertEquals(
             numberOfDataSetsToPostPerCompany, listOfDataMetaInfoForFirstCompanyId.size,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
-                "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
+                    "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
         )
     }
 
@@ -106,12 +109,12 @@ class MetaDataControllerTest {
         )
         val listSizeDataMetaInfoForEuTaxoFinancials = apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType)
         val expectedListSizeDataMetaInfoForEuTaxoFinancials = initListSizeDataMetaInfoForEuTaxoFinancials +
-            totalNumberOfDataSetsPerFramework
+                totalNumberOfDataSetsPerFramework
         assertEquals(
             expectedListSizeDataMetaInfoForEuTaxoFinancials, listSizeDataMetaInfoForEuTaxoFinancials,
             "The meta info list for all EU Taxonomy Data for Non-Financials is expected to increase by " +
-                "$totalNumberOfDataSetsPerFramework to $expectedListSizeDataMetaInfoForEuTaxoFinancials, " +
-                "but has the size $listSizeDataMetaInfoForEuTaxoFinancials.",
+                    "$totalNumberOfDataSetsPerFramework to $expectedListSizeDataMetaInfoForEuTaxoFinancials, " +
+                    "but has the size $listSizeDataMetaInfoForEuTaxoFinancials.",
         )
     }
 
@@ -124,11 +127,12 @@ class MetaDataControllerTest {
         val sizeOfListOfDataMetaInfoPerCompanyIdAndDataType = apiAccessor.getNumberOfDataMetaInfo(
             listOfUploadInfo[0].actualStoredCompany.companyId,
             testDataType,
+            true
         )
         assertEquals(
             numberOfDataSetsToPostPerCompany, sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
-                "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
+                    "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
         )
     }
 
@@ -140,9 +144,17 @@ class MetaDataControllerTest {
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val dataMetaInformation = apiAccessor.unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
+        val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         assertEquals(
-            DataMetaInformation(testDataId, testDataType, 0, listOfUploadInfo[0].actualStoredCompany.companyId, null),
-            dataMetaInformation.copy(uploadTime = 0),
+            DataMetaInformation(
+                testDataId,
+                listOfUploadInfo[0].actualStoredCompany.companyId,
+                testDataType,
+                uploadTime,
+                "",
+                null
+            ),
+            dataMetaInformation.copy(uploadTime = uploadTime),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
         )
     }
@@ -168,13 +180,14 @@ class MetaDataControllerTest {
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
-        val expectedMetaInformation = DataMetaInformation(testDataId, testDataType, 0, testCompanyId, null)
+        val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+        val expectedMetaInformation = DataMetaInformation(testDataId, testCompanyId, testDataType, uploadTime, "", null)
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
-                .map { it.copy(uploadTime = 0) }
+                .map { it.copy(uploadTime = uploadTime) }
                 .contains(expectedMetaInformation),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
-                "match the retrieved meta info.",
+                    "match the retrieved meta info.",
         )
     }
 

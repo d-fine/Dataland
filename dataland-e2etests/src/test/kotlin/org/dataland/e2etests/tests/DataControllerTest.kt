@@ -34,8 +34,9 @@ class DataControllerTest {
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
                 .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
+
         assertEquals(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["companyId"], testDataEuTaxonomyNonFinancials),
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["companyId"],"", testDataEuTaxonomyNonFinancials),
             companyAssociatedDataEuTaxonomyDataForNonFinancials,
             "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
         )
@@ -51,6 +52,7 @@ class DataControllerTest {
             .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
         val expectedCompanyAssociatedData = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
             mapOfIds["companyId"]!!,
+            "",
             testDataEuTaxonomyNonFinancials,
         )
         assertEquals(
@@ -83,6 +85,7 @@ class DataControllerTest {
                     .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
                         CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
                             testCompanyId,
+                            "",
                             testDataEuTaxonomyNonFinancials,
                         ),
                     )
