@@ -40,7 +40,7 @@ class DataManager(
     private val uploadQueue = ""
 
     @Value("\${spring.rabbitmq.storage-queue}")
-    private var storageQueue = ""
+    private val storageQueue = ""
 
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInformationHashMap = mutableMapOf<String, String>()
