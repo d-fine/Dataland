@@ -29,4 +29,7 @@ data class DataMetaInformation(
 
     @field:JsonProperty(required = true)
     val reportingPeriod: String,
+
+    @field:JsonProperty(required = true)
+    val currentlyActive: Boolean,
 )

@@ -41,9 +41,21 @@ class DataMetaInformationManager(
             uploadTime = uploadTime,
             reportingPeriod = reportingPeriod,
             company = company,
+            currentlyActive = false
         )
 
-        return dataMetaInformationRepository.save(dataMetaInformationEntity)
+        val newDataset = dataMetaInformationRepository.save(dataMetaInformationEntity)
+        setActiveDataset(newDataset)
+        return newDataset
+    }
+
+    /**
+     * Marks the given dataset as the latest dataset for the combination of dataType, company and reporting period
+     * Ensures that only one dataset per group has the active status
+     */
+    @Transactional
+    fun setActiveDataset(dataSet: DataMetaInformationEntity) {
+        dataMetaInformationRepository.updateActiveStatus(dataSet)
     }
 
     /**
@@ -79,12 +91,9 @@ class DataMetaInformationManager(
             companyIdFilter = companyId,
             dataTypeFilter = dataTypeFilter,
             reportingPeriodFilter = reportingPeriodFilter,
+            onlyActive = !showVersionHistoryForReportingPeriod
         )
 
-        return if (showVersionHistoryForReportingPeriod) {
-            dataMetaInformationRepository.searchDataMetaInformation(filter)
-        } else {
-            dataMetaInformationRepository.searchActiveDataMetaInformation(filter)
-        }
+        return dataMetaInformationRepository.searchDataMetaInformation(filter)
     }
 }

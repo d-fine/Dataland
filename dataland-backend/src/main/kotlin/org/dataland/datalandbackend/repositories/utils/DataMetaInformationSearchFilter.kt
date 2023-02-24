@@ -8,6 +8,7 @@ data class DataMetaInformationSearchFilter(
     val companyIdFilter: String,
     val dataTypeFilter: String,
     val reportingPeriodFilter: String,
+    val onlyActive: Boolean
 ) {
     val companyIdFilterLength: Int
         get() = companyIdFilter.length

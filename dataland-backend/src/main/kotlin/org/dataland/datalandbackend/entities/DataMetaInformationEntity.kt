@@ -39,6 +39,8 @@ data class DataMetaInformationEntity(
     @Column(name = "reporting_period", nullable = false)
     var reportingPeriod: String,
 
+    @Column(name = "currently_active", nullable = false)
+    var currentlyActive: Boolean
 ) : ApiModelConversion<DataMetaInformation> {
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
@@ -53,6 +55,7 @@ data class DataMetaInformationEntity(
             uploaderUserId = if (displayUploaderUserId) uploaderUserId else null,
             uploadTime = uploadTime,
             reportingPeriod = reportingPeriod,
+            currentlyActive = currentlyActive,
         )
     }
 }

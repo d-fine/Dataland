@@ -70,7 +70,7 @@ abstract class DataController<T>(
         val dataIdOfPostedData = dataManager.addDataSet(datasetToStore, correlationId)
         logger.info("Posted company associated data for companyId '$companyId'. Correlation ID: $correlationId")
         return ResponseEntity.ok(
-            DataMetaInformation(dataIdOfPostedData, companyId, dataType, userId, uploadTime, reportingPeriod),
+            DataMetaInformation(dataIdOfPostedData, companyId, dataType, userId, uploadTime, reportingPeriod, false),
         )
     }
 

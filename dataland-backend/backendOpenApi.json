@@ -1973,6 +1973,7 @@
       "DataMetaInformation": {
         "required": [
           "companyId",
+          "currentlyActive",
           "dataId",
           "dataType",
           "reportingPeriod",
@@ -1998,6 +1999,9 @@
           },
           "reportingPeriod": {
             "type": "string"
+          },
+          "currentlyActive": {
+            "type": "boolean"
           }
         }
       },
