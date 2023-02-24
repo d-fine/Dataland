@@ -31,36 +31,35 @@
     }
   ],
   "policies": [],
-  "queues": [
+  "queues": [],
+  "exchanges": [
     {
-      "name": "stored_queue",
+      "name": "dataReceived",
       "vhost": "vhost",
+      "type": "direct",
       "durable": true,
       "auto_delete": false,
+      "internal": false,
       "arguments": {}
     },
     {
-      "name": "qa_queue",
+      "name": "dataQualityAssured",
       "vhost": "vhost",
+      "type": "direct",
       "durable": true,
       "auto_delete": false,
+      "internal": false,
       "arguments": {}
     },
     {
-      "name": "upload_queue",
+      "name": "dataStored",
       "vhost": "vhost",
+      "type": "direct",
       "durable": true,
       "auto_delete": false,
-      "arguments": {}
-    },
-    {
-      "name": "storage_queue",
-      "vhost": "vhost",
-      "durable": true,
-      "auto_delete": false,
+      "internal": false,
       "arguments": {}
     }
   ],
-  "exchanges": [],
   "bindings": []
 }

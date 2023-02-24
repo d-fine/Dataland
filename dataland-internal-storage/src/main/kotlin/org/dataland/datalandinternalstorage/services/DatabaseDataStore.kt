@@ -5,11 +5,14 @@ import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataController
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.MqConstants
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
+import org.springframework.amqp.rabbit.annotation.Exchange
+import org.springframework.amqp.rabbit.annotation.Queue
+import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
@@ -26,8 +29,6 @@ class DatabaseDataStore(
     @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
 ) {
-    @Value("\${spring.rabbitmq.stored-queue}")
-    private val storedQueue = ""
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -36,7 +37,15 @@ class DatabaseDataStore(
      * @param message Message retrieved from storage_queue
      */
 
-    @RabbitListener(queues = ["\${spring.rabbitmq.storage-queue}"])
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue("dataReceivedInternalStorageDatabaseDataStore"),
+                exchange = Exchange(MqConstants.dataReceived, declare = "false"),
+                key = [""],
+            ),
+        ],
+    )
     fun listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -46,7 +55,7 @@ class DatabaseDataStore(
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, "Data successfully stored", correlationId, storedQueue,
+            dataId, "Data successfully stored", correlationId, MqConstants.dataStored,
         )
     }
 
