@@ -225,7 +225,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `Ensure that Version History field works metadata endpoint of meta data controller`() {
+    fun `ensure that version history field in metadata endpoint of meta data controller works`() {
 //        Get a data set of an arbitrary framework. Upload it multiple times changing ReportingPeriod, uploadTime and a data point in between.
 //        Ensure that only the data set with the latest upload_time is returned or all depending on showVersionHistory flag.
         val companyInformation =
@@ -274,7 +274,7 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `Ensure that reportingPeriod works on metadata endpoint of meta data controller`() {
+    fun `ensure that reportingPeriod field of metadata endpoint of meta data controller works`() {
 //        Upload multiple versions of a dataset under different reporting Periods. Ensure that only a single one is active
 //        per reporting period and that the active one is the latest one uploaded for this reporting period
         val companyInformation =
@@ -282,13 +282,13 @@ class MetaDataControllerTest {
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
         val reportingPeriod1 = "2022"
         val reportingPeriod2 = "2023"
-        val firstUploadInfo = firstUploadForVersionHistory(companyInformation, frameWorkData, reportingPeriod1)
+        val firstUploadInfo = firstUploadForVersionHistory(companyInformation, frameWorkData, reportingPeriod2)
         val companyId = firstUploadInfo.actualStoredCompany.companyId
 //        TODO: Shorten sleep time when upload time was switched from second to milli
         Thread.sleep(1000)
         val final2022metadata = subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
         Thread.sleep(1000)
-        subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod2)
+        subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
         Thread.sleep(1000)
         val final2023metadata = subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod2)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
@@ -303,6 +303,18 @@ class MetaDataControllerTest {
         assertTrue(
             (final2022metadata.dataId == result2022WithoutVersioning[0].dataId && final2023metadata.dataId == result2023WithoutVersioning[0].dataId),
             "The active data set of the reporting period should be the last uploaded one but this is not the case."
+        )
+//        When not specifying a reportingPeriod we should retrieve metadata of datasets for all reporting periods
+        val resultsWithVersioning = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true)
+        val resultsWithoutVersioning =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
+        assertTrue(
+            (resultsWithVersioning.size == 4),
+            "Without filtering for reporting period and when displaying version history, metadata of all 4 datasets should be returned but it isn't."
+        )
+        assertTrue(
+            (resultsWithoutVersioning.size == 2 && resultsWithoutVersioning[0].dataId != resultsWithoutVersioning[1].dataId),
+            "a single current dataset per reporting period should be available and it should be different ones for the different reporting periods - but it isn't"
         )
     }
 
