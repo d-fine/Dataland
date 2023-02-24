@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 class ConfigurationBackendControllerApi(
-    @Value("\${dataland.backend.base-url:http://backend:8080/api}")
+    @Value("\${dataland.backend.base-url}")
     private val backendBaseUrl: String,
 ) {
     /**
