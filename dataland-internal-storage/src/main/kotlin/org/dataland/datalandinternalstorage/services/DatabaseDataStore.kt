@@ -5,14 +5,12 @@ import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataController
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.enums.MqConstants
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
-import org.springframework.amqp.rabbit.annotation.RabbitHandler
-import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.amqp.rabbit.annotation.*
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import java.lang.IllegalArgumentException
 
 /**
  * Simple implementation of a data store using a postgres database
@@ -26,10 +24,8 @@ class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
-    @Autowired var objectMapper: ObjectMapper,
+    @Autowired var objectMapper: ObjectMapper
 ) {
-    @Value("\${spring.rabbitmq.stored-queue}")
-    private val storedQueue = ""
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -38,7 +34,9 @@ class DatabaseDataStore(
      * @param message Message retrieved from storage_queue
      */
 
-    @RabbitListener(queues = ["\${spring.rabbitmq.storage-queue}"])
+    @RabbitListener(bindings = [QueueBinding(value = Queue("dataReceivedInternalStorageDatabaseDataStore"),
+        exchange = Exchange(MqConstants.dataReceived, declare="false"),
+        key = [""])])
     fun listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -60,7 +58,8 @@ class DatabaseDataStore(
         try {
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "Data successfully stored", correlationId, storedQueue,
+//                Replace with exchange name from RabbitMQ Utils
+                dataId, "Data successfully stored", correlationId, MqConstants.dataStored,
             )
         } catch (exception: IllegalArgumentException) {
             val internalMessage = "Error storing data." +

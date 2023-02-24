@@ -11,8 +11,12 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.enums.MqConstants
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
+import org.springframework.amqp.rabbit.annotation.Exchange
+import org.springframework.amqp.rabbit.annotation.Queue
+import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -36,12 +40,6 @@ class DataManager(
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
 ) {
-    @Value("\${spring.rabbitmq.upload-queue}")
-    private val uploadQueue = ""
-
-    @Value("\${spring.rabbitmq.storage-queue}")
-    private val storageQueue = ""
-
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInMemoryStorage = mutableMapOf<String, String>()
 
@@ -98,7 +96,9 @@ class DataManager(
      * Method that listens to the qa_queue and updates the metadata information after successful qa process
      * @param message is the message delivered on the message queue
      */
-    @RabbitListener(queues = ["\${spring.rabbitmq.qa-queue}"])
+    @RabbitListener(bindings = [QueueBinding(value = Queue("dataStoredBackendDataManager"),
+        exchange = Exchange(MqConstants.dataStored, declare = "false"),
+       key = [""])])
     fun listenToMessageQueueAndUpdateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -150,7 +150,7 @@ class DataManager(
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "Data to be stored", correlationId,
-            storageQueue,
+            MqConstants.dataReceived,
         )
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID in temporary store" +
@@ -174,7 +174,9 @@ class DataManager(
      * correlationId
      * @param message Message retrieved from stored_queue
      */
-    @RabbitListener(queues = ["\${spring.rabbitmq.stored-queue}"])
+    @RabbitListener(bindings = [QueueBinding(value = Queue("dataQualityAssuredBackendDataManager"),
+        exchange = Exchange(MqConstants.dataQualityAssured, declare = "false"),
+        key = [""])])
     fun listenToStoredQueueAndRemoveStoredItemFromTemporaryStore(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()

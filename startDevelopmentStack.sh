@@ -1,6 +1,6 @@
 #!/bin/bash
 # Login to the docker repository
-set -euxo pipefail
+#set -euxo pipefail
 ./verifyEnvironmentVariables.sh
 
 docker login ghcr.io -u $GITHUB_USER -p $GITHUB_TOKEN
@@ -29,3 +29,5 @@ docker compose --profile development up -d --build
 
 #start the backend
 ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace
+
+sleep 10000
