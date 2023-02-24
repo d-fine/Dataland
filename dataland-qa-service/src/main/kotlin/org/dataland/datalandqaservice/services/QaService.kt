@@ -4,7 +4,6 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.enums.MqConstants
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.AmqpException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class QaService(
-    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler
+    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -44,19 +43,6 @@ class QaService(
             throw MessageQueueException(
                 "Error receiving data for QA process: $internalMessage",
             )
-        }
-    }
-
-    private fun sendMessageToQueue(dataId: String, type: String, correlationId: String, messageQueue: String) {
-        try {
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, type, correlationId, messageQueue,
-            )
-        } catch (exception: AmqpException) {
-            val internalMessage = "Error sending message to $messageQueue." +
-                " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
-            logger.error(internalMessage)
-            throw AmqpException(internalMessage, exception)
         }
     }
 }

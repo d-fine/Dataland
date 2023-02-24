@@ -49,7 +49,6 @@ class CloudEventMessageHandler(
      */
     fun buildCEMessageAndSendToQueue(body: String, type: String, correlationId: String, exchange: String) {
         val messageInput = buildCEMessage(body, type, correlationId)
-
         try {
             rabbitTemplate.send(exchange,"", messageInput)
         } catch (exception: AmqpException) {
