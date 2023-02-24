@@ -31,6 +31,6 @@ interface NonPersistedDataApi {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    fun getCompanyAssociatedDataForInternalStorage(@PathVariable("dataId") dataId: String):
+    fun getReceivedData(@PathVariable("dataId") dataId: String):
         ResponseEntity<String>
 }

@@ -699,7 +699,7 @@
         ],
         "summary": "Retrieve specific data from the hashmap of the backend.",
         "description": "Data identified by the provided data ID is retrieved.",
-        "operationId": "getCompanyAssociatedDataForInternalStorage",
+        "operationId": "getReceivedData",
         "parameters": [
           {
             "name": "dataId",

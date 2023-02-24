@@ -15,7 +15,7 @@ class NonPersistedDataController(
     @Autowired var dataManager: DataManager,
 ) : NonPersistedDataApi {
 
-    override fun getCompanyAssociatedDataForInternalStorage(dataId: String): ResponseEntity<String> {
+    override fun getReceivedData(dataId: String): ResponseEntity<String> {
         return ResponseEntity.ok(dataManager.selectDataSetFromTemporaryStorage(dataId))
     }
 }

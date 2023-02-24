@@ -43,7 +43,7 @@ class DatabaseDataStore(
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-        val data = nonPersistedDataClient.getCompanyAssociatedDataForInternalStorage(dataId)
+        val data = nonPersistedDataClient.getReceivedData(dataId)
         logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         insertDataAndSendMessage(dataId, data, correlationId)
