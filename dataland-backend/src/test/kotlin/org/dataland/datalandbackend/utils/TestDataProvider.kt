@@ -26,17 +26,7 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
     }
 
     fun getEmptySmeDataset(): SmeData {
-        return SmeData(
-            null, null, null, null,
-            null, null, null, null,
-            null, null, null, null,
-            null, null, null, null,
-            null, null, null, null,
-            null, null, null, null,
-            null, null, null, null,
-            null, null, null, null,
-            null, null,
-        )
+        return objectMapper.readValue("{}", SmeData::class.java)
     }
 
     fun getEmptyStoredCompanyEntity(): StoredCompanyEntity {
