@@ -5,8 +5,6 @@
       type="checkbox"
       :name="name"
       :value="false"
-      validation="accepted"
-      validation-label="Integrated report is on a group level"
       :outer-class="{
         'formkit-outer': false,
       }"
@@ -17,11 +15,11 @@
         'formkit-input': false,
       }"
     />
-    <h5>{{ name }}</h5>
+    <h5>{{ displayName }}</h5>
     <em
       class="material-icons info-icon"
       aria-hidden="true"
-      :title="name"
+      :title="displayName ? displayName : ''"
       v-tooltip.top="{
         value: explanation,
       }"
@@ -52,6 +50,7 @@ export default defineComponent({
   props: {
     name: String,
     explanation: String,
+    displayName: String,
   },
 });
 </script>

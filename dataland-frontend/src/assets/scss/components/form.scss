@@ -582,22 +582,24 @@ input[type="checkbox"], input[type="radio"]{
       border-bottom: 1px solid $input-separator;
     }
   }
-}
-
-.uploaded-files {
-  .p-fileupload {
-    .p-fileupload-content {
-      border: none;
-      padding: 0;
-      align-items: center;
-      .file-upload-item {
-        margin: 2rem 0;
-      }
-      button {
-        margin-left: auto;
-        width: 25px;
-        height: 25px;
+  .uploaded-files {
+    .p-progressbar {
+      display: none;
+    }
+    .p-fileupload {
+      .p-fileupload-content {
+        border: none;
         padding: 0;
+        align-items: center;
+        .file-upload-item {
+          margin: 2rem 0;
+        }
+        button {
+          margin-left: auto;
+          width: 25px;
+          height: 25px;
+          padding: 0;
+        }
       }
     }
   }

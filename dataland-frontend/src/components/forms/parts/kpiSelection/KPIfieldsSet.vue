@@ -1,8 +1,7 @@
 <template>
 
 
-  <div class="col-9 formFields">
-    <h3>Eligible CapEx</h3>
+
   <div class="form-field vertical-middle">
     <InputSwitch inputId="dataPointIsAvailableSwitch" v-model="dataPointIsAvailable" />
     <h5 class="ml-2">Data point is available</h5>
@@ -81,7 +80,6 @@
         placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
     />
     </div>
-  </div>
 
 </template>
 

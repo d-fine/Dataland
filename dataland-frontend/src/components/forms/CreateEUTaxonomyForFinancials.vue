@@ -30,8 +30,8 @@
                 <div class="col-9 formFields uploaded-files">
                   <h3 class="mt-0">Select company reports</h3>
                   <FileUpload
-                    name="demo[]"
-                    url="./upload"
+                    ref="fileUpload"
+                    name="fileUpload"
                     accept=".pdf, .xlsx"
                     @select="onSelectedFiles"
                     :maxFileSize="maxFileSize"
@@ -47,7 +47,6 @@
                             icon="pi pi-upload"
                             class="m-0"
                             label="UPLOAD REPORTS"
-                            :disabled="this.files.length"
                           />
                         </div>
                       </div>
@@ -61,7 +60,6 @@
                         >
                           <span class="font-semibold flex-1">{{ file.name }}</span>
                           <div class="mx-2 text-black-alpha-50">{{ formatSize(file.size) }}</div>
-                          <Badge value="Completed" class="mt-3" severity="success" />
                           <PrimeButton
                             icon="pi pi-times"
                             @click="onRemoveTemplatingFile(file, removeUploadedFileCallback, index)"
@@ -74,187 +72,175 @@
                 </div>
 
                 <div class="uploadFormSection">
-                <!-- Select company reports -->
-                <div v-if="files[0]?.name" class="col-9 formFields">
-                  <div class="form-field-label">
-                    <h3 class="mt-0">{{ files[0].name }}</h3>
+                  <FormKit name="referencedReports" type="group">
+                    <!-- Select company reports -->
+                    <div v-for="file of files" class="col-9 formFields">
+                      <div class="form-field-label">
+                        <h3 class="mt-0">{{ file.name }}</h3>
+                      </div>
+                      <FormKit :name="file.name" type="group">
+                        <!-- Date of the report -->
+                        <div class="form-field">
+                          <UploadFormHeader name="Date of the report" explanation="Date of the report" />
+                          <div class="lg:col-6 md:col-6 col-12 p-0">
+                            <Calendar
+                              data-test="dateOfTheReport"
+                              inputId="icon"
+                              :showIcon="true"
+                              dateFormat="D, M dd, yy"
+                              :maxDate="new Date()"
+                            />
+                          </div>
 
-                    <PrimeButton
-                        @click="onRemoveTemplatingFile(files[0], removeUploadedFileCallback, 0)"
-                        label="REMOVED"
-                        class="p-button-text"
-                        icon="pi pi-trash"
-                    ></PrimeButton>
-                  </div>
+                          <FormKit
+                            type="text"
+                            validation="required"
+                            name="dateOfTheReport"
+                            :outer-class="{ 'hidden-input': true }"
+                          />
+                        </div>
 
-                  <!-- Date of the report -->
-                  <div class="form-field">
-                    <UploadFormHeader
-                        name="Date of the report"
-                        explanation="Date of the report"
-                    />
-                    <div class="lg:col-6 md:col-6 col-12 p-0">
-                      <Calendar
-                        data-test="dateOfTheReport"
-                        inputId="icon"
-                        :showIcon="true"
-                        dateFormat="D, M dd, yy"
-                        :maxDate="new Date()"
-                      />
+                        <!-- Currency used in the report -->
+                        <div class="form-field" data-test="currencyUsedInTheReport">
+                          <UploadFormHeader
+                            name="Currency used in the report"
+                            explanation="Currency used in the report"
+                          />
+                          <div class="lg:col-6 md:col-6 col-12 p-0">
+                            <FormKit
+                              type="text"
+                              name="currencyUsedInTheReport"
+                              validation="required"
+                              validation-label="Currency used in the report"
+                              placeholder="Currency used in the report"
+                            />
+                          </div>
+                        </div>
+                        <!-- Integrated report is on a group level -->
+                        <div class="form-field">
+                          <CheckBoxCustom
+                            name="integratedReportIsOnAGroupLevel"
+                            explanation="Integrated report is on a group level"
+                            displayName="Integrated report is on a group level"
+                          />
+                        </div>
+                      </FormKit>
                     </div>
-
-                    <FormKit
-                      type="text"
-                      validation="required"
-                      name="dateOfTheReport"
-                      :outer-class="{ 'hidden-input': true }"
-                    />
-                  </div>
-
-                  <!-- Currency used in the report -->
-                  <div class="form-field" data-test="currencyUsedInTheReport">
-                    <UploadFormHeader
-                        name="Currency used in the report"
-                        explanation="Currency used in the report"
-                    />
-                    <div class="lg:col-6 md:col-6 col-12 p-0">
-                    <FormKit
-                        type="text"
-                        name="currencyUsedInTheReport"
-                        validation="required"
-                        validation-label="Currency used in the report"
-                        placeholder="Currency used in the report"
-                    />
-                    </div>
-
-                  </div>
-                  <div class="form-field">
-                    <CheckBoxCustom name="integratedReportIsOnAGroupLevel" explanation="Integrated report is on a group level" />
-                  </div>
-
-                </div>
+                  </FormKit>
                 </div>
 
                 <div class="uploadFormSection">
-
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="general" class="anchor title">Basic information</h4>
                   </div>
                   <!-- Basic information -->
                   <div class="col-9 formFields">
                     <h3 class="mt-0">Basic information</h3>
-                    <CheckBoxCustom name="fiscalYearIsDeviating" explanation="Fiscal year is deviating" />
+                    <CheckBoxCustom
+                        name="fiscalYearDeviation"
+                        explanation="Fiscal year is deviating"
+                        displayName="Fiscal year is deviating"
+                    />
 
                     <!-- The date the fiscal year ends -->
                     <div class="form-field">
                       <UploadFormHeader
-                          name="The date the fiscal year ends"
-                          explanation="The date the fiscal year ends"
+                        name="The date the fiscal year ends"
+                        explanation="The date the fiscal year ends"
                       />
                       <div class="lg:col-6 md:col-6 col-12 p-0">
-                        <Calendar
-                            inputId="icon"
-                            :showIcon="true"
-                            dateFormat="D, M dd, yy"
-                            :maxDate="new Date()"
-                        />
+                        <Calendar inputId="icon" :showIcon="true" dateFormat="D, M dd, yy" :maxDate="new Date()" />
                       </div>
 
                       <FormKit
-                          type="text"
-                          validation="required"
-                          name="dateTheFiscalYearEnds"
-                          :outer-class="{ 'hidden-input': true }"
+                        type="text"
+                        validation=""
+                        name="fiscalYearEnd"
+                        :outer-class="{ 'hidden-input': true }"
                       />
                     </div>
 
                     <!-- Scope of entities -->
                     <div class="form-field">
-                      <CheckBoxCustom name="scopeOfEntities *" explanation="Scope of entities *" />
+                      <CheckBoxCustom name="scopeOfEntities" explanation="Scope of entities" displayName="Scope of entities" />
                     </div>
 
                     <!-- EU Taxonomy activity level reporting -->
                     <div class="form-field">
-                      <CheckBoxCustom name="euTaxonomyActivityLevelReporting" explanation="EU Taxonomy activity level reporting *" />
+                      <CheckBoxCustom
+                        name="activityLevelReporting"
+                        explanation="EU Taxonomy activity level reporting"
+                        displayName="EU Taxonomy activity level reporting"
+                      />
                     </div>
 
                     <!-- Number of employees -->
                     <div class="form-field">
-                      <UploadFormHeader
-                          name="Number of employees"
-                          explanation="Number of employees"
-                      />
+                      <UploadFormHeader name="Number of employees" explanation="Number of employees" />
                       <FormKit
-                          type="number"
-                          name="numberOfEmployees"
-                          validation-label="Number of employees"
-                          placeholder="Value"
-                          validation="required|number"
-                          step="1"
-                          min="0"
-                          :inner-class="{ short: true }"
+                        type="number"
+                        name="numberOfEmployees"
+                        validation-label="Number of employees"
+                        placeholder="Value"
+                        validation="required|number"
+                        step="1"
+                        min="0"
+                        :inner-class="{ short: true }"
                       />
                     </div>
-
                   </div>
                 </div>
 
-
-                  <div class="uploadFormSection">
-
-                    <div class="col-3 p-3 topicLabel">
-                      <h4 id="general" class="anchor title">NFRD & Assurance</h4>
-                    </div>
-                    <!-- NFRD & Assurance -->
+                <div class="uploadFormSection">
+                  <div class="col-3 p-3 topicLabel">
+                    <h4 id="general" class="anchor title">NFRD & Assurance</h4>
+                  </div>
+                  <!-- NFRD & Assurance -->
                   <div class="col-9 formFields">
                     <h3 class="mt-0">NFRD</h3>
 
                     <!-- Scope of entities -->
                     <div class="form-field">
-                      <CheckBoxCustom name="mandatoryNFRD" explanation="NFRD is mandatory *" />
+                      <CheckBoxCustom name="mandatoryNFRD" explanation="NFRD is mandatory" displayName="NFRD is mandatory" />
                     </div>
 
                     <!-- The date the fiscal year ends -->
                     <div class="form-field">
                       <UploadFormHeader
-                          name="The date the fiscal year ends"
-                          explanation="The date the fiscal year ends"
+                        name="The date the fiscal year ends"
+                        explanation="The date the fiscal year ends"
                       />
                       <div class="lg:col-6 md:col-6 col-12 p-0">
-                        <Calendar
-                            inputId="icon"
-                            :showIcon="true"
-                            dateFormat="D, M dd, yy"
-                            :maxDate="new Date()"
-                        />
+                        <Calendar inputId="icon" :showIcon="true" dateFormat="D, M dd, yy" :maxDate="new Date()" />
                       </div>
 
                       <FormKit
-                          type="text"
-                          validation="required"
-                          name="dateTheFiscalYearEnds"
-                          :outer-class="{ 'hidden-input': true }"
+                        type="text"
+                        validation=""
+                        name="dateTheFiscalYearEnds"
+                        :outer-class="{ 'hidden-input': true }"
                       />
                     </div>
 
                     <!-- Scope of entities -->
                     <div class="form-field">
-                      <CheckBoxCustom name="scopeOfEntities *" explanation="Scope of entities *" />
+                      <CheckBoxCustom name="scopeOfEntities" explanation="Scope of entities" displayName="Scope of entities" />
                     </div>
 
                     <!-- EU Taxonomy activity level reporting -->
                     <div class="form-field">
-                      <CheckBoxCustom name="euTaxonomyActivityLevelReporting" explanation="EU Taxonomy activity level reporting *" />
+                      <CheckBoxCustom
+                        name="euTaxonomyActivityLevelReporting"
+                        explanation="EU Taxonomy activity level reporting"
+                        displayName="EU Taxonomy activity level reporting"
+                      />
                     </div>
 
                     <!-- Number of employees -->
                     <div class="form-field">
-                      <UploadFormHeader
-                          name="Number of employees"
-                          explanation="Number of employees"
-                      />
+                      <UploadFormHeader name="Number of employees" explanation="Number of employees" />
                       <div class="lg:col-4 md:col-6 col-12 p-0">
-                      <FormKit
+                        <FormKit
                           type="number"
                           name="numberOfEmployees"
                           validation-label="Number of employees"
@@ -262,13 +248,10 @@
                           validation="required|number"
                           step="1"
                           min="0"
-                      />
+                        />
                       </div>
                     </div>
-
                   </div>
-
-
 
                   <!-- Level of assurance -->
                   <div class="col-9 formFields">
@@ -276,69 +259,57 @@
 
                     <!-- Level of assurance -->
                     <div class="form-field">
-                      <UploadFormHeader
-                          name="Level of assurance *"
-                          explanation="Level of assurance"
-                      />
+                      <UploadFormHeader name="Level of assurance *" explanation="Level of assurance" />
                       <div class="lg:col-4 md:col-6 col-12 p-0">
-                      <FormKit
+                        <FormKit
                           type="select"
                           name="levelOfAssurance"
                           placeholder="None"
                           validation-label="Level of assurance"
-                          validation="required"
-                      />
+                          validation=""
+                        />
                       </div>
                     </div>
 
                     <!-- Assurance provider -->
                     <div class="form-field">
-                      <UploadFormHeader
-                          name="Assurance provider *"
-                          explanation="Assurance provider"
-                      />
+                      <UploadFormHeader name="Assurance provider *" explanation="Assurance provider" />
                       <FormKit
-                          type="text"
-                          name="assuranceProvider"
-                          placeholder="Assurance provider"
-                          validation-label="Assurance provider"
-                          validation="required"
+                        type="text"
+                        name="assuranceProvider"
+                        placeholder="Assurance provider"
+                        validation-label="Assurance provider"
+                        validation="required"
                       />
                     </div>
 
                     <!-- Data source -->
                     <div class="form-field">
-                      <UploadFormHeader
-                          name="Data source *"
-                          explanation="Data source"
-                      />
+                      <UploadFormHeader name="Data source *" explanation="Data source" />
                       <div class="next-to-each-other">
                         <FormKit
-                            outer-class="flex-1"
-                            type="select"
-                            name="page"
-                            placeholder="Select a report"
-                            validation-label="Select a report"
-                            validation="required"
-                            :options="files"
+                          outer-class="flex-1"
+                          type="select"
+                          name="page"
+                          placeholder="Select a report"
+                          validation-label="Select a report"
+                          validation="required"
+                          :options="files"
                         />
                         <FormKit
-                            outer-class="w-100"
-                            type="number"
-                            name="page"
-                            placeholder="Page"
-                            validation-label="Page"
-                            validation="required"
+                          outer-class="w-100"
+                          type="number"
+                          name="page"
+                          placeholder="Page"
+                          validation-label="Page"
+                          validation="required"
                         />
                       </div>
                     </div>
-
                   </div>
-
-                  </div>
+                </div>
 
                 <div class="uploadFormSection">
-
                   <div class="col-3 p-3 topicLabel">
                     <h4 id="general" class="anchor title">Add KPIs</h4>
                     <p>Select at least one company type to add the related section of KPIs.</p>
@@ -346,99 +317,120 @@
 
                   <!-- Add KPIs -->
                   <div class="col-9 formFields">
-
                     <!-- Data source -->
                     <div class="form-field">
-                      <UploadFormHeader
-                          name="Company type *"
-                          explanation="Company type *"
-                      />
+                      <UploadFormHeader name="Company type *" explanation="Company type *" />
 
                       <MultiSelect
-                          v-model="selectedKPIs"
-                          :options="kpisModel"
-                          name="companyType"
-                          optionLabel="label"
-                          validation-label="Company type"
-                          validation="required"
-                          placeholder="Select Brands"
-                          class="mb-3"
+                        v-model="selectedKPIs"
+                        :options="kpisModel"
+                        name="companyType"
+                        optionLabel="label"
+                        validation-label="Company type"
+                        validation="required"
+                        placeholder="Select Brands"
+                        class="mb-3"
                       />
                       <ul v-if="selectedKPIs.length">
-                        <li v-for="(file, index) of selectedKPIs">{{file.label}}</li>
+                        <li v-for="(file, index) of selectedKPIs">{{ file.label }}</li>
                       </ul>
 
-                      <PrimeButton
-                          @click="confirmeSelectedKPIs"
-                          class="m-0"
-                          label="ADD RELATED KPIS"
-                          :disabled="valid"
-                      />
+                      <PrimeButton @click="confirmeSelectedKPIs" class="m-0" label="ADD RELATED KPIS" />
+                    </div>
+                  </div>
+                </div>
 
+                <div v-for="(copanyType, index) of confirmedSelectedKPIs" :key="copanyType" class="uploadFormSection">
+                  <FormKit :name="copanyType.value" type="group">
+                    <div class="flex w-full">
+                      <h2>{{ copanyType.label }}</h2>
+
+                      <PrimeButton
+                        @click="removeKpisSection(copanyType.value)"
+                        label="REMOVE THIS SECTION"
+                        class="p-button-text ml-auto"
+                        icon="pi pi-trash"
+                      ></PrimeButton>
                     </div>
 
+                    <div
+                      v-for="kpiType of Object.entries(euTaxonomyKPIsModel[copanyType.value])"
+                      :key="JSON.stringify(kpiType)"
+                      class="uploadFormSection"
+                    >
+                      <FormKit :name="kpiType[0]" type="group">
+                        <div class="col-3 p-3 topicLabel">
+                          <h4 id="general" class="anchor title">{{ kpiType[0] }}</h4>
+                        </div>
+
+                        <div v-for="(kpi, index) of kpiType[1]" :key="index" class="col-9 formFields">
+                          <FormKit :name="kpi" type="group">
+                            <h3 class="mt-0">{{ kpi }}</h3>
+                            <div class="form-field">
+                              <KPIfieldsSet name="xxxxx" />
+                            </div>
+                          </FormKit>
+                        </div>
+                      </FormKit>
+                    </div>
+
+                    {{ Object.keys(euTaxonomyKPIsModel[copanyType.value]) }}
+                  </FormKit>
+                </div>
+
+                <!--------- SUBMIT --------->
+
+                <div class="uploadFormSection grid">
+                  <div class="col-3"></div>
+
+                  <div class="col-9">
+                    <PrimeButton data-test="submitButton" type="submit" label="ADD DATA" />
                   </div>
-
                 </div>
-
-                <div v-for="copanyType of confirmedSelectedKPIs" :key="copanyType" class="uploadFormSection">
-                  <KPIfieldsSet name="xxxxx" />
-                </div>
-
-
-                <div class="form-field">
-                  {{confirmedSelectedKPIs}}
-                  {{selectedKPIs}}
-                </div>
-
-
               </div>
 
-
-
-
               <!-- rest -->
-              <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
-                <template
-                  v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement', 'InvestmentFirm']"
-                  :key="fsType"
-                >
-                  <div :name="fsType">
-                    <FormKit type="group" :name="fsType">
-                      <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>
-                      <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />
-                      <DataPointFormElement name="taxonomyNonEligibleActivity" label="Taxonomy Non Eligible Activity" />
-                      <DataPointFormElement name="derivatives" label="Derivatives" />
-                      <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />
-                      <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />
-                    </FormKit>
-                  </div>
-                </template>
-              </FormKit>
-              <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">
-                <h4>Credit Institution KPIs</h4>
-                <div name="creditInstitutionKpis">
-                  <DataPointFormElement name="tradingPortfolio" label="Trading Portfolio" />
-                  <DataPointFormElement name="interbankLoans" label="Interbank Loans" />
-                  <DataPointFormElement
-                    name="tradingPortfolioAndInterbankLoans"
-                    label="Trading Portfolio and Interbank Loans (combined)"
-                  />
-                  <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />
-                </div>
-              </FormKit>
-              <FormKit type="group" name="insuranceKpis" label="Insurance KPIs">
-                <h4>Insurance KPIs</h4>
-                <DataPointFormElement
-                  name="taxonomyEligibleNonLifeInsuranceActivities"
-                  label="Taxonomy Eligible non Life Insurance Activities"
-                />
-              </FormKit>
-              <FormKit type="group" name="investmentFirmKpis" label="Investment Firm KPIs">
-                <h4>Investment Firm KPIs</h4>
-                <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />
-              </FormKit>
-              <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
+              <!--              <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">-->
+              <!--                <template-->
+              <!--                  v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement', 'InvestmentFirm']"-->
+              <!--                  :key="fsType"-->
+              <!--                >-->
+              <!--                  <div :name="fsType">-->
+              <!--                    <FormKit type="group" :name="fsType">-->
+              <!--                      <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>-->
+              <!--                      <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />-->
+              <!--                      <DataPointFormElement name="taxonomyNonEligibleActivity" label="Taxonomy Non Eligible Activity" />-->
+              <!--                      <DataPointFormElement name="derivatives" label="Derivatives" />-->
+              <!--                      <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />-->
+              <!--                      <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />-->
+              <!--                    </FormKit>-->
+              <!--                  </div>-->
+              <!--                </template>-->
+              <!--              </FormKit>-->
+              <!--              <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">-->
+              <!--                <h4>Credit Institution KPIs</h4>-->
+              <!--                <div name="creditInstitutionKpis">-->
+              <!--                  <DataPointFormElement name="tradingPortfolio" label="Trading Portfolio" />-->
+              <!--                  <DataPointFormElement name="interbankLoans" label="Interbank Loans" />-->
+              <!--                  <DataPointFormElement-->
+              <!--                    name="tradingPortfolioAndInterbankLoans"-->
+              <!--                    label="Trading Portfolio and Interbank Loans (combined)"-->
+              <!--                  />-->
+              <!--                  <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />-->
+              <!--                </div>-->
+              <!--              </FormKit>-->
+              <!--              <FormKit type="group" name="insuranceKpis" label="Insurance KPIs">-->
+              <!--                <h4>Insurance KPIs</h4>-->
+              <!--                <DataPointFormElement-->
+              <!--                  name="taxonomyEligibleNonLifeInsuranceActivities"-->
+              <!--                  label="Taxonomy Eligible non Life Insurance Activities"-->
+              <!--                />-->
+              <!--              </FormKit>-->
+              <!--              <FormKit type="group" name="investmentFirmKpis" label="Investment Firm KPIs">-->
+              <!--                <h4>Investment Firm KPIs</h4>-->
+              <!--                <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />-->
+              <!--              </FormKit>-->
+              <!--              <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />-->
             </FormKit>
           </FormKit>
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
@@ -471,15 +463,17 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { euTaxonomyKPIsModel } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel.js";
 import CheckBoxCustom from "@/components/forms/parts/CheckBoxCustom.vue";
 
 export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      fileUpload: ref<typeof FileUpload>(),
     };
   },
   name: "CreateEUTaxonomyForFinancials",
@@ -514,13 +508,14 @@ export default defineComponent({
     formInputsModel: {},
     postEuTaxonomyDataForFinancialsResponse: null,
     humanizeString: humanizeString,
+    euTaxonomyKPIsModel,
     files: [],
     kpisModel: [
-      {label: 'Industrial Companies KPIs', value: 'industrialCompanies'},
-      {label: 'Financial Companies KPIs', value: 'financialCompanies'},
-      {label: 'Credit Insitution KPIs', value: 'creditInstitution'},
-      {label: 'Green Asset Ratio', value: 'greenAssetRatio'},
-      {label: 'Insurance & Re-insurance KPIs', value: 'insuranceReinsurance'}
+      { label: "Industrial Companies KPIs", value: "industrialCompanies" },
+      { label: "Financial Companies KPIs", value: "financialCompanies" },
+      { label: "Credit Insitution KPIs", value: "creditInstitution" },
+      { label: "Green Asset Ratio", value: "greenAssetRatio" },
+      { label: "Insurance & Re-insurance KPIs", value: "insuranceReinsurance" },
     ],
     selectedKPIs: [],
     confirmedSelectedKPIs: [],
@@ -535,42 +530,54 @@ export default defineComponent({
      * Creates a new EuTaxonomy-Financials framework entry for the current company
      * with the data entered in the form by using the Dataland API
      */
-    async postEuTaxonomyDataForFinancials(): Promise<void> {
-      try {
-        this.postEuTaxonomyDataForFinancialsProcessed = false;
-        this.messageCount++;
-        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getEuTaxonomyDataForFinancialsControllerApi();
-        this.postEuTaxonomyDataForFinancialsResponse =
-          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-            this.formInputsModel
-          );
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
-      } catch (error) {
-        this.postEuTaxonomyDataForFinancialsResponse = null;
-        console.error(error);
-      } finally {
-        this.postEuTaxonomyDataForFinancialsProcessed = true;
-      }
+
+    postEuTaxonomyDataForFinancials() {
+      console.log("------>", this.formInputsModel);
     },
+
+    // async postEuTaxonomyDataForFinancials(): Promise<void> {
+    //   try {
+    //     this.postEuTaxonomyDataForFinancialsProcessed = false;
+    //     this.messageCount++;
+    //     const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+    //       assertDefined(this.getKeycloakPromise)()
+    //     ).getEuTaxonomyDataForFinancialsControllerApi();
+    //     this.postEuTaxonomyDataForFinancialsResponse =
+    //       await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
+    //         this.formInputsModel
+    //       );
+    //     this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+    //   } catch (error) {
+    //     this.postEuTaxonomyDataForFinancialsResponse = null;
+    //     console.error(error);
+    //   } finally {
+    //     this.postEuTaxonomyDataForFinancialsProcessed = true;
+    //   }
+    // },
 
     onSelectedFiles(event) {
       console.log("event", event);
-      this.files = event.files;
+      this.files = [...this.files, ...event.files];
+      console.log("this.files", this.files);
     },
 
     onRemoveTemplatingFile(file, fileRemoveCallback: void, index: number) {
       fileRemoveCallback(index);
-      this.files = this.files.filter( (el) => {
+      this.files = this.files.filter((el) => {
         return el.name !== file.name;
-      })
-
+      });
     },
 
     confirmeSelectedKPIs() {
-      console.log('confirmedSelectedKPIs')
+      console.log("confirmedSelectedKPIs");
       this.confirmedSelectedKPIs = this.selectedKPIs;
+    },
+
+    removeKpisSection(value: string) {
+      this.confirmedSelectedKPIs = this.confirmedSelectedKPIs.filter(
+        (el: { label: string; value: string }) => el.value !== value
+      );
+      this.selectedKPIs = this.confirmedSelectedKPIs;
     },
 
     formatSize(bytes: number) {
