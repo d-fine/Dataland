@@ -7,12 +7,10 @@ import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
-import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import java.lang.IllegalArgumentException
 
 /**
  * Simple implementation of a data store using a postgres database
@@ -46,28 +44,10 @@ class DatabaseDataStore(
         val data = nonPersistedDataClient.getReceivedData(dataId)
         logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
-        insertDataAndSendMessage(dataId, data, correlationId)
-    }
-
-    /**
-     * Method to actually insert data into the database and send a message to stored_queue after it has finished
-     * @param dataId to identify the data as first property of item to store
-     * @param data the data to be stored in the storage
-     * @param correlationId of the request initiating the storing of data
-     */
-    @RabbitHandler
-    fun insertDataAndSendMessage(dataId: String, data: String, correlationId: String) {
-        try {
-            dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "Data successfully stored", correlationId, storedQueue,
-            )
-        } catch (exception: IllegalArgumentException) {
-            val internalMessage = "Error storing data." +
-                "Received IllegalArgumentException with message: ${exception.message}. Correlation ID: $correlationId."
-            logger.error(internalMessage)
-            throw IllegalArgumentException(internalMessage, exception)
-        }
+        dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            dataId, "Data successfully stored", correlationId, storedQueue,
+        )
     }
 
     /**
