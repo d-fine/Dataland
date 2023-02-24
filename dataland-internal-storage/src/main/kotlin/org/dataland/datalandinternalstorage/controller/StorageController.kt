@@ -1,10 +1,8 @@
 package org.dataland.datalandinternalstorage.controller
 
 import org.dataland.datalandinternalstorage.api.StorageAPI
-import org.dataland.datalandinternalstorage.models.InsertDataResponse
 import org.dataland.datalandinternalstorage.services.DatabaseDataStore
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.core.Message
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
@@ -24,12 +22,5 @@ class StorageController(
     override fun selectDataById(dataId: String, correlationId: String): ResponseEntity<String> {
         logger.info("Selecting data from database with (data id: $dataId) and (correlation id: $correlationId).")
         return ResponseEntity.ok(dataStore.selectDataSet(dataId))
-    }
-    override fun insertData(message: Message): ResponseEntity<InsertDataResponse> {
-        return ResponseEntity.ok(
-            InsertDataResponse(
-                dataStore.listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message).toString(),
-            ),
-        )
     }
 }
