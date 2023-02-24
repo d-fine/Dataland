@@ -6,26 +6,23 @@ import org.springframework.context.annotation.Configuration
 
 
 @Configuration
-class ExchangeConfig2 {
+class BackendExchangeConfig {
     @Bean
-    fun fanoutBackend12(): FanoutExchange {
+    fun fanoutBackend(): FanoutExchange {
         return FanoutExchange("dataReceived")
     }
 }
 @Configuration
-class ExchangeConfig3 {
+class InternalStorageExchangeConfig {
     @Bean
-    fun fanoutInternalStorage12(): FanoutExchange {
-        return FanoutExchange("dataStoredTest")
+    fun fanoutInternalStorage(): FanoutExchange {
+        return FanoutExchange("dataStored")
     }
 }
-/*
+@Configuration
+class QualityAssuredExchangeConfig {
     @Bean
-    fun fanoutInternalStorage12(): FanoutExchange {
-        return FanoutExchange("dataStoredTest")
-    }
-    @Bean
-    fun fanoutQaService12(): FanoutExchange {
+    fun fanoutQaService(): FanoutExchange {
         return FanoutExchange("dataQualityAssured")
     }
-*/
+}

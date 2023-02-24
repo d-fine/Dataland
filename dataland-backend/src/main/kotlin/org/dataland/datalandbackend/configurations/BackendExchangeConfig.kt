@@ -3,22 +3,22 @@ package org.dataland.datalandbackend.configurations
 import org.springframework.amqp.core.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.dataland.datalandmessagequeueutils.cloudevents.ExchangeConfig2
-import org.dataland.datalandmessagequeueutils.cloudevents.ExchangeConfig3
+import org.dataland.datalandmessagequeueutils.cloudevents.InternalStorageExchangeConfig
+import org.dataland.datalandmessagequeueutils.cloudevents.QualityAssuredExchangeConfig
 import org.springframework.beans.factory.annotation.Autowired
 
 
 @Configuration
-class BackendExchangeConfig2 (
-    @Autowired Exchange: ExchangeConfig3
-        ){
-    val dataStoredExchange = Exchange.fanoutInternalStorage12()
-    /*@Bean
-    fun fanoutBackend1(): FanoutExchange {
-        return FanoutExchange("dataStored")
-    }*/
+class BackendBindingConfig2 (
+    @Autowired exchange: InternalStorageExchangeConfig
+){val dataStoredExchange = exchange.fanoutInternalStorage()
 
-private class BindingConfig {
+    @Bean
+    fun fanoutBackend1(): FanoutExchange {
+        return dataStoredExchange
+    }
+
+private class BindingConfig2 {
 
         @Bean
         fun autoDeleteQueue4(): Queue {
@@ -28,24 +28,26 @@ private class BindingConfig {
 
         @Bean
         fun binding4(
-            dataStoredExchange: FanoutExchange?,
+            fanoutBackend1: FanoutExchange?,
             autoDeleteQueue4: Queue?
         ): Binding {
-            return BindingBuilder.bind(autoDeleteQueue4).to(dataStoredExchange)
+            return BindingBuilder.bind(autoDeleteQueue4).to(fanoutBackend1)
         }
     }
-
-
 }
-/*
+
+
+
 @Configuration
-class BackendExchangeConfig {
+class BackendBindingConfig (
+    @Autowired exchange: QualityAssuredExchangeConfig
+){val dataQualityAssuredExchange = exchange.fanoutQaService()
     @Bean
     fun fanoutBackend2(): FanoutExchange {
-        return FanoutExchange("dataQualityAssured")
+        return dataQualityAssuredExchange
     }
 
-    private class BindinjgConfig {
+    private class BindingConfig {
         @Bean
         fun autoDeleteQueue3(): Queue {
             return AnonymousQueue()
@@ -53,8 +55,8 @@ class BackendExchangeConfig {
 
         @Bean
         fun binding3(
-            fanoutQaService: FanoutExchange?,
-            fanoutBackend2: Queue?
+            fanoutBackend2: FanoutExchange?,
+            autoDeleteQueue3: Queue?
         ): Binding {
             return BindingBuilder.bind(autoDeleteQueue3).to(fanoutBackend2)
         }
@@ -62,4 +64,4 @@ class BackendExchangeConfig {
     }
 
 
-}*/
+}

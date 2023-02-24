@@ -1,16 +1,20 @@
 package org.dataland.datalandinternalstorage.configurations
 
+import org.dataland.datalandmessagequeueutils.cloudevents.BackendExchangeConfig
 import org.springframework.amqp.core.*
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
 
 @Configuration
-class InternalStorageExchangeConfig {
+class InternalStorageBindingConfig (
+    @Autowired exchange: BackendExchangeConfig
+){val dataReceivedExchange = exchange.fanoutBackend()
     @Bean
     fun fanoutInternalStorage(): FanoutExchange {
-        return FanoutExchange("dataStored")
+        return dataReceivedExchange
     }
 
 
@@ -23,11 +27,11 @@ class InternalStorageExchangeConfig {
 
         @Bean
         fun binding1(
-            fanoutBackend1: FanoutExchange?,
+            fanoutInternalStorage: FanoutExchange?,
             autoDeleteQueue1: Queue?
         ): Binding {
             //hier soll die Queue an den Exchange "dataReceived" des Backends gebunden werden
-            return BindingBuilder.bind(autoDeleteQueue1).to(fanoutBackend1)
+            return BindingBuilder.bind(autoDeleteQueue1).to(fanoutInternalStorage)
         }
     }
 }

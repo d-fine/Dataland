@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.configurations.BackendExchangeConfig2
+import org.dataland.datalandbackend.configurations.BackendBindingConfig
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -41,7 +41,7 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Qualifier("fanoutInternalStorage12") @Autowired private var fanoutBackend: FanoutExchange,
+    @Qualifier("fanoutInternalStorage") @Autowired private var fanoutBackend: FanoutExchange,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInformationHashMap = mutableMapOf<String, String>()
