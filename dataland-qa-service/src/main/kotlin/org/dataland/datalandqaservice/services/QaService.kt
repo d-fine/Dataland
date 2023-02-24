@@ -36,7 +36,7 @@ class QaService(
             logger.info(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
             )
-            sendMessageToQueue(dataId, "QA Process Completed", correlationId, MqConstants.dataQualityAssured)
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(dataId, "QA Process Completed", correlationId, MqConstants.dataQualityAssured)
         } else {
             val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
             logger.error(internalMessage)
