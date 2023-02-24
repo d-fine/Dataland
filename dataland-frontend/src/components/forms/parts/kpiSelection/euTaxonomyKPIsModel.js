@@ -43,6 +43,7 @@ export const euTaxonomyKpiNameMappings = {
   fiscalYearDeviation: "Fiscal year is deviating",
   numberOfEmployees: "Number Of Employees",
   scopeOfEntities: "Scope Of Entities",
+  currency: "Currency used in the report",
 
   groupLevelSustainabilityReport: "Group Level Sustainability Report",
   sustainabilityReportDate: "Sustainability Report Date",
@@ -112,9 +113,9 @@ export const euTaxonomyKpiInfoMappings = {
   fiscalYear: "Fiscal Year",
   fiscalYearEnd: "The date the fiscal year ends",
   annualReport: "Link to Annual Report",
+  currency: "The 3-letter alpha code that represents the currency used in the report",
   groupLevelAnnualReport: "Group Level Annual Report",
   annualReportDate: "The date for which the information presented in the report is valid through",
-  annualReportCurrency: "The 3-letter alpha code that represents the currency used in the report",
 
   activityLevelReporting: "EU Taxonomy activity level reporting",
   fiscalYearDeviation: "Fiscal year is deviating",
@@ -124,17 +125,14 @@ export const euTaxonomyKpiInfoMappings = {
   sustainabilityReport: "Link to Sustainability Report",
   groupLevelSustainabilityReport: "Is Sustainability Report on a Group level",
   sustainabilityReportDate: "The date for which the information presented in the report is valid through",
-  sustainabilityReportCurrency: "The 3-letter alpha code that represents the currency used in the report",
 
   integratedReport: "Link to Integrated Report",
   groupLevelIntegratedReport: "Is Integrated Report on a Group level",
   integratedReportDate: "The date for which the information presented in the report is valid through",
-  integratedReportCurrency: "The 3-letter alpha code that represents the currency used in the report",
 
   esefReport: "Link to ESEF Report",
   groupLevelEsefReport: "Is ESEF Report on a Group level",
   esefReportDate: "The date for which the information presented in the report is valid through",
-  esefReportCurrency: "The 3-letter alpha code that represents the currency used in the report",
 
   eUTaxonomyActivityLevelReporting: "EU Taxonomy Activity Level Reporting",
   nfrdMandatory: "The reporting obligation for companies whose number of employees is greater or equal to 500",

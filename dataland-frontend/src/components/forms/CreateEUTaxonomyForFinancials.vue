@@ -74,14 +74,17 @@
                 <div class="uploadFormSection">
                   <FormKit name="referencedReports" type="group">
                     <!-- Select company reports -->
-                    <div v-for="file of files" class="col-9 formFields">
+                    <div v-for="file of files" :key="file.name" class="col-9 formFields">
                       <div class="form-field-label">
                         <h3 class="mt-0">{{ file.name }}</h3>
                       </div>
                       <FormKit :name="file.name" type="group">
                         <!-- Date of the report -->
                         <div class="form-field">
-                          <UploadFormHeader name="Date of the report" explanation="Date of the report" />
+                          <UploadFormHeader
+                            :name="euTaxonomyKpiNameMappings.fiscalYearEnd"
+                            :explanation="euTaxonomyKpiInfoMappings.fiscalYearEnd"
+                          />
                           <div class="lg:col-6 md:col-6 col-12 p-0">
                             <Calendar
                               data-test="dateOfTheReport"
@@ -103,8 +106,8 @@
                         <!-- Currency used in the report -->
                         <div class="form-field" data-test="currencyUsedInTheReport">
                           <UploadFormHeader
-                            name="Currency used in the report"
-                            explanation="Currency used in the report"
+                            :name="euTaxonomyKpiNameMappings.currency"
+                            :explanation="euTaxonomyKpiInfoMappings.currency"
                           />
                           <div class="lg:col-6 md:col-6 col-12 p-0">
                             <FormKit
@@ -119,9 +122,9 @@
                         <!-- Integrated report is on a group level -->
                         <div class="form-field">
                           <CheckBoxCustom
-                            name="integratedReportIsOnAGroupLevel"
-                            explanation="Integrated report is on a group level"
-                            displayName="Integrated report is on a group level"
+                            name="groupLevelIntegratedReport"
+                            :explanation="euTaxonomyKpiInfoMappings.groupLevelIntegratedReport"
+                            :displayName="euTaxonomyKpiNameMappings.groupLevelIntegratedReport"
                           />
                         </div>
                       </FormKit>
@@ -466,7 +469,7 @@ import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { euTaxonomyKPIsModel } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel.js";
+import { euTaxonomyKPIsModel, euTaxonomyKpiInfoMappings, euTaxonomyKpiNameMappings } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel.js";
 import CheckBoxCustom from "@/components/forms/parts/CheckBoxCustom.vue";
 
 export default defineComponent({
@@ -509,6 +512,8 @@ export default defineComponent({
     postEuTaxonomyDataForFinancialsResponse: null,
     humanizeString: humanizeString,
     euTaxonomyKPIsModel,
+    euTaxonomyKpiNameMappings,
+    euTaxonomyKpiInfoMappings,
     files: [],
     kpisModel: [
       { label: "Industrial Companies KPIs", value: "industrialCompanies" },
