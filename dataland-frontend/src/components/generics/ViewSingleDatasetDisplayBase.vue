@@ -20,6 +20,10 @@
 
     <template v-slot:content>
       <div v-if="foundDataIdToDisplay">
+        <div v-if="foundDataIdBelongsToOutdatedDataset">
+          this dataset is outdated
+          <PrimeButton @click="switchToLatestVersion"> See latest version </PrimeButton>
+        </div>
         <div class="grid">
           <div class="col-12 text-left">
             <h2 class="mb-0">{{ title }}</h2>
@@ -64,10 +68,11 @@ import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/F
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
+import PrimeButton from "primevue/button";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
-  components: { ViewFrameworkBase, Dropdown },
+  components: { ViewFrameworkBase, Dropdown, PrimeButton },
   props: {
     companyId: {
       type: String,
@@ -93,14 +98,15 @@ export default defineComponent({
 
   data() {
     return {
-      foundDataIdToDisplay: false,
+      waitingForDataMetaInfoAndChoosingDatasetToDisplay: true,
+      listOfReceivedActiveDataMetaInfo: [] as DataMetaInformation[],
       reportingPeriodsInDropdown: [] as Array<string>,
       chosenReportingPeriodInDropdown: "",
       currentReportingPeriod: null as string | null,
-      waitingForDataMetaInfoAndChoosingDatasetToDisplay: true,
-      listOfReceivedActiveDataMetaInfo: [] as DataMetaInformation[],
       isDataIdInUrlValid: true,
       isReportingPeriodInUrlValid: true,
+      foundDataIdToDisplay: false,
+      foundDataIdBelongsToOutdatedDataset: false,
     };
   },
 
@@ -118,22 +124,44 @@ export default defineComponent({
       );
       this.$emit(
         "updateDataIdOfDatasetToDisplay",
-        this.getActiveDataIdFromListOfDataMetaInfoForSingleReportingPeriod(listOfDataMetaInfoForChosenReportingPeriod)
+        this.getActiveDataMetaInfoFromListOfDataMetaInfoForSingleReportingPeriod(
+          listOfDataMetaInfoForChosenReportingPeriod
+        ).dataId
       );
       this.$router.push(
         `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${newReportingPeriod}`
-      );
+      ); //TODO duplice code
     },
   },
 
   methods: {
-    getActiveDataIdFromListOfDataMetaInfoForSingleReportingPeriod(
+    switchToLatestVersion() {
+      const aa = this.listOfReceivedActiveDataMetaInfo.filter(
+        (dataMetaInfo) => dataMetaInfo.reportingPeriod == this.currentReportingPeriod
+      )[0]; // TODO list needs to have 1 element! check!
+      console.log(aa); //TODO variable name
+      this.foundDataIdBelongsToOutdatedDataset = false;
+      this.$emit("updateDataIdOfDatasetToDisplay", aa.dataId);
+      this.$router.push(
+        `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${this.chosenReportingPeriodInDropdown}`
+      );
+    },
+
+    getActiveDataMetaInfoFromListOfDataMetaInfoForSingleReportingPeriod(
       listOfDataMetaInfoForSingleReportingPeriod: DataMetaInformation[]
-    ): string {
+    ): DataMetaInformation {
       // TODO happens currently based on upload time => in the future this could just check for a status: "active" e.g.
-      return listOfDataMetaInfoForSingleReportingPeriod.reduce((prev, current) => {
-        return prev.uploadTime > current.uploadTime ? prev : current;
-      }).dataId;
+      const a = listOfDataMetaInfoForSingleReportingPeriod.filter((dataMetaInfo) => dataMetaInfo.currentlyActive); // TODO rename "a"
+      if (a.length == 1) {
+        return a[0];
+      } else if (a.length == 0) {
+        throw TypeError(`The fetched data meta info for the current company ID ${this.companyId}
+        and framework ${this.dataType} is empty.`);
+      } else {
+        throw TypeError(`The fetched data meta info for the current company ID ${this.companyId}
+        and framework ${this.dataType} has several data meta info datsets with the status 'active'.
+        Therefore no unique data ID could be determined.`);
+      }
     },
 
     handleUpdateAvailableReportingPeriods(listOfAvailableReportingPeriods: string[]) {
@@ -164,11 +192,12 @@ export default defineComponent({
         this.currentReportingPeriod = latestReportingPeriod;
         console.log("found latest reporting period"); // TODO debugging
         console.log("------------------------------------");
-        return this.getActiveDataIdFromListOfDataMetaInfoForSingleReportingPeriod(
+        // assure that active TODO  else throw an error
+        return this.getActiveDataMetaInfoFromListOfDataMetaInfoForSingleReportingPeriod(
           this.listOfReceivedActiveDataMetaInfo.filter(
             (dataMetaInfo: DataMetaInformation) => dataMetaInfo.reportingPeriod == latestReportingPeriod
           )
-        );
+        ).dataId;
       } else {
         console.log("could not found latest reporting period, returning first as default"); // TODO debugging
         console.log("------------------------------------");
@@ -190,6 +219,7 @@ export default defineComponent({
           const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
           this.currentReportingPeriod = dataMetaInfoForDataSetWithDataIdFromUrl.reportingPeriod;
           this.foundDataIdToDisplay = true;
+          this.foundDataIdBelongsToOutdatedDataset = !dataMetaInfoForDataSetWithDataIdFromUrl.currentlyActive;
           this.$emit("updateDataIdOfDatasetToDisplay", this.dataId);
         } catch (error) {
           const axiosError = error as AxiosError;
@@ -203,15 +233,18 @@ export default defineComponent({
           (dataMetaInfo) => dataMetaInfo.reportingPeriod === this.reportingPeriod
         );
         if (listOfDataMetaInfoWithReportingPeriodFromUrl.length == 1) {
+          const dataMetaInfoToEmit = listOfDataMetaInfoWithReportingPeriodFromUrl[0];
           this.currentReportingPeriod = this.reportingPeriod;
           this.foundDataIdToDisplay = true;
-          this.$emit("updateDataIdOfDatasetToDisplay", listOfDataMetaInfoWithReportingPeriodFromUrl[0]);
+          this.foundDataIdBelongsToOutdatedDataset = !dataMetaInfoToEmit.currentlyActive;
+          this.$emit("updateDataIdOfDatasetToDisplay", dataMetaInfoToEmit.dataId);
         } else {
           this.isReportingPeriodInUrlValid = false;
         }
       } else {
         console.log("no dataId or reprtingPeriod in Url => default"); // TODO debugging
         this.foundDataIdToDisplay = true; // TODO think about this later again
+        this.foundDataIdBelongsToOutdatedDataset = false;
         this.$emit(
           // TODO duplicate code block more or less => put in own function
           "updateDataIdOfDatasetToDisplay",
