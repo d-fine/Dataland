@@ -6,12 +6,11 @@ import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.core.Message
-import org.springframework.amqp.rabbit.annotation.RabbitHandler
-import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.amqp.rabbit.annotation.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.lang.IllegalArgumentException
 
 /**
  * Simple implementation of a data store using a postgres database
@@ -26,10 +25,8 @@ class DatabaseDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
-) { companion object {
-    private const val storageQueue = ("\${spring.rabbitmq.storage-queue}")
-    private const val storedQueue = ("\${spring.rabbitmq.stored-queue}")
-}
+    @Autowired private var fanoutInternalStorage: FanoutExchange,
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -38,7 +35,8 @@ class DatabaseDataStore(
      * @param message Message retrieved from storage_queue
      */
 
-    @RabbitListener(queues = [storageQueue])
+    //@RabbitListener(queues = ["storage_queue"])
+    @RabbitListener(queues = ["#{autoDeleteQueue1.name}"])
     fun listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -60,7 +58,7 @@ class DatabaseDataStore(
         try {
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "Data successfully stored", correlationId, storedQueue,
+                dataId, "Data successfully stored", correlationId, fanoutInternalStorage.name,
             )
         } catch (exception: IllegalArgumentException) {
             val internalMessage = "Error storing data." +

@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.configurations.BackendExchangeConfig2
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -12,9 +13,15 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.AnonymousQueue
+import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.core.Message
+import org.springframework.amqp.rabbit.annotation.Exchange
+import org.springframework.amqp.rabbit.annotation.Queue
+import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -34,12 +41,8 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-) { companion object {
-    private const val qaQueue = ("\${spring.rabbitmq.qa-queue}")
-    private const val storedQueue = ("\${spring.rabbitmq.stored-queue}")
-    private const val uploadQueue = ("\${spring.rabbitmq.upload-queue}")
-    private const val storageQueue = ("\${spring.rabbitmq.storage-queue}")
-}
+    @Qualifier("fanoutInternalStorage12") @Autowired private var fanoutBackend: FanoutExchange,
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInformationHashMap = mutableMapOf<String, String>()
 
@@ -87,10 +90,10 @@ class DataManager(
             storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, QAStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(metaData)
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, "New data - QA necessary", correlationId,
-            uploadQueue,
-        )
+       // cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+        //    dataId, "New data - QA necessary", correlationId,
+        //    fanoutBackend.name,
+       // )
         return dataId
     }
 
@@ -98,7 +101,7 @@ class DataManager(
      * Method that listens to the qa_queue and updates the metadata information after successful qa process
      * @param message is the message delivered on the message queue
      */
-    @RabbitListener(queues = [qaQueue])
+    @RabbitListener(queues = ["qa_queue"])
     fun listenToMessageQueueAndUpdateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -150,7 +153,7 @@ class DataManager(
         dataInformationHashMap[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "Data to be stored", correlationId,
-            storageQueue,
+            fanoutBackend.name,
         )
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID in temporary store" +
@@ -174,10 +177,16 @@ class DataManager(
      * correlationId
      * @param message Message retrieved from stored_queue
      */
-    @RabbitListener(queues = [storedQueue])
+    //@RabbitListener(queues = ["#{autoDeleteQueue1.name}"])
+   /* @RabbitListener(bindings = [QueueBinding(
+        value = Queue(value = ""),
+        exchange = Exchange(value = "dataStored")
+    )]
+    )*/
     fun listenToStoredQueueAndRemoveStoredItemFromTemporaryStore(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
+
         if (!dataId.isNullOrEmpty()) {
             logger.info("Internal Storage sent a message - job done")
             logger.info(
