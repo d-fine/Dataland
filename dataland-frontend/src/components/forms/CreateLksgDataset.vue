@@ -1208,7 +1208,7 @@ export default defineComponent({
         this.yearOfDataDate = newValue.getFullYear().toString();
         this.convertedDataDate = `${this.yearOfDataDate}-${("0" + (newValue.getMonth() + 1).toString()).slice(-2)}-${(
           "0" + newValue.getDate().toString()
-        ).slice(-2)}`;
+        ).slice(-2)}`; // TODO Are we sure that there is no out-of-the-box method to convert datest to the format YYYY-MM-DD ?
       } else {
         this.yearOfDataDate = "";
         this.convertedDataDate = "";

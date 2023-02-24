@@ -164,7 +164,7 @@ export default defineComponent({
         const metaDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
-        const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
+        const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, true);
         const listOfAllDataMetaInfo = response.data;
         this.listOfEuTaxonomyNonFinancialsMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
           listOfAllDataMetaInfo.filter(

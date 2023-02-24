@@ -110,15 +110,13 @@ export default defineComponent({
      */
     async redirectToViewPageIfEnabledInFrontend(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
       if (this.isFrontendViewPageExisting) {
-        let dataIdQueryParamToSet: string;
+        let urlExtension: string;
         if (dataMetaInfoOfClickedDataSet.dataType === DataTypeEnum.Lksg) {
-          dataIdQueryParamToSet = "";
+          urlExtension = "";
         } else {
-          dataIdQueryParamToSet = `?dataId=${dataMetaInfoOfClickedDataSet.dataId}`;
+          urlExtension = `/${dataMetaInfoOfClickedDataSet.dataId}`;
         }
-        await this.$router.push(
-          `/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${dataIdQueryParamToSet}`
-        );
+        await this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${urlExtension}`);
       }
     },
     /**

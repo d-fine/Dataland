@@ -1,12 +1,14 @@
 <template>
   <ViewSingleDatasetDisplayBase
     :company-id="companyID"
+    :data-id="dataId"
+    :reporting-period="reportingPeriod"
     :data-type="DataTypeEnum.EutaxonomyFinancials"
-    v-model:data-id-to-display="dataIdToDisplay"
     data-descriptor="EU-Taxonomy data for financial companies"
     title="EU Taxonomy Data"
+    @updateDataIdOfDatasetToDisplay="handleUpdatedDataIdToDisplay"
   >
-    <EuTaxonomyPanelFinancials :dataID="dataIdToDisplay" />
+    <EuTaxonomyPanelFinancials :dataID="dataIdOfDisplayedDataset" />
   </ViewSingleDatasetDisplayBase>
 </template>
 
@@ -23,12 +25,25 @@ export default defineComponent({
     companyID: {
       type: String,
     },
+    dataId: {
+      type: String,
+    },
+    reportingPeriod: {
+      type: String,
+    },
   },
   data() {
     return {
-      dataIdToDisplay: "",
+      dataIdOfDisplayedDataset: null as string | null,
       DataTypeEnum,
     };
+  },
+  methods: {
+    handleUpdatedDataIdToDisplay(updatedDataId: string) {
+      console.log("updated data Id"); // TODO debugging
+      console.log(updatedDataId); // TODO debugging
+      this.dataIdOfDisplayedDataset = updatedDataId;
+    },
   },
 });
 </script>

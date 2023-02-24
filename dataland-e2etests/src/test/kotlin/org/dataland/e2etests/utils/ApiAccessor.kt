@@ -132,6 +132,7 @@ class ApiAccessor {
         listOfCompanyInformation: List<CompanyInformation>,
         numberOfDataSetsPerCompany: Int,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
+        reportingPeriod: String
     ): List<UploadInfo> {
         return when (dataType) {
             DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(
@@ -139,6 +140,7 @@ class ApiAccessor {
                 testDataProviderForLksgData.getTData(numberOfDataSetsPerCompany),
                 lksgUploaderFunction,
                 uploadingTechnicalUser,
+                reportingPeriod
             )
 
             DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
@@ -146,6 +148,7 @@ class ApiAccessor {
                 testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany),
                 sfdrUploaderFunction,
                 uploadingTechnicalUser,
+                reportingPeriod
             )
 
             DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
@@ -153,6 +156,7 @@ class ApiAccessor {
                 testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany),
                 smeUploaderFunction,
                 uploadingTechnicalUser,
+                reportingPeriod
             )
 
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
@@ -160,6 +164,7 @@ class ApiAccessor {
                 testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerCompany),
                 euTaxonomyNonFinancialsUploaderFunction,
                 uploadingTechnicalUser,
+                reportingPeriod
             )
 
             DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
@@ -167,14 +172,16 @@ class ApiAccessor {
                 testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
                 euTaxonomyFinancialsUploaderFunction,
                 uploadingTechnicalUser,
+                reportingPeriod
             )
         }
     }
-// TODO: Add ReportingPeriod for this function
+
     fun uploadCompanyAndFrameworkDataForMultipleFrameworks(
         companyInformationPerFramework: Map<DataTypeEnum, List<CompanyInformation>>,
         numberOfDataSetsPerCompany: Int,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
+        reportingPeriod: String = ""
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         companyInformationPerFramework.keys.forEach {
@@ -184,6 +191,7 @@ class ApiAccessor {
                     companyInformationPerFramework[it]!!,
                     numberOfDataSetsPerCompany,
                     uploadingTechnicalUser,
+                    reportingPeriod
                 ),
             )
         }
