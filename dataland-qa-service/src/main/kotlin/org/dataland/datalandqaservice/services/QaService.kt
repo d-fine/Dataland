@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.services
 
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.enums.MqConstants
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.AmqpException
@@ -27,9 +28,8 @@ class QaService(
      * Method to retrieve message from upload_queue and constructing new one for qa_queue
      * @param message Message retrieved from upload_queue
      */
-    //@RabbitListener(queues = ["upload_queue"])
-    @RabbitListener(bindings = [QueueBinding(value = Queue("foo2"),
-        exchange = Exchange("dataStored", declare="false"),
+    @RabbitListener(bindings = [QueueBinding(value = Queue("dataStoredQaService"),
+        exchange = Exchange(MqConstants.dataStored, declare="false"),
         key = [""])])
     fun receive(message: Message) {
 
@@ -39,8 +39,7 @@ class QaService(
             logger.info(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
             )
-//            TODO: get Exchange Name from ENUM in rabbitmq utils
-            sendMessageToQueue(dataId, "QA Process Completed", correlationId, "dataQualityAssured")
+            sendMessageToQueue(dataId, "QA Process Completed", correlationId, MqConstants.dataQualityAssured)
         } else {
             val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
             logger.error(internalMessage)

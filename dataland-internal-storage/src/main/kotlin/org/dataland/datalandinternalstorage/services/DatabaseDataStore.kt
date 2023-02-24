@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataController
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.enums.MqConstants
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.*
@@ -33,9 +34,8 @@ class DatabaseDataStore(
      * @param message Message retrieved from storage_queue
      */
 
-    //@RabbitListener(queues = ["storage_queue"])
-    @RabbitListener(bindings = [QueueBinding(value = Queue("foo"),
-        exchange = Exchange("dataReceived", declare="false"),
+    @RabbitListener(bindings = [QueueBinding(value = Queue("dataReceivedInternalStorageDatabaseDataStore"),
+        exchange = Exchange(MqConstants.dataReceived, declare="false"),
         key = [""])])
     fun listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
@@ -59,7 +59,7 @@ class DatabaseDataStore(
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
 //                Replace with exchange name from RabbitMQ Utils
-                dataId, "Data successfully stored", correlationId, "dataStored",
+                dataId, "Data successfully stored", correlationId, MqConstants.dataStored,
             )
         } catch (exception: IllegalArgumentException) {
             val internalMessage = "Error storing data." +
