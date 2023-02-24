@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
@@ -32,7 +31,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@Transactional
 internal class DataControllerTest(
     @Autowired @Spy
     var objectMapper: ObjectMapper,
