@@ -1,5 +1,9 @@
 <template>
-  <ViewFrameworkBase :companyID="companyID" :dataType="DataTypeEnum.Lksg" @updateDataId="handleReceivedListOfDataIds">
+  <ViewFrameworkBase
+    :companyID="companyID"
+    :dataType="DataTypeEnum.Lksg"
+    @updateDataMetaInfo="handleReceivedListOfDataIds"
+  >
     <template v-if="receivedLksgDataIds.length > 0">
       <div class="grid">
         <div class="col-12">
@@ -39,7 +43,7 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
+     * TODO Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
      *
      * @param receivedLksgDataIds Received LkSG data IDs
      */

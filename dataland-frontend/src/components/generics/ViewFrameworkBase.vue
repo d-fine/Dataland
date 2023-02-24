@@ -15,7 +15,7 @@
       </MarginWrapper>
       <MarginWrapper v-if="noFailure" class="text-left surface-0" style="margin-right: 0">
         <Dropdown
-          id="frameworkDataDropdown"
+          id="chooseFrameworkDropdown"
           v-model="chosenDataTypeInDropdown"
           :options="dataTypesInDropdown"
           optionLabel="label"
@@ -26,9 +26,10 @@
           dropdownIcon="pi pi-angle-down"
           @change="redirectToViewPageForChosenFramework"
         />
+        <slot name="reportingPeriodDropdown"> </slot>
       </MarginWrapper>
       <MarginWrapper v-if="noFailure" style="margin-right: 0">
-        <slot></slot>
+        <slot name="content"> </slot>
       </MarginWrapper>
     </TheContent>
     <DatalandFooter />
@@ -51,6 +52,7 @@ import Dropdown from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -65,7 +67,7 @@ export default defineComponent({
     CompanyInformation,
     DatalandFooter,
   },
-  emits: ["updateDataId"],
+  emits: ["updateAvailableReportingPeriodsForChosenFramework", "updateActiveDataMetaInfoForChosenFramework"],
   props: {
     companyID: {
       type: String,
@@ -92,7 +94,7 @@ export default defineComponent({
     };
   },
   created() {
-    void this.getAllDataIdsForFrameworkAndEmitThem();
+    void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
     window.addEventListener("scroll", this.windowScrollHandler);
   },
   methods: {
@@ -122,39 +124,61 @@ export default defineComponent({
       });
     },
 
-    /**
-     * Checks if the provided data type already exists in the vue components dataTypesInDropdown-array and adds it if not.
-     *
-     * @param dataType The data type to check for
-     */
-    appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataType: string) {
-      if (!this.dataTypesInDropdown.some((dataTypeObject) => dataTypeObject.value === dataType)) {
-        this.dataTypesInDropdown.push({ label: humanizeString(dataType), value: dataType });
-      }
+    getDistinctAvailableFrameworksAndPutThemIntoDropdown(
+      listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod: DataMetaInformation[]
+    ) {
+      const setOfAvailableFrameworksForCompany = [
+        ...new Set(listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.map((dataMetaInfo) => dataMetaInfo.dataType)),
+      ];
+      setOfAvailableFrameworksForCompany.forEach((dataType) => {
+        if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataType)) {
+          this.dataTypesInDropdown.push({ label: humanizeString(dataType), value: dataType });
+        }
+      });
+    },
+
+    filterListOfDataMetaInfoForChosenFrameworkAndReturnIt(
+      listOfDataMetaInfo: DataMetaInformation[]
+    ): DataMetaInformation[] {
+      return listOfDataMetaInfo.filter((dataMetaInfo) => dataMetaInfo.dataType === this.dataType);
+    },
+
+    getDistinctReportingPeriodsInListOfDataMetaInfoAndReturnIt(listOfDataMetaInfo: DataMetaInformation[]): string[] {
+      return [...new Set(listOfDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.reportingPeriod))];
     },
 
     /**
      * Goes through all data meta info for the currently viewed company and does two things. First it saves all distinct
      * data types into the vue components dataTypesInDropdown-array. Second it collects all data IDs for data of the
-     * currently selected framework type and emits them.
+     * currently selected framework type and emits them. TODO
      */
-    async getAllDataIdsForFrameworkAndEmitThem() {
+    async getDropdownOptionsAndActiveDataMetaInfoAndDoEmits() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
-        const listOfDataMetaInfoForCompany = apiResponse.data;
-        const listOfDataIdsToEmit = [] as string[];
-        listOfDataMetaInfoForCompany.forEach((dataMetaInfo) => {
-          if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)) {
-            this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo.dataType);
-          }
-          if (dataMetaInfo.dataType === this.dataType) {
-            listOfDataIdsToEmit.push(dataMetaInfo.dataId);
-          }
-        });
-        this.$emit("updateDataId", listOfDataIdsToEmit);
+        const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
+
+        this.getDistinctAvailableFrameworksAndPutThemIntoDropdown(
+          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
+        );
+
+        const listOfActiveDataMetaInfoPerReportingPeriodForChosenFramework =
+          this.filterListOfDataMetaInfoForChosenFrameworkAndReturnIt(
+            listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
+          );
+
+        this.$emit(
+          "updateAvailableReportingPeriodsForChosenFramework",
+          this.getDistinctReportingPeriodsInListOfDataMetaInfoAndReturnIt(
+            listOfActiveDataMetaInfoPerReportingPeriodForChosenFramework
+          )
+        );
+        this.$emit(
+          "updateActiveDataMetaInfoForChosenFramework",
+          listOfActiveDataMetaInfoPerReportingPeriodForChosenFramework
+        );
       } catch (error) {
         this.noFailure = false;
         console.error(error);
@@ -163,7 +187,7 @@ export default defineComponent({
   },
   watch: {
     companyID() {
-      void this.getAllDataIdsForFrameworkAndEmitThem();
+      void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
     },
   },
 });

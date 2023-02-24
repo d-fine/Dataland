@@ -1,46 +1,81 @@
 <template>
-  <ViewFrameworkBase :companyID="companyId" :dataType="dataType" @updateDataId="handleReceivedListOfDataIds">
-    <div v-if="dataIdToDisplay">
-      <div class="grid">
-        <div class="col-12 text-left">
-          <h2 class="mb-0">{{ title }}</h2>
+  <ViewFrameworkBase
+    :companyID="companyId"
+    :dataType="dataType"
+    @updateAvailableReportingPeriodsForChosenFramework="handleUpdateAvailableReportingPeriods"
+    @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
+  >
+    <template v-slot:reportingPeriodDropdown>
+      <Dropdown
+        id="chooseReportingPeriodDropdown"
+        v-model="chosenReportingPeriodInDropdown"
+        :options="reportingPeriodsInDropdown"
+        :placeholder="currentReportingPeriod"
+        aria-label="Choose reporting period"
+        class="fill-dropdown"
+        dropdownIcon="pi pi-angle-down"
+        @change=""
+      />
+    </template>
+
+    <template v-slot:content>
+      <div v-if="foundDataIdToDisplay">
+        <div class="grid">
+          <div class="col-12 text-left">
+            <h2 class="mb-0">{{ title }}</h2>
+          </div>
+          <div class="col-6 text-left">
+            <p class="font-semibold text-gray-800 mt-0">Data from company report.</p>
+          </div>
         </div>
-        <div class="col-6 text-left">
-          <p class="font-semibold m-0">2021</p>
-          <p class="font-semibold text-gray-800 mt-0">Data from company report.</p>
+        <div class="grid">
+          <div class="col-7">
+            <slot></slot>
+          </div>
         </div>
       </div>
-      <div class="grid">
-        <div class="col-7">
-          <slot></slot>
-        </div>
+      <div v-if="waitingForDataMetaInfoAndChoosingDatasetToDisplay" class="col-12 text-left">
+        <h2>Checking if {{ dataDescriptor }} available...</h2>
       </div>
-    </div>
-    <div v-if="waitingForDataIdsAndChoosingDataIdToDisplay" class="col-12 text-left">
-      <h2>Checking if {{ dataDescriptor }} available...</h2>
-    </div>
-    <div
-      v-if="!waitingForDataIdsAndChoosingDataIdToDisplay && listOfReceivedDataIds.length === 0"
-      class="col-12 text-left"
-    >
-      <h2>No {{ dataDescriptor }} present</h2>
-    </div>
-    <div v-if="!isQueryParamDataIdValid">
-      <h2>There is no {{ dataDescriptor }} available for the data ID you provided in the URL.</h2>
-    </div>
+      <div
+        v-if="!waitingForDataMetaInfoAndChoosingDatasetToDisplay && listOfReceivedActiveDataMetaInfo.length === 0"
+        class="col-12 text-left"
+      >
+        <h2>No {{ dataDescriptor }} present</h2>
+      </div>
+      <div v-if="!isDataIdInUrlValid">
+        <h2>No {{ dataDescriptor }} data could be found for the data ID {{ dataId }}.</h2>
+      </div>
+      <div v-if="!isReportingPeriodInUrlValid">
+        <h2>No {{ dataDescriptor }} data could be found for the reporting period {{ reportingPeriod }}.</h2>
+      </div>
+    </template>
   </ViewFrameworkBase>
 </template>
 
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
-import { defineComponent } from "vue";
+import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { defineComponent, inject, ref } from "vue";
 import { useRoute } from "vue-router";
+import Dropdown from "primevue/dropdown";
+import Keycloak from "keycloak-js";
+import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { AxiosError } from "axios";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
-  components: { ViewFrameworkBase },
+  components: { ViewFrameworkBase, Dropdown },
   props: {
     companyId: {
+      type: String,
+    },
+    dataId: {
+      type: String,
+    },
+    reportingPeriod: {
       type: String,
     },
     dataType: {
@@ -52,44 +87,139 @@ export default defineComponent({
     title: {
       type: String,
     },
-    dataIdToDisplay: {
-      type: String,
-      default: "",
-    },
   },
-  emits: ["update:dataIdToDisplay"],
+
+  emits: ["updateDataIdOfDatasetToDisplay"],
+
   data() {
     return {
-      waitingForDataIdsAndChoosingDataIdToDisplay: true,
-      listOfReceivedDataIds: [] as string[],
-      route: useRoute(),
-      isQueryParamDataIdValid: true,
+      foundDataIdToDisplay: false,
+      reportingPeriodsInDropdown: [] as Array<string>,
+      chosenReportingPeriodInDropdown: "",
+      currentReportingPeriod: null as string | null,
+      waitingForDataMetaInfoAndChoosingDatasetToDisplay: true,
+      listOfReceivedActiveDataMetaInfo: [] as DataMetaInformation[],
+      isDataIdInUrlValid: true,
+      isReportingPeriodInUrlValid: true,
     };
   },
-  methods: {
-    /**
-     * Handles changes in the provided data IDs by storing and picking a dataset to display
-     *
-     * @param receivedDataIds Received data IDs
-     */
-    handleReceivedListOfDataIds(receivedDataIds: []) {
-      this.listOfReceivedDataIds = receivedDataIds;
-      this.chooseDataIdToDisplayBasedOnQueryParam();
-      this.waitingForDataIdsAndChoosingDataIdToDisplay = false;
+
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
+    };
+  },
+
+  watch: {
+    chosenReportingPeriodInDropdown(newReportingPeriod) {
+      const listOfDataMetaInfoForChosenReportingPeriod = this.listOfReceivedActiveDataMetaInfo.filter(
+        (dataMetaInfo) => dataMetaInfo.reportingPeriod == newReportingPeriod
+      );
+      this.$emit(
+        "updateDataIdOfDatasetToDisplay",
+        this.getActiveDataIdFromListOfDataMetaInfoForSingleReportingPeriod(listOfDataMetaInfoForChosenReportingPeriod)
+      );
+      this.$router.push(
+        `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${newReportingPeriod}`
+      );
     },
+  },
+
+  methods: {
+    getActiveDataIdFromListOfDataMetaInfoForSingleReportingPeriod(
+      listOfDataMetaInfoForSingleReportingPeriod: DataMetaInformation[]
+    ): string {
+      // TODO happens currently based on upload time => in the future this could just check for a status: "active" e.g.
+      return listOfDataMetaInfoForSingleReportingPeriod.reduce((prev, current) => {
+        return prev.uploadTime > current.uploadTime ? prev : current;
+      }).dataId;
+    },
+
+    handleUpdateAvailableReportingPeriods(listOfAvailableReportingPeriods: string[]) {
+      this.reportingPeriodsInDropdown = listOfAvailableReportingPeriods;
+      console.log("reportingPeriods are"); // TODO debugging
+      console.log(this.reportingPeriodsInDropdown); // TODO debugging
+    },
+
+    handleUpdateActiveDataMetaInfo(listOfReceivedDataMetaInfo: Array<DataMetaInformation>) {
+      this.listOfReceivedActiveDataMetaInfo = listOfReceivedDataMetaInfo;
+      console.log("receivedActiveDataMetainfo are"); // TODO debugging
+      console.log(this.listOfReceivedActiveDataMetaInfo); // TODO debugging
+      this.chooseDataMetaInfoForDisplayedDataset();
+      this.waitingForDataMetaInfoAndChoosingDatasetToDisplay = false;
+    },
+
+    getActiveDataIdFromLatestReportingPeriodIfNumberFound(): string {
+      const numbersInReportingPeriodsAsStrings = this.reportingPeriodsInDropdown.filter(
+        (reportingPeriod) => !isNaN(parseInt(reportingPeriod))
+      );
+      console.log("------------------------------------");
+      console.log(numbersInReportingPeriodsAsStrings);
+      if (numbersInReportingPeriodsAsStrings.length > 0) {
+        const integersInReportingPeriods = numbersInReportingPeriodsAsStrings.map((integerAsString) =>
+          parseInt(integerAsString)
+        );
+        const latestReportingPeriod = integersInReportingPeriods.reduce((a, b) => Math.max(a, b)).toString();
+        this.currentReportingPeriod = latestReportingPeriod;
+        console.log("found latest reporting period"); // TODO debugging
+        console.log("------------------------------------");
+        return this.getActiveDataIdFromListOfDataMetaInfoForSingleReportingPeriod(
+          this.listOfReceivedActiveDataMetaInfo.filter(
+            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.reportingPeriod == latestReportingPeriod
+          )
+        );
+      } else {
+        console.log("could not found latest reporting period, returning first as default"); // TODO debugging
+        console.log("------------------------------------");
+        return this.listOfReceivedActiveDataMetaInfo[0].dataId;
+      }
+    },
+
     /**
-     * Displays either the data set using the ID from the query param or if that is not available the first data set from the list of received data sets.
+     * TODO adjust: Displays either the data set using the ID from the query param or if that is not available the first data set from the list of received data sets.
      */
-    chooseDataIdToDisplayBasedOnQueryParam() {
-      const singleQueryDataId = this.route.query.dataId as string;
-      if (singleQueryDataId) {
-        if (this.listOfReceivedDataIds.includes(singleQueryDataId)) {
-          this.$emit("update:dataIdToDisplay", singleQueryDataId);
+    async chooseDataMetaInfoForDisplayedDataset() {
+      if (this.dataId) {
+        console.log("dataId passed in Url"); // TODO debugging
+        try {
+          const metaDataControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getMetaDataControllerApi();
+          const apiResponse = await metaDataControllerApi.getDataMetaInfo(this.dataId);
+          const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
+          this.currentReportingPeriod = dataMetaInfoForDataSetWithDataIdFromUrl.reportingPeriod;
+          this.foundDataIdToDisplay = true;
+          this.$emit("updateDataIdOfDatasetToDisplay", this.dataId);
+        } catch (error) {
+          const axiosError = error as AxiosError;
+          if (axiosError.response?.status == 404) {
+            this.isDataIdInUrlValid = false;
+          }
+        }
+      } else if (!this.dataId && this.reportingPeriod) {
+        console.log("only reporting period passed in Url"); // TODO debugging
+        const listOfDataMetaInfoWithReportingPeriodFromUrl = this.listOfReceivedActiveDataMetaInfo.filter(
+          (dataMetaInfo) => dataMetaInfo.reportingPeriod === this.reportingPeriod
+        );
+        if (listOfDataMetaInfoWithReportingPeriodFromUrl.length == 1) {
+          this.currentReportingPeriod = this.reportingPeriod;
+          this.foundDataIdToDisplay = true;
+          this.$emit("updateDataIdOfDatasetToDisplay", listOfDataMetaInfoWithReportingPeriodFromUrl[0]);
         } else {
-          this.isQueryParamDataIdValid = false;
+          this.isReportingPeriodInUrlValid = false;
         }
       } else {
-        this.$emit("update:dataIdToDisplay", this.listOfReceivedDataIds[0]);
+        console.log("no dataId or reprtingPeriod in Url => default"); // TODO debugging
+        this.foundDataIdToDisplay = true; // TODO think about this later again
+        this.$emit(
+          // TODO duplicate code block more or less => put in own function
+          "updateDataIdOfDatasetToDisplay",
+          this.getActiveDataIdFromLatestReportingPeriodIfNumberFound()
+        );
+        this.$router.push(
+          `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${this.currentReportingPeriod}`
+        );
       }
     },
   },

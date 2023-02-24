@@ -103,6 +103,18 @@ const routes = [
     component: ViewEuTaxonomyFinancials,
   },
   {
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/:reportingPeriod`,
+    props: true,
+    name: "Company EU Taxonomy for financials for specific reporting period",
+    component: ViewEuTaxonomyFinancials,
+  },
+  {
+    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}/:dataId`,
+    props: true,
+    name: "Company EU Taxonomy for financials for specific data ID",
+    component: ViewEuTaxonomyFinancials,
+  },
+  {
     path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}`,
     props: true,
     name: "Company lksg",
