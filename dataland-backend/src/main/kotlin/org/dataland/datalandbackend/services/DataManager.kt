@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.configurations.BackendBindingConfig
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -41,7 +40,7 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Qualifier("fanoutInternalStorage") @Autowired private var fanoutBackend: FanoutExchange,
+    @Autowired private var fanoutBackend: FanoutExchange,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInformationHashMap = mutableMapOf<String, String>()
@@ -101,7 +100,10 @@ class DataManager(
      * Method that listens to the qa_queue and updates the metadata information after successful qa process
      * @param message is the message delivered on the message queue
      */
-    @RabbitListener(queues = ["qa_queue"])
+   // @RabbitListener(queues = ["qa_queue"])
+    @RabbitListener(bindings = [QueueBinding(value = Queue("foo3"),
+        exchange = Exchange("dataQualityAssured"),
+       key = [""])])
     fun listenToMessageQueueAndUpdateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
@@ -177,12 +179,9 @@ class DataManager(
      * correlationId
      * @param message Message retrieved from stored_queue
      */
-    //@RabbitListener(queues = ["#{autoDeleteQueue1.name}"])
-   /* @RabbitListener(bindings = [QueueBinding(
-        value = Queue(value = ""),
-        exchange = Exchange(value = "dataStored")
-    )]
-    )*/
+   // @RabbitListener(bindings = [QueueBinding(value = Queue("foo4"),
+   //     exchange = Exchange("dataStored"),
+   //     key = [""])])
     fun listenToStoredQueueAndRemoveStoredItemFromTemporaryStore(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()

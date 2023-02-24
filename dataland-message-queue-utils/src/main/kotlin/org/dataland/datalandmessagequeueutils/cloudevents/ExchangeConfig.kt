@@ -3,7 +3,7 @@ package org.dataland.datalandmessagequeueutils.cloudevents
 import org.springframework.amqp.core.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-
+/*
 
 @Configuration
 class BackendExchangeConfig {
@@ -26,3 +26,4 @@ class QualityAssuredExchangeConfig {
         return FanoutExchange("dataQualityAssured")
     }
 }
+*/

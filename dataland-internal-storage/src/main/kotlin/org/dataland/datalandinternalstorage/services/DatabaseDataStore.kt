@@ -36,7 +36,9 @@ class DatabaseDataStore(
      */
 
     //@RabbitListener(queues = ["storage_queue"])
-    @RabbitListener(queues = ["#{autoDeleteQueue1.name}"])
+    @RabbitListener(bindings = [QueueBinding(value = Queue("foo"),
+        exchange = Exchange("dataReceived"),
+        key = [""])])
     fun listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()

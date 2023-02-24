@@ -29,8 +29,10 @@ class QaService(
      * Method to retrieve message from upload_queue and constructing new one for qa_queue
      * @param message Message retrieved from upload_queue
      */
-    @RabbitListener(queues = ["upload_queue"])
-
+    //@RabbitListener(queues = ["upload_queue"])
+    @RabbitListener(bindings = [QueueBinding(value = Queue("foo2"),
+        exchange = Exchange("dataStored"),
+        key = [""])])
     fun receive(message: Message) {
 
         val dataId = cloudEventMessageHandler.bodyToString(message)
