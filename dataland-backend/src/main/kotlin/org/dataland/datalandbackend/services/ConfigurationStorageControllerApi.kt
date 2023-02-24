@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 class ConfigurationStorageControllerApi(
-    @Value("\${dataland.internalstorage.base-url:http://internal-storage:8080/internal-storage}")
+    @Value("\${dataland.internalstorage.base-url}")
     private val internalStorageBaseUrl: String,
 ) {
     /**
