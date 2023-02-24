@@ -353,17 +353,23 @@
                           name="Company type *"
                           explanation="Company type *"
                       />
-                      <FormKit
-                          type="select"
+
+                      <MultiSelect
+                          v-model="selectedKPIs"
+                          :options="kpisModel"
                           name="companyType"
+                          optionLabel="label"
                           validation-label="Company type"
                           validation="required"
-                          :options="files"
+                          placeholder="Select Brands"
+                          class="mb-3"
                       />
-
+                      <ul v-if="selectedKPIs.length">
+                        <li v-for="(file, index) of selectedKPIs">{{file.label}}</li>
+                      </ul>
 
                       <PrimeButton
-                          @click=""
+                          @click="confirmeSelectedKPIs"
                           class="m-0"
                           label="ADD RELATED KPIS"
                           :disabled="valid"
@@ -375,9 +381,14 @@
 
                 </div>
 
+                <div v-for="copanyType of confirmedSelectedKPIs" :key="copanyType" class="uploadFormSection">
+                  <KPIfieldsSet name="xxxxx" />
+                </div>
 
 
                 <div class="form-field">
+                  {{confirmedSelectedKPIs}}
+                  {{selectedKPIs}}
                 </div>
 
 
@@ -450,6 +461,8 @@ import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { FormKit } from "@formkit/vue";
 import FileUpload from "primevue/fileupload";
 import PrimeButton from "primevue/button";
+import MultiSelect from "primevue/multiselect";
+import KPIfieldsSet from "@/components/forms/parts/kpiSelection/KPIfieldsSet.vue";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
@@ -480,6 +493,8 @@ export default defineComponent({
     FileUpload,
     PrimeButton,
     Calendar,
+    MultiSelect,
+    KPIfieldsSet,
     CheckBoxCustom,
   },
 
@@ -500,6 +515,15 @@ export default defineComponent({
     postEuTaxonomyDataForFinancialsResponse: null,
     humanizeString: humanizeString,
     files: [],
+    kpisModel: [
+      {label: 'Industrial Companies KPIs', value: 'industrialCompanies'},
+      {label: 'Financial Companies KPIs', value: 'financialCompanies'},
+      {label: 'Credit Insitution KPIs', value: 'creditInstitution'},
+      {label: 'Green Asset Ratio', value: 'greenAssetRatio'},
+      {label: 'Insurance & Re-insurance KPIs', value: 'insuranceReinsurance'}
+    ],
+    selectedKPIs: [],
+    confirmedSelectedKPIs: [],
   }),
   props: {
     companyID: {
@@ -542,6 +566,11 @@ export default defineComponent({
         return el.name !== file.name;
       })
 
+    },
+
+    confirmeSelectedKPIs() {
+      console.log('confirmedSelectedKPIs')
+      this.confirmedSelectedKPIs = this.selectedKPIs;
     },
 
     formatSize(bytes: number) {

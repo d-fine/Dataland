@@ -146,6 +146,10 @@ body {
   justify-content: center;
   justify-items: center;
 }
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
 .p-disabled, .p-component:disabled {
   opacity: .5;
 }

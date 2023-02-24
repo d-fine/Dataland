@@ -5,7 +5,7 @@
 }
 form {
   text-align: left;
-  [data-type="text"], [data-type="select"], [data-type="number"] {
+  [data-type="text"], [data-type="select"], [data-type="number"], [data-type="textarea"] {
     .formkit-inner {
       font-size: $input-text-fs;
       border-radius: 0;
@@ -303,7 +303,18 @@ input[type="checkbox"], input[type="radio"]{
       right: .5rem;
     }
     .p-checkbox {
-      margin-right: .5rem
+      margin-right: .5rem;
+      &::after {
+        content: "Select All";
+        margin-left: 0.5rem;
+        z-index: -2;
+      }
+    }
+
+    .p-multiselect-close-icon {
+      &::before {
+        display: none;
+      }
     }
   }
   .p-multiselect-items {
@@ -326,6 +337,35 @@ input[type="checkbox"], input[type="radio"]{
     }
   }
 }
+
+.p-inputswitch {
+  width: 3rem;
+  height: 1.75rem;
+  .p-inputswitch-slider {
+    background: $inputswitch-slider-bg-off;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 30px;
+    &::before {
+      background: $bg-text-primary;
+      width: 1.25rem;
+      height: 1.25rem;
+      left: 0.25rem;
+      margin-top: -0.625rem;
+      border-radius: 50%;
+      transition-duration: 0.2s;
+    }
+  }
+  &.p-inputswitch-checked {
+    .p-inputswitch-slider {
+      background: $inputswitch-slider-bg;
+      &::before {
+        background: $bg-text-primary;
+        transform: translateX(1.25rem);
+      }
+    }
+  }
+}
+
 
 .p-tooltip {
   .p-tooltip-text {
@@ -391,6 +431,34 @@ input[type="checkbox"], input[type="radio"]{
   }
   input[type=checkbox]:checked::before, input[type=radio]:checked::before {
     display: block;
+  }
+  .p-multiselect {
+    font-size: $input-text-fs;
+    border-radius: 0;
+    background:$input-text-bg;
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-color: $input-text-border;
+    box-shadow: none;
+    width: 100%;
+
+    &:focus-within {
+      outline: none;
+      border-bottom: 1px solid $input-text-border-hover;
+    }
+    .p-multiselect-label {
+      padding: .75rem;
+      &.p-placeholder {
+        color: $text-color-secondary
+      }
+    }
+    .p-multiselect-trigger {
+      width: 2.5rem;
+      .p-multiselect-trigger-icon {
+        color: $text-color-secondary;
+        font-size: .75rem;
+      }
+    }
   }
   .w-100 { width: 100px; }
   .short { width: 33%; }
@@ -557,13 +625,6 @@ input[type="checkbox"], input[type="radio"]{
 }
 
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
-  border-color: #e67f3f
-}
-
-.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
-  outline: 0 none;
-  outline-offset: 0;
-  box-shadow: 0 0 0 .2rem #bfd1f6;
   border-color: #e67f3f
 }
 
