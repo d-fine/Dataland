@@ -4,7 +4,6 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.AmqpException
-import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -19,8 +18,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class QaService(
-    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private var fanoutQaService: FanoutExchange,
+    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler
 ) { companion object {
 }
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -31,7 +29,7 @@ class QaService(
      */
     //@RabbitListener(queues = ["upload_queue"])
     @RabbitListener(bindings = [QueueBinding(value = Queue("foo2"),
-        exchange = Exchange("dataStored"),
+        exchange = Exchange("dataStored", declare="false"),
         key = [""])])
     fun receive(message: Message) {
 
@@ -41,7 +39,8 @@ class QaService(
             logger.info(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
             )
-            sendMessageToQueue(dataId, "QA Process Completed", correlationId, fanoutQaService.name)
+//            TODO: get Exchange Name from ENUM in rabbitmq utils
+            sendMessageToQueue(dataId, "QA Process Completed", correlationId, "dataQualityAssured")
         } else {
             val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
             logger.error(internalMessage)

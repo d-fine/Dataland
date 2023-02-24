@@ -6,7 +6,6 @@ import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,8 +23,7 @@ class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
-    @Autowired var objectMapper: ObjectMapper,
-    @Autowired private var fanoutInternalStorage: FanoutExchange,
+    @Autowired var objectMapper: ObjectMapper
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -37,7 +35,7 @@ class DatabaseDataStore(
 
     //@RabbitListener(queues = ["storage_queue"])
     @RabbitListener(bindings = [QueueBinding(value = Queue("foo"),
-        exchange = Exchange("dataReceived"),
+        exchange = Exchange("dataReceived", declare="false"),
         key = [""])])
     fun listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
@@ -60,7 +58,8 @@ class DatabaseDataStore(
         try {
             dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "Data successfully stored", correlationId, fanoutInternalStorage.name,
+//                Replace with exchange name from RabbitMQ Utils
+                dataId, "Data successfully stored", correlationId, "dataStored",
             )
         } catch (exception: IllegalArgumentException) {
             val internalMessage = "Error storing data." +

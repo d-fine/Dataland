@@ -12,8 +12,6 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.core.AnonymousQueue
-import org.springframework.amqp.core.FanoutExchange
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -39,8 +37,7 @@ class DataManager(
     @Autowired var companyManager: CompanyManager,
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
-    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private var fanoutBackend: FanoutExchange,
+    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInformationHashMap = mutableMapOf<String, String>()
@@ -102,7 +99,7 @@ class DataManager(
      */
    // @RabbitListener(queues = ["qa_queue"])
     @RabbitListener(bindings = [QueueBinding(value = Queue("foo3"),
-        exchange = Exchange("dataQualityAssured"),
+        exchange = Exchange("dataQualityAssured", declare = "false"),
        key = [""])])
     fun listenToMessageQueueAndUpdateMetaDataAfterQA(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
@@ -155,7 +152,8 @@ class DataManager(
         dataInformationHashMap[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "Data to be stored", correlationId,
-            fanoutBackend.name,
+//            TODO: Replace with name from RabbitMQ Utils Enum
+            "dataReceived",
         )
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID in temporary store" +
