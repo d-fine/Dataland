@@ -86,9 +86,6 @@ class DataManager(
             storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, QAStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(metaData)
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, "New data - QA necessary", correlationId, uploadQueue,
-        )
         return dataId
     }
 
