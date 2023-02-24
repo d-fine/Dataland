@@ -18,7 +18,7 @@ class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
 ) {
     @Value("\${spring.rabbitmq.qa-queue}")
-    private val qaQueue = ""
+    private var qaQueue = ""
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -29,10 +29,11 @@ class QaService(
     fun receive(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        if (!dataId.isNullOrEmpty()) {
+        if (dataId.isNotEmpty()) {
             logger.info(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
             )
+            logger.error(qaQueue)
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 dataId, "QA Process Completed", correlationId, qaQueue,
             )

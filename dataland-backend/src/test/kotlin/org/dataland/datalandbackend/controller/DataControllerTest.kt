@@ -13,13 +13,13 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.ArgumentMatchers.notNull
-import org.mockito.InjectMocks
-import org.mockito.Mock
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.Spy
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,7 +40,7 @@ internal class DataControllerTest(
     val testDataType = DataType.valueOf("sme")
     val storedCompanyEntity = testDataProvider.getEmptyStoredCompanyEntity()
     val someSmeData = testDataProvider.getEmptySmeDataset()
-    val someSmeDataAsString = objectMapper.writeValueAsString(someSmeData)
+    val someSmeDataAsString = objectMapper.writeValueAsString(someSmeData)!!
 
     val testUserId = "testuser"
     val otherUserId = "otheruser"
@@ -54,13 +54,18 @@ internal class DataControllerTest(
     val otherUserAcceptedDataMetaInformationEntity =
         buildDataMetaInformationEntity(otherUserAcceptedDataId, otherUserId, QAStatus.Accepted)
 
-    @Mock lateinit var mockSecurityContext: SecurityContext
+    lateinit var mockSecurityContext: SecurityContext
+    lateinit var mockDataManager: DataManager
+    lateinit var mockDataMetaInformationManager: DataMetaInformationManager
+    lateinit var dataController: SmeDataController
 
-    @Mock lateinit var mockDataManager: DataManager
-
-    @Mock lateinit var mockDataMetaInformationManager: DataMetaInformationManager
-
-    @InjectMocks lateinit var dataController: SmeDataController
+    @BeforeEach
+    fun resetMocks() {
+        mockSecurityContext = mock(SecurityContext::class.java)
+        mockDataManager = mock(DataManager::class.java)
+        mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
+        dataController = SmeDataController(mockDataManager, mockDataMetaInformationManager, objectMapper)
+    }
 
     @Test
     fun `test that the correct datasets are filtered`() {

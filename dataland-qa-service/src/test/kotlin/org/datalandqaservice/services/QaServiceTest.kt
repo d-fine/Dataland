@@ -5,6 +5,7 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.services.QaService
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
@@ -15,14 +16,20 @@ import org.springframework.amqp.core.Message as AMQPMessage
 
 @SpringBootTest(classes = [DatalandQaService::class])
 class QaServiceTest {
-    val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-    val qaService = QaService(mockCloudEventMessageHandler)
+    lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
+    lateinit var qaService: QaService
 
     val dataAsString = "TestData"
     val dataId = "TestDataId"
 
     fun buildDummyMessage(data: String): AMQPMessage {
         return AMQPMessage(data.toByteArray())
+    }
+
+    @BeforeEach
+    fun resetMocks() {
+        mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+        qaService = QaService(mockCloudEventMessageHandler)
     }
 
     @Test
@@ -42,7 +49,7 @@ class QaServiceTest {
         `when`(mockCloudEventMessageHandler.bodyToString(message)).thenReturn(dataId)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "QA Process Completed", correlationId, "qa_queue",
+                dataId, "QA Process Completed", correlationId, "",
             ),
         ).thenThrow(
             AmqpException::class.java,
