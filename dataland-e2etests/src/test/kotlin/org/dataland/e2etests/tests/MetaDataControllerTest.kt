@@ -43,7 +43,7 @@ class MetaDataControllerTest {
         val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
         val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         val expectedDataMetaInformation =
-            DataMetaInformation(uploadedMetaInfo.dataId, uploadedMetaInfo.companyId, testDataType, uploadTime, "", null)
+            DataMetaInformation(uploadedMetaInfo.dataId, uploadedMetaInfo.companyId, testDataType, uploadTime, "", true,null)
         assertEquals(
             expectedDataMetaInformation,
             actualDataMetaInformation.copy(uploadTime = uploadTime),
@@ -155,6 +155,7 @@ class MetaDataControllerTest {
                 testDataType,
                 uploadTime,
                 "",
+                true,
                 null
             ),
             dataMetaInformation.copy(uploadTime = uploadTime),
@@ -184,7 +185,7 @@ class MetaDataControllerTest {
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
         val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
-        val expectedMetaInformation = DataMetaInformation(testDataId, testCompanyId, testDataType, uploadTime, "", null)
+        val expectedMetaInformation = DataMetaInformation(testDataId, testCompanyId, testDataType, uploadTime, "", true,null)
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
                 .map { it.copy(uploadTime = uploadTime) }
