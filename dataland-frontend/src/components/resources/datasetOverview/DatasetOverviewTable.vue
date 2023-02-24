@@ -19,6 +19,16 @@
         </template>
       </Column>
       <Column field="dataReportingPeriod" header="REPORTING PERIOD" :sortable="true"></Column>
+      <Column field="currentlyActive" header="STATUS" :sortable="true">
+        <template #body="{ data }">
+          <div v-if="data.currentlyActive" class="p-badge badge-green">
+            <span>ACTIVE</span>
+          </div>
+          <div v-else class="p-badge badge-gray">
+            <span>OUTDATED</span>
+          </div>
+        </template>
+      </Column>
       <Column field="uploadTimeInMs" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInMs" class="w-2">
         <template #body="{ data }">
           <span>{{ convertDate(data.uploadTimeInMs) }}</span>

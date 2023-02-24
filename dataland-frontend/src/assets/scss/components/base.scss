@@ -68,6 +68,11 @@ body {
     color: var(--blue-700);
     background: var(--blue-100);
   }
+
+  &.badge-gray {
+    color: var(--gray-700);
+    background: var(--gray-100);
+  }
 }
 .d-center-div {
   position: absolute;

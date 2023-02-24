@@ -10,7 +10,8 @@ export class DatasetTableInfo {
     readonly uploadTimeInMs: number,
     readonly companyId: string,
     readonly dataId: string,
-    readonly dataReportingPeriod: string
+    readonly dataReportingPeriod: string,
+    readonly currentlyActive: boolean
   ) {}
 }
 
@@ -55,7 +56,8 @@ export async function getMyDatasetTableInfos(
             dataMetaInfo.uploadTime * 1000,
             company.companyId,
             dataMetaInfo.dataId,
-            dataMetaInfo.reportingPeriod
+            dataMetaInfo.reportingPeriod,
+            dataMetaInfo.currentlyActive
           )
       )
   );
