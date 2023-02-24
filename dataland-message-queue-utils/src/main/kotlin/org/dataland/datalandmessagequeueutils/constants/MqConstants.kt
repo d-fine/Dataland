@@ -1,5 +1,4 @@
-package org.dataland.datalandmessagequeueutils.enums
-
+package org.dataland.datalandmessagequeueutils.constants
 
 /**
  * An enum with the values Yes and No to be used for fields backed by datapoints.

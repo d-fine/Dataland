@@ -5,10 +5,13 @@ import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataController
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.enums.MqConstants
+import org.dataland.datalandmessagequeueutils.constants.MqConstants
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
-import org.springframework.amqp.rabbit.annotation.*
+import org.springframework.amqp.rabbit.annotation.Exchange
+import org.springframework.amqp.rabbit.annotation.Queue
+import org.springframework.amqp.rabbit.annotation.QueueBinding
+import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -24,7 +27,7 @@ class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
-    @Autowired var objectMapper: ObjectMapper
+    @Autowired var objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -34,9 +37,15 @@ class DatabaseDataStore(
      * @param message Message retrieved from storage_queue
      */
 
-    @RabbitListener(bindings = [QueueBinding(value = Queue("dataReceivedInternalStorageDatabaseDataStore"),
-        exchange = Exchange(MqConstants.dataReceived, declare="false"),
-        key = [""])])
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue("dataReceivedInternalStorageDatabaseDataStore"),
+                exchange = Exchange(MqConstants.dataReceived, declare = "false"),
+                key = [""],
+            ),
+        ],
+    )
     fun listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()

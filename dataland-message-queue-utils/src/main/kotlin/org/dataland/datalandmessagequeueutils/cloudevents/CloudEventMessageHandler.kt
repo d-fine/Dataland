@@ -50,7 +50,7 @@ class CloudEventMessageHandler(
     fun buildCEMessageAndSendToQueue(body: String, type: String, correlationId: String, exchange: String) {
         val messageInput = buildCEMessage(body, type, correlationId)
         try {
-            rabbitTemplate.send(exchange,"", messageInput)
+            rabbitTemplate.send(exchange, "", messageInput)
         } catch (exception: AmqpException) {
             val internalMessage = "Error sending message to $exchange." +
                 " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."
