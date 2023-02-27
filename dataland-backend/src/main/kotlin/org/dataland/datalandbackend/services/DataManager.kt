@@ -96,7 +96,7 @@ class DataManager(
         bindings = [
             QueueBinding(
                 value = Queue("dataStoredBackendDataManager"),
-                exchange = Exchange(MqConstants.dataStored, declare = "false"),
+                exchange = Exchange(MqConstants.dataQualityAssured, declare = "false"),
                 key = [""],
             ),
         ],
@@ -180,7 +180,7 @@ class DataManager(
         bindings = [
             QueueBinding(
                 value = Queue("dataQualityAssuredBackendDataManager"),
-                exchange = Exchange(MqConstants.dataQualityAssured, declare = "false"),
+                exchange = Exchange(MqConstants.dataStored, declare = "false"),
                 key = [""],
             ),
         ],
