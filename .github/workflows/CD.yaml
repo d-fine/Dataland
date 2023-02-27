@@ -130,6 +130,8 @@ jobs:
         if: always()
         with:
           subfolder: 'deploy-to-server-with-latest-built-images'
+      - name: Verify images
+        run: ./verifyImagesRemote.sh
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
