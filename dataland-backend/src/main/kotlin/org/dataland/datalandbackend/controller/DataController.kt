@@ -11,11 +11,11 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
 import java.util.UUID.randomUUID
 
@@ -83,7 +83,7 @@ abstract class DataController<T>(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         if (!isDataViewableByUser(metaInfo, DatalandAuthentication.fromContextOrNull())) {
-            throw InvalidInputApiException("Access denied", "You are trying to access a unreviewed dataset")
+            throw AccessDeniedException("You are trying to access a unreviewed dataset")
         }
         val companyId = metaInfo.company.companyId
         val correlationId = generatedCorrelationId(companyId)
