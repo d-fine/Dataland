@@ -20,7 +20,7 @@ class DataMetaInformationManager(
 
     /**
      * Method to associate data information with a specific company
-     * @param updatedMetaData The data meta information which should be stored
+     * @param dataMetaInformation The data meta information which should be stored
      */
     @Transactional
     fun storeDataMetaInformation(
