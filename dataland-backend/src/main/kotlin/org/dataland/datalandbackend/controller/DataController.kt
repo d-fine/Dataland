@@ -44,27 +44,17 @@ abstract class DataController<T>(
                 "for companyId '${companyAssociatedData.companyId}'",
         )
         val correlationId = generatedCorrelationId(companyAssociatedData.companyId)
-        val dataIdOfPostedData = storeDataInStorage(companyAssociatedData, userId, uploadTime, correlationId)
+        val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
+        val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(datasetToStore, correlationId)
         logger.info(
             "Posted company associated data for companyId '${companyAssociatedData.companyId}'. " +
                 "Correlation ID: $correlationId",
         )
         return ResponseEntity.ok(
             DataMetaInformation(
-                dataIdOfPostedData, dataType, userId, uploadTime,
-                companyAssociatedData.companyId, QAStatus.Pending,
+                dataIdOfPostedData, dataType, userId, uploadTime, companyAssociatedData.companyId, QAStatus.Pending,
             ),
         )
-    }
-
-    private fun storeDataInStorage(
-        companyAssociatedData: CompanyAssociatedData<T>,
-        userId: String,
-        uploadTime: Long,
-        correlationId: String,
-    ): String {
-        val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
-        return dataManager.addDataSetToTemporaryStorageAndSendMessage(datasetToStore, correlationId)
     }
 
     private fun buildDatasetToStore(
