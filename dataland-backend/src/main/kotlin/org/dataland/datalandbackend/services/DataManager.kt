@@ -167,7 +167,7 @@ class DataManager(
      * @return generated UUID
      */
     fun generateRandomDataId(): String {
-        return "${UUID.randomUUID()}:${UUID.randomUUID()}_${UUID.randomUUID()}"
+        return "${UUID.randomUUID()}"
     }
 
     /**
