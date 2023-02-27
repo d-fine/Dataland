@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 /**
- * This class is used to configure the CSP for the Swagger-UI as the default content does not allow loading anything
+ * This class is used to configure the appearance of the swagger-ui to exclude all internal endpoints
  */
 
 @Configuration
