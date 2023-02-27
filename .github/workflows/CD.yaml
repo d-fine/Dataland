@@ -132,6 +132,8 @@ jobs:
           subfolder: 'deploy-to-server-with-latest-built-images'
       - name: Verify images
         run: ./deployment/verifyImagesRemote.sh
+        env:
+          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
