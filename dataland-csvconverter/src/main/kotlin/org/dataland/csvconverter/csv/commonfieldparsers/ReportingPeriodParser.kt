@@ -7,7 +7,7 @@ import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
  */
 class ReportingPeriodParser {
     private val columnMappingReportingPeriod = mapOf(
-            "reportingPeriod" to "Reporting Period"
+        "reportingPeriod" to "Reporting Period",
     )
 
     /**

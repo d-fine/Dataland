@@ -69,7 +69,7 @@ class CsvToJsonConverter {
                     CompanyInformationWithData(
                         company,
                         dataParser.buildData(it),
-                        reportingPeriodParser.getReportingPeriod(it)
+                        reportingPeriodParser.getReportingPeriod(it),
                     )
                 } else {
                     null

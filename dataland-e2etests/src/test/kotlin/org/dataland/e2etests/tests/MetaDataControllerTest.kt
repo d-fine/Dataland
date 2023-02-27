@@ -43,7 +43,7 @@ class MetaDataControllerTest {
         val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
         val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         val expectedDataMetaInformation =
-            DataMetaInformation(uploadedMetaInfo.dataId, uploadedMetaInfo.companyId, testDataType, uploadTime, "", true,null)
+            DataMetaInformation(uploadedMetaInfo.dataId, uploadedMetaInfo.companyId, testDataType, uploadTime, "", true, null)
         assertEquals(
             expectedDataMetaInformation,
             actualDataMetaInformation.copy(uploadTime = uploadTime),
@@ -78,7 +78,7 @@ class MetaDataControllerTest {
         assertEquals(
             expectedSizeOfDataMetaInfo, sizeOfListOfDataMetaInfo,
             "The list with all data meta info is expected to increase by $totalNumberOfDataSetsPerFramework to " +
-                    "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
+                "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
         )
     }
 
@@ -93,7 +93,7 @@ class MetaDataControllerTest {
         assertEquals(
             numberOfDataSetsToPostPerCompany, listOfDataMetaInfoForFirstCompanyId.size,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
-                    "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
+                "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
         )
     }
 
@@ -112,12 +112,12 @@ class MetaDataControllerTest {
         val listSizeDataMetaInfoForEuTaxoFinancials =
             apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showVersionHistoryForReportingPeriod = true)
         val expectedListSizeDataMetaInfoForEuTaxoFinancials = initListSizeDataMetaInfoForEuTaxoFinancials +
-                totalNumberOfDataSetsPerFramework
+            totalNumberOfDataSetsPerFramework
         assertEquals(
             expectedListSizeDataMetaInfoForEuTaxoFinancials, listSizeDataMetaInfoForEuTaxoFinancials,
             "The meta info list for all EU Taxonomy Data for Non-Financials is expected to increase by " +
-                    "$totalNumberOfDataSetsPerFramework to $expectedListSizeDataMetaInfoForEuTaxoFinancials, " +
-                    "but has the size $listSizeDataMetaInfoForEuTaxoFinancials.",
+                "$totalNumberOfDataSetsPerFramework to $expectedListSizeDataMetaInfoForEuTaxoFinancials, " +
+                "but has the size $listSizeDataMetaInfoForEuTaxoFinancials.",
         )
     }
 
@@ -130,12 +130,12 @@ class MetaDataControllerTest {
         val sizeOfListOfDataMetaInfoPerCompanyIdAndDataType = apiAccessor.getNumberOfDataMetaInfo(
             listOfUploadInfo[0].actualStoredCompany.companyId,
             testDataType,
-            true
+            true,
         )
         assertEquals(
             numberOfDataSetsToPostPerCompany, sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
-                    "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
+                "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
         )
     }
 
@@ -156,7 +156,7 @@ class MetaDataControllerTest {
                 uploadTime,
                 "",
                 true,
-                null
+                null,
             ),
             dataMetaInformation.copy(uploadTime = uploadTime),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
@@ -185,13 +185,13 @@ class MetaDataControllerTest {
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
         val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
-        val expectedMetaInformation = DataMetaInformation(testDataId, testCompanyId, testDataType, uploadTime, "", true,null)
+        val expectedMetaInformation = DataMetaInformation(testDataId, testCompanyId, testDataType, uploadTime, "", true, null)
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
                 .map { it.copy(uploadTime = uploadTime) }
                 .contains(expectedMetaInformation),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
-                    "match the retrieved meta info.",
+                "match the retrieved meta info.",
         )
     }
 
@@ -252,7 +252,7 @@ class MetaDataControllerTest {
 
         val activeDataSet =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                resultWithoutVersioning[0].dataId
+                resultWithoutVersioning[0].dataId,
             )
 
         assertEquals(
@@ -262,15 +262,15 @@ class MetaDataControllerTest {
         assertEquals(
             1,
             resultWithoutVersioning.size,
-            "Metadata of a single, active version should be available. Instead its ${resultWithVersioning.size}"
+            "Metadata of a single, active version should be available. Instead its ${resultWithVersioning.size}",
         )
         assertTrue(
             (resultWithoutVersioning[0].uploadTime == resultWithVersioning.maxOfOrNull { it.uploadTime }),
-            "The active result should be the one with the highest uploadTime but it isn't."
+            "The active result should be the one with the highest uploadTime but it isn't.",
         )
         assertTrue(
             (activeDataSet.data!!.numberOfEmployees == BigDecimal.valueOf(3)),
-            "The active dataset should have been manipulated to have a numberOfEmployees of three but the retrieved active data set does not."
+            "The active dataset should have been manipulated to have a numberOfEmployees of three but the retrieved active data set does not.",
         )
     }
 
@@ -299,11 +299,11 @@ class MetaDataControllerTest {
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod2)
         assertTrue(
             (result2023WithoutVersioning.size == 1 && result2022WithoutVersioning.size == 1 && result2023WithoutVersioning[0].dataId != result2022WithoutVersioning[0].dataId),
-            "Without versioning, metadata of only a single active dataset should be returned per reporting period and they should point to different data sets. But this is not the case."
+            "Without versioning, metadata of only a single active dataset should be returned per reporting period and they should point to different data sets. But this is not the case.",
         )
         assertTrue(
             (final2022metadata.dataId == result2022WithoutVersioning[0].dataId && final2023metadata.dataId == result2023WithoutVersioning[0].dataId),
-            "The active data set of the reporting period should be the last uploaded one but this is not the case."
+            "The active data set of the reporting period should be the last uploaded one but this is not the case.",
         )
 //        When not specifying a reportingPeriod we should retrieve metadata of datasets for all reporting periods
         val resultsWithVersioning = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true)
@@ -311,36 +311,36 @@ class MetaDataControllerTest {
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
         assertTrue(
             (resultsWithVersioning.size == 4),
-            "Without filtering for reporting period and when displaying version history, metadata of all 4 datasets should be returned but it isn't."
+            "Without filtering for reporting period and when displaying version history, metadata of all 4 datasets should be returned but it isn't.",
         )
         assertTrue(
             (resultsWithoutVersioning.size == 2 && resultsWithoutVersioning[0].dataId != resultsWithoutVersioning[1].dataId),
-            "a single current dataset per reporting period should be available and it should be different ones for the different reporting periods - but it isn't"
+            "a single current dataset per reporting period should be available and it should be different ones for the different reporting periods - but it isn't",
         )
     }
 
     private fun firstUploadForVersionHistory(
         companyInformation: CompanyInformation,
         frameWorkData: EuTaxonomyDataForNonFinancials,
-        reportingPeriod: String
+        reportingPeriod: String,
     ): UploadInfo {
         return apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOf(companyInformation),
             listOf(frameWorkData),
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
-            reportingPeriod = reportingPeriod
+            reportingPeriod = reportingPeriod,
         )[0]
     }
 
     private fun subsequentUploadForVersionHistory(
         companyId: String,
         frameWorkData: EuTaxonomyDataForNonFinancials,
-        reportingPeriod: String
+        reportingPeriod: String,
     ): DataMetaInformation {
         val body =
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, reportingPeriod, frameWorkData)
         return apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            body
+            body,
         )
     }
 
