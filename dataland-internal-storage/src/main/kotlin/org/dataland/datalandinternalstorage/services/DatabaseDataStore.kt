@@ -46,7 +46,7 @@ class DatabaseDataStore(
             ),
         ],
     )
-    fun listenToStorageQueueAndTransferDataFromTemporaryToPersistentStorage(message: Message) {
+    fun listenToStorageQueueAndPersistentlyStoreData(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
