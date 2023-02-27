@@ -1,11 +1,9 @@
 package org.dataland.datalandmessagequeueutils.cloudevents
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.support.converter.MessagingMessageConverter
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.function.cloudevent.CloudEventMessageBuilder
 import org.springframework.cloud.function.cloudevent.CloudEventMessageUtils
 import org.springframework.messaging.MessageHeaders
@@ -24,7 +22,6 @@ import org.springframework.messaging.Message as MessageResult
 @Component("CloudEventMessageHandler")
 class CloudEventMessageHandler(
     private val rabbitTemplate: RabbitTemplate,
-    @Autowired var objectMapper: ObjectMapper,
 ) {
     var converter: MessagingMessageConverter = MessagingMessageConverter()
     private val logger = LoggerFactory.getLogger(javaClass)
