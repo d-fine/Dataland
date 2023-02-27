@@ -69,7 +69,7 @@ class DataManager(
      * @return ID of the newly stored data in the data store
      */
     @Transactional
-    fun addDataSetToTemporaryStorageAndSendRequestQAMessage(storableDataSet: StorableDataSet, correlationId: String):
+    fun addDataSetToTemporaryStorageAndSendMessage(storableDataSet: StorableDataSet, correlationId: String):
         String {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
@@ -77,7 +77,7 @@ class DataManager(
                 "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId",
         )
-        val dataId: String = storeDataSetInTemporaryStoreAndSendDataReceivedMessage(
+        val dataId: String = storeDataSetInTemporaryStoreAndSendMessage(
             storableDataSet, company.companyName, correlationId,
         )
         val metaData = DataMetaInformationEntity(
@@ -101,7 +101,7 @@ class DataManager(
             ),
         ],
     )
-    fun listenToMessageQueueAndUpdateMetaDataAfterQA(message: Message) {
+    fun updateMetaData(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         if (!dataId.isNullOrEmpty()) {
@@ -143,7 +143,7 @@ class DataManager(
      * @param correlationId The correlation id of the request initiating the storing of data
      * @return ID of the stored data set
      */
-    fun storeDataSetInTemporaryStoreAndSendDataReceivedMessage(
+    fun storeDataSetInTemporaryStoreAndSendMessage(
         storableDataSet: StorableDataSet,
         companyName: String,
         correlationId: String,
@@ -151,7 +151,7 @@ class DataManager(
         val dataId = generateRandomDataId()
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, "Data to be stored", correlationId,
+            dataId, "Data received", correlationId,
             MqConstants.dataReceived,
         )
         logger.info(
@@ -185,7 +185,7 @@ class DataManager(
             ),
         ],
     )
-    fun listenToStoredQueueAndRemoveStoredItemFromTemporaryStore(message: Message) {
+    fun removeStoredItemFromTemporaryStore(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         if (!dataId.isNullOrEmpty()) {

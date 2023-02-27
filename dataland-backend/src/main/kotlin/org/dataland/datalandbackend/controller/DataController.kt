@@ -64,7 +64,7 @@ abstract class DataController<T>(
         correlationId: String,
     ): String {
         val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
-        return dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(datasetToStore, correlationId)
+        return dataManager.addDataSetToTemporaryStorageAndSendMessage(datasetToStore, correlationId)
     }
 
     private fun buildDatasetToStore(

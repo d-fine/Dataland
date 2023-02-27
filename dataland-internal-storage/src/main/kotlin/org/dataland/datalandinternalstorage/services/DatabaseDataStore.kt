@@ -46,7 +46,7 @@ class DatabaseDataStore(
             ),
         ],
     )
-    fun persistentlyStoreData(message: Message) {
+    fun persistentlyStoreDataAndSendMessage(message: Message) {
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")

@@ -63,7 +63,7 @@ class DataManagerTest(
     fun `check that a Server Exception is thrown when the data storage reports a Server Exception during selection`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId = dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(
+        val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
             storableEuTaxonomyDataSetForNonFinancials, correlationId,
         )
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenThrow(ServerException::class.java)
@@ -79,7 +79,7 @@ class DataManagerTest(
     fun `check that an exception is thrown when non matching dataId to dataType pair is requested from data storage`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId = dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(
+        val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
             storableEuTaxonomyDataSetForNonFinancials, correlationId,
         )
         val thrown = assertThrows<InvalidInputApiException> {
@@ -96,7 +96,7 @@ class DataManagerTest(
     fun `check that an exception is thrown if the received data from the data storage is empty`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId = dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(
+        val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
             storableEuTaxonomyDataSetForNonFinancials, correlationId,
         )
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn("")
@@ -110,7 +110,7 @@ class DataManagerTest(
     fun `check that an exception is thrown if the received data from the data storage has an unexpected type`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId = dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(
+        val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
             storableEuTaxonomyDataSetForNonFinancials, correlationId,
         )
         val expectedDataTypeName = getExpectedDataTypeName(
@@ -139,7 +139,7 @@ class DataManagerTest(
     @Test
     fun `check that an exception is thrown if the received data from the storage has an unexpected uploading user`() {
         val storableDataSetForNonFinancials = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId = dataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(
+        val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
             storableDataSetForNonFinancials,
             correlationId,
         )
@@ -170,7 +170,7 @@ class DataManagerTest(
         val storableNFEuTaxonomyDataSetAsString: String =
             objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.listenToMessageQueueAndUpdateMetaDataAfterQA(
+            dataManager.updateMetaData(
                 AMQPMessage(
                     storableNFEuTaxonomyDataSetAsString.toByteArray(),
                 ),
@@ -186,7 +186,7 @@ class DataManagerTest(
         val storableNFEuTaxonomyDataSetAsString: String =
             objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.listenToStoredQueueAndRemoveStoredItemFromTemporaryStore(
+            dataManager.removeStoredItemFromTemporaryStore(
                 AMQPMessage(
                     storableNFEuTaxonomyDataSetAsString.toByteArray(),
                 ),
@@ -205,14 +205,14 @@ class DataManagerTest(
 
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, "Data to be stored", correlationId, "",
+                dataUUId, "Data received", correlationId, "",
             ),
         ).thenThrow(
             AmqpException::class.java,
         )
 
         assertThrows<AmqpException> {
-            spyDataManager.storeDataSetInTemporaryStoreAndSendDataReceivedMessage(
+            spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
                 storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId,
             )
         }
@@ -224,7 +224,7 @@ class DataManagerTest(
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val company = companyManager.getCompanyById(storableEuTaxonomyDataSetForNonFinancials.companyId)
         `when`(
-            spyDataManager.storeDataSetInTemporaryStoreAndSendDataReceivedMessage(
+            spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
                 storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId,
             ),
         ).thenReturn(dataUUId)
@@ -236,7 +236,7 @@ class DataManagerTest(
             AmqpException::class.java,
         )
         assertThrows<AmqpException> {
-            spyDataManager.addDataSetToTemporaryStorageAndSendRequestQAMessage(
+            spyDataManager.addDataSetToTemporaryStorageAndSendMessage(
                 storableEuTaxonomyDataSetForNonFinancials, correlationId,
             )
         }
