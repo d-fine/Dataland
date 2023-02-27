@@ -118,6 +118,10 @@ body {
 .fs-xl{ font-size: $fs-xl}  // 24px
 .fs-xxl{ font-size: $fs-xxl}  // 32px
 
+// Typography //
+.gray-text{ color: $gray };
+.gray-text-light{ color: $gray-light };
+
 // Home Page
 .video-container {
   position: relative;

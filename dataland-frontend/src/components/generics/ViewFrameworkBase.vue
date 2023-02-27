@@ -22,7 +22,7 @@
           optionValue="value"
           :placeholder="humanizeString(dataType)"
           aria-label="Choose framework"
-          class="fill-dropdown"
+          class="fill-dropdown always-fill"
           dropdownIcon="pi pi-angle-down"
           @change="redirectToViewPageForChosenFramework"
         />
@@ -180,7 +180,6 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
-
         this.getDistinctAvailableFrameworksAndPutThemIntoDropdown(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
@@ -189,7 +188,6 @@ export default defineComponent({
           this.filterListOfDataMetaInfoForChosenFrameworkAndReturnIt(
             listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
           );
-
         this.$emit(
           "updateAvailableReportingPeriodsForChosenFramework",
           this.getDistinctReportingPeriodsInListOfDataMetaInfoAndReturnIt(

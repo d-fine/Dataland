@@ -4,7 +4,7 @@
     :dataType="DataTypeEnum.Lksg"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
   >
-    <template v-if="receivedLksgDataIds.length > 0">
+    <template v-if="receivedLksgDataIds.length > 0" v-slot:content>
       <div class="grid">
         <div class="col-12">
           <LksgPanel :companyId="companyID" />

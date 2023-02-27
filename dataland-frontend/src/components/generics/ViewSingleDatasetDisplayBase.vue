@@ -10,9 +10,10 @@
         id="chooseReportingPeriodDropdown"
         v-model="chosenReportingPeriodInDropdown"
         :options="reportingPeriodsInDropdown"
-        :placeholder="currentReportingPeriod"
+        :placeholder="currentReportingPeriod?.length ? currentReportingPeriod : 'Select...'"
         aria-label="Choose reporting period"
-        class="fill-dropdown"
+        :class="[currentReportingPeriod?.length ? ['always-fill'] : '']"
+        class="fill-dropdown ml-4"
         dropdownIcon="pi pi-angle-down"
         @change="handleChangeReportingPeriod"
       />
@@ -20,9 +21,13 @@
 
     <template v-slot:content>
       <div v-if="foundDataIdToDisplay">
-        <div v-if="foundDataIdBelongsToOutdatedDataset">
-          this dataset is outdated
-          <PrimeButton @click="switchToActiveDatasetForCurrentlyChosenReportingPeriod"> See latest version </PrimeButton>
+        <div v-if="foundDataIdBelongsToOutdatedDataset" class="flex w-full info-bar">
+          <span class="flex-1">this dataset is outdated</span>
+          <PrimeButton
+            @click="switchToActiveDatasetForCurrentlyChosenReportingPeriod"
+            label="See latest version"
+            icon="pi pi-stopwatch"
+          />
         </div>
         <div class="grid">
           <div class="col-12 text-left">
@@ -62,7 +67,7 @@ import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { defineComponent, inject, ref } from "vue";
 import { useRoute } from "vue-router";
-import Dropdown, {DropdownChangeEvent} from "primevue/dropdown";
+import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import Keycloak from "keycloak-js";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -149,7 +154,7 @@ export default defineComponent({
       const latestDataMetaInfoForCurrentReportingPeriod = this.listOfReceivedActiveDataMetaInfo.filter(
         (dataMetaInfo) => dataMetaInfo.reportingPeriod == this.currentReportingPeriod
       )[0]; // TODO list needs to have 1 element! check??? necessary???
-      this.foundDataIdBelongsToOutdatedDataset = !latestDataMetaInfoForCurrentReportingPeriod.currentlyActive
+      this.foundDataIdBelongsToOutdatedDataset = !latestDataMetaInfoForCurrentReportingPeriod.currentlyActive;
       this.$emit("updateDataIdOfDatasetToDisplay", latestDataMetaInfoForCurrentReportingPeriod.dataId);
       this.$router.push(
         `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${this.currentReportingPeriod}`

@@ -131,11 +131,31 @@ input[type="checkbox"], input[type="radio"]{
 }
 
 .fill-dropdown {
-  background: $fill-dropdown-bg;
+  background: $white;
   border-width: 2px;
   border-style: solid;
   border-color: $fill-dropdown-bg;
   border-radius: 8px;
+  &.always-fill {
+    background: $fill-dropdown-bg;
+    color: $white;
+    .p-inputtext {
+      color: $white;
+    }
+    .p-dropdown-trigger {
+      color: $white;
+    }
+  }
+  &.p-inputwrapper-filled {
+    background: $fill-dropdown-bg;
+    color: $white;
+    .p-inputtext {
+      color: $white;
+    }
+    .p-dropdown-trigger {
+      color: $white;
+    }
+  }
   &.p-overlay-open {
     background: $fill-dropdown-hover-bg;
     .p-inputtext {
@@ -153,10 +173,10 @@ input[type="checkbox"], input[type="radio"]{
   .p-inputtext {
     background: transparent;
     padding: .5rem .75rem;
-    color: $fill-input-color;
+    color: $fill-dropdown-hover-text;
   }
   .p-dropdown-trigger {
-    color: $fill-input-color;
+    color: $fill-dropdown-hover-text;
   }
 }
 
