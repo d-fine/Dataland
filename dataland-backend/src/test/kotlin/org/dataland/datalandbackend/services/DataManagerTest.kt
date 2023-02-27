@@ -230,7 +230,7 @@ class DataManagerTest(
         ).thenReturn(dataUUId)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, "New data - QA necessary", correlationId, "",
+                dataUUId, "Data received", correlationId, "",
             ),
         ).thenThrow(
             AmqpException::class.java,
