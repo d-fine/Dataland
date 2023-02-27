@@ -224,7 +224,7 @@ export default defineComponent({
     },
 
     /**
-     * Gets all data meta information of the company identified by the variable companyId and fills the lists for
+     * Gets all data meta information of the company identified by the company ID in the URL and fills the lists for
      * data meta information of the various frameworks
      */
     async getMetaInfoAboutAllDataSetsForCurrentCompany() {
