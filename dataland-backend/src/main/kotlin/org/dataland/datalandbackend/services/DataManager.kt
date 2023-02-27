@@ -11,7 +11,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.MqConstants
+import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -96,7 +96,7 @@ class DataManager(
         bindings = [
             QueueBinding(
                 value = Queue("dataStoredBackendDataManager"),
-                exchange = Exchange(MqConstants.dataQualityAssured, declare = "false"),
+                exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
                 key = [""],
             ),
         ],
@@ -152,7 +152,7 @@ class DataManager(
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, "Data received", correlationId,
-            MqConstants.dataReceived,
+            ExchangeNames.dataReceived,
         )
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID in temporary store" +
@@ -180,7 +180,7 @@ class DataManager(
         bindings = [
             QueueBinding(
                 value = Queue("dataQualityAssuredBackendDataManager"),
-                exchange = Exchange(MqConstants.dataStored, declare = "false"),
+                exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
                 key = [""],
             ),
         ],

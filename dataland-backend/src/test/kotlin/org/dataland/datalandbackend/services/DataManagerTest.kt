@@ -13,7 +13,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.MqConstants
+import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -206,7 +206,7 @@ class DataManagerTest(
 
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, "Data received", correlationId, MqConstants.dataReceived,
+                dataUUId, "Data received", correlationId, ExchangeNames.dataReceived,
             ),
         ).thenThrow(
             AmqpException::class.java,

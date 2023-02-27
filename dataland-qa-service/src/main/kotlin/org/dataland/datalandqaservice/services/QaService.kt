@@ -1,7 +1,7 @@
 package org.dataland.datalandqaservice.services
 
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.MqConstants
+import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
@@ -30,7 +30,7 @@ class QaService(
         bindings = [
             QueueBinding(
                 value = Queue("dataStoredQaService"),
-                exchange = Exchange(MqConstants.dataStored, declare = "false"),
+                exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
                 key = [""],
             ),
         ],
@@ -44,7 +44,7 @@ class QaService(
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 dataId, "QA Process Completed", correlationId,
-                MqConstants.dataQualityAssured,
+                ExchangeNames.dataQualityAssured,
             )
         } else {
             val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"

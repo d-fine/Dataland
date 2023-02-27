@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataContr
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.MqConstants
+import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -41,7 +41,7 @@ class DatabaseDataStore(
         bindings = [
             QueueBinding(
                 value = Queue("dataReceivedInternalStorageDatabaseDataStore"),
-                exchange = Exchange(MqConstants.dataReceived, declare = "false"),
+                exchange = Exchange(ExchangeNames.dataReceived, declare = "false"),
                 key = [""],
             ),
         ],
@@ -55,7 +55,7 @@ class DatabaseDataStore(
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, "Data successfully stored", correlationId, MqConstants.dataStored,
+            dataId, "Data successfully stored", correlationId, ExchangeNames.dataStored,
         )
     }
 
