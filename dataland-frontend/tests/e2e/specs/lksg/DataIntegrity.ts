@@ -12,6 +12,7 @@ import {
 import { getPreparedFixture, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import {getRandomReportingPeriod} from "@common/ReportingPeriodFixtures";
 
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 const monthAndDayOfLksgPreparedFixtures = "-01-01";
@@ -91,12 +92,16 @@ describeIf(
             const reportingYear: number = +reportingYearAsString;
             reportingYearOfNewLksgDataSet = reportingYear + 1;
           }
-          const newLksgDataSet = generateLksgData(
+          const reportingDateOfNewLksgDataSet =
             reportingYearOfNewLksgDataSet.toString() + dateAndMonthOfAdditionallyUploadedLksgDataSets
+          const newLksgDataSet = generateLksgData(
+            reportingDateOfNewLksgDataSet
           );
-          return uploadOneLksgDatasetViaApi(token, companyId, newLksgDataSet).then((dataMetaInformation) => {
-            return { companyId: companyId, dataId: dataMetaInformation.dataId };
-          });
+          return uploadOneLksgDatasetViaApi(token, companyId, reportingDateOfNewLksgDataSet, newLksgDataSet).then(
+            (dataMetaInformation) => {
+              return { companyId: companyId, dataId: dataMetaInformation.dataId };
+            }
+          );
         });
       });
     }
@@ -105,9 +110,10 @@ describeIf(
       const preparedFixture = getPreparedFixture("one-lksg-data-set", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
+      const reportingPeriod = preparedFixture.reportingPeriod;
 
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
+        return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData, reportingPeriod).then((uploadIds) => {
           cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Lksg}`);
           cy.wait("@retrieveLksgData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
@@ -166,7 +172,8 @@ describeIf(
             return uploadCompanyAndLksgDataViaApi(
               token,
               generateDummyCompanyInformation(someRandomCompanyName),
-              generateLksgData()
+              generateLksgData(),
+              getRandomReportingPeriod()
             ).then(() => {
               cy.intercept("**/api/companies*").as("searchCompany");
               cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
@@ -190,9 +197,10 @@ describeIf(
       const preparedFixture = getPreparedFixture("two-lksg-data-sets-in-same-year", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
+      const reportingPeriod = preparedFixture.reportingPeriod;
 
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
+        return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData, reportingPeriod).then((uploadIds) => {
           return uploadAnotherLksgDataSetToExistingCompany(uploadIds, true).then(() => {
             cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/company/*`).as("retrieveLksgData");
             cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Lksg}`);
@@ -218,12 +226,13 @@ describeIf(
       const preparedFixture = getPreparedFixture("six-lksg-data-sets-in-different-years", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const lksgData = preparedFixture.t;
+      const reportingPeriod = preparedFixture.reportingPeriod;
       const reportingYearAsString = getYearFromLksgDate(lksgData.social!.general!.dataDate!);
       const reportingYear: number = +reportingYearAsString;
       const numberOfLksgDataSetsForCompany = 6;
 
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData).then((uploadIds) => {
+        return uploadCompanyAndLksgDataViaApi(token, companyInformation, lksgData, reportingPeriod).then((uploadIds) => {
           let currentChainable: Chainable<UploadIds> = uploadAnotherLksgDataSetToExistingCompany(uploadIds);
           for (let i = 3; i <= numberOfLksgDataSetsForCompany; i++) {
             currentChainable = currentChainable.then(uploadAnotherLksgDataSetToExistingCompany);

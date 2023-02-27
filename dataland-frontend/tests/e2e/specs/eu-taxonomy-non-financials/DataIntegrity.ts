@@ -55,7 +55,7 @@ describeIf(
           token,
           generateDummyCompanyInformation(fixtureData.companyInformation.companyName)
         ).then((storedCompany) => {
-          return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, fixtureData.t).then(
+          return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, fixtureData.reportingPeriod,fixtureData.t).then(
             () => {
               cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
               cy.visitAndCheckAppMount(

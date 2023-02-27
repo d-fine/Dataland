@@ -7,8 +7,8 @@ import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import {
-  getFirstEuTaxonomyNonFinancialsDatasetFromFixtures,
-  uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
+    getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures,
+    uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
@@ -247,9 +247,9 @@ describe("As a user, I expect the search functionality on the /companies page to
         const highlightedSubString = "this_is_highlighted";
         const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-          getFirstEuTaxonomyNonFinancialsDatasetFromFixtures().then((data) => {
+          getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures().then((fixtureData) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, data);
+              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, fixtureData.reportingPeriod, fixtureData.t);
             });
           });
         });

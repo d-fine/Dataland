@@ -11,6 +11,7 @@ import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
+import {getRandomReportingPeriod} from "@common/ReportingPeriodFixtures";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -138,11 +139,13 @@ describe("The shared header of the framework pages should act as expected", { sc
               return uploadCompanyAndLksgDataViaApi(
                 token,
                 singleLksgPreparedFixture.companyInformation,
-                singleLksgPreparedFixture.t
+                singleLksgPreparedFixture.t,
+                singleLksgPreparedFixture.reportingPeriod
               ).then((uploadIds) => {
                 return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                   token,
                   uploadIds.companyId,
+                  getRandomReportingPeriod(),
                   generateEuTaxonomyDataForFinancials()
                 );
               });
@@ -158,8 +161,12 @@ describe("The shared header of the framework pages should act as expected", { sc
           const companyInformation = generateCompanyInformation();
           companyInformation.companyName = nonFinancialCompanyName;
           return uploadCompanyViaApi(token, companyInformation).then((storedCompany) => {
-            const nonFinancialDataSet = generateEuTaxonomyDataForNonFinancials();
-            return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, nonFinancialDataSet);
+            return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+                token,
+                storedCompany.companyId,
+                getRandomReportingPeriod(),
+                generateEuTaxonomyDataForNonFinancials()
+            );
           });
         });
       }

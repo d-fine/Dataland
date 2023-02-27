@@ -41,15 +41,15 @@ describe(
      * A higher-level helper function for bulk data upload. Creates all provided companies and uses
      * the uploaderOneFrameworkDataset function to upload the datasets
      *
-     * @param companiesWithFrameworkData a list of companies with datasets to upload
+     * @param fixtureDataForFrameworkT a list of framework-T fixture data with datasets to upload
      * @param uploadOneFrameworkDataset a function that uploads a single dataset
      */
     function prepopulate<T>(
-      companiesWithFrameworkData: Array<FixtureData<T>>,
+      fixtureDataForFrameworkT: Array<FixtureData<T>>,
       uploadOneFrameworkDataset: UploadFunction<T>
     ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        doThingsInChunks(companiesWithFrameworkData, chunkSize, async (fixtureData) => {
+        doThingsInChunks(fixtureDataForFrameworkT, chunkSize, async (fixtureData) => {
           const storedCompany = await uploadCompanyViaApi(token, fixtureData.companyInformation);
           await uploadOneFrameworkDataset(token, storedCompany.companyId, fixtureData.reportingPeriod, fixtureData.t);
         });
@@ -82,22 +82,22 @@ describe(
     }
 
     describe("Upload and validate EuTaxonomy for financials data", () => {
-      let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+      let fixtureDataForEuTaxonomyFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
       before(function () {
         cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
-          companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+          fixtureDataForEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
         });
       });
 
       it("Upload eutaxonomy-financials fake-fixtures", () => {
-        prepopulate(companiesWithEuTaxonomyDataForFinancials, uploadOneEuTaxonomyFinancialsDatasetViaApi);
+        prepopulate(fixtureDataForEuTaxonomyFinancials, uploadOneEuTaxonomyFinancialsDatasetViaApi);
       });
 
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
         checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
           DataTypeEnum.EutaxonomyFinancials,
-          companiesWithEuTaxonomyDataForFinancials.length
+            fixtureDataForEuTaxonomyFinancials.length
         );
       });
     });

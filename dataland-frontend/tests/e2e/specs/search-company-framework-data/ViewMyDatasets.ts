@@ -7,6 +7,7 @@ import { faker } from "@faker-js/faker";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { DataTypeEnum } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
+import {getRandomReportingPeriod} from "@common/ReportingPeriodFixtures";
 
 describe(
   "As a user, I expect the search functionality on the /companies page to behave as I expect",
@@ -31,7 +32,12 @@ describe(
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
             const companyInformation = generateCompanyInformation();
             companyInformation.companyName = companyName;
-            return uploadCompanyAndLksgDataViaApi(token, companyInformation, generateLksgData());
+            return uploadCompanyAndLksgDataViaApi(
+                token,
+                companyInformation,
+                generateLksgData(),
+                getRandomReportingPeriod()
+            );
           });
         }
 

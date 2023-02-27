@@ -9,6 +9,7 @@ import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/fi
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { assertDefined } from "../../../../src/utils/TypeScriptUtils";
 import { describeIf } from "../../support/TestUtility";
+import {getRandomReportingPeriod} from "@common/ReportingPeriodFixtures";
 
 describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   describeIf(
@@ -47,6 +48,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
               return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
+                getRandomReportingPeriod(),
                 generateEuTaxonomyDataForFinancials()
               );
             })
@@ -59,6 +61,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                   return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
+                    getRandomReportingPeriod(),
                     generateEuTaxonomyDataForFinancials()
                   );
                 })
@@ -67,6 +70,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                   return uploadOneLksgDatasetViaApi(
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
+                    getRandomReportingPeriod(),
                     generateLksgData()
                   );
                 });

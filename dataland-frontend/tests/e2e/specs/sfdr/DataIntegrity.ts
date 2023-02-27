@@ -49,7 +49,7 @@ describeIf(
           const newSfdrDataSet = generateSfdrData(
             reportingYearOfNewSfdrDataSet.toString() + dateAndMonthOfAdditionallyUploadedLksgDataSets
           );
-          return uploadOneSfdrDataset(token, companyId, newSfdrDataSet).then((dataMetaInformation) => {
+          return uploadOneSfdrDataset(token, companyId, reportingYearOfNewSfdrDataSet.toString(), newSfdrDataSet).then((dataMetaInformation) => {
             return { companyId: companyId, dataId: dataMetaInformation.dataId };
           });
         });
@@ -90,9 +90,10 @@ describeIf(
       const preparedFixture = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const sfdrData = preparedFixture.t;
+      const reportingPeriod = preparedFixture.reportingPeriod;
 
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
-        return uploadCompanyAndSfdrDataViaApi(token, companyInformation, sfdrData).then((uploadIds) => {
+        return uploadCompanyAndSfdrDataViaApi(token, companyInformation, sfdrData, reportingPeriod).then((uploadIds) => {
           cy.intercept("**/api/data/sfdr/company/*").as("retrieveSfdrData");
           cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/sfdr`);
           cy.wait("@retrieveSfdrData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
@@ -120,11 +121,12 @@ describeIf(
       const preparedFixture = getPreparedFixture("two-sfdr-data-sets-in-different-years", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const sfdrData = preparedFixture.t;
+      const reportingPeriod = preparedFixture.reportingPeriod;
       const fiscalYearEndAsString = getYearFromSfdrDate(sfdrData.social!.general!.fiscalYearEnd!);
       const numberOfSfdrDataSetsForCompany = 4;
 
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadCompanyAndSfdrDataViaApi(token, companyInformation, sfdrData).then((uploadIds) => {
+        return uploadCompanyAndSfdrDataViaApi(token, companyInformation, sfdrData, reportingPeriod).then((uploadIds) => {
           let currentChainable: Chainable<UploadIds> = uploadAnotherSfdrDataSetToExistingCompany(uploadIds);
           for (let i = 3; i <= numberOfSfdrDataSetsForCompany; i++) {
             currentChainable = currentChainable.then(uploadAnotherSfdrDataSetToExistingCompany);

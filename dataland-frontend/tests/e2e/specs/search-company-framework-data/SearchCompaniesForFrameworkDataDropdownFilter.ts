@@ -1,7 +1,7 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import {
-  getFirstEuTaxonomyFinancialsDatasetFromFixtures,
-  uploadOneEuTaxonomyFinancialsDatasetViaApi,
+    getFirstEuTaxonomyFinancialsFixtureDataFromFixtures,
+    uploadOneEuTaxonomyFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
@@ -223,12 +223,13 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           const companyName = "CompanyWithFinancial" + companyNameMarker;
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-            getFirstEuTaxonomyFinancialsDatasetFromFixtures().then((euTaxonomyFinancialsDataset) => {
+            getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
                 return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                   token,
                   storedCompany.companyId,
-                  euTaxonomyFinancialsDataset
+                  fixtureData.reportingPeriod,
+                  fixtureData.t
                 );
               });
             });
@@ -286,13 +287,14 @@ describe("As a user, I expect the search functionality on the /companies page to
           const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
 
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-            getFirstEuTaxonomyFinancialsDatasetFromFixtures().then((euTaxonomyFinancialsDataset) => {
+            getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
                 (storedCompany) => {
                   return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                     token,
                     storedCompany.companyId,
-                    euTaxonomyFinancialsDataset
+                    fixtureData.reportingPeriod,
+                    fixtureData.t
                   );
                 }
               );
@@ -306,10 +308,12 @@ describe("As a user, I expect the search functionality on the /companies page to
           getKeycloakToken(uploader_name, uploader_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameNonFinancial)).then(
               (storedCompany) => {
+                const firstFixtureDataForEuTaxonomyNonFinancials = companiesWithEuTaxonomyDataForNonFinancials[0];
                 return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
                   token,
                   storedCompany.companyId,
-                  companiesWithEuTaxonomyDataForNonFinancials[0].t
+                  firstFixtureDataForEuTaxonomyNonFinancials.reportingPeriod,
+                  firstFixtureDataForEuTaxonomyNonFinancials.t
                 );
               }
             );
