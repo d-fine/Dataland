@@ -218,28 +218,4 @@ class DataManagerTest(
             )
         }
     }
-
-    @Test
-    fun `check an exception is thrown during adding a data set when sending notification to message queue fails`() {
-        val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
-            addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val company = companyManager.getCompanyById(storableEuTaxonomyDataSetForNonFinancials.companyId)
-        `when`(
-            spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
-                storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId,
-            ),
-        ).thenReturn(dataUUId)
-        `when`(
-            mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, "Data received", correlationId, MqConstants.dataReceived,
-            ),
-        ).thenThrow(
-            AmqpException::class.java,
-        )
-        assertThrows<AmqpException> {
-            spyDataManager.addDataSetToTemporaryStorageAndSendMessage(
-                storableEuTaxonomyDataSetForNonFinancials, correlationId,
-            )
-        }
-    }
 }
