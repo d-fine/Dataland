@@ -52,9 +52,9 @@ class Lksg {
         val finalLksgData2023 = lksgData.copy(
             social = lksgData.social!!.copy(
                 general = lksgData.social!!.general!!.copy(
-                    numberOfEmployees = BigDecimal.valueOf(2.023)
-                )
-            )
+                    numberOfEmployees = BigDecimal.valueOf(2.023),
+                ),
+            ),
         )
         uploadLambda(companyId, lksgData, "2022")
         uploadLambda(companyId, finalLksgData2023, "2023")
@@ -62,31 +62,30 @@ class Lksg {
 //        Retrieve uploaded data set from the GET lksg_companies_companyId endpoint and assert that the correct ones are retrieved
         val responseWithoutVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
             companyId = companyId,
-            showVersionHistoryForReportingPeriod = false
+            showVersionHistoryForReportingPeriod = false,
         )
         val responseWithVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
             companyId = companyId,
-            showVersionHistoryForReportingPeriod = true
+            showVersionHistoryForReportingPeriod = true,
         )
         val response2023WithoutVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
             companyId = companyId,
             showVersionHistoryForReportingPeriod = false,
-            reportingPeriod = "2023"
+            reportingPeriod = "2023",
         )
         val response2023WithVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
             companyId = companyId,
             showVersionHistoryForReportingPeriod = true,
-            reportingPeriod = "2023"
+            reportingPeriod = "2023",
         )
         assertTrue(
             responseWithoutVersioning.size == 2 && responseWithVersioning.size == 4 && response2023WithVersioning.size == 2 && response2023WithoutVersioning.size == 1,
-            "Versioning and reporting Period parameters should influence the number of returned datasets correctly but they do not."
+            "Versioning and reporting Period parameters should influence the number of returned datasets correctly but they do not.",
         )
         assertEquals(
             response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees,
             BigDecimal.valueOf(2.023),
-            "The active dataset should contain the manipulated ${2.023} but it is ${response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees} instead"
+            "The active dataset should contain the manipulated ${2.023} but it is ${response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees} instead",
         )
-
     }
 }

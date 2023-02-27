@@ -105,7 +105,7 @@ class ApiAccessor {
         listOfFrameworkData: List<T>,
         frameworkDataUploadFunction: (companyId: String, frameworkData: T, reportingPeriod: String) -> DataMetaInformation,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
-        reportingPeriod: String = ""
+        reportingPeriod: String = "",
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
@@ -132,7 +132,7 @@ class ApiAccessor {
         listOfCompanyInformation: List<CompanyInformation>,
         numberOfDataSetsPerCompany: Int,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
-        reportingPeriod: String
+        reportingPeriod: String,
     ): List<UploadInfo> {
         return when (dataType) {
             DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(
@@ -140,7 +140,7 @@ class ApiAccessor {
                 testDataProviderForLksgData.getTData(numberOfDataSetsPerCompany),
                 lksgUploaderFunction,
                 uploadingTechnicalUser,
-                reportingPeriod
+                reportingPeriod,
             )
 
             DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
@@ -148,7 +148,7 @@ class ApiAccessor {
                 testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany),
                 sfdrUploaderFunction,
                 uploadingTechnicalUser,
-                reportingPeriod
+                reportingPeriod,
             )
 
             DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
@@ -156,7 +156,7 @@ class ApiAccessor {
                 testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany),
                 smeUploaderFunction,
                 uploadingTechnicalUser,
-                reportingPeriod
+                reportingPeriod,
             )
 
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
@@ -164,7 +164,7 @@ class ApiAccessor {
                 testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerCompany),
                 euTaxonomyNonFinancialsUploaderFunction,
                 uploadingTechnicalUser,
-                reportingPeriod
+                reportingPeriod,
             )
 
             DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
@@ -172,7 +172,7 @@ class ApiAccessor {
                 testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
                 euTaxonomyFinancialsUploaderFunction,
                 uploadingTechnicalUser,
-                reportingPeriod
+                reportingPeriod,
             )
         }
     }
@@ -181,7 +181,7 @@ class ApiAccessor {
         companyInformationPerFramework: Map<DataTypeEnum, List<CompanyInformation>>,
         numberOfDataSetsPerCompany: Int,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
-        reportingPeriod: String = ""
+        reportingPeriod: String = "",
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         companyInformationPerFramework.keys.forEach {
@@ -191,7 +191,7 @@ class ApiAccessor {
                     companyInformationPerFramework[it]!!,
                     numberOfDataSetsPerCompany,
                     uploadingTechnicalUser,
-                    reportingPeriod
+                    reportingPeriod,
                 ),
             )
         }
@@ -202,7 +202,7 @@ class ApiAccessor {
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials,
     ):
-            Map<String, String> {
+        Map<String, String> {
         val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
             listOf(companyInformation),
             listOf(euTaxonomyDataForNonFinancials),
@@ -259,13 +259,13 @@ class ApiAccessor {
     fun getNumberOfDataMetaInfo(
         companyId: String? = null,
         dataType: DataTypeEnum? = null,
-        showVersionHistoryForReportingPeriod: Boolean? = null
+        showVersionHistoryForReportingPeriod: Boolean? = null,
     ): Int {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         return metaDataControllerApi.getListOfDataMetaInfo(
             companyId,
             dataType,
-            showVersionHistoryForReportingPeriod
+            showVersionHistoryForReportingPeriod,
         ).size
     }
 }
@@ -278,4 +278,4 @@ data class UploadInfo(
 
     val actualStoredDataMetaInfo: DataMetaInformation? = null,
 
-    )
+)

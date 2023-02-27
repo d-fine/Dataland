@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
@@ -30,22 +30,21 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR dataMetaInformation.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.onlyActive} = false " +
-            "OR dataMetaInformation.currentlyActive = true)"
+            "OR dataMetaInformation.currentlyActive = true)",
     )
     fun searchDataMetaInformation(
         @Param("searchFilter") searchFilter: DataMetaInformationSearchFilter,
     ): List<DataMetaInformationEntity>
 
     /**
-     * Marks the given Dataset as the active dataset for the given reporting period, company and dataType.
-     * Removes the active status from any other dataset with the same reporting period, company and dataType
+     * Retrieves the currently active dataset for the given triplet of reporting Period, company and dataType
      */
-    @Modifying
-    @Query("UPDATE DataMetaInformationEntity dataMetaInformation " +
-            "SET dataMetaInformation.currentlyActive = CASE WHEN (dataMetaInformation.dataId = :#{#newActive.dataId}) THEN true ELSE false END " +
-            "WHERE dataMetaInformation.reportingPeriod = :#{#newActive.reportingPeriod} " +
-                "AND dataMetaInformation.company.companyId = :#{#newActive.company.companyId} " +
-                "AND dataMetaInformation.dataType = :#{#newActive.dataType}"
+    @Query(
+        "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
+            "WHERE dataMetaInformation.reportingPeriod = :#{#reportingPeriod} " +
+            "AND dataMetaInformation.company.companyId = :#{#company.companyId} " +
+            "AND dataMetaInformation.dataType = :#{#dataType} " +
+            "AND dataMetaInformation.currentlyActive = true ",
     )
-    fun updateActiveStatus(@Param("newActive") newActive: DataMetaInformationEntity)
+    fun getActiveDataset(@Param("company") company: StoredCompanyEntity, @Param("dataType") dataType: String, @Param("reportingPeriod") reportingPeriod: String): DataMetaInformationEntity?
 }

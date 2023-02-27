@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * A service class for managing data meta-information
@@ -25,7 +24,6 @@ class DataMetaInformationManager(
      * @param dataId The id of the dataset to associate with the company
      * @param dataType The dataType of the dataId
      */
-    @Transactional
     fun storeDataMetaInformation(
         dataId: String,
         dataType: DataType,
@@ -41,7 +39,7 @@ class DataMetaInformationManager(
             uploadTime = uploadTime,
             reportingPeriod = reportingPeriod,
             company = company,
-            currentlyActive = false
+            currentlyActive = null,
         )
 
         val newDataset = dataMetaInformationRepository.save(dataMetaInformationEntity)
@@ -53,9 +51,13 @@ class DataMetaInformationManager(
      * Marks the given dataset as the latest dataset for the combination of dataType, company and reporting period
      * Ensures that only one dataset per group has the active status
      */
-    @Transactional
-    fun setActiveDataset(dataSet: DataMetaInformationEntity) {
-        dataMetaInformationRepository.updateActiveStatus(dataSet)
+    fun setActiveDataset(dataset: DataMetaInformationEntity) {
+        val currentlyActive = dataMetaInformationRepository.getActiveDataset(dataset.company, dataset.dataType, dataset.reportingPeriod)
+        if (currentlyActive != null) {
+            currentlyActive.currentlyActive = null
+            dataMetaInformationRepository.saveAndFlush(currentlyActive)
+        }
+        dataset.currentlyActive = true
     }
 
     /**
@@ -91,7 +93,7 @@ class DataMetaInformationManager(
             companyIdFilter = companyId,
             dataTypeFilter = dataTypeFilter,
             reportingPeriodFilter = reportingPeriodFilter,
-            onlyActive = !showVersionHistoryForReportingPeriod
+            onlyActive = !showVersionHistoryForReportingPeriod,
         )
 
         return dataMetaInformationRepository.searchDataMetaInformation(filter)
