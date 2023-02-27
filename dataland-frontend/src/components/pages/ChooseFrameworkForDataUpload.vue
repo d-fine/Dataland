@@ -139,24 +139,92 @@ export default defineComponent({
 
   watch: {},
   methods: {
+    // TODO test this in unit tests
     /**
-     *  Sorts a list of data meta information by their uploading time
+     *  Sorts a list of data meta information alphabetically by their reporting period
+     *
+     * @param listOfDataMetaInfo the list of data meta information to be sorted
+     * @returns the sorted list of data meta information
+     */
+    sortListOfDataMetaInfoAlphabeticallyByReportingPeriod(
+      listOfDataMetaInfo: DataMetaInformation[]
+    ): DataMetaInformation[] {
+      console.log(listOfDataMetaInfo);
+      listOfDataMetaInfo.sort((dataMetaInfoA, dataMetaInfoB) => {
+        if (dataMetaInfoA.reportingPeriod > dataMetaInfoB.reportingPeriod) return -1;
+        else return 0;
+      });
+      console.log(listOfDataMetaInfo);
+      return listOfDataMetaInfo;
+    },
+
+    // TODO test this in unit tests
+    /**
+     *  Sorts a list of data meta information descending by their uploading time
      *
      * @param listOfDataMetaInfo the list of data meta information to be sorted
      * @returns the sorted list of data meta information
      */
     sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfo: Array<DataMetaInformation>): Array<DataMetaInformation> {
-      return listOfDataMetaInfo.sort((dataMetaInfoA, dataMetaInfoB) => {
-        if (dataMetaInfoA.uploadTime > dataMetaInfoB.uploadTime) {
-          return 1;
+      return listOfDataMetaInfo.sort(
+        (dataMetaInfoA, dataMetaInfoB) => dataMetaInfoB.uploadTime - dataMetaInfoA.uploadTime
+      );
+    },
+
+    // TODO test this in unit tests
+    /**
+     *  This function assigns the elements of an array of data meta info to buckets/groups based on their reporting periods.
+     *  It does so by using a map. It takes the list of data meta info and puts its elements into sub-arrays, which
+     *  are the values of that map. The respective reporting period is the key of those sub-arrays.
+     *
+     * @param listOfDataMetaInfo the list of data meta information to be grouped
+     * @returns a map with the distinct reporting periods as keys and arrays of data meta info for that period as values
+     */
+    groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
+      listOfDataMetaInfo: DataMetaInformation[]
+    ): Map<string, DataMetaInformation[]> {
+      const mapOfReportingPeriodToListOfDataMetaInfo = new Map();
+      listOfDataMetaInfo.forEach((currentDataMetaInfo) => {
+        const reportingPeriodOfCurrentDataMetaInfo = currentDataMetaInfo.reportingPeriod;
+        const listOfDataMetaInfoForUniqueReportingPeriod = mapOfReportingPeriodToListOfDataMetaInfo.get(
+          reportingPeriodOfCurrentDataMetaInfo
+        );
+        if (!listOfDataMetaInfoForUniqueReportingPeriod) {
+          mapOfReportingPeriodToListOfDataMetaInfo.set(reportingPeriodOfCurrentDataMetaInfo, [currentDataMetaInfo]);
         } else {
-          return -1;
+          listOfDataMetaInfoForUniqueReportingPeriod.push(currentDataMetaInfo);
         }
       });
+      return mapOfReportingPeriodToListOfDataMetaInfo;
+    },
+
+    // TODO test in unit tests
+    /**
+     *  Groups a list of data meta information by their reporting periods, then executes a sorting function on
+     *  each group, and then unites and returns all those groups.
+     *
+     * @param listOfDataMetaInfo the list of data meta information to be grouped and sorted
+     * @returns a list of data meta info as the united sub-lists of the groups
+     */
+    groupAndSortListOfDataMetaInfo(listOfDataMetaInfo: Array<DataMetaInformation>): Array<DataMetaInformation> {
+      const listOfDataMetaInfoSortedByReportingPeriod =
+        this.sortListOfDataMetaInfoAlphabeticallyByReportingPeriod(listOfDataMetaInfo);
+      const mapOfReportingPeriodToListOfDataMetaInfo =
+        this.groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
+          listOfDataMetaInfoSortedByReportingPeriod
+        );
+
+      const resultArray: DataMetaInformation[] = [];
+      Array.from(mapOfReportingPeriodToListOfDataMetaInfo.values()).forEach(
+        (listOfDataMetaInfoForUniqueReportingPeriod) => {
+          resultArray.push(...this.sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfoForUniqueReportingPeriod));
+        }
+      );
+      return resultArray;
     },
 
     /**
-     * Gets all data meta information of the company identified by the variable companyId and fills the lists for
+     * Gets all data meta information of the company identified by the company ID in the URL and fills the lists for
      * data meta information of the various frameworks
      */
     async getMetaInfoAboutAllDataSetsForCurrentCompany() {
@@ -166,22 +234,22 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, true);
         const listOfAllDataMetaInfo = response.data;
-        this.listOfEuTaxonomyNonFinancialsMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
+        this.listOfEuTaxonomyNonFinancialsMetaInfo = this.groupAndSortListOfDataMetaInfo(
           listOfAllDataMetaInfo.filter(
             (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyNonFinancials
           )
         );
-        this.listOfEuTaxonomyFinancialsMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
+        this.listOfEuTaxonomyFinancialsMetaInfo = this.groupAndSortListOfDataMetaInfo(
           listOfAllDataMetaInfo.filter(
             (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyFinancials
           )
         );
-        this.listOfSfdrMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
+        this.listOfSfdrMetaInfo = this.groupAndSortListOfDataMetaInfo(
           listOfAllDataMetaInfo.filter(
             (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Sfdr
           )
         );
-        this.listOfLksgMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
+        this.listOfLksgMetaInfo = this.groupAndSortListOfDataMetaInfo(
           listOfAllDataMetaInfo.filter(
             (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Lksg
           )

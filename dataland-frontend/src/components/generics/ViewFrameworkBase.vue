@@ -13,7 +13,7 @@
           </div>
         </div>
       </MarginWrapper>
-      <MarginWrapper v-if="noFailure" class="text-left surface-0" style="margin-right: 0">
+      <MarginWrapper v-if="isDataProcessedSuccesfully" class="text-left surface-0" style="margin-right: 0">
         <Dropdown
           id="chooseFrameworkDropdown"
           v-model="chosenDataTypeInDropdown"
@@ -28,9 +28,10 @@
         />
         <slot name="reportingPeriodDropdown"> </slot>
       </MarginWrapper>
-      <MarginWrapper v-if="noFailure" style="margin-right: 0">
+      <MarginWrapper v-if="isDataProcessedSuccesfully" style="margin-right: 0">
         <slot name="content"> </slot>
       </MarginWrapper>
+      <h1 v-else>No data could be loaded.</h1>
     </TheContent>
     <DatalandFooter />
   </AuthenticationWrapper>
@@ -52,7 +53,7 @@ import Dropdown from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { DataMetaInformation } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -90,7 +91,7 @@ export default defineComponent({
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
-      noFailure: true,
+      isDataProcessedSuccesfully: true,
     };
   },
   created() {
@@ -124,11 +125,16 @@ export default defineComponent({
       });
     },
 
-    getDistinctAvailableFrameworksAndPutThemIntoDropdown(
-      listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod: DataMetaInformation[]
-    ) {
+    /**
+     * Uses a list of data meta info to derive all distinct frameworks that occur in that list. Only if those distinct
+     * frameworks are also included in the frontend constant which contains all frameworks that have view-pages
+     * implemented, the distinct frameworks are set as options for the framework-dropdown element.
+     *
+     * @param listOfDataMetaInfo a list of data meta info
+     */
+    getDistinctAvailableFrameworksAndPutThemIntoDropdown(listOfDataMetaInfo: DataMetaInformation[]) {
       const setOfAvailableFrameworksForCompany = [
-        ...new Set(listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.map((dataMetaInfo) => dataMetaInfo.dataType)),
+        ...new Set(listOfDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.dataType)),
       ];
       setOfAvailableFrameworksForCompany.forEach((dataType) => {
         if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataType)) {
@@ -137,20 +143,35 @@ export default defineComponent({
       });
     },
 
+    /**
+     * Uses a list of data meta info and filters out all elements whose data type (framework) do not equal the
+     * dataType-prop set for this Vue-component during render.
+     *
+     * @param listOfDataMetaInfo a list of data meta info
+     * @returns the filtered list of data meta info
+     */
     filterListOfDataMetaInfoForChosenFrameworkAndReturnIt(
       listOfDataMetaInfo: DataMetaInformation[]
     ): DataMetaInformation[] {
       return listOfDataMetaInfo.filter((dataMetaInfo) => dataMetaInfo.dataType === this.dataType);
     },
 
+    /**
+     * Uses a list of data meta info to copy all distinct reporting periods that occur in that list to a new list
+     * which is then returned.
+     *
+     * @param listOfDataMetaInfo a list of data meta info
+     * @returns a list of strings which contains all distinct reporting periods
+     */
     getDistinctReportingPeriodsInListOfDataMetaInfoAndReturnIt(listOfDataMetaInfo: DataMetaInformation[]): string[] {
       return [...new Set(listOfDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.reportingPeriod))];
     },
 
     /**
-     * Goes through all data meta info for the currently viewed company and does two things. First it saves all distinct
-     * data types into the vue components dataTypesInDropdown-array. Second it collects all data IDs for data of the
-     * currently selected framework type and emits them. TODO
+     * Goes through all data meta info for the currently viewed company and does multiple things.
+     * First it sets the distinct frameworks as options in the framework-dropdown.
+     * Then it emits a list of all distinct reporting periods.
+     * Finally it emits a list with data meta info elements for all active datasets for this company.
      */
     async getDropdownOptionsAndActiveDataMetaInfoAndDoEmits() {
       try {
@@ -180,7 +201,7 @@ export default defineComponent({
           listOfActiveDataMetaInfoPerReportingPeriodForChosenFramework
         );
       } catch (error) {
-        this.noFailure = false;
+        this.isDataProcessedSuccesfully = false;
         console.error(error);
       }
     },
