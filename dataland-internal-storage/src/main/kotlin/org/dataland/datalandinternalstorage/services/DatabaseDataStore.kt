@@ -1,7 +1,7 @@
 package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -19,14 +19,14 @@ import org.springframework.stereotype.Component
  * Simple implementation of a data store using a postgres database
  * @param dataItemRepository
  * @param cloudEventMessageHandler service for managing CloudEvents messages
- * @param nonPersistedDataClient the service for retrieving data from the temporary storage
+ * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
 class DatabaseDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var nonPersistedDataClient: NonPersistedDataControllerApi,
+    @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -50,7 +50,7 @@ class DatabaseDataStore(
         val dataId = cloudEventMessageHandler.bodyToString(message)
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-        val data = nonPersistedDataClient.getReceivedData(dataId)
+        val data = temporarilyCachedDataClient.getReceivedData(dataId)
         logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))

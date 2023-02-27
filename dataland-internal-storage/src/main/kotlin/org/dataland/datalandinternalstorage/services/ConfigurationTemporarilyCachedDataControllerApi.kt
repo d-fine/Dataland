@@ -1,6 +1,6 @@
 package org.dataland.datalandinternalstorage.services
 
-import org.dataland.datalandbackend.openApiClient.api.NonPersistedDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
  * environment
  */
 @Configuration
-class ConfigurationBackendControllerApi(
+class ConfigurationTemporarilyCachedDataControllerApi(
     @Value("\${dataland.backend.base-url}")
     private val backendBaseUrl: String,
 ) {
@@ -18,7 +18,7 @@ class ConfigurationBackendControllerApi(
      * The bean to configure the internal client StorageControllerApi
      */
     @Bean
-    fun getApiBackendClient(): NonPersistedDataControllerApi {
-        return NonPersistedDataControllerApi(basePath = backendBaseUrl)
+    fun getTemporarilyCachedDataApiClient(): TemporarilyCachedDataControllerApi {
+        return TemporarilyCachedDataControllerApi(basePath = backendBaseUrl)
     }
 }
