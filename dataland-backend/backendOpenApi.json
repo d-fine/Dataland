@@ -697,7 +697,7 @@
         "tags": [
           "temporarily-cached-data-controller"
         ],
-        "summary": "Retrieve specific data from the hashmap of the backend.",
+        "summary": "Retrieve specific data from the cache store of the backend.",
         "description": "Data identified by the provided data ID is retrieved.",
         "operationId": "getReceivedData",
         "parameters": [
