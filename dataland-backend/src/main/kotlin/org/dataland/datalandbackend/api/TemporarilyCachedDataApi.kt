@@ -19,7 +19,7 @@ interface TemporarilyCachedDataApi {
      * @param dataId filters the requested data to a specific entry.
      */
     @Operation(
-        summary = "Retrieve specific data from the hashmap of the backend.",
+        summary = "Retrieve specific data from the cache store of the backend.",
         description = "Data identified by the provided data ID is retrieved.",
     )
     @ApiResponses(
