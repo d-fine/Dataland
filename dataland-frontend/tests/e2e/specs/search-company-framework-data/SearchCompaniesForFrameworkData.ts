@@ -252,14 +252,8 @@ describe("As a user, I expect the search functionality on the /companies page to
   it("Search for company by its alternative name", () => {
     const testCompany = getCompanyWithAlternativeName();
     const searchValue = testCompany.companyInformation.companyAlternativeNames![0];
-    cy.visitAndCheckAppMount("/companies-only-search");
-    cy.get("input[name=companyName]")
-      .should("not.be.disabled")
-      .click({ force: true })
-      .type(searchValue)
-      .should("have.value", searchValue);
-    cy.get("button[name=getCompanies]").click({ force: true });
-    cy.get("table.p-datatable-table").contains(testCompany.companyInformation.companyName);
+    cy.visitAndCheckAppMount("/companies");
+    executeCompanySearchWithStandardSearchBar(searchValue);
   });
 
   describeIf(
