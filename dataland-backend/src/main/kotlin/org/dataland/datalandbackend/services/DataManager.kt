@@ -12,13 +12,16 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.MessageHeaderType
+import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.messaging.handler.annotation.Header
+import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -90,7 +93,9 @@ class DataManager(
 
     /**
      * Method that listens to the qa_queue and updates the metadata information after successful qa process
-     * @param message is the message delivered on the message queue
+     * @param dataId the ID of the dataset to have an updated qa status
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
      */
     @RabbitListener(
         bindings = [
@@ -101,10 +106,15 @@ class DataManager(
             ),
         ],
     )
-    fun updateMetaData(message: Message) {
-        val dataId = cloudEventMessageHandler.bodyToString(message)
-        val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        if (!dataId.isNullOrEmpty()) {
+    fun updateMetaData(
+        @Payload dataId: String,
+        @Header(MessageHeaderType.CorrelationId) correlationId: String,
+        @Header(MessageHeaderType.Type) type: String,
+    ) {
+        if (type != MessageType.QACompleted.id) {
+            return
+        }
+        if (dataId.isNotEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaInformation.qaStatus = QAStatus.Accepted
             metaDataManager.storeDataMetaInformation(metaInformation)
@@ -124,7 +134,7 @@ class DataManager(
     /**
      * This method retrieves data from the temporary storage
      * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
-     * * @return stringified data entry from the temporary store
+     * @return stringified data entry from the temporary store
      */
     fun selectDataSetFromTemporaryStorage(dataId: String): String {
         val rawValue = dataInMemoryStorage.getOrElse(dataId) {
@@ -151,7 +161,7 @@ class DataManager(
         val dataId = generateRandomDataId()
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, "Data received", correlationId,
+            dataId, MessageType.DataReceived.id, correlationId,
             ExchangeNames.dataReceived,
         )
         logger.info(
@@ -174,7 +184,9 @@ class DataManager(
      * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
      * stored in the persisted database. Further it logs success notification associated containing dataId and
      * correlationId
-     * @param message Message retrieved from stored_queue
+     * @param dataId the ID of the dataset to that was stored
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
      */
     @RabbitListener(
         bindings = [
@@ -185,10 +197,15 @@ class DataManager(
             ),
         ],
     )
-    fun removeStoredItemFromTemporaryStore(message: Message) {
-        val dataId = cloudEventMessageHandler.bodyToString(message)
-        val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
-        if (!dataId.isNullOrEmpty()) {
+    fun removeStoredItemFromTemporaryStore(
+        @Payload dataId: String,
+        @Header(MessageHeaderType.CorrelationId) correlationId: String,
+        @Header(MessageHeaderType.Type) type: String,
+    ) {
+        if (type != MessageType.DataStored.id) {
+            return
+        }
+        if (dataId.isNotEmpty()) {
             logger.info("Internal Storage sent a message - job done")
             logger.info(
                 "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",

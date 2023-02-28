@@ -6,13 +6,16 @@ import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.MessageHeaderType
+import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.messaging.handler.annotation.Header
+import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 
 /**
@@ -34,9 +37,10 @@ class DatabaseDataStore(
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
      * storage_queue
-     * @param message Message retrieved from storage_queue
+     * @param dataId the ID of the dataset to store
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
      */
-
     @RabbitListener(
         bindings = [
             QueueBinding(
@@ -46,16 +50,21 @@ class DatabaseDataStore(
             ),
         ],
     )
-    fun persistentlyStoreDataAndSendMessage(message: Message) {
-        val dataId = cloudEventMessageHandler.bodyToString(message)
-        val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
+    fun persistentlyStoreDataAndSendMessage(
+        @Payload dataId: String,
+        @Header(MessageHeaderType.CorrelationId) correlationId: String,
+        @Header(MessageHeaderType.Type) type: String,
+    ) {
+        if (type != MessageType.DataReceived.id) {
+            return
+        }
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
         val data = temporarilyCachedDataClient.getReceivedData(dataId)
         logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, "Data successfully stored", correlationId, ExchangeNames.dataStored,
+            dataId, MessageType.DataStored.id, correlationId, ExchangeNames.dataStored,
         )
     }
 

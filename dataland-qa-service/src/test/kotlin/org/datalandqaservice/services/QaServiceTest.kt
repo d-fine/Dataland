@@ -1,6 +1,7 @@
 package org.datalandqaservice.services
 
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.services.QaService
@@ -49,7 +50,7 @@ class QaServiceTest {
         `when`(mockCloudEventMessageHandler.bodyToString(message)).thenReturn(dataId)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "QA Process Completed", correlationId, "",
+                dataId, MessageType.QACompleted.id, correlationId, "",
             ),
         ).thenThrow(
             AmqpException::class.java,

@@ -2,14 +2,17 @@ package org.dataland.datalandqaservice.services
 
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.MessageHeaderType
+import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.messaging.handler.annotation.Header
+import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 
 /**
@@ -24,7 +27,9 @@ class QaService(
 
     /**
      * Method to retrieve message from upload_queue and constructing new one for qa_queue
-     * @param message Message retrieved from upload_queue
+     * @param dataId the ID of the dataset to be QAed
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
      */
     @RabbitListener(
         bindings = [
@@ -35,15 +40,20 @@ class QaService(
             ),
         ],
     )
-    fun assureQualityOfData(message: Message) {
-        val dataId = cloudEventMessageHandler.bodyToString(message)
-        val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
+    fun assureQualityOfData(
+        @Payload dataId: String,
+        @Header(MessageHeaderType.CorrelationId) correlationId: String,
+        @Header(MessageHeaderType.Type) type: String,
+    ) {
+        if (type != MessageType.DataStored.id) {
+            return
+        }
         if (dataId.isNotEmpty()) {
             logger.info(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "QA Process Completed", correlationId,
+                dataId, MessageType.QACompleted.id, correlationId,
                 ExchangeNames.dataQualityAssured,
             )
         } else {

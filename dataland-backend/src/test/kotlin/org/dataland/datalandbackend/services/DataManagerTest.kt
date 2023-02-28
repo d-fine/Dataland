@@ -14,6 +14,7 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -206,7 +207,7 @@ class DataManagerTest(
 
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, "Data received", correlationId, ExchangeNames.dataReceived,
+                dataUUId, MessageType.DataReceived.id, correlationId, ExchangeNames.dataReceived,
             ),
         ).thenThrow(
             AmqpException::class.java,
