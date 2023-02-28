@@ -157,21 +157,10 @@ export default defineComponent({
     },
 
     /**
-     * Uses a list of data meta info to copy all distinct reporting periods that occur in that list to a new list
-     * which is then returned.
-     *
-     * @param listOfDataMetaInfo a list of data meta info
-     * @returns a list of strings which contains all distinct reporting periods
-     */
-    getDistinctReportingPeriodsInListOfDataMetaInfoAndReturnIt(listOfDataMetaInfo: DataMetaInformation[]): string[] {
-      return [...new Set(listOfDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.reportingPeriod))];
-    },
-
-    /**
      * Goes through all data meta info for the currently viewed company and does multiple things.
      * First it sets the distinct frameworks as options in the framework-dropdown.
-     * Then it emits a list of all distinct reporting periods.
-     * Finally it emits a list with data meta info elements for all active datasets for this company.
+     * Then it emits a list of all distinct reporting periods. TODO adjust to changes
+     * Finally it emits a list with data meta info elements for all active datasets for this company. TODO
      */
     async getDropdownOptionsAndActiveDataMetaInfoAndDoEmits() {
       try {
@@ -180,24 +169,22 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
+
         this.getDistinctAvailableFrameworksAndPutThemIntoDropdown(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
 
-        const listOfActiveDataMetaInfoPerReportingPeriodForChosenFramework =
-          this.filterListOfDataMetaInfoForChosenFrameworkAndReturnIt(
-            listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
-          );
-        this.$emit(
-          "updateAvailableReportingPeriodsForChosenFramework",
-          this.getDistinctReportingPeriodsInListOfDataMetaInfoAndReturnIt(
-            listOfActiveDataMetaInfoPerReportingPeriodForChosenFramework
-          )
-        );
-        this.$emit(
-          "updateActiveDataMetaInfoForChosenFramework",
-          listOfActiveDataMetaInfoPerReportingPeriodForChosenFramework
-        );
+        const mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
+        listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.forEach((dataMetaInfo: DataMetaInformation) => {
+          if (dataMetaInfo.dataType === this.dataType) {
+            if (dataMetaInfo.currentlyActive) {
+              mapOfReportingPeriodToActiveDataset.set(dataMetaInfo.reportingPeriod, dataMetaInfo); // TODO the fact that backend only sends one meta info per distinct reportingPeriod is assured implicitly by using reporting period as key here for the map.. is this ok??
+            } else {
+              throw TypeError("Received inactive dataset meta info from Dataland Backend"); // TODO do we even need a check like this, or is this handled as "assured"
+            }
+          }
+        });
+        this.$emit("updateActiveDataMetaInfoForChosenFramework", mapOfReportingPeriodToActiveDataset);
       } catch (error) {
         this.isDataProcessedSuccesfully = false;
         console.error(error);

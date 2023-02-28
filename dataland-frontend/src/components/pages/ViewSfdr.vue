@@ -4,7 +4,7 @@
     dataType="sfdr"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
   >
-    <template v-if="receivedSfdrDataIds.length > 0">
+    <template v-slot:content v-if="receivedSfdrDataIds.length > 0">
       <div class="grid">
         <div class="col-12">
           <SfdrPanel :companyId="companyID" />
@@ -46,9 +46,12 @@ export default defineComponent({
      *
      * @param receivedSfdrDataIds Received Sfdr data IDs
      * @param listOfReceivedDataMetaInfo
+     * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo
      */
-    handleUpdateActiveDataMetaInfo(listOfReceivedDataMetaInfo: DataMetaInformation[]) {
-      this.receivedSfdrDataIds = listOfReceivedDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.dataId);
+    handleUpdateActiveDataMetaInfo(receivedMapOfReportingPeriodsToActiveDataMetaInfo: DataMetaInformation[]) {
+      this.receivedSfdrDataIds = Array.from(receivedMapOfReportingPeriodsToActiveDataMetaInfo.values()).map(
+        (dataMetaInfo) => dataMetaInfo.dataId
+      );
       // TODO can we remove the sorting logic for same-year datasets from the lksg-view-page now?  because we receive only one per year now (because of "latest" setting)
       this.loading = false;
     },
