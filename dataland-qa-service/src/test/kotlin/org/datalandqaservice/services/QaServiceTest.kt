@@ -37,7 +37,7 @@ class QaServiceTest(
     fun `check an exception is thrown in reading out message from upload queue when dataId is empty`() {
         val correlationId = "correlationId"
         val thrown = assertThrows<MessageQueueException> {
-            qaService.assureQualityOfData("", correlationId, MessageType.DataStored.name)
+            qaService.assureQualityOfData("", correlationId, MessageType.DataStored)
         }
         val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
         Assertions.assertEquals("Error receiving data for QA process: $internalMessage", thrown.message)
@@ -54,13 +54,13 @@ class QaServiceTest(
         )
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QACompleted.name, correlationId, ExchangeNames.dataQualityAssured,
+                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
             ),
         ).thenThrow(
             AmqpException::class.java,
         )
         assertThrows<AmqpException> {
-            qaService.assureQualityOfData(dataId, correlationId, MessageType.DataStored.name)
+            qaService.assureQualityOfData(dataId, correlationId, MessageType.DataStored)
         }
     }
 }

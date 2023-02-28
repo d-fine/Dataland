@@ -3,7 +3,7 @@ package org.dataland.datalandqaservice.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderType
+import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
@@ -45,10 +45,10 @@ class QaService(
     )
     fun assureQualityOfData(
         @Payload dataId: String,
-        @Header(MessageHeaderType.CorrelationId) correlationId: String,
-        @Header(MessageHeaderType.Type) type: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
     ) {
-        if (type != MessageType.DataStored.name) {
+        if (type != MessageType.DataStored) {
             return
         }
         if (dataId.isNotEmpty()) {
@@ -62,7 +62,7 @@ class QaService(
                 )
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QACompleted.name, correlationId,
+                message, MessageType.QACompleted, correlationId,
                 ExchangeNames.dataQualityAssured,
             )
         } else {
