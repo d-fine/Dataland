@@ -36,10 +36,6 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./user-api-key");
 }
 
-if (cypressTestGroup === 102) {
-  require("./company-upload-and-search/CompaniesOnlySearch");
-}
-
 if (testGroupingDisabled || cypressTestGroup === 2) {
   require("./framework-view-and-upload-journey");
   require("./eu-taxonomy-non-financials");
