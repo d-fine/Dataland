@@ -48,7 +48,7 @@ class QaService(
         @Header(MessageHeaderType.CorrelationId) correlationId: String,
         @Header(MessageHeaderType.Type) type: String,
     ) {
-        if (type != MessageType.DataStored.id) {
+        if (type != MessageType.DataStored.name) {
             return
         }
         if (dataId.isNotEmpty()) {
@@ -62,7 +62,7 @@ class QaService(
                 )
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QACompleted.id, correlationId,
+                message, MessageType.QACompleted.name, correlationId,
                 ExchangeNames.dataQualityAssured,
             )
         } else {

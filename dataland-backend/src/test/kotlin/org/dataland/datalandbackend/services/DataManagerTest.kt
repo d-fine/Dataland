@@ -27,7 +27,6 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.Instant
-import org.springframework.amqp.core.Message as AMQPMessage
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -167,32 +166,16 @@ class DataManagerTest(
 
     @Test
     fun `check an exception is thrown in updating of meta data when dataId is empty`() {
-        val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
-            addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val storableNFEuTaxonomyDataSetAsString: String =
-            objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.updateMetaData(
-                AMQPMessage(
-                    storableNFEuTaxonomyDataSetAsString.toByteArray(),
-                ),
-            )
+            dataManager.updateMetaData("", "", MessageType.QACompleted.name)
         }
         assertEquals("The update of the metadataset failed", thrown.publicMessage)
     }
 
     @Test
     fun `check an exception is thrown in logging of stored data when dataId is empty`() {
-        val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
-            addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val storableNFEuTaxonomyDataSetAsString: String =
-            objectMapper.writeValueAsString(storableEuTaxonomyDataSetForNonFinancials)
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.removeStoredItemFromTemporaryStore(
-                AMQPMessage(
-                    storableNFEuTaxonomyDataSetAsString.toByteArray(),
-                ),
-            )
+            dataManager.removeStoredItemFromTemporaryStore("", "", MessageType.DataStored.name)
         }
         assertEquals("The storing of the dataset failed", thrown.publicMessage)
     }
@@ -207,7 +190,7 @@ class DataManagerTest(
 
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, MessageType.DataReceived.id, correlationId, ExchangeNames.dataReceived,
+                dataUUId, MessageType.DataReceived.name, correlationId, ExchangeNames.dataReceived,
             ),
         ).thenThrow(
             AmqpException::class.java,

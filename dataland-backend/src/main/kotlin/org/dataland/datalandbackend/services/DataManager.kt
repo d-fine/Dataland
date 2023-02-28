@@ -16,7 +16,6 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
@@ -95,7 +94,7 @@ class DataManager(
 
     /**
      * Method that listens to the qa_queue and updates the metadata information after successful qa process
-     * @param dataId the ID of the dataset to have an updated qa status
+     * @param jsonString the message describing the result of the completed QA process
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -113,7 +112,7 @@ class DataManager(
         @Header(MessageHeaderType.CorrelationId) correlationId: String,
         @Header(MessageHeaderType.Type) type: String,
     ) {
-            if (type != MessageType.QACompleted.id) {
+            if (type != MessageType.QACompleted.name) {
 //                TODO: Reject statement
                 return
             }
@@ -165,7 +164,7 @@ class DataManager(
         val dataId = generateRandomDataId()
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, MessageType.DataReceived.id, correlationId,
+            dataId, MessageType.DataReceived.name, correlationId,
             ExchangeNames.dataReceived,
         )
         logger.info(
@@ -206,7 +205,7 @@ class DataManager(
         @Header(MessageHeaderType.CorrelationId) correlationId: String,
         @Header(MessageHeaderType.Type) type: String,
     ) {
-        if (type != MessageType.DataStored.id) {
+        if (type != MessageType.DataStored.name) {
             return
         }
         if (dataId.isNotEmpty()) {
