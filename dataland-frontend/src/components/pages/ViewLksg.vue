@@ -45,8 +45,6 @@ export default defineComponent({
     /**
      * TODO Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
      *
-     * @param receivedLksgDataIds Received LkSG data IDs
-     * @param listOfReceivedDataMetaInfo
      * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo
      */
     handleUpdateActiveDataMetaInfo(
@@ -55,7 +53,7 @@ export default defineComponent({
       this.receivedLksgDataIds = Array.from(receivedMapOfReportingPeriodsToActiveDataMetaInfo.values()).map(
         (dataMetaInfo) => dataMetaInfo.dataId
       );
-      console.log(this.receivedLksgDataIds); TODO debugging
+      console.log(this.receivedLksgDataIds); // TODO debugging
       // TODO can we remove the sorting logic for same-year datasets from the lksg-view-page now?  because we receive only one per year now (because of "latest" setting)
       this.loading = false;
     },

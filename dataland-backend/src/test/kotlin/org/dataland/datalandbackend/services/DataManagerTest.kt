@@ -23,7 +23,6 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.Instant
-import java.util.*
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -48,6 +47,7 @@ class DataManagerTest(
             DataType("eutaxonomy-non-financials"),
             "USER_ID_OF_AN_UPLOADING_USER",
             Instant.now().epochSecond,
+            "",
             euTaxonomyDataForNonFinancialsAsString,
         )
     }
