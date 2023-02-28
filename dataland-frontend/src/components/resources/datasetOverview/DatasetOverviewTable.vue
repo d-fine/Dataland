@@ -36,9 +36,10 @@
       </Column>
       <Column field="companyName" header="" class="w-2 d-bg-white d-datatable-column-right">
         <template #header>
-          <span class="w-12 p-input-icon-left">
+          <span class="w-12 p-input-icon-left p-input-icon-right">
             <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-            <InputText v-model="searchBarInput" placeholder="Search table" class="w-12 pl-6" />
+            <InputText v-model="searchBarInput" placeholder="Search table" class="w-12 pl-6 pr-6" />
+            <i v-if="loading" class="pi pi-spin pi-spinner right-0 mr-3" aria-hidden="true"></i>
           </span>
         </template>
         <template #body="{ data }">
@@ -98,6 +99,7 @@ export default defineComponent({
         250,
         false
       ),
+      loading: false,
     };
   },
   setup() {
@@ -127,22 +129,18 @@ export default defineComponent({
      * @returns the path depending on the status of the data set
      */
     getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
-      // TODO: Update to the new URL format
-      const dataTypesWithSingleView = [DataTypeEnum.Lksg] as DataTypeEnum[];
-      let queryParameters = "";
-      if (!dataTypesWithSingleView.includes(datasetTableInfo.dataType)) {
-        queryParameters = `?dataId=${datasetTableInfo.dataId}`;
-      }
-      return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}${queryParameters}`;
+      return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/${datasetTableInfo.dataId}`;
     },
     /**
      * Filter the given datasets for the search string in the company name
      */
     async applySearchFilter(): Promise<void> {
+      this.loading = true;
       this.displayedDatasetTableInfos = await getMyDatasetTableInfos(
         assertDefined(this.getKeycloakPromise),
         this.searchBarInput
       );
+      this.loading = false;
     },
     /**
      * Depending on the dataset status, executes a router push to either the dataset view page or an upload page
