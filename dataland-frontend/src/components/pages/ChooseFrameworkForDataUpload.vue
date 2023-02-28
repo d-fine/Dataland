@@ -149,12 +149,10 @@ export default defineComponent({
     sortListOfDataMetaInfoAlphabeticallyByReportingPeriod(
       listOfDataMetaInfo: DataMetaInformation[]
     ): DataMetaInformation[] {
-      console.log(listOfDataMetaInfo);
       listOfDataMetaInfo.sort((dataMetaInfoA, dataMetaInfoB) => {
         if (dataMetaInfoA.reportingPeriod > dataMetaInfoB.reportingPeriod) return -1;
         else return 0;
       });
-      console.log(listOfDataMetaInfo);
       return listOfDataMetaInfo;
     },
 
