@@ -235,6 +235,33 @@ describe("As a user, I expect the search functionality on the /companies page to
     }
   );
 
+  /**
+   * Returns the first company from the fake fixture that has at least one alternative name
+   *
+   * @returns the matching company from the fake fixtures
+   */
+  function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForNonFinancials> {
+    return companiesWithEuTaxonomyDataForNonFinancials.filter((it) => {
+      return (
+        it.companyInformation.companyAlternativeNames !== undefined &&
+        it.companyInformation.companyAlternativeNames.length > 0
+      );
+    })[0];
+  }
+
+  it("Search for company by its alternative name", () => {
+    const testCompany = getCompanyWithAlternativeName();
+    const searchValue = testCompany.companyInformation.companyAlternativeNames![0];
+    cy.visitAndCheckAppMount("/companies-only-search");
+    cy.get("input[name=companyName]")
+      .should("not.be.disabled")
+      .click({ force: true })
+      .type(searchValue)
+      .should("have.value", searchValue);
+    cy.get("button[name=getCompanies]").click({ force: true });
+    cy.get("table.p-datatable-table").contains(testCompany.companyInformation.companyName);
+  });
+
   describeIf(
     "As a user, I expect substrings of the autocomplete suggestions to be highlighted if they match my search string",
     {
