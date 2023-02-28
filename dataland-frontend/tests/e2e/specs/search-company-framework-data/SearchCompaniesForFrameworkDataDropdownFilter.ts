@@ -1,7 +1,7 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import {
-    getFirstEuTaxonomyFinancialsFixtureDataFromFixtures,
-    uploadOneEuTaxonomyFinancialsDatasetViaApi,
+  getFirstEuTaxonomyFinancialsFixtureDataFromFixtures,
+  uploadOneEuTaxonomyFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";

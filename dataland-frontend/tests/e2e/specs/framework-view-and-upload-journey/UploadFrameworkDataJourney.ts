@@ -9,7 +9,7 @@ import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/fi
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { assertDefined } from "../../../../src/utils/TypeScriptUtils";
 import { describeIf } from "../../support/TestUtility";
-import {getRandomReportingPeriod} from "@common/ReportingPeriodFixtures";
+import { getRandomReportingPeriod } from "@common/ReportingPeriodFixtures";
 
 describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   describeIf(

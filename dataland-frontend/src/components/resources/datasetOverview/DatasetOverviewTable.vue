@@ -76,6 +76,7 @@ import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import { DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import debounce from "@/utils/Debounce";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
@@ -90,6 +91,13 @@ export default defineComponent({
       displayedDatasetTableInfos: [] as DatasetTableInfo[],
       humanizeString: humanizeString,
       convertDate: convertUnixTimeInMsToDateString,
+      applySearchFilterDebounced: debounce(
+        () => {
+          void this.applySearchFilter();
+        },
+        250,
+        false
+      ),
     };
   },
   setup() {
@@ -105,7 +113,7 @@ export default defineComponent({
   },
   watch: {
     searchBarInput() {
-      void this.applySearchFilter();
+      void this.applySearchFilterDebounced();
     },
     datasetTableInfos() {
       this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
@@ -119,6 +127,7 @@ export default defineComponent({
      * @returns the path depending on the status of the data set
      */
     getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
+      // TODO: Update to the new URL format
       const dataTypesWithSingleView = [DataTypeEnum.Lksg] as DataTypeEnum[];
       let queryParameters = "";
       if (!dataTypesWithSingleView.includes(datasetTableInfo.dataType)) {

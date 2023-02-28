@@ -97,7 +97,7 @@ describe(
       it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
         checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
           DataTypeEnum.EutaxonomyFinancials,
-            fixtureDataForEuTaxonomyFinancials.length
+          fixtureDataForEuTaxonomyFinancials.length
         );
       });
     });

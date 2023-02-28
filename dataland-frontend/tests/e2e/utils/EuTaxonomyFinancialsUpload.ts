@@ -92,7 +92,9 @@ function fillField(divName: string, inputName: string, value?: DataPointBigDecim
  *
  * @returns the first eutaxonomy-financials dataset from the fake fixtures
  */
-export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable<FixtureData<EuTaxonomyDataForFinancials>> {
+export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable<
+  FixtureData<EuTaxonomyDataForFinancials>
+> {
   return cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
     const companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
     return companiesWithEuTaxonomyDataForFinancials[0];
