@@ -112,11 +112,11 @@ class DataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-            if (type != MessageType.QACompleted) {
+        if (type != MessageType.QACompleted) {
 //                TODO: Reject statement
-                return
-            }
-        val dataId = objectMapper.readValue(jsonString,QaCompletedMessage::class.java).dataId
+            return
+        }
+        val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).dataId
         if (dataId.isNotEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaInformation.qaStatus = QAStatus.Accepted
