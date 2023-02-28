@@ -15,6 +15,7 @@ import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerE
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -166,8 +167,14 @@ class DataManagerTest(
 
     @Test
     fun `check an exception is thrown in updating of meta data when dataId is empty`() {
+        val messageWithEmptyDataID = objectMapper.writeValueAsString(
+            QaCompletedMessage(
+                dataId = "",
+                validationResult = "By default, QA is passed"
+            )
+        )
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.updateMetaData("", "", MessageType.QACompleted.name)
+            dataManager.updateMetaData(messageWithEmptyDataID, "", MessageType.QACompleted.name)
         }
         assertEquals("The update of the metadataset failed", thrown.publicMessage)
     }

@@ -1,9 +1,11 @@
 package org.datalandqaservice.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
+import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.services.QaService
 import org.junit.jupiter.api.Assertions
@@ -13,11 +15,13 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.amqp.AmqpException
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.amqp.core.Message as AMQPMessage
 
 @SpringBootTest(classes = [DatalandQaService::class])
-class QaServiceTest {
+class QaServiceTest(
+    @Autowired val objectMapper: ObjectMapper
+) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var qaService: QaService
 
@@ -26,7 +30,7 @@ class QaServiceTest {
     @BeforeEach
     fun resetMocks() {
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-        qaService = QaService(mockCloudEventMessageHandler)
+        qaService = QaService(mockCloudEventMessageHandler, objectMapper)
     }
 
     @Test
@@ -42,9 +46,15 @@ class QaServiceTest {
     @Test
     fun `check that an exception is thrown when sending a success notification to message queue fails`() {
         val correlationId = "correlationId"
+        val message = objectMapper.writeValueAsString(
+            QaCompletedMessage(
+                dataId = dataId,
+                validationResult = "By default, QA is passed"
+            )
+        )
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, MessageType.QACompleted.name, correlationId, ExchangeNames.dataQualityAssured,
+                message, MessageType.QACompleted.name, correlationId, ExchangeNames.dataQualityAssured,
             ),
         ).thenThrow(
             AmqpException::class.java,
