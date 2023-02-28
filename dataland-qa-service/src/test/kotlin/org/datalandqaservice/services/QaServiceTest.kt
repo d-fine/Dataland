@@ -36,7 +36,7 @@ class QaServiceTest {
     fun `check an exception is thrown in reading out message from upload queue when dataId is empty`() {
         val message = buildDummyMessage(dataAsString)
         val thrown = assertThrows<MessageQueueException> {
-            qaService.receive(message)
+            qaService.assureQualityOfData(message)
         }
         val internalMessage = "Error receiving information for QA service. Correlation ID: null"
         Assertions.assertEquals("Error receiving data for QA process: $internalMessage", thrown.message)
@@ -55,7 +55,7 @@ class QaServiceTest {
             AmqpException::class.java,
         )
         assertThrows<AmqpException> {
-            qaService.receive(message)
+            qaService.assureQualityOfData(message)
         }
     }
 }

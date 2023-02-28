@@ -96,7 +96,7 @@ class DataManager(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue("dataStoredBackendDataManager"),
+                value = Queue("dataQualityAssuredBackendDataManager"),
                 exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
                 key = [""],
             ),
@@ -180,7 +180,7 @@ class DataManager(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue("dataQualityAssuredBackendDataManager"),
+                value = Queue("dataStoredBackendDataManager"),
                 exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
                 key = [""],
             ),
