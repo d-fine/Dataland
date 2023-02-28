@@ -44,8 +44,11 @@ class EuTaxonomyDataForNonFinancialsController(
     }
 
     @Operation(operationId = "getAllCompanyEuTaxonomyDataForNonFinancials")
-    override fun getFrameworkDatasetsForCompany(companyId: String, showVersionHistoryForReportingPeriod: Boolean, reportingPeriod: String?):
-        ResponseEntity<List<DataAndMetaInformation<EuTaxonomyDataForNonFinancials>>> {
+    override fun getFrameworkDatasetsForCompany(
+        companyId: String,
+        showVersionHistoryForReportingPeriod: Boolean,
+        reportingPeriod: String?
+    ): ResponseEntity<List<DataAndMetaInformation<EuTaxonomyDataForNonFinancials>>> {
         return super.getFrameworkDatasetsForCompany(companyId, showVersionHistoryForReportingPeriod, reportingPeriod)
     }
 }

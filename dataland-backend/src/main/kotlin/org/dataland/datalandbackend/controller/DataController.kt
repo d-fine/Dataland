@@ -94,13 +94,22 @@ abstract class DataController<T>(
         return ResponseEntity.ok(companyAssociatedData)
     }
 
-    override fun getFrameworkDatasetsForCompany(companyId: String, showVersionHistoryForReportingPeriod: Boolean, reportingPeriod: String?): ResponseEntity<List<DataAndMetaInformation<T>>> {
+    override fun getFrameworkDatasetsForCompany(
+            companyId: String,
+            showVersionHistoryForReportingPeriod: Boolean,
+            reportingPeriod: String?
+    ): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val reportingPeriodInLogMessage = reportingPeriod ?: "all reporting periods"
         logger.info(
             "Received a request to get all datasets together with meta info for framework '$dataType', " +
                 "companyId '$companyId' and reporting period '$reportingPeriodInLogMessage'",
         )
-        var listOfDataMetaInfoEntities = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType, showVersionHistoryForReportingPeriod, reportingPeriod)
+        var listOfDataMetaInfoEntities = dataMetaInformationManager.searchDataMetaInfo(
+                companyId,
+                dataType,
+                showVersionHistoryForReportingPeriod,
+                reportingPeriod
+        )
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         listOfDataMetaInfoEntities.forEach {
             val correlationId = generatedCorrelationId(companyId)

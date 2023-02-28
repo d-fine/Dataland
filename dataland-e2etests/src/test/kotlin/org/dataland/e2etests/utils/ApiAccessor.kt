@@ -48,7 +48,11 @@ class ApiAccessor {
     val euTaxonomyNonFinancialsUploaderFunction =
         { companyId: String, euTaxonomyNonFinancialsData: EuTaxonomyDataForNonFinancials, reportingPeriod: String ->
             val companyAssociatedEuTaxonomyNonFinancialsData =
-                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, reportingPeriod, euTaxonomyNonFinancialsData)
+                CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+                    companyId,
+                    reportingPeriod,
+                    euTaxonomyNonFinancialsData
+                )
             dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
                 companyAssociatedEuTaxonomyNonFinancialsData,
             )
@@ -103,7 +107,11 @@ class ApiAccessor {
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         listOfCompanyInformation: List<CompanyInformation>,
         listOfFrameworkData: List<T>,
-        frameworkDataUploadFunction: (companyId: String, frameworkData: T, reportingPeriod: String) -> DataMetaInformation,
+        frameworkDataUploadFunction: (
+            companyId: String,
+            frameworkData: T,
+            reportingPeriod: String
+        ) -> DataMetaInformation,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
         reportingPeriod: String = "",
     ): List<UploadInfo> {

@@ -46,5 +46,9 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
             "AND dataMetaInformation.dataType = :#{#dataType} " +
             "AND dataMetaInformation.currentlyActive = true ",
     )
-    fun getActiveDataset(@Param("company") company: StoredCompanyEntity, @Param("dataType") dataType: String, @Param("reportingPeriod") reportingPeriod: String): DataMetaInformationEntity?
+    fun getActiveDataset(
+        @Param("company") company: StoredCompanyEntity,
+        @Param("dataType") dataType: String,
+        @Param("reportingPeriod") reportingPeriod: String
+    ): DataMetaInformationEntity?
 }

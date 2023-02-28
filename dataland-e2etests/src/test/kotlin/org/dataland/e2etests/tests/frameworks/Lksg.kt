@@ -35,7 +35,7 @@ class Lksg {
     }
 
     @Test
-    fun `check that reporting period and version history parameters of GET lksg_companies_companyId endpoint work correctly`() {
+    fun `check that reporting period and version history parameters of GET endpoint for companies work correctly`() {
 //        Upload multiple lksg datasets for multiple reporting periods for the same company
         val uploadLambda = { companyId: String, lksgData: LksgData, reportingDate: String ->
             val body = CompanyAssociatedDataLksgData(companyId, reportingDate, lksgData)
@@ -59,7 +59,8 @@ class Lksg {
         uploadLambda(companyId, lksgData, "2022")
         uploadLambda(companyId, finalLksgData2023, "2023")
 
-//        Retrieve uploaded data set from the GET lksg_companies_companyId endpoint and assert that the correct ones are retrieved
+        // Retrieve uploaded data set from the GET lksg_companies_companyId endpoint and assert that the correct ones
+        // are retrieved
         val responseWithoutVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
             companyId = companyId,
             showVersionHistoryForReportingPeriod = false,
@@ -79,13 +80,18 @@ class Lksg {
             reportingPeriod = "2023",
         )
         assertTrue(
-            responseWithoutVersioning.size == 2 && responseWithVersioning.size == 4 && response2023WithVersioning.size == 2 && response2023WithoutVersioning.size == 1,
-            "Versioning and reporting Period parameters should influence the number of returned datasets correctly but they do not.",
+            responseWithoutVersioning.size == 2 &&
+                        responseWithVersioning.size == 4 &&
+                        response2023WithVersioning.size == 2 &&
+                        response2023WithoutVersioning.size == 1,
+            "Versioning and reporting Period parameters should influence the number of returned datasets " +
+                    "correctly but they do not.",
         )
         assertEquals(
             response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees,
             BigDecimal.valueOf(2.023),
-            "The active dataset should contain the manipulated ${2.023} but it is ${response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees} instead",
+            "The active dataset should contain the manipulated ${2.023} but it is " +
+                    "${response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees} instead",
         )
     }
 }

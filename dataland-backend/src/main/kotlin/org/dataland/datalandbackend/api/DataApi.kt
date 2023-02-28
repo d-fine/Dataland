@@ -85,7 +85,9 @@ interface DataApi<T> {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved framework datasets with meta info."),
+            ApiResponse(
+                responseCode = "200", description = "Successfully retrieved framework datasets with meta info."
+            ),
         ],
     )
     @GetMapping(

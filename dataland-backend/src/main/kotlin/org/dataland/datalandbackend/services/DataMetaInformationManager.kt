@@ -52,7 +52,11 @@ class DataMetaInformationManager(
      * Ensures that only one dataset per group has the active status
      */
     fun setActiveDataset(dataset: DataMetaInformationEntity) {
-        val currentlyActive = dataMetaInformationRepository.getActiveDataset(dataset.company, dataset.dataType, dataset.reportingPeriod)
+        val currentlyActive = dataMetaInformationRepository.getActiveDataset(
+            dataset.company,
+            dataset.dataType,
+            dataset.reportingPeriod
+        )
         if (currentlyActive != null) {
             currentlyActive.currentlyActive = null
             dataMetaInformationRepository.saveAndFlush(currentlyActive)
@@ -83,7 +87,12 @@ class DataMetaInformationManager(
      * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
      * @return a list of meta info about data depending on the filters:
      */
-    fun searchDataMetaInfo(companyId: String, dataType: DataType?, showVersionHistoryForReportingPeriod: Boolean, reportingPeriod: String?): List<DataMetaInformationEntity> {
+    fun searchDataMetaInfo(
+        companyId: String,
+        dataType: DataType?,
+        showVersionHistoryForReportingPeriod: Boolean,
+        reportingPeriod: String?
+    ): List<DataMetaInformationEntity> {
         if (companyId != "") {
             companyManager.verifyCompanyIdExists(companyId)
         }
