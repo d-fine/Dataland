@@ -10,7 +10,6 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.AuthenticationMock
 import org.dataland.datalandbackend.utils.TestDataProvider
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -26,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 
@@ -124,7 +124,7 @@ internal class DataControllerTest(
     private fun testGetCompanyAssociatedDataEndpoint() {
         mockJwtAuthentication(DatalandRealmRole.ROLE_UPLOADER)
         assertExpectedDatasetForDataId(testUserPendingDataId)
-        assertThrows<InvalidInputApiException> {
+        assertThrows<AccessDeniedException> {
             dataController.getCompanyAssociatedData(otherUserPendingDataId)
         }
         assertExpectedDatasetForDataId(otherUserAcceptedDataId)
