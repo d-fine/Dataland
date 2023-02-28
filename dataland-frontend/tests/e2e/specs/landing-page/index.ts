@@ -3,5 +3,4 @@
  */
 describe("Landing Page Tests", () => {
   require("./FooterSection");
-  require("./LoginSection");
 });

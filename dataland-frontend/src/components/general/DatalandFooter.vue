@@ -22,10 +22,10 @@
               <p class="font-semibold m-0">Legal</p>
             </div>
             <div class="col-12">
-              <router-link to="/imprint" class="no-underline">
+              <router-link to="/imprint" class="no-underline" data-cy="imprint">
                 <span class="font-semibold underline text-primary cursor-pointer" title="imprint">Imprint</span>
               </router-link>
-              <router-link to="/dataprivacy" class="no-underline">
+              <router-link to="/dataprivacy" class="no-underline" data-cy="data privacy">
                 <p class="font-semibold underline text-primary cursor-pointer" title="data privacy">Data Privacy</p>
               </router-link>
             </div>

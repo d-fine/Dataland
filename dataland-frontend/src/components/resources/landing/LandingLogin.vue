@@ -12,7 +12,7 @@
       <div class="grid align-items-center m-0">
         <div data-test="landing-page-top-logo" class="col-5 text-left col-offset-1">
           <router-link to="/">
-            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland Logo" class="pt-2" />
+            <img src="@/assets/images/logos/logo_dataland_long.svg" alt="Dataland banner logo" class="pt-2" />
           </router-link>
         </div>
         <div data-test="landing-page-login-button" class="col-2 col-offset-3">
@@ -22,10 +22,10 @@
 
       <div data-test="landing-page-graphic-vision" class="grid align-items-center m-0">
         <div class="col-5 col-offset-1">
-          <h1 class="text-left text-6xl font-normal">THE ALTERNATIVE TO DATA MONOPOLIES</h1>
+          <h1 class="text-left text-6xl font-normal" data-cy="banner message">THE ALTERNATIVE TO DATA MONOPOLIES</h1>
         </div>
         <div data-test="landing-page-graphic-vision-img" class="col-4 col-offset-1">
-          <img alt="Dataland logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto" />
+          <img alt="Dataland image logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto" />
         </div>
       </div>
       <div data-test="landing-page-create-account" class="grid m-0">
