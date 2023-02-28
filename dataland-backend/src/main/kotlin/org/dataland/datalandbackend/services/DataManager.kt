@@ -14,7 +14,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
@@ -107,13 +109,15 @@ class DataManager(
         ],
     )
     fun updateMetaData(
-        @Payload dataId: String,
+        @Payload jsonString: String,
         @Header(MessageHeaderType.CorrelationId) correlationId: String,
         @Header(MessageHeaderType.Type) type: String,
     ) {
-        if (type != MessageType.QACompleted.id) {
-            return
-        }
+            if (type != MessageType.QACompleted.id) {
+//                TODO: Reject statement
+                return
+            }
+        val dataId = objectMapper.readValue(jsonString,QaCompletedMessage::class.java).dataId
         if (dataId.isNotEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaInformation.qaStatus = QAStatus.Accepted
