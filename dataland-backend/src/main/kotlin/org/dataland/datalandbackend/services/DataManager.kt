@@ -111,7 +111,7 @@ class DataManager(
         @Header(MessageHeaderType.CorrelationId) correlationId: String,
         @Header(MessageHeaderType.Type) type: String,
     ) {
-        if (type != MessageType.QACompleted.id) {
+        if (type != MessageType.QACompleted.name) {
             return
         }
         if (dataId.isNotEmpty()) {
@@ -161,7 +161,7 @@ class DataManager(
         val dataId = generateRandomDataId()
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, MessageType.DataReceived.id, correlationId,
+            dataId, MessageType.DataReceived.name, correlationId,
             ExchangeNames.dataReceived,
         )
         logger.info(
@@ -202,7 +202,7 @@ class DataManager(
         @Header(MessageHeaderType.CorrelationId) correlationId: String,
         @Header(MessageHeaderType.Type) type: String,
     ) {
-        if (type != MessageType.DataStored.id) {
+        if (type != MessageType.DataStored.name) {
             return
         }
         if (dataId.isNotEmpty()) {

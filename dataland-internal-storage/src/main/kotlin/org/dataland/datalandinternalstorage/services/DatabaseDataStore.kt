@@ -55,7 +55,7 @@ class DatabaseDataStore(
         @Header(MessageHeaderType.CorrelationId) correlationId: String,
         @Header(MessageHeaderType.Type) type: String,
     ) {
-        if (type != MessageType.DataReceived.id) {
+        if (type != MessageType.DataReceived.name) {
             return
         }
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
@@ -64,7 +64,7 @@ class DatabaseDataStore(
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, MessageType.DataStored.id, correlationId, ExchangeNames.dataStored,
+            dataId, MessageType.DataStored.name, correlationId, ExchangeNames.dataStored,
         )
     }
 

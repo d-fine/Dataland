@@ -45,7 +45,7 @@ class QaService(
         @Header(MessageHeaderType.CorrelationId) correlationId: String,
         @Header(MessageHeaderType.Type) type: String,
     ) {
-        if (type != MessageType.DataStored.id) {
+        if (type != MessageType.DataStored.name) {
             return
         }
         if (dataId.isNotEmpty()) {
@@ -53,7 +53,7 @@ class QaService(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, MessageType.QACompleted.id, correlationId,
+                dataId, MessageType.QACompleted.name, correlationId,
                 ExchangeNames.dataQualityAssured,
             )
         } else {
