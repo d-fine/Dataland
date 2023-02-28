@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.model.CompanyAssociatedData
+import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -35,7 +36,7 @@ abstract class DataController<T>(
         val userId = DatalandAuthentication.fromContext().userId
         val uploadTime = Instant.now().epochSecond
         logger.info(
-            "Received a request from user $userId to post company associated data of type $dataType" +
+            "Received a request from user $userId to post company associated data of type $dataType " +
                 "for companyId '${companyAssociatedData.companyId}'",
         )
         val correlationId = generatedCorrelationId(companyAssociatedData.companyId)
@@ -94,16 +95,21 @@ abstract class DataController<T>(
         return ResponseEntity.ok(companyAssociatedData)
     }
 
-    override fun getAllCompanyData(companyId: String): ResponseEntity<List<T>> {
+    override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
-        val frameworkData: MutableList<T> = mutableListOf()
+        val frameworkData = mutableListOf<DataAndMetaInformation<T>>()
         metaInfos.forEach {
             val correlationId = generatedCorrelationId(companyId)
             logger.info(
                 "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
             )
             val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
-            frameworkData.add(objectMapper.readValue(dataAsString, clazz))
+            frameworkData.add(
+                DataAndMetaInformation(
+                    it.toApiModel(DatalandAuthentication.fromContext()),
+                    objectMapper.readValue(dataAsString, clazz),
+                ),
+            )
         }
         return ResponseEntity.ok(frameworkData)
     }

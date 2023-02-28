@@ -2,18 +2,18 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section min-h-screen">
-      <MarginWrapper class="text-left surface-0" style="margin-right: 0rem">
+      <MarginWrapper class="text-left surface-0" style="margin-right: 0">
         <BackButton />
         <FrameworkDataSearchBar class="mt-2" ref="frameworkDataSearchBar" @search-confirmed="handleSearchConfirm" />
       </MarginWrapper>
-      <MarginWrapper class="surface-0" style="margin-right: 0rem">
+      <MarginWrapper class="surface-0" style="margin-right: 0">
         <div class="grid align-items-end">
           <div class="col-9">
             <CompanyInformation :companyID="companyID" />
           </div>
         </div>
       </MarginWrapper>
-      <MarginWrapper v-if="noFailure" class="text-left surface-0" style="margin-right: 0rem">
+      <MarginWrapper v-if="noFailure" class="text-left surface-0" style="margin-right: 0">
         <Dropdown
           id="frameworkDataDropdown"
           v-model="chosenDataTypeInDropdown"
@@ -27,7 +27,7 @@
           @change="redirectToViewPageForChosenFramework"
         />
       </MarginWrapper>
-      <MarginWrapper v-if="noFailure" style="margin-right: 0rem">
+      <MarginWrapper v-if="noFailure" style="margin-right: 0">
         <slot></slot>
       </MarginWrapper>
     </TheContent>

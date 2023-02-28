@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.CompanyAssociatedData
+import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -87,5 +88,5 @@ interface DataApi<T> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
-    fun getAllCompanyData(@PathVariable("companyId") companyId: String): ResponseEntity<List<T>>
+    fun getAllCompanyData(@PathVariable("companyId") companyId: String): ResponseEntity<List<DataAndMetaInformation<T>>>
 }
