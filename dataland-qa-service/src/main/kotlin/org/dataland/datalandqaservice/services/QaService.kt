@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component
 @Component
 class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired var objectMapper: ObjectMapper
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -43,8 +45,14 @@ class QaService(
             logger.info(
                 "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
             )
+            val message = objectMapper.writeValueAsString(
+                QaCompletedMessage(
+                    dataId = dataId,
+                    validationResult = "By default, QA is passed"
+                )
+            )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, "QA Process Completed", correlationId,
+                message, "QA Process Completed", correlationId,
                 ExchangeNames.dataQualityAssured,
             )
         } else {

@@ -103,7 +103,9 @@ class DataManager(
         ],
     )
     fun updateMetaData(message: Message) {
-        val dataId = cloudEventMessageHandler.bodyToString(message)
+
+        val jsonString = cloudEventMessageHandler.bodyToString(message)
+        val dataId = objectMapper.readValue(jsonString,QaCompletedMessage::class.java).dataId
         val correlationId = message.messageProperties.headers["cloudEvents:id"].toString()
         if (!dataId.isNullOrEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
