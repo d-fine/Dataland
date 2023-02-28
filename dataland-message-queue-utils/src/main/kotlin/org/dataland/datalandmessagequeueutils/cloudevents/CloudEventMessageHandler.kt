@@ -16,7 +16,6 @@ import org.springframework.messaging.Message as MessageResult
 /**
  * Handling of messages in the CloudEvents format
  * @param rabbitTemplate
- * @param objectMapper
  */
 
 @Component("CloudEventMessageHandler")
@@ -42,7 +41,7 @@ class CloudEventMessageHandler(
      * @param body the payload of the message to be constructed
      * @param type criterion to distinguish different messages to RabbitMQ apart from used queue
      * @param correlationId to be used as ID in header of CloudEvents message
-     * @param messageQueue RabbitMQ message queue to send the constructed message to
+     * @param exchange RabbitMQ exchange to send the constructed message to
      */
     fun buildCEMessageAndSendToQueue(body: String, type: String, correlationId: String, exchange: String) {
         val messageInput = buildCEMessage(body, type, correlationId)
@@ -54,14 +53,6 @@ class CloudEventMessageHandler(
             logger.error(internalMessage)
             throw AmqpException(internalMessage, exception)
         }
-    }
-
-    /**
-     * Method to extract the byte payload of a RabbitMQ message as string
-     * @param message RabbitMQ message whose payload is to be extracted
-     */
-    fun bodyToString(message: MessageMQ): String {
-        return String(message.body)
     }
 
     private fun convertMessage(message: MessageResult<ByteArray>): MessageMQ {
