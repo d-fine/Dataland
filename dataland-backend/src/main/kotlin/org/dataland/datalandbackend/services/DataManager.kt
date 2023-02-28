@@ -113,7 +113,6 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.QACompleted) {
-//                TODO: Reject statement
             return
         }
         val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).dataId
