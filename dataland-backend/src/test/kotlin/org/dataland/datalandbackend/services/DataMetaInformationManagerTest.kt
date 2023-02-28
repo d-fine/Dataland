@@ -19,7 +19,12 @@ class DataMetaInformationManagerTest(
     fun `check that an exception is thrown when non existing company id is provided in meta data search`() {
         val nonExistingCompanyId = "nonExistingCompanyId"
         val thrown = assertThrows<ResourceNotFoundApiException> {
-            dataMetaInformationManager.searchDataMetaInfo(companyId = nonExistingCompanyId, dataType = null)
+            dataMetaInformationManager.searchDataMetaInfo(
+                    companyId = nonExistingCompanyId,
+                    dataType = null,
+                    showVersionHistoryForReportingPeriod = false,
+                    reportingPeriod = ""
+            )
         }
         assertEquals(
             "Dataland does not know the company ID nonExistingCompanyId",
