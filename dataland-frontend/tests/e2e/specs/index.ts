@@ -32,7 +32,6 @@ if (runPrepopulation) {
 if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./landing-page");
   require("./swagger-ui");
-  require("./company-upload-and-search");
   require("./user-api-key");
 }
 
