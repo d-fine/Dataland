@@ -88,10 +88,6 @@ import { defineComponent } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
-import {
-  lksgKpiNameMappings,
-  lksgKpiInfoMappings,
-} from "@/components/resources/frameworkDataSearch/DataModelsTranslations";
 
 export default defineComponent({
   name: "KPIfieldsSet",
@@ -99,8 +95,6 @@ export default defineComponent({
   data: () => ({
     dataPointIsAvailable: true,
     dataQualityList: ["Audited", "Reported", "Estimated", "Incomplete", "N/A"],
-    lksgKpiNameMappings,
-    lksgKpiInfoMappings,
   }),
   props: {
     name: {

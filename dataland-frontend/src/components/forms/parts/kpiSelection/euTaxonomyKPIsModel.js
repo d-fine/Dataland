@@ -39,8 +39,8 @@ export const euTaxonomyKpiNameMappings = {
   annualReportCurrency: "Annual Report Currency",
   sustainabilityReport: "Sustainability Report",
 
-  activityLevelReporting: "EU Taxonomy activity level reporting",
-  fiscalYearDeviation: "Fiscal year is deviating",
+  activityLevelReporting: "EU Taxonomy Activity Level Reporting",
+  fiscalYearDeviation: "Fiscal Year is deviating",
   numberOfEmployees: "Number Of Employees",
   scopeOfEntities: "Scope Of Entities",
   currency: "Currency used in the report",
@@ -56,7 +56,6 @@ export const euTaxonomyKpiNameMappings = {
   groupLevelEsefReport: "Group Level ESEF Report",
   esefReportDate: "ESEF Report Date",
   esefReportCurrency: "ESEF Report Currency",
-  eUTaxonomyActivityLevelReporting: "EU Taxonomy Activity Level Reporting",
   nfrdMandatory: "NFRD Mandatory",
 
   quality: "Quality",
@@ -66,7 +65,7 @@ export const euTaxonomyKpiNameMappings = {
   comment: "Comment",
 
   assurance: "Assurance",
-  AssuranceProvider: "Assurance Provider",
+  provider: "Assurance Provider",
   AssurancePage: "Assurance Page",
   AssuranceReport: "Assurance Report",
   eligibleRevenue: "Eligible Revenue",
@@ -117,10 +116,11 @@ export const euTaxonomyKpiInfoMappings = {
   groupLevelAnnualReport: "Group Level Annual Report",
   annualReportDate: "The date for which the information presented in the report is valid through",
 
-  activityLevelReporting: "EU Taxonomy activity level reporting",
-  fiscalYearDeviation: "Fiscal year is deviating",
+  activityLevelReporting: "EU Taxonomy Activity Level Reporting",
+  fiscalYearDeviation: "Is Fiscal Year deviating?",
   numberOfEmployees: "Total number of employees (including temporary workers)",
-  scopeOfEntities: "Does a list of legal entities covered by Sust./Annual/Integrated/ESEF report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
+  scopeOfEntities:
+    "Does a list of legal entities covered by Sust./Annual/Integrated/ESEF report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
 
   sustainabilityReport: "Link to Sustainability Report",
   groupLevelSustainabilityReport: "Is Sustainability Report on a Group level",
@@ -134,7 +134,6 @@ export const euTaxonomyKpiInfoMappings = {
   groupLevelEsefReport: "Is ESEF Report on a Group level",
   esefReportDate: "The date for which the information presented in the report is valid through",
 
-  eUTaxonomyActivityLevelReporting: "EU Taxonomy Activity Level Reporting",
   nfrdMandatory: "The reporting obligation for companies whose number of employees is greater or equal to 500",
 
   quality: "The level of confidence associated to the value",
@@ -144,7 +143,7 @@ export const euTaxonomyKpiInfoMappings = {
   comment: "Free optional text",
 
   assurance: "Level of Assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
-  AssuranceProvider: "Name of the Audit company which provide assurance to EU Taxonomy data points ",
+  provider: "Name of the Audit company which provide assurance to EU Taxonomy data points ",
   AssurancePage: "The page number from where the text which proof that EU Taxonomy disclosures included in Assurance statement was sourced",
   AssuranceReport: "Link to Assurance Report",
   eligibleRevenue: "Percentage of the Revenue where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria)",

@@ -139,115 +139,69 @@
                   <!-- Basic information -->
                   <div class="col-9 formFields">
                     <h3 class="mt-0">Basic information</h3>
-                    <CheckBoxCustom
-                        name="fiscalYearDeviation"
-                        explanation="Fiscal year is deviating"
-                        displayName="Fiscal year is deviating"
+
+                    <YesNoComponent
+                      :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
+                      :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
+                      :name="'fiscalYearDeviation'"
+                      :radioButtonsOptions="['Deviation', 'NoDeviation']"
+                      required="required"
                     />
 
                     <!-- The date the fiscal year ends -->
                     <div class="form-field">
                       <UploadFormHeader
-                        name="The date the fiscal year ends"
-                        explanation="The date the fiscal year ends"
+                        :name="euTaxonomyKpiNameMappings.fiscalYearEnd"
+                        :explanation="euTaxonomyKpiInfoMappings.fiscalYearEnd"
                       />
                       <div class="lg:col-6 md:col-6 col-12 p-0">
-                        <Calendar inputId="icon" :showIcon="true" dateFormat="D, M dd, yy" :maxDate="new Date()" />
+                        <Calendar
+                          inputId="fiscalYearEnd"
+                          v-model="fiscalYearEnd"
+                          :showIcon="true"
+                          dateFormat="D, M dd, yy"
+                        />
                       </div>
 
                       <FormKit
                         type="text"
-                        validation=""
+                        validation="required"
                         name="fiscalYearEnd"
+                        v-model="convertedFiscalYearEnd"
                         :outer-class="{ 'hidden-input': true }"
                       />
                     </div>
 
                     <!-- Scope of entities -->
                     <div class="form-field">
-                      <CheckBoxCustom name="scopeOfEntities" explanation="Scope of entities" displayName="Scope of entities" />
+                      <YesNoComponent
+                        :displayName="euTaxonomyKpiNameMappings.scopeOfEntities"
+                        :info="euTaxonomyKpiInfoMappings.scopeOfEntities"
+                        :name="'scopeOfEntities'"
+                      />
                     </div>
 
                     <!-- EU Taxonomy activity level reporting -->
                     <div class="form-field">
-                      <CheckBoxCustom
-                        name="activityLevelReporting"
-                        explanation="EU Taxonomy activity level reporting"
-                        displayName="EU Taxonomy activity level reporting"
+                      <YesNoComponent
+                        :displayName="euTaxonomyKpiNameMappings.activityLevelReporting"
+                        :info="euTaxonomyKpiInfoMappings.activityLevelReporting"
+                        :name="'activityLevelReporting'"
                       />
                     </div>
 
                     <!-- Number of employees -->
-                    <div class="form-field">
-                      <UploadFormHeader name="Number of employees" explanation="Number of employees" />
-                      <FormKit
-                        type="number"
-                        name="numberOfEmployees"
-                        validation-label="Number of employees"
-                        placeholder="Value"
-                        validation="required|number"
-                        step="1"
-                        min="0"
-                        :inner-class="{ short: true }"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="general" class="anchor title">NFRD & Assurance</h4>
-                  </div>
-                  <!-- NFRD & Assurance -->
-                  <div class="col-9 formFields">
-                    <h3 class="mt-0">NFRD</h3>
-
-                    <!-- Scope of entities -->
-                    <div class="form-field">
-                      <CheckBoxCustom name="mandatoryNFRD" explanation="NFRD is mandatory" displayName="NFRD is mandatory" />
-                    </div>
-
-                    <!-- The date the fiscal year ends -->
                     <div class="form-field">
                       <UploadFormHeader
-                        name="The date the fiscal year ends"
-                        explanation="The date the fiscal year ends"
+                        :name="euTaxonomyKpiNameMappings.numberOfEmployees"
+                        :explanation="euTaxonomyKpiInfoMappings.numberOfEmployees"
                       />
-                      <div class="lg:col-6 md:col-6 col-12 p-0">
-                        <Calendar inputId="icon" :showIcon="true" dateFormat="D, M dd, yy" :maxDate="new Date()" />
-                      </div>
-
-                      <FormKit
-                        type="text"
-                        validation=""
-                        name="dateTheFiscalYearEnds"
-                        :outer-class="{ 'hidden-input': true }"
-                      />
-                    </div>
-
-                    <!-- Scope of entities -->
-                    <div class="form-field">
-                      <CheckBoxCustom name="scopeOfEntities" explanation="Scope of entities" displayName="Scope of entities" />
-                    </div>
-
-                    <!-- EU Taxonomy activity level reporting -->
-                    <div class="form-field">
-                      <CheckBoxCustom
-                        name="euTaxonomyActivityLevelReporting"
-                        explanation="EU Taxonomy activity level reporting"
-                        displayName="EU Taxonomy activity level reporting"
-                      />
-                    </div>
-
-                    <!-- Number of employees -->
-                    <div class="form-field">
-                      <UploadFormHeader name="Number of employees" explanation="Number of employees" />
-                      <div class="lg:col-4 md:col-6 col-12 p-0">
+                      <div class="lg:col-4 md:col-4 col-6 p-0">
                         <FormKit
                           type="number"
                           name="numberOfEmployees"
                           validation-label="Number of employees"
-                          placeholder="Number"
+                          placeholder="Value"
                           validation="required|number"
                           step="1"
                           min="0"
@@ -255,60 +209,82 @@
                       </div>
                     </div>
                   </div>
+                </div>
+
+                <div class="uploadFormSection">
+                  <div class="col-3 p-3 topicLabel">
+                    <h4 id="general" class="anchor title">Assurance</h4>
+                  </div>
 
                   <!-- Level of assurance -->
                   <div class="col-9 formFields">
-                    <h3 class="mt-0">Level of assurance</h3>
+                    <h3 class="mt-0">Assurance</h3>
+                    <FormKit name="assurance" type="group">
 
-                    <!-- Level of assurance -->
-                    <div class="form-field">
-                      <UploadFormHeader name="Level of assurance *" explanation="Level of assurance" />
-                      <div class="lg:col-4 md:col-6 col-12 p-0">
+                      <!-- Level of assurance -->
+                      <div class="form-field">
+                        <UploadFormHeader
+                          :name="euTaxonomyKpiNameMappings.assurance ?? ''"
+                          :explanation="euTaxonomyKpiInfoMappings.assurance ?? ''"
+                        />
+                        <div class="lg:col-4 md:col-6 col-12 p-0">
+                          <FormKit
+                            type="select"
+                            name="assurance"
+                            placeholder="Please chose..."
+                            :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
+                            validation="required"
+                            :options="assuranceData"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- Assurance provider -->
+                      <div class="form-field">
+                        <UploadFormHeader
+                          :name="euTaxonomyKpiNameMappings.provider ?? ''"
+                          :explanation="euTaxonomyKpiInfoMappings.provider ?? ''"
+                        />
                         <FormKit
-                          type="select"
-                          name="levelOfAssurance"
-                          placeholder="None"
-                          validation-label="Level of assurance"
-                          validation=""
+                          type="text"
+                          name="provider"
+                          :placeholder="euTaxonomyKpiNameMappings.provider ?? ''"
+                          :validation-label="euTaxonomyKpiNameMappings.provider ?? ''"
                         />
                       </div>
-                    </div>
 
-                    <!-- Assurance provider -->
-                    <div class="form-field">
-                      <UploadFormHeader name="Assurance provider *" explanation="Assurance provider" />
-                      <FormKit
-                        type="text"
-                        name="assuranceProvider"
-                        placeholder="Assurance provider"
-                        validation-label="Assurance provider"
-                        validation="required"
-                      />
-                    </div>
+                      <!-- Data source -->
+                      <div class="form-field">
 
-                    <!-- Data source -->
-                    <div class="form-field">
-                      <UploadFormHeader name="Data source *" explanation="Data source" />
-                      <div class="next-to-each-other">
-                        <FormKit
-                          outer-class="flex-1"
-                          type="select"
-                          name="page"
-                          placeholder="Select a report"
-                          validation-label="Select a report"
-                          validation="required"
-                          :options="files"
-                        />
-                        <FormKit
-                          outer-class="w-100"
-                          type="number"
-                          name="page"
-                          placeholder="Page"
-                          validation-label="Page"
-                          validation="required"
-                        />
+                        <h3 class="mt-0">Assurance</h3>
+                        <UploadFormHeader name="Data source" explanation="Data source" />
+                        <div class="next-to-each-other">
+                          <FormKit
+                            outer-class="flex-1"
+                            type="select"
+                            name="report"
+                            placeholder="Select a report"
+                            validation-label="Select a report"
+                            validation="required"
+                            :options="['None...', ...(files.map(el => el.name))]"
+                          />
+                          <FormKit
+                              outer-class="w-100"
+                              type="number"
+                              name="page"
+                              placeholder="Page"
+                              validation-label="Page"
+                          />
+                          <FormKit
+                              outer-class="short"
+                              type="text"
+                              name="tagName"
+                              placeholder="Tag Name"
+                              validation-label="Tag Name"
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </FormKit>
                   </div>
                 </div>
 
@@ -393,47 +369,47 @@
               </div>
 
               <!-- rest -->
-              <!--              <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">-->
-              <!--                <template-->
-              <!--                  v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement', 'InvestmentFirm']"-->
-              <!--                  :key="fsType"-->
-              <!--                >-->
-              <!--                  <div :name="fsType">-->
-              <!--                    <FormKit type="group" :name="fsType">-->
-              <!--                      <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>-->
-              <!--                      <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />-->
-              <!--                      <DataPointFormElement name="taxonomyNonEligibleActivity" label="Taxonomy Non Eligible Activity" />-->
-              <!--                      <DataPointFormElement name="derivatives" label="Derivatives" />-->
-              <!--                      <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />-->
-              <!--                      <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />-->
-              <!--                    </FormKit>-->
-              <!--                  </div>-->
-              <!--                </template>-->
-              <!--              </FormKit>-->
-              <!--              <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">-->
-              <!--                <h4>Credit Institution KPIs</h4>-->
-              <!--                <div name="creditInstitutionKpis">-->
-              <!--                  <DataPointFormElement name="tradingPortfolio" label="Trading Portfolio" />-->
-              <!--                  <DataPointFormElement name="interbankLoans" label="Interbank Loans" />-->
-              <!--                  <DataPointFormElement-->
-              <!--                    name="tradingPortfolioAndInterbankLoans"-->
-              <!--                    label="Trading Portfolio and Interbank Loans (combined)"-->
-              <!--                  />-->
-              <!--                  <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />-->
-              <!--                </div>-->
-              <!--              </FormKit>-->
-              <!--              <FormKit type="group" name="insuranceKpis" label="Insurance KPIs">-->
-              <!--                <h4>Insurance KPIs</h4>-->
-              <!--                <DataPointFormElement-->
-              <!--                  name="taxonomyEligibleNonLifeInsuranceActivities"-->
-              <!--                  label="Taxonomy Eligible non Life Insurance Activities"-->
-              <!--                />-->
-              <!--              </FormKit>-->
-              <!--              <FormKit type="group" name="investmentFirmKpis" label="Investment Firm KPIs">-->
-              <!--                <h4>Investment Firm KPIs</h4>-->
-              <!--                <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />-->
-              <!--              </FormKit>-->
-              <!--              <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />-->
+              <FormKit type="group" name="eligibilityKpis" label="Eligibility KPIs">
+                <template
+                  v-for="fsType in ['CreditInstitution', 'InsuranceOrReinsurance', 'AssetManagement', 'InvestmentFirm']"
+                  :key="fsType"
+                >
+                  <div :name="fsType">
+                    <FormKit type="group" :name="fsType">
+                      <h4>Eligibility KPIs ({{ humanizeString(fsType) }})</h4>
+                      <DataPointFormElement name="taxonomyEligibleActivity" label="Taxonomy Eligible Activity" />
+                      <DataPointFormElement name="taxonomyNonEligibleActivity" label="Taxonomy Non Eligible Activity" />
+                      <DataPointFormElement name="derivatives" label="Derivatives" />
+                      <DataPointFormElement name="banksAndIssuers" label="Banks and Issuers" />
+                      <DataPointFormElement name="investmentNonNfrd" label="Investment non Nfrd" />
+                    </FormKit>
+                  </div>
+                </template>
+              </FormKit>
+              <FormKit type="group" name="creditInstitutionKpis" label="Credit Institution KPIs">
+                <h4>Credit Institution KPIs</h4>
+                <div name="creditInstitutionKpis">
+                  <DataPointFormElement name="tradingPortfolio" label="Trading Portfolio" />
+                  <DataPointFormElement name="interbankLoans" label="Interbank Loans" />
+                  <DataPointFormElement
+                    name="tradingPortfolioAndInterbankLoans"
+                    label="Trading Portfolio and Interbank Loans (combined)"
+                  />
+                  <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />
+                </div>
+              </FormKit>
+              <FormKit type="group" name="insuranceKpis" label="Insurance KPIs">
+                <h4>Insurance KPIs</h4>
+                <DataPointFormElement
+                  name="taxonomyEligibleNonLifeInsuranceActivities"
+                  label="Taxonomy Eligible non Life Insurance Activities"
+                />
+              </FormKit>
+              <FormKit type="group" name="investmentFirmKpis" label="Investment Firm KPIs">
+                <h4>Investment Firm KPIs</h4>
+                <DataPointFormElement name="greenAssetRatio" label="Green asset ratio" />
+              </FormKit>
+              <FormKit type="submit" :disabled="!valid" label="Post EU-Taxonomy Dataset" name="postEUData" />
             </FormKit>
           </FormKit>
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
@@ -458,6 +434,7 @@ import FileUpload from "primevue/fileupload";
 import PrimeButton from "primevue/button";
 import MultiSelect from "primevue/multiselect";
 import KPIfieldsSet from "@/components/forms/parts/kpiSelection/KPIfieldsSet.vue";
+import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
@@ -469,7 +446,11 @@ import DataPointFormElement from "@/components/forms/DataPointFormElement.vue";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { euTaxonomyKPIsModel, euTaxonomyKpiInfoMappings, euTaxonomyKpiNameMappings } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel.js";
+import {
+  euTaxonomyKPIsModel,
+  euTaxonomyKpiInfoMappings,
+  euTaxonomyKpiNameMappings,
+} from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel.js";
 import CheckBoxCustom from "@/components/forms/parts/CheckBoxCustom.vue";
 
 export default defineComponent({
@@ -491,11 +472,23 @@ export default defineComponent({
     PrimeButton,
     Calendar,
     MultiSelect,
+    YesNoComponent,
     KPIfieldsSet,
     CheckBoxCustom,
   },
 
   data: () => ({
+    formInputsModel: {},
+    files: [],
+    fiscalYearEnd: "",
+    convertedFiscalYearEnd: "",
+    assuranceData: [
+      { label: "None", value: "None" },
+      { label: "LimitedAssurance", value: "LimitedAssurance" },
+      { label: "ReasonableAssurance", value: "ReasonableAssurance" },
+    ],
+    maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+
     innerClass: {
       "formkit-inner": false,
       "p-inputwrapper": true,
@@ -506,15 +499,12 @@ export default defineComponent({
       "w-full": true,
     },
     postEuTaxonomyDataForFinancialsProcessed: false,
-    maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
     messageCount: 0,
-    formInputsModel: {},
     postEuTaxonomyDataForFinancialsResponse: null,
     humanizeString: humanizeString,
     euTaxonomyKPIsModel,
     euTaxonomyKpiNameMappings,
     euTaxonomyKpiInfoMappings,
-    files: [],
     kpisModel: [
       { label: "Industrial Companies KPIs", value: "industrialCompanies" },
       { label: "Financial Companies KPIs", value: "financialCompanies" },
@@ -525,12 +515,26 @@ export default defineComponent({
     selectedKPIs: [],
     confirmedSelectedKPIs: [],
   }),
+  watch: {
+    fiscalYearEnd: function (newValue: Date) {
+      if (newValue) {
+        this.convertedFiscalYearEnd = this.converteDateFormat(newValue);
+      } else {
+        this.convertedFiscalYearEnd = "";
+      }
+    },
+  },
   props: {
     companyID: {
       type: String,
     },
   },
   methods: {
+    converteDateFormat(date) {
+      return `${date.getFullYear()}-${("0" + (date.getMonth() + 1).toString()).slice(-2)}-${(
+        "0" + date.getDate().toString()
+      ).slice(-2)}`;
+    },
     /**
      * Creates a new EuTaxonomy-Financials framework entry for the current company
      * with the data entered in the form by using the Dataland API
