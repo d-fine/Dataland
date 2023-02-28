@@ -14,7 +14,6 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.amqp.AmqpException
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.amqp.core.Message as AMQPMessage
 
 @SpringBootTest(classes = [DatalandQaService::class])
 class QaServiceTest {
@@ -33,7 +32,7 @@ class QaServiceTest {
     fun `check an exception is thrown in reading out message from upload queue when dataId is empty`() {
         val correlationId = "correlationId"
         val thrown = assertThrows<MessageQueueException> {
-            qaService.assureQualityOfData("", correlationId, MessageType.DataStored.name)
+            qaService.assureQualityOfData("", correlationId, MessageType.DataStored)
         }
         val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
         Assertions.assertEquals("Error receiving data for QA process: $internalMessage", thrown.message)
@@ -44,13 +43,13 @@ class QaServiceTest {
         val correlationId = "correlationId"
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, MessageType.QACompleted.name, correlationId, ExchangeNames.dataQualityAssured,
+                dataId, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
             ),
         ).thenThrow(
             AmqpException::class.java,
         )
         assertThrows<AmqpException> {
-            qaService.assureQualityOfData(dataId, correlationId, MessageType.DataStored.name)
+            qaService.assureQualityOfData(dataId, correlationId, MessageType.DataStored)
         }
     }
 }

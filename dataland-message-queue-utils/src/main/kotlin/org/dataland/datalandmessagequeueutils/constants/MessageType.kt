@@ -3,8 +3,8 @@ package org.dataland.datalandmessagequeueutils.constants
 /**
  * The type of content of a RabbitMQ message
  */
-enum class MessageType {
-    DataReceived,
-    DataStored,
-    QACompleted,
+object MessageType {
+    const val DataReceived = "Data received"
+    const val DataStored = "Data stored"
+    const val QACompleted = "QA completed"
 }

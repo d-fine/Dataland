@@ -1,9 +1,9 @@
 package org.dataland.datalandmessagequeueutils.constants
 
 /**
- * Types of a RabbitMQ message header
+ * Keys to the header values of a RabbitMQ message
  */
-object MessageHeaderType {
+object MessageHeaderKey {
     const val Type = "cloudEvents:type"
     const val CorrelationId = "cloudEvents:id"
 }

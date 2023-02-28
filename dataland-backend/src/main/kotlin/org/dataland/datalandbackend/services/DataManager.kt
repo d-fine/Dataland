@@ -12,7 +12,7 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderType
+import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -108,10 +108,10 @@ class DataManager(
     )
     fun updateMetaData(
         @Payload dataId: String,
-        @Header(MessageHeaderType.CorrelationId) correlationId: String,
-        @Header(MessageHeaderType.Type) type: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
     ) {
-        if (type != MessageType.QACompleted.name) {
+        if (type != MessageType.QACompleted) {
             return
         }
         if (dataId.isNotEmpty()) {
@@ -161,7 +161,7 @@ class DataManager(
         val dataId = generateRandomDataId()
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, MessageType.DataReceived.name, correlationId,
+            dataId, MessageType.DataReceived, correlationId,
             ExchangeNames.dataReceived,
         )
         logger.info(
@@ -199,10 +199,10 @@ class DataManager(
     )
     fun removeStoredItemFromTemporaryStore(
         @Payload dataId: String,
-        @Header(MessageHeaderType.CorrelationId) correlationId: String,
-        @Header(MessageHeaderType.Type) type: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
     ) {
-        if (type != MessageType.DataStored.name) {
+        if (type != MessageType.DataStored) {
             return
         }
         if (dataId.isNotEmpty()) {

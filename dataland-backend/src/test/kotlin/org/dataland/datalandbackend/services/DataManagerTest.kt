@@ -167,7 +167,7 @@ class DataManagerTest(
     @Test
     fun `check an exception is thrown in updating of meta data when dataId is empty`() {
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.updateMetaData("", "", MessageType.QACompleted.name)
+            dataManager.updateMetaData("", "", MessageType.QACompleted)
         }
         assertEquals("The update of the metadataset failed", thrown.publicMessage)
     }
@@ -175,7 +175,7 @@ class DataManagerTest(
     @Test
     fun `check an exception is thrown in logging of stored data when dataId is empty`() {
         val thrown = assertThrows<InternalServerErrorApiException> {
-            dataManager.removeStoredItemFromTemporaryStore("", "", MessageType.DataStored.name)
+            dataManager.removeStoredItemFromTemporaryStore("", "", MessageType.DataStored)
         }
         assertEquals("The storing of the dataset failed", thrown.publicMessage)
     }
@@ -190,7 +190,7 @@ class DataManagerTest(
 
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, MessageType.DataReceived.name, correlationId, ExchangeNames.dataReceived,
+                dataUUId, MessageType.DataReceived, correlationId, ExchangeNames.dataReceived,
             ),
         ).thenThrow(
             AmqpException::class.java,

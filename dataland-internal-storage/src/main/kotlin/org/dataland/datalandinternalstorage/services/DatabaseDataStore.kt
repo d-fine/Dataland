@@ -6,7 +6,7 @@ import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderType
+import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -52,10 +52,10 @@ class DatabaseDataStore(
     )
     fun persistentlyStoreDataAndSendMessage(
         @Payload dataId: String,
-        @Header(MessageHeaderType.CorrelationId) correlationId: String,
-        @Header(MessageHeaderType.Type) type: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
     ) {
-        if (type != MessageType.DataReceived.name) {
+        if (type != MessageType.DataReceived) {
             return
         }
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
@@ -64,7 +64,7 @@ class DatabaseDataStore(
         logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
         dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, MessageType.DataStored.name, correlationId, ExchangeNames.dataStored,
+            dataId, MessageType.DataStored, correlationId, ExchangeNames.dataStored,
         )
     }
 
