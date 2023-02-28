@@ -55,17 +55,20 @@ describeIf(
           token,
           generateDummyCompanyInformation(fixtureData.companyInformation.companyName)
         ).then((storedCompany) => {
-          return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, fixtureData.reportingPeriod,fixtureData.t).then(
-            () => {
-              cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
-              cy.visitAndCheckAppMount(
-                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
-              );
-              cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
-                euTaxonomyPageVerifier();
-              });
-            }
-          );
+          return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+            token,
+            storedCompany.companyId,
+            fixtureData.reportingPeriod,
+            fixtureData.t
+          ).then(() => {
+            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
+            cy.visitAndCheckAppMount(
+              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+            );
+            cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
+              euTaxonomyPageVerifier();
+            });
+          });
         });
       });
     }

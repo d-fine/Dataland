@@ -8,6 +8,7 @@ import {
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
+
 /**
  * Uploads a single LKSG data entry for a company
  *

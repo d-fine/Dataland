@@ -80,7 +80,12 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany) => {
-            return uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, reportingPeriod, testData).then(() => {
+            return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+              token,
+              storedCompany.companyId,
+              reportingPeriod,
+              testData
+            ).then(() => {
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
               );

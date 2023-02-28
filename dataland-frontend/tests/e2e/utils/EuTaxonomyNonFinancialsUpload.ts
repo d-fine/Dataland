@@ -40,7 +40,9 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): 
  *
  * @returns the first eutaxonomy-non-financials dataset from the fake fixtures
  */
-export function getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures(): Chainable<FixtureData<EuTaxonomyDataForNonFinancials>> {
+export function getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures(): Chainable<
+  FixtureData<EuTaxonomyDataForNonFinancials>
+> {
   return cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
     const companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<
       FixtureData<EuTaxonomyDataForNonFinancials>
