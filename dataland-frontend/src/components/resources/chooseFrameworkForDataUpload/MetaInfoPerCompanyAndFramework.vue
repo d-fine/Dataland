@@ -94,6 +94,12 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Method to construct a title for a data meta information object depending on whether it is currently active and
+     * whether a corresponding frontend view page exists
+     *
+     * @param dataMetaInfo The data meta information object for which the title is constructed
+     */
     getDynamicDatasetTitle(dataMetaInfo: DataMetaInformation): string {
       let resultingTitle = `${this.title} dataset for reporting period: ${dataMetaInfo.reportingPeriod}`;
       if (dataMetaInfo.currentlyActive) {
