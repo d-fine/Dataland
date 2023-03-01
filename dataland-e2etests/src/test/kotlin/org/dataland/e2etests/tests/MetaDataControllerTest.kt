@@ -95,12 +95,15 @@ class MetaDataControllerTest {
 
     @Test
     fun `post companies and eu taxonomy data and check meta info search with filter on company ID`() {
-        val companyIdOfFirstUploadedCompany = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
+        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
             numberOfDataSetsToPostPerCompany,
-        )[0].actualStoredCompany.companyId
+        )
+        val companyIdOfFirstUploadedCompany = listOfUploadInfo[0].actualStoredCompany.companyId
         val listOfDataMetaInfoForFirstCompanyId =
-            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyIdOfFirstUploadedCompany)
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
+                companyIdOfFirstUploadedCompany, showVersionHistoryForReportingPeriod = true
+            )
         assertEquals(
             numberOfDataSetsToPostPerCompany, listOfDataMetaInfoForFirstCompanyId.size,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
@@ -309,9 +312,9 @@ class MetaDataControllerTest {
         val companyId = firstUploadInfo.actualStoredCompany.companyId
 //        TODO: Shorten sleep time when upload time was switched from second to milli
         Thread.sleep(1000)
-        val final2022metadata = subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
-        Thread.sleep(1000)
         subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
+        Thread.sleep(1000)
+        val final2022metadata = subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
         Thread.sleep(1000)
         val final2023metadata = subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod2)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
