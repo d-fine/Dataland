@@ -51,13 +51,13 @@
         v-if="!isWaitingForDataIdToDisplay && Object.keys(receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo).length === 0"
         class="col-12 text-left"
       >
-        <h2>No {{ dataDescriptor }} present</h2>
+        <h2>No {{ dataDescriptor }} present for this company.</h2>
       </div>
       <div v-if="isDataIdInUrlInvalid">
-        <h2>No {{ dataDescriptor }} data could be found for the data ID passed in the URL.</h2>
+        <h2>No {{ dataDescriptor }} data could be found for the data ID passed in the URL for this company.</h2>
       </div>
       <div v-if="isReportingPeriodInUrlInvalid">
-        <h2>No {{ dataDescriptor }} data could be found for the reporting period {{ reportingPeriod }}.</h2>
+        <h2>No {{ dataDescriptor }} data could be found for the reporting period {{ reportingPeriod }} for this company.</h2>
       </div>
     </template>
   </ViewFrameworkBase>
@@ -283,16 +283,22 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
-        this.processDataMetaInfoForDisplay(dataMetaInfoForDataSetWithDataIdFromUrl);
+        if(dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId){
+          this.handleInvalidDataIdPassedInUrl()
+        } else { this.processDataMetaInfoForDisplay(dataMetaInfoForDataSetWithDataIdFromUrl) }
       } catch (error) {
         const axiosError = error as AxiosError;
         if (axiosError.response?.status == 404) {
-          this.latestChosenReportingPeriodInDropdown = null;
-          this.chosenReportingPeriodInDropdown = "";
-          this.isDataIdToDisplayFound = false;
-          this.isDataIdInUrlInvalid = true;
+          this.handleInvalidDataIdPassedInUrl()
         }
       }
+    },
+
+    handleInvalidDataIdPassedInUrl() {
+      this.latestChosenReportingPeriodInDropdown = null;
+      this.chosenReportingPeriodInDropdown = "";
+      this.isDataIdToDisplayFound = false;
+      this.isDataIdInUrlInvalid = true;
     },
 
     /**
