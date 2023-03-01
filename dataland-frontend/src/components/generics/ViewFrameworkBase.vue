@@ -137,7 +137,7 @@ export default defineComponent({
      * @param listOfDataMetaInfo a list of data meta info
      */
     getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(listOfDataMetaInfo: DataMetaInformation[]) {
-      this.dataTypesInDropdown=[]
+      this.dataTypesInDropdown = [];
       const setOfAvailableFrameworksForCompany = [
         ...new Set(listOfDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.dataType)),
       ];

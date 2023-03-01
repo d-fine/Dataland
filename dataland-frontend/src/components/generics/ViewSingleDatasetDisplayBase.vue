@@ -48,7 +48,10 @@
         <h2>Checking if {{ dataDescriptor }} available...</h2>
       </div>
       <div
-        v-if="!isWaitingForDataIdToDisplay && Object.keys(receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo).length === 0"
+        v-if="
+          !isWaitingForDataIdToDisplay &&
+          Object.keys(receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo).length === 0
+        "
         class="col-12 text-left"
       >
         <h2>No {{ dataDescriptor }} present for this company.</h2>
@@ -57,7 +60,9 @@
         <h2>No {{ dataDescriptor }} data could be found for the data ID passed in the URL for this company.</h2>
       </div>
       <div v-if="isReportingPeriodInUrlInvalid">
-        <h2>No {{ dataDescriptor }} data could be found for the reporting period {{ reportingPeriod }} for this company.</h2>
+        <h2>
+          No {{ dataDescriptor }} data could be found for the reporting period {{ reportingPeriod }} for this company.
+        </h2>
       </div>
     </template>
   </ViewFrameworkBase>
@@ -170,7 +175,7 @@ export default defineComponent({
      */
     handleChangeReportingPeriodEvent(dropDownChangeEvent: DropdownChangeEvent) {
       console.log("change event of reporting period dropdown");
-      if (this.latestChosenReportingPeriodInDropdown != null){
+      if (this.latestChosenReportingPeriodInDropdown != null) {
         console.log("placeholderValue: " + this.latestChosenReportingPeriodInDropdown);
       }
       console.log("new reporting period from change event: " + String(dropDownChangeEvent.value));
@@ -205,9 +210,11 @@ export default defineComponent({
      */
     routerPushToReportingPeriod(reportingPeriod: string) {
       if (this.companyId != null && this.dataType != null) {
-        this.$router.push(
-          `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${reportingPeriod}`
-        ).catch(err => console.log("Setting route for reporting period " + reportingPeriod + " failed with error " + String(err)));
+        this.$router
+          .push(`/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${reportingPeriod}`)
+          .catch((err) =>
+            console.log("Setting route for reporting period " + reportingPeriod + " failed with error " + String(err))
+          );
       }
     },
 
@@ -232,8 +239,8 @@ export default defineComponent({
       this.getDistinctAvailableReportingPeriodsAndPutThemSortedIntoDropdown(
         receivedMapOfReportingPeriodsToActiveDataMetaInfo
       );
-      this.chooseDataMetaInfoForDisplayedDatasetAndEmitDataId().catch(
-          err => console.log("Retrieving and emitting data meta info failed with error " + String(err))
+      this.chooseDataMetaInfoForDisplayedDatasetAndEmitDataId().catch((err) =>
+        console.log("Retrieving and emitting data meta info failed with error " + String(err))
       );
       this.isWaitingForDataIdToDisplay = false;
     },
@@ -283,13 +290,15 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
-        if(dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId){
-          this.handleInvalidDataIdPassedInUrl()
-        } else { this.processDataMetaInfoForDisplay(dataMetaInfoForDataSetWithDataIdFromUrl) }
+        if (dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId) {
+          this.handleInvalidDataIdPassedInUrl();
+        } else {
+          this.processDataMetaInfoForDisplay(dataMetaInfoForDataSetWithDataIdFromUrl);
+        }
       } catch (error) {
         const axiosError = error as AxiosError;
         if (axiosError.response?.status == 404) {
-          this.handleInvalidDataIdPassedInUrl()
+          this.handleInvalidDataIdPassedInUrl();
         }
       }
     },
@@ -311,11 +320,13 @@ export default defineComponent({
         this.processDataMetaInfoForDisplay(dataMetaInfoForEmit);
         this.isReportingPeriodsWatcherEnabledForNextExecution = false;
         if (this.companyId != null && this.dataType != null) {
-          this.$router.replace(
-            `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${
+          this.$router
+            .replace(
+              `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${
                 this.latestChosenReportingPeriodInDropdown as string
-            }`
-          ).catch(err => console.log("Replacing route failed with error " + String(err)));
+              }`
+            )
+            .catch((err) => console.log("Replacing route failed with error " + String(err)));
         }
       }
     },
