@@ -203,11 +203,11 @@ export default defineComponent({
      *
      * @param reportingPeriod Specific reporting period the route should end with
      */
-    routerPushToReportingPeriod(reportingPeriod: string): void {
+    routerPushToReportingPeriod(reportingPeriod: string) {
       if (this.companyId != null && this.dataType != null) {
         this.$router.push(
           `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${reportingPeriod}`
-        );
+        ).catch(err => console.log("Setting route for reporting period " + reportingPeriod + " failed with error " + String(err)));
       }
     },
 
@@ -226,13 +226,15 @@ export default defineComponent({
      */
     handleUpdateActiveDataMetaInfo(
       receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
-    ): void {
+    ) {
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
       this.getDistinctAvailableReportingPeriodsAndPutThemSortedIntoDropdown(
         receivedMapOfReportingPeriodsToActiveDataMetaInfo
       );
-      this.chooseDataMetaInfoForDisplayedDatasetAndEmitDataId();
+      this.chooseDataMetaInfoForDisplayedDatasetAndEmitDataId().catch(
+          err => console.log("Retrieving and emitting data meta info failed with error " + String(err))
+      );
       this.isWaitingForDataIdToDisplay = false;
     },
 
@@ -297,7 +299,7 @@ export default defineComponent({
      * Method to switch to default data set to display, including replacing the route by the one corresponding to the
      * latest chosen reporting period in dropdown
      */
-    switchToDefaultDatasetToDisplay(): void {
+    switchToDefaultDatasetToDisplay() {
       const dataMetaInfoForEmit = this.getActiveDataMetaInfoFromLatestReportingPeriodIfParsableAsNumber();
       if (dataMetaInfoForEmit) {
         this.processDataMetaInfoForDisplay(dataMetaInfoForEmit);
@@ -307,7 +309,7 @@ export default defineComponent({
             `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${
                 this.latestChosenReportingPeriodInDropdown as string
             }`
-          );
+          ).catch(err => console.log("Replacing route failed with error " + String(err)));
         }
       }
     },
