@@ -9,9 +9,11 @@
         id="chooseReportingPeriodDropdown"
         v-model="chosenReportingPeriodInDropdown"
         :options="reportingPeriodsInDropdown"
-        :placeholder="currentReportingPeriod?.length ? currentReportingPeriod : 'Select...'"
+        :placeholder="
+          placeholderForReportingPeriodDropdown?.length ? placeholderForReportingPeriodDropdown : 'Select...'
+        "
         aria-label="Choose reporting period"
-        :class="[currentReportingPeriod?.length ? ['always-fill'] : '']"
+        :class="[placeholderForReportingPeriodDropdown?.length ? ['always-fill'] : '']"
         class="fill-dropdown ml-4"
         dropdownIcon="pi pi-angle-down"
         @change="handleChangeReportingPeriodEvent"
@@ -101,11 +103,13 @@ export default defineComponent({
 
   data() {
     return {
+      isReportingPeriodsWatcherEnabledForNextExecution: true,
       waitingForDataIdToDisplay: true,
       mapOfDistinctReportingPeriodsToActiveDataMetaInfo: {} as Map<string, DataMetaInformation>,
+      reportingPeriodsInReceivedDataMetaInfo: [] as Array<string>,
       reportingPeriodsInDropdown: [] as Array<string>,
       chosenReportingPeriodInDropdown: "",
-      currentReportingPeriod: null as string | null,
+      placeholderForReportingPeriodDropdown: null as string | null, // TODO at the very end: think about removing this. is it possible?
       isDataIdInUrlValid: true,
       isReportingPeriodInUrlValid: true,
       foundDataIdToDisplay: false,
@@ -120,26 +124,43 @@ export default defineComponent({
     };
   },
 
+  mounted() {
+    console.log("mounted"); // TODO debugging
+  },
+
   watch: {
-    reportingPeriod(newValue) {
-      // TODO broken         two times the same request. see console in browser!
-      console.log("watcherRuns"); // TODO debugging
-      console.log("new vlaue is " + newValue);  // TODO debugging
-      if (newValue == null) {
-        console.log("value switchedToNull");
+    async dataId(newDataId) {
+      console.log("dataId watcher runs");
+      if (newDataId) {
+        console.log("dataId watcher does things");
+        const dataMetaInfoForThisDataId = (await this.getMetaDataForDataIdAndReturnAndEmit(
+          newDataId
+        )) as DataMetaInformation;
+        this.chosenReportingPeriodInDropdown = dataMetaInfoForThisDataId.reportingPeriod;
       }
-      if (Number.isNaN(this.reportingPeriod)) {
-        console.log("reporting period is NaN"); // TODO debugging
-      }
-      if (!Number.isNaN(this.reportingPeriod)) {
-        console.log("reporting period is " + this.reportingPeriod); // TODO debugging
-        this.changeReportingPeriod(newValue);
+    },
+    reportingPeriod(newReportingPeriod) {
+      "newReportingPeriod watcher runs";
+      // this.placeholderForReportingPeriodDropdown = newReportingPeriod
+      // this.filterReportingPeriodsInDropdown(newReportingPeriod)
+      if (this.isReportingPeriodsWatcherEnabledForNextExecution && newReportingPeriod) {
+        console.log("reportingPeriod watcher does things"); // TODO debug
+        this.changeReportingPeriod(newReportingPeriod);
+      } else {
+        console.log("reportingPeriod watcher deactivated => does nothing");
+        this.isReportingPeriodsWatcherEnabledForNextExecution = true;
       }
     },
   },
 
   methods: {
-    changeRouteToReportingPeriod(reportingPeriod: string) {
+    filterReportingPeriodsInDropdown(reportinPeriodToFilterOut: string) {
+      this.reportingPeriodsInDropdown = this.reportingPeriodsInDropdown.filter(
+        (singleReportingPeriod) => reportinPeriodToFilterOut != singleReportingPeriod
+      );
+    },
+
+    routerPushToReportingPeriod(reportingPeriod: string) {
       this.$router.push(`/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${reportingPeriod}`);
     },
 
@@ -150,30 +171,44 @@ export default defineComponent({
      * @param dropDownChangeEvent The object which is passed by the change event of the reporting period dropdown
      */
     handleChangeReportingPeriodEvent(dropDownChangeEvent: DropdownChangeEvent) {
-      this.changeReportingPeriod(dropDownChangeEvent.value);
+      console.log("change event of reporting period dropdown");
+      this.isReportingPeriodsWatcherEnabledForNextExecution = false;
+      console.log("placeholderValue: " + this.placeholderForReportingPeriodDropdown);
+      console.log("new reporting period from change event: " + dropDownChangeEvent.value);
+      if (dropDownChangeEvent.value != this.placeholderForReportingPeriodDropdown) {
+        this.changeReportingPeriod(dropDownChangeEvent.value);
+      }
     },
 
     changeReportingPeriod(newReportingPeriod: string) {
+      if (!this.isReportingPeriodInUrlValid) {
+        this.isReportingPeriodInUrlValid = true;
+      }
       const dataMetaInfoForChosenReportingPeriod =
         this.mapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(newReportingPeriod);
       if (dataMetaInfoForChosenReportingPeriod) {
         this.chosenReportingPeriodInDropdown = dataMetaInfoForChosenReportingPeriod.reportingPeriod;
+        this.foundDataIdToDisplay = true;
+        this.foundDataIdBelongsToOutdatedDataset = !dataMetaInfoForChosenReportingPeriod.currentlyActive;
         this.$emit("updateDataIdOfDatasetToDisplay", dataMetaInfoForChosenReportingPeriod.dataId);
       }
-      this.changeRouteToReportingPeriod(newReportingPeriod);
+      this.routerPushToReportingPeriod(newReportingPeriod);
+      this.placeholderForReportingPeriodDropdown = newReportingPeriod;
     },
 
     /**
      * Switches to the active dataset for the currently chosen reporting period.
      */
     switchToActiveDatasetForCurrentlyChosenReportingPeriod() {
+      // TODO check if still needed or if you can use other method and remove this one
+      this.isReportingPeriodsWatcherEnabledForNextExecution = false;
       const latestDataMetaInfoForCurrentReportingPeriod = this.mapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(
-        this.currentReportingPeriod as string
+        this.placeholderForReportingPeriodDropdown as string
       );
       if (latestDataMetaInfoForCurrentReportingPeriod) {
         this.foundDataIdBelongsToOutdatedDataset = !latestDataMetaInfoForCurrentReportingPeriod.currentlyActive;
         this.$emit("updateDataIdOfDatasetToDisplay", latestDataMetaInfoForCurrentReportingPeriod.dataId);
-        this.changeRouteToReportingPeriod(this.currentReportingPeriod as string);
+        this.routerPushToReportingPeriod(this.placeholderForReportingPeriodDropdown as string);
       }
     },
 
@@ -181,13 +216,14 @@ export default defineComponent({
       receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
     ) {
       this.mapOfDistinctReportingPeriodsToActiveDataMetaInfo = receivedMapOfReportingPeriodsToActiveDataMetaInfo;
+      // TODO
       this.reportingPeriodsInDropdown = Array.from(receivedMapOfReportingPeriodsToActiveDataMetaInfo.keys()).sort(
         (reportingPeriodA, reportingPeriodB) => {
           if (reportingPeriodA > reportingPeriodB) return -1;
           else return 0;
         }
       );
-      this.chooseDataMetaInfoForDisplayedDataset();
+      this.chooseDataMetaInfoForDisplayedDatasetAndEmitDataId();
       this.waitingForDataIdToDisplay = false;
     },
 
@@ -203,7 +239,7 @@ export default defineComponent({
       });
       if (listOfNumbersInReportingPeriods.length > 0) {
         const latestReportingPeriod = listOfNumbersInReportingPeriods.reduce((a, b) => Math.max(a, b)).toString();
-        this.currentReportingPeriod = latestReportingPeriod;
+        this.placeholderForReportingPeriodDropdown = latestReportingPeriod;
         const activeDataMetaInfoForLatestReportingPeriod =
           this.mapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(latestReportingPeriod);
         if (activeDataMetaInfoForLatestReportingPeriod) {
@@ -214,47 +250,71 @@ export default defineComponent({
       } else return defaultActiveDataMetaInfo;
     },
 
-    /**
-     * TODO adjust: Displays either the data set using the ID from the query param or if that is not available the first data set from the list of received data sets.
-     */
-    async chooseDataMetaInfoForDisplayedDataset() {
-      if (this.dataId) {
-        try {
-          const metaDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
-          ).getMetaDataControllerApi();
-          const apiResponse = await metaDataControllerApi.getDataMetaInfo(this.dataId);
-          const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
-          this.currentReportingPeriod = dataMetaInfoForDataSetWithDataIdFromUrl.reportingPeriod;
-          this.foundDataIdToDisplay = true;
-          this.foundDataIdBelongsToOutdatedDataset = !dataMetaInfoForDataSetWithDataIdFromUrl.currentlyActive;
-          this.$emit("updateDataIdOfDatasetToDisplay", this.dataId);
-        } catch (error) {
-          const axiosError = error as AxiosError;
-          if (axiosError.response?.status == 404) {
-            this.isDataIdInUrlValid = false;
-          }
+    async getMetaDataForDataIdAndReturnAndEmit(dataId: string) {
+      try {
+        const metaDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getMetaDataControllerApi();
+        const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
+        const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
+        this.placeholderForReportingPeriodDropdown = dataMetaInfoForDataSetWithDataIdFromUrl.reportingPeriod;
+        this.foundDataIdToDisplay = true;
+        this.foundDataIdBelongsToOutdatedDataset = !dataMetaInfoForDataSetWithDataIdFromUrl.currentlyActive;
+        this.$emit("updateDataIdOfDatasetToDisplay", this.dataId);
+        return dataMetaInfoForDataSetWithDataIdFromUrl;
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response?.status == 404) {
+          this.isDataIdInUrlValid = false;
         }
-      } else if (!this.dataId && this.reportingPeriod) {
+      }
+    },
+
+    switchToActiveDatasetForReportingPeriodInUrl() {
+      if (this.reportingPeriod) {
         const activeDataMetaInfoWithReportingPeriodFromUrl = this.mapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(
           this.reportingPeriod
         );
         if (activeDataMetaInfoWithReportingPeriodFromUrl) {
-          this.currentReportingPeriod = this.reportingPeriod;
+          this.placeholderForReportingPeriodDropdown = this.reportingPeriod;
           this.foundDataIdToDisplay = true;
           this.foundDataIdBelongsToOutdatedDataset = !activeDataMetaInfoWithReportingPeriodFromUrl.currentlyActive;
           this.$emit("updateDataIdOfDatasetToDisplay", activeDataMetaInfoWithReportingPeriodFromUrl.dataId);
         } else {
           this.isReportingPeriodInUrlValid = false;
         }
+      }
+    },
+
+    switchToDefaultDatasetToDisplay() {
+      const dataMetaInfoForEmit = this.getActiveDataMetaInfoFromLatestReportingPeriodIfParsableAsNumber();
+      if (dataMetaInfoForEmit) {
+        this.foundDataIdToDisplay = true;
+        this.foundDataIdBelongsToOutdatedDataset = !dataMetaInfoForEmit.currentlyActive;
+        this.$emit("updateDataIdOfDatasetToDisplay", dataMetaInfoForEmit.dataId);
+        this.isReportingPeriodsWatcherEnabledForNextExecution = false;
+        this.$router.replace(
+          `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${
+            this.placeholderForReportingPeriodDropdown as string
+          }`
+        );
+        // this.filterReportingPeriodsInDropdown(dataMetaInfoForEmit.reportingPeriod)
+      }
+    },
+
+    /**
+     * TODO adjust: Displays either the data set using the ID from the query param or if that is not available the first data set from the list of received data sets.
+     */
+    async chooseDataMetaInfoForDisplayedDatasetAndEmitDataId() {
+      if (this.dataId) {
+        console.log("A"); // TODO debugging
+        await this.getMetaDataForDataIdAndReturnAndEmit(this.dataId);
+      } else if (!this.dataId && this.reportingPeriod) {
+        console.log("B"); // TODO debugging
+        this.switchToActiveDatasetForReportingPeriodInUrl();
       } else {
-        const dataMetaInfoForEmit = this.getActiveDataMetaInfoFromLatestReportingPeriodIfParsableAsNumber();
-        if (dataMetaInfoForEmit) {
-          this.foundDataIdToDisplay = true; // TODO think about this later again
-          this.foundDataIdBelongsToOutdatedDataset = !dataMetaInfoForEmit.currentlyActive;
-          this.$emit("updateDataIdOfDatasetToDisplay", dataMetaInfoForEmit.dataId);
-          this.changeRouteToReportingPeriod(this.currentReportingPeriod as string);
-        }
+        console.log("C"); // TODO debugging
+        this.switchToDefaultDatasetToDisplay();
       }
     },
   },

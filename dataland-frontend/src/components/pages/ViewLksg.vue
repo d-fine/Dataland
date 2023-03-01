@@ -54,7 +54,6 @@ export default defineComponent({
       this.receivedLksgDataIds = Array.from(receivedMapOfReportingPeriodsToActiveDataMetaInfo.values()).map(
         (dataMetaInfo) => dataMetaInfo.dataId
       );
-      console.log(this.receivedLksgDataIds); // TODO debugging
       // TODO can we remove the sorting logic for same-year datasets from the lksg-view-page now?  because we receive only one per year now (because of "latest" setting)
       this.loading = false;
     },

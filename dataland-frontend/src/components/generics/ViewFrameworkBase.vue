@@ -24,7 +24,7 @@
           aria-label="Choose framework"
           class="fill-dropdown always-fill"
           dropdownIcon="pi pi-angle-down"
-          @change="redirectToViewPageForChosenFramework"
+          @change="handleChangeFrameworkEvent"
         />
         <slot name="reportingPeriodDropdown"> </slot>
       </MarginWrapper>
@@ -49,7 +49,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Dropdown from "primevue/dropdown";
+import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
@@ -108,9 +108,13 @@ export default defineComponent({
     },
     /**
      * Visits the framework view page for the framework which was chosen in the dropdown
+     *
+     * @param dropDownChangeEvent
      */
-    redirectToViewPageForChosenFramework() {
-      void this.$router.push(`/companies/${this.companyID as string}/frameworks/${this.chosenDataTypeInDropdown}`);
+    handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
+      if (this.dataType != dropDownChangeEvent.value) {
+        void this.$router.push(`/companies/${this.companyID as string}/frameworks/${this.chosenDataTypeInDropdown}`);
+      }
     },
     /**
      * Handles the "search-confirmed" event of the search bar by visiting the search page with the query param set to
