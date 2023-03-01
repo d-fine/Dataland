@@ -1,34 +1,34 @@
 export const euTaxonomyKPIsModel = {
-  industrialCompanies: {
-    revenue: ["eligibleRevenue", "alignedRevenue", "totalRevenue"],
-    capEx: ["eligibleCapEx", "alignedCapEx", "totalCapEx"],
-    opEx: ["eligibleOpEx", "alignedOpEx", "totalOpEx"],
-  },
-  financialCompanies: {
-    exposuresToTaxonomy: [
-      "exposuresToTaxonomyEligibleEconomicActivitiesAssetManagementCompany",
-      "exposuresToTaxonomyNonEligibleEconomicActivitiesAssetManagementCompany",
-    ],
-    exposuresToCentralGovernmentsCentralBanksSupranationalIssuersAssetManagementCompany: [
-      "exposuresToCentralGovernmentsCentralBanksSupranationalIssuersAssetManagementCompany",
-    ],
-    exposuresToDerivativesAssetManagementCompany: ["exposuresToDerivativesAssetManagementCompany"],
-    exposuresToNonNFRDEntitiesAssetManagementCompany: ["exposuresToNonNFRDEntitiesAssetManagementCompany"],
-  },
-  creditInstitution: {
-    tradingPortfolioOnDemandInterbankLoans: ["tradingPortfolioOnDemandInterbankLoans"],
-    tradingPortfolio: ["tradingPortfolio"],
-    OnDemandInterbankLoans: ["OnDemandInterbankLoans"],
-  },
-  greenAssetRatio: {
-    greenAssetRatioInvestmentFirm: ["greenAssetRatioInvestmentFirm"],
-  },
-  insuranceReinsurance: {
-    taxonomyEligibleNonLifeInsuranceEconomicActivities: ["taxonomyEligibleNonLifeInsuranceEconomicActivities"],
-  },
+  CreditInstitution: [
+    "tradingPortfolio",
+    "interbankLoans",
+    "tradingPortfolioAndInterbankLoans",
+    "greenAssetRatio"
+  ],
+  InsuranceOrReinsurance: [
+    "taxonomyEligibleNonLifeInsuranceActivities"
+  ],
+  AssetManagement: [
+    "taxonomyEligibleActivity",
+    "taxonomyNonEligibleActivity",
+    "derivatives",
+    "banksAndIssuers",
+    "investmentNonNfrd",
+  ],
+  InvestmentFirm: [
+    "greenAssetRatio"
+  ],
 };
 
 export const euTaxonomyKpiNameMappings = {
+  financialServicesTypes: "Financial Services Types",
+  investmentNonNfrd: "Investment Non NFRD",
+  banksAndIssuers: "Banks and Issuers",
+  derivatives: "Exposures To Derivatives",
+  taxonomyNonEligibleActivity: "Taxonomy non Eligible Activity",
+  taxonomyEligibleActivity: "Taxonomy Eligible Activity",
+  reportDate: "Report Date",
+
   iSfS: "IS/FS",
   fsCompanyType: "FS - Company Type",
   fiscalYear: "Fiscal Year",
@@ -84,14 +84,14 @@ export const euTaxonomyKpiNameMappings = {
   ExposuresToDerivativesCreditInstitution: "Exposures To Derivatives Credit Institution",
   ExposuresToNonNfdrEntitiesCreditInstitution: "Exposures To Non-NFRD Entities Credit Institution",
   TradingPortfolio: "Trading Portfolio",
-  OnDemandInterbankLoans: "On-demand Interbank Loans",
-  TradingPortfolioOnDemandInterbankLoans: "Trading Portfolio & On-demand Interbank Loans",
+  interbankLoans: "Interbank Loans",
+  tradingPortfolioAndInterbankLoans: "Trading Portfolio & Interbank Loans",
   ExposuresToTaxonomyEligibleEconomicActivitiesInsuranceReinsurance: "Exposures To Taxonomy-eligible Economic Activities Insurance/Reinsurance",
   ExposuresToTaxonomyNonEligibleEconomicActivitiesInsuranceReinsurance: "Exposures To Taxonomy Non-eligible Economic Activities Insurance/Reinsurance",
   ExposuresToCentralGovernmentsCentralBanksSupranationalIssuersInsuranceReinsurance: "Exposures To Central Governments, Central Banks, Supranational Issuers Insurance/Reinsurance",
   ExposuresToDerivativesInsuranceReinsurance: "Exposures To Derivatives Insurance/Reinsurance",
   ExposuresToNonNfrdEntitiesInsuranceReinsurance: "Exposures To Non-NFRD Entities Insurance/Reinsurance",
-  TaxonomyEligibleNonLifeInsuranceEconomicActivities: "Taxonomy-eligible Non-life Insurance Economic Activities",
+  taxonomyEligibleNonLifeInsuranceActivities: "Taxonomy-eligible Non-life Insurance Economic Activities",
   ExposuresToTaxonomyEligibleEconomicActivitiesAssetManagementCompany: "Exposures To Taxonomy-eligible Economic Activities Asset Management Company",
   ExposuresToTaxonomyNonEligibleEconomicActivitiesAssetManagementCompany: "Exposures To Taxonomy Non-eligible Economic Activities Asset Management Company",
   ExposuresToCentralGovernmentsCentralBanksSupranationalIssuersAssetManagementCompany: "Exposures To Central Governments, Central Banks, Supranational Issuers Asset Management Company",
@@ -102,11 +102,18 @@ export const euTaxonomyKpiNameMappings = {
   ExposuresToCentralGovernmentsCentralBanksSupranationalIssuersInvestmentFirm: "Exposures To Taxonomy Non-eligible Economic Activities Investment Firm",
   ExposuresToDerivativesInvestmentFirm: "Exposures To Derivatives Investment Firm",
   ExposuresToNonNfrdEntitiesInvestmentFirm: "Exposures To Non-NFRD Entities Investment Firm",
-  GreenAssetRatioCreditInstitution: "Green Asset Ratio Credit Institution",
-  GreenAssetRatioInvestmentFirm: "Green Asset Ratio Investment Firm",
+  greenAssetRatio: "Green Asset Ratio Credit Institution",
 };
 
 export const euTaxonomyKpiInfoMappings = {
+  financialServicesTypes: "Financial Services Types",
+  investmentNonNfrd: "Investment Non NFRD",
+  banksAndIssuers: "Banks and Issuers",
+  derivatives: "For financial companies (FS), the percentage of total assets exposed to derivatives",
+  taxonomyNonEligibleActivity: "For financial companies (FS), the percentage of total assets exposed to taxonomy non-eligible economic activities. i.e., to types of economic activity that is not described and does not have technical screening criteria set out in the EU Taxonomy Regulation",
+  taxonomyEligibleActivity: "For financial companies (FS), the percentage of total assets exposed to taxonomy-eligible economic activities",
+  reportDate: "Report Date",
+
   iSfS: "Distinguishes between non-financial companies (IS) and financial companies (FS)",
   fsCompanyType: "Defines the type of financial company. Credit Institution (1), Insurance/Reinsurance (2), Asset Manager (3), Investment Firm (4)",
   fiscalYear: "Fiscal Year",
@@ -161,16 +168,16 @@ export const euTaxonomyKpiInfoMappings = {
   ExposuresToCentralGovernmentsCentralBanksSupranationalIssuersCreditInstitution: "For financial companies (FS), the percentage of total assets exposed to central governments, central banks, supranational issuers",
   ExposuresToDerivativesCreditInstitution: "For financial companies (FS), the percentage of total assets exposed to derivatives",
   ExposuresToNonNfdrEntitiesCreditInstitution: "For financial companies (FS), the percentage of total assets exposed to non-NFRD entities",
-  TradingPortfolio: "For Credit Institutions, the trading portfolio as a percentage of total assets",
-  OnDemandInterbankLoans: "For Credit Institutions, the on demand interbank loans as a percentage of total assets",
-  TradingPortfolioOnDemandInterbankLoans: "For Credit Institutions, the trading portfolio and the on demand interbank loans as a percentage of total assets",
+  tradingPortfolio: "For Credit Institutions, the trading portfolio as a percentage of total assets",
+  interbankLoans: "For Credit Institutions, the on demand interbank loans as a percentage of total assets",
+  tradingPortfolioAndInterbankLoans: "For Credit Institutions, the trading portfolio and the on demand interbank loans as a percentage of total assets",
 
   ExposuresToTaxonomyEligibleEconomicActivitiesInsuranceReinsurance: "For financial companies (FS), the percentage of total assets exposed to taxonomy-eligible economic activities",
   ExposuresToTaxonomyNonEligibleEconomicActivitiesInsuranceReinsurance: "For financial companies (FS), the percentage of total assets exposed to taxonomy non-eligible economic activities. i.e., to types of economic activity that is not described and does not have technical screening criteria set out in the EU Taxonomy Regulation",
   ExposuresToCentralGovernmentsCentralBanksSupranationalIssuersInsuranceReinsurance: "For financial companies (FS), the percentage of total assets exposed to central governments, central banks, supranational issuers",
   ExposuresToDerivativesInsuranceReinsurance: "For financial companies (FS), the percentage of total assets exposed to derivatives",
   ExposuresToNonNfrdEntitiesInsuranceReinsurance: "For financial companies (FS), the percentage of total assets exposed to non-NFRD entities",
-  TaxonomyEligibleNonLifeInsuranceEconomicActivities: "For Insurance/Reinsurance companies, the percentage of Taxonomy-eligible non-life insurance economics activities. Insurance and reinsurance undertakings other than life insurance undertakings shall calculate the KPI related to underwriting activities and present the ‘gross premiums written’ non-life insurance revenue or, as applicable, reinsurance revenue corresponding to Taxonomy-aligned insurance or reinsurance activities",
+  taxonomyEligibleNonLifeInsuranceActivities: "For Insurance/Reinsurance companies, the percentage of Taxonomy-eligible non-life insurance economics activities. Insurance and reinsurance undertakings other than life insurance undertakings shall calculate the KPI related to underwriting activities and present the ‘gross premiums written’ non-life insurance revenue or, as applicable, reinsurance revenue corresponding to Taxonomy-aligned insurance or reinsurance activities",
   ExposuresToTaxonomyEligibleEconomicActivitiesAssetManagementCompany: "For financial companies (FS), the percentage of total assets exposed to taxonomy-eligible economic activities",
   ExposuresToTaxonomyNonEligibleEconomicActivitiesAssetManagementCompany: "For financial companies (FS), the percentage of total assets exposed to taxonomy non-eligible economic activities. i.e., to types of economic activity that is not described and does not have technical screening criteria set out in the EU Taxonomy Regulation",
   ExposuresToCentralGovernmentsCentralBanksSupranationalIssuersAssetManagementCompany: "For financial companies (FS), the percentage of total assets exposed to central governments, central banks, supranational issuers",
@@ -182,6 +189,5 @@ export const euTaxonomyKpiInfoMappings = {
   ExposuresToCentralGovernmentsCentralBanksSupranationalIssuersInvestmentFirm: "For financial companies (FS), the percentage of total assets exposed to central governments, central banks, supranational issuers",
   ExposuresToDerivativesInvestmentFirm: "For financial companies (FS), the percentage of total assets exposed to derivatives",
   ExposuresToNonNfrdEntitiesInvestmentFirm: "For financial companies (FS), the percentage of total assets exposed to non-NFRD entities",
-  GreenAssetRatioCreditInstitution: "The proportion of the of credit institution’s assets financing and invested in taxonomy-aligned economic activities as a proportion of total covered assets",
-  GreenAssetRatioInvestmentFirm: "The proportion of the of credit institution’s assets financing and invested in taxonomy-aligned economic activities as a proportion of total covered assets",
+  greenAssetRatio: "The proportion of the of credit institution’s assets financing and invested in taxonomy-aligned economic activities as a proportion of total covered assets",
 };
