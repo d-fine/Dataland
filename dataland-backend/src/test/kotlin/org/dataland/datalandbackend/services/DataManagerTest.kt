@@ -170,8 +170,8 @@ class DataManagerTest(
         val messageWithEmptyDataID = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 dataId = "",
-                validationResult = "By default, QA is passed"
-            )
+                validationResult = "By default, QA is passed",
+            ),
         )
         val thrown = assertThrows<InternalServerErrorApiException> {
             dataManager.updateMetaData(messageWithEmptyDataID, "", MessageType.QACompleted)

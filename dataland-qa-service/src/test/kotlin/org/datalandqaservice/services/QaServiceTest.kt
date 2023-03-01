@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest(classes = [DatalandQaService::class])
 class QaServiceTest(
-    @Autowired val objectMapper: ObjectMapper
+    @Autowired val objectMapper: ObjectMapper,
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var qaService: QaService
@@ -49,8 +49,8 @@ class QaServiceTest(
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 dataId = dataId,
-                validationResult = "By default, QA is passed"
-            )
+                validationResult = "By default, QA is passed",
+            ),
         )
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(

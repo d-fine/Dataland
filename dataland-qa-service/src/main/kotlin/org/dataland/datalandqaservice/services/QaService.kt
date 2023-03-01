@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component
 @Component
 class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var objectMapper: ObjectMapper
+    @Autowired var objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -60,8 +60,8 @@ class QaService(
             val message = objectMapper.writeValueAsString(
                 QaCompletedMessage(
                     dataId = dataId,
-                    validationResult = "By default, QA is passed"
-                )
+                    validationResult = "By default, QA is passed",
+                ),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 message, MessageType.QACompleted, correlationId,
