@@ -13,7 +13,8 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.exceptions.UnexpectedMessageTypeMessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -121,7 +122,7 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.QACompleted) {
-            throw MessageQueueException()
+            throw UnexpectedMessageTypeMessageQueueRejectException(type, MessageType.QACompleted)
         }
         val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).dataId
         if (dataId.isNotEmpty()) {
@@ -132,7 +133,7 @@ class DataManager(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId",
             )
         } else {
-            throw MessageQueueException()
+            throw MessageQueueRejectException("Provided data ID is empty")
         }
     }
 
@@ -215,7 +216,7 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.DataStored) {
-            throw MessageQueueException()
+            throw UnexpectedMessageTypeMessageQueueRejectException(type, MessageType.DataStored)
         }
         if (dataId.isNotEmpty()) {
             logger.info("Internal Storage sent a message - job done")
@@ -224,7 +225,7 @@ class DataManager(
             )
             dataInMemoryStorage.remove(dataId)
         } else {
-            throw MessageQueueException()
+            throw MessageQueueRejectException("Provided data ID is empty")
         }
     }
 

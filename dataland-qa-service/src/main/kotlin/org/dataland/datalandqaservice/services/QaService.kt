@@ -5,7 +5,8 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.exceptions.UnexpectedMessageTypeMessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -57,7 +58,7 @@ class QaService(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.DataStored) {
-            throw MessageQueueException()
+            throw UnexpectedMessageTypeMessageQueueRejectException(type, MessageType.DataStored)
         }
         if (dataId.isNotEmpty()) {
             logger.info(
@@ -72,7 +73,7 @@ class QaService(
                 message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
             )
         } else {
-            throw MessageQueueException()
+            throw MessageQueueRejectException("Provided data ID is empty")
         }
     }
 }

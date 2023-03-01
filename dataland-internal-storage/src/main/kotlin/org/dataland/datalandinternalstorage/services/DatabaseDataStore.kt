@@ -8,7 +8,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
+import org.dataland.datalandmessagequeueutils.exceptions.UnexpectedMessageTypeMessageQueueRejectException
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -65,7 +65,7 @@ class DatabaseDataStore(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.DataReceived) {
-            throw MessageQueueException()
+            throw UnexpectedMessageTypeMessageQueueRejectException(type, MessageType.DataReceived)
         }
         // TODO Here we don't check if the dataId is empty. Is there a reason for it or should we make all of our checks
         //  consistent?

@@ -15,7 +15,7 @@ import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerE
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -175,7 +175,7 @@ class DataManagerTest(
                 validationResult = "By default, QA is passed",
             ),
         )
-        val thrown = assertThrows<MessageQueueException> {
+        val thrown = assertThrows<MessageQueueRejectException> {
             dataManager.updateMetaData(messageWithEmptyDataID, "", MessageType.QACompleted)
         }
         assertEquals("Message could not be processed - Message rejected", thrown.message)
