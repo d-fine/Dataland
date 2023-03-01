@@ -65,13 +65,11 @@ class QaService(
             )
             val message = objectMapper.writeValueAsString(
                 QaCompletedMessage(
-                    dataId = dataId,
-                    validationResult = "By default, QA is passed",
+                    dataId = dataId, validationResult = "By default, QA is passed",
                 ),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QACompleted, correlationId,
-                ExchangeNames.dataQualityAssured,
+                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
             )
         } else {
             throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
