@@ -14,7 +14,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.exceptions.UnexpectedMessageTypeMessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueUtils
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -121,17 +121,20 @@ class DataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        if (type != MessageType.QACompleted) {
-            throw UnexpectedMessageTypeMessageQueueRejectException(type, MessageType.QACompleted)
-        }
+        MessageQueueUtils.validateMessageType(type, MessageType.QACompleted)
         val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).dataId
         if (dataId.isNotEmpty()) {
-            val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            metaInformation.qaStatus = QAStatus.Accepted
-            metaDataManager.storeDataMetaInformation(metaInformation)
-            logger.info(
-                "Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId",
-            )
+            try {
+                val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
+                metaInformation.qaStatus = QAStatus.Accepted
+                metaDataManager.storeDataMetaInformation(metaInformation)
+                logger.info(
+                    "Received quality assurance for data upload with DataId: " +
+                        "$dataId with Correlation Id: $correlationId",
+                )
+            } catch (e: Exception) {
+                throw MessageQueueRejectException(e)
+            }
         } else {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
@@ -215,9 +218,7 @@ class DataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        if (type != MessageType.DataStored) {
-            throw UnexpectedMessageTypeMessageQueueRejectException(type, MessageType.DataStored)
-        }
+        MessageQueueUtils.validateMessageType(type, MessageType.DataStored)
         if (dataId.isNotEmpty()) {
             logger.info("Internal Storage sent a message - job done")
             logger.info(

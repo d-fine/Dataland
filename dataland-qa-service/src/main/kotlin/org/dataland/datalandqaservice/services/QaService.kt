@@ -6,7 +6,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.exceptions.UnexpectedMessageTypeMessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueUtils
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -57,21 +57,23 @@ class QaService(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        if (type != MessageType.DataStored) {
-            throw UnexpectedMessageTypeMessageQueueRejectException(type, MessageType.DataStored)
-        }
+        MessageQueueUtils.validateMessageType(type, MessageType.DataStored)
         if (dataId.isNotEmpty()) {
-            logger.info(
-                "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
-            )
-            val message = objectMapper.writeValueAsString(
-                QaCompletedMessage(
-                    dataId = dataId, validationResult = "By default, QA is passed",
-                ),
-            )
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
-            )
+            try {
+                logger.info(
+                    "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
+                )
+                val message = objectMapper.writeValueAsString(
+                    QaCompletedMessage(
+                        dataId = dataId, validationResult = "By default, QA is passed",
+                    ),
+                )
+                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+                )
+            } catch (e: Exception) {
+                throw MessageQueueRejectException(e)
+            }
         } else {
             throw MessageQueueRejectException("Provided data ID is empty")
         }

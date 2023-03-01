@@ -8,7 +8,8 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.exceptions.UnexpectedMessageTypeMessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -64,19 +65,21 @@ class DatabaseDataStore(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        if (type != MessageType.DataReceived) {
-            throw UnexpectedMessageTypeMessageQueueRejectException(type, MessageType.DataReceived)
-        }
+        MessageQueueUtils.validateMessageType(type, MessageType.DataReceived)
         // TODO Here we don't check if the dataId is empty. Is there a reason for it or should we make all of our checks
         //  consistent?
-        logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-        val data = temporarilyCachedDataClient.getReceivedData(dataId)
-        logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
-        logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
-        dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, MessageType.DataStored, correlationId, ExchangeNames.dataStored,
-        )
+        try {
+            logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+            val data = temporarilyCachedDataClient.getReceivedData(dataId)
+            logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
+            logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
+            dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataId, MessageType.DataStored, correlationId, ExchangeNames.dataStored,
+            )
+        } catch (e: Exception) {
+            throw MessageQueueRejectException(e)
+        }
     }
 
     /**

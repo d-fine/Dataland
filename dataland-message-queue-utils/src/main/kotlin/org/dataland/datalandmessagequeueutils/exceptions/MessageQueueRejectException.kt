@@ -3,7 +3,9 @@ package org.dataland.datalandmessagequeueutils.exceptions
 import org.springframework.amqp.AmqpRejectAndDontRequeueException
 
 /**
- * A MessageQueueRejectException should be thrown if message received from the RabbitMQ Queue should be rejected
+ * A MessageQueueRejectException should be thrown to reject a message received from the RabbitMQ Queue
  */
-open class MessageQueueRejectException(message: String) :
-    AmqpRejectAndDontRequeueException("Message was rejected: $message")
+open class MessageQueueRejectException : AmqpRejectAndDontRequeueException {
+    constructor (message: String) : super("Message was rejected: $message")
+    constructor (cause: Throwable) : super(cause)
+}
