@@ -6,7 +6,7 @@
 import { ApiClientProvider } from "@/services/ApiClients";
 import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
-import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { useFiltersStore } from "@/stores/filters";
 
 export interface DataSearchStoredCompany {
@@ -90,7 +90,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
     if (frameworkFilter.size === 0) {
-      frameworkFilter = new Set(ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS);
+      frameworkFilter = new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE);
     }
 
     const response = await companyDataControllerApi.getCompanies(

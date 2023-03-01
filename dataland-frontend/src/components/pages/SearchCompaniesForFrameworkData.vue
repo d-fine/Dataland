@@ -104,7 +104,7 @@ import { DataTypeEnum } from "@clients/backend";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
-import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { useFiltersStore } from "@/stores/filters";
 import TabPanel from "primevue/tabpanel";
@@ -153,7 +153,7 @@ export default defineComponent({
       resultsArray: [] as Array<DataSearchStoredCompany>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
-      currentFilteredFrameworks: ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS,
+      currentFilteredFrameworks: ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
       currentCombinedFilter: <FrameworkDataSearchFilterInterface>{
@@ -274,12 +274,12 @@ export default defineComponent({
     getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
       const queryFrameworks = route.query.framework;
       if (queryFrameworks !== undefined) {
-        const allowedDataTypeEnumValues = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS as Array<string>;
+        const allowedDataTypeEnumValues = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
         return parseQueryParamArray(queryFrameworks).filter((singleFrameworkInQueryParam) =>
           allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam)
         ) as Array<DataTypeEnum>;
       } else {
-        return ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS;
+        return ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE;
       }
     },
     /**
@@ -383,7 +383,7 @@ export default defineComponent({
 
       const queryInput = this.currentSearchBarInput == "" ? undefined : this.currentSearchBarInput;
 
-      const allFrameworksSelected = ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.every((frameworkAsDataTypeEnum) =>
+      const allFrameworksSelected = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.every((frameworkAsDataTypeEnum) =>
         this.currentFilteredFrameworks.includes(frameworkAsDataTypeEnum)
       );
       let queryFrameworks: DataTypeEnum[] | undefined | null = this.currentFilteredFrameworks;

@@ -1,7 +1,7 @@
 import { DataMetaInformation, DataTypeEnum, StoredCompany } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 export class DatasetTableInfo {
   constructor(
@@ -31,7 +31,7 @@ export async function getMyDatasetTableInfos(
   const companiesMetaInfos = (
     await companyDataControllerApi.getCompanies(
       searchString,
-      new Set(ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS),
+      new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE),
       undefined,
       undefined,
       undefined,
@@ -46,7 +46,7 @@ export async function getMyDatasetTableInfos(
     company.dataRegisteredByDataland
       .filter(
         (dataMetaInfo: DataMetaInformation) =>
-          dataMetaInfo.uploaderUserId == userId && ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)
+          dataMetaInfo.uploaderUserId == userId && ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(dataMetaInfo.dataType)
       )
       .map(
         (dataMetaInfo: DataMetaInformation) =>

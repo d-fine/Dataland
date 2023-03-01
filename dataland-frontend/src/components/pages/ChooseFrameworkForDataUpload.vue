@@ -20,8 +20,7 @@
 
                     <MetaInfoPerCompanyAndFramework
                       title="Non-Financials"
-                      :isFrontendUploadFormExisting="false"
-                      :framework-url-path="DataTypeEnum.EutaxonomyNonFinancials"
+                      :data-type="DataTypeEnum.EutaxonomyNonFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"
                       :listOfFrameworkData="listOfEuTaxonomyNonFinancialsMetaInfo"
@@ -30,8 +29,7 @@
 
                     <MetaInfoPerCompanyAndFramework
                       title="Financials"
-                      :isFrontendUploadFormExisting="false"
-                      :framework-url-path="DataTypeEnum.EutaxonomyFinancials"
+                      :data-type="DataTypeEnum.EutaxonomyFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"
                       :listOfFrameworkData="listOfEuTaxonomyFinancialsMetaInfo"
@@ -48,9 +46,7 @@
                 <div class="col-9 d-card">
                   <MetaInfoPerCompanyAndFramework
                     title="SFDR"
-                    :isFrontendViewPageExisting="false"
-                    :isFrontendUploadFormExisting="false"
-                    :framework-url-path="DataTypeEnum.Sfdr"
+                    :data-type="DataTypeEnum.Sfdr"
                     :companyId="companyID"
                     :isWaitingForData="waitingForData"
                     :listOfFrameworkData="listOfSfdrMetaInfo"
@@ -66,10 +62,26 @@
                 <div class="col-9 d-card">
                   <MetaInfoPerCompanyAndFramework
                     title="LkSG"
-                    :framework-url-path="DataTypeEnum.Lksg"
+                    :data-type="DataTypeEnum.Lksg"
                     :companyId="companyID"
                     :isWaitingForData="waitingForData"
                     :listOfFrameworkData="listOfLksgMetaInfo"
+                  />
+                </div>
+              </div>
+
+              <div id="smeContainer" class="col-9 flex top-border-section">
+                <div id="smeLabel" class="col-3">
+                  <h3>Sme</h3>
+                  <p>Overview of all existing and missing Sme datasets for this company.</p>
+                </div>
+                <div class="col-9 d-card">
+                  <MetaInfoPerCompanyAndFramework
+                    title="Sme"
+                    :data-type="DataTypeEnum.Sme"
+                    :companyId="companyID"
+                    :isWaitingForData="waitingForData"
+                    :listOfFrameworkData="listOfSmeMetaInfo"
                   />
                 </div>
               </div>
@@ -128,6 +140,7 @@ export default defineComponent({
       listOfEuTaxonomyFinancialsMetaInfo: [] as Array<DataMetaInformation>,
       listOfSfdrMetaInfo: [] as Array<DataMetaInformation>,
       listOfLksgMetaInfo: [] as Array<DataMetaInformation>,
+      listOfSmeMetaInfo: [] as Array<DataMetaInformation>,
       DataTypeEnum,
     };
   },
@@ -250,6 +263,11 @@ export default defineComponent({
         this.listOfLksgMetaInfo = this.groupAndSortListOfDataMetaInfo(
           listOfAllDataMetaInfo.filter(
             (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Lksg
+          )
+        );
+        this.listOfSmeMetaInfo = this.groupAndSortListOfDataMetaInfo(
+          listOfAllDataMetaInfo.filter(
+            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Sme
           )
         );
         this.waitingForData = false;

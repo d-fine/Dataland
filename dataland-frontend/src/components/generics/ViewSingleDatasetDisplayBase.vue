@@ -181,8 +181,9 @@ export default defineComponent({
       if (dataMetaInfoForNewlyChosenReportingPeriod) {
         this.processDataMetaInfoForDisplay(dataMetaInfoForNewlyChosenReportingPeriod);
         this.routerPushToReportingPeriod(dataMetaInfoForNewlyChosenReportingPeriod.reportingPeriod);
+      } else {
+        this.isReportingPeriodInUrlInvalid = true;
       }
-      else { this.isReportingPeriodInUrlInvalid = true }
     },
 
     routerPushToReportingPeriod(reportingPeriod: string) {
