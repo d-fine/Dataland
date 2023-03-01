@@ -130,13 +130,10 @@ export default defineComponent({
 
   watch: {
     async dataId(newDataId) {
-      console.log("dataId watcher runs");
+      console.log("dataId watcher runs"); // TODO debugging
       if (newDataId) {
-        console.log("dataId watcher does things");
-        const dataMetaInfoForThisDataId = (await this.getMetaDataForDataIdAndReturnAndEmit(
-          newDataId
-        )) as DataMetaInformation;
-        this.chosenReportingPeriodInDropdown = dataMetaInfoForThisDataId.reportingPeriod;
+        console.log("dataId watcher does things"); // TODO debugging
+        await this.getMetaDataForDataIdAndReturnAndEmit(newDataId)
       }
     },
     reportingPeriod(newReportingPeriod) {
@@ -257,11 +254,11 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
+        this.chosenReportingPeriodInDropdown = dataMetaInfoForDataSetWithDataIdFromUrl.reportingPeriod;
         this.latestChosenReportingPeriodInDropdown = dataMetaInfoForDataSetWithDataIdFromUrl.reportingPeriod;
         this.isDataIdToDisplayFound = true;
         this.isFoundDataIdBelongingToOutdatedDataset = !dataMetaInfoForDataSetWithDataIdFromUrl.currentlyActive;
         this.$emit("updateDataIdOfDatasetToDisplay", this.dataId);
-        return dataMetaInfoForDataSetWithDataIdFromUrl;
       } catch (error) {
         const axiosError = error as AxiosError;
         if (axiosError.response?.status == 404) {
