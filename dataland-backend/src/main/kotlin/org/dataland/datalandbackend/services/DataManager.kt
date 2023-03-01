@@ -225,7 +225,11 @@ class DataManager(
             logger.info(
                 "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
             )
-            dataInMemoryStorage.remove(dataId)
+            try {
+                dataInMemoryStorage.remove(dataId)
+            } catch(e: Exception){
+                throw MessageQueueRejectException(e)
+            }
         } else {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
