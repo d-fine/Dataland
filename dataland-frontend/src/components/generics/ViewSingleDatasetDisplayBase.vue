@@ -54,7 +54,7 @@
         <h2>No {{ dataDescriptor }} present</h2>
       </div>
       <div v-if="isDataIdInUrlInvalid">
-        <h2>No {{ dataDescriptor }} data could be found for the data ID {{ dataId }}.</h2>
+        <h2>No {{ dataDescriptor }} data could be found for the data ID passed in the URL.</h2>
       </div>
       <div v-if="isReportingPeriodInUrlInvalid">
         <h2>No {{ dataDescriptor }} data could be found for the reporting period {{ reportingPeriod }}.</h2>
