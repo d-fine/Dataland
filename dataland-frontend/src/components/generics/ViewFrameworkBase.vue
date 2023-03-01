@@ -136,14 +136,18 @@ export default defineComponent({
      *
      * @param listOfDataMetaInfo a list of data meta info
      */
-    getDistinctAvailableFrameworksAndPutThemIntoDropdown(listOfDataMetaInfo: DataMetaInformation[]) {
+    getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(listOfDataMetaInfo: DataMetaInformation[]) {
       const setOfAvailableFrameworksForCompany = [
         ...new Set(listOfDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.dataType)),
       ];
+      const listOfDistinctAvailableAndViewableFrameworksForCompany: string[] = [];
       setOfAvailableFrameworksForCompany.forEach((dataType) => {
         if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataType)) {
-          this.dataTypesInDropdown.push({ label: humanizeString(dataType), value: dataType });
+          listOfDistinctAvailableAndViewableFrameworksForCompany.push(dataType);
         }
+      });
+      listOfDistinctAvailableAndViewableFrameworksForCompany.sort().forEach((dataType) => {
+        this.dataTypesInDropdown.push({ label: humanizeString(dataType), value: dataType });
       });
     },
 
@@ -174,7 +178,7 @@ export default defineComponent({
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
 
-        this.getDistinctAvailableFrameworksAndPutThemIntoDropdown(
+        this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
 

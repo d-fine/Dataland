@@ -41,6 +41,7 @@ export default defineComponent({
   methods: {
     /**
      * Method to handle an updated data ID of the displayed data set
+     *
      * @param updatedDataId The new/updated data ID
      */
     handleUpdatedDataIdToDisplay(updatedDataId: string) {
