@@ -129,14 +129,14 @@ export default defineComponent({
   },
 
   watch: {
-    async dataId(newDataId) {
+    async dataId(newDataId: string) {
       console.log("dataId watcher runs"); // TODO debugging
       if (newDataId) {
         console.log("dataId watcher does things"); // TODO debugging
         await this.getMetaDataForDataIdAndEmit(newDataId);
       }
     },
-    reportingPeriod(newReportingPeriod) {
+    reportingPeriod(newReportingPeriod: string) {
       "newReportingPeriod watcher runs";
       if (this.isReportingPeriodsWatcherEnabledForNextExecution && newReportingPeriod) {
         console.log("reportingPeriod watcher does things"); // TODO debug
@@ -149,6 +149,11 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Method to prepare the display of given data meta information
+     *
+     * @param dataMetaInfoForDisplay The data meta information object to be displayed
+     */
     processDataMetaInfoForDisplay(dataMetaInfoForDisplay: DataMetaInformation) {
       this.chosenReportingPeriodInDropdown = dataMetaInfoForDisplay.reportingPeriod;
       this.latestChosenReportingPeriodInDropdown = dataMetaInfoForDisplay.reportingPeriod;
@@ -165,13 +170,20 @@ export default defineComponent({
      */
     handleChangeReportingPeriodEvent(dropDownChangeEvent: DropdownChangeEvent) {
       console.log("change event of reporting period dropdown");
-      console.log("placeholderValue: " + this.latestChosenReportingPeriodInDropdown);
-      console.log("new reporting period from change event: " + dropDownChangeEvent.value);
+      if (this.latestChosenReportingPeriodInDropdown != null){
+        console.log("placeholderValue: " + this.latestChosenReportingPeriodInDropdown);
+      }
+      console.log("new reporting period from change event: " + String(dropDownChangeEvent.value));
       if (dropDownChangeEvent.value != this.latestChosenReportingPeriodInDropdown) {
-        this.switchToActiveDatasetForNewlyChosenReportingPeriod(dropDownChangeEvent.value);
+        this.switchToActiveDatasetForNewlyChosenReportingPeriod(String(dropDownChangeEvent.value));
       }
     },
 
+    /**
+     * Switch to the active data set of a new reporting period, including adapting the corresponding route
+     *
+     * @param newReportingPeriod The desired new reporting period
+     */
     switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod: string) {
       this.isReportingPeriodsWatcherEnabledForNextExecution = false;
       if (this.isReportingPeriodInUrlInvalid) this.isReportingPeriodInUrlInvalid = false;
@@ -184,8 +196,17 @@ export default defineComponent({
       }
     },
 
-    routerPushToReportingPeriod(reportingPeriod: string) {
-      this.$router.push(`/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${reportingPeriod}`);
+    /**
+     * Method to set route to a specific reporting period
+     *
+     * @param reportingPeriod Specific reporting period the route should end with
+     */
+    routerPushToReportingPeriod(reportingPeriod: string): void {
+      if (this.companyId != null && this.dataType != null) {
+        this.$router.push(
+          `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${reportingPeriod}`
+        );
+      }
     },
 
     /**
@@ -195,9 +216,15 @@ export default defineComponent({
       this.switchToActiveDatasetForNewlyChosenReportingPeriod(this.latestChosenReportingPeriodInDropdown as string);
     },
 
+    /**
+     * Method to handle the update of the currently active data meta information for the chosen framework
+     *
+     * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
+     * active data meta information objects
+     */
     handleUpdateActiveDataMetaInfo(
       receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
-    ) {
+    ): void {
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
       this.getDistinctAvailableReportingPeriodsAndPutThemSortedIntoDropdown(
@@ -207,6 +234,12 @@ export default defineComponent({
       this.isWaitingForDataIdToDisplay = false;
     },
 
+    /**
+     * Method to construct a sorted dropdown with all available distinct reporting periods
+     *
+     * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
+     * active data meta information objects
+     */
     getDistinctAvailableReportingPeriodsAndPutThemSortedIntoDropdown(
       receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
     ) {
@@ -234,6 +267,11 @@ export default defineComponent({
       }
     },
 
+    /**
+     * Method to retrieve meta data for a specific data ID and prepare displaying them
+     *
+     * @param dataId The desired data ID for which the meta data are wanted
+     */
     async getMetaDataForDataIdAndEmit(dataId: string) {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
@@ -253,19 +291,28 @@ export default defineComponent({
       }
     },
 
-    switchToDefaultDatasetToDisplay() {
+    /**
+     * Method to switch to default data set to display, including replacing the route by the one corresponding to the
+     * latest chosen reporting period in dropdown
+     */
+    switchToDefaultDatasetToDisplay(): void {
       const dataMetaInfoForEmit = this.getActiveDataMetaInfoFromLatestReportingPeriodIfParsableAsNumber();
       if (dataMetaInfoForEmit) {
         this.processDataMetaInfoForDisplay(dataMetaInfoForEmit);
         this.isReportingPeriodsWatcherEnabledForNextExecution = false;
-        this.$router.replace(
-          `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${
-            this.latestChosenReportingPeriodInDropdown as string
-          }`
-        );
+        if (this.companyId != null && this.dataType != null) {
+          this.$router.replace(
+            `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${
+                this.latestChosenReportingPeriodInDropdown as string
+            }`
+          );
+        }
       }
     },
 
+    /**
+     * Method to retrieve the active data meta information for the latest reporting period
+     */
     getActiveDataMetaInfoFromLatestReportingPeriodIfParsableAsNumber(): DataMetaInformation {
       const [firstActiveDataMetaInfo] = this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.values();
       const defaultActiveDataMetaInfo = [firstActiveDataMetaInfo][0];
