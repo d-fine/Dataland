@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.services.QaService
@@ -15,6 +14,7 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.amqp.AmqpException
+import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -36,11 +36,10 @@ class QaServiceTest(
     @Test
     fun `check an exception is thrown in reading out message from upload queue when dataId is empty`() {
         val correlationId = "correlationId"
-        val thrown = assertThrows<MessageQueueException> {
+        val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaService.assureQualityOfData("", correlationId, MessageType.DataStored)
         }
-        val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
-        Assertions.assertEquals("Error receiving data for QA process: $internalMessage", thrown.message)
+        Assertions.assertEquals("Message could not be processed - Message rejected", thrown.message)
     }
 
     @Test

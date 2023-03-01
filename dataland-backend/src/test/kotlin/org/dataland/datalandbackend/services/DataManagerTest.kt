@@ -23,6 +23,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.`when`
 import org.springframework.amqp.AmqpException
+import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -173,18 +174,18 @@ class DataManagerTest(
                 validationResult = "By default, QA is passed",
             ),
         )
-        val thrown = assertThrows<InternalServerErrorApiException> {
+        val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             dataManager.updateMetaData(messageWithEmptyDataID, "", MessageType.QACompleted)
         }
-        assertEquals("The update of the metadataset failed", thrown.publicMessage)
+        assertEquals("Message could not be processed - Message rejected", thrown.message)
     }
 
     @Test
     fun `check an exception is thrown in logging of stored data when dataId is empty`() {
-        val thrown = assertThrows<InternalServerErrorApiException> {
+        val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             dataManager.removeStoredItemFromTemporaryStore("", "", MessageType.DataStored)
         }
-        assertEquals("The storing of the dataset failed", thrown.publicMessage)
+        assertEquals("Message could not be processed - Message rejected", thrown.message)
     }
 
     @Test

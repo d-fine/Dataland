@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.enums.data.QAStatus
-import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -17,7 +16,8 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.AmqpRejectAndDontRequeueException
-import org.springframework.amqp.rabbit.annotation.*
+import org.springframework.amqp.rabbit.annotation.Argument
+import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
@@ -102,11 +102,14 @@ class DataManager(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue("dataQualityAssuredBackendDataManager", arguments = [
-                    Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
-                    Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                    Argument(name = "defaultRequeueRejected", value = "false")
-                ]),
+                value = Queue(
+                    "dataQualityAssuredBackendDataManager",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
                 exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
                 key = [""],
             ),
@@ -117,10 +120,10 @@ class DataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-            if (type != MessageType.QACompleted) {
-              throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected");
-            }
-        val dataId = objectMapper.readValue(jsonString,QaCompletedMessage::class.java).dataId
+        if (type != MessageType.QACompleted) {
+            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
+        }
+        val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).dataId
         if (dataId.isNotEmpty()) {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaInformation.qaStatus = QAStatus.Accepted
@@ -129,7 +132,7 @@ class DataManager(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId",
             )
         } else {
-            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected");
+            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
         }
     }
 
@@ -193,11 +196,14 @@ class DataManager(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue("dataStoredBackendDataManager", arguments = [
-                    Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
-                    Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                    Argument(name = "defaultRequeueRejected", value = "false")
-                ]),
+                value = Queue(
+                    "dataStoredBackendDataManager",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
                 exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
                 key = [""],
             ),
@@ -209,7 +215,7 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.DataStored) {
-        throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected");
+            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
         }
         if (dataId.isNotEmpty()) {
             logger.info("Internal Storage sent a message - job done")
@@ -218,16 +224,8 @@ class DataManager(
             )
             dataInMemoryStorage.remove(dataId)
         } else {
-            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected");
+            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
         }
-    }
-//TODO Just for testing purposes
-    @RabbitListener(queues = ["deadLetterQueue"])
-    fun testLogger(@Payload dataId: String,
-                   @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-                   @Header(MessageHeaderKey.Type) type: String,
-    ){
-        logger.info("FehlerFehlerFehler")
     }
 
     /**
