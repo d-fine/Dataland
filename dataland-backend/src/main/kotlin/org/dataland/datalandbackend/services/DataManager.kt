@@ -116,6 +116,7 @@ class DataManager(
             ),
         ],
     )
+    @Suppress("TooGenericExceptionCaught")
     fun updateMetaData(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,

@@ -52,6 +52,7 @@ class QaService(
             ),
         ],
     )
+    @Suppress("TooGenericExceptionCaught")
     fun assureQualityOfData(
         @Payload dataId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,

@@ -60,6 +60,7 @@ class DatabaseDataStore(
             ),
         ],
     )
+    @Suppress("TooGenericExceptionCaught")
     fun persistentlyStoreDataAndSendMessage(
         @Payload dataId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
