@@ -31,7 +31,15 @@
     }
   ],
   "policies": [],
-  "queues": [],
+  "queues": [
+    {
+    "name": "deadLetterQueue",
+    "vhost": "vhost",
+    "durable": true,
+    "auto_delete": false,
+    "arguments": {}
+  }
+  ],
   "exchanges": [
     {
       "name": "dataReceived",
@@ -59,7 +67,25 @@
       "auto_delete": false,
       "internal": false,
       "arguments": {}
+    },
+    {
+      "name": "deadLetter",
+      "vhost": "vhost",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
     }
   ],
-  "bindings": []
+  "bindings": [
+    {
+      "source": "deadLetter",
+      "vhost": "vhost",
+      "destination": "deadLetterQueue",
+      "destination_type": "queue",
+      "routing_key": "deadLetterKey",
+      "arguments": {}
+    }
+  ]
 }

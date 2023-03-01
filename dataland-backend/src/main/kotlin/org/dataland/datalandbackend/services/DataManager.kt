@@ -16,11 +16,11 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.annotation.Exchange
+import org.springframework.amqp.AmqpRejectAndDontRequeueException
+import org.springframework.amqp.rabbit.annotation.*
 import org.springframework.amqp.rabbit.annotation.Queue
-import org.springframework.amqp.rabbit.annotation.QueueBinding
-import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.messaging.MessageHandlingException
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
@@ -101,7 +101,11 @@ class DataManager(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue("dataQualityAssuredBackendDataManager"),
+                value = Queue("dataQualityAssuredBackendDataManager", arguments = [
+                    Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                    Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                    Argument(name = "defaultRequeueRejected", value = "false")
+                ]),
                 exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
                 key = [""],
             ),
@@ -113,8 +117,7 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
             if (type != MessageType.QACompleted) {
-//                TODO: Reject statement
-                return
+              throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected");
             }
         val dataId = objectMapper.readValue(jsonString,QaCompletedMessage::class.java).dataId
         if (dataId.isNotEmpty()) {
@@ -125,12 +128,7 @@ class DataManager(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId",
             )
         } else {
-            val internalMessage = "Error updating metadata data. Correlation ID: $correlationId"
-            logger.error(internalMessage)
-            throw InternalServerErrorApiException(
-                "Update of meta data failed", "The update of the metadataset failed",
-                internalMessage,
-            )
+            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected");
         }
     }
 
@@ -194,7 +192,11 @@ class DataManager(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue("dataStoredBackendDataManager"),
+                value = Queue("dataStoredBackendDataManager", arguments = [
+                    Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                    Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                    Argument(name = "defaultRequeueRejected", value = "false")
+                ]),
                 exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
                 key = [""],
             ),
@@ -206,7 +208,7 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.DataStored) {
-            return
+        throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected");
         }
         if (dataId.isNotEmpty()) {
             logger.info("Internal Storage sent a message - job done")
@@ -215,13 +217,16 @@ class DataManager(
             )
             dataInMemoryStorage.remove(dataId)
         } else {
-            val internalMessage = "Error storing data. Correlation ID: $correlationId"
-            logger.error(internalMessage)
-            throw InternalServerErrorApiException(
-                "Storing of dataset failed", "The storing of the dataset failed",
-                internalMessage,
-            )
+            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected");
         }
+    }
+//TODO Just for testing purposes
+    @RabbitListener(queues = ["deadLetterQueue"])
+    fun testLogger(@Payload dataId: String,
+                   @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+                   @Header(MessageHeaderKey.Type) type: String,
+    ){
+        logger.info("FehlerFehlerFehler")
     }
 
     /**

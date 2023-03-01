@@ -8,10 +8,8 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.annotation.Exchange
-import org.springframework.amqp.rabbit.annotation.Queue
-import org.springframework.amqp.rabbit.annotation.QueueBinding
-import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.amqp.AmqpRejectAndDontRequeueException
+import org.springframework.amqp.rabbit.annotation.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
@@ -37,7 +35,11 @@ class QaService(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue("dataStoredQaService"),
+                value = Queue("dataStoredQaService", arguments = [
+                    Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                    Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                    Argument(name = "defaultRequeueRejected", value = "false")
+                ]),
                 exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
                 key = [""],
             ),
@@ -49,7 +51,7 @@ class QaService(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.DataStored) {
-            return
+            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected");
         }
         if (dataId.isNotEmpty()) {
             logger.info(
@@ -66,11 +68,7 @@ class QaService(
                 ExchangeNames.dataQualityAssured,
             )
         } else {
-            val internalMessage = "Error receiving information for QA service. Correlation ID: $correlationId"
-            logger.error(internalMessage)
-            throw MessageQueueException(
-                "Error receiving data for QA process: $internalMessage",
-            )
+            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected");
         }
     }
 }
