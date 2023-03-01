@@ -45,7 +45,7 @@ class LksgDataController(
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
         showVersionHistoryForReportingPeriod: Boolean,
-        reportingPeriod: String?
+        reportingPeriod: String?,
     ): ResponseEntity<List<DataAndMetaInformation<LksgData>>> {
         return super.getFrameworkDatasetsForCompany(companyId, showVersionHistoryForReportingPeriod, reportingPeriod)
     }

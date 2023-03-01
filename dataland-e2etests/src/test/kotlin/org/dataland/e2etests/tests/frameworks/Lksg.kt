@@ -81,17 +81,17 @@ class Lksg {
         )
         assertTrue(
             responseWithoutVersioning.size == 2 &&
-                        responseWithVersioning.size == 4 &&
-                        response2023WithVersioning.size == 2 &&
-                        response2023WithoutVersioning.size == 1,
+                responseWithVersioning.size == 4 &&
+                response2023WithVersioning.size == 2 &&
+                response2023WithoutVersioning.size == 1,
             "Versioning and reporting Period parameters should influence the number of returned datasets " +
-                    "correctly but they do not.",
+                "correctly but they do not.",
         )
         assertEquals(
             response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees,
             BigDecimal.valueOf(2.023),
             "The active dataset should contain the manipulated ${2.023} but it is " +
-                    "${response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees} instead",
+                "${response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees} instead",
         )
     }
 }

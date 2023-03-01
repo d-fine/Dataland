@@ -22,6 +22,7 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
     name = "data_meta_information",
     uniqueConstraints = [
         UniqueConstraint(columnNames = ["company_id", "data_type", "reporting_period", "currently_active"]),
+        UniqueConstraint(columnNames = ["company_id", "data_type", "reporting_period", "upload_time"]),
     ],
 )
 data class DataMetaInformationEntity(

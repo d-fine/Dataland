@@ -51,7 +51,7 @@ class ApiAccessor {
                 CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
                     companyId,
                     reportingPeriod,
-                    euTaxonomyNonFinancialsData
+                    euTaxonomyNonFinancialsData,
                 )
             dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
                 companyAssociatedEuTaxonomyNonFinancialsData,
@@ -110,7 +110,7 @@ class ApiAccessor {
         frameworkDataUploadFunction: (
             companyId: String,
             frameworkData: T,
-            reportingPeriod: String
+            reportingPeriod: String,
         ) -> DataMetaInformation,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
         reportingPeriod: String = "",

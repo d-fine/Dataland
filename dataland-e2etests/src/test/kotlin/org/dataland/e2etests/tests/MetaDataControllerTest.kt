@@ -53,7 +53,7 @@ class MetaDataControllerTest {
                 testDataType, uploadTime,
                 "",
                 true,
-                null
+                null,
             )
         assertEquals(
             expectedDataMetaInformation,
@@ -203,7 +203,7 @@ class MetaDataControllerTest {
             uploadTime,
             "",
             true,
-            null
+            null,
         )
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
@@ -278,7 +278,7 @@ class MetaDataControllerTest {
         assertEquals(
             3, resultWithVersioning.size,
             "Metadata of three versions of uploaded datasets should be available, instead its " +
-                    "${resultWithoutVersioning.size}.",
+                "${resultWithoutVersioning.size}.",
         )
         assertEquals(
             1,
@@ -292,7 +292,7 @@ class MetaDataControllerTest {
         assertTrue(
             (activeDataSet.data!!.numberOfEmployees == BigDecimal.valueOf(3)),
             "The active dataset should have been manipulated to have a numberOfEmployees of three but the " +
-                    "retrieved active data set does not.",
+                "retrieved active data set does not.",
         )
     }
 
@@ -320,15 +320,19 @@ class MetaDataControllerTest {
         val result2023WithoutVersioning =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod2)
         assertTrue(
-            (result2023WithoutVersioning.size == 1 &&
-                result2022WithoutVersioning.size == 1 &&
-                result2023WithoutVersioning[0].dataId != result2022WithoutVersioning[0].dataId),
+            (
+                result2023WithoutVersioning.size == 1 &&
+                    result2022WithoutVersioning.size == 1 &&
+                    result2023WithoutVersioning[0].dataId != result2022WithoutVersioning[0].dataId
+                ),
             "Without versioning, metadata of only a single active dataset should be returned per reporting " +
-                    "period and they should point to different data sets. But this is not the case.",
+                "period and they should point to different data sets. But this is not the case.",
         )
         assertTrue(
-            (final2022metadata.dataId == result2022WithoutVersioning[0].dataId &&
-                final2023metadata.dataId == result2023WithoutVersioning[0].dataId),
+            (
+                final2022metadata.dataId == result2022WithoutVersioning[0].dataId &&
+                    final2023metadata.dataId == result2023WithoutVersioning[0].dataId
+                ),
             "The active data set of the reporting period should be the last uploaded one but this is not the case.",
         )
 //        When not specifying a reportingPeriod we should retrieve metadata of datasets for all reporting periods
@@ -338,13 +342,15 @@ class MetaDataControllerTest {
         assertTrue(
             (resultsWithVersioning.size == 4),
             "Without filtering for reporting period and when displaying version history, metadata of all 4 " +
-                    "datasets should be returned but it isn't.",
+                "datasets should be returned but it isn't.",
         )
         assertTrue(
-            (resultsWithoutVersioning.size == 2 &&
-                resultsWithoutVersioning[0].dataId != resultsWithoutVersioning[1].dataId),
+            (
+                resultsWithoutVersioning.size == 2 &&
+                    resultsWithoutVersioning[0].dataId != resultsWithoutVersioning[1].dataId
+                ),
             "a single current dataset per reporting period should be available and it should be different " +
-                    "ones for the different reporting periods - but it isn't",
+                "ones for the different reporting periods - but it isn't",
         )
     }
 
@@ -368,10 +374,10 @@ class MetaDataControllerTest {
     ): DataMetaInformation {
         val body =
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, reportingPeriod, frameWorkData)
-        return apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.
-            postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+        return apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+            .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
                 body,
-        )
+            )
     }
 
     private fun validateAdminAccessToUserId(

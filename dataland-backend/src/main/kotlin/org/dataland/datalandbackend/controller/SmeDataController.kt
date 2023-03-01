@@ -45,7 +45,7 @@ class SmeDataController(
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
         showVersionHistoryForReportingPeriod: Boolean,
-        reportingPeriod: String?
+        reportingPeriod: String?,
     ): ResponseEntity<List<DataAndMetaInformation<SmeData>>> {
         return super.getFrameworkDatasetsForCompany(companyId, showVersionHistoryForReportingPeriod, reportingPeriod)
     }

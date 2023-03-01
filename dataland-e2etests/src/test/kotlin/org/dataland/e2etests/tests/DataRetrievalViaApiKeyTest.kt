@@ -120,7 +120,7 @@ class DataRetrievalViaApiKeyTest {
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
                 mapOfIds["companyId"],
                 "",
-                testDataEuTaxonomyNonFinancials
+                testDataEuTaxonomyNonFinancials,
             ),
             downloadedCompanyAssociatedDataEuTaxonomyDataForNonFinancials,
             "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",

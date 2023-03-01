@@ -98,7 +98,7 @@ class DataManager(
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID '${storableDataSet.companyId}'" +
                 ", Company Name $companyName, and received data ID '$dataId' from storage. " +
-                    "Correlation ID: $correlationId",
+                "Correlation ID: $correlationId",
         )
         return dataId
     }

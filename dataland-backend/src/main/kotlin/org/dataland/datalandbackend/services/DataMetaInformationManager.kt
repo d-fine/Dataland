@@ -55,7 +55,7 @@ class DataMetaInformationManager(
         val currentlyActive = dataMetaInformationRepository.getActiveDataset(
             dataset.company,
             dataset.dataType,
-            dataset.reportingPeriod
+            dataset.reportingPeriod,
         )
         if (currentlyActive != null) {
             currentlyActive.currentlyActive = null
@@ -91,7 +91,7 @@ class DataMetaInformationManager(
         companyId: String,
         dataType: DataType?,
         showVersionHistoryForReportingPeriod: Boolean,
-        reportingPeriod: String?
+        reportingPeriod: String?,
     ): List<DataMetaInformationEntity> {
         if (companyId != "") {
             companyManager.verifyCompanyIdExists(companyId)

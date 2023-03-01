@@ -49,6 +49,6 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     fun getActiveDataset(
         @Param("company") company: StoredCompanyEntity,
         @Param("dataType") dataType: String,
-        @Param("reportingPeriod") reportingPeriod: String
+        @Param("reportingPeriod") reportingPeriod: String,
     ): DataMetaInformationEntity?
 }

@@ -39,7 +39,7 @@ class DataControllerTest {
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
                 mapOfIds["companyId"],
                 "",
-                testDataEuTaxonomyNonFinancials
+                testDataEuTaxonomyNonFinancials,
             ),
             companyAssociatedDataEuTaxonomyDataForNonFinancials,
             "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",

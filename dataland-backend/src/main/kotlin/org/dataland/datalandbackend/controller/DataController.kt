@@ -95,9 +95,9 @@ abstract class DataController<T>(
     }
 
     override fun getFrameworkDatasetsForCompany(
-            companyId: String,
-            showVersionHistoryForReportingPeriod: Boolean,
-            reportingPeriod: String?
+        companyId: String,
+        showVersionHistoryForReportingPeriod: Boolean,
+        reportingPeriod: String?,
     ): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val reportingPeriodInLogMessage = reportingPeriod ?: "all reporting periods"
         logger.info(
@@ -105,10 +105,10 @@ abstract class DataController<T>(
                 "companyId '$companyId' and reporting period '$reportingPeriodInLogMessage'",
         )
         var listOfDataMetaInfoEntities = dataMetaInformationManager.searchDataMetaInfo(
-                companyId,
-                dataType,
-                showVersionHistoryForReportingPeriod,
-                reportingPeriod
+            companyId,
+            dataType,
+            showVersionHistoryForReportingPeriod,
+            reportingPeriod,
         )
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         listOfDataMetaInfoEntities.forEach {

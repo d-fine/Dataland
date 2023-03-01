@@ -46,7 +46,7 @@ class EuTaxonomyDataForFinancialsController(
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
         showVersionHistoryForReportingPeriod: Boolean,
-        reportingPeriod: String?
+        reportingPeriod: String?,
     ): ResponseEntity<List<DataAndMetaInformation<EuTaxonomyDataForFinancials>>> {
         return super.getFrameworkDatasetsForCompany(companyId, showVersionHistoryForReportingPeriod, reportingPeriod)
     }
