@@ -43,16 +43,13 @@ import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import PrimeButton from "primevue/button";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "MetaInfoPerComanyAndFramework",
   components: { PrimeButton },
 
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
     dataType: {
       type: String,
       required: true,
@@ -73,6 +70,7 @@ export default defineComponent({
 
   data() {
     return {
+      title: humanizeString(this.dataType),
       isFrontendViewPageExisting: null as null | boolean,
       isFrontendUploadFormExisting: null as null | boolean,
       convertUnixTimeInMsToDateString: convertUnixTimeInMsToDateString,

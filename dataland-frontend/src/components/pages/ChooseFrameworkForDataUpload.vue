@@ -12,14 +12,13 @@
               <div id="euTaxonomyContainer" class="col-9 flex">
                 <div id="euTaxonomyLabel" class="col-3 p-3">
                   <h3>EU Taxonomy</h3>
-                  <p>Overview of all existing and missing EU Taxonomy datasets for this company.</p>
+                  <p>{{ buildSubtitle("EU Taxonomy") }}</p>
                 </div>
                 <div class="col-9 d-card">
                   <div id="eutaxonomyDataSetsContainer">
                     <h4 class="bottom-border-section-dots">Eu Taxonomy Data Sets:</h4>
 
                     <MetaInfoPerCompanyAndFramework
-                      title="Non-Financials"
                       :data-type="DataTypeEnum.EutaxonomyNonFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"
@@ -28,7 +27,6 @@
                     />
 
                     <MetaInfoPerCompanyAndFramework
-                      title="Financials"
                       :data-type="DataTypeEnum.EutaxonomyFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"
@@ -38,51 +36,24 @@
                 </div>
               </div>
 
-              <div id="sfdrContainer" class="col-9 flex top-border-section">
-                <div id="sfdrLabel" class="col-3 p-3">
-                  <h3>SFDR</h3>
-                  <p>Overview of all existing and missing SFDR datasets for this company.</p>
-                </div>
-                <div class="col-9 d-card">
-                  <MetaInfoPerCompanyAndFramework
-                    title="SFDR"
-                    :data-type="DataTypeEnum.Sfdr"
-                    :companyId="companyID"
-                    :isWaitingForData="waitingForData"
-                    :listOfFrameworkData="listOfSfdrMetaInfo"
-                  />
-                </div>
-              </div>
-
-              <div id="lksgContainer" class="col-9 flex top-border-section">
-                <div id="lksgLabel" class="col-3">
-                  <h3>LkSG</h3>
-                  <p>Overview of all existing and missing LkSG datasets for this company.</p>
-                </div>
-                <div class="col-9 d-card">
-                  <MetaInfoPerCompanyAndFramework
-                    title="LkSG"
-                    :data-type="DataTypeEnum.Lksg"
-                    :companyId="companyID"
-                    :isWaitingForData="waitingForData"
-                    :listOfFrameworkData="listOfLksgMetaInfo"
-                  />
-                </div>
-              </div>
-
-              <div id="smeContainer" class="col-9 flex top-border-section">
-                <div id="smeLabel" class="col-3">
-                  <h3>Sme</h3>
-                  <p>Overview of all existing and missing Sme datasets for this company.</p>
-                </div>
-                <div class="col-9 d-card">
-                  <MetaInfoPerCompanyAndFramework
-                    title="Sme"
-                    :data-type="DataTypeEnum.Sme"
-                    :companyId="companyID"
-                    :isWaitingForData="waitingForData"
-                    :listOfFrameworkData="listOfSmeMetaInfo"
-                  />
+              <div
+                v-for="(dataType, index) in [DataTypeEnum.Sfdr, DataTypeEnum.Lksg, DataTypeEnum.Sme]"
+                :key="index"
+                class="col-9 flex top-border-section"
+              >
+                <div :id="dataType + 'Container'" class="col-9 flex top-border-section">
+                  <div :id="dataType + 'Label'" class="col-3 p-3">
+                    <h3>{{ humanizeString(dataType) }}</h3>
+                    <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
+                  </div>
+                  <div class="col-9 d-card">
+                    <MetaInfoPerCompanyAndFramework
+                      :data-type="dataType"
+                      :companyId="companyID"
+                      :isWaitingForData="waitingForData"
+                      :listOfFrameworkData="listOfSfdrMetaInfo"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -109,6 +80,7 @@ import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "ChooseFramework",
@@ -142,6 +114,7 @@ export default defineComponent({
       listOfLksgMetaInfo: [] as Array<DataMetaInformation>,
       listOfSmeMetaInfo: [] as Array<DataMetaInformation>,
       DataTypeEnum,
+      humanizeString: humanizeString,
     };
   },
   props: {
@@ -152,6 +125,10 @@ export default defineComponent({
 
   watch: {},
   methods: {
+    buildSubtitle(dataTypeTitle: string): string {
+      return `Overview of all existing ${dataTypeTitle} datasets for this company.`;
+    },
+
     // TODO test this in unit tests
     /**
      *  Sorts a list of data meta information alphabetically by their reporting period
