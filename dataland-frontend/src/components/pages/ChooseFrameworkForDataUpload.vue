@@ -181,7 +181,7 @@ export default defineComponent({
     groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
       listOfDataMetaInfo: DataMetaInformation[]
     ): Map<string, DataMetaInformation[]> {
-      const mapOfReportingPeriodToListOfDataMetaInfo = new Map();
+      const mapOfReportingPeriodToListOfDataMetaInfo = new Map<string, DataMetaInformation[]>();
       listOfDataMetaInfo.forEach((currentDataMetaInfo) => {
         const reportingPeriodOfCurrentDataMetaInfo = currentDataMetaInfo.reportingPeriod;
         const listOfDataMetaInfoForUniqueReportingPeriod = mapOfReportingPeriodToListOfDataMetaInfo.get(

@@ -44,9 +44,8 @@ export default defineComponent({
     /**
      * TODO Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component.
      *
-     * @param receivedSfdrDataIds Received Sfdr data IDs
-     * @param listOfReceivedDataMetaInfo
-     * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo
+     * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
+     * active data meta information objects
      */
     handleUpdateActiveDataMetaInfo(receivedMapOfReportingPeriodsToActiveDataMetaInfo: DataMetaInformation[]) {
       this.receivedSfdrDataIds = Array.from(receivedMapOfReportingPeriodsToActiveDataMetaInfo.values()).map(
