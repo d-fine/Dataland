@@ -14,19 +14,20 @@ class EuTaxonomyNonFinancials {
         .getCompanyInformationWithoutIdentifiers(1)
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
+    fun `post a dummy company and a dummy data set for it and check if data Id appears in the company's meta data`() {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneEuTaxonomyNonFinancialsDataSet,
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
+        val expectedDataMetaInformation = receivedDataMetaInformation?.copy(currentlyActive = true)
         val listOfDataMetaInfoForTestCompany = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
-            receivedDataMetaInformation!!.companyId,
-            receivedDataMetaInformation.dataType,
+            expectedDataMetaInformation?.companyId,
+            expectedDataMetaInformation?.dataType,
         )
         Assertions.assertTrue(
-            listOfDataMetaInfoForTestCompany.contains(receivedDataMetaInformation),
+            listOfDataMetaInfoForTestCompany.contains(expectedDataMetaInformation),
             "The all-data-sets-list of the posted company does not contain the posted data set.",
         )
     }
