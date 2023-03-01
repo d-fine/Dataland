@@ -8,8 +8,8 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -65,7 +65,7 @@ class DatabaseDataStore(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.DataReceived) {
-            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
+            throw MessageQueueException()
         }
         // TODO Here we don't check if the dataId is empty. Is there a reason for it or should we make all of our checks
         //  consistent?

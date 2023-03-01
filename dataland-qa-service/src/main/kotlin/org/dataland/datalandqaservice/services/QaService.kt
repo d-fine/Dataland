@@ -5,9 +5,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -57,7 +57,7 @@ class QaService(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.DataStored) {
-            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
+            throw MessageQueueException()
         }
         if (dataId.isNotEmpty()) {
             logger.info(
@@ -72,7 +72,7 @@ class QaService(
                 message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
             )
         } else {
-            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
+            throw MessageQueueException()
         }
     }
 }

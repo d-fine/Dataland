@@ -13,9 +13,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -121,7 +121,7 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.QACompleted) {
-            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
+            throw MessageQueueException()
         }
         val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).dataId
         if (dataId.isNotEmpty()) {
@@ -132,7 +132,7 @@ class DataManager(
                 "Received quality assurance for data upload with DataId: $dataId with Correlation Id: $correlationId",
             )
         } else {
-            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
+            throw MessageQueueException()
         }
     }
 
@@ -215,7 +215,7 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         if (type != MessageType.DataStored) {
-            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
+            throw MessageQueueException()
         }
         if (dataId.isNotEmpty()) {
             logger.info("Internal Storage sent a message - job done")
@@ -224,7 +224,7 @@ class DataManager(
             )
             dataInMemoryStorage.remove(dataId)
         } else {
-            throw AmqpRejectAndDontRequeueException("Message could not be processed - Message rejected")
+            throw MessageQueueException()
         }
     }
 
