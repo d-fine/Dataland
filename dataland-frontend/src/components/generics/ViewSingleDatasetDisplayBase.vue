@@ -193,6 +193,8 @@ export default defineComponent({
       if (dataMetaInfoForNewlyChosenReportingPeriod) {
         this.processDataMetaInfoForDisplay(dataMetaInfoForNewlyChosenReportingPeriod);
         this.routerPushToReportingPeriod(dataMetaInfoForNewlyChosenReportingPeriod.reportingPeriod);
+      } else {
+        this.isReportingPeriodInUrlInvalid = true;
       }
     },
 
@@ -283,8 +285,8 @@ export default defineComponent({
       } catch (error) {
         const axiosError = error as AxiosError;
         if (axiosError.response?.status == 404) {
-          // TODO we need to do smth here to set the reportingPeriod dropdown to "Select ...";  Reason: If you click "BACK" and land on the "invalid data ID" page, the reporting Period dropdown needs to adjust and display the "Select..." state
-          this.latestChosenReportingPeriodInDropdown = null; // TODO this alone isn't working!
+          this.latestChosenReportingPeriodInDropdown = null;
+          this.chosenReportingPeriodInDropdown = "";
           this.isDataIdToDisplayFound = false;
           this.isDataIdInUrlInvalid = true;
         }

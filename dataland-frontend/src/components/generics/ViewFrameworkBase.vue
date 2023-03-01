@@ -51,7 +51,7 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { DataMetaInformation } from "@clients/backend";
 
@@ -142,7 +142,7 @@ export default defineComponent({
       ];
       const listOfDistinctAvailableAndViewableFrameworksForCompany: string[] = [];
       setOfAvailableFrameworksForCompany.forEach((dataType) => {
-        if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataType)) {
+        if (ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
           listOfDistinctAvailableAndViewableFrameworksForCompany.push(dataType);
         }
       });

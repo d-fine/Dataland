@@ -42,6 +42,7 @@ import { defineComponent } from "vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import PrimeButton from "primevue/button";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 export default defineComponent({
   name: "MetaInfoPerComanyAndFramework",
@@ -52,15 +53,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    isFrontendViewPageExisting: {
-      type: Boolean,
-      default: true,
-    },
-    isFrontendUploadFormExisting: {
-      type: Boolean,
-      default: true,
-    },
-    frameworkUrlPath: {
+    dataType: {
       type: String,
       required: true,
     },
@@ -80,8 +73,15 @@ export default defineComponent({
 
   data() {
     return {
+      isFrontendViewPageExisting: null as null | boolean,
+      isFrontendUploadFormExisting: null as null | boolean,
       convertUnixTimeInMsToDateString: convertUnixTimeInMsToDateString,
     };
+  },
+
+  mounted() {
+    this.isFrontendViewPageExisting = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(this.dataType as DataTypeEnum);
+    this.isFrontendUploadFormExisting = ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum);
   },
 
   computed: {
@@ -124,14 +124,14 @@ export default defineComponent({
         } else {
           urlExtension = `/${dataMetaInfoOfClickedDataSet.dataId}`;
         }
-        await this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${urlExtension}`);
+        await this.$router.push(`/companies/${this.companyId}/frameworks/${this.dataType}${urlExtension}`);
       }
     },
     /**
      * Executes a router push to the upload page of a given company and framework
      */
     async redirectToUploadForm() {
-      await this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}/upload`);
+      await this.$router.push(`/companies/${this.companyId}/frameworks/${this.dataType}/upload`);
     },
   },
 });
