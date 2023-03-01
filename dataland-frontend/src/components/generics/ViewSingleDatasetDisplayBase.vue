@@ -48,7 +48,7 @@
         <h2>Checking if {{ dataDescriptor }} available...</h2>
       </div>
       <div
-        v-if="!isWaitingForDataIdToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.length === 0"
+        v-if="!isWaitingForDataIdToDisplay && Object.keys(receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo).length === 0"
         class="col-12 text-left"
       >
         <h2>No {{ dataDescriptor }} present</h2>
@@ -65,7 +65,7 @@
 
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { DataMetaInformation } from "@clients/backend";
 import { defineComponent, inject, ref } from "vue";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import Keycloak from "keycloak-js";
