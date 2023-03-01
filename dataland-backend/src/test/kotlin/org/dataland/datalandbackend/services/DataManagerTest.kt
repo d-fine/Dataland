@@ -178,7 +178,7 @@ class DataManagerTest(
         val thrown = assertThrows<MessageQueueRejectException> {
             dataManager.updateMetaData(messageWithEmptyDataID, "", MessageType.QACompleted)
         }
-        assertEquals("Message could not be processed - Message rejected", thrown.message)
+        assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
 
     @Test
@@ -186,7 +186,7 @@ class DataManagerTest(
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             dataManager.removeStoredItemFromTemporaryStore("", "", MessageType.DataStored)
         }
-        assertEquals("Message could not be processed - Message rejected", thrown.message)
+        assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
 
     @Test
