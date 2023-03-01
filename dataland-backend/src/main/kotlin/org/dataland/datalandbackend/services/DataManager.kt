@@ -214,6 +214,7 @@ class DataManager(
             ),
         ],
     )
+    @Suppress("TooGenericExceptionCaught")
     fun removeStoredItemFromTemporaryStore(
         @Payload dataId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
@@ -227,7 +228,7 @@ class DataManager(
             )
             try {
                 dataInMemoryStorage.remove(dataId)
-            } catch(e: Exception){
+            } catch (e: Exception) {
                 throw MessageQueueRejectException(e)
             }
         } else {
