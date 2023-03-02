@@ -62,12 +62,10 @@ class QaService(
         if (dataId.isNotEmpty()) {
             try {
                 logger.info(
-                    "Received data upload with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
+                    "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
                 )
                 val message = objectMapper.writeValueAsString(
-                    QaCompletedMessage(
-                        dataId = dataId, validationResult = "By default, QA is passed",
-                    ),
+                    QaCompletedMessage(dataId, "By default, QA is passed"),
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
