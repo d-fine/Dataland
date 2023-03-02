@@ -4,19 +4,20 @@
     :dataType="DataTypeEnum.Lksg"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
   >
-    <template v-slot:content v-if="receivedLksgDataIds.length > 0">
+    <template v-slot:content>
       <div class="grid">
         <div class="col-12">
           <LksgPanel :companyId="companyID" />
         </div>
       </div>
+
+      <div v-if="loading" class="col-12 text-left">
+        <h2>Checking if LkSG data is available...</h2>
+      </div>
+      <div v-if="!loading && receivedLksgDataIds.length === 0" class="col-12 text-left">
+        <h2>No LkSG data</h2>
+      </div>
     </template>
-    <div v-if="loading" class="col-12 text-left">
-      <h2>Checking if LkSG data is available...</h2>
-    </div>
-    <div v-if="!loading && receivedLksgDataIds.length === 0" class="col-12 text-left">
-      <h2>No LkSG data</h2>
-    </div>
   </ViewFrameworkBase>
 </template>
 
