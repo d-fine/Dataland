@@ -9,11 +9,9 @@
         id="chooseReportingPeriodDropdown"
         v-model="chosenReportingPeriodInDropdown"
         :options="reportingPeriodsInDropdown"
-        :placeholder="
-          latestChosenReportingPeriodInDropdown?.length ? latestChosenReportingPeriodInDropdown : 'Select...'
-        "
+        :placeholder="dataMetaInfoForDisplay?.reportingPeriod || 'Select...'"
         aria-label="Choose reporting period"
-        :class="[latestChosenReportingPeriodInDropdown?.length ? ['always-fill'] : '']"
+        :class="[dataMetaInfoForDisplay ? ['always-fill'] : '']"
         class="fill-dropdown ml-4"
         dropdownIcon="pi pi-angle-down"
         @change="handleChangeReportingPeriodEvent"
@@ -22,7 +20,7 @@
 
     <template v-slot:content>
       <div v-if="isDataIdToDisplayFound">
-        <div v-if="isFoundDataIdBelongingToOutdatedDataset" class="flex w-full info-bar">
+        <div v-if="dataMetaInfoForDisplay?.currentlyActive === false" class="flex w-full info-bar">
           <span class="flex-1">this dataset is outdated</span>
           <PrimeButton
             @click="handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton"
@@ -103,22 +101,18 @@ export default defineComponent({
       type: String,
     },
   },
-
   emits: ["updateDataIdOfDatasetToDisplay"],
-
   data() {
     return {
-      isReportingPeriodsWatcherEnabledForNextExecution: true,
       isWaitingForDataIdToDisplay: true,
       receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo: {} as Map<string, DataMetaInformation>,
       reportingPeriodsInReceivedDataMetaInfo: [] as Array<string>,
       reportingPeriodsInDropdown: [] as Array<string>,
       chosenReportingPeriodInDropdown: "",
-      latestChosenReportingPeriodInDropdown: null as string | null,
+      dataMetaInfoForDisplay: null as DataMetaInformation | null,
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
       isDataIdToDisplayFound: false,
-      isFoundDataIdBelongingToOutdatedDataset: false,
     };
   },
 
@@ -128,28 +122,14 @@ export default defineComponent({
       frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
     };
   },
-
-  mounted() {
-    console.log("mounted"); // TODO debugging
-  },
-
   watch: {
-    async dataId(newDataId: string) {
-      console.log("dataId watcher runs"); // TODO debugging
+    dataId(newDataId: string) {
       if (newDataId) {
-        console.log("dataId watcher does things"); // TODO debugging
-        await this.getMetaDataForDataIdAndEmit(newDataId);
+        void this.getMetaDataForDataIdAndEmit(newDataId);
       }
     },
     reportingPeriod(newReportingPeriod: string) {
-      "newReportingPeriod watcher runs";
-      if (this.isReportingPeriodsWatcherEnabledForNextExecution && newReportingPeriod) {
-        console.log("reportingPeriod watcher does things"); // TODO debug
-        this.switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod);
-      } else {
-        console.log("reportingPeriod watcher deactivated => does nothing");
-      }
-      this.isReportingPeriodsWatcherEnabledForNextExecution = true;
+      this.switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod);
     },
   },
 
@@ -161,9 +141,8 @@ export default defineComponent({
      */
     processDataMetaInfoForDisplay(dataMetaInfoForDisplay: DataMetaInformation) {
       this.chosenReportingPeriodInDropdown = dataMetaInfoForDisplay.reportingPeriod;
-      this.latestChosenReportingPeriodInDropdown = dataMetaInfoForDisplay.reportingPeriod;
       this.isDataIdToDisplayFound = true;
-      this.isFoundDataIdBelongingToOutdatedDataset = !dataMetaInfoForDisplay.currentlyActive;
+      this.dataMetaInfoForDisplay = dataMetaInfoForDisplay;
       this.$emit("updateDataIdOfDatasetToDisplay", dataMetaInfoForDisplay.dataId);
     },
 
@@ -174,14 +153,7 @@ export default defineComponent({
      * @param dropDownChangeEvent The object which is passed by the change event of the reporting period dropdown
      */
     handleChangeReportingPeriodEvent(dropDownChangeEvent: DropdownChangeEvent) {
-      console.log("change event of reporting period dropdown");
-      if (this.latestChosenReportingPeriodInDropdown != null) {
-        console.log("placeholderValue: " + this.latestChosenReportingPeriodInDropdown);
-      }
-      console.log("new reporting period from change event: " + String(dropDownChangeEvent.value));
-      if (dropDownChangeEvent.value != this.latestChosenReportingPeriodInDropdown) {
-        this.switchToActiveDatasetForNewlyChosenReportingPeriod(String(dropDownChangeEvent.value));
-      }
+      this.routerPushToReportingPeriod(String(dropDownChangeEvent.value));
     },
 
     /**
@@ -190,9 +162,8 @@ export default defineComponent({
      * @param newReportingPeriod The desired new reporting period
      */
     switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod: string) {
-      this.isReportingPeriodsWatcherEnabledForNextExecution = false;
-      if (this.isReportingPeriodInUrlInvalid) this.isReportingPeriodInUrlInvalid = false;
-      if (this.isDataIdInUrlInvalid) this.isDataIdInUrlInvalid = false;
+      this.isReportingPeriodInUrlInvalid = false;
+      this.isDataIdInUrlInvalid = false;
       const dataMetaInfoForNewlyChosenReportingPeriod =
         this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(newReportingPeriod);
       if (dataMetaInfoForNewlyChosenReportingPeriod) {
@@ -222,7 +193,9 @@ export default defineComponent({
      * Switches to the active dataset for the currently chosen reporting period.
      */
     handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
-      this.switchToActiveDatasetForNewlyChosenReportingPeriod(this.latestChosenReportingPeriodInDropdown as string);
+      this.switchToActiveDatasetForNewlyChosenReportingPeriod(
+        assertDefined(this.dataMetaInfoForDisplay?.reportingPeriod)
+      );
     },
 
     /**
@@ -304,7 +277,7 @@ export default defineComponent({
     },
 
     handleInvalidDataIdPassedInUrl() {
-      this.latestChosenReportingPeriodInDropdown = null;
+      this.dataMetaInfoForDisplay = null;
       this.chosenReportingPeriodInDropdown = "";
       this.isDataIdToDisplayFound = false;
       this.isDataIdInUrlInvalid = true;
@@ -315,19 +288,13 @@ export default defineComponent({
      * latest chosen reporting period in dropdown
      */
     switchToDefaultDatasetToDisplay() {
-      const dataMetaInfoForEmit = this.getActiveDataMetaInfoFromLatestReportingPeriodIfParsableAsNumber();
-      if (dataMetaInfoForEmit) {
-        this.processDataMetaInfoForDisplay(dataMetaInfoForEmit);
-        this.isReportingPeriodsWatcherEnabledForNextExecution = false;
-        if (this.companyId != null && this.dataType != null) {
-          this.$router
-            .replace(
-              `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${
-                this.latestChosenReportingPeriodInDropdown as string
-              }`
-            )
-            .catch((err) => console.log("Replacing route failed with error " + String(err)));
-        }
+      const latestDataMetaInformation = this.getActiveDataMetaInfoFromLatestReportingPeriodIfParsableAsNumber();
+      if (latestDataMetaInformation && this.companyId && this.dataType) {
+        this.$router
+          .replace(
+            `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${latestDataMetaInformation.reportingPeriod}`
+          )
+          .catch((err) => console.log("Replacing route failed with error " + String(err)));
       }
     },
 
@@ -336,7 +303,6 @@ export default defineComponent({
      */
     getActiveDataMetaInfoFromLatestReportingPeriodIfParsableAsNumber(): DataMetaInformation {
       const [firstActiveDataMetaInfo] = this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.values();
-      const defaultActiveDataMetaInfo = [firstActiveDataMetaInfo][0];
       const listOfNumbersInReportingPeriods: number[] = [];
       this.reportingPeriodsInDropdown.forEach((reportingPeriodAsString) => {
         const parsedReportingPeriod = parseInt(reportingPeriodAsString);
@@ -351,9 +317,9 @@ export default defineComponent({
         if (activeDataMetaInfoForLatestReportingPeriod) {
           return activeDataMetaInfoForLatestReportingPeriod;
         } else {
-          return defaultActiveDataMetaInfo;
+          return firstActiveDataMetaInfo;
         }
-      } else return defaultActiveDataMetaInfo;
+      } else return firstActiveDataMetaInfo;
     },
   },
 });
