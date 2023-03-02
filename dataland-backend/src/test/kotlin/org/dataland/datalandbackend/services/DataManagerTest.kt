@@ -204,10 +204,9 @@ class DataManagerTest(
         ).thenThrow(
             AmqpException::class.java,
         )
-        val dataId = "amqpexceptionisthrownduringstoring"
         assertThrows<AmqpException> {
             spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
-                dataId, storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId,
+                dataUUId, storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId,
             )
         }
     }
