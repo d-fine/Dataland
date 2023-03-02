@@ -45,7 +45,7 @@ interface MetaDataApi {
     fun getListOfDataMetaInfo(
         @RequestParam companyId: String? = null,
         @RequestParam dataType: DataType? = null,
-        @RequestParam showOnlyActive: Boolean = true,
+        @RequestParam(defaultValue = "true") showOnlyActive: Boolean = true,
         @RequestParam reportingPeriod: String? = null,
     ):
         ResponseEntity<List<DataMetaInformation>>
