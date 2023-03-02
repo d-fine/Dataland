@@ -67,19 +67,21 @@ class DatabaseDataStore(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DataReceived)
-        // TODO Here we don't check if the dataId is empty. Is there a reason for it or should we make all of our checks
-        //  consistent?
-        try {
-            logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-            val data = temporarilyCachedDataClient.getReceivedData(dataId)
-            logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
-            logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
-            dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, MessageType.DataStored, correlationId, ExchangeNames.dataStored,
-            )
-        } catch (e: Exception) {
-            throw MessageQueueRejectException(e)
+        if (dataId.isNotEmpty()) {
+            try {
+                logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+                val data = temporarilyCachedDataClient.getReceivedData(dataId)
+                logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
+                logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
+                dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
+                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                    dataId, MessageType.DataStored, correlationId, ExchangeNames.dataStored,
+                )
+            } catch (e: Exception) {
+                throw MessageQueueRejectException(e)
+            }
+        } else {
+            throw MessageQueueRejectException("Provided data ID is empty")
         }
     }
 
