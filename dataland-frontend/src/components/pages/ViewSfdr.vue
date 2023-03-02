@@ -4,19 +4,19 @@
     dataType="sfdr"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
   >
-    <template v-slot:content v-if="receivedSfdrDataIds.length > 0">
+    <template v-slot:content>
       <div class="grid">
         <div class="col-12">
           <SfdrPanel :companyId="companyID" />
         </div>
       </div>
+      <div v-if="loading" class="col-12 text-left">
+        <h2>Checking if SFDR data is available...</h2>
+      </div>
+      <div v-if="!loading && receivedSfdrDataIds.length === 0" class="col-12 text-left">
+        <h2>No SFDR data</h2>
+      </div>
     </template>
-    <div v-if="loading" class="col-12 text-left">
-      <h2>Checking if SFDR data is available...</h2>
-    </div>
-    <div v-if="!loading && receivedSfdrDataIds.length === 0" class="col-12 text-left">
-      <h2>No SFDR data</h2>
-    </div>
   </ViewFrameworkBase>
 </template>
 

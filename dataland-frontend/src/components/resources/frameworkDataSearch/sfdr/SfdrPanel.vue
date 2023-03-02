@@ -3,7 +3,7 @@
     <p class="font-medium text-xl">Loading SFDR Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="sfdrData && !waitingForData">
+  <div v-if="kpiDataObjects.length && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
       :dataDateOfDataSets="listOfDataDateToDisplayAsColumns"
