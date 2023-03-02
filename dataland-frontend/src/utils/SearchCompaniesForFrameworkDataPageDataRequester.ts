@@ -116,12 +116,14 @@ export async function getCompanyDataForFrameworkDataSearchPage(
  * @returns a vue router link to the first framework associated with the given company object
  */
 export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
-  const dataTypesForWhichCompanyHasData = companyData.dataRegisteredByDataland.map( //TODO duplicate code => create method to derive distinct datatypes out of list of meta info and use it everyhwere this is needed (esp. in Viewframework Base)
-    (dataMetaInformation) => dataMetaInformation.dataType   // TODO if that method works like in FrameworkBase, it will be more efficient too
+  const dataTypesForWhichCompanyHasData = companyData.dataRegisteredByDataland.map(
+    //TODO duplicate code => create method to derive distinct datatypes out of list of meta info and use it everyhwere this is needed (esp. in Viewframework Base)
+    (dataMetaInformation) => dataMetaInformation.dataType // TODO if that method works like in FrameworkBase, it will be more efficient too
   );
   const defaultRoute = `/companies/${companyData.companyId}/frameworks/${dataTypesForWhichCompanyHasData[0]}`;
   const filtersStore = useFiltersStore();
-  if (filtersStore.selectedFiltersForFrameworks.length === 0) {  // TODO discuss with Marc =>  Should we switch all ".length > 0" checks in code to just ".length" ?  And  ".length ===0" to "!.length" ?
+  if (filtersStore.selectedFiltersForFrameworks.length === 0) {
+    // TODO discuss with Marc =>  Should we switch all ".length > 0" checks in code to just ".length" ?  And  ".length ===0" to "!.length" ?
     return defaultRoute;
   } else {
     const dataTypesOfCompanyThatMatchTheFiltersStore = dataTypesForWhichCompanyHasData.filter((dataType) =>
