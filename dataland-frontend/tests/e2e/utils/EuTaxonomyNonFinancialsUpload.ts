@@ -17,6 +17,7 @@ import Chainable = Cypress.Chainable;
  */
 export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
+  cy.get(`input[name="reportingPeriod"]`).type("2023");
   cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
     force: true,

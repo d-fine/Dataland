@@ -27,6 +27,8 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
+  cy.get(`input[name="reportingPeriod"]`).type("2023");
+
   cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes || []);
 
   if (data.assurance?.assurance !== undefined) {
