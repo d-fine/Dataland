@@ -4,7 +4,12 @@
     <TheContent class="paper-section min-h-screen">
       <MarginWrapper class="text-left surface-0" style="margin-right: 0">
         <BackButton />
-        <FrameworkDataSearchBar class="mt-2" ref="frameworkDataSearchBar" @search-confirmed="handleSearchConfirm" />
+        <FrameworkDataSearchBar
+          :companyIdIfOnViewPage="companyID"
+          class="mt-2"
+          ref="frameworkDataSearchBar"
+          @search-confirmed="handleSearchConfirm"
+        />
       </MarginWrapper>
       <MarginWrapper class="surface-0" style="margin-right: 0">
         <div class="grid align-items-end">

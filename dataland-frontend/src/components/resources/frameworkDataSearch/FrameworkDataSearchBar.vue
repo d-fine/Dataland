@@ -23,7 +23,7 @@
             @keydown="noteThatAKeyWasPressed"
             @keydown.down="getCurrentFocusedOptionIndex"
             @keydown.up="getCurrentFocusedOptionIndex"
-            @item-select="pushToViewDataPageForItem"
+            @item-select="handleItemSelect"
             @keyup.enter="executeSearchIfNoItemFocused"
             @focus="setCurrentFocusedOptionIndexToDefault"
           >
@@ -77,6 +77,9 @@ export default defineComponent({
   emits: ["companies-received", "search-confirmed"],
 
   props: {
+    companyIdIfOnViewPage: {
+      type: String,
+    },
     searchBarId: {
       type: String,
       default: "framework_data_search_bar_standard",
@@ -185,8 +188,12 @@ export default defineComponent({
      * @param event the click event
      * @param event.value the company that was clicked on
      */
-    pushToViewDataPageForItem(event: { value: DataSearchStoredCompany }) {
-      void this.$router.push(getRouterLinkTargetFramework(event.value));
+    handleItemSelect(event: { value: DataSearchStoredCompany }) {
+      if (this.companyIdIfOnViewPage != event.value.companyId) {
+        void this.$router.push(getRouterLinkTargetFramework(event.value));
+      } else {
+        this.searchBarInput = event.value.companyName;
+      }
     },
 
     /**
