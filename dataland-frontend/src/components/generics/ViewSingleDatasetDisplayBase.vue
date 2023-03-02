@@ -220,7 +220,7 @@ export default defineComponent({
         receivedMapOfReportingPeriodsToActiveDataMetaInfo
       );
       this.chooseDataMetaInfoForDisplayedDataset().catch((err) =>
-        console.log("Retrieving and emitting data meta info failed with error " + String(err))
+        console.log("Retrieving data meta info failed with error " + String(err))
       );
       this.isWaitingForDataIdToDisplay = false;
     },
