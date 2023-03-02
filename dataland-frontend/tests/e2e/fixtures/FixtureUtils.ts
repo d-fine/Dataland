@@ -1,6 +1,6 @@
 import { CompanyInformation, CompanyReport } from "@clients/backend";
 import { generateCompanyInformation } from "./CompanyFixtures";
-import { getRandomReportingPeriod } from "@common/ReportingPeriodFixtures";
+import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 
 export type ReferencedReports = { [key: string]: CompanyReport };
 

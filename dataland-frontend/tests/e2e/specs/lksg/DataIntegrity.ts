@@ -12,7 +12,7 @@ import {
 import { getPreparedFixture, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import Chainable = Cypress.Chainable;
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { getRandomReportingPeriod } from "@common/ReportingPeriodFixtures";
+import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 
 const dateAndMonthOfAdditionallyUploadedLksgDataSets = "-12-31";
 const monthAndDayOfLksgPreparedFixtures = "-01-01";

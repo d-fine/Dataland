@@ -1,9 +1,9 @@
-import { reader_name, reader_pw, uploader_name, uploader_pw } from "../../utils/Cypress";
-import { DataTypeEnum } from "../../../../build/clients/backend";
-import { describeIf } from "../../support/TestUtility";
-import { uploadCompanyViaApi } from "../../utils/CompanyUpload";
-import { getKeycloakToken } from "../../utils/Auth";
-import { generateCompanyInformation } from "../../fixtures/CompanyFixtures";
+import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { DataTypeEnum } from "@clients/backend";
+import { describeIf } from "@e2e/support/TestUtility";
+import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 
 describe("Check if each page is visitable if and only if the corresponding role is given", () => {
   describeIf(

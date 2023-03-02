@@ -7,9 +7,9 @@ import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
-import { assertDefined } from "../../../../src/utils/TypeScriptUtils";
-import { describeIf } from "../../support/TestUtility";
-import { getRandomReportingPeriod } from "@common/ReportingPeriodFixtures";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { describeIf } from "@e2e/support/TestUtility";
+import { getRandomReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
 
 describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   describeIf(

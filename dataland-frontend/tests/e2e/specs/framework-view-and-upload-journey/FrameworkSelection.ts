@@ -11,7 +11,7 @@ import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
-import { getRandomReportingPeriod } from "@common/ReportingPeriodFixtures";
+import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
