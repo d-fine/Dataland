@@ -30,6 +30,8 @@ export default defineConfig({
         KEYCLOAK_ADMIN_PASSWORD: process.env.KEYCLOAK_ADMIN_PASSWORD,
         KEYCLOAK_ADMIN: process.env.KEYCLOAK_ADMIN,
         PGADMIN_PASSWORD: process.env.PGADMIN_PASSWORD,
+        RABBITMQ_PASS: process.env.RABBITMQ_PASS,
+        RABBITMQ_USER: process.env.RABBITMQ_USER
     },
     numTestsKeptInMemory: 2,
     defaultCommandTimeout: 10000,

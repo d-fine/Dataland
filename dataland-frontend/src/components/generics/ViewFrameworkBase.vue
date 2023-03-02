@@ -51,6 +51,7 @@ import Dropdown from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import { QAStatus } from "@clients/backend";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -146,14 +147,16 @@ export default defineComponent({
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfDataMetaInfoForCompany = apiResponse.data;
         const listOfDataIdsToEmit = [] as string[];
-        listOfDataMetaInfoForCompany.forEach((dataMetaInfo) => {
-          if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)) {
-            this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo.dataType);
-          }
-          if (dataMetaInfo.dataType === this.dataType) {
-            listOfDataIdsToEmit.push(dataMetaInfo.dataId);
-          }
-        });
+        listOfDataMetaInfoForCompany
+          .filter((dataMetaInfo) => dataMetaInfo.qaStatus == QAStatus.Accepted)
+          .forEach((dataMetaInfo) => {
+            if (ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS.includes(dataMetaInfo.dataType)) {
+              this.appendDistinctDataTypeToDropdownOptionsIfNotIncludedYet(dataMetaInfo.dataType);
+            }
+            if (dataMetaInfo.dataType === this.dataType) {
+              listOfDataIdsToEmit.push(dataMetaInfo.dataId);
+            }
+          });
         this.$emit("updateDataId", listOfDataIdsToEmit);
       } catch (error) {
         this.noFailure = false;

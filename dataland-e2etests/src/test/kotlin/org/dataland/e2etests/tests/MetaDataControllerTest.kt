@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -38,8 +39,7 @@ class MetaDataControllerTest {
         )[0].actualStoredDataMetaInfo!!
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
-        val expectedDataMetaInformation =
-            DataMetaInformation(uploadedMetaInfo.dataId, testDataType, 0, uploadedMetaInfo.companyId, null)
+        val expectedDataMetaInformation = buildDataMetaInformation(uploadedMetaInfo, testDataType)
         assertEquals(
             expectedDataMetaInformation,
             actualDataMetaInformation.copy(uploadTime = 0),
@@ -52,6 +52,14 @@ class MetaDataControllerTest {
             "The server-upload-time and the local upload time differ too much.",
         )
     }
+
+    private fun buildDataMetaInformation(
+        uploadedMetaInfo: DataMetaInformation,
+        testDataType: DataTypeEnum,
+    ) = DataMetaInformation(
+        uploadedMetaInfo.dataId, testDataType, 0,
+        uploadedMetaInfo.companyId, QAStatus.accepted,
+    )
 
     @Test
     fun `search for a company that does not exist and check that a 404 error is returned`() {
@@ -141,7 +149,10 @@ class MetaDataControllerTest {
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val dataMetaInformation = apiAccessor.unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
         assertEquals(
-            DataMetaInformation(testDataId, testDataType, 0, listOfUploadInfo[0].actualStoredCompany.companyId, null),
+            DataMetaInformation(
+                testDataId, testDataType, 0,
+                listOfUploadInfo[0].actualStoredCompany.companyId, QAStatus.accepted,
+            ),
             dataMetaInformation.copy(uploadTime = 0),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
         )
@@ -168,13 +179,16 @@ class MetaDataControllerTest {
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
-        val expectedMetaInformation = DataMetaInformation(testDataId, testDataType, 0, testCompanyId, null)
+        val expectedMetaInformation = DataMetaInformation(
+            testDataId, testDataType, 0,
+            testCompanyId, QAStatus.accepted,
+        )
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
                 .map { it.copy(uploadTime = 0) }
                 .contains(expectedMetaInformation),
-            "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
-                "match the retrieved meta info.",
+            "The meta info of the posted eu taxonomy data that was associated with the teaser company " +
+                "does not match the retrieved meta info.",
         )
     }
 

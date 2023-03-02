@@ -3,7 +3,7 @@
     <p class="font-medium text-xl">Loading SFDR Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="sfdrData && !waitingForData">
+  <div v-if="sfdrDataAndMetaInfo && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
       :dataDateOfDataSets="listOfDataDateToDisplayAsColumns"
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { SfdrData, DataAndMetaInformationSfdrData } from "@clients/backend";
+import { DataAndMetaInformationSfdrData, QAStatus } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -40,7 +40,7 @@ export default defineComponent({
   data() {
     return {
       waitingForData: true,
-      sfdrData: [] as Array<SfdrData>,
+      sfdrDataAndMetaInfo: [] as Array<DataAndMetaInformationSfdrData>,
       listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       sfdrKpisNameMappings,
@@ -54,20 +54,24 @@ export default defineComponent({
     },
   },
   created() {
-    void this.fetchDataForAllDataIds();
+    void this.fetchAllAcceptedDatasets();
   },
   methods: {
     /**
-     * Fetches all Sfdr datasets for the current company and converts them to the requried frontend format.
+     * Fetches all accepted Sfdr datasets for the current company and converts them to the required frontend format.
      */
-    async fetchDataForAllDataIds() {
+    async fetchAllAcceptedDatasets() {
       try {
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getSfdrDataControllerApi();
-        this.sfdrData = (await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))).data;
-        this.convertSfdrDataToFrontendFormat(this.sfdrData);
+        this.sfdrDataAndMetaInfo = (
+          await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))
+        ).data.filter(
+          (dataAndMetaInfo: DataAndMetaInformationSfdrData) => dataAndMetaInfo.metaInfo.qaStatus == QAStatus.Accepted
+        );
+        this.convertSfdrDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -106,12 +110,10 @@ export default defineComponent({
 
     /**
      * Retrieves and converts values from an array of SDFG datasets in order to make it displayable in the frontend.
-     *
-     * @param sfdrData The Sfdr dataset that shall be converted
      */
-    convertSfdrDataToFrontendFormat(sfdrData: Array<DataAndMetaInformationSfdrData>): void {
-      if (sfdrData.length) {
-        sfdrData.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
+    convertSfdrDataToFrontendFormat(): void {
+      if (this.sfdrDataAndMetaInfo.length) {
+        this.sfdrDataAndMetaInfo.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
           const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
           const dataDateOfSfdrDataset = oneSfdrDataset.data.social?.general?.fiscalYearEnd ?? "";
           this.listOfDataDateToDisplayAsColumns.push({
@@ -133,7 +135,7 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchDataForAllDataIds();
+      void this.fetchAllAcceptedDatasets();
     },
   },
 });

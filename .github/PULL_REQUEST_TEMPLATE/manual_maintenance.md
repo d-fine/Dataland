@@ -37,6 +37,9 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-internal-storage/Dockerfile`
 - [ ] `./dataland-internal-storage/DockerfileTest`
+- [ ] `./dataland-qa-service/Dockerfile`
+- [ ] `./dataland-qa-service/DockerfileTest`
+- [ ] `./dataland-rabbitmq/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
 - [ ] `./dataland-inbound-proxy/DockerfileBase`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
