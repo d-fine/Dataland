@@ -81,7 +81,6 @@ import { DataMetaInformation } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import Keycloak from "keycloak-js";
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
