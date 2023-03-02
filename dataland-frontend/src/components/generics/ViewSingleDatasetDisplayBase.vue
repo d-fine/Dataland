@@ -133,7 +133,7 @@ export default defineComponent({
   watch: {
     dataId(newDataId: string) {
       if (newDataId) {
-        void this.getMetaDataForDataIdAndEmit(newDataId);
+        void this.getMetaDataForDataId(newDataId);
       }
     },
     reportingPeriod(newReportingPeriod: string) {
@@ -219,7 +219,7 @@ export default defineComponent({
       this.getDistinctAvailableReportingPeriodsAndPutThemSortedIntoDropdown(
         receivedMapOfReportingPeriodsToActiveDataMetaInfo
       );
-      this.chooseDataMetaInfoForDisplayedDatasetAndEmitDataId().catch((err) =>
+      this.chooseDataMetaInfoForDisplayedDataset().catch((err) =>
         console.log("Retrieving and emitting data meta info failed with error " + String(err))
       );
       this.isWaitingForDataIdToDisplay = false;
@@ -245,10 +245,10 @@ export default defineComponent({
     /**
      * TODO adjust: Displays either the data set using the ID from the query param or if that is not available the first data set from the list of received data sets.
      */
-    async chooseDataMetaInfoForDisplayedDatasetAndEmitDataId() {
+    async chooseDataMetaInfoForDisplayedDataset() {
       if (this.dataId) {
         console.log("Case A"); // TODO debugging
-        await this.getMetaDataForDataIdAndEmit(this.dataId);
+        await this.getMetaDataForDataId(this.dataId);
       } else if (!this.dataId && this.reportingPeriod) {
         console.log("Case B"); // TODO debugging
         this.switchToActiveDatasetForNewlyChosenReportingPeriod(this.reportingPeriod);
@@ -263,7 +263,7 @@ export default defineComponent({
      *
      * @param dataId The desired data ID for which the meta data are wanted
      */
-    async getMetaDataForDataIdAndEmit(dataId: string) {
+    async getMetaDataForDataId(dataId: string) {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
