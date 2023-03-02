@@ -59,7 +59,7 @@
       </div>
       <div v-if="isReportingPeriodInUrlInvalid">
         <h2>
-          No {{ dataDescriptor }} data could be found for the reporting period {{ reportingPeriod }} for this company.
+          No {{ dataDescriptor }} data could be found for the reporting period passed in the URL for this company.
         </h2>
       </div>
     </template>
