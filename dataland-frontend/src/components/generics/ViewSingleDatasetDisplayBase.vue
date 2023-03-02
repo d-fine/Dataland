@@ -52,12 +52,7 @@
       <div v-if="isWaitingForDataIdToDisplay" class="col-12 text-left">
         <h2>Checking if {{ humanizedDataDescription }} available...</h2>
       </div>
-      <div
-        v-if="
-          !isWaitingForDataIdToDisplay &&
-          Object.keys(receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo).length === 0
-        "
-      >
+      <div v-if="!isWaitingForDataIdToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size === 0">
         <h2>No {{ humanizedDataDescription }} present for this company.</h2>
       </div>
       <div v-if="isDataIdInUrlInvalid">
