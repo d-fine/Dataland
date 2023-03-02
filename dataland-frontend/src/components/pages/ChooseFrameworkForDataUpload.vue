@@ -40,20 +40,19 @@
                 v-for="(dataType, index) in [DataTypeEnum.Sfdr, DataTypeEnum.Lksg, DataTypeEnum.Sme]"
                 :key="index"
                 class="col-9 flex top-border-section"
+                :id="dataType + 'Container'"
               >
-                <div :id="dataType + 'Container'" class="col-9 flex top-border-section">
-                  <div :id="dataType + 'Label'" class="col-3 p-3">
-                    <h3>{{ humanizeString(dataType) }}</h3>
-                    <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
-                  </div>
-                  <div class="col-9 d-card">
-                    <MetaInfoPerCompanyAndFramework
-                      :data-type="dataType"
-                      :companyId="companyID"
-                      :isWaitingForData="waitingForData"
-                      :listOfFrameworkData="listOfSfdrMetaInfo"
-                    />
-                  </div>
+                <div :id="dataType + 'Label'" class="col-3 p-3">
+                  <h3>{{ humanizeString(dataType) }}</h3>
+                  <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
+                </div>
+                <div class="col-9 d-card">
+                  <MetaInfoPerCompanyAndFramework
+                    :data-type="dataType"
+                    :companyId="companyID"
+                    :isWaitingForData="waitingForData"
+                    :listOfFrameworkData="listOfSfdrMetaInfo"
+                  />
                 </div>
               </div>
             </div>
