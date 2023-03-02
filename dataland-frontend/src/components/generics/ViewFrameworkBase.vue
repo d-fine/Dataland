@@ -100,6 +100,7 @@ export default defineComponent({
     };
   },
   created() {
+    this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
     window.addEventListener("scroll", this.windowScrollHandler);
   },
