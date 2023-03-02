@@ -78,7 +78,7 @@
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { DataMetaInformation } from "@clients/backend";
-import { defineComponent, inject, ref } from "vue";
+import { defineComponent, inject } from "vue";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import Keycloak from "keycloak-js";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
@@ -127,7 +127,6 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
     };
   },
   watch: {
