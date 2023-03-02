@@ -144,7 +144,7 @@ class MetaDataControllerTest {
         val sizeOfListOfDataMetaInfoPerCompanyIdAndDataType = apiAccessor.getNumberOfDataMetaInfo(
             listOfUploadInfo[0].actualStoredCompany.companyId,
             testDataType,
-            true,
+            false,
         )
         assertEquals(
             numberOfDataSetsToPostPerCompany, sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
@@ -268,9 +268,9 @@ class MetaDataControllerTest {
         subsequentUploadForVersionHistory(companyId, finalFrameWorkData, reportingPeriod1)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val resultWithoutVersioning =
-            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod1)
-        val resultWithVersioning =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod1)
+        val resultWithVersioning =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod1)
 
         val activeDataSet =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
@@ -317,9 +317,9 @@ class MetaDataControllerTest {
         val final2023metadata = subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod2)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val result2022WithoutVersioning =
-            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod1)
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod1)
         val result2023WithoutVersioning =
-            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod2)
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod2)
         assertTrue(
             (
                 result2023WithoutVersioning.size == 1 &&
@@ -337,9 +337,9 @@ class MetaDataControllerTest {
             "The active data set of the reporting period should be the last uploaded one but this is not the case.",
         )
 //        When not specifying a reportingPeriod we should retrieve metadata of datasets for all reporting periods
-        val resultsWithVersioning = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true)
+        val resultsWithVersioning = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
         val resultsWithoutVersioning =
-            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true)
         assertTrue(
             (resultsWithVersioning.size == 4),
             "Without filtering for reporting period and when displaying version history, metadata of all 4 " +
