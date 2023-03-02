@@ -20,8 +20,8 @@ const ViewEuTaxonomyNonFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/ViewEuTaxonomyNonFinancials.vue");
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
-const ViewLksg = (): Promise<RouteComponent> => import("@/components/pages/ViewLksg.vue");
-const ViewSfdr = (): Promise<RouteComponent> => import("@/components/pages/ViewSfdr.vue");
+const ViewMultipleDatsetsDisplayBase = (): Promise<RouteComponent> =>
+  import("@/components/generics/ViewMultipleDatasetsDisplayBase.vue");
 const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
@@ -127,16 +127,10 @@ const routes = [
     component: ViewEuTaxonomyFinancials,
   },
   {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}`,
+    path: `/companies/:companyID/frameworks/:dataType`,
     props: true,
-    name: "Company lksg",
-    component: ViewLksg,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.Sfdr}`,
-    props: true,
-    name: "Company sfdr",
-    component: ViewSfdr,
+    name: "Company framework multiple-view page",
+    component: ViewMultipleDatsetsDisplayBase,
   },
   {
     path: "/companies-only-search",

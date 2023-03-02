@@ -7,7 +7,8 @@
     <template v-slot:content>
       <div class="grid">
         <div class="col-12">
-          <slot> </slot>
+          <LksgPanel v-if="dataType === DataTypeEnum.Lksg" :companyId="companyID" />
+          <SfdrPanel v-if="dataType === DataTypeEnum.Sfdr" :companyId="companyID" />
         </div>
       </div>
       <div v-if="loading" class="col-12 text-left">
@@ -25,10 +26,13 @@ import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { defineComponent } from "vue";
 import { DataMetaInformation } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
+import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
+import { DataTypeEnum } from "@clients/backend";
+import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: { ViewFrameworkBase },
+  components: { SfdrPanel, LksgPanel, ViewFrameworkBase },
   props: {
     companyID: {
       type: String,
@@ -42,6 +46,7 @@ export default defineComponent({
       loading: true,
       receivedDataIds: [] as string[],
       humanizeString: humanizeString,
+      DataTypeEnum,
     };
   },
   methods: {
