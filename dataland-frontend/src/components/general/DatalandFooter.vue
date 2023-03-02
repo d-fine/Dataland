@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="surface-ground pt-8 footer">
+    <div class="surface-ground pt-8 footer" data-cy="dataland footer">
       <div class="grid m-0">
         <div class="lg:col-4 md:col-4 col-12 legend">
           <div class="grid text-left">
