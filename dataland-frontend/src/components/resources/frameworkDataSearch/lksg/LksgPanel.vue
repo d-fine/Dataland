@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData } from "@clients/backend";
+import { DataAndMetaInformationLksgData, QAStatus } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -51,7 +51,7 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchDataForAllDataIds();
+      void this.fetchAllAcceptedDatasets();
     },
   },
   setup() {
@@ -60,13 +60,13 @@ export default defineComponent({
     };
   },
   created() {
-    void this.fetchDataForAllDataIds();
+    void this.fetchAllAcceptedDatasets();
   },
   methods: {
     /**
-     * Fetches all LkSG datasets for the current company and converts them to the requried frontend format.
+     * Fetches all accepted LkSG datasets for the current company and converts them to the requried frontend format.
      */
-    async fetchDataForAllDataIds() {
+    async fetchAllAcceptedDatasets() {
       try {
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
@@ -74,7 +74,9 @@ export default defineComponent({
         ).getLksgDataControllerApi();
         this.lksgDataAndMetaInfo = (
           await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
-        ).data;
+        ).data.filter(
+          (dataAndMetaInfo: DataAndMetaInformationLksgData) => dataAndMetaInfo.metaInfo.qaStatus == QAStatus.Accepted
+        );
         this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {

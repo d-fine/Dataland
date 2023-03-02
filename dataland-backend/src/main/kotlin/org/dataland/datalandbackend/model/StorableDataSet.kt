@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiExcept
  * @param dataType the type of the data set
  * @param data the actual data
  */
+
 data class StorableDataSet(
     val companyId: String,
     val dataType: DataType,
