@@ -2,7 +2,7 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-import { Configuration, SfdrDataControllerApi, SfdrData } from "@clients/backend";
+import { Configuration, SfdrDataControllerApi, SfdrData, DataTypeEnum } from "@clients/backend";
 import { uploadCompanyAndSfdrDataViaApi, uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { getPreparedFixture, UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { generateSfdrData } from "@e2e/fixtures/sfdr/SfdrDataFixtures";
@@ -97,25 +97,24 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         return uploadCompanyAndSfdrDataViaApi(token, companyInformation, sfdrData, reportingPeriod).then(
           (uploadIds) => {
-            cy.intercept("**/api/data/sfdr/company/*").as("retrieveSfdrData");
-            cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/sfdr`);
-            cy.wait("@retrieveSfdrData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
-              cy.get(`h1`).should("contain", companyInformation.companyName);
+            cy.intercept(`**/api/data/${DataTypeEnum.Sfdr}/companies/*`).as("retrieveSfdrData");
+            cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Sfdr}`);
+            cy.wait("@retrieveSfdrData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+            cy.get(`h1`).should("contain", companyInformation.companyName);
 
-              cy.get("table.p-datatable-table")
-                .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
-                .should("exist");
+            cy.get("table.p-datatable-table")
+              .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
+              .should("exist");
 
-              cy.get("button.p-row-toggler").eq(0).click();
-              cy.get("table.p-datatable-table")
-                .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
-                .should("not.exist");
+            cy.get("button.p-row-toggler").eq(0).click();
+            cy.get("table.p-datatable-table")
+              .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
+              .should("not.exist");
 
-              cy.get("button.p-row-toggler").eq(0).click();
-              cy.get("table.p-datatable-table")
-                .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
-                .should("exist");
-            });
+            cy.get("button.p-row-toggler").eq(0).click();
+            cy.get("table.p-datatable-table")
+              .find(`span:contains(${sfdrData.social!.general!.fiscalYearEnd!})`)
+              .should("exist");
           }
         );
       });
@@ -136,19 +135,18 @@ describeIf(
             for (let i = 3; i <= numberOfSfdrDataSetsForCompany; i++) {
               currentChainable = currentChainable.then(uploadAnotherSfdrDataSetToExistingCompany);
             }
-            cy.intercept("**/api/data/sfdr/company/*").as("retrieveSfdrData");
-            cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/sfdr`);
-            cy.wait("@retrieveSfdrData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(() => {
-              cy.get("table")
-                .find(`tr:contains("Fiscal Year End")`)
-                .find(`span`)
-                .eq(numberOfSfdrDataSetsForCompany)
-                .contains(sfdrData.social!.general!.fiscalYearEnd!);
+            cy.intercept(`**/api/data/${DataTypeEnum.Sfdr}/companies/*`).as("retrieveSfdrData");
+            cy.visitAndCheckAppMount(`/companies/${uploadIds.companyId}/frameworks/${DataTypeEnum.Sfdr}`);
+            cy.wait("@retrieveSfdrData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+            cy.get("table")
+              .find(`tr:contains("Fiscal Year End")`)
+              .find(`span`)
+              .eq(numberOfSfdrDataSetsForCompany)
+              .contains(sfdrData.social!.general!.fiscalYearEnd!);
 
-              cy.get(`span.p-column-title`)
-                .eq(numberOfSfdrDataSetsForCompany)
-                .should("contain.text", fiscalYearEndAsString);
-            });
+            cy.get(`span.p-column-title`)
+              .eq(numberOfSfdrDataSetsForCompany)
+              .should("contain.text", fiscalYearEndAsString);
           }
         );
       });
