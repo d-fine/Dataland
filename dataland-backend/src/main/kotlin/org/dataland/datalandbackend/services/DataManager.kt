@@ -83,14 +83,15 @@ class DataManager(
                 "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId",
         )
-        val dataId: String = storeDataSetInTemporaryStoreAndSendMessage(
-            storableDataSet, company.companyName, correlationId,
-        )
+        val dataId = generateRandomDataId()
         val metaData = DataMetaInformationEntity(
             dataId, storableDataSet.dataType.toString(),
             storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, QAStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(metaData)
+        storeDataSetInTemporaryStoreAndSendMessage(
+            dataId, storableDataSet, company.companyName, correlationId,
+        )
         return dataId
     }
 
@@ -164,11 +165,11 @@ class DataManager(
      * @return ID of the stored data set
      */
     fun storeDataSetInTemporaryStoreAndSendMessage(
+        dataId: String,
         storableDataSet: StorableDataSet,
         companyName: String,
         correlationId: String,
-    ): String {
-        val dataId = generateRandomDataId()
+    ) {
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             dataId, MessageType.DataReceived, correlationId,
@@ -179,7 +180,6 @@ class DataManager(
                 "${storableDataSet.companyId}. Company Name $companyName received ID $dataId from storage. " +
                 "Correlation ID: $correlationId.",
         )
-        return(dataId)
     }
 
     /**

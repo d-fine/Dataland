@@ -69,7 +69,6 @@ class QaService(
                         dataId = dataId, validationResult = "By default, QA is passed",
                     ),
                 )
-                Thread.sleep(1000)
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
                 )
