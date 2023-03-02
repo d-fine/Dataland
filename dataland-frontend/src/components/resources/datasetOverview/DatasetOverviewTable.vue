@@ -74,7 +74,6 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
-import { DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import debounce from "@/utils/Debounce";

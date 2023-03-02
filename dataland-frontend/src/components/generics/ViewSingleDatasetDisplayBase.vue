@@ -275,6 +275,9 @@ export default defineComponent({
       }
     },
 
+    /**
+     * Called when the dataId in the url is found to be invalid (i.e. belongs to a different company or does not exist)
+     */
     handleInvalidDataIdPassedInUrl() {
       this.dataMetaInfoForDisplay = null;
       this.chosenReportingPeriodInDropdown = "";
@@ -299,6 +302,8 @@ export default defineComponent({
 
     /**
      * Method to retrieve the active data meta information for the latest reporting period
+     *
+     * @returns the active data meta information from the latest reporting period
      */
     getActiveDataMetaInfoFromLatestReportingPeriodIfParsableAsNumber(): DataMetaInformation {
       const [firstActiveDataMetaInfo] = this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.values();

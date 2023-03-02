@@ -124,6 +124,12 @@ export default defineComponent({
 
   watch: {},
   methods: {
+    /**
+     * Function building a unified for subtitle for a framework type
+     *
+     * @param dataTypeTitle the type of the framework (humanized name)
+     * @returns a unified subtitle
+     */
     buildSubtitle(dataTypeTitle: string): string {
       return `Overview of all existing ${dataTypeTitle} datasets for this company.`;
     },

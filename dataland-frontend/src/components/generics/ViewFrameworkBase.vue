@@ -109,7 +109,7 @@ export default defineComponent({
     /**
      * Visits the framework view page for the framework which was chosen in the dropdown
      *
-     * @param dropDownChangeEvent
+     * @param dropDownChangeEvent the change event emitted by the dropdown component
      */
     handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
       if (this.dataType != dropDownChangeEvent.value) {

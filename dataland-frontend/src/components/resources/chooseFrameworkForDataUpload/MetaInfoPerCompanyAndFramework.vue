@@ -97,6 +97,7 @@ export default defineComponent({
      * whether a corresponding frontend view page exists
      *
      * @param dataMetaInfo The data meta information object for which the title is constructed
+     * @returns the constrcted dataset title
      */
     getDynamicDatasetTitle(dataMetaInfo: DataMetaInformation): string {
       let resultingTitle = `${this.title} dataset for reporting period: ${dataMetaInfo.reportingPeriod}`;
