@@ -30,7 +30,7 @@
         </div>
         <div class="grid">
           <div class="col-12 text-left">
-            <h2 class="mb-0">{{ title }}</h2>
+            <h2 class="mb-0">{{ humanizedDataDescription }}</h2>
           </div>
           <div class="col-6 text-left">
             <p class="font-semibold text-gray-800 mt-0">Data from company report.</p>
@@ -38,12 +38,19 @@
         </div>
         <div class="grid">
           <div class="col-7">
-            <slot></slot>
+            <EuTaxonomyPanelNonFinancials
+              v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
+              :dataID="dataMetaInfoForDisplay.dataId"
+            />
+            <EuTaxonomyPanelFinancials
+              v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
+              :dataID="dataMetaInfoForDisplay.dataId"
+            />
           </div>
         </div>
       </div>
       <div v-if="isWaitingForDataIdToDisplay" class="col-12 text-left">
-        <h2>Checking if {{ dataDescriptor }} available...</h2>
+        <h2>Checking if {{ humanizedDataDescription }} available...</h2>
       </div>
       <div
         v-if="
@@ -51,14 +58,17 @@
           Object.keys(receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo).length === 0
         "
       >
-        <h2>No {{ dataDescriptor }} present for this company.</h2>
+        <h2>No {{ humanizedDataDescription }} present for this company.</h2>
       </div>
       <div v-if="isDataIdInUrlInvalid">
-        <h2>No {{ dataDescriptor }} data could be found for the data ID passed in the URL for this company.</h2>
+        <h2>
+          No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company.
+        </h2>
       </div>
       <div v-if="isReportingPeriodInUrlInvalid">
         <h2>
-          No {{ dataDescriptor }} data could be found for the reporting period passed in the URL for this company.
+          No {{ humanizedDataDescription }} data could be found for the reporting period passed in the URL for this
+          company.
         </h2>
       </div>
     </template>
@@ -76,10 +86,14 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
 import PrimeButton from "primevue/button";
+import { DataTypeEnum } from "@clients/backend";
+import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
+import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
-  components: { ViewFrameworkBase, Dropdown, PrimeButton },
+  components: { ViewFrameworkBase, Dropdown, PrimeButton, EuTaxonomyPanelFinancials, EuTaxonomyPanelNonFinancials },
   props: {
     companyId: {
       type: String,
@@ -93,14 +107,7 @@ export default defineComponent({
     dataType: {
       type: String,
     },
-    dataDescriptor: {
-      type: String,
-    },
-    title: {
-      type: String,
-    },
   },
-  emits: ["updateDataIdOfDatasetToDisplay"],
   data() {
     return {
       isWaitingForDataIdToDisplay: true,
@@ -112,6 +119,8 @@ export default defineComponent({
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
       isDataIdToDisplayFound: false,
+      humanizedDataDescription: humanizeString(this.dataType),
+      DataTypeEnum,
     };
   },
 
@@ -142,7 +151,6 @@ export default defineComponent({
       this.chosenReportingPeriodInDropdown = dataMetaInfoForDisplay.reportingPeriod;
       this.isDataIdToDisplayFound = true;
       this.dataMetaInfoForDisplay = dataMetaInfoForDisplay;
-      this.$emit("updateDataIdOfDatasetToDisplay", dataMetaInfoForDisplay.dataId);
     },
 
     /**

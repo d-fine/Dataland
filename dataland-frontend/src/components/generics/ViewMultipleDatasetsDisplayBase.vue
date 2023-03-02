@@ -1,14 +1,14 @@
 <template>
   <ViewFrameworkBase
-    :companyID="companyID"
+    :companyID="companyId"
     :dataType="dataType"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
   >
     <template v-slot:content>
       <div class="grid">
         <div class="col-12">
-          <LksgPanel v-if="dataType === DataTypeEnum.Lksg" :companyId="companyID" />
-          <SfdrPanel v-if="dataType === DataTypeEnum.Sfdr" :companyId="companyID" />
+          <LksgPanel v-if="dataType === DataTypeEnum.Lksg" :companyId="companyId" />
+          <SfdrPanel v-if="dataType === DataTypeEnum.Sfdr" :companyId="companyId" />
         </div>
       </div>
       <div v-if="loading" class="col-12 text-left">
@@ -34,10 +34,13 @@ export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
   components: { SfdrPanel, LksgPanel, ViewFrameworkBase },
   props: {
-    companyID: {
+    companyId: {
       type: String,
     },
     dataType: {
+      type: String,
+    },
+    dataId: {
       type: String,
     },
   },
