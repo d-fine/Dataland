@@ -90,7 +90,7 @@ class DataMetaInformationManager(
     fun searchDataMetaInfo(
         companyId: String,
         dataType: DataType?,
-        showVersionHistoryForReportingPeriod: Boolean,
+        showOnlyActive: Boolean,
         reportingPeriod: String?,
     ): List<DataMetaInformationEntity> {
         if (companyId != "") {
@@ -102,7 +102,7 @@ class DataMetaInformationManager(
             companyIdFilter = companyId,
             dataTypeFilter = dataTypeFilter,
             reportingPeriodFilter = reportingPeriodFilter,
-            onlyActive = !showVersionHistoryForReportingPeriod,
+            onlyActive = showOnlyActive,
         )
 
         return dataMetaInformationRepository.searchDataMetaInformation(filter)

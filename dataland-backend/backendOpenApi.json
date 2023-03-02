@@ -587,7 +587,7 @@
             }
           },
           {
-            "name": "showVersionHistoryForReportingPeriod",
+            "name": "showOnlyActive",
             "in": "query",
             "required": false,
             "schema": {
@@ -782,7 +782,7 @@
             }
           },
           {
-            "name": "showVersionHistoryForReportingPeriod",
+            "name": "showOnlyActive",
             "in": "query",
             "required": false,
             "schema": {
@@ -917,7 +917,7 @@
             }
           },
           {
-            "name": "showVersionHistoryForReportingPeriod",
+            "name": "showOnlyActive",
             "in": "query",
             "required": false,
             "schema": {
@@ -1052,7 +1052,7 @@
             }
           },
           {
-            "name": "showVersionHistoryForReportingPeriod",
+            "name": "showOnlyActive",
             "in": "query",
             "required": false,
             "schema": {
@@ -1187,7 +1187,7 @@
             }
           },
           {
-            "name": "showVersionHistoryForReportingPeriod",
+            "name": "showOnlyActive",
             "in": "query",
             "required": false,
             "schema": {
@@ -1322,7 +1322,7 @@
             }
           },
           {
-            "name": "showVersionHistoryForReportingPeriod",
+            "name": "showOnlyActive",
             "in": "query",
             "required": false,
             "schema": {

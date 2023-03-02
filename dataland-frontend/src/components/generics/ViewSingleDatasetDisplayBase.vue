@@ -50,7 +50,6 @@
           !isWaitingForDataIdToDisplay &&
           Object.keys(receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo).length === 0
         "
-        class="col-12 text-left"
       >
         <h2>No {{ dataDescriptor }} present for this company.</h2>
       </div>

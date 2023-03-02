@@ -46,7 +46,6 @@ class Lksg {
         val lksgData = apiAccessor.testDataProviderForLksgData.getTData(1)[0]
         uploadLambda(companyId, lksgData, "2022")
         uploadLambda(companyId, lksgData, "2023")
-//        TODO: Reduce sleep length after switch to milliseconds
         Thread.sleep(1000)
 //        Manipulate a data set to be able to identify the correct one
         val finalLksgData2023 = lksgData.copy(
@@ -63,20 +62,20 @@ class Lksg {
         // are retrieved
         val responseWithoutVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
             companyId = companyId,
-            showVersionHistoryForReportingPeriod = false,
+            showOnlyActive = true,
         )
         val responseWithVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
             companyId = companyId,
-            showVersionHistoryForReportingPeriod = true,
+            showOnlyActive = false,
         )
         val response2023WithoutVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
             companyId = companyId,
-            showVersionHistoryForReportingPeriod = false,
+            showOnlyActive = true,
             reportingPeriod = "2023",
         )
         val response2023WithVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
             companyId = companyId,
-            showVersionHistoryForReportingPeriod = true,
+            showOnlyActive = false,
             reportingPeriod = "2023",
         )
         assertTrue(

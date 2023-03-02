@@ -120,6 +120,7 @@ class ApiAccessor {
         listOfCompanyInformation.forEach { companyInformation ->
             val receivedStoredCompany = companyDataControllerApi.postCompany(companyInformation)
             listOfFrameworkData.forEach { frameworkDataSet ->
+                Thread.sleep(1000)
                 val receivedDataMetaInformation =
                     frameworkDataUploadFunction(receivedStoredCompany.companyId, frameworkDataSet, reportingPeriod)
                 listOfUploadInfo.add(
@@ -267,13 +268,13 @@ class ApiAccessor {
     fun getNumberOfDataMetaInfo(
         companyId: String? = null,
         dataType: DataTypeEnum? = null,
-        showVersionHistoryForReportingPeriod: Boolean? = null,
+        showOnlyActive: Boolean? = null,
     ): Int {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         return metaDataControllerApi.getListOfDataMetaInfo(
             companyId,
             dataType,
-            showVersionHistoryForReportingPeriod,
+            showOnlyActive,
         ).size
     }
 }

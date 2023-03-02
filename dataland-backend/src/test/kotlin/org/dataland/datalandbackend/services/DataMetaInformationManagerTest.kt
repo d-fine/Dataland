@@ -31,7 +31,7 @@ class DataMetaInformationManagerTest(
             dataMetaInformationManager.searchDataMetaInfo(
                 companyId = nonExistingCompanyId,
                 dataType = null,
-                showVersionHistoryForReportingPeriod = false,
+                showOnlyActive = true,
                 reportingPeriod = "",
             )
         }

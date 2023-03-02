@@ -22,7 +22,7 @@ class MetaDataController(
     override fun getListOfDataMetaInfo(
         companyId: String?,
         dataType: DataType?,
-        showVersionHistoryForReportingPeriod: Boolean,
+        showOnlyActive: Boolean,
         reportingPeriod: String?,
     ):
         ResponseEntity<List<DataMetaInformation>> {
@@ -31,7 +31,7 @@ class MetaDataController(
             dataMetaInformationManager.searchDataMetaInfo(
                 companyId ?: "",
                 dataType,
-                showVersionHistoryForReportingPeriod,
+                showOnlyActive,
                 reportingPeriod,
             ).map { it.toApiModel(currentUser) },
         )

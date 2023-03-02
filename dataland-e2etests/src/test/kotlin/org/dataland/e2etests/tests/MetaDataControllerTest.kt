@@ -79,12 +79,12 @@ class MetaDataControllerTest {
 
     @Test
     fun `post companies and eu taxonomy data and check meta info search with empty filters`() {
-        val initialSizeOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showVersionHistoryForReportingPeriod = true)
+        val initialSizeOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showOnlyActive = false)
         apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
             numberOfDataSetsToPostPerCompany,
         )
-        val sizeOfListOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showVersionHistoryForReportingPeriod = true)
+        val sizeOfListOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showOnlyActive = false)
         val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + totalNumberOfDataSetsPerFramework
         assertEquals(
             expectedSizeOfDataMetaInfo, sizeOfListOfDataMetaInfo,
@@ -102,7 +102,7 @@ class MetaDataControllerTest {
         val companyIdOfFirstUploadedCompany = listOfUploadInfo[0].actualStoredCompany.companyId
         val listOfDataMetaInfoForFirstCompanyId =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
-                companyIdOfFirstUploadedCompany, showVersionHistoryForReportingPeriod = true
+                companyIdOfFirstUploadedCompany, showOnlyActive = false,
             )
         assertEquals(
             numberOfDataSetsToPostPerCompany, listOfDataMetaInfoForFirstCompanyId.size,
@@ -115,7 +115,7 @@ class MetaDataControllerTest {
     fun `post companies and eu taxonomy data and check meta info search with filter on data type`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val initListSizeDataMetaInfoForEuTaxoFinancials =
-            apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showVersionHistoryForReportingPeriod = true)
+            apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showOnlyActive = false)
         apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(
                 testDataType to listOfTestCompanyInformation,
@@ -124,7 +124,7 @@ class MetaDataControllerTest {
             numberOfDataSetsToPostPerCompany,
         )
         val listSizeDataMetaInfoForEuTaxoFinancials =
-            apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showVersionHistoryForReportingPeriod = true)
+            apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showOnlyActive = false)
         val expectedListSizeDataMetaInfoForEuTaxoFinancials = initListSizeDataMetaInfoForEuTaxoFinancials +
             totalNumberOfDataSetsPerFramework
         assertEquals(
@@ -260,7 +260,6 @@ class MetaDataControllerTest {
             firstUploadForVersionHistory(companyInformation, frameWorkData, reportingPeriod1)
         val companyId = listOfUploadInfo2022first.actualStoredCompany.companyId
 //        Wait to ensure that uploadTime changes
-//        TODO: Shorten sleep time when upload time was switched from second to milli
         Thread.sleep(1000)
         subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
         Thread.sleep(1000)
@@ -310,7 +309,6 @@ class MetaDataControllerTest {
         val reportingPeriod2 = "2023"
         val firstUploadInfo = firstUploadForVersionHistory(companyInformation, frameWorkData, reportingPeriod2)
         val companyId = firstUploadInfo.actualStoredCompany.companyId
-//        TODO: Shorten sleep time when upload time was switched from second to milli
         Thread.sleep(1000)
         subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
         Thread.sleep(1000)
