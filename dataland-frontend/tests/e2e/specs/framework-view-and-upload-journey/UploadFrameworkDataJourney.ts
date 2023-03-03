@@ -140,7 +140,9 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.contains("h1", uploadedTestCompanyName);
 
         cy.get("div[id=eutaxonomyDataSetsContainer]").contains("Be the first to create this dataset");
-        cy.get("div[id=eutaxonomyDataSetsContainer]").contains("Create another dataset for EU Taxonomy for financial companies");
+        cy.get("div[id=eutaxonomyDataSetsContainer]").contains(
+          "Create another dataset for EU Taxonomy for financial companies"
+        );
         cy.get("div[id=eutaxonomyDataSetsContainer]").contains(
           "Uploading data for this framework is currently not enabled on the Dataland frontend."
         );
