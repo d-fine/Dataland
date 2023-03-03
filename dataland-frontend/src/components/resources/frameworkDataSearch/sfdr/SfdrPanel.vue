@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationSfdrData, QAStatus } from "@clients/backend";
+import { SfdrData, DataAndMetaInformationSfdrData, DataMetaInformation } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -52,25 +52,35 @@ export default defineComponent({
     companyId: {
       type: String,
     },
+    singleDataMetaInfoToDisplay: {
+      type: Object as () => DataMetaInformation,
+    },
   },
   created() {
-    void this.fetchAllAcceptedDatasets();
+    void this.fetchData();
   },
   methods: {
     /**
      * Fetches all accepted Sfdr datasets for the current company and converts them to the required frontend format.
      */
-    async fetchAllAcceptedDatasets() {
+    async fetchData() {
       try {
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getSfdrDataControllerApi();
-        this.sfdrDataAndMetaInfo = (
-          await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))
-        ).data.filter(
-          (dataAndMetaInfo: DataAndMetaInformationSfdrData) => dataAndMetaInfo.metaInfo.qaStatus == QAStatus.Accepted
-        );
+
+        if (this.singleDataMetaInfoToDisplay) {
+          const singleSfdrData = (
+            await sfdrDataControllerApi.getCompanyAssociatedSfdrData(this.singleDataMetaInfoToDisplay.dataId)
+          ).data.data as SfdrData; // TODO think about catching errors here,   take dataMetaInfo fetch in the base-component as example
+
+          this.sfdrDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSfdrData }];
+        } else {
+          this.sfdrDataAndMetaInfo = (
+            await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))
+          ).data;
+        }
         this.convertSfdrDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
@@ -109,7 +119,8 @@ export default defineComponent({
     },
 
     /**
-     * Retrieves and converts values from an array of SDFG datasets in order to make it displayable in the frontend.
+     * Retrieves and converts values from an array of SDFR datasets in order to make it displayable in the frontend.
+     *
      */
     convertSfdrDataToFrontendFormat(): void {
       if (this.sfdrDataAndMetaInfo.length) {
@@ -135,7 +146,7 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchAllAcceptedDatasets();
+      void this.fetchData();
     },
   },
 });
