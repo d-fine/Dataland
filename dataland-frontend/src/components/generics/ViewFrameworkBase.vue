@@ -19,19 +19,38 @@
         </div>
       </MarginWrapper>
       <MarginWrapper v-if="isDataProcessedSuccesfully" class="text-left surface-0" style="margin-right: 0">
-        <Dropdown
-          id="chooseFrameworkDropdown"
-          v-model="chosenDataTypeInDropdown"
-          :options="dataTypesInDropdown"
-          optionLabel="label"
-          optionValue="value"
-          :placeholder="humanizeString(dataType)"
-          aria-label="Choose framework"
-          class="fill-dropdown always-fill"
-          dropdownIcon="pi pi-angle-down"
-          @change="handleChangeFrameworkEvent"
-        />
-        <slot name="reportingPeriodDropdown"> </slot>
+        <div class="flex justify-content-between align-items-center d-search-filters-panel">
+          <div class="flex">
+            <Dropdown
+              id="chooseFrameworkDropdown"
+              v-model="chosenDataTypeInDropdown"
+              :options="dataTypesInDropdown"
+              optionLabel="label"
+              optionValue="value"
+              :placeholder="humanizeString(dataType)"
+              aria-label="Choose framework"
+              class="fill-dropdown always-fill"
+              dropdownIcon="pi pi-angle-down"
+              @change="handleChangeFrameworkEvent"
+            />
+            <slot name="reportingPeriodDropdown"> </slot>
+          </div>
+          <div v-if="hasUserUploaderRights" class="flex align-content-end align-items-center">
+            <PrimeButton
+              v-if="canEdit"
+              class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
+              aria-label="EDIT"
+              @click="editDataset"
+            >
+              <span class="material-icons-outlined px-2">mode</span>
+              <span class="px-2">EDIT</span>
+            </PrimeButton>
+            <PrimeButton class="uppercase p-button-sm d-letters mr-3" aria-label="New Dataset" @click="gotoNewDataset">
+              <span class="material-icons-outlined px-2">queue</span>
+              <span class="px-2">NEW DATASET</span>
+            </PrimeButton>
+          </div>
+        </div>
       </MarginWrapper>
       <MarginWrapper v-if="isDataProcessedSuccesfully" style="margin-right: 0">
         <slot name="content"> </slot>
@@ -50,15 +69,18 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
+import PrimeButton from "primevue/button";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
-import { DataMetaInformation } from "@clients/backend";
+import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
+import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -96,15 +118,48 @@ export default defineComponent({
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
+      mapOfReportingPeriodToActiveDataset: {} as Map<string, DataMetaInformation>,
       isDataProcessedSuccesfully: true,
+      hasUserUploaderRights: null as null | boolean,
     };
+  },
+  computed: {
+    canEdit() {
+      return ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum);
+    },
   },
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
+    checkIfUserHasUploaderRights(this.getKeycloakPromise)
+      .then((hasUserUploaderRights) => {
+        this.hasUserUploaderRights = hasUserUploaderRights;
+      })
+      .catch((error) => console.log(error));
     window.addEventListener("scroll", this.windowScrollHandler);
   },
   methods: {
+    /**
+     * Opens a modal for selecting a reporting period to edit data for
+     */
+    editDataset() {
+      this.$dialog.open(SelectReportingPeriodDialog, {
+        props: {
+          header: "Select reporting period to edit data for",
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          mapOfReportingPeriodToActiveDataset: this.mapOfReportingPeriodToActiveDataset,
+        },
+      });
+    },
+    /**
+     * Navigates to the framework upload page for the current company (a framework is not pre-selected)
+     */
+    gotoNewDataset() {
+      void this.$router.push(`/companies/${assertDefined(this.companyID)}/frameworks/upload`);
+    },
     /**
      * Hides the dropdown of the Autocomplete-component
      */
@@ -190,19 +245,19 @@ export default defineComponent({
         );
 
         // TODO modularize following code block
-        const mapOfReportingPeriodToActiveDatasetForFramework = new Map<string, DataMetaInformation>();
+        this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
         const listOfDistinctAvailableReportingPeriodsForFramework: string[] = [];
         listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.forEach((dataMetaInfo: DataMetaInformation) => {
           if (dataMetaInfo.dataType === this.dataType) {
             if (dataMetaInfo.currentlyActive) {
-              mapOfReportingPeriodToActiveDatasetForFramework.set(dataMetaInfo.reportingPeriod, dataMetaInfo); // TODO the fact that backend only sends one meta info per distinct reportingPeriod is assured implicitly by using reporting period as key here for the map.. is this ok??
+              this.mapOfReportingPeriodToActiveDataset.set(dataMetaInfo.reportingPeriod, dataMetaInfo); // TODO the fact that backend only sends one meta info per distinct reportingPeriod is assured implicitly by using reporting period as key here for the map.. is this ok??
               listOfDistinctAvailableReportingPeriodsForFramework.push(dataMetaInfo.reportingPeriod);
             } else {
               throw TypeError("Received inactive dataset meta info from Dataland Backend"); // TODO do we even need a check like this, or is this handled as "assured"
             }
           }
         });
-        this.$emit("updateActiveDataMetaInfoForChosenFramework", mapOfReportingPeriodToActiveDatasetForFramework);
+        this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);
         // TODO ________________
 
         // TODO modularize following code block
