@@ -61,7 +61,7 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Fetches all Sfdr datasets for the current company and converts them to the requried frontend format.
+     * Fetches all accepted Sfdr datasets for the current company and converts them to the required frontend format.
      */
     async fetchData() {
       try {

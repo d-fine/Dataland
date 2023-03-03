@@ -44,8 +44,17 @@ server {
       include utils/apiErrors.conf;
     }
 
-    location /internal-storage/actuator/health {
-      proxy_pass http://internal-storage:8080/internal-storage/actuator/health;
+    location /api/internal/ {
+        return 301 https://${PROXY_PRIMARY_URL}/nocontent;
+    }
+
+    location /internal-storage/ {
+      proxy_pass http://internal-storage:8080/internal-storage/;
+      include utils/proxy.conf;
+    }
+
+    location /qa/actuator/health {
+      proxy_pass http://qa-service:8080/qa/actuator/health;
       include utils/proxy.conf;
     }
 

@@ -236,7 +236,8 @@ export default defineComponent({
     /**
      * Returns a list of the meta information available for a framework
      *
-     * @param dataType
+     * @param dataType the data type of the data associated to the meta infos returned
+     * @returns the meta infos of data with the specified data type
      */
     getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
       return this.listOfFrameworkMetaInfo.get(dataType) || [];

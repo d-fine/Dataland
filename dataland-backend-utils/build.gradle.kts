@@ -29,8 +29,9 @@ dependencies {
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.okhttp)
     implementation(libs.slf4j.api)
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.security:spring-security-crypto")
+    implementation("org.springframework.security:spring-security-web")
+    implementation("jakarta.servlet:jakarta.servlet-api")
     implementation(libs.bcpkix.jdk15on)
     implementation(libs.bcprov.jdk15on)
 }
@@ -41,7 +42,6 @@ tasks.bootJar {
 
 jacoco {
     toolVersion = jacocoVersion
-    applyTo(tasks.bootRun.get())
 }
 
 gitProperties {

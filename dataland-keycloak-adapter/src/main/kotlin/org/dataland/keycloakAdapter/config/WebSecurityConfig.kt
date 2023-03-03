@@ -31,6 +31,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMa
 class WebSecurityConfig(
     private val jwtDecoder: JwtDecoder,
     @Value("\${dataland.authorization.publiclinks:}") private val publicLinks: String,
+    @Value("\${dataland.authorization.internallinks:}") private val internalLinks: String,
     @Value("\${dataland.apikeymanager.base-url:}") private val apiKeyManagerBaseUrl: String,
     @Value("\${org.dataland.authorization.apikey.enable:false}") private val enableApiKeyAuthentication: Boolean,
 ) {
@@ -74,15 +75,22 @@ class WebSecurityConfig(
 
     @Suppress("SpreadOperator")
     private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
-        val publicLinkMatchers = publicLinks.split(",").map { antMatcher(it) }.toTypedArray()
+        val linksList = listStringToList(publicLinks) + listStringToList(internalLinks)
+        val linkMatchers = linksList.map { antMatcher(it) }.toTypedArray()
         http
             .authorizeHttpRequests()
-            .requestMatchers(*publicLinkMatchers).permitAll()
+            .requestMatchers(*linkMatchers).permitAll()
             .anyRequest().fullyAuthenticated()
             .and()
             .logout().disable()
             .csrf().disable()
             .oauth2ResourceServer().authenticationManagerResolver(tokenAuthenticationManagerResolver())
+    }
+
+    private fun listStringToList(listString: String) = if (listString.isNotEmpty()) {
+        listString.split(",")
+    } else {
+        emptyList()
     }
 
     private fun updatePolicies(http: HttpSecurity) {

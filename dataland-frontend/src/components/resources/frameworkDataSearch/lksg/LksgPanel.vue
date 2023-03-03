@@ -67,7 +67,7 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Fetches all LkSG datasets for the current company and converts them to the requried frontend format.
+     * Fetches all accepted LkSG datasets for the current company and converts them to the requried frontend format.
      */
     async fetchData() {
       try {

@@ -2,7 +2,9 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackend.model.lksg.LksgData
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -59,22 +61,30 @@ class DataMetaInformationManagerTest(
         val company = companyManager.addCompany(companyInformation)
 
         dataMetaInformationManager.storeDataMetaInformation(
-            "data-id-1",
-            DataType.of(LksgData::class.java),
-            "uploader-user-id",
-            0,
-            "reporting-period",
-            company,
+            DataMetaInformationEntity(
+                "data-id-1",
+                company,
+                DataType.of(LksgData::class.java).toString(),
+                "uploader-user-id",
+                0,
+                "reporting-period",
+                null,
+                QAStatus.Accepted,
+            ),
         )
 
         assertThrows<DataIntegrityViolationException> {
             dataMetaInformationManager.storeDataMetaInformation(
-                "data-id-2",
-                DataType.of(LksgData::class.java),
-                "uploader-user-id",
-                0,
-                "reporting-period",
-                company,
+                DataMetaInformationEntity(
+                    "data-id-2",
+                    company,
+                    DataType.of(LksgData::class.java).toString(),
+                    "uploader-user-id",
+                    0,
+                    "reporting-period",
+                    null,
+                    QAStatus.Accepted,
+                ),
             )
         }
     }

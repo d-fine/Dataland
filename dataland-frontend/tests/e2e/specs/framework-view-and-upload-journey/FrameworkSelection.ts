@@ -24,7 +24,7 @@ describe("The shared header of the framework pages should act as expected", { sc
     function (): void {
       const lksgAndFinancialCompanyName = "two-different-data-set-types";
       const nonFinancialCompanyName = "some-non-financial-only-company";
-      const dropdownSelector = "div#frameworkDataDropdown";
+      const dropdownSelector = "div#chooseFrameworkDropdown";
       const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
       const financialsDropdownItem = "EU Taxonomy for financial companies";
       const lksgDropdownItem = "LkSG";
@@ -119,6 +119,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param header the h2 header to check for
        */
       function validateFrameworkPage(framework: DataTypeEnum, header: string): void {
+        cy.wait(5000);
         cy.url().should("contain", `/frameworks/${framework}`);
         cy.get("h2").should("contain", header);
       }
@@ -179,18 +180,18 @@ describe("The shared header of the framework pages should act as expected", { sc
       it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.EutaxonomyFinancials, lksgAndFinancialCompanyName);
-        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy Data");
+        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy for financial companies");
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
           DataTypeEnum.EutaxonomyFinancials,
           lksgAndFinancialCompanyName
         );
-        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy Data");
+        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy for financial companies");
         validateDropdown(financialsDropdownItem);
         selectFrameworkInDropdown(lksgDropdownItem);
         validateFrameworkPage(DataTypeEnum.Lksg, "LkSG Data");
         validateDropdown(lksgDropdownItem);
         selectFrameworkInDropdown(financialsDropdownItem);
-        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy Data");
+        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy for financial companies");
 
         selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
         validateFrameworkPage(DataTypeEnum.Lksg, "LkSG Data");
@@ -207,7 +208,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           nonFinancialCompanyName,
           "input#framework_data_search_bar_standard"
         );
-        validateFrameworkPage(DataTypeEnum.EutaxonomyNonFinancials, "EU Taxonomy Data");
+        validateFrameworkPage(DataTypeEnum.EutaxonomyNonFinancials, "EU Taxonomy for non-financial companies");
       });
 
       it("Check if invalid company ID or invalid data ID lead to displayed error message on framework view page", () => {
@@ -215,6 +216,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         const someInvalidCompanyId = "12345-some-invalid-companyId";
         const someInvalidDataId = "789-some-invalid-dataId-987";
         cy.visit(`/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`);
+        cy.wait(10000);
         cy.contains("h1", "No company with this ID present");
         getKeycloakToken().then((token: string) => {
           return getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials).then(
@@ -222,11 +224,11 @@ describe("The shared header of the framework pages should act as expected", { sc
               const companyIdOfSomeStoredCompany =
                 listOfStoredCompaniesWithAtLeastOneEuTaxoFinancialsDataset[0].companyId;
               cy.visit(
-                `/companies/${companyIdOfSomeStoredCompany}/frameworks/${DataTypeEnum.EutaxonomyFinancials}?dataId=${someInvalidDataId}`
+                `/companies/${companyIdOfSomeStoredCompany}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${someInvalidDataId}`
               );
               cy.contains(
                 "h2",
-                "There is no EU-Taxonomy data for financial companies available for the data ID you provided in the URL."
+                "No EU Taxonomy for financial companies data could be found for the data ID passed in the URL for this company."
               );
             }
           );
