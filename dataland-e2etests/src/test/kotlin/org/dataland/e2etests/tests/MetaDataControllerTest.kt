@@ -280,6 +280,7 @@ class MetaDataControllerTest {
         val finalFrameWorkData = frameWorkData.copy(numberOfEmployees = BigDecimal.valueOf(3))
         subsequentUploadForVersionHistory(companyId, finalFrameWorkData, reportingPeriod1)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
+        Thread.sleep(1000)
         val resultWithoutVersioning =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod1)
         val resultWithVersioning =
@@ -293,12 +294,12 @@ class MetaDataControllerTest {
         assertEquals(
             3, resultWithVersioning.size,
             "Metadata of three versions of uploaded datasets should be available, instead its " +
-                "${resultWithoutVersioning.size}.",
+                "${resultWithVersioning.size}.",
         )
         assertEquals(
             1,
             resultWithoutVersioning.size,
-            "Metadata of a single, active version should be available. Instead its ${resultWithVersioning.size}",
+            "Metadata of a single, active version should be available. Instead its ${resultWithoutVersioning.size}",
         )
         assertTrue(
             (resultWithoutVersioning[0].uploadTime == resultWithVersioning.maxOfOrNull { it.uploadTime }),
