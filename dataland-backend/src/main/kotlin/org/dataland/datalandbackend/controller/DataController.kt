@@ -83,7 +83,7 @@ abstract class DataController<T>(
             throw AccessDeniedException("You are trying to access a unreviewed dataset")
         }
         val companyId = metaInfo.company.companyId
-        val reportingPeriod = dataMetaInformationEntity.reportingPeriod
+        val reportingPeriod = metaInfo.reportingPeriod
         val correlationId = generatedCorrelationId(companyId)
         logger.info(
             "Received a request to get company data with dataId '$dataId' for companyId '$companyId'. ",

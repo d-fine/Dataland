@@ -24,7 +24,7 @@ class DataMetaInformationManager(
     fun storeDataMetaInformation(
         dataMetaInformation: DataMetaInformationEntity,
     ): DataMetaInformationEntity {
-        val newDataset = dataMetaInformationRepository.save(dataMetaInformationEntity)
+        val newDataset = dataMetaInformationRepository.save(dataMetaInformation)
         setActiveDataset(newDataset)
         return newDataset
     }

@@ -85,8 +85,14 @@ class DataManager(
         )
         val dataId = generateRandomDataId()
         val metaData = DataMetaInformationEntity(
-            dataId, storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId, storableDataSet.uploadTime, storableDataSet.reportingPeriod, company, QAStatus.Pending,
+            dataId,
+            company,
+            storableDataSet.dataType.toString(),
+            storableDataSet.uploaderUserId,
+            storableDataSet.uploadTime,
+            storableDataSet.reportingPeriod,
+            null,
+            QAStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(metaData)
         storeDataSetInTemporaryStoreAndSendMessage(
