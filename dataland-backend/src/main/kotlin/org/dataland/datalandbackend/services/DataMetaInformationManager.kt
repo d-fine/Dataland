@@ -23,10 +23,8 @@ class DataMetaInformationManager(
      */
     fun storeDataMetaInformation(
         dataMetaInformation: DataMetaInformationEntity,
-    ): DataMetaInformationEntity {
-        val newDataset = dataMetaInformationRepository.save(dataMetaInformation)
-        setActiveDataset(newDataset)
-        return newDataset
+    ) {
+        dataMetaInformationRepository.save(dataMetaInformation)
     }
 
     /**
@@ -34,6 +32,9 @@ class DataMetaInformationManager(
      * Ensures that only one dataset per group has the active status
      */
     fun setActiveDataset(dataset: DataMetaInformationEntity) {
+        if (dataset.currentlyActive == true) {
+            return
+        }
         val currentlyActive = dataMetaInformationRepository.getActiveDataset(
             dataset.company,
             dataset.dataType,

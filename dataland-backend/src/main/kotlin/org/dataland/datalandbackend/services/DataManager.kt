@@ -123,6 +123,7 @@ class DataManager(
             ),
         ],
     )
+    @Transactional
     @Suppress("TooGenericExceptionCaught")
     fun updateMetaData(
         @Payload jsonString: String,
@@ -135,7 +136,7 @@ class DataManager(
             try {
                 val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
                 metaInformation.qaStatus = QAStatus.Accepted
-                metaDataManager.storeDataMetaInformation(metaInformation)
+                metaDataManager.setActiveDataset(metaInformation)
                 logger.info(
                     "Received quality assurance for data upload with DataId: " +
                         "$dataId with Correlation Id: $correlationId",
