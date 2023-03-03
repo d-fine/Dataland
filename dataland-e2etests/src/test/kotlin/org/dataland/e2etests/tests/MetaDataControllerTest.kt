@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.UploadInfo
@@ -54,6 +55,7 @@ class MetaDataControllerTest {
                 "",
                 true,
                 null,
+                QAStatus.accepted,
             )
         assertEquals(
             expectedDataMetaInformation,
@@ -67,6 +69,14 @@ class MetaDataControllerTest {
             "The server-upload-time and the local upload time differ too much.",
         )
     }
+
+    private fun buildDataMetaInformation(
+        uploadedMetaInfo: DataMetaInformation,
+        testDataType: DataTypeEnum,
+    ) = DataMetaInformation(
+        uploadedMetaInfo.dataId, testDataType, 0,
+        uploadedMetaInfo.companyId, QAStatus.accepted,
+    )
 
     @Test
     fun `search for a company that does not exist and check that a 404 error is returned`() {
@@ -171,6 +181,7 @@ class MetaDataControllerTest {
                 "",
                 true,
                 null,
+                QAStatus.accepted,
             ),
             dataMetaInformation.copy(uploadTime = uploadTime),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
@@ -207,13 +218,14 @@ class MetaDataControllerTest {
             "",
             true,
             null,
+            QAStatus.accepted,
         )
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
                 .map { it.copy(uploadTime = uploadTime) }
                 .contains(expectedMetaInformation),
-            "The meta info of the posted eu taxonomy data that was associated with the teaser company does not" +
-                "match the retrieved meta info.",
+            "The meta info of the posted eu taxonomy data that was associated with the teaser company " +
+                "does not match the retrieved meta info.",
         )
     }
 

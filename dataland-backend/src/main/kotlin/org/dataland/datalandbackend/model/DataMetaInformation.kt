@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.enums.data.QAStatus
 
 /**
  * --- API model ---
@@ -32,4 +33,7 @@ data class DataMetaInformation(
 
     @field:JsonProperty(required = true)
     val currentlyActive: Boolean,
+
+    @field:JsonProperty(required = true)
+    var qaStatus: QAStatus,
 )
