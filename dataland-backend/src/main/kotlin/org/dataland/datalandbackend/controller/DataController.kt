@@ -36,14 +36,14 @@ abstract class DataController<T>(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
-            ResponseEntity<DataMetaInformation> {
+        ResponseEntity<DataMetaInformation> {
         val companyId = companyAssociatedData.companyId
         val reportingPeriod = companyAssociatedData.reportingPeriod
         val userId = DatalandAuthentication.fromContext().userId
         val uploadTime = Instant.now().epochSecond
         logger.info(
             "Received a request from user '$userId' to post company associated data of type $dataType " +
-                    "for company ID '$companyId' and the reporting period $reportingPeriod",
+                "for company ID '$companyId' and the reporting period $reportingPeriod",
         )
         val correlationId = generatedCorrelationId(companyId)
         val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
@@ -110,7 +110,7 @@ abstract class DataController<T>(
             "Received a request to get all datasets together with meta info for framework '$dataType', " +
                 "companyId '$companyId' and reporting period '$reportingPeriodInLogMessage'",
         )
-        var metaInfos = dataMetaInformationManager.searchDataMetaInfo(
+        val metaInfos = dataMetaInformationManager.searchDataMetaInfo(
             companyId,
             dataType,
             showOnlyActive,
@@ -121,15 +121,15 @@ abstract class DataController<T>(
         metaInfos
             .filter { isDataViewableByUser(it, authentication) }
             .forEach {
-            val correlationId = generatedCorrelationId(companyId)
-            val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
-            listOfFrameworkDataAndMetaInfo.add(
-                DataAndMetaInformation(
-                    it.toApiModel(DatalandAuthentication.fromContext()),
-                    objectMapper.readValue(dataAsString, clazz),
-                ),
-            )
-        }
+                val correlationId = generatedCorrelationId(companyId)
+                val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
+                listOfFrameworkDataAndMetaInfo.add(
+                    DataAndMetaInformation(
+                        it.toApiModel(DatalandAuthentication.fromContext()),
+                        objectMapper.readValue(dataAsString, clazz),
+                    ),
+                )
+            }
         return ResponseEntity.ok(listOfFrameworkDataAndMetaInfo)
     }
 
