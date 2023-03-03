@@ -22,7 +22,7 @@
                       :data-type="DataTypeEnum.EutaxonomyNonFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"
-                      :listOfFrameworkData="listOfEuTaxonomyNonFinancialsMetaInfo"
+                      :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyNonFinancials)"
                       class="bottom-border-section-dots"
                     />
 
@@ -30,7 +30,7 @@
                       :data-type="DataTypeEnum.EutaxonomyFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"
-                      :listOfFrameworkData="listOfEuTaxonomyFinancialsMetaInfo"
+                      :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyFinancials)"
                     />
                   </div>
                 </div>
@@ -51,7 +51,7 @@
                     :data-type="dataType"
                     :companyId="companyID"
                     :isWaitingForData="waitingForData"
-                    :listOfFrameworkData="listOfSfdrMetaInfo"
+                    :listOfFrameworkData="getFrameworkMetaInfos(dataType)"
                   />
                 </div>
               </div>
@@ -107,13 +107,9 @@ export default defineComponent({
   data() {
     return {
       waitingForData: true,
-      listOfEuTaxonomyNonFinancialsMetaInfo: [] as Array<DataMetaInformation>,
-      listOfEuTaxonomyFinancialsMetaInfo: [] as Array<DataMetaInformation>,
-      listOfSfdrMetaInfo: [] as Array<DataMetaInformation>,
-      listOfLksgMetaInfo: [] as Array<DataMetaInformation>,
-      listOfSmeMetaInfo: [] as Array<DataMetaInformation>,
       DataTypeEnum,
       humanizeString: humanizeString,
+      listOfFrameworkMetaInfo: new Map<DataTypeEnum, Array<DataMetaInformation>>()
     };
   },
   props: {
@@ -227,36 +223,23 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, true);
         const listOfAllDataMetaInfo = response.data;
-        this.listOfEuTaxonomyNonFinancialsMetaInfo = this.groupAndSortListOfDataMetaInfo(
-          listOfAllDataMetaInfo.filter(
-            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyNonFinancials
-          )
-        );
-        this.listOfEuTaxonomyFinancialsMetaInfo = this.groupAndSortListOfDataMetaInfo(
-          listOfAllDataMetaInfo.filter(
-            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyFinancials
-          )
-        );
-        this.listOfSfdrMetaInfo = this.groupAndSortListOfDataMetaInfo(
-          listOfAllDataMetaInfo.filter(
-            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Sfdr
-          )
-        );
-        this.listOfLksgMetaInfo = this.groupAndSortListOfDataMetaInfo(
-          listOfAllDataMetaInfo.filter(
-            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Lksg
-          )
-        );
-        this.listOfSmeMetaInfo = this.groupAndSortListOfDataMetaInfo(
-          listOfAllDataMetaInfo.filter(
-            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Sme
-          )
-        );
+        this.listOfFrameworkMetaInfo = listOfAllDataMetaInfo.reduce((groups, item) => {
+          groups.get(item.dataType)?.push(item) || groups.set(item.dataType, [item]);
+          return groups;
+        },
+        new Map<DataTypeEnum, Array<DataMetaInformation>>())
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
       }
     },
+
+    /**
+     * Returns a list of the meta information available for a framework
+     */
+    getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
+      return this.listOfFrameworkMetaInfo.get(dataType) || [];
+    }
   },
 });
 </script>
