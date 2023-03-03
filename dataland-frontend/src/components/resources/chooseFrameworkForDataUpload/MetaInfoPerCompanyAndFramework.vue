@@ -117,13 +117,9 @@ export default defineComponent({
      */
     async redirectToViewPageIfEnabledInFrontend(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
       if (this.isFrontendViewPageExisting) {
-        let urlExtension: string;
-        if (dataMetaInfoOfClickedDataSet.dataType === DataTypeEnum.Lksg) {
-          urlExtension = "";
-        } else {
-          urlExtension = `/${dataMetaInfoOfClickedDataSet.dataId}`;
-        }
-        await this.$router.push(`/companies/${this.companyId}/frameworks/${this.dataType}${urlExtension}`);
+        await this.$router.push(
+          `/companies/${this.companyId}/frameworks/${this.dataType}/${dataMetaInfoOfClickedDataSet.dataId}`
+        );
       }
     },
     /**

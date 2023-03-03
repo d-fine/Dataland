@@ -96,7 +96,7 @@ interface DataApi<T> {
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
     fun getFrameworkDatasetsForCompany(
         @PathVariable("companyId") companyId: String,
-        @RequestParam showOnlyActive: Boolean = true,
+        @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
         @RequestParam reportingPeriod: String? = null,
     ): ResponseEntity<List<DataAndMetaInformation<T>>>
 }
