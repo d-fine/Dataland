@@ -189,17 +189,32 @@ export default defineComponent({
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
 
-        const mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
+        // TODO modularize following code block
+        const mapOfReportingPeriodToActiveDatasetForFramework = new Map<string, DataMetaInformation>();
+        const listOfDistinctAvailableReportingPeriodsForFramework: string[] = [];
         listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.forEach((dataMetaInfo: DataMetaInformation) => {
           if (dataMetaInfo.dataType === this.dataType) {
             if (dataMetaInfo.currentlyActive) {
-              mapOfReportingPeriodToActiveDataset.set(dataMetaInfo.reportingPeriod, dataMetaInfo); // TODO the fact that backend only sends one meta info per distinct reportingPeriod is assured implicitly by using reporting period as key here for the map.. is this ok??
+              mapOfReportingPeriodToActiveDatasetForFramework.set(dataMetaInfo.reportingPeriod, dataMetaInfo); // TODO the fact that backend only sends one meta info per distinct reportingPeriod is assured implicitly by using reporting period as key here for the map.. is this ok??
+              listOfDistinctAvailableReportingPeriodsForFramework.push(dataMetaInfo.reportingPeriod);
             } else {
               throw TypeError("Received inactive dataset meta info from Dataland Backend"); // TODO do we even need a check like this, or is this handled as "assured"
             }
           }
         });
-        this.$emit("updateActiveDataMetaInfoForChosenFramework", mapOfReportingPeriodToActiveDataset);
+        this.$emit("updateActiveDataMetaInfoForChosenFramework", mapOfReportingPeriodToActiveDatasetForFramework);
+        // TODO ________________
+
+        // TODO modularize following code block
+        listOfDistinctAvailableReportingPeriodsForFramework.sort((reportingPeriodA, reportingPeriodB) => {
+          if (reportingPeriodA > reportingPeriodB) return -1;
+          else return 0;
+        });
+        this.$emit(
+          "updateAvailableReportingPeriodsForChosenFramework",
+          listOfDistinctAvailableReportingPeriodsForFramework
+        );
+        // TODO _______
       } catch (error) {
         this.isDataProcessedSuccesfully = false;
         console.error(error);

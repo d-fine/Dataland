@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { SfdrData, DataAndMetaInformationSfdrData } from "@clients/backend";
+import { SfdrData, DataAndMetaInformationSfdrData, DataMetaInformation } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -40,7 +40,7 @@ export default defineComponent({
   data() {
     return {
       waitingForData: true,
-      sfdrData: [] as Array<SfdrData>,
+      sfdrDataAndMetaInfo: [] as Array<DataAndMetaInformationSfdrData>,
       listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       sfdrKpisNameMappings,
@@ -52,22 +52,36 @@ export default defineComponent({
     companyId: {
       type: String,
     },
+    singleDataMetaInfoToDisplay: {
+      type: Object as () => DataMetaInformation,
+    },
   },
   created() {
-    void this.fetchDataForAllDataIds();
+    void this.fetchData();
   },
   methods: {
     /**
      * Fetches all Sfdr datasets for the current company and converts them to the requried frontend format.
      */
-    async fetchDataForAllDataIds() {
+    async fetchData() {
       try {
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getSfdrDataControllerApi();
-        this.sfdrData = (await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))).data;
-        this.convertSfdrDataToFrontendFormat(this.sfdrData);
+
+        if (this.singleDataMetaInfoToDisplay) {
+          const singleSfdrData = (
+            await sfdrDataControllerApi.getCompanyAssociatedSfdrData(this.singleDataMetaInfoToDisplay.dataId)
+          ).data.data as SfdrData; // TODO think about catching errors here,   take dataMetaInfo fetch in the base-component as example
+
+          this.sfdrDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSfdrData }];
+        } else {
+          this.sfdrDataAndMetaInfo = (
+            await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))
+          ).data;
+        }
+        this.convertSfdrDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -105,13 +119,12 @@ export default defineComponent({
     },
 
     /**
-     * Retrieves and converts values from an array of SDFG datasets in order to make it displayable in the frontend.
+     * Retrieves and converts values from an array of SDFR datasets in order to make it displayable in the frontend.
      *
-     * @param sfdrData The Sfdr dataset that shall be converted
      */
-    convertSfdrDataToFrontendFormat(sfdrData: Array<DataAndMetaInformationSfdrData>): void {
-      if (sfdrData.length) {
-        sfdrData.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
+    convertSfdrDataToFrontendFormat(): void {
+      if (this.sfdrDataAndMetaInfo.length) {
+        this.sfdrDataAndMetaInfo.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
           const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
           const dataDateOfSfdrDataset = oneSfdrDataset.data.social?.general?.fiscalYearEnd ?? "";
           this.listOfDataDateToDisplayAsColumns.push({
@@ -133,7 +146,7 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchDataForAllDataIds();
+      void this.fetchData();
     },
   },
 });

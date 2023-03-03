@@ -3,6 +3,7 @@
     :companyID="companyId"
     :dataType="dataType"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
+    @updateAvailableReportingPeriodsForChosenFramework="handleUpdateAvailableReportingPeriods"
   >
     <template v-slot:reportingPeriodDropdown>
       <Dropdown
@@ -50,10 +51,10 @@
         </div>
       </div>
       <div v-if="isWaitingForDataIdToDisplay" class="col-12 text-left">
-        <h2>Checking if {{ humanizedDataDescription }} available...</h2>
+        <h2>Checking if {{ humanizedDataDescription }} data available...</h2>
       </div>
       <div v-if="!isWaitingForDataIdToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size === 0">
-        <h2>No {{ humanizedDataDescription }} present for this company.</h2>
+        <h2>No {{ humanizedDataDescription }} data present for this company.</h2>
       </div>
       <div v-if="isDataIdInUrlInvalid">
         <h2>
@@ -198,6 +199,10 @@ export default defineComponent({
       );
     },
 
+    handleUpdateAvailableReportingPeriods(receivedListOfAvailableReportingPeriods: string[]) {
+      this.reportingPeriodsInDropdown = receivedListOfAvailableReportingPeriods;
+    },
+
     /**
      * Method to handle the update of the currently active data meta information for the chosen framework
      *
@@ -209,30 +214,10 @@ export default defineComponent({
     ) {
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
-      this.getDistinctAvailableReportingPeriodsAndPutThemSortedIntoDropdown(
-        receivedMapOfReportingPeriodsToActiveDataMetaInfo
-      );
       this.chooseDataMetaInfoForDisplayedDataset().catch((err) =>
         console.log("Retrieving data meta info failed with error " + String(err))
       );
       this.isWaitingForDataIdToDisplay = false;
-    },
-
-    /**
-     * Method to construct a sorted dropdown with all available distinct reporting periods
-     *
-     * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
-     * active data meta information objects
-     */
-    getDistinctAvailableReportingPeriodsAndPutThemSortedIntoDropdown(
-      receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
-    ) {
-      this.reportingPeriodsInDropdown = Array.from(receivedMapOfReportingPeriodsToActiveDataMetaInfo.keys()).sort(
-        (reportingPeriodA, reportingPeriodB) => {
-          if (reportingPeriodA > reportingPeriodB) return -1;
-          else return 0;
-        }
-      );
     },
 
     /**
