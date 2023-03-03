@@ -11,6 +11,7 @@ import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 
@@ -48,6 +49,9 @@ data class DataMetaInformationEntity(
 
     @Column(name = "currently_active", nullable = true)
     var currentlyActive: Boolean?,
+
+    @Column(name = "quality_status", nullable = false)
+    var qaStatus: QAStatus,
 ) : ApiModelConversion<DataMetaInformation> {
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
@@ -63,6 +67,7 @@ data class DataMetaInformationEntity(
             uploadTime = uploadTime,
             reportingPeriod = reportingPeriod,
             currentlyActive = currentlyActive == true,
+            qaStatus = qaStatus,
         )
     }
 }

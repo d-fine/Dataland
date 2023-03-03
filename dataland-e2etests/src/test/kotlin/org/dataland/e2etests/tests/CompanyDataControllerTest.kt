@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -198,6 +199,26 @@ class CompanyDataControllerTest {
             "Client error : 403 ",
             exception.message,
             "The exception message does not say that a 403 client error was the cause.",
+        )
+    }
+
+    @Test
+    fun `post a dummy company twice and receive the expected error code and message`() {
+        val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getCompanyInformationWithRandomIdentifiers(1).first()
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.companyDataControllerApi.postCompany(testCompanyInformation)
+        val response = apiAccessor.companyDataControllerApi.postCompanyWithHttpInfo(testCompanyInformation)
+            as ClientError
+
+        assertEquals(
+            400,
+            response.statusCode,
+            "The status code is ${response.statusCode} instead of the expected 400.",
+        )
+        assertTrue(
+            response.body.toString().contains("Could not insert company as one company identifier is already used"),
+            "The response message is not as expected.",
         )
     }
 }

@@ -13,6 +13,7 @@ import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiExcept
  * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid
  * @param data the actual data
  */
+
 data class StorableDataSet(
     val companyId: String,
     val dataType: DataType,

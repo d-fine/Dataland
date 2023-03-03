@@ -9,6 +9,8 @@ include(
     "dataland-csvconverter",
     "dataland-keycloak:dataland_theme:login",
     "dataland-keycloak-adapter",
+    "dataland-qa-service",
+    "dataland-message-queue-utils",
 )
 
 dependencyResolutionManagement {

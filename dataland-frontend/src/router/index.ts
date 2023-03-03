@@ -2,7 +2,6 @@ import { createWebHistory, createRouter, RouteComponent } from "vue-router";
 const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
-const CompanyInformation = (): Promise<RouteComponent> => import("@/components/pages/CompanyInformation.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
 const ViewEuTaxonomyNonFinancialsSample = (): Promise<RouteComponent> =>
@@ -39,11 +38,6 @@ const routes = [
 
     name: "Eu Taxonomy For Non-Financials Sample",
     component: ViewEuTaxonomyNonFinancialsSample,
-  },
-  {
-    path: "/companies/upload",
-    name: "Upload Company",
-    component: UploadCompany,
   },
   {
     path: "/companies/choose",
@@ -102,11 +96,6 @@ const routes = [
     props: true,
     name: "Company EU Taxonomy for specific reporting period",
     component: ViewFrameworkData,
-  },
-  {
-    path: "/companies-only-search",
-    name: "Search Companies",
-    component: SearchCompanies,
   },
   {
     path: "/datasets",
