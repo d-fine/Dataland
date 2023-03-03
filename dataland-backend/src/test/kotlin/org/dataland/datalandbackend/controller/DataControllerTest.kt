@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.ArgumentMatchers.notNull
 import org.mockito.Mockito.mock
@@ -85,7 +86,7 @@ internal class DataControllerTest(
         `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(otherUserAcceptedDataId)).thenReturn(
             otherUserAcceptedDataMetaInformationEntity,
         )
-        `when`(mockDataMetaInformationManager.searchDataMetaInfo(anyString(), any())).thenReturn(
+        `when`(mockDataMetaInformationManager.searchDataMetaInfo(anyString(), any(), anyBoolean(), anyString())).thenReturn(
             listOf(
                 testUserPendingDataMetaInformationEntity,
                 otherUserPendingDataMetaInformationEntity,
@@ -101,6 +102,7 @@ internal class DataControllerTest(
                 testDataType,
                 "",
                 0,
+                "",
                 someSmeDataAsString,
             ),
         )
@@ -113,10 +115,12 @@ internal class DataControllerTest(
     ): DataMetaInformationEntity {
         return DataMetaInformationEntity(
             dataId,
+            storedCompanyEntity,
             testDataType.toString(),
             uploaderId,
             0,
-            storedCompanyEntity,
+            "",
+            null,
             qaStatus,
         )
     }
@@ -157,7 +161,7 @@ internal class DataControllerTest(
     }
 
     private fun assertDatasetsContainExactly(dataIds: List<String>) {
-        val datasetsWithMetaInfo = dataController.getAllCompanyData("").body!!
+        val datasetsWithMetaInfo = dataController.getFrameworkDatasetsForCompany("").body!!
         Assertions.assertEquals(datasetsWithMetaInfo.size, dataIds.size)
         dataIds.forEach { dataId ->
             assert(datasetsWithMetaInfo.any { it.metaInfo.dataId == dataId })

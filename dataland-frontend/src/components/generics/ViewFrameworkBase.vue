@@ -93,6 +93,7 @@ export default defineComponent({
     AuthenticationWrapper,
     CompanyInformation,
     DatalandFooter,
+    PrimeButton,
   },
   emits: ["updateAvailableReportingPeriodsForChosenFramework", "updateActiveDataMetaInfoForChosenFramework"],
   props: {

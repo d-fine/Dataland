@@ -30,6 +30,30 @@ export function generateProductionSite(): ProductionSite {
 }
 
 /**
+ * Generates a random production site without any undefined values
+ *
+ * @returns a production site without any undefined values
+ */
+export function generateFullProductionSite(): ProductionSite {
+  const fakeGoodsOrServices = Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
+    return faker.commerce.productName();
+  });
+
+  return {
+    name: faker.company.name(),
+    isInHouseProductionOrIsContractProcessing: faker.helpers.arrayElement([
+      InHouseProductionOrContractProcessing.InHouseProduction,
+      InHouseProductionOrContractProcessing.ContractProcessing,
+    ]),
+    country: faker.address.countryCode(),
+    city: faker.address.city(),
+    streetAndHouseNumber: faker.address.street() + " " + faker.address.buildingNumber(),
+    postalCode: faker.address.zipCode(),
+    listOfGoodsOrServices: fakeGoodsOrServices,
+  };
+}
+
+/**
  * Generates an array consisting of 1 to 5 random production sites
  *
  * @returns 1 to 5 random production sites

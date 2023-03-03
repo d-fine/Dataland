@@ -3,215 +3,218 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Birkemeyer KG",
-				"Normann AG"
+				"Brehmer, Neimke und Rautenkranz",
+				"Neuschwander-Maczey"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"headquarters": "Nord Fabrice",
-			"headquartersPostalCode": "32773",
-			"sector": "convergence",
+			"headquarters": "Isabellscheid",
+			"headquartersPostalCode": "77360",
+			"sector": "markets",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "abi1jwggmidsawn"
-				},
-				{
 					"identifierType": "Duns",
-					"identifierValue": "j9nucqbig"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "2aq4efu2dqqf"
+					"identifierValue": "ikqpjefe8"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "5usu3oqmncrqog8dlyrn"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "a1hl1jdgle"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "k97elko"
+					"identifierValue": "666szrbmv8fljzhstn94"
 				}
 			],
-			"countryCode": "TO",
-			"isTeaserCompany": false
+			"countryCode": "BS",
+			"isTeaserCompany": false,
+			"website": "https://friedlich-radio.info"
 		},
 		"t": {
 			"referencedReports": {
 				"AnnualReport": {
-					"reference": "https://xn--glamours-zahl-omb.name/geachtet-leber.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "JMD"
+					"reference": "http://xn--erwnscht-klassik-lzb.de/offensichtlich-religion.pdf",
+					"reportDate": "2022-03-26",
+					"currency": "JOD"
+				},
+				"ESEFReport": {
+					"reference": "http://vielschichtig-badezimmer.org/ausschlaggebend-denker.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-06-13",
+					"currency": "PAB"
+				},
+				"SustainabilityReport": {
+					"reference": "https://begehrt-anatomie.name/optimistisch-pocken.pdf",
+					"currency": "MNT"
 				},
 				"IntegratedReport": {
-					"reference": "http://heldenhaft-sessel.com/diszipliniert-sprache.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-07-08",
-					"currency": "BDT"
+					"reference": "https://begabt-blei.org/heilsam-lunge.pdf",
+					"currency": "FKP"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-03-02",
+			"fiscalYearDeviation": "Deviation",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"dataSource": {
-					"page": 207,
-					"report": "AnnualReport",
-					"tagName": "action-items"
-				}
+				"assurance": "None"
 			},
 			"scopeOfEntities": "No",
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.7247,
-					"quality": "Incomplete"
+					"value": 0.3362,
+					"dataSource": {
+						"page": 996,
+						"report": "AnnualReport",
+						"tagName": "e-tailers"
+					},
+					"quality": "Audited",
+					"comment": "connect auxiliary array"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.7002,
-					"quality": "Estimated"
+					"value": 0.4582,
+					"dataSource": {
+						"page": 482,
+						"report": "IntegratedReport",
+						"tagName": "channels"
+					},
+					"quality": "Reported",
+					"comment": "quantify online sensor"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.1042,
-					"dataSource": {
-						"page": 1135,
-						"report": "IntegratedReport",
-						"tagName": "web services"
-					},
-					"quality": "Incomplete",
-					"comment": "input solid state sensor"
+					"value": 0.5198,
+					"quality": "Estimated"
 				}
 			}
 		},
-		"reportingPeriod": "2020-Q1"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Daimer, Stang und Burger",
-				"Gehrig Gruppe",
-				"Krauel, Strege und Kahl",
-				"Unterpaintner-Achilles"
+				"Ihly UG"
 			],
-			"companyLegalForm": "GmbH",
-			"headquarters": "Judithstadt",
-			"headquartersPostalCode": "67937",
-			"sector": "content",
+			"headquarters": "Ferdinandstadt",
+			"headquartersPostalCode": "29563",
+			"sector": "deliverables",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "4adm0jpd9a5d1vu"
+					"identifierValue": "mdvdk6tcf6uinw8"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "yhkjkhxzh"
+					"identifierValue": "qxev47j5a"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "pebtk03p0x8d"
+					"identifierValue": "5pmpmno0ydt7"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "k7bk17ajoamh5zzbg5at"
+					"identifierValue": "bned3qlg56mh9ixf4n60"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "3o229ptlie"
+					"identifierValue": "ztfqjudoqa"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "0tlwnq6"
+					"identifierValue": "5rqtdaz"
 				}
 			],
-			"countryCode": "GM",
-			"isTeaserCompany": false
+			"countryCode": "IE",
+			"isTeaserCompany": false,
+			"website": "http://emsig-regen.net"
 		},
 		"t": {
 			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "http://humorvoll-insekt.com/offensichtlich-musiker.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-03-28",
+					"currency": "MAD"
+				},
 				"SustainabilityReport": {
-					"reference": "https://unfassbar-plazenta.net/kurz-liberalismus.pdf",
-					"reportDate": "2022-10-31",
-					"currency": "IDR"
+					"reference": "http://friedfertig-rock.name/dumm-geb%C3%A4ude.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-07-04",
+					"currency": "AZN"
+				},
+				"ESEFReport": {
+					"reference": "https://xn--bemerkenswert-kse-4qb.org/au%C3%9Ferordentlich-sexismus.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-11-04",
+					"currency": "XBB"
+				},
+				"AnnualReport": {
+					"reference": "http://ultimativ-krankheiten.net/konstruktiv-epistemologie.pdf",
+					"currency": "XOF"
 				}
 			},
+			"fiscalYearEnd": "2022-07-02",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 78,
-					"report": "SustainabilityReport",
-					"tagName": "bandwidth"
-				}
+				"assurance": "ReasonableAssurance",
+				"provider": "Filipowski-Konieczny"
 			},
-			"reportingObligation": "Yes",
-			"numberOfEmployees": 51927,
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 473098.7,
+					"value": 605416.22,
 					"dataSource": {
-						"page": 135,
-						"report": "SustainabilityReport",
-						"tagName": "applications"
+						"page": 243,
+						"report": "AnnualReport",
+						"tagName": "experiences"
 					},
-					"quality": "Audited",
-					"comment": "calculate haptic firewall"
+					"quality": "Reported",
+					"comment": "generate primary matrix"
 				},
 				"eligiblePercentage": {
-					"value": 0.5378,
+					"value": 0.7176,
 					"quality": "Estimated"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 930756.69,
+					"value": 396355.71,
 					"dataSource": {
-						"page": 1040,
-						"report": "SustainabilityReport",
-						"tagName": "supply-chains"
+						"page": 769,
+						"report": "IntegratedReport",
+						"tagName": "blockchains"
 					},
 					"quality": "Audited",
-					"comment": "index open-source feed"
+					"comment": "input mobile protocol"
 				},
 				"eligiblePercentage": {
-					"value": 0.7164,
+					"value": 0.3471,
 					"dataSource": {
-						"page": 555,
+						"page": 641,
 						"report": "SustainabilityReport",
-						"tagName": "convergence"
+						"tagName": "e-services"
 					},
 					"quality": "Audited",
-					"comment": "input open-source driver"
+					"comment": "compress online firewall"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 817100.69,
+					"value": 99078.53,
 					"dataSource": {
-						"page": 999,
+						"page": 31,
 						"report": "SustainabilityReport",
-						"tagName": "supply-chains"
+						"tagName": "architectures"
 					},
-					"quality": "Estimated",
-					"comment": "hack 1080p bandwidth"
+					"quality": "Incomplete",
+					"comment": "parse virtual application"
 				},
 				"eligiblePercentage": {
-					"value": 0.7728,
+					"value": 0.1549,
 					"dataSource": {
-						"page": 147,
-						"report": "SustainabilityReport",
-						"tagName": "action-items"
+						"page": 348,
+						"report": "ESEFReport",
+						"tagName": "e-commerce"
 					},
-					"quality": "Estimated",
-					"comment": "parse auxiliary application"
+					"quality": "Reported",
+					"comment": "navigate redundant matrix"
 				}
 			}
 		},

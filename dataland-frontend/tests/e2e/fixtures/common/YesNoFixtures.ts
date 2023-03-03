@@ -11,6 +11,15 @@ export function randomYesNoUndefined(): YesNo | undefined {
   return faker.helpers.arrayElement(possibleYesNoUndefinedValues);
 }
 
+/**
+ * Randomly returns Yes or No
+ *
+ * @returns Yes or No
+ */
+export function randomYesNo(): YesNo {
+  return faker.helpers.arrayElement(Object.values(YesNo));
+}
+
 const possibleYesNoNaUndefinedValues = [undefined, ...Object.values(YesNoNa)];
 
 /**
