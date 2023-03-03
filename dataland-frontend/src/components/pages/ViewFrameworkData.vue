@@ -11,6 +11,7 @@
     :dataType="dataType"
     :companyId="companyId"
     :dataId="dataId"
+    :reportingPeriod="reportingPeriod"
   />
 </template>
 

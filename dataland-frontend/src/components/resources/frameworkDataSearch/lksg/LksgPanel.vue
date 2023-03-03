@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData } from "@clients/backend";
+import { DataAndMetaInformationLksgData, DataMetaInformation, LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -47,11 +47,14 @@ export default defineComponent({
     companyId: {
       type: String,
     },
+    singleDataMetaInfoToDisplay: {
+      type: Object as () => DataMetaInformation,
+    },
   },
   watch: {
     companyId() {
       this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchDataForAllDataIds();
+      void this.fetchData();
     },
   },
   setup() {
@@ -60,21 +63,29 @@ export default defineComponent({
     };
   },
   created() {
-    void this.fetchDataForAllDataIds();
+    void this.fetchData();
   },
   methods: {
     /**
      * Fetches all LkSG datasets for the current company and converts them to the requried frontend format.
      */
-    async fetchDataForAllDataIds() {
+    async fetchData() {
       try {
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        this.lksgDataAndMetaInfo = (
-          await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
-        ).data;
+        if (this.singleDataMetaInfoToDisplay) {
+          const singleLksgData = (
+            await lksgDataControllerApi.getCompanyAssociatedLksgData(this.singleDataMetaInfoToDisplay.dataId)
+          ).data.data as LksgData; // TODO think about catching errors here,   take dataMetaInfo fetch in the base-component as example
+
+          this.lksgDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleLksgData }];
+        } else {
+          this.lksgDataAndMetaInfo = (
+            await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
+          ).data;
+        }
         this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
