@@ -60,7 +60,7 @@ class QaService(
     ) {
         messageUtils.validateMessageType(type, MessageType.DataStored)
         if (dataId.isNotEmpty()) {
-            messageUtils.rejectMessageOnException{
+            messageUtils.rejectMessageOnException {
                 logger.info(
                     "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
                 )

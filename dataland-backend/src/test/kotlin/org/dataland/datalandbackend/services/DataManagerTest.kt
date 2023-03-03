@@ -46,7 +46,7 @@ class DataManagerTest(
     val testDataProvider = TestDataProvider(objectMapper)
     val dataManager = DataManager(
         objectMapper, companyManager, dataMetaInformationManager,
-        mockStorageClient, mockCloudEventMessageHandler,messageUtils,
+        mockStorageClient, mockCloudEventMessageHandler, messageUtils,
     )
     val spyDataManager: DataManager = spy(dataManager)
     val correlationId = IdUtils.generateUUID()
