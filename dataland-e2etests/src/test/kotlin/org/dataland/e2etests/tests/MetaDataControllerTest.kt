@@ -54,8 +54,8 @@ class MetaDataControllerTest {
                 testDataType, uploadTime,
                 "",
                 true,
-                null,
                 QAStatus.accepted,
+                null,
             )
         assertEquals(
             expectedDataMetaInformation,
@@ -74,8 +74,8 @@ class MetaDataControllerTest {
         uploadedMetaInfo: DataMetaInformation,
         testDataType: DataTypeEnum,
     ) = DataMetaInformation(
-        uploadedMetaInfo.dataId, testDataType, 0,
-        uploadedMetaInfo.companyId, QAStatus.accepted,
+        uploadedMetaInfo.dataId, uploadedMetaInfo.companyId, testDataType, 0, "", false,
+        QAStatus.accepted, null
     )
 
     @Test
@@ -180,8 +180,8 @@ class MetaDataControllerTest {
                 uploadTime,
                 "",
                 true,
-                null,
                 QAStatus.accepted,
+                null,
             ),
             dataMetaInformation.copy(uploadTime = uploadTime),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
@@ -217,8 +217,8 @@ class MetaDataControllerTest {
             uploadTime,
             "",
             true,
-            null,
             QAStatus.accepted,
+            null,
         )
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
