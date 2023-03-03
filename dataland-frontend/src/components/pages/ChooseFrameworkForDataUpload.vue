@@ -109,7 +109,7 @@ export default defineComponent({
       waitingForData: true,
       DataTypeEnum,
       humanizeString: humanizeString,
-      listOfFrameworkMetaInfo: new Map<DataTypeEnum, Array<DataMetaInformation>>()
+      listOfFrameworkMetaInfo: new Map<DataTypeEnum, Array<DataMetaInformation>>(),
     };
   },
   props: {
@@ -226,8 +226,7 @@ export default defineComponent({
         this.listOfFrameworkMetaInfo = listOfAllDataMetaInfo.reduce((groups, item) => {
           groups.get(item.dataType)?.push(item) || groups.set(item.dataType, [item]);
           return groups;
-        },
-        new Map<DataTypeEnum, Array<DataMetaInformation>>())
+        }, new Map<DataTypeEnum, Array<DataMetaInformation>>());
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -236,10 +235,13 @@ export default defineComponent({
 
     /**
      * Returns a list of the meta information available for a framework
+     *
+     * @param dataType the data type of the data associated to the meta infos returned
+     * @returns the meta infos of data with the specified data type
      */
     getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
       return this.listOfFrameworkMetaInfo.get(dataType) || [];
-    }
+    },
   },
 });
 </script>
