@@ -69,7 +69,6 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import PrimeButton from "primevue/button";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
