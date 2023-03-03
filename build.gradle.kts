@@ -8,14 +8,6 @@ val githubToken: String by project
 allprojects {
     repositories {
         mavenCentral()
-        maven {
-            name = "GitHubPackagesEDCClient"
-            url = uri("https://maven.pkg.github.com/d-fine/datalandEDC")
-            credentials {
-                username = System.getenv("GITHUB_USER") ?: githubUser
-                password = System.getenv("GITHUB_TOKEN") ?: githubToken
-            }
-        }
     }
 }
 
