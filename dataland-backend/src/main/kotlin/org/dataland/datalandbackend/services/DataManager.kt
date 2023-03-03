@@ -14,8 +14,8 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueUtils
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -44,6 +44,7 @@ class DataManager(
     @Autowired var metaDataManager: DataMetaInformationManager,
     @Autowired var storageClient: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired var messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val dataInMemoryStorage = mutableMapOf<String, String>()
@@ -117,16 +118,15 @@ class DataManager(
             ),
         ],
     )
-    @Suppress("TooGenericExceptionCaught")
     fun updateMetaData(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.QACompleted)
+        messageUtils.validateMessageType(type, MessageType.QACompleted)
         val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).dataId
         if (dataId.isNotEmpty()) {
-            try {
+            messageUtils.rejectMessageOnException {
                 val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
                 metaInformation.qaStatus = QAStatus.Accepted
                 metaDataManager.storeDataMetaInformation(metaInformation)
@@ -134,8 +134,6 @@ class DataManager(
                     "Received quality assurance for data upload with DataId: " +
                         "$dataId with Correlation Id: $correlationId",
                 )
-            } catch (e: Exception) {
-                throw MessageQueueRejectException(e)
             }
         } else {
             throw MessageQueueRejectException("Provided data ID is empty")
@@ -214,22 +212,19 @@ class DataManager(
             ),
         ],
     )
-    @Suppress("TooGenericExceptionCaught")
     fun removeStoredItemFromTemporaryStore(
         @Payload dataId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.DataStored)
+        messageUtils.validateMessageType(type, MessageType.DataStored)
         if (dataId.isNotEmpty()) {
             logger.info("Internal Storage sent a message - job done")
             logger.info(
                 "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
             )
-            try {
+            messageUtils.rejectMessageOnException {
                 dataInMemoryStorage.remove(dataId)
-            } catch (e: Exception) {
-                throw MessageQueueRejectException(e)
             }
         } else {
             throw MessageQueueRejectException("Provided data ID is empty")

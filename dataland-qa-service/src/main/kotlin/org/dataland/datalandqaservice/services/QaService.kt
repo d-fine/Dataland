@@ -6,8 +6,8 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueUtils
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component
 class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
+    @Autowired var messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -52,15 +53,14 @@ class QaService(
             ),
         ],
     )
-    @Suppress("TooGenericExceptionCaught")
     fun assureQualityOfData(
         @Payload dataId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.DataStored)
+        messageUtils.validateMessageType(type, MessageType.DataStored)
         if (dataId.isNotEmpty()) {
-            try {
+            messageUtils.rejectMessageOnException{
                 logger.info(
                     "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
                 )
@@ -70,8 +70,6 @@ class QaService(
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
                 )
-            } catch (e: Exception) {
-                throw MessageQueueRejectException(e)
             }
         } else {
             throw MessageQueueRejectException("Provided data ID is empty")

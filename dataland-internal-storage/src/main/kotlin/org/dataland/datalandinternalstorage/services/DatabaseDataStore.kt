@@ -9,7 +9,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueUtils
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -34,6 +34,7 @@ class DatabaseDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
+    @Autowired var messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -60,15 +61,14 @@ class DatabaseDataStore(
             ),
         ],
     )
-    @Suppress("TooGenericExceptionCaught")
     fun persistentlyStoreDataAndSendMessage(
         @Payload dataId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.DataReceived)
+        messageUtils.validateMessageType(type, MessageType.DataReceived)
         if (dataId.isNotEmpty()) {
-            try {
+            messageUtils.rejectMessageOnException {
                 logger.info("Received DataID $dataId and CorrelationId: $correlationId")
                 val data = temporarilyCachedDataClient.getReceivedData(dataId)
                 logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
@@ -77,8 +77,6 @@ class DatabaseDataStore(
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     dataId, MessageType.DataStored, correlationId, ExchangeNames.dataStored,
                 )
-            } catch (e: Exception) {
-                throw MessageQueueRejectException(e)
             }
         } else {
             throw MessageQueueRejectException("Provided data ID is empty")
