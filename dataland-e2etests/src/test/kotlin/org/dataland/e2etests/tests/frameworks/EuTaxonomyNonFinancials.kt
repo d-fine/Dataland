@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -21,7 +22,11 @@ class EuTaxonomyNonFinancials {
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
-        val expectedDataMetaInformation = receivedDataMetaInformation?.copy(currentlyActive = true)
+        val expectedDataMetaInformation = receivedDataMetaInformation?.copy(
+            currentlyActive = true,
+            qaStatus = QAStatus.accepted,
+        )
+        Thread.sleep(1000)
         val listOfDataMetaInfoForTestCompany = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
             expectedDataMetaInformation?.companyId,
             expectedDataMetaInformation?.dataType,
