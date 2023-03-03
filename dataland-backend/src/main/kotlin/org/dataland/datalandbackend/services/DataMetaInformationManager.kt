@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
@@ -21,27 +20,13 @@ class DataMetaInformationManager(
 
     /**
      * Method to associate data information with a specific company
-     * @param company The company to associate the data meta information with
-     * @param dataId The id of the dataset to associate with the company
-     * @param dataType The dataType of the dataId
+     * @param dataMetaInformation The data meta information which should be stored
      */
     @Transactional
     fun storeDataMetaInformation(
-        dataId: String,
-        dataType: DataType,
-        uploaderUserId: String,
-        uploadTime: Long,
-        company: StoredCompanyEntity,
+        dataMetaInformation: DataMetaInformationEntity,
     ): DataMetaInformationEntity {
-        val dataMetaInformationEntity = DataMetaInformationEntity(
-            dataId = dataId,
-            dataType = dataType.name,
-            uploaderUserId = uploaderUserId,
-            uploadTime = uploadTime,
-            company = company,
-        )
-
-        return dataMetaInformationRepository.save(dataMetaInformationEntity)
+        return dataMetaInformationRepository.save(dataMetaInformation)
     }
 
     /**

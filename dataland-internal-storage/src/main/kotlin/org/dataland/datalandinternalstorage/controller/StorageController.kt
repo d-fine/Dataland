@@ -1,7 +1,6 @@
 package org.dataland.datalandinternalstorage.controller
 
 import org.dataland.datalandinternalstorage.api.StorageAPI
-import org.dataland.datalandinternalstorage.models.InsertDataResponse
 import org.dataland.datalandinternalstorage.services.DatabaseDataStore
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,10 +22,5 @@ class StorageController(
     override fun selectDataById(dataId: String, correlationId: String): ResponseEntity<String> {
         logger.info("Selecting data from database with (data id: $dataId) and (correlation id: $correlationId).")
         return ResponseEntity.ok(dataStore.selectDataSet(dataId))
-    }
-
-    override fun insertData(correlationId: String, body: String): ResponseEntity<InsertDataResponse> {
-        logger.info("Inserting data into database with (correlation id: $correlationId).")
-        return ResponseEntity.ok(InsertDataResponse(dataStore.insertDataSet(body)))
     }
 }

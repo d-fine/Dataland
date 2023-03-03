@@ -2,16 +2,20 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataApi
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
 import java.util.UUID.randomUUID
 
@@ -41,14 +45,15 @@ abstract class DataController<T>(
         )
         val correlationId = generatedCorrelationId(companyAssociatedData.companyId)
         val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
-
-        val dataIdOfPostedData = dataManager.addDataSet(datasetToStore, correlationId)
+        val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(datasetToStore, correlationId)
         logger.info(
             "Posted company associated data for companyId '${companyAssociatedData.companyId}'. " +
                 "Correlation ID: $correlationId",
         )
         return ResponseEntity.ok(
-            DataMetaInformation(dataIdOfPostedData, dataType, userId, uploadTime, companyAssociatedData.companyId),
+            DataMetaInformation(
+                dataIdOfPostedData, dataType, userId, uploadTime, companyAssociatedData.companyId, QAStatus.Pending,
+            ),
         )
     }
 
@@ -76,17 +81,18 @@ abstract class DataController<T>(
     }
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
-        val companyId = dataMetaInformationManager.getDataMetaInformationByDataId(dataId).company.companyId
+        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        if (!isDataViewableByUser(metaInfo, DatalandAuthentication.fromContextOrNull())) {
+            throw AccessDeniedException("You are trying to access a unreviewed dataset")
+        }
+        val companyId = metaInfo.company.companyId
         val correlationId = generatedCorrelationId(companyId)
         logger.info(
             "Received a request to get company data with dataId '$dataId' for companyId '$companyId'. ",
         )
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
-            data = objectMapper.readValue(
-                dataManager.getDataSet(dataId, dataType, correlationId).data,
-                clazz,
-            ),
+            data = objectMapper.readValue(dataManager.getDataSet(dataId, dataType, correlationId).data, clazz),
         )
         logger.info(
             "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +
@@ -98,19 +104,26 @@ abstract class DataController<T>(
     override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(companyId, dataType)
         val frameworkData = mutableListOf<DataAndMetaInformation<T>>()
-        metaInfos.forEach {
-            val correlationId = generatedCorrelationId(companyId)
-            logger.info(
-                "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
-            )
-            val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
-            frameworkData.add(
-                DataAndMetaInformation(
-                    it.toApiModel(DatalandAuthentication.fromContext()),
-                    objectMapper.readValue(dataAsString, clazz),
-                ),
-            )
-        }
+        val authentication = DatalandAuthentication.fromContextOrNull()
+        metaInfos
+            .filter { isDataViewableByUser(it, authentication) }
+            .forEach {
+                val correlationId = generatedCorrelationId(companyId)
+                logger.info(
+                    "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
+                )
+                val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
+                frameworkData.add(
+                    DataAndMetaInformation(it.toApiModel(authentication), objectMapper.readValue(dataAsString, clazz)),
+                )
+            }
         return ResponseEntity.ok(frameworkData)
+    }
+
+    private fun isDataViewableByUser(dataMetaInfo: DataMetaInformationEntity, authentication: DatalandAuthentication?):
+        Boolean {
+        return dataMetaInfo.qaStatus == QAStatus.Accepted ||
+            dataMetaInfo.uploaderUserId == authentication?.userId ||
+            authentication?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
     }
 }

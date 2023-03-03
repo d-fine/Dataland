@@ -56,43 +56,23 @@
                 }
               }
             }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "storage-controller"
-        ],
-        "summary": "Upload data.",
-        "description": "Upload data and get data id.",
-        "operationId": "insertData",
-        "parameters": [
-          {
-            "name": "correlationId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
               }
             }
           },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved data.",
-            "content": {
-              "*/*": {
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
                 "schema": {
-                  "$ref": "#/components/schemas/InsertDataResponse"
+                  "type": "string"
                 }
               }
             }
@@ -145,6 +125,26 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -173,6 +173,26 @@
               "application/json": {
                 "schema": {
                   "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -207,6 +227,26 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -238,6 +278,26 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -245,17 +305,6 @@
   },
   "components": {
     "schemas": {
-      "InsertDataResponse": {
-        "required": [
-          "dataId"
-        ],
-        "type": "object",
-        "properties": {
-          "dataId": {
-            "type": "string"
-          }
-        }
-      },
       "Link": {
         "type": "object",
         "properties": {
@@ -264,6 +313,34 @@
           },
           "templated": {
             "type": "boolean"
+          }
+        }
+      },
+      "ErrorDetails": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "number"
+          },
+          "errorType": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetails"
+            }
           }
         }
       }

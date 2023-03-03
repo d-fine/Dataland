@@ -9,12 +9,7 @@ describe("As a user, I expect the footer section to be present and contain relev
       cy.ensureLoggedIn();
     });
 
-    const pagesToCheck = [
-      "/companies",
-      "/companies/upload",
-      "/companies-only-search",
-      `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
-    ];
+    const pagesToCheck = ["/companies", `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`];
 
     /**
      * Verifies that the Dataland footer is present

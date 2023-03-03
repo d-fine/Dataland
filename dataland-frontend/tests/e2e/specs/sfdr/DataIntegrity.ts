@@ -82,11 +82,11 @@ describeIf(
         const fiscalYearEndAsString = sfdrData.social!.general!.fiscalYearEnd as string;
         return getYearFromSfdrDate(fiscalYearEndAsString);
       } else {
-        throw Error(`No SFDR dataset could be retrieved for the provided dataId ${dataId}`);
+        throw Error(`No Sfdr dataset could be retrieved for the provided dataId ${dataId}`);
       }
     }
 
-    it("Check Sfdr view page for company with one SFDR data set", () => {
+    it("Check Sfdr view page for company with one Sfdr data set", () => {
       const preparedFixture = getPreparedFixture("company-with-one-sfdr-data-set", preparedFixtures);
       const companyInformation = preparedFixture.companyInformation;
       const sfdrData = preparedFixture.t;

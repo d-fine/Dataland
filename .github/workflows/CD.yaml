@@ -123,10 +123,17 @@ jobs:
           PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
           PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
+          RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
+          RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
+          RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
           subfolder: 'deploy-to-server-with-latest-built-images'
+      - name: Verify images
+        run: ./deployment/verifyImagesRemote.sh
+        env:
+          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
