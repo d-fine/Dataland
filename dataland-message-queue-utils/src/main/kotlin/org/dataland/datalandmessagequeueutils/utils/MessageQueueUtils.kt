@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component
 @Component("MessageQueueUtils")
 class MessageQueueUtils {
     /**
-     * tryCatchWrapper is a wrapper function which provides a possibility to add a try catch block to a function
+     * rejectMessageOnException is a wrapper function which provides a possibility to add a try catch block to a
+     * function
      * The catch will throw a MessageQueueRejectException
      * @param method is the method to be wrapped
      */
