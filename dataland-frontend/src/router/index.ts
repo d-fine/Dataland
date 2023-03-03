@@ -11,8 +11,6 @@ const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/Da
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
 const UploadEuTaxonomyDataForFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForFinancials.vue");
-const UploadCompany = (): Promise<RouteComponent> => import("@/components/pages/UploadCompany.vue");
-const SearchCompanies = (): Promise<RouteComponent> => import("@/components/pages/SearchCompanies.vue");
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
@@ -72,12 +70,6 @@ const routes = [
     path: "/companies",
     name: "Search Companies for Framework Data",
     component: SearchCompaniesForFrameworkData,
-  },
-  {
-    path: "/companies/:companyID",
-    props: true,
-    name: "Company Info",
-    component: CompanyInformation,
   },
   {
     path: `/companies/:companyId/frameworks/:dataType`,
