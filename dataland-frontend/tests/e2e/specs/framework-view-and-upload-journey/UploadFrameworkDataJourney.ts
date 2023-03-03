@@ -6,7 +6,7 @@ import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonom
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
-import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
@@ -82,7 +82,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         const primevueHighlightedSuggestionClass = "p-focus";
         let latestScrollPosition = 0;
         cy.visitAndCheckAppMount("/companies");
-        verifyTaxonomySearchResultTable();
+        verifySearchResultTable();
 
         cy.get('button[aria-label="New Dataset"]')
           .click({ force: true })
@@ -140,7 +140,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.contains("h1", uploadedTestCompanyName);
 
         cy.get("div[id=eutaxonomyDataSetsContainer]").contains("Be the first to create this dataset");
-        cy.get("div[id=eutaxonomyDataSetsContainer]").contains("Create another dataset for Financials");
+        cy.get("div[id=eutaxonomyDataSetsContainer]").contains("Create another dataset for EU Taxonomy for financial companies");
         cy.get("div[id=eutaxonomyDataSetsContainer]").contains(
           "Uploading data for this framework is currently not enabled on the Dataland frontend."
         );
@@ -179,7 +179,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         dataIdOfSecondUploadedEuTaxoFinancialsDataset: string
       ): void {
         cy.get("div[id=eutaxonomyDataSetsContainer")
-          .find(`p.text-primary:contains(Financials)`)
+          .find(`p.text-primary:contains(financial companies)`)
           .eq(0)
           .click({ force: true });
         cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
@@ -187,11 +187,11 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .should(
             "eq",
             getBaseUrl() +
-              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}?dataId=${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
+              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfFirstUploadedEuTaxoFinancialsDataset}`
           );
         cy.go("back");
         cy.get("div[id=eutaxonomyDataSetsContainer")
-          .find(`p.text-primary:contains(Financials)`)
+          .find(`p.text-primary:contains(financial companies)`)
           .eq(1)
           .click({ force: true });
         cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
@@ -199,7 +199,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .should(
             "eq",
             getBaseUrl() +
-              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}?dataId=${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
+              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSecondUploadedEuTaxoFinancialsDataset}`
           );
         cy.go("back");
 
@@ -214,7 +214,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           " and verify pages and elements",
         function () {
           cy.visitAndCheckAppMount("/companies");
-          verifyTaxonomySearchResultTable();
+          verifySearchResultTable();
           cy.get('button[aria-label="New Dataset"]').click({ force: true });
           cy.get("input[id=company_search_bar_standard]")
             .should("exist")

@@ -9,7 +9,7 @@ import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 
@@ -30,13 +30,13 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
       cy.visit("/companies").wait("@companies-meta-information");
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       cy.get("#framework-filter")
         .click()
         .get("div.p-multiselect-panel")
         .find("li.p-highlight:contains('EU Taxonomy for financial companies')")
         .click();
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       cy.url()
         .should(
           "eq",
@@ -48,13 +48,13 @@ describe("As a user, I expect the search functionality on the /companies page to
         .get("div.p-multiselect-panel")
         .find("li.p-multiselect-item:contains('EU Taxonomy for financial companies')")
         .click();
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       cy.url()
         .should("eq", getBaseUrl() + "/companies")
         .get("div.p-multiselect-panel")
         .find("li.p-highlight:contains('EU Taxonomy for non-financial companies')")
         .click();
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       cy.url().should(
         "eq",
         getBaseUrl() +
@@ -145,7 +145,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
       cy.visit("/companies").wait("@companies-meta-information");
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       cy.get("#framework-filter").click().get("div.p-multiselect-panel").should("exist");
 
       cy.scrollTo(0, 500, { duration: 300 }).get("div.p-multiselect-panel").should("not.exist");
@@ -161,7 +161,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .find("li.p-multiselect-item")
         .first()
         .click();
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       cy.get("div.p-multiselect-panel").should("not.exist");
     }
   );
@@ -189,9 +189,9 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies`);
           cy.intercept("**/api/companies/meta-information").as("getFilterOptions");
-          verifyTaxonomySearchResultTable();
+          verifySearchResultTable();
           cy.wait("@getFilterOptions", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-            verifyTaxonomySearchResultTable();
+            verifySearchResultTable();
             cy.get("#sector-filter")
               .click({ scrollBehavior: false })
               .get('input[placeholder="Search sectors"]')
@@ -266,7 +266,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       function checkFirstAutoCompleteSuggestion(companyNamePrefix: string, frameworkToFilterFor: string): void {
         cy.visit(`/companies?framework=${frameworkToFilterFor}`);
         cy.intercept("**/api/companies*").as("searchCompany");
-        verifyTaxonomySearchResultTable();
+        verifySearchResultTable();
         cy.get("input[id=search_bar_top]")
           .click({ scrollBehavior: false })
           .type(companyNameMarker, { scrollBehavior: false });
