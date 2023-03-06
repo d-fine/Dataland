@@ -75,9 +75,9 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                     generateLksgData()
                   );
                 })
-                  .then((dataMetaInformationLksgUpload) => {
-                        dataIdOfLksgUpload = dataMetaInformationLksgUpload.dataId;
-                      });
+                .then((dataMetaInformationLksgUpload) => {
+                  dataIdOfLksgUpload = dataMetaInformationLksgUpload.dataId;
+                });
             });
         });
       });
@@ -185,7 +185,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         storedCompanyForTest: StoredCompany,
         dataIdOfFirstUploadedEuTaxoFinancialsDataset: string,
         dataIdOfSecondUploadedEuTaxoFinancialsDataset: string,
-        dataIdOfLksgDataset: string,
+        dataIdOfLksgDataset: string
       ): void {
         cy.get("div[id=eutaxonomyDataSetsContainer")
           .find(`p.text-primary:contains(financial companies)`)
@@ -216,8 +216,8 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
           .url()
           .should(
-              "contain",
-              `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfLksgDataset}`
+            "contain",
+            `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfLksgDataset}`
           );
       }
 
@@ -253,7 +253,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             storedCompanyForManyDatasetsCompany,
             dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod,
             dataIdOfSecondEuTaxoFinancialsUpload,
-            dataIdOfLksgUpload,
+            dataIdOfLksgUpload
           );
         }
       );

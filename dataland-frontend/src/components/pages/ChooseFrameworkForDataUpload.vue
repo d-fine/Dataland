@@ -38,6 +38,7 @@
 
               <div
                 v-for="dataType in allFrameworksExceptEuTaxonomy"
+                :key="dataType"
                 class="col-9 flex top-border-section"
                 :id="dataType + 'Container'"
               >
