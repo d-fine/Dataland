@@ -7,6 +7,18 @@
   >
     <template v-slot:content>
       <div v-if="isListOfDataIdsToDisplayFound">
+        <div
+          v-if="singleDataMetaInfoToDisplay && singleDataMetaInfoToDisplay.currentlyActive === false"
+          class="flex w-full info-bar"
+        >
+          <span class="flex-1">this dataset is outdated</span>
+          <PrimeButton
+            @click="handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton"
+            label="See latest version"
+            icon="pi pi-stopwatch"
+          />
+        </div>
+
         <div class="grid">
           <div class="col-12">
             <LksgPanel
@@ -60,10 +72,11 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios/index";
 import Keycloak from "keycloak-js";
+import PrimeButton from "primevue/button";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: { SfdrPanel, LksgPanel, ViewFrameworkBase },
+  components: { SfdrPanel, LksgPanel, ViewFrameworkBase, PrimeButton },
   props: {
     companyId: {
       type: String,
@@ -97,7 +110,27 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
+  watch: {
+    dataId(newDataId: string) {
+      /* TODO   this is responsible for cases when you click the "BACK" button and land on the URL with dataId filled
+      if (newDataId) {
+        void this.getMetaDataForDataId(newDataId);
+      }*/
+    },
+    reportingPeriod(newReportingPeriod: string) {
+      // TODO might be that this is not required, because there's no scenario where you click "BACK" and land on the URL with reportingPeriod filled
+      // this.switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod);
+    },
+  },
+
+  // TODO this component is partly similar to ViewSingleDatasetDisplayBase => therefore we should align the order of methods to make it easy to have an overview while working in both files
+
   methods: {
+    handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
+      // TODO       this doesnt work.  button is broken
+      this.reportingPeriod = this.singleDataMetaInfoToDisplay.reportingPeriod;
+    },
+
     handleInvalidDataIdPassedInUrl() {
       // TODO wip
       this.isDataIdInUrlInvalid = true;
@@ -107,6 +140,12 @@ export default defineComponent({
     handleInvalidReportingPeriodPassedInUrl() {
       // TODO wip
       this.isReportingPeriodInUrlInvalid = true;
+      this.isListOfDataIdsToDisplayFound = false;
+    },
+
+    setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation) {
+      this.isListOfDataIdsToDisplayFound = true;
+      this.singleDataMetaInfoToDisplay = dataMetaInfoToDisplay;
     },
 
     async getMetaDataForDataId(dataId: string) {
@@ -119,8 +158,7 @@ export default defineComponent({
         if (dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId) {
           this.handleInvalidDataIdPassedInUrl();
         } else {
-          this.isListOfDataIdsToDisplayFound = true;
-          this.singleDataMetaInfoToDisplay = dataMetaInfoForDataSetWithDataIdFromUrl;
+          this.setSingleDataMetaInfoToDisplay(dataMetaInfoForDataSetWithDataIdFromUrl);
         }
       } catch (error) {
         const axiosError = error as AxiosError;
@@ -139,7 +177,7 @@ export default defineComponent({
         const activeDataMetaInfoWithReportingPeriodFromUrl =
           this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(this.reportingPeriod);
         if (activeDataMetaInfoWithReportingPeriodFromUrl) {
-          this.isListOfDataIdsToDisplayFound = true;
+          this.setSingleDataMetaInfoToDisplay(activeDataMetaInfoWithReportingPeriodFromUrl);
         } else {
           this.handleInvalidReportingPeriodPassedInUrl();
         }
