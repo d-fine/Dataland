@@ -56,6 +56,10 @@ export default defineComponent({
       this.listOfDataDateToDisplayAsColumns = [];
       void this.fetchData();
     },
+    singleDataMetaInfoToDisplay() {
+      this.listOfDataDateToDisplayAsColumns = [];
+      void this.fetchData();
+    },
   },
   setup() {
     return {

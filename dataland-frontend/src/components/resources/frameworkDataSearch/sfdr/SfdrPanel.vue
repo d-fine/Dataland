@@ -32,11 +32,6 @@ import {
 export default defineComponent({
   name: "SfdrPanel",
   components: { CompanyDataTable },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
   data() {
     return {
       waitingForData: true,
@@ -55,6 +50,21 @@ export default defineComponent({
     singleDataMetaInfoToDisplay: {
       type: Object as () => DataMetaInformation,
     },
+  },
+  watch: {
+    companyId() {
+      this.listOfDataDateToDisplayAsColumns = [];
+      void this.fetchData();
+    },
+    singleDataMetaInfoToDisplay() {
+      this.listOfDataDateToDisplayAsColumns = [];
+      void this.fetchData();
+    },
+  },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
   },
   created() {
     void this.fetchData();
@@ -141,12 +151,6 @@ export default defineComponent({
         });
       }
       this.listOfDataDateToDisplayAsColumns = sortDatesToDisplayAsColumns(this.listOfDataDateToDisplayAsColumns);
-    },
-  },
-  watch: {
-    companyId() {
-      this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchData();
     },
   },
 });

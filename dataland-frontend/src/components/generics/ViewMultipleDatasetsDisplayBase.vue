@@ -19,6 +19,25 @@
           />
         </div>
 
+        <div
+          v-if="
+            singleDataMetaInfoToDisplay &&
+            singleDataMetaInfoToDisplay.currentlyActive === true &&
+            receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size > 1
+          "
+          class="flex w-full info-bar"
+        >
+          <span class="flex-1"
+            >this dataset is the latest dataset for the reporting period
+            {{ singleDataMetaInfoToDisplay.reportingPeriod }}</span
+          >
+          <PrimeButton
+            @click="handleClickOnSwitchToAllActiveDatasetButton"
+            :label="`See all ${singleDataMetaInfoToDisplay.dataType} datasets available for this company`"
+            icon="pi pi-stopwatch"
+          />
+        </div>
+
         <div class="grid">
           <div class="col-12">
             <LksgPanel
@@ -112,14 +131,28 @@ export default defineComponent({
   },
   watch: {
     dataId(newDataId: string) {
-      /* TODO   this is responsible for cases when you click the "BACK" button and land on the URL with dataId filled
       if (newDataId) {
         void this.getMetaDataForDataId(newDataId);
-      }*/
+      } else {
+        if (!this.reportingPeriod) {
+          this.setSingleDataMetaInfoToDisplay(null);
+        }
+      }
     },
     reportingPeriod(newReportingPeriod: string) {
-      // TODO might be that this is not required, because there's no scenario where you click "BACK" and land on the URL with reportingPeriod filled
-      // this.switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod);
+      if (newReportingPeriod) {
+        const dataMetaInfoForNewlyChosenReportingPeriod =
+          this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(newReportingPeriod);
+        if (dataMetaInfoForNewlyChosenReportingPeriod) {
+          this.getMetaDataForDataId(dataMetaInfoForNewlyChosenReportingPeriod.dataId);
+        } else {
+          this.isReportingPeriodInUrlInvalid = true;
+        }
+      } else {
+        if (!this.dataId) {
+          this.setSingleDataMetaInfoToDisplay(null);
+        }
+      }
     },
   },
 
@@ -127,8 +160,22 @@ export default defineComponent({
 
   methods: {
     handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
-      // TODO       this doesnt work.  button is broken
-      this.reportingPeriod = this.singleDataMetaInfoToDisplay.reportingPeriod;
+      if (this.singleDataMetaInfoToDisplay) {
+        const currentReportingPeriod = this.singleDataMetaInfoToDisplay.reportingPeriod;
+        this.$router
+          .push(`/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${currentReportingPeriod}`)
+          .catch((err) =>
+            console.log(
+              "Setting route for reporting period " + currentReportingPeriod + " failed with error " + String(err)
+            )
+          );
+      }
+    },
+
+    handleClickOnSwitchToAllActiveDatasetButton() {
+      this.$router
+        .push(`/companies/${this.companyId}/frameworks/${this.dataType}`)
+        .catch((err) => console.log("Setting default route failed with error " + String(err)));
     },
 
     handleInvalidDataIdPassedInUrl() {
@@ -143,7 +190,7 @@ export default defineComponent({
       this.isListOfDataIdsToDisplayFound = false;
     },
 
-    setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation) {
+    setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation | null) {
       this.isListOfDataIdsToDisplayFound = true;
       this.singleDataMetaInfoToDisplay = dataMetaInfoToDisplay;
     },
