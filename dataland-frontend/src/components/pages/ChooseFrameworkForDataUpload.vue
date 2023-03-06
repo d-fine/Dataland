@@ -176,12 +176,11 @@ export default defineComponent({
     groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
       listOfDataMetaInfo: DataMetaInformation[]
     ): Map<string, DataMetaInformation[]> {
-      const mapOfReportingPeriodToListOfDataMetaInfo = listOfDataMetaInfo.reduce((groups, dataMetaInfo) => {
-          groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo) || groups.set(dataMetaInfo.reportingPeriod, [dataMetaInfo]);
-          return groups;
-        }, new Map<string, DataMetaInformation[]>);
-      console.log(mapOfReportingPeriodToListOfDataMetaInfo)
-      return mapOfReportingPeriodToListOfDataMetaInfo;
+      return listOfDataMetaInfo.reduce((groups, dataMetaInfo) => {
+        groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo) ||
+          groups.set(dataMetaInfo.reportingPeriod, [dataMetaInfo]);
+        return groups;
+      }, new Map<string, DataMetaInformation[]>());
     },
 
     // TODO test in unit tests
@@ -223,12 +222,9 @@ export default defineComponent({
           groups.get(dataMetaInfo.dataType)?.push(dataMetaInfo) || groups.set(dataMetaInfo.dataType, [dataMetaInfo]);
           return groups;
         }, new Map<DataTypeEnum, Array<DataMetaInformation>>());
-
-        console.log(this.mapOfDataTypeToListOfDataMetaInfo)
-        // group and sort here already TODO
-
-
-
+        this.mapOfDataTypeToListOfDataMetaInfo.forEach((value, key) => {
+          this.mapOfDataTypeToListOfDataMetaInfo.set(key, this.groupAndSortListOfDataMetaInfo(value));
+        });
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -242,7 +238,11 @@ export default defineComponent({
      * @returns the meta infos of data with the specified data type
      */
     getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
-      return this.groupAndSortListOfDataMetaInfo(this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) || []);
+      if (!this.waitingForData) {
+        return this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) || [];
+      } else {
+        return [];
+      }
     },
   },
 });
