@@ -48,7 +48,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
               return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
-                getRandomReportingPeriod(),
+                "2023",
                 generateEuTaxonomyDataForFinancials()
               );
             })
@@ -61,7 +61,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                   return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
-                    getRandomReportingPeriod(),
+                    "2022",
                     generateEuTaxonomyDataForFinancials()
                   );
                 })
