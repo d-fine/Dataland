@@ -33,7 +33,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       const uniqueCompanyMarkerC = Date.now().toString() + "CCC";
       const testCompanyNameForManyDatasetsCompany =
         "Api-Created-Company-With-Many-FrameworkDatasets" + uniqueCompanyMarkerC;
-      let dataIdOfFirstEuTaxoFinancialsUpload: string;
+      let dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod: string;
       let dataIdOfSecondEuTaxoFinancialsUpload: string;
       let storedCompanyForManyDatasetsCompany: StoredCompany;
 
@@ -53,7 +53,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
               );
             })
             .then((dataMetaInformationOfFirstUpload) => {
-              dataIdOfFirstEuTaxoFinancialsUpload = dataMetaInformationOfFirstUpload.dataId;
+              dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod = dataMetaInformationOfFirstUpload.dataId;
               const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 2000;
               return cy
                 .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
@@ -241,7 +241,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
 
           checkIfLinksToExistingDatasetsWorkAsExpected(
             storedCompanyForManyDatasetsCompany,
-            dataIdOfFirstEuTaxoFinancialsUpload,
+            dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod,
             dataIdOfSecondEuTaxoFinancialsUpload
           );
         }
