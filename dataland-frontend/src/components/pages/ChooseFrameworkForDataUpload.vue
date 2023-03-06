@@ -37,8 +37,7 @@
               </div>
 
               <div
-                v-for="(dataType, index) in [DataTypeEnum.Sfdr, DataTypeEnum.Lksg, DataTypeEnum.Sme]"
-                :key="index"
+                v-for="dataType in allFrameworksExceptEuTaxonomy"
                 class="col-9 flex top-border-section"
                 :id="dataType + 'Container'"
               >
@@ -106,10 +105,16 @@ export default defineComponent({
 
   data() {
     return {
+      allFrameworksExceptEuTaxonomy: Object.values(DataTypeEnum).filter(
+        (frameworkName) =>
+          [DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
+            frameworkName
+          ) === -1
+      ) as DataTypeEnum[],
       waitingForData: true,
       DataTypeEnum,
       humanizeString: humanizeString,
-      listOfFrameworkMetaInfo: new Map<DataTypeEnum, Array<DataMetaInformation>>(),
+      mapOfDataTypeToListOfDataMetaInfo: new Map<DataTypeEnum, DataMetaInformation[]>(),
     };
   },
   props: {
@@ -118,7 +123,6 @@ export default defineComponent({
     },
   },
 
-  watch: {},
   methods: {
     /**
      * Function building a unified for subtitle for a framework type
@@ -223,9 +227,8 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, false);
         const listOfAllDataMetaInfo = response.data;
-        this.listOfFrameworkMetaInfo = listOfAllDataMetaInfo.reduce((groups, item) => {
-          // TODO reminder to Emanuel to understand what happens here
-          groups.get(item.dataType)?.push(item) || groups.set(item.dataType, [item]);
+        this.mapOfDataTypeToListOfDataMetaInfo = listOfAllDataMetaInfo.reduce((groups, dataMetaInfo) => {
+          groups.get(dataMetaInfo.dataType)?.push(dataMetaInfo) || groups.set(dataMetaInfo.dataType, [dataMetaInfo]);
           return groups;
         }, new Map<DataTypeEnum, Array<DataMetaInformation>>());
         this.waitingForData = false;
@@ -241,7 +244,7 @@ export default defineComponent({
      * @returns the meta infos of data with the specified data type
      */
     getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
-      return this.listOfFrameworkMetaInfo.get(dataType) || [];
+      return this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) || [];
     },
   },
 });
