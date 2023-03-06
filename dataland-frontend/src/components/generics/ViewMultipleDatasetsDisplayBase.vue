@@ -159,6 +159,12 @@ export default defineComponent({
   // TODO this component is partly similar to ViewSingleDatasetDisplayBase => therefore we should align the order of methods to make it easy to have an overview while working in both files
 
   methods: {
+    setFlagsToDataFoundState() {
+      this.isListOfDataIdsToDisplayFound = true;
+      this.isDataIdInUrlInvalid = false;
+      this.isReportingPeriodInUrlInvalid = false;
+    },
+
     handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
       if (this.singleDataMetaInfoToDisplay) {
         const currentReportingPeriod = this.singleDataMetaInfoToDisplay.reportingPeriod;
@@ -180,18 +186,20 @@ export default defineComponent({
 
     handleInvalidDataIdPassedInUrl() {
       // TODO wip
+      console.log("invalidDataIdPassedInUrl"); // TODO
       this.isDataIdInUrlInvalid = true;
       this.isListOfDataIdsToDisplayFound = false;
     },
 
     handleInvalidReportingPeriodPassedInUrl() {
       // TODO wip
+      console.log("invalidReportingPeriodPassedInUrl"); // TODO
       this.isReportingPeriodInUrlInvalid = true;
       this.isListOfDataIdsToDisplayFound = false;
     },
 
     setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation | null) {
-      this.isListOfDataIdsToDisplayFound = true;
+      this.setFlagsToDataFoundState();
       this.singleDataMetaInfoToDisplay = dataMetaInfoToDisplay;
     },
 
@@ -230,7 +238,7 @@ export default defineComponent({
         }
       } else {
         console.log("Case C for multiview"); // TODO debugging
-        this.isListOfDataIdsToDisplayFound = true;
+        this.setFlagsToDataFoundState();
       }
     },
 
@@ -247,7 +255,7 @@ export default defineComponent({
     handleUpdateActiveDataMetaInfo(
       receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
     ) {
-      console.log(receivedMapOfReportingPeriodsToActiveDataMetaInfo);
+      console.log("handleUpdateActiveDataMetaInfo"); // TODO
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
       this.createListOfDataMetaInfoForDisplayedDatasets().catch((err) =>

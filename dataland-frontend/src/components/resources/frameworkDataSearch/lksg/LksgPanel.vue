@@ -75,6 +75,7 @@ export default defineComponent({
      */
     async fetchData() {
       try {
+        console.log("LksgPanel fetches data"); // TODO
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()

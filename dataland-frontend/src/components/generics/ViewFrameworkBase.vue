@@ -281,6 +281,9 @@ export default defineComponent({
     companyID() {
       void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
     },
+    dataType() {
+      void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
+    },
   },
 });
 </script>

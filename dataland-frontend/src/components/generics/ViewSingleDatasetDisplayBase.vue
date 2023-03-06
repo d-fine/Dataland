@@ -41,12 +41,9 @@
           <div class="col-7">
             <EuTaxonomyPanelNonFinancials
               v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
-              :dataID="dataMetaInfoForDisplay.dataId"
+              :dataID="dataIdForPanelWithValidType"
             />
-            <EuTaxonomyPanelFinancials
-              v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
-              :dataID="dataMetaInfoForDisplay.dataId"
-            />
+            <EuTaxonomyPanelFinancials v-if="dataType === DataTypeEnum.EutaxonomyFinancials" :dataID="dataIdForPanelWithValidType" />
           </div>
         </div>
       </div>
@@ -126,12 +123,22 @@ export default defineComponent({
   },
   watch: {
     dataId(newDataId: string) {
+      console.log("dataID watcher in Single-View component executed"); // TODO
       if (newDataId) {
         void this.getMetaDataForDataId(newDataId);
       }
     },
     reportingPeriod(newReportingPeriod: string) {
+      console.log("reportingPeriod watcher in Single-View component executed"); // TODO
       this.switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod);
+    },
+  },
+
+  computed: {
+    dataIdForPanelWithValidType() {
+      if (this.dataMetaInfoForDisplay?.dataType === this.dataType) {
+        return this.dataMetaInfoForDisplay?.dataId;
+      } else return "loading";
     },
   },
 

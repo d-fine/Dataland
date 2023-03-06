@@ -75,6 +75,7 @@ export default defineComponent({
      */
     async fetchData() {
       try {
+        console.log("SfdrPanel fetches data"); // TODO
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
