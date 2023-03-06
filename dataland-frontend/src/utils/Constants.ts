@@ -5,11 +5,17 @@ import { DataTypeEnum } from "@clients/backend";
  */
 
 export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = Object.values(DataTypeEnum).filter(
-  (frameworkName) => ["sme"].indexOf(frameworkName) === -1
+  (frameworkName) => [DataTypeEnum.Sme as string].indexOf(frameworkName) === -1
 ) as Array<DataTypeEnum>;
 
 export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = Object.values(DataTypeEnum).filter(
-  (frameworkName) => ["eutaxonomy-financials", "eutaxonomy-non-financials", "sfdr", "sme"].indexOf(frameworkName) === -1
+  (frameworkName) =>
+    [
+      DataTypeEnum.EutaxonomyFinancials as string,
+      DataTypeEnum.EutaxonomyNonFinancials as string,
+      DataTypeEnum.Sfdr as string,
+      DataTypeEnum.Sme as string,
+    ].indexOf(frameworkName) === -1
 ) as Array<DataTypeEnum>;
 
 export const UPLOAD_FILE_SIZE_DISPLAY_DECIMALS = 2;
