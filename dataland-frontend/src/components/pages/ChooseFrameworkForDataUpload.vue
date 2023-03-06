@@ -231,6 +231,11 @@ export default defineComponent({
           groups.get(dataMetaInfo.dataType)?.push(dataMetaInfo) || groups.set(dataMetaInfo.dataType, [dataMetaInfo]);
           return groups;
         }, new Map<DataTypeEnum, Array<DataMetaInformation>>());
+
+        console.log(this.mapOfDataTypeToListOfDataMetaInfo)
+
+
+
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -244,7 +249,7 @@ export default defineComponent({
      * @returns the meta infos of data with the specified data type
      */
     getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
-      return this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) || [];
+      return this.groupAndSortListOfDataMetaInfo(this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) || []);
     },
   },
 });
