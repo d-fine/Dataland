@@ -38,16 +38,15 @@ describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy
             return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;
           })[0].companyId;
           cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
-          cy.wait("@retrieveCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-            cy.get(".p-card-content .text-left strong").contains("NFRD required");
-            cy.get('.material-icons[title="NFRD required"]').trigger("mouseenter", "center");
-            cy.get(".p-tooltip").should("be.visible").contains(NFRDText);
-            cy.get('.material-icons[title="NFRD required"]').trigger("mouseleave");
-            cy.get(".p-tooltip").should("not.exist");
-            cy.get(".p-card-content .text-left strong").contains("Level of Assurance");
-            cy.get('.material-icons[title="Level of Assurance"]').trigger("mouseenter", "center");
-            cy.get(".p-tooltip").should("be.visible").contains(AssuranceText);
-          });
+          cy.wait("@retrieveCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
+          cy.get(".p-card-content .text-left strong").contains("NFRD required");
+          cy.get('.material-icons[title="NFRD required"]').trigger("mouseenter", "center");
+          cy.get(".p-tooltip").should("be.visible").contains(NFRDText);
+          cy.get('.material-icons[title="NFRD required"]').trigger("mouseleave");
+          cy.get(".p-tooltip").should("not.exist");
+          cy.get(".p-card-content .text-left strong").contains("Level of Assurance");
+          cy.get('.material-icons[title="Level of Assurance"]').trigger("mouseenter", "center");
+          cy.get(".p-tooltip").should("be.visible").contains(AssuranceText);
         }
       );
     });
