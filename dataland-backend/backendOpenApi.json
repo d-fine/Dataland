@@ -839,7 +839,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": true
             }
           },
           {
@@ -974,7 +975,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": true
             }
           },
           {
@@ -1109,7 +1111,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": true
             }
           },
           {
@@ -1244,7 +1247,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": true
             }
           },
           {
@@ -1379,7 +1383,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": true
             }
           },
           {
