@@ -2393,7 +2393,7 @@
     "frontendUrl": "http://dataland-admin:6789/keycloak",
     "acr.loa.map": "{}"
   },
-  "keycloakVersion": "20.0.3",
+  "keycloakVersion": "21.0.1",
   "userManagedAccessAllowed": false,
   "clientProfiles": {
     "profiles": []

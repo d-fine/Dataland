@@ -2508,7 +2508,7 @@
     "frontendUrl": "${KEYCLOAK_FRONTEND_URL}",
     "acr.loa.map": "{}"
   },
-  "keycloakVersion": "20.0.3",
+  "keycloakVersion": "21.0.1",
   "userManagedAccessAllowed": false,
   "clientProfiles": {
     "profiles": []
