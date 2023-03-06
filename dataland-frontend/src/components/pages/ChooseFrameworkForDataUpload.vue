@@ -37,8 +37,7 @@
               </div>
 
               <div
-                v-for="(dataType, index) in [DataTypeEnum.Sfdr, DataTypeEnum.Lksg, DataTypeEnum.Sme]"
-                :key="index"
+                v-for="dataType in allFrameworksExceptEuTaxonomy"
                 class="col-9 flex top-border-section"
                 :id="dataType + 'Container'"
               >
@@ -106,10 +105,16 @@ export default defineComponent({
 
   data() {
     return {
+      allFrameworksExceptEuTaxonomy: Object.values(DataTypeEnum).filter(
+        (frameworkName) =>
+          [DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
+            frameworkName
+          ) === -1
+      ) as DataTypeEnum[],
       waitingForData: true,
       DataTypeEnum,
       humanizeString: humanizeString,
-      listOfFrameworkMetaInfo: new Map<DataTypeEnum, Array<DataMetaInformation>>(),
+      mapOfDataTypeToListOfDataMetaInfo: new Map<DataTypeEnum, DataMetaInformation[]>(),
     };
   },
   props: {
@@ -118,7 +123,6 @@ export default defineComponent({
     },
   },
 
-  watch: {},
   methods: {
     /**
      * Function building a unified for subtitle for a framework type
@@ -172,18 +176,11 @@ export default defineComponent({
     groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
       listOfDataMetaInfo: DataMetaInformation[]
     ): Map<string, DataMetaInformation[]> {
-      const mapOfReportingPeriodToListOfDataMetaInfo = new Map<string, DataMetaInformation[]>();
-      listOfDataMetaInfo.forEach((currentDataMetaInfo) => {
-        const reportingPeriodOfCurrentDataMetaInfo = currentDataMetaInfo.reportingPeriod;
-        const listOfDataMetaInfoForUniqueReportingPeriod = mapOfReportingPeriodToListOfDataMetaInfo.get(
-          reportingPeriodOfCurrentDataMetaInfo
-        );
-        if (!listOfDataMetaInfoForUniqueReportingPeriod) {
-          mapOfReportingPeriodToListOfDataMetaInfo.set(reportingPeriodOfCurrentDataMetaInfo, [currentDataMetaInfo]);
-        } else {
-          listOfDataMetaInfoForUniqueReportingPeriod.push(currentDataMetaInfo);
-        }
-      });
+      const mapOfReportingPeriodToListOfDataMetaInfo = listOfDataMetaInfo.reduce((groups, dataMetaInfo) => {
+          groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo) || groups.set(dataMetaInfo.reportingPeriod, [dataMetaInfo]);
+          return groups;
+        }, new Map<string, DataMetaInformation[]>);
+      console.log(mapOfReportingPeriodToListOfDataMetaInfo)
       return mapOfReportingPeriodToListOfDataMetaInfo;
     },
 
@@ -202,7 +199,6 @@ export default defineComponent({
         this.groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
           listOfDataMetaInfoSortedByReportingPeriod
         );
-
       const resultArray: DataMetaInformation[] = [];
       Array.from(mapOfReportingPeriodToListOfDataMetaInfo.values()).forEach(
         (listOfDataMetaInfoForUniqueReportingPeriod) => {
@@ -223,11 +219,16 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, false);
         const listOfAllDataMetaInfo = response.data;
-        this.listOfFrameworkMetaInfo = listOfAllDataMetaInfo.reduce((groups, item) => {
-          // TODO reminder to Emanuel to understand what happens here
-          groups.get(item.dataType)?.push(item) || groups.set(item.dataType, [item]);
+        this.mapOfDataTypeToListOfDataMetaInfo = listOfAllDataMetaInfo.reduce((groups, dataMetaInfo) => {
+          groups.get(dataMetaInfo.dataType)?.push(dataMetaInfo) || groups.set(dataMetaInfo.dataType, [dataMetaInfo]);
           return groups;
         }, new Map<DataTypeEnum, Array<DataMetaInformation>>());
+
+        console.log(this.mapOfDataTypeToListOfDataMetaInfo)
+        // group and sort here already TODO
+
+
+
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -241,11 +242,8 @@ export default defineComponent({
      * @returns the meta infos of data with the specified data type
      */
     getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
-      return this.listOfFrameworkMetaInfo.get(dataType) || [];
+      return this.groupAndSortListOfDataMetaInfo(this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) || []);
     },
   },
 });
 </script>
-
-// TODO comment by Emanuel: Someone broke the ordering on this page... reporting period groups are sorted wrong now, and
-the sorting in the subgroup is wrong too. Why have you done this to me :(
