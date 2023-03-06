@@ -70,7 +70,7 @@ class MetaDataControllerTest {
         )
     }
 
-    //TODO check if this function can be rather used than the hardcoded blocks
+    // TODO check if this function can be rather used than the hardcoded blocks
     private fun buildDataMetaInformation(
         uploadedMetaInfo: DataMetaInformation,
         testDataType: DataTypeEnum,
