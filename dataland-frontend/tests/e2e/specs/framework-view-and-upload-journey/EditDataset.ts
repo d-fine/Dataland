@@ -83,8 +83,8 @@ describe("Validates the edit button functionality on the view framework page", (
             return getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
               const data = await new LksgDataControllerApi(
                 new Configuration({ accessToken: token })
-              ).getAllCompanyLksgData(uploadId.companyId);
-              assert(data.data.length == 2);
+              ).getAllCompanyLksgData(uploadId.companyId, false);
+              expect(data.data).to.have.length(2);
               expect(data.data[0].data).to.deep.equal(data.data[1].data);
             });
           });

@@ -179,8 +179,8 @@ class DataManager(
 
     /**
      * Method to temporarily store a data set in a hash map and send a message to the storage_queue
+     * @param dataId The id of the inserted data set
      * @param storableDataSet The data set to store
-     * @param companyName The name of the company corresponding to the data set to store
      * @param correlationId The correlation id of the request initiating the storing of data
      * @return ID of the stored data set
      */
@@ -196,8 +196,8 @@ class DataManager(
         )
         logger.info(
             "Stored StorableDataSet of type ${storableDataSet.dataType} " +
-                    "for company ID ${storableDataSet.companyId} in temporary storage " +
-                    "and received data ID '$dataId' from storage. Correlation ID: $correlationId.",
+                "for company ID ${storableDataSet.companyId} in temporary storage " +
+                "and received data ID '$dataId' from storage. Correlation ID: $correlationId.",
         )
     }
 

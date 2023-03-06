@@ -33,8 +33,9 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       const uniqueCompanyMarkerC = Date.now().toString() + "CCC";
       const testCompanyNameForManyDatasetsCompany =
         "Api-Created-Company-With-Many-FrameworkDatasets" + uniqueCompanyMarkerC;
-      let dataIdOfFirstEuTaxoFinancialsUpload: string;
+      let dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod: string;
       let dataIdOfSecondEuTaxoFinancialsUpload: string;
+      let dataIdOfLksgUpload: string;
       let storedCompanyForManyDatasetsCompany: StoredCompany;
 
       before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
@@ -48,12 +49,12 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
               return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
-                getRandomReportingPeriod(),
+                "2023",
                 generateEuTaxonomyDataForFinancials()
               );
             })
             .then((dataMetaInformationOfFirstUpload) => {
-              dataIdOfFirstEuTaxoFinancialsUpload = dataMetaInformationOfFirstUpload.dataId;
+              dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod = dataMetaInformationOfFirstUpload.dataId;
               const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 2000;
               return cy
                 .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
@@ -61,7 +62,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                   return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
-                    getRandomReportingPeriod(),
+                    "2022",
                     generateEuTaxonomyDataForFinancials()
                   );
                 })
@@ -73,6 +74,9 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                     getRandomReportingPeriod(),
                     generateLksgData()
                   );
+                })
+                .then((dataMetaInformationLksgUpload) => {
+                  dataIdOfLksgUpload = dataMetaInformationLksgUpload.dataId;
                 });
             });
         });
@@ -174,11 +178,14 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
        * uploaded first in the before-function
        * @param dataIdOfSecondUploadedEuTaxoFinancialsDataset the data ID of the Eu-Taxo-Financial dataset that was
        * uploaded second in the before-function
+       * @param dataIdOfLksgDataset the data ID of the Lksg dataset that was
+       * uploaded in the before-function
        */
       function checkIfLinksToExistingDatasetsWorkAsExpected(
         storedCompanyForTest: StoredCompany,
         dataIdOfFirstUploadedEuTaxoFinancialsDataset: string,
-        dataIdOfSecondUploadedEuTaxoFinancialsDataset: string
+        dataIdOfSecondUploadedEuTaxoFinancialsDataset: string,
+        dataIdOfLksgDataset: string
       ): void {
         cy.get("div[id=eutaxonomyDataSetsContainer")
           .find(`p.text-primary:contains(financial companies)`)
@@ -208,7 +215,10 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.get("div[id=lksgContainer").find(`p.text-primary:contains(LkSG)`).click({ force: true });
         cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
           .url()
-          .should("eq", getBaseUrl() + `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+          .should(
+            "contain",
+            `/companies/${storedCompanyForTest.companyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfLksgDataset}`
+          );
       }
 
       it(
@@ -241,8 +251,9 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
 
           checkIfLinksToExistingDatasetsWorkAsExpected(
             storedCompanyForManyDatasetsCompany,
-            dataIdOfFirstEuTaxoFinancialsUpload,
-            dataIdOfSecondEuTaxoFinancialsUpload
+            dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod,
+            dataIdOfSecondEuTaxoFinancialsUpload,
+            dataIdOfLksgUpload
           );
         }
       );

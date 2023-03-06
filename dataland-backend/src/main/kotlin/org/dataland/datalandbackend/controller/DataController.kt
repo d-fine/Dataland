@@ -50,7 +50,16 @@ abstract class DataController<T>(
         val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(datasetToStore, correlationId)
         logger.info("Posted company associated data for companyId '$companyId'. Correlation ID: $correlationId")
         return ResponseEntity.ok(
-            DataMetaInformation(dataIdOfPostedData, companyId, dataType, userId, uploadTime, reportingPeriod, false, QAStatus.Pending),
+            DataMetaInformation(
+                dataId = dataIdOfPostedData,
+                companyId = companyId,
+                dataType = dataType,
+                uploaderUserId = userId,
+                uploadTime = uploadTime,
+                reportingPeriod = reportingPeriod,
+                currentlyActive = false,
+                qaStatus = QAStatus.Pending
+            ),
         )
     }
 

@@ -48,14 +48,11 @@ class MetaDataControllerTest {
         val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
         val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         val expectedDataMetaInformation =
-            DataMetaInformation(
+            buildAcceptedAndActiveDataMetaInformation(
                 uploadedMetaInfo.dataId,
                 uploadedMetaInfo.companyId,
-                testDataType, uploadTime,
-                "",
-                true,
-                QAStatus.accepted,
-                null,
+                testDataType,
+                uploadTime,
             )
         assertEquals(
             expectedDataMetaInformation,
@@ -70,13 +67,14 @@ class MetaDataControllerTest {
         )
     }
 
-    // TODO check if this function can be rather used than the hardcoded blocks
-    private fun buildDataMetaInformation(
-        uploadedMetaInfo: DataMetaInformation,
+    private fun buildAcceptedAndActiveDataMetaInformation(
+        dataId: String,
+        companyId: String,
         testDataType: DataTypeEnum,
+        uploadTime: Long,
     ) = DataMetaInformation(
-        uploadedMetaInfo.dataId, uploadedMetaInfo.companyId, testDataType, 0, "", false,
-        QAStatus.accepted, null,
+        dataId, companyId, testDataType, uploadTime,
+        "", true, QAStatus.accepted, null,
     )
 
     @Test
@@ -174,15 +172,11 @@ class MetaDataControllerTest {
         val dataMetaInformation = apiAccessor.unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
         val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         assertEquals(
-            DataMetaInformation(
+            buildAcceptedAndActiveDataMetaInformation(
                 testDataId,
                 listOfUploadInfo[0].actualStoredCompany.companyId,
                 testDataType,
                 uploadTime,
-                "",
-                true,
-                QAStatus.accepted,
-                null,
             ),
             dataMetaInformation.copy(uploadTime = uploadTime),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
@@ -211,15 +205,11 @@ class MetaDataControllerTest {
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
         val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
-        val expectedMetaInformation = DataMetaInformation(
+        val expectedMetaInformation = buildAcceptedAndActiveDataMetaInformation(
             testDataId,
             testCompanyId,
             testDataType,
             uploadTime,
-            "",
-            true,
-            QAStatus.accepted,
-            null,
         )
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
