@@ -23,8 +23,8 @@ class DataMetaInformationManager(
      */
     fun storeDataMetaInformation(
         dataMetaInformation: DataMetaInformationEntity,
-    ) {
-        dataMetaInformationRepository.save(dataMetaInformation)
+    ): DataMetaInformationEntity {
+        return dataMetaInformationRepository.save(dataMetaInformation)
     }
 
     /**
