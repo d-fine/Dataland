@@ -176,18 +176,11 @@ export default defineComponent({
     groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
       listOfDataMetaInfo: DataMetaInformation[]
     ): Map<string, DataMetaInformation[]> {
-      const mapOfReportingPeriodToListOfDataMetaInfo = new Map<string, DataMetaInformation[]>();
-      listOfDataMetaInfo.forEach((currentDataMetaInfo) => {
-        const reportingPeriodOfCurrentDataMetaInfo = currentDataMetaInfo.reportingPeriod;
-        const listOfDataMetaInfoForUniqueReportingPeriod = mapOfReportingPeriodToListOfDataMetaInfo.get(
-          reportingPeriodOfCurrentDataMetaInfo
-        );
-        if (!listOfDataMetaInfoForUniqueReportingPeriod) {
-          mapOfReportingPeriodToListOfDataMetaInfo.set(reportingPeriodOfCurrentDataMetaInfo, [currentDataMetaInfo]);
-        } else {
-          listOfDataMetaInfoForUniqueReportingPeriod.push(currentDataMetaInfo);
-        }
-      });
+      const mapOfReportingPeriodToListOfDataMetaInfo = listOfDataMetaInfo.reduce((groups, dataMetaInfo) => {
+          groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo) || groups.set(dataMetaInfo.reportingPeriod, [dataMetaInfo]);
+          return groups;
+        }, new Map<string, DataMetaInformation[]>);
+      console.log(mapOfReportingPeriodToListOfDataMetaInfo)
       return mapOfReportingPeriodToListOfDataMetaInfo;
     },
 
@@ -206,7 +199,6 @@ export default defineComponent({
         this.groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
           listOfDataMetaInfoSortedByReportingPeriod
         );
-
       const resultArray: DataMetaInformation[] = [];
       Array.from(mapOfReportingPeriodToListOfDataMetaInfo.values()).forEach(
         (listOfDataMetaInfoForUniqueReportingPeriod) => {
@@ -233,6 +225,7 @@ export default defineComponent({
         }, new Map<DataTypeEnum, Array<DataMetaInformation>>());
 
         console.log(this.mapOfDataTypeToListOfDataMetaInfo)
+        // group and sort here already TODO
 
 
 
