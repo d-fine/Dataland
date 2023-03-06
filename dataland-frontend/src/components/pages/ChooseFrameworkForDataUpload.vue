@@ -254,6 +254,3 @@ export default defineComponent({
   },
 });
 </script>
-
-// TODO comment by Emanuel: Someone broke the ordering on this page... reporting period groups are sorted wrong now, and
-the sorting in the subgroup is wrong too. Why have you done this to me :(
