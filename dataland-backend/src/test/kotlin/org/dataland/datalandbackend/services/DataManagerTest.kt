@@ -194,7 +194,6 @@ class DataManagerTest(
     fun `check an exception is thrown during storing a data set when sending notification to message queue fails`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val company = companyManager.getCompanyById(storableEuTaxonomyDataSetForNonFinancials.companyId)
 
         `when`(spyDataManager.generateRandomDataId()).thenReturn(dataUUId)
 
@@ -207,7 +206,7 @@ class DataManagerTest(
         )
         assertThrows<AmqpException> {
             spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
-                dataUUId, storableEuTaxonomyDataSetForNonFinancials, company.companyName, correlationId,
+                dataUUId, storableEuTaxonomyDataSetForNonFinancials, correlationId,
             )
         }
     }

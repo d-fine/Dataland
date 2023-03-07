@@ -19,6 +19,25 @@
           />
         </div>
 
+        <div
+          v-if="
+            singleDataMetaInfoToDisplay &&
+            singleDataMetaInfoToDisplay.currentlyActive === true &&
+            receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size > 1
+          "
+          class="flex w-full info-bar"
+        >
+          <span class="flex-1"
+            >this dataset is the latest dataset for the reporting period
+            {{ singleDataMetaInfoToDisplay.reportingPeriod }}</span
+          >
+          <PrimeButton
+            @click="handleClickOnSwitchToAllActiveDatasetButton"
+            :label="`See all ${singleDataMetaInfoToDisplay.dataType} datasets available for this company`"
+            icon="pi pi-stopwatch"
+          />
+        </div>
+
         <div class="grid">
           <div class="col-12">
             <LksgPanel
@@ -70,7 +89,7 @@ import { DataTypeEnum } from "@clients/backend";
 import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { AxiosError } from "axios/index";
+import { AxiosError } from "axios";
 import Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 
@@ -112,42 +131,124 @@ export default defineComponent({
   },
   watch: {
     dataId(newDataId: string) {
-      /* TODO   this is responsible for cases when you click the "BACK" button and land on the URL with dataId filled
+      console.log("dataID watcher in Multi-View component executed"); // TODO
       if (newDataId) {
+        this.setFlagsToDataNotFoundState();
         void this.getMetaDataForDataId(newDataId);
-      }*/
+      } else {
+        if (!this.reportingPeriod) {
+          this.setSingleDataMetaInfoToDisplay(null);
+        }
+      }
     },
     reportingPeriod(newReportingPeriod: string) {
-      // TODO might be that this is not required, because there's no scenario where you click "BACK" and land on the URL with reportingPeriod filled
-      // this.switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod);
+      console.log("reportingPeriod watcher in Multi-View component executed"); // TODO
+      if (newReportingPeriod) {
+        const dataMetaInfoForNewlyChosenReportingPeriod =
+          this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(newReportingPeriod);
+        if (dataMetaInfoForNewlyChosenReportingPeriod) {
+          this.getMetaDataForDataId(dataMetaInfoForNewlyChosenReportingPeriod.dataId).catch((err) =>
+            console.log(
+              "Retrieving meta data information for data ID " +
+                dataMetaInfoForNewlyChosenReportingPeriod.dataId +
+                " failed with error " +
+                String(err)
+            )
+          );
+        } else {
+          this.isReportingPeriodInUrlInvalid = true;
+        }
+      } else {
+        if (!this.dataId) {
+          this.setSingleDataMetaInfoToDisplay(null);
+        }
+      }
     },
   },
 
   // TODO this component is partly similar to ViewSingleDatasetDisplayBase => therefore we should align the order of methods to make it easy to have an overview while working in both files
 
   methods: {
-    handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
-      // TODO       this doesnt work.  button is broken
-      this.reportingPeriod = this.singleDataMetaInfoToDisplay.reportingPeriod;
+    /**
+     * Method to set flags that indicate found data
+     */
+    setFlagsToDataFoundState() {
+      this.isListOfDataIdsToDisplayFound = true;
+      this.isDataIdInUrlInvalid = false;
+      this.isReportingPeriodInUrlInvalid = false;
     },
 
+    /**
+     * Method to set flags that indicate that fetching data is in progress
+     */
+    setFlagsToDataNotFoundState() {
+      this.isListOfDataIdsToDisplayFound = false;
+      this.isDataIdInUrlInvalid = false;
+      this.isReportingPeriodInUrlInvalid = false;
+    },
+
+    /**
+     * Method to handle the button that switches to the active data set for the currently selected reporting period
+     */
+    handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
+      if (this.singleDataMetaInfoToDisplay) {
+        const currentReportingPeriod = this.singleDataMetaInfoToDisplay.reportingPeriod;
+        if (this.companyId != null && this.dataType != null) {
+          this.$router
+            .push(`/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${currentReportingPeriod}`)
+            .catch((err) =>
+              console.log(
+                "Setting route for reporting period " + currentReportingPeriod + " failed with error " + String(err)
+              )
+            );
+        }
+      }
+    },
+
+    /**
+     * Method to handle the button that switches to all active data sets for the selected company and framework
+     */
+    handleClickOnSwitchToAllActiveDatasetButton() {
+      if (this.companyId != null && this.dataType != null) {
+        this.$router
+          .push(`/companies/${this.companyId}/frameworks/${this.dataType}`)
+          .catch((err) => console.log("Setting default route failed with error " + String(err)));
+      }
+    },
+
+    /**
+     * Method to handle an invalid data ID that was passed in URL
+     */
     handleInvalidDataIdPassedInUrl() {
-      // TODO wip
+      console.log("invalidDataIdPassedInUrl"); // TODO
       this.isDataIdInUrlInvalid = true;
       this.isListOfDataIdsToDisplayFound = false;
     },
 
+    /**
+     * Method to handle an invalid reporting period that was passed in URL
+     */
     handleInvalidReportingPeriodPassedInUrl() {
-      // TODO wip
+      console.log("invalidReportingPeriodPassedInUrl"); // TODO
       this.isReportingPeriodInUrlInvalid = true;
       this.isListOfDataIdsToDisplayFound = false;
     },
 
-    setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation) {
-      this.isListOfDataIdsToDisplayFound = true;
+    /**
+     * Method to set a data meta information object as the only one to display
+     *
+     * @param dataMetaInfoToDisplay
+     */
+    setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation | null) {
+      this.setFlagsToDataFoundState();
       this.singleDataMetaInfoToDisplay = dataMetaInfoToDisplay;
     },
 
+    /**
+     * Method to asynchronously retrieve the meta data associated to a given data ID
+     *
+     * @param dataId
+     */
     async getMetaDataForDataId(dataId: string) {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
@@ -168,6 +269,9 @@ export default defineComponent({
       }
     },
 
+    /**
+     * Method to asynchronously create a list of all data meta information objects for the displayed data sets
+     */
     async createListOfDataMetaInfoForDisplayedDatasets() {
       if (this.dataId) {
         console.log("Case A for multiview"); // TODO debugging
@@ -183,10 +287,15 @@ export default defineComponent({
         }
       } else {
         console.log("Case C for multiview"); // TODO debugging
-        this.isListOfDataIdsToDisplayFound = true;
+        this.setFlagsToDataFoundState();
       }
     },
 
+    /**
+     * Method to handle the update of the available reporting periods
+     *
+     * @param receivedListOfAvailableReportingPeriods Desired new available reporting periods
+     */
     handleUpdateAvailableReportingPeriods(receivedListOfAvailableReportingPeriods: string[]) {
       this.distinctAvailableReportingPeriods = receivedListOfAvailableReportingPeriods;
     },
@@ -200,7 +309,7 @@ export default defineComponent({
     handleUpdateActiveDataMetaInfo(
       receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
     ) {
-      console.log(receivedMapOfReportingPeriodsToActiveDataMetaInfo);
+      console.log("handleUpdateActiveDataMetaInfo"); // TODO
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
       this.createListOfDataMetaInfoForDisplayedDatasets().catch((err) =>

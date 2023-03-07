@@ -32,13 +32,9 @@ import {
 export default defineComponent({
   name: "SfdrPanel",
   components: { CompanyDataTable },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
   data() {
     return {
+      firstRender: true,
       waitingForData: true,
       sfdrDataAndMetaInfo: [] as Array<DataAndMetaInformationSfdrData>,
       listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
@@ -56,8 +52,30 @@ export default defineComponent({
       type: Object as () => DataMetaInformation,
     },
   },
-  created() {
-    void this.fetchData();
+  watch: {
+    companyId() {
+      console.log("companyId watcher executes in SfdrPanel"); //TODO
+      this.listOfDataDateToDisplayAsColumns = [];
+      void this.fetchData();
+    },
+    singleDataMetaInfoToDisplay() {
+      console.log("singleDataMetaInfoToDisplay watcher executes in SfdrPanel"); //TODO
+      if (!this.firstRender) {
+        console.log("singleDataMetaInfoToDisplay watcher in SfdrPanel: no first render => fetch data") // TODO
+        this.listOfDataDateToDisplayAsColumns = [];
+        void this.fetchData();
+      }
+    },
+  },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
+  async created() {
+    console.log("SfdrPanel created"); //TODO
+    void await this.fetchData();
+    this.firstRender = false;
   },
   methods: {
     /**
@@ -65,6 +83,7 @@ export default defineComponent({
      */
     async fetchData() {
       try {
+        console.log("SfdrPanel fetches data"); // TODO
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -141,12 +160,6 @@ export default defineComponent({
         });
       }
       this.listOfDataDateToDisplayAsColumns = sortDatesToDisplayAsColumns(this.listOfDataDateToDisplayAsColumns);
-    },
-  },
-  watch: {
-    companyId() {
-      this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchData();
     },
   },
 });

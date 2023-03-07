@@ -41,11 +41,11 @@
           <div class="col-7">
             <EuTaxonomyPanelNonFinancials
               v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
-              :dataID="dataMetaInfoForDisplay.dataId"
+              :dataID="dataIdForPanelWithValidType"
             />
             <EuTaxonomyPanelFinancials
               v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
-              :dataID="dataMetaInfoForDisplay.dataId"
+              :dataID="dataIdForPanelWithValidType"
             />
           </div>
         </div>
@@ -126,12 +126,22 @@ export default defineComponent({
   },
   watch: {
     dataId(newDataId: string) {
+      console.log("dataID watcher in Single-View component executed"); // TODO
       if (newDataId) {
         void this.getMetaDataForDataId(newDataId);
       }
     },
     reportingPeriod(newReportingPeriod: string) {
+      console.log("reportingPeriod watcher in Single-View component executed"); // TODO
       this.switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod);
+    },
+  },
+
+  computed: {
+    dataIdForPanelWithValidType() {
+      if (this.dataMetaInfoForDisplay?.dataType === this.dataType) {
+        return this.dataMetaInfoForDisplay?.dataId;
+      } else return "loading";
     },
   },
 
@@ -171,7 +181,9 @@ export default defineComponent({
         this.processDataMetaInfoForDisplay(dataMetaInfoForNewlyChosenReportingPeriod);
         this.routerPushToReportingPeriod(dataMetaInfoForNewlyChosenReportingPeriod.reportingPeriod);
       } else {
-        this.isReportingPeriodInUrlInvalid = true;
+        if (newReportingPeriod) {
+          this.isReportingPeriodInUrlInvalid = true;
+        }
       }
     },
 
@@ -199,6 +211,11 @@ export default defineComponent({
       );
     },
 
+    /**
+     * Method to handle the update of the available reporting periods
+     *
+     * @param receivedListOfAvailableReportingPeriods Desired new available reporting periods
+     */
     handleUpdateAvailableReportingPeriods(receivedListOfAvailableReportingPeriods: string[]) {
       this.reportingPeriodsInDropdown = receivedListOfAvailableReportingPeriods;
     },

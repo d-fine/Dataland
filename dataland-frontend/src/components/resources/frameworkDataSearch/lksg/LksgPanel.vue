@@ -34,6 +34,7 @@ export default defineComponent({
   components: { CompanyDataTable },
   data() {
     return {
+      firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
       listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
@@ -53,8 +54,17 @@ export default defineComponent({
   },
   watch: {
     companyId() {
+      console.log("companyId watcher executes in LksgPanel"); //TODO
       this.listOfDataDateToDisplayAsColumns = [];
       void this.fetchData();
+    },
+    singleDataMetaInfoToDisplay() {
+      console.log("singleDataMetaInfoToDisplay watcher executes in LksgPanel"); //TODO
+      if (!this.firstRender) {
+        console.log("singleDataMetaInfoToDisplay watcher in LksgPanel: no first render => fetch data") // TODO
+        this.listOfDataDateToDisplayAsColumns = [];
+        void this.fetchData();
+      }
     },
   },
   setup() {
@@ -62,8 +72,10 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  created() {
-    void this.fetchData();
+  async created() {
+    console.log("LksgPanel created"); //TODO
+    void await this.fetchData();
+    this.firstRender = false;
   },
   methods: {
     /**
@@ -71,6 +83,7 @@ export default defineComponent({
      */
     async fetchData() {
       try {
+        console.log("LksgPanel fetches data"); // TODO
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
