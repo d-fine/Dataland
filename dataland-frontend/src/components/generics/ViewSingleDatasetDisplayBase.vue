@@ -206,6 +206,10 @@ export default defineComponent({
       );
     },
 
+    /**
+     * Method to handle the update of the available reporting periods
+     * @param receivedListOfAvailableReportingPeriods Desired new available reporting periods
+     */
     handleUpdateAvailableReportingPeriods(receivedListOfAvailableReportingPeriods: string[]) {
       this.reportingPeriodsInDropdown = receivedListOfAvailableReportingPeriods;
     },

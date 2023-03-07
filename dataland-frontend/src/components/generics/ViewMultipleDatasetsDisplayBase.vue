@@ -144,7 +144,13 @@ export default defineComponent({
         const dataMetaInfoForNewlyChosenReportingPeriod =
           this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(newReportingPeriod);
         if (dataMetaInfoForNewlyChosenReportingPeriod) {
-          this.getMetaDataForDataId(dataMetaInfoForNewlyChosenReportingPeriod.dataId);
+          this
+            .getMetaDataForDataId(dataMetaInfoForNewlyChosenReportingPeriod.dataId)
+            .catch((err) => console.log(
+                "Retrieving meta data information for data ID " + dataMetaInfoForNewlyChosenReportingPeriod.dataId +
+                  " failed with error " + String(err)
+                )
+            );
         } else {
           this.isReportingPeriodInUrlInvalid = true;
         }
@@ -159,31 +165,47 @@ export default defineComponent({
   // TODO this component is partly similar to ViewSingleDatasetDisplayBase => therefore we should align the order of methods to make it easy to have an overview while working in both files
 
   methods: {
+    /**
+     * Method to set flags that indicate found data
+     */
     setFlagsToDataFoundState() {
       this.isListOfDataIdsToDisplayFound = true;
       this.isDataIdInUrlInvalid = false;
       this.isReportingPeriodInUrlInvalid = false;
     },
 
+    /**
+     * Method to handle the button that switches to the active data set for the currently selected reporting period
+     */
     handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
       if (this.singleDataMetaInfoToDisplay) {
         const currentReportingPeriod = this.singleDataMetaInfoToDisplay.reportingPeriod;
-        this.$router
-          .push(`/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${currentReportingPeriod}`)
-          .catch((err) =>
-            console.log(
-              "Setting route for reporting period " + currentReportingPeriod + " failed with error " + String(err)
-            )
-          );
+        if (this.companyId != null && this.dataType != null) {
+          this.$router
+            .push(`/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${currentReportingPeriod}`)
+            .catch((err) =>
+              console.log(
+                  "Setting route for reporting period " + currentReportingPeriod + " failed with error " + String(err)
+              )
+            );
+        }
       }
     },
 
+    /**
+     * Method to handle the button that switches to all active data sets for the selected company and framework
+     */
     handleClickOnSwitchToAllActiveDatasetButton() {
-      this.$router
-        .push(`/companies/${this.companyId}/frameworks/${this.dataType}`)
-        .catch((err) => console.log("Setting default route failed with error " + String(err)));
+      if (this.companyId != null && this.dataType != null) {
+        this.$router
+          .push(`/companies/${this.companyId}/frameworks/${this.dataType}`)
+          .catch((err) => console.log("Setting default route failed with error " + String(err)));
+      }
     },
 
+    /**
+     * Method to handle an invalid data ID that was passed in URL
+     */
     handleInvalidDataIdPassedInUrl() {
       // TODO wip
       console.log("invalidDataIdPassedInUrl"); // TODO
@@ -191,6 +213,9 @@ export default defineComponent({
       this.isListOfDataIdsToDisplayFound = false;
     },
 
+    /**
+     * Method to handle an invalid reporting period that was passed in URL
+     */
     handleInvalidReportingPeriodPassedInUrl() {
       // TODO wip
       console.log("invalidReportingPeriodPassedInUrl"); // TODO
@@ -198,11 +223,19 @@ export default defineComponent({
       this.isListOfDataIdsToDisplayFound = false;
     },
 
+    /**
+     * Method to set a data meta information object as the only one to display
+     * @param dataMetaInfoToDisplay
+     */
     setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation | null) {
       this.setFlagsToDataFoundState();
       this.singleDataMetaInfoToDisplay = dataMetaInfoToDisplay;
     },
 
+    /**
+     * Method to asynchronously retrieve the meta data associated to a given data ID
+     * @param dataId
+     */
     async getMetaDataForDataId(dataId: string) {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
@@ -223,6 +256,9 @@ export default defineComponent({
       }
     },
 
+    /**
+     * Method to asynchronously create a list of all data meta information objects for the displayed data sets
+     */
     async createListOfDataMetaInfoForDisplayedDatasets() {
       if (this.dataId) {
         console.log("Case A for multiview"); // TODO debugging
@@ -242,6 +278,10 @@ export default defineComponent({
       }
     },
 
+    /**
+     * Method to handle the update of the available reporting periods
+     * @param receivedListOfAvailableReportingPeriods Desired new available reporting periods
+     */
     handleUpdateAvailableReportingPeriods(receivedListOfAvailableReportingPeriods: string[]) {
       this.distinctAvailableReportingPeriods = receivedListOfAvailableReportingPeriods;
     },
