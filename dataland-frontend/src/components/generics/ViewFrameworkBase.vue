@@ -119,7 +119,7 @@ export default defineComponent({
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
-      mapOfReportingPeriodToActiveDataset: {} as Map<string, DataMetaInformation>,
+      mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
       isDataProcessedSuccesfully: true,
       hasUserUploaderRights: null as null | boolean,
     };
@@ -246,8 +246,10 @@ export default defineComponent({
         );
 
         // TODO modularize following code block
+        console.log("HI");
         this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
         const listOfDistinctAvailableReportingPeriodsForFramework: string[] = [];
+        console.log(listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod);
         listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.forEach((dataMetaInfo: DataMetaInformation) => {
           if (dataMetaInfo.dataType === this.dataType) {
             if (dataMetaInfo.currentlyActive) {

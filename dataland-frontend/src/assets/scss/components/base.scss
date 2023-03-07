@@ -73,6 +73,11 @@ body {
     color: var(--gray-700);
     background: var(--gray-100);
   }
+
+  &.badge-brown {
+    color: $brown-light;
+    background: #E2D9C5;
+  }
 }
 .d-center-div {
   position: absolute;

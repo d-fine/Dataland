@@ -1,7 +1,13 @@
-import { DataMetaInformation, DataTypeEnum, StoredCompany } from "@clients/backend";
+import { DataMetaInformation, DataTypeEnum, QAStatus, StoredCompany } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+
+export enum DatasetStatus {
+  QAPending,
+  QAApproved,
+  Outdated,
+}
 
 export class DatasetTableInfo {
   constructor(
@@ -11,8 +17,22 @@ export class DatasetTableInfo {
     readonly companyId: string,
     readonly dataId: string,
     readonly dataReportingPeriod: string,
-    readonly currentlyActive: boolean
+    readonly status: DatasetStatus
   ) {}
+}
+
+/**
+ * Computes the reduced DatasetStatus of the provided dataset
+ *
+ * @param dataMetaInfo the dataset containing different status indicators (i.e QAStatus, currentlyActive,...)
+ * @returns a unified DatasetStatus
+ */
+function getDatasetStatus(dataMetaInfo: DataMetaInformation): DatasetStatus {
+  if (dataMetaInfo.qaStatus == QAStatus.Accepted) {
+    return dataMetaInfo.currentlyActive ? DatasetStatus.QAApproved : DatasetStatus.Outdated;
+  } else {
+    return DatasetStatus.QAPending;
+  }
 }
 
 /**
@@ -42,6 +62,7 @@ export async function getMyDatasetTableInfos(
   if (parsedIdToken) {
     userId = parsedIdToken.sub;
   }
+
   return companiesMetaInfos.flatMap((company: StoredCompany) =>
     company.dataRegisteredByDataland
       .filter(
@@ -57,7 +78,7 @@ export async function getMyDatasetTableInfos(
             company.companyId,
             dataMetaInfo.dataId,
             dataMetaInfo.reportingPeriod,
-            dataMetaInfo.currentlyActive
+            getDatasetStatus(dataMetaInfo)
           )
       )
   );

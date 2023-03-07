@@ -19,13 +19,16 @@
         </template>
       </Column>
       <Column field="dataReportingPeriod" header="REPORTING PERIOD" :sortable="true"></Column>
-      <Column field="currentlyActive" header="STATUS" :sortable="true">
+      <Column field="status" header="STATUS" :sortable="true">
         <template #body="{ data }">
-          <div v-if="data.currentlyActive" class="p-badge badge-green">
-            <span>ACTIVE</span>
+          <div v-if="data.status == DatasetStatus.QAApproved" class="p-badge badge-green">
+            <span>APPROVED</span>
           </div>
-          <div v-else class="p-badge badge-gray">
+          <div v-if="data.status == DatasetStatus.Outdated" class="p-badge badge-brown">
             <span>OUTDATED</span>
+          </div>
+          <div v-if="data.status == DatasetStatus.QAPending" class="p-badge badge-yellow">
+            <span>PENDING</span>
           </div>
         </template>
       </Column>
@@ -71,7 +74,11 @@ import { defineComponent, inject } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import {
+  DatasetStatus,
+  DatasetTableInfo,
+  getMyDatasetTableInfos,
+} from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import Keycloak from "keycloak-js";
@@ -80,6 +87,14 @@ import debounce from "@/utils/Debounce";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
+  computed: {
+    DatasetStatus() {
+      return DatasetStatus;
+    },
+  },
+  mounted() {
+    this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
+  },
   components: {
     DataTable,
     Column,
