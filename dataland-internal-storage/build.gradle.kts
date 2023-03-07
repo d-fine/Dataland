@@ -103,6 +103,9 @@ tasks.register("generateClients") {
     dependsOn("generateBackendClient")
 }
 
+tasks.findByName("jar")!!.dependsOn("forkedSpringBootRun")
+tasks.findByName("jar")!!.dependsOn("generateOpenApiDocs")
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }

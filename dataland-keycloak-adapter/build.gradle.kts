@@ -46,12 +46,9 @@ java {
     withSourcesJar()
 }
 
+
 tasks.bootJar {
     enabled = false
-}
-
-tasks.register("generateClients") {
-    dependsOn("generateApiKeyManagerClient")
 }
 
 tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
@@ -70,6 +67,11 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
         ),
     )
 }
+tasks.register("generateClients") {
+    dependsOn("generateApiKeyManagerClient")
+}
+
+tasks.findByName("sourcesJar")!!.dependsOn("generateApiKeyManagerClient")
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
