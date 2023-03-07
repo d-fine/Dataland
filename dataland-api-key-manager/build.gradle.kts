@@ -69,9 +69,6 @@ jacoco {
     toolVersion = jacocoVersion
 }
 
-tasks.findByName("jar")!!.dependsOn("forkedSpringBootRun")
-tasks.findByName("jar")!!.dependsOn("generateOpenApiDocs")
-
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }

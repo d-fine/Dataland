@@ -116,9 +116,6 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     )
 }
 
-tasks.findByName("jar")!!.dependsOn("forkedSpringBootRun")
-tasks.findByName("jar")!!.dependsOn("generateOpenApiDocs")
-
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateInternalStorageClient")
 }
