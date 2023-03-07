@@ -12,6 +12,7 @@ import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
+import { humanizeString } from "../../../../src/utils/StringHumanizer"; // TODO write path with @notation!
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -26,8 +27,20 @@ describe("The shared header of the framework pages should act as expected", { sc
       const nonFinancialCompanyName = "some-non-financial-only-company";
       const dropdownSelector = "div#chooseFrameworkDropdown";
       const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
-      const financialsDropdownItem = "EU Taxonomy for financial companies";
-      const lksgDropdownItem = "LkSG";
+      const financialsDropdownItem = "EU Taxonomy for financial companies"; // TODO could depend on humanize String and DataType class?
+      const lksgDropdownItem = "LkSG"; // TODO could depend on humanize String and DataType class?
+
+      function createAllInterceptsOnFrameworkViewPage() {
+        cy.intercept("/api/companies/**-**-**").as("getCompanyInformation");
+        cy.intercept("/api/metadata**").as("getMetaDataForCompanyId");
+        cy.intercept("/api/data/**").as("getFrameworkData");
+      }
+
+      function waitForAllInterceptsOnFrameworkViewPage() {
+        cy.wait(["@getCompanyInformation", "@getMetaDataForCompanyId", "@getFrameworkData"], {
+          timeout: Cypress.env("long_timeout_in_ms") as number,
+        });
+      }
 
       /**
        * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
@@ -40,27 +53,12 @@ describe("The shared header of the framework pages should act as expected", { sc
         frameworkQueryParam: string,
         searchStringQueryParam: string
       ): void {
-        cy.intercept("**/api/companies*").as("companyLoad");
+        cy.intercept("/api/companies**").as("getSearchResults");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
-        cy.wait("@companyLoad", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        cy.wait("@getSearchResults", { timeout: Cypress.env("long_timeout_in_ms") as number });
         const companySelector = "span:contains(VIEW)";
         cy.get(companySelector).first().scrollIntoView();
         cy.get(companySelector).first().click({ force: true });
-      }
-
-      /**
-       * Visits the search page with the framework query param set, type a search string into the search bar and click
-       * the first suggestion.
-       *
-       * @param frameworkQueryParam The query param set as framework filter
-       * @param searchStringForSearchBar The search string to type into the search bar
-       */
-      function selectCompanyViaAutocompleteOnCompaniesPage(
-        frameworkQueryParam: string,
-        searchStringForSearchBar: string
-      ): void {
-        cy.visit(`/companies?framework=${frameworkQueryParam}`);
-        searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(searchStringForSearchBar);
       }
 
       /**
@@ -74,8 +72,10 @@ describe("The shared header of the framework pages should act as expected", { sc
         searchString: string,
         searchBarSelector = "input#search_bar_top"
       ): void {
+        cy.intercept("/api/companies?searchString=**true").as("autocompleteSuggestions");
         cy.get(searchBarSelector).click();
         cy.get(searchBarSelector).type(searchString, { force: true });
+        cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
         const companySelector = ".p-autocomplete-item";
         cy.get(companySelector).first().scrollIntoView();
         cy.get(companySelector).first().click({ force: true });
@@ -109,19 +109,16 @@ describe("The shared header of the framework pages should act as expected", { sc
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(dropdownSelector).click();
         cy.get(`${dropdownItemsSelector}:contains(${frameworkToSelect})`).click({ force: true });
-        cy.wait(3000);
       }
 
       /**
        * Validates if the framework view page is currently displayed.
        *
        * @param framework the framework type as DataTypeEnum
-       * @param header the h2 header to check for
        */
-      function validateFrameworkPage(framework: DataTypeEnum, header: string): void {
-        cy.wait(5000);
+      function validateFrameworkPage(framework: DataTypeEnum): void {
         cy.url().should("contain", `/frameworks/${framework}`);
-        cy.get("h2").should("contain", header);
+        cy.get('[data-test="frameworkDataTableTitle"]').should("contain", humanizeString(framework)); // TODO
       }
 
       /**
@@ -179,44 +176,62 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.EutaxonomyFinancials, lksgAndFinancialCompanyName);
-        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy for financial companies");
+        cy.intercept("/api/companies?searchString=&dataTypes=*").as("firstLoadOfSearchPage");
+        cy.visit(`/companies?framework=${DataTypeEnum.EutaxonomyFinancials}`);
+        cy.wait("@firstLoadOfSearchPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        createAllInterceptsOnFrameworkViewPage();
+        searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(lksgAndFinancialCompanyName);
+
+        waitForAllInterceptsOnFrameworkViewPage();
+        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials);
+        validateDropdown(financialsDropdownItem);
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
           DataTypeEnum.EutaxonomyFinancials,
           lksgAndFinancialCompanyName
         );
-        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy for financial companies");
+
+        waitForAllInterceptsOnFrameworkViewPage();
+        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials);
         validateDropdown(financialsDropdownItem);
         selectFrameworkInDropdown(lksgDropdownItem);
-        validateFrameworkPage(DataTypeEnum.Lksg, "LkSG Data");
+
+        waitForAllInterceptsOnFrameworkViewPage();
+        validateFrameworkPage(DataTypeEnum.Lksg);
         validateDropdown(lksgDropdownItem);
         selectFrameworkInDropdown(financialsDropdownItem);
-        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy for financial companies");
 
-        selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
-        validateFrameworkPage(DataTypeEnum.Lksg, "LkSG Data");
+        waitForAllInterceptsOnFrameworkViewPage();
+        validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials);
+        cy.visit(`/companies?framework=${DataTypeEnum.Lksg}`);
+        searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(lksgAndFinancialCompanyName);
+
+        waitForAllInterceptsOnFrameworkViewPage();
+        validateFrameworkPage(DataTypeEnum.Lksg);
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
-        validateFrameworkPage(DataTypeEnum.Lksg, "LkSG Data");
+
+        waitForAllInterceptsOnFrameworkViewPage();
+        validateFrameworkPage(DataTypeEnum.Lksg);
         validateDropdown(lksgDropdownItem);
       });
 
       it("Check that from a framework page you can search a company without this framework", () => {
+        // TODO add waits
         cy.ensureLoggedIn();
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
-        validateFrameworkPage(DataTypeEnum.Lksg, "LkSG Data");
+        validateFrameworkPage(DataTypeEnum.Lksg);
         searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(
           nonFinancialCompanyName,
           "input#framework_data_search_bar_standard"
         );
-        validateFrameworkPage(DataTypeEnum.EutaxonomyNonFinancials, "EU Taxonomy for non-financial companies");
+        validateFrameworkPage(DataTypeEnum.EutaxonomyNonFinancials);
       });
 
       it("Check if invalid company ID or invalid data ID lead to displayed error message on framework view page", () => {
+        // TODO add waits
         cy.ensureLoggedIn();
         const someInvalidCompanyId = "12345-some-invalid-companyId";
         const someInvalidDataId = "789-some-invalid-dataId-987";
         cy.visit(`/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`);
-        cy.wait(10000);
         cy.contains("h1", "No company with this ID present");
         getKeycloakToken().then((token: string) => {
           return getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials).then(

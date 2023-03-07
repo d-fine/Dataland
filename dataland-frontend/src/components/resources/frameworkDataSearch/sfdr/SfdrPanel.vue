@@ -61,7 +61,7 @@ export default defineComponent({
     singleDataMetaInfoToDisplay() {
       console.log("singleDataMetaInfoToDisplay watcher executes in SfdrPanel"); //TODO
       if (!this.firstRender) {
-        console.log("singleDataMetaInfoToDisplay watcher in SfdrPanel: no first render => fetch data") // TODO
+        console.log("singleDataMetaInfoToDisplay watcher in SfdrPanel: no first render => fetch data"); // TODO
         this.listOfDataDateToDisplayAsColumns = [];
         void this.fetchData();
       }
@@ -74,7 +74,7 @@ export default defineComponent({
   },
   async created() {
     console.log("SfdrPanel created"); //TODO
-    void await this.fetchData();
+    void (await this.fetchData());
     this.firstRender = false;
   },
   methods: {
