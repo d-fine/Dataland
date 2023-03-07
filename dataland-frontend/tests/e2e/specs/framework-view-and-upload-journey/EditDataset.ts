@@ -14,8 +14,8 @@ import {describeIf} from "../../support/TestUtility";
 
 describeIf("Validates the edit button functionality on the view framework page",
     {
-      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-      dataEnvironments: ["fakeFixtures"],
+      executionEnvironments: ["developmentLocal", "ci"],
+      dataEnvironments: ["fakeFixtures", "realData"],
     },
     () => {
   /**
