@@ -34,6 +34,7 @@ export default defineComponent({
   components: { CompanyDataTable },
   data() {
     return {
+      firstRender: true,
       waitingForData: true,
       sfdrDataAndMetaInfo: [] as Array<DataAndMetaInformationSfdrData>,
       listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
@@ -53,12 +54,16 @@ export default defineComponent({
   },
   watch: {
     companyId() {
+      console.log("companyId watcher executes in SfdrPanel"); //TODO
       this.listOfDataDateToDisplayAsColumns = [];
       void this.fetchData();
     },
     singleDataMetaInfoToDisplay() {
-      this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchData();
+      console.log("singleDataMetaInfoToDisplay watcher executes in LksgPanel"); //TODO
+      if (!this.firstRender) {
+        this.listOfDataDateToDisplayAsColumns = [];
+        void this.fetchData();
+      }
     },
   },
   setup() {
@@ -67,6 +72,7 @@ export default defineComponent({
     };
   },
   created() {
+    console.log("SfdrPanel created"); //TODO
     void this.fetchData();
   },
   methods: {
@@ -94,6 +100,9 @@ export default defineComponent({
         }
         this.convertSfdrDataToFrontendFormat();
         this.waitingForData = false;
+        if (this.firstRender) {
+          this.firstRender = false;
+        }
       } catch (error) {
         console.error(error);
       }

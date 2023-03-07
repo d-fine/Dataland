@@ -43,7 +43,10 @@
               v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
               :dataID="dataIdForPanelWithValidType"
             />
-            <EuTaxonomyPanelFinancials v-if="dataType === DataTypeEnum.EutaxonomyFinancials" :dataID="dataIdForPanelWithValidType" />
+            <EuTaxonomyPanelFinancials
+              v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
+              :dataID="dataIdForPanelWithValidType"
+            />
           </div>
         </div>
       </div>
@@ -208,6 +211,7 @@ export default defineComponent({
 
     /**
      * Method to handle the update of the available reporting periods
+     *
      * @param receivedListOfAvailableReportingPeriods Desired new available reporting periods
      */
     handleUpdateAvailableReportingPeriods(receivedListOfAvailableReportingPeriods: string[]) {

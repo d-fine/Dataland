@@ -89,7 +89,7 @@ import { DataTypeEnum } from "@clients/backend";
 import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { AxiosError } from "axios/index";
+import { AxiosError } from "axios";
 import Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 
@@ -131,7 +131,9 @@ export default defineComponent({
   },
   watch: {
     dataId(newDataId: string) {
+      console.log("dataID watcher in Multi-View component executed"); // TODO
       if (newDataId) {
+        this.setFlagsToDataNotFoundState();
         void this.getMetaDataForDataId(newDataId);
       } else {
         if (!this.reportingPeriod) {
@@ -140,17 +142,19 @@ export default defineComponent({
       }
     },
     reportingPeriod(newReportingPeriod: string) {
+      console.log("reportingPeriod watcher in Multi-View component executed"); // TODO
       if (newReportingPeriod) {
         const dataMetaInfoForNewlyChosenReportingPeriod =
           this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(newReportingPeriod);
         if (dataMetaInfoForNewlyChosenReportingPeriod) {
-          this
-            .getMetaDataForDataId(dataMetaInfoForNewlyChosenReportingPeriod.dataId)
-            .catch((err) => console.log(
-                "Retrieving meta data information for data ID " + dataMetaInfoForNewlyChosenReportingPeriod.dataId +
-                  " failed with error " + String(err)
-                )
-            );
+          this.getMetaDataForDataId(dataMetaInfoForNewlyChosenReportingPeriod.dataId).catch((err) =>
+            console.log(
+              "Retrieving meta data information for data ID " +
+                dataMetaInfoForNewlyChosenReportingPeriod.dataId +
+                " failed with error " +
+                String(err)
+            )
+          );
         } else {
           this.isReportingPeriodInUrlInvalid = true;
         }
@@ -175,6 +179,15 @@ export default defineComponent({
     },
 
     /**
+     * Method to set flags that indicate that fetching data is in progress
+     */
+    setFlagsToDataNotFoundState() {
+      this.isListOfDataIdsToDisplayFound = false;
+      this.isDataIdInUrlInvalid = false;
+      this.isReportingPeriodInUrlInvalid = false;
+    },
+
+    /**
      * Method to handle the button that switches to the active data set for the currently selected reporting period
      */
     handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
@@ -185,7 +198,7 @@ export default defineComponent({
             .push(`/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${currentReportingPeriod}`)
             .catch((err) =>
               console.log(
-                  "Setting route for reporting period " + currentReportingPeriod + " failed with error " + String(err)
+                "Setting route for reporting period " + currentReportingPeriod + " failed with error " + String(err)
               )
             );
         }
@@ -207,7 +220,6 @@ export default defineComponent({
      * Method to handle an invalid data ID that was passed in URL
      */
     handleInvalidDataIdPassedInUrl() {
-      // TODO wip
       console.log("invalidDataIdPassedInUrl"); // TODO
       this.isDataIdInUrlInvalid = true;
       this.isListOfDataIdsToDisplayFound = false;
@@ -217,7 +229,6 @@ export default defineComponent({
      * Method to handle an invalid reporting period that was passed in URL
      */
     handleInvalidReportingPeriodPassedInUrl() {
-      // TODO wip
       console.log("invalidReportingPeriodPassedInUrl"); // TODO
       this.isReportingPeriodInUrlInvalid = true;
       this.isListOfDataIdsToDisplayFound = false;
@@ -225,6 +236,7 @@ export default defineComponent({
 
     /**
      * Method to set a data meta information object as the only one to display
+     *
      * @param dataMetaInfoToDisplay
      */
     setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation | null) {
@@ -234,6 +246,7 @@ export default defineComponent({
 
     /**
      * Method to asynchronously retrieve the meta data associated to a given data ID
+     *
      * @param dataId
      */
     async getMetaDataForDataId(dataId: string) {
@@ -280,6 +293,7 @@ export default defineComponent({
 
     /**
      * Method to handle the update of the available reporting periods
+     *
      * @param receivedListOfAvailableReportingPeriods Desired new available reporting periods
      */
     handleUpdateAvailableReportingPeriods(receivedListOfAvailableReportingPeriods: string[]) {
