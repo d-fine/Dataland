@@ -59,8 +59,9 @@ export default defineComponent({
       void this.fetchData();
     },
     singleDataMetaInfoToDisplay() {
+      console.log("singleDataMetaInfoToDisplay watcher executes in LksgPanel"); //TODO
       if (!this.firstRender) {
-        console.log("singleDataMetaInfoToDisplay watcher executes in LksgPanel"); //TODO
+        console.log("singleDataMetaInfoToDisplay watcher in LksgPanel: no first render => fetch data") // TODO
         this.listOfDataDateToDisplayAsColumns = [];
         void this.fetchData();
       }
