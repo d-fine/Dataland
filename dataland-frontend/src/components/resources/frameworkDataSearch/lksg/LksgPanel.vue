@@ -71,9 +71,10 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  created() {
+  async created() {
     console.log("LksgPanel created"); //TODO
-    void this.fetchData();
+    void await this.fetchData();
+    this.firstRender = false;
   },
   methods: {
     /**
@@ -99,9 +100,6 @@ export default defineComponent({
         }
         this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
-        if (this.firstRender) {
-          this.firstRender = false;
-        }
       } catch (error) {
         console.error(error);
       }
