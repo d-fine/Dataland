@@ -10,8 +10,14 @@ import {
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
+import {describeIf} from "../../support/TestUtility";
 
-describe("Validates the edit button functionality on the view framework page", () => {
+describeIf("Validates the edit button functionality on the view framework page",
+    {
+      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+      dataEnvironments: ["fakeFixtures"],
+    },
+    () => {
   /**
    * Uses the dataland API to retrieve the id of an arbitrary company with data for the specified data framework
    *
