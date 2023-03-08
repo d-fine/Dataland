@@ -33,7 +33,7 @@ subprojects {
             jvmTarget = "17"
         }
     }
-    sonarqube {
+    sonar {
         isSkipProject = true
     }
     ktlint {
@@ -70,7 +70,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa") version "1.8.10" apply false
 }
 
-sonarqube {
+sonar {
     properties {
         property("sonar.projectKey", "d-fine_Dataland")
         property("sonar.organization", "d-fine")
