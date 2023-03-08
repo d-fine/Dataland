@@ -6,7 +6,7 @@
   <div v-if="kpiDataObjects.length && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :dataDateOfDataSets="listOfDataDateToDisplayAsColumns"
+      :reportingPeriodsOfDataSets="listOfReportingPeriodsToDisplayAsColumns"
       :kpiNameMappings="lksgKpisNameMappings"
       :kpiInfoMappings="lksgKpisInfoMappings"
       :subAreaNameMappings="lksgSubAreasNameMappings"
@@ -21,7 +21,7 @@ import { DataAndMetaInformationLksgData, DataMetaInformation, LksgData } from "@
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { sortDatesToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import {sortReportingPeriodsToDisplayAsColumns} from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
   lksgSubAreasNameMappings,
@@ -37,7 +37,7 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
-      listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
+      listOfReportingPeriodsToDisplayAsColumns: [] as Array<{ dataId: string; reportingPeriod: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       lksgKpisNameMappings,
       lksgKpisInfoMappings,
@@ -55,14 +55,14 @@ export default defineComponent({
   watch: {
     companyId() {
       console.log("companyId watcher executes in LksgPanel"); //TODO
-      this.listOfDataDateToDisplayAsColumns = [];
+      this.listOfReportingPeriodsToDisplayAsColumns = [];
       void this.fetchData();
     },
     singleDataMetaInfoToDisplay() {
       console.log("singleDataMetaInfoToDisplay watcher executes in LksgPanel"); //TODO
       if (!this.firstRender) {
-        console.log("singleDataMetaInfoToDisplay watcher in LksgPanel: no first render => fetch data") // TODO
-        this.listOfDataDateToDisplayAsColumns = [];
+        console.log("singleDataMetaInfoToDisplay watcher in LksgPanel: no first render => fetch data"); // TODO
+        this.listOfReportingPeriodsToDisplayAsColumns = [];
         void this.fetchData();
       }
     },
@@ -74,7 +74,7 @@ export default defineComponent({
   },
   async created() {
     console.log("LksgPanel created"); //TODO
-    void await this.fetchData();
+    void (await this.fetchData());
     this.firstRender = false;
   },
   methods: {
@@ -146,10 +146,11 @@ export default defineComponent({
       if (this.lksgDataAndMetaInfo.length) {
         this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
           const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
-          const dataDateOfLksgDataset = oneLksgDataset.data.social?.general?.dataDate ?? "";
-          this.listOfDataDateToDisplayAsColumns.push({
+          // const dataDateOfLksgDataset = oneLksgDataset.data.social?.general?.dataDate ?? "";
+          const reportingPeriodOfLksgDataset = oneLksgDataset.metaInfo?.reportingPeriod ?? "";
+          this.listOfReportingPeriodsToDisplayAsColumns.push({
             dataId: dataIdOfLksgDataset,
-            dataDate: dataDateOfLksgDataset,
+            reportingPeriod: reportingPeriodOfLksgDataset,
           });
           for (const areaObject of Object.values(oneLksgDataset.data)) {
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
@@ -160,7 +161,9 @@ export default defineComponent({
           }
         });
       }
-      this.listOfDataDateToDisplayAsColumns = sortDatesToDisplayAsColumns(this.listOfDataDateToDisplayAsColumns);
+      this.listOfReportingPeriodsToDisplayAsColumns = sortReportingPeriodsToDisplayAsColumns(
+        this.listOfReportingPeriodsToDisplayAsColumns
+      );
     },
 
     /**

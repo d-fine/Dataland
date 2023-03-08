@@ -1,78 +1,74 @@
 <template>
   <DynamicDialog />
-  <div class="col-12 text-left">
-    <h2>{{ tableDataTitle }}</h2>
-  </div>
-  <div>
-    <div class="card">
-      <DataTable
-        :value="kpiDataObjectsToDisplay"
-        rowGroupMode="subheader"
-        groupRowsBy="subAreaKey"
-        dataKey="subAreaKey"
-        sortField="subAreaKey"
-        :sortOrder="1"
-        sortMode="single"
-        responsiveLayout="scroll"
-        :expandableRowGroups="true"
-        :reorderableColumns="true"
-        v-model:expandedRowGroups="expandedRowGroups"
+  <div class="card">
+    <DataTable
+      :value="kpiDataObjectsToDisplay"
+      rowGroupMode="subheader"
+      groupRowsBy="subAreaKey"
+      dataKey="subAreaKey"
+      sortField="subAreaKey"
+      :sortOrder="1"
+      sortMode="single"
+      responsiveLayout="scroll"
+      :expandableRowGroups="true"
+      :reorderableColumns="true"
+      v-model:expandedRowGroups="expandedRowGroups"
+    >
+      <Column
+        bodyClass="headers-bg"
+        headerStyle="width: 30vw;"
+        headerClass="horizontal-headers-size"
+        field="kpiKey"
+        header="KPIs"
       >
-        <Column
-          bodyClass="headers-bg"
-          headerStyle="width: 30vw;"
-          headerClass="horizontal-headers-size"
-          field="kpiKey"
-          header="KPIs"
-        >
-          <template #body="slotProps">
-            <span class="table-left-label">{{
-              kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : slotProps.data.kpiKey
-            }}</span>
-            <em
-              class="material-icons info-icon"
-              aria-hidden="true"
-              :title="kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : ''"
-              v-tooltip.top="{
-                value: kpiInfoMappings[slotProps.data.kpiKey] ? kpiInfoMappings[slotProps.data.kpiKey] : '',
-              }"
-              >info</em
-            >
-          </template>
-        </Column>
-        <Column
-          v-for="dataDate of dataDateOfDataSets"
-          headerClass="horizontal-headers-size"
-          :field="dataDate.dataId"
-          :header="dataDate.dataDate?.split('-')[0]"
-          :key="dataDate.dataId"
-        >
-          <template #body="{ data }">
-            <a
-              v-if="Array.isArray(data[dataDate.dataId]) && data[dataDate.dataId].length"
-              @click="openModalAndDisplayListOfProductionSites(data[dataDate.dataId], kpiNameMappings[data.kpiKey])"
-              class="link"
-              >Show "{{ kpiNameMappings[data.kpiKey] }}"
-              <em class="material-icons" aria-hidden="true" title=""> dataset </em>
-            </a>
-            <template v-else-if="typeof data[dataDate.dataId] === 'object' && data[dataDate.dataId] !== null">
-              {{ data[dataDate.dataId].value ?? "" }}
-            </template>
-
-            <span v-else>{{ Array.isArray(data[dataDate.dataId]) ? "" : data[dataDate.dataId] }}</span>
-          </template>
-        </Column>
-
-        <Column field="subAreaKey" header="Impact Area"></Column>
-        <template #groupheader="slotProps">
-          <span>{{
-            subAreaNameMappings[slotProps.data.subAreaKey]
-              ? subAreaNameMappings[slotProps.data.subAreaKey]
-              : slotProps.data.subAreaKey
+        <template #body="slotProps">
+          <span class="table-left-label">{{
+            kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : slotProps.data.kpiKey
           }}</span>
+          <em
+            class="material-icons info-icon"
+            aria-hidden="true"
+            :title="kpiNameMappings[slotProps.data.kpiKey] ? kpiNameMappings[slotProps.data.kpiKey] : ''"
+            v-tooltip.top="{
+              value: kpiInfoMappings[slotProps.data.kpiKey] ? kpiInfoMappings[slotProps.data.kpiKey] : '',
+            }"
+            >info</em
+          >
         </template>
-      </DataTable>
-    </div>
+      </Column>
+      <Column
+        v-for="reportingPeriod of reportingPeriodsOfDataSets"
+        headerClass="horizontal-headers-size"
+        :field="reportingPeriod.dataId"
+        :header="reportingPeriod.reportingPeriod"
+        :key="reportingPeriod.dataId"
+      >
+        <template #body="{ data }">
+          <a
+            v-if="Array.isArray(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId].length"
+            @click="openModalAndDisplayListOfProductionSites(data[reportingPeriod.dataId], kpiNameMappings[data.kpiKey])"
+            class="link"
+            >Show "{{ kpiNameMappings[data.kpiKey] }}"
+            <em class="material-icons" aria-hidden="true" title=""> dataset </em>
+          </a>
+          <template
+            v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId] !== null">
+            {{ data[reportingPeriod.dataId].value ?? "" }}
+          </template>
+
+          <span v-else>{{ Array.isArray(data[reportingPeriod.dataId]) ? "" : data[reportingPeriod.dataId] }}</span>
+        </template>
+      </Column>
+
+      <Column field="subAreaKey" header="Impact Area"></Column>
+      <template #groupheader="slotProps">
+        <span>{{
+          subAreaNameMappings[slotProps.data.subAreaKey]
+            ? subAreaNameMappings[slotProps.data.subAreaKey]
+            : slotProps.data.subAreaKey
+        }}</span>
+      </template>
+    </DataTable>
   </div>
 </template>
 
@@ -103,7 +99,7 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    dataDateOfDataSets: {
+    reportingPeriodsOfDataSets: {
       type: Array,
       default: () => [],
     },

@@ -25,7 +25,7 @@
         </DatasetStatusIndicator>
         <div class="grid">
           <div class="col-12 text-left">
-            <h2 class="mb-0">{{ humanizedDataDescription }}</h2>
+            <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizedDataDescription }}</h2>
           </div>
           <div class="col-6 text-left">
             <p class="font-semibold text-gray-800 mt-0">Data from company report.</p>

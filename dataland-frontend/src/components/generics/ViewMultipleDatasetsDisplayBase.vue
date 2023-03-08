@@ -14,6 +14,9 @@
         </DatasetStatusIndicator>
 
         <div class="grid">
+          <div class="col-12 text-left">
+            <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizeString(dataType) }}</h2>
+          </div>
           <div class="col-12">
             <LksgPanel
               v-if="dataType === DataTypeEnum.Lksg"
