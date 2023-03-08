@@ -27,8 +27,8 @@ describe("The shared header of the framework pages should act as expected", { sc
       const nonFinancialCompanyName = "some-non-financial-only-company";
       const dropdownSelector = "div#chooseFrameworkDropdown";
       const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
-      const financialsDropdownItem = "EU Taxonomy for financial companies"; // TODO could depend on humanize String and DataType class?
-      const lksgDropdownItem = "LkSG"; // TODO could depend on humanize String and DataType class?
+      const financialsDropdownItem = humanizeString(DataTypeEnum.EutaxonomyFinancials);
+      const lksgDropdownItem = humanizeString(DataTypeEnum.Lksg);
 
       function createAllInterceptsOnFrameworkViewPage() {
         cy.intercept("/api/companies/**-**-**").as("getCompanyInformation");
@@ -53,7 +53,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         frameworkQueryParam: string,
         searchStringQueryParam: string
       ): void {
-        cy.intercept("/api/companies**").as("getSearchResults");
+        cy.intercept("/api/companies?searchString=**false").as("getSearchResults");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
         cy.wait("@getSearchResults", { timeout: Cypress.env("long_timeout_in_ms") as number });
         const companySelector = "span:contains(VIEW)";
@@ -217,12 +217,15 @@ describe("The shared header of the framework pages should act as expected", { sc
       it("Check that from a framework page you can search a company without this framework", () => {
         // TODO add waits
         cy.ensureLoggedIn();
+        createAllInterceptsOnFrameworkViewPage();
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Lksg, lksgAndFinancialCompanyName);
+        waitForAllInterceptsOnFrameworkViewPage();
         validateFrameworkPage(DataTypeEnum.Lksg);
         searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(
           nonFinancialCompanyName,
           "input#framework_data_search_bar_standard"
         );
+        waitForAllInterceptsOnFrameworkViewPage();
         validateFrameworkPage(DataTypeEnum.EutaxonomyNonFinancials);
       });
 
