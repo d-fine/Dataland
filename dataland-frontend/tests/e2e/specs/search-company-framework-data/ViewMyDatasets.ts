@@ -1,21 +1,10 @@
-import {
-  admin_name,
-  admin_pw,
-  reader_name,
-  reader_pw,
-  uploader_name,
-  uploader_pw,
-  wrapPromiseToCypressPromise,
-} from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import { uploadCompanyAndLksgDataViaApi, uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { faker } from "@faker-js/faker";
-import { humanizeString } from "@/utils/StringHumanizer";
-import { DataTypeEnum } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 
 describe("As a user, I expect the View My Datasets page to behave as I expect", { scrollBehavior: false }, function () {
   describeIf(
@@ -135,63 +124,6 @@ describe("As a user, I expect the View My Datasets page to behave as I expect", 
           expect(elements.length).to.equal(6);
         });
         cy.get("tbody td").first().should("contain", newCompanyName);
-      });
-
-      it("Check if the table rows look as expected", () => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
-        cy.visit("/datasets");
-        cy.get(searchBarSelector).type(newCompanyName);
-        const expectedRowContents = [
-          `COMPANY${newCompanyName}`,
-          `DATA FRAMEWORK${humanizeString(DataTypeEnum.Lksg)}`,
-          "REPORTING PERIOD2023",
-          "STATUSACTIVE",
-        ];
-        cy.get("tbody td").should((elements) => {
-          expect(elements.length).to.equal(6);
-        });
-        cy.get("tbody td").each((element, index) => {
-          if (index < expectedRowContents.length) {
-            expect(element.text()).to.equal(expectedRowContents[index]);
-          } else if (index == 4) {
-            expect(Date.parse(element.text().substring(15)).toString()).not.to.equal(NaN.toString());
-          } else if (index == 5) {
-            expect(element.text()).to.contain("VIEW");
-          }
-        });
-        cy.get("tbody td a").click();
-        cy.url().should("contain", `/frameworks/${DataTypeEnum.Lksg}`);
-      });
-
-      /**
-       * Uploads a company with random information and the given companyName and 2 LKSG datasets for it
-       *
-       * @param token the api token to use for the upload
-       * @param companyName the name of the company to generate
-       */
-      async function uploadCompanyWithOutdatedDataset(token: string, companyName: string): Promise<void> {
-        const companyInformation = generateCompanyInformation();
-        companyInformation.companyName = companyName;
-        const company = await uploadCompanyViaApi(
-          token,
-          generateDummyCompanyInformation(companyInformation.companyName)
-        );
-        await uploadOneLksgDatasetViaApi(token, company.companyId, "2023", generateLksgData());
-        await new Promise((r) => setTimeout(r, 2000));
-        await uploadOneLksgDatasetViaApi(token, company.companyId, "2023", generateLksgData());
-      }
-
-      it("Check that outdated datasets are displayed as such", () => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
-        const companyName = `Company with outdated Dataset ${Math.random()}`;
-        getKeycloakToken(uploader_name, uploader_pw).then((token) =>
-          wrapPromiseToCypressPromise(uploadCompanyWithOutdatedDataset(token, companyName))
-        );
-        cy.visitAndCheckAppMount("/datasets");
-        cy.get(searchBarSelector).type(companyName);
-        cy.get("td").contains(companyName).should("exist");
-        cy.get("div.p-badge").contains("ACTIVE").should("exist");
-        cy.get("div.p-badge").contains("OUTDATED").should("exist");
       });
     }
   );

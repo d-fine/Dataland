@@ -31,7 +31,6 @@ Cypress.Commands.add("mount", (component: ComponentParam, options: OptionsParam 
   options.global.plugins = options.global.plugins || [];
   options.global.provide = options.global.provide || {};
 
-  // create router if one is not provided
   if (!options.router) {
     options.router = createRouter({
       routes: routes,
@@ -50,7 +49,6 @@ Cypress.Commands.add("mount", (component: ComponentParam, options: OptionsParam 
     options.propsData = options.propsOverride;
   }
 
-  // Add router plugin
   options.global.plugins.push({
     install(app) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
