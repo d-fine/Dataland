@@ -6,7 +6,7 @@
   <div v-if="kpiDataObjects.length && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :dataDateOfDataSets="listOfDataDateToDisplayAsColumns"
+      :reportingPeriodsOfDataSets="listOfReportingPeriodsToDisplayAsColumns"
       :kpiNameMappings="sfdrKpisNameMappings"
       :kpiInfoMappings="sfdrKpisInfoMappings"
       :subAreaNameMappings="sfdrSubAreasNameMappings"
@@ -21,7 +21,7 @@ import { SfdrData, DataAndMetaInformationSfdrData, DataMetaInformation } from "@
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { sortDatesToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import {sortReportingPeriodsToDisplayAsColumns} from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
   sfdrSubAreasNameMappings,
@@ -37,7 +37,7 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       sfdrDataAndMetaInfo: [] as Array<DataAndMetaInformationSfdrData>,
-      listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
+      listOfReportingPeriodsToDisplayAsColumns: [] as Array<{ dataId: string; reportingPeriod: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       sfdrKpisNameMappings,
       sfdrKpisInfoMappings,
@@ -55,14 +55,14 @@ export default defineComponent({
   watch: {
     companyId() {
       console.log("companyId watcher executes in SfdrPanel"); //TODO
-      this.listOfDataDateToDisplayAsColumns = [];
+      this.listOfReportingPeriodsToDisplayAsColumns = [];
       void this.fetchData();
     },
     singleDataMetaInfoToDisplay() {
       console.log("singleDataMetaInfoToDisplay watcher executes in SfdrPanel"); //TODO
       if (!this.firstRender) {
         console.log("singleDataMetaInfoToDisplay watcher in SfdrPanel: no first render => fetch data"); // TODO
-        this.listOfDataDateToDisplayAsColumns = [];
+        this.listOfReportingPeriodsToDisplayAsColumns = [];
         void this.fetchData();
       }
     },
@@ -145,10 +145,11 @@ export default defineComponent({
       if (this.sfdrDataAndMetaInfo.length) {
         this.sfdrDataAndMetaInfo.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
           const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
-          const dataDateOfSfdrDataset = oneSfdrDataset.data.social?.general?.fiscalYearEnd ?? "";
-          this.listOfDataDateToDisplayAsColumns.push({
+          //const dataDateOfSfdrDataset = oneSfdrDataset.data.social?.general?.fiscalYearEnd ?? "";
+          const reportingPeriodOfSfdrDataset = oneSfdrDataset.metaInfo?.reportingPeriod ?? "";
+          this.listOfReportingPeriodsToDisplayAsColumns.push({
             dataId: dataIdOfSfdrDataset,
-            dataDate: dataDateOfSfdrDataset,
+            reportingPeriod: reportingPeriodOfSfdrDataset,
           });
           for (const areaObject of Object.values(oneSfdrDataset.data)) {
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
@@ -159,7 +160,9 @@ export default defineComponent({
           }
         });
       }
-      this.listOfDataDateToDisplayAsColumns = sortDatesToDisplayAsColumns(this.listOfDataDateToDisplayAsColumns);
+      this.listOfReportingPeriodsToDisplayAsColumns = sortReportingPeriodsToDisplayAsColumns(
+        this.listOfReportingPeriodsToDisplayAsColumns
+      );
     },
   },
 });

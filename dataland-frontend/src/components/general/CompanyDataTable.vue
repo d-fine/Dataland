@@ -37,25 +37,26 @@
         </template>
       </Column>
       <Column
-        v-for="dataDate of dataDateOfDataSets"
+        v-for="reportingPeriod of reportingPeriodsOfDataSets"
         headerClass="horizontal-headers-size"
-        :field="dataDate.dataId"
-        :header="dataDate.dataDate?.split('-')[0]"
-        :key="dataDate.dataId"
+        :field="reportingPeriod.dataId"
+        :header="reportingPeriod.reportingPeriod"
+        :key="reportingPeriod.dataId"
       >
         <template #body="{ data }">
           <a
-            v-if="Array.isArray(data[dataDate.dataId]) && data[dataDate.dataId].length"
-            @click="openModalAndDisplayListOfProductionSites(data[dataDate.dataId], kpiNameMappings[data.kpiKey])"
+            v-if="Array.isArray(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId].length"
+            @click="openModalAndDisplayListOfProductionSites(data[reportingPeriod.dataId], kpiNameMappings[data.kpiKey])"
             class="link"
             >Show "{{ kpiNameMappings[data.kpiKey] }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
           </a>
-          <template v-else-if="typeof data[dataDate.dataId] === 'object' && data[dataDate.dataId] !== null">
-            {{ data[dataDate.dataId].value ?? "" }}
+          <template
+            v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId] !== null">
+            {{ data[reportingPeriod.dataId].value ?? "" }}
           </template>
 
-          <span v-else>{{ Array.isArray(data[dataDate.dataId]) ? "" : data[dataDate.dataId] }}</span>
+          <span v-else>{{ Array.isArray(data[reportingPeriod.dataId]) ? "" : data[reportingPeriod.dataId] }}</span>
         </template>
       </Column>
 
@@ -98,7 +99,7 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    dataDateOfDataSets: {
+    reportingPeriodsOfDataSets: {
       type: Array,
       default: () => [],
     },
