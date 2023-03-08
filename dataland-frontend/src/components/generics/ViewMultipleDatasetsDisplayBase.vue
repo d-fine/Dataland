@@ -7,36 +7,11 @@
   >
     <template v-slot:content>
       <div v-if="isListOfDataIdsToDisplayFound">
-        <div
-          v-if="singleDataMetaInfoToDisplay && singleDataMetaInfoToDisplay.currentlyActive === false"
-          class="flex w-full info-bar"
+        <DatasetStatusIndicator
+          :displayed-dataset="singleDataMetaInfoToDisplay"
+          :link-to-active-page="linkToActiveView"
         >
-          <span class="flex-1">this dataset is outdated</span>
-          <PrimeButton
-            @click="handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton"
-            label="See latest version"
-            icon="pi pi-stopwatch"
-          />
-        </div>
-
-        <div
-          v-if="
-            singleDataMetaInfoToDisplay &&
-            singleDataMetaInfoToDisplay.currentlyActive === true &&
-            receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size > 1
-          "
-          class="flex w-full info-bar"
-        >
-          <span class="flex-1"
-            >this dataset is the latest dataset for the reporting period
-            {{ singleDataMetaInfoToDisplay.reportingPeriod }}</span
-          >
-          <PrimeButton
-            @click="handleClickOnSwitchToAllActiveDatasetButton"
-            :label="`See all ${singleDataMetaInfoToDisplay.dataType} datasets available for this company`"
-            icon="pi pi-stopwatch"
-          />
-        </div>
+        </DatasetStatusIndicator>
 
         <div class="grid">
           <div class="col-12">
@@ -91,11 +66,11 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
 import Keycloak from "keycloak-js";
-import PrimeButton from "primevue/button";
+import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: { SfdrPanel, LksgPanel, ViewFrameworkBase, PrimeButton },
+  components: { DatasetStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
   props: {
     companyId: {
       type: String,
@@ -128,6 +103,12 @@ export default defineComponent({
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
+  },
+  computed: {
+    linkToActiveView() {
+      if (this.companyId && this.dataType) return `/companies/${this.companyId}/frameworks/${this.dataType}`;
+      return undefined;
+    },
   },
   watch: {
     dataId(newDataId: string) {
@@ -202,17 +183,6 @@ export default defineComponent({
               )
             );
         }
-      }
-    },
-
-    /**
-     * Method to handle the button that switches to all active data sets for the selected company and framework
-     */
-    handleClickOnSwitchToAllActiveDatasetButton() {
-      if (this.companyId != null && this.dataType != null) {
-        this.$router
-          .push(`/companies/${this.companyId}/frameworks/${this.dataType}`)
-          .catch((err) => console.log("Setting default route failed with error " + String(err)));
       }
     },
 

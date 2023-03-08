@@ -21,14 +21,8 @@
 
     <template v-slot:content>
       <div v-if="isDataIdToDisplayFound">
-        <div v-if="dataMetaInfoForDisplay?.currentlyActive === false" class="flex w-full info-bar">
-          <span class="flex-1">this dataset is outdated</span>
-          <PrimeButton
-            @click="handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton"
-            label="See latest version"
-            icon="pi pi-stopwatch"
-          />
-        </div>
+        <DatasetStatusIndicator :link-to-active-page="linkToActiveView" :displayed-dataset="dataMetaInfoForDisplay">
+        </DatasetStatusIndicator>
         <div class="grid">
           <div class="col-12 text-left">
             <h2 class="mb-0">{{ humanizedDataDescription }}</h2>
@@ -85,10 +79,17 @@ import { DataTypeEnum } from "@clients/backend";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
+import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
-  components: { ViewFrameworkBase, Dropdown, PrimeButton, EuTaxonomyPanelFinancials, EuTaxonomyPanelNonFinancials },
+  components: {
+    DatasetStatusIndicator,
+    ViewFrameworkBase,
+    Dropdown,
+    EuTaxonomyPanelFinancials,
+    EuTaxonomyPanelNonFinancials,
+  },
   props: {
     companyId: {
       type: String,
@@ -142,6 +143,11 @@ export default defineComponent({
       if (this.dataMetaInfoForDisplay?.dataType === this.dataType) {
         return this.dataMetaInfoForDisplay?.dataId;
       } else return "loading";
+    },
+    linkToActiveView() {
+      if (this.companyId && this.dataType && this.dataMetaInfoForDisplay?.reportingPeriod)
+        return `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${this.dataMetaInfoForDisplay?.reportingPeriod}`;
+      return undefined;
     },
   },
 
