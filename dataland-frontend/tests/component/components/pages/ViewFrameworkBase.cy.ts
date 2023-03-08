@@ -1,10 +1,12 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
-import { QAStatus } from "@clients/backend";
+import { DataMetaInformation, QAStatus } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "../../../../src/utils/TypeScriptUtils";
 import { shallowMount } from "@vue/test-utils";
 import { waitForComponent } from "../../utils/helper.cy";
 import { nextTick } from "vue";
+import { DataTypeEnum } from "@clients/backend";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 describe("Component test for ViewFrameworkBase", () => {
   it("Should display only accepted datasets", () => {
@@ -71,8 +73,14 @@ describe("Component test for ViewFrameworkBase", () => {
           },
         };
       },
+      data() {
+        return {
+          dataTypesInDropdown: [] as { label: string; value: string }[],
+          mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
+        };
+      },
       props: {
-        dataType: "eutaxonomy-financials",
+        dataType: DataTypeEnum.EutaxonomyFinancials,
         companyId: "86226010-some-fake-dataId-52824875a3e7",
       },
     });
@@ -88,19 +96,19 @@ describe("Component test for ViewFrameworkBase", () => {
 
     cy.wait("@listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod").then(() => {
       expect(wrapper.vm.$data.dataTypesInDropdown).to.deep.equal([
-        { label: "EU Taxonomy for financial companies", value: "eutaxonomy-financials" },
-        { label: "EU Taxonomy for non-financial companies", value: "eutaxonomy-non-financials" },
-        { label: "LkSG", value: "lksg" },
-        { label: "SFDR", value: "sfdr" },
+        { label: humanizeString(DataTypeEnum.EutaxonomyFinancials), value: DataTypeEnum.EutaxonomyFinancials },
+        { label: humanizeString(DataTypeEnum.EutaxonomyNonFinancials), value: DataTypeEnum.EutaxonomyNonFinancials },
+        { label: humanizeString(DataTypeEnum.Lksg), value: DataTypeEnum.Lksg },
+        { label: humanizeString(DataTypeEnum.Sfdr), value: DataTypeEnum.Sfdr },
       ]);
 
       cy.fixture("MapsForReportingsPeriodForDifferentDatasetAsArrays.json").then(async (data) => {
         expect(Array.from(wrapper.vm.$data.mapOfReportingPeriodToActiveDataset)).to.deep.equal(
           data[`${wrapper.vm.$props.dataType}`]
         );
-        await wrapper.setProps({ dataType: "lksg" });
+        await wrapper.setProps({ dataType: DataTypeEnum.Lksg });
         await nextTick();
-        expect(wrapper.props("dataType")).to.eq("lksg");
+        expect(wrapper.props("dataType")).to.eq(DataTypeEnum.Lksg);
         await nextTick(() => {
           cy.wait(1000).then(() => {
             expect(Array.from(wrapper.vm.$data.mapOfReportingPeriodToActiveDataset)).to.deep.equal(
