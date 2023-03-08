@@ -2431,9 +2431,9 @@
       "config": {}
     },
     {
-      "alias": "TERMS_AND_CONDITIONS",
+      "alias": "terms_and_conditions",
       "name": "Terms and Conditions",
-      "providerId": "TERMS_AND_CONDITIONS",
+      "providerId": "terms_and_conditions",
       "enabled": true,
       "defaultAction": true,
       "priority": 20,
@@ -2508,7 +2508,7 @@
     "frontendUrl": "${KEYCLOAK_FRONTEND_URL}",
     "acr.loa.map": "{}"
   },
-  "keycloakVersion": "21.0.1",
+  "keycloakVersion": "20.0.3",
   "userManagedAccessAllowed": false,
   "clientProfiles": {
     "profiles": []

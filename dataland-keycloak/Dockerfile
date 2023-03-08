@@ -5,14 +5,9 @@ WORKDIR /app
 COPY ./dataland-keycloak/build.gradle.kts ./dataland-keycloak/
 COPY ./dataland-keycloak/dataland_theme/login ./dataland-keycloak/dataland_theme/login
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
-    ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
+     ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 
-FROM redhat/ubi9 AS ubi-micro-build
-RUN mkdir -p /mnt/rootfs
-RUN dnf update --installroot /mnt/rootfs; dnf --installroot /mnt/rootfs clean all
-
-FROM quay.io/keycloak/keycloak:21.0.1
-
+FROM quay.io/keycloak/keycloak:20.0.3
 
 ENV KC_DB=postgres
 ENV KC_DB_URL=jdbc:postgresql://keycloak-db/keycloak
@@ -24,7 +19,6 @@ ENV KC_PROXY_ADDRESS_FORWARDING=true
 ENV KC_PROXY=edge
 ENV KC_HTTP_RELATIVE_PATH=keycloak
 ENV KC_HOSTNAME_ADMIN=dataland-admin:6789
-COPY --from=ubi-micro-build --chown=keycloak / /
 COPY --from=builder /app/dataland-keycloak/dataland_theme/login/build/dist /opt/keycloak/themes/dataland_theme/login
 COPY ./dataland-keycloak/dataland_theme/email /opt/keycloak/themes/dataland_theme/email
 COPY ./dataland-keycloak/start_keycloak.sh /opt/keycloak/bin
