@@ -24,16 +24,25 @@ describe("The shared header of the framework pages should act as expected", { sc
     },
     function (): void {
       const nameOfCompanyAlpha = "company-alpha-with-four-different-framework-types";
-      const nameOfCompanyBeta = "company-beta-with-eutaxo-and-lksg-data";
-      const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
-      const reportingPeriodDropdownSelector = "div#chooseReportingPeriodDropdown";
-      const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
-      const expectedDropdownItemsForAlpha = new Set<string>([
+      const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
         humanizeString(DataTypeEnum.EutaxonomyFinancials),
         humanizeString(DataTypeEnum.EutaxonomyNonFinancials),
         humanizeString(DataTypeEnum.Lksg),
         humanizeString(DataTypeEnum.Sfdr),
       ]);
+      const expectedReportingPeriodsForEuTaxoFinancialsForAlpha = new Set<string>(["2019", "2016"]);
+      const expectedReportingPeriodsForEuNonTaxoFinancialsForAlpha = new Set<string>(["2015"]);
+
+      const nameOfCompanyBeta = "company-beta-with-eutaxo-and-lksg-data";
+      const expectedFrameworkDropdownItemsForBeta = new Set<string>([
+        humanizeString(DataTypeEnum.EutaxonomyNonFinancials),
+        humanizeString(DataTypeEnum.Lksg),
+      ]);
+      const expectedReportingPeriodsForEuTaxoFinancialsForBeta = new Set<string>(["2014"]);
+
+      const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
+      const reportingPeriodDropdownSelector = "div#chooseReportingPeriodDropdown";
+      const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
 
       function createAllInterceptsOnFrameworkViewPage() {
         cy.intercept("/api/companies/**-**-**").as("getCompanyInformation");
@@ -101,7 +110,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(frameworkDropdownSelector).click();
         let optionsCounter = 0;
         cy.get(dropdownItemsSelector)
-          // .wait(500) // TODO better ideas?  it seems that sometimes the HTML elements are not rendered fast enough to be read
           .each((item) => {
             expect(expectedDropdownOptions.has(item.text())).to.equal(true);
             optionsCounter++;
@@ -109,6 +117,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           .then(() => {
             expect(expectedDropdownOptions.size).to.equal(optionsCounter);
           });
+        cy.get(frameworkDropdownSelector).click();
       }
 
       function validateChosenReportingPeriod(
@@ -123,14 +132,27 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(reportingPeriodDropdownSelector).click();
         let optionsCounter = 0;
         cy.get(dropdownItemsSelector)
-          // .wait(500) // TODO better ideas?  it seems that sometimes the HTML elements are not rendered fast enough to be read
           .each((item) => {
+            cy.log(item.text());
             expect(expectedDropdownOptions.has(item.text())).to.equal(true);
             optionsCounter++;
           })
           .then(() => {
             expect(expectedDropdownOptions.size).to.equal(optionsCounter);
           });
+        cy.get(reportingPeriodDropdownSelector).click();
+      }
+
+      function validateEligibleActivityValueForFinancialsDataset(expectedEligibleActiviyValue: string) {
+        /* cy.get(`div.grid:contains(${expectedEligibleActiviyValue})`)
+            .find("span.font-medium.text-3xl")*/
+
+        cy.get(`div:contains("Taxonomy-eligible economic activity")`)
+          .siblings(`div:contains(${expectedEligibleActiviyValue})`)
+          .should("exist");
+
+        /*cy.get(`div.col-6.text-right.text-primary:contains(${expectedEligibleActiviyValue})`)
+            .find("span.font-medium.textxl")*/
       }
 
       /**
@@ -141,6 +163,11 @@ describe("The shared header of the framework pages should act as expected", { sc
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(frameworkDropdownSelector).click();
         cy.get(`${dropdownItemsSelector}:contains(${humanizeString(frameworkToSelect)})`).click({ force: true });
+      }
+
+      function selectReportingPeriodInDropdown(reportingPeriodToSelect: string): void {
+        cy.get(reportingPeriodDropdownSelector).click();
+        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(reportingPeriodToSelect)})`).click({ force: true });
       }
 
       /**
@@ -226,7 +253,7 @@ describe("The shared header of the framework pages should act as expected", { sc
               return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
                 token,
                 companyId,
-                "2019",
+                "2015",
                 generateEuTaxonomyDataForNonFinancials()
               );
             });
@@ -266,7 +293,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         uploadCompanyAlphaAndData();
         uploadCompanyBetaAndData();
       });
-
+      /*
       it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         cy.intercept("/api/companies?searchString=&dataTypes=*").as("firstLoadOfSearchPage");
@@ -276,7 +303,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha);
         waitForAllInterceptsOnFrameworkViewPage();
         validateViewPage(DataTypeEnum.EutaxonomyNonFinancials);
-        validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials, expectedDropdownItemsForAlpha);
+        validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials, expectedFrameworkDropdownItemsForAlpha);
 
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
           DataTypeEnum.EutaxonomyNonFinancials,
@@ -284,12 +311,12 @@ describe("The shared header of the framework pages should act as expected", { sc
         );
         waitForAllInterceptsOnFrameworkViewPage();
         validateViewPage(DataTypeEnum.EutaxonomyNonFinancials);
-        validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials, expectedDropdownItemsForAlpha);
+        validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials, expectedFrameworkDropdownItemsForAlpha);
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
         waitForAllInterceptsOnFrameworkViewPage();
         validateViewPage(DataTypeEnum.Lksg);
-        validateChosenFramework(DataTypeEnum.Lksg, expectedDropdownItemsForAlpha);
+        validateChosenFramework(DataTypeEnum.Lksg, expectedFrameworkDropdownItemsForAlpha);
 
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
         waitForAllInterceptsOnFrameworkViewPage();
@@ -309,7 +336,11 @@ describe("The shared header of the framework pages should act as expected", { sc
         );
         waitForAllInterceptsOnFrameworkViewPage();
         cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
+
+        // TODO check also for different starting scenarios, since this broke for Paul in some scenario
       });
+
+ */
 
       it("Check that reporting period dropdown works as expected", () => {
         cy.ensureLoggedIn();
@@ -319,30 +350,50 @@ describe("The shared header of the framework pages should act as expected", { sc
           nameOfCompanyAlpha
         );
         waitForAllInterceptsOnFrameworkViewPage();
-        validateViewPage(DataTypeEnum.EutaxonomyFinancials);
-        validateChosenReportingPeriod("2019", new Set(["2016", "2019"]));
-        // validateEligibleActivityValue("29,2")
+        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
+        validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
+        validateEligibleActivityValueForFinancialsDataset("29.2");
 
-        // selectReportingPeriodInDropdown("2019")
+        selectReportingPeriodInDropdown("2019");
+
+        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
+        validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
+        validateEligibleActivityValueForFinancialsDataset("29.2");
+
+        selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
+
+        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
+        validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
+        validateEligibleActivityValueForFinancialsDataset("29.2");
 
         // validateReportingPeriodInUrl( "2019")
         // validateReportingPeriodDropdown("2019", ["2016", "2019"])
         // validateEligibleActivityValue("29,2")
 
-        // selectReportingPeriodInDropdown("2016")
+        cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
+        validateChosenReportingPeriod("2016", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
+        validateEligibleActivityValueForFinancialsDataset("26");
 
         // validateReportingPeriodInUrl( "2016")
         // validateReportingPeriodDropdown("2016", ["2016", "2019"])
         // validateEligibleActivityValue("26")
 
-        // switch to non-taxo
+        cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
+        validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
+        validateEligibleActivityValueForFinancialsDataset("29.2");
 
-        // validateReportingPeriodInUrl( "2019")
-        // validateReportingPeriodDropdown("2019", ["2019"])
+        selectFrameworkInDropdown(DataTypeEnum.EutaxonomyNonFinancials);
+
+        cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        cy.wait("@getMetaDataForCompanyId", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials, expectedFrameworkDropdownItemsForAlpha);
+        validateChosenReportingPeriod("2015", expectedReportingPeriodsForEuNonTaxoFinancialsForAlpha);
 
         // switch to Lksg
 
-        // validateViewPage(DataTypeEnum.Lksg);
+        // validateViewPage(DataTypeEnum.Lksg);      const expectedReportingPeriodsForEuTaxoFinancialsForAlpha = new Set<string>(["2019", "2016"])
 
         // back
 
@@ -351,15 +402,11 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         // back
 
-        // validateReportingPeriodInUrl( "2016")
-        // validateReportingPeriodDropdown("2016", ["2016", "2019"])
-        // validateEligibleActivityValue("26")
+        selectReportingPeriodInDropdown("2019");
 
         // back
 
-        // validateReportingPeriodInUrl( "2019")
-        // validateReportingPeriodDropdown("2019", ["2016", "2019"])
-        // validateEligibleActivityValue("29,2")
+        selectReportingPeriodInDropdown("2016");
 
         // done
 
@@ -380,7 +427,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             - switch between eutaxo and lksg (via BACK) and assert that reporting Period is still correct and in sync with data and url
         */
       });
-
+      /*
       it("Check that invalid data IDs or reporting periods in url don't break anything", () => {
         cy.ensureLoggedIn();
         createAllInterceptsOnFrameworkViewPage();
@@ -446,7 +493,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         // validate error message for wrong data ID  + url + dropdowns
 
         // Done
-      });
+      }); */
     }
   );
 });

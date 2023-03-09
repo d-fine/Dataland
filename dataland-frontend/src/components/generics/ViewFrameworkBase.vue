@@ -138,7 +138,7 @@ export default defineComponent({
   },
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? "";
-    void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
+    void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
     checkIfUserHasUploaderRights(this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
@@ -229,12 +229,11 @@ export default defineComponent({
     },
 
     /**
-     * Goes through all data meta info for the currently viewed company and does multiple things.
+     * Goes through all data meta info for the currently viewed company and does two things.
      * First it sets the distinct frameworks as options in the framework-dropdown.
-     * Then it emits a list of all distinct reporting periods. TODO adjust to changes
      * Finally it emits a list with data meta info elements for all active datasets for this company. TODO
      */
-    async getDropdownOptionsAndActiveDataMetaInfoAndDoEmits() {
+    async getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -266,10 +265,10 @@ export default defineComponent({
   },
   watch: {
     companyID() {
-      void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
+      void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
     },
     dataType() {
-      void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
+      void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
     },
   },
 });
