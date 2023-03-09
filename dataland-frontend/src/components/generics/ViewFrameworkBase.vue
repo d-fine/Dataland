@@ -267,7 +267,8 @@ export default defineComponent({
     companyID() {
       void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
     },
-    dataType() {
+    dataType(newDataType) {
+      this.chosenDataTypeInDropdown = newDataType;
       void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
     },
   },

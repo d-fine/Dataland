@@ -156,6 +156,16 @@ describe("The shared header of the framework pages should act as expected", { sc
         });
       }
 
+      function validateNoErrorMessagesAreShown() {
+        getElementAndAssertExistence("noDataForThisFrameworkPresentErrorIndicator", "not.exist");
+        getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "not.exist");
+        getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "not.exist");
+      }
+
+      function getElementAndAssertExistence(dataTestSelector: string, shouldTag: string): void {
+        cy.get(`[data-test=${dataTestSelector}]`).should(shouldTag);
+      }
+
       /**
        * Opens the dropdown and selects a specific framework.
        *
@@ -179,6 +189,10 @@ describe("The shared header of the framework pages should act as expected", { sc
       function validateViewPage(framework: string): void {
         cy.url().should("contain", `/frameworks/${framework}`);
         cy.get('[data-test="frameworkDataTableTitle"]').should("contain", humanizeString(framework)); // TODO
+      }
+
+      function clickBackButton(): void {
+        cy.get('[data-test="backButton"]').click();
       }
 
       /**
@@ -350,6 +364,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           DataTypeEnum.EutaxonomyFinancials,
           nameOfCompanyAlpha
         );
+        validateNoErrorMessagesAreShown();
         waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
@@ -357,18 +372,21 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         selectReportingPeriodInDropdown("2019");
 
+        validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
         validateEligibleActivityValueForFinancialsDataset("29.2");
 
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
 
+        validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
         validateEligibleActivityValueForFinancialsDataset("29.2");
 
         selectReportingPeriodInDropdown("2016");
 
+        validateNoErrorMessagesAreShown();
         cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2016", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
@@ -376,6 +394,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         selectReportingPeriodInDropdown("2019");
 
+        validateNoErrorMessagesAreShown();
         cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
@@ -383,6 +402,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyNonFinancials);
 
+        validateNoErrorMessagesAreShown();
         cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         cy.wait("@getMetaDataForCompanyId", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials, expectedFrameworkDropdownItemsForAlpha);
@@ -390,11 +410,26 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
 
+        validateNoErrorMessagesAreShown();
         waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.Lksg, expectedFrameworkDropdownItemsForAlpha);
         validateOneColumnPerExpectedReportingPeriod(expectedReportingPeriodsForLksgForAlpha);
 
-        // back
+        clickBackButton();
+
+        validateNoErrorMessagesAreShown();
+        waitForAllInterceptsOnFrameworkViewPage();
+        validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials, expectedFrameworkDropdownItemsForAlpha);
+        validateChosenReportingPeriod("2015", expectedReportingPeriodsForEuNonTaxoFinancialsForAlpha);
+
+        clickBackButton();
+
+        validateNoErrorMessagesAreShown();
+        cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        cy.wait("@getMetaDataForCompanyId", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
+        validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
+        validateEligibleActivityValueForFinancialsDataset("29.2");
 
         // validateReportingPeriodInUrl( "2019")
         // validateReportingPeriodDropdown("2019", ["2019"])
