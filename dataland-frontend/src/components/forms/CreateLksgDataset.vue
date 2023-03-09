@@ -25,7 +25,7 @@
               :model-value="companyID"
               disabled="true"
             />
-            <div class="uploadFormSection grid">
+            <div v-if="!updatingData" class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
                 <h4 id="general" class="anchor title">Reporting Period</h4>
               </div>
@@ -45,16 +45,18 @@
                       :maxDate="new Date()"
                     />
                   </div>
-                  <FormKit
-                    validation="required"
-                    validation-label="Reporting Period"
-                    name="reportingPeriod"
-                    v-model="convertedReportingPeriod"
-                    :outer-class="{ 'hidden-input': true }"
-                  />
                 </div>
               </div>
             </div>
+
+            <FormKit
+              validation="required"
+              validation-label="Reporting Period"
+              name="reportingPeriod"
+              v-model="convertedReportingPeriod"
+              :outer-class="{ 'hidden-input': true }"
+            />
+
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">

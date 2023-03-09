@@ -2,6 +2,7 @@
   <ViewFrameworkBase
     :companyID="companyId"
     :dataType="dataType"
+    :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
   >
     <template v-slot:content>
@@ -287,7 +288,7 @@ export default defineComponent({
     handleUpdateActiveDataMetaInfo(
       receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
     ) {
-      console.log("handleUpdateActiveDataMetaInfo"); // TODO
+      console.log("handleUpdateActiveDataMetaInfo", receivedMapOfReportingPeriodsToActiveDataMetaInfo); // TODO
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
       this.createListOfDataMetaInfoForDisplayedDatasets().catch((err) =>
