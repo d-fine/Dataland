@@ -21,15 +21,7 @@
       <Column field="dataReportingPeriod" header="REPORTING PERIOD" :sortable="true"></Column>
       <Column field="status" header="STATUS" :sortable="true">
         <template #body="{ data }">
-          <div v-if="data.status == DatasetStatus.QAApproved" class="p-badge badge-green">
-            <span>APPROVED</span>
-          </div>
-          <div v-if="data.status == DatasetStatus.Outdated" class="p-badge badge-brown">
-            <span>OUTDATED</span>
-          </div>
-          <div v-if="data.status == DatasetStatus.QAPending" class="p-badge badge-yellow">
-            <span>PENDING</span>
-          </div>
+          <div v-html="DatasetStatusBadgeElements.get(data.status)"></div>
         </template>
       </Column>
       <Column field="uploadTimeInMs" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInMs" class="w-2">
@@ -84,6 +76,7 @@ import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import debounce from "@/utils/Debounce";
+import { DatasetStatusBadgeElements } from "@/utils/QABadgeElements";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
@@ -114,6 +107,7 @@ export default defineComponent({
         false
       ),
       loading: false,
+      DatasetStatusBadgeElements,
     };
   },
   setup() {
