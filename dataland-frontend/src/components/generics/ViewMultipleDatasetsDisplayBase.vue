@@ -109,7 +109,12 @@ export default defineComponent({
   },
   computed: {
     linkToActiveView() {
-      if (this.companyId && this.dataType) return `/companies/${this.companyId}/frameworks/${this.dataType}`;
+      const activeDatasetAvailable =
+        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo &&
+        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size > 0;
+
+      if (this.companyId && this.dataType && activeDatasetAvailable)
+        return `/companies/${this.companyId}/frameworks/${this.dataType}`;
       return undefined;
     },
   },

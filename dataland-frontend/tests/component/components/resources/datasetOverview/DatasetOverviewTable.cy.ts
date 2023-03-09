@@ -2,7 +2,7 @@ import DatasetOverviewTable from "@/components/resources/datasetOverview/Dataset
 import { DatasetTableInfo, DatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
-import { humanizeString } from "../../../../../src/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 describe("Component test for DatasetOverviewTable", () => {
   it("Check if the table rows look as expected", () => {

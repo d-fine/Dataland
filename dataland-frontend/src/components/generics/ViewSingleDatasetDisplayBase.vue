@@ -74,7 +74,6 @@ import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
-import PrimeButton from "primevue/button";
 import { DataTypeEnum } from "@clients/backend";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
@@ -145,8 +144,21 @@ export default defineComponent({
       } else return "loading";
     },
     linkToActiveView() {
-      if (this.companyId && this.dataType && this.dataMetaInfoForDisplay?.reportingPeriod)
-        return `/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${this.dataMetaInfoForDisplay?.reportingPeriod}`;
+      const currentReportingPeriod = this.dataMetaInfoForDisplay?.reportingPeriod;
+      const thereIsAnActiveDatasetForTheCurrentReportingPeriod =
+        currentReportingPeriod &&
+        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(currentReportingPeriod)?.currentlyActive;
+
+      if (
+        this.companyId &&
+        this.dataType &&
+        currentReportingPeriod &&
+        thereIsAnActiveDatasetForTheCurrentReportingPeriod
+      )
+        return (
+          `/companies/${this.companyId}/frameworks/${this.dataType}` +
+          `/reportingPeriods/${assertDefined(this.dataMetaInfoForDisplay?.reportingPeriod)}`
+        );
       return undefined;
     },
   },

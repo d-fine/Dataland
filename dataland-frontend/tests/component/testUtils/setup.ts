@@ -42,6 +42,7 @@ Cypress.Commands.add("mount", (component: ComponentParam, options: OptionsParam 
     options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
       return Promise.resolve(options.keycloak as Keycloak);
     };
+    options.global.provide.authenticated = true;
   }
 
   if (options.propsOverride) {

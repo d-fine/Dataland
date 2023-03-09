@@ -1,7 +1,12 @@
 <template>
-  <div v-if="displayWarning" class="flex w-full info-bar" style="min-height: 2rem">
+  <div v-if="displayWarning" data-test="datasetStatusContainer" class="flex w-full info-bar" style="min-height: 2rem">
     <span class="flex-1">{{ warningMessage }}</span>
-    <router-link v-if="linkToActivePage" :to="linkToActivePage" class="no-underline">
+    <router-link
+      v-if="linkToActivePage"
+      :to="linkToActivePage"
+      class="no-underline"
+      data-test="datasetStatusLinkToActive"
+    >
       <PrimeButton label="View Active" icon="pi pi-stopwatch" />
     </router-link>
   </div>

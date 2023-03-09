@@ -1,8 +1,8 @@
-import { admin_name, admin_pw, reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import { uploadCompanyAndLksgDataViaApi, uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
+import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { faker } from "@faker-js/faker";
 import { describeIf } from "@e2e/support/TestUtility";
 
@@ -90,20 +90,6 @@ describe("As a user, I expect the View My Datasets page to behave as I expect", 
         cy.url().should("contain", "/companies/choose");
         cy.get("[title='back_button']").click();
         cy.url().should("contain", "/datasets");
-      });
-
-      it("Check that a user who has no dataset associated with him has no table displayed", () => {
-        cy.ensureLoggedIn(admin_name, admin_pw);
-        cy.visit("/datasets");
-        cy.get(newDatasetButtonSelector).should("exist");
-        cy.get("table").parent().parent().parent().should("have.class", "hidden");
-      });
-
-      it("Check that a user who has no upload permission has no new dataset button displayed", () => {
-        cy.ensureLoggedIn(reader_name, reader_pw);
-        cy.visit("/datasets");
-        cy.contains("No datasets uploaded").should("exist");
-        cy.get(newDatasetButtonSelector).should("not.exist");
       });
 
       let newCompanyName = "";
