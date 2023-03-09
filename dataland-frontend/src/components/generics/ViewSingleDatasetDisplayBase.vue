@@ -43,18 +43,21 @@
           </div>
         </div>
       </div>
-      <div v-if="isWaitingForDataIdToDisplay" class="col-12 text-left">
+      <div v-if="isWaitingForDataIdToDisplay" class="col-12 text-left" data-test="checkingIfAvailableIndicator">
         <h2>Checking if {{ humanizedDataDescription }} data available...</h2>
       </div>
-      <div v-if="!isWaitingForDataIdToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size === 0">
+      <div
+        v-if="!isWaitingForDataIdToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size === 0"
+        data-test="noDataForThisFrameworkPresentErrorIndicator"
+      >
         <h2>No {{ humanizedDataDescription }} data present for this company.</h2>
       </div>
-      <div v-if="isDataIdInUrlInvalid">
+      <div v-if="isDataIdInUrlInvalid" data-test="noDataForThisDataIdPresentErrorIndicator">
         <h2>
           No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company.
         </h2>
       </div>
-      <div v-if="isReportingPeriodInUrlInvalid">
+      <div v-if="isReportingPeriodInUrlInvalid" data-test="noDataForThisReportingPeriodPresentErrorIndicator">
         <h2>
           No {{ humanizedDataDescription }} data could be found for the reporting period passed in the URL for this
           company.
@@ -202,9 +205,6 @@ export default defineComponent({
         this.processDataMetaInfoForDisplay(dataMetaInfoForNewlyChosenReportingPeriod);
         this.routerPushToReportingPeriod(dataMetaInfoForNewlyChosenReportingPeriod.reportingPeriod);
       } else {
-        if (newReportingPeriod) {
-          this.isReportingPeriodInUrlInvalid = true;
-        }
       }
     },
 
