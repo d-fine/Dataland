@@ -9,13 +9,13 @@
 
       <div v-else>
         <div v-for="(dataMetaInfo, index) in listOfFrameworkData" :key="index">
-          <p
+          <a
             :class="[isFrontendViewPageExisting ? ['text-primary', 'cursor-pointer'] : '']"
             class="font-semibold"
             @click="redirectToViewPageIfEnabledInFrontend(dataMetaInfo)"
           >
             {{ getDynamicDatasetTitle(dataMetaInfo) }}
-          </p>
+          </a>
           <p>{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</p>
         </div>
         <p class="mt-5">{{ dynamicButtonTitle }}</p>

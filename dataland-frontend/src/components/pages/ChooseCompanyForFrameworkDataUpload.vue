@@ -22,8 +22,8 @@
                     <CompaniesOnlySearchBar />
                     <div class="mt-6">
                       <span>Can't find the company? </span>
-                      <span @click="autoScrollToCreateACompanyForm" class="cursor-pointer text-primary font-semibold"
-                        >Add it.</span
+                      <a @click="autoScrollToCreateACompanyForm" class="cursor-pointer text-primary font-semibold"
+                        >Add it.</a
                       >
                     </div>
                   </div>

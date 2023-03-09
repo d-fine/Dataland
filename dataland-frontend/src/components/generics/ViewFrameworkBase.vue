@@ -45,11 +45,14 @@
               <span class="material-icons-outlined px-2">mode</span>
               <span class="px-2">EDIT</span>
             </PrimeButton>
-            <PrimeButton class="uppercase p-button-sm d-letters mr-3" aria-label="New Dataset" @click="gotoNewDataset">
+            <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset" @click="gotoNewDataset">
               <span class="material-icons-outlined px-2">queue</span>
               <span class="px-2">NEW DATASET</span>
             </PrimeButton>
           </div>
+          <OverlayPanel ref="reportingPeriodsOverlayPanel">
+            <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
+          </OverlayPanel>
         </div>
       </MarginWrapper>
       <MarginWrapper v-if="isDataProcessedSuccesfully" style="margin-right: 0">
@@ -80,6 +83,8 @@ import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAG
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
+
+import OverlayPanel from "primevue/overlaypanel";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 
 export default defineComponent({
@@ -95,6 +100,8 @@ export default defineComponent({
     CompanyInformation,
     DatalandFooter,
     PrimeButton,
+    OverlayPanel,
+    SelectReportingPeriodDialog,
   },
   emits: ["updateAvailableReportingPeriodsForChosenFramework", "updateActiveDataMetaInfoForChosenFramework"],
   props: {
@@ -141,19 +148,13 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Opens a modal for selecting a reporting period to edit data for
+     * Opens Overlay Panel for selecting a reporting period to edit data for
+     *
+     * @param event event
      */
-    editDataset() {
-      this.$dialog.open(SelectReportingPeriodDialog, {
-        props: {
-          header: "Select reporting period to edit data for",
-          modal: true,
-          dismissableMask: true,
-        },
-        data: {
-          mapOfReportingPeriodToActiveDataset: this.mapOfReportingPeriodToActiveDataset,
-        },
-      });
+    editDataset(event: Event) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access
+      (this.$refs.reportingPeriodsOverlayPanel as any)?.toggle(event);
     },
     /**
      * Navigates to the framework upload page for the current company (a framework is not pre-selected)
@@ -240,7 +241,6 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
-
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
@@ -249,7 +249,6 @@ export default defineComponent({
         console.log("HI");
         this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
         const listOfDistinctAvailableReportingPeriodsForFramework: string[] = [];
-        console.log(listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod);
         listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.forEach((dataMetaInfo: DataMetaInformation) => {
           if (dataMetaInfo.dataType === this.dataType) {
             if (dataMetaInfo.currentlyActive) {
