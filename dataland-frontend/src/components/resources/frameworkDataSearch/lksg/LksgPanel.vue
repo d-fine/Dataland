@@ -21,7 +21,7 @@ import { DataAndMetaInformationLksgData, DataMetaInformation, LksgData } from "@
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import {sortReportingPeriodsToDisplayAsColumns} from "@/utils/DataTableDisplay";
+import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
   lksgSubAreasNameMappings,
