@@ -1,12 +1,13 @@
 import { minimalKeycloakMock } from "../../testUtils/keycloak";
 import DatasetOverview from "@/components/pages/DatasetOverview.vue";
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
+import { mount } from "cypress/vue";
 
 describe("Component tests for the DatasetOverview page", () => {
   it("Should not display the New Dataset button to non-uploader users", () => {
     const keycloakMock = minimalKeycloakMock({});
     cy.intercept("**/api/companies?**", []);
-    cy.mount(DatasetOverview, {
+    cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
     });
     cy.get("h1[data-test=noDatasetUploadedText]").should("be.visible");
@@ -19,7 +20,7 @@ describe("Component tests for the DatasetOverview page", () => {
       roles: ["ROLE_USER", "ROLE_UPLOADER"],
     });
     cy.intercept("**/api/companies?**", []);
-    cy.mount(DatasetOverview, {
+    cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
     });
     cy.get("h1[data-test=noDatasetUploadedText]").should("be.visible");
@@ -53,12 +54,13 @@ describe("Component tests for the DatasetOverview page", () => {
   it("Checks that the tab-bar is rendered correctly and that clicking on 'AVAILABLE DATASETS' performs a router push", () => {
     const keycloakMock = minimalKeycloakMock({});
     cy.intercept("**/api/companies?**", []);
-    cy.mount(DatasetOverview, {
+    const test = mount(DatasetOverview);
+    cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
-    }).then(({ wrapper, component }) => {
+    }).then((mounted) => {
       validateTabBar(1);
       cy.get(getTabSelector(0)).click();
-      cy.wrap(component).its("$route.path").should("eq", "/companies");
+      cy.wrap(mounted.component).its("$route.path").should("eq", "/companies");
     });
   });
 
@@ -70,12 +72,12 @@ describe("Component tests for the DatasetOverview page", () => {
       sectors: [],
     };
     cy.intercept("**/api/companies/meta-information", mockDistinctValues);
-    cy.mount(SearchCompaniesForFrameworkData, {
+    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
-    }).then(({ wrapper, component }) => {
+    }).then((mounted) => {
       validateTabBar(0);
       cy.get(getTabSelector(1)).click();
-      cy.wrap(component).its("$route.path").should("eq", "/datasets");
+      cy.wrap(mounted.component).its("$route.path").should("eq", "/datasets");
     });
   });
 });

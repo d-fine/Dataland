@@ -14,10 +14,10 @@ describe("Component Tests for DatasetStatusIndicator", () => {
   };
 
   it("Should not display anything if the dataset is active", () => {
-    cy.mount(DatasetStatusIndicator, {
-      propsOverride: {
+    cy.mountWithPlugins(DatasetStatusIndicator, {}).then((mounted) => {
+      void mounted.wrapper.setProps({
         displayedDataset: acceptedAndActiveDataset,
-      },
+      });
     });
 
     cy.get("div[data-test=datasetStatusContainer]").should("not.exist");
@@ -29,10 +29,10 @@ describe("Component Tests for DatasetStatusIndicator", () => {
     outdatedDataset.currentlyActive = false;
     outdatedDataset.qaStatus = QAStatus.Accepted;
 
-    cy.mount(DatasetStatusIndicator, {
-      propsOverride: {
+    cy.mountWithPlugins(DatasetStatusIndicator, {}).then((mounted) => {
+      void mounted.wrapper.setProps({
         displayedDataset: outdatedDataset,
-      },
+      });
     });
 
     cy.get("div[data-test=datasetStatusContainer]").contains("outdated").should("exist");
@@ -43,10 +43,10 @@ describe("Component Tests for DatasetStatusIndicator", () => {
     datasetPendingReview.currentlyActive = false;
     datasetPendingReview.qaStatus = QAStatus.Pending;
 
-    cy.mount(DatasetStatusIndicator, {
-      propsOverride: {
+    cy.mountWithPlugins(DatasetStatusIndicator, {}).then((mounted) => {
+      void mounted.wrapper.setProps({
         displayedDataset: datasetPendingReview,
-      },
+      });
     });
 
     cy.get("div[data-test=datasetStatusContainer]").contains("pending").should("exist");
@@ -57,11 +57,11 @@ describe("Component Tests for DatasetStatusIndicator", () => {
     const outdatedDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
     outdatedDataset.currentlyActive = false;
     outdatedDataset.qaStatus = QAStatus.Accepted;
-    cy.mount(DatasetStatusIndicator, {
-      propsOverride: {
+    cy.mountWithPlugins(DatasetStatusIndicator, {}).then((mounted) => {
+      void mounted.wrapper.setProps({
         displayedDataset: outdatedDataset,
         linkToActivePage: mockActiveDatasetLink,
-      },
+      });
     });
     cy.get("div[data-test=datasetStatusContainer]").contains("outdated").should("exist");
     cy.get("a[data-test=datasetStatusLinkToActive]").should("have.attr", "href", mockActiveDatasetLink);
