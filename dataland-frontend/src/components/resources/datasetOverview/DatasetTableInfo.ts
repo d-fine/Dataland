@@ -27,7 +27,7 @@ export class DatasetTableInfo {
  * @param dataMetaInfo the dataset containing different status indicators (i.e QAStatus, currentlyActive,...)
  * @returns a unified DatasetStatus
  */
-function getDatasetStatus(dataMetaInfo: DataMetaInformation): DatasetStatus {
+export function getDatasetStatus(dataMetaInfo: DataMetaInformation): DatasetStatus {
   if (dataMetaInfo.qaStatus == QAStatus.Accepted) {
     return dataMetaInfo.currentlyActive ? DatasetStatus.QAApproved : DatasetStatus.Outdated;
   } else {

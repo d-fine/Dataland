@@ -9,14 +9,19 @@
 
       <div v-else>
         <div v-for="(dataMetaInfo, index) in listOfFrameworkData" :key="index">
-          <a
-            :class="[isFrontendViewPageExisting ? ['text-primary', 'cursor-pointer'] : '']"
-            class="font-semibold"
-            @click="redirectToViewPageIfEnabledInFrontend(dataMetaInfo)"
-          >
-            {{ getDynamicDatasetTitle(dataMetaInfo) }}
-          </a>
-          <p>{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</p>
+          <div>
+            <a
+              :class="[isFrontendViewPageExisting ? ['text-primary', 'cursor-pointer'] : '']"
+              class="font-semibold underline"
+              @click="redirectToViewPageIfEnabledInFrontend(dataMetaInfo)"
+            >
+              {{ getDynamicDatasetTitle(dataMetaInfo) }}
+            </a>
+          </div>
+          <div>
+            <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</span>
+            <span v-html="getBadgeElement(dataMetaInfo)"></span>
+          </div>
         </div>
         <p class="mt-5">{{ dynamicButtonTitle }}</p>
         <PrimeButton
@@ -44,6 +49,7 @@ import PrimeButton from "primevue/button";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { getBadgeElement } from "@/utils/QABadgeElements";
 
 export default defineComponent({
   name: "MetaInfoPerComanyAndFramework",
@@ -74,6 +80,7 @@ export default defineComponent({
       isFrontendViewPageExisting: null as null | boolean,
       isFrontendUploadFormExisting: null as null | boolean,
       convertUnixTimeInMsToDateString: convertUnixTimeInMsToDateString,
+      getBadgeElement,
     };
   },
 

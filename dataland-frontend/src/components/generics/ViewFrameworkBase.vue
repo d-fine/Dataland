@@ -103,7 +103,7 @@ export default defineComponent({
     OverlayPanel,
     SelectReportingPeriodDialog,
   },
-  emits: ["updateAvailableReportingPeriodsForChosenFramework", "updateActiveDataMetaInfoForChosenFramework"],
+  emits: ["updateActiveDataMetaInfoForChosenFramework"],
   props: {
     companyID: {
       type: String,
@@ -138,7 +138,7 @@ export default defineComponent({
   },
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? "";
-    void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
+    void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
     checkIfUserHasUploaderRights(this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
@@ -241,12 +241,11 @@ export default defineComponent({
     },
 
     /**
-     * Goes through all data meta info for the currently viewed company and does multiple things.
+     * Goes through all data meta info for the currently viewed company and does two things.
      * First it sets the distinct frameworks as options in the framework-dropdown.
-     * Then it emits a list of all distinct reporting periods. TODO adjust to changes
      * Finally it emits a list with data meta info elements for all active datasets for this company. TODO
      */
-    async getDropdownOptionsAndActiveDataMetaInfoAndDoEmits() {
+    async getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -259,12 +258,10 @@ export default defineComponent({
 
         // TODO modularize following code block
         this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
-        const listOfDistinctAvailableReportingPeriodsForFramework: string[] = [];
         listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.forEach((dataMetaInfo: DataMetaInformation) => {
           if (dataMetaInfo.dataType === this.dataType) {
             if (dataMetaInfo.currentlyActive) {
               this.mapOfReportingPeriodToActiveDataset.set(dataMetaInfo.reportingPeriod, dataMetaInfo); // TODO the fact that backend only sends one meta info per distinct reportingPeriod is assured implicitly by using reporting period as key here for the map.. is this ok??
-              listOfDistinctAvailableReportingPeriodsForFramework.push(dataMetaInfo.reportingPeriod);
             } else {
               throw TypeError("Received inactive dataset meta info from Dataland Backend"); // TODO do we even need a check like this, or is this handled as "assured"
             }
@@ -272,17 +269,6 @@ export default defineComponent({
         });
         this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);
         // TODO ________________
-
-        // TODO modularize following code block
-        listOfDistinctAvailableReportingPeriodsForFramework.sort((reportingPeriodA, reportingPeriodB) => {
-          if (reportingPeriodA > reportingPeriodB) return -1;
-          else return 0;
-        });
-        this.$emit(
-          "updateAvailableReportingPeriodsForChosenFramework",
-          listOfDistinctAvailableReportingPeriodsForFramework
-        );
-        // TODO _______
       } catch (error) {
         this.isDataProcessedSuccesfully = false;
         console.error(error);
@@ -291,10 +277,11 @@ export default defineComponent({
   },
   watch: {
     companyID() {
-      void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
+      void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
     },
-    dataType() {
-      void this.getDropdownOptionsAndActiveDataMetaInfoAndDoEmits();
+    dataType(newDataType) {
+      this.chosenDataTypeInDropdown = newDataType;
+      void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
     },
   },
 });

@@ -3,7 +3,6 @@
     :companyID="companyId"
     :dataType="dataType"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
-    @updateAvailableReportingPeriodsForChosenFramework="handleUpdateAvailableReportingPeriods"
   >
     <template v-slot:reportingPeriodDropdown>
       <Dropdown
@@ -21,14 +20,8 @@
 
     <template v-slot:content>
       <div v-if="isDataIdToDisplayFound">
-        <div v-if="dataMetaInfoForDisplay?.currentlyActive === false" class="flex w-full info-bar">
-          <span class="flex-1">this dataset is outdated</span>
-          <PrimeButton
-            @click="handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton"
-            label="See latest version"
-            icon="pi pi-stopwatch"
-          />
-        </div>
+        <DatasetStatusIndicator :link-to-active-page="linkToActiveView" :displayed-dataset="dataMetaInfoForDisplay">
+        </DatasetStatusIndicator>
         <div class="grid">
           <div class="col-12 text-left">
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizedDataDescription }}</h2>
@@ -50,18 +43,21 @@
           </div>
         </div>
       </div>
-      <div v-if="isWaitingForDataIdToDisplay" class="col-12 text-left">
+      <div v-if="isWaitingForDataIdToDisplay" class="col-12 text-left" data-test="checkingIfAvailableIndicator">
         <h2>Checking if {{ humanizedDataDescription }} data available...</h2>
       </div>
-      <div v-if="!isWaitingForDataIdToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size === 0">
+      <div
+        v-if="!isWaitingForDataIdToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size === 0"
+        data-test="noDataForThisFrameworkPresentErrorIndicator"
+      >
         <h2>No {{ humanizedDataDescription }} data present for this company.</h2>
       </div>
-      <div v-if="isDataIdInUrlInvalid">
+      <div v-if="isDataIdInUrlInvalid" data-test="noDataForThisDataIdPresentErrorIndicator">
         <h2>
           No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company.
         </h2>
       </div>
-      <div v-if="isReportingPeriodInUrlInvalid">
+      <div v-if="isReportingPeriodInUrlInvalid" data-test="noDataForThisReportingPeriodPresentErrorIndicator">
         <h2>
           No {{ humanizedDataDescription }} data could be found for the reporting period passed in the URL for this
           company.
@@ -80,15 +76,22 @@ import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
-import PrimeButton from "primevue/button";
 import { DataTypeEnum } from "@clients/backend";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
+import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
+import { getKeysFromMapAndReturnAsAlphabeticallySortedArray } from "../../../tests/e2e/utils/GenericUtils";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
-  components: { ViewFrameworkBase, Dropdown, PrimeButton, EuTaxonomyPanelFinancials, EuTaxonomyPanelNonFinancials },
+  components: {
+    DatasetStatusIndicator,
+    ViewFrameworkBase,
+    Dropdown,
+    EuTaxonomyPanelFinancials,
+    EuTaxonomyPanelNonFinancials,
+  },
   props: {
     companyId: {
       type: String,
@@ -114,7 +117,6 @@ export default defineComponent({
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
       isDataIdToDisplayFound: false,
-      humanizedDataDescription: humanizeString(this.dataType),
       DataTypeEnum,
     };
   },
@@ -138,10 +140,32 @@ export default defineComponent({
   },
 
   computed: {
+    humanizedDataDescription() {
+      return humanizeString(this.dataType);
+    },
+
     dataIdForPanelWithValidType() {
       if (this.dataMetaInfoForDisplay?.dataType === this.dataType) {
         return this.dataMetaInfoForDisplay?.dataId;
       } else return "loading";
+    },
+    linkToActiveView() {
+      const currentReportingPeriod = this.dataMetaInfoForDisplay?.reportingPeriod;
+      const thereIsAnActiveDatasetForTheCurrentReportingPeriod =
+        currentReportingPeriod &&
+        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(currentReportingPeriod)?.currentlyActive;
+
+      if (
+        this.companyId &&
+        this.dataType &&
+        currentReportingPeriod &&
+        thereIsAnActiveDatasetForTheCurrentReportingPeriod
+      )
+        return (
+          `/companies/${this.companyId}/frameworks/${this.dataType}` +
+          `/reportingPeriods/${assertDefined(this.dataMetaInfoForDisplay?.reportingPeriod)}`
+        );
+      return undefined;
     },
   },
 
@@ -182,7 +206,7 @@ export default defineComponent({
         this.routerPushToReportingPeriod(dataMetaInfoForNewlyChosenReportingPeriod.reportingPeriod);
       } else {
         if (newReportingPeriod) {
-          this.isReportingPeriodInUrlInvalid = true;
+          this.handleInvalidReportingPeriodPassedInUrl();
         }
       }
     },
@@ -212,15 +236,6 @@ export default defineComponent({
     },
 
     /**
-     * Method to handle the update of the available reporting periods
-     *
-     * @param receivedListOfAvailableReportingPeriods Desired new available reporting periods
-     */
-    handleUpdateAvailableReportingPeriods(receivedListOfAvailableReportingPeriods: string[]) {
-      this.reportingPeriodsInDropdown = receivedListOfAvailableReportingPeriods;
-    },
-
-    /**
      * Method to handle the update of the currently active data meta information for the chosen framework
      *
      * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
@@ -231,6 +246,9 @@ export default defineComponent({
     ) {
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
+      this.reportingPeriodsInDropdown = getKeysFromMapAndReturnAsAlphabeticallySortedArray(
+        receivedMapOfReportingPeriodsToActiveDataMetaInfo
+      );
       this.chooseDataMetaInfoForDisplayedDataset().catch((err) =>
         console.log("Retrieving data meta info failed with error " + String(err))
       );
@@ -286,6 +304,16 @@ export default defineComponent({
       this.chosenReportingPeriodInDropdown = "";
       this.isDataIdToDisplayFound = false;
       this.isDataIdInUrlInvalid = true;
+    },
+
+    /**
+     * Called when the reporting period in the url does not belong to a designated dataset
+     */
+    handleInvalidReportingPeriodPassedInUrl() {
+      this.dataMetaInfoForDisplay = null;
+      this.chosenReportingPeriodInDropdown = "";
+      this.isDataIdToDisplayFound = false;
+      this.isReportingPeriodInUrlInvalid = true;
     },
 
     /**

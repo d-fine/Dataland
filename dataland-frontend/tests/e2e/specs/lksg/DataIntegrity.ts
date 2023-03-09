@@ -123,14 +123,10 @@ describeIf(
               getYearFromLksgDate(lksgData.social!.general!.dataDate!)
             );
 
-            cy.get("table.p-datatable-table")
-              .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
-              .should("exist");
+            cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
 
             cy.get("button.p-row-toggler").eq(0).click();
-            cy.get("table.p-datatable-table")
-              .find(`span:contains(${lksgData.social!.general!.dataDate!})`)
-              .should("not.exist");
+            cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("not.exist");
 
             cy.get("button.p-row-toggler").eq(0).click();
             cy.get("table.p-datatable-table")

@@ -1,14 +1,18 @@
 import { routes } from "@/router";
+import { createPinia } from "pinia";
+import PrimeVue from "primevue/config";
+import DialogService from "primevue/dialogservice";
 import { createMemoryHistory, createRouter, Router } from "vue-router";
-import { mount as cpMount } from "cypress/vue";
+import { mount } from "cypress/vue";
+import { VueWrapper } from "@vue/test-utils";
+import { DefineComponent } from "vue";
 import Keycloak from "keycloak-js";
 
-type MountReturn = ReturnType<typeof cpMount>;
-type MountParams = Parameters<typeof cpMount>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ComponentParam = any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type OptionsParam = MountParams[1] & { router?: Router; keycloak?: Keycloak; propsOverride?: any };
+type ComponentMountingOptions<T extends DefineComponent<any, any, any, any, any>> = Parameters<typeof mount<T>>[1] & {
+  router?: Router;
+  keycloak?: Keycloak;
+};
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -20,18 +24,41 @@ declare global {
        * @param component Vue Component or JSX Element to mount
        * @param options Options passed to Vue Test Utils
        */
-      mount(component: ComponentParam, options?: OptionsParam): MountReturn;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
+        component: T,
+        options: ComponentMountingOptions<T>
+      ): Cypress.Chainable<{
+        wrapper: VueWrapper<InstanceType<T>>;
+        component: VueWrapper<InstanceType<T>>["vm"];
+      }>;
     }
   }
 }
 
-Cypress.Commands.add("mount", (component: ComponentParam, options: OptionsParam = {}) => {
+/**
+ * A slightly modified version of the vue mount function that automatically initiates plugins used in dataland
+ * like PrimeVue, Pinia or the Router and also allows for simple authentication injection
+ *
+ * @param component the component you want to mount
+ * @param options the options for mounting said component
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
+  component: T,
+  options: ComponentMountingOptions<T>
+): Cypress.Chainable<{
+  wrapper: VueWrapper<InstanceType<T>>;
+  component: VueWrapper<InstanceType<T>>["vm"];
+}> {
   // Setup options object
   options.global = options.global || {};
   options.global.plugins = options.global.plugins || [];
+  options.global.plugins.push(createPinia());
+  options.global.plugins.push(PrimeVue);
+  options.global.plugins.push(DialogService);
   options.global.provide = options.global.provide || {};
 
-  // create router if one is not provided
   if (!options.router) {
     options.router = createRouter({
       routes: routes,
@@ -43,14 +70,9 @@ Cypress.Commands.add("mount", (component: ComponentParam, options: OptionsParam 
     options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
       return Promise.resolve(options.keycloak as Keycloak);
     };
+    options.global.provide.authenticated = true;
   }
 
-  if (options.propsOverride) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    options.propsData = options.propsOverride;
-  }
-
-  // Add router plugin
   options.global.plugins.push({
     install(app) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -59,5 +81,9 @@ Cypress.Commands.add("mount", (component: ComponentParam, options: OptionsParam 
     },
   });
 
-  return cpMount(component, options);
-});
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return mount(component, options);
+}
+
+Cypress.Commands.add("mountWithPlugins", mountWithPlugins);

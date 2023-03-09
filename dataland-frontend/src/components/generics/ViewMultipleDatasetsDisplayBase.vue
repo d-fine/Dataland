@@ -3,40 +3,14 @@
     :companyID="companyId"
     :dataType="dataType"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
-    @updateAvailableReportingPeriodsForChosenFramework="handleUpdateAvailableReportingPeriods"
   >
     <template v-slot:content>
       <div v-if="isListOfDataIdsToDisplayFound">
-        <div
-          v-if="singleDataMetaInfoToDisplay && singleDataMetaInfoToDisplay.currentlyActive === false"
-          class="flex w-full info-bar"
+        <DatasetStatusIndicator
+          :displayed-dataset="singleDataMetaInfoToDisplay"
+          :link-to-active-page="linkToActiveView"
         >
-          <span class="flex-1">this dataset is outdated</span>
-          <PrimeButton
-            @click="handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton"
-            label="See latest version"
-            icon="pi pi-stopwatch"
-          />
-        </div>
-
-        <div
-          v-if="
-            singleDataMetaInfoToDisplay &&
-            singleDataMetaInfoToDisplay.currentlyActive === true &&
-            receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size > 1
-          "
-          class="flex w-full info-bar"
-        >
-          <span class="flex-1"
-            >this dataset is the latest dataset for the reporting period
-            {{ singleDataMetaInfoToDisplay.reportingPeriod }}</span
-          >
-          <PrimeButton
-            @click="handleClickOnSwitchToAllActiveDatasetButton"
-            :label="`See all ${singleDataMetaInfoToDisplay.dataType} datasets available for this company`"
-            icon="pi pi-stopwatch"
-          />
-        </div>
+        </DatasetStatusIndicator>
 
         <div class="grid">
           <div class="col-12 text-left">
@@ -64,15 +38,16 @@
           !isWaitingForListOfDataIdsToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size === 0
         "
         class="col-12 text-left"
+        data-test="noDataForThisFrameworkPresentErrorIndicator"
       >
         <h2>No {{ humanizedDataDescription }} data present for this company.</h2>
       </div>
-      <div v-if="isDataIdInUrlInvalid">
+      <div v-if="isDataIdInUrlInvalid" data-test="noDataForThisDataIdPresentErrorIndicator">
         <h2>
           No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company.
         </h2>
       </div>
-      <div v-if="isReportingPeriodInUrlInvalid">
+      <div v-if="isReportingPeriodInUrlInvalid" data-test="noDataForThisReportingPeriodPresentErrorIndicator">
         <h2>
           No {{ humanizedDataDescription }} data could be found for the reporting period passed in the URL for this
           company.
@@ -94,11 +69,11 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
 import Keycloak from "keycloak-js";
-import PrimeButton from "primevue/button";
+import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: { SfdrPanel, LksgPanel, ViewFrameworkBase, PrimeButton },
+  components: { DatasetStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
   props: {
     companyId: {
       type: String,
@@ -131,6 +106,17 @@ export default defineComponent({
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
+  },
+  computed: {
+    linkToActiveView() {
+      const activeDatasetAvailable =
+        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo &&
+        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size > 0;
+
+      if (this.companyId && this.dataType && activeDatasetAvailable)
+        return `/companies/${this.companyId}/frameworks/${this.dataType}`;
+      return undefined;
+    },
   },
   watch: {
     dataId(newDataId: string) {
@@ -209,17 +195,6 @@ export default defineComponent({
     },
 
     /**
-     * Method to handle the button that switches to all active data sets for the selected company and framework
-     */
-    handleClickOnSwitchToAllActiveDatasetButton() {
-      if (this.companyId != null && this.dataType != null) {
-        this.$router
-          .push(`/companies/${this.companyId}/frameworks/${this.dataType}`)
-          .catch((err) => console.log("Setting default route failed with error " + String(err)));
-      }
-    },
-
-    /**
      * Method to handle an invalid data ID that was passed in URL
      */
     handleInvalidDataIdPassedInUrl() {
@@ -240,7 +215,7 @@ export default defineComponent({
     /**
      * Method to set a data meta information object as the only one to display
      *
-     * @param dataMetaInfoToDisplay
+     * @param dataMetaInfoToDisplay the data meta information to display
      */
     setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation | null) {
       this.setFlagsToDataFoundState();
@@ -250,7 +225,7 @@ export default defineComponent({
     /**
      * Method to asynchronously retrieve the meta data associated to a given data ID
      *
-     * @param dataId
+     * @param dataId the data id to retrieve meta info for
      */
     async getMetaDataForDataId(dataId: string) {
       try {

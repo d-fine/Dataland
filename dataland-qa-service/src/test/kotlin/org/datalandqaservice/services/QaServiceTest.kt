@@ -5,6 +5,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.services.QaService
 import org.junit.jupiter.api.Assertions
@@ -21,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest(classes = [DatalandQaService::class])
 class QaServiceTest(
     @Autowired val objectMapper: ObjectMapper,
+    @Autowired var messageUtils: MessageQueueUtils,
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var qaService: QaService
@@ -30,7 +32,7 @@ class QaServiceTest(
     @BeforeEach
     fun resetMocks() {
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-        qaService = QaService(mockCloudEventMessageHandler, objectMapper)
+        qaService = QaService(mockCloudEventMessageHandler, objectMapper, messageUtils)
     }
 
     @Test
@@ -39,7 +41,7 @@ class QaServiceTest(
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaService.assureQualityOfData("", correlationId, MessageType.DataStored)
         }
-        Assertions.assertEquals("Message could not be processed - Message rejected", thrown.message)
+        Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
 
     @Test
