@@ -114,7 +114,6 @@ export default defineComponent({
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
       isDataIdToDisplayFound: false,
-      humanizedDataDescription: humanizeString(this.dataType),
       DataTypeEnum,
     };
   },
@@ -138,6 +137,10 @@ export default defineComponent({
   },
 
   computed: {
+    humanizedDataDescription() {
+      return humanizeString(this.dataType);
+    },
+
     dataIdForPanelWithValidType() {
       if (this.dataMetaInfoForDisplay?.dataType === this.dataType) {
         return this.dataMetaInfoForDisplay?.dataId;
