@@ -12,14 +12,14 @@
           <div>
             <a
               :class="[isFrontendViewPageExisting ? ['text-primary', 'cursor-pointer'] : '']"
-              class="font-semibold"
+              class="font-semibold underline"
               @click="redirectToViewPageIfEnabledInFrontend(dataMetaInfo)"
             >
               {{ getDynamicDatasetTitle(dataMetaInfo) }}
             </a>
           </div>
           <div>
-            <span class="mr-4">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</span>
+            <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</span>
             <span v-html="getBadgeElement(dataMetaInfo)"></span>
           </div>
         </div>
