@@ -21,6 +21,7 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
     realmAccess: {
       roles: config.roles || ["ROLE_USER"],
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     updateToken(minValidity: number): void {
       return;
     },

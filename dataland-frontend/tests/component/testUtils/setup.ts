@@ -1,9 +1,11 @@
 import { routes } from "@/router";
+import { createPinia } from "pinia";
+import PrimeVue from "primevue/config";
+import DialogService from "primevue/dialogservice";
 import { createMemoryHistory, createRouter, Router } from "vue-router";
 import { mount as cpMount } from "cypress/vue";
 import Keycloak from "keycloak-js";
 
-type MountReturn = ReturnType<typeof cpMount>;
 type MountParams = Parameters<typeof cpMount>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ComponentParam = any;
@@ -20,7 +22,8 @@ declare global {
        * @param component Vue Component or JSX Element to mount
        * @param options Options passed to Vue Test Utils
        */
-      mount(component: ComponentParam, options?: OptionsParam): MountReturn;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mount(component: ComponentParam, options?: OptionsParam): Chainable<any>;
     }
   }
 }
@@ -29,6 +32,9 @@ Cypress.Commands.add("mount", (component: ComponentParam, options: OptionsParam 
   // Setup options object
   options.global = options.global || {};
   options.global.plugins = options.global.plugins || [];
+  options.global.plugins.push(createPinia());
+  options.global.plugins.push(PrimeVue);
+  options.global.plugins.push(DialogService);
   options.global.provide = options.global.provide || {};
 
   if (!options.router) {

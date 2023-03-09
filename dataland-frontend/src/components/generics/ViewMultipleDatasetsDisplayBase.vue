@@ -3,7 +3,6 @@
     :companyID="companyId"
     :dataType="dataType"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
-    @updateAvailableReportingPeriodsForChosenFramework="handleUpdateAvailableReportingPeriods"
   >
     <template v-slot:content>
       <div v-if="isListOfDataIdsToDisplayFound">
@@ -215,7 +214,7 @@ export default defineComponent({
     /**
      * Method to set a data meta information object as the only one to display
      *
-     * @param dataMetaInfoToDisplay
+     * @param dataMetaInfoToDisplay the data meta information to display
      */
     setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation | null) {
       this.setFlagsToDataFoundState();
@@ -225,7 +224,7 @@ export default defineComponent({
     /**
      * Method to asynchronously retrieve the meta data associated to a given data ID
      *
-     * @param dataId
+     * @param dataId the data id to retrieve meta info for
      */
     async getMetaDataForDataId(dataId: string) {
       try {
