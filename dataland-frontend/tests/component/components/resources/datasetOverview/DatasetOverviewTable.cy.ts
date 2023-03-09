@@ -23,11 +23,13 @@ describe("Component test for DatasetOverviewTable", () => {
       uploadTimeInMs: 1672527600000, // 1.1.2023 00:00:00:0000
     };
     const mockData = [mockDataEntry];
-    cy.mount(DatasetOverviewTable, {
+
+    cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
       keycloak: keycloakMock,
-      propsOverride: {
+    }).then(({ component, wrapper }) => {
+      void wrapper.setProps({
         datasetTableInfos: mockData,
-      },
+      });
     });
   }
 
