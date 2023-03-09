@@ -78,13 +78,14 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         const primevueHighlightedSuggestionClass = "p-focus";
         let latestScrollPosition = 0;
         cy.visitAndCheckAppMount("/companies");
+        //TODO remove verify and check in componenttest, maybe discuss Florian if this was used to verify that the first company was uploaded via api
         verifyTaxonomySearchResultTable();
 
         cy.get('button[aria-label="New Dataset"]')
           .click({ force: true })
           .url()
           .should("eq", getBaseUrl() + "/companies/choose");
-
+        //TODO Test of highlighting as componenttest?
         cy.intercept("**/api/companies*").as("searchCompanyName");
         cy.get("input[id=company_search_bar_standard]").click({ force: true }).type(uniqueCompanyMarkerA);
         cy.wait("@searchCompanyName", { timeout: Cypress.env("short_timeout_in_ms") as number });
@@ -101,6 +102,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .then((scrollYPosition) => {
             latestScrollPosition = scrollYPosition;
           });
+        //TODO Test that the appropriate message is deplayed could be part of a component test
         cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
         cy.window().its("scrollY").should("be.gt", latestScrollPosition);
         cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
@@ -108,6 +110,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.url().should("eq", getBaseUrl() + "/companies/" + company.companyId + "/frameworks/upload");
           cy.visit("/companies/choose");
+          //TODO Discuss with Florian why this is necessary
           const identifierDoesExistMessage = "There already exists a company with this ID";
           cy.contains(identifierDoesExistMessage).should("not.exist");
           cy.get("input[name='isin']").type(
