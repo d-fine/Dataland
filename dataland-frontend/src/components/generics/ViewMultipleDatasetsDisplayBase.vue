@@ -3,7 +3,6 @@
     :companyID="companyId"
     :dataType="dataType"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
-    @updateAvailableReportingPeriodsForChosenFramework="handleUpdateAvailableReportingPeriods"
   >
     <template v-slot:content>
       <div v-if="isListOfDataIdsToDisplayFound">

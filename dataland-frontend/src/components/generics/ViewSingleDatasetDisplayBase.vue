@@ -3,7 +3,6 @@
     :companyID="companyId"
     :dataType="dataType"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
-    @updateAvailableReportingPeriodsForChosenFramework="handleUpdateAvailableReportingPeriods"
   >
     <template v-slot:reportingPeriodDropdown>
       <Dropdown
@@ -79,6 +78,7 @@ import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSe
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
+import { getKeysFromMapAndReturnAsAlphabeticallySortedArray } from "../../../tests/e2e/utils/GenericUtils";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
@@ -230,15 +230,6 @@ export default defineComponent({
     },
 
     /**
-     * Method to handle the update of the available reporting periods
-     *
-     * @param receivedListOfAvailableReportingPeriods Desired new available reporting periods
-     */
-    handleUpdateAvailableReportingPeriods(receivedListOfAvailableReportingPeriods: string[]) {
-      this.reportingPeriodsInDropdown = receivedListOfAvailableReportingPeriods;
-    },
-
-    /**
      * Method to handle the update of the currently active data meta information for the chosen framework
      *
      * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
@@ -249,6 +240,9 @@ export default defineComponent({
     ) {
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
+      this.reportingPeriodsInDropdown = getKeysFromMapAndReturnAsAlphabeticallySortedArray(
+        receivedMapOfReportingPeriodsToActiveDataMetaInfo
+      );
       this.chooseDataMetaInfoForDisplayedDataset().catch((err) =>
         console.log("Retrieving data meta info failed with error " + String(err))
       );
