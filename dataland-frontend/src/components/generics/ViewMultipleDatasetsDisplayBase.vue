@@ -38,15 +38,16 @@
           !isWaitingForListOfDataIdsToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size === 0
         "
         class="col-12 text-left"
+        data-test="noDataForThisFrameworkPresentErrorIndicator"
       >
         <h2>No {{ humanizedDataDescription }} data present for this company.</h2>
       </div>
-      <div v-if="isDataIdInUrlInvalid">
+      <div v-if="isDataIdInUrlInvalid" data-test="noDataForThisDataIdPresentErrorIndicator">
         <h2>
           No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company.
         </h2>
       </div>
-      <div v-if="isReportingPeriodInUrlInvalid">
+      <div v-if="isReportingPeriodInUrlInvalid" data-test="noDataForThisReportingPeriodPresentErrorIndicator">
         <h2>
           No {{ humanizedDataDescription }} data could be found for the reporting period passed in the URL for this
           company.
