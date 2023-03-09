@@ -21,7 +21,7 @@ export interface FixtureData<T> {
 export function generateFixtureDataset<T>(frameworkDataGenerator: () => T, numElements: number): Array<FixtureData<T>> {
   const fixtureDataset = [];
   for (let id = 1; id <= numElements; id++) {
-    const data =  frameworkDataGenerator();
+    const data = frameworkDataGenerator();
     fixtureDataset.push({
       companyInformation: generateCompanyInformation(),
       t: data,

@@ -27,21 +27,22 @@
             />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
+                <h4 id="general" class="anchor title">Reporting Period</h4>
               </div>
               <div class="col-9 formFields">
                 <div class="form-field">
                   <UploadFormHeader
-                      name="Reporting Period"
-                      explanation="The day at which the data was collected. We recommend the same date as entered in the Data Date field."
+                    name="Reporting Period"
+                    explanation="The day at which the data was collected. We recommend the same date as entered in the Data Date field."
                   />
                   <div class="lg:col-4 md:col-6 col-12">
                     <Calendar
-                        data-test="reportingPeriod"
-                        inputId="icon"
-                        :showIcon="true"
-                        v-model="reportingPeriod"
-                        dateFormat="D, M dd, yy"
-                        :maxDate="new Date()"
+                      data-test="reportingPeriod"
+                      inputId="icon"
+                      :showIcon="true"
+                      v-model="reportingPeriod"
+                      dateFormat="D, M dd, yy"
+                      :maxDate="new Date()"
                     />
                   </div>
                   <FormKit
@@ -1167,6 +1168,7 @@ import { AxiosError } from "axios";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { InHouseProductionOrContractProcessing } from "@clients/backend";
 import { useRoute } from "vue-router";
+import { getHyphenatedDate } from "@/utils/DateFormatUtils";
 
 export default defineComponent({
   setup() {
@@ -1180,46 +1182,49 @@ export default defineComponent({
     tooltip: Tooltip,
   },
 
-  data: () => ({
-    isYourCompanyManufacturingCompany: "No",
-    listOfProductionSites: [
-      {
-        id: 0,
-        listOfGoodsOrServices: [] as string[],
-        listOfGoodsOrServicesString: "",
-      },
-    ],
-    idCounter: 0,
-    allCountry: getAllCountryNamesWithCodes(),
-    waitingForData: false,
-    reportingPeriod: undefined as Date | undefined,
-    convertedReportingPeriod: "",
-    dataDate: undefined as Date | undefined,
-    convertedDataDate: "",
-    lkSGDataModel: {} as object,
-    route: useRoute(),
-    message: "",
-    uploadSucceded: false,
-    postLkSGDataProcessed: false,
-    messageCounter: 0,
-    lksgKpisInfoMappings,
-    lksgKpisNameMappings,
-    lksgSubAreasNameMappings,
-    elementPosition: 0,
-    scrollListener: (): null => null,
-    isInHouseProductionOrContractProcessingMap: Object.fromEntries(
-      new Map<string, string>([
-        [
-          InHouseProductionOrContractProcessing.InHouseProduction,
-          humanizeString(InHouseProductionOrContractProcessing.InHouseProduction),
-        ],
-        [
-          InHouseProductionOrContractProcessing.ContractProcessing,
-          humanizeString(InHouseProductionOrContractProcessing.ContractProcessing),
-        ],
-      ])
-    ),
-  }),
+  data() {
+    return {
+      isYourCompanyManufacturingCompany: "No",
+      listOfProductionSites: [
+        {
+          id: 0,
+          listOfGoodsOrServices: [] as string[],
+          listOfGoodsOrServicesString: "",
+        },
+      ],
+      idCounter: 0,
+      allCountry: getAllCountryNamesWithCodes(),
+      waitingForData: false,
+      reportingPeriod: undefined as Date | undefined,
+      convertedReportingPeriod: "",
+      dataDate: undefined as Date | undefined,
+      convertedDataDate: "",
+      lkSGDataModel: {} as object,
+      route: useRoute(),
+      message: "",
+      uploadSucceded: false,
+      postLkSGDataProcessed: false,
+      messageCounter: 0,
+      lksgKpisInfoMappings,
+      lksgKpisNameMappings,
+      lksgSubAreasNameMappings,
+      elementPosition: 0,
+      scrollListener: (): null => null,
+      isInHouseProductionOrContractProcessingMap: Object.fromEntries(
+        new Map<string, string>([
+          [
+            InHouseProductionOrContractProcessing.InHouseProduction,
+            humanizeString(InHouseProductionOrContractProcessing.InHouseProduction),
+          ],
+          [
+            InHouseProductionOrContractProcessing.ContractProcessing,
+            humanizeString(InHouseProductionOrContractProcessing.ContractProcessing),
+          ],
+        ])
+      ),
+      getHyphenatedDate,
+    };
+  },
   props: {
     companyID: {
       type: String,
@@ -1228,14 +1233,14 @@ export default defineComponent({
   watch: {
     dataDate: function (newValue: Date) {
       if (newValue) {
-        this.convertedDataDate = newValue.toISOString().substring(0, 10);
+        this.convertedDataDate = getHyphenatedDate(newValue);
       } else {
         this.convertedDataDate = "";
       }
     },
     reportingPeriod: function (newValue: Date) {
       if (newValue) {
-        this.convertedReportingPeriod = newValue.toISOString().substring(0, 10);
+        this.convertedReportingPeriod = this.getHyphenatedDate(newValue);
       } else {
         this.convertedReportingPeriod = "";
       }
