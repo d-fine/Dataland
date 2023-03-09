@@ -76,6 +76,7 @@ import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import debounce from "@/utils/Debounce";
+import { DatasetStatusBadgeElements } from "@/utils/QABadgeElements";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
@@ -106,6 +107,7 @@ export default defineComponent({
         false
       ),
       loading: false,
+      DatasetStatusBadgeElements,
     };
   },
   setup() {
