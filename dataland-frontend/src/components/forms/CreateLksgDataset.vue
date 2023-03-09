@@ -30,7 +30,7 @@
               name="reportingPeriod"
               label="Reporting Period"
               placeholder="Reporting Period"
-              v-model="yearOfDataDate"
+              :v-model="updatingData ? lkSGDataModel.reportingPeriod : yearOfDataDate"
               disabled="true"
             />
             <FormKit type="group" name="data" label="data">
@@ -1081,7 +1081,11 @@
               <div class="col-3"></div>
 
               <div class="col-9">
-                <PrimeButton data-test="submitButton" type="submit" label="ADD DATA" />
+                <PrimeButton
+                  data-test="submitButton"
+                  type="submit"
+                  :label="this.updatingData ? 'UPDATE DATA' : 'ADD DATA'"
+                />
               </div>
             </div>
           </FormKit>
@@ -1196,6 +1200,7 @@ export default defineComponent({
         ],
       ])
     ),
+    updatingData: false,
   }),
   props: {
     companyID: {
@@ -1232,6 +1237,7 @@ export default defineComponent({
 
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+      this.updatingData = true;
       void this.loadLKSGData(dataId);
     }
   },
@@ -1271,7 +1277,7 @@ export default defineComponent({
       if (dateFromDataset) {
         this.dataDate = new Date(dateFromDataset);
       }
-      this.lkSGDataModel.data = lksgDataset.data;
+      this.lkSGDataModel = lksgDataset;
       this.waitingForData = false;
     },
     /**

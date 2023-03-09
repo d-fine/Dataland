@@ -153,8 +153,20 @@ export default defineComponent({
      * @param event event
      */
     editDataset(event: Event) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access
-      (this.$refs.reportingPeriodsOverlayPanel as any)?.toggle(event);
+      if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access
+        (this.$refs.reportingPeriodsOverlayPanel as any)?.toggle(event);
+      } else if (this.mapOfReportingPeriodToActiveDataset.size == 1) {
+        void this.$router.push(
+          `/companies/${assertDefined(this.companyID)}/frameworks/${assertDefined(
+            this.dataType
+          )}/upload?templateDataId=${
+            (this.mapOfReportingPeriodToActiveDataset.entries().next().value as [string, DataMetaInformation])[1].dataId
+          }`
+        );
+      } else {
+        return;
+      }
     },
     /**
      * Navigates to the framework upload page for the current company (a framework is not pre-selected)
@@ -246,7 +258,6 @@ export default defineComponent({
         );
 
         // TODO modularize following code block
-        console.log("HI");
         this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
         const listOfDistinctAvailableReportingPeriodsForFramework: string[] = [];
         listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.forEach((dataMetaInfo: DataMetaInformation) => {
