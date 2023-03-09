@@ -29,6 +29,41 @@ jobs:
           inputs: ${{ toJSON(inputs) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
+  frontend-component-tests:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Frontend component testing
+        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace
+        if: always()
+      - name: Upload FE lcov Exec Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: lcovResults
+          path: ./dataland-frontend/coverage/lcov.info
+      - name: Upload FE Cypress Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-component-tests
+          path: ./cypress
   gradle-based-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -62,18 +97,12 @@ jobs:
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
           INVITATION_REQUEST_CC: "dev.null@dataland.com"
-      - name: Execute Frontend Component Tests
-        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_testcomponent :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
+      - name: Frontend linting
+        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
         if: always()
       - name: Keycloak theme linting
         run: ./gradlew :dataland-keycloak:dataland_theme:login:npm_run_lintci --no-daemon --stacktrace
         if: always()
-      - name: Upload FE lcov Exec Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: lcovResults
-          path: ./dataland-frontend/coverage/lcov.info
       - name: Execute Frontend Scripts to check if they run successfully
         if: always()
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
@@ -211,6 +240,7 @@ jobs:
     needs:
       - e2e-tests
       - gradle-based-tests
+      - frontend-component-tests
     steps:
       - uses: actions/checkout@v3
         with:
