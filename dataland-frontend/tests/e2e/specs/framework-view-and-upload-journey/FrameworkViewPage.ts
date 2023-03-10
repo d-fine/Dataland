@@ -41,10 +41,15 @@ describe("The shared header of the framework pages should act as expected", { sc
         humanizeString(DataTypeEnum.Lksg),
       ]);
       const expectedReportingPeriodsForEuTaxoFinancialsForBeta = new Set<string>(["2014"]);
+      let companyIdOfBeta: string;
 
       const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
       const reportingPeriodDropdownSelector = "div#chooseReportingPeriodDropdown";
       const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
+      const searchBarSelector = "input#framework_data_search_bar_standard";
+
+      const nonExistingDataId = "abcd123123123123123-non-existing";
+      const nonExistingReportingPeriod = "999999";
 
       function createAllInterceptsOnFrameworkViewPage() {
         cy.intercept("/api/companies/**-**-**").as("getCompanyInformation");
@@ -257,17 +262,16 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       function uploadCompanyBetaAndData(): void {
-        let companyId: string;
         getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
             .then((storedCompany) => {
-              companyId = storedCompany.companyId;
-              return uploadOneLksgDatasetViaApi(token, companyId, "2015", generateLksgData());
+              companyIdOfBeta = storedCompany.companyId;
+              return uploadOneLksgDatasetViaApi(token, companyIdOfBeta, "2015", generateLksgData());
             })
             .then(() => {
               return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
                 token,
-                companyId,
+                  companyIdOfBeta,
                 "2014",
                 generateEuTaxonomyDataForNonFinancials()
               );
@@ -316,21 +320,41 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
       });
 
-      it("Check that from a framework page you can search a company without this framework", () => {
-        cy.ensureLoggedIn();
-        createAllInterceptsOnFrameworkViewPage();
-        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}`);
-        waitForAllInterceptsOnFrameworkViewPage();
-        validateChosenFramework(DataTypeEnum.Sfdr);
-        searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(
-          nameOfCompanyBeta,
-          "input#framework_data_search_bar_standard"
-        );
-        waitForAllInterceptsOnFrameworkViewPage();
-        cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
+      it(
+        "Check that from the view-page, even in error mode, you can search a company, even if it" +
+          "dos not have a dataset for the framework chosen on the search page",
+        () => {
+          cy.ensureLoggedIn();
+          createAllInterceptsOnFrameworkViewPage();
+          cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}`);
 
-        // TODO check also for different starting scenarios, since this broke for Paul in some scenario
-      });
+          waitForAllInterceptsOnFrameworkViewPage();
+          validateChosenFramework(DataTypeEnum.Sfdr);
+
+          searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelector);
+
+          waitForAllInterceptsOnFrameworkViewPage();
+          cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
+          validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForBeta)
+
+          cy.visit(
+            `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`
+          );
+          searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, searchBarSelector);
+
+          waitForAllInterceptsOnFrameworkViewPage();
+          cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyAlpha);
+          validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha)
+
+          cy.visit(
+            `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
+          );
+          searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelector);
+
+          waitForAllInterceptsOnFrameworkViewPage();
+          cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
+        }
+      );
 
       it("Check that using back-button and dropdowns on the view-page work as expected", () => {
         cy.ensureLoggedIn();
@@ -412,8 +436,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       });
 
       it("Check that invalid data IDs or reporting periods in url don't break any user flow on the view-page", () => {
-        const nonExistingDataId = "abcd123123123123123-non-existing";
-        const nonExistingReportingPeriod = "999999";
         cy.ensureLoggedIn();
         createAllInterceptsOnFrameworkViewPage();
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
