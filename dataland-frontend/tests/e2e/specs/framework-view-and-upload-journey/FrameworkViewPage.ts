@@ -40,11 +40,15 @@ describe("The shared header of the framework pages should act as expected", { sc
         humanizeString(DataTypeEnum.EutaxonomyNonFinancials),
         humanizeString(DataTypeEnum.Lksg),
       ]);
-      const expectedReportingPeriodsForEuTaxoFinancialsForBeta = new Set<string>(["2014"]);
+      let companyIdOfBeta: string;
 
       const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
       const reportingPeriodDropdownSelector = "div#chooseReportingPeriodDropdown";
       const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
+      const searchBarSelector = "input#framework_data_search_bar_standard";
+
+      const nonExistingDataId = "abcd123123123123123-non-existing";
+      const nonExistingReportingPeriod = "999999";
 
       function createAllInterceptsOnFrameworkViewPage() {
         cy.intercept("/api/companies/**-**-**").as("getCompanyInformation");
@@ -98,10 +102,9 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Validates if the dropdown label and the items in the dropdown equal the expected values.
+       * Validates if the dropdown label and the items in the dropdown equal the expected values. TODO
        *
        * @param expectedChosenFramework The expected label of the dropdown
-       * @param expectedDropdownOptions
        */
       function validateChosenFramework(expectedChosenFramework: string): void {
         cy.url().should("contain", `/frameworks/${expectedChosenFramework}`);
@@ -136,43 +139,74 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(dropdownSelector).click();
       }
 
+      /**
+       * Validates that a div with the text "Taxonomy-eligible economic activity" is rendered together with a
+       * div-sibling that contains the text which is passed to this method.
+       *
+       * @param expectedEligibleActiviyValue The text/value which is expected
+       */
       function validateEligibleActivityValueForFinancialsDataset(expectedEligibleActiviyValue: string) {
         cy.get(`div:contains("Taxonomy-eligible economic activity")`)
           .siblings(`div:contains(${expectedEligibleActiviyValue})`)
           .should("exist");
       }
 
+      /**
+       * Validates that for each expected reporting period for a multi-view-framework a column is present in the
+       * data-panel.
+       *
+       * @param expectedReportingPeriods The set of expected reporting periods to be displayed
+       */
       function validateOneColumnPerExpectedReportingPeriod(expectedReportingPeriods: Set<string>) {
         expectedReportingPeriods.forEach((singleReportingPeriod) => {
           cy.get(`span.p-column-title:contains(${singleReportingPeriod})`).should("have.length", 1);
         });
       }
 
+      /**
+       * Checks if none of the currently three possible error-blocks on the view-page are rendered.
+       *
+       */
       function validateNoErrorMessagesAreShown() {
         getElementAndAssertExistence("noDataForThisFrameworkPresentErrorIndicator", "not.exist");
         getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "not.exist");
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "not.exist");
       }
 
-      function getElementAndAssertExistence(dataTestSelector: string, shouldTag: string): void {
-        cy.get(`[data-test=${dataTestSelector}]`).should(shouldTag);
+      /**
+       * Gets an HTML element by looking for a specific value for the "data-test" HTML attribute and runs a
+       * "should"-operation on that HTML element
+       *
+       * @param dataTestValue The value which the HTML element should have for the attribute "data-test"
+       * @param shouldTag The value of the cypress "should" operation, e.g. "not.exist"
+       */
+      function getElementAndAssertExistence(dataTestValue: string, shouldTag: string): void {
+        cy.get(`[data-test=${dataTestValue}]`).should(shouldTag);
       }
 
       /**
-       * Opens the dropdown and selects a specific framework.
+       * Opens the framework dropdown and selects the framework passed as input if it is found
        *
        * @param frameworkToSelect The framework/item that shall be selected
        */
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(frameworkDropdownSelector).click();
-        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(frameworkToSelect)})`).click({ force: true });
+        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(frameworkToSelect)}`).click({ force: true });
       }
 
+      /**
+       * Opens the reporting periods dropdown and selects the reporting period passed as input if it is found
+       *
+       * @param reportingPeriodToSelect The reporting period/the item that shall be selected
+       */
       function selectReportingPeriodInDropdown(reportingPeriodToSelect: string): void {
         cy.get(reportingPeriodDropdownSelector).click();
-        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(reportingPeriodToSelect)})`).click({ force: true });
+        cy.get(`${dropdownItemsSelector}:contains(${reportingPeriodToSelect})`).click({ force: true });
       }
 
+      /**
+       * Clicks the back button on the page.
+       */
       function clickBackButton(): void {
         cy.get('[data-test="backButton"]').click();
       }
@@ -227,7 +261,9 @@ describe("The shared header of the framework pages should act as expected", { sc
                 companyIdOfAlpha,
                 "2019",
                 getPreparedFixture("eligible-activity-Point-29", euTaxoFinancialPreparedFixtures).t
-              );
+              ).then((dataMetaInformation) => {
+                dataIdOfOutdatedFinancial2019 = dataMetaInformation.dataId;
+              });
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
@@ -236,7 +272,9 @@ describe("The shared header of the framework pages should act as expected", { sc
                   companyIdOfAlpha,
                   "2019",
                   getPreparedFixture("eligible-activity-Point-292", euTaxoFinancialPreparedFixtures).t
-                );
+                ).then((dataMetaInformation) => {
+                  dataIdOfActiveFinancial2019 = dataMetaInformation.dataId;
+                });
               });
             })
             .then(() => {
@@ -261,17 +299,16 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       function uploadCompanyBetaAndData(): void {
-        let companyId: string;
         getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
             .then((storedCompany) => {
-              companyId = storedCompany.companyId;
-              return uploadOneLksgDatasetViaApi(token, companyId, "2015", generateLksgData());
+              companyIdOfBeta = storedCompany.companyId;
+              return uploadOneLksgDatasetViaApi(token, companyIdOfBeta, "2015", generateLksgData());
             })
             .then(() => {
               return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
                 token,
-                companyId,
+                companyIdOfBeta,
                 "2014",
                 generateEuTaxonomyDataForNonFinancials()
               );
@@ -320,21 +357,41 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
       });
 
-      it("Check that from a framework page you can search a company without this framework", () => {
-        cy.ensureLoggedIn();
-        createAllInterceptsOnFrameworkViewPage();
-        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}`);
-        waitForAllInterceptsOnFrameworkViewPage();
-        validateChosenFramework(DataTypeEnum.Sfdr);
-        searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(
-          nameOfCompanyBeta,
-          "input#framework_data_search_bar_standard"
-        );
-        waitForAllInterceptsOnFrameworkViewPage();
-        cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
+      it(
+        "Check that from the view-page, even in error mode, you can search a company, even if it" +
+          "dos not have a dataset for the framework chosen on the search page",
+        () => {
+          cy.ensureLoggedIn();
+          createAllInterceptsOnFrameworkViewPage();
+          cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}`);
 
-        // TODO check also for different starting scenarios, since this broke for Paul in some scenario
-      });
+          waitForAllInterceptsOnFrameworkViewPage();
+          validateChosenFramework(DataTypeEnum.Sfdr);
+
+          searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelector);
+
+          waitForAllInterceptsOnFrameworkViewPage();
+          cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
+          validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForBeta);
+
+          cy.visit(
+            `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`
+          );
+          searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, searchBarSelector);
+
+          waitForAllInterceptsOnFrameworkViewPage();
+          cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyAlpha);
+          validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
+
+          cy.visit(
+            `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
+          );
+          searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelector);
+
+          waitForAllInterceptsOnFrameworkViewPage();
+          cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
+        }
+      );
 
       it("Check that using back-button and dropdowns on the view-page work as expected", () => {
         cy.ensureLoggedIn();
@@ -416,8 +473,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       });
 
       it("Check that invalid data IDs or reporting periods in url don't break any user flow on the view-page", () => {
-        const nonExistingDataId = "abcd123123123123123-non-existing";
-        const nonExistingReportingPeriod = "999999";
         cy.ensureLoggedIn();
         createAllInterceptsOnFrameworkViewPage();
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
@@ -481,28 +536,59 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       let dataIdOfOutdatedLksg2023: string;
       let dataIdOfActiveLksg2023: string;
-      it("Check if the version change bar works as expected", () => {
+      let dataIdOfOutdatedFinancial2019: string;
+      let dataIdOfActiveFinancial2019: string;
+      it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
+
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`);
-        validateLksgTable(["2023"], "VAT Identification Number", ["2023-1"]);
+        validateLksgTable(["2023"], ["2023-1"]);
         validateOutdatedBarAndGetButton().click();
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
-        validateLksgTable(["2023", "2022"], "VAT Identification Number", ["2023-2", "2022"]);
+        validateLksgTable(["2023", "2022"], ["2023-2", "2022"]);
         cy.contains("This dataset is outdated").should("not.exist");
         clickBackButton();
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`
         );
-        validateLksgTable(["2023"], "VAT Identification Number", ["2023-1"]);
+        validateLksgTable(["2023"], ["2023-1"]);
+
+        cy.visit(
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfOutdatedFinancial2019}`
+        );
+        validateEUTaxonomyFinancialsTable("29");
+        validateOutdatedBarAndGetButton().click();
+        cy.url().should(
+          "eq",
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
+            DataTypeEnum.EutaxonomyFinancials
+          }/reportingPeriods/2019`
+        );
+        validateEUTaxonomyFinancialsTable("29.2");
+        cy.contains("This dataset is outdated").should("not.exist");
+        clickBackButton();
+        cy.url().should(
+          "eq",
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
+            DataTypeEnum.EutaxonomyFinancials
+          }/${dataIdOfOutdatedFinancial2019}`
+        );
+        validateEUTaxonomyFinancialsTable("29");
       });
 
       function validateOutdatedBarAndGetButton() {
         return cy.contains("This dataset is outdated").parent().find("button > span:contains('View Active')");
       }
 
-      function validateLksgTable(columnHeaders: string[], rowTitle: string, rowContent: string[]) {
-        expect(columnHeaders.length).to.equal(rowContent.length);
+      /**
+       * Validates if all the column headers and the values in one specific row on the LkSG panel equal the passed values
+       *
+       * @param columnHeaders The expected values in the headers of the LkSG dataset columns
+       * @param vatIdNumberRowContent The expected values in the row of the VAT identification number field
+       */
+      function validateLksgTable(columnHeaders: string[], vatIdNumberRowContent: string[]) {
+        expect(columnHeaders.length).to.equal(vatIdNumberRowContent.length);
         cy.get(".p-column-title").each((element, index, elements) => {
           expect(elements).to.have.length(columnHeaders.length + 1);
           if (index == 0) {
@@ -511,18 +597,23 @@ describe("The shared header of the framework pages should act as expected", { sc
             expect(element.text()).to.equal(columnHeaders[index - 1]);
           }
         });
-        cy.get(`tr:contains("${rowTitle}")`)
+        cy.get(`tr:contains("VAT Identification Number")`)
           .find("td > span")
           .each((element, index, elements) => {
-            expect(elements).to.have.length(rowContent.length + 1);
+            expect(elements).to.have.length(vatIdNumberRowContent.length + 1);
             if (index == 0) {
-              expect(element.text()).to.equal(rowTitle);
+              expect(element.text()).to.equal("VAT Identification Number");
             } else {
-              expect(element.text()).to.equal(rowContent[index - 1]);
+              expect(element.text()).to.equal(vatIdNumberRowContent[index - 1]);
             }
           });
+      }
+
+      function validateEUTaxonomyFinancialsTable(taxonomyEligibleEconomicActivityValueInPercent: string) {
+        cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
+          .find("[data-test='value']")
+          .should("have.text", taxonomyEligibleEconomicActivityValueInPercent);
       }
     }
   );
 });
-// TODO test search from specific scenarios
