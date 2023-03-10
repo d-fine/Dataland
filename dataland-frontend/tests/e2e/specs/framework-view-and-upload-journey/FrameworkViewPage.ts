@@ -162,18 +162,23 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Opens the dropdown and selects a specific framework.
+       * Opens the framework dropdown and selects the framework passed as input if it is found
        *
        * @param frameworkToSelect The framework/item that shall be selected
        */
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(frameworkDropdownSelector).click();
-        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(frameworkToSelect)})`).click({ force: true });
+        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(frameworkToSelect)}`).click({ force: true });
       }
 
+      /**
+       * Opens the reporting periods dropdown and selects the reporting period passed as input if it is found
+       *
+       * @param reportingPeriodToSelect The reporting period/the item that shall be selected
+       */
       function selectReportingPeriodInDropdown(reportingPeriodToSelect: string): void {
         cy.get(reportingPeriodDropdownSelector).click();
-        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(reportingPeriodToSelect)})`).click({ force: true });
+        cy.get(`${dropdownItemsSelector}:contains(${reportingPeriodToSelect})`).click({ force: true });
       }
 
       /**
