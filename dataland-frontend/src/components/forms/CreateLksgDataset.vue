@@ -25,38 +25,14 @@
               :model-value="companyID"
               disabled="true"
             />
-            <div v-if="!updatingData" class="uploadFormSection grid">
-              <div class="col-3 p-3 topicLabel">
-                <h4 id="general" class="anchor title">Reporting Period</h4>
-              </div>
-              <div class="col-9 formFields">
-                <div class="form-field">
-                  <UploadFormHeader
-                    name="Reporting Period"
-                    explanation="The day at which the data was collected. We recommend the same date as entered in the Data Date field."
-                  />
-                  <div class="lg:col-4 md:col-6 col-12">
-                    <Calendar
-                      data-test="reportingPeriod"
-                      inputId="icon"
-                      :showIcon="true"
-                      v-model="reportingPeriod"
-                      dateFormat="D, M dd, yy"
-                      :maxDate="new Date()"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <FormKit
-              validation="required"
-              validation-label="Reporting Period"
+              type="hidden"
               name="reportingPeriod"
-              v-model="convertedReportingPeriod"
-              :outer-class="{ 'hidden-input': true }"
+              label="Reporting Period"
+              placeholder="Reporting Period"
+              v-model="yearOfDataDate"
+              disabled="true"
             />
-
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
@@ -1201,8 +1177,6 @@ export default defineComponent({
       idCounter: 0,
       allCountry: getAllCountryNamesWithCodes(),
       waitingForData: false,
-      reportingPeriod: undefined as Date | undefined,
-      convertedReportingPeriod: "",
       dataDate: undefined as Date | undefined,
       convertedDataDate: "",
       lkSGDataModel: {} as object,
@@ -1240,16 +1214,11 @@ export default defineComponent({
   watch: {
     dataDate: function (newValue: Date) {
       if (newValue) {
+        this.yearOfDataDate = newValue.getFullYear().toString();
         this.convertedDataDate = getHyphenatedDate(newValue);
       } else {
+        this.yearOfDataDate = "";
         this.convertedDataDate = "";
-      }
-    },
-    reportingPeriod: function (newValue: Date) {
-      if (newValue) {
-        this.convertedReportingPeriod = this.getHyphenatedDate(newValue);
-      } else {
-        this.convertedReportingPeriod = "";
       }
     },
   },
@@ -1306,10 +1275,6 @@ export default defineComponent({
           });
         }
       }
-      const reportingPeriodFromDataset = lksgDataset.reportingPeriod;
-      if (reportingPeriodFromDataset) {
-        this.reportingPeriod = new Date(reportingPeriodFromDataset);
-      }
       const dataDateFromDataset = lksgDataset.data?.social?.general?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
@@ -1337,7 +1302,6 @@ export default defineComponent({
           },
         ];
         this.idCounter = 0;
-        this.reportingPeriod = undefined;
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;

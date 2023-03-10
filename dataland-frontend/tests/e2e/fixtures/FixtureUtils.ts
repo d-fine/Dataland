@@ -25,7 +25,8 @@ export function generateFixtureDataset<T>(frameworkDataGenerator: () => T, numEl
     fixtureDataset.push({
       companyInformation: generateCompanyInformation(),
       t: data,
-      reportingPeriod: (data as LksgData)?.social?.general?.dataDate || getRandomReportingPeriod(),
+      reportingPeriod: (data as LksgData)?.social?.general?.dataDate?.substring(0, 4) ||
+          getRandomReportingPeriod(),
     });
   }
   return fixtureDataset;
