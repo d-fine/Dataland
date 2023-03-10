@@ -145,20 +145,38 @@ describe("The shared header of the framework pages should act as expected", { sc
           .should("exist");
       }
 
+      /**
+       * Validates that for each expected reporting period for a multi-view-framework a column is present in the
+       * data-panel.
+       *
+       * @param expectedReportingPeriods The set of expected reporting periods to be displayed
+       *
+       */
       function validateOneColumnPerExpectedReportingPeriod(expectedReportingPeriods: Set<string>) {
         expectedReportingPeriods.forEach((singleReportingPeriod) => {
           cy.get(`span.p-column-title:contains(${singleReportingPeriod})`).should("have.length", 1);
         });
       }
 
+      /**
+       * Checks if none of the currently three possible error-blocks on the view-page are rendered.
+       *
+       */
       function validateNoErrorMessagesAreShown() {
         getElementAndAssertExistence("noDataForThisFrameworkPresentErrorIndicator", "not.exist");
         getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "not.exist");
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "not.exist");
       }
 
-      function getElementAndAssertExistence(dataTestSelector: string, shouldTag: string): void {
-        cy.get(`[data-test=${dataTestSelector}]`).should(shouldTag);
+      /**
+       * Gets an HTML element by looking for a specific value for the "data-test" HTML attribute and runs a
+       * "should"-operation on that HTML element
+       *
+       * @param dataTestValue The value which the HTML element should have for the attribute "data-test"
+       * @param shouldTag The value of the cypress "should" operation, e.g. "not.exist"
+       */
+      function getElementAndAssertExistence(dataTestValue: string, shouldTag: string): void {
+        cy.get(`[data-test=${dataTestValue}]`).should(shouldTag);
       }
 
       /**
