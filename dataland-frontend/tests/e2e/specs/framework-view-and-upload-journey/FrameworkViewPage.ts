@@ -104,7 +104,8 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param expectedDropdownOptions
        */
       function validateChosenFramework(expectedChosenFramework: string): void {
-        validateViewPage(expectedChosenFramework);
+        cy.url().should("contain", `/frameworks/${expectedChosenFramework}`);
+        cy.get('[data-test="frameworkDataTableTitle"]').should("contain", humanizeString(expectedChosenFramework));
         cy.get("h2:contains('Checking if')").should("not.exist");
         cy.get(frameworkDropdownSelector)
           .find(".p-dropdown-label")
@@ -125,13 +126,13 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(dropdownSelector).click();
         let optionsCounter = 0;
         cy.get(dropdownItemsSelector)
-            .each((item) => {
-              expect(expectedDropdownOptions.has(item.text())).to.equal(true);
-              optionsCounter++;
-            })
-            .then(() => {
-              expect(expectedDropdownOptions.size).to.equal(optionsCounter);
-            });
+          .each((item) => {
+            expect(expectedDropdownOptions.has(item.text())).to.equal(true);
+            optionsCounter++;
+          })
+          .then(() => {
+            expect(expectedDropdownOptions.size).to.equal(optionsCounter);
+          });
         cy.get(dropdownSelector).click();
       }
 
@@ -170,16 +171,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       function selectReportingPeriodInDropdown(reportingPeriodToSelect: string): void {
         cy.get(reportingPeriodDropdownSelector).click();
         cy.get(`${dropdownItemsSelector}:contains(${humanizeString(reportingPeriodToSelect)})`).click({ force: true });
-      }
-
-      /**
-       * Validates if the framework view page is currently displayed.
-       *
-       * @param framework the framework type as DataTypeEnum
-       */
-      function validateViewPage(framework: string): void {
-        cy.url().should("contain", `/frameworks/${framework}`);
-        cy.get('[data-test="frameworkDataTableTitle"]').should("contain", humanizeString(framework));
       }
 
       function clickBackButton(): void {
@@ -307,7 +298,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         createAllInterceptsOnFrameworkViewPage();
         searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha);
         waitForAllInterceptsOnFrameworkViewPage();
-        validateViewPage(DataTypeEnum.EutaxonomyNonFinancials);
         validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
 
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
@@ -315,25 +305,23 @@ describe("The shared header of the framework pages should act as expected", { sc
           nameOfCompanyAlpha
         );
         waitForAllInterceptsOnFrameworkViewPage();
-        validateViewPage(DataTypeEnum.EutaxonomyNonFinancials);
         validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
         waitForAllInterceptsOnFrameworkViewPage();
-        validateViewPage(DataTypeEnum.Lksg);
         validateChosenFramework(DataTypeEnum.Lksg);
 
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
         waitForAllInterceptsOnFrameworkViewPage();
-        validateViewPage(DataTypeEnum.EutaxonomyFinancials);
+        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
       });
 
       it("Check that from a framework page you can search a company without this framework", () => {
         cy.ensureLoggedIn();
         createAllInterceptsOnFrameworkViewPage();
-        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Sfdr, nameOfCompanyAlpha);
+        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}`);
         waitForAllInterceptsOnFrameworkViewPage();
-        validateViewPage(DataTypeEnum.Sfdr);
+        validateChosenFramework(DataTypeEnum.Sfdr);
         searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(
           nameOfCompanyBeta,
           "input#framework_data_search_bar_standard"
@@ -347,10 +335,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       it("Check that reporting period dropdown works as expected", () => {
         cy.ensureLoggedIn();
         createAllInterceptsOnFrameworkViewPage();
-        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
-          DataTypeEnum.EutaxonomyFinancials,
-          nameOfCompanyAlpha
-        );
+        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
         validateNoErrorMessagesAreShown();
         waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
@@ -431,10 +416,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         const nonExistingReportingPeriod = "999999";
         cy.ensureLoggedIn();
         createAllInterceptsOnFrameworkViewPage();
-        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
-          DataTypeEnum.EutaxonomyFinancials,
-          nameOfCompanyAlpha
-        );
+        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
 
         validateNoErrorMessagesAreShown();
         waitForAllInterceptsOnFrameworkViewPage();
