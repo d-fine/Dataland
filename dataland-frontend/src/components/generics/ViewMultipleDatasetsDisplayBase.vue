@@ -10,8 +10,7 @@
         <DatasetStatusIndicator
           :displayed-dataset="singleDataMetaInfoToDisplay"
           :link-to-active-page="linkToActiveView"
-        >
-        </DatasetStatusIndicator>
+        />
 
         <div class="grid">
           <div class="col-12 text-left">
