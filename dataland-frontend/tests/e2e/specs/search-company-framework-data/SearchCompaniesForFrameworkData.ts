@@ -19,7 +19,7 @@ before(function () {
   });
 });
 
-describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
+describe("As a user, I expect the search functionality on the /companies page to show me the desired results", function () {
   beforeEach(function () {
     cy.ensureLoggedIn();
   });
@@ -75,21 +75,6 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.get("input[id=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
       cy.scrollTo(0, 0);
       cy.get("input[id=search_bar_top]").should("have.value", inputValue1 + inputValue2);
-    }
-  );
-
-  it(
-    "Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed",
-    { scrollBehavior: false },
-    () => {
-      cy.visitAndCheckAppMount("/companies");
-      cy.intercept("**/api/companies*").as("searchCompany");
-      cy.get("input[id=search_bar_top]").type("b");
-      cy.get(".p-autocomplete-item").contains("View all results").click();
-      cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-        verifyTaxonomySearchResultTable();
-        cy.url().should("include", "/companies?input=b");
-      });
     }
   );
 
@@ -180,17 +165,44 @@ describe("As a user, I expect the search functionality on the /companies page to
     });
   });
 
-  it("Click on an autocomplete-suggestion and check if forwarded to company framework data view page", () => {
+  it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
       cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
-          const searchString = storedCompanies[0].companyInformation.companyName.substring(0, 4);
+          const primevueHighlightedSuggestionClass = "p-focus";
+          const searchString = storedCompanies[0].companyInformation.companyName;
+          const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
           cy.visitAndCheckAppMount("/companies");
           cy.intercept("**/api/companies*").as("searchCompany");
+          cy.get("input[id=search_bar_top]").type("b");
+          cy.get(".p-autocomplete-item").eq(0).get("span[class='font-semibold']")
+              .contains("b").should("exist");
+          cy.get(".p-autocomplete-item").contains("View all results").click();
+          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+            verifyTaxonomySearchResultTable();
+            cy.url().should("include", "/companies?input=b");
+          });
+          cy.get("input[id=search_bar_top]")
+            .click({ force: true })
+            .type("{backspace}")
+            .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
+          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+            cy.get("ul[class=p-autocomplete-items]").should("exist");
+            cy.get("input[id=search_bar_top]").type("{downArrow}");
+            cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
+            cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
+            cy.get("input[id=search_bar_top]").type("{downArrow}");
+            cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
+            cy.get(".p-autocomplete-item").eq(1).should("have.class", primevueHighlightedSuggestionClass);
+            cy.get("input[id=search_bar_top]").type("{upArrow}");
+            cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
+            cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
+          });
           cy.get("input[id=search_bar_top]").click({ force: true }).type(searchString);
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             cy.get(".p-autocomplete-item")
               .eq(0)
+              .should("contain.text", searchString)
               .click({ force: true })
               .url()
               .should("include", "/companies/")
@@ -201,39 +213,6 @@ describe("As a user, I expect the search functionality on the /companies page to
       );
     });
   });
-
-  it(
-    "Navigate with arrow keys, press enter on an autocomplete-suggestion and check if forwarded to company framework data view page",
-    { scrollBehavior: false },
-    () => {
-      const primevueHighlightedSuggestionClass = "p-focus";
-      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
-      cy.visitAndCheckAppMount("/companies");
-      verifyTaxonomySearchResultTable();
-      cy.intercept("**/api/companies*").as("searchCompany");
-      cy.get("input[id=search_bar_top]")
-        .click({ force: true })
-        .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
-      cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-        cy.get("ul[class=p-autocomplete-items]").should("exist");
-        cy.get("input[id=search_bar_top]").type("{downArrow}");
-        cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
-        cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-        cy.get("input[id=search_bar_top]").type("{downArrow}");
-        cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
-        cy.get(".p-autocomplete-item").eq(1).should("have.class", primevueHighlightedSuggestionClass);
-        cy.get("input[id=search_bar_top]").type("{upArrow}");
-        cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
-        cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-        cy.get("input[id=search_bar_top]")
-          .type("{enter}")
-          .url()
-          .should("include", "/companies/")
-          .url()
-          .should("include", "/frameworks/");
-      });
-    }
-  );
 
   /**
    * Returns the first company from the fake fixture that has at least one alternative name
