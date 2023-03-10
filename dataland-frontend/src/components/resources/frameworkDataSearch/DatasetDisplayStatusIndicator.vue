@@ -17,7 +17,7 @@ import { defineComponent, PropType } from "vue";
 import { DataMetaInformation, QAStatus } from "@clients/backend";
 import PrimeButton from "primevue/button";
 export default defineComponent({
-  name: "DatasetStatusIndicator",
+  name: "DatasetDisplayStatusIndicator",
   components: { PrimeButton },
   props: {
     displayedDataset: {

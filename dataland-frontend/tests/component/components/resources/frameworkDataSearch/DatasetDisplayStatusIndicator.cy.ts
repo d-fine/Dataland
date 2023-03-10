@@ -1,4 +1,4 @@
-import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
+import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 import { DataMetaInformation } from "@clients/backend";
 import { DataTypeEnum, QAStatus } from "@clients/backend";
 describe("Component Tests for DatasetStatusIndicator", () => {
@@ -14,7 +14,7 @@ describe("Component Tests for DatasetStatusIndicator", () => {
   };
 
   it("Should not display anything if the dataset is active", () => {
-    cy.mountWithPlugins(DatasetStatusIndicator, {}).then((mounted) => {
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
       void mounted.wrapper.setProps({
         displayedDataset: acceptedAndActiveDataset,
       });
@@ -29,7 +29,7 @@ describe("Component Tests for DatasetStatusIndicator", () => {
     outdatedDataset.currentlyActive = false;
     outdatedDataset.qaStatus = QAStatus.Accepted;
 
-    cy.mountWithPlugins(DatasetStatusIndicator, {}).then((mounted) => {
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
       void mounted.wrapper.setProps({
         displayedDataset: outdatedDataset,
       });
@@ -43,7 +43,7 @@ describe("Component Tests for DatasetStatusIndicator", () => {
     datasetPendingReview.currentlyActive = false;
     datasetPendingReview.qaStatus = QAStatus.Pending;
 
-    cy.mountWithPlugins(DatasetStatusIndicator, {}).then((mounted) => {
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
       void mounted.wrapper.setProps({
         displayedDataset: datasetPendingReview,
       });
@@ -57,7 +57,7 @@ describe("Component Tests for DatasetStatusIndicator", () => {
     const outdatedDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
     outdatedDataset.currentlyActive = false;
     outdatedDataset.qaStatus = QAStatus.Accepted;
-    cy.mountWithPlugins(DatasetStatusIndicator, {}).then((mounted) => {
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
       void mounted.wrapper.setProps({
         displayedDataset: outdatedDataset,
         linkToActivePage: mockActiveDatasetLink,

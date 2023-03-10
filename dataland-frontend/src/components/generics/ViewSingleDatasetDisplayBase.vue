@@ -20,7 +20,7 @@
 
     <template v-slot:content>
       <div v-if="isDataIdToDisplayFound">
-        <DatasetStatusIndicator :link-to-target-page="linkToActiveView" :displayed-dataset="dataMetaInfoForDisplay" />
+        <DatasetDisplayStatusIndicator :link-to-target-page="linkToActiveView" :displayed-dataset="dataMetaInfoForDisplay" />
         <div class="grid">
           <div class="col-12 text-left">
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizedDataDescription }}</h2>
@@ -80,12 +80,12 @@ import { DataTypeEnum } from "@clients/backend";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
-import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
+import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
   components: {
-    DatasetStatusIndicator,
+    DatasetDisplayStatusIndicator,
     ViewFrameworkBase,
     Dropdown,
     EuTaxonomyPanelFinancials,

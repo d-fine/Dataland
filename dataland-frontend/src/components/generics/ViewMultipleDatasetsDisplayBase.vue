@@ -7,7 +7,7 @@
   >
     <template v-slot:content>
       <div v-if="isListOfDataIdsToDisplayFound">
-        <DatasetStatusIndicator
+        <DatasetDisplayStatusIndicator
           :displayed-dataset="singleDataMetaInfoToDisplay"
           :link-to-target-page="linkToActiveView"
         />
@@ -70,11 +70,11 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
 import Keycloak from "keycloak-js";
-import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
+import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: { DatasetStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
+  components: { DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
   props: {
     companyId: {
       type: String,
