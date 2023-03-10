@@ -178,24 +178,6 @@ export default defineComponent({
     },
 
     /**
-     * Method to handle the button that switches to the active data set for the currently selected reporting period
-     */
-    handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
-      if (this.singleDataMetaInfoToDisplay) {
-        const currentReportingPeriod = this.singleDataMetaInfoToDisplay.reportingPeriod;
-        if (this.companyId != null && this.dataType != null) {
-          this.$router
-            .push(`/companies/${this.companyId}/frameworks/${this.dataType}/reportingPeriods/${currentReportingPeriod}`)
-            .catch((err) =>
-              console.log(
-                "Setting route for reporting period " + currentReportingPeriod + " failed with error " + String(err)
-              )
-            );
-        }
-      }
-    },
-
-    /**
      * Method to handle an invalid data ID that was passed in URL
      */
     handleInvalidDataIdPassedInUrl() {
