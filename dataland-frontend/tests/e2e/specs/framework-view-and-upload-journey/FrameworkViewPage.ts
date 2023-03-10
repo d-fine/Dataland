@@ -102,10 +102,9 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Validates if the dropdown label and the items in the dropdown equal the expected values.
+       * Validates if the dropdown label and the items in the dropdown equal the expected values. TODO
        *
        * @param expectedChosenFramework The expected label of the dropdown
-       * @param expectedDropdownOptions
        */
       function validateChosenFramework(expectedChosenFramework: string): void {
         cy.url().should("contain", `/frameworks/${expectedChosenFramework}`);
@@ -177,6 +176,9 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(`${dropdownItemsSelector}:contains(${humanizeString(reportingPeriodToSelect)})`).click({ force: true });
       }
 
+      /**
+       * Clicks the back button on the page.
+       */
       function clickBackButton(): void {
         cy.get('[data-test="backButton"]').click();
       }
