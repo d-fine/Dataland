@@ -241,7 +241,7 @@ export default defineComponent({
      * @param inputMap The map that should be used for this operation
      * @returns an array containing the keys of the map alphabetically sorted
      */
-    getKeysFromMapAndReturnAsAlphabeticallySortedArray(inputMap: Map<string, Object>): Array<string> {
+    getKeysFromMapAndReturnAsAlphabeticallySortedArray(inputMap: Map<string, object>): Array<string> {
       return Array.from(inputMap.keys()).sort((reportingPeriodA, reportingPeriodB) => {
         if (reportingPeriodA > reportingPeriodB) return -1;
         else return 0;
