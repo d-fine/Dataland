@@ -109,14 +109,13 @@
               validationVisibility: 'live',
             }"
           >
-
             <UploadFormHeader :name="companyDataNames.lei" :explanation="companyDataExplanations.lei" />
             <FormKit
-                name="lei"
-                v-model="lei"
-                type="text"
-                :placeholder="companyDataNames.lei"
-                validation="identifierDoesNotExistValidator:Lei"
+              name="lei"
+              v-model="lei"
+              type="text"
+              :placeholder="companyDataNames.lei"
+              validation="identifierDoesNotExistValidator:Lei"
             />
 
             <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
