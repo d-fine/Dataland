@@ -139,6 +139,13 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(dropdownSelector).click();
       }
 
+      /**
+       * Validates that a div with the text "Taxonomy-eligible economic activity" is rendered together with a
+       * div-sibling that contains the text which is passed to this method.
+       *
+       * @param expectedEligibleActiviyValue The text/value which is expected
+       *
+       */
       function validateEligibleActivityValueForFinancialsDataset(expectedEligibleActiviyValue: string) {
         cy.get(`div:contains("Taxonomy-eligible economic activity")`)
           .siblings(`div:contains(${expectedEligibleActiviyValue})`)
