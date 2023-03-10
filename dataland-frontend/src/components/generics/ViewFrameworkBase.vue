@@ -264,6 +264,21 @@ export default defineComponent({
       return listOfDataMetaInfo.filter((dataMetaInfo) => dataMetaInfo.dataType === this.dataType);
     },
 
+    buildMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
+      listOfActiveDataMetaInfo: DataMetaInformation[]
+    ) {
+      this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
+      listOfActiveDataMetaInfo.forEach((dataMetaInfo: DataMetaInformation) => {
+        if (dataMetaInfo.dataType === this.dataType) {
+          if (dataMetaInfo.currentlyActive) {
+            this.mapOfReportingPeriodToActiveDataset.set(dataMetaInfo.reportingPeriod, dataMetaInfo);
+          } else {
+            throw TypeError("Received inactive dataset meta info from Dataland Backend");
+          }
+        }
+      });
+    },
+
     /**
      * Goes through all data meta info for the currently viewed company and does two things.
      * First it sets the distinct frameworks as options in the framework-dropdown.
@@ -279,20 +294,10 @@ export default defineComponent({
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
-
-        // TODO modularize following code block
-        this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
-        listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.forEach((dataMetaInfo: DataMetaInformation) => {
-          if (dataMetaInfo.dataType === this.dataType) {
-            if (dataMetaInfo.currentlyActive) {
-              this.mapOfReportingPeriodToActiveDataset.set(dataMetaInfo.reportingPeriod, dataMetaInfo); // TODO the fact that backend only sends one meta info per distinct reportingPeriod is assured implicitly by using reporting period as key here for the map.. is this ok??
-            } else {
-              throw TypeError("Received inactive dataset meta info from Dataland Backend"); // TODO do we even need a check like this, or is this handled as "assured"
-            }
-          }
-        });
+        this.buildMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
+          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
+        );
         this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);
-        // TODO ________________
       } catch (error) {
         this.isDataProcessedSuccesfully = false;
         console.error(error);

@@ -53,7 +53,8 @@
       </div>
       <div v-if="isDataIdInUrlInvalid" data-test="noDataForThisDataIdPresentErrorIndicator">
         <h2>
-          No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company.
+          No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company and
+          framework.
         </h2>
       </div>
       <div v-if="isReportingPeriodInUrlInvalid" data-test="noDataForThisReportingPeriodPresentErrorIndicator">
@@ -80,7 +81,6 @@ import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSe
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
-import { getKeysFromMapAndReturnAsAlphabeticallySortedArray } from "../../../tests/e2e/utils/GenericUtils";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
@@ -235,6 +235,19 @@ export default defineComponent({
     },
 
     /**
+     * Gets the keys from a map and returns them in an alphabeticall sorted array
+     *
+     * @param inputMap The map that should be used for this operation
+     * @returns an array containing the keys of the map alphabetically sorted
+     */
+    getKeysFromMapAndReturnAsAlphabeticallySortedArray(inputMap: Map<string, Object>): Array<string> {
+      return Array.from(inputMap.keys()).sort((reportingPeriodA, reportingPeriodB) => {
+        if (reportingPeriodA > reportingPeriodB) return -1;
+        else return 0;
+      });
+    },
+
+    /**
      * Method to handle the update of the currently active data meta information for the chosen framework
      *
      * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
@@ -245,7 +258,7 @@ export default defineComponent({
     ) {
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
-      this.reportingPeriodsInDropdown = getKeysFromMapAndReturnAsAlphabeticallySortedArray(
+      this.reportingPeriodsInDropdown = this.getKeysFromMapAndReturnAsAlphabeticallySortedArray(
         receivedMapOfReportingPeriodsToActiveDataMetaInfo
       );
       this.chooseDataMetaInfoForDisplayedDataset().catch((err) =>
@@ -282,7 +295,10 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
-        if (dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId) {
+        if (
+          dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId ||
+          dataMetaInfoForDataSetWithDataIdFromUrl.dataType != this.dataType
+        ) {
           this.handleInvalidDataIdPassedInUrl();
         } else {
           this.processDataMetaInfoForDisplay(dataMetaInfoForDataSetWithDataIdFromUrl);

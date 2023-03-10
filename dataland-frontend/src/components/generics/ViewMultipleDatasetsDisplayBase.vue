@@ -44,7 +44,8 @@
       </div>
       <div v-if="isDataIdInUrlInvalid" data-test="noDataForThisDataIdPresentErrorIndicator">
         <h2>
-          No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company.
+          No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company and
+          framework.
         </h2>
       </div>
       <div v-if="isReportingPeriodInUrlInvalid" data-test="noDataForThisReportingPeriodPresentErrorIndicator">
@@ -155,8 +156,6 @@ export default defineComponent({
     },
   },
 
-  // TODO this component is partly similar to ViewSingleDatasetDisplayBase => therefore we should align the order of methods to make it easy to have an overview while working in both files
-
   methods: {
     /**
      * Method to set flags that indicate found data
@@ -216,7 +215,10 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
-        if (dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId) {
+        if (
+          dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId ||
+          dataMetaInfoForDataSetWithDataIdFromUrl.dataType != this.dataType
+        ) {
           this.handleInvalidDataIdPassedInUrl();
         } else {
           this.setSingleDataMetaInfoToDisplay(dataMetaInfoForDataSetWithDataIdFromUrl);
