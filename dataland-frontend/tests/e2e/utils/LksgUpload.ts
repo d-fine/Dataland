@@ -107,17 +107,12 @@ export function uploadLksgDataViaForm(): void {
     "hazardousAndOtherWasteImport",
   ];
 
-  cy.get('[data-test="reportingPeriod"]').click();
-  cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
-  cy.get("div.p-datepicker").find('span:contains("13")').click();
   cy.get('[data-test="lksgDataDate"]').click();
   cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
   cy.get("div.p-datepicker").find('span:contains("13")').click();
-  cy.get('input[name="reportingPeriod"]').should((input) => {
-    expect(input.val()).to.include("-13");
-  });
-  cy.get('input[name="dataDate"]').should((input) => {
-    expect(input.val()).to.include("-13");
+  cy.get('input[name="dataDate"]').should(($input) => {
+    const val = $input.val();
+    expect(val).to.include("-13");
   });
   cy.get('div[data-test="lksgInScope"]').find('input[value="Yes"]').click().should("be.checked");
   cy.get("input[name=vatIdentificationNumber]").type("BE0999999999");

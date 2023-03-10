@@ -49,7 +49,8 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
  */
 function manipulateFixtureForTwoLksgDataSetsInSameYear(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "two-lksg-data-sets-in-same-year";
-  input.t.social!.general!.dataDate = input.reportingPeriod = "2022-01-01";
+  input.t.social!.general!.dataDate = "2022-01-01";
+  input.reportingPeriod = "2023";
   return input;
 }
 
@@ -61,7 +62,8 @@ function manipulateFixtureForTwoLksgDataSetsInSameYear(input: FixtureData<LksgDa
  */
 function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "six-lksg-data-sets-in-different-years";
-  input.t.social!.general!.dataDate = input.reportingPeriod = "2022-01-01";
+  input.t.social!.general!.dataDate = "2022-01-01";
+  input.reportingPeriod = "2022";
   return input;
 }
 
@@ -82,21 +84,24 @@ function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureDat
 function manipulateFixtureForVat20231(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "vat-2023-1";
   input.t.social!.general!.vatIdentificationNumber = "2023-1";
-  input.t.social!.general!.dataDate = input.reportingPeriod = "2023-04-18";
+  input.t.social!.general!.dataDate = "2023-04-18";
+  input.reportingPeriod = "2023";
   return input;
 }
 
 function manipulateFixtureForVat20232(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "vat-2023-2";
   input.t.social!.general!.vatIdentificationNumber = "2023-2";
-  input.t.social!.general!.dataDate = input.reportingPeriod = "2023-06-22";
+  input.t.social!.general!.dataDate = "2023-06-22";
+  input.reportingPeriod = "2023";
   return input;
 }
 
 function manipulateFixtureForVat2022(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "vat-2022";
   input.t.social!.general!.vatIdentificationNumber = "2022";
-  input.t.social!.general!.dataDate = input.reportingPeriod = "2022-07-30";
+  input.t.social!.general!.dataDate = "2022-07-30";
+  input.reportingPeriod = "2022";
   return input;
 }
 
@@ -256,6 +261,6 @@ function manipulateFixtureToContainEveryField(input: FixtureData<LksgData>): Fix
       },
     },
   };
-  input.reportingPeriod = assertDefined(input.t.social?.general?.dataDate);
+  input.reportingPeriod = assertDefined(input.t.social?.general?.dataDate).substring(0, 4);
   return input;
 }
