@@ -43,20 +43,12 @@ class Lksg {
         }
 
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val lksgData = apiAccessor.testDataProviderForLksgData.getTData(1)[0]
-        uploadLambda(companyId, lksgData, "2022")
-        uploadLambda(companyId, lksgData, "2023")
+        val lksgData = apiAccessor.testDataProviderForLksgData.getTData(2)
+        uploadLambda(companyId, lksgData[0], "2022")
+        uploadLambda(companyId, lksgData[0], "2023")
         Thread.sleep(1000)
-//        Manipulate a data set to be able to identify the correct one
-        val finalLksgData2023 = lksgData.copy(
-            social = lksgData.social!!.copy(
-                general = lksgData.social!!.general!!.copy(
-                    numberOfEmployees = BigDecimal.valueOf(2.023),
-                ),
-            ),
-        )
-        uploadLambda(companyId, lksgData, "2022")
-        uploadLambda(companyId, finalLksgData2023, "2023")
+        uploadLambda(companyId, lksgData[1], "2022")
+        uploadLambda(companyId, lksgData[1], "2023")
 
         // Retrieve uploaded data set from the GET lksg_companies_companyId endpoint and assert that the correct ones
         // are retrieved
@@ -87,10 +79,9 @@ class Lksg {
                 "correctly but they do not.",
         )
         assertEquals(
-            response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees,
-            BigDecimal.valueOf(2.023),
-            "The active dataset should contain the manipulated ${2.023} but it is " +
-                "${response2023WithoutVersioning[0].data.social!!.general!!.numberOfEmployees} instead",
+            response2023WithoutVersioning[0].data,
+            lksgData[1],
+            "The active dataset should equal the latest uploaded LKSG dataset"
         )
     }
 }
