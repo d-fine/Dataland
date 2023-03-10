@@ -244,14 +244,14 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         }
       );
 
-      it.only("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
-        let latestScrollPosition = 0;
+      it("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
         cy.visitAndCheckAppMount("/companies");
+        //TODO Maybe remove the wait statement before final commit
+        cy.wait(2500)
         cy.get('button[aria-label="New Dataset"]')
             .click({ force: true })
             .url()
             .should("eq", getBaseUrl() + "/companies/choose");
-        //TODO Test that the appropriate message is deplayed could be part of a component test
         cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
         cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
