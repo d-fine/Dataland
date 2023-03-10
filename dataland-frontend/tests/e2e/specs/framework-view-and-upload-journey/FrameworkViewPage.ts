@@ -197,7 +197,9 @@ describe("The shared header of the framework pages should act as expected", { sc
                 companyIdOfAlpha,
                 "2023",
                 getPreparedFixture("vat-2023-1", lksgPreparedFixtures).t
-              ).then(dataMetaInformation => { dataIdOfOutdatedLksg2023 = dataMetaInformation.dataId });
+              ).then((dataMetaInformation) => {
+                dataIdOfOutdatedLksg2023 = dataMetaInformation.dataId;
+              });
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
@@ -206,7 +208,9 @@ describe("The shared header of the framework pages should act as expected", { sc
                   companyIdOfAlpha,
                   "2023",
                   getPreparedFixture("vat-2023-2", lksgPreparedFixtures).t
-                ).then(dataMetaInformation => { dataIdOfActiveLksg2023 = dataMetaInformation.dataId });
+                ).then((dataMetaInformation) => {
+                  dataIdOfActiveLksg2023 = dataMetaInformation.dataId;
+                });
               });
             })
             .then(() => {
@@ -271,7 +275,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             .then(() => {
               return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
                 token,
-                  companyIdOfBeta,
+                companyIdOfBeta,
                 "2014",
                 generateEuTaxonomyDataForNonFinancials()
               );
@@ -335,7 +339,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
           waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
-          validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForBeta)
+          validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForBeta);
 
           cy.visit(
             `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`
@@ -344,7 +348,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
           waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyAlpha);
-          validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha)
+          validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
 
           cy.visit(
             `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
@@ -497,8 +501,8 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenReportingPeriod("Select...", true);
       });
 
-      var dataIdOfOutdatedLksg2023: String;
-      var dataIdOfActiveLksg2023: String;
+      let dataIdOfOutdatedLksg2023: string;
+      let dataIdOfActiveLksg2023: string;
       it("Check if the version change bar works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`);
@@ -508,7 +512,10 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateLksgTable(["2023", "2022"], "VAT Identification Number", ["2023-2", "2022"]);
         cy.contains("This dataset is outdated").should("not.exist");
         clickBackButton();
-        cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`);
+        cy.url().should(
+          "eq",
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`
+        );
         validateLksgTable(["2023"], "VAT Identification Number", ["2023-1"]);
       });
 
@@ -526,16 +533,17 @@ describe("The shared header of the framework pages should act as expected", { sc
             expect(element.text()).to.equal(columnHeaders[index - 1]);
           }
         });
-        cy.get(`tr:contains("${rowTitle}")`).find("td > span").each((element, index, elements) => {
-          expect(elements).to.have.length(rowContent.length + 1);
-          if (index == 0) {
-            expect(element.text()).to.equal(rowTitle);
-          } else {
-            expect(element.text()).to.equal(rowContent[index - 1]);
-          }
-        });
+        cy.get(`tr:contains("${rowTitle}")`)
+          .find("td > span")
+          .each((element, index, elements) => {
+            expect(elements).to.have.length(rowContent.length + 1);
+            if (index == 0) {
+              expect(element.text()).to.equal(rowTitle);
+            } else {
+              expect(element.text()).to.equal(rowContent[index - 1]);
+            }
+          });
       }
     }
   );
 });
-// TODO test search from specific scenarios

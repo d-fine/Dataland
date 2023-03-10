@@ -156,8 +156,6 @@ export default defineComponent({
     },
   },
 
-  // TODO this component is partly similar to ViewSingleDatasetDisplayBase => therefore we should align the order of methods to make it easy to have an overview while working in both files
-
   methods: {
     /**
      * Method to set flags that indicate found data
