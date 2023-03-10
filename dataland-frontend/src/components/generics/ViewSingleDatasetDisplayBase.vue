@@ -54,7 +54,8 @@
       </div>
       <div v-if="isDataIdInUrlInvalid" data-test="noDataForThisDataIdPresentErrorIndicator">
         <h2>
-          No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company.
+          No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company and
+          framework.
         </h2>
       </div>
       <div v-if="isReportingPeriodInUrlInvalid" data-test="noDataForThisReportingPeriodPresentErrorIndicator">
@@ -283,7 +284,10 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
-        if (dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId) {
+        if (
+          dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId ||
+          dataMetaInfoForDataSetWithDataIdFromUrl.dataType != this.dataType
+        ) {
           this.handleInvalidDataIdPassedInUrl();
         } else {
           this.processDataMetaInfoForDisplay(dataMetaInfoForDataSetWithDataIdFromUrl);
