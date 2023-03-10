@@ -205,6 +205,9 @@ export default defineComponent({
         this.processDataMetaInfoForDisplay(dataMetaInfoForNewlyChosenReportingPeriod);
         this.routerPushToReportingPeriod(dataMetaInfoForNewlyChosenReportingPeriod.reportingPeriod);
       } else {
+        if (newReportingPeriod) {
+          this.handleInvalidReportingPeriodPassedInUrl();
+        }
       }
     },
 
@@ -301,6 +304,16 @@ export default defineComponent({
       this.chosenReportingPeriodInDropdown = "";
       this.isDataIdToDisplayFound = false;
       this.isDataIdInUrlInvalid = true;
+    },
+
+    /**
+     * Called when the reporting period in the url does not belong to a designated dataset
+     */
+    handleInvalidReportingPeriodPassedInUrl() {
+      this.dataMetaInfoForDisplay = null;
+      this.chosenReportingPeriodInDropdown = "";
+      this.isDataIdToDisplayFound = false;
+      this.isReportingPeriodInUrlInvalid = true;
     },
 
     /**

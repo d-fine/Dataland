@@ -41,7 +41,7 @@ export default defineComponent({
         let key: string;
         let value: DataMetaInformation;
         for ([key, value] of this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>) {
-          this.dataTableContents.push({
+          this.dataTableContents.unshift({
             reportingPeriod: key,
             editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?templateDataId=${value.dataId}`,
           });

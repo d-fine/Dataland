@@ -396,6 +396,11 @@ input[type="checkbox"], input[type="radio"]{
   input[type=checkbox]:checked::before, input[type=radio]:checked::before {
     display: block;
   }
+  label[data-checked="true"] {
+    input[type=radio]::before {
+      display: block;
+    }
+  }
   .short { width: 33%; }
   .medium { width: 66%; }
   .next-to-each-other {

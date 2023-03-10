@@ -62,6 +62,7 @@
 
                         <FormKit
                           type="text"
+                          :validation-label="lksgKpisNameMappings.dataDate"
                           validation="required"
                           name="dataDate"
                           v-model="convertedDataDate"
@@ -1081,7 +1082,11 @@
               <div class="col-3"></div>
 
               <div class="col-9">
-                <PrimeButton data-test="submitButton" type="submit" label="ADD DATA" />
+                <PrimeButton
+                  data-test="submitButton"
+                  type="submit"
+                  :label="this.updatingData ? 'UPDATE DATA' : 'ADD DATA'"
+                />
               </div>
             </div>
           </FormKit>
@@ -1159,45 +1164,48 @@ export default defineComponent({
     tooltip: Tooltip,
   },
 
-  data: () => ({
-    isYourCompanyManufacturingCompany: "No",
-    listOfProductionSites: [
-      {
-        id: 0,
-        listOfGoodsOrServices: [] as string[],
-        listOfGoodsOrServicesString: "",
-      },
-    ],
-    idCounter: 0,
-    allCountry: getAllCountryNamesWithCodes(),
-    waitingForData: false,
-    dataDate: undefined as Date | undefined,
-    convertedDataDate: "",
-    yearOfDataDate: "",
-    lkSGDataModel: {} as object,
-    route: useRoute(),
-    message: "",
-    uploadSucceded: false,
-    postLkSGDataProcessed: false,
-    messageCounter: 0,
-    lksgKpisInfoMappings,
-    lksgKpisNameMappings,
-    lksgSubAreasNameMappings,
-    elementPosition: 0,
-    scrollListener: (): null => null,
-    isInHouseProductionOrContractProcessingMap: Object.fromEntries(
-      new Map<string, string>([
-        [
-          InHouseProductionOrContractProcessing.InHouseProduction,
-          humanizeString(InHouseProductionOrContractProcessing.InHouseProduction),
-        ],
-        [
-          InHouseProductionOrContractProcessing.ContractProcessing,
-          humanizeString(InHouseProductionOrContractProcessing.ContractProcessing),
-        ],
-      ])
-    ),
-  }),
+  data() {
+    return {
+      isYourCompanyManufacturingCompany: "No",
+      listOfProductionSites: [
+        {
+          id: 0,
+          listOfGoodsOrServices: [] as string[],
+          listOfGoodsOrServicesString: "",
+        },
+      ],
+      idCounter: 0,
+      allCountry: getAllCountryNamesWithCodes(),
+      waitingForData: false,
+      dataDate: undefined as Date | undefined,
+      convertedDataDate: "",
+      lkSGDataModel: {} as object,
+      route: useRoute(),
+      message: "",
+      uploadSucceded: false,
+      postLkSGDataProcessed: false,
+      messageCounter: 0,
+      lksgKpisInfoMappings,
+      lksgKpisNameMappings,
+      lksgSubAreasNameMappings,
+      elementPosition: 0,
+      scrollListener: (): null => null,
+      isInHouseProductionOrContractProcessingMap: Object.fromEntries(
+        new Map<string, string>([
+          [
+            InHouseProductionOrContractProcessing.InHouseProduction,
+            humanizeString(InHouseProductionOrContractProcessing.InHouseProduction),
+          ],
+          [
+            InHouseProductionOrContractProcessing.ContractProcessing,
+            humanizeString(InHouseProductionOrContractProcessing.ContractProcessing),
+          ],
+        ])
+      ),
+      getHyphenatedDate,
+      updatingData: false,
+    };
+  },
   props: {
     companyID: {
       type: String,
@@ -1231,6 +1239,7 @@ export default defineComponent({
 
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+      this.updatingData = true;
       void this.loadLKSGData(dataId);
     }
   },
@@ -1266,9 +1275,9 @@ export default defineComponent({
           });
         }
       }
-      const dateFromDataset = lksgDataset.data?.social?.general?.dataDate;
-      if (dateFromDataset) {
-        this.dataDate = new Date(dateFromDataset);
+      const dataDateFromDataset = lksgDataset.data?.social?.general?.dataDate;
+      if (dataDateFromDataset) {
+        this.dataDate = new Date(dataDateFromDataset);
       }
       this.lkSGDataModel.data = lksgDataset.data;
       this.waitingForData = false;
