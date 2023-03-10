@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { DataTypeEnum, EuTaxonomyDataForFinancials, LksgData } from "@clients/backend";
@@ -214,7 +214,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 companyIdOfAlpha,
                 "2023",
                 getPreparedFixture("vat-2023-1", lksgPreparedFixtures).t
-              );
+              ).then(dataMetaInformation => { dataIdOfOutdatedLksg2023 = dataMetaInformation.dataId });
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
@@ -223,7 +223,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   companyIdOfAlpha,
                   "2023",
                   getPreparedFixture("vat-2023-2", lksgPreparedFixtures).t
-                );
+                ).then(dataMetaInformation => { dataIdOfActiveLksg2023 = dataMetaInformation.dataId });
               });
             })
             .then(() => {
@@ -488,6 +488,45 @@ describe("The shared header of the framework pages should act as expected", { sc
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");
         validateChosenReportingPeriod("Select...", expectedReportingPeriodsForEuTaxoNonFinancialsForAlpha, true);
       });
+
+      var dataIdOfOutdatedLksg2023: String;
+      var dataIdOfActiveLksg2023: String;
+      it("Check if the version change bar works as expected", () => {
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`);
+        validateLksgTable(["2023"], "VAT Identification Number", ["2023-1"]);
+        validateOutdatedBarAndGetButton().click();
+        cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
+        validateLksgTable(["2023", "2022"], "VAT Identification Number", ["2023-2", "2022"]);
+        cy.contains("This dataset is outdated").should("not.exist");
+        clickBackButton();
+        cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`);
+        validateLksgTable(["2023"], "VAT Identification Number", ["2023-1"]);
+      });
+
+      function validateOutdatedBarAndGetButton() {
+        return cy.contains("This dataset is outdated").parent().find("button > span:contains('View Active')");
+      }
+
+      function validateLksgTable(columnHeaders: string[], rowTitle: string, rowContent: string[]) {
+        expect(columnHeaders.length).to.equal(rowContent.length);
+        cy.get(".p-column-title").each((element, index, elements) => {
+          expect(elements).to.have.length(columnHeaders.length + 1);
+          if (index == 0) {
+            expect(element.text()).to.equal("KPIs");
+          } else {
+            expect(element.text()).to.equal(columnHeaders[index - 1]);
+          }
+        });
+        cy.get(`tr:contains("${rowTitle}")`).find("td > span").each((element, index, elements) => {
+          expect(elements).to.have.length(rowContent.length + 1);
+          if (index == 0) {
+            expect(element.text()).to.equal(rowTitle);
+          } else {
+            expect(element.text()).to.equal(rowContent[index - 1]);
+          }
+        });
+      }
     }
   );
 });
