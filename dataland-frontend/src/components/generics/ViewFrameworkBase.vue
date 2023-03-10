@@ -39,11 +39,15 @@
             <PrimeButton
               v-if="canEdit"
               class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
-              aria-label="EDIT"
+              aria-label="EDIT DATA"
               @click="editDataset"
             >
-              <span class="material-icons-outlined px-2">mode</span>
-              <span class="px-2">EDIT</span>
+              <span class="px-2">EDIT DATA</span>
+              <span
+                v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
+                class="material-icons-outlined"
+                >arrow_drop_down</span
+              >
             </PrimeButton>
             <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset" @click="gotoNewDataset">
               <span class="material-icons-outlined px-2">queue</span>
@@ -111,6 +115,10 @@ export default defineComponent({
     dataType: {
       type: String,
     },
+    singleDataMetaInfoToDisplay: {
+      type: Object as () => DataMetaInformation,
+      required: false,
+    },
   },
   setup() {
     return {
@@ -153,8 +161,36 @@ export default defineComponent({
      * @param event event
      */
     editDataset(event: Event) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access
-      (this.$refs.reportingPeriodsOverlayPanel as any)?.toggle(event);
+      if (this.singleDataMetaInfoToDisplay) {
+        this.gotoUpdateForm(
+          this.singleDataMetaInfoToDisplay.companyId,
+          this.singleDataMetaInfoToDisplay.dataType,
+          this.singleDataMetaInfoToDisplay.dataId
+        );
+      } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access
+        (this.$refs.reportingPeriodsOverlayPanel as any)?.toggle(event);
+      } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
+        this.gotoUpdateForm(
+          assertDefined(this.companyID),
+          this.dataType as DataTypeEnum,
+          (this.mapOfReportingPeriodToActiveDataset.entries().next().value as [string, DataMetaInformation])[1].dataId
+        );
+      } else {
+        return;
+      }
+    },
+    /**
+     * Navigates to the data update form
+     *
+     * @param companyID company ID
+     * @param dataType data type
+     * @param dataId data Id
+     */
+    gotoUpdateForm(companyID: string, dataType: DataTypeEnum, dataId: string) {
+      void this.$router.push(
+        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
+      );
     },
     /**
      * Navigates to the framework upload page for the current company (a framework is not pre-selected)
@@ -267,7 +303,8 @@ export default defineComponent({
     companyID() {
       void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
     },
-    dataType() {
+    dataType(newDataType: string) {
+      this.chosenDataTypeInDropdown = newDataType;
       void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
     },
   },

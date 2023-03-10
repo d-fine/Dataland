@@ -25,14 +25,38 @@
               :model-value="companyID"
               disabled="true"
             />
+            <div v-if="!updatingData" class="uploadFormSection grid">
+              <div class="col-3 p-3 topicLabel">
+                <h4 id="general" class="anchor title">Reporting Period</h4>
+              </div>
+              <div class="col-9 formFields">
+                <div class="form-field">
+                  <UploadFormHeader
+                    name="Reporting Period"
+                    explanation="The day at which the data was collected. We recommend the same date as entered in the Data Date field."
+                  />
+                  <div class="lg:col-4 md:col-6 col-12">
+                    <Calendar
+                      data-test="reportingPeriod"
+                      inputId="icon"
+                      :showIcon="true"
+                      v-model="reportingPeriod"
+                      dateFormat="D, M dd, yy"
+                      :maxDate="new Date()"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <FormKit
-              type="hidden"
+              validation="required"
+              validation-label="Reporting Period"
               name="reportingPeriod"
-              label="Reporting Period"
-              placeholder="Reporting Period"
-              v-model="yearOfDataDate"
-              disabled="true"
+              v-model="convertedReportingPeriod"
+              :outer-class="{ 'hidden-input': true }"
             />
+
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
@@ -62,6 +86,7 @@
 
                         <FormKit
                           type="text"
+                          :validation-label="lksgKpisNameMappings.dataDate"
                           validation="required"
                           name="dataDate"
                           v-model="convertedDataDate"
@@ -1081,7 +1106,11 @@
               <div class="col-3"></div>
 
               <div class="col-9">
-                <PrimeButton data-test="submitButton" type="submit" label="ADD DATA" />
+                <PrimeButton
+                  data-test="submitButton"
+                  type="submit"
+                  :label="this.updatingData ? 'UPDATE DATA' : 'ADD DATA'"
+                />
               </div>
             </div>
           </FormKit>
@@ -1145,6 +1174,7 @@ import { AxiosError } from "axios";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { InHouseProductionOrContractProcessing } from "@clients/backend";
 import { useRoute } from "vue-router";
+import { getHyphenatedDate } from "@/utils/DateFormatUtils";
 
 export default defineComponent({
   setup() {
@@ -1158,45 +1188,50 @@ export default defineComponent({
     tooltip: Tooltip,
   },
 
-  data: () => ({
-    isYourCompanyManufacturingCompany: "No",
-    listOfProductionSites: [
-      {
-        id: 0,
-        listOfGoodsOrServices: [] as string[],
-        listOfGoodsOrServicesString: "",
-      },
-    ],
-    idCounter: 0,
-    allCountry: getAllCountryNamesWithCodes(),
-    waitingForData: false,
-    dataDate: undefined as Date | undefined,
-    convertedDataDate: "",
-    yearOfDataDate: "",
-    lkSGDataModel: {} as object,
-    route: useRoute(),
-    message: "",
-    uploadSucceded: false,
-    postLkSGDataProcessed: false,
-    messageCounter: 0,
-    lksgKpisInfoMappings,
-    lksgKpisNameMappings,
-    lksgSubAreasNameMappings,
-    elementPosition: 0,
-    scrollListener: (): null => null,
-    isInHouseProductionOrContractProcessingMap: Object.fromEntries(
-      new Map<string, string>([
-        [
-          InHouseProductionOrContractProcessing.InHouseProduction,
-          humanizeString(InHouseProductionOrContractProcessing.InHouseProduction),
-        ],
-        [
-          InHouseProductionOrContractProcessing.ContractProcessing,
-          humanizeString(InHouseProductionOrContractProcessing.ContractProcessing),
-        ],
-      ])
-    ),
-  }),
+  data() {
+    return {
+      isYourCompanyManufacturingCompany: "No",
+      listOfProductionSites: [
+        {
+          id: 0,
+          listOfGoodsOrServices: [] as string[],
+          listOfGoodsOrServicesString: "",
+        },
+      ],
+      idCounter: 0,
+      allCountry: getAllCountryNamesWithCodes(),
+      waitingForData: false,
+      reportingPeriod: undefined as Date | undefined,
+      convertedReportingPeriod: "",
+      dataDate: undefined as Date | undefined,
+      convertedDataDate: "",
+      lkSGDataModel: {} as object,
+      route: useRoute(),
+      message: "",
+      uploadSucceded: false,
+      postLkSGDataProcessed: false,
+      messageCounter: 0,
+      lksgKpisInfoMappings,
+      lksgKpisNameMappings,
+      lksgSubAreasNameMappings,
+      elementPosition: 0,
+      scrollListener: (): null => null,
+      isInHouseProductionOrContractProcessingMap: Object.fromEntries(
+        new Map<string, string>([
+          [
+            InHouseProductionOrContractProcessing.InHouseProduction,
+            humanizeString(InHouseProductionOrContractProcessing.InHouseProduction),
+          ],
+          [
+            InHouseProductionOrContractProcessing.ContractProcessing,
+            humanizeString(InHouseProductionOrContractProcessing.ContractProcessing),
+          ],
+        ])
+      ),
+      getHyphenatedDate,
+      updatingData: false,
+    };
+  },
   props: {
     companyID: {
       type: String,
@@ -1205,13 +1240,16 @@ export default defineComponent({
   watch: {
     dataDate: function (newValue: Date) {
       if (newValue) {
-        this.yearOfDataDate = newValue.getFullYear().toString();
-        this.convertedDataDate = `${this.yearOfDataDate}-${("0" + (newValue.getMonth() + 1).toString()).slice(-2)}-${(
-          "0" + newValue.getDate().toString()
-        ).slice(-2)}`; // TODO Are we sure that there is no out-of-the-box method to convert datest to the format YYYY-MM-DD ?
+        this.convertedDataDate = getHyphenatedDate(newValue);
       } else {
-        this.yearOfDataDate = "";
         this.convertedDataDate = "";
+      }
+    },
+    reportingPeriod: function (newValue: Date) {
+      if (newValue) {
+        this.convertedReportingPeriod = this.getHyphenatedDate(newValue);
+      } else {
+        this.convertedReportingPeriod = "";
       }
     },
   },
@@ -1232,6 +1270,7 @@ export default defineComponent({
 
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+      this.updatingData = true;
       void this.loadLKSGData(dataId);
     }
   },
@@ -1267,9 +1306,13 @@ export default defineComponent({
           });
         }
       }
-      const dateFromDataset = lksgDataset.data?.social?.general?.dataDate;
-      if (dateFromDataset) {
-        this.dataDate = new Date(dateFromDataset);
+      const reportingPeriodFromDataset = lksgDataset.reportingPeriod;
+      if (reportingPeriodFromDataset) {
+        this.reportingPeriod = new Date(reportingPeriodFromDataset);
+      }
+      const dataDateFromDataset = lksgDataset.data?.social?.general?.dataDate;
+      if (dataDateFromDataset) {
+        this.dataDate = new Date(dataDateFromDataset);
       }
       this.lkSGDataModel.data = lksgDataset.data;
       this.waitingForData = false;
@@ -1294,6 +1337,7 @@ export default defineComponent({
           },
         ];
         this.idCounter = 0;
+        this.reportingPeriod = undefined;
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;

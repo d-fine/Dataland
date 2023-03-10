@@ -6,7 +6,7 @@ import {
   generateProductionSite,
   generateVatIdentificationNumber,
 } from "./LksgDataFixtures";
-import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
+import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { faker } from "@faker-js/faker";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
@@ -49,7 +49,7 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
  */
 function manipulateFixtureForTwoLksgDataSetsInSameYear(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "two-lksg-data-sets-in-same-year";
-  input.t.social!.general!.dataDate = "2022-01-01";
+  input.t.social!.general!.dataDate = input.reportingPeriod = "2022-01-01";
   return input;
 }
 
@@ -61,7 +61,7 @@ function manipulateFixtureForTwoLksgDataSetsInSameYear(input: FixtureData<LksgDa
  */
 function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "six-lksg-data-sets-in-different-years";
-  input.t.social!.general!.dataDate = "2022-01-01";
+  input.t.social!.general!.dataDate = input.reportingPeriod = "2022-01-01";
   return input;
 }
 
@@ -81,25 +81,22 @@ function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureDat
 
 function manipulateFixtureForVat20231(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "vat-2023-1";
-  input.reportingPeriod = "2023";
   input.t.social!.general!.vatIdentificationNumber = "2023-1";
-  input.t.social!.general!.dataDate = "2023-04-18";
+  input.t.social!.general!.dataDate = input.reportingPeriod = "2023-04-18";
   return input;
 }
 
 function manipulateFixtureForVat20232(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "vat-2023-2";
-  input.reportingPeriod = "2023";
   input.t.social!.general!.vatIdentificationNumber = "2023-2";
-  input.t.social!.general!.dataDate = "2023-06-22";
+  input.t.social!.general!.dataDate = input.reportingPeriod = "2023-06-22";
   return input;
 }
 
 function manipulateFixtureForVat2022(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "vat-2022";
-  input.reportingPeriod = "2022";
   input.t.social!.general!.vatIdentificationNumber = "2022";
-  input.t.social!.general!.dataDate = "2022-07-30";
+  input.t.social!.general!.dataDate = input.reportingPeriod = "2022-07-30";
   return input;
 }
 
@@ -114,7 +111,7 @@ function manipulateFixtureToContainEveryField(input: FixtureData<LksgData>): Fix
   input.t = {
     social: {
       general: {
-        dataDate: randomFutureDate(),
+        dataDate: randomPastDate(),
         lksgInScope: randomYesNo(),
         vatIdentificationNumber: generateVatIdentificationNumber(),
         numberOfEmployees: faker.datatype.number({ min: 1000, max: 200000 }),
@@ -259,6 +256,6 @@ function manipulateFixtureToContainEveryField(input: FixtureData<LksgData>): Fix
       },
     },
   };
-  input.reportingPeriod = new Date(assertDefined(input.t.social?.general?.dataDate)).getFullYear().toString();
+  input.reportingPeriod = assertDefined(input.t.social?.general?.dataDate);
   return input;
 }
