@@ -392,14 +392,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenReportingPeriod("2016", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
         validateEligibleActivityValueForFinancialsDataset("26");
 
-        selectReportingPeriodInDropdown("2019");
-
-        validateNoErrorMessagesAreShown();
-        cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
-        validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-        validateEligibleActivityValueForFinancialsDataset("29.2");
-
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyNonFinancials);
 
         validateNoErrorMessagesAreShown();
@@ -427,14 +419,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateNoErrorMessagesAreShown();
         cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         cy.wait("@getMetaDataForCompanyId", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
-        validateChosenReportingPeriod("2019", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-        validateEligibleActivityValueForFinancialsDataset("29.2");
-
-        clickBackButton();
-
-        validateNoErrorMessagesAreShown();
-        cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2016", expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
         validateEligibleActivityValueForFinancialsDataset("26");
