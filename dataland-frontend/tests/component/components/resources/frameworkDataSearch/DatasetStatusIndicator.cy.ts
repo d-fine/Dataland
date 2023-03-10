@@ -20,7 +20,7 @@ describe("Component Tests for DatasetStatusIndicator", () => {
       });
     });
 
-    cy.get("div[data-test=datasetStatusContainer]").should("not.exist");
+    cy.get("div[data-test=datasetDisplayStatusContainer]").should("not.exist");
     cy.get("a[data-test=datasetStatusLinkToActive]").should("not.exist");
   });
 
@@ -35,7 +35,7 @@ describe("Component Tests for DatasetStatusIndicator", () => {
       });
     });
 
-    cy.get("div[data-test=datasetStatusContainer]").contains("outdated").should("exist");
+    cy.get("div[data-test=datasetDisplayStatusContainer]").contains("outdated").should("exist");
     cy.get("a[data-test=datasetStatusLinkToActive]").should("not.exist");
   });
   it("Should display a QA-Pending warning message when the dataset is pending QA", () => {
@@ -49,7 +49,7 @@ describe("Component Tests for DatasetStatusIndicator", () => {
       });
     });
 
-    cy.get("div[data-test=datasetStatusContainer]").contains("pending").should("exist");
+    cy.get("div[data-test=datasetDisplayStatusContainer]").contains("pending").should("exist");
     cy.get("a[data-test=datasetStatusLinkToActive]").should("not.exist");
   });
   it("Should display a button with a link to an active dataset if one is provided", () => {
@@ -63,7 +63,7 @@ describe("Component Tests for DatasetStatusIndicator", () => {
         linkToActivePage: mockActiveDatasetLink,
       });
     });
-    cy.get("div[data-test=datasetStatusContainer]").contains("outdated").should("exist");
+    cy.get("div[data-test=datasetDisplayStatusContainer]").contains("outdated").should("exist");
     cy.get("a[data-test=datasetStatusLinkToActive]").should("have.attr", "href", mockActiveDatasetLink);
   });
 });
