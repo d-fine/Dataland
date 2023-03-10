@@ -1,7 +1,6 @@
 import { minimalKeycloakMock } from "../../testUtils/keycloak";
 import DatasetOverview from "@/components/pages/DatasetOverview.vue";
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
-import { mount } from "cypress/vue";
 
 describe("Component tests for the DatasetOverview page", () => {
   it("Should not display the New Dataset button to non-uploader users", () => {

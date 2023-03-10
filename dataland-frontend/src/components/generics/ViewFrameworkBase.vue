@@ -264,7 +264,14 @@ export default defineComponent({
       return listOfDataMetaInfo.filter((dataMetaInfo) => dataMetaInfo.dataType === this.dataType);
     },
 
-    buildMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
+    /**
+     * Uses a list of data meta info to set a map which has the distinct repoting periods as keys, and the respective
+     * active data meta info as value.
+     * It only takes into account data meta info whose dataType equals the current dataType prop value.
+     *
+     * @param listOfActiveDataMetaInfo The list to be used as input for the map.
+     */
+    setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
       listOfActiveDataMetaInfo: DataMetaInformation[]
     ) {
       this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
@@ -294,7 +301,7 @@ export default defineComponent({
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
-        this.buildMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
+        this.setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
         this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);

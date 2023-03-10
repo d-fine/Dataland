@@ -23,7 +23,6 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
     createAssetManagementCompany,
     createAllValuesCompany,
     createCreditInstitutionWithEligibleActivity26,
-    createCreditInstitutionWithEligibleActivity29,
     createCreditInstitutionWithEligibleActivity292,
   ];
   const fixtureBase = generateFixtureDataset<EuTaxonomyDataForFinancials>(

@@ -212,7 +212,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(frameworkDropdownSelector).click();
-        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(frameworkToSelect)}`).click({ force: true });
+        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(frameworkToSelect)})`).click({ force: true });
       }
 
       /**
@@ -602,7 +602,11 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateEUTaxonomyFinancialsTable("29");
       });
 
-
+      /**
+       * Validates that the "outdated" indicator is present together with a button to view the active dataset for this
+       * reporting period.
+       *
+       */
       function validateOutdatedBarAndGetButton() {
         return cy.contains("This dataset is outdated").parent().find("button > span:contains('View Active')");
       }
@@ -613,7 +617,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param columnHeaders The expected values in the headers of the LkSG dataset columns
        * @param vatIdNumberRowContent The expected values in the row of the VAT identification number field
        */
-      function validateLksgTable(columnHeaders: string[], vatIdNumberRowContent: string[]) {
+      function validateLksgTable(columnHeaders: string[], vatIdNumberRowContent: string[]): void {
         expect(columnHeaders.length).to.equal(vatIdNumberRowContent.length);
         cy.get(".p-column-title").each((element, index, elements) => {
           expect(elements).to.have.length(columnHeaders.length + 1);
@@ -635,11 +639,11 @@ describe("The shared header of the framework pages should act as expected", { sc
           });
       }
 
-      function validateEUTaxonomyFinancialsTable(taxonomyEligibleEconomicActivityValueInPercent: string) {
+      function validateEUTaxonomyFinancialsTable(taxonomyEligibleEconomicActivityValueInPercent: string): void {
         cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
           .find("[data-test='value']")
           .should("have.text", taxonomyEligibleEconomicActivityValueInPercent);
-      }
+      } // TODO @Florian => with this we can delete "validateEligibleActivityValueForFinancialsDataset()" and replace it with this method, right?
     }
   );
 });
