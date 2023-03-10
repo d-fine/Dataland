@@ -40,7 +40,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         humanizeString(DataTypeEnum.EutaxonomyNonFinancials),
         humanizeString(DataTypeEnum.Lksg),
       ]);
-      const expectedReportingPeriodsForEuTaxoFinancialsForBeta = new Set<string>(["2014"]);
       let companyIdOfBeta: string;
 
       const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
@@ -523,6 +522,13 @@ describe("The shared header of the framework pages should act as expected", { sc
         return cy.contains("This dataset is outdated").parent().find("button > span:contains('View Active')");
       }
 
+      /**
+       * Validates if all the column headers and the values in one specific row on the LkSG panel equal the passed values
+       *
+       * @param columnHeaders The expected values in the headers of the LkSG dataset columns
+       * @param rowTitle The title of the row for which the values shall be validated
+       * @param rowContent The expected values in that row
+       */
       function validateLksgTable(columnHeaders: string[], rowTitle: string, rowContent: string[]) {
         expect(columnHeaders.length).to.equal(rowContent.length);
         cy.get(".p-column-title").each((element, index, elements) => {
