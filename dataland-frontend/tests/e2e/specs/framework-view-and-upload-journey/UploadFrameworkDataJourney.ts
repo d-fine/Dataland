@@ -246,10 +246,9 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
 
       it("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
         cy.visitAndCheckAppMount("/companies");
-        //TODO Maybe remove the wait statement before final commit
-        cy.wait(2500)
+        //TODO .trigger("click") used instead of .click() as the latter runs into timeout problems locally
         cy.get('button[aria-label="New Dataset"]')
-            .click({ force: true })
+            .trigger('click')
             .url()
             .should("eq", getBaseUrl() + "/companies/choose");
         cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
