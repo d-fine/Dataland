@@ -63,12 +63,13 @@ class DataMetaInformationManager(
         return dataMetaInformationDbResponse.get()
     }
 
-    /** TODO
+    /**
      * Method to make the data manager search for meta info
      * @param companyId if not empty, it filters the requested meta info to a specific company
      * @param dataType if not empty, it filters the requested meta info to a specific data type
      * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
-     * @return a list of meta info about data depending on the filters:
+     * @param showOnlyActive if true, it will only return datasets marked "active"
+     * @return a list of meta info about data depending on the filters
      */
     fun searchDataMetaInfo(
         companyId: String,

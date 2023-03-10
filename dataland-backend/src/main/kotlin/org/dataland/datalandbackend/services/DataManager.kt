@@ -87,11 +87,11 @@ class DataManager(
     }
 
     /**
-     * Stored the data meta information to the database ensuring that the transactions ends after this function
-     * stops so that a queueu message might be sent out after this function completes
+     * Persists the data meta-information to the database ensuring that the database transaction
+     * ends directly after this function returns so that a MQ-Message might be sent out after this function completes
      * @param dataId The dataId of the dataset to store
      * @param storableDataSet the dataset to store
-     * @param correlationId the coorelation id of the insertion process
+     * @param correlationId the correlation id of the insertion process
      */
     @Transactional(propagation = Propagation.NEVER)
     fun addDatasetToDatabase(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {

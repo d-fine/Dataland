@@ -11,6 +11,8 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       :rowHover="true"
       @row-click="rerouteRowClick"
+      sortField="uploadTimeInMs"
+      :sortOrder="-1"
     >
       <Column field="companyName" header="COMPANY" :sortable="true" class="w-3"></Column>
       <Column field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType" class="w-3">

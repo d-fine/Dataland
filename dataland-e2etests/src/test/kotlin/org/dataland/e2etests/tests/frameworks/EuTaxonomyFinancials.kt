@@ -8,11 +8,12 @@ class EuTaxonomyFinancials {
     private val apiAccessor = ApiAccessor()
 
     private val listOfOneEuTaxonomyFinancialsDataSet = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)
+    /* Sorting is required in the last assertion as the backend models this field as a Set but this info is lost during the
+  conversion */
     private val euTaxonomyFinancialsDataSetWithSortedFinancialServicesTypes = listOfOneEuTaxonomyFinancialsDataSet[0]
         .copy(financialServicesTypes = listOfOneEuTaxonomyFinancialsDataSet[0].financialServicesTypes?.sorted())
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderEuTaxonomyForFinancials
         .getCompanyInformationWithoutIdentifiers(1)
-//  private val listOfTenEuTaxonomyFinancialsDataSets = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(10)
 
     @Test
     fun `post a company with EuTaxonomyForFinancials data and check if the data can be retrieved correctly`() {
@@ -35,19 +36,5 @@ class EuTaxonomyFinancials {
             ),
         )
     }
-
-    /*
-    @Test
-    fun `Check that latest and version history can be retrieved for multiple uploaded framework data for same period`(){
-
-        // Upload 10 identical data sets for the same company
-        val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOfCompanyInformation = listOfOneCompanyInformation,
-            listOfFrameworkData = listOfTenEuTaxonomyFinancialsDataSets,
-            frameworkDataUploadFunction = apiAccessor.euTaxonomyFinancialsUploaderFunction
-        )
-    }
-     */
 }
-/* Sorting is required in the last assertion as the backend models this field as a Set but this info is lost during the
-  conversion */
+
