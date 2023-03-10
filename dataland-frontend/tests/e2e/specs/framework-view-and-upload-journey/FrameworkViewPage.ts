@@ -223,7 +223,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 companyIdOfAlpha,
                 "2019",
                 getPreparedFixture("eligible-activity-Point-29", euTaxoFinancialPreparedFixtures).t
-              );
+              ).then(dataMetaInformation => { dataIdOfOutdatedFinancial2019 = dataMetaInformation.dataId });
             })
             .then(() => {
               return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
@@ -232,7 +232,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   companyIdOfAlpha,
                   "2019",
                   getPreparedFixture("eligible-activity-Point-292", euTaxoFinancialPreparedFixtures).t
-                );
+                ).then(dataMetaInformation => { dataIdOfActiveFinancial2019 = dataMetaInformation.dataId });
               });
             })
             .then(() => {
@@ -477,25 +477,38 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       var dataIdOfOutdatedLksg2023: String;
       var dataIdOfActiveLksg2023: String;
-      it("Check if the version change bar works as expected", () => {
+      var dataIdOfOutdatedFinancial2019: String;
+      var dataIdOfActiveFinancial2019: String;
+      it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
+
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`);
-        validateLksgTable(["2023"], "VAT Identification Number", ["2023-1"]);
+        validateLksgTable(["2023"], ["2023-1"]);
         validateOutdatedBarAndGetButton().click();
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
-        validateLksgTable(["2023", "2022"], "VAT Identification Number", ["2023-2", "2022"]);
+        validateLksgTable(["2023", "2022"], ["2023-2", "2022"]);
         cy.contains("This dataset is outdated").should("not.exist");
         clickBackButton();
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`);
-        validateLksgTable(["2023"], "VAT Identification Number", ["2023-1"]);
+        validateLksgTable(["2023"], ["2023-1"]);
+
+        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfOutdatedFinancial2019}`);
+        validateEUTaxonomyFinancialsTable("29");
+        validateOutdatedBarAndGetButton().click();
+        cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/2019`);
+        validateEUTaxonomyFinancialsTable("29.2");
+        cy.contains("This dataset is outdated").should("not.exist");
+        clickBackButton();
+        cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfOutdatedFinancial2019}`);
+        validateEUTaxonomyFinancialsTable("29");
       });
 
       function validateOutdatedBarAndGetButton() {
         return cy.contains("This dataset is outdated").parent().find("button > span:contains('View Active')");
       }
 
-      function validateLksgTable(columnHeaders: string[], rowTitle: string, rowContent: string[]) {
-        expect(columnHeaders.length).to.equal(rowContent.length);
+      function validateLksgTable(columnHeaders: string[], vatIdNumberRowContent: string[]) {
+        expect(columnHeaders.length).to.equal(vatIdNumberRowContent.length);
         cy.get(".p-column-title").each((element, index, elements) => {
           expect(elements).to.have.length(columnHeaders.length + 1);
           if (index == 0) {
@@ -504,16 +517,20 @@ describe("The shared header of the framework pages should act as expected", { sc
             expect(element.text()).to.equal(columnHeaders[index - 1]);
           }
         });
-        cy.get(`tr:contains("${rowTitle}")`).find("td > span").each((element, index, elements) => {
-          expect(elements).to.have.length(rowContent.length + 1);
+        cy.get(`tr:contains("VAT Identification Number")`).find("td > span").each((element, index, elements) => {
+          expect(elements).to.have.length(vatIdNumberRowContent.length + 1);
           if (index == 0) {
-            expect(element.text()).to.equal(rowTitle);
+            expect(element.text()).to.equal("VAT Identification Number");
           } else {
-            expect(element.text()).to.equal(rowContent[index - 1]);
+            expect(element.text()).to.equal(vatIdNumberRowContent[index - 1]);
           }
         });
       }
-    }
+
+      function validateEUTaxonomyFinancialsTable(taxonomyEligibleEconomicActivityValueInPercent: string) {
+        cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
+            .find("[data-test='value']").should("have.text", taxonomyEligibleEconomicActivityValueInPercent);
+    }}
   );
 });
 // TODO test search from specific scenarios
