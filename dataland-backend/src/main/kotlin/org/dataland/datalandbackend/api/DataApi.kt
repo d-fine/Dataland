@@ -76,7 +76,7 @@ interface DataApi<T> {
      * @param companyId identifier of the company in Dataland
      * @param showOnlyActive if set to true, only active datasets will be returned (e.g. no outdated ones)
      * @param reportingPeriod identifies a specific reporting period (e.g. a year or quarter)
-     * @return a list of all datasets for this company, framework and
+     * @return a list of all datasets for the chosen company and framework, filtered by the chosen arguments
      */
     @Operation(
         summary = "Retrieve framework datasets with meta info.",

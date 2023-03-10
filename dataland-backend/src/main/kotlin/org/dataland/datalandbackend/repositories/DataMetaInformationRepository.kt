@@ -15,7 +15,7 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     /**
      * A function for searching for dataMetaInformation by dataType and companyId.
      * If companyId is not empty, then only metaInformation for data with that companyId is returned
-     * If an invalid companyId is supplied, no results are returned (but no errors is thrown)
+     * If an invalid companyId is supplied, no results are returned (but no error is thrown)
      * If dataType is not empty, then only metaInformation for data with that dataType is returned
      * If an invalid dataType is supplied, no results are returned (but no error is thrown)
      * If reportingPeriod is not empty, then only metaInformation for data with for that reportingPeriod is returned

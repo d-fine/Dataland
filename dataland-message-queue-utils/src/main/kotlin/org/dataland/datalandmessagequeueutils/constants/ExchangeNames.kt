@@ -1,7 +1,7 @@
 package org.dataland.datalandmessagequeueutils.constants
 
 /**
- * An enum with the values Yes and No to be used for fields backed by datapoints.
+ * Constants to be used as exchanges in rabbitmq.
  */
 
 object ExchangeNames {

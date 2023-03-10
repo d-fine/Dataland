@@ -267,7 +267,10 @@ class MetaDataControllerTest {
         subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
         Thread.sleep(1000)
 //        Override number of employees to identify the final uploaded dataset
-        val finalFrameWorkData = frameWorkData.copy(numberOfEmployees = BigDecimal.valueOf(3))
+        val newNumberOfEmployees =  (frameWorkData.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
+        val finalFrameWorkData = frameWorkData.copy(
+            numberOfEmployees = newNumberOfEmployees,
+        )
         subsequentUploadForVersionHistory(companyId, finalFrameWorkData, reportingPeriod1)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         Thread.sleep(1000)
@@ -296,9 +299,9 @@ class MetaDataControllerTest {
             "The active result should be the one with the highest uploadTime but it isn't.",
         )
         assertTrue(
-            (activeDataSet.data!!.numberOfEmployees == BigDecimal.valueOf(3)),
-            "The active dataset should have been manipulated to have a numberOfEmployees of three but the " +
-                "retrieved active data set does not.",
+            (activeDataSet.data!!.numberOfEmployees == newNumberOfEmployees),
+            "The active dataset should have been manipulated to have a numberOfEmployees " +
+                    "of the old one plus 1 but the retrieved active data set does not.",
         )
     }
 
