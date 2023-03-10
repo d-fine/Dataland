@@ -54,7 +54,6 @@ describe("Component tests for the DatasetOverview page", () => {
   it("Checks that the tab-bar is rendered correctly and that clicking on 'AVAILABLE DATASETS' performs a router push", () => {
     const keycloakMock = minimalKeycloakMock({});
     cy.intercept("**/api/companies?**", []);
-    const test = mount(DatasetOverview);
     cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
     }).then((mounted) => {
