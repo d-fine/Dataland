@@ -2,10 +2,10 @@
   <div v-if="displayWarning" data-test="datasetDisplayStatusContainer" class="flex w-full info-bar" style="min-height: 2rem">
     <span class="flex-1">{{ warningMessage }}</span>
     <router-link
-      v-if="linkToActivePage"
-      :to="linkToActivePage"
+      v-if="linkToTargetPage"
+      :to="linkToTargetPage"
       class="no-underline"
-      data-test="datasetStatusLinkToActive"
+      data-test="datasetDisplayStatusLink"
     >
       <PrimeButton :label="buttonLabel" icon="pi pi-stopwatch" />
     </router-link>
@@ -23,7 +23,7 @@ export default defineComponent({
     displayedDataset: {
       type: Object as PropType<DataMetaInformation>,
     },
-    linkToActivePage: {
+    linkToTargetPage: {
       type: String,
     },
   },

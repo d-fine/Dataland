@@ -20,7 +20,7 @@
 
     <template v-slot:content>
       <div v-if="isDataIdToDisplayFound">
-        <DatasetStatusIndicator :link-to-active-page="linkToActiveView" :displayed-dataset="dataMetaInfoForDisplay" />
+        <DatasetStatusIndicator :link-to-target-page="linkToActiveView" :displayed-dataset="dataMetaInfoForDisplay" />
         <div class="grid">
           <div class="col-12 text-left">
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizedDataDescription }}</h2>

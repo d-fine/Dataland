@@ -9,7 +9,7 @@
       <div v-if="isListOfDataIdsToDisplayFound">
         <DatasetStatusIndicator
           :displayed-dataset="singleDataMetaInfoToDisplay"
-          :link-to-active-page="linkToActiveView"
+          :link-to-target-page="linkToActiveView"
         />
 
         <div class="grid">
