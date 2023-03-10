@@ -1,8 +1,8 @@
 import Keycloak from "keycloak-js";
 
 export interface KeycloakMockConfiguration {
-    userId?: string;
-    roles?: Array<string>;
+  userId?: string;
+  roles?: Array<string>;
 }
 
 /**
@@ -12,19 +12,19 @@ export interface KeycloakMockConfiguration {
  * @returns a mocked keycloak object sufficient to trick the dataland frontend
  */
 export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak {
-    const mock = {
-        token: "mocked-token",
-        authenticated: true,
-        idTokenParsed: {
-            sub: config.userId || "mock-user-id",
-        },
-        realmAccess: {
-            roles: config.roles || ["ROLE_USER"],
-        },
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        updateToken(minValidity: number): void {
-            return;
-        },
-    };
-    return mock as Keycloak;
+  const mock = {
+    token: "mocked-token",
+    authenticated: true,
+    idTokenParsed: {
+      sub: config.userId || "mock-user-id",
+    },
+    realmAccess: {
+      roles: config.roles || ["ROLE_USER"],
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    updateToken(minValidity: number): void {
+      return;
+    },
+  };
+  return mock as Keycloak;
 }

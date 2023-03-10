@@ -10,30 +10,30 @@ import Keycloak from "keycloak-js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ComponentMountingOptions<T extends DefineComponent<any, any, any, any, any>> = Parameters<typeof mount<T>>[1] & {
-    router?: Router;
-    keycloak?: Keycloak;
+  router?: Router;
+  keycloak?: Keycloak;
 };
 
 declare global {
-    // eslint-disable-next-line @typescript-eslint/no-namespace
-    namespace Cypress {
-        interface Chainable {
-            /**
-             * Helper mount function for Vue Components
-             *
-             * @param component Vue Component or JSX Element to mount
-             * @param options Options passed to Vue Test Utils
-             */
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
-                component: T,
-                options: ComponentMountingOptions<T>
-            ): Cypress.Chainable<{
-                wrapper: VueWrapper<InstanceType<T>>;
-                component: VueWrapper<InstanceType<T>>["vm"];
-            }>;
-        }
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Helper mount function for Vue Components
+       *
+       * @param component Vue Component or JSX Element to mount
+       * @param options Options passed to Vue Test Utils
+       */
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
+        component: T,
+        options: ComponentMountingOptions<T>
+      ): Cypress.Chainable<{
+        wrapper: VueWrapper<InstanceType<T>>;
+        component: VueWrapper<InstanceType<T>>["vm"];
+      }>;
     }
+  }
 }
 
 /**
@@ -42,48 +42,49 @@ declare global {
  *
  * @param component the component you want to mount
  * @param options the options for mounting said component
+ * @returns mount the mount of the component
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
-    component: T,
-    options: ComponentMountingOptions<T>
+  component: T,
+  options: ComponentMountingOptions<T>
 ): Cypress.Chainable<{
-    wrapper: VueWrapper<InstanceType<T>>;
-    component: VueWrapper<InstanceType<T>>["vm"];
+  wrapper: VueWrapper<InstanceType<T>>;
+  component: VueWrapper<InstanceType<T>>["vm"];
 }> {
-    // Setup options object
-    options.global = options.global || {};
-    options.global.plugins = options.global.plugins || [];
-    options.global.plugins.push(createPinia());
-    options.global.plugins.push(PrimeVue);
-    options.global.plugins.push(DialogService);
-    options.global.provide = options.global.provide || {};
+  // Setup options object
+  options.global = options.global || {};
+  options.global.plugins = options.global.plugins || [];
+  options.global.plugins.push(createPinia());
+  options.global.plugins.push(PrimeVue);
+  options.global.plugins.push(DialogService);
+  options.global.provide = options.global.provide || {};
 
-    if (!options.router) {
-        options.router = createRouter({
-            routes: routes,
-            history: createMemoryHistory(),
-        });
-    }
-
-    if (options.keycloak) {
-        options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
-            return Promise.resolve(options.keycloak as Keycloak);
-        };
-        options.global.provide.authenticated = true;
-    }
-
-    options.global.plugins.push({
-        install(app) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            app.use(options.router);
-        },
+  if (!options.router) {
+    options.router = createRouter({
+      routes: routes,
+      history: createMemoryHistory(),
     });
+  }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return mount(component, options);
+  if (options.keycloak) {
+    options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
+      return Promise.resolve(options.keycloak as Keycloak);
+    };
+    options.global.provide.authenticated = true;
+  }
+
+  options.global.plugins.push({
+    install(app) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      app.use(options.router);
+    },
+  });
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return mount(component, options);
 }
 
 Cypress.Commands.add("mountWithPlugins", mountWithPlugins);
