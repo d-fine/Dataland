@@ -332,7 +332,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         // TODO check also for different starting scenarios, since this broke for Paul in some scenario
       });
 
-      it("Check that reporting period dropdown works as expected", () => {
+      it("Check that using back-button and dropdowns on the view-page work as expected", () => {
         cy.ensureLoggedIn();
         createAllInterceptsOnFrameworkViewPage();
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
@@ -411,7 +411,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateEligibleActivityValueForFinancialsDataset("26");
       });
 
-      it("Check that invalid data IDs or reporting periods in url don't break any user flow", () => {
+      it("Check that invalid data IDs or reporting periods in url don't break any user flow on the view-page", () => {
         const nonExistingDataId = "abcd123123123123123-non-existing";
         const nonExistingReportingPeriod = "999999";
         cy.ensureLoggedIn();
