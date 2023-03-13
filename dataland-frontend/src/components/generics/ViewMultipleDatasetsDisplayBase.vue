@@ -9,7 +9,10 @@
       <div v-if="isListOfDataIdsToDisplayFound">
         <DatasetDisplayStatusIndicator
           :displayed-dataset="singleDataMetaInfoToDisplay"
-          :link-to-target-page="linkToActiveView"
+          :received-map-of-reporting-periods-to-active-data-meta-info="
+            receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo
+          "
+          :is-multiview="true"
         />
 
         <div class="grid">
@@ -107,17 +110,6 @@ export default defineComponent({
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
-  },
-  computed: {
-    linkToActiveView() {
-      const activeDatasetAvailable =
-        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo &&
-        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size > 0;
-
-      if (this.companyId && this.dataType && activeDatasetAvailable)
-        return `/companies/${this.companyId}/frameworks/${this.dataType}`;
-      return undefined;
-    },
   },
   watch: {
     dataId(newDataId: string) {

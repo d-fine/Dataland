@@ -20,7 +20,12 @@
 
     <template v-slot:content>
       <div v-if="isDataIdToDisplayFound">
-        <DatasetDisplayStatusIndicator :link-to-target-page="linkToActiveView" :displayed-dataset="dataMetaInfoForDisplay" />
+        <DatasetDisplayStatusIndicator
+          :displayed-dataset="dataMetaInfoForDisplay"
+          :received-map-of-reporting-periods-to-active-data-meta-info="
+            receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo
+          "
+        />
         <div class="grid">
           <div class="col-12 text-left">
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizedDataDescription }}</h2>
@@ -148,26 +153,7 @@ export default defineComponent({
         return this.dataMetaInfoForDisplay?.dataId;
       } else return "loading";
     },
-    linkToActiveView() {
-      const currentReportingPeriod = this.dataMetaInfoForDisplay?.reportingPeriod;
-      const thereIsAnActiveDatasetForTheCurrentReportingPeriod =
-        currentReportingPeriod &&
-        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(currentReportingPeriod)?.currentlyActive;
-
-      if (
-        this.companyId &&
-        this.dataType &&
-        currentReportingPeriod &&
-        thereIsAnActiveDatasetForTheCurrentReportingPeriod
-      )
-        return (
-          `/companies/${this.companyId}/frameworks/${this.dataType}` +
-          `/reportingPeriods/${assertDefined(this.dataMetaInfoForDisplay?.reportingPeriod)}`
-        );
-      return undefined;
-    },
   },
-
   methods: {
     /**
      * Method to prepare the display of given data meta information
