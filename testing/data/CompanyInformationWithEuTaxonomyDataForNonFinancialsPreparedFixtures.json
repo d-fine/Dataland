@@ -3,217 +3,208 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Nicolay, Riedel und Frey"
+				"Franzmann KG",
+				"Molitor GmbH",
+				"Oeser GmbH",
+				"Schönball, Fietz und Plauk"
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
-			"headquarters": "Cedrikland",
-			"headquartersPostalCode": "70318",
-			"sector": "metrics",
+			"headquarters": "Süd Adriano",
+			"headquartersPostalCode": "90811",
+			"sector": "action-items",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "mqj5fjcejpfmc2k"
-				},
-				{
 					"identifierType": "Duns",
-					"identifierValue": "i5cohur1u"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "zvmziagsu49d"
+					"identifierValue": "7nthmfm55"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "9edjpp4w06v03gnwpgva"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "v4mcp14j67"
+					"identifierValue": "3lgcxwr9pbfxlu76oaua"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "tifgnux"
+					"identifierValue": "q95kate"
 				}
 			],
-			"countryCode": "NL",
+			"countryCode": "MO",
 			"isTeaserCompany": false,
-			"website": "http://kantig-weizen.info"
+			"website": "https://tapfer-knie.net"
 		},
 		"t": {
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "http://zuvorkommend-haut.info/verbindlich-zeit.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-03-06",
-					"currency": "XCD"
-				},
 				"ESEFReport": {
-					"reference": "https://offensiv-gesellschaft.org/umfassend-atom.pdf",
-					"currency": "KRW"
+					"reference": "http://physikalisch-meter.com/l%C3%A4ssig-legierung.pdf",
+					"reportDate": "2022-11-18",
+					"currency": "UAH"
+				},
+				"IntegratedReport": {
+					"reference": "http://xn--schpferisch-gebirge-s6b.com/fabelhaft-geburtenkontrolle.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "CHF"
+				},
+				"AnnualReport": {
+					"reference": "https://erstrangig-neutron.de/wohltuend-metallurgie.pdf",
+					"currency": "BTN"
+				},
+				"SustainabilityReport": {
+					"reference": "http://xn--kunstvoll-mdchen-5nb.info/%C3%B6rtlich-petroleum.pdf",
+					"isGroupLevel": "NA",
+					"currency": "XCD"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-10-03",
+			"fiscalYearDeviation": "Deviation",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 643,
+					"report": "ESEFReport",
+					"tagName": "architectures"
+				}
 			},
 			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.3942,
-					"dataSource": {
-						"page": 666,
-						"report": "ESEFReport",
-						"tagName": "blockchains"
-					},
-					"quality": "Reported",
-					"comment": "calculate bluetooth array"
+					"value": 0.9117,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.8015,
-					"dataSource": {
-						"page": 1066,
-						"report": "IntegratedReport",
-						"tagName": "networks"
-					},
-					"quality": "Audited",
-					"comment": "input neural application"
+					"value": 0.7058,
+					"quality": "Incomplete"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.2145,
+					"value": 0.5921,
 					"dataSource": {
-						"page": 558,
+						"page": 872,
 						"report": "IntegratedReport",
-						"tagName": "technologies"
+						"tagName": "paradigms"
 					},
-					"quality": "Reported",
-					"comment": "reboot mobile firewall"
+					"quality": "Estimated",
+					"comment": "back up multi-byte firewall"
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2022"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Bultmann OHG",
-				"Koha AG",
-				"Mulrain, Huls und Helmke",
-				"Schütze, Reichel und Freisen"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"headquarters": "Stifeldorf",
-			"headquartersPostalCode": "51222",
-			"sector": "infrastructures",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"headquarters": "Bad Jil",
+			"sector": "e-commerce",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "ew9voewzg12sfik"
+					"identifierValue": "x88h2rs6x25w2o9"
 				},
 				{
-					"identifierType": "Duns",
-					"identifierValue": "2xoln7bys"
+					"identifierType": "Lei",
+					"identifierValue": "o7wazfr1j29r6td8vxmw"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "9ey2ihn"
+					"identifierValue": "vkjjkya"
 				}
 			],
-			"countryCode": "AS",
+			"countryCode": "SL",
 			"isTeaserCompany": false,
-			"website": "https://jovial-mais.name"
+			"website": "https://modern-abtreibung.net"
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "http://xn--ntzlich-kse-t8a71a.de/ruhevoll-brot.pdf",
-					"isGroupLevel": "NA",
-					"currency": "DOP"
-				},
-				"AnnualReport": {
-					"reference": "http://trocken-bein.de/wahrheitsliebend-sache.pdf",
-					"isGroupLevel": "NA",
-					"currency": "MMK"
-				},
 				"ESEFReport": {
-					"reference": "http://anmutig-schlafzimmer.ch/erlesen-treppe.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-09-12",
-					"currency": "GIP"
+					"reference": "https://wagemutig-haut.name/facettenreich-fernsehen.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-10-30",
+					"currency": "BOB"
+				},
+				"IntegratedReport": {
+					"reference": "http://unternehmungsfreudig-diamant.org/gl%C3%BCcklich-spiel.pdf",
+					"currency": "TOP"
 				}
 			},
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-07-13",
+			"fiscalYearEnd": "2022-07-26",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Rabenstein GmbH & Co. KG"
+				"assurance": "LimitedAssurance",
+				"provider": "Obergföll GmbH & Co. KG",
+				"dataSource": {
+					"page": 333,
+					"report": "ESEFReport",
+					"tagName": "metrics"
+				}
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "Yes",
+			"scopeOfEntities": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 57306.51,
+					"value": 239809.88,
 					"dataSource": {
-						"page": 70,
-						"report": "AnnualReport",
-						"tagName": "bandwidth"
+						"page": 939,
+						"report": "IntegratedReport",
+						"tagName": "ROI"
 					},
-					"quality": "Estimated",
-					"comment": "input online alarm"
+					"quality": "Incomplete",
+					"comment": "synthesize mobile system"
 				},
 				"eligiblePercentage": {
-					"value": 0.964,
+					"value": 0.5176,
 					"dataSource": {
-						"page": 447,
-						"report": "SustainabilityReport",
-						"tagName": "web services"
+						"page": 29,
+						"report": "ESEFReport",
+						"tagName": "experiences"
 					},
-					"quality": "Audited",
-					"comment": "program 1080p hard drive"
+					"quality": "Reported",
+					"comment": "compress open-source port"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 688963.6,
+					"value": 145324.8,
 					"dataSource": {
-						"page": 859,
-						"report": "AnnualReport",
-						"tagName": "networks"
+						"page": 69,
+						"report": "ESEFReport",
+						"tagName": "e-business"
 					},
-					"quality": "Incomplete",
-					"comment": "program bluetooth capacitor"
+					"quality": "Audited",
+					"comment": "input online hard drive"
 				},
 				"eligiblePercentage": {
-					"value": 0.7072,
+					"value": 0.0636,
 					"dataSource": {
-						"page": 238,
-						"report": "SustainabilityReport",
-						"tagName": "methodologies"
+						"page": 13,
+						"report": "ESEFReport",
+						"tagName": "interfaces"
 					},
-					"quality": "Estimated",
-					"comment": "input multi-byte driver"
+					"quality": "Reported",
+					"comment": "reboot open-source microchip"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 329565.81,
+					"value": 172292.68,
 					"dataSource": {
-						"page": 622,
-						"report": "ESEFReport",
-						"tagName": "technologies"
+						"page": 117,
+						"report": "IntegratedReport",
+						"tagName": "methodologies"
 					},
-					"quality": "Audited",
-					"comment": "synthesize virtual hard drive"
+					"quality": "Estimated",
+					"comment": "bypass cross-platform firewall"
 				},
 				"eligiblePercentage": {
-					"value": 0.5426,
-					"quality": "Estimated"
+					"value": 0.7006,
+					"dataSource": {
+						"page": 1121,
+						"report": "ESEFReport",
+						"tagName": "e-business"
+					},
+					"quality": "Estimated",
+					"comment": "override neural circuit"
 				}
 			}
 		},
