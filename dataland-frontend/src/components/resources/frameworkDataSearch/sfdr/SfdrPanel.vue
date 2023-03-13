@@ -6,7 +6,7 @@
   <div v-if="kpiDataObjects.length && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :reportingPeriodsOfDataSets="listOfReportingPeriodsToDisplayAsColumns"
+      :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
       :kpiNameMappings="sfdrKpisNameMappings"
       :kpiInfoMappings="sfdrKpisInfoMappings"
       :subAreaNameMappings="sfdrSubAreasNameMappings"
@@ -37,7 +37,7 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       sfdrDataAndMetaInfo: [] as Array<DataAndMetaInformationSfdrData>,
-      listOfReportingPeriodsToDisplayAsColumns: [] as Array<{ dataId: string; reportingPeriod: string }>,
+      listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       sfdrKpisNameMappings,
       sfdrKpisInfoMappings,
@@ -55,14 +55,14 @@ export default defineComponent({
   watch: {
     companyId() {
       console.log("companyId watcher executes in SfdrPanel"); //TODO
-      this.listOfReportingPeriodsToDisplayAsColumns = [];
+      this.listOfColumnIdentifierObjects = [];
       void this.fetchData();
     },
     singleDataMetaInfoToDisplay() {
       console.log("singleDataMetaInfoToDisplay watcher executes in SfdrPanel"); //TODO
       if (!this.firstRender) {
         console.log("singleDataMetaInfoToDisplay watcher in SfdrPanel: no first render => fetch data"); // TODO
-        this.listOfReportingPeriodsToDisplayAsColumns = [];
+        this.listOfColumnIdentifierObjects = [];
         void this.fetchData();
       }
     },
@@ -147,7 +147,7 @@ export default defineComponent({
           const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
           //const dataDateOfSfdrDataset = oneSfdrDataset.data.social?.general?.fiscalYearEnd ?? "";
           const reportingPeriodOfSfdrDataset = oneSfdrDataset.metaInfo?.reportingPeriod ?? "";
-          this.listOfReportingPeriodsToDisplayAsColumns.push({
+          this.listOfColumnIdentifierObjects.push({
             dataId: dataIdOfSfdrDataset,
             reportingPeriod: reportingPeriodOfSfdrDataset,
           });
@@ -160,8 +160,8 @@ export default defineComponent({
           }
         });
       }
-      this.listOfReportingPeriodsToDisplayAsColumns = sortReportingPeriodsToDisplayAsColumns(
-        this.listOfReportingPeriodsToDisplayAsColumns
+      this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(
+        this.listOfColumnIdentifierObjects
       );
     },
   },

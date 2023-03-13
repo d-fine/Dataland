@@ -269,7 +269,6 @@ export default defineComponent({
       this.createListOfDataMetaInfoForDisplayedDatasets().catch((err) =>
         console.log("Retrieving data meta info failed with error " + String(err))
       );
-      // TODO can we remove the sorting logic for same-year datasets from the lksg-view-page now?  because we receive only one per year now (because of "latest" setting)
       this.isWaitingForListOfDataIdsToDisplay = false;
     },
   },

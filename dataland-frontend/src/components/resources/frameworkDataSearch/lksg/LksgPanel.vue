@@ -6,7 +6,7 @@
   <div v-if="kpiDataObjects.length && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :reportingPeriodsOfDataSets="listOfReportingPeriodsToDisplayAsColumns"
+      :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
       :kpiNameMappings="lksgKpisNameMappings"
       :kpiInfoMappings="lksgKpisInfoMappings"
       :subAreaNameMappings="lksgSubAreasNameMappings"
@@ -37,7 +37,7 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
-      listOfReportingPeriodsToDisplayAsColumns: [] as Array<{ dataId: string; reportingPeriod: string }>,
+      listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       lksgKpisNameMappings,
       lksgKpisInfoMappings,
@@ -55,14 +55,14 @@ export default defineComponent({
   watch: {
     companyId() {
       console.log("companyId watcher executes in LksgPanel"); //TODO
-      this.listOfReportingPeriodsToDisplayAsColumns = [];
+      this.listOfColumnIdentifierObjects = [];
       void this.fetchData();
     },
     singleDataMetaInfoToDisplay() {
       console.log("singleDataMetaInfoToDisplay watcher executes in LksgPanel"); //TODO
       if (!this.firstRender) {
         console.log("singleDataMetaInfoToDisplay watcher in LksgPanel: no first render => fetch data"); // TODO
-        this.listOfReportingPeriodsToDisplayAsColumns = [];
+        this.listOfColumnIdentifierObjects = [];
         void this.fetchData();
       }
     },
@@ -148,7 +148,7 @@ export default defineComponent({
           const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
           // const dataDateOfLksgDataset = oneLksgDataset.data.social?.general?.dataDate ?? "";
           const reportingPeriodOfLksgDataset = oneLksgDataset.metaInfo?.reportingPeriod ?? "";
-          this.listOfReportingPeriodsToDisplayAsColumns.push({
+          this.listOfColumnIdentifierObjects.push({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
@@ -161,8 +161,8 @@ export default defineComponent({
           }
         });
       }
-      this.listOfReportingPeriodsToDisplayAsColumns = sortReportingPeriodsToDisplayAsColumns(
-        this.listOfReportingPeriodsToDisplayAsColumns
+      this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(
+        this.listOfColumnIdentifierObjects
       );
     },
 
