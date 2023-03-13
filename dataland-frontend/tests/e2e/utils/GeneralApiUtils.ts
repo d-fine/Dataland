@@ -1,6 +1,6 @@
 import { CompanyDataControllerApi, Configuration, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { RouteHandler } from "cypress/types/net-stubbing";
-import { FixtureData } from "../fixtures/FixtureUtils";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 
 export interface UploadIds {
   companyId: string;

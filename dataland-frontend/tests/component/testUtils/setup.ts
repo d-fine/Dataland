@@ -42,6 +42,7 @@ declare global {
  *
  * @param component the component you want to mount
  * @param options the options for mounting said component
+ * @returns TODO ???
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(

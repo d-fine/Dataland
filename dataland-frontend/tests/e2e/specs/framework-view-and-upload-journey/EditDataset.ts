@@ -10,7 +10,7 @@ import {
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
-import { describeIf } from "../../support/TestUtility"; // TODO use @ in path
+import { describeIf } from "@e2e/support/TestUtility";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",

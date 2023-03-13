@@ -23,7 +23,6 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
     createAssetManagementCompany,
     createAllValuesCompany,
     createCreditInstitutionWithEligibleActivity26,
-    createCreditInstitutionWithEligibleActivity29,
     createCreditInstitutionWithEligibleActivity292,
   ];
   const fixtureBase = generateFixtureDataset<EuTaxonomyDataForFinancials>(
@@ -177,22 +176,12 @@ function createAllValuesCompany(
   return input;
 }
 
-function createCreditInstitutionWithEligibleActivity29(
-  input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForFinancials> {
-  input.companyInformation.companyName = "eligible-activity-Point-29";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
-  input.t.eligibilityKpis = {
-    CreditInstitution: {
-      taxonomyEligibleActivity: {
-        value: 0.29,
-        quality: QualityOptions.Reported,
-      },
-    },
-  };
-  return input;
-}
-
+/**
+ * Creates a fixture of a credit institution, but sets the value "taxonomyEligibleActivity" to the value 0.292.
+ *
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
 function createCreditInstitutionWithEligibleActivity292(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {
@@ -209,6 +198,12 @@ function createCreditInstitutionWithEligibleActivity292(
   return input;
 }
 
+/**
+ * Creates a fixture of a credit institution, but sets the value "taxonomyEligibleActivity" to the value 0.26.
+ *
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
 function createCreditInstitutionWithEligibleActivity26(
   input: FixtureData<EuTaxonomyDataForFinancials>
 ): FixtureData<EuTaxonomyDataForFinancials> {

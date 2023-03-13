@@ -30,7 +30,7 @@
               name="reportingPeriod"
               label="Reporting Period"
               placeholder="Reporting Period"
-              v-model="yearOfDataDate"
+              :model-value="reportingPeriodValue"
               disabled="true"
             />
             <FormKit type="group" name="data" label="data">
@@ -1148,7 +1148,7 @@ import {
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { InHouseProductionOrContractProcessing } from "@clients/backend";
+import { CompanyAssociatedDataLksgData, InHouseProductionOrContractProcessing } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DateFormatUtils";
 
@@ -1179,7 +1179,8 @@ export default defineComponent({
       waitingForData: false,
       dataDate: undefined as Date | undefined,
       convertedDataDate: "",
-      lkSGDataModel: {} as object,
+      yearOfDataDate: "",
+      lkSGDataModel: {} as CompanyAssociatedDataLksgData,
       route: useRoute(),
       message: "",
       uploadSucceded: false,
@@ -1205,6 +1206,11 @@ export default defineComponent({
       getHyphenatedDate,
       updatingData: false,
     };
+  },
+  computed: {
+    reportingPeriodValue(): string {
+      return this.updatingData ? (this.lkSGDataModel?.reportingPeriod as string) : this.yearOfDataDate;
+    },
   },
   props: {
     companyID: {
@@ -1279,7 +1285,7 @@ export default defineComponent({
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
       }
-      this.lkSGDataModel.data = lksgDataset.data;
+      this.lkSGDataModel = lksgDataset;
       this.waitingForData = false;
     },
     /**

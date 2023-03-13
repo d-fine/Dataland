@@ -24,3 +24,5 @@ export function sortReportingPeriodsToDisplayAsColumns(
     }
   });
 }
+
+// TODO Emanuel:  Is this being tested?

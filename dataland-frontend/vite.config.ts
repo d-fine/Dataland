@@ -50,6 +50,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@clients": path.resolve(__dirname, "./build/clients"),
+      "@ct": path.resolve(__dirname, "./tests/component")
     },
   },
   build: {

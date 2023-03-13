@@ -81,6 +81,13 @@ function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureDat
   return input;
 }
 
+/**
+ * Sets the company name, vat identification number, data date and reporting period in the fixture data to
+ * specific values needed for tests.
+ *
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
 function manipulateFixtureForVat20231(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "vat-2023-1";
   input.t.social!.general!.vatIdentificationNumber = "2023-1";
@@ -89,6 +96,13 @@ function manipulateFixtureForVat20231(input: FixtureData<LksgData>): FixtureData
   return input;
 }
 
+/**
+ * Sets the company name, vat identification number, data date and reporting period in the fixture data to
+ * specific values needed for tests.
+ *
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
 function manipulateFixtureForVat20232(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "vat-2023-2";
   input.t.social!.general!.vatIdentificationNumber = "2023-2";
@@ -97,6 +111,13 @@ function manipulateFixtureForVat20232(input: FixtureData<LksgData>): FixtureData
   return input;
 }
 
+/**
+ * Sets the company name, vat identification number, data date and reporting period in the fixture data to
+ * specific values needed for tests.
+ *
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
 function manipulateFixtureForVat2022(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "vat-2022";
   input.t.social!.general!.vatIdentificationNumber = "2022";

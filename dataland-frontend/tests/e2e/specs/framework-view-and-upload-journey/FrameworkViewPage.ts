@@ -50,13 +50,21 @@ describe("The shared header of the framework pages should act as expected", { sc
       const nonExistingDataId = "abcd123123123123123-non-existing";
       const nonExistingReportingPeriod = "999999";
 
-      function createAllInterceptsOnFrameworkViewPage() {
+      /**
+       * Creates interceptions for all three requests which are sent when you visit the view-page from somewhere else.
+       *
+       */
+      function createAllInterceptsOnFrameworkViewPage(): void {
         cy.intercept("/api/companies/**-**-**").as("getCompanyInformation");
         cy.intercept("/api/metadata**").as("getMetaDataForCompanyId");
         cy.intercept("/api/data/**").as("getFrameworkData");
       }
 
-      function waitForAllInterceptsOnFrameworkViewPage() {
+      /**
+       * Waits for all three requests which are sent when you visit the view-page from somewhere else.
+       *
+       */
+      function waitForAllInterceptsOnFrameworkViewPage(): void {
         cy.wait(["@getCompanyInformation", "@getMetaDataForCompanyId", "@getFrameworkData"], {
           timeout: Cypress.env("long_timeout_in_ms") as number,
         });
@@ -82,13 +90,12 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Visits the search page with the framework query param set, type a search string into the search bar and click
-       * the first suggestion.
+       * Types a search string into the searchbar and clicks on the first autocomplete suggestion.
        *
        * @param searchString The search string to type into the search bar
        * @param searchBarSelector The selector to select the correct search bar from the DOM
        */
-      function searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(
+      function typeSearchStringIntoSearchBarAndSelectFirstSuggestion(
         searchString: string,
         searchBarSelector = "input#search_bar_top"
       ): void {
@@ -102,9 +109,10 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Validates if the dropdown label and the items in the dropdown equal the expected values. TODO
+       * Validates that the view-page is currently set to the expected framework by checking the url and the
+       * chosen option in the frameworks-dropdown.
        *
-       * @param expectedChosenFramework The expected label of the dropdown
+       * @param expectedChosenFramework The framework wich is expected to be currently set
        */
       function validateChosenFramework(expectedChosenFramework: string): void {
         cy.url().should("contain", `/frameworks/${expectedChosenFramework}`);
@@ -115,7 +123,14 @@ describe("The shared header of the framework pages should act as expected", { sc
           .should("have.text", humanizeString(expectedChosenFramework));
       }
 
-      function validateChosenReportingPeriod(expectedChosenReportingPeriod: string, skipUrlCheck = false) {
+      /**
+       * Validates that the view-page is currently set to the expected reporting period by checking the url and
+       * the chosen option in the reporting-periods-dropdown.
+       *
+       * @param expectedChosenReportingPeriod The reporting period wich is expected to be currently set
+       * @param skipUrlCheck This flag makes it possible to skip the url-check
+       */
+      function validateChosenReportingPeriod(expectedChosenReportingPeriod: string, skipUrlCheck = false): void {
         if (!skipUrlCheck) {
           cy.url().should("contain", `/reportingPeriods/${expectedChosenReportingPeriod}`);
         }
@@ -125,7 +140,13 @@ describe("The shared header of the framework pages should act as expected", { sc
           .should("have.text", expectedChosenReportingPeriod);
       }
 
-      function validateDropdownOptions(dropdownSelector: string, expectedDropdownOptions: Set<string>) {
+      /**
+       * Validates that a specific dropdown contains some expected options.
+       *
+       * @param dropdownSelector The selector to be used to identify the dropdown which needs to be validated
+       * @param expectedDropdownOptions The expected options for this dropdown
+       */
+      function validateDropdownOptions(dropdownSelector: string, expectedDropdownOptions: Set<string>): void {
         cy.get(dropdownSelector).click();
         let optionsCounter = 0;
         cy.get(dropdownItemsSelector)
@@ -145,7 +166,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        *
        * @param expectedEligibleActiviyValue The text/value which is expected
        */
-      function validateEligibleActivityValueForFinancialsDataset(expectedEligibleActiviyValue: string) {
+      function validateEligibleActivityValueForFinancialsDataset(expectedEligibleActiviyValue: string): void {
         cy.get(`div:contains("Taxonomy-eligible economic activity")`)
           .siblings(`div:contains(${expectedEligibleActiviyValue})`)
           .should("exist");
@@ -157,7 +178,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        *
        * @param expectedReportingPeriods The set of expected reporting periods to be displayed
        */
-      function validateOneColumnPerExpectedReportingPeriod(expectedReportingPeriods: Set<string>) {
+      function validateOneColumnPerExpectedReportingPeriod(expectedReportingPeriods: Set<string>): void {
         expectedReportingPeriods.forEach((singleReportingPeriod) => {
           cy.get(`span.p-column-title:contains(${singleReportingPeriod})`).should("have.length", 1);
         });
@@ -167,7 +188,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * Checks if none of the currently three possible error-blocks on the view-page are rendered.
        *
        */
-      function validateNoErrorMessagesAreShown() {
+      function validateNoErrorMessagesAreShown(): void {
         getElementAndAssertExistence("noDataForThisFrameworkPresentErrorIndicator", "not.exist");
         getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "not.exist");
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "not.exist");
@@ -191,7 +212,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
         cy.get(frameworkDropdownSelector).click();
-        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(frameworkToSelect)}`).click({ force: true });
+        cy.get(`${dropdownItemsSelector}:contains(${humanizeString(frameworkToSelect)})`).click({ force: true });
       }
 
       /**
@@ -212,8 +233,8 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Uploads a specific company and LkSG dataset from the prepared fixtures, then EU Taxonomy data for financial
-       * companies for that company.
+       * Uploads the test company "Alpha" with its datasets.
+       *
        */
       function uploadCompanyAlphaAndData(): void {
         const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 2000;
@@ -298,6 +319,10 @@ describe("The shared header of the framework pages should act as expected", { sc
         });
       }
 
+      /**
+       * Uploads the test company "Beta" with its datasets.
+       *
+       */
       function uploadCompanyBetaAndData(): void {
         getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
@@ -337,7 +362,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.visit(`/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}`);
         cy.wait("@firstLoadOfSearchPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
         createAllInterceptsOnFrameworkViewPage();
-        searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha);
+        typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha);
         waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
 
@@ -368,7 +393,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           waitForAllInterceptsOnFrameworkViewPage();
           validateChosenFramework(DataTypeEnum.Sfdr);
 
-          searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelector);
+          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelector);
 
           waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
@@ -377,7 +402,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           cy.visit(
             `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`
           );
-          searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, searchBarSelector);
+          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, searchBarSelector);
 
           waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyAlpha);
@@ -386,7 +411,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           cy.visit(
             `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
           );
-          searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelector);
+          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelector);
 
           waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
@@ -577,6 +602,11 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateEUTaxonomyFinancialsTable("29");
       });
 
+      /**
+       * Validates that the "outdated" indicator is present together with a button to view the active dataset for this
+       * reporting period.
+       *
+       */
       function validateOutdatedBarAndGetButton() {
         return cy.contains("This dataset is outdated").parent().find("button > span:contains('View Active')");
       }
@@ -587,7 +617,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param columnHeaders The expected values in the headers of the LkSG dataset columns
        * @param vatIdNumberRowContent The expected values in the row of the VAT identification number field
        */
-      function validateLksgTable(columnHeaders: string[], vatIdNumberRowContent: string[]) {
+      function validateLksgTable(columnHeaders: string[], vatIdNumberRowContent: string[]): void {
         expect(columnHeaders.length).to.equal(vatIdNumberRowContent.length);
         cy.get(".p-column-title").each((element, index, elements) => {
           expect(elements).to.have.length(columnHeaders.length + 1);
@@ -609,11 +639,11 @@ describe("The shared header of the framework pages should act as expected", { sc
           });
       }
 
-      function validateEUTaxonomyFinancialsTable(taxonomyEligibleEconomicActivityValueInPercent: string) {
+      function validateEUTaxonomyFinancialsTable(taxonomyEligibleEconomicActivityValueInPercent: string): void {
         cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
           .find("[data-test='value']")
           .should("have.text", taxonomyEligibleEconomicActivityValueInPercent);
-      }
+      } // TODO @Florian => with this we can delete "validateEligibleActivityValueForFinancialsDataset()" and replace it with this method, right?
     }
   );
 });

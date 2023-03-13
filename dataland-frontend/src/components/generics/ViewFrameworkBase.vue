@@ -141,7 +141,10 @@ export default defineComponent({
   },
   computed: {
     canEdit() {
-      return ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum);
+      return (
+        ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum) &&
+        (!this.singleDataMetaInfoToDisplay || this.singleDataMetaInfoToDisplay.currentlyActive)
+      );
     },
   },
   created() {
@@ -264,7 +267,14 @@ export default defineComponent({
       return listOfDataMetaInfo.filter((dataMetaInfo) => dataMetaInfo.dataType === this.dataType);
     },
 
-    buildMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
+    /**
+     * Uses a list of data meta info to set a map which has the distinct repoting periods as keys, and the respective
+     * active data meta info as value.
+     * It only takes into account data meta info whose dataType equals the current dataType prop value.
+     *
+     * @param listOfActiveDataMetaInfo The list to be used as input for the map.
+     */
+    setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
       listOfActiveDataMetaInfo: DataMetaInformation[]
     ) {
       this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
@@ -282,7 +292,8 @@ export default defineComponent({
     /**
      * Goes through all data meta info for the currently viewed company and does two things.
      * First it sets the distinct frameworks as options in the framework-dropdown.
-     * Finally it emits a list with data meta info elements for all active datasets for this company. TODO
+     * Then it builds a map which - for the currently chosen framework - maps all reporting periods to the data meta
+     * info of the currently active dataset.
      */
     async getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit() {
       try {
@@ -294,7 +305,7 @@ export default defineComponent({
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
-        this.buildMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
+        this.setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
         this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);

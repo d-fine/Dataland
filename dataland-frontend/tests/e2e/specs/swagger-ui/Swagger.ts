@@ -1,4 +1,4 @@
-import { getBaseUrl } from "../../utils/Cypress";
+import { getBaseUrl } from "@e2e/utils/Cypress";
 
 describe("As a user, I want to be able to use the swagger UI to send requests to the backend", () => {
   it("Checks that one is able to open swagger and send a request", () => {
