@@ -5,6 +5,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { shallowMount } from "@vue/test-utils";
 import { nextTick } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { minimalKeycloakMock } from "@ct/testUtils/keycloak";
 
 describe("Component test for ViewFrameworkBase", () => {
   it("Should display only accepted datasets", () => {
@@ -117,4 +118,75 @@ describe("Component test for ViewFrameworkBase", () => {
       );
     });
   });
+
+  it("Should not display the edit and create new dataset button on the framework view page for a data reader", () => {
+    const keycloakMock = minimalKeycloakMock({});
+    cy.intercept("**/api/metadata**", []);
+    cy.mountWithPlugins(ViewFrameworkBase, {
+      keycloak: keycloakMock,
+      global: {
+        stubs: ["CompanyInformation"],
+      },
+    }).then((mounted) => {
+      void mounted.wrapper.setProps({
+        dataType: DataTypeEnum.Lksg,
+        companyID: "mock-company-id",
+      });
+      cy.get("button[data-test=editDatasetButton]").should("not.exist");
+      cy.get("a[data-test=gotoNewDatasetButton]").should("not.exist");
+    });
+  });
+
+  it(
+    "Should display the edit and crate new dataset button for users with " +
+      "upload permission and framework with edit page",
+    () => {
+      const keycloakMock = minimalKeycloakMock({
+        roles: ["ROLE_USER", "ROLE_UPLOADER"],
+      });
+      cy.intercept("**/api/metadata**", []);
+      cy.mountWithPlugins(ViewFrameworkBase, {
+        keycloak: keycloakMock,
+        global: {
+          stubs: ["CompanyInformation"],
+        },
+      }).then((mounted) => {
+        void mounted.wrapper.setProps({
+          dataType: DataTypeEnum.Lksg,
+          companyID: "mock-company-id",
+        });
+        cy.get("a[data-test=gotoNewDatasetButton] > button").should("exist");
+        cy.get("button[data-test=editDatasetButton]").should("exist");
+      });
+    }
+  );
+
+  it(
+    "Should display the add new dataset button, but not the edit button " +
+      "on framework-view-pages for which no edit functionality has been implemented",
+    () => {
+      const keycloakMock = minimalKeycloakMock({
+        roles: ["ROLE_USER", "ROLE_UPLOADER"],
+      });
+      cy.intercept("**/api/metadata**", []);
+      cy.mountWithPlugins(ViewFrameworkBase, {
+        keycloak: keycloakMock,
+        global: {
+          stubs: ["CompanyInformation"],
+        },
+      }).then((mounted) => {
+        void mounted.wrapper.setProps({
+          dataType: DataTypeEnum.Sfdr,
+          companyID: "mock-company-id",
+        });
+        cy.get("a[data-test=gotoNewDatasetButton] > button").should("exist");
+        cy.get("a[data-test=gotoNewDatasetButton]").should(
+          "have.attr",
+          "href",
+          "/companies/mock-company-id/frameworks/upload"
+        );
+        cy.get("button[data-test=editDatasetButton]").should("not.exist");
+      });
+    }
+  );
 });
