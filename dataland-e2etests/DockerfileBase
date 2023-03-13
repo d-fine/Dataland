@@ -1,10 +1,13 @@
 # This is an image that has node, cypress os dependencies and a jdk included. It can be used to execute Java or Node Stuff
-FROM cypress/base:18.12.1
+FROM cypress/base:18.14.1
 RUN apt-get update && \
-    apt-get install -y wget curl apt-transport-https gnupg && \
-    wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add - && echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list && \
+    apt-get install -y wget curl apt-transport-https gnupg ca-certificates && \
+    mkdir -p /etc/apt/keyrings && \
+    wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/keyrings/adoptium.asc && \
+    echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list && \
     apt-get remove -y apt-transport-https gnupg && \
     apt-get update && \
+    mkdir -p /usr/share/man/man1 && \
     apt-get install -y temurin-17-jdk && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*

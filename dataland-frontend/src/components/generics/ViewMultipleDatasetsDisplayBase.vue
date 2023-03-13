@@ -10,8 +10,7 @@
         <DatasetStatusIndicator
           :displayed-dataset="singleDataMetaInfoToDisplay"
           :link-to-active-page="linkToActiveView"
-        >
-        </DatasetStatusIndicator>
+        />
 
         <div class="grid">
           <div class="col-12 text-left">
@@ -45,7 +44,8 @@
       </div>
       <div v-if="isDataIdInUrlInvalid" data-test="noDataForThisDataIdPresentErrorIndicator">
         <h2>
-          No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company.
+          No {{ humanizedDataDescription }} data could be found for the data ID passed in the URL for this company and
+          framework.
         </h2>
       </div>
       <div v-if="isReportingPeriodInUrlInvalid" data-test="noDataForThisReportingPeriodPresentErrorIndicator">
@@ -121,7 +121,6 @@ export default defineComponent({
   },
   watch: {
     dataId(newDataId: string) {
-      console.log("dataID watcher in Multi-View component executed"); // TODO
       if (newDataId) {
         this.setFlagsToDataNotFoundState();
         void this.getMetaDataForDataId(newDataId);
@@ -132,7 +131,6 @@ export default defineComponent({
       }
     },
     reportingPeriod(newReportingPeriod: string) {
-      console.log("reportingPeriod watcher in Multi-View component executed"); // TODO
       if (newReportingPeriod) {
         const dataMetaInfoForNewlyChosenReportingPeriod =
           this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(newReportingPeriod);
@@ -155,8 +153,6 @@ export default defineComponent({
       }
     },
   },
-
-  // TODO this component is partly similar to ViewSingleDatasetDisplayBase => therefore we should align the order of methods to make it easy to have an overview while working in both files
 
   methods: {
     /**
@@ -181,7 +177,6 @@ export default defineComponent({
      * Method to handle an invalid data ID that was passed in URL
      */
     handleInvalidDataIdPassedInUrl() {
-      console.log("invalidDataIdPassedInUrl"); // TODO
       this.isDataIdInUrlInvalid = true;
       this.isListOfDataIdsToDisplayFound = false;
     },
@@ -190,7 +185,6 @@ export default defineComponent({
      * Method to handle an invalid reporting period that was passed in URL
      */
     handleInvalidReportingPeriodPassedInUrl() {
-      console.log("invalidReportingPeriodPassedInUrl"); // TODO
       this.isReportingPeriodInUrlInvalid = true;
       this.isListOfDataIdsToDisplayFound = false;
     },
@@ -217,7 +211,10 @@ export default defineComponent({
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
-        if (dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId) {
+        if (
+          dataMetaInfoForDataSetWithDataIdFromUrl.companyId != this.companyId ||
+          dataMetaInfoForDataSetWithDataIdFromUrl.dataType != this.dataType
+        ) {
           this.handleInvalidDataIdPassedInUrl();
         } else {
           this.setSingleDataMetaInfoToDisplay(dataMetaInfoForDataSetWithDataIdFromUrl);
@@ -235,10 +232,8 @@ export default defineComponent({
      */
     async createListOfDataMetaInfoForDisplayedDatasets() {
       if (this.dataId) {
-        console.log("Case A for multiview"); // TODO debugging
         await this.getMetaDataForDataId(this.dataId);
       } else if (!this.dataId && this.reportingPeriod) {
-        console.log("Case B for multiview"); // TODO debugging
         const activeDataMetaInfoWithReportingPeriodFromUrl =
           this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(this.reportingPeriod);
         if (activeDataMetaInfoWithReportingPeriodFromUrl) {
@@ -247,7 +242,6 @@ export default defineComponent({
           this.handleInvalidReportingPeriodPassedInUrl();
         }
       } else {
-        console.log("Case C for multiview"); // TODO debugging
         this.setFlagsToDataFoundState();
       }
     },
@@ -270,13 +264,11 @@ export default defineComponent({
     handleUpdateActiveDataMetaInfo(
       receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
     ) {
-      console.log("handleUpdateActiveDataMetaInfo", receivedMapOfReportingPeriodsToActiveDataMetaInfo); // TODO
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;
       this.createListOfDataMetaInfoForDisplayedDatasets().catch((err) =>
         console.log("Retrieving data meta info failed with error " + String(err))
       );
-      // TODO can we remove the sorting logic for same-year datasets from the lksg-view-page now?  because we receive only one per year now (because of "latest" setting)
       this.isWaitingForListOfDataIdsToDisplay = false;
     },
   },

@@ -141,7 +141,10 @@ export default defineComponent({
   },
   computed: {
     canEdit() {
-      return ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum);
+      return (
+        ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum) &&
+        (!this.singleDataMetaInfoToDisplay || this.singleDataMetaInfoToDisplay.currentlyActive)
+      );
     },
   },
   created() {
@@ -265,9 +268,32 @@ export default defineComponent({
     },
 
     /**
+     * Uses a list of data meta info to set a map which has the distinct repoting periods as keys, and the respective
+     * active data meta info as value.
+     * It only takes into account data meta info whose dataType equals the current dataType prop value.
+     *
+     * @param listOfActiveDataMetaInfo The list to be used as input for the map.
+     */
+    setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
+      listOfActiveDataMetaInfo: DataMetaInformation[]
+    ) {
+      this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
+      listOfActiveDataMetaInfo.forEach((dataMetaInfo: DataMetaInformation) => {
+        if (dataMetaInfo.dataType === this.dataType) {
+          if (dataMetaInfo.currentlyActive) {
+            this.mapOfReportingPeriodToActiveDataset.set(dataMetaInfo.reportingPeriod, dataMetaInfo);
+          } else {
+            throw TypeError("Received inactive dataset meta info from Dataland Backend");
+          }
+        }
+      });
+    },
+
+    /**
      * Goes through all data meta info for the currently viewed company and does two things.
      * First it sets the distinct frameworks as options in the framework-dropdown.
-     * Finally it emits a list with data meta info elements for all active datasets for this company. TODO
+     * Then it builds a map which - for the currently chosen framework - maps all reporting periods to the data meta
+     * info of the currently active dataset.
      */
     async getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit() {
       try {
@@ -279,20 +305,10 @@ export default defineComponent({
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
-
-        // TODO modularize following code block
-        this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
-        listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.forEach((dataMetaInfo: DataMetaInformation) => {
-          if (dataMetaInfo.dataType === this.dataType) {
-            if (dataMetaInfo.currentlyActive) {
-              this.mapOfReportingPeriodToActiveDataset.set(dataMetaInfo.reportingPeriod, dataMetaInfo); // TODO the fact that backend only sends one meta info per distinct reportingPeriod is assured implicitly by using reporting period as key here for the map.. is this ok??
-            } else {
-              throw TypeError("Received inactive dataset meta info from Dataland Backend"); // TODO do we even need a check like this, or is this handled as "assured"
-            }
-          }
-        });
+        this.setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
+          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
+        );
         this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);
-        // TODO ________________
       } catch (error) {
         this.isDataProcessedSuccesfully = false;
         console.error(error);

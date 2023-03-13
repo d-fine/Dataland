@@ -1,7 +1,7 @@
 ARG DATALAND_INTERNAL_STORAGE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_internal_storage_base:${DATALAND_INTERNAL_STORAGE_BASE_VERSION} as builder
 
-FROM eclipse-temurin:17.0.5_8-jre-alpine
+FROM eclipse-temurin:17.0.6_10-jre-alpine
 COPY --from=builder /app/dataland-internal-storage/build/libs/dataland-internal-storage-0.0.1-SNAPSHOT.jar /jar/dataland-internal-storage.jar
 CMD ["java","-jar","/jar/dataland-internal-storage.jar"]
 
