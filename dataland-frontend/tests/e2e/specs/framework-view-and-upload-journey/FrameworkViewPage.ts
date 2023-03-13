@@ -9,10 +9,10 @@ import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
-import { humanizeString } from "../../../../src/utils/StringHumanizer";
-import { uploadOneSfdrDataset } from "../../utils/SfdrUpload";
-import { generateSfdrData } from "../../fixtures/sfdr/SfdrDataFixtures";
-import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures"; // TODO write paths with @notation!
+import { humanizeString } from "@/utils/StringHumanizer";
+import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
+import { generateSfdrData } from "@e2e/fixtures/sfdr/SfdrDataFixtures";
+import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures"; // TODO write paths with @notation!
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -560,9 +560,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       });
 
       let dataIdOfOutdatedLksg2023: string;
-      let dataIdOfActiveLksg2023: string;
       let dataIdOfOutdatedFinancial2019: string;
-      let dataIdOfActiveFinancial2019: string;
       it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
 
@@ -679,6 +677,11 @@ describe("The shared header of the framework pages should act as expected", { sc
           });
       }
 
+      /**
+       * Validates that the EU taxonomy financials table is there and has the expected taxonomy eligible economic activity value in percent
+       *
+       * @param expectedTaxonomyEligibleEconomicActivityValueInPercent  the expected taxonomy eligible economic activity value in percent
+       */
       function validateEUTaxonomyFinancialsTable(expectedTaxonomyEligibleEconomicActivityValueInPercent: string): void {
         cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
           .find("[data-test='value']")
