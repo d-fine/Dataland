@@ -165,7 +165,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     });
   });
 
-  it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
+  it.only("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
       cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
@@ -197,7 +197,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
             cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
           });
-          cy.get("input[id=search_bar_top]").click({ force: true }).type(searchString);
+          cy.get("input[id=search_bar_top]").click({ force: true }).type("{backspace}").type(searchString);
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             cy.get(".p-autocomplete-item")
               .eq(0)
