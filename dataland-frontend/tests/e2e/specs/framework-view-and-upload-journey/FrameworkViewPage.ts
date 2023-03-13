@@ -623,7 +623,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        *
        * @returns a chainable to the button on the dataset display status bar
        */
-      function validateOutdatedBarAndGetButton() {
+      function validateOutdatedBarAndGetButton(): Cypress.Chainable {
         return cy
           .get('[data-test="datasetDisplayStatusContainer"]:contains("This dataset is outdated")')
           .find("button > span:contains('View Active')");
@@ -635,7 +635,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        *
        * @returns a chainable to the button on the dataset display status bar
        */
-      function validateSeeMoreBarAndGetButton() {
+      function validateSeeMoreBarAndGetButton(): Cypress.Chainable {
         return cy
           .get(
             '[data-test="datasetDisplayStatusContainer"]:contains("You are only viewing a single available dataset")'
