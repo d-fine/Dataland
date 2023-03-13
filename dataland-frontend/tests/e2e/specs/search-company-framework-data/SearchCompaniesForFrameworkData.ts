@@ -165,7 +165,7 @@ describe("As a user, I expect the search functionality on the /companies page to
     });
   });
 
-  it.only("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
+  it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
       cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
