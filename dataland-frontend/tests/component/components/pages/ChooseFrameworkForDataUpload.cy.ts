@@ -72,7 +72,6 @@ describe("Component tests for the ChooseFrameworkForDataUpload page", () => {
     const dataMetaInfo20220 = { reportingPeriod: "2022", uploadTime: 0 } as DataMetaInformation;
     const orderedListOfThree = [dataMetaInfo20231, dataMetaInfo20230, dataMetaInfo20220];
 
-    console.log(testedMethod([dataMetaInfo20220, dataMetaInfo20230, dataMetaInfo20231]))
     expect(testedMethod([])).to.be.empty;
     expect(testedMethod([dataMetaInfo20230])).to.deep.equal([dataMetaInfo20230]);
     expect(testedMethod([dataMetaInfo20230, dataMetaInfo20230])).to.deep.equal([dataMetaInfo20230, dataMetaInfo20230]);
