@@ -26,8 +26,11 @@ describe("Component Tests for DatasetStatusIndicator", () => {
 
     cy.get("div[data-test=datasetDisplayStatusContainer]").contains("outdated").should("exist");
     cy.get("a[data-test=datasetDisplayStatusLink]").contains("View Active").should("exist");
-    cy.get("a[data-test=datasetDisplayStatusLink]").should("have.attr", "href",
-        `/companies/${outdatedDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${outdatedDataset.reportingPeriod}`);
+    cy.get("a[data-test=datasetDisplayStatusLink]").should(
+      "have.attr",
+      "href",
+      `/companies/${outdatedDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${outdatedDataset.reportingPeriod}`
+    );
   });
 
   it("Should display a QA-Pending warning message when the dataset is pending QA", () => {
@@ -61,8 +64,11 @@ describe("Component Tests for DatasetStatusIndicator", () => {
 
     cy.get("div[data-test=datasetDisplayStatusContainer]").contains("single").should("exist");
     cy.get("a[data-test=datasetDisplayStatusLink]").contains("View All").should("exist");
-    cy.get("a[data-test=datasetDisplayStatusLink]").should("have.attr", "href",
-        `/companies/${acceptedAndActiveDataset.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+    cy.get("a[data-test=datasetDisplayStatusLink]").should(
+      "have.attr",
+      "href",
+      `/companies/${acceptedAndActiveDataset.companyId}/frameworks/${DataTypeEnum.Lksg}`
+    );
   });
 
   it("Should not display anything when only one active dataset is viewed when singleview and multiple are available", () => {
