@@ -100,7 +100,7 @@ export default defineComponent({
     };
   },
 
-  mounted() {
+  created() {
     void this.getMetaInfoAboutAllDataSetsForCurrentCompany();
   },
 
@@ -135,7 +135,6 @@ export default defineComponent({
       return `Overview of all existing ${dataTypeTitle} datasets for this company.`;
     },
 
-    // TODO test this in unit tests
     /**
      *  Sorts a list of data meta information alphabetically by their reporting period
      *
@@ -152,7 +151,6 @@ export default defineComponent({
       return listOfDataMetaInfo;
     },
 
-    // TODO test this in unit tests
     /**
      *  Sorts a list of data meta information descending by their uploading time
      *
@@ -165,7 +163,6 @@ export default defineComponent({
       );
     },
 
-    // TODO test this in unit tests
     /**
      *  This function assigns the elements of an array of data meta info to buckets/groups based on their reporting periods.
      *  It does so by using a map. It takes the list of data meta info and puts its elements into sub-arrays, which
@@ -184,7 +181,6 @@ export default defineComponent({
       }, new Map<string, DataMetaInformation[]>());
     },
 
-    // TODO test in unit tests
     /**
      *  Groups a list of data meta information by their reporting periods, then executes a sorting function on
      *  each group, and then unites and returns all those groups.
