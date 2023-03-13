@@ -12,7 +12,7 @@ import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/eutaxonomy
 import { humanizeString } from "@/utils/StringHumanizer";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { generateSfdrData } from "@e2e/fixtures/sfdr/SfdrDataFixtures";
-import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures"; // TODO write paths with @notation!
+import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(

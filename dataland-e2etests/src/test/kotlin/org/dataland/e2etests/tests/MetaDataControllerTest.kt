@@ -267,7 +267,7 @@ class MetaDataControllerTest {
         subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
         Thread.sleep(1000)
 //        Override number of employees to identify the final uploaded dataset
-        val newNumberOfEmployees =  (frameWorkData.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
+        val newNumberOfEmployees = (frameWorkData.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
         val finalFrameWorkData = frameWorkData.copy(
             numberOfEmployees = newNumberOfEmployees,
         )
@@ -301,7 +301,7 @@ class MetaDataControllerTest {
         assertTrue(
             (activeDataSet.data!!.numberOfEmployees == newNumberOfEmployees),
             "The active dataset should have been manipulated to have a numberOfEmployees " +
-                    "of the old one plus 1 but the retrieved active data set does not.",
+                "of the old one plus 1 but the retrieved active data set does not.",
         )
     }
 
