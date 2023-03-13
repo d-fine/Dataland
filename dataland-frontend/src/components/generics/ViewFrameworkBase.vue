@@ -292,7 +292,8 @@ export default defineComponent({
     /**
      * Goes through all data meta info for the currently viewed company and does two things.
      * First it sets the distinct frameworks as options in the framework-dropdown.
-     * Finally it emits a list with data meta info elements for all active datasets for this company. TODO
+     * Then it builds a map which - for the currently chosen framework - maps all reporting periods to the data meta
+     * info of the currently active dataset.
      */
     async getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit() {
       try {
