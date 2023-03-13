@@ -122,30 +122,33 @@ function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCo
 }
 
 /**
- * Generates a router link for the view button on the framework search page.
- * Links to the first framework that is included in the data in the company object
+ * Generates a router link for the view button on the framework search page, or if an autocomplete suggestion is selected.
+ * If no filter is set, or if the number of framework-filters equals the number of all viewable frameworks,
+ * it links to the first framework that is included in the data in the company object.
+ * Otherwise, it links to the first framework that is included in the currently stored framework filters.
  *
  * @param companyData the company to generate a link for
- * @returns a vue router link to the first framework associated with the given company object
+ * @returns a vue router link to the view page for a specific framework
  */
 export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
-  const dataTypesForWhichCompanyHasData = companyData.dataRegisteredByDataland.map(
-    //TODO duplicate code => create method to derive distinct datatypes out of list of meta info and use it everyhwere this is needed (esp. in Viewframework Base)
-    (dataMetaInformation) => dataMetaInformation.dataType // TODO if that method works like in FrameworkBase, it will be more efficient too
-  );
-  const defaultRoute = `/companies/${companyData.companyId}/frameworks/${dataTypesForWhichCompanyHasData[0]}`;
-  const filtersStore = useFiltersStore();
-  if (filtersStore.selectedFiltersForFrameworks.length === 0) {
-    // TODO discuss with Marc =>  Should we switch all ".length > 0" checks in code to just ".length" ?  And  ".length ===0" to "!.length" ?
-    return defaultRoute;
-  } else {
-    const dataTypesOfCompanyThatMatchTheFiltersStore = dataTypesForWhichCompanyHasData.filter((dataType) =>
-      filtersStore.selectedFiltersForFrameworks.includes(dataType)
-    );
-    if (dataTypesOfCompanyThatMatchTheFiltersStore.length === 0) {
-      return defaultRoute;
+  const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
+  console.log(dataRegisteredByDataland);
+  let routeToVisit = `/companies/${companyData.companyId}/frameworks/${dataRegisteredByDataland[0].dataType}`;
+  const selectedFiltersForFrameworks = useFiltersStore().selectedFiltersForFrameworks;
+  if (
+    selectedFiltersForFrameworks.length > 0 &&
+    selectedFiltersForFrameworks.length < ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.length
+  ) {
+    const frameworkToRouteTo = dataRegisteredByDataland.find((dataMetaInfo) => {
+      return selectedFiltersForFrameworks.includes(dataMetaInfo.dataType);
+    })?.dataType;
+    if (frameworkToRouteTo) {
+      routeToVisit = `/companies/${companyData.companyId}/frameworks/${frameworkToRouteTo}`;
     } else {
-      return `/companies/${companyData.companyId}/frameworks/${dataTypesOfCompanyThatMatchTheFiltersStore[0]}`;
+      throw new Error(
+        "No data meta info for the frameworks set in the filters could be found in the data of the server response."
+      );
     }
   }
+  return routeToVisit;
 }
