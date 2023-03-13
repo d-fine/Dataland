@@ -171,7 +171,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         uploadCompanyAndEuTaxonomyNonFinancialsDatasetViaApi();
       });
 
-      it.only("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
+      it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.EutaxonomyFinancials, lksgAndFinancialCompanyName);
         validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy Data");
