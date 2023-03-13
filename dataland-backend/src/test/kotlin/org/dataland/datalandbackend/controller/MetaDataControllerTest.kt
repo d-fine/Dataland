@@ -15,7 +15,6 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -81,14 +80,20 @@ internal class MetaDataControllerTest(
                 QAStatus.Pending,
             ),
         )
-        mockSecurityContext("reader-user-id",
-            setOf(DatalandRealmRole.ROLE_USER))
+        mockSecurityContext(
+            "reader-user-id",
+            setOf(DatalandRealmRole.ROLE_USER),
+        )
         assertMetaDataNotVisible(metaInfo)
-        mockSecurityContext("uploader-user-id",
-            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER))
+        mockSecurityContext(
+            "uploader-user-id",
+            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
+        )
         assertMetaDataVisible(metaInfo)
-        mockSecurityContext("admin-user-id",
-            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER, DatalandRealmRole.ROLE_ADMIN))
+        mockSecurityContext(
+            "admin-user-id",
+            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER, DatalandRealmRole.ROLE_ADMIN),
+        )
     }
 
     private fun assertMetaDataVisible(metaInfo: DataMetaInformationEntity) {
