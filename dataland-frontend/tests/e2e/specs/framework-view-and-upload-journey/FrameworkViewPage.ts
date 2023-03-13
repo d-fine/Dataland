@@ -569,15 +569,30 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`);
         validateLksgTable(["2023"], ["2023-1"]);
         validateOutdatedBarAndGetButton().click();
+        cy.url().should(
+          "eq",
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
+        );
+        validateLksgTable(["2023"], ["2023-2"]);
+        validateSeeMoreBarAndGetButton().click();
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
         validateLksgTable(["2023", "2022"], ["2023-2", "2022"]);
         cy.contains("This dataset is outdated").should("not.exist");
+        validateDatasetDisplayStatusBarAbsence();
+        clickBackButton();
+        cy.url().should(
+          "eq",
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
+        );
+        validateLksgTable(["2023"], ["2023-2"]);
+        validateSeeMoreBarAndGetButton();
         clickBackButton();
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`
         );
         validateLksgTable(["2023"], ["2023-1"]);
+        validateOutdatedBarAndGetButton();
 
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfOutdatedFinancial2019}`
@@ -591,7 +606,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           }/reportingPeriods/2019`
         );
         validateEUTaxonomyFinancialsTable("29.2");
-        cy.contains("This dataset is outdated").should("not.exist");
+        validateDatasetDisplayStatusBarAbsence();
         clickBackButton();
         cy.url().should(
           "eq",
@@ -606,43 +621,68 @@ describe("The shared header of the framework pages should act as expected", { sc
        * Validates that the "outdated" indicator is present together with a button to view the active dataset for this
        * reporting period.
        *
+       * @returns a chainable to the button on the dataset display status bar
        */
       function validateOutdatedBarAndGetButton() {
-        return cy.contains("This dataset is outdated").parent().find("button > span:contains('View Active')");
+        return cy
+          .get('[data-test="datasetDisplayStatusContainer"]:contains("This dataset is outdated")')
+          .find("button > span:contains('View Active')");
+      }
+
+      /**
+       * Validates that the "show more" indicator is present together with a button to view all datasets for this
+       * data type.
+       *
+       * @returns a chainable to the button on the dataset display status bar
+       */
+      function validateSeeMoreBarAndGetButton() {
+        return cy
+          .get(
+            '[data-test="datasetDisplayStatusContainer"]:contains("You are only viewing a single available dataset")'
+          )
+          .find("button > span:contains('View All')");
+      }
+
+      /**
+       * Validates that no dataset display status bar is shown
+       */
+      function validateDatasetDisplayStatusBarAbsence(): void {
+        cy.get('[data-test="datasetDisplayStatusContainer"]').should("not.exist");
       }
 
       /**
        * Validates if all the column headers and the values in one specific row on the LkSG panel equal the passed values
        *
-       * @param columnHeaders The expected values in the headers of the LkSG dataset columns
-       * @param vatIdNumberRowContent The expected values in the row of the VAT identification number field
+       * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
+       * @param expectedVatIdNumberRowContent The expected values in the row of the VAT identification number field
        */
-      function validateLksgTable(columnHeaders: string[], vatIdNumberRowContent: string[]): void {
-        expect(columnHeaders.length).to.equal(vatIdNumberRowContent.length);
+      function validateLksgTable(expectedColumnHeaders: string[], expectedVatIdNumberRowContent: string[]): void {
+        cy.wait(1000); // TODO for reviewer: manual waiting is required because the expect statements have no timeout condition and fail immediately most of the time
+        expect(expectedColumnHeaders.length).to.equal(expectedVatIdNumberRowContent.length);
         cy.get(".p-column-title").each((element, index, elements) => {
-          expect(elements).to.have.length(columnHeaders.length + 1);
+          expect(elements).to.have.length(expectedColumnHeaders.length + 1);
           if (index == 0) {
             expect(element.text()).to.equal("KPIs");
           } else {
-            expect(element.text()).to.equal(columnHeaders[index - 1]);
+            expect(element.text()).to.equal(expectedColumnHeaders[index - 1]);
           }
         });
         cy.get(`tr:contains("VAT Identification Number")`)
           .find("td > span")
           .each((element, index, elements) => {
-            expect(elements).to.have.length(vatIdNumberRowContent.length + 1);
+            expect(elements).to.have.length(expectedVatIdNumberRowContent.length + 1);
             if (index == 0) {
               expect(element.text()).to.equal("VAT Identification Number");
             } else {
-              expect(element.text()).to.equal(vatIdNumberRowContent[index - 1]);
+              expect(element.text()).to.equal(expectedVatIdNumberRowContent[index - 1]);
             }
           });
       }
 
-      function validateEUTaxonomyFinancialsTable(taxonomyEligibleEconomicActivityValueInPercent: string): void {
+      function validateEUTaxonomyFinancialsTable(expectedTaxonomyEligibleEconomicActivityValueInPercent: string): void {
         cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
           .find("[data-test='value']")
-          .should("have.text", taxonomyEligibleEconomicActivityValueInPercent);
+          .should("have.text", expectedTaxonomyEligibleEconomicActivityValueInPercent);
       } // TODO @Florian => with this we can delete "validateEligibleActivityValueForFinancialsDataset()" and replace it with this method, right?
     }
   );
