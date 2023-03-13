@@ -132,7 +132,7 @@ export default defineComponent({
     },
 
     /**
-     * Retrieves and converts values from an array of SDFR datasets in order to make it displayable in the frontend.
+     * Retrieves and converts values from an array of SFDR datasets in order to make it displayable in the frontend.
      *
      */
     convertSfdrDataToFrontendFormat(): void {
