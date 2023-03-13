@@ -39,7 +39,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         frameworkQueryParam: string,
         searchStringQueryParam: string
       ): void {
-        cy.intercept("**/api/companies*").as("companyLoad");
+        cy.intercept(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`).as("companyLoad");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
         cy.wait("@companyLoad", { timeout: Cypress.env("long_timeout_in_ms") as number });
         const companySelector = "span:contains(VIEW)";
@@ -73,11 +73,13 @@ describe("The shared header of the framework pages should act as expected", { sc
         searchString: string,
         searchBarSelector = "input#search_bar_top"
       ): void {
+        cy.intercept("**/api/companies/*").as("searchCompany");
         cy.get(searchBarSelector).click();
         cy.get(searchBarSelector).type(searchString, { force: true });
         const companySelector = ".p-autocomplete-item";
         cy.get(companySelector).first().scrollIntoView();
         cy.get(companySelector).first().click({ force: true });
+        cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
       }
 
       /**
@@ -118,7 +120,6 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param header the h2 header to check for
        */
       function validateFrameworkPage(framework: DataTypeEnum, header: string): void {
-        cy.wait(5000);
         cy.url().should("contain", `/frameworks/${framework}`);
         cy.get("h2").should("contain", header);
       }
@@ -170,7 +171,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         uploadCompanyAndEuTaxonomyNonFinancialsDatasetViaApi();
       });
 
-      it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
+      it.only("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.EutaxonomyFinancials, lksgAndFinancialCompanyName);
         validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy Data");
@@ -208,8 +209,9 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.ensureLoggedIn();
         const someInvalidCompanyId = "12345-some-invalid-companyId";
         const someInvalidDataId = "789-some-invalid-dataId-987";
+        cy.intercept(`**/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`).as("searchCompany");
         cy.visit(`/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`);
-        cy.wait(10000);
+        cy.wait("@searchCompany", {timeout: Cypress.env("medium_timeout_in_ms") as number});
         cy.contains("h1", "No company with this ID present");
         getKeycloakToken().then((token: string) => {
           return getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials).then(
