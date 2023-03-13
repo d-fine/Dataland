@@ -139,7 +139,6 @@ export default defineComponent({
       if (this.sfdrDataAndMetaInfo.length) {
         this.sfdrDataAndMetaInfo.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
           const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
-          //const dataDateOfSfdrDataset = oneSfdrDataset.data.social?.general?.fiscalYearEnd ?? "";
           const reportingPeriodOfSfdrDataset = oneSfdrDataset.metaInfo?.reportingPeriod ?? "";
           this.listOfColumnIdentifierObjects.push({
             dataId: dataIdOfSfdrDataset,

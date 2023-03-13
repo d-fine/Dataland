@@ -141,7 +141,6 @@ export default defineComponent({
       if (this.lksgDataAndMetaInfo.length) {
         this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
           const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
-          // const dataDateOfLksgDataset = oneLksgDataset.data.social?.general?.dataDate ?? "";
           const reportingPeriodOfLksgDataset = oneLksgDataset.metaInfo?.reportingPeriod ?? "";
           this.listOfColumnIdentifierObjects.push({
             dataId: dataIdOfLksgDataset,
