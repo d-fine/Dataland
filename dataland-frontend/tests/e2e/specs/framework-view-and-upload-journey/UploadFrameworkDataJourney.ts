@@ -191,7 +191,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
 
       it(
         "Go through the whole dataset creation process for an existing company, which already has framework data for multiple frameworks," +
-          " and verify pages and elements",
+          " and verify pages and elements.",
         function () {
           cy.visitAndCheckAppMount("/companies");
           verifyTaxonomySearchResultTable();
