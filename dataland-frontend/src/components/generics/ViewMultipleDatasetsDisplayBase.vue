@@ -7,9 +7,12 @@
   >
     <template v-slot:content>
       <div v-if="isListOfDataIdsToDisplayFound">
-        <DatasetStatusIndicator
+        <DatasetDisplayStatusIndicator
           :displayed-dataset="singleDataMetaInfoToDisplay"
-          :link-to-active-page="linkToActiveView"
+          :received-map-of-reporting-periods-to-active-data-meta-info="
+            receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo
+          "
+          :is-multiview="true"
         />
 
         <div class="grid">
@@ -70,11 +73,11 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
 import Keycloak from "keycloak-js";
-import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
+import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
-  components: { DatasetStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
+  components: { DatasetDisplayStatusIndicator, SfdrPanel, LksgPanel, ViewFrameworkBase },
   props: {
     companyId: {
       type: String,
@@ -107,17 +110,6 @@ export default defineComponent({
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
-  },
-  computed: {
-    linkToActiveView() {
-      const activeDatasetAvailable =
-        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo &&
-        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size > 0;
-
-      if (this.companyId && this.dataType && activeDatasetAvailable)
-        return `/companies/${this.companyId}/frameworks/${this.dataType}`;
-      return undefined;
-    },
   },
   watch: {
     dataId(newDataId: string) {
