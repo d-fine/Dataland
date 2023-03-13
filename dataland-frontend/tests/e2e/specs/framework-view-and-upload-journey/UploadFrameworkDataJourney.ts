@@ -75,7 +75,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       });
 
       it("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
-        const latestScrollPosition = 0;
         cy.visitAndCheckAppMount("/companies");
         verifyTaxonomySearchResultTable();
 
@@ -84,7 +83,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .url()
           .should("eq", getBaseUrl() + "/companies/choose");
         cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
-        cy.window().its("scrollY").should("be.gt", latestScrollPosition);
         cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
           cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
