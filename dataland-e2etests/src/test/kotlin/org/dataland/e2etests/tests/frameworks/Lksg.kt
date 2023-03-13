@@ -6,7 +6,6 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 class Lksg {
 
@@ -81,7 +80,7 @@ class Lksg {
         assertEquals(
             response2023WithoutVersioning[0].data,
             lksgData[1],
-            "The active dataset should equal the latest uploaded LKSG dataset"
+            "The active dataset should equal the latest uploaded LKSG dataset",
         )
     }
 }
