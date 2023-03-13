@@ -54,14 +54,11 @@ export default defineComponent({
   },
   watch: {
     companyId() {
-      console.log("companyId watcher executes in LksgPanel"); //TODO
       this.listOfColumnIdentifierObjects = [];
       void this.fetchData();
     },
     singleDataMetaInfoToDisplay() {
-      console.log("singleDataMetaInfoToDisplay watcher executes in LksgPanel"); //TODO
       if (!this.firstRender) {
-        console.log("singleDataMetaInfoToDisplay watcher in LksgPanel: no first render => fetch data"); // TODO
         this.listOfColumnIdentifierObjects = [];
         void this.fetchData();
       }
@@ -73,7 +70,6 @@ export default defineComponent({
     };
   },
   created() {
-    console.log("LksgPanel created"); //TODO
     void this.fetchData();
     this.firstRender = false;
   },
@@ -83,7 +79,6 @@ export default defineComponent({
      */
     async fetchData() {
       try {
-        console.log("LksgPanel fetches data"); // TODO
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -91,7 +86,7 @@ export default defineComponent({
         if (this.singleDataMetaInfoToDisplay) {
           const singleLksgData = (
             await lksgDataControllerApi.getCompanyAssociatedLksgData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data as LksgData; // TODO think about catching errors here,   take dataMetaInfo fetch in the base-component as example
+          ).data.data as LksgData;
 
           this.lksgDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleLksgData }];
         } else {

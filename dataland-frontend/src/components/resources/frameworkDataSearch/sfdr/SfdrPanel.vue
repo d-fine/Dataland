@@ -54,14 +54,11 @@ export default defineComponent({
   },
   watch: {
     companyId() {
-      console.log("companyId watcher executes in SfdrPanel"); //TODO
       this.listOfColumnIdentifierObjects = [];
       void this.fetchData();
     },
     singleDataMetaInfoToDisplay() {
-      console.log("singleDataMetaInfoToDisplay watcher executes in SfdrPanel"); //TODO
       if (!this.firstRender) {
-        console.log("singleDataMetaInfoToDisplay watcher in SfdrPanel: no first render => fetch data"); // TODO
         this.listOfColumnIdentifierObjects = [];
         void this.fetchData();
       }
@@ -73,7 +70,6 @@ export default defineComponent({
     };
   },
   created() {
-    console.log("SfdrPanel created"); //TODO
     void this.fetchData();
     this.firstRender = false;
   },
@@ -83,7 +79,6 @@ export default defineComponent({
      */
     async fetchData() {
       try {
-        console.log("SfdrPanel fetches data"); // TODO
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -92,8 +87,7 @@ export default defineComponent({
         if (this.singleDataMetaInfoToDisplay) {
           const singleSfdrData = (
             await sfdrDataControllerApi.getCompanyAssociatedSfdrData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data as SfdrData; // TODO think about catching errors here,   take dataMetaInfo fetch in the base-component as example
-
+          ).data.data as SfdrData;
           this.sfdrDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSfdrData }];
         } else {
           this.sfdrDataAndMetaInfo = (
