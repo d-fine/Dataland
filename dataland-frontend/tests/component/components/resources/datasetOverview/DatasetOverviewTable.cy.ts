@@ -26,8 +26,8 @@ describe("Component test for DatasetOverviewTable", () => {
 
     cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
       keycloak: keycloakMock,
-    }).then(({ component, wrapper }) => {
-      void wrapper.setProps({
+    }).then((mocked) => {
+      void mocked.wrapper.setProps({
         datasetTableInfos: mockData,
       });
     });

@@ -1,4 +1,4 @@
-import { CompanyInformation, CompanyReport, LksgData } from "@clients/backend";
+import { CompanyInformation, CompanyReport } from "@clients/backend";
 import { generateCompanyInformation } from "./CompanyFixtures";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 
@@ -16,16 +16,21 @@ export interface FixtureData<T> {
  *
  * @param frameworkDataGenerator a generator that generates a random framework dataset of type T
  * @param numElements the number of elements to generate
+ * @param reportingPeriodGenerator a generator that generates a reporting period
  * @returns a list of numElements pairs of randomly generated companies associated to randomly generated framework datasets
  */
-export function generateFixtureDataset<T>(frameworkDataGenerator: () => T, numElements: number): Array<FixtureData<T>> {
+export function generateFixtureDataset<T>(
+  frameworkDataGenerator: () => T,
+  numElements: number,
+  reportingPeriodGenerator: (dataSet: T) => string = getRandomReportingPeriod
+): Array<FixtureData<T>> {
   const fixtureDataset = [];
   for (let id = 1; id <= numElements; id++) {
     const data = frameworkDataGenerator();
     fixtureDataset.push({
       companyInformation: generateCompanyInformation(),
       t: data,
-      reportingPeriod: (data as LksgData)?.social?.general?.dataDate?.substring(0, 4) || getRandomReportingPeriod(),
+      reportingPeriod: reportingPeriodGenerator(data),
     });
   }
   return fixtureDataset;

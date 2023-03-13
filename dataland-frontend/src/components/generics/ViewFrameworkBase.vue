@@ -41,6 +41,7 @@
               class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
               aria-label="EDIT DATA"
               @click="editDataset"
+              data-test="editDatasetButton"
             >
               <span class="px-2">EDIT DATA</span>
               <span
@@ -49,10 +50,12 @@
                 >arrow_drop_down</span
               >
             </PrimeButton>
-            <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset" @click="gotoNewDataset">
-              <span class="material-icons-outlined px-2">queue</span>
-              <span class="px-2">NEW DATASET</span>
-            </PrimeButton>
+            <router-link :to="addNewDatasetLinkTarget" class="no-underline" data-test="gotoNewDatasetButton">
+              <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
+                <span class="material-icons-outlined px-2">queue</span>
+                <span class="px-2">NEW DATASET</span>
+              </PrimeButton>
+            </router-link>
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
@@ -146,6 +149,9 @@ export default defineComponent({
         (!this.singleDataMetaInfoToDisplay || this.singleDataMetaInfoToDisplay.currentlyActive)
       );
     },
+    addNewDatasetLinkTarget() {
+      return `/companies/${this.companyID || ""}/frameworks/upload`;
+    },
   },
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? "";
@@ -194,12 +200,6 @@ export default defineComponent({
       void this.$router.push(
         `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
       );
-    },
-    /**
-     * Navigates to the framework upload page for the current company (a framework is not pre-selected)
-     */
-    gotoNewDataset() {
-      void this.$router.push(`/companies/${assertDefined(this.companyID)}/frameworks/upload`);
     },
     /**
      * Hides the dropdown of the Autocomplete-component

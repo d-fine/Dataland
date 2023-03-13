@@ -44,14 +44,14 @@ describeIf(
      * @param dataId The data ID of an LkSG dataset
      * @returns the year from the date value of the LkSG dataset as string
      */
-    async function getReportingYearOfLksgDataSet(token: string, dataId: string): Promise<string> {
+    async function getYearOfDataDateOfLksgDataSet(token: string, dataId: string): Promise<string> {
       const response = await new LksgDataControllerApi(
         new Configuration({ accessToken: token })
       ).getCompanyAssociatedLksgData(dataId);
       const lksgData = response.data.data as LksgData;
       if (lksgData) {
-        const reportingDateAsString = lksgData.social!.general!.dataDate as string;
-        return getYearFromLksgDate(reportingDateAsString);
+        const dataDateAsString = lksgData.social!.general!.dataDate as string;
+        return getYearFromLksgDate(dataDateAsString);
       } else {
         throw Error(`No Lksg dataset could be retrieved for the provided dataId ${dataId}`);
       }
@@ -84,18 +84,16 @@ describeIf(
       const companyId = uploadIdsOfExistingCompanyAndLksgDataSet.companyId;
       const dataId = uploadIdsOfExistingCompanyAndLksgDataSet.dataId;
       return getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return getReportingYearOfLksgDataSet(token, dataId).then((reportingYearAsString) => {
-          let reportingYearOfNewLksgDataSet;
+        return getYearOfDataDateOfLksgDataSet(token, dataId).then((yearOfDataDateAsString) => {
+          let reportingPeriodOfNewLksgDataSet: string;
           if (isNewLksgDataSetInSameYear) {
-            reportingYearOfNewLksgDataSet = reportingYearAsString;
+            reportingPeriodOfNewLksgDataSet = yearOfDataDateAsString;
           } else {
-            const reportingYear: number = +reportingYearAsString;
-            reportingYearOfNewLksgDataSet = reportingYear + 1;
+            const yearOfDataDateAsNumber: number = +yearOfDataDateAsString;
+            reportingPeriodOfNewLksgDataSet = (yearOfDataDateAsNumber + 1).toString();
           }
-          const reportingDateOfNewLksgDataSet =
-            reportingYearOfNewLksgDataSet.toString() + dateAndMonthOfAdditionallyUploadedLksgDataSets;
-          const newLksgDataSet = generateLksgData(reportingDateOfNewLksgDataSet);
-          return uploadOneLksgDatasetViaApi(token, companyId, reportingDateOfNewLksgDataSet, newLksgDataSet).then(
+          const newLksgDataSet = generateLksgData(reportingPeriodOfNewLksgDataSet);
+          return uploadOneLksgDatasetViaApi(token, companyId, reportingPeriodOfNewLksgDataSet, newLksgDataSet).then(
             (dataMetaInformation) => {
               return { companyId: companyId, dataId: dataMetaInformation.dataId };
             }

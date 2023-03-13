@@ -3,12 +3,17 @@ import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import fs from "fs";
 import { LksgData } from "@clients/backend";
 import { generateLksgPreparedFixtures } from "./LksgPreparedFixtures";
+import { getRandomReportingPeriod } from "../common/ReportingPeriodFixtures";
 
 /**
  * Generates and exports fake fixtures for the LKSG framework
  */
 export function exportFixturesLksg(): void {
-  const companyInformationWithLksgData = generateFixtureDataset<LksgData>(generateLksgData, 150);
+  const companyInformationWithLksgData = generateFixtureDataset<LksgData>(
+    generateLksgData,
+    150,
+    (dataSet) => dataSet?.social?.general?.dataDate?.substring(0, 4) || getRandomReportingPeriod()
+  );
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithLksgData.json",
     JSON.stringify(companyInformationWithLksgData, null, "\t")
