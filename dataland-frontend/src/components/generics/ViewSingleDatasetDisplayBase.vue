@@ -254,7 +254,13 @@ export default defineComponent({
     },
 
     /**
-     * TODO adjust: Displays either the data set using the ID from the query param or if that is not available the first data set from the list of received data sets.
+     *  This controller-method decides how the displayed dataset should be chosen.
+     *  It does so by checking the path-params in the URL, which are handled as props in this vue component.
+     *  Case A: Just a data ID is found in the URL, therefore this specific dataset should be displayed.
+     *  Case B: No data ID is found in the URL, but a reporting period. Therefore the active dataset for this reporting
+     *  period should be displayed.
+     *  Case C: No data ID or reporting period is found in the URL. A default function should now decide, which dataset
+     *  will be displayed.
      */
     async chooseDataMetaInfoForDisplayedDataset() {
       if (this.dataId) {
