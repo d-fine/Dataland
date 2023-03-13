@@ -153,9 +153,7 @@ export default defineComponent({
           }
         });
       }
-      this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(
-        this.listOfColumnIdentifierObjects
-      );
+      this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(this.listOfColumnIdentifierObjects);
     },
   },
 });
