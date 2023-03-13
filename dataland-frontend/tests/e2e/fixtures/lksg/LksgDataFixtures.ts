@@ -8,47 +8,27 @@ import { randomStringOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 /**
  * Generates a random production site
  *
+ * @param undefinedPercentage the percentage of undefined values in the returned production site
  * @returns a random production site
  */
-export function generateProductionSite(): ProductionSite {
+export function generateProductionSite(undefinedPercentage = 0.5): ProductionSite {
   const fakeGoodsOrServices = Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
     return faker.commerce.productName();
   });
 
   return {
-    name: randomStringOrUndefined(faker.company.name()),
+    name: randomStringOrUndefined(faker.company.name(), undefinedPercentage),
     isInHouseProductionOrIsContractProcessing: faker.helpers.arrayElement([
       InHouseProductionOrContractProcessing.InHouseProduction,
       InHouseProductionOrContractProcessing.ContractProcessing,
     ]),
-    country: randomStringOrUndefined(faker.address.countryCode()),
-    city: randomStringOrUndefined(faker.address.city()),
-    streetAndHouseNumber: randomStringOrUndefined(faker.address.street() + " " + faker.address.buildingNumber()),
-    postalCode: randomStringOrUndefined(faker.address.zipCode()),
-    listOfGoodsOrServices: fakeGoodsOrServices,
-  };
-}
-
-/**
- * Generates a random production site without any undefined values
- *
- * @returns a production site without any undefined values
- */
-export function generateFullProductionSite(): ProductionSite {
-  const fakeGoodsOrServices = Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
-    return faker.commerce.productName();
-  });
-
-  return {
-    name: faker.company.name(),
-    isInHouseProductionOrIsContractProcessing: faker.helpers.arrayElement([
-      InHouseProductionOrContractProcessing.InHouseProduction,
-      InHouseProductionOrContractProcessing.ContractProcessing,
-    ]),
-    country: faker.address.countryCode(),
-    city: faker.address.city(),
-    streetAndHouseNumber: faker.address.street() + " " + faker.address.buildingNumber(),
-    postalCode: faker.address.zipCode(),
+    country: randomStringOrUndefined(faker.address.countryCode(), undefinedPercentage),
+    city: randomStringOrUndefined(faker.address.city(), undefinedPercentage),
+    streetAndHouseNumber: randomStringOrUndefined(
+      faker.address.street() + " " + faker.address.buildingNumber(),
+      undefinedPercentage
+    ),
+    postalCode: randomStringOrUndefined(faker.address.zipCode(), undefinedPercentage),
     listOfGoodsOrServices: fakeGoodsOrServices,
   };
 }
