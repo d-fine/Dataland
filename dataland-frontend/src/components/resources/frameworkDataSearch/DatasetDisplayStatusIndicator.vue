@@ -6,7 +6,7 @@
     style="min-height: 2rem"
   >
     <span class="flex-1">{{ warningMessage }}</span>
-    <router-link v-if="displayedDataset" :to="link" class="no-underline" data-test="datasetDisplayStatusLink">
+    <router-link v-if="displayedDataset.qaStatus !== QAStatus.Pending" :to="link" class="no-underline" data-test="datasetDisplayStatusLink">
       <PrimeButton :label="buttonLabel" icon="pi pi-stopwatch" />
     </router-link>
   </div>
@@ -20,16 +20,23 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 export default defineComponent({
   name: "DatasetDisplayStatusIndicator",
   components: { PrimeButton },
+  data() {
+    return {
+      QAStatus,
+    };
+  },
   props: {
     displayedDataset: {
       type: Object as PropType<DataMetaInformation | null>,
+      required: true,
+    },
+    receivedMapOfReportingPeriodsToActiveDataMetaInfo: {
+      type: Object,
+      required: true,
     },
     isMultiview: {
       type: Boolean,
       default: false,
-    },
-    receivedMapOfReportingPeriodsToActiveDataMetaInfo: {
-      type: Object,
     },
   },
   computed: {
