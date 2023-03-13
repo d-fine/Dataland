@@ -38,6 +38,7 @@ describe("Component Tests for DatasetStatusIndicator", () => {
     cy.get("div[data-test=datasetStatusContainer]").contains("outdated").should("exist");
     cy.get("a[data-test=datasetStatusLinkToActive]").should("not.exist");
   });
+
   it("Should display a QA-Pending warning message when the dataset is pending QA", () => {
     const datasetPendingReview = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
     datasetPendingReview.currentlyActive = false;
@@ -52,6 +53,7 @@ describe("Component Tests for DatasetStatusIndicator", () => {
     cy.get("div[data-test=datasetStatusContainer]").contains("pending").should("exist");
     cy.get("a[data-test=datasetStatusLinkToActive]").should("not.exist");
   });
+
   it("Should display a button with a link to an active dataset if one is provided", () => {
     const mockActiveDatasetLink = "/url-to-active-dataset";
     const outdatedDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
