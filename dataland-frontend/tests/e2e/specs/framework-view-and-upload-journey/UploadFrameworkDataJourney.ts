@@ -74,7 +74,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         });
       });
 
-      it.only("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
+      it("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
         const latestScrollPosition = 0;
         cy.visitAndCheckAppMount("/companies");
         verifyTaxonomySearchResultTable();
