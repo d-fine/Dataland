@@ -211,7 +211,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         const someInvalidDataId = "789-some-invalid-dataId-987";
         cy.intercept(`**/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`).as("searchCompany");
         cy.visit(`/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`);
-        cy.wait("@searchCompany", {timeout: Cypress.env("medium_timeout_in_ms") as number});
+        cy.wait("@searchCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
         cy.contains("h1", "No company with this ID present");
         getKeycloakToken().then((token: string) => {
           return getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials).then(
