@@ -9,10 +9,10 @@ import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
-import { humanizeString } from "../../../../src/utils/StringHumanizer";
-import { uploadOneSfdrDataset } from "../../utils/SfdrUpload";
-import { generateSfdrData } from "../../fixtures/sfdr/SfdrDataFixtures";
-import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures"; // TODO write paths with @notation!
+import { humanizeString } from "@/utils/StringHumanizer";
+import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
+import { generateSfdrData } from "@e2e/fixtures/sfdr/SfdrDataFixtures";
+import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -125,13 +125,13 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(dropdownSelector).click();
         let optionsCounter = 0;
         cy.get(dropdownItemsSelector)
-            .each((item) => {
-              expect(expectedDropdownOptions.has(item.text())).to.equal(true);
-              optionsCounter++;
-            })
-            .then(() => {
-              expect(expectedDropdownOptions.size).to.equal(optionsCounter);
-            });
+          .each((item) => {
+            expect(expectedDropdownOptions.has(item.text())).to.equal(true);
+            optionsCounter++;
+          })
+          .then(() => {
+            expect(expectedDropdownOptions.size).to.equal(optionsCounter);
+          });
         cy.get(dropdownSelector).click();
       }
 

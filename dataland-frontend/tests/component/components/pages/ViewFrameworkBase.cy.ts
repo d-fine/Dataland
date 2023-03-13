@@ -1,7 +1,7 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { QAStatus } from "@clients/backend";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "../../../../src/utils/TypeScriptUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import { shallowMount } from "@vue/test-utils";
 
 describe("Component test for ViewFrameworkBase", () => {

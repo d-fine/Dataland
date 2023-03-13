@@ -7,7 +7,10 @@ import { FixtureData, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
-import { getCsvSharedEuTaxonomyValuesMapping, populateSharedValues } from "../EuTaxonomySharedValuesFixtures";
+import {
+  getCsvSharedEuTaxonomyValuesMapping,
+  populateSharedValues,
+} from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { parse } from "json2csv";
 

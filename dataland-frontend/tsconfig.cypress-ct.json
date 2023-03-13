@@ -9,6 +9,11 @@
   ],
   "compilerOptions": {
     "composite": true,
-    "types": ["cypress"]
-  },
+    "types": ["cypress"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@clients/*": ["./build/clients/*"],
+      "@ct/*": ["./tests/component/*"]
+    }
+  }
 }

@@ -81,7 +81,7 @@ import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSe
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
-import { getKeysFromMapAndReturnAsAlphabeticallySortedArray } from "../../../tests/e2e/utils/GenericUtils";
+import { getKeysFromMapAndReturnAsAlphabeticallySortedArray } from "@/utils/GenericUtils";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
