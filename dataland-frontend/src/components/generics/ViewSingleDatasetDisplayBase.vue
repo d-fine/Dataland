@@ -132,13 +132,11 @@ export default defineComponent({
   },
   watch: {
     dataId(newDataId: string) {
-      console.log("dataID watcher in Single-View component executed"); // TODO
       if (newDataId) {
         void this.getMetaDataForDataId(newDataId);
       }
     },
     reportingPeriod(newReportingPeriod: string) {
-      console.log("reportingPeriod watcher in Single-View component executed"); // TODO
       this.switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod);
     },
   },
@@ -264,13 +262,10 @@ export default defineComponent({
      */
     async chooseDataMetaInfoForDisplayedDataset() {
       if (this.dataId) {
-        console.log("Case A"); // TODO debugging
         await this.getMetaDataForDataId(this.dataId);
       } else if (!this.dataId && this.reportingPeriod) {
-        console.log("Case B"); // TODO debugging
         this.switchToActiveDatasetForNewlyChosenReportingPeriod(this.reportingPeriod);
       } else {
-        console.log("Case C"); // TODO debugging
         this.switchToDefaultDatasetToDisplay();
       }
     },

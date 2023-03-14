@@ -98,7 +98,6 @@ export default defineComponent({
       isListOfDataIdsToDisplayFound: false,
       receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo: {} as Map<string, DataMetaInformation>,
       singleDataMetaInfoToDisplay: null as null | DataMetaInformation,
-      distinctAvailableReportingPeriods: [] as string[], // TODO note:    this is needed for the popup when you click "EDIT"
       humanizeString: humanizeString,
       isDataIdInUrlInvalid: false,
       isReportingPeriodInUrlInvalid: false,
@@ -236,15 +235,6 @@ export default defineComponent({
       } else {
         this.setFlagsToDataFoundState();
       }
-    },
-
-    /**
-     * Method to handle the update of the available reporting periods
-     *
-     * @param receivedListOfAvailableReportingPeriods Desired new available reporting periods
-     */
-    handleUpdateAvailableReportingPeriods(receivedListOfAvailableReportingPeriods: string[]) {
-      this.distinctAvailableReportingPeriods = receivedListOfAvailableReportingPeriods;
     },
 
     /**
