@@ -3,7 +3,7 @@ import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@cl
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import {

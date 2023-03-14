@@ -2,209 +2,187 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [
-				"Franzmann KG",
-				"Molitor GmbH",
-				"Oeser GmbH",
-				"Schönball, Fietz und Plauk"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"headquarters": "Süd Adriano",
-			"headquartersPostalCode": "90811",
-			"sector": "action-items",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"headquarters": "Thrieneburg",
+			"sector": "synergies",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "5lyyr0pbmsvbuao"
+				},
+				{
 					"identifierType": "Duns",
-					"identifierValue": "7nthmfm55"
+					"identifierValue": "dql04fo34"
 				},
 				{
-					"identifierType": "Lei",
-					"identifierValue": "3lgcxwr9pbfxlu76oaua"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "q95kate"
+					"identifierType": "PermId",
+					"identifierValue": "tfy7nsxrbz"
 				}
 			],
-			"countryCode": "MO",
+			"countryCode": "MF",
 			"isTeaserCompany": false,
-			"website": "https://tapfer-knie.net"
+			"website": "https://beispielgebend-hurrikan.info"
 		},
 		"t": {
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "http://physikalisch-meter.com/l%C3%A4ssig-legierung.pdf",
-					"reportDate": "2022-11-18",
-					"currency": "UAH"
-				},
 				"IntegratedReport": {
-					"reference": "http://xn--schpferisch-gebirge-s6b.com/fabelhaft-geburtenkontrolle.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "CHF"
-				},
-				"AnnualReport": {
-					"reference": "https://erstrangig-neutron.de/wohltuend-metallurgie.pdf",
-					"currency": "BTN"
-				},
-				"SustainabilityReport": {
-					"reference": "http://xn--kunstvoll-mdchen-5nb.info/%C3%B6rtlich-petroleum.pdf",
+					"reference": "https://empathisch-wissenschaftler.org/farbenfroh-mars.pdf",
 					"isGroupLevel": "NA",
-					"currency": "XCD"
+					"reportDate": "2023-02-16",
+					"currency": "MVR"
 				}
 			},
-			"fiscalYearDeviation": "Deviation",
+			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 643,
-					"report": "ESEFReport",
-					"tagName": "architectures"
-				}
+				"assurance": "None"
 			},
 			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.9117,
-					"quality": "Incomplete"
+					"value": 0.705,
+					"dataSource": {
+						"page": 806,
+						"report": "IntegratedReport",
+						"tagName": "bandwidth"
+					},
+					"quality": "Incomplete",
+					"comment": "override 1080p panel"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.7058,
-					"quality": "Incomplete"
+					"value": 0.5638,
+					"dataSource": {
+						"page": 1120,
+						"report": "IntegratedReport",
+						"tagName": "platforms"
+					},
+					"quality": "Reported",
+					"comment": "index online feed"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.5921,
-					"dataSource": {
-						"page": 872,
-						"report": "IntegratedReport",
-						"tagName": "paradigms"
-					},
-					"quality": "Estimated",
-					"comment": "back up multi-byte firewall"
+					"value": 0.9312,
+					"quality": "Estimated"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [],
+			"companyAlternativeNames": [
+				"Cordes KG"
+			],
 			"companyLegalForm": "GmbH",
-			"headquarters": "Bad Jil",
-			"sector": "e-commerce",
+			"headquarters": "Nord Niklas",
+			"sector": "mindshare",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "x88h2rs6x25w2o9"
+					"identifierType": "Lei",
+					"identifierValue": "bxcwifjwam0pqufge7fb"
 				},
 				{
-					"identifierType": "Lei",
-					"identifierValue": "o7wazfr1j29r6td8vxmw"
+					"identifierType": "PermId",
+					"identifierValue": "dwafzczr0x"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "vkjjkya"
+					"identifierValue": "9zil4sh"
 				}
 			],
-			"countryCode": "SL",
-			"isTeaserCompany": false,
-			"website": "https://modern-abtreibung.net"
+			"countryCode": "CR",
+			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
 				"ESEFReport": {
-					"reference": "https://wagemutig-haut.name/facettenreich-fernsehen.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-10-30",
-					"currency": "BOB"
+					"reference": "https://monumental-wille.org/vern%C3%BCnftig-aids.pdf",
+					"isGroupLevel": "NA",
+					"currency": "BYN"
 				},
-				"IntegratedReport": {
-					"reference": "http://unternehmungsfreudig-diamant.org/gl%C3%BCcklich-spiel.pdf",
-					"currency": "TOP"
+				"SustainabilityReport": {
+					"reference": "http://xn--geheimnisvoll-milchstrae-s7b.de/epochemachend-liberalismus.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "INR"
+				},
+				"AnnualReport": {
+					"reference": "https://xn--zh-fu-pqa4a.com/fett-feuer.pdf",
+					"isGroupLevel": "NA",
+					"currency": "HUF"
 				}
 			},
-			"fiscalYearEnd": "2022-07-26",
+			"fiscalYearDeviation": "Deviation",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Obergföll GmbH & Co. KG",
-				"dataSource": {
-					"page": 333,
-					"report": "ESEFReport",
-					"tagName": "metrics"
-				}
+				"assurance": "ReasonableAssurance"
 			},
-			"scopeOfEntities": "No",
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
+			"numberOfEmployees": 10924,
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 239809.88,
+					"value": 653239.11,
 					"dataSource": {
-						"page": 939,
-						"report": "IntegratedReport",
-						"tagName": "ROI"
+						"page": 700,
+						"report": "SustainabilityReport",
+						"tagName": "e-tailers"
 					},
-					"quality": "Incomplete",
-					"comment": "synthesize mobile system"
+					"quality": "Audited",
+					"comment": "hack multi-byte feed"
 				},
 				"eligiblePercentage": {
-					"value": 0.5176,
+					"value": 0.0237,
 					"dataSource": {
-						"page": 29,
-						"report": "ESEFReport",
-						"tagName": "experiences"
+						"page": 1010,
+						"report": "AnnualReport",
+						"tagName": "e-tailers"
 					},
 					"quality": "Reported",
-					"comment": "compress open-source port"
+					"comment": "copy solid state application"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 145324.8,
+					"value": 645669.94,
 					"dataSource": {
-						"page": 69,
+						"page": 431,
 						"report": "ESEFReport",
-						"tagName": "e-business"
+						"tagName": "users"
 					},
 					"quality": "Audited",
-					"comment": "input online hard drive"
+					"comment": "calculate neural interface"
 				},
 				"eligiblePercentage": {
-					"value": 0.0636,
+					"value": 0.3906,
 					"dataSource": {
-						"page": 13,
-						"report": "ESEFReport",
-						"tagName": "interfaces"
+						"page": 961,
+						"report": "AnnualReport",
+						"tagName": "e-markets"
 					},
-					"quality": "Reported",
-					"comment": "reboot open-source microchip"
+					"quality": "Estimated",
+					"comment": "calculate bluetooth firewall"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 172292.68,
+					"value": 834748.8,
 					"dataSource": {
-						"page": 117,
-						"report": "IntegratedReport",
-						"tagName": "methodologies"
+						"page": 1154,
+						"report": "SustainabilityReport",
+						"tagName": "markets"
 					},
-					"quality": "Estimated",
-					"comment": "bypass cross-platform firewall"
+					"quality": "Audited",
+					"comment": "synthesize 1080p hard drive"
 				},
 				"eligiblePercentage": {
-					"value": 0.7006,
-					"dataSource": {
-						"page": 1121,
-						"report": "ESEFReport",
-						"tagName": "e-business"
-					},
-					"quality": "Estimated",
-					"comment": "override neural circuit"
+					"value": 0.6847,
+					"quality": "Incomplete"
 				}
 			}
 		},

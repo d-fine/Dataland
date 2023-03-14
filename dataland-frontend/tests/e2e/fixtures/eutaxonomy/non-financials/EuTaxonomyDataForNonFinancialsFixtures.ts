@@ -3,7 +3,8 @@ import {
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDetailsPerCashFlowType,
 } from "@clients/backend";
-import { FixtureData, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";

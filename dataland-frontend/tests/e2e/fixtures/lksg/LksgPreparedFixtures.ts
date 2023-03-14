@@ -1,6 +1,6 @@
-import { FixtureData, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { LksgData } from "@clients/backend";
-import { generateLksgData, generateProductionSite, generateVatIdentificationNumber } from "./LksgDataFixtures";
+import { generateLksgFixture, generateProductionSite, generateVatIdentificationNumber } from "./LksgDataFixtures";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { faker } from "@faker-js/faker";
@@ -17,7 +17,6 @@ type generatorFunction = (input: FixtureData<LksgData>) => FixtureData<LksgData>
  */
 export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   const manipulatorFunctions: Array<generatorFunction> = [
-    manipulateFixtureForTwoLksgDataSetsInSameYear,
     manipulateFixtureForSixLksgDataSetsInDifferentYears,
     manipulateFixtureForOneLksgDataSetWithProductionSites,
     manipulateFixtureForVat20231,
@@ -25,28 +24,12 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
     manipulateFixtureForVat2022,
     manipulateFixtureToContainEveryField,
   ];
-  const preparedFixturesBeforeManipulation = generateFixtureDataset<LksgData>(
-    generateLksgData,
-    manipulatorFunctions.length
-  );
+  const preparedFixturesBeforeManipulation = generateLksgFixture(manipulatorFunctions.length);
   const preparedFixtures = [];
   for (let i = 0; i < manipulatorFunctions.length; i++) {
     preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
   }
   return preparedFixtures;
-}
-
-/**
- * Sets the company name and the date in the fixture data to a specific string.
- *
- * @param input Fixture data to be manipulated
- * @returns the manipulated fixture data
- */
-function manipulateFixtureForTwoLksgDataSetsInSameYear(input: FixtureData<LksgData>): FixtureData<LksgData> {
-  input.companyInformation.companyName = "two-lksg-data-sets-in-same-year";
-  input.t.social!.general!.dataDate = "2022-01-01";
-  input.reportingPeriod = "2023";
-  return input;
 }
 
 /**

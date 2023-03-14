@@ -1,4 +1,5 @@
-import { FixtureData, DataPoint } from "@e2e/fixtures/FixtureUtils";
+import { DataPoint } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import {
   CompanyReport,
   CompanyReportReference,

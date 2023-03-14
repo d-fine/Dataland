@@ -7,7 +7,7 @@ import {
   DataMetaInformation,
   DataTypeEnum,
 } from "@clients/backend";
-import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 
 /**

@@ -4,6 +4,23 @@ import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { randomStringOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
+
+/**
+ * Generates a set number of LKSG fixtures
+ *
+ * @param numFixtures the number of lksg fixtures to generate
+ * @returns a set number of LKSG fixtures
+ */
+export function generateLksgFixture(numFixtures: number): FixtureData<LksgData>[] {
+  return generateFixtureDataset<LksgData>(
+    generateLksgData,
+    numFixtures,
+    (dataSet) => dataSet?.social?.general?.dataDate?.substring(0, 4) || getRandomReportingPeriod()
+  );
+}
 
 /**
  * Generates a random production site

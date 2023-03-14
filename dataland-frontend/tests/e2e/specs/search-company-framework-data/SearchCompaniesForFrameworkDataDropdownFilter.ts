@@ -8,7 +8,7 @@ import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxo
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";

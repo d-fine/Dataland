@@ -1,10 +1,11 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { Configuration, SfdrDataControllerApi, SfdrData, DataTypeEnum } from "@clients/backend";
 import { uploadCompanyAndSfdrDataViaApi, uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
-import { getPreparedFixture, UploadIds } from "@e2e/utils/GeneralApiUtils";
+import { getPreparedFixture } from "@sharedUtils/Fixtures";
+import { UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { generateSfdrData } from "@e2e/fixtures/sfdr/SfdrDataFixtures";
 import Chainable = Cypress.Chainable;
 

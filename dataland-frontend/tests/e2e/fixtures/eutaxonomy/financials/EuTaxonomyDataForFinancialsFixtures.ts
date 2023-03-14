@@ -15,7 +15,8 @@ import {
   getCsvSharedEuTaxonomyValuesMapping,
   populateSharedValues,
 } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { FixtureData, DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { parse } from "json2csv";
 

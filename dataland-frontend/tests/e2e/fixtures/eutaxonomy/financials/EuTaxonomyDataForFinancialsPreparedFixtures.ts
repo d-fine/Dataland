@@ -1,4 +1,5 @@
-import { FixtureData, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { EuTaxonomyDataForFinancials, QualityOptions } from "@clients/backend";
 import {
   generateEuTaxonomyDataForFinancials,

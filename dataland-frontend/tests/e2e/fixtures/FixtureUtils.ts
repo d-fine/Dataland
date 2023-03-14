@@ -1,14 +1,9 @@
-import { CompanyInformation, CompanyReport } from "@clients/backend";
+import { CompanyReport } from "@clients/backend";
 import { generateCompanyInformation } from "./CompanyFixtures";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
+import { FixtureData } from "@sharedUtils/Fixtures";
 
 export type ReferencedReports = { [key: string]: CompanyReport };
-
-export interface FixtureData<T> {
-  companyInformation: CompanyInformation;
-  t: T;
-  reportingPeriod: string;
-}
 
 /**
  * Randomly generates a fixture datasets consisting of a specified number of groups of company information datasets, framework datasets and

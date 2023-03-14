@@ -1,4 +1,4 @@
-import { minimalKeycloakMock } from "@ct/testUtils/keycloak";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import DatasetOverview from "@/components/pages/DatasetOverview.vue";
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
 

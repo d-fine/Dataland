@@ -2,7 +2,7 @@ import DatasetOverviewTable from "@/components/resources/datasetOverview/Dataset
 import { DatasetTableInfo, DatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { DataTypeEnum, StoredCompany, QAStatus } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { minimalKeycloakMock } from "@ct/testUtils/keycloak";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
 describe("Component test for DatasetOverviewTable", () => {
   /**

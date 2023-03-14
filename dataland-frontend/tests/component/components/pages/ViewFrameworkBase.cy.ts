@@ -4,7 +4,7 @@ import Keycloak from "keycloak-js";
 import { shallowMount } from "@vue/test-utils";
 import { nextTick } from "vue";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { minimalKeycloakMock } from "@ct/testUtils/keycloak";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
 describe("Component test for ViewFrameworkBase", () => {
   it("Should proper set the component based on data", () => {

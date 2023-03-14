@@ -6,4 +6,4 @@ import "primeflex/primeflex.min.css";
 import "@/assets/scss/global.scss";
 import "@/assets/css/ibm-plex-sans.scss";
 
-import "./testUtils/setup";
+import "./testUtils/MountWithPlugins";

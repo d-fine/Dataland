@@ -12,10 +12,9 @@ import {
   DataPointBigDecimal,
   DataTypeEnum,
 } from "@clients/backend";
-import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",

@@ -1,8 +1,8 @@
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
-import { FixtureData } from "@e2e/fixtures/FixtureUtils";
-import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
+import { getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { humanizeString } from "@/utils/StringHumanizer";
