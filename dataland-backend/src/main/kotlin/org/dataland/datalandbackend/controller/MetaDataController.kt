@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -33,14 +34,17 @@ class MetaDataController(
                 dataType,
                 showOnlyActive,
                 reportingPeriod,
-            ).map { it.toApiModel(currentUser) },
+            ).filter { it.isDatasetViewableByUser(currentUser) }
+                .map { it.toApiModel(currentUser) },
         )
     }
 
     override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
-        return ResponseEntity.ok(
-            dataMetaInformationManager.getDataMetaInformationByDataId(dataId).toApiModel(currentUser),
-        )
+        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+            throw AccessDeniedException("You are trying to access a unreviewed dataset")
+        }
+        return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }
 }

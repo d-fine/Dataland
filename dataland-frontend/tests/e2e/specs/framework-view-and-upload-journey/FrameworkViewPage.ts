@@ -9,10 +9,10 @@ import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
-import { humanizeString } from "../../../../src/utils/StringHumanizer";
-import { uploadOneSfdrDataset } from "../../utils/SfdrUpload";
-import { generateSfdrData } from "../../fixtures/sfdr/SfdrDataFixtures";
-import { generateLksgData } from "../../fixtures/lksg/LksgDataFixtures"; // TODO write paths with @notation!
+import { humanizeString } from "@/utils/StringHumanizer";
+import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
+import { generateSfdrData } from "@e2e/fixtures/sfdr/SfdrDataFixtures";
+import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -161,18 +161,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Validates that a div with the text "Taxonomy-eligible economic activity" is rendered together with a
-       * div-sibling that contains the text which is passed to this method.
-       *
-       * @param expectedEligibleActiviyValue The text/value which is expected
-       */
-      function validateEligibleActivityValueForFinancialsDataset(expectedEligibleActiviyValue: string): void {
-        cy.get(`div:contains("Taxonomy-eligible economic activity")`)
-          .siblings(`div:contains(${expectedEligibleActiviyValue})`)
-          .should("exist");
-      }
-
-      /**
        * Validates that for each expected reporting period for a multi-view-framework a column is present in the
        * data-panel.
        *
@@ -258,9 +246,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   companyIdOfAlpha,
                   "2023",
                   getPreparedFixture("vat-2023-2", lksgPreparedFixtures).t
-                ).then((dataMetaInformation) => {
-                  dataIdOfActiveLksg2023 = dataMetaInformation.dataId;
-                });
+                );
               });
             })
             .then(() => {
@@ -281,7 +267,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfAlpha,
                 "2019",
-                getPreparedFixture("eligible-activity-Point-29", euTaxoFinancialPreparedFixtures).t
+                getPreparedFixture("eligible-activity-Point-0.29", euTaxoFinancialPreparedFixtures).t
               ).then((dataMetaInformation) => {
                 dataIdOfOutdatedFinancial2019 = dataMetaInformation.dataId;
               });
@@ -292,10 +278,8 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2019",
-                  getPreparedFixture("eligible-activity-Point-292", euTaxoFinancialPreparedFixtures).t
-                ).then((dataMetaInformation) => {
-                  dataIdOfActiveFinancial2019 = dataMetaInformation.dataId;
-                });
+                  getPreparedFixture("eligible-activity-Point-0.292", euTaxoFinancialPreparedFixtures).t
+                );
               });
             })
             .then(() => {
@@ -304,7 +288,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2016",
-                  getPreparedFixture("eligible-activity-Point-26", euTaxoFinancialPreparedFixtures).t
+                  getPreparedFixture("eligible-activity-Point-0.26", euTaxoFinancialPreparedFixtures).t
                 );
               });
             })
@@ -428,21 +412,21 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2019");
         validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-        validateEligibleActivityValueForFinancialsDataset("29.2");
+        validateEUTaxonomyFinancialsTable("29.2");
 
         selectReportingPeriodInDropdown("2019");
 
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2019");
-        validateEligibleActivityValueForFinancialsDataset("29.2");
+        validateEUTaxonomyFinancialsTable("29.2");
 
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
 
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2019");
-        validateEligibleActivityValueForFinancialsDataset("29.2");
+        validateEUTaxonomyFinancialsTable("29.2");
 
         selectReportingPeriodInDropdown("2016");
 
@@ -452,7 +436,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2016");
         validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-        validateEligibleActivityValueForFinancialsDataset("26");
+        validateEUTaxonomyFinancialsTable("26");
 
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyNonFinancials);
 
@@ -494,7 +478,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.wait("@getMetaDataForCompanyId", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2016");
-        validateEligibleActivityValueForFinancialsDataset("26");
+        validateEUTaxonomyFinancialsTable("26");
       });
 
       it("Check that invalid data IDs or reporting periods in url don't break any user flow on the view-page", () => {
@@ -512,7 +496,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2016");
-        validateEligibleActivityValueForFinancialsDataset("26");
+        validateEUTaxonomyFinancialsTable("26");
 
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
@@ -525,7 +509,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2019");
-        validateEligibleActivityValueForFinancialsDataset("29.2");
+        validateEUTaxonomyFinancialsTable("29.2");
 
         clickBackButton();
 
@@ -539,7 +523,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2016");
         validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-        validateEligibleActivityValueForFinancialsDataset("26");
+        validateEUTaxonomyFinancialsTable("26");
 
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
@@ -560,24 +544,37 @@ describe("The shared header of the framework pages should act as expected", { sc
       });
 
       let dataIdOfOutdatedLksg2023: string;
-      let dataIdOfActiveLksg2023: string;
       let dataIdOfOutdatedFinancial2019: string;
-      let dataIdOfActiveFinancial2019: string;
       it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
 
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`);
         validateLksgTable(["2023"], ["2023-1"]);
         validateOutdatedBarAndGetButton().click();
+        cy.url().should(
+          "eq",
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
+        );
+        validateLksgTable(["2023"], ["2023-2"]);
+        validateSeeMoreBarAndGetButton().click();
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
         validateLksgTable(["2023", "2022"], ["2023-2", "2022"]);
         cy.contains("This dataset is outdated").should("not.exist");
+        validateDatasetDisplayStatusBarAbsence();
+        clickBackButton();
+        cy.url().should(
+          "eq",
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
+        );
+        validateLksgTable(["2023"], ["2023-2"]);
+        validateSeeMoreBarAndGetButton();
         clickBackButton();
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`
         );
         validateLksgTable(["2023"], ["2023-1"]);
+        validateOutdatedBarAndGetButton();
 
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfOutdatedFinancial2019}`
@@ -590,8 +587,8 @@ describe("The shared header of the framework pages should act as expected", { sc
             DataTypeEnum.EutaxonomyFinancials
           }/reportingPeriods/2019`
         );
-        validateEUTaxonomyFinancialsTable("29.2");
-        cy.contains("This dataset is outdated").should("not.exist");
+        validateEUTaxonomyFinancialsTable("29");
+        validateDatasetDisplayStatusBarAbsence();
         clickBackButton();
         cy.url().should(
           "eq",
@@ -606,44 +603,74 @@ describe("The shared header of the framework pages should act as expected", { sc
        * Validates that the "outdated" indicator is present together with a button to view the active dataset for this
        * reporting period.
        *
+       * @returns a chainable to the button on the dataset display status bar
        */
-      function validateOutdatedBarAndGetButton() {
-        return cy.contains("This dataset is outdated").parent().find("button > span:contains('View Active')");
+      function validateOutdatedBarAndGetButton(): Cypress.Chainable {
+        return cy
+          .get('[data-test="datasetDisplayStatusContainer"]:contains("This dataset is outdated")')
+          .find("button > span:contains('View Active')");
+      }
+
+      /**
+       * Validates that the "show more" indicator is present together with a button to view all datasets for this
+       * data type.
+       *
+       * @returns a chainable to the button on the dataset display status bar
+       */
+      function validateSeeMoreBarAndGetButton(): Cypress.Chainable {
+        return cy
+          .get(
+            '[data-test="datasetDisplayStatusContainer"]:contains("You are only viewing a single available dataset")'
+          )
+          .find("button > span:contains('View All')");
+      }
+
+      /**
+       * Validates that no dataset display status bar is shown
+       */
+      function validateDatasetDisplayStatusBarAbsence(): void {
+        cy.get('[data-test="datasetDisplayStatusContainer"]').should("not.exist");
       }
 
       /**
        * Validates if all the column headers and the values in one specific row on the LkSG panel equal the passed values
        *
-       * @param columnHeaders The expected values in the headers of the LkSG dataset columns
-       * @param vatIdNumberRowContent The expected values in the row of the VAT identification number field
+       * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
+       * @param expectedVatIdNumberRowContent The expected values in the row of the VAT identification number field
        */
-      function validateLksgTable(columnHeaders: string[], vatIdNumberRowContent: string[]): void {
-        expect(columnHeaders.length).to.equal(vatIdNumberRowContent.length);
+      function validateLksgTable(expectedColumnHeaders: string[], expectedVatIdNumberRowContent: string[]): void {
+        cy.wait(1000); // TODO for reviewer: manual waiting is required because the expect statements have no timeout condition and fail immediately most of the time
+        expect(expectedColumnHeaders.length).to.equal(expectedVatIdNumberRowContent.length);
         cy.get(".p-column-title").each((element, index, elements) => {
-          expect(elements).to.have.length(columnHeaders.length + 1);
+          expect(elements).to.have.length(expectedColumnHeaders.length + 1);
           if (index == 0) {
             expect(element.text()).to.equal("KPIs");
           } else {
-            expect(element.text()).to.equal(columnHeaders[index - 1]);
+            expect(element.text()).to.equal(expectedColumnHeaders[index - 1]);
           }
         });
         cy.get(`tr:contains("VAT Identification Number")`)
           .find("td > span")
           .each((element, index, elements) => {
-            expect(elements).to.have.length(vatIdNumberRowContent.length + 1);
+            expect(elements).to.have.length(expectedVatIdNumberRowContent.length + 1);
             if (index == 0) {
               expect(element.text()).to.equal("VAT Identification Number");
             } else {
-              expect(element.text()).to.equal(vatIdNumberRowContent[index - 1]);
+              expect(element.text()).to.equal(expectedVatIdNumberRowContent[index - 1]);
             }
           });
       }
 
-      function validateEUTaxonomyFinancialsTable(taxonomyEligibleEconomicActivityValueInPercent: string): void {
+      /**
+       * Validates that the EU taxonomy financials table is there and has the expected taxonomy eligible economic activity value in percent
+       *
+       * @param expectedTaxonomyEligibleEconomicActivityValueInPercent  the expected taxonomy eligible economic activity value in percent
+       */
+      function validateEUTaxonomyFinancialsTable(expectedTaxonomyEligibleEconomicActivityValueInPercent: string): void {
         cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
           .find("[data-test='value']")
-          .should("have.text", taxonomyEligibleEconomicActivityValueInPercent);
-      } // TODO @Florian => with this we can delete "validateEligibleActivityValueForFinancialsDataset()" and replace it with this method, right?
+          .should("have.text", expectedTaxonomyEligibleEconomicActivityValueInPercent);
+      }
     }
   );
 });

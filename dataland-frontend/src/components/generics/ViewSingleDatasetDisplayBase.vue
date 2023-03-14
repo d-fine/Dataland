@@ -20,7 +20,12 @@
 
     <template v-slot:content>
       <div v-if="isDataIdToDisplayFound">
-        <DatasetStatusIndicator :link-to-active-page="linkToActiveView" :displayed-dataset="dataMetaInfoForDisplay" />
+        <DatasetDisplayStatusIndicator
+          :displayed-dataset="dataMetaInfoForDisplay"
+          :received-map-of-reporting-periods-to-active-data-meta-info="
+            receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo
+          "
+        />
         <div class="grid">
           <div class="col-12 text-left">
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizedDataDescription }}</h2>
@@ -80,12 +85,12 @@ import { DataTypeEnum } from "@clients/backend";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
-import DatasetStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetStatusIndicator.vue";
+import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
   components: {
-    DatasetStatusIndicator,
+    DatasetDisplayStatusIndicator,
     ViewFrameworkBase,
     Dropdown,
     EuTaxonomyPanelFinancials,
@@ -148,26 +153,7 @@ export default defineComponent({
         return this.dataMetaInfoForDisplay?.dataId;
       } else return "loading";
     },
-    linkToActiveView() {
-      const currentReportingPeriod = this.dataMetaInfoForDisplay?.reportingPeriod;
-      const thereIsAnActiveDatasetForTheCurrentReportingPeriod =
-        currentReportingPeriod &&
-        this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(currentReportingPeriod)?.currentlyActive;
-
-      if (
-        this.companyId &&
-        this.dataType &&
-        currentReportingPeriod &&
-        thereIsAnActiveDatasetForTheCurrentReportingPeriod
-      )
-        return (
-          `/companies/${this.companyId}/frameworks/${this.dataType}` +
-          `/reportingPeriods/${assertDefined(this.dataMetaInfoForDisplay?.reportingPeriod)}`
-        );
-      return undefined;
-    },
   },
-
   methods: {
     /**
      * Method to prepare the display of given data meta information
@@ -268,7 +254,13 @@ export default defineComponent({
     },
 
     /**
-     * TODO adjust: Displays either the data set using the ID from the query param or if that is not available the first data set from the list of received data sets.
+     *  This controller-method decides how the displayed dataset should be chosen.
+     *  It does so by checking the path-params in the URL, which are handled as props in this vue component.
+     *  Case A: Just a data ID is found in the URL, therefore this specific dataset should be displayed.
+     *  Case B: No data ID is found in the URL, but a reporting period. Therefore the active dataset for this reporting
+     *  period should be displayed.
+     *  Case C: No data ID or reporting period is found in the URL. A default function should now decide, which dataset
+     *  will be displayed.
      */
     async chooseDataMetaInfoForDisplayedDataset() {
       if (this.dataId) {

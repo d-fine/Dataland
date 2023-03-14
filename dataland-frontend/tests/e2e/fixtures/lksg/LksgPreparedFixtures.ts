@@ -1,11 +1,6 @@
 import { FixtureData, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { LksgData } from "@clients/backend";
-import {
-  generateFullProductionSite,
-  generateLksgData,
-  generateProductionSite,
-  generateVatIdentificationNumber,
-} from "./LksgDataFixtures";
+import { generateLksgData, generateProductionSite, generateVatIdentificationNumber } from "./LksgDataFixtures";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { faker } from "@faker-js/faker";
@@ -144,7 +139,7 @@ function manipulateFixtureToContainEveryField(input: FixtureData<LksgData>): Fix
         shareOfTemporaryWorkers: faker.datatype.number({ min: 0, max: 30, precision: 0.01 }),
         totalRevenue: faker.datatype.number({ min: 10000000, max: 100000000000 }),
         totalRevenueCurrency: generateIso4217CurrencyCode(),
-        listOfProductionSites: [generateFullProductionSite(), generateFullProductionSite()],
+        listOfProductionSites: [generateProductionSite(0), generateProductionSite(0)],
       },
       grievanceMechanism: {
         grievanceHandlingMechanism: randomYesNo(),

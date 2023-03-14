@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataApi
-import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
@@ -12,7 +11,6 @@ import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
@@ -58,7 +56,7 @@ abstract class DataController<T>(
                 uploadTime = uploadTime,
                 reportingPeriod = reportingPeriod,
                 currentlyActive = false,
-                qaStatus = QAStatus.Pending
+                qaStatus = QAStatus.Pending,
             ),
         )
     }
@@ -88,7 +86,7 @@ abstract class DataController<T>(
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        if (!isDataViewableByUser(metaInfo, DatalandAuthentication.fromContextOrNull())) {
+        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException("You are trying to access a unreviewed dataset")
         }
         val companyId = metaInfo.company.companyId
@@ -128,7 +126,7 @@ abstract class DataController<T>(
         val authentication = DatalandAuthentication.fromContextOrNull()
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         metaInfos
-            .filter { isDataViewableByUser(it, authentication) }
+            .filter { it.isDatasetViewableByUser(authentication) }
             .forEach {
                 val correlationId = generatedCorrelationId(companyId)
                 val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
@@ -140,12 +138,5 @@ abstract class DataController<T>(
                 )
             }
         return ResponseEntity.ok(listOfFrameworkDataAndMetaInfo)
-    }
-
-    private fun isDataViewableByUser(dataMetaInfo: DataMetaInformationEntity, authentication: DatalandAuthentication?):
-        Boolean {
-        return dataMetaInfo.qaStatus == QAStatus.Accepted ||
-            dataMetaInfo.uploaderUserId == authentication?.userId ||
-            authentication?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
     }
 }

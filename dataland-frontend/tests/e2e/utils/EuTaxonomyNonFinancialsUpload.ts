@@ -6,7 +6,7 @@ import {
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsControllerApi,
 } from "@clients/backend";
-import { FixtureData } from "../fixtures/FixtureUtils";
+import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import Chainable = Cypress.Chainable;
 
 /**

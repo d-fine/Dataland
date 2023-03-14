@@ -2,7 +2,7 @@ import DatasetOverviewTable from "@/components/resources/datasetOverview/Dataset
 import { DatasetTableInfo, DatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { DataTypeEnum, StoredCompany, QAStatus } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { minimalKeycloakMock } from "../../../testUtils/keycloak";
+import { minimalKeycloakMock } from "@ct/testUtils/keycloak";
 
 describe("Component test for DatasetOverviewTable", () => {
   /**
@@ -26,42 +26,11 @@ describe("Component test for DatasetOverviewTable", () => {
 
     cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
       keycloak: keycloakMock,
-    }).then(({ component, wrapper }) => {
-      void wrapper.setProps({
+    }).then((mocked) => {
+      void mocked.wrapper.setProps({
         datasetTableInfos: mockData,
       });
     });
-  }
-
-  /**
-   * Returns a mocked StoredCompany entity
-   *
-   * @param companyName the name of the company to mock
-   * @returns a mocked StoredCompany entity with a corresponding dataset
-   */
-  function getMockCompaniesResponse(companyName: string): StoredCompany {
-    return {
-      companyId: "mock-company-id",
-      companyInformation: {
-        companyName: companyName,
-        countryCode: "DE",
-        headquarters: "DE",
-        sector: "MOCK-SECTOR",
-        identifiers: [],
-      },
-      dataRegisteredByDataland: [
-        {
-          dataId: "Mock-Data-Id",
-          dataType: DataTypeEnum.Lksg,
-          companyId: "mock-company-id",
-          qaStatus: QAStatus.Accepted,
-          currentlyActive: true,
-          reportingPeriod: "2023",
-          uploaderUserId: "Mock-User-Id",
-          uploadTime: 1672527600, // 1.1.2023 00:00:00:0000
-        },
-      ],
-    };
   }
 
   it("Check if the table rows look as expected", () => {
@@ -103,6 +72,37 @@ describe("Component test for DatasetOverviewTable", () => {
       }
     });
   });
+
+  /**
+   * Returns a mocked StoredCompany entity
+   *
+   * @param companyName the name of the company to mock
+   * @returns a mocked StoredCompany entity with a corresponding dataset
+   */
+  function getMockCompaniesResponse(companyName: string): StoredCompany {
+    return {
+      companyId: "mock-company-id",
+      companyInformation: {
+        companyName: companyName,
+        countryCode: "DE",
+        headquarters: "DE",
+        sector: "MOCK-SECTOR",
+        identifiers: [],
+      },
+      dataRegisteredByDataland: [
+        {
+          dataId: "Mock-Data-Id",
+          dataType: DataTypeEnum.Lksg,
+          companyId: "mock-company-id",
+          qaStatus: QAStatus.Accepted,
+          currentlyActive: true,
+          reportingPeriod: "2023",
+          uploaderUserId: "Mock-User-Id",
+          uploadTime: 1672527600, // 1.1.2023 00:00:00:0000
+        },
+      ],
+    };
+  }
 
   it("Check if search filter works as expected", () => {
     const mockCompanyToBeSearchedFor = getMockCompaniesResponse("CoolCompany");

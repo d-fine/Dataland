@@ -3,221 +3,211 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Brehmer, Neimke und Rautenkranz",
-				"Neuschwander-Maczey"
+				"Franzmann KG",
+				"Molitor GmbH",
+				"Oeser GmbH",
+				"Schönball, Fietz und Plauk"
 			],
-			"headquarters": "Isabellscheid",
-			"headquartersPostalCode": "77360",
-			"sector": "markets",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"headquarters": "Süd Adriano",
+			"headquartersPostalCode": "90811",
+			"sector": "action-items",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "ikqpjefe8"
+					"identifierValue": "7nthmfm55"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "666szrbmv8fljzhstn94"
+					"identifierValue": "3lgcxwr9pbfxlu76oaua"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "q95kate"
 				}
 			],
-			"countryCode": "BS",
+			"countryCode": "MO",
 			"isTeaserCompany": false,
-			"website": "https://friedlich-radio.info"
+			"website": "https://tapfer-knie.net"
 		},
 		"t": {
 			"referencedReports": {
-				"AnnualReport": {
-					"reference": "http://xn--erwnscht-klassik-lzb.de/offensichtlich-religion.pdf",
-					"reportDate": "2022-03-26",
-					"currency": "JOD"
-				},
 				"ESEFReport": {
-					"reference": "http://vielschichtig-badezimmer.org/ausschlaggebend-denker.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-06-13",
-					"currency": "PAB"
-				},
-				"SustainabilityReport": {
-					"reference": "https://begehrt-anatomie.name/optimistisch-pocken.pdf",
-					"currency": "MNT"
+					"reference": "http://physikalisch-meter.com/l%C3%A4ssig-legierung.pdf",
+					"reportDate": "2022-11-18",
+					"currency": "UAH"
 				},
 				"IntegratedReport": {
-					"reference": "https://begabt-blei.org/heilsam-lunge.pdf",
-					"currency": "FKP"
+					"reference": "http://xn--schpferisch-gebirge-s6b.com/fabelhaft-geburtenkontrolle.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "CHF"
+				},
+				"AnnualReport": {
+					"reference": "https://erstrangig-neutron.de/wohltuend-metallurgie.pdf",
+					"currency": "BTN"
+				},
+				"SustainabilityReport": {
+					"reference": "http://xn--kunstvoll-mdchen-5nb.info/%C3%B6rtlich-petroleum.pdf",
+					"isGroupLevel": "NA",
+					"currency": "XCD"
 				}
 			},
 			"fiscalYearDeviation": "Deviation",
 			"assurance": {
-				"assurance": "None"
-			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
-			"opex": {
-				"eligiblePercentage": {
-					"value": 0.3362,
-					"dataSource": {
-						"page": 996,
-						"report": "AnnualReport",
-						"tagName": "e-tailers"
-					},
-					"quality": "Audited",
-					"comment": "connect auxiliary array"
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 643,
+					"report": "ESEFReport",
+					"tagName": "architectures"
 				}
-			},
-			"capex": {
-				"eligiblePercentage": {
-					"value": 0.4582,
-					"dataSource": {
-						"page": 482,
-						"report": "IntegratedReport",
-						"tagName": "channels"
-					},
-					"quality": "Reported",
-					"comment": "quantify online sensor"
-				}
-			},
-			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.5198,
-					"quality": "Estimated"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Ihly UG"
-			],
-			"headquarters": "Ferdinandstadt",
-			"headquartersPostalCode": "29563",
-			"sector": "deliverables",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "mdvdk6tcf6uinw8"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "qxev47j5a"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "5pmpmno0ydt7"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "bned3qlg56mh9ixf4n60"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "ztfqjudoqa"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "5rqtdaz"
-				}
-			],
-			"countryCode": "IE",
-			"isTeaserCompany": false,
-			"website": "http://emsig-regen.net"
-		},
-		"t": {
-			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "http://humorvoll-insekt.com/offensichtlich-musiker.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-03-28",
-					"currency": "MAD"
-				},
-				"SustainabilityReport": {
-					"reference": "http://friedfertig-rock.name/dumm-geb%C3%A4ude.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-07-04",
-					"currency": "AZN"
-				},
-				"ESEFReport": {
-					"reference": "https://xn--bemerkenswert-kse-4qb.org/au%C3%9Ferordentlich-sexismus.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-11-04",
-					"currency": "XBB"
-				},
-				"AnnualReport": {
-					"reference": "http://ultimativ-krankheiten.net/konstruktiv-epistemologie.pdf",
-					"currency": "XOF"
-				}
-			},
-			"fiscalYearEnd": "2022-07-02",
-			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Filipowski-Konieczny"
 			},
 			"scopeOfEntities": "Yes",
 			"reportingObligation": "No",
 			"activityLevelReporting": "Yes",
 			"opex": {
-				"totalAmount": {
-					"value": 605416.22,
+				"eligiblePercentage": {
+					"value": 0.9117,
+					"quality": "Incomplete"
+				}
+			},
+			"capex": {
+				"eligiblePercentage": {
+					"value": 0.7058,
+					"quality": "Incomplete"
+				}
+			},
+			"revenue": {
+				"eligiblePercentage": {
+					"value": 0.5921,
 					"dataSource": {
-						"page": 243,
-						"report": "AnnualReport",
+						"page": 872,
+						"report": "IntegratedReport",
+						"tagName": "paradigms"
+					},
+					"quality": "Estimated",
+					"comment": "back up multi-byte firewall"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"headquarters": "Bad Jil",
+			"sector": "e-commerce",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "x88h2rs6x25w2o9"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "o7wazfr1j29r6td8vxmw"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "vkjjkya"
+				}
+			],
+			"countryCode": "SL",
+			"isTeaserCompany": false,
+			"website": "https://modern-abtreibung.net"
+		},
+		"t": {
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "https://wagemutig-haut.name/facettenreich-fernsehen.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-10-30",
+					"currency": "BOB"
+				},
+				"IntegratedReport": {
+					"reference": "http://unternehmungsfreudig-diamant.org/gl%C3%BCcklich-spiel.pdf",
+					"currency": "TOP"
+				}
+			},
+			"fiscalYearEnd": "2022-07-26",
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Obergföll GmbH & Co. KG",
+				"dataSource": {
+					"page": 333,
+					"report": "ESEFReport",
+					"tagName": "metrics"
+				}
+			},
+			"scopeOfEntities": "No",
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 239809.88,
+					"dataSource": {
+						"page": 939,
+						"report": "IntegratedReport",
+						"tagName": "ROI"
+					},
+					"quality": "Incomplete",
+					"comment": "synthesize mobile system"
+				},
+				"eligiblePercentage": {
+					"value": 0.5176,
+					"dataSource": {
+						"page": 29,
+						"report": "ESEFReport",
 						"tagName": "experiences"
 					},
 					"quality": "Reported",
-					"comment": "generate primary matrix"
-				},
-				"eligiblePercentage": {
-					"value": 0.7176,
-					"quality": "Estimated"
+					"comment": "compress open-source port"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 396355.71,
+					"value": 145324.8,
 					"dataSource": {
-						"page": 769,
-						"report": "IntegratedReport",
-						"tagName": "blockchains"
+						"page": 69,
+						"report": "ESEFReport",
+						"tagName": "e-business"
 					},
 					"quality": "Audited",
-					"comment": "input mobile protocol"
+					"comment": "input online hard drive"
 				},
 				"eligiblePercentage": {
-					"value": 0.3471,
+					"value": 0.0636,
 					"dataSource": {
-						"page": 641,
-						"report": "SustainabilityReport",
-						"tagName": "e-services"
+						"page": 13,
+						"report": "ESEFReport",
+						"tagName": "interfaces"
 					},
-					"quality": "Audited",
-					"comment": "compress online firewall"
+					"quality": "Reported",
+					"comment": "reboot open-source microchip"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 99078.53,
+					"value": 172292.68,
 					"dataSource": {
-						"page": 31,
-						"report": "SustainabilityReport",
-						"tagName": "architectures"
+						"page": 117,
+						"report": "IntegratedReport",
+						"tagName": "methodologies"
 					},
-					"quality": "Incomplete",
-					"comment": "parse virtual application"
+					"quality": "Estimated",
+					"comment": "bypass cross-platform firewall"
 				},
 				"eligiblePercentage": {
-					"value": 0.1549,
+					"value": 0.7006,
 					"dataSource": {
-						"page": 348,
+						"page": 1121,
 						"report": "ESEFReport",
-						"tagName": "e-commerce"
+						"tagName": "e-business"
 					},
-					"quality": "Reported",
-					"comment": "navigate redundant matrix"
+					"quality": "Estimated",
+					"comment": "override neural circuit"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020-Q1"
 	}
 ]

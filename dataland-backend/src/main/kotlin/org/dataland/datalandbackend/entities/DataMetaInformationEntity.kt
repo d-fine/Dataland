@@ -54,6 +54,19 @@ data class DataMetaInformationEntity(
     var qaStatus: QAStatus,
 ) : ApiModelConversion<DataMetaInformation> {
 
+    /**
+     * A user can view information about the dataset / the dataset itself if
+     * (a) the dataset is QAd
+     * (b) the user has uploaded the dataset
+     * (c) the user is an admin
+     * This function checks these conditions
+     */
+    fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean {
+        return this.qaStatus == QAStatus.Accepted ||
+            this.uploaderUserId == viewingUser?.userId ||
+            viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
+    }
+
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
         val displayUploaderUserId = viewingUser != null && (
             viewingUser.roles.contains(DatalandRealmRole.ROLE_ADMIN) ||
