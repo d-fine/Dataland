@@ -31,16 +31,6 @@ describe("Component test for LksgPanel", () => {
     cy.get("td:contains('1.23 MM')").should("exist");
   });
 
-  /**
-   * Parses the year from a date string
-   *
-   * @param lksgDate date to parse
-   * @returns the year from the date as string
-   */
-  function getYearFromLksgDate(lksgDate: string): string {
-    return new Date(lksgDate).getFullYear().toString();
-  }
-
   it("Check Lksg view page for company with one Lksg data set", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set", preparedFixtures);
     const lksgData = preparedFixture.t;
@@ -68,7 +58,7 @@ describe("Component test for LksgPanel", () => {
       },
     });
 
-    cy.get(`span.p-column-title`).should("contain.text", getYearFromLksgDate(lksgData.social!.general!.dataDate!));
+    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate!.substring(0,4));
 
     cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
 

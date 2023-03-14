@@ -60,16 +60,6 @@ describeIf(
     }
 
     /**
-     * Parses the year from a date string
-     *
-     * @param sfdrDate date to parse
-     * @returns the year from the date as string
-     */
-    function getYearFromSfdrDate(sfdrDate: string): string {
-      return new Date(sfdrDate).getFullYear().toString();
-    }
-
-    /**
      * Gets an SFDR dataset based on the provided data ID and parses the Fiscal Year End from its date field
      *
      * @param token The API bearer token to use
@@ -83,7 +73,7 @@ describeIf(
       const sfdrData = response.data.data as SfdrData;
       if (sfdrData) {
         const fiscalYearEndAsString = sfdrData.social!.general!.fiscalYearEnd as string;
-        return getYearFromSfdrDate(fiscalYearEndAsString);
+        return fiscalYearEndAsString.substring(0,4);
       } else {
         throw Error(`No Sfdr dataset could be retrieved for the provided dataId ${dataId}`);
       }
@@ -126,7 +116,7 @@ describeIf(
       const companyInformation = preparedFixture.companyInformation;
       const sfdrData = preparedFixture.t;
       const reportingPeriod = preparedFixture.reportingPeriod;
-      const fiscalYearEndAsString = getYearFromSfdrDate(sfdrData.social!.general!.fiscalYearEnd!);
+      const fiscalYearEndAsString = sfdrData.social!.general!.fiscalYearEnd!.substring(0,4);
       const numberOfSfdrDataSetsForCompany = 4;
 
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
