@@ -6,6 +6,5 @@
  * @returns either the input or undefined
  */
 export function randomStringOrUndefined(input: string, undefinedPercentage = 0.5): string | undefined {
-  if (Math.random() < undefinedPercentage) return undefined;
-  else return input;
+  return Math.random() < undefinedPercentage ? undefined : input;
 }
