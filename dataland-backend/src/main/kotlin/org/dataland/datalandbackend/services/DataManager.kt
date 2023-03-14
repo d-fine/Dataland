@@ -80,7 +80,7 @@ class DataManager(
         String {
         val dataId = generateRandomDataId()
         addDatasetToDatabase(dataId, storableDataSet, correlationId)
-        storeDataSetInTemporaryStoreAndSendMessage(                dataId, storableDataSet, correlationId,        )
+        storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, correlationId)
         return dataId
     }
 
