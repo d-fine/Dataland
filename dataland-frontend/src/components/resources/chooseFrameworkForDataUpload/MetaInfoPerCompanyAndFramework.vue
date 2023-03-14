@@ -12,7 +12,7 @@
           <div>
             <router-link
               v-if="this.isFrontendViewPageExisting"
-              :to="functionName(dataMetaInfo)"
+              :to="calculateDatasetLink(dataMetaInfo)"
               class="text-primary font-semibold underline"
             >
               {{ getDynamicDatasetTitle(dataMetaInfo) }}
@@ -102,7 +102,13 @@ export default defineComponent({
     },
   },
   methods: {
-    functionName(dataMetaInfo: DataMetaInformation): string {
+    /**
+     * Calculates the link to the view page for the specified dataset
+     *
+     * @param dataMetaInfo the dataset to generate the link for
+     * @returns the link to the view page for the specified dataset
+     */
+    calculateDatasetLink(dataMetaInfo: DataMetaInformation): string {
       return `/companies/${this.companyId}/frameworks/${this.dataType}/${dataMetaInfo.dataId}`;
     },
 
