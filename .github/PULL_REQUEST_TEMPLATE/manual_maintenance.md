@@ -80,7 +80,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
   - [ ] It's verified that real data has been used
   - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] This template has been updated to reflect the latest state of tasks required and known issues with upgrades
-- [ ] At least one commit needs to be called 'manual-maintenance' to satisfy the CI maintenance check in future commits
+- [ ] The Merge Request commit message needs to contain 'manual maintenance' to satisfy the CI maintenance check in future commits
 
 # Review (to be completed by the reviewer)
 - [x] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.
