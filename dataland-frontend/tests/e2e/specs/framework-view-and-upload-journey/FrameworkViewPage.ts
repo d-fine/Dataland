@@ -267,7 +267,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfAlpha,
                 "2019",
-                getPreparedFixture("eligible-activity-Point-29", euTaxoFinancialPreparedFixtures).t
+                getPreparedFixture("eligible-activity-Point-0.29", euTaxoFinancialPreparedFixtures).t
               ).then((dataMetaInformation) => {
                 dataIdOfOutdatedFinancial2019 = dataMetaInformation.dataId;
               });
@@ -278,7 +278,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2019",
-                  getPreparedFixture("eligible-activity-Point-292", euTaxoFinancialPreparedFixtures).t
+                  getPreparedFixture("eligible-activity-Point-0.292", euTaxoFinancialPreparedFixtures).t
                 );
               });
             })
@@ -288,7 +288,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2016",
-                  getPreparedFixture("eligible-activity-Point-26", euTaxoFinancialPreparedFixtures).t
+                  getPreparedFixture("eligible-activity-Point-0.26", euTaxoFinancialPreparedFixtures).t
                 );
               });
             })

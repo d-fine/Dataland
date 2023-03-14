@@ -22,8 +22,9 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
     createInsuranceCompany,
     createAssetManagementCompany,
     createAllValuesCompany,
-    createCreditInstitutionWithEligibleActivity26,
-    createCreditInstitutionWithEligibleActivity292,
+    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.26),
+    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.29),
+    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.292),
   ];
   const fixtureBase = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
@@ -177,45 +178,26 @@ function createAllValuesCompany(
 }
 
 /**
- * Creates a fixture of a credit institution, but sets the value "taxonomyEligibleActivity" to the value 0.292.
+ * Higher order function which returns a function that creates a fixture of a credit institution, but sets the value
+ * "taxonomyEligibleActivity" to the value of the input that is passed to the higher order function.
  *
- * @param input the base fixture to modify
- * @returns the modified fixture
+ * @param eligibleActivityValue The value for the field "eligible activity".
+ * @returns a generator function that creates a dataset with the "eligbile activity" value set accordingly
  */
-function createCreditInstitutionWithEligibleActivity292(
-  input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForFinancials> {
-  input.companyInformation.companyName = "eligible-activity-Point-292";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
-  input.t.eligibilityKpis = {
-    CreditInstitution: {
-      taxonomyEligibleActivity: {
-        value: 0.292,
-        quality: QualityOptions.Reported,
+function createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(
+  eligibleActivityValue: number
+): (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials> {
+  return (input) => {
+    input.companyInformation.companyName = "eligible-activity-Point-" + eligibleActivityValue.toString();
+    input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+    input.t.eligibilityKpis = {
+      CreditInstitution: {
+        taxonomyEligibleActivity: {
+          value: eligibleActivityValue,
+          quality: QualityOptions.Reported,
+        },
       },
-    },
+    };
+    return input;
   };
-  return input;
-}
-
-/**
- * Creates a fixture of a credit institution, but sets the value "taxonomyEligibleActivity" to the value 0.26.
- *
- * @param input the base fixture to modify
- * @returns the modified fixture
- */
-function createCreditInstitutionWithEligibleActivity26(
-  input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForFinancials> {
-  input.companyInformation.companyName = "eligible-activity-Point-26";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
-  input.t.eligibilityKpis = {
-    CreditInstitution: {
-      taxonomyEligibleActivity: {
-        value: 0.26,
-        quality: QualityOptions.Reported,
-      },
-    },
-  };
-  return input;
 }

@@ -7,6 +7,7 @@ import { mount } from "cypress/vue";
 import { VueWrapper } from "@vue/test-utils";
 import { DefineComponent } from "vue";
 import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ComponentMountingOptions<T extends DefineComponent<any, any, any, any, any>> = Parameters<typeof mount<T>>[1] & {
@@ -52,7 +53,6 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   wrapper: VueWrapper<InstanceType<T>>;
   component: VueWrapper<InstanceType<T>>["vm"];
 }> {
-  // Setup options object
   options.global = options.global || {};
   options.global.plugins = options.global.plugins || [];
   options.global.plugins.push(createPinia());
@@ -76,9 +76,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
 
   options.global.plugins.push({
     install(app) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      app.use(options.router);
+      app.use(assertDefined(options.router));
     },
   });
 
