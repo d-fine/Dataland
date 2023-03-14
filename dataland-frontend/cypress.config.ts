@@ -51,8 +51,8 @@ export default defineConfig({
     e2e: {
         baseUrl: "https://local-dev.dataland.com",
         setupNodeEvents(on, config) {
-            const executionEnvironment = Cypress.env("EXECUTION_ENVIRONMENT");
-            const dataEnvironment = Cypress.env("DATA_ENVIRONMENT");
+            const executionEnvironment = config.env["EXECUTION_ENVIRONMENT"];
+            const dataEnvironment = config.env["DATA_ENVIRONMENT"];
 
             console.log(`Execution environment: ${executionEnvironment}; dataEnvironment: ${dataEnvironment}`);
             if (executionEnvironment === "developmentLocal") {
