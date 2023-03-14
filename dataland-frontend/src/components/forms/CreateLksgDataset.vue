@@ -17,22 +17,8 @@
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit
-              type="hidden"
-              name="companyId"
-              label="Company ID"
-              placeholder="Company ID"
-              :model-value="companyID"
-              disabled="true"
-            />
-            <FormKit
-              type="hidden"
-              name="reportingPeriod"
-              label="Reporting Period"
-              placeholder="Reporting Period"
-              :model-value="reportingPeriodValue"
-              disabled="true"
-            />
+            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
+            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
@@ -1178,8 +1164,6 @@ export default defineComponent({
       allCountry: getAllCountryNamesWithCodes(),
       waitingForData: false,
       dataDate: undefined as Date | undefined,
-      convertedDataDate: "",
-      yearOfDataDate: "",
       lkSGDataModel: {} as CompanyAssociatedDataLksgData,
       route: useRoute(),
       message: "",
@@ -1203,29 +1187,34 @@ export default defineComponent({
           ],
         ])
       ),
-      getHyphenatedDate,
       updatingData: false,
     };
   },
   computed: {
-    reportingPeriodValue(): string {
-      return this.updatingData ? (this.lkSGDataModel?.reportingPeriod as string) : this.yearOfDataDate;
+    yearOfDataDate: {
+      get(): string {
+        return this.dataDate?.getFullYear()?.toString() || "";
+      },
+      set() {
+        // IGNORED
+      },
+    },
+    convertedDataDate: {
+      get(): string {
+        if (this.dataDate) {
+          return getHyphenatedDate(this.dataDate);
+        } else {
+          return "";
+        }
+      },
+      set() {
+        // IGNORED
+      },
     },
   },
   props: {
     companyID: {
       type: String,
-    },
-  },
-  watch: {
-    dataDate: function (newValue: Date) {
-      if (newValue) {
-        this.yearOfDataDate = newValue.getFullYear().toString();
-        this.convertedDataDate = getHyphenatedDate(newValue);
-      } else {
-        this.yearOfDataDate = "";
-        this.convertedDataDate = "";
-      }
     },
   },
   mounted() {
@@ -1245,7 +1234,6 @@ export default defineComponent({
 
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
-      this.updatingData = true;
       void this.loadLKSGData(dataId);
     }
   },
