@@ -1,10 +1,11 @@
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { Configuration, LksgData, LksgDataControllerApi } from "@clients/backend";
+import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
 import { FixtureData } from "@e2e/fixtures/FixtureUtils";
 import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { describeIf } from "@e2e/support/TestUtility";
+import { humanizeString } from "../../../../src/utils/StringHumanizer";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -35,9 +36,8 @@ describeIf(
         .then((uploadId) => {
           cy.ensureLoggedIn(uploader_name, uploader_pw);
           cy.visit(`/companies/${uploadId.companyId}/frameworks/lksg`);
-          cy.get("h2").contains("LkSG Data").should("be.visible");
-          cy.get("button:contains(EDIT)").should("be.visible").click();
-          cy.get("a").contains("EDIT").should("be.visible").click();
+          cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
+          cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
           cy.get("div").contains("New Dataset - LkSG").should("be.visible");
           cy.get("button").contains("ADD DATA").should("exist").click();
           cy.get("h4")

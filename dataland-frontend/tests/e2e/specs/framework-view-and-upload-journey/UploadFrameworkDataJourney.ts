@@ -109,7 +109,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .then((scrollYPosition) => {
             latestScrollPosition = scrollYPosition;
           });
-        cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
+        cy.get("div[id=option1Container").find("a:contains(Add it)").click({ force: true });
         cy.window().its("scrollY").should("be.gt", latestScrollPosition);
         cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
@@ -188,7 +188,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         dataIdOfLksgDataset: string
       ): void {
         cy.get("div[id=eutaxonomyDataSetsContainer")
-          .find(`p.text-primary:contains(financial companies)`)
+          .find(`a.text-primary:contains(financial companies)`)
           .eq(0)
           .click({ force: true });
         cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
@@ -200,7 +200,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           );
         cy.go("back");
         cy.get("div[id=eutaxonomyDataSetsContainer")
-          .find(`p.text-primary:contains(financial companies)`)
+          .find(`a.text-primary:contains(financial companies)`)
           .eq(1)
           .click({ force: true });
         cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
@@ -212,7 +212,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           );
         cy.go("back");
 
-        cy.get("div[id=lksgContainer").find(`p.text-primary:contains(LkSG)`).click({ force: true });
+        cy.get("div[id=lksgContainer").find(`a.text-primary:contains(LkSG)`).click({ force: true });
         cy.contains("h1", storedCompanyForTest.companyInformation.companyName)
           .url()
           .should(
