@@ -260,5 +260,3 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
     }
   );
 });
-
-// TODO extend these tests

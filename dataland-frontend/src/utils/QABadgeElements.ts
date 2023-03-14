@@ -18,7 +18,7 @@ export function getBadgeElement(dataMetaInfo: DataMetaInformation): string {
 export const DatasetStatusBadgeElements = new Map<DatasetStatus, string>([
   [DatasetStatus.QAApproved, composeBadge("green", "APPROVED")],
   [DatasetStatus.QAPending, composeBadge("yellow", "PENDING")],
-  [DatasetStatus.Outdated, composeBadge("brown", "OUTDATED")],
+  [DatasetStatus.Superseded, composeBadge("brown", "SUPERSEDED")],
 ]);
 
 /**
