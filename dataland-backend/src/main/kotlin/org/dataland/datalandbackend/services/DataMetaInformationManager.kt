@@ -37,8 +37,8 @@ class DataMetaInformationManager(
     fun getDataMetaInformationByDataId(dataId: String): DataMetaInformationEntity {
         return dataMetaInformationRepository.findById(dataId).orElseThrow {
             ResourceNotFoundApiException(
-                    "Dataset not found",
-                    "No dataset with the id: $dataId could be found in the data store.",
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store.",
             )
         }
     }
