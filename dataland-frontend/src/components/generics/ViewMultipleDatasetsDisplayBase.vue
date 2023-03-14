@@ -238,7 +238,9 @@ export default defineComponent({
     },
 
     /**
-     * TODO Stores the received data IDs from the "updateDataId" event and terminates the loading-state of the component
+     * Stores the received map of distinct reporting periods to active meta info from the
+     * "updateActiveDataMetaInfoForChosenFramework" event, then triggers a controller-method which picks the data
+     * meta infos for the datasets to display, and finally terminates the loading-state of the component.
      *
      * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
      * active data meta information objects
