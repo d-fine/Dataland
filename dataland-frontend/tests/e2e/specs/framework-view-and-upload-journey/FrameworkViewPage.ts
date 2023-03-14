@@ -587,7 +587,7 @@ describe("The shared header of the framework pages should act as expected", { sc
             DataTypeEnum.EutaxonomyFinancials
           }/reportingPeriods/2019`
         );
-        validateEUTaxonomyFinancialsTable("29");
+        validateEUTaxonomyFinancialsTable("29.2");
         validateDatasetDisplayStatusBarAbsence();
         clickBackButton();
         cy.url().should(
