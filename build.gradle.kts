@@ -81,6 +81,7 @@ sonar {
             "sonar.sources",
             subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> },
         )
+        property("sonar.log.level", "TRACE")
     }
 }
 
