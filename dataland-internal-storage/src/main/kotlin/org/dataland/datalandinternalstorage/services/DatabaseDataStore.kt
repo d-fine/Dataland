@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Simple implementation of a data store using a postgres database
@@ -73,7 +75,7 @@ class DatabaseDataStore(
                 val data = temporarilyCachedDataClient.getReceivedData(dataId)
                 logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
                 logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
-                dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
+                storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     dataId, MessageType.DataStored, correlationId, ExchangeNames.dataStored,
                 )
@@ -81,6 +83,16 @@ class DatabaseDataStore(
         } else {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
+    }
+
+    /**
+     * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
+     * is commited after exit of this method.
+     * @param dataItem the DataItem to be stored
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun storeDataItemWithoutTransaction(dataItem: DataItem) {
+        dataItemRepository.save(dataItem)
     }
 
     /**

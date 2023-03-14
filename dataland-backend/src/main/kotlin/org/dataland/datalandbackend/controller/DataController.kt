@@ -43,7 +43,7 @@ abstract class DataController<T>(
             "Received a request from user $userId to post company associated data of type $dataType " +
                 "for companyId '${companyAssociatedData.companyId}'",
         )
-        val correlationId = generatedCorrelationId(companyAssociatedData.companyId)
+        val correlationId = generateCorrelationId(companyAssociatedData.companyId)
         val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
         val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(datasetToStore, correlationId)
         logger.info(
@@ -72,7 +72,7 @@ abstract class DataController<T>(
         return datasetToStore
     }
 
-    private fun generatedCorrelationId(companyId: String): String {
+    private fun generateCorrelationId(companyId: String): String {
         val correlationId = randomUUID().toString()
         logger.info(
             "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
@@ -86,7 +86,7 @@ abstract class DataController<T>(
             throw AccessDeniedException("You are trying to access a unreviewed dataset")
         }
         val companyId = metaInfo.company.companyId
-        val correlationId = generatedCorrelationId(companyId)
+        val correlationId = generateCorrelationId(companyId)
         logger.info(
             "Received a request to get company data with dataId '$dataId' for companyId '$companyId'. ",
         )
@@ -108,7 +108,7 @@ abstract class DataController<T>(
         metaInfos
             .filter { isDataViewableByUser(it, authentication) }
             .forEach {
-                val correlationId = generatedCorrelationId(companyId)
+                val correlationId = generateCorrelationId(companyId)
                 logger.info(
                     "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
                 )
