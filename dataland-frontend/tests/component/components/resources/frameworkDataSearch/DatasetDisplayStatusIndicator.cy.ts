@@ -1,7 +1,7 @@
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 import { DataMetaInformation } from "@clients/backend";
 import { DataTypeEnum, QAStatus } from "@clients/backend";
-describe("Component Tests for DatasetStatusIndicator", () => {
+describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   const acceptedAndActiveDataset: DataMetaInformation = {
     dataId: "mock-data-id",
     companyId: "mock-company-id",
