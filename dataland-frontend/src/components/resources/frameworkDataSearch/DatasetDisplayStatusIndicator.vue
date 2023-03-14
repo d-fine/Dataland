@@ -54,7 +54,7 @@ export default defineComponent({
     },
     warningMessage(): string {
       if (this.displayedDataset?.qaStatus === QAStatus.Pending) return "This dataset is currently pending review";
-      else if (this.displayedDataset?.currentlyActive === false) return "This dataset is outdated";
+      else if (this.displayedDataset?.currentlyActive === false) return "This dataset is superseded";
       else if (this.areMoreDatasetsViewableSimultaneously) return "You are only viewing a single available dataset";
       else return "ERROR";
     },

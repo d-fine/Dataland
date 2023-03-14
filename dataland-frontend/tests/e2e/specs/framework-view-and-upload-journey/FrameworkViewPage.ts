@@ -236,7 +236,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 "2023",
                 getPreparedFixture("vat-2023-1", lksgPreparedFixtures).t
               ).then((dataMetaInformation) => {
-                dataIdOfOutdatedLksg2023 = dataMetaInformation.dataId;
+                dataIdOfSupersededLksg2023 = dataMetaInformation.dataId;
               });
             })
             .then(() => {
@@ -269,7 +269,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 "2019",
                 getPreparedFixture("eligible-activity-Point-0.29", euTaxoFinancialPreparedFixtures).t
               ).then((dataMetaInformation) => {
-                dataIdOfOutdatedFinancial2019 = dataMetaInformation.dataId;
+                dataIdOfSupersededFinancial2019 = dataMetaInformation.dataId;
               });
             })
             .then(() => {
@@ -543,14 +543,14 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenReportingPeriod("Select...", true);
       });
 
-      let dataIdOfOutdatedLksg2023: string;
-      let dataIdOfOutdatedFinancial2019: string;
+      let dataIdOfSupersededLksg2023: string;
+      let dataIdOfSupersededFinancial2019: string;
       it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
 
-        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`);
+        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023}`);
         validateLksgTable(["2023"], ["2023-1"]);
-        validateOutdatedBarAndGetButton().click();
+        validateSupersededBarAndGetButton().click();
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
@@ -559,7 +559,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateSeeMoreBarAndGetButton().click();
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
         validateLksgTable(["2023", "2022"], ["2023-2", "2022"]);
-        cy.contains("This dataset is outdated").should("not.exist");
+        cy.contains("This dataset is superseded").should("not.exist");
         validateDatasetDisplayStatusBarAbsence();
         clickBackButton();
         cy.url().should(
@@ -571,16 +571,16 @@ describe("The shared header of the framework pages should act as expected", { sc
         clickBackButton();
         cy.url().should(
           "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfOutdatedLksg2023}`
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023}`
         );
         validateLksgTable(["2023"], ["2023-1"]);
-        validateOutdatedBarAndGetButton();
+        validateSupersededBarAndGetButton();
 
         cy.visit(
-          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfOutdatedFinancial2019}`
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019}`
         );
         validateEUTaxonomyFinancialsTable("29");
-        validateOutdatedBarAndGetButton().click();
+        validateSupersededBarAndGetButton().click();
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
@@ -594,20 +594,20 @@ describe("The shared header of the framework pages should act as expected", { sc
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
             DataTypeEnum.EutaxonomyFinancials
-          }/${dataIdOfOutdatedFinancial2019}`
+          }/${dataIdOfSupersededFinancial2019}`
         );
         validateEUTaxonomyFinancialsTable("29");
       });
 
       /**
-       * Validates that the "outdated" indicator is present together with a button to view the active dataset for this
+       * Validates that the "superseded" indicator is present together with a button to view the active dataset for this
        * reporting period.
        *
        * @returns a chainable to the button on the dataset display status bar
        */
-      function validateOutdatedBarAndGetButton(): Cypress.Chainable {
+      function validateSupersededBarAndGetButton(): Cypress.Chainable {
         return cy
-          .get('[data-test="datasetDisplayStatusContainer"]:contains("This dataset is outdated")')
+          .get('[data-test="datasetDisplayStatusContainer"]:contains("This dataset is superseded")')
           .find("button > span:contains('View Active')");
       }
 

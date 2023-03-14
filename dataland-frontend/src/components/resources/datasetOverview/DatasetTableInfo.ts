@@ -6,7 +6,7 @@ import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 export enum DatasetStatus {
   QAPending,
   QAApproved,
-  Outdated,
+  Superseded,
 }
 
 export class DatasetTableInfo {
@@ -29,7 +29,7 @@ export class DatasetTableInfo {
  */
 export function getDatasetStatus(dataMetaInfo: DataMetaInformation): DatasetStatus {
   if (dataMetaInfo.qaStatus == QAStatus.Accepted) {
-    return dataMetaInfo.currentlyActive ? DatasetStatus.QAApproved : DatasetStatus.Outdated;
+    return dataMetaInfo.currentlyActive ? DatasetStatus.QAApproved : DatasetStatus.Superseded;
   } else {
     return DatasetStatus.QAPending;
   }

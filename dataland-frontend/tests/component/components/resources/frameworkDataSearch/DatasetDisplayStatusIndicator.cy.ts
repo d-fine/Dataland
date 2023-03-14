@@ -13,23 +13,23 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
     uploadTime: 1672527600000, // 1.1.2023 00:00:00:0000
   };
 
-  it("Should display a outdated warning message when the dataset is outdated", () => {
-    const outdatedDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
-    outdatedDataset.currentlyActive = false;
-    outdatedDataset.qaStatus = QAStatus.Accepted;
+  it("Should display a superseded warning message when the dataset is superseded", () => {
+    const supersededDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
+    supersededDataset.currentlyActive = false;
+    supersededDataset.qaStatus = QAStatus.Accepted;
 
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
       void mounted.wrapper.setProps({
-        displayedDataset: outdatedDataset,
+        displayedDataset: supersededDataset,
       });
     });
 
-    cy.get("div[data-test=datasetDisplayStatusContainer]").contains("outdated").should("exist");
+    cy.get("div[data-test=datasetDisplayStatusContainer]").contains("superseded").should("exist");
     cy.get("a[data-test=datasetDisplayStatusLink]").contains("View Active").should("exist");
     cy.get("a[data-test=datasetDisplayStatusLink]").should(
       "have.attr",
       "href",
-      `/companies/${outdatedDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${outdatedDataset.reportingPeriod}`
+      `/companies/${supersededDataset.companyId}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/${supersededDataset.reportingPeriod}`
     );
   });
 
