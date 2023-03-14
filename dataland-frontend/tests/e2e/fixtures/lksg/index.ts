@@ -3,7 +3,7 @@ import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 import fs from "fs";
 import { LksgData } from "@clients/backend";
 import { generateLksgPreparedFixtures } from "./LksgPreparedFixtures";
-import { getRandomReportingPeriod } from "../common/ReportingPeriodFixtures";
+import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 
 /**
  * Generates and exports fake fixtures for the LKSG framework
