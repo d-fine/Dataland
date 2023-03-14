@@ -174,8 +174,8 @@ class DataManager(
             ExchangeNames.dataReceived,
         )
         logger.info(
-            "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID in temporary store" +
-                "${storableDataSet.companyId}. Company Name $companyName received ID $dataId from storage. " +
+            "Stored StorableDataSet of type ${storableDataSet.dataType} for Company Name $companyName, company ID " +
+                "${storableDataSet.companyId} in temporary store. Dataset ID $dataId. " +
                 "Correlation ID: $correlationId.",
         )
     }
