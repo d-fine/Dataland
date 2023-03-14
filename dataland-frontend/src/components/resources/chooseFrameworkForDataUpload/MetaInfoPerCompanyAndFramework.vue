@@ -10,13 +10,16 @@
       <div v-else>
         <div v-for="(dataMetaInfo, index) in listOfFrameworkData" :key="index">
           <div>
-            <a
-              :class="[isFrontendViewPageExisting ? ['text-primary', 'cursor-pointer'] : '']"
-              class="font-semibold underline"
-              @click="redirectToViewPageIfEnabledInFrontend(dataMetaInfo)"
+            <router-link
+              v-if="this.isFrontendViewPageExisting"
+              :to="functionName(dataMetaInfo)"
+              class="text-primary font-semibold underline"
             >
               {{ getDynamicDatasetTitle(dataMetaInfo) }}
-            </a>
+            </router-link>
+            <span v-else class="font-semibold underline">
+              {{ getDynamicDatasetTitle(dataMetaInfo) }}
+            </span>
           </div>
           <div>
             <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</span>
@@ -99,6 +102,10 @@ export default defineComponent({
     },
   },
   methods: {
+    functionName(dataMetaInfo: DataMetaInformation): string {
+      return `/companies/${this.companyId}/frameworks/${this.dataType}/${dataMetaInfo.dataId}`;
+    },
+
     /**
      * Method to construct a title for a data meta information object depending on whether it is currently active and
      * whether a corresponding frontend view page exists
@@ -117,18 +124,6 @@ export default defineComponent({
       return resultingTitle;
     },
 
-    /**
-     * Executes a router push to the page of the given data set if the framework it belongs to is enabled in the frontend
-     *
-     * @param dataMetaInfoOfClickedDataSet the meta information of the data set in question
-     */
-    async redirectToViewPageIfEnabledInFrontend(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
-      if (this.isFrontendViewPageExisting) {
-        await this.$router.push(
-          `/companies/${this.companyId}/frameworks/${this.dataType}/${dataMetaInfoOfClickedDataSet.dataId}`
-        );
-      }
-    },
     /**
      * Executes a router push to the upload page of a given company and framework
      */
