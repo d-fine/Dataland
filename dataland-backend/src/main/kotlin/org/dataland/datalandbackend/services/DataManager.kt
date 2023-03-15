@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
@@ -75,25 +76,35 @@ class DataManager(
      * @param storableDataSet contains all the inputs needed by Dataland
      * @return ID of the newly stored data in the data store
      */
-    @Transactional
     fun addDataSetToTemporaryStorageAndSendMessage(storableDataSet: StorableDataSet, correlationId: String):
         String {
+        val dataId = generateRandomDataId()
+        addDatasetToDatabase(dataId, storableDataSet, correlationId)
+        storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, correlationId)
+        return dataId
+    }
+
+    /**
+     * Persists the data meta-information to the database ensuring that the database transaction
+     * ends directly after this function returns so that a MQ-Message might be sent out after this function completes
+     * @param dataId The dataId of the dataset to store
+     * @param storableDataSet the dataset to store
+     * @param correlationId the correlation id of the insertion process
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun addDatasetToDatabase(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
-                "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
+                "'${storableDataSet.companyId}', Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId",
         )
-        val dataId = generateRandomDataId()
+
         val metaData = DataMetaInformationEntity(
             dataId, storableDataSet.dataType.toString(),
             storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, QAStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(metaData)
-        storeDataSetInTemporaryStoreAndSendMessage(
-            dataId, storableDataSet, company.companyName, correlationId,
-        )
-        return dataId
     }
 
     /**
@@ -157,15 +168,14 @@ class DataManager(
 
     /**
      * Method to temporarily store a data set in a hash map and send a message to the storage_queue
+     * @param dataId The id of the inserted data set
      * @param storableDataSet The data set to store
-     * @param companyName The name of the company corresponding to the data set to store
      * @param correlationId The correlation id of the request initiating the storing of data
      * @return ID of the stored data set
      */
     fun storeDataSetInTemporaryStoreAndSendMessage(
         dataId: String,
         storableDataSet: StorableDataSet,
-        companyName: String,
         correlationId: String,
     ) {
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
@@ -174,9 +184,9 @@ class DataManager(
             ExchangeNames.dataReceived,
         )
         logger.info(
-            "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID in temporary store" +
-                "${storableDataSet.companyId}. Company Name $companyName received ID $dataId from storage. " +
-                "Correlation ID: $correlationId.",
+            "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
+                "for company ID '${storableDataSet.companyId}' in temporary storage. " +
+                "Data ID '$dataId'. Correlation ID: '$correlationId'.",
         )
     }
 

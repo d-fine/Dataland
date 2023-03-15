@@ -19,7 +19,7 @@ class MessageQueueUtils {
         try {
             return method()
         } catch (e: Exception) {
-            throw MessageQueueRejectException(e)
+            throw MessageQueueRejectException(e.message, e)
         }
     }
 
