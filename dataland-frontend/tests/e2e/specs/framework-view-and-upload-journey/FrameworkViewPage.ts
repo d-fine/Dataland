@@ -227,6 +227,64 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
+       * Validates if the container which displays a specific status of the current dataset is present and contains
+       * the expected text.
+       * It also validates if the corresponding button in that container contains the expected text.
+       *
+       * @param expectedTextInContainer The expected disclaimer text in the display-status-container
+       * @param expectedButtonText The expected text inside the corresponding button of the display-status-container
+       * @returns a Cypress Chainable containing the button of the display-status-container
+       */
+      function validateDisplayStatusContainerAndGetButton(
+        expectedTextInContainer: string,
+        expectedButtonText: string
+      ): Cypress.Chainable {
+        return cy
+          .get(`[data-test="datasetDisplayStatusContainer"]:contains(${expectedTextInContainer})`)
+          .find(`button > span:contains(${expectedButtonText})`);
+      }
+
+      /**
+       * Validates if all the column headers and the values in one specific row on the LkSG panel equal the passed values
+       *
+       * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
+       * @param expectedVatIdNumberRowContent The expected values in the row of the VAT identification number field
+       */
+      function validateLksgTable(expectedColumnHeaders: string[], expectedVatIdNumberRowContent: string[]): void {
+        cy.wait(1000); // TODO for reviewer: manual waiting is required because the expect statements have no timeout condition and fail immediately most of the time
+        expect(expectedColumnHeaders.length).to.equal(expectedVatIdNumberRowContent.length);
+        cy.get(".p-column-title").each((element, index, elements) => {
+          expect(elements).to.have.length(expectedColumnHeaders.length + 1);
+          if (index == 0) {
+            expect(element.text()).to.equal("KPIs");
+          } else {
+            expect(element.text()).to.equal(expectedColumnHeaders[index - 1]);
+          }
+        }); // TODO naming of function   only checks headers and VAT numbers        testpart1: headers       testpart2: vat nubmers
+        cy.get(`tr:contains("VAT Identification Number")`)
+          .find("td > span")
+          .each((element, index, elements) => {
+            expect(elements).to.have.length(expectedVatIdNumberRowContent.length + 1);
+            if (index == 0) {
+              expect(element.text()).to.equal("VAT Identification Number");
+            } else {
+              expect(element.text()).to.equal(expectedVatIdNumberRowContent[index - 1]);
+            }
+          });
+      }
+
+      /**
+       * Validates that the EU taxonomy financials table is there and has the expected taxonomy eligible economic activity value in percent
+       *
+       * @param expectedTaxonomyEligibleEconomicActivityValueInPercent  the expected taxonomy eligible economic activity value in percent
+       */
+      function validateEUTaxonomyFinancialsTable(expectedTaxonomyEligibleEconomicActivityValueInPercent: string): void {
+        cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
+          .find("[data-test='value']")
+          .should("have.text", expectedTaxonomyEligibleEconomicActivityValueInPercent);
+      }
+
+      /**
        * Uploads the test company "Alpha" with its datasets.
        *
        */
@@ -574,13 +632,16 @@ describe("The shared header of the framework pages should act as expected", { sc
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`
         );
         validateLksgTable(["2023"], ["2023-1"]);
-        validateSupersededBarAndGetButton().click();
+        validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
         );
         validateLksgTable(["2023"], ["2023-2"]);
-        validateSeeMoreBarAndGetButton().click();
+        validateDisplayStatusContainerAndGetButton(
+          "You are only viewing a single available dataset",
+          "View All"
+        ).click();
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
         validateLksgTable(["2023", "2022"], ["2023-2", "2022"]);
         cy.contains("This dataset is superseded").should("not.exist");
@@ -590,8 +651,9 @@ describe("The shared header of the framework pages should act as expected", { sc
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
         );
+
         validateLksgTable(["2023"], ["2023-2"]);
-        validateSeeMoreBarAndGetButton();
+        validateDisplayStatusContainerAndGetButton("You are only viewing a single available dataset", "View All");
         clickBackButton();
         cy.url().should(
           "eq",
@@ -599,14 +661,14 @@ describe("The shared header of the framework pages should act as expected", { sc
             DataTypeEnum.Lksg
           }/${dataIdOfSupersededLksg2023ForAlpha}`
         );
-        validateLksgTable(["2023"], ["2023-1"]);
-        validateSupersededBarAndGetButton();
 
+        validateLksgTable(["2023"], ["2023-1"]);
+        validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`
         );
         validateEUTaxonomyFinancialsTable("29");
-        validateSupersededBarAndGetButton().click();
+        validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
@@ -624,72 +686,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         );
         validateEUTaxonomyFinancialsTable("29");
       });
-
-      /**
-       * Validates that the "superseded" indicator is present together with a button to view the active dataset for this
-       * reporting period.
-       *
-       * @returns a chainable to the button on the dataset display status bar
-       */
-      function validateSupersededBarAndGetButton(): Cypress.Chainable {
-        return cy
-          .get('[data-test="datasetDisplayStatusContainer"]:contains("This dataset is superseded")')
-          .find("button > span:contains('View Active')"); // TODO getExistence instead of this?
-      }
-
-      /**
-       * Validates that the "show more" indicator is present together with a button to view all datasets for this
-       * data type.
-       *
-       * @returns a chainable to the button on the dataset display status bar
-       */
-      function validateSeeMoreBarAndGetButton(): Cypress.Chainable {
-        return cy
-          .get(
-            '[data-test="datasetDisplayStatusContainer"]:contains("You are only viewing a single available dataset")'
-          )
-          .find("button > span:contains('View All')"); // TODO getExistence maybe instead of this?
-      }
-
-      /**
-       * Validates if all the column headers and the values in one specific row on the LkSG panel equal the passed values
-       *
-       * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
-       * @param expectedVatIdNumberRowContent The expected values in the row of the VAT identification number field
-       */
-      function validateLksgTable(expectedColumnHeaders: string[], expectedVatIdNumberRowContent: string[]): void {
-        cy.wait(1000); // TODO for reviewer: manual waiting is required because the expect statements have no timeout condition and fail immediately most of the time
-        expect(expectedColumnHeaders.length).to.equal(expectedVatIdNumberRowContent.length);
-        cy.get(".p-column-title").each((element, index, elements) => {
-          expect(elements).to.have.length(expectedColumnHeaders.length + 1);
-          if (index == 0) {
-            expect(element.text()).to.equal("KPIs");
-          } else {
-            expect(element.text()).to.equal(expectedColumnHeaders[index - 1]);
-          }
-        }); // TODO naming of function   only checks headers and VAT numbers        testpart1: headers       testpart2: vat nubmers
-        cy.get(`tr:contains("VAT Identification Number")`)
-          .find("td > span")
-          .each((element, index, elements) => {
-            expect(elements).to.have.length(expectedVatIdNumberRowContent.length + 1);
-            if (index == 0) {
-              expect(element.text()).to.equal("VAT Identification Number");
-            } else {
-              expect(element.text()).to.equal(expectedVatIdNumberRowContent[index - 1]);
-            }
-          });
-      }
-
-      /**
-       * Validates that the EU taxonomy financials table is there and has the expected taxonomy eligible economic activity value in percent
-       *
-       * @param expectedTaxonomyEligibleEconomicActivityValueInPercent  the expected taxonomy eligible economic activity value in percent
-       */
-      function validateEUTaxonomyFinancialsTable(expectedTaxonomyEligibleEconomicActivityValueInPercent: string): void {
-        cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
-          .find("[data-test='value']")
-          .should("have.text", expectedTaxonomyEligibleEconomicActivityValueInPercent);
-      }
     }
   );
 });
