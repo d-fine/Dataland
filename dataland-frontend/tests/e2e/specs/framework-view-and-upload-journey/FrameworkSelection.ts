@@ -42,9 +42,11 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.intercept(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`).as("companyLoad");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
         cy.wait("@companyLoad", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        cy.intercept("**/api/companies/*").as("searchCompany");
         const companySelector = "span:contains(VIEW)";
         cy.get(companySelector).first().scrollIntoView();
         cy.get(companySelector).first().click({ force: true });
+        cy.wait("@searchCompany", { timeout: Cypress.env("long_timeout_in_ms") as number });
       }
 
       /**
@@ -58,7 +60,9 @@ describe("The shared header of the framework pages should act as expected", { sc
         frameworkQueryParam: string,
         searchStringForSearchBar: string
       ): void {
+        cy.intercept("**/api/*").as("getRequest");
         cy.visit(`/companies?framework=${frameworkQueryParam}`);
+        cy.wait("@getRequest", { timeout: Cypress.env("short_timeout_in_ms") as number });
         searchCompanyViaLocalSearchBarAndSelectFirstSuggestion(searchStringForSearchBar);
       }
 
@@ -73,13 +77,13 @@ describe("The shared header of the framework pages should act as expected", { sc
         searchString: string,
         searchBarSelector = "input#search_bar_top"
       ): void {
-        cy.intercept("**/api/companies/*").as("searchCompany");
         cy.get(searchBarSelector).click();
         cy.get(searchBarSelector).type(searchString, { force: true });
+        cy.intercept("**/api/companies/*").as("searchCompany");
         const companySelector = ".p-autocomplete-item";
         cy.get(companySelector).first().scrollIntoView();
         cy.get(companySelector).first().click({ force: true });
-        cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
+        cy.wait("@searchCompany", { timeout: Cypress.env("long_timeout_in_ms") as number });
       }
 
       /**
@@ -100,6 +104,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           .then(() => {
             expect(expectedDropdownItems.size).to.equal(0);
           });
+        cy.get(dropdownSelector).click();
       }
 
       /**
@@ -108,9 +113,10 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param frameworkToSelect The framework/item that shall be selected
        */
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
+        cy.intercept("**/api/companies/*").as("selectFramework");
         cy.get(dropdownSelector).click();
         cy.get(`${dropdownItemsSelector}:contains(${frameworkToSelect})`).click({ force: true });
-        cy.wait(3000);
+        cy.wait("@selectFramework", { timeout: Cypress.env("long_timeout_in_ms") as number });
       }
 
       /**
