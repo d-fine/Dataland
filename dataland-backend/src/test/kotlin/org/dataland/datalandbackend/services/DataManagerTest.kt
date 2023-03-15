@@ -13,7 +13,6 @@ import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiExcept
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -48,7 +47,6 @@ class DataManagerTest(
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
-    lateinit var spyDataMetaInformationManager: DataMetaInformationManager
     lateinit var dataManager: DataManager
     lateinit var spyDataManager: DataManager
     val correlationId = IdUtils.generateUUID()
@@ -56,9 +54,8 @@ class DataManagerTest(
 
     @BeforeEach
     fun reset() {
-        spyDataMetaInformationManager = spy(dataMetaInformationManager)
         dataManager = DataManager(
-            objectMapper, companyManager, spyDataMetaInformationManager,
+            objectMapper, companyManager, dataMetaInformationManager,
             mockStorageClient, mockCloudEventMessageHandler, messageUtils,
         )
         spyDataManager = spy(dataManager)
@@ -75,22 +72,6 @@ class DataManagerTest(
             Instant.now().epochSecond,
             euTaxonomyDataForNonFinancialsAsString,
         )
-    }
-
-    @Test
-    fun `check that a Server Exception is thrown when the data storage reports a Server Exception during selection`() {
-        val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
-            addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
-            storableEuTaxonomyDataSetForNonFinancials, correlationId,
-        )
-        `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenThrow(ServerException::class.java)
-        assertThrows<ServerException> {
-            dataManager.getDataSet(
-                dataId, DataType(storableEuTaxonomyDataSetForNonFinancials.dataType.name),
-                correlationId,
-            )
-        }
     }
 
     @Test
@@ -118,6 +99,7 @@ class DataManagerTest(
             storableEuTaxonomyDataSetForNonFinancials, correlationId,
         )
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn("")
+        dataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
         }
@@ -134,6 +116,7 @@ class DataManagerTest(
         val expectedDataTypeName = getExpectedDataTypeName(
             storableEuTaxonomyDataSetForNonFinancials, dataId, "eutaxonomy-financials",
         )
+        dataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<InternalServerErrorApiException> {
             dataManager.getDataSet(dataId, DataType(expectedDataTypeName), correlationId)
         }
@@ -166,6 +149,7 @@ class DataManagerTest(
             buildReturnOfMockDataSelect(storableDataSetForNonFinancials),
         )
 
+        dataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<InternalServerErrorApiException> {
             dataManager.getDataSet(dataId, storableDataSetForNonFinancials.dataType, correlationId)
         }
@@ -227,14 +211,25 @@ class DataManagerTest(
     @Test
     fun `check a resource-not-found exception if the dataset could not be found`() {
         val mockMetaInfo = DataMetaInformationEntity(
-            dataId = "",
+            dataId = "i-only-have-meta-info-stored",
             dataType = "lksg",
             uploaderUserId = "",
             uploadTime = 0,
             qaStatus = QAStatus.Pending,
             company = testDataProvider.getEmptyStoredCompanyEntity()
         )
-        `when`(spyDataMetaInformationManager.getDataMetaInformationByDataId(anyString())).thenReturn(mockMetaInfo)
+        val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
+        `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(anyString())).thenReturn(mockMetaInfo)
+        `when`(mockStorageClient.selectDataById(anyString(), anyString())).thenReturn(
+            "",
+        )
+        dataManager = DataManager(
+            objectMapper, companyManager, mockDataMetaInformationManager,
+            mockStorageClient, mockCloudEventMessageHandler, messageUtils,
+        )
+        assertThrows<ResourceNotFoundApiException> {
+            dataManager.getDataSet(mockMetaInfo.dataId, DataType("lksg"), "")
+        }
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet("i-exist-by-no-means", DataType("lksg"), "")
         }
