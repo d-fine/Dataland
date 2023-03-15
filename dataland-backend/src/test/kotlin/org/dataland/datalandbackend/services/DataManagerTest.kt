@@ -209,14 +209,10 @@ class DataManagerTest(
     }
 
     @Test
-    fun `check a resource-not-found exception if the dataset could not be found`() {
+    fun `check a ResourceNotFoundApiException if the dataset could not be found`() {
         val mockMetaInfo = DataMetaInformationEntity(
-            dataId = "i-only-have-meta-info-stored",
-            dataType = "lksg",
-            uploaderUserId = "",
-            uploadTime = 0,
-            qaStatus = QAStatus.Pending,
-            company = testDataProvider.getEmptyStoredCompanyEntity(),
+            dataId = "i-only-have-meta-info-stored", dataType = "lksg", uploaderUserId = "", uploadTime = 0,
+            qaStatus = QAStatus.Pending, company = testDataProvider.getEmptyStoredCompanyEntity(),
         )
         val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
         `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(anyString())).thenReturn(mockMetaInfo)
@@ -227,9 +223,7 @@ class DataManagerTest(
             objectMapper, companyManager, mockDataMetaInformationManager,
             mockStorageClient, mockCloudEventMessageHandler, messageUtils,
         )
-        assertThrows<ResourceNotFoundApiException> {
-            dataManager.getDataSet(mockMetaInfo.dataId, DataType("lksg"), "")
-        }
+        assertThrows<ResourceNotFoundApiException> { dataManager.getDataSet(mockMetaInfo.dataId, DataType("lksg"), "") }
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet("i-exist-by-no-means", DataType("lksg"), "")
         }
