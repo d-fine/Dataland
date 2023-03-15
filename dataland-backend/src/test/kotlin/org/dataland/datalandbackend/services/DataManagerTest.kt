@@ -3,8 +3,10 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
@@ -19,8 +21,10 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.`when`
@@ -44,6 +48,7 @@ class DataManagerTest(
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
+    val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
     val dataManager = DataManager(
         objectMapper, companyManager, dataMetaInformationManager,
         mockStorageClient, mockCloudEventMessageHandler, messageUtils,
@@ -209,6 +214,22 @@ class DataManagerTest(
             spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
                 dataUUId, storableEuTaxonomyDataSetForNonFinancials, correlationId,
             )
+        }
+    }
+
+    @Test
+    fun `check a resource-not-found exception if the dataset could not be found`() {
+        val mockMetaInfo = DataMetaInformationEntity(
+            dataId = "",
+            dataType = "lksg",
+            uploaderUserId = "",
+            uploadTime = 0,
+            qaStatus = QAStatus.Pending,
+            company = testDataProvider.getEmptyStoredCompanyEntity()
+        )
+        `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(anyString())).thenReturn(mockMetaInfo)
+        assertThrows<ResourceNotFoundApiException> {
+            dataManager.getDataSet("i-exist-by-no-means", DataType("lksg"), "")
         }
     }
 }
