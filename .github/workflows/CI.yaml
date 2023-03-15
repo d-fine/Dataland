@@ -261,6 +261,8 @@ jobs:
       - name: Run Sonar
         if: always()
         run: |
+          mkdir ./build/reports
+          touch ./build/reports/sonarProperties.txt
           ./gradlew sonar -D"sonar.scanner.dumpToFile"="./build/reports/sonarProperties.txt" --no-daemon --stacktrace
           ./gradlew sonar --no-daemon --stacktrace
         env:
