@@ -48,14 +48,21 @@ class DataManagerTest(
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
-    val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
-    val dataManager = DataManager(
-        objectMapper, companyManager, dataMetaInformationManager,
-        mockStorageClient, mockCloudEventMessageHandler, messageUtils,
-    )
-    val spyDataManager: DataManager = spy(dataManager)
+    lateinit var spyDataMetaInformationManager: DataMetaInformationManager
+    lateinit var dataManager: DataManager
+    lateinit var spyDataManager: DataManager
     val correlationId = IdUtils.generateUUID()
     val dataUUId = "JustSomeUUID"
+
+    @BeforeEach
+    fun reset() {
+        spyDataMetaInformationManager = spy(dataMetaInformationManager)
+        dataManager = DataManager(
+            objectMapper, companyManager, spyDataMetaInformationManager,
+            mockStorageClient, mockCloudEventMessageHandler, messageUtils,
+        )
+        spyDataManager = spy(dataManager)
+    }
 
     private fun addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt(): StorableDataSet {
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
@@ -227,7 +234,7 @@ class DataManagerTest(
             qaStatus = QAStatus.Pending,
             company = testDataProvider.getEmptyStoredCompanyEntity()
         )
-        `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(anyString())).thenReturn(mockMetaInfo)
+        `when`(spyDataMetaInformationManager.getDataMetaInformationByDataId(anyString())).thenReturn(mockMetaInfo)
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet("i-exist-by-no-means", DataType("lksg"), "")
         }
