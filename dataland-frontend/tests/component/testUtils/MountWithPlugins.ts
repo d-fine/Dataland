@@ -9,6 +9,13 @@ import { DefineComponent } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
+/*
+  This file defines a alternative mounting function that also includes many creature comforts
+  (mounting of plugins, mocking router, mocking keycloak, ....)
+  However, the underlying type definition of the mount function is very complex.
+  The no-explicit-any overrides are present as the original mount type definitions also include these anys
+ */
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ComponentMountingOptions<T extends DefineComponent<any, any, any, any, any>> = Parameters<typeof mount<T>>[1] & {
   router?: Router;
@@ -80,6 +87,12 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
     },
   });
 
+  /*
+    The mount() function returns a VueWrapper different from the VueWrapper exported by "@vue/test-utils"
+    but that type is not exported and accessing a non-exported type is non-trivial.
+    The VueWrapper component from "@vue/test-utils" is, however, "close enough" to the actual return value for our
+    purposes. That is the reason for the ts-ignore and eslint-ignores
+   */
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return mount(component, options);

@@ -21,6 +21,11 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
     realmAccess: {
       roles: config.roles || ["ROLE_USER"],
     },
+    /*
+      The updateToken method is invoked several times on the Keycloak objet (e.g. in the APIClients).
+      Therefore, a mock of the keycloak object also needs to provide this method.
+      ESLint, however, does not recognize the usage of this function ==> ESlint-Disable
+     */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     updateToken(minValidity: number): void {
       return;
