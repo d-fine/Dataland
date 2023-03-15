@@ -97,9 +97,9 @@ describe("Component test for LksgPanel", () => {
   });
 
   /**
-   * This functions immitates an api response of the /data/lksg/companies/mock-company-id endpoint
-   * to include 6 active LKSG datasets from different years to test the simulataneous display of multiple LKSG
-   * datasets
+   * This functions imitates an api response of the /data/lksg/companies/mock-company-id endpoint
+   * to include 6 active Lksg datasets from different years to test the simultaneous display of multiple Lksg
+   * datasets (constructed datasets range from 2023 to 2028)
    *
    * @param baseDataset the lksg dataset used as a basis for constructing the 6 mocked ones
    * @returns a mocked api response
@@ -144,8 +144,6 @@ describe("Component test for LksgPanel", () => {
       },
     });
     cy.get("table").find(`tr:contains("Data Date")`).find(`span`).eq(6).contains("2023");
-
-    cy.get(`span.p-column-title`).eq(6).should("contain.text", "2023");
 
     for (let indexOfColumn = 1; indexOfColumn <= 6; indexOfColumn++) {
       cy.get(`span.p-column-title`)
