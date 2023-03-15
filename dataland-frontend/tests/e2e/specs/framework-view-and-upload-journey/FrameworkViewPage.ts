@@ -584,7 +584,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
         validateLksgTable(["2023", "2022"], ["2023-2", "2022"]);
         cy.contains("This dataset is superseded").should("not.exist");
-        validateDatasetDisplayStatusBarAbsence();
+        getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
         clickBackButton();
         cy.url().should(
           "eq",
@@ -614,7 +614,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           }/reportingPeriods/2019`
         );
         validateEUTaxonomyFinancialsTable("29.2");
-        validateDatasetDisplayStatusBarAbsence();
+        getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
         clickBackButton();
         cy.url().should(
           "eq",
@@ -649,13 +649,6 @@ describe("The shared header of the framework pages should act as expected", { sc
             '[data-test="datasetDisplayStatusContainer"]:contains("You are only viewing a single available dataset")'
           )
           .find("button > span:contains('View All')"); // TODO getExistence maybe instead of this?
-      }
-
-      /**
-       * Validates that no dataset display status bar is shown
-       */
-      function validateDatasetDisplayStatusBarAbsence(): void {
-        cy.get('[data-test="datasetDisplayStatusContainer"]').should("not.exist"); //TODO use getExistence for this
       }
 
       /**
