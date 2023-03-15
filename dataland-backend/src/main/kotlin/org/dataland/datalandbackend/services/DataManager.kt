@@ -251,7 +251,7 @@ class DataManager(
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        val dataAsString = getDataFromStorage(dataId, correlationId)
+        val dataAsString = getDataFromStorageLocation(dataId, correlationId)
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
                 "Dataset not found",
@@ -262,6 +262,10 @@ class DataManager(
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         dataAsStorableDataSet.requireConsistencyWith(dataMetaInformation)
         return dataAsStorableDataSet
+    }
+
+    private fun getDataFromStorageLocation(dataId: String, correlationId: String): String {
+        return dataInMemoryStorage[dataId] ?: getDataFromStorage(dataId, correlationId)
     }
 
     private fun getDataFromStorage(dataId: String, correlationId: String): String {
