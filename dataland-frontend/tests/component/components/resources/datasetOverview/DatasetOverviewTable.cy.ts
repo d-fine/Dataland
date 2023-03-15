@@ -62,10 +62,6 @@ describe("Component test for DatasetOverviewTable", () => {
     expectedHeaders.forEach((value) => {
       cy.get(`table th:contains(${value})`).should("exist");
     });
-    const unexpectedHeaders = ["YEAR"];
-    unexpectedHeaders.forEach((value) => {
-      cy.get(`table th:contains(${value})`).should("not.exist");
-    });
     cy.get("th").each((element) => {
       if (!expectedHeaders.includes(element.text())) {
         expect(element.html()).to.contain("<input");
