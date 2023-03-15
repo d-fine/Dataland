@@ -216,7 +216,7 @@ class DataManagerTest(
             uploaderUserId = "",
             uploadTime = 0,
             qaStatus = QAStatus.Pending,
-            company = testDataProvider.getEmptyStoredCompanyEntity()
+            company = testDataProvider.getEmptyStoredCompanyEntity(),
         )
         val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
         `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(anyString())).thenReturn(mockMetaInfo)
