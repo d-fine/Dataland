@@ -82,7 +82,6 @@ sonar {
             subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> },
         )
         property("sonar.verbose", "true")
-        property("sonar.scanner.dumpToFile", "$projectDir/build/reports/sonarProperties.txt")
         property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/")
     }
 }
