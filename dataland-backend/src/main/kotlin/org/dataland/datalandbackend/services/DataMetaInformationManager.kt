@@ -35,14 +35,12 @@ class DataMetaInformationManager(
      * @return meta info about data behind the dataId
      */
     fun getDataMetaInformationByDataId(dataId: String): DataMetaInformationEntity {
-        val dataMetaInformationDbResponse = dataMetaInformationRepository.findById(dataId)
-        if (dataMetaInformationDbResponse.isEmpty) {
-            throw ResourceNotFoundApiException(
+        return dataMetaInformationRepository.findById(dataId).orElseThrow {
+            ResourceNotFoundApiException(
                 "Dataset not found",
                 "No dataset with the id: $dataId could be found in the data store.",
             )
         }
-        return dataMetaInformationDbResponse.get()
     }
 
     /**

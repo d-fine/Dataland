@@ -83,7 +83,7 @@ sonar {
         )
         property("sonar.verbose", "true")
         property("sonar.scanner.dumpToFile", "$projectDir/build/reports/sonarProperties.txt")
-        property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/sonarMetadata.txt")
+        property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/")
     }
 }
 
