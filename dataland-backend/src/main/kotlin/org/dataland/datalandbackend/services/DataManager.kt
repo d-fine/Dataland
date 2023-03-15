@@ -135,6 +135,7 @@ class DataManager(
             ),
         ],
     )
+    @Transactional
     fun updateMetaData(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
