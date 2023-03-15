@@ -58,7 +58,7 @@ describe("Component test for LksgPanel", () => {
       },
     });
 
-    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate!.substring(0,4));
+    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate!.substring(0, 4));
 
     cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
 

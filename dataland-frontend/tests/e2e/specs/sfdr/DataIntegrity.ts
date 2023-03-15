@@ -73,7 +73,7 @@ describeIf(
       const sfdrData = response.data.data as SfdrData;
       if (sfdrData) {
         const fiscalYearEndAsString = sfdrData.social!.general!.fiscalYearEnd as string;
-        return fiscalYearEndAsString.substring(0,4);
+        return fiscalYearEndAsString.substring(0, 4);
       } else {
         throw Error(`No Sfdr dataset could be retrieved for the provided dataId ${dataId}`);
       }
@@ -116,7 +116,7 @@ describeIf(
       const companyInformation = preparedFixture.companyInformation;
       const sfdrData = preparedFixture.t;
       const reportingPeriod = preparedFixture.reportingPeriod;
-      const fiscalYearEndAsString = sfdrData.social!.general!.fiscalYearEnd!.substring(0,4);
+      const fiscalYearEndAsString = sfdrData.social!.general!.fiscalYearEnd!.substring(0, 4);
       const numberOfSfdrDataSetsForCompany = 4;
 
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
