@@ -32,7 +32,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       ]);
       const expectedReportingPeriodsForEuTaxoFinancialsForAlpha = new Set<string>(["2019", "2016"]);
       const expectedReportingPeriodsForEuTaxoNonFinancialsForAlpha = new Set<string>(["2015"]);
-      const expectedReportingPeriodsForLksgForAlpha = new Set<string>(["2023", "2022"]);
       let companyIdOfAlpha: string;
 
       let dataIdOfSupersededLksg2023ForAlpha: string;
@@ -60,7 +59,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function createAllInterceptsOnFrameworkViewPage(): void {
         cy.intercept("/api/companies/**-**-**").as("getCompanyInformation");
-        cy.intercept("/api/metadata**").as("getMetaDataForCompanyId");
+        cy.intercept("/api/metadata**").as("getMetaDataQuery");
         cy.intercept("/api/data/**").as("getFrameworkData");
       }
 
@@ -69,7 +68,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        *
        */
       function waitForAllInterceptsOnFrameworkViewPage(): void {
-        cy.wait(["@getCompanyInformation", "@getMetaDataForCompanyId", "@getFrameworkData"], {
+        cy.wait(["@getCompanyInformation", "@getMetaDataQuery", "@getFrameworkData"], {
           timeout: Cypress.env("long_timeout_in_ms") as number,
         });
       }
@@ -165,18 +164,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Validates that for each expected reporting period for a multi-view-framework a column is present in the
-       * data-panel.
-       *
-       * @param expectedReportingPeriods The set of expected reporting periods to be displayed
-       */
-      function validateOneColumnPerExpectedReportingPeriod(expectedReportingPeriods: Set<string>): void {
-        expectedReportingPeriods.forEach((singleReportingPeriod) => {
-          cy.get(`span.p-column-title:contains(${singleReportingPeriod})`).should("have.length", 1);
-        });
-      } // TODO you could use testpart1 and throw this away
-
-      /**
        * Checks if none of the currently three possible error-blocks on the view-page are rendered.
        *
        */
@@ -245,14 +232,11 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Validates if all the column headers and the values in one specific row on the LkSG panel equal the passed values
+       * Validates if all the column headers equal the passed values
        *
        * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
-       * @param expectedVatIdNumberRowContent The expected values in the row of the VAT identification number field
        */
-      function validateLksgTable(expectedColumnHeaders: string[], expectedVatIdNumberRowContent: string[]): void {
-        cy.wait(1000); // TODO for reviewer: manual waiting is required because the expect statements have no timeout condition and fail immediately most of the time
-        expect(expectedColumnHeaders.length).to.equal(expectedVatIdNumberRowContent.length);
+      function validateColumnHeadersOfDisplayedLksgDatasets(expectedColumnHeaders: string[]): void {
         cy.get(".p-column-title").each((element, index, elements) => {
           expect(elements).to.have.length(expectedColumnHeaders.length + 1);
           if (index == 0) {
@@ -260,15 +244,23 @@ describe("The shared header of the framework pages should act as expected", { sc
           } else {
             expect(element.text()).to.equal(expectedColumnHeaders[index - 1]);
           }
-        }); // TODO naming of function   only checks headers and VAT numbers        testpart1: headers       testpart2: vat nubmers
+        });
+      }
+
+      /**
+       * Validates if all the values in the Vat ID row on the LkSG panel equal the passed values
+       *
+       * @param expectedVatIdNumbers The expected values in the row of the VAT identification number field
+       */
+      function validateVatIdNumbersOfDisplayedLksgDatasets(expectedVatIdNumbers: string[]): void {
         cy.get(`tr:contains("VAT Identification Number")`)
           .find("td > span")
           .each((element, index, elements) => {
-            expect(elements).to.have.length(expectedVatIdNumberRowContent.length + 1);
+            expect(elements).to.have.length(expectedVatIdNumbers.length + 1);
             if (index == 0) {
               expect(element.text()).to.equal("VAT Identification Number");
             } else {
-              expect(element.text()).to.equal(expectedVatIdNumberRowContent[index - 1]);
+              expect(element.text()).to.equal(expectedVatIdNumbers[index - 1]);
             }
           });
       }
@@ -506,7 +498,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         validateNoErrorMessagesAreShown();
         cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        cy.wait("@getMetaDataForCompanyId", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        cy.wait("@getMetaDataQuery", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2015");
@@ -521,7 +513,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.Lksg);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-        validateOneColumnPerExpectedReportingPeriod(expectedReportingPeriodsForLksgForAlpha);
+        validateColumnHeadersOfDisplayedLksgDatasets(["2023", "2022"]);
 
         clickBackButton();
 
@@ -539,7 +531,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         validateNoErrorMessagesAreShown();
         cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        cy.wait("@getMetaDataForCompanyId", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        cy.wait("@getMetaDataQuery", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2016");
         validateEUTaxonomyFinancialsTable("26");
@@ -582,7 +574,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         clickBackButton();
 
         cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        cy.wait("@getMetaDataForCompanyId", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        cy.wait("@getMetaDataQuery", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2016");
@@ -627,48 +619,74 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-
+        cy.intercept("/api/metadata/**").as("getMetaDataForSpecificDataId");
+        createAllInterceptsOnFrameworkViewPage();
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`
         );
-        validateLksgTable(["2023"], ["2023-1"]);
+
+        waitForAllInterceptsOnFrameworkViewPage();
+        validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
+        validateVatIdNumbersOfDisplayedLksgDatasets(["2023-1"]);
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
+
+        cy.wait(["@getMetaDataForSpecificDataId", "@getFrameworkData"], {
+          timeout: Cypress.env("long_timeout_in_ms") as number,
+        });
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
         );
-        validateLksgTable(["2023"], ["2023-2"]);
+        validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
+        validateVatIdNumbersOfDisplayedLksgDatasets(["2023-2"]);
         validateDisplayStatusContainerAndGetButton(
           "You are only viewing a single available dataset",
           "View All"
         ).click();
+
+        cy.wait("@getFrameworkData", {
+          timeout: Cypress.env("long_timeout_in_ms") as number,
+        });
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
-        validateLksgTable(["2023", "2022"], ["2023-2", "2022"]);
+        validateColumnHeadersOfDisplayedLksgDatasets(["2023", "2022"]);
+        validateVatIdNumbersOfDisplayedLksgDatasets(["2023-2", "2022"]);
         cy.contains("This dataset is superseded").should("not.exist");
         getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
         clickBackButton();
+
+        cy.wait(["@getMetaDataForSpecificDataId", "@getFrameworkData"], {
+          timeout: Cypress.env("long_timeout_in_ms") as number,
+        });
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
         );
-
-        validateLksgTable(["2023"], ["2023-2"]);
+        validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
+        validateVatIdNumbersOfDisplayedLksgDatasets(["2023-2"]);
         validateDisplayStatusContainerAndGetButton("You are only viewing a single available dataset", "View All");
         clickBackButton();
+
+        cy.wait(["@getMetaDataForSpecificDataId", "@getFrameworkData"], {
+          timeout: Cypress.env("long_timeout_in_ms") as number,
+        });
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
             DataTypeEnum.Lksg
           }/${dataIdOfSupersededLksg2023ForAlpha}`
         );
-
-        validateLksgTable(["2023"], ["2023-1"]);
-        validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
+        validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
+        validateVatIdNumbersOfDisplayedLksgDatasets(["2023-1"]);
+        validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active");
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`
         );
+
+        waitForAllInterceptsOnFrameworkViewPage();
         validateEUTaxonomyFinancialsTable("29");
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
+
+        cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
@@ -678,6 +696,10 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateEUTaxonomyFinancialsTable("29.2");
         getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
         clickBackButton();
+
+        cy.wait(["@getMetaDataForSpecificDataId", "@getFrameworkData"], {
+          timeout: Cypress.env("long_timeout_in_ms") as number,
+        });
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
