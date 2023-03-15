@@ -30,6 +30,9 @@ import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataCont
 
 class ApiAccessor {
 
+//    Wait after an upload to ensure that dummy QA has been put to passed
+    val SLEEP_AFTER_UPLOAD_MS : Long = 200
+
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
@@ -105,6 +108,7 @@ class ApiAccessor {
         listOfFrameworkData: List<T>,
         frameworkDataUploadFunction: (companyId: String, frameworkData: T) -> DataMetaInformation,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
+        sleepAfterUpload: Boolean = true
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
@@ -122,6 +126,8 @@ class ApiAccessor {
                 )
             }
         }
+//        Sleep after upload to ensure that dummy QA is passed and data actually available for further processing
+        if (sleepAfterUpload) Thread.sleep(SLEEP_AFTER_UPLOAD_MS)
         return listOfUploadInfo
     }
 
@@ -130,7 +136,7 @@ class ApiAccessor {
         dataType: DataTypeEnum,
         listOfCompanyInformation: List<CompanyInformation>,
         numberOfDataSetsPerCompany: Int,
-        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
+        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader
     ): List<UploadInfo> {
         return when (dataType) {
             DataTypeEnum.lksg -> uploadCompanyAndFrameworkDataForOneFramework(
