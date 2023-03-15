@@ -132,7 +132,6 @@ function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCo
  */
 export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
   const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
-  console.log(dataRegisteredByDataland);
   let routeToVisit = `/companies/${companyData.companyId}/frameworks/${dataRegisteredByDataland[0].dataType}`;
   const selectedFiltersForFrameworks = useFiltersStore().selectedFiltersForFrameworks;
   if (

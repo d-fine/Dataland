@@ -19,7 +19,7 @@
       </div>
     </div>
     <div v-else-if="companyIdDoesNotExist" class="col-12">
-      <h1 class="mb-0">No company with this ID present</h1>
+      <h1 class="mb-0" data-test="noCompanyWithThisIdErrorIndicator">No company with this ID present</h1>
     </div>
   </TheContent>
 </template>

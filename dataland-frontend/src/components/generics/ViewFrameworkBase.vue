@@ -18,54 +18,56 @@
           </div>
         </div>
       </MarginWrapper>
-      <MarginWrapper v-if="isDataProcessedSuccesfully" class="text-left surface-0" style="margin-right: 0">
-        <div class="flex justify-content-between align-items-center d-search-filters-panel">
-          <div class="flex">
-            <Dropdown
-              id="chooseFrameworkDropdown"
-              v-model="chosenDataTypeInDropdown"
-              :options="dataTypesInDropdown"
-              optionLabel="label"
-              optionValue="value"
-              :placeholder="humanizeString(dataType)"
-              aria-label="Choose framework"
-              class="fill-dropdown always-fill"
-              dropdownIcon="pi pi-angle-down"
-              @change="handleChangeFrameworkEvent"
-            />
-            <slot name="reportingPeriodDropdown"> </slot>
-          </div>
-          <div v-if="hasUserUploaderRights" class="flex align-content-end align-items-center">
-            <PrimeButton
-              v-if="canEdit"
-              class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
-              aria-label="EDIT DATA"
-              @click="editDataset"
-              data-test="editDatasetButton"
-            >
-              <span class="px-2">EDIT DATA</span>
-              <span
-                v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
-                class="material-icons-outlined"
-                >arrow_drop_down</span
+      <div v-if="isDataProcessedSuccesfully">
+        <MarginWrapper class="text-left surface-0" style="margin-right: 0">
+          <div class="flex justify-content-between align-items-center d-search-filters-panel">
+            <div class="flex">
+              <Dropdown
+                id="chooseFrameworkDropdown"
+                v-model="chosenDataTypeInDropdown"
+                :options="dataTypesInDropdown"
+                optionLabel="label"
+                optionValue="value"
+                :placeholder="humanizeString(dataType)"
+                aria-label="Choose framework"
+                class="fill-dropdown always-fill"
+                dropdownIcon="pi pi-angle-down"
+                @change="handleChangeFrameworkEvent"
+              />
+              <slot name="reportingPeriodDropdown"> </slot>
+            </div>
+            <div v-if="hasUserUploaderRights" class="flex align-content-end align-items-center">
+              <PrimeButton
+                v-if="canEdit"
+                class="uppercase p-button-outlined p-button p-button-sm d-letters mr-3"
+                aria-label="EDIT DATA"
+                @click="editDataset"
+                data-test="editDatasetButton"
               >
-            </PrimeButton>
-            <router-link :to="addNewDatasetLinkTarget" class="no-underline" data-test="gotoNewDatasetButton">
-              <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
-                <span class="material-icons-outlined px-2">queue</span>
-                <span class="px-2">NEW DATASET</span>
+                <span class="px-2">EDIT DATA</span>
+                <span
+                  v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
+                  class="material-icons-outlined"
+                  >arrow_drop_down</span
+                >
               </PrimeButton>
-            </router-link>
+              <router-link :to="addNewDatasetLinkTarget" class="no-underline" data-test="gotoNewDatasetButton">
+                <PrimeButton class="uppercase p-button-sm d-letters" aria-label="New Dataset">
+                  <span class="material-icons-outlined px-2">queue</span>
+                  <span class="px-2">NEW DATASET</span>
+                </PrimeButton>
+              </router-link>
+            </div>
+            <OverlayPanel ref="reportingPeriodsOverlayPanel">
+              <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
+            </OverlayPanel>
           </div>
-          <OverlayPanel ref="reportingPeriodsOverlayPanel">
-            <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
-          </OverlayPanel>
-        </div>
-      </MarginWrapper>
-      <MarginWrapper v-if="isDataProcessedSuccesfully" style="margin-right: 0">
-        <slot name="content"> </slot>
-      </MarginWrapper>
-      <h1 v-else>No data could be loaded.</h1>
+        </MarginWrapper>
+        <MarginWrapper style="margin-right: 0">
+          <slot name="content"> </slot>
+        </MarginWrapper>
+      </div>
+      <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>
     </TheContent>
     <DatalandFooter />
   </AuthenticationWrapper>
@@ -309,6 +311,7 @@ export default defineComponent({
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
         this.$emit("updateActiveDataMetaInfoForChosenFramework", this.mapOfReportingPeriodToActiveDataset);
+        this.isDataProcessedSuccesfully = true;
       } catch (error) {
         this.isDataProcessedSuccesfully = false;
         console.error(error);

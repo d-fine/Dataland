@@ -33,7 +33,6 @@ export default defineComponent({
   props: {
     displayedDataset: {
       type: Object as PropType<DataMetaInformation | null>,
-      required: true,
     },
     receivedMapOfReportingPeriodsToActiveDataMetaInfo: {
       type: Object,

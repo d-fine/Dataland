@@ -35,6 +35,9 @@ describe("The shared header of the framework pages should act as expected", { sc
       const expectedReportingPeriodsForLksgForAlpha = new Set<string>(["2023", "2022"]);
       let companyIdOfAlpha: string;
 
+      let dataIdOfSupersededLksg2023ForAlpha: string;
+      let dataIdOfSupersededFinancial2019ForAlpha: string;
+
       const nameOfCompanyBeta = "company-beta-with-eutaxo-and-lksg-data";
       const expectedFrameworkDropdownItemsForBeta = new Set<string>([
         humanizeString(DataTypeEnum.EutaxonomyNonFinancials),
@@ -45,10 +48,11 @@ describe("The shared header of the framework pages should act as expected", { sc
       const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
       const reportingPeriodDropdownSelector = "div#chooseReportingPeriodDropdown";
       const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
-      const searchBarSelector = "input#framework_data_search_bar_standard";
+      const searchBarSelectorForViewPage = "input#framework_data_search_bar_standard";
 
       const nonExistingDataId = "abcd123123123123123-non-existing";
-      const nonExistingReportingPeriod = "999999";
+      const nonExistingReportingPeriod = "999999-non-existing";
+      const nonExistingCompanyId = "ABC-non-existing";
 
       /**
        * Creates interceptions for all three requests which are sent when you visit the view-page from somewhere else.
@@ -170,7 +174,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         expectedReportingPeriods.forEach((singleReportingPeriod) => {
           cy.get(`span.p-column-title:contains(${singleReportingPeriod})`).should("have.length", 1);
         });
-      }
+      } // TODO you could use testpart1 and throw this away
 
       /**
        * Checks if none of the currently three possible error-blocks on the view-page are rendered.
@@ -180,6 +184,8 @@ describe("The shared header of the framework pages should act as expected", { sc
         getElementAndAssertExistence("noDataForThisFrameworkPresentErrorIndicator", "not.exist");
         getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "not.exist");
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "not.exist");
+        getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
+        getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "not.exist");
       }
 
       /**
@@ -236,7 +242,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 "2023",
                 getPreparedFixture("vat-2023-1", lksgPreparedFixtures).t
               ).then((dataMetaInformation) => {
-                dataIdOfSupersededLksg2023 = dataMetaInformation.dataId;
+                dataIdOfSupersededLksg2023ForAlpha = dataMetaInformation.dataId;
               });
             })
             .then(() => {
@@ -269,7 +275,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 "2019",
                 getPreparedFixture("eligible-activity-Point-0.29", euTaxoFinancialPreparedFixtures).t
               ).then((dataMetaInformation) => {
-                dataIdOfSupersededFinancial2019 = dataMetaInformation.dataId;
+                dataIdOfSupersededFinancial2019ForAlpha = dataMetaInformation.dataId;
               });
             })
             .then(() => {
@@ -368,7 +374,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it(
         "Check that from the view-page, even in error mode, you can search a company, even if it" +
-          "dos not have a dataset for the framework chosen on the search page",
+          "does not have a dataset for the framework chosen on the search page",
         () => {
           cy.ensureLoggedIn();
           createAllInterceptsOnFrameworkViewPage();
@@ -377,7 +383,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           waitForAllInterceptsOnFrameworkViewPage();
           validateChosenFramework(DataTypeEnum.Sfdr);
 
-          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelector);
+          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
 
           waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
@@ -386,7 +392,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           cy.visit(
             `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`
           );
-          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, searchBarSelector);
+          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, searchBarSelectorForViewPage);
 
           waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyAlpha);
@@ -395,7 +401,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           cy.visit(
             `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
           );
-          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelector);
+          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
 
           waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
@@ -481,7 +487,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateEUTaxonomyFinancialsTable("26");
       });
 
-      it("Check that invalid data IDs or reporting periods in url don't break any user flow on the view-page", () => {
+      it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
         cy.ensureLoggedIn();
         createAllInterceptsOnFrameworkViewPage();
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
@@ -541,14 +547,32 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");
         validateChosenReportingPeriod("Select...", true);
+
+        cy.visit(
+          `/companies/${nonExistingCompanyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`
+        );
+
+        getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
+        getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "not.exist");
+
+        typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
+
+        waitForAllInterceptsOnFrameworkViewPage();
+        validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForBeta);
+        validateNoErrorMessagesAreShown();
+
+        clickBackButton();
+
+        getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "exist");
+        getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "exist");
       });
 
-      let dataIdOfSupersededLksg2023: string;
-      let dataIdOfSupersededFinancial2019: string;
       it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
 
-        cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023}`);
+        cy.visit(
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`
+        );
         validateLksgTable(["2023"], ["2023-1"]);
         validateSupersededBarAndGetButton().click();
         cy.url().should(
@@ -571,13 +595,15 @@ describe("The shared header of the framework pages should act as expected", { sc
         clickBackButton();
         cy.url().should(
           "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023}`
+          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
+            DataTypeEnum.Lksg
+          }/${dataIdOfSupersededLksg2023ForAlpha}`
         );
         validateLksgTable(["2023"], ["2023-1"]);
         validateSupersededBarAndGetButton();
 
         cy.visit(
-          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019}`
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`
         );
         validateEUTaxonomyFinancialsTable("29");
         validateSupersededBarAndGetButton().click();
@@ -594,7 +620,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
             DataTypeEnum.EutaxonomyFinancials
-          }/${dataIdOfSupersededFinancial2019}`
+          }/${dataIdOfSupersededFinancial2019ForAlpha}`
         );
         validateEUTaxonomyFinancialsTable("29");
       });
@@ -608,7 +634,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       function validateSupersededBarAndGetButton(): Cypress.Chainable {
         return cy
           .get('[data-test="datasetDisplayStatusContainer"]:contains("This dataset is superseded")')
-          .find("button > span:contains('View Active')");
+          .find("button > span:contains('View Active')"); // TODO getExistence instead of this?
       }
 
       /**
@@ -622,14 +648,14 @@ describe("The shared header of the framework pages should act as expected", { sc
           .get(
             '[data-test="datasetDisplayStatusContainer"]:contains("You are only viewing a single available dataset")'
           )
-          .find("button > span:contains('View All')");
+          .find("button > span:contains('View All')"); // TODO getExistence maybe instead of this?
       }
 
       /**
        * Validates that no dataset display status bar is shown
        */
       function validateDatasetDisplayStatusBarAbsence(): void {
-        cy.get('[data-test="datasetDisplayStatusContainer"]').should("not.exist");
+        cy.get('[data-test="datasetDisplayStatusContainer"]').should("not.exist"); //TODO use getExistence for this
       }
 
       /**
@@ -648,7 +674,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           } else {
             expect(element.text()).to.equal(expectedColumnHeaders[index - 1]);
           }
-        });
+        }); // TODO naming of function   only checks headers and VAT numbers        testpart1: headers       testpart2: vat nubmers
         cy.get(`tr:contains("VAT Identification Number")`)
           .find("td > span")
           .each((element, index, elements) => {
