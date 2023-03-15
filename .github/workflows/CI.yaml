@@ -260,7 +260,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Sonar
         if: always()
-        run: ./gradlew sonar --no-daemon --stacktrace
+        run: ./gradlew sonar -D"sonar.scanner.dumpToFile"="./build/reports/sonarProperties.txt" --no-daemon --stacktrace |
+             ./gradlew sonar --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
