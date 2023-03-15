@@ -43,7 +43,7 @@ abstract class DataController<T>(
             "Received a request from user '$userId' to post company associated data of type $dataType " +
                 "for company ID '$companyId' and the reporting period $reportingPeriod",
         )
-        val correlationId = generatedCorrelationId(companyId)
+        val correlationId = generateCorrelationId(companyAssociatedData.companyId)
         val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
         val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(datasetToStore, correlationId)
         logger.info("Posted company associated data for companyId '$companyId'. Correlation ID: $correlationId")
@@ -76,7 +76,7 @@ abstract class DataController<T>(
         )
     }
 
-    private fun generatedCorrelationId(companyId: String): String {
+    private fun generateCorrelationId(companyId: String): String {
         val correlationId = randomUUID().toString()
         logger.info(
             "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
@@ -91,7 +91,7 @@ abstract class DataController<T>(
         }
         val companyId = metaInfo.company.companyId
         val reportingPeriod = metaInfo.reportingPeriod
-        val correlationId = generatedCorrelationId(companyId)
+        val correlationId = generateCorrelationId(companyId)
         logger.info(
             "Received a request to get company data with dataId '$dataId' for companyId '$companyId'. ",
         )
@@ -128,7 +128,10 @@ abstract class DataController<T>(
         metaInfos
             .filter { it.isDatasetViewableByUser(authentication) }
             .forEach {
-                val correlationId = generatedCorrelationId(companyId)
+                val correlationId = generateCorrelationId(companyId)
+                logger.info(
+                    "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
+                )
                 val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
                 listOfFrameworkDataAndMetaInfo.add(
                     DataAndMetaInformation(

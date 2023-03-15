@@ -80,9 +80,7 @@ class DataManager(
         String {
         val dataId = generateRandomDataId()
         addDatasetToDatabase(dataId, storableDataSet, correlationId)
-        storeDataSetInTemporaryStoreAndSendMessage(
-            dataId, storableDataSet, correlationId,
-        )
+        storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, correlationId)
         return dataId
     }
 
@@ -137,7 +135,6 @@ class DataManager(
             ),
         ],
     )
-    @Transactional
     fun updateMetaData(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
@@ -193,9 +190,9 @@ class DataManager(
             ExchangeNames.dataReceived,
         )
         logger.info(
-            "Stored StorableDataSet of type ${storableDataSet.dataType} " +
-                "for company ID ${storableDataSet.companyId} in temporary storage " +
-                "and received data ID '$dataId' from storage. Correlation ID: $correlationId.",
+            "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
+                "for company ID '${storableDataSet.companyId}' in temporary storage. " +
+                "Data ID '$dataId'. Correlation ID: '$correlationId'.",
         )
     }
 
