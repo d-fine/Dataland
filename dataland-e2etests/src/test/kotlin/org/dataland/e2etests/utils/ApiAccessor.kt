@@ -130,8 +130,8 @@ class ApiAccessor {
 
     private fun ensureQaCompleted(listOfUploadInfo: MutableList<UploadInfo>): MutableList<UploadInfo> {
         // Check after upload to ensure that dummy QA is passed and wait until it is
-        val maxQaPassedYetRetries = 100
-        val sleepIfQaNotPassedYetMs: Long = 50
+        val maxQaPassedYetRetries = 100; val sleepIfQaNotPassedYetMs: Long = 50
+
         val result = mutableListOf<UploadInfo>()
         repeat(maxQaPassedYetRetries) {
             for (idx in listOfUploadInfo.indices.reversed()) {
@@ -148,7 +148,7 @@ class ApiAccessor {
         }
         class QaNotCompletedException(message: String) : RuntimeException(message)
         throw QaNotCompletedException(
-            "$maxQaPassedYetRetries retries every $sleepIfQaNotPassedYetMs ms, qa for $listOfUploadInfo still failed"
+            "$maxQaPassedYetRetries retries every $sleepIfQaNotPassedYetMs ms, qa for $listOfUploadInfo still failed",
         )
     }
 
