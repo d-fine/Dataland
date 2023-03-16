@@ -80,14 +80,12 @@ jobs:
       - name: verify OpenApi Files
         if: always()
         run: testing/verifyOpenApiFiles.sh
-      - name: Upload Test and Coverage Reports
+      - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: GradleReports
-          path: |
-            ./**/build/reports
-            ./**/coverage
+          name: TestReport
+          path: ./**/build/reports
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -186,15 +184,18 @@ jobs:
         with:
           name: lcovResults
           path: ./*.info
-      - name: Upload E2E Test and Cypress Reports
+      - name: Upload FE E2E Cypress Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress
+          path: ./cypress
+      - name: Upload E2E Test Reports
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: e2eTestReports
-          path: |
-            ./cypress
-            ./**/coverage
-            ./reports
+          path: ./reports
       - name: Upload database dumps
         if: always()
         uses: actions/upload-artifact@v3
