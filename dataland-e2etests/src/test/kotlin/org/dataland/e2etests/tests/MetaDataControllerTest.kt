@@ -125,15 +125,12 @@ class MetaDataControllerTest {
             ),
             numberOfDataSetsToPostPerCompany,
         )
-        val listSizeDataMetaInfoForEuTaxoFinancials =
-            apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showOnlyActive = false)
-        val expectedListSizeDataMetaInfoForEuTaxoFinancials = initListSizeDataMetaInfoForEuTaxoFinancials +
-            totalNumberOfDataSetsPerFramework
+        val listSizeAfterUploads = apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showOnlyActive = false)
+        val expectedListSize = initListSizeDataMetaInfoForEuTaxoFinancials + totalNumberOfDataSetsPerFramework
         assertEquals(
-            expectedListSizeDataMetaInfoForEuTaxoFinancials, listSizeDataMetaInfoForEuTaxoFinancials,
+            expectedListSize, listSizeAfterUploads,
             "The meta info list for all EU Taxonomy Data for Non-Financials is expected to increase by " +
-                "$totalNumberOfDataSetsPerFramework to $expectedListSizeDataMetaInfoForEuTaxoFinancials, " +
-                "but has the size $listSizeDataMetaInfoForEuTaxoFinancials.",
+                "$totalNumberOfDataSetsPerFramework to $expectedListSize, but has the size $listSizeAfterUploads.",
         )
     }
 
@@ -198,10 +195,9 @@ class MetaDataControllerTest {
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
         val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         val expectedMetaInformation = buildAcceptedAndActiveDataMetaInformation(
-            testDataId,
-            testCompanyId,
-            testDataType,
-            uploadTime,
+            dataId = testDataId, companyId = testCompanyId,
+            testDataType = testDataType,
+            uploadTime = uploadTime,
         )
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
