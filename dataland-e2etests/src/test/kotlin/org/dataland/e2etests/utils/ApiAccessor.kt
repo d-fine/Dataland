@@ -129,12 +129,17 @@ class ApiAccessor {
         return ensureQaCompleted(listOfUploadInfo)
     }
 
-    private fun ensureQaCompleted(listOfUploadInfo: List<UploadInfo>): MutableList<UploadInfo> {
-        // Check after upload to ensure that dummy QA is passed and wait until it is
+    /**
+     * Wait until QaStatus is accepted for all Upload Infos or throw error.
+     *
+     * @param uploadInfos List of UploadInfo for which an update of the QAStatus should be checked and awaited
+     * @return Input list of UplaodInfo but with updated metadata
+     */
+    private fun ensureQaCompleted(uploadInfos: List<UploadInfo>): MutableList<UploadInfo> {
         val maxQaPassedYetRetries = 100
         val sleepIfQaNotPassedYetMs = 50L
         val result = mutableListOf<UploadInfo>()
-        var qaNotPassedUploadInfos = listOfUploadInfo
+        var qaNotPassedUploadInfos = uploadInfos
         repeat(maxQaPassedYetRetries) {
             val pairResult = updateQaStatus(qaNotPassedUploadInfos)
             val qaPassedUploadInfos = pairResult.first
@@ -145,12 +150,18 @@ class ApiAccessor {
         }
         class QaNotCompletedException(message: String) : RuntimeException(message)
         throw QaNotCompletedException(
-            "$maxQaPassedYetRetries retries every $sleepIfQaNotPassedYetMs ms, qa for $listOfUploadInfo still failed",
+            "$maxQaPassedYetRetries retries every $sleepIfQaNotPassedYetMs ms, qa for $uploadInfos still failed",
         )
     }
 
+    /**
+     * For a list of UploadInfos, check the associated metadata and check separate them into sets of UploadInfos with
+     * qaStatus Accepted and QaStatus not accepted.
+     *
+     * @param uploadInfos List of UploadInfos for which QA status should be updated
+     * @return First returned item contains QA Passed UploadInfos, second contains QA not passed UploadInfos
+     */
     private fun updateQaStatus(uploadInfos: List<UploadInfo>): Pair<List<UploadInfo>, List<UploadInfo>> {
-        // First returned item contains QA Passed uploads, second contains QA not passed uploads
         val qaPassed = mutableListOf<UploadInfo>()
         val qaNotPassed = uploadInfos.toMutableList()
         for (idx in qaNotPassed.indices.reversed()) {
