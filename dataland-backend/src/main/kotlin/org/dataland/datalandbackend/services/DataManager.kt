@@ -255,7 +255,7 @@ class DataManager(
         lateinit var dataAsString: String
         try {
             dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
-        } catch(e: ClientException) {
+        } catch (e: ClientException) {
             if (e.statusCode == 404) {
                 logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
                 throw ResourceNotFoundApiException(

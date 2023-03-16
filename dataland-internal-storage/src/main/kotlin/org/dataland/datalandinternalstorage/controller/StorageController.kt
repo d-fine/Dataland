@@ -22,11 +22,9 @@ class StorageController(
 
     override fun selectDataById(dataId: String, correlationId: String): ResponseEntity<String> {
         logger.info("Selecting data from database with data id: $dataId. Correlation id: $correlationId.")
-        val data = dataStore.selectDataSet(dataId)
-        if (data == null) {
-            logger.info("Data with data id: $dataId could not be found. Correlation id: $correlationId.")
-            return ResponseEntity(HttpStatus.NOT_FOUND)
-        }
-        return ResponseEntity.ok(data)
+        return dataStore.selectDataSet(dataId)?.let { return ResponseEntity.ok(it) }
+            ?: ResponseEntity<String>(HttpStatus.NOT_FOUND).also {
+                logger.info("Data with data id: $dataId could not be found. Correlation id: $correlationId.")
+            }
     }
 }
