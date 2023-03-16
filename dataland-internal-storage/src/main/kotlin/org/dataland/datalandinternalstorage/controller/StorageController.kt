@@ -4,7 +4,6 @@ import org.dataland.datalandinternalstorage.api.StorageAPI
 import org.dataland.datalandinternalstorage.services.DatabaseDataStore
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RestController
@@ -22,9 +21,6 @@ class StorageController(
 
     override fun selectDataById(dataId: String, correlationId: String): ResponseEntity<String> {
         logger.info("Selecting data from database with data id: $dataId. Correlation id: $correlationId.")
-        return dataStore.selectDataSet(dataId)?.let { return ResponseEntity.ok(it) }
-            ?: ResponseEntity<String>(HttpStatus.NOT_FOUND).also {
-                logger.info("Data with data id: $dataId could not be found. Correlation id: $correlationId.")
-            }
+        return ResponseEntity.ok(dataStore.selectDataSet(dataId, correlationId))
     }
 }
