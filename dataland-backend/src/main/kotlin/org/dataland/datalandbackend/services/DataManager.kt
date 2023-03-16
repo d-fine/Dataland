@@ -24,6 +24,7 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
@@ -256,7 +257,7 @@ class DataManager(
         try {
             dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
         } catch (e: ClientException) {
-            if (e.statusCode == 404) {
+            if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
                 logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
                 throw ResourceNotFoundApiException(
                     "Dataset not found",
