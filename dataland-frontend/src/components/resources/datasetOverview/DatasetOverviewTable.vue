@@ -68,16 +68,10 @@ import { defineComponent, inject } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
-import {
-  DatasetStatus,
-  DatasetTableInfo,
-  getMyDatasetTableInfos,
-} from "@/components/resources/datasetOverview/DatasetTableInfo";
+import { DatasetStatus, DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import debounce from "@/utils/Debounce";
 import { DatasetStatusBadgeElements } from "@/utils/QABadgeElements";
 
 export default defineComponent({
@@ -101,14 +95,8 @@ export default defineComponent({
       displayedDatasetTableInfos: [] as DatasetTableInfo[],
       humanizeString: humanizeString,
       convertDate: convertUnixTimeInMsToDateString,
-      applySearchFilterDebounced: debounce(
-        () => {
-          void this.applySearchFilter();
-        },
-        250,
-        false
-      ),
       loading: false,
+      latestSearchString: "" as string,
       DatasetStatusBadgeElements,
     };
   },
@@ -124,8 +112,8 @@ export default defineComponent({
     },
   },
   watch: {
-    searchBarInput() {
-      void this.applySearchFilterDebounced();
+    searchBarInput(newSearchString) {
+      this.applySearchFilter(newSearchString as string);
     },
     datasetTableInfos() {
       this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
@@ -141,17 +129,27 @@ export default defineComponent({
     getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
       return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/${datasetTableInfo.dataId}`;
     },
+
     /**
      * Filter the given datasets for the search string in the company name
+     *
+     * @param searchString The search string to look for in the company names
      */
-    async applySearchFilter(): Promise<void> {
+    applySearchFilter(searchString: string): void {
       this.loading = true;
-      this.displayedDatasetTableInfos = await getMyDatasetTableInfos(
-        assertDefined(this.getKeycloakPromise),
-        this.searchBarInput
-      );
+      let arrayToFilter: DatasetTableInfo[];
+      if (searchString.includes(this.latestSearchString)) {
+        arrayToFilter = this.displayedDatasetTableInfos;
+      } else {
+        arrayToFilter = this.datasetTableInfos as DatasetTableInfo[];
+      }
+      this.displayedDatasetTableInfos = arrayToFilter.filter((datasetTableInfo: DatasetTableInfo) => {
+        return datasetTableInfo.companyName.includes(searchString);
+      });
+      this.latestSearchString = searchString;
       this.loading = false;
     },
+
     /**
      * Depending on the dataset status, executes a router push to either the dataset view page or an upload page
      *

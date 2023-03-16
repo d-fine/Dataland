@@ -42,13 +42,13 @@ export function getDatasetStatus(dataMetaInfo: DataMetaInformation): DatasetStat
  * @param searchString a filter for the company names / alternative names
  * @returns the filtered DatasetTableInfos
  */
-export async function getMyDatasetTableInfos(
+export async function getMyDatasetTableInfos( // TODO I have questions here (Emanuel).  Especially: I will only see datasets here for companies, which I uploaded. Do we want that?
   getKeycloakPromise: () => Promise<Keycloak>,
   searchString?: string
 ): Promise<DatasetTableInfo[]> {
   let userId: string | undefined;
   const companyDataControllerApi = await new ApiClientProvider(getKeycloakPromise()).getCompanyDataControllerApi();
-  const companiesMetaInfos = (
+  const storedCompaniesUploadedByCurrentUser = (
     await companyDataControllerApi.getCompanies(
       searchString,
       new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE),
@@ -63,7 +63,7 @@ export async function getMyDatasetTableInfos(
     userId = parsedIdToken.sub;
   }
 
-  return companiesMetaInfos.flatMap((company: StoredCompany) =>
+  return storedCompaniesUploadedByCurrentUser.flatMap((company: StoredCompany) =>
     company.dataRegisteredByDataland
       .filter(
         (dataMetaInfo: DataMetaInformation) =>
