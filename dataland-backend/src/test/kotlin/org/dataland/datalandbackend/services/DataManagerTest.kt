@@ -13,6 +13,7 @@ import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiExcept
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpStatus
 import java.time.Instant
 
 @SpringBootTest(classes = [DatalandBackend::class])
@@ -98,7 +100,8 @@ class DataManagerTest(
         val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
             storableEuTaxonomyDataSetForNonFinancials, correlationId,
         )
-        `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn("")
+        `when`(mockStorageClient.selectDataById(dataId, correlationId))
+            .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
         dataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DataStored)
         val thrown = assertThrows<ResourceNotFoundApiException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
@@ -216,8 +219,8 @@ class DataManagerTest(
         )
         val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
         `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(anyString())).thenReturn(mockMetaInfo)
-        `when`(mockStorageClient.selectDataById(anyString(), anyString())).thenReturn(
-            "",
+        `when`(mockStorageClient.selectDataById(anyString(), anyString())).thenThrow(
+            ClientException(statusCode = HttpStatus.NOT_FOUND.value()),
         )
         dataManager = DataManager(
             objectMapper, companyManager, mockDataMetaInformationManager,
