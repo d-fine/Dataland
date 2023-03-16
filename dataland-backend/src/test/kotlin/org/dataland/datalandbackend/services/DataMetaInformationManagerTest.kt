@@ -58,34 +58,20 @@ class DataMetaInformationManagerTest(
     @Test
     fun `check that an exception is thrown when two meta data entries are uploaded simultaneously`() {
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
-        val company = companyManager.addCompany(companyInformation)
-
-        dataMetaInformationManager.storeDataMetaInformation(
-            DataMetaInformationEntity(
-                "data-id-1",
-                company,
-                DataType.of(LksgData::class.java).toString(),
-                "uploader-user-id",
-                0,
-                "reporting-period",
-                null,
-                QAStatus.Accepted,
-            ),
+        val storedCompanyEntity = companyManager.addCompany(companyInformation)
+        val dataMetaInfoEntityToStore = DataMetaInformationEntity(
+            dataId = "data-id-1",
+            company = storedCompanyEntity,
+            dataType = DataType.of(LksgData::class.java).toString(),
+            uploaderUserId = "uploader-user-id",
+            uploadTime = 0,
+            reportingPeriod = "reporting-period",
+            currentlyActive = null,
+            qaStatus = QAStatus.Accepted,
         )
-
+        dataMetaInformationManager.storeDataMetaInformation(dataMetaInfoEntityToStore)
         assertThrows<DataIntegrityViolationException> {
-            dataMetaInformationManager.storeDataMetaInformation(
-                DataMetaInformationEntity(
-                    "data-id-2",
-                    company,
-                    DataType.of(LksgData::class.java).toString(),
-                    "uploader-user-id",
-                    0,
-                    "reporting-period",
-                    null,
-                    QAStatus.Accepted,
-                ),
-            )
+            dataMetaInformationManager.storeDataMetaInformation(dataMetaInfoEntityToStore.copy(dataId = "data-id-2"))
         }
     }
 }
