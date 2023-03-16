@@ -18,6 +18,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -27,11 +28,9 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
+import org.junit.jupiter.api.Assertions
 
 class ApiAccessor {
-
-    //    Wait after an upload to ensure that dummy QA has been put to passed
-    private val sleepAfterUploadMs: Long = 200
 
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
@@ -108,7 +107,7 @@ class ApiAccessor {
         listOfFrameworkData: List<T>,
         frameworkDataUploadFunction: (companyId: String, frameworkData: T) -> DataMetaInformation,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
-        sleepAfterUpload: Boolean = true,
+        ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
@@ -126,9 +125,36 @@ class ApiAccessor {
                 )
             }
         }
-//        Sleep after upload to ensure that dummy QA is passed and data actually available for further processing
-        if (sleepAfterUpload) Thread.sleep(sleepAfterUploadMs)
-        return listOfUploadInfo
+        if (!ensureQaPassed) return listOfUploadInfo
+        return ensureQaCompleted(listOfUploadInfo)
+    }
+
+    private fun ensureQaCompleted(listOfUploadInfo: MutableList<UploadInfo>): MutableList<UploadInfo> {
+        // Check after upload to ensure that dummy QA is passed and wait until it is
+        val maxQaPassedYetRetries = 10
+        val sleepIfQaNotPassedYetMs: Long = 50
+        val result = mutableListOf<UploadInfo>()
+        for (retries in 1..maxQaPassedYetRetries) {
+            for (idx in listOfUploadInfo.indices.reversed()) {
+                var metaData = listOfUploadInfo[idx].actualStoredDataMetaInfo!!
+                listOfUploadInfo[idx].actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
+                metaData = listOfUploadInfo[idx].actualStoredDataMetaInfo!!
+                if (metaData.qaStatus == QAStatus.accepted) {
+                    result.add(listOfUploadInfo[idx])
+                    listOfUploadInfo.removeAt(idx)
+                }
+            }
+            if (listOfUploadInfo.isEmpty()) break
+            if (retries == maxQaPassedYetRetries - 1) {
+                Assertions.assertTrue(
+                    false,
+                    """After $retries retries with $sleepIfQaNotPassedYetMs ms sleep, 
+                        qa for $listOfUploadInfo was still not passed.""",
+                )
+            }
+            Thread.sleep(sleepIfQaNotPassedYetMs)
+        }
+        return result
     }
 
     @Suppress("kotlin:S138")
@@ -145,24 +171,28 @@ class ApiAccessor {
                 lksgUploaderFunction,
                 uploadingTechnicalUser,
             )
+
             DataTypeEnum.sfdr -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderForSfdrData.getTData(numberOfDataSetsPerCompany),
                 sfdrUploaderFunction,
                 uploadingTechnicalUser,
             )
+
             DataTypeEnum.sme -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderForSmeData.getTData(numberOfDataSetsPerCompany),
                 smeUploaderFunction,
                 uploadingTechnicalUser,
             )
+
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderForEuTaxonomyDataForNonFinancials.getTData(numberOfDataSetsPerCompany),
                 euTaxonomyNonFinancialsUploaderFunction,
                 uploadingTechnicalUser,
             )
+
             DataTypeEnum.eutaxonomyMinusFinancials -> uploadCompanyAndFrameworkDataForOneFramework(
                 listOfCompanyInformation,
                 testDataProviderEuTaxonomyForFinancials.getTData(numberOfDataSetsPerCompany),
@@ -211,8 +241,7 @@ class ApiAccessor {
         val listOfCompanyInformation = testDataProviderEuTaxonomyForFinancials
             .getCompanyInformationWithoutIdentifiers(numCompanies)
         val listOfUploadInfos = mutableListOf<UploadInfo>()
-        listOfCompanyInformation.forEach {
-                companyInformation ->
+        listOfCompanyInformation.forEach { companyInformation ->
             listOfUploadInfos.add(
                 UploadInfo(
                     companyInformation,
@@ -262,6 +291,6 @@ data class UploadInfo(
 
     val actualStoredCompany: StoredCompany,
 
-    val actualStoredDataMetaInfo: DataMetaInformation? = null,
+    var actualStoredDataMetaInfo: DataMetaInformation? = null,
 
 )
