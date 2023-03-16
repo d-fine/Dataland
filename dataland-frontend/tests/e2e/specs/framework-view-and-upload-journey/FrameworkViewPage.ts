@@ -162,7 +162,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           .then(() => {
             expect(expectedDropdownOptions.size).to.equal(optionsCounter);
           });
-        cy.get(dropdownSelector).click();
+        cy.get(dropdownSelector).click({ force: true });
       }
 
       /**
