@@ -403,24 +403,19 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.intercept("/api/companies?searchString=&dataTypes=*").as("firstLoadOfSearchPage");
         cy.visit(`/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}`);
         cy.wait("@firstLoadOfSearchPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        createAllInterceptsOnFrameworkViewPage();
         typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha);
-        waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
 
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(
           DataTypeEnum.EutaxonomyNonFinancials,
           nameOfCompanyAlpha
         );
-        waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
 
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
-        waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.Lksg);
 
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
-        waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
       });
 
