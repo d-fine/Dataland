@@ -113,16 +113,13 @@ class DataRetrievalViaApiKeyTest {
             testDataEuTaxonomyNonFinancials,
         )
         apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(TechnicalUser.Reader, 1)
-        val downloadedCompanyAssociatedDataEuTaxonomyDataForNonFinancials =
-            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
+        val downloadedCompanyAssociatedEuTaxoDataNonFinancials = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+            .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
         assertEquals(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
-                companyId = mapOfIds["companyId"],
-                reportingPeriod = "",
-                data = testDataEuTaxonomyNonFinancials,
+                companyId = mapOfIds["companyId"], reportingPeriod = "", data = testDataEuTaxonomyNonFinancials,
             ),
-            downloadedCompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+            downloadedCompanyAssociatedEuTaxoDataNonFinancials,
             "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
         )
     }
