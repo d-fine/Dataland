@@ -20,6 +20,7 @@ fi
 mkdir -p ./cypress/${CYPRESS_TEST_GROUP}
 mkdir -p ./reports/${CYPRESS_TEST_GROUP}
 docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/coverage/lcov.info ./lcov-${CYPRESS_TEST_GROUP}.info || true
+docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/coverage/. ./coverage/${CYPRESS_TEST_GROUP} || true
 docker cp dala-e2e-test-e2etests-1:/app/dataland-frontend/cypress/. ./cypress/${CYPRESS_TEST_GROUP}/ || true
 docker cp dala-e2e-test-e2etests-1:/app/dataland-e2etests/build/reports/. ./reports/${CYPRESS_TEST_GROUP}/ || true
 
