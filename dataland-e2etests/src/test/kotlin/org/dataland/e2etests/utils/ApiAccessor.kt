@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import org.awaitility.Awaitility.await
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
@@ -29,6 +30,7 @@ import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedCompanyDataC
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
 import java.lang.NullPointerException
+import java.util.concurrent.TimeUnit
 
 class ApiAccessor {
 
@@ -125,58 +127,36 @@ class ApiAccessor {
                 )
             }
         }
-        if (!ensureQaPassed) return listOfUploadInfo
-        return ensureQaCompleted(listOfUploadInfo)
+        if (ensureQaPassed) ensureQaCompletedAndUpdateMetadata(listOfUploadInfo)
+        return listOfUploadInfo
     }
 
     /**
-     * Wait until QaStatus is accepted for all Upload Infos or throw error.
+     * Wait until QaStatus is accepted for all Upload Infos or throw error. The metadata of the provided uploadInfos
+     * are updated in the process.
      *
      * @param uploadInfos List of UploadInfo for which an update of the QAStatus should be checked and awaited
      * @return Input list of UplaodInfo but with updated metadata
      */
-    private fun ensureQaCompleted(uploadInfos: List<UploadInfo>): MutableList<UploadInfo> {
-        val maxQaPassedYetRetries = 100
-        val sleepIfQaNotPassedYetMs = 50L
-        val result = mutableListOf<UploadInfo>()
-        var qaNotPassedUploadInfos = uploadInfos
-        repeat(maxQaPassedYetRetries) {
-            val pairResult = updateQaStatus(qaNotPassedUploadInfos)
-            val qaPassedUploadInfos = pairResult.first
-            qaNotPassedUploadInfos = pairResult.second
-            result.addAll(qaPassedUploadInfos)
-            if (qaNotPassedUploadInfos.isEmpty()) return result
-            Thread.sleep(sleepIfQaNotPassedYetMs)
-        }
-        class QaNotCompletedException(message: String) : RuntimeException(message)
-        throw QaNotCompletedException(
-            "$maxQaPassedYetRetries retries every $sleepIfQaNotPassedYetMs ms, qa for $uploadInfos still failed",
-        )
+    private fun ensureQaCompletedAndUpdateMetadata(uploadInfos: List<UploadInfo>) {
+        await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedAndUpdateMetadata(uploadInfos) }
     }
 
-    /**
-     * For a list of UploadInfos, check the associated metadata and check separate them into sets of UploadInfos with
-     * qaStatus Accepted and QaStatus not accepted.
-     *
-     * @param uploadInfos List of UploadInfos for which QA status should be updated
-     * @return First returned item contains QA Passed UploadInfos, second contains QA not passed UploadInfos
-     */
-    private fun updateQaStatus(uploadInfos: List<UploadInfo>): Pair<List<UploadInfo>, List<UploadInfo>> {
-        val qaPassed = mutableListOf<UploadInfo>()
-        val qaNotPassed = uploadInfos.toMutableList()
-        for (idx in qaNotPassed.indices.reversed()) {
-            val dataId = qaNotPassed[idx].actualStoredDataMetaInfo?.dataId
+    private fun checkIfQaPassedAndUpdateMetadata(uploadInfos: List<UploadInfo>): Boolean {
+        var allQaPassedIndicator = true
+        for (uploadInfo in uploadInfos) {
+            val metaData = uploadInfo.actualStoredDataMetaInfo
                 ?: throw NullPointerException(
-                    "To check QA Status, metadata is required but was null for ${qaNotPassed[idx]}",
+                    "To check QA Status, metadata is required but was null for $uploadInfo",
                 )
-            qaNotPassed[idx].actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
-            val updatedMetaData = qaNotPassed[idx].actualStoredDataMetaInfo!!
-            if (updatedMetaData.qaStatus == QAStatus.accepted) {
-                qaPassed.add(qaNotPassed[idx])
-                qaNotPassed.removeAt(idx)
+            if (metaData.qaStatus != QAStatus.accepted) {
+                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
+                if (uploadInfo.actualStoredDataMetaInfo!!.qaStatus != QAStatus.accepted) {
+                    allQaPassedIndicator = false
+                }
             }
         }
-        return Pair(qaPassed, qaNotPassed)
+        return allQaPassedIndicator
     }
 
     @Suppress("kotlin:S138")
