@@ -28,6 +28,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
+import java.lang.NullPointerException
 
 class ApiAccessor {
 
@@ -128,28 +129,43 @@ class ApiAccessor {
         return ensureQaCompleted(listOfUploadInfo)
     }
 
-    private fun ensureQaCompleted(listOfUploadInfo: MutableList<UploadInfo>): MutableList<UploadInfo> {
+    private fun ensureQaCompleted(listOfUploadInfo: List<UploadInfo>): MutableList<UploadInfo> {
         // Check after upload to ensure that dummy QA is passed and wait until it is
-        val maxQaPassedYetRetries = 100; val sleepIfQaNotPassedYetMs: Long = 50
-
+        val maxQaPassedYetRetries = 100
+        val sleepIfQaNotPassedYetMs = 50L
         val result = mutableListOf<UploadInfo>()
+        var qaNotPassedUploadInfos = listOfUploadInfo
         repeat(maxQaPassedYetRetries) {
-            for (idx in listOfUploadInfo.indices.reversed()) {
-                var metaData = listOfUploadInfo[idx].actualStoredDataMetaInfo!!
-                listOfUploadInfo[idx].actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
-                metaData = listOfUploadInfo[idx].actualStoredDataMetaInfo!!
-                if (metaData.qaStatus == QAStatus.accepted) {
-                    result.add(listOfUploadInfo[idx])
-                    listOfUploadInfo.removeAt(idx)
-                }
-            }
-            if (listOfUploadInfo.isEmpty()) return result
+            val pairResult = updateQaStatus(qaNotPassedUploadInfos)
+            val qaPassedUploadInfos = pairResult.first
+            qaNotPassedUploadInfos = pairResult.second
+            result.addAll(qaPassedUploadInfos)
+            if (qaNotPassedUploadInfos.isEmpty()) return result
             Thread.sleep(sleepIfQaNotPassedYetMs)
         }
         class QaNotCompletedException(message: String) : RuntimeException(message)
         throw QaNotCompletedException(
             "$maxQaPassedYetRetries retries every $sleepIfQaNotPassedYetMs ms, qa for $listOfUploadInfo still failed",
         )
+    }
+
+    private fun updateQaStatus(uploadInfos: List<UploadInfo>): Pair<List<UploadInfo>, List<UploadInfo>> {
+        // First returned item contains QA Passed uploads, second contains QA not passed uploads
+        val qaPassed = mutableListOf<UploadInfo>()
+        val qaNotPassed = uploadInfos.toMutableList()
+        for (idx in qaNotPassed.indices.reversed()) {
+            val dataId = qaNotPassed[idx].actualStoredDataMetaInfo?.dataId
+                ?: throw NullPointerException(
+                    "To check QA Status, metadata is required but was null for ${qaNotPassed[idx]}",
+                )
+            qaNotPassed[idx].actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
+            val updatedMetaData = qaNotPassed[idx].actualStoredDataMetaInfo!!
+            if (updatedMetaData.qaStatus == QAStatus.accepted) {
+                qaPassed.add(qaNotPassed[idx])
+                qaNotPassed.removeAt(idx)
+            }
+        }
+        return Pair(qaPassed, qaNotPassed)
     }
 
     @Suppress("kotlin:S138")

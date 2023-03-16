@@ -264,9 +264,8 @@ class DataManager(
                     "No dataset with the id: $dataId could be found in the data store.",
                     e,
                 )
-            } else {
-                throw e
             }
+            throw e
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
