@@ -1,6 +1,10 @@
 <template>
   <div class="form-field vertical-middle">
-    <InputSwitch inputId="dataPointIsAvailableSwitch" v-model="dataPointIsAvailable" />
+    <InputSwitch
+      inputId="dataPointIsAvailableSwitch"
+      @click="dataPointAvailableToggle"
+      v-model="dataPointIsAvailable"
+    />
     <h5 class="ml-2">Data point is available</h5>
   </div>
 
@@ -9,12 +13,12 @@
       <UploadFormHeader name="Eligible Revenue (%) *" explanation="Eligible Revenue (%) *" />
       <FormKit
         type="number"
-        name="shareOfTemporaryWorkers"
+        name="value"
         validation-label=""
         placeholder="Value %"
         step="0.01"
         min="0"
-        validation="required|number|between:0,100"
+        validation="number|between:0,100"
         :inner-class="{
           short: true,
         }"
@@ -24,49 +28,27 @@
     <!-- Data source -->
     <div class="form-field">
       <FormKit type="group" name="dataSource">
-      <h4 class="mt-0">Data source</h4>
-      <div class="next-to-each-other">
-        <div class="flex-1">
-          <UploadFormHeader
-              :name="KpiNameMappings.report ?? ''"
-              :explanation="KpiInfoMappings.report ?? ''"
-          />
-          <FormKit
+        <h4 class="mt-0">Data source</h4>
+        <div class="next-to-each-other">
+          <div class="flex-1">
+            <UploadFormHeader :name="KpiNameMappings.report ?? ''" :explanation="KpiInfoMappings.report ?? ''" />
+            <FormKit
               type="select"
               name="report"
               placeholder="Select a report"
               validation-label="Select a report"
-              validation="required"
               :options="['None...', ...this.files.filesNames]"
-          />
+            />
+          </div>
+          <div>
+            <UploadFormHeader :name="KpiNameMappings.page ?? ''" :explanation="KpiInfoMappings.page ?? ''" />
+            <FormKit outer-class="w-100" type="number" name="page" placeholder="Page" validation-label="Page" />
+          </div>
         </div>
         <div>
-          <UploadFormHeader
-              :name="KpiNameMappings.page ?? ''"
-              :explanation="KpiInfoMappings.page ?? ''"
-          />
-          <FormKit
-              outer-class="w-100"
-              type="number"
-              name="page"
-              placeholder="Page"
-              validation-label="Page"
-          />
+          <UploadFormHeader :name="KpiNameMappings.tagName ?? ''" :explanation="KpiInfoMappings.tagName ?? ''" />
+          <FormKit outer-class="short" type="text" name="tagName" placeholder="Tag Name" validation-label="Tag Name" />
         </div>
-      </div>
-      <div>
-        <UploadFormHeader
-            :name="KpiNameMappings.tagName ?? ''"
-            :explanation="KpiInfoMappings.tagName ?? ''"
-        />
-        <FormKit
-            outer-class="short"
-            type="text"
-            name="tagName"
-            placeholder="Tag Name"
-            validation-label="Tag Name"
-        />
-      </div>
       </FormKit>
     </div>
     <!-- Data quality -->
@@ -75,8 +57,7 @@
       <div class="lg:col-6 md:col-6 col-12 p-0">
         <FormKit
           type="select"
-          name="dataQuality"
-          validation="required"
+          name="quality"
           validation-label="Data quality"
           placeholder="Data quality"
           :options="dataQualityList"
@@ -105,6 +86,7 @@ import { useFilesUploadedStore } from "@/stores/filesUploaded";
 export default defineComponent({
   name: "KPIfieldsSet",
   components: { UploadFormHeader, FormKit, InputSwitch },
+  emits: ["dataPointAvailableToggle"],
   data: () => ({
     files: useFilesUploadedStore(),
     dataPointIsAvailable: true,
@@ -121,6 +103,12 @@ export default defineComponent({
     KpiNameMappings: {
       type: Object,
       default: null,
+    },
+  },
+  methods: {
+    dataPointAvailableToggle() {
+      this.dataPointIsAvailable = !this.dataPointIsAvailable;
+      this.$emit("dataPointAvailableToggle", this.dataPointIsAvailable);
     },
   },
 });
