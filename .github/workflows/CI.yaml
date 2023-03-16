@@ -193,7 +193,7 @@ jobs:
           name: e2eTestReports
           path: |
             ./cypress
-            ./**/coverage
+            ./coverage
             ./reports
       - name: Upload database dumps
         if: always()
