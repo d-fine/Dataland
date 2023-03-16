@@ -2,13 +2,12 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import {
   uploadEuTaxonomyDataForNonFinancialsViaForm,
   uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { getPreparedFixture } from "@sharedUtils/Fixtures";
 
 describeIf(
   "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",

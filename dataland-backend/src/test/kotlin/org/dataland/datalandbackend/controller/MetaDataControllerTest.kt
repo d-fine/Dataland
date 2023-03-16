@@ -48,6 +48,11 @@ internal class MetaDataControllerTest(
 ) {
     val testDataProvider = TestDataProvider(objectMapper)
 
+    val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
+    val expectedSetOfRolesForUploader = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
+    val expectedSetOfRolesForAdmin =
+        setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER, DatalandRealmRole.ROLE_ADMIN)
+
     @Test
     fun `list of meta info about data for specific company can be retrieved`() {
         val testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
@@ -70,30 +75,17 @@ internal class MetaDataControllerTest(
         val storedCompany = companyManager.addCompany(testCompanyInformation)
         val metaInfo = dataMetaInformationManager.storeDataMetaInformation(
             DataMetaInformationEntity(
-                "data-id-for-testing-user-access",
-                storedCompany,
-                DataType.of(LksgData::class.java).toString(),
-                "uploader-user-id",
-                0,
-                "reporting-period",
-                null,
-                QAStatus.Pending,
+                dataId = "data-id-for-testing-user-access", company = storedCompany,
+                dataType = DataType.of(LksgData::class.java).toString(), uploaderUserId = "uploader-user-id",
+                uploadTime = 0, reportingPeriod = "reporting-period", currentlyActive = null,
+                qaStatus = QAStatus.Pending,
             ),
         )
-        mockSecurityContext(
-            "reader-user-id",
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
+        mockSecurityContext(userId = "reader-user-id", roles = expectedSetOfRolesForReader)
         assertMetaDataNotVisible(metaInfo)
-        mockSecurityContext(
-            "uploader-user-id",
-            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
-        )
+        mockSecurityContext(userId = "uploader-user-id", roles = expectedSetOfRolesForUploader)
         assertMetaDataVisible(metaInfo)
-        mockSecurityContext(
-            "admin-user-id",
-            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER, DatalandRealmRole.ROLE_ADMIN),
-        )
+        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
     }
 
     private fun assertMetaDataVisible(metaInfo: DataMetaInformationEntity) {

@@ -251,7 +251,8 @@ export default defineComponent({
           listOfDistinctAvailableAndViewableFrameworksForCompany.push(dataType);
         }
       });
-      listOfDistinctAvailableAndViewableFrameworksForCompany.sort().forEach((dataType) => {
+      listOfDistinctAvailableAndViewableFrameworksForCompany.sort();
+      listOfDistinctAvailableAndViewableFrameworksForCompany.forEach((dataType) => {
         this.dataTypesInDropdown.push({ label: humanizeString(dataType), value: dataType });
       });
     },

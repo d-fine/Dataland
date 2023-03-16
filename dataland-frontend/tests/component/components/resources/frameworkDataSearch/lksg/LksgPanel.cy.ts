@@ -1,10 +1,16 @@
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
-import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
 import { mount } from "cypress/vue";
-import { CompanyAssociatedDataLksgData } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { DataMetaInformation, ProductionSite, DataTypeEnum, QAStatus } from "@clients/backend";
+import {
+  DataAndMetaInformationLksgData,
+  LksgData,
+  CompanyAssociatedDataLksgData,
+  DataMetaInformation,
+  ProductionSite,
+  DataTypeEnum,
+  QAStatus,
+} from "@clients/backend";
 
 describe("Component test for LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;

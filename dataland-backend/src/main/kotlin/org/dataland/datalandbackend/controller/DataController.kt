@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.LogMessageBuilder
 import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.model.CompanyAssociatedData
 import org.dataland.datalandbackend.model.DataAndMetaInformation
@@ -32,6 +33,7 @@ abstract class DataController<T>(
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val logMessageBuilder = LogMessageBuilder()
 
     override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
         ResponseEntity<DataMetaInformation> {
@@ -39,24 +41,16 @@ abstract class DataController<T>(
         val reportingPeriod = companyAssociatedData.reportingPeriod
         val userId = DatalandAuthentication.fromContext().userId
         val uploadTime = Instant.now().epochSecond
-        logger.info(
-            "Received a request from user '$userId' to post company associated data of type $dataType " +
-                "for company ID '$companyId' and the reporting period $reportingPeriod",
-        )
+        logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))
         val correlationId = generateCorrelationId(companyAssociatedData.companyId)
         val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
         val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(datasetToStore, correlationId)
-        logger.info("Posted company associated data for companyId '$companyId'. Correlation ID: $correlationId")
+        logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
         return ResponseEntity.ok(
             DataMetaInformation(
-                dataId = dataIdOfPostedData,
-                companyId = companyId,
-                dataType = dataType,
-                uploaderUserId = userId,
-                uploadTime = uploadTime,
-                reportingPeriod = reportingPeriod,
-                currentlyActive = false,
-                qaStatus = QAStatus.Pending,
+                dataId = dataIdOfPostedData, companyId = companyId, dataType = dataType,
+                uploaderUserId = userId, uploadTime = uploadTime, reportingPeriod = reportingPeriod,
+                currentlyActive = false, qaStatus = QAStatus.Pending,
             ),
         )
     }
@@ -78,31 +72,25 @@ abstract class DataController<T>(
 
     private fun generateCorrelationId(companyId: String): String {
         val correlationId = randomUUID().toString()
-        logger.info(
-            "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
-        )
+        logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
         return correlationId
     }
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-            throw AccessDeniedException("You are trying to access a unreviewed dataset")
+            throw AccessDeniedException(logMessageBuilder.accessDeniedExceptionMessage)
         }
         val companyId = metaInfo.company.companyId
-        val reportingPeriod = metaInfo.reportingPeriod
         val correlationId = generateCorrelationId(companyId)
-        logger.info(
-            "Received a request to get company data with dataId '$dataId' for companyId '$companyId'. ",
-        )
+        logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
-            reportingPeriod = reportingPeriod,
+            reportingPeriod = metaInfo.reportingPeriod,
             data = objectMapper.readValue(dataManager.getDataSet(dataId, dataType, correlationId).data, clazz),
         )
         logger.info(
-            "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +
-                "Correlation ID '$correlationId'",
+            logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
         )
         return ResponseEntity.ok(companyAssociatedData)
     }
@@ -112,34 +100,23 @@ abstract class DataController<T>(
         showOnlyActive: Boolean,
         reportingPeriod: String?,
     ): ResponseEntity<List<DataAndMetaInformation<T>>> {
-        val reportingPeriodInLogMessage = reportingPeriod ?: "all reporting periods"
-        logger.info(
-            "Received a request to get all datasets together with meta info for framework '$dataType', " +
-                "companyId '$companyId' and reporting period '$reportingPeriodInLogMessage'",
-        )
+        val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
+        logger.info(logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog))
         val metaInfos = dataMetaInformationManager.searchDataMetaInfo(
-            companyId,
-            dataType,
-            showOnlyActive,
-            reportingPeriod,
+            companyId, dataType, showOnlyActive, reportingPeriod,
         )
         val authentication = DatalandAuthentication.fromContextOrNull()
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
-        metaInfos
-            .filter { it.isDatasetViewableByUser(authentication) }
-            .forEach {
-                val correlationId = generateCorrelationId(companyId)
-                logger.info(
-                    "Generated correlation ID '$correlationId' for the received request with company ID: $companyId.",
-                )
-                val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
-                listOfFrameworkDataAndMetaInfo.add(
-                    DataAndMetaInformation(
-                        it.toApiModel(DatalandAuthentication.fromContext()),
-                        objectMapper.readValue(dataAsString, clazz),
-                    ),
-                )
-            }
+        metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
+            val correlationId = generateCorrelationId(companyId)
+            logger.info(logMessageBuilder.generatedCorrelationIdMessage(correlationId, companyId))
+            val dataAsString = dataManager.getDataSet(it.dataId, DataType.valueOf(it.dataType), correlationId).data
+            listOfFrameworkDataAndMetaInfo.add(
+                DataAndMetaInformation(
+                    it.toApiModel(DatalandAuthentication.fromContext()), objectMapper.readValue(dataAsString, clazz),
+                ),
+            )
+        }
         return ResponseEntity.ok(listOfFrameworkDataAndMetaInfo)
     }
 }

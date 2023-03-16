@@ -56,7 +56,7 @@ class DataMetaInformationManagerTest(
     }
 
     @Test
-    fun `check that an exception is thrown when two meta-data entries are uploaded simultaneously`() {
+    fun `check that an exception is thrown when two meta data entries are uploaded simultaneously`() {
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
         val company = companyManager.addCompany(companyInformation)
 

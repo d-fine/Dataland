@@ -64,10 +64,9 @@
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { defineComponent, inject } from "vue";
-import { DataMetaInformation } from "@clients/backend";
+import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
-import { DataTypeEnum } from "@clients/backend";
 import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
