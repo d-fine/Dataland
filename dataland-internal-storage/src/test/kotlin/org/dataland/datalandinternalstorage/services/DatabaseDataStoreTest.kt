@@ -11,21 +11,22 @@ import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.springframework.boot.test.context.SpringBootTest
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import java.util.*
+import org.springframework.boot.test.context.SpringBootTest
+import java.util.Optional
+import java.util.UUID
 
 @SpringBootTest(classes = [DatalandInternalStorage::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 class DatabaseDataStoreTest(
     @Autowired val objectMapper: ObjectMapper,
-    @Autowired val messageQueueUtils: MessageQueueUtils
+    @Autowired val messageQueueUtils: MessageQueueUtils,
 ) {
 
     val mockDataItemRepository: DataItemRepository = mock(DataItemRepository::class.java)
@@ -43,7 +44,7 @@ class DatabaseDataStoreTest(
             mockCloudEventMessageHandler,
             mockTemporarilyCachedDataControllerApi,
             objectMapper,
-            messageQueueUtils
+            messageQueueUtils,
         )
         spyDatabaseDataStore = spy(databaseDataStore)
     }
@@ -51,8 +52,7 @@ class DatabaseDataStoreTest(
     @Test
     fun `check that a ResourceNotFoundApiException is thrown if the dataset could not be found`() {
         val dataId = "dummyId"
-        `when`(mockDataItemRepository.findById(dataId)).thenReturn(null)
+        `when`(mockDataItemRepository.findById(dataId)).thenReturn(Optional.empty())
         assertThrows<ResourceNotFoundApiException> { databaseDataStore.selectDataSet(dataId, correlationId) }
     }
-
 }
