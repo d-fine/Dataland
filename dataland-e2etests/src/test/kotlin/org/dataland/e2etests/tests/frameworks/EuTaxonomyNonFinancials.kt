@@ -15,7 +15,7 @@ class EuTaxonomyNonFinancials {
         .getCompanyInformationWithoutIdentifiers(1)
 
     @Test
-    fun `post a dummy company and a dummy data set for it and check if data Id appears in the company's meta data`() {
+    fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneEuTaxonomyNonFinancialsDataSet,
