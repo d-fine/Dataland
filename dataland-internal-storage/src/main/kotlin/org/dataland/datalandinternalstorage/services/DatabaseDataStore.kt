@@ -101,6 +101,6 @@ class DatabaseDataStore(
      * @return the data as json string with id dataId
      */
     fun selectDataSet(dataId: String): String {
-        return dataItemRepository.findById(dataId).orElse(DataItem("", "\"\"")).data
+        return dataItemRepository.findById(dataId).orElse(DataItem("", "")).data
     }
 }

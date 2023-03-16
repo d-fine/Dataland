@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
@@ -251,12 +252,20 @@ class DataManager(
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        val dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
-        if (dataAsString == "") {
-            throw ResourceNotFoundApiException(
-                "Dataset not found",
-                "No dataset with the id: $dataId could be found in the data store.",
-            )
+        lateinit var dataAsString: String
+        try {
+            dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
+        } catch(e: ClientException) {
+            if (e.statusCode == 404) {
+                logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
+                throw ResourceNotFoundApiException(
+                    "Dataset not found",
+                    "No dataset with the id: $dataId could be found in the data store.",
+                    e,
+                )
+            } else {
+                throw e
+            }
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
