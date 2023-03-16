@@ -586,6 +586,9 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
         );
+        cy.wait(["@getCompanyInformation", "@getMetaDataQuery"], {
+          timeout: Cypress.env("long_timeout_in_ms") as number,
+        });
 
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");
         validateChosenReportingPeriod("Select...", true);
