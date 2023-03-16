@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.controller
 
+import org.dataland.datalandbackend.LogMessageBuilder
 import org.dataland.datalandbackend.api.MetaDataApi
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired val logMessageBuilder: LogMessageBuilder,
 ) : MetaDataApi {
 
     override fun getListOfDataMetaInfo(
@@ -43,7 +45,7 @@ class MetaDataController(
         val currentUser = DatalandAuthentication.fromContextOrNull()
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-            throw AccessDeniedException("You are trying to access a unreviewed dataset")
+            throw AccessDeniedException(logMessageBuilder.accessDeniedExceptionMessage)
         }
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }
