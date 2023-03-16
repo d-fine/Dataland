@@ -153,6 +153,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(dropdownSelector).click();
         let optionsCounter = 0;
         cy.get(dropdownItemsSelector).should("exist");
+        cy.get(`${dropdownItemsSelector}:contains("No available options")`).should("not.exist");
         cy.get(dropdownItemsSelector)
           .each((item) => {
             expect(expectedDropdownOptions.has(item.text())).to.equal(true);
