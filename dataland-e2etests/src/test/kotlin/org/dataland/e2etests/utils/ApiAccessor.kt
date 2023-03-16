@@ -28,7 +28,6 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
-import org.junit.jupiter.api.Assertions
 
 class ApiAccessor {
 
@@ -134,7 +133,7 @@ class ApiAccessor {
         val maxQaPassedYetRetries = 10
         val sleepIfQaNotPassedYetMs: Long = 50
         val result = mutableListOf<UploadInfo>()
-        for (retries in 1..maxQaPassedYetRetries) {
+        repeat(maxQaPassedYetRetries) {
             for (idx in listOfUploadInfo.indices.reversed()) {
                 var metaData = listOfUploadInfo[idx].actualStoredDataMetaInfo!!
                 listOfUploadInfo[idx].actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
@@ -144,17 +143,14 @@ class ApiAccessor {
                     listOfUploadInfo.removeAt(idx)
                 }
             }
-            if (listOfUploadInfo.isEmpty()) break
-            if (retries == maxQaPassedYetRetries - 1) {
-                Assertions.assertTrue(
-                    false,
-                    """After $retries retries with $sleepIfQaNotPassedYetMs ms sleep, 
-                        qa for $listOfUploadInfo was still not passed.""",
-                )
-            }
+            if (listOfUploadInfo.isEmpty()) return result
             Thread.sleep(sleepIfQaNotPassedYetMs)
         }
-        return result
+        class QaNotCompletedException(message: String) : RuntimeException(message)
+        throw QaNotCompletedException(
+            """After $maxQaPassedYetRetries retries with $sleepIfQaNotPassedYetMs ms sleep, 
+                        qa for $listOfUploadInfo was still not passed.""",
+        )
     }
 
     @Suppress("kotlin:S138")
