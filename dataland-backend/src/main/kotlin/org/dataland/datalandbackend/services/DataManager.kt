@@ -257,20 +257,25 @@ class DataManager(
         try {
             dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
         } catch (e: ClientException) {
-            if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-                logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
-                throw ResourceNotFoundApiException(
-                    "Dataset not found",
-                    "No dataset with the id: $dataId could be found in the data store.",
-                    e,
-                )
-            }
-            throw e
+            handleInternalStorageClientException(e, dataId, correlationId)
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
         dataAsStorableDataSet.requireConsistencyWith(dataMetaInformation)
         return dataAsStorableDataSet
+    }
+
+    private fun handleInternalStorageClientException(e: ClientException, dataId: String, correlationId: String) {
+        if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+            logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
+            throw ResourceNotFoundApiException(
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store.",
+                e,
+            )
+        } else {
+            throw e
+        }
     }
 
     private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
