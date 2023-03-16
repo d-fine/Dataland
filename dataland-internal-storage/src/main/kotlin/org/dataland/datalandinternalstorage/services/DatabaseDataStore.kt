@@ -100,7 +100,7 @@ class DatabaseDataStore(
      * @param dataId the id of the data to be retrieved
      * @return the data as json string with id dataId
      */
-    fun selectDataSet(dataId: String): String {
-        return dataItemRepository.findById(dataId).orElse(DataItem("", "")).data
+    fun selectDataSet(dataId: String): String? {
+        return dataItemRepository.findById(dataId).orElse(null)?.data
     }
 }
