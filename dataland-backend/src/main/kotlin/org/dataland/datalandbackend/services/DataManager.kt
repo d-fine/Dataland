@@ -251,7 +251,7 @@ class DataManager(
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        val dataAsString = getDataFromStorageLocation(dataId, correlationId)
+        val dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
         if (dataAsString == "") {
             throw ResourceNotFoundApiException(
                 "Dataset not found",
@@ -264,11 +264,11 @@ class DataManager(
         return dataAsStorableDataSet
     }
 
-    private fun getDataFromStorageLocation(dataId: String, correlationId: String): String {
-        return dataInMemoryStorage[dataId] ?: getDataFromStorage(dataId, correlationId)
+    private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
+        return dataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)
     }
 
-    private fun getDataFromStorage(dataId: String, correlationId: String): String {
+    private fun getDataFromStorageService(dataId: String, correlationId: String): String {
         val dataAsString: String
         logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {
