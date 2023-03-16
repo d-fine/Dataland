@@ -1,6 +1,5 @@
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { SfdrData } from "@clients/backend";
-import { getPreparedFixture } from "@sharedUtils/Fixtures";
 import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 import {
   CompanyAssociatedDataSfdrData,
