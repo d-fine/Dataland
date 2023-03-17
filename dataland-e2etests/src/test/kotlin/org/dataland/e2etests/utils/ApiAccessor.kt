@@ -143,20 +143,15 @@ class ApiAccessor {
     }
 
     private fun checkIfQaPassedAndUpdateMetadata(uploadInfos: List<UploadInfo>): Boolean {
-        var allQaPassedIndicator = true
-        for (uploadInfo in uploadInfos) {
+        return uploadInfos.all { uploadInfo ->
             val metaData = uploadInfo.actualStoredDataMetaInfo
                 ?: throw NullPointerException(
                     "To check QA Status, metadata is required but was null for $uploadInfo",
                 )
             if (metaData.qaStatus != QAStatus.accepted) {
-                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
-                if (uploadInfo.actualStoredDataMetaInfo!!.qaStatus != QAStatus.accepted) {
-                    allQaPassedIndicator = false
-                }
-            }
+                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)}
+            return uploadInfo.actualStoredDataMetaInfo!!.qaStatus == QAStatus.accepted
         }
-        return allQaPassedIndicator
     }
 
     @Suppress("kotlin:S138")
