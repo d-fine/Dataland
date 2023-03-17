@@ -53,7 +53,6 @@ dependencyResolutionManagement {
 
             library("bcpkix-jdk15on", "org.bouncycastle:bcpkix-jdk15on:1.70")
             library("bcprov-jdk15on", "org.bouncycastle:bcprov-jdk15on:1.70")
-            library("awaitility", "org.awaitility:awaitility:4.2.0")
         }
     }
 }
