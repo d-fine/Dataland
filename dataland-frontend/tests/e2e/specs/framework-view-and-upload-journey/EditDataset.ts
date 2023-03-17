@@ -32,9 +32,9 @@ describeIf(
             preparedFixture.reportingPeriod
           )
         )
-        .then((uploadId) => {
+        .then((uploadIds) => {
           cy.ensureLoggedIn(uploader_name, uploader_pw);
-          cy.visit(`/companies/${uploadId.companyId}/frameworks/lksg`);
+          cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
           cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
           cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
           cy.get("div").contains("New Dataset - LkSG").should("be.visible");
@@ -46,7 +46,7 @@ describeIf(
               return getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
                 const data = await new LksgDataControllerApi(
                   new Configuration({ accessToken: token })
-                ).getAllCompanyLksgData(uploadId.companyId, false);
+                ).getAllCompanyLksgData(uploadIds.companyId, false);
                 expect(data.data).to.have.length(2);
                 expect(data.data[0].data).to.deep.equal(data.data[1].data);
               });

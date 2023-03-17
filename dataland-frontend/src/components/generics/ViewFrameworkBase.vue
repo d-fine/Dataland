@@ -187,8 +187,6 @@ export default defineComponent({
           this.dataType as DataTypeEnum,
           (this.mapOfReportingPeriodToActiveDataset.entries().next().value as [string, DataMetaInformation])[1].dataId
         );
-      } else {
-        return;
       }
     },
     /**
