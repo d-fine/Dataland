@@ -1,15 +1,11 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.UploadInfo
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -38,30 +34,18 @@ class MetaDataControllerTest {
     private val listOfOneTeaserTestCompanyInformation =
         listOf(listOfTestCompanyInformation[0].copy(isTeaserCompany = true))
 
-    private fun uploadCompanyAndOneEuTaxoNonFiancialsDataset(
-        companyInformation: CompanyInformation,
-        frameWorkData: EuTaxonomyDataForNonFinancials,
-        reportingPeriod: String,
-    ): UploadInfo {
-        return apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(companyInformation),
-            listOf(frameWorkData),
-            apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
-            reportingPeriod = reportingPeriod,
-        )[0]
-    }
-
-    private fun uploadOneEuTaxoNonFinancialsDatasetForCompanyId(
+    private fun <T>repeatUploadFunctionWithWaits(
+        n: Int,
         companyId: String,
-        frameWorkData: EuTaxonomyDataForNonFinancials,
+        data: T,
         reportingPeriod: String,
-    ): DataMetaInformation {
-        val body =
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, reportingPeriod, frameWorkData)
-        return apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                body,
-            )
+        waitTime: Long,
+        uploadFunction: (String, T, String) -> DataMetaInformation,
+    ) {
+        repeat(n) {
+            uploadFunction(companyId, data, reportingPeriod)
+            Thread.sleep(waitTime)
+        }
     }
 
     private fun validateAdminAccessToUserId(
@@ -323,7 +307,7 @@ class MetaDataControllerTest {
         )
     }
 
-    private fun validateVersioningAndReturnActiveDataMetaInfo(
+    private fun validateShowActiveFlagAndReturnActiveDataMetaInfo(
         companyId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
@@ -349,16 +333,16 @@ class MetaDataControllerTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val frameworkDataAlpha = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
         val reportingPeriod = "2022"
-        uploadOneEuTaxoNonFinancialsDatasetForCompanyId(companyId, frameworkDataAlpha, reportingPeriod)
+        apiAccessor.euTaxonomyNonFinancialsUploaderFunction(companyId, frameworkDataAlpha, reportingPeriod)
         Thread.sleep(1000)
         val newNumberOfEmployees = (frameworkDataAlpha.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
         val frameworkDataBeta = frameworkDataAlpha.copy(numberOfEmployees = newNumberOfEmployees)
-        uploadOneEuTaxoNonFinancialsDatasetForCompanyId(companyId, frameworkDataBeta, reportingPeriod)
+        apiAccessor.euTaxonomyNonFinancialsUploaderFunction(companyId, frameworkDataBeta, reportingPeriod)
         Thread.sleep(1000)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val activeDataset =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                validateVersioningAndReturnActiveDataMetaInfo(companyId, dataType, reportingPeriod, 2).dataId,
+                validateShowActiveFlagAndReturnActiveDataMetaInfo(companyId, dataType, reportingPeriod, 2).dataId,
             )
         assertTrue(
             (activeDataset.data!!.numberOfEmployees == newNumberOfEmployees),
@@ -366,63 +350,47 @@ class MetaDataControllerTest {
         )
     }
 
+    private fun validateReportingPeriodQueryParam(
+        listOfMetaData: List<DataMetaInformation>,
+        expectedNumberOfMetaData: Int,
+        listOfActiveMetaData: List<DataMetaInformation>,
+        listOfActiveMetaDataYearA: List<DataMetaInformation>,
+        listOfActiveMetaDataYearB: List<DataMetaInformation>,
+    ) {
+        assertTrue(
+            (listOfMetaData.size == expectedNumberOfMetaData),
+            "The number of meta datasets does not equal the expected one.",
+        )
+        assertTrue(
+            listOfActiveMetaDataYearA[0].dataId != listOfActiveMetaDataYearB[0].dataId,
+            "The active data meta info for the two different reporting Periods are identical.",
+        )
+        assertTrue(
+            listOfActiveMetaData.size == 2 && listOfActiveMetaData.map { it.dataId }.containsAll(
+                setOf(listOfActiveMetaDataYearA[0].dataId, listOfActiveMetaDataYearB[0].dataId),
+            ),
+            "The list of active meta data for all reporting periods does not consist of the expected elements.",
+        )
+    }
+
     @Test
     fun `ensure that reportingPeriod field of metadata endpoint of meta data controller works`() {
-//        Upload multiple versions of a dataset under different reporting Periods. Ensure that only a single one is
-//        active per reporting period and that the active one is the latest one uploaded for this reporting period
-        val companyInformation =
-            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1)[0]
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
-        val reportingPeriod1 = "2022"
-        val reportingPeriod2 = "2023"
-        val firstUploadInfo =
-            uploadCompanyAndOneEuTaxoNonFiancialsDataset(companyInformation, frameWorkData, reportingPeriod2)
-        val companyId = firstUploadInfo.actualStoredCompany.companyId
-        Thread.sleep(1000)
-        uploadOneEuTaxoNonFinancialsDatasetForCompanyId(companyId, frameWorkData, reportingPeriod1)
-        Thread.sleep(1000)
-        val final2022metadata =
-            uploadOneEuTaxoNonFinancialsDatasetForCompanyId(companyId, frameWorkData, reportingPeriod1)
-        Thread.sleep(1000)
-        val final2023metadata =
-            uploadOneEuTaxoNonFinancialsDatasetForCompanyId(companyId, frameWorkData, reportingPeriod2)
+        for (reportingPeriod in listOf("2022", "2023")) { repeatUploadFunctionWithWaits(
+            n = 2, companyId = companyId, data = frameWorkData, reportingPeriod = reportingPeriod,
+            waitTime = 1100, uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+        ) }
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        val result2022WithoutVersioning =
-            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod1)
-        val result2023WithoutVersioning =
-            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod2)
-        assertTrue(
-            (
-                result2023WithoutVersioning.size == 1 &&
-                    result2022WithoutVersioning.size == 1 &&
-                    result2023WithoutVersioning[0].dataId != result2022WithoutVersioning[0].dataId
-                ),
-            "Without versioning, metadata of only a single active dataset should be returned per reporting " +
-                "period and they should point to different data sets. But this is not the case.",
-        )
-        assertTrue(
-            (
-                final2022metadata.dataId == result2022WithoutVersioning[0].dataId &&
-                    final2023metadata.dataId == result2023WithoutVersioning[0].dataId
-                ),
-            "The active data set of the reporting period should be the last uploaded one but this is not the case.",
-        )
-//        When not specifying a reportingPeriod we should retrieve metadata of datasets for all reporting periods
-        val resultsWithVersioning = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
-        val resultsWithoutVersioning =
+        val listOfMetaData = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
+        val listOfActiveMetaData =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true)
-        assertTrue(
-            (resultsWithVersioning.size == 4),
-            "Without filtering for reporting period and when displaying version history, metadata of all 4 " +
-                "datasets should be returned but it isn't.",
-        )
-        assertTrue(
-            (
-                resultsWithoutVersioning.size == 2 &&
-                    resultsWithoutVersioning[0].dataId != resultsWithoutVersioning[1].dataId
-                ),
-            "a single current dataset per reporting period should be available and it should be different " +
-                "ones for the different reporting periods - but it isn't",
+        val listOfActiveMetaData2022 =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, "2022")
+        val listOfActiveMetaData2023 =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, "2023")
+        validateReportingPeriodQueryParam(
+            listOfMetaData, 4, listOfActiveMetaData, listOfActiveMetaData2023, listOfActiveMetaData2022,
         )
     }
 }
