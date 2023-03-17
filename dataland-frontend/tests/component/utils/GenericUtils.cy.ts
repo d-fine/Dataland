@@ -13,6 +13,6 @@ describe("Unit test for StringHumanizer", () => {
       ["2023", "someValue_130"],
     ]);
     const outputArray = getKeysFromMapAndReturnAsAlphabeticallySortedArray(inputMap);
-    expect(outputArray.toString()).to.equal(["X", "D", "C", "A", "B", "2023", "2022", "2020"].toString());
+    expect(outputArray.toString()).to.equal(["X", "D", "C", "B", "A", "2023", "2022", "2020"].toString());
   });
 });
