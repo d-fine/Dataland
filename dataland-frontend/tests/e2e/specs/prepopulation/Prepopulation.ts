@@ -17,7 +17,7 @@ import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
 import { describeIf } from "@e2e/support/TestUtility";
-const chunkSize = 3; // TODO try something out
+const chunkSize = 15;
 
 describe(
   "As a user, I want to be able to see some data on the Dataland webpage",
