@@ -269,12 +269,14 @@ class ApiAccessor {
         companyId: String? = null,
         dataType: DataTypeEnum? = null,
         showOnlyActive: Boolean? = null,
+        reportingPeriod: String? = null,
     ): Int {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         return metaDataControllerApi.getListOfDataMetaInfo(
             companyId,
             dataType,
             showOnlyActive,
+            reportingPeriod,
         ).size
     }
 }

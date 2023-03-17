@@ -38,6 +38,102 @@ class MetaDataControllerTest {
     private val listOfOneTeaserTestCompanyInformation =
         listOf(listOfTestCompanyInformation[0].copy(isTeaserCompany = true))
 
+    private fun uploadCompanyAndOneEuTaxoNonFiancialsDataset(
+        companyInformation: CompanyInformation,
+        frameWorkData: EuTaxonomyDataForNonFinancials,
+        reportingPeriod: String,
+    ): UploadInfo {
+        return apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+            listOf(companyInformation),
+            listOf(frameWorkData),
+            apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            reportingPeriod = reportingPeriod,
+        )[0]
+    }
+
+    private fun uploadOneEuTaxoNonFinancialsDatasetForCompanyId(
+        companyId: String,
+        frameWorkData: EuTaxonomyDataForNonFinancials,
+        reportingPeriod: String,
+    ): DataMetaInformation {
+        val body =
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, reportingPeriod, frameWorkData)
+        return apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+            .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+                body,
+            )
+    }
+
+    private fun validateAdminAccessToUserId(
+        testUploadDataUploaderMetaInfo: DataMetaInformation,
+        testUploadDataAdminMetaInfo: DataMetaInformation,
+    ) {
+        expectUserIdToBe(
+            testUploadDataUploaderMetaInfo, TechnicalUser.Admin, TechnicalUser.Uploader.technicalUserId,
+            "Admins should be able to view uploaderUserids for all users",
+        )
+        expectUserIdToBe(
+            testUploadDataAdminMetaInfo, TechnicalUser.Admin, TechnicalUser.Admin.technicalUserId,
+            "Admins should be able to view uploaderUserids for all users",
+        )
+    }
+
+    private fun validateUploaderAccessToUserId(
+        testUploadDataUploaderMetaInfo: DataMetaInformation,
+        testUploadDataAdminMetaInfo: DataMetaInformation,
+    ) {
+        expectUserIdToBe(
+            testUploadDataUploaderMetaInfo, TechnicalUser.Uploader, TechnicalUser.Uploader.technicalUserId,
+            "Expected user id to be present if the user requests data about an upload he performed himself",
+        )
+        expectUserIdToBe(
+            testUploadDataAdminMetaInfo, TechnicalUser.Uploader, null,
+            "Data Uploaders should not be able to view the user id of uploads of other users",
+        )
+    }
+
+    private fun validateReaderAccessToUserId(
+        testUploadDataUploaderMetaInfo: DataMetaInformation,
+        testUploadDataAdminMetaInfo: DataMetaInformation,
+    ) {
+        expectUserIdToBe(
+            testUploadDataUploaderMetaInfo, TechnicalUser.Reader, null,
+            "A reader should not see any uploader ids",
+        )
+        expectUserIdToBe(
+            testUploadDataAdminMetaInfo, TechnicalUser.Reader, null,
+            "A reader should not see any uploader ids",
+        )
+    }
+
+    private fun expectUserIdToBe(
+        dataMetaInformation: DataMetaInformation,
+        requestingTechnicalUser: TechnicalUser,
+        expectedUploaderId: String?,
+        msg: String,
+    ) {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(requestingTechnicalUser)
+
+        val uploaderUserIdFromMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataMetaInformation.dataId)
+            .uploaderUserId
+        assertEquals(expectedUploaderId, uploaderUserIdFromMetaInfo, msg)
+
+        val uploaderUserIdFromCompanyInfo = apiAccessor.companyDataControllerApi
+            .getCompanyById(dataMetaInformation.companyId)
+            .dataRegisteredByDataland.firstOrNull()?.uploaderUserId
+        assertEquals(uploaderUserIdFromCompanyInfo, uploaderUserIdFromMetaInfo, msg)
+    }
+
+    private fun buildAcceptedAndActiveDataMetaInformation(
+        dataId: String,
+        companyId: String,
+        testDataType: DataTypeEnum,
+        uploadTime: Long,
+    ) = DataMetaInformation(
+        dataId, companyId, testDataType, uploadTime,
+        "", true, QAStatus.accepted, null,
+    )
+
     @Test
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
@@ -59,16 +155,6 @@ class MetaDataControllerTest {
             abs(timeDiffFromUploadToNow) < 60, "The server-upload-time and the local upload time differ too much.",
         )
     }
-
-    private fun buildAcceptedAndActiveDataMetaInformation(
-        dataId: String,
-        companyId: String,
-        testDataType: DataTypeEnum,
-        uploadTime: Long,
-    ) = DataMetaInformation(
-        dataId, companyId, testDataType, uploadTime,
-        "", true, QAStatus.accepted, null,
-    )
 
     @Test
     fun `search for a company that does not exist and check that a 404 error is returned`() {
@@ -237,54 +323,46 @@ class MetaDataControllerTest {
         )
     }
 
-//        Get a data set of an arbitrary framework. Upload it multiple times changing ReportingPeriod, uploadTime and
-//        a data point in between. Ensure that only the data set with the latest upload_time is returned or all
-//        depending on showVersionHistory flag.
+    private fun validateVersioningAndReturnActiveDataMetaInfo(
+        companyId: String,
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+        expectedNumberOfVersions: Int,
+    ): DataMetaInformation {
+        val listOfMetaData =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod)
+        val listOfActiveMetaData =
+            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod)
+        assertEquals(
+            expectedNumberOfVersions, listOfMetaData.size, "The number of versions does not equal the expected one.",
+        )
+        assertEquals(1, listOfActiveMetaData.size, "Metadata for exactly one active dataset should exist.")
+        assertTrue(
+            (listOfActiveMetaData[0].uploadTime == listOfMetaData.maxOfOrNull { it.uploadTime }),
+            "The active result is not the one with the highest upload time.",
+        )
+        return listOfActiveMetaData[0]
+    }
+
     @Test
     fun `ensure that version history field in metadata endpoint of meta data controller works`() {
-        val companyInformation =
-            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1)[0]
-        val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
-        val reportingPeriod1 = "2022"
-        val listOfUploadInfo2022first =
-            firstUploadForVersionHistory(companyInformation, frameWorkData, reportingPeriod1)
-        val companyId = listOfUploadInfo2022first.actualStoredCompany.companyId
-//        Wait to ensure that uploadTime changes
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val frameworkDataAlpha = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
+        val reportingPeriod = "2022"
+        uploadOneEuTaxoNonFinancialsDatasetForCompanyId(companyId, frameworkDataAlpha, reportingPeriod)
         Thread.sleep(1000)
-        subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
+        val newNumberOfEmployees = (frameworkDataAlpha.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
+        val frameworkDataBeta = frameworkDataAlpha.copy(numberOfEmployees = newNumberOfEmployees)
+        uploadOneEuTaxoNonFinancialsDatasetForCompanyId(companyId, frameworkDataBeta, reportingPeriod)
         Thread.sleep(1000)
-//        Override number of employees to identify the final uploaded dataset
-        val newNumberOfEmployees = (frameWorkData.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
-        val finalFrameWorkData = frameWorkData.copy(numberOfEmployees = newNumberOfEmployees)
-        subsequentUploadForVersionHistory(companyId, finalFrameWorkData, reportingPeriod1)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
-        Thread.sleep(1000)
-        val resultWithoutVersioning =
-            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod1)
-        val resultWithVersioning =
-            apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod1)
-        val activeDataSet =
+        val activeDataset =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                resultWithoutVersioning[0].dataId,
+                validateVersioningAndReturnActiveDataMetaInfo(companyId, dataType, reportingPeriod, 2).dataId,
             )
-        assertEquals(
-            3, resultWithVersioning.size,
-            "Metadata of three versions of uploaded datasets should be available, instead its " +
-                "${resultWithVersioning.size}.",
-        )
-        assertEquals(
-            1,
-            resultWithoutVersioning.size,
-            "Metadata of a single, active version should be available. Instead its ${resultWithoutVersioning.size}",
-        )
         assertTrue(
-            (resultWithoutVersioning[0].uploadTime == resultWithVersioning.maxOfOrNull { it.uploadTime }),
-            "The active result should be the one with the highest uploadTime but it isn't.",
-        )
-        assertTrue(
-            (activeDataSet.data!!.numberOfEmployees == newNumberOfEmployees),
-            "The active dataset should have been manipulated to have a numberOfEmployees " +
-                "of the old one plus 1 but the retrieved active data set does not.",
+            (activeDataset.data!!.numberOfEmployees == newNumberOfEmployees),
+            "The active dataset does not have numberOfEmployees of the old one plus 1.",
         )
     }
 
@@ -297,14 +375,17 @@ class MetaDataControllerTest {
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
         val reportingPeriod1 = "2022"
         val reportingPeriod2 = "2023"
-        val firstUploadInfo = firstUploadForVersionHistory(companyInformation, frameWorkData, reportingPeriod2)
+        val firstUploadInfo =
+            uploadCompanyAndOneEuTaxoNonFiancialsDataset(companyInformation, frameWorkData, reportingPeriod2)
         val companyId = firstUploadInfo.actualStoredCompany.companyId
         Thread.sleep(1000)
-        subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
+        uploadOneEuTaxoNonFinancialsDatasetForCompanyId(companyId, frameWorkData, reportingPeriod1)
         Thread.sleep(1000)
-        val final2022metadata = subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod1)
+        val final2022metadata =
+            uploadOneEuTaxoNonFinancialsDatasetForCompanyId(companyId, frameWorkData, reportingPeriod1)
         Thread.sleep(1000)
-        val final2023metadata = subsequentUploadForVersionHistory(companyId, frameWorkData, reportingPeriod2)
+        val final2023metadata =
+            uploadOneEuTaxoNonFinancialsDatasetForCompanyId(companyId, frameWorkData, reportingPeriod2)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val result2022WithoutVersioning =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod1)
@@ -343,91 +424,5 @@ class MetaDataControllerTest {
             "a single current dataset per reporting period should be available and it should be different " +
                 "ones for the different reporting periods - but it isn't",
         )
-    }
-
-    private fun firstUploadForVersionHistory(
-        companyInformation: CompanyInformation,
-        frameWorkData: EuTaxonomyDataForNonFinancials,
-        reportingPeriod: String,
-    ): UploadInfo {
-        return apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(companyInformation),
-            listOf(frameWorkData),
-            apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
-            reportingPeriod = reportingPeriod,
-        )[0]
-    }
-
-    private fun subsequentUploadForVersionHistory(
-        companyId: String,
-        frameWorkData: EuTaxonomyDataForNonFinancials,
-        reportingPeriod: String,
-    ): DataMetaInformation {
-        val body =
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(companyId, reportingPeriod, frameWorkData)
-        return apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                body,
-            )
-    }
-
-    private fun validateAdminAccessToUserId(
-        testUploadDataUploaderMetaInfo: DataMetaInformation,
-        testUploadDataAdminMetaInfo: DataMetaInformation,
-    ) {
-        expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, TechnicalUser.Admin, TechnicalUser.Uploader.technicalUserId,
-            "Admins should be able to view uploaderUserids for all users",
-        )
-        expectUserIdToBe(
-            testUploadDataAdminMetaInfo, TechnicalUser.Admin, TechnicalUser.Admin.technicalUserId,
-            "Admins should be able to view uploaderUserids for all users",
-        )
-    }
-
-    private fun validateUploaderAccessToUserId(
-        testUploadDataUploaderMetaInfo: DataMetaInformation,
-        testUploadDataAdminMetaInfo: DataMetaInformation,
-    ) {
-        expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, TechnicalUser.Uploader, TechnicalUser.Uploader.technicalUserId,
-            "Expected user id to be present if the user requests data about an upload he performed himself",
-        )
-        expectUserIdToBe(
-            testUploadDataAdminMetaInfo, TechnicalUser.Uploader, null,
-            "Data Uploaders should not be able to view the user id of uploads of other users",
-        )
-    }
-
-    private fun validateReaderAccessToUserId(
-        testUploadDataUploaderMetaInfo: DataMetaInformation,
-        testUploadDataAdminMetaInfo: DataMetaInformation,
-    ) {
-        expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, TechnicalUser.Reader, null,
-            "A reader should not see any uploader ids",
-        )
-        expectUserIdToBe(
-            testUploadDataAdminMetaInfo, TechnicalUser.Reader, null,
-            "A reader should not see any uploader ids",
-        )
-    }
-
-    private fun expectUserIdToBe(
-        dataMetaInformation: DataMetaInformation,
-        requestingTechnicalUser: TechnicalUser,
-        expectedUploaderId: String?,
-        msg: String,
-    ) {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(requestingTechnicalUser)
-
-        val uploaderUserIdFromMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataMetaInformation.dataId)
-            .uploaderUserId
-        assertEquals(expectedUploaderId, uploaderUserIdFromMetaInfo, msg)
-
-        val uploaderUserIdFromCompanyInfo = apiAccessor.companyDataControllerApi
-            .getCompanyById(dataMetaInformation.companyId)
-            .dataRegisteredByDataland.firstOrNull()?.uploaderUserId
-        assertEquals(uploaderUserIdFromCompanyInfo, uploaderUserIdFromMetaInfo, msg)
     }
 }
