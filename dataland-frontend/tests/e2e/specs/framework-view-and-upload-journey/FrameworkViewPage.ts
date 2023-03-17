@@ -53,26 +53,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       const nonExistingCompanyId = "ABC-non-existing";
 
       /**
-       * Creates interceptions for all three requests which are sent when you visit the view-page from somewhere else.
-       *
-       */
-      function createAllInterceptsOnFrameworkViewPage(): void {
-        // cy.intercept("/api/companies/**-**-**").as("getCompanyInformation");
-        // cy.intercept("/api/metadata**").as("getMetaDataQuery");
-        // cy.intercept("/api/data/**").as("getFrameworkData");
-      }
-
-      /**
-       * Waits for all three requests which are sent when you visit the view-page from somewhere else.
-       *
-       */
-      function waitForAllInterceptsOnFrameworkViewPage(): void {
-        // cy.wait(["@getCompanyInformation", "@getMetaDataQuery", "@getFrameworkData"], {
-        //   timeout: Cypress.env("long_timeout_in_ms") as number,
-        // });
-      }
-
-      /**
        * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
        * in the search results table.
        *
@@ -123,7 +103,8 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(frameworkDropdownSelector)
           .find(".p-dropdown-label")
           .should("have.text", humanizeString(expectedChosenFramework));
-        if(expectedChosenFramework in [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.EutaxonomyNonFinancials]) {
+        if(([DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.EutaxonomyNonFinancials] as string[])
+            .indexOf(expectedChosenFramework) >= 0) {
           cy.get("[data-test='taxocard']").should("exist");
         } else {
           cy.get("table").should("exist");
@@ -158,6 +139,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         let optionsCounter = 0;
         cy.get(dropdownItemsSelector).should("exist");
         cy.get(`${dropdownItemsSelector}:contains("No available options")`).should("not.exist");
+        cy.get(dropdownItemsSelector).should("exist");
         cy.get(dropdownItemsSelector)
           .each((item) => {
             console.log("asdf", item.text())
@@ -439,7 +421,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         waitForRequest("**/api/companies/**", requestingExpression, "waitForCompanyRequest");
       }
 
-      it.only(
+      it(
         "Check that from the view-page, even in error mode, you can search a company, even if it" +
           "does not have a dataset for the framework chosen on the search page",
         () => {
@@ -482,10 +464,8 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check that using back-button and dropdowns on the view-page work as expected", () => {
         cy.ensureLoggedIn();
-        createAllInterceptsOnFrameworkViewPage();
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
         validateNoErrorMessagesAreShown();
-        waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2019");
@@ -509,7 +489,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         selectReportingPeriodInDropdown("2016");
 
         validateNoErrorMessagesAreShown();
-        // cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2016");
@@ -519,8 +498,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyNonFinancials);
 
         validateNoErrorMessagesAreShown();
-        // cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        // cy.wait("@getMetaDataQuery", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2015");
@@ -532,7 +509,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         selectFrameworkInDropdown(DataTypeEnum.Lksg);
 
         validateNoErrorMessagesAreShown();
-        waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.Lksg);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateColumnHeadersOfDisplayedLksgDatasets(["2023", "2022"]);
@@ -540,7 +516,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         clickBackButton();
 
         validateNoErrorMessagesAreShown();
-        waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.EutaxonomyNonFinancials);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2015");
@@ -552,8 +527,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         clickBackButton();
 
         validateNoErrorMessagesAreShown();
-        // cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        // cy.wait("@getMetaDataQuery", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2016");
         validateEUTaxonomyFinancialsTable("26");
@@ -561,17 +534,14 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
         cy.ensureLoggedIn();
-        createAllInterceptsOnFrameworkViewPage();
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
 
         validateNoErrorMessagesAreShown();
-        waitForAllInterceptsOnFrameworkViewPage();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
 
         selectReportingPeriodInDropdown("2016");
 
         validateNoErrorMessagesAreShown();
-        // cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2016");
         validateEUTaxonomyFinancialsTable("26");
@@ -584,7 +554,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         selectReportingPeriodInDropdown("2019");
 
         validateNoErrorMessagesAreShown();
-        // cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateChosenReportingPeriod("2019");
         validateEUTaxonomyFinancialsTable("29.2");
@@ -595,8 +564,6 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         clickBackButton();
 
-        // cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        // cy.wait("@getMetaDataQuery", { timeout: Cypress.env("long_timeout_in_ms") as number });
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
         validateChosenReportingPeriod("2016");
@@ -606,9 +573,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
         );
-        // cy.wait(["@getCompanyInformation", "@getMetaDataQuery"], {
-        //   timeout: Cypress.env("long_timeout_in_ms") as number,
-        // });
 
         getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");
         validateChosenReportingPeriod("Select...", true);
@@ -632,7 +596,6 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
 
-        waitForAllInterceptsOnFrameworkViewPage();
         validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForBeta);
         validateNoErrorMessagesAreShown();
 
@@ -645,20 +608,15 @@ describe("The shared header of the framework pages should act as expected", { sc
       it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         cy.intercept("/api/metadata/**").as("getMetaDataForSpecificDataId");
-        createAllInterceptsOnFrameworkViewPage();
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`
         );
 
-        waitForAllInterceptsOnFrameworkViewPage();
         cy.contains("2023-1").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
         validateVatIdNumbersOfDisplayedLksgDatasets(["2023-1"]);
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
 
-        // cy.wait(["@getMetaDataForSpecificDataId", "@getFrameworkData"], {
-        //   timeout: Cypress.env("long_timeout_in_ms") as number,
-        // });
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
@@ -670,9 +628,6 @@ describe("The shared header of the framework pages should act as expected", { sc
           "You are only viewing a single available dataset",
           "View All"
         ).click();
-        // cy.wait("@getFrameworkData", {
-        //   timeout: Cypress.env("long_timeout_in_ms") as number,
-        // });
 
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
         cy.contains("2022").should("exist");
@@ -680,11 +635,8 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateVatIdNumbersOfDisplayedLksgDatasets(["2023-2", "2022"]);
         cy.contains("This dataset is superseded").should("not.exist");
         getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
-
         clickBackButton();
-        // cy.wait(["@getMetaDataForSpecificDataId", "@getFrameworkData"], {
-        //   timeout: Cypress.env("long_timeout_in_ms") as number,
-        // });
+
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
@@ -695,9 +647,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDisplayStatusContainerAndGetButton("You are only viewing a single available dataset", "View All");
         clickBackButton();
 
-        // cy.wait(["@getMetaDataForSpecificDataId", "@getFrameworkData"], {
-        //   timeout: Cypress.env("long_timeout_in_ms") as number,
-        // });
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
@@ -712,11 +661,9 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`
         );
-        waitForAllInterceptsOnFrameworkViewPage();
         validateEUTaxonomyFinancialsTable("29");
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
 
-        // cy.wait("@getFrameworkData", { timeout: Cypress.env("long_timeout_in_ms") as number });
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
@@ -727,9 +674,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
         clickBackButton();
 
-        // cy.wait(["@getMetaDataForSpecificDataId", "@getFrameworkData"], {
-        //   timeout: Cypress.env("long_timeout_in_ms") as number,
-        // });
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
