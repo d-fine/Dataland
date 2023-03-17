@@ -159,7 +159,7 @@ describe("Component test for LksgPanel", () => {
     }
   });
 
-  it.only("Unit test for sortReportingPeriodsToDisplayAsColumns", () => {
+  it("Unit test for sortReportingPeriodsToDisplayAsColumns", () => {
     const firstYearObject = { dataId: "5", reportingPeriod: "2022" };
     const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
     const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
