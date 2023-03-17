@@ -42,7 +42,7 @@ export function getDatasetStatus(dataMetaInfo: DataMetaInformation): DatasetStat
  * @param searchString a filter for the company names / alternative names
  * @returns the filtered DatasetTableInfos
  */
-export async function getMyDatasetTableInfos( // TODO I have questions here (Emanuel).  Especially: I will only see datasets here for companies, which I uploaded. Do we want that?
+export async function getMyDatasetTableInfos(
   getKeycloakPromise: () => Promise<Keycloak>,
   searchString?: string
 ): Promise<DatasetTableInfo[]> {

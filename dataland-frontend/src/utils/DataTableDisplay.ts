@@ -24,6 +24,3 @@ export function sortReportingPeriodsToDisplayAsColumns(
     }
   });
 }
-
-// TODO Emanuel:  Is this being tested?   @Marc I think Marc tests this implicitly in his component test of the lksg view page,
-//  because there he will assert the correct order of the Lksg dataset columns, correct?

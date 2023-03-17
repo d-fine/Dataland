@@ -11,6 +11,7 @@ import {
   DataTypeEnum,
   QAStatus,
 } from "@clients/backend";
+import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
 describe("Component test for LksgPanel", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -156,5 +157,36 @@ describe("Component test for LksgPanel", () => {
         .eq(indexOfColumn)
         .should("contain.text", (2029 - indexOfColumn).toString());
     }
+  });
+
+  it.only("Unit test for sortReportingPeriodsToDisplayAsColumns", () => {
+    const firstYearObject = { dataId: "5", reportingPeriod: "2022" };
+    const secondYearObject = { dataId: "2", reportingPeriod: "2020" };
+    const firstOtherObject = { dataId: "3", reportingPeriod: "Q2-2020" };
+    const secondOtherObject = { dataId: "6", reportingPeriod: "Q3-2020" };
+    expect(sortReportingPeriodsToDisplayAsColumns([secondYearObject, firstYearObject])).to.deep.equal([
+      firstYearObject,
+      secondYearObject,
+    ]);
+    expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject])).to.deep.equal([
+      firstYearObject,
+      secondYearObject,
+    ]);
+    expect(sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondYearObject, firstYearObject])).to.deep.equal([
+      firstYearObject,
+      firstYearObject,
+      secondYearObject,
+    ]);
+    expect(sortReportingPeriodsToDisplayAsColumns([secondOtherObject, firstOtherObject])).to.deep.equal([
+      firstOtherObject,
+      secondOtherObject,
+    ]);
+    expect(sortReportingPeriodsToDisplayAsColumns([firstOtherObject, secondOtherObject])).to.deep.equal([
+      firstOtherObject,
+      secondOtherObject,
+    ]);
+    expect(
+      sortReportingPeriodsToDisplayAsColumns([firstYearObject, secondOtherObject, firstOtherObject])
+    ).to.deep.equal([firstYearObject, firstOtherObject, secondOtherObject]);
   });
 });
