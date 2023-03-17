@@ -51,10 +51,10 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.mockito:mockito-core:5.1.1")
+    testImplementation("org.mockito:mockito-core")
     testImplementation("org.springframework.security:spring-security-test")
     implementation(project(":dataland-keycloak-adapter"))
-    implementation("com.mailjet:mailjet-client:5.2.2")
+    implementation(libs.mailjet.client)
     implementation(project(":dataland-message-queue-utils"))
 }
 
