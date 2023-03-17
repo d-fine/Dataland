@@ -1,9 +1,9 @@
 <template>
   <h4 class="title">SELECT YEAR</h4>
   <div class="three-in-row">
-    <a v-for="(el, index) in dataTableContents" :key="index" class="link" :href="el.editUrl">{{
+    <router-link v-for="(el, index) in dataTableContents" :key="index" class="link" :to="el.editUrl">{{
       el.reportingPeriod
-    }}</a>
+    }}</router-link>
   </div>
 </template>
 

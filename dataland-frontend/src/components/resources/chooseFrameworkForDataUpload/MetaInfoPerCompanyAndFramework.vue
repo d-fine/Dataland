@@ -23,7 +23,7 @@
           </div>
           <div>
             <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</span>
-            <span v-html="getBadgeElement(dataMetaInfo)"></span>
+            <DatasetStatusBadge :dataset-status="getDatasetStatus(dataMetaInfo)" />
           </div>
         </div>
         <p class="mt-5">{{ dynamicButtonTitle }}</p>
@@ -52,11 +52,12 @@ import PrimeButton from "primevue/button";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { getBadgeElement } from "@/utils/QABadgeElements";
+import { getDatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
 
 export default defineComponent({
   name: "MetaInfoPerComanyAndFramework",
-  components: { PrimeButton },
+  components: { PrimeButton, DatasetStatusBadge },
 
   props: {
     dataType: {
@@ -83,7 +84,7 @@ export default defineComponent({
       isFrontendViewPageExisting: null as null | boolean,
       isFrontendUploadFormExisting: null as null | boolean,
       convertUnixTimeInMsToDateString: convertUnixTimeInMsToDateString,
-      getBadgeElement,
+      getDatasetStatus,
     };
   },
 

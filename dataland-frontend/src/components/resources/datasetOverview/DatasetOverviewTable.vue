@@ -23,7 +23,7 @@
       <Column field="dataReportingPeriod" header="REPORTING PERIOD" :sortable="true"></Column>
       <Column field="status" header="STATUS" :sortable="true">
         <template #body="{ data }">
-          <div v-html="DatasetStatusBadgeElements.get(data.status)"></div>
+          <DatasetStatusBadge :dataset-status="data.status" />
         </template>
       </Column>
       <Column field="uploadTimeInMs" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInMs" class="w-2">
@@ -68,23 +68,19 @@ import { defineComponent, inject } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { DatasetStatus, DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import { DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import Keycloak from "keycloak-js";
-import { DatasetStatusBadgeElements } from "@/utils/QABadgeElements";
+import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
-  computed: {
-    DatasetStatus() {
-      return DatasetStatus;
-    },
-  },
   mounted() {
     this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
   },
   components: {
+    DatasetStatusBadge,
     DataTable,
     Column,
     InputText,
@@ -97,7 +93,6 @@ export default defineComponent({
       convertDate: convertUnixTimeInMsToDateString,
       loading: false,
       latestSearchString: "" as string,
-      DatasetStatusBadgeElements,
     };
   },
   setup() {
