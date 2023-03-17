@@ -123,6 +123,11 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(frameworkDropdownSelector)
           .find(".p-dropdown-label")
           .should("have.text", humanizeString(expectedChosenFramework));
+        if(expectedChosenFramework in [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.EutaxonomyNonFinancials]) {
+          cy.get("[data-test='taxocard']").should("exist");
+        } else {
+          cy.get("table").should("exist");
+        }
       }
 
       /**
@@ -419,38 +424,58 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
       });
 
-      it(
+      function waitForRequest(requestPattern: string, requestingExpression: () => void, hint: String = ""): void {
+        const requestAlias = hint + (new Date().getTime().toString());
+        cy.intercept(requestPattern).as(requestAlias);
+        requestingExpression();
+        cy.wait(`@${requestAlias}`, {timeout: Cypress.env("long_timeout_in_ms") as number});
+      }
+
+      function waitForDataRequest(requestingExpression: () => void): void {
+        waitForRequest("**/api/data/**", requestingExpression, "waitForDataRequest");
+      }
+
+      function waitForCompanyRequest(requestingExpression: () => void): void {
+        waitForRequest("**/api/companies/**", requestingExpression, "waitForCompanyRequest");
+      }
+
+      it.only(
         "Check that from the view-page, even in error mode, you can search a company, even if it" +
           "does not have a dataset for the framework chosen on the search page",
         () => {
           cy.ensureLoggedIn();
-          createAllInterceptsOnFrameworkViewPage();
           cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}`);
 
-          waitForAllInterceptsOnFrameworkViewPage();
           validateChosenFramework(DataTypeEnum.Sfdr);
 
-          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
+          waitForDataRequest(() => {
+            typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
+          });
 
-          waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
           validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForBeta);
 
-          cy.visit(
-            `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`
-          );
-          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, searchBarSelectorForViewPage);
+          waitForCompanyRequest(() => {
+            cy.visit(
+                `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`
+            );
+          });
+          waitForDataRequest(() => {
+            typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, searchBarSelectorForViewPage);
+          });
 
-          waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyAlpha);
           validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
 
-          cy.visit(
-            `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
-          );
-          typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
+          waitForCompanyRequest(() => {
+            cy.visit(
+              `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`
+            );
+          });
+          waitForDataRequest(() => {
+            typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
+          });
 
-          waitForAllInterceptsOnFrameworkViewPage();
           cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
         }
       );
