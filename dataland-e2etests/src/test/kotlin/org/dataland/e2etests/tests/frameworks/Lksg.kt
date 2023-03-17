@@ -1,7 +1,5 @@
 package org.dataland.e2etests.tests.frameworks
 
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
-import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -35,52 +33,23 @@ class Lksg {
 
     @Test
     fun `check that reporting period and version history parameters of GET endpoint for companies work correctly`() {
-//        Upload multiple lksg datasets for multiple reporting periods for the same company
-        val uploadLambda = { companyId: String, lksgData: LksgData, reportingDate: String ->
-            val body = CompanyAssociatedDataLksgData(companyId, reportingDate, lksgData)
-            apiAccessor.dataControllerApiForLksgData.postCompanyAssociatedLksgData(body)
-        }
-
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val lksgData = apiAccessor.testDataProviderForLksgData.getTData(2)
-        uploadLambda(companyId, lksgData[0], "2022")
-        uploadLambda(companyId, lksgData[0], "2023")
-        Thread.sleep(1000)
-        uploadLambda(companyId, lksgData[1], "2022")
-        uploadLambda(companyId, lksgData[1], "2023")
-
-        // Retrieve uploaded data set from the GET lksg_companies_companyId endpoint and assert that the correct ones
-        // are retrieved
-        val responseWithoutVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-            companyId = companyId,
-            showOnlyActive = true,
-        )
-        val responseWithVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-            companyId = companyId,
-            showOnlyActive = false,
-        )
-        val response2023WithoutVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-            companyId = companyId,
-            showOnlyActive = true,
-            reportingPeriod = "2023",
-        )
-        val response2023WithVersioning = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
-            companyId = companyId,
-            showOnlyActive = false,
-            reportingPeriod = "2023",
-        )
+        apiAccessor.lksgUploaderFunction(companyId, lksgData[0], "2022")
+        apiAccessor.lksgUploaderFunction(companyId, lksgData[0], "2023")
+        Thread.sleep(1100)
+        apiAccessor.lksgUploaderFunction(companyId, lksgData[1], "2022")
+        apiAccessor.lksgUploaderFunction(companyId, lksgData[1], "2023")
+        val lksgDataSets = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(companyId, false)
+        val activeLksgDatasets = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(companyId, true)
+        val lksgDatasets2023 = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(companyId, false, "2023")
+        val activeLksgDatasets2023 =
+            apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(companyId, true, "2023")
         assertTrue(
-            responseWithoutVersioning.size == 2 &&
-                responseWithVersioning.size == 4 &&
-                response2023WithVersioning.size == 2 &&
-                response2023WithoutVersioning.size == 1,
-            "Versioning and reporting Period parameters should influence the number of returned datasets " +
-                "correctly but they do not.",
+            lksgDataSets.size == 4 && activeLksgDatasets.size == 2 &&
+                lksgDatasets2023.size == 2 && activeLksgDatasets2023.size == 1,
+            "At least of the retrieved meta data lists does not have the expected size.",
         )
-        assertEquals(
-            response2023WithoutVersioning[0].data,
-            lksgData[1],
-            "The active dataset should equal the latest uploaded LKSG dataset",
-        )
+        assertEquals(activeLksgDatasets2023[0].data, lksgData[1], "Active dataset in 2023 not equal to latest upload.")
     }
 }
