@@ -370,6 +370,38 @@ describe("The shared header of the framework pages should act as expected", { sc
         });
       }
 
+      /**
+       * Intercepts a given function for a request pattern
+       *
+       * @param requestPattern the pattern to intercept
+       * @param requestingExpression the function to intercept
+       * @param hint a description of the intercept for recognizability of the request
+       */
+      function waitForRequest(requestPattern: string, requestingExpression: () => void, hint: String = ""): void {
+        const requestAlias = hint + (new Date().getTime().toString());
+        cy.intercept(requestPattern).as(requestAlias);
+        requestingExpression();
+        cy.wait(`@${requestAlias}`, {timeout: Cypress.env("long_timeout_in_ms") as number});
+      }
+
+      /**
+       * Intercepts a given function for a data request
+       *
+       * @param requestingExpression the function to intercept
+       */
+      function waitForDataRequest(requestingExpression: () => void): void {
+        waitForRequest("**/api/data/**", requestingExpression, "waitForDataRequest");
+      }
+
+      /**
+       * Intercepts a given function for a company request
+       *
+       * @param requestingExpression the function to intercept
+       */
+      function waitForCompanyRequest(requestingExpression: () => void): void {
+        waitForRequest("**/api/companies/**", requestingExpression, "waitForCompanyRequest");
+      }
+
       let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
       let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
 
@@ -405,21 +437,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
       });
-
-      function waitForRequest(requestPattern: string, requestingExpression: () => void, hint: String = ""): void {
-        const requestAlias = hint + (new Date().getTime().toString());
-        cy.intercept(requestPattern).as(requestAlias);
-        requestingExpression();
-        cy.wait(`@${requestAlias}`, {timeout: Cypress.env("long_timeout_in_ms") as number});
-      }
-
-      function waitForDataRequest(requestingExpression: () => void): void {
-        waitForRequest("**/api/data/**", requestingExpression, "waitForDataRequest");
-      }
-
-      function waitForCompanyRequest(requestingExpression: () => void): void {
-        waitForRequest("**/api/companies/**", requestingExpression, "waitForCompanyRequest");
-      }
 
       it(
         "Check that from the view-page, even in error mode, you can search a company, even if it" +
