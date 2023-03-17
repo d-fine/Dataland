@@ -1,9 +1,33 @@
 import ChooseFrameworkForDataUpload from "@/components/pages/ChooseFrameworkForDataUpload.vue";
 import { shallowMount } from "@vue/test-utils";
-import { DataMetaInformation } from "@clients/backend";
+import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 
 describe("Component tests for the ChooseFrameworkForDataUpload page", () => {
-  const wrapper = shallowMount(ChooseFrameworkForDataUpload);
+  const wrapper = shallowMount(ChooseFrameworkForDataUpload, {
+    global: {
+      provide: {
+        authenticated: true,
+        getKeycloakPromise() {
+          return Promise.resolve({
+            authenticated: true,
+            updateToken: () => undefined,
+          });
+        },
+      },
+    },
+  });
+
+  it("Unit tests for getMetaInfoAboutAllDataSetsForCurrentCompany", () => {
+    const dataMetaInfo = { dataType: DataTypeEnum.Lksg, uploadTime: 0, reportingPeriod: "2023" } as DataMetaInformation;
+    cy.intercept("**/api/metadata*", { statusCode: 200, body: [dataMetaInfo] }).then(() => {
+      void (wrapper.vm.getMetaInfoAboutAllDataSetsForCurrentCompany as () => Promise<void>)().then(() => {
+        expect(wrapper.vm.mapOfDataTypeToListOfDataMetaInfo).to.deep.equal(
+          new Map([[DataTypeEnum.Lksg, [dataMetaInfo]]])
+        );
+      });
+    });
+  });
+
   it("Unit tests for sortListOfDataMetaInfoAlphabeticallyByReportingPeriod", () => {
     const testedMethod = wrapper.vm.sortListOfDataMetaInfoAlphabeticallyByReportingPeriod as (
       listOfDataMetaInfo: DataMetaInformation[]
