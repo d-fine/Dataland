@@ -149,7 +149,7 @@ class ApiAccessor {
                     "To check QA Status, metadata is required but was null for $uploadInfo",
                 )
             if (metaData.qaStatus != QAStatus.accepted) {
-                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)}
+                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId) }
             return uploadInfo.actualStoredDataMetaInfo!!.qaStatus == QAStatus.accepted
         }
     }
