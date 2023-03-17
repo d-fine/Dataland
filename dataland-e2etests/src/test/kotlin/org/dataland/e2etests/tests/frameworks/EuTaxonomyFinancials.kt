@@ -19,8 +19,7 @@ class EuTaxonomyFinancials {
     @Test
     fun `post a company with EuTaxonomyForFinancials data and check if the data can be retrieved correctly`() {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOfOneCompanyInformation,
-            listOfOneEuTaxonomyFinancialsDataSet,
+            listOfOneCompanyInformation, listOfOneEuTaxonomyFinancialsDataSet,
             apiAccessor.euTaxonomyFinancialsUploaderFunction,
         )
         Thread.sleep(1000)

@@ -45,25 +45,18 @@ class MetaDataControllerTest {
             mapOf(testDataType to listOfOneTestCompanyInformation), 1,
         )[0].actualStoredDataMetaInfo!!
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val actualDataMetaInformation = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
-        val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
-        val expectedDataMetaInformation =
-            buildAcceptedAndActiveDataMetaInformation(
-                uploadedMetaInfo.dataId,
-                uploadedMetaInfo.companyId,
-                testDataType,
-                uploadTime,
-            )
+        val actualDataMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
+        val expectedDataMetaInfo = buildAcceptedAndActiveDataMetaInformation(
+            dataId = uploadedMetaInfo.dataId, companyId = uploadedMetaInfo.companyId,
+            testDataType = testDataType, uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+        )
         assertEquals(
-            expectedDataMetaInformation,
-            actualDataMetaInformation.copy(uploadTime = uploadTime),
+            expectedDataMetaInfo, actualDataMetaInfo.copy(uploadTime = expectedDataMetaInfo.uploadTime),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
         )
-
-        val timeDiffFromUploadToNow = actualDataMetaInformation.uploadTime - Instant.now().epochSecond
+        val timeDiffFromUploadToNow = actualDataMetaInfo.uploadTime - Instant.now().epochSecond
         assertTrue(
-            abs(timeDiffFromUploadToNow) < 60,
-            "The server-upload-time and the local upload time differ too much.",
+            abs(timeDiffFromUploadToNow) < 60, "The server-upload-time and the local upload time differ too much.",
         )
     }
 
@@ -132,15 +125,12 @@ class MetaDataControllerTest {
             ),
             numberOfDataSetsToPostPerCompany,
         )
-        val listSizeDataMetaInfoForEuTaxoFinancials =
-            apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showOnlyActive = false)
-        val expectedListSizeDataMetaInfoForEuTaxoFinancials = initListSizeDataMetaInfoForEuTaxoFinancials +
-            totalNumberOfDataSetsPerFramework
+        val listSizeAfterUploads = apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showOnlyActive = false)
+        val expectedListSize = initListSizeDataMetaInfoForEuTaxoFinancials + totalNumberOfDataSetsPerFramework
         assertEquals(
-            expectedListSizeDataMetaInfoForEuTaxoFinancials, listSizeDataMetaInfoForEuTaxoFinancials,
+            expectedListSize, listSizeAfterUploads,
             "The meta info list for all EU Taxonomy Data for Non-Financials is expected to increase by " +
-                "$totalNumberOfDataSetsPerFramework to $expectedListSizeDataMetaInfoForEuTaxoFinancials, " +
-                "but has the size $listSizeDataMetaInfoForEuTaxoFinancials.",
+                "$totalNumberOfDataSetsPerFramework to $expectedListSize, but has the size $listSizeAfterUploads.",
         )
     }
 
@@ -198,7 +188,6 @@ class MetaDataControllerTest {
     @Test
     fun `post a dummy company as teaser company and data for it and confirm unauthorized meta info search succeeds`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
-
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfOneTeaserTestCompanyInformation), 1,
         )
@@ -206,15 +195,13 @@ class MetaDataControllerTest {
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
         val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         val expectedMetaInformation = buildAcceptedAndActiveDataMetaInformation(
-            testDataId,
-            testCompanyId,
-            testDataType,
-            uploadTime,
+            dataId = testDataId, companyId = testCompanyId,
+            testDataType = testDataType,
+            uploadTime = uploadTime,
         )
         assertTrue(
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
-                .map { it.copy(uploadTime = uploadTime) }
-                .contains(expectedMetaInformation),
+                .map { it.copy(uploadTime = uploadTime) }.contains(expectedMetaInformation),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company " +
                 "does not match the retrieved meta info.",
         )
@@ -250,11 +237,11 @@ class MetaDataControllerTest {
         )
     }
 
-    @Test
-    fun `ensure that version history field in metadata endpoint of meta data controller works`() {
 //        Get a data set of an arbitrary framework. Upload it multiple times changing ReportingPeriod, uploadTime and
 //        a data point in between. Ensure that only the data set with the latest upload_time is returned or all
 //        depending on showVersionHistory flag.
+    @Test
+    fun `ensure that version history field in metadata endpoint of meta data controller works`() {
         val companyInformation =
             apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getCompanyInformationWithoutIdentifiers(1)[0]
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
@@ -268,9 +255,7 @@ class MetaDataControllerTest {
         Thread.sleep(1000)
 //        Override number of employees to identify the final uploaded dataset
         val newNumberOfEmployees = (frameWorkData.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
-        val finalFrameWorkData = frameWorkData.copy(
-            numberOfEmployees = newNumberOfEmployees,
-        )
+        val finalFrameWorkData = frameWorkData.copy(numberOfEmployees = newNumberOfEmployees)
         subsequentUploadForVersionHistory(companyId, finalFrameWorkData, reportingPeriod1)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         Thread.sleep(1000)
@@ -278,12 +263,10 @@ class MetaDataControllerTest {
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, reportingPeriod1)
         val resultWithVersioning =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false, reportingPeriod1)
-
         val activeDataSet =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
                 resultWithoutVersioning[0].dataId,
             )
-
         assertEquals(
             3, resultWithVersioning.size,
             "Metadata of three versions of uploaded datasets should be available, instead its " +
