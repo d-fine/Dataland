@@ -103,8 +103,11 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(frameworkDropdownSelector)
           .find(".p-dropdown-label")
           .should("have.text", humanizeString(expectedChosenFramework));
-        if(([DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.EutaxonomyNonFinancials] as string[])
-            .indexOf(expectedChosenFramework) >= 0) {
+        if (
+          ([DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.EutaxonomyNonFinancials] as string[]).indexOf(
+            expectedChosenFramework
+          ) >= 0
+        ) {
           cy.get("[data-test='taxocard']").should("exist");
         } else {
           cy.get("table").should("exist");
@@ -142,7 +145,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(dropdownItemsSelector).should("exist");
         cy.get(dropdownItemsSelector)
           .each((item) => {
-            console.log("asdf", item.text())
             expect(expectedDropdownOptions.has(item.text())).to.equal(true);
             optionsCounter++;
           })
@@ -377,11 +379,11 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param requestingExpression the function to intercept
        * @param hint a description of the intercept for recognizability of the request
        */
-      function waitForRequest(requestPattern: string, requestingExpression: () => void, hint: String = ""): void {
-        const requestAlias = hint + (new Date().getTime().toString());
+      function waitForRequest(requestPattern: string, requestingExpression: () => void, hint = ""): void {
+        const requestAlias = hint + new Date().getTime().toString();
         cy.intercept(requestPattern).as(requestAlias);
         requestingExpression();
-        cy.wait(`@${requestAlias}`, {timeout: Cypress.env("long_timeout_in_ms") as number});
+        cy.wait(`@${requestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number });
       }
 
       /**
@@ -456,7 +458,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
           waitForCompanyRequest(() => {
             cy.visit(
-                `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`
+              `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`
             );
           });
           waitForDataRequest(() => {
