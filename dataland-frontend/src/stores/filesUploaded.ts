@@ -3,26 +3,34 @@ import { defineStore } from "pinia";
 export const useFilesUploadedStore = defineStore("reportsFilesUploaded", {
   state: () => {
     return {
-      files: [],
-      filesNames: [],
+      files: [] as Record<string, string>[],
+      filesNames: [] as Array<string>,
     };
   },
   actions: {
-    setReportsFilesUploaded(fileToSet) {
+    setReportsFilesUploaded(fileToSet: Record<string, string>) {
       this.files = [...this.files, fileToSet];
-      this.filesNames = this.files.map(el => el.name)
+      this.filesNames = this.files.map((el) => el.name);
     },
-    removeReportFromFilesUploaded(fileToRemove) {
+    removeReportFromFilesUploaded(
+      fileToRemove: Record<string, string>,
+      fileRemoveCallback: (x: number) => void,
+      index: number
+    ) {
+      fileRemoveCallback(index);
       this.files = this.files.filter((el) => {
         return el.name !== fileToRemove.name;
       });
     },
-    updatePropertyFilesUploaded(indexFileToUpload, property, value) {
-      // this.files.splice(indexFileToUpload, 1, {...this.files[indexFileToUpload], property: value})
-      this.files[indexFileToUpload][property] = value;
+    updatePropertyFilesUploaded(indexFileToUpload: number, property: string, value: string) {
+      if (this.files[indexFileToUpload][property]) {
+        this.files[indexFileToUpload][property] = value;
+      } else {
+        return;
+      }
     },
     reRender() {
-      this.files = [...this.files]
-    }
+      this.files = [...this.files];
+    },
   },
 });

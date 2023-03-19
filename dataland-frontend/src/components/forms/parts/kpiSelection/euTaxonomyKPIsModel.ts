@@ -1,14 +1,19 @@
 export const euTaxonomyKPIsModel = {
-  CreditInstitution: ["tradingPortfolio", "interbankLoans", "tradingPortfolioAndInterbankLoans", "greenAssetRatio"],
-  InsuranceOrReinsurance: ["taxonomyEligibleNonLifeInsuranceActivities"],
-  AssetManagement: [
+  creditInstitutionKpis: ["tradingPortfolio", "interbankLoans", "tradingPortfolioAndInterbankLoans", "greenAssetRatio"],
+  insuranceKpis: ["taxonomyEligibleNonLifeInsuranceActivities"],
+  eligibilityKpis: [
     "taxonomyEligibleActivity",
     "taxonomyNonEligibleActivity",
     "derivatives",
     "banksAndIssuers",
     "investmentNonNfrd",
   ],
-  InvestmentFirm: ["taxonomyEligibleActivity"],
+  investmentFirmKpis: ["greenAssetRatio"],
+  companyTypeToEligibilityKpis: {
+    creditInstitutionKpis: "CreditInstitution",
+    insuranceKpis: "InsuranceOrReinsurance",
+    investmentFirmKpis: "InvestmentFirm",
+  },
 };
 
 export const euTaxonomyKpiNameMappings = {
@@ -77,7 +82,7 @@ export const euTaxonomyKpiNameMappings = {
     "Exposures To Central Governments, Central Banks, Supranational Issuers Credit Institution",
   ExposuresToDerivativesCreditInstitution: "Exposures To Derivatives Credit Institution",
   ExposuresToNonNfdrEntitiesCreditInstitution: "Exposures To Non-NFRD Entities Credit Institution",
-  TradingPortfolio: "Trading Portfolio",
+  tradingPortfolio: "Trading Portfolio",
   interbankLoans: "Interbank Loans",
   tradingPortfolioAndInterbankLoans: "Trading Portfolio & Interbank Loans",
   ExposuresToTaxonomyEligibleEconomicActivitiesInsuranceReinsurance:
@@ -105,7 +110,7 @@ export const euTaxonomyKpiNameMappings = {
     "Exposures To Taxonomy Non-eligible Economic Activities Investment Firm",
   ExposuresToDerivativesInvestmentFirm: "Exposures To Derivatives Investment Firm",
   ExposuresToNonNfrdEntitiesInvestmentFirm: "Exposures To Non-NFRD Entities Investment Firm",
-  greenAssetRatio: "Green Asset Ratio Credit Institution",
+  greenAssetRatio: "Green Asset Ratio",
 };
 
 export const euTaxonomyKpiInfoMappings = {

@@ -13,51 +13,83 @@
       <UploadFormHeader name="Eligible Revenue (%) *" explanation="Eligible Revenue (%) *" />
       <FormKit
         type="number"
-        name="value"
+        :name="`${nestedDataPath}value`"
         validation-label=""
         placeholder="Value %"
         step="0.01"
         min="0"
-        validation="number|between:0,100"
+        validation="required|number|between:0,100"
         :inner-class="{
           short: true,
         }"
       />
     </div>
 
-    <!-- Data source -->
-    <div class="form-field">
+    <div class="form-field" v-if="nestedDataPath.length">
+      <h4 class="mt-0">Data source</h4>
+      <div class="next-to-each-other">
+        <div class="flex-1">
+          <UploadFormHeader :name="kpiNameMappings.report ?? ''" :explanation="kpiInfoMappings.report ?? ''" />
+          <FormKit
+            type="select"
+            :name="`${nestedDataPath}dataSource.report`"
+            placeholder="Select a report"
+            validation="required"
+            validation-label="Select a report"
+            :options="['None...', ...this.files.filesNames]"
+          />
+        </div>
+        <div>
+          <UploadFormHeader :name="kpiNameMappings.page ?? ''" :explanation="kpiInfoMappings.page ?? ''" />
+          <FormKit
+            outer-class="w-100"
+            type="number"
+            validation="required"
+            :name="`${nestedDataPath}dataSource.page`"
+            placeholder="Page"
+            validation-label="Page"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="form-field" v-else>
       <FormKit type="group" name="dataSource">
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
-            <UploadFormHeader :name="KpiNameMappings.report ?? ''" :explanation="KpiInfoMappings.report ?? ''" />
+            <UploadFormHeader :name="kpiNameMappings.report ?? ''" :explanation="kpiInfoMappings.report ?? ''" />
             <FormKit
               type="select"
               name="report"
               placeholder="Select a report"
+              validation="required"
               validation-label="Select a report"
               :options="['None...', ...this.files.filesNames]"
             />
           </div>
           <div>
-            <UploadFormHeader :name="KpiNameMappings.page ?? ''" :explanation="KpiInfoMappings.page ?? ''" />
-            <FormKit outer-class="w-100" type="number" name="page" placeholder="Page" validation-label="Page" />
+            <UploadFormHeader :name="kpiNameMappings.page ?? ''" :explanation="kpiInfoMappings.page ?? ''" />
+            <FormKit
+              outer-class="w-100"
+              type="number"
+              validation="required"
+              name="page"
+              placeholder="Page"
+              validation-label="Page"
+            />
           </div>
-        </div>
-        <div>
-          <UploadFormHeader :name="KpiNameMappings.tagName ?? ''" :explanation="KpiInfoMappings.tagName ?? ''" />
-          <FormKit outer-class="short" type="text" name="tagName" placeholder="Tag Name" validation-label="Tag Name" />
         </div>
       </FormKit>
     </div>
+
     <!-- Data quality -->
     <div class="form-field">
       <UploadFormHeader name="Data quality" explanation="Data quality" />
       <div class="lg:col-6 md:col-6 col-12 p-0">
         <FormKit
           type="select"
-          name="quality"
+          :name="nestedDataPath.length ? `${nestedDataPath}quality` : 'quality'"
+          validation="required"
           validation-label="Data quality"
           placeholder="Data quality"
           :options="dataQualityList"
@@ -69,7 +101,7 @@
   <div class="form-field">
     <FormKit
       type="textarea"
-      name="comment"
+      :name="nestedDataPath.length ? `${nestedDataPath}comment` : 'comment'"
       rows="10"
       placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
     />
@@ -96,17 +128,25 @@ export default defineComponent({
     name: {
       type: String,
     },
-    KpiInfoMappings: {
+    kpiInfoMappings: {
       type: Object,
       default: null,
     },
-    KpiNameMappings: {
+    kpiNameMappings: {
       type: Object,
       default: null,
+    },
+    nestedDataPath: {
+      type: String,
+      default: "",
     },
   },
   methods: {
-    dataPointAvailableToggle() {
+    /**
+     * Toggle dataPointIsAvailable variable value and emit event
+     *
+     */
+    dataPointAvailableToggle(): void {
       this.dataPointIsAvailable = !this.dataPointIsAvailable;
       this.$emit("dataPointAvailableToggle", this.dataPointIsAvailable);
     },
