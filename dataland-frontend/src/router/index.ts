@@ -2,7 +2,6 @@ import { createWebHistory, createRouter, RouteComponent } from "vue-router";
 const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
-const CompanyInformation = (): Promise<RouteComponent> => import("@/components/pages/CompanyInformation.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
 const ViewEuTaxonomyNonFinancialsSample = (): Promise<RouteComponent> =>
@@ -12,8 +11,6 @@ const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/Da
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
 const UploadEuTaxonomyDataForFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForFinancials.vue");
-const UploadCompany = (): Promise<RouteComponent> => import("@/components/pages/UploadCompany.vue");
-const SearchCompanies = (): Promise<RouteComponent> => import("@/components/pages/SearchCompanies.vue");
 const ViewEuTaxonomyFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/ViewEuTaxonomyFinancials.vue");
 const ViewEuTaxonomyNonFinancials = (): Promise<RouteComponent> =>
@@ -44,11 +41,6 @@ const routes = [
 
     name: "Eu Taxonomy For Non-Financials Sample",
     component: ViewEuTaxonomyNonFinancialsSample,
-  },
-  {
-    path: "/companies/upload",
-    name: "Upload Company",
-    component: UploadCompany,
   },
   {
     path: "/companies/choose",
@@ -85,12 +77,6 @@ const routes = [
     component: SearchCompaniesForFrameworkData,
   },
   {
-    path: "/companies/:companyID",
-    props: true,
-    name: "Company Info",
-    component: CompanyInformation,
-  },
-  {
     path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
     props: true,
     name: "Company EU Taxonomy for non financials",
@@ -113,11 +99,6 @@ const routes = [
     props: true,
     name: "Company sfdr",
     component: ViewSfdr,
-  },
-  {
-    path: "/companies-only-search",
-    name: "Search Companies",
-    component: SearchCompanies,
   },
   {
     path: "/datasets",

@@ -2,8 +2,6 @@ import { DataTypeEnum } from "@clients/backend";
 
 describe("As a user I expect to be redirected to the login page if I am unauthenticated", () => {
   const pages = [
-    "/companies/upload",
-    "/companies-only-search",
     "/companies",
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
     `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,

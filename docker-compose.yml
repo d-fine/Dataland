@@ -41,6 +41,7 @@ services:
     ports:
       - "127.0.0.1:6789:6789"
       - "127.0.0.1:5433-5436:5433-5436"
+      - "127.0.0.1:5672:5672"
   api-key-manager:
     restart: always
     profiles: ["production", "testing", "development"]
@@ -60,7 +61,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:15.1
+    image: postgres:15.2
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -90,12 +91,14 @@ services:
       MAILJET_API_ID: ${MAILJET_API_ID}
       INVITATION_REQUEST_RECEIVERS: ${INVITATION_REQUEST_RECEIVERS}
       INVITATION_REQUEST_CC: ${INVITATION_REQUEST_CC}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
   backend-db:
     restart: always
     profiles: ["production", "testing", "development"]
     networks:
       - backend-db
-    image: postgres:15.1
+    image: postgres:15.2
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -134,7 +137,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:19.6.0
+    image: node:19.7.0
     networks:
       - internal
     volumes:
@@ -156,13 +159,12 @@ services:
     networks:
       - internal
       - internal-storage-db
-    expose:
-      - "8080"
-    ports:
-      - "127.0.0.1:8082:8080"
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
     depends_on:
       - internal-storage-db
   internal-storage-db:
@@ -170,7 +172,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:15.1
+    image: postgres:15.2
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -187,7 +189,7 @@ services:
     profiles: ["production", "testing", "development", "init"]
     networks:
       - keycloak-db
-    image: postgres:15.1
+    image: postgres:15.2
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -269,6 +271,33 @@ services:
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
+  rabbitmq:
+    restart: always
+    profiles: ["production", "testing", "development"]
+    image: ghcr.io/d-fine/dataland/dataland_rabbitmq:${DATALAND_RABBITMQ_VERSION}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - internal
+    environment:
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}
+    healthcheck:
+      test: rabbitmq-diagnostics -q alarms
+      interval: 30s
+      timeout: 3s
+  qa-service:
+    restart: always
+    profiles: ["production", "testing", "development"]
+    image: ${QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_qa_service_test:${DATALAND_QA_SERVICE_TEST_VERSION}}
+    networks:
+      - internal
+    expose:
+      - "8080"
+    environment:
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
 networks:
   internal:
   external:
@@ -284,6 +313,8 @@ volumes:
   api_key_manager_data:
     driver: local
   internal_storage_data:
+    driver: local
+  rabbitmq_data:
     driver: local
   letsencrypt:
     driver: local

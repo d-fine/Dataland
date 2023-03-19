@@ -692,6 +692,58 @@
         ]
       }
     },
+    "/internal/cached/{dataId}": {
+      "get": {
+        "tags": [
+          "temporarily-cached-data-controller"
+        ],
+        "summary": "Retrieve specific data from the cache store of the backend.",
+        "description": "Data identified by the provided data ID is retrieved.",
+        "operationId": "getReceivedData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/data/sme/{dataId}": {
       "get": {
         "tags": [
@@ -1876,6 +1928,7 @@
           "companyId",
           "dataId",
           "dataType",
+          "qaStatus",
           "uploadTime"
         ],
         "type": "object",
@@ -1895,8 +1948,18 @@
           },
           "companyId": {
             "type": "string"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QAStatus"
           }
         }
+      },
+      "QAStatus": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Accepted"
+        ]
       },
       "CompanyAssociatedDataSfdrData": {
         "type": "object",

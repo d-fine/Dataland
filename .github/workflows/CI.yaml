@@ -144,17 +144,17 @@ jobs:
           API_KEY_MANAGER_DB_PASSWORD: "password"
           INTERNAL_STORAGE_DB_PASSWORD: "password"
           PGADMIN_PASSWORD: "password"
-          KEYCLOAK_DATALAND_ADMIN_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
-          KEYCLOAK_DATALAND_ADMIN_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
-          KEYCLOAK_DATALAND_ADMIN_PASSWORD: "test"
-          KEYCLOAK_READER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
-          KEYCLOAK_READER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
-          KEYCLOAK_READER_PASSWORD: "test"
-          KEYCLOAK_UPLOADER_VALUE: "qT0vhQ7bQA0OuAlJslpDr421pJQjZWIHxXZYePO9IOVVfZUX+85SwuwVrLgL/9xiW5hjyxlhKqQzUl7xUh+hVQ=="
-          KEYCLOAK_UPLOADER_SALT: "6ZN+5rRT/wQcQqvNhXIsfA=="
-          KEYCLOAK_UPLOADER_PASSWORD: "test"
+          KEYCLOAK_DATALAND_ADMIN_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
+          KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="
+          KEYCLOAK_DATALAND_ADMIN_PASSWORD: "password"
+          KEYCLOAK_READER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
+          KEYCLOAK_READER_SALT: "K9nzg086pCNjq8dxl84GZg=="
+          KEYCLOAK_READER_PASSWORD: "password"
+          KEYCLOAK_UPLOADER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
+          KEYCLOAK_UPLOADER_SALT: "K9nzg086pCNjq8dxl84GZg=="
+          KEYCLOAK_UPLOADER_PASSWORD: "password"
           KEYCLOAK_ADMIN: "admin"
-          KEYCLOAK_ADMIN_PASSWORD: "admin"
+          KEYCLOAK_ADMIN_PASSWORD: "password"
           KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
           KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
           PROXY_PRIMARY_URL: local-dev.dataland.com
@@ -169,6 +169,9 @@ jobs:
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
           INVITATION_REQUEST_CC: "dev.null@dataland.com"
+          RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
+          RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
+          RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -257,7 +260,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Sonar
         if: always()
-        run: ./gradlew sonarqube --no-daemon --stacktrace
+        run: ./gradlew sonar --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
