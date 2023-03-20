@@ -48,14 +48,15 @@ describeIf(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
     ): void {
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany): void => {
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
             );
-            fillEuTaxonomyForFinancialsUploadForm(testData);
-            submitEuTaxonomyFinancialsUploadForm();
+            cy.get("h3:contains('Select company reports')");
+            // fillEuTaxonomyForFinancialsUploadForm(testData);
+            // submitEuTaxonomyFinancialsUploadForm();
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
             );

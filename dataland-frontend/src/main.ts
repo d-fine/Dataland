@@ -9,7 +9,6 @@ import "./assets/scss/global.scss";
 import "./assets/css/ibm-plex-sans.scss";
 import "@formkit/themes/genesis";
 import { plugin, defaultConfig } from "@formkit/vue";
-import config from "@/utils/formkit";
 import router from "./router";
 import PrimeVue from "primevue/config";
 import DialogService from "primevue/dialogservice";
@@ -21,7 +20,7 @@ import { createPinia } from "pinia";
 function instantiateVueApp(): void {
   const app = createApp(App);
   const pinia = createPinia();
-  app.use(plugin, defaultConfig(config));
+  app.use(plugin, defaultConfig);
   app.use(DialogService);
   app.use(router);
   app.use(PrimeVue);

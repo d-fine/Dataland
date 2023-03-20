@@ -433,6 +433,11 @@ input[type="checkbox"], input[type="radio"]{
   input[type=checkbox]:checked::before, input[type=radio]:checked::before {
     display: block;
   }
+  label[data-checked="true"] {
+    input[type=radio]::before {
+      display: block;
+    }
+  }
   .p-multiselect {
     font-size: $input-text-fs;
     border-radius: 0;

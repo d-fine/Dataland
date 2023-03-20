@@ -23,6 +23,7 @@
           class="uppercase p-button p-button-sm d-letters mt-3"
           :disabled="!isFrontendUploadFormExisting"
           label="Create Dataset"
+          data-test="createDatasetButton"
           icon="pi pi-plus"
           @click="redirectToUploadForm"
         />

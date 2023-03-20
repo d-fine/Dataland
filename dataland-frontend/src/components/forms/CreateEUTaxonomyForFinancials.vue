@@ -318,7 +318,8 @@
                       <MultiSelect
                         v-model="selectedKPIs"
                         :options="kpisModel"
-                        name="financialServicesTypes"
+                        data-test="MultiSelectfinancialServicesTypes"
+                        name="MultiSelectfinancialServicesTypes"
                         optionLabel="label"
                         validation-label="Services Types"
                         validation="required"
@@ -340,20 +341,20 @@
                 </div>
 
                 <div v-for="copanyType of confirmedSelectedKPIs" :key="copanyType" class="uploadFormSection">
-                  <FormKit :name="copanyType.value" type="group">
-                    <div class="flex w-full">
-                      <div class="p-3 topicLabel">
-                        <h3 :id="copanyType.value" class="anchor title">{{ copanyType.label }}</h3>
-                      </div>
-
-                      <PrimeButton
-                        @click="removeKpisSection(copanyType.value)"
-                        label="REMOVE THIS SECTION"
-                        class="p-button-text ml-auto"
-                        icon="pi pi-trash"
-                      ></PrimeButton>
+                  <div class="flex w-full">
+                    <div class="p-3 topicLabel">
+                      <h3 :id="copanyType.value" class="anchor title">{{ copanyType.label }}</h3>
                     </div>
 
+                    <PrimeButton
+                      @click="removeKpisSection(copanyType.value)"
+                      label="REMOVE THIS SECTION"
+                      class="p-button-text ml-auto"
+                      icon="pi pi-trash"
+                    ></PrimeButton>
+                  </div>
+
+                  <FormKit :name="copanyType.value" type="group">
                     <div
                       v-for="kpiType of euTaxonomyKPIsModel[copanyType.value]"
                       :key="kpiType"
@@ -366,7 +367,7 @@
                               :name="euTaxonomyKpiNameMappings[kpiType] ?? ''"
                               :explanation="euTaxonomyKpiInfoMappings[kpiType] ?? ''"
                             />
-                            <KPIfieldsSet
+                            <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               @dataPointAvailableToggle="updateModelFromLocalStore"
@@ -375,29 +376,32 @@
                         </FormKit>
                       </div>
                     </div>
+                  </FormKit>
 
-                    <div
-                      v-for="kpiTypeEligibility of euTaxonomyKPIsModel.eligibilityKpis"
-                      :key="kpiTypeEligibility"
-                      class="uploadFormSection"
-                    >
-                      <div class="col-9 formFields">
-                        <div class="form-field">
-                          <UploadFormHeader
-                            :name="euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? ''"
-                            :explanation="euTaxonomyKpiInfoMappings[kpiTypeEligibility] ?? ''"
-                          />
-                          <KPIfieldsSet
-                            :nestedDataPath="`data.eligibilityKpis.${
-                              euTaxonomyKPIsModel.companyTypeToEligibilityKpis[copanyType.value]
-                            }.${kpiTypeEligibility}.`"
-                            :kpiInfoMappings="euTaxonomyKpiInfoMappings"
-                            :kpiNameMappings="euTaxonomyKpiNameMappings"
-                            @dataPointAvailableToggle="updateModelFromLocalStore"
-                          />
+                  <FormKit name="eligibilityKpis" type="group">
+                    <FormKit :name="euTaxonomyKPIsModel.companyTypeToEligibilityKpis[copanyType.value]" type="group">
+                      <div
+                        v-for="kpiTypeEligibility of euTaxonomyKPIsModel.eligibilityKpis"
+                        :key="kpiTypeEligibility"
+                        class="uploadFormSection"
+                      >
+                        <div class="col-9 formFields">
+                          <FormKit :name="kpiTypeEligibility" type="group">
+                            <div class="form-field">
+                              <UploadFormHeader
+                                :name="euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? ''"
+                                :explanation="euTaxonomyKpiInfoMappings[kpiTypeEligibility] ?? ''"
+                              />
+                              <KPIfieldSet
+                                :kpiInfoMappings="euTaxonomyKpiInfoMappings"
+                                :kpiNameMappings="euTaxonomyKpiNameMappings"
+                                @dataPointAvailableToggle="updateModelFromLocalStore"
+                              />
+                            </div>
+                          </FormKit>
                         </div>
                       </div>
-                    </div>
+                    </FormKit>
                   </FormKit>
                 </div>
               </FormKit>
@@ -444,7 +448,7 @@ import { FormKit } from "@formkit/vue";
 import FileUpload from "primevue/fileupload";
 import PrimeButton from "primevue/button";
 import MultiSelect from "primevue/multiselect";
-import KPIfieldsSet from "@/components/forms/parts/kpiSelection/KPIfieldsSet.vue";
+import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
@@ -484,16 +488,12 @@ export default defineComponent({
     Calendar,
     MultiSelect,
     YesNoComponent,
-    KPIfieldsSet,
+    KPIfieldSet,
   },
 
   data() {
     return {
-      formInputsModel: {
-        data: {
-          eligibilityKpis: {},
-        },
-      } as CompanyAssociatedDataEuTaxonomyDataForFinancials,
+      formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
       fiscalYearEnd: "",
       convertedFiscalYearEnd: "",

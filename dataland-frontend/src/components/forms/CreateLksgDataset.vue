@@ -1259,7 +1259,6 @@ export default defineComponent({
       }
     },
 
-
     /**
      * Adds a new Object to the ProductionSite array
      */
