@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import org.awaitility.Awaitility.await
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
@@ -18,6 +19,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -27,6 +29,8 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
+import java.lang.NullPointerException
+import java.util.concurrent.TimeUnit
 
 class ApiAccessor {
 
@@ -114,6 +118,7 @@ class ApiAccessor {
         ) -> DataMetaInformation,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
         reportingPeriod: String = "",
+        ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
@@ -132,7 +137,31 @@ class ApiAccessor {
                 )
             }
         }
+        if (ensureQaPassed) ensureQaCompletedAndUpdateMetadata(listOfUploadInfo)
         return listOfUploadInfo
+    }
+
+    /**
+     * Wait until QaStatus is accepted for all Upload Infos or throw error. The metadata of the provided uploadInfos
+     * are updated in the process.
+     *
+     * @param uploadInfos List of UploadInfo for which an update of the QAStatus should be checked and awaited
+     * @return Input list of UplaodInfo but with updated metadata
+     */
+    private fun ensureQaCompletedAndUpdateMetadata(uploadInfos: List<UploadInfo>) {
+        await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedAndUpdateMetadata(uploadInfos) }
+    }
+
+    private fun checkIfQaPassedAndUpdateMetadata(uploadInfos: List<UploadInfo>): Boolean {
+        return uploadInfos.all { uploadInfo ->
+            val metaData = uploadInfo.actualStoredDataMetaInfo
+                ?: throw NullPointerException(
+                    "To check QA Status, metadata is required but was null for $uploadInfo",
+                )
+            if (metaData.qaStatus != QAStatus.accepted) {
+                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId) }
+            return uploadInfo.actualStoredDataMetaInfo!!.qaStatus == QAStatus.accepted
+        }
     }
 
     @Suppress("kotlin:S138")
@@ -287,6 +316,6 @@ data class UploadInfo(
 
     val actualStoredCompany: StoredCompany,
 
-    val actualStoredDataMetaInfo: DataMetaInformation? = null,
+    var actualStoredDataMetaInfo: DataMetaInformation? = null,
 
 )

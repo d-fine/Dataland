@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
@@ -23,6 +24,7 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
@@ -258,12 +260,11 @@ class DataManager(
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        val dataAsString = getDataFromStorage(dataId, correlationId)
-        if (dataAsString == "") {
-            throw ResourceNotFoundApiException(
-                "Dataset not found",
-                "No dataset with the id: $dataId could be found in the data store.",
-            )
+        lateinit var dataAsString: String
+        try {
+            dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
+        } catch (e: ClientException) {
+            handleInternalStorageClientException(e, dataId, correlationId)
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
@@ -271,7 +272,24 @@ class DataManager(
         return dataAsStorableDataSet
     }
 
-    private fun getDataFromStorage(dataId: String, correlationId: String): String {
+    private fun handleInternalStorageClientException(e: ClientException, dataId: String, correlationId: String) {
+        if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+            logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
+            throw ResourceNotFoundApiException(
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store.",
+                e,
+            )
+        } else {
+            throw e
+        }
+    }
+
+    private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
+        return dataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)
+    }
+
+    private fun getDataFromStorageService(dataId: String, correlationId: String): String {
         val dataAsString: String
         logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {

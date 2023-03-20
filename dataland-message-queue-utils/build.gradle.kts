@@ -24,10 +24,10 @@ plugins {
 
 dependencies {
     implementation("org.springframework.amqp:spring-rabbit")
-    implementation("io.cloudevents:cloudevents-api:2.4.2")
-    implementation("io.cloudevents:cloudevents-json-jackson:2.4.2")
-    implementation("io.cloudevents:cloudevents-core:2.4.2")
-    implementation("org.springframework.cloud:spring-cloud-function-context:4.0.1")
+    implementation(libs.cloudevents.api)
+    implementation(libs.cloudevents.json.jackson)
+    implementation(libs.cloudevents.core)
+    implementation(libs.spring.cloud.function.context)
     implementation("org.springframework.amqp:spring-amqp")
 }
 
