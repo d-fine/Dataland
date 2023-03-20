@@ -15,4 +15,4 @@ describe("Unit test for StringHumanizer", () => {
     const outputArray = getKeysFromMapAndReturnAsAlphabeticallySortedArray(inputMap);
     expect(outputArray.toString()).to.equal(["X", "D", "C", "B", "A", "2023", "2022", "2020"].toString());
   });
-});
+}); //
