@@ -11,6 +11,7 @@ export default defineComponent({
   data() {
     return {
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
+      resolvedKeycloakPromise: undefined as undefined | Keycloak, // TODO
       keycloakAuthenticated: false,
       keycloakInitOptions: {
         realm: "datalandsecurity",
@@ -25,9 +26,9 @@ export default defineComponent({
      * Sets up the keycloak and keycloakPromise objects that are passed down
      * to the other components to handle authentication
      */
-    initKeycloak() {
+    initKeycloak(): Promise<Keycloak> {
       const keycloak = new Keycloak(this.keycloakInitOptions);
-      this.keycloakPromise = keycloak
+      return keycloak
         .init({
           onLoad: "check-sso",
           silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
@@ -46,8 +47,24 @@ export default defineComponent({
     },
   },
 
-  created() {
-    this.initKeycloak();
+  async created() {
+    this.keycloakPromise = this.initKeycloak();
+    const resolvedKeycloakPromise = await this.keycloakPromise
+    if(resolvedKeycloakPromise) {
+      setInterval(() => {
+        console.log("run")
+        resolvedKeycloakPromise.updateToken(5).then((refreshed) => {
+          if (refreshed) {
+            console.log('Token refreshed' + refreshed);
+          } else {
+            console.log('Token not refreshed, valid for ')
+             //   + Math.round(resolvedKeycloakPromise.tokenParsed.exp + resolvedKeycloakPromise.timeSkew - new Date().getTime() / 1000) + ' seconds');
+          }
+        }).catch(() => {
+          console.error('Failed to refresh token');
+        });
+      }, 6000)
+    }
   },
 
   provide() {
