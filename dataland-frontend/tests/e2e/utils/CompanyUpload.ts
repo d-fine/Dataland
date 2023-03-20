@@ -13,24 +13,24 @@ import { faker } from "@faker-js/faker";
  * @param companyName the company name to fill into the form
  */
 export function fillCompanyUploadFields(companyName: string): void {
-  cy.get("input[name=companyName]").type(companyName, { force: true });
-  cy.get("input[name=alternativeName]").type("Name to remove", { force: true });
+  cy.get("input[name=companyName]").should("contain", "").type(companyName, { force: true });
+  cy.get("input[name=alternativeName]").should("contain", "").type("Name to remove", { force: true });
   cy.get("button[name=addAlternativeName]").click({ force: true });
   cy.get(`span.form-list-item em`).click();
   cy.get("span.form-list-item").should("not.exist");
   cy.get("input[name=alternativeName]").type("Another Name", { force: true });
   cy.get("button[name=addAlternativeName]").click({ force: true });
-  cy.get("input[name=headquarters]").type("Capitol City", { force: true });
+  cy.get("input[name=headquarters]").should("contain", "").type("Capitol City", { force: true });
   cy.get("select[name=countryCode]").select("DE", { force: true });
-  cy.get("input[name=headquartersPostalCode]").type("123456", { force: true });
-  cy.get("input[name=companyLegalForm]").type("Enterprise Ltd.", { force: true });
-  cy.get("input[name=website]").type("www.company.com", { force: true });
-  cy.get("input[name=lei]").type(`LeiValueId:${crypto.randomUUID()}`, { force: true });
-  cy.get("input[name=isin]").type(`IsinValueId:${crypto.randomUUID()}`, { force: true });
-  cy.get("input[name=ticker]").type(`TickerValueId:${crypto.randomUUID()}`, { force: true });
-  cy.get("input[name=permId]").type(`PermValueId:${crypto.randomUUID()}`, { force: true });
-  cy.get("input[name=duns]").type(`DunsValueId:${crypto.randomUUID()}`, { force: true });
-  cy.get("input[name=companyRegistrationNumber]").type(`RegValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=headquartersPostalCode]").should("contain", "").type("123456", { force: true });
+  cy.get("input[name=companyLegalForm]").should("contain", "").type("Enterprise Ltd.", { force: true });
+  cy.get("input[name=website]").should("contain", "").type("www.company.com", { force: true });
+  cy.get("input[name=lei]").should("contain", "").type(`LeiValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=isin]").should("contain", "").type(`IsinValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=ticker]").should("contain", "").type(`TickerValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=permId]").should("contain", "").type(`PermValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=duns]").should("contain", "").type(`DunsValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=companyRegistrationNumber]").should("contain", "").type(`RegValueId:${crypto.randomUUID()}`, { force: true });
   cy.get("select[name=sector]").select("Energy");
 }
 
