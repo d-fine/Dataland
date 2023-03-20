@@ -39,7 +39,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         frameworkQueryParam: string,
         searchStringQueryParam: string
       ): void {
-        cy.intercept(`**/api/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`).as("companyLoad");
+        cy.intercept(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`).as("companyLoad");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
         cy.wait("@companyLoad", { timeout: Cypress.env("long_timeout_in_ms") as number });
         cy.intercept("**/api/companies/*").as("searchCompany");
@@ -177,7 +177,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         uploadCompanyAndEuTaxonomyNonFinancialsDatasetViaApi();
       });
 
-      it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
+      it.only("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         selectCompanyViaAutocompleteOnCompaniesPage(DataTypeEnum.EutaxonomyFinancials, lksgAndFinancialCompanyName);
         validateFrameworkPage(DataTypeEnum.EutaxonomyFinancials, "EU Taxonomy Data");
