@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import Keycloak from "keycloak-js";
+import Keycloak, {KeycloakError} from "keycloak-js";
 import { computed, defineComponent } from "vue";
 
 export default defineComponent({
@@ -28,6 +28,11 @@ export default defineComponent({
      */
     initKeycloak(): Promise<Keycloak> {
       const keycloak = new Keycloak(this.keycloakInitOptions);
+      keycloak.onAuthLogout = () => {console.log("Logging out")}
+      keycloak.onAuthSuccess = () => {console.log("onAuthSuccess")}
+      keycloak.onAuthError = () => {console.log("onAuthError")}
+      keycloak.onAuthRefreshSuccess = () => {console.log("onAuthRefreshSuccess")}
+      keycloak.onAuthRefreshError = () => {console.log("onAuthRefreshError")}
       return keycloak
         .init({
           onLoad: "check-sso",
@@ -43,14 +48,14 @@ export default defineComponent({
         })
         .then((): Keycloak => {
           return keycloak;
-        });
+        })
     },
   },
 
   async created() {
     this.keycloakPromise = this.initKeycloak();
     const resolvedKeycloakPromise = await this.keycloakPromise
-    if(resolvedKeycloakPromise) {
+    /*if(resolvedKeycloakPromise) {
       setInterval(() => {
         console.log("run")
         resolvedKeycloakPromise.updateToken(5).then((refreshed) => {
@@ -64,7 +69,7 @@ export default defineComponent({
           console.error('Failed to refresh token');
         });
       }, 6000)
-    }
+    }*/
   },
 
   provide() {
