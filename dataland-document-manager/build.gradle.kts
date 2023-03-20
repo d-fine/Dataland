@@ -1,0 +1,118 @@
+// dataland-document-manager
+
+val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
+val jacocoSources by extra(sonarSources)
+val jacocoClasses by extra(
+    sourceSets.asMap.values.flatMap { sourceSet ->
+        sourceSet.output.classesDirs.flatMap {
+            fileTree(it) {
+                exclude("**/openApiClient/**")
+            }.files
+        }
+    },
+)
+val jacocoVersion: String by project
+val openApiGeneratorTimeOutThresholdInSeconds: String by project
+
+plugins {
+    kotlin("jvm")
+    kotlin("plugin.spring")
+    jacoco
+    id("org.springdoc.openapi-gradle-plugin")
+    id("com.gorylenko.gradle-git-properties")
+    id("org.springframework.boot")
+    kotlin("kapt")
+    id("org.jetbrains.kotlin.plugin.jpa")
+    kotlin("plugin.serialization") version "1.8.0"
+}
+
+java.sourceCompatibility = JavaVersion.VERSION_17
+
+dependencies {
+    implementation(project(":dataland-backend-utils"))
+    implementation(libs.springdoc.openapi.ui)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
+    implementation(libs.okhttp)
+    implementation(libs.log4j)
+    implementation(libs.log4j.api)
+    implementation(libs.log4j.to.slf4j)
+    implementation(libs.logback.classic)
+    implementation(libs.logback.core)
+    implementation(libs.slf4j.api)
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    implementation("org.springframework.boot:spring-boot-starter-amqp")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+//    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.springframework.security:spring-security-test")
+    implementation(project(":dataland-keycloak-adapter"))
+    implementation(project(":dataland-message-queue-utils"))
+}
+
+openApi {
+    apiDocsUrl.set("http://localhost:8485/documents/v3/api-docs")
+    customBootRun {
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8485"))
+    }
+    outputFileName.set("$projectDir/documentManagerOpenApi.json")
+    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
+}
+
+//tasks.test {
+//    useJUnitPlatform()
+//
+//    extensions.configure(JacocoTaskExtension::class) {
+//        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+//    }
+//}
+//
+//jacoco {
+//    toolVersion = jacocoVersion
+//}
+
+gitProperties {
+    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
+}
+
+tasks.register("generateInternalStorageClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
+    input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
+        .path
+    outputDir.set("$buildDir/clients/internal-storage")
+    packageName.set(internalStorageClientDestinationPackage)
+    modelPackage.set("$internalStorageClientDestinationPackage.model")
+    apiPackage.set("$internalStorageClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateInternalStorageClient")
+}
+
+sourceSets {
+    val main by getting
+    main.kotlin.srcDir("$buildDir/clients/internal-storage/src/main/kotlin")
+}
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
+    }
+}
