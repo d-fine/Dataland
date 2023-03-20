@@ -17,9 +17,7 @@ describe("As a user, I expect the footer section to be present and contain relev
     cy.get("h2").contains("Imprint");
     cy.get("[title=back_button").click({ force: true });
     cy.wait("@youtube");
-    cy.get('a p[title="data privacy"]')
-      .should("contain.text", "Data Privacy")
-      .click({ force: true })
+    cy.get('a p[title="data privacy"]').should("contain.text", "Data Privacy").click({ force: true });
     cy.get("[data-test='DataPrivacy-Text']").should("exist");
     cy.url().should("include", "/dataprivacy");
     cy.get("h2").contains("Data Privacy");
