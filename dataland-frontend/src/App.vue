@@ -58,21 +58,20 @@ export default defineComponent({
   async created() {
     this.keycloakPromise = this.initKeycloak();
     const resolvedKeycloakPromise = await this.keycloakPromise
-    /*if(resolvedKeycloakPromise) {
+    if(resolvedKeycloakPromise) {
       setInterval(() => {
         console.log("run")
         resolvedKeycloakPromise.updateToken(5).then((refreshed) => {
           if (refreshed) {
             console.log('Token refreshed' + refreshed);
           } else {
-            console.log('Token not refreshed, valid for ')
-             //   + Math.round(resolvedKeycloakPromise.tokenParsed.exp + resolvedKeycloakPromise.timeSkew - new Date().getTime() / 1000) + ' seconds');
+            console.log('Token not refreshed, valid for ' + Math.round(resolvedKeycloakPromise!.tokenParsed.exp + resolvedKeycloakPromise!.timeSkew - new Date().getTime() / 1000) + ' seconds');
           }
         }).catch(() => {
           console.error('Failed to refresh token');
         });
       }, 6000)
-    }*/
+    }
   },
 
   provide() {
