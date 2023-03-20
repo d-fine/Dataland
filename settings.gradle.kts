@@ -11,6 +11,7 @@ include(
     "dataland-keycloak-adapter",
     "dataland-qa-service",
     "dataland-message-queue-utils",
+    "dataland-document-manager",
 )
 
 dependencyResolutionManagement {

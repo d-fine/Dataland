@@ -39,6 +39,16 @@ server {
         return 301 https://${PROXY_PRIMARY_URL}/nocontent;
     }
 
+    location /documents/ {
+      proxy_pass http://document-manager:8080/api/;
+      include utils/proxy.conf;
+      include utils/documentsErrors.conf;
+    }
+
+    location /documents/internal/ {
+        return 301 https://${PROXY_PRIMARY_URL}/nocontent;
+    }
+
     location /internal-storage/actuator/health {
       proxy_pass http://internal-storage:8080/internal-storage/actuator/health;
       include utils/proxy.conf;
