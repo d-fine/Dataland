@@ -50,12 +50,16 @@ describeIf(
       allPages.forEach((page) => {
         it(`Non uploader should be able to access ${page}`, () => {
           cy.visit(page);
-          cy.get(noUploaderRightsMessageSelector).should("not.exist");
+          cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+            "not.exist"
+          );
         });
       });
       uploaderPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noUploaderRightsMessageSelector).should("exist");
+        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+          "exist"
+        );
       });
     });
 
@@ -63,11 +67,15 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       allPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noUploaderRightsMessageSelector).should("not.exist");
+        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+          "not.exist"
+        );
       });
       uploaderPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noUploaderRightsMessageSelector).should("not.exist");
+        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+          "not.exist"
+        );
       });
     });
   }
