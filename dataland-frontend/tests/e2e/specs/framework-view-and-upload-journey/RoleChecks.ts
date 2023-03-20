@@ -49,16 +49,12 @@ describeIf(
       cy.ensureLoggedIn(reader_name, reader_pw);
       allPages.forEach((page) => {
         it(`Non uploader should be able to access ${page}`, () => {
-          cy.intercept(`**${page}`).as("loadPage");
           cy.visit(page);
-          cy.wait("@loadPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
           cy.get(noUploaderRightsMessageSelector).should("not.exist");
         });
       });
       uploaderPages.forEach((page) => {
-        cy.intercept(`**${page}`).as("loadPage");
         cy.visit(page);
-        cy.wait("@loadPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
         cy.get(noUploaderRightsMessageSelector).should("exist");
       });
     });
@@ -66,15 +62,11 @@ describeIf(
     it("Check if an uploader user can access the corresponding pages", () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       allPages.forEach((page) => {
-        cy.intercept(`**${page}`).as("loadPage");
         cy.visit(page);
-        cy.wait("@loadPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
         cy.get(noUploaderRightsMessageSelector).should("not.exist");
       });
       uploaderPages.forEach((page) => {
-        cy.intercept(`**${page}`).as("loadPage");
         cy.visit(page);
-        cy.wait("@loadPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
         cy.get(noUploaderRightsMessageSelector).should("not.exist");
       });
     });
