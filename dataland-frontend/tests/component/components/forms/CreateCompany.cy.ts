@@ -4,7 +4,6 @@ import { shallowMount } from "@vue/test-utils";
 describe("Component test for CreateCompany", () => {
   const wrapper = shallowMount(CreateCompany);
 
-
   // Moved to e2e
   it("Check that the initial values are correct", () => {
     expect(wrapper.vm.postCompanyProcessed).to.equal(false);

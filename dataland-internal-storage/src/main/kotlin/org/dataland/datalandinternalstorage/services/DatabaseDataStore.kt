@@ -2,6 +2,7 @@ package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -100,7 +101,13 @@ class DatabaseDataStore(
      * @param dataId the id of the data to be retrieved
      * @return the data as json string with id dataId
      */
-    fun selectDataSet(dataId: String): String {
-        return dataItemRepository.findById(dataId).orElse(DataItem("", "")).data
+    fun selectDataSet(dataId: String, correlationId: String): String {
+        return dataItemRepository.findById(dataId).orElseThrow {
+            logger.info("Data with data id: $dataId could not be found. Correlation id: $correlationId.")
+            ResourceNotFoundApiException(
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store.",
+            )
+        }.data
     }
 }

@@ -30,7 +30,9 @@ export function fillCompanyUploadFields(companyName: string): void {
   cy.get("input[name=ticker]").should("contain", "").type(`TickerValueId:${crypto.randomUUID()}`, { force: true });
   cy.get("input[name=permId]").should("contain", "").type(`PermValueId:${crypto.randomUUID()}`, { force: true });
   cy.get("input[name=duns]").should("contain", "").type(`DunsValueId:${crypto.randomUUID()}`, { force: true });
-  cy.get("input[name=companyRegistrationNumber]").should("contain", "").type(`RegValueId:${crypto.randomUUID()}`, { force: true });
+  cy.get("input[name=companyRegistrationNumber]")
+    .should("contain", "")
+    .type(`RegValueId:${crypto.randomUUID()}`, { force: true });
   cy.get("select[name=sector]").select("Energy");
 }
 
