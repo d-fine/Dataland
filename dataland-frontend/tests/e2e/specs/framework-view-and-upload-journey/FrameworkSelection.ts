@@ -215,7 +215,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.ensureLoggedIn();
         const someInvalidCompanyId = "12345-some-invalid-companyId";
         const someInvalidDataId = "789-some-invalid-dataId-987";
-        cy.intercept("/companies/${someInvalidCompanyId}*").as("@getDataRequest");
+        cy.intercept(`**/companies/${someInvalidCompanyId}*`).as("getDataRequest");
         cy.visit(`/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`);
         cy.wait("@getDataRequest", { timeout: Cypress.env("medium_timeout_in_ms") as number });
         cy.get("[data-test='Company_Not_Existing']").should("exist");
