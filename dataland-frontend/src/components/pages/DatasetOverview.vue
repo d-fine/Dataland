@@ -6,15 +6,21 @@
       <TabPanel header="MY DATASETS">
         <TheContent class="p-3 min-h-screen paper-section relative">
           <div class="col-12 flex flex-row justify-content-between align-items-end">
-            <PrimeButton
+            <router-link
               v-if="hasUserUploaderRights"
-              class="uppercase p-button p-button-sm d-letters mr-3"
-              label="New Dataset"
-              icon="pi pi-plus"
-              @click="void this.$router.push('/companies/choose')"
-            />
+              to="/companies/choose"
+              class="no-underline"
+              data-test="newDatasetButton"
+            >
+              <PrimeButton
+                class="uppercase p-button p-button-sm d-letters mr-3"
+                label="New Dataset"
+                icon="pi pi-plus"
+              />
+            </router-link>
           </div>
           <DatasetOverviewTable
+            data-test="datasetOverviewTable"
             :dataset-table-infos="datasetTableInfos"
             :class="datasetTableInfos.length > 0 ? '' : 'hidden'"
           />
@@ -23,7 +29,7 @@
             <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
           </div>
           <div v-else-if="datasetTableInfos.length === 0">
-            <h1 class="mb-0">No datasets uploaded</h1>
+            <h1 class="mb-0" data-test="noDatasetUploadedText">No datasets uploaded</h1>
           </div>
         </TheContent>
       </TabPanel>

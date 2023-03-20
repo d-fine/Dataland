@@ -5,7 +5,7 @@ import {
   generateEuTaxonomyDataForNonFinancials,
 } from "./EuTaxonomyDataForNonFinancialsFixtures";
 import fs from "fs";
-import { generateEuTaxonomyForNonFinancialsPreparedFixtures } from "../non-financials/EuTaxonomyDataForNonFinancialsPreparedFixtures";
+import { generateEuTaxonomyForNonFinancialsPreparedFixtures } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsPreparedFixtures";
 
 /**
  * Generates and exports fake fixtures for the eutaxonomy-non-financials framework

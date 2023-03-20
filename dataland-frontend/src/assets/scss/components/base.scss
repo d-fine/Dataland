@@ -68,6 +68,16 @@ body {
     color: var(--blue-700);
     background: var(--blue-100);
   }
+
+  &.badge-gray {
+    color: var(--gray-700);
+    background: var(--gray-100);
+  }
+
+  &.badge-brown {
+    color: $brown-light;
+    background: #E2D9C5;
+  }
 }
 .d-center-div {
   position: absolute;
@@ -112,6 +122,10 @@ body {
 .fs-lg{ font-size: $fs-lg}  // 18px
 .fs-xl{ font-size: $fs-xl}  // 24px
 .fs-xxl{ font-size: $fs-xxl}  // 32px
+
+// Typography //
+.gray-text{ color: $gray }
+.gray-text-light{ color: $gray-light }
 
 // Home Page
 .video-container {

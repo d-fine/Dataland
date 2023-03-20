@@ -11,14 +11,9 @@ const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/Da
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
 const UploadEuTaxonomyDataForFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForFinancials.vue");
-const ViewEuTaxonomyFinancials = (): Promise<RouteComponent> =>
-  import("@/components/pages/ViewEuTaxonomyFinancials.vue");
-const ViewEuTaxonomyNonFinancials = (): Promise<RouteComponent> =>
-  import("@/components/pages/ViewEuTaxonomyNonFinancials.vue");
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
-const ViewLksg = (): Promise<RouteComponent> => import("@/components/pages/ViewLksg.vue");
-const ViewSfdr = (): Promise<RouteComponent> => import("@/components/pages/ViewSfdr.vue");
+const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
 const UploadLkSG = (): Promise<RouteComponent> => import("@/components/pages/UploadLkSG.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
@@ -77,28 +72,22 @@ const routes = [
     component: SearchCompaniesForFrameworkData,
   },
   {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
+    path: `/companies/:companyId/frameworks/:dataType`,
     props: true,
-    name: "Company EU Taxonomy for non financials",
-    component: ViewEuTaxonomyNonFinancials,
+    name: "Company framework data view page",
+    component: ViewFrameworkData,
   },
   {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
+    path: `/companies/:companyId/frameworks/:dataType/:dataId`,
     props: true,
-    name: "Company EU Taxonomy for financials",
-    component: ViewEuTaxonomyFinancials,
+    name: "Company framework data view page for specific data ID",
+    component: ViewFrameworkData,
   },
   {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.Lksg}`,
+    path: `/companies/:companyId/frameworks/:dataType/reportingPeriods/:reportingPeriod`,
     props: true,
-    name: "Company lksg",
-    component: ViewLksg,
-  },
-  {
-    path: `/companies/:companyID/frameworks/${DataTypeEnum.Sfdr}`,
-    props: true,
-    name: "Company sfdr",
-    component: ViewSfdr,
+    name: "Company EU Taxonomy for specific reporting period",
+    component: ViewFrameworkData,
   },
   {
     path: "/datasets",

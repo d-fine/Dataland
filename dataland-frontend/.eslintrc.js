@@ -39,6 +39,9 @@ module.exports = {
           "lang": "ts"
         }
       }
-    ]
+    ],
+    "no-restricted-imports": ["error", {
+      "patterns": ["../*"]
+    }]
   },
 }

@@ -103,8 +103,14 @@ class DataManager(
         )
 
         val metaData = DataMetaInformationEntity(
-            dataId, storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, QAStatus.Pending,
+            dataId,
+            company,
+            storableDataSet.dataType.toString(),
+            storableDataSet.uploaderUserId,
+            storableDataSet.uploadTime,
+            storableDataSet.reportingPeriod,
+            null,
+            QAStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(metaData)
     }
@@ -131,6 +137,7 @@ class DataManager(
             ),
         ],
     )
+    @Transactional
     fun updateMetaData(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
@@ -142,7 +149,7 @@ class DataManager(
             messageUtils.rejectMessageOnException {
                 val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
                 metaInformation.qaStatus = QAStatus.Accepted
-                metaDataManager.storeDataMetaInformation(metaInformation)
+                metaDataManager.setActiveDataset(metaInformation)
                 logger.info(
                     "Received quality assurance for data upload with DataId: " +
                         "$dataId with Correlation Id: $correlationId",

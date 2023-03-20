@@ -12,64 +12,46 @@
               <div id="euTaxonomyContainer" class="col-9 flex">
                 <div id="euTaxonomyLabel" class="col-3 p-3">
                   <h3>EU Taxonomy</h3>
-                  <p>Overview of all existing and missing EU Taxonomy datasets for this company.</p>
+                  <p>{{ buildSubtitle("EU Taxonomy") }}</p>
                 </div>
                 <div class="col-9 d-card">
                   <div id="eutaxonomyDataSetsContainer">
                     <h4 class="bottom-border-section-dots">Eu Taxonomy Data Sets:</h4>
 
                     <MetaInfoPerCompanyAndFramework
-                      title="Non-Financials"
-                      :isFrontendUploadFormExisting="false"
-                      :framework-url-path="DataTypeEnum.EutaxonomyNonFinancials"
+                      :data-type="DataTypeEnum.EutaxonomyNonFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"
-                      :listOfFrameworkData="listOfEuTaxonomyNonFinancialsMetaInfo"
+                      :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyNonFinancials)"
                       class="bottom-border-section-dots"
                     />
 
                     <MetaInfoPerCompanyAndFramework
-                      title="Financials"
-                      :isFrontendUploadFormExisting="false"
-                      :framework-url-path="DataTypeEnum.EutaxonomyFinancials"
+                      :data-type="DataTypeEnum.EutaxonomyFinancials"
                       :companyId="companyID"
                       :isWaitingForData="waitingForData"
-                      :listOfFrameworkData="listOfEuTaxonomyFinancialsMetaInfo"
+                      :listOfFrameworkData="getFrameworkMetaInfos(DataTypeEnum.EutaxonomyFinancials)"
                     />
                   </div>
                 </div>
               </div>
 
-              <div id="sfdrContainer" class="col-9 flex top-border-section">
-                <div id="sfdrLabel" class="col-3 p-3">
-                  <h3>SFDR</h3>
-                  <p>Overview of all existing and missing SFDR datasets for this company.</p>
+              <div
+                v-for="dataType in allFrameworksExceptEuTaxonomy"
+                :key="dataType"
+                class="col-9 flex top-border-section"
+                :id="dataType + 'Container'"
+              >
+                <div :id="dataType + 'Label'" class="col-3 p-3">
+                  <h3>{{ humanizeString(dataType) }}</h3>
+                  <p>{{ buildSubtitle(humanizeString(dataType)) }}</p>
                 </div>
                 <div class="col-9 d-card">
                   <MetaInfoPerCompanyAndFramework
-                    title="SFDR"
-                    :isFrontendViewPageExisting="false"
-                    :isFrontendUploadFormExisting="false"
-                    :framework-url-path="DataTypeEnum.Sfdr"
+                    :data-type="dataType"
                     :companyId="companyID"
                     :isWaitingForData="waitingForData"
-                    :listOfFrameworkData="listOfSfdrMetaInfo"
-                  />
-                </div>
-              </div>
-
-              <div id="lksgContainer" class="col-9 flex top-border-section">
-                <div id="lksgLabel" class="col-3">
-                  <h3>LkSG</h3>
-                  <p>Overview of all existing and missing LkSG datasets for this company.</p>
-                </div>
-                <div class="col-9 d-card">
-                  <MetaInfoPerCompanyAndFramework
-                    title="LkSG"
-                    :framework-url-path="DataTypeEnum.Lksg"
-                    :companyId="companyID"
-                    :isWaitingForData="waitingForData"
-                    :listOfFrameworkData="listOfLksgMetaInfo"
+                    :listOfFrameworkData="getFrameworkMetaInfos(dataType)"
                   />
                 </div>
               </div>
@@ -97,6 +79,7 @@ import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "ChooseFramework",
@@ -117,18 +100,22 @@ export default defineComponent({
     };
   },
 
-  mounted() {
+  created() {
     void this.getMetaInfoAboutAllDataSetsForCurrentCompany();
   },
 
   data() {
     return {
+      allFrameworksExceptEuTaxonomy: Object.values(DataTypeEnum).filter(
+        (frameworkName) =>
+          [DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
+            frameworkName
+          ) === -1
+      ) as DataTypeEnum[],
       waitingForData: true,
-      listOfEuTaxonomyNonFinancialsMetaInfo: [] as Array<DataMetaInformation>,
-      listOfEuTaxonomyFinancialsMetaInfo: [] as Array<DataMetaInformation>,
-      listOfSfdrMetaInfo: [] as Array<DataMetaInformation>,
-      listOfLksgMetaInfo: [] as Array<DataMetaInformation>,
       DataTypeEnum,
+      humanizeString: humanizeString,
+      mapOfDataTypeToListOfDataMetaInfo: new Map<DataTypeEnum, DataMetaInformation[]>(),
     };
   },
   props: {
@@ -137,26 +124,88 @@ export default defineComponent({
     },
   },
 
-  watch: {},
   methods: {
     /**
-     *  Sorts a list of data meta information by their uploading time
+     * Function building a unified for subtitle for a framework type
+     *
+     * @param dataTypeTitle the type of the framework (humanized name)
+     * @returns a unified subtitle
+     */
+    buildSubtitle(dataTypeTitle: string): string {
+      return `Overview of all existing ${dataTypeTitle} datasets for this company.`;
+    },
+
+    /**
+     *  Sorts a list of data meta information alphabetically by their reporting period
+     *
+     * @param listOfDataMetaInfo the list of data meta information to be sorted
+     * @returns the sorted list of data meta information
+     */
+    sortListOfDataMetaInfoAlphabeticallyByReportingPeriod(
+      listOfDataMetaInfo: DataMetaInformation[]
+    ): DataMetaInformation[] {
+      listOfDataMetaInfo.sort((dataMetaInfoA, dataMetaInfoB) => {
+        if (dataMetaInfoA.reportingPeriod > dataMetaInfoB.reportingPeriod) return -1;
+        else return 0;
+      });
+      return listOfDataMetaInfo;
+    },
+
+    /**
+     *  Sorts a list of data meta information descending by their uploading time
      *
      * @param listOfDataMetaInfo the list of data meta information to be sorted
      * @returns the sorted list of data meta information
      */
     sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfo: Array<DataMetaInformation>): Array<DataMetaInformation> {
-      return listOfDataMetaInfo.sort((dataMetaInfoA, dataMetaInfoB) => {
-        if (dataMetaInfoA.uploadTime > dataMetaInfoB.uploadTime) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
+      return listOfDataMetaInfo.sort(
+        (dataMetaInfoA, dataMetaInfoB) => dataMetaInfoB.uploadTime - dataMetaInfoA.uploadTime
+      );
     },
 
     /**
-     * Gets all data meta information of the company identified by the variable companyId and fills the lists for
+     *  This function assigns the elements of an array of data meta info to buckets/groups based on their reporting periods.
+     *  It does so by using a map. It takes the list of data meta info and puts its elements into sub-arrays, which
+     *  are the values of that map. The respective reporting period is the key of those sub-arrays.
+     *
+     * @param listOfDataMetaInfo the list of data meta information to be grouped
+     * @returns a map with the distinct reporting periods as keys and arrays of data meta info for that period as values
+     */
+    groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
+      listOfDataMetaInfo: DataMetaInformation[]
+    ): Map<string, DataMetaInformation[]> {
+      return listOfDataMetaInfo.reduce((groups, dataMetaInfo) => {
+        groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo) ||
+          groups.set(dataMetaInfo.reportingPeriod, [dataMetaInfo]);
+        return groups;
+      }, new Map<string, DataMetaInformation[]>());
+    },
+
+    /**
+     *  Groups a list of data meta information by their reporting periods, then executes a sorting function on
+     *  each group, and then unites and returns all those groups.
+     *
+     * @param listOfDataMetaInfo the list of data meta information to be grouped and sorted
+     * @returns a list of data meta info as the united sub-lists of the groups
+     */
+    groupAndSortListOfDataMetaInfo(listOfDataMetaInfo: Array<DataMetaInformation>): Array<DataMetaInformation> {
+      const listOfDataMetaInfoSortedByReportingPeriod =
+        this.sortListOfDataMetaInfoAlphabeticallyByReportingPeriod(listOfDataMetaInfo);
+      const mapOfReportingPeriodToListOfDataMetaInfo =
+        this.groupListOfDataMetaInfoAsMapOfReportingPeriodToListOfDataMetaInfo(
+          listOfDataMetaInfoSortedByReportingPeriod
+        );
+      const resultArray: DataMetaInformation[] = [];
+      Array.from(mapOfReportingPeriodToListOfDataMetaInfo.values()).forEach(
+        (listOfDataMetaInfoForUniqueReportingPeriod) => {
+          resultArray.push(...this.sortListOfDataMetaInfoByUploadTime(listOfDataMetaInfoForUniqueReportingPeriod));
+        }
+      );
+      return resultArray;
+    },
+
+    /**
+     * Gets all data meta information of the company identified by the company ID in the URL and fills the lists for
      * data meta information of the various frameworks
      */
     async getMetaInfoAboutAllDataSetsForCurrentCompany() {
@@ -164,31 +213,32 @@ export default defineComponent({
         const metaDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
-        const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
+        const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, false);
         const listOfAllDataMetaInfo = response.data;
-        this.listOfEuTaxonomyNonFinancialsMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
-          listOfAllDataMetaInfo.filter(
-            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyNonFinancials
-          )
-        );
-        this.listOfEuTaxonomyFinancialsMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
-          listOfAllDataMetaInfo.filter(
-            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.EutaxonomyFinancials
-          )
-        );
-        this.listOfSfdrMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
-          listOfAllDataMetaInfo.filter(
-            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Sfdr
-          )
-        );
-        this.listOfLksgMetaInfo = this.sortListOfDataMetaInfoByUploadTime(
-          listOfAllDataMetaInfo.filter(
-            (dataMetaInfo: DataMetaInformation) => dataMetaInfo.dataType === DataTypeEnum.Lksg
-          )
-        );
+        this.mapOfDataTypeToListOfDataMetaInfo = listOfAllDataMetaInfo.reduce((groups, dataMetaInfo) => {
+          groups.get(dataMetaInfo.dataType)?.push(dataMetaInfo) || groups.set(dataMetaInfo.dataType, [dataMetaInfo]);
+          return groups;
+        }, new Map<DataTypeEnum, Array<DataMetaInformation>>());
+        this.mapOfDataTypeToListOfDataMetaInfo.forEach((value, key) => {
+          this.mapOfDataTypeToListOfDataMetaInfo.set(key, this.groupAndSortListOfDataMetaInfo(value));
+        });
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
+      }
+    },
+
+    /**
+     * Returns a list of the meta information available for a framework
+     *
+     * @param dataType the data type of the data associated to the meta infos returned
+     * @returns the meta infos of data with the specified data type
+     */
+    getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
+      if (!this.waitingForData) {
+        return this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) || [];
+      } else {
+        return [];
       }
     },
   },
