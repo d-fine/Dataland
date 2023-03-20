@@ -129,11 +129,7 @@ class ApiAccessor {
                 val receivedDataMetaInformation =
                     frameworkDataUploadFunction(receivedStoredCompany.companyId, frameworkDataSet, reportingPeriod)
                 listOfUploadInfo.add(
-                    UploadInfo(
-                        companyInformation,
-                        receivedStoredCompany,
-                        receivedDataMetaInformation,
-                    ),
+                    UploadInfo(companyInformation, receivedStoredCompany, receivedDataMetaInformation),
                 )
             }
         }
