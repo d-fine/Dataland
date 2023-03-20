@@ -6,7 +6,7 @@
 import { ApiClientProvider } from "@/services/ApiClients";
 import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum, QAStatus } from "@clients/backend";
 import Keycloak from "keycloak-js";
-import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { useFiltersStore } from "@/stores/filters";
 
 export interface DataSearchStoredCompany {
@@ -90,7 +90,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   try {
     const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
     if (frameworkFilter.size === 0) {
-      frameworkFilter = new Set(ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS);
+      frameworkFilter = new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE);
     }
 
     const response = await companyDataControllerApi.getCompanies(
@@ -122,28 +122,32 @@ function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCo
 }
 
 /**
- * Generates a router link for the view button on the framework search page.
- * Links to the first framework that is included in the data in the company object
+ * Generates a router link for the view button on the framework search page, or if an autocomplete suggestion is selected.
+ * If no filter is set, or if the number of framework-filters equals the number of all viewable frameworks,
+ * it links to the first framework that is included in the data in the company object.
+ * Otherwise, it links to the first framework that is included in the currently stored framework filters.
  *
  * @param companyData the company to generate a link for
- * @returns a vue router link to the first framework associated with the given company object
+ * @returns a vue router link to the view page for a specific framework
  */
 export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
-  const dataTypesForWhichCompanyHasData = companyData.dataRegisteredByDataland.map(
-    (dataMetaInformation) => dataMetaInformation.dataType
-  );
-  const defaultRoute = `/companies/${companyData.companyId}/frameworks/${dataTypesForWhichCompanyHasData[0]}`;
-  const filtersStore = useFiltersStore();
-  if (filtersStore.selectedFiltersForFrameworks.length === 0) {
-    return defaultRoute;
-  } else {
-    const dataTypesOfCompanyThatMatchTheFiltersStore = dataTypesForWhichCompanyHasData.filter((dataType) =>
-      filtersStore.selectedFiltersForFrameworks.includes(dataType)
-    );
-    if (dataTypesOfCompanyThatMatchTheFiltersStore.length === 0) {
-      return defaultRoute;
+  const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
+  let routeToVisit = `/companies/${companyData.companyId}/frameworks/${dataRegisteredByDataland[0].dataType}`;
+  const selectedFiltersForFrameworks = useFiltersStore().selectedFiltersForFrameworks;
+  if (
+    selectedFiltersForFrameworks.length > 0 &&
+    selectedFiltersForFrameworks.length < ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.length
+  ) {
+    const frameworkToRouteTo = dataRegisteredByDataland.find((dataMetaInfo) => {
+      return selectedFiltersForFrameworks.includes(dataMetaInfo.dataType);
+    })?.dataType;
+    if (frameworkToRouteTo) {
+      routeToVisit = `/companies/${companyData.companyId}/frameworks/${frameworkToRouteTo}`;
     } else {
-      return `/companies/${companyData.companyId}/frameworks/${dataTypesOfCompanyThatMatchTheFiltersStore[0]}`;
+      throw new Error(
+        "No data meta info for the frameworks set in the filters could be found in the data of the server response."
+      );
     }
   }
+  return routeToVisit;
 }

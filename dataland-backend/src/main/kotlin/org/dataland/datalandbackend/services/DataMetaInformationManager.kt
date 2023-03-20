@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * A service class for managing data meta-information
@@ -22,11 +21,30 @@ class DataMetaInformationManager(
      * Method to associate data information with a specific company
      * @param dataMetaInformation The data meta information which should be stored
      */
-    @Transactional
     fun storeDataMetaInformation(
         dataMetaInformation: DataMetaInformationEntity,
     ): DataMetaInformationEntity {
         return dataMetaInformationRepository.save(dataMetaInformation)
+    }
+
+    /**
+     * Marks the given dataset as the latest dataset for the combination of dataType, company and reporting period
+     * Ensures that only one dataset per group has the active status
+     */
+    fun setActiveDataset(dataset: DataMetaInformationEntity) {
+        if (dataset.currentlyActive == true) {
+            return
+        }
+        val currentlyActive = dataMetaInformationRepository.getActiveDataset(
+            dataset.company,
+            dataset.dataType,
+            dataset.reportingPeriod,
+        )
+        if (currentlyActive != null) {
+            currentlyActive.currentlyActive = null
+            dataMetaInformationRepository.saveAndFlush(currentlyActive)
+        }
+        dataset.currentlyActive = true
     }
 
     /**
@@ -49,18 +67,28 @@ class DataMetaInformationManager(
      * Method to make the data manager search for meta info
      * @param companyId if not empty, it filters the requested meta info to a specific company
      * @param dataType if not empty, it filters the requested meta info to a specific data type
-     * @return a list of meta info about data depending on the filters:
+     * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
+     * @param showOnlyActive if true, it will only return datasets marked "active"
+     * @return a list of meta info about data depending on the filters
      */
-    fun searchDataMetaInfo(companyId: String, dataType: DataType?): List<DataMetaInformationEntity> {
+    fun searchDataMetaInfo(
+        companyId: String,
+        dataType: DataType?,
+        showOnlyActive: Boolean,
+        reportingPeriod: String?,
+    ): List<DataMetaInformationEntity> {
         if (companyId != "") {
             companyManager.verifyCompanyIdExists(companyId)
         }
         val dataTypeFilter = dataType?.name ?: ""
-        return dataMetaInformationRepository.searchDataMetaInformation(
-            DataMetaInformationSearchFilter(
-                dataTypeFilter = dataTypeFilter,
-                companyIdFilter = companyId,
-            ),
+        val reportingPeriodFilter = reportingPeriod ?: ""
+        val filter = DataMetaInformationSearchFilter(
+            companyIdFilter = companyId,
+            dataTypeFilter = dataTypeFilter,
+            reportingPeriodFilter = reportingPeriodFilter,
+            onlyActive = showOnlyActive,
         )
+
+        return dataMetaInformationRepository.searchDataMetaInformation(filter)
     }
 }

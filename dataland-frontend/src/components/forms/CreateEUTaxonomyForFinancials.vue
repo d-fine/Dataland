@@ -19,6 +19,7 @@
           :model-value="companyID"
           disabled="true"
         />
+        <FormKit type="text" name="reportingPeriod" label="Reporting Period" placeholder="Reporting Period" />
         <FormKit type="group" name="data" label="data">
           <FormKit
             type="select"

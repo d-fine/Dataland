@@ -1,13 +1,13 @@
 import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
 import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import {
-  getFirstEuTaxonomyNonFinancialsDatasetFromFixtures,
+  getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures,
   uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
@@ -38,7 +38,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Scroll the page and check if search icon and search bar behave as expected", { scrollBehavior: false }, () => {
     cy.visitAndCheckAppMount("/companies");
-    verifyTaxonomySearchResultTable();
+    verifySearchResultTable();
     cy.get("button[name=search_bar_collapse]").should("not.be.visible");
 
     cy.scrollTo(0, 500, { duration: 300 });
@@ -68,7 +68,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       const inputValue1 = "ABCDEFG";
       const inputValue2 = "XYZ";
       cy.visitAndCheckAppMount("/companies");
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       cy.get("input[id=search_bar_top]").type(inputValue1);
       cy.scrollTo(0, 500);
       cy.get("button[name=search_bar_collapse]").click();
@@ -87,7 +87,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.get("input[id=search_bar_top]").type("b");
       cy.get(".p-autocomplete-item").contains("View all results").click();
       cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-        verifyTaxonomySearchResultTable();
+        verifySearchResultTable();
         cy.url().should("include", "/companies?input=b");
       });
     }
@@ -109,7 +109,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       .type("{enter}")
       .should("have.value", inputValue);
     cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
-    verifyTaxonomySearchResultTable();
+    verifySearchResultTable();
   }
 
   it(
@@ -136,12 +136,12 @@ describe("As a user, I expect the search functionality on the /companies page to
       }
 
       cy.visitAndCheckAppMount("/companies");
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
       const permIdText = "Permanent Identifier (PermID)";
       checkPermIdToolTip(permIdText);
       executeCompanySearchWithStandardSearchBar(inputValue);
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       checkViewButtonWorks();
       cy.get("h1").contains(inputValue);
       cy.get("[title=back_button").should("be.visible").click({ force: true });
@@ -209,7 +209,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       const primevueHighlightedSuggestionClass = "p-focus";
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
       cy.visitAndCheckAppMount("/companies");
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       cy.intercept("**/api/companies*").as("searchCompany");
       cy.get("input[id=search_bar_top]")
         .click({ force: true })
@@ -268,9 +268,14 @@ describe("As a user, I expect the search functionality on the /companies page to
         const highlightedSubString = "this_is_highlighted";
         const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-          getFirstEuTaxonomyNonFinancialsDatasetFromFixtures().then((data) => {
+          getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures().then((fixtureData) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, data);
+              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+                token,
+                storedCompany.companyId,
+                fixtureData.reportingPeriod,
+                fixtureData.t
+              );
             });
           });
         });

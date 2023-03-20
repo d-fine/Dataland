@@ -23,7 +23,7 @@
             @keydown="noteThatAKeyWasPressed"
             @keydown.down="getCurrentFocusedOptionIndex"
             @keydown.up="getCurrentFocusedOptionIndex"
-            @item-select="pushToViewDataPageForItem"
+            @item-select="handleItemSelect"
             @keyup.enter="executeSearchIfNoItemFocused"
             @focus="setCurrentFocusedOptionIndexToDefault"
           >
@@ -62,7 +62,7 @@ import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS } from "@/utils/Constants";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 export default defineComponent({
   setup() {
@@ -77,6 +77,9 @@ export default defineComponent({
   emits: ["companies-received", "search-confirmed"],
 
   props: {
+    companyIdIfOnViewPage: {
+      type: String,
+    },
     searchBarId: {
       type: String,
       default: "framework_data_search_bar_standard",
@@ -86,7 +89,7 @@ export default defineComponent({
       default(): FrameworkDataSearchFilterInterface {
         return {
           companyNameFilter: "",
-          frameworkFilter: ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS,
+          frameworkFilter: ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
           sectorFilter: [],
           countryCodeFilter: [],
         };
@@ -185,8 +188,12 @@ export default defineComponent({
      * @param event the click event
      * @param event.value the company that was clicked on
      */
-    pushToViewDataPageForItem(event: { value: DataSearchStoredCompany }) {
-      void this.$router.push(getRouterLinkTargetFramework(event.value));
+    handleItemSelect(event: { value: DataSearchStoredCompany }) {
+      if (this.companyIdIfOnViewPage != event.value.companyId) {
+        void this.$router.push(getRouterLinkTargetFramework(event.value));
+      } else {
+        this.searchBarInput = event.value.companyName;
+      }
     },
 
     /**

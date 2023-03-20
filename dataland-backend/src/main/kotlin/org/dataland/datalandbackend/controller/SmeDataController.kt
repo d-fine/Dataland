@@ -42,7 +42,11 @@ class SmeDataController(
     }
 
     @Operation(operationId = "getAllCompanySmeData")
-    override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<SmeData>>> {
-        return super.getAllCompanyData(companyId)
+    override fun getFrameworkDatasetsForCompany(
+        companyId: String,
+        showOnlyActive: Boolean,
+        reportingPeriod: String?,
+    ): ResponseEntity<List<DataAndMetaInformation<SmeData>>> {
+        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
     }
 }

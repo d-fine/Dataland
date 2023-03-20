@@ -1,5 +1,5 @@
 <template>
-  <Card class="bg-white d-card mr-2">
+  <Card class="bg-white d-card mr-2" data-test="taxocard">
     <template #title></template>
     <template #content>
       <div class="grid">
@@ -7,7 +7,7 @@
           <strong>{{ title }}</strong>
         </div>
         <div v-if="percent !== undefined && percent !== null" class="col-6 text-right text-primary">
-          <span class="font-medium text-3xl">{{ percentCalculation }}</span>
+          <span class="font-medium text-3xl" data-test="value">{{ percentCalculation }}</span>
           <span>%</span>
         </div>
         <div v-else class="col-6 grid align-items-center text-right">

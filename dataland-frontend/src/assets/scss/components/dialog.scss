@@ -52,6 +52,25 @@
   }
 }
 
+.p-overlaypanel {
+  background: $white;
+  border: 0 none;
+  border-radius: 0;
+  box-shadow: 0 0 3px 3px $shadow-color;
+  padding: 1rem;
+  .title {
+    margin: 0 0 1rem 0;
+  }
+  .three-in-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
 .p-component-overlay-enter {
   animation: p-component-overlay-enter-animation 150ms forwards
 }

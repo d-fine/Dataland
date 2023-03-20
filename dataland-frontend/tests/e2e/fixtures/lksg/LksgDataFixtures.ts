@@ -4,27 +4,48 @@ import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { randomStringOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
+
+/**
+ * Generates a set number of LKSG fixtures
+ *
+ * @param numFixtures the number of lksg fixtures to generate
+ * @returns a set number of LKSG fixtures
+ */
+export function generateLksgFixture(numFixtures: number): FixtureData<LksgData>[] {
+  return generateFixtureDataset<LksgData>(
+    generateLksgData,
+    numFixtures,
+    (dataSet) => dataSet?.social?.general?.dataDate?.substring(0, 4) || getRandomReportingPeriod()
+  );
+}
 
 /**
  * Generates a random production site
  *
+ * @param undefinedPercentage the percentage of undefined values in the returned production site
  * @returns a random production site
  */
-export function generateProductionSite(): ProductionSite {
+export function generateProductionSite(undefinedPercentage = 0.5): ProductionSite {
   const fakeGoodsOrServices = Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
     return faker.commerce.productName();
   });
 
   return {
-    name: randomStringOrUndefined(faker.company.name()),
+    name: randomStringOrUndefined(faker.company.name(), undefinedPercentage),
     isInHouseProductionOrIsContractProcessing: faker.helpers.arrayElement([
       InHouseProductionOrContractProcessing.InHouseProduction,
       InHouseProductionOrContractProcessing.ContractProcessing,
     ]),
-    country: randomStringOrUndefined(faker.address.country()),
-    city: randomStringOrUndefined(faker.address.city()),
-    streetAndHouseNumber: randomStringOrUndefined(faker.address.street() + " " + faker.address.buildingNumber()),
-    postalCode: randomStringOrUndefined(faker.address.zipCode()),
+    country: randomStringOrUndefined(faker.address.countryCode(), undefinedPercentage),
+    city: randomStringOrUndefined(faker.address.city(), undefinedPercentage),
+    streetAndHouseNumber: randomStringOrUndefined(
+      faker.address.street() + " " + faker.address.buildingNumber(),
+      undefinedPercentage
+    ),
+    postalCode: randomStringOrUndefined(faker.address.zipCode(), undefinedPercentage),
     listOfGoodsOrServices: fakeGoodsOrServices,
   };
 }
