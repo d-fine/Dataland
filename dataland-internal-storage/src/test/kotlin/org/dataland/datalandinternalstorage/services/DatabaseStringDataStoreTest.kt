@@ -15,34 +15,34 @@ import org.mockito.Mockito.`when`
 import java.util.Optional
 import java.util.UUID
 
-class DatabaseDataStoreTest {
+class DatabaseStringDataStoreTest {
 
     val mockDataItemRepository: DataItemRepository = mock(DataItemRepository::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val mockTemporarilyCachedDataControllerApi: TemporarilyCachedDataControllerApi =
         mock(TemporarilyCachedDataControllerApi::class.java)
-    lateinit var databaseDataStore: DatabaseDataStore
-    lateinit var spyDatabaseDataStore: DatabaseDataStore
+    lateinit var databaseStringDataStore: DatabaseStringDataStore
+    lateinit var spyDatabaseStringDataStore: DatabaseStringDataStore
     val correlationId = UUID.randomUUID().toString()
     val objectMapper: ObjectMapper = ObjectMapper()
     val messageQueueUtils: MessageQueueUtils = MessageQueueUtils()
 
     @BeforeEach
     fun reset() {
-        databaseDataStore = DatabaseDataStore(
+        databaseStringDataStore = DatabaseStringDataStore(
             mockDataItemRepository,
             mockCloudEventMessageHandler,
             mockTemporarilyCachedDataControllerApi,
             objectMapper,
             messageQueueUtils,
         )
-        spyDatabaseDataStore = spy(databaseDataStore)
+        spyDatabaseStringDataStore = spy(databaseStringDataStore)
     }
 
     @Test
     fun `check that a ResourceNotFoundApiException is thrown if the dataset could not be found`() {
         val dataId = "dummyId"
         `when`(mockDataItemRepository.findById(dataId)).thenReturn(Optional.empty())
-        assertThrows<ResourceNotFoundApiException> { databaseDataStore.selectDataSet(dataId, correlationId) }
+        assertThrows<ResourceNotFoundApiException> { databaseStringDataStore.selectDataSet(dataId, correlationId) }
     }
 }

@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
-class DatabaseDataStore(
+class DatabaseStringDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
