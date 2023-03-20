@@ -178,7 +178,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.get(".p-autocomplete-item").eq(0).get("span[class='font-semibold']").contains("b").should("exist");
           cy.get(".p-autocomplete-item").contains("View all results").click();
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-            verifyTaxonomySearchResultTable();
+            verifySearchResultTable();
             cy.url().should("include", "/companies?input=b");
           });
           cy.get("input[id=search_bar_top]")
