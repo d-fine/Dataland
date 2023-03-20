@@ -18,7 +18,7 @@
         <span class="font-semibold">{{ companyInformation.sector }}</span>
       </div>
     </div>
-    <div v-else-if="companyIdDoesNotExist" class="col-12">
+    <div v-else-if="companyIdDoesNotExist" class="col-12" data-test="Company_Not_Existing">
       <h1 class="mb-0">No company with this ID present</h1>
     </div>
   </TheContent>
