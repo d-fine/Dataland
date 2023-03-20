@@ -1,6 +1,6 @@
-package org.dataland.datalandbackend
+package org.dataland.documentmanager
 
-import org.dataland.datalandbackend.configurations.OpenAPIConfiguration
+import org.dataland.documentmanager.configurations.OpenAPIConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
