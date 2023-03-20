@@ -90,7 +90,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         });
       });
 
-      it.only("Check that the error message is correctly displayed if a PermId is typed in that was already stored in dataland", function () {
+      it("Check that the error message is correctly displayed if a PermId is typed in that was already stored in dataland", function () {
         cy.visitAndCheckAppMount("/companies/choose");
         const identifierDoesExistMessage = "There already exists a company with this ID";
         cy.contains(identifierDoesExistMessage).should("not.exist");
