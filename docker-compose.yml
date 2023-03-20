@@ -83,6 +83,8 @@ services:
       - "8080"
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
   backend:
     restart: always
     profiles: ["production", "testing"]
