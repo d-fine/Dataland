@@ -28,7 +28,10 @@ export default defineComponent({
      */
     initKeycloak(): Promise<Keycloak> {
       const keycloak = new Keycloak(this.keycloakInitOptions);
-      keycloak.onAuthLogout = () => {console.log("Logging out")}
+      keycloak.onAuthLogout = () => {
+        console.log("Logging out")
+        keycloak.login()
+      }
       keycloak.onAuthSuccess = () => {console.log("onAuthSuccess")}
       keycloak.onAuthError = () => {console.log("onAuthError")}
       keycloak.onAuthRefreshSuccess = () => {console.log("onAuthRefreshSuccess")}
