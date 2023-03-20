@@ -39,7 +39,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         frameworkQueryParam: string,
         searchStringQueryParam: string
       ): void {
-        cy.intercept(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`).as("companyLoad");
+        cy.intercept(`**/api/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`).as("companyLoad");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
         cy.wait("@companyLoad", { timeout: Cypress.env("long_timeout_in_ms") as number });
         cy.intercept("**/api/companies/*").as("searchCompany");
@@ -215,7 +215,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.ensureLoggedIn();
         const someInvalidCompanyId = "12345-some-invalid-companyId";
         const someInvalidDataId = "789-some-invalid-dataId-987";
-        cy.intercept(`**/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`).as("searchCompany");
+        cy.intercept(`**/api/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`).as("searchCompany");
         cy.visit(`/companies/${someInvalidCompanyId}/frameworks/${DataTypeEnum.Lksg}`);
         cy.wait("@searchCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
         cy.contains("h1", "No company with this ID present");
