@@ -4,6 +4,7 @@ import { shallowMount } from "@vue/test-utils";
 describe("Component test for CreateCompany", () => {
   const wrapper = shallowMount(CreateCompany);
 
+  // Moved to e2e
   it("Check that the initial values are correct", () => {
     expect(wrapper.vm.postCompanyProcessed).to.equal(false);
     expect(wrapper.vm.companyAlternativeNames).to.be.an("array").that.is.empty;
@@ -15,6 +16,7 @@ describe("Component test for CreateCompany", () => {
     expect(wrapper.vm.messageCounter).to.equal(0);
   });
 
+  // Moved to e2e
   it("Check that an error message is displayed when trying to upload a company without any identifiers", () => {
     void wrapper.setData({ identifiers: [] });
     void (wrapper.vm.postCompanyInformation as () => Promise<void>)();
@@ -22,6 +24,7 @@ describe("Component test for CreateCompany", () => {
     expect(wrapper.vm.postCompanyProcessed).to.be.true;
   });
 
+  // Moved to e2e
   it("Check if removing an alternative company name works", () => {
     void wrapper.setData({
       companyAlternativeNames: ["No1", "No2", "No3"],

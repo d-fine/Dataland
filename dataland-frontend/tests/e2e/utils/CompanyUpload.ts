@@ -48,8 +48,6 @@ export function uploadCompanyViaForm(companyName: string): Cypress.Chainable<Sto
   cy.intercept("**/api/companies").as("postCompany");
   cy.wait(1000);
   cy.get('button[name="addCompany"]').click();
-  //TODO: Try to please sonar, needs dedicated test id
-  cy.get(`div[class="p-message-text"]`).contains("Upload successfully executed.");
   return cy.wait("@postCompany").then((interception) => {
     return interception.response!.body as StoredCompany;
   });

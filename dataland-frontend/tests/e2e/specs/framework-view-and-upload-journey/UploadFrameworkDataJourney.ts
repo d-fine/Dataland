@@ -94,7 +94,8 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.visitAndCheckAppMount("/companies/choose");
         const identifierDoesExistMessage = "There already exists a company with this ID";
         cy.contains(identifierDoesExistMessage).should("not.exist");
-
+        cy.get('button[name="addCompany"]').click();
+        cy.get('li[id="createCompanyForm-incomplete"]').should("exist");
         cy.get("input[name='permId']").type(
           assertDefined(
             storedCompanyForManyDatasetsCompany.companyInformation.identifiers.find(
