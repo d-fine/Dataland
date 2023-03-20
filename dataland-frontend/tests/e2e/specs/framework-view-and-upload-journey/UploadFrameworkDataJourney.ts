@@ -90,7 +90,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .click({ force: true })
           .url()
           .should("eq", getBaseUrl() + "/companies/choose");
-        cy.get("div[id=option1Container").find("span:contains(Add it)").click({ force: true });
+        cy.get("div[id=option1Container").find("a:contains(Add it)").click({ force: true });
         cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
           cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
