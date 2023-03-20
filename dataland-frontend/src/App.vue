@@ -10,9 +10,14 @@ export default defineComponent({
   name: "app",
   data() {
     return {
-      keycloak: undefined,
-      keycloakPromise: undefined,
+      keycloakPromise: undefined as undefined | Promise<Keycloak>,
       keycloakAuthenticated: false,
+      keycloakInitOptions: {
+        realm: "datalandsecurity",
+        url: "/keycloak",
+        clientId: "dataland-public",
+        onLoad: "login-required",
+      },
     };
   },
   methods: {
@@ -21,22 +26,15 @@ export default defineComponent({
      * to the other components to handle authentication
      */
     initKeycloak() {
-      const initOptions = {
-        realm: "datalandsecurity",
-        url: "/keycloak",
-        clientId: "dataland-public",
-        onLoad: "login-required",
-      };
-      const keycloak = new Keycloak(initOptions);
-      const keycloakPromise = keycloak
+      const keycloak = new Keycloak(this.keycloakInitOptions);
+      this.keycloakPromise = keycloak
         .init({
           onLoad: "check-sso",
           silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
           pkceMethod: "S256",
         })
-        .then((authenticated): boolean => {
+        .then((authenticated) => {
           this.keycloakAuthenticated = authenticated;
-          return authenticated;
         })
         .catch((error) => {
           console.log("Error in init keycloak ", error);
@@ -45,11 +43,13 @@ export default defineComponent({
         .then((): Keycloak => {
           return keycloak;
         });
-
-      this.keycloak = keycloak;
-      this.keycloakPromise = keycloakPromise;
     },
   },
+
+  created() {
+    this.initKeycloak();
+  },
+
   provide() {
     return {
       getKeycloakPromise: (): Promise<Keycloak> => {
@@ -60,9 +60,6 @@ export default defineComponent({
         return this.keycloakAuthenticated;
       }),
     };
-  },
-  created() {
-    this.initKeycloak();
   },
 });
 </script>
