@@ -49,7 +49,7 @@ server {
     }
 
     location /documents/ {
-      proxy_pass http://document-manager:8080/api/;
+      proxy_pass http://document-manager:8080/documents/;
       include utils/proxy.conf;
       include utils/documentsErrors.conf;
     }

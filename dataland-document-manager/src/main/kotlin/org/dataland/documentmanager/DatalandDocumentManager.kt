@@ -4,7 +4,6 @@ import org.dataland.documentmanager.configurations.OpenAPIConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Import
 
 /**
  * Class to define the spring boot application
