@@ -68,12 +68,6 @@ jobs:
       - name: Keycloak theme linting
         run: ./gradlew :dataland-keycloak:dataland_theme:login:npm_run_lintci --no-daemon --stacktrace
         if: always()
-      - name: Upload FE lcov Exec Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: lcovResults
-          path: ./dataland-frontend/coverage/lcov.info
       - name: Execute Frontend Scripts to check if they run successfully
         if: always()
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
