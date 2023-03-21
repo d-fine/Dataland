@@ -12,10 +12,9 @@ import {
   DataPointBigDecimal,
   DataTypeEnum,
 } from "@clients/backend";
-import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { getPreparedFixture } from "@e2e/utils/GeneralApiUtils";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -48,7 +47,7 @@ describeIf(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
     ): void {
-      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany): void => {
             cy.ensureLoggedIn(uploader_name, uploader_pw);
@@ -71,15 +70,22 @@ describeIf(
      *
      * @param companyInformation the company information to upload
      * @param testData the dataset to upload
+     * @param reportingPeriod the period associated to the EU Taxonomy data for Financials to upload
      */
     function uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
-      testData: EuTaxonomyDataForFinancials
+      testData: EuTaxonomyDataForFinancials,
+      reportingPeriod: string
     ): void {
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany) => {
-            return uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, testData).then(() => {
+            return uploadOneEuTaxonomyFinancialsDatasetViaApi(
+              token,
+              storedCompany.companyId,
+              reportingPeriod,
+              testData
+            ).then(() => {
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
               );
@@ -127,7 +133,7 @@ describeIf(
     }
 
     /**
-     * Verifies that the frontend correctly displays the insurenace firm KPIs
+     * Verifies that the frontend correctly displays the insurance firm KPIs
      *
      * @param testData the dataset used as the source of truth
      */
@@ -209,7 +215,8 @@ describeIf(
       const testData = getPreparedFixture("credit-institution-single-field-submission", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
-        testData.t
+        testData.t,
+        testData.reportingPeriod
       );
       checkCreditInstitutionValues(testData.t, false, true);
     });
@@ -218,7 +225,8 @@ describeIf(
       const testData = getPreparedFixture("credit-institution-dual-field-submission", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
-        testData.t
+        testData.t,
+        testData.reportingPeriod
       );
       checkCreditInstitutionValues(testData.t, true, false);
     });
@@ -227,7 +235,8 @@ describeIf(
       const testData = getPreparedFixture("insurance-company", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
-        testData.t
+        testData.t,
+        testData.reportingPeriod
       );
       checkInsuranceValues(testData.t);
       cy.get("body").should("not.contain", "Trading portfolio");
@@ -238,7 +247,8 @@ describeIf(
       const testData = getPreparedFixture("company-for-all-types", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
         testData.companyInformation,
-        testData.t
+        testData.t,
+        testData.reportingPeriod
       );
       checkInvestmentFirmValues(testData.t);
     });
@@ -247,7 +257,8 @@ describeIf(
     //   const testData = getPreparedFixture("asset-management-company", preparedFixtures);
     //   uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
     //     testData.companyInformation,
-    //     testData.t
+    //     testData.t,
+//         testData.reportingPeriod
     //   );
     //   checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
     //   cy.get("body").should("not.contain", "Trading portfolio");
@@ -259,7 +270,8 @@ describeIf(
     //   const testData = getPreparedFixture("asset-management-insurance-company", preparedFixtures);
     //   uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
     //     testData.companyInformation,
-    //     testData.t
+    //     testData.t,
+//         testData.reportingPeriod
     //   );
     //   checkInsuranceValues(testData.t);
     //   checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);

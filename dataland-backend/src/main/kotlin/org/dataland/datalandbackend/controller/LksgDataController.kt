@@ -42,7 +42,11 @@ class LksgDataController(
     }
 
     @Operation(operationId = "getAllCompanyLksgData")
-    override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<LksgData>>> {
-        return super.getAllCompanyData(companyId)
+    override fun getFrameworkDatasetsForCompany(
+        companyId: String,
+        showOnlyActive: Boolean,
+        reportingPeriod: String?,
+    ): ResponseEntity<List<DataAndMetaInformation<LksgData>>> {
+        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
     }
 }

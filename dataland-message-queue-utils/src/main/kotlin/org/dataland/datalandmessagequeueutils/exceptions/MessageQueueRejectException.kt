@@ -7,5 +7,5 @@ import org.springframework.amqp.AmqpRejectAndDontRequeueException
  */
 open class MessageQueueRejectException : AmqpRejectAndDontRequeueException {
     constructor (message: String) : super("Message was rejected: $message")
-    constructor (cause: Throwable) : super(cause)
+    constructor (message: String?, cause: Throwable) : super(message, cause)
 }

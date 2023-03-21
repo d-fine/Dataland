@@ -26,6 +26,7 @@ interface MetaDataApi {
      * A method to search for meta info about data sets registered by Dataland
      * @param companyId filters the requested meta info to a specific company.
      * @param dataType filters the requested meta info to a specific data type.
+     * @param showOnlyActive if set to true, only active datasets will be returned (e.g. no outdated ones)
      * @return a list of matching DataMetaInformation
      */
     @Operation(
@@ -41,7 +42,12 @@ interface MetaDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyManager.isCompanyPublic(#companyId)")
-    fun getListOfDataMetaInfo(@RequestParam companyId: String? = null, @RequestParam dataType: DataType? = null):
+    fun getListOfDataMetaInfo(
+        @RequestParam companyId: String? = null,
+        @RequestParam dataType: DataType? = null,
+        @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
+        @RequestParam reportingPeriod: String? = null,
+    ):
         ResponseEntity<List<DataMetaInformation>>
 
     /**

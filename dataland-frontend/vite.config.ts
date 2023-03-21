@@ -7,6 +7,8 @@ export default defineConfig({
   //This section is to prevent the vite cold start issue https://github.com/cypress-io/cypress/issues/22557
   optimizeDeps: {
     include: [
+      "@clients/backend",
+      "@clients/apikeymanager",
       "@vue/test-utils",
       "cypress/vue",
       "vue-router",
@@ -48,6 +50,8 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@clients": path.resolve(__dirname, "./build/clients"),
+      "@ct": path.resolve(__dirname, "./tests/component"),
+      "@sharedUtils": path.resolve(__dirname, "./tests/sharedUtils"),
     },
   },
   build: {

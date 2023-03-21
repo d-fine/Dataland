@@ -22,6 +22,7 @@
               disabled="true"
             />
             <div class="uploadFormSection grid">
+              <FormKit type="text" name="reportingPeriod" label="Reporting Period" placeholder="Reporting Period" />
               <FormKit type="group" name="data" label="data">
                 <FormKit v-model="computedFinancialServicesTypes" type="hidden" name="financialServicesTypes" />
                 <div class="col-3 p-3 topicLabel">

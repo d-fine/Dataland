@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
@@ -23,9 +24,11 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
@@ -75,25 +78,41 @@ class DataManager(
      * @param storableDataSet contains all the inputs needed by Dataland
      * @return ID of the newly stored data in the data store
      */
-    @Transactional
     fun addDataSetToTemporaryStorageAndSendMessage(storableDataSet: StorableDataSet, correlationId: String):
         String {
+        val dataId = generateRandomDataId()
+        addDatasetToDatabase(dataId, storableDataSet, correlationId)
+        storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, correlationId)
+        return dataId
+    }
+
+    /**
+     * Persists the data meta-information to the database ensuring that the database transaction
+     * ends directly after this function returns so that a MQ-Message might be sent out after this function completes
+     * @param dataId The dataId of the dataset to store
+     * @param storableDataSet the dataset to store
+     * @param correlationId the correlation id of the insertion process
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun addDatasetToDatabase(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
-                "${storableDataSet.companyId}, Company Name ${company.companyName} to storage Interface. " +
+                "'${storableDataSet.companyId}', Company Name ${company.companyName} to storage Interface. " +
                 "Correlation ID: $correlationId",
         )
-        val dataId = generateRandomDataId()
+
         val metaData = DataMetaInformationEntity(
-            dataId, storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId, storableDataSet.uploadTime, company, QAStatus.Pending,
+            dataId,
+            company,
+            storableDataSet.dataType.toString(),
+            storableDataSet.uploaderUserId,
+            storableDataSet.uploadTime,
+            storableDataSet.reportingPeriod,
+            null,
+            QAStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(metaData)
-        storeDataSetInTemporaryStoreAndSendMessage(
-            dataId, storableDataSet, company.companyName, correlationId,
-        )
-        return dataId
     }
 
     /**
@@ -118,6 +137,7 @@ class DataManager(
             ),
         ],
     )
+    @Transactional
     fun updateMetaData(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
@@ -129,7 +149,7 @@ class DataManager(
             messageUtils.rejectMessageOnException {
                 val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
                 metaInformation.qaStatus = QAStatus.Accepted
-                metaDataManager.storeDataMetaInformation(metaInformation)
+                metaDataManager.setActiveDataset(metaInformation)
                 logger.info(
                     "Received quality assurance for data upload with DataId: " +
                         "$dataId with Correlation Id: $correlationId",
@@ -157,15 +177,14 @@ class DataManager(
 
     /**
      * Method to temporarily store a data set in a hash map and send a message to the storage_queue
+     * @param dataId The id of the inserted data set
      * @param storableDataSet The data set to store
-     * @param companyName The name of the company corresponding to the data set to store
      * @param correlationId The correlation id of the request initiating the storing of data
      * @return ID of the stored data set
      */
     fun storeDataSetInTemporaryStoreAndSendMessage(
         dataId: String,
         storableDataSet: StorableDataSet,
-        companyName: String,
         correlationId: String,
     ) {
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
@@ -174,9 +193,9 @@ class DataManager(
             ExchangeNames.dataReceived,
         )
         logger.info(
-            "Stored StorableDataSet of type ${storableDataSet.dataType} for company ID in temporary store" +
-                "${storableDataSet.companyId}. Company Name $companyName received ID $dataId from storage. " +
-                "Correlation ID: $correlationId.",
+            "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
+                "for company ID '${storableDataSet.companyId}' in temporary storage. " +
+                "Data ID '$dataId'. Correlation ID: '$correlationId'.",
         )
     }
 
@@ -241,12 +260,11 @@ class DataManager(
     fun getDataSet(dataId: String, dataType: DataType, correlationId: String): StorableDataSet {
         assertActualAndExpectedDataTypeForIdMatch(dataId, dataType, correlationId)
         val dataMetaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-        val dataAsString = getDataFromStorage(dataId, correlationId)
-        if (dataAsString == "") {
-            throw ResourceNotFoundApiException(
-                "Dataset not found",
-                "No dataset with the id: $dataId could be found in the data store.",
-            )
+        lateinit var dataAsString: String
+        try {
+            dataAsString = getDataFromCacheOrStorageService(dataId, correlationId)
+        } catch (e: ClientException) {
+            handleInternalStorageClientException(e, dataId, correlationId)
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
         val dataAsStorableDataSet = objectMapper.readValue(dataAsString, StorableDataSet::class.java)
@@ -254,7 +272,24 @@ class DataManager(
         return dataAsStorableDataSet
     }
 
-    private fun getDataFromStorage(dataId: String, correlationId: String): String {
+    private fun handleInternalStorageClientException(e: ClientException, dataId: String, correlationId: String) {
+        if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+            logger.info("Dataset with id $dataId could not be found. Correlation ID: $correlationId")
+            throw ResourceNotFoundApiException(
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store.",
+                e,
+            )
+        } else {
+            throw e
+        }
+    }
+
+    private fun getDataFromCacheOrStorageService(dataId: String, correlationId: String): String {
+        return dataInMemoryStorage[dataId] ?: getDataFromStorageService(dataId, correlationId)
+    }
+
+    private fun getDataFromStorageService(dataId: String, correlationId: String): String {
         val dataAsString: String
         logger.info("Retrieve data from internal storage. Correlation ID: $correlationId")
         try {

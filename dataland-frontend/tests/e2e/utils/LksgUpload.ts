@@ -8,22 +8,26 @@ import {
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
+
 /**
  * Uploads a single LKSG data entry for a company
  *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
+ * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
  */
 export async function uploadOneLksgDatasetViaApi(
   token: string,
   companyId: string,
+  reportingPeriod: string,
   data: LksgData
 ): Promise<DataMetaInformation> {
   const response = await new LksgDataControllerApi(
     new Configuration({ accessToken: token })
   ).postCompanyAssociatedLksgData({
     companyId,
+    reportingPeriod,
     data,
   });
   return response.data;
@@ -35,18 +39,22 @@ export async function uploadOneLksgDatasetViaApi(
  * @param token The API bearer token to use
  * @param companyInformation The company information to use for the company upload
  * @param testData The Dataset to upload
+ * @param reportingPeriod The reporting period to use for the upload
  * @returns an object which contains the companyId from the company upload and the dataId from the data upload
  */
 export function uploadCompanyAndLksgDataViaApi(
   token: string,
   companyInformation: CompanyInformation,
-  testData: LksgData
+  testData: LksgData,
+  reportingPeriod: string
 ): Promise<UploadIds> {
   return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
     (storedCompany) => {
-      return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, testData).then((dataMetaInformation) => {
-        return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
-      });
+      return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, reportingPeriod, testData).then(
+        (dataMetaInformation) => {
+          return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
+        }
+      );
     }
   );
 }

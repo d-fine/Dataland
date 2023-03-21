@@ -41,13 +41,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    runtimeOnly(libs.database.postgres)
-    runtimeOnly(libs.database.h2)
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.10")
+    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("com.h2database:h2")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:okhttp")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

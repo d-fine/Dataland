@@ -73,6 +73,10 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 ## Check e-mails sent by backend
 - [ ] Send an invitation request from one of the dev servers and check if the e-mail response contains the right attachments and is displayed correctly.
 
+## Check RabbitMQ dead letter queue and disk space
+- [ ] RabbitMQ does need at least 6GB of free disk space to operate. `ssh` into all servers and check the available disk space with `df` command. If the open disk space is close to the minimum requirement, clear up disk space with `docker image prune`.
+- [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual maintenance. If new messages have appeared this does need to be investigated. The dead letter queue can be accessed and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr; deadLetterQueue &rarr; Get message.
+
 ## Conclusion
 - [ ] After updating all components check if everything still works
 - [ ] The new version is deployed to the dev server using this branch and real data
@@ -80,6 +84,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
   - [ ] It's verified that real data has been used
   - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] This template has been updated to reflect the latest state of tasks required and known issues with upgrades
+- [ ] The Merge Request commit message needs to contain 'manual maintenance' to satisfy the CI maintenance check in future commits
 
 # Review (to be completed by the reviewer)
 - [x] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.

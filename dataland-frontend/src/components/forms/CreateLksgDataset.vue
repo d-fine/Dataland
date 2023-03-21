@@ -2,7 +2,11 @@
   <Card class="col-12 page-wrapper-card">
     <template #title>New Dataset - LkSG </template>
     <template #content>
-      <div class="grid uploadFormWrapper">
+      <div v-show="waitingForData" class="d-center-div text-center px-7 py-4">
+        <p class="font-medium text-xl">Loading LkSG data...</p>
+        <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      </div>
+      <div v-show="!waitingForData" class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="lkSGDataModel"
@@ -13,14 +17,8 @@
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit
-              type="hidden"
-              name="companyId"
-              label="Company ID"
-              placeholder="Company ID"
-              :model-value="companyID"
-              disabled="true"
-            />
+            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
+            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
@@ -50,6 +48,7 @@
 
                         <FormKit
                           type="text"
+                          :validation-label="lksgKpisNameMappings.dataDate"
                           validation="required"
                           name="dataDate"
                           v-model="convertedDataDate"
@@ -1069,7 +1068,11 @@
               <div class="col-3"></div>
 
               <div class="col-9">
-                <PrimeButton data-test="submitButton" type="submit" label="ADD DATA" />
+                <PrimeButton
+                  data-test="submitButton"
+                  type="submit"
+                  :label="this.updatingData ? 'UPDATE DATA' : 'ADD DATA'"
+                />
               </div>
             </div>
           </FormKit>
@@ -1079,7 +1082,6 @@
             <FailedUpload v-else :message="message" :messageId="messageCounter" />
           </div>
         </div>
-
         <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
           <h4 id="topicTitles" class="title">On this page</h4>
           <ul>
@@ -1131,9 +1133,11 @@ import {
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { CompanyAssociatedDataLksgData, InHouseProductionOrContractProcessing } from "@clients/backend";
+import { useRoute } from "vue-router";
+import { getHyphenatedDate } from "@/utils/DateFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { InHouseProductionOrContractProcessing } from "@clients/backend";
 
 export default defineComponent({
   setup() {
@@ -1159,9 +1163,10 @@ export default defineComponent({
       ],
       idCounter: 0,
       allCountry: getAllCountryNamesWithCodes(),
-      dataDate: "",
-      convertedDataDate: "",
-      lkSGDataModel: {},
+      waitingForData: false,
+      dataDate: undefined as Date | undefined,
+      lkSGDataModel: {} as CompanyAssociatedDataLksgData,
+      route: useRoute(),
       message: "",
       uploadSucceded: false,
       postLkSGDataProcessed: false,
@@ -1185,22 +1190,34 @@ export default defineComponent({
       ),
       smoothScroll,
       checkCustomInputs,
+      updatingData: false,
     };
+  },
+  computed: {
+    yearOfDataDate: {
+      get(): string {
+        return this.dataDate?.getFullYear()?.toString() || "";
+      },
+      set() {
+        // IGNORED
+      },
+    },
+    convertedDataDate: {
+      get(): string {
+        if (this.dataDate) {
+          return getHyphenatedDate(this.dataDate);
+        } else {
+          return "";
+        }
+      },
+      set() {
+        // IGNORED
+      },
+    },
   },
   props: {
     companyID: {
       type: String,
-    },
-  },
-  watch: {
-    dataDate: function (newValue: Date) {
-      if (newValue) {
-        this.convertedDataDate = `${newValue.getFullYear()}-${("0" + (newValue.getMonth() + 1).toString()).slice(
-          -2
-        )}-${("0" + newValue.getDate().toString()).slice(-2)}`;
-      } else {
-        this.convertedDataDate = "";
-      }
     },
   },
   mounted() {
@@ -1217,11 +1234,51 @@ export default defineComponent({
       return null;
     };
     window.addEventListener("scroll", this.scrollListener);
+
+    const dataId = this.route.query.templateDataId;
+    if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+      void this.loadLKSGData(dataId);
+    }
   },
   unmounted() {
     window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
+    /**
+     * Loads the LKGS-Dataset identified by the provided dataId and pre-configures the form to contain the data
+     * from the dataset
+     *
+     * @param dataId the id of the dataset to load
+     */
+    async loadLKSGData(dataId: string): Promise<void> {
+      this.waitingForData = true;
+      const lkSGDataControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getLksgDataControllerApi();
+
+      const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
+      const lksgDataset = dataResponse.data;
+      const numberOfProductionSites = lksgDataset.data?.social?.general?.listOfProductionSites?.length || 0;
+      if (numberOfProductionSites > 0) {
+        this.isYourCompanyManufacturingCompany = "Yes";
+        const productionSites = assertDefined(lksgDataset.data?.social?.general?.listOfProductionSites);
+        this.listOfProductionSites = [];
+        this.idCounter = numberOfProductionSites;
+        for (let i = 0; i < numberOfProductionSites; i++) {
+          this.listOfProductionSites.push({
+            id: i,
+            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices || [],
+            listOfGoodsOrServicesString: "",
+          });
+        }
+      }
+      const dataDateFromDataset = lksgDataset.data?.social?.general?.dataDate;
+      if (dataDateFromDataset) {
+        this.dataDate = new Date(dataDateFromDataset);
+      }
+      this.lkSGDataModel = lksgDataset;
+      this.waitingForData = false;
+    },
     /**
      * Sends data to add LkSG data
      */
@@ -1242,7 +1299,7 @@ export default defineComponent({
           },
         ];
         this.idCounter = 0;
-        this.dataDate = "";
+        this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
       } catch (error) {
