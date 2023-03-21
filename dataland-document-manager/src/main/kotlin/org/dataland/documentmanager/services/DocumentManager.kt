@@ -3,6 +3,7 @@ package org.dataland.documentmanager.services
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
+import org.dataland.documentmanager.model.Document
 import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentQAStatus
@@ -40,9 +41,12 @@ class DocumentManager(
         val correlationId = randomUUID().toString()
         logger.info("Started temporary storage process for document with correlationId: $correlationId")
         val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
+        val documentExists = documentMetaInfoRepository.existsById(documentMetaInfo.documentId)
+        if (documentExists) { return documentMetaInfo
+        }
         saveMetaInfoToDatabase(documentMetaInfo)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, document.bytes)
-        // TODO sent message
+        // TODO send message
         return documentMetaInfo
     }
 
@@ -84,5 +88,13 @@ class DocumentManager(
             logger.info("Document with ID: $documentId does not exist")
         }
         return DocumentExistsResponse(documentExists)
+    }
+
+    fun retrieveDocumentById(documentId: String): Document {
+        val metaDataInfoEntity = documentMetaInfoRepository.findById(documentId).orElseThrow{
+            ResourceNotFoundApiException("No document found", "No document with ID: $documentId could be found")
+        }
+        val fileData = inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)
+        return Document(metaDataInfoEntity.displayTitle, fileData)
     }
 }
