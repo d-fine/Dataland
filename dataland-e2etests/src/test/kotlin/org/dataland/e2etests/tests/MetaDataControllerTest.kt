@@ -315,9 +315,12 @@ class MetaDataControllerTest {
         return listOfActiveMetaData[0]
     }
 
+    @Suppress("kotlin:S138")
     @Test
     fun `ensure that version history field in metadata endpoint of meta data controller works`() {
+
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+
         val frameworkDataAlpha = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
         val reportingPeriod = "2022"
         val uploadedMetadata: MutableList<DataMetaInformation> = mutableListOf()
@@ -330,8 +333,6 @@ class MetaDataControllerTest {
         )
         val newNumberOfEmployees = (frameworkDataAlpha.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
         val frameworkDataBeta = frameworkDataAlpha.copy(numberOfEmployees = newNumberOfEmployees)
-        // Wait to avoid Error 500 when immediately uploading two datasets for same framework,
-        // company and reporting date
         Thread.sleep(1000)
         uploadedMetadata.add(
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
@@ -380,9 +381,8 @@ class MetaDataControllerTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
         apiAccessor.repeatUploadWithWait<EuTaxonomyDataForNonFinancials>(
-            n = 2, companyId = companyId, dataList = listOf(frameWorkData, frameWorkData),
-            reportingPeriods = listOf("2022", "2023"), waitTime = 1000,
-            uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            n = 2, companyId = companyId, dataList = listOf(frameWorkData, frameWorkData), waitTime = 1000,
+            reportingPeriods = listOf("2022", "2023"), uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
         )
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val listOfMetaData = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
