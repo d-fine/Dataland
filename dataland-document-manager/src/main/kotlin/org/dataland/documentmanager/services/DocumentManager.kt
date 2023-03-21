@@ -125,6 +125,7 @@ class DocumentManager(
         }
         return DocumentExistsResponse(documentExists)
     }
+
     /**
      * This method retrieves a document from the storage
      * @param documentId the documentId of the document to be retrieved

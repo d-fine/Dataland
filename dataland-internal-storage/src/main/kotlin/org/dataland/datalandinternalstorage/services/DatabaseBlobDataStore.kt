@@ -1,6 +1,7 @@
 package org.dataland.datalandinternalstorage.services
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandinternalstorage.entities.BlobItem
 import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
@@ -9,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.documentmanager.openApiClient.api.TemporarilyCachedDocumentControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -31,6 +33,7 @@ class DatabaseBlobDataStore(
     @Autowired private val blobItemRepository: BlobItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var messageUtils: MessageQueueUtils,
+    @Autowired var temporarilyCachedDocumentClient: TemporarilyCachedDocumentControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -67,12 +70,14 @@ class DatabaseBlobDataStore(
         if (documentId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
                 logger.info("Received DocumentId $documentId and CorrelationId: $correlationId")
-                // TODO Connect here to the endpoint of the document service to retrieve a temp. stored document
-                // val hash = blob.sha256()
-                // val blobItem = BlobItem(hash, blob)
-                logger.info("Inserting document into database with documentId: $documentId and correlation id: " +
-                        "$correlationId.")
-                // blobItemRepository.save(blobItem)
+                // TODO Check why getReceivedData is byte Array
+                val blob = temporarilyCachedDocumentClient.getReceivedData(documentId)[0]
+                val blobItem = BlobItem(documentId, blob)
+                logger.info(
+                    "Inserting document into database with documentId: $documentId and correlation id: " +
+                        "$correlationId.",
+                )
+                blobItemRepository.save(blobItem)
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     documentId, MessageType.DocumentStored, correlationId, ExchangeNames.itemStored,
                     RoutingKeyNames.document,
