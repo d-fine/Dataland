@@ -8,5 +8,6 @@ object ExchangeNames {
     const val dataQualityAssured = "dataQualityAssured"
     const val dataReceived = "dataReceived"
     const val dataStored = "dataStored"
+    const val documentStored = "documentStored"
     const val deadLetter = "deadLetter"
 }

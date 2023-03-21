@@ -69,6 +69,15 @@
       "arguments": {}
     },
     {
+      "name": "documentStored",
+      "vhost": "vhost",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
       "name": "deadLetter",
       "vhost": "vhost",
       "type": "direct",
