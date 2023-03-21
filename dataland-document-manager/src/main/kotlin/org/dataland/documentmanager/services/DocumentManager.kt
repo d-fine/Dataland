@@ -21,10 +21,10 @@ class DocumentManager {
     }
 
     private fun generateDocumentMetaInfo(document: MultipartFile, correlationId: String): DocumentMetaInfo {
-        val filename = document.originalFilename ?:
-            throw InvalidInputApiException(
-            "Document without filename received",
-            "Document without filename received: $correlationId",
+        val filename = document.originalFilename
+            ?: throw InvalidInputApiException(
+                "Document without filename received",
+                "Document without filename received: $correlationId",
             )
         return DocumentMetaInfo(
             documentId = document.bytes.sha256(),

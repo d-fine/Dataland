@@ -32,7 +32,7 @@ class QaService(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Method to retrieve message from upload_queue and constructing new one for qa_queue
+     * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
      * @param dataId the ID of the dataset to be QAed
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
@@ -68,11 +68,56 @@ class QaService(
                     QaCompletedMessage(dataId, "By default, QA is passed"),
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, "data",
                 )
             }
         } else {
             throw MessageQueueRejectException("Provided data ID is empty")
+        }
+    }
+
+    /**
+     * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange
+     * @param documentHash the Hash of the document to be QAed
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "documentStoredQaService",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange(ExchangeNames.documentStored, declare = "false"),
+                key = [""],
+            ),
+        ],
+    )
+    fun assureQualityOfDocument(
+        @Payload documentHash: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
+    ) {
+        messageUtils.validateMessageType(type, MessageType.DocumentStored)
+        if (documentHash.isNotEmpty()) {
+            messageUtils.rejectMessageOnException {
+                logger.info(
+                    "Received document with Hash: $documentHash on QA message queue with Correlation Id: $correlationId",
+                )
+                val message = objectMapper.writeValueAsString(
+                    QaCompletedMessage(documentHash, "By default, QA is passed"),
+                )
+                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, "document",
+                )
+            }
+        } else {
+            throw MessageQueueRejectException("Provided document Hash is empty")
         }
     }
 }
