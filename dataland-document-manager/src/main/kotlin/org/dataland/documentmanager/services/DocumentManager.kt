@@ -33,8 +33,11 @@ class DocumentManager(
             "Document without filename received",
             "Document without filename received: $correlationId",
             )
+        val documentId = document.bytes.sha256()
+        logger.info("Generated hash: $documentId for document with correlationId: $correlationId. " +
+                "The hash is also the documentId.")
         return DocumentMetaInfo(
-            documentId = document.bytes.sha256(),
+            documentId = documentId,
             displayTitle = filename,
             uploaderId = DatalandAuthentication.fromContext().userId,
             uploadTime = Instant.now().toEpochMilli(),
