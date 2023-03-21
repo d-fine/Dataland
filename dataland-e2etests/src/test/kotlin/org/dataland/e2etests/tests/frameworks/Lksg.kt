@@ -38,7 +38,7 @@ class Lksg {
         val lksgData = apiAccessor.testDataProviderForLksgData.getTData(2)
         apiAccessor.repeatUploadWithWait<LksgData>(
             n = 2, companyId = companyId, dataList = lksgData, reportingPeriods = listOf("2022", "2023"),
-            waitTime = 1000, uploadFunction = apiAccessor.lksgUploaderFunction
+            waitTime = 1000, uploadFunction = apiAccessor.lksgUploaderFunction,
         )
         val lksgDataSets = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(companyId, false)
         val activeLksgDatasets = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(companyId, true)
@@ -47,7 +47,7 @@ class Lksg {
             apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(companyId, true, "2023")
         assertTrue(
             lksgDataSets.size == 4 && activeLksgDatasets.size == 2 &&
-                    lksgDatasets2023.size == 2 && activeLksgDatasets2023.size == 1,
+                lksgDatasets2023.size == 2 && activeLksgDatasets2023.size == 1,
             "At least of the retrieved meta data lists does not have the expected size.",
         )
         assertEquals(activeLksgDatasets2023[0].data, lksgData[1], "Active dataset in 2023 not equal to latest upload.")

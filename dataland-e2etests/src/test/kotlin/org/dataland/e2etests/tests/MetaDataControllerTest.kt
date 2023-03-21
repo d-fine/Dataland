@@ -148,7 +148,7 @@ class MetaDataControllerTest {
         assertEquals(
             expectedSizeOfDataMetaInfo, sizeOfListOfDataMetaInfo,
             "The list with all data meta info is expected to increase by $totalNumberOfDataSetsPerFramework to " +
-                    "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
+                "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
         )
     }
 
@@ -166,7 +166,7 @@ class MetaDataControllerTest {
         assertEquals(
             numberOfDataSetsToPostPerCompany, listOfDataMetaInfoForFirstCompanyId.size,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
-                    "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
+                "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
         )
     }
 
@@ -187,7 +187,7 @@ class MetaDataControllerTest {
         assertEquals(
             expectedListSize, listSizeAfterUploads,
             "The meta info list for all EU Taxonomy Data for Non-Financials is expected to increase by " +
-                    "$totalNumberOfDataSetsPerFramework to $expectedListSize, but has the size $listSizeAfterUploads.",
+                "$totalNumberOfDataSetsPerFramework to $expectedListSize, but has the size $listSizeAfterUploads.",
         )
     }
 
@@ -205,7 +205,7 @@ class MetaDataControllerTest {
         assertEquals(
             numberOfDataSetsToPostPerCompany, sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
-                    "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
+                "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
         )
     }
 
@@ -260,7 +260,7 @@ class MetaDataControllerTest {
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
                 .map { it.copy(uploadTime = uploadTime) }.contains(expectedMetaInformation),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company " +
-                    "does not match the retrieved meta info.",
+                "does not match the retrieved meta info.",
         )
     }
 
@@ -325,19 +325,20 @@ class MetaDataControllerTest {
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
                 companyId,
                 frameworkDataAlpha,
-                reportingPeriod
-            )
+                reportingPeriod,
+            ),
         )
         val newNumberOfEmployees = (frameworkDataAlpha.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
         val frameworkDataBeta = frameworkDataAlpha.copy(numberOfEmployees = newNumberOfEmployees)
-        // Wait to avoid Error 500 when immediately uploading two datasets for same framework, company and reporting date
+        // Wait to avoid Error 500 when immediately uploading two datasets for same framework,
+        // company and reporting date
         Thread.sleep(1000)
         uploadedMetadata.add(
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
                 companyId,
                 frameworkDataBeta,
-                reportingPeriod
-            )
+                reportingPeriod,
+            ),
         )
         apiAccessor.ensureQaIsPassed(uploadedMetadata)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
@@ -379,8 +380,9 @@ class MetaDataControllerTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
         apiAccessor.repeatUploadWithWait<EuTaxonomyDataForNonFinancials>(
-            n = 2, companyId = companyId, dataList = listOf(frameWorkData, frameWorkData), reportingPeriods = listOf("2022","2023"),
-            waitTime = 1000, uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            n = 2, companyId = companyId, dataList = listOf(frameWorkData, frameWorkData),
+            reportingPeriods = listOf("2022", "2023"), waitTime = 1000,
+            uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
         )
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val listOfMetaData = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)

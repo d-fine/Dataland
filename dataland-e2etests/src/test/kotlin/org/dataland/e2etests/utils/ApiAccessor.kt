@@ -111,7 +111,7 @@ class ApiAccessor {
     /**
      * Uploads each of the datasets provided in [listOfFrameworkData] for each of the companies provided in
      * [listOfCompanyInformation] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
-     * times for the same company a wait of at least [waitTimeBeforeNextUpload] is necessary to avoid an error 500.
+     * times for the same company a wait of at least 1000ms is necessary to avoid an error 500.
      */
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         listOfCompanyInformation: List<CompanyInformation>,
@@ -124,18 +124,19 @@ class ApiAccessor {
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
         reportingPeriod: String = "",
         ensureQaPassed: Boolean = true,
-        waitTimeBeforeNextUpload: Long = 1000
     ): List<UploadInfo> {
-        val waitNecessary = (listOfFrameworkData.size>1)
+        val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 0L else 1000L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
-        val storedCompanyInfos = listOfCompanyInformation.map{companyDataControllerApi.postCompany(it)}
-        listOfFrameworkData.forEach {frameworkDataSet ->
+        val storedCompanyInfos = listOfCompanyInformation.map { companyDataControllerApi.postCompany(it) }
+        listOfFrameworkData.forEach { frameworkDataSet ->
             listOfCompanyInformation.zip(storedCompanyInfos).forEach { pair ->
-                val receivedDataMetaInformation = frameworkDataUploadFunction(pair.second.companyId,frameworkDataSet,reportingPeriod)
-                listOfUploadInfo.add(UploadInfo(pair.first,pair.second,receivedDataMetaInformation))
+                val receivedDataMetaInformation = frameworkDataUploadFunction(
+                    pair.second.companyId, frameworkDataSet, reportingPeriod,
+                )
+                listOfUploadInfo.add(UploadInfo(pair.first, pair.second, receivedDataMetaInformation))
             }
-            if (waitNecessary) Thread.sleep(waitTimeBeforeNextUpload)
+            Thread.sleep(waitTimeBeforeNextUpload)
         }
         if (ensureQaPassed) ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo)
         return listOfUploadInfo
@@ -260,7 +261,7 @@ class ApiAccessor {
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials,
     ):
-            Map<String, String> {
+        Map<String, String> {
         val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
             listOf(companyInformation),
             listOf(euTaxonomyDataForNonFinancials),
@@ -342,22 +343,21 @@ class ApiAccessor {
         reportingPeriods: List<String>,
         waitTime: Long,
         uploadFunction: (String, T, String) -> DataMetaInformation,
-        ensureQaIsPassed: Boolean = true
     ): List<DataMetaInformation> {
-        if (dataList.size != reportingPeriods.size) throw IllegalArgumentException(
-            "Length of provided dataset and reporting period has to be the same."
-        )
+        if (dataList.size != reportingPeriods.size) {
+            throw IllegalArgumentException(
+                "Length of provided dataset and reporting period has to be the same.",
+            )
+        }
         val uploadedMetaData: MutableList<DataMetaInformation> = mutableListOf()
         for (i in 1..n) {
             dataList.zip(reportingPeriods).forEach {
                 uploadedMetaData.add(uploadFunction(companyId, it.first, it.second))
-
             }
             if (i != n) Thread.sleep(waitTime)
         }
-        return if (ensureQaIsPassed) ensureQaIsPassed(uploadedMetaData) else uploadedMetaData
+        return ensureQaIsPassed(uploadedMetaData)
     }
-
 }
 
 data class UploadInfo(
@@ -368,4 +368,4 @@ data class UploadInfo(
 
     var actualStoredDataMetaInfo: DataMetaInformation? = null,
 
-    )
+)
