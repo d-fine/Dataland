@@ -34,7 +34,7 @@ class MetaDataControllerTest {
     private val listOfOneTeaserTestCompanyInformation =
         listOf(listOfTestCompanyInformation[0].copy(isTeaserCompany = true))
 
-    private fun <T>repeatUploadFunctionWithWaits(
+    private fun <T> repeatUploadFunctionWithWaits(
         n: Int,
         companyId: String,
         data: T,
@@ -161,7 +161,7 @@ class MetaDataControllerTest {
         assertEquals(
             expectedSizeOfDataMetaInfo, sizeOfListOfDataMetaInfo,
             "The list with all data meta info is expected to increase by $totalNumberOfDataSetsPerFramework to " +
-                "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
+                    "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
         )
     }
 
@@ -179,7 +179,7 @@ class MetaDataControllerTest {
         assertEquals(
             numberOfDataSetsToPostPerCompany, listOfDataMetaInfoForFirstCompanyId.size,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
-                "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
+                    "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
         )
     }
 
@@ -200,7 +200,7 @@ class MetaDataControllerTest {
         assertEquals(
             expectedListSize, listSizeAfterUploads,
             "The meta info list for all EU Taxonomy Data for Non-Financials is expected to increase by " +
-                "$totalNumberOfDataSetsPerFramework to $expectedListSize, but has the size $listSizeAfterUploads.",
+                    "$totalNumberOfDataSetsPerFramework to $expectedListSize, but has the size $listSizeAfterUploads.",
         )
     }
 
@@ -218,7 +218,7 @@ class MetaDataControllerTest {
         assertEquals(
             numberOfDataSetsToPostPerCompany, sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
             "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
-                "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
+                    "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
         )
     }
 
@@ -273,7 +273,7 @@ class MetaDataControllerTest {
             apiAccessor.unauthorizedMetaDataControllerApi.getListOfDataMetaInfo(testCompanyId, testDataType)
                 .map { it.copy(uploadTime = uploadTime) }.contains(expectedMetaInformation),
             "The meta info of the posted eu taxonomy data that was associated with the teaser company " +
-                "does not match the retrieved meta info.",
+                    "does not match the retrieved meta info.",
         )
     }
 
@@ -333,11 +333,25 @@ class MetaDataControllerTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val frameworkDataAlpha = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
         val reportingPeriod = "2022"
-        apiAccessor.euTaxonomyNonFinancialsUploaderFunction(companyId, frameworkDataAlpha, reportingPeriod)
+        val uploadedMetadata: MutableList<DataMetaInformation> = mutableListOf()
+        uploadedMetadata.add(
+            apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
+                companyId,
+                frameworkDataAlpha,
+                reportingPeriod
+            )
+        )
         Thread.sleep(1000)
         val newNumberOfEmployees = (frameworkDataAlpha.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
         val frameworkDataBeta = frameworkDataAlpha.copy(numberOfEmployees = newNumberOfEmployees)
-        apiAccessor.euTaxonomyNonFinancialsUploaderFunction(companyId, frameworkDataBeta, reportingPeriod)
+        uploadedMetadata.add(
+            apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
+                companyId,
+                frameworkDataBeta,
+                reportingPeriod
+            )
+        )
+        apiAccessor.ensureQaIsPassed(uploadedMetadata)
         Thread.sleep(1000)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val activeDataset =
@@ -377,12 +391,15 @@ class MetaDataControllerTest {
     fun `ensure that reportingPeriod field of metadata endpoint of meta data controller works`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
-        for (reportingPeriod in listOf("2022", "2023")) { repeatUploadFunctionWithWaits(
-            n = 2, companyId = companyId, data = frameWorkData, reportingPeriod = reportingPeriod,
-            waitTime = 1100, uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
-        ) }
+        for (reportingPeriod in listOf("2022", "2023")) {
+            repeatUploadFunctionWithWaits(
+                n = 2, companyId = companyId, data = frameWorkData, reportingPeriod = reportingPeriod,
+                waitTime = 1100, uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            )
+        }
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val listOfMetaData = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
+        val listOfQadMetaData = apiAccessor.ensureQaIsPassed(listOfMetaData)
         val listOfActiveMetaData =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true)
         val listOfActiveMetaData2022 =
@@ -390,7 +407,7 @@ class MetaDataControllerTest {
         val listOfActiveMetaData2023 =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, "2023")
         validateReportingPeriodQueryParam(
-            listOfMetaData, 4, listOfActiveMetaData, listOfActiveMetaData2023, listOfActiveMetaData2022,
+            listOfQadMetaData, 4, listOfActiveMetaData, listOfActiveMetaData2023, listOfActiveMetaData2022,
         )
     }
 }

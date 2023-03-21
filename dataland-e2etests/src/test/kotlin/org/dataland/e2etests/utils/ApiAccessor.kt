@@ -133,7 +133,7 @@ class ApiAccessor {
                 )
             }
         }
-        if (ensureQaPassed) ensureQaCompletedAndUpdateMetadata(listOfUploadInfo)
+        if (ensureQaPassed) ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo)
         return listOfUploadInfo
     }
 
@@ -144,19 +144,39 @@ class ApiAccessor {
      * @param uploadInfos List of UploadInfo for which an update of the QAStatus should be checked and awaited
      * @return Input list of UplaodInfo but with updated metadata
      */
-    private fun ensureQaCompletedAndUpdateMetadata(uploadInfos: List<UploadInfo>) {
-        await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedAndUpdateMetadata(uploadInfos) }
+    private fun ensureQaCompletedAndUpdateUploadInfo(uploadInfos: List<UploadInfo>) {
+        await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedAndUpdateUploadInfo(uploadInfos) }
     }
 
-    private fun checkIfQaPassedAndUpdateMetadata(uploadInfos: List<UploadInfo>): Boolean {
+    private fun checkIfQaPassedAndUpdateUploadInfo(uploadInfos: List<UploadInfo>): Boolean {
         return uploadInfos.all { uploadInfo ->
             val metaData = uploadInfo.actualStoredDataMetaInfo
                 ?: throw NullPointerException(
                     "To check QA Status, metadata is required but was null for $uploadInfo",
                 )
             if (metaData.qaStatus != QAStatus.accepted) {
-                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId) }
+                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
+            }
             return uploadInfo.actualStoredDataMetaInfo!!.qaStatus == QAStatus.accepted
+        }
+    }
+
+    /**
+     * Waits until the status of all provided [metaDatas] is QaStatus.Accepted. Then returns an updated list of metaData
+     * each of which has qaStatus = QaStatus.Accepted.
+     */
+    fun ensureQaIsPassed(metaDatas: List<DataMetaInformation>): List<DataMetaInformation> {
+        await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedForMetaDataList(metaDatas) }
+        val updatedMetaDatas = mutableListOf<DataMetaInformation>()
+        metaDatas.forEach() { metaData ->
+            updatedMetaDatas.add(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
+        }
+        return updatedMetaDatas
+    }
+
+    private fun checkIfQaPassedForMetaDataList(metaDatas: List<DataMetaInformation>): Boolean {
+        return metaDatas.all { metaData ->
+            return (metaDataControllerApi.getDataMetaInfo(metaData.dataId).qaStatus == QAStatus.accepted)
         }
     }
 
