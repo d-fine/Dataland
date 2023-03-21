@@ -13,10 +13,12 @@ import java.time.Instant
 import java.util.UUID.randomUUID
 
 @Component
-class DocumentManager {
+class DocumentManager(
+    @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    fun temporarilyStoreDocumentAndTriggerStorage(pdfDocument: MultipartFile): DocumentMetaInfo {
+    fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentMetaInfo {
         val correlationId = randomUUID().toString()
         logger.info("Started temporary storage process for document with correlationId: $correlationId")
         val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
