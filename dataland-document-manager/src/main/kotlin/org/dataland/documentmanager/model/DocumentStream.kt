@@ -8,8 +8,7 @@ import org.springframework.core.io.InputStreamResource
  * @param title the display title of the document
  * @param content the content of the document as stream
  */
-data class DocumentStream (
+data class DocumentStream(
     val title: String,
     val content: InputStreamResource,
-) {
-}
+)

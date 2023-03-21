@@ -14,10 +14,10 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
-import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentQAStatus
+import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -34,6 +34,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
 import java.time.Instant
 import java.util.UUID.randomUUID
 
@@ -69,10 +70,11 @@ class DocumentManager(
         if (documentExists) {
             return documentMetaInfo
         }
+        val documentBody = document.bytes
         pdfVerificationService.assertThatBlobLooksLikeAPdf(documentBody, correlationId)
         logger.info("Started temporary storage process for document with correlationId: $correlationId")
         saveMetaInfoToDatabase(documentMetaInfo)
-        inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, document.bytes)
+        inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeNames.documentReceived,
         )
@@ -123,26 +125,30 @@ class DocumentManager(
 
     fun retrieveDocumentById(documentId: String): DocumentStream {
         val correlationId = randomUUID().toString()
-        val metaDataInfoEntity = documentMetaInfoRepository.findById(documentId).orElseThrow{
-            ResourceNotFoundApiException("No document found",
-                "No document with ID: $documentId could be found. CorrelationId: $correlationId")
+        val metaDataInfoEntity = documentMetaInfoRepository.findById(documentId).orElseThrow {
+            ResourceNotFoundApiException(
+                "No document found",
+                "No document with ID: $documentId could be found. CorrelationId: $correlationId",
+            )
         }
-        if (metaDataInfoEntity.qaStatus != DocumentQAStatus.Accepted){
-            throw ResourceNotFoundApiException("No accepted document found",
+        if (metaDataInfoEntity.qaStatus != DocumentQAStatus.Accepted) {
+            throw ResourceNotFoundApiException(
+                "No accepted document found",
                 "A non-quality-assured document with ID: $documentId was found. " +
-                        "Only quality-assured documents can be retrieved. CorrelationId: $correlationId")
+                    "Only quality-assured documents can be retrieved. CorrelationId: $correlationId",
+            )
         }
 
         val documentDataStream = InputStreamResource(
             inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)?.let {
                 logger.info("Received document $documentId from temporary storage")
                 ByteArrayInputStream(it)
-            } ?:
-                storageApi.selectBlobByHash(documentId, correlationId).inputStream()
-                    .let {
-                logger.info("Received document $documentId from storage service")
-                it
             }
+                ?: storageApi.selectBlobByHash(documentId, correlationId).inputStream()
+                    .let {
+                        logger.info("Received document $documentId from storage service")
+                        it
+                    },
         )
         return DocumentStream(metaDataInfoEntity.displayTitle, documentDataStream)
     }
@@ -222,7 +228,7 @@ class DocumentManager(
         val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
         if (documentId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
-                var metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
+                val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
                 metaInformation.qaStatus = DocumentQAStatus.Accepted
                 logger.info(
                     "Received quality assurance for document upload with DataId: " +
