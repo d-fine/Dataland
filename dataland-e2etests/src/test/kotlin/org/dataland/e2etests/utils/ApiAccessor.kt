@@ -256,7 +256,7 @@ class ApiAccessor {
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials,
     ):
-        Map<String, String> {
+            Map<String, String> {
         val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
             listOf(companyInformation),
             listOf(euTaxonomyDataForNonFinancials),
@@ -324,6 +324,36 @@ class ApiAccessor {
             reportingPeriod,
         ).size
     }
+
+    /**
+     * Upload the dataset provided in [dataList] via [uploadFunction] multiple times for the given [companyId] and
+     * [reportingPeriods] waiting [waitTime] ms in between each of the [n] sets of uploads.
+     * The i-th dataset in [dataList] is uploaded [n] times for the i-th reportingPeriod in [reportingPeriods].
+     * If [ensureQaIsPassed], it is ensured before return that QA is passed for all uploaded data sets.
+     */
+    fun <T> repeatUploadWithWait(
+        n: Int,
+        companyId: String,
+        dataList: List<T>,
+        reportingPeriods: List<String>,
+        waitTime: Long,
+        uploadFunction: (String, T, String) -> DataMetaInformation,
+        ensureQaIsPassed: Boolean = true
+    ): List<DataMetaInformation> {
+        if (dataList.size != reportingPeriods.size) throw IllegalArgumentException(
+            "Length of provided dataset and reporting period has to be the same."
+        )
+        val uploadedMetaData: MutableList<DataMetaInformation> = mutableListOf()
+        for (i in 1..n) {
+            dataList.zip(reportingPeriods).forEach {
+                uploadedMetaData.add(uploadFunction(companyId, it.first, it.second))
+
+            }
+            if (i != n) Thread.sleep(waitTime)
+        }
+        return if (ensureQaIsPassed) ensureQaIsPassed(uploadedMetaData) else uploadedMetaData
+    }
+
 }
 
 data class UploadInfo(
@@ -334,4 +364,4 @@ data class UploadInfo(
 
     var actualStoredDataMetaInfo: DataMetaInformation? = null,
 
-)
+    )

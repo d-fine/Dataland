@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -33,20 +34,6 @@ class MetaDataControllerTest {
         listOf(listOfTestCompanyInformation[0].copy(isTeaserCompany = false))
     private val listOfOneTeaserTestCompanyInformation =
         listOf(listOfTestCompanyInformation[0].copy(isTeaserCompany = true))
-
-    private fun <T> repeatUploadFunctionWithWaits(
-        n: Int,
-        companyId: String,
-        data: T,
-        reportingPeriod: String,
-        waitTime: Long,
-        uploadFunction: (String, T, String) -> DataMetaInformation,
-    ) {
-        repeat(n) {
-            uploadFunction(companyId, data, reportingPeriod)
-            Thread.sleep(waitTime)
-        }
-    }
 
     private fun validateAdminAccessToUserId(
         testUploadDataUploaderMetaInfo: DataMetaInformation,
@@ -391,12 +378,10 @@ class MetaDataControllerTest {
     fun `ensure that reportingPeriod field of metadata endpoint of meta data controller works`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
-        for (reportingPeriod in listOf("2022", "2023")) {
-            repeatUploadFunctionWithWaits(
-                n = 2, companyId = companyId, data = frameWorkData, reportingPeriod = reportingPeriod,
-                waitTime = 1100, uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
-            )
-        }
+        apiAccessor.repeatUploadWithWait<EuTaxonomyDataForNonFinancials>(
+            n = 2, companyId = companyId, dataList = listOf(frameWorkData, frameWorkData), reportingPeriods = listOf("2022","2023"),
+            waitTime = 1000, uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+        )
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val listOfMetaData = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
         val listOfQadMetaData = apiAccessor.ensureQaIsPassed(listOfMetaData)
