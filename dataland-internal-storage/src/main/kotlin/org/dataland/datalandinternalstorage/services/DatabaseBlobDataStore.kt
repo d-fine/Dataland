@@ -31,6 +31,7 @@ class DatabaseBlobDataStore(
     @Autowired private val blobItemRepository: BlobItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var messageUtils: MessageQueueUtils,
+    @Autowired var cachedDataControllerApi: ConfigurationTemporarilyCachedDataControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -68,6 +69,7 @@ class DatabaseBlobDataStore(
             messageUtils.rejectMessageOnException {
                 logger.info("Received DocumentId $documentId and CorrelationId: $correlationId")
                 //TODO Connect here to the endpoint of the document service to retrieve a temp. stored document
+                
                 // val hash = blob.sha256()
                 // val blobItem = BlobItem(hash, blob)
                 logger.info("Inserting document into database with documentId: $documentId and correlation id: $correlationId.")
