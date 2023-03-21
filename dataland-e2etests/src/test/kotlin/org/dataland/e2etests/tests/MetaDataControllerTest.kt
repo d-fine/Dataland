@@ -318,7 +318,6 @@ class MetaDataControllerTest {
     @Suppress("kotlin:S138")
     @Test
     fun `ensure that version history field in metadata endpoint of meta data controller works`() {
-
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         val frameworkDataAlpha = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
@@ -381,8 +380,8 @@ class MetaDataControllerTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
         apiAccessor.repeatUploadWithWait<EuTaxonomyDataForNonFinancials>(
-            n = 2, companyId = companyId, dataList = listOf(frameWorkData, frameWorkData), waitTime = 1000,
-            reportingPeriods = listOf("2022", "2023"), uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            n = 2, companyId = companyId, uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            reportingPeriods = listOf("2022", "2023"), dataList = listOf(frameWorkData, frameWorkData), waitTime = 1000,
         )
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val listOfMetaData = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
