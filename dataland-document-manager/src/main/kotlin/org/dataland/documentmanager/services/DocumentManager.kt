@@ -2,6 +2,7 @@ package org.dataland.documentmanager.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
