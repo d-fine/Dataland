@@ -16,6 +16,7 @@ class TemporarilyCachedDataController(
 ) : TemporarilyCachedDataApi {
     override fun getReceivedData(sha256hash: String): ResponseEntity<ByteArray> {
         val dataset = inMemoryStore.retrieveDataFromMemoryStore(sha256hash)
+        // TODO delete document from in memory store
         return ResponseEntity.ok(dataset)
     }
 }

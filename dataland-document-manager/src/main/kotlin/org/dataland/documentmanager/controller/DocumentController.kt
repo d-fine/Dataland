@@ -25,4 +25,11 @@ class DocumentController(
     override fun checkDocument(documentId: String): ResponseEntity<DocumentExistsResponse> {
         return ResponseEntity.ok(documentManager.checkIfDocumentExistsWithId(documentId))
     }
+
+    override fun getDocument(documentId: String): ResponseEntity<ByteArray> {
+        val document = documentManager.retrieveDocumentById(documentId)
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=${document.title}")
+            .body(document.content)
+    }
 }
