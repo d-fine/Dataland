@@ -3,6 +3,7 @@ package org.dataland.documentmanager.services
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.sha256
+import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.model.DocumentExistsResponse
@@ -12,10 +13,12 @@ import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
 import java.time.Instant
 import java.util.UUID.randomUUID
 
@@ -28,6 +31,7 @@ import java.util.UUID.randomUUID
 class DocumentManager(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired val documentMetaInfoRepository: DocumentMetaInfoRepository,
+    @Autowired val storageApi: StorageControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
