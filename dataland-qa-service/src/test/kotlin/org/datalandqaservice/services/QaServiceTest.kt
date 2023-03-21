@@ -49,7 +49,7 @@ class QaServiceTest(
         val correlationId = "correlationId"
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
-                dataId = dataId,
+                identifier = dataId,
                 validationResult = "By default, QA is passed",
             ),
         )

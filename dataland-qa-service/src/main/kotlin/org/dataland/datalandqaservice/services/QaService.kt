@@ -48,8 +48,8 @@ class QaService(
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
-                key = [""],
+                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                key = ["data"],
             ),
         ],
     )
@@ -93,24 +93,24 @@ class QaService(
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.documentStored, declare = "false"),
-                key = [""],
+                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                key = ["document"],
             ),
         ],
     )
     fun assureQualityOfDocument(
-        @Payload documentHash: String,
+        @Payload documentId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DocumentStored)
-        if (documentHash.isNotEmpty()) {
+        if (documentId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
                 logger.info(
-                    "Received document with Hash: $documentHash on QA message queue with Correlation Id: $correlationId",
+                    "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
                 )
                 val message = objectMapper.writeValueAsString(
-                    QaCompletedMessage(documentHash, "By default, QA is passed"),
+                    QaCompletedMessage(documentId, "By default, QA is passed"),
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, "document",

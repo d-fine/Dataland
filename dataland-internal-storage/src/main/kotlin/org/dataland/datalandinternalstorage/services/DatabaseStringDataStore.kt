@@ -78,7 +78,7 @@ class DatabaseStringDataStore(
                 logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
                 storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    dataId, MessageType.DataStored, correlationId, ExchangeNames.dataStored,
+                    dataId, MessageType.DataStored, correlationId, ExchangeNames.itemStored,
                 )
             }
         } else {

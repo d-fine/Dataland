@@ -144,7 +144,7 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QACompleted)
-        val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).dataId
+        val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
         if (dataId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
                 val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
@@ -226,8 +226,8 @@ class DataManager(
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
-                key = [""],
+                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                key = ["data"],
             ),
         ],
     )

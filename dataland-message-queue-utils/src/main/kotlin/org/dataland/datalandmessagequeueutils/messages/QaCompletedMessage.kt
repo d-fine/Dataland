@@ -5,6 +5,6 @@ package org.dataland.datalandmessagequeueutils.messages
  * quality assurance of provided data has been completed.
  */
 data class QaCompletedMessage(
-    val dataId: String,
+    val identifier: String,
     val validationResult: String,
 )
