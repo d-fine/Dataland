@@ -1,5 +1,4 @@
 package org.dataland.documentmanager.model
-import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * --- Document model ---
@@ -7,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param title the display title of the document
  * @param content the content of the document as byte array
  */
-data class Document (
+data class Document(
     val title: String,
     val content: ByteArray,
 ) {

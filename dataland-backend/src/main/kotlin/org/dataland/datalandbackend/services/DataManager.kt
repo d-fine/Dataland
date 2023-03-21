@@ -14,6 +14,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -133,7 +134,7 @@ class DataManager(
                     ],
                 ),
                 exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
-                key = ["data"],
+                key = [RoutingKeyNames.data],
             ),
         ],
     )
@@ -227,7 +228,7 @@ class DataManager(
                     ],
                 ),
                 exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
-                key = ["data"],
+                key = [RoutingKeyNames.data],
             ),
         ],
     )

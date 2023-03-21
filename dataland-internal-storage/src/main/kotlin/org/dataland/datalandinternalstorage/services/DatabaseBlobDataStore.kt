@@ -1,11 +1,23 @@
 package org.dataland.datalandinternalstorage.services
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.utils.sha256
-import org.dataland.datalandinternalstorage.entities.BlobItem
 import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.rabbit.annotation.Argument
+import org.springframework.amqp.rabbit.annotation.Exchange
+import org.springframework.amqp.rabbit.annotation.Queue
+import org.springframework.amqp.rabbit.annotation.QueueBinding
+import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.messaging.handler.annotation.Header
+import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -17,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 class DatabaseBlobDataStore(
     @Autowired private val blobItemRepository: BlobItemRepository,
+    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired var messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -27,12 +41,45 @@ class DatabaseBlobDataStore(
      * @param blob the blob to store to the database
      * @return the sha256 hash of the blob under which is it now accessible in the database
      */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "documentReceivedDatabaseDataStore",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange(ExchangeNames.documentReceived, declare = "false"),
+                key = [RoutingKeyNames.document],
+            ),
+        ],
+    )
     @Transactional(propagation = Propagation.NEVER)
-    fun storeBlobToDatabase(blob: ByteArray): String {
-        val hash = blob.sha256()
-        val blobItem = BlobItem(hash, blob)
-        blobItemRepository.save(blobItem)
-        return hash
+    fun storeBlobToDatabase(
+        @Payload documentId: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
+    ): String {
+        messageUtils.validateMessageType(type, MessageType.DataReceived)
+        if (documentId.isNotEmpty()) {
+            messageUtils.rejectMessageOnException {
+                logger.info("Received DocumentId $documentId and CorrelationId: $correlationId")
+                //TODO Connect here to the endpoint of the document service to retrieve a temp. stored document
+                // val hash = blob.sha256()
+                // val blobItem = BlobItem(hash, blob)
+                logger.info("Inserting document into database with documentId: $documentId and correlation id: $correlationId.")
+                // blobItemRepository.save(blobItem)
+                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                    documentId, MessageType.DocumentStored, correlationId, ExchangeNames.itemStored, RoutingKeyNames.document,
+                )
+            }
+        } else {
+            throw MessageQueueRejectException("Provided document ID is empty")
+        }
+        return documentId
     }
 
     /**

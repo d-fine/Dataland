@@ -5,6 +5,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -68,7 +69,7 @@ class QaService(
                     QaCompletedMessage(dataId, "By default, QA is passed"),
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, "data",
+                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.data,
                 )
             }
         } else {
@@ -78,7 +79,7 @@ class QaService(
 
     /**
      * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange
-     * @param documentHash the Hash of the document to be QAed
+     * @param documentId the Hash of the document to be QAed
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -94,7 +95,7 @@ class QaService(
                     ],
                 ),
                 exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
-                key = ["document"],
+                key = [RoutingKeyNames.document],
             ),
         ],
     )
@@ -113,7 +114,7 @@ class QaService(
                     QaCompletedMessage(documentId, "By default, QA is passed"),
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, "document",
+                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.document,
                 )
             }
         } else {

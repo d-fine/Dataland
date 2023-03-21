@@ -2,24 +2,29 @@ package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.documentmanager.model.Document
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
+import org.dataland.documentmanager.model.Document
 import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentQAStatus
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.annotation.*
+import org.springframework.amqp.rabbit.annotation.Argument
+import org.springframework.amqp.rabbit.annotation.Exchange
+import org.springframework.amqp.rabbit.annotation.Queue
+import org.springframework.amqp.rabbit.annotation.QueueBinding
+import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
@@ -42,7 +47,7 @@ class DocumentManager(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var messageUtils: MessageQueueUtils,
     @Autowired var objectMapper: ObjectMapper,
-    @Autowired private val pdfVerificationService: PdfVerificationService
+    @Autowired private val pdfVerificationService: PdfVerificationService,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -83,14 +88,16 @@ class DocumentManager(
 
     private fun generateDocumentMetaInfo(document: MultipartFile, correlationId: String): DocumentMetaInfo {
         logger.info("Generate document meta info for document with correlationId: $correlationId")
-        val filename = document.originalFilename ?:
-            throw InvalidInputApiException(
-            "Document without filename received",
-            "Document without filename received: $correlationId",
+        val filename = document.originalFilename
+            ?: throw InvalidInputApiException(
+                "Document without filename received",
+                "Document without filename received: $correlationId",
             )
         val documentId = document.bytes.sha256()
-        logger.info("Generated hash: $documentId for document with correlationId: $correlationId. " +
-                "The hash is also the documentId.")
+        logger.info(
+            "Generated hash: $documentId for document with correlationId: $correlationId. " +
+                "The hash is also the documentId.",
+        )
         return DocumentMetaInfo(
             documentId = documentId,
             displayTitle = filename,
@@ -112,12 +119,13 @@ class DocumentManager(
     }
 
     fun retrieveDocumentById(documentId: String): Document {
-        val metaDataInfoEntity = documentMetaInfoRepository.findById(documentId).orElseThrow{
+        val metaDataInfoEntity = documentMetaInfoRepository.findById(documentId).orElseThrow {
             ResourceNotFoundApiException("No document found", "No document with ID: $documentId could be found")
         }
         val fileData = inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)
         return Document(metaDataInfoEntity.displayTitle, fileData)
     }
+
     /**
      * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
      * stored in the persisted database. Further it logs success notification associated containing documentId and
@@ -138,7 +146,7 @@ class DocumentManager(
                     ],
                 ),
                 exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
-                key = ["document"],
+                key = [RoutingKeyNames.document],
             ),
         ],
     )
@@ -179,7 +187,7 @@ class DocumentManager(
                     ],
                 ),
                 exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
-                key = ["document"],
+                key = [RoutingKeyNames.document],
             ),
         ],
     )
@@ -196,8 +204,8 @@ class DocumentManager(
                 var metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
                 metaInformation.qaStatus = DocumentQAStatus.Accepted
                 logger.info(
-                    "Received quality assurance for document upload with DataId: "+
-                           "$documentId with Correlation Id: $correlationId",
+                    "Received quality assurance for document upload with DataId: " +
+                        "$documentId with Correlation Id: $correlationId",
                 )
             }
         } else {
