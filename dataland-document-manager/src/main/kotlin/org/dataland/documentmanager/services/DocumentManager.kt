@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.sha256
+import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -13,10 +14,10 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
-import org.dataland.documentmanager.model.Document
 import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentQAStatus
+import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -26,12 +27,14 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.InputStreamResource
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
 import java.time.Instant
 import java.util.UUID.randomUUID
 
@@ -44,6 +47,7 @@ import java.util.UUID.randomUUID
 class DocumentManager(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired val documentMetaInfoRepository: DocumentMetaInfoRepository,
+    @Autowired val storageApi: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var messageUtils: MessageQueueUtils,
     @Autowired var objectMapper: ObjectMapper,
@@ -56,20 +60,21 @@ class DocumentManager(
      * retrieved for other use
      *
      * @param document the multipart file which contains the uploaded document
-     * @returns the metainformation for the document
+     * @returns the meta information for the document
      */
     fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentMetaInfo {
         val correlationId = randomUUID().toString()
-        val documentBody = document.bytes
+        logger.info("Started temporary storage process for document with correlationId: $correlationId")
         val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
         val documentExists = documentMetaInfoRepository.existsById(documentMetaInfo.documentId)
         if (documentExists) {
             return documentMetaInfo
         }
+        val documentBody = document.bytes
         pdfVerificationService.assertThatBlobLooksLikeAPdf(documentBody, correlationId)
         logger.info("Started temporary storage process for document with correlationId: $correlationId")
         saveMetaInfoToDatabase(documentMetaInfo)
-        inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, document.bytes)
+        inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeNames.documentReceived,
         )
@@ -118,12 +123,34 @@ class DocumentManager(
         return DocumentExistsResponse(documentExists)
     }
 
-    fun retrieveDocumentById(documentId: String): Document {
+    fun retrieveDocumentById(documentId: String): DocumentStream {
+        val correlationId = randomUUID().toString()
         val metaDataInfoEntity = documentMetaInfoRepository.findById(documentId).orElseThrow {
-            ResourceNotFoundApiException("No document found", "No document with ID: $documentId could be found")
+            ResourceNotFoundApiException(
+                "No document found",
+                "No document with ID: $documentId could be found. CorrelationId: $correlationId",
+            )
         }
-        val fileData = inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)
-        return Document(metaDataInfoEntity.displayTitle, fileData)
+        if (metaDataInfoEntity.qaStatus != DocumentQAStatus.Accepted) {
+            throw ResourceNotFoundApiException(
+                "No accepted document found",
+                "A non-quality-assured document with ID: $documentId was found. " +
+                    "Only quality-assured documents can be retrieved. CorrelationId: $correlationId",
+            )
+        }
+
+        val documentDataStream = InputStreamResource(
+            inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)?.let {
+                logger.info("Received document $documentId from temporary storage")
+                ByteArrayInputStream(it)
+            }
+                ?: storageApi.selectBlobByHash(documentId, correlationId).inputStream()
+                    .let {
+                        logger.info("Received document $documentId from storage service")
+                        it
+                    },
+        )
+        return DocumentStream(metaDataInfoEntity.displayTitle, documentDataStream)
     }
 
     /**
@@ -201,7 +228,7 @@ class DocumentManager(
         val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
         if (documentId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
-                var metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
+                val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
                 metaInformation.qaStatus = DocumentQAStatus.Accepted
                 logger.info(
                     "Received quality assurance for document upload with DataId: " +

@@ -1,6 +1,5 @@
 package org.dataland.documentmanager.services
 
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -25,12 +24,8 @@ class InMemoryDocumentStore {
      * Retrieves the data identified by the given hash from the in-memory store.
      * Throws a ResourceNotFoundException if no such dataset exists.
      */
-    fun retrieveDataFromMemoryStore(sha256hash: String): ByteArray {
+    fun retrieveDataFromMemoryStore(sha256hash: String): ByteArray? {
         return dataInMemoryStorage[sha256hash]
-            ?: throw ResourceNotFoundApiException(
-                "Blob for hash \"$sha256hash\" not found in temporary storage",
-                "Dataland does not know the file identified by \"$sha256hash\"",
-            )
     }
 
     /**

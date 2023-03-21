@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -80,10 +81,10 @@ interface DocumentApi {
     )
     @GetMapping(
         value = ["/{documentId}"],
-        produces = ["application/pdf"],
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDocument(
         @PathVariable("documentId") documentId: String,
-    ): ResponseEntity<ByteArray>
+    ): ResponseEntity<InputStreamResource>
 }

@@ -112,11 +112,8 @@
             "content": {
               "application/pdf": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "byte"
-                  }
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
