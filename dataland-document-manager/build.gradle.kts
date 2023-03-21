@@ -63,17 +63,17 @@ openApi {
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
-//tasks.test {
-//    useJUnitPlatform()
-//
-//    extensions.configure(JacocoTaskExtension::class) {
-//        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
-//    }
-//}
-//
-//jacoco {
-//    toolVersion = jacocoVersion
-//}
+tasks.test {
+    useJUnitPlatform()
+
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+    }
+}
+
+jacoco {
+    toolVersion = jacocoVersion
+}
 
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
