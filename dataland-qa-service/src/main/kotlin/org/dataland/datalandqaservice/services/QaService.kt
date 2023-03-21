@@ -69,7 +69,8 @@ class QaService(
                     QaCompletedMessage(dataId, "By default, QA is passed"),
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.data,
+                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+                    RoutingKeyNames.data,
                 )
             }
         } else {
@@ -114,7 +115,8 @@ class QaService(
                     QaCompletedMessage(documentId, "By default, QA is passed"),
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.document,
+                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+                    RoutingKeyNames.document,
                 )
             }
         } else {

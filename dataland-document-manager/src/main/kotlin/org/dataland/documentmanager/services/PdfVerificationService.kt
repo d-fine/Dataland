@@ -22,7 +22,8 @@ class PdfVerificationService {
         try {
             PDDocument.load(blob).use {
                 if (it.numberOfPages <= 0) {
-                    logger.info("PDF document uploaded with correlation id: $correlationId seems to have 0 pages, aborting.")
+                    logger.info("PDF document uploaded with correlation id: $correlationId seems to have 0 pages, " +
+                            "aborting.")
                     throw InvalidInputApiException(
                         "You seem to have uploaded an empty PDF",
                         "We have detected that the pdf you uploaded has 0 pages.",
