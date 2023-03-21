@@ -134,6 +134,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 sourceSets {
     val main by getting
     main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/document-manager/src/main/kotlin")
 }
 
 ktlint {
