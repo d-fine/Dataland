@@ -26,7 +26,7 @@ export const companyDataExplanations = {
   sector: "GICS classification, “Sector” level",
   isin: "A 12-digit alphanumeric code that uniquely identifies a specific security",
   permId: "An open standard from Refinitiv",
-  lei: "The Legal Entity Identifier (LEI) is a a 20-character alphanumeric string",
+  lei: "The Legal Entity Identifier (LEI) is a 20-character alphanumeric string",
   duns: "A unique nine-digit identifier for businesses",
   ticker: "An abbreviation used to identify financial instruments on stock exchanges",
   companyRegistrationNumber: "Identification number assigned to a company in the commercial register",

@@ -25,6 +25,7 @@ export function fillCompanyUploadFields(companyName: string): void {
   cy.get("input[name=headquartersPostalCode]").type("123456", { force: true });
   cy.get("input[name=companyLegalForm]").type("Enterprise Ltd.", { force: true });
   cy.get("input[name=website]").type("www.company.com", { force: true });
+  cy.get("input[name=lei]").type(`LeiValueId:${crypto.randomUUID()}`, { force: true });
   cy.get("input[name=isin]").type(`IsinValueId:${crypto.randomUUID()}`, { force: true });
   cy.get("input[name=ticker]").type(`TickerValueId:${crypto.randomUUID()}`, { force: true });
   cy.get("input[name=permId]").type(`PermValueId:${crypto.randomUUID()}`, { force: true });

@@ -85,9 +85,11 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(searchBarSelector).click();
         cy.get(searchBarSelector).type(searchString, { force: true });
         cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        cy.intercept("**/api/companies/*").as("searchCompany");
         const companySelector = ".p-autocomplete-item";
         cy.get(companySelector).first().scrollIntoView();
         cy.get(companySelector).first().click({ force: true });
+        cy.wait("@searchCompany", { timeout: Cypress.env("long_timeout_in_ms") as number });
       }
 
       /**

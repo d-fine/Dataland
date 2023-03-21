@@ -28,7 +28,7 @@ export function logout(): void {
 export function login(username = reader_name, password = reader_pw, otpGenerator?: () => string): void {
   cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
   cy.visitAndCheckAppMount("/")
-    .wait("@youtube")
+    .wait("@youtube", { timeout: Cypress.env("medium_timeout_in_ms") as number })
     .get("button[name='login_dataland_button']")
     .click()
     .get("#username")

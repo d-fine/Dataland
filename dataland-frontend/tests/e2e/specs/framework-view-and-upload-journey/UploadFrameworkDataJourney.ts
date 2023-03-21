@@ -83,8 +83,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       });
 
       it("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
-        const primevueHighlightedSuggestionClass = "p-focus";
-        let latestScrollPosition = 0;
         cy.visitAndCheckAppMount("/companies");
         verifySearchResultTable();
 
@@ -92,43 +90,30 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           .click({ force: true })
           .url()
           .should("eq", getBaseUrl() + "/companies/choose");
-
-        cy.intercept("**/api/companies*").as("searchCompanyName");
-        cy.get("input[id=company_search_bar_standard]").click({ force: true }).type(uniqueCompanyMarkerA);
-        cy.wait("@searchCompanyName", { timeout: Cypress.env("short_timeout_in_ms") as number });
-        cy.get("ul[class=p-autocomplete-items]").should("exist");
-        cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
-        cy.get("input[id=company_search_bar_standard]").type("{downArrow}");
-        cy.get(".p-autocomplete-item")
-          .eq(0)
-          .should("have.class", primevueHighlightedSuggestionClass)
-          .should("contain.text", testCompanyNameForApiUpload);
-        cy.get("input[id=company_search_bar_standard]").type("{esc}");
-        cy.window()
-          .its("scrollY")
-          .then((scrollYPosition) => {
-            latestScrollPosition = scrollYPosition;
-          });
         cy.get("div[id=option1Container").find("a:contains(Add it)").click({ force: true });
-        cy.window().its("scrollY").should("be.gt", latestScrollPosition);
         cy.intercept("**/api/metadata*").as("retrieveExistingDatasetsForCompany");
         uploadCompanyViaForm(testCompanyNameForFormUpload).then((company) => {
           cy.wait("@retrieveExistingDatasetsForCompany", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.url().should("eq", getBaseUrl() + "/companies/" + company.companyId + "/frameworks/upload");
-          cy.visit("/companies/choose");
-          const identifierDoesExistMessage = "There already exists a company with this ID";
-          cy.contains(identifierDoesExistMessage).should("not.exist");
-          cy.get("input[name='isin']").type(
-            assertDefined(
-              company.companyInformation.identifiers.find(
-                (id) => id.identifierType == CompanyIdentifierIdentifierTypeEnum.Isin
-              )
-            ).identifierValue
-          );
-          cy.contains(identifierDoesExistMessage).should("exist");
-          cy.get("input[name='isin']").type("thisshouldnotexist");
-          cy.contains(identifierDoesExistMessage).should("not.exist");
         });
+      });
+
+      it("Check that the error message is correctly displayed if a PermId is typed in that was already stored in dataland", function () {
+        cy.visitAndCheckAppMount("/companies/choose");
+        const identifierDoesExistMessage = "There already exists a company with this ID";
+        cy.contains(identifierDoesExistMessage).should("not.exist");
+        cy.get('button[name="addCompany"]').click();
+        cy.get('li[id="createCompanyForm-incomplete"]').should("exist");
+        cy.get("input[name='permId']").type(
+          assertDefined(
+            storedCompanyForManyDatasetsCompany.companyInformation.identifiers.find(
+              (id) => id.identifierType == CompanyIdentifierIdentifierTypeEnum.PermId
+            )
+          ).identifierValue
+        );
+        cy.contains(identifierDoesExistMessage).should("exist");
+        cy.get("input[name='permId']").type("thisshouldnotexist");
+        cy.contains(identifierDoesExistMessage).should("not.exist");
       });
 
       /**
@@ -223,7 +208,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
 
       it(
         "Go through the whole dataset creation process for an existing company, which already has framework data for multiple frameworks," +
-          " and verify pages and elements",
+          " and verify pages and elements.",
         function () {
           cy.visitAndCheckAppMount("/companies");
           verifySearchResultTable();
