@@ -1,6 +1,7 @@
 package org.dataland.documentmanager.services
 
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -25,11 +26,10 @@ class DocumentManager {
             "Document without filename received",
             "Document without filename received: $correlationId",
             )
-        //val uploaderId =
         return DocumentMetaInfo(
-            documentId = "",
+            documentId = document.bytes.sha256(),
             displayTitle = filename,
-            uploaderId = "",
+            uploaderId = DatalandAuthentication.fromContext().userId,
         )
     }
 }

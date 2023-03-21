@@ -23,7 +23,7 @@ interface DocumentApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved document."),
+            ApiResponse(responseCode = "200", description = "Successfully uploaded document."),
         ],
     )
     @PostMapping(

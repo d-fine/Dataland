@@ -1,7 +1,6 @@
 package org.dataland.documentmanager.services
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.utils.sha256
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -16,8 +15,7 @@ class InMemoryDocumentStore {
     /**
      * Stores the provided dataset in memory identified by its sha256 hash.
      */
-    fun storeDataInMemory(data: ByteArray): String {
-        val hash = data.sha256()
+    fun storeDataInMemory(hash: String, data: ByteArray): String {
         dataInMemoryStorage[hash] = data
         logger.debug("Stored blob with hash $hash to the in-memory store")
         return hash

@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
-class DocumentController: DocumentApi {
-    override fun getDocument(documentId: String): ResponseEntity<DocumentMetaInfo> {
-        return ResponseEntity.ok(DocumentMetaInfo(documentId, "Test Document"))
+class DocumentController(
+    @Autowired val documentManager: DocumentManager,
+): DocumentApi {
+    override fun postDocument(pdfDocument: MultipartFile): ResponseEntity<DocumentMetaInfo> {
+        return ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(pdfDocument))
     }
 }
