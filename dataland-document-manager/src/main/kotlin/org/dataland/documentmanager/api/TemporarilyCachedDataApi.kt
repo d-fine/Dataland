@@ -31,5 +31,5 @@ interface TemporarilyCachedDataApi {
         produces = ["application/octet-stream"],
     )
     fun getReceivedData(@PathVariable("sha256hash") sha256hash: String):
-            ResponseEntity<ByteArray>
+        ResponseEntity<ByteArray>
 }

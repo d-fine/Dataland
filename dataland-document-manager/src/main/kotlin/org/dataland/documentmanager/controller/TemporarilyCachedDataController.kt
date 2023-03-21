@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 class TemporarilyCachedDataController(
-    @Autowired private val inMemoryStore: InMemoryDocumentStore
-): TemporarilyCachedDataApi {
+    @Autowired private val inMemoryStore: InMemoryDocumentStore,
+) : TemporarilyCachedDataApi {
     override fun getReceivedData(sha256hash: String): ResponseEntity<ByteArray> {
         val dataset = inMemoryStore.retrieveDataFromMemoryStore(sha256hash)
         return ResponseEntity.ok(dataset)
