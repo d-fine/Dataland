@@ -50,7 +50,7 @@ class QaService(
                     ],
                 ),
                 exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
-                key = ["data"],
+                key = [RoutingKeyNames.data],
             ),
         ],
     )
