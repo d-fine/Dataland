@@ -112,6 +112,10 @@ class DocumentManager(
         )
     }
 
+    /**
+     * This method checks whether a document is already stored in the database or not
+     * @param documentId the documentId of the document to be checked
+     */
     fun checkIfDocumentExistsWithId(documentId: String): DocumentExistsResponse {
         logger.info("Check if document exists with documentId: $documentId")
         val documentExists = documentMetaInfoRepository.existsById(documentId)
@@ -122,7 +126,10 @@ class DocumentManager(
         }
         return DocumentExistsResponse(documentExists)
     }
-
+    /**
+     * This method retrieves a document from the storage
+     * @param documentId the documentId of the document to be retrieved
+     */
     fun retrieveDocumentById(documentId: String): DocumentStream {
         val correlationId = randomUUID().toString()
         val metaDataInfoEntity = documentMetaInfoRepository.findById(documentId).orElseThrow {
