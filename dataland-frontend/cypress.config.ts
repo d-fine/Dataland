@@ -51,7 +51,11 @@ export default defineConfig({
     e2e: {
         baseUrl: "https://local-dev.dataland.com",
         setupNodeEvents(on, config) {
-            if (config.env["EXECUTION_ENVIRONMENT"] === "developmentLocal") {
+            const executionEnvironment = config.env["EXECUTION_ENVIRONMENT"];
+            const dataEnvironment = config.env["DATA_ENVIRONMENT"];
+
+            console.log(`Execution environment: ${executionEnvironment}; dataEnvironment: ${dataEnvironment}`);
+            if (executionEnvironment === "developmentLocal") {
                 console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
                 config.specPattern = ["tests/e2e/specs"];
                 config.defaultCommandTimeout = 22000

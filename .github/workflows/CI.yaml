@@ -52,12 +52,6 @@ jobs:
       - name: Frontend component testing
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace
         if: always()
-      - name: Upload FE lcov Exec Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: lcovResults
-          path: ./dataland-frontend/coverage/lcov.info
       - name: Upload FE Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -109,12 +103,14 @@ jobs:
       - name: verify OpenApi Files
         if: always()
         run: testing/verifyOpenApiFiles.sh
-      - name: Upload Test Reports
+      - name: Upload Test and Coverage Reports
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: TestReport
-          path: ./**/build/reports
+          name: GradleReports
+          path: |
+            ./**/build/reports
+            ./**/coverage
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -213,18 +209,15 @@ jobs:
         with:
           name: lcovResults
           path: ./*.info
-      - name: Upload FE E2E Cypress Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress
-          path: ./cypress
-      - name: Upload E2E Test Reports
+      - name: Upload E2E Test and Cypress Reports
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: e2eTestReports
-          path: ./reports
+          path: |
+            ./cypress
+            ./coverage
+            ./reports
       - name: Upload database dumps
         if: always()
         uses: actions/upload-artifact@v3
@@ -290,7 +283,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Sonar
         if: always()
-        run: ./gradlew sonar --no-daemon --stacktrace
+        run: |
+          touch ./build/reports/sonarProperties.txt
+          ./gradlew sonar -D"sonar.scanner.dumpToFile"="./build/reports/sonarProperties.txt" --no-daemon --stacktrace
+          ./gradlew sonar --no-daemon --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
