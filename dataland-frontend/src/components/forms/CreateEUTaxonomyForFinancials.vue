@@ -218,6 +218,15 @@
                         />
                       </div>
                     </div>
+
+                    <!-- EU Taxonomy activity level reporting -->
+                    <div class="form-field">
+                      <YesNoComponent
+                        :displayName="euTaxonomyKpiNameMappings.reportingObligation"
+                        :info="euTaxonomyKpiInfoMappings.reportingObligation"
+                        :name="'reportingObligation'"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -227,7 +236,7 @@
                   </div>
 
                   <!-- Level of assurance -->
-                  <div class="col-9 formFields">
+                  <div data-test="assuranceSection" class="col-9 formFields">
                     <h3 class="mt-0">Assurance</h3>
                     <FormKit name="assurance" type="group">
                       <!-- Level of assurance -->
@@ -333,6 +342,7 @@
                       <PrimeButton
                         @click="confirmeSelectedKPIs"
                         :disabled="!selectedKPIs.length"
+                        data-test="addKpisButton"
                         class="m-0"
                         label="ADD RELATED KPIS"
                       />
@@ -340,7 +350,12 @@
                   </div>
                 </div>
 
-                <div v-for="copanyType of confirmedSelectedKPIs" :key="copanyType" class="uploadFormSection">
+                <div
+                  v-for="copanyType of confirmedSelectedKPIs"
+                  :key="copanyType"
+                  :data-test="copanyType.value"
+                  class="uploadFormSection"
+                >
                   <div class="flex w-full">
                     <div class="p-3 topicLabel">
                       <h3 :id="copanyType.value" class="anchor title">{{ copanyType.label }}</h3>
@@ -356,8 +371,9 @@
 
                   <FormKit :name="copanyType.value" type="group">
                     <div
-                      v-for="kpiType of euTaxonomyKPIsModel[copanyType.value]"
-                      :key="kpiType"
+                      v-for="(kpiType, index) of euTaxonomyKPIsModel[copanyType.value]"
+                      :key="index"
+                      :data-test="kpiType"
                       class="uploadFormSection"
                     >
                       <div class="col-9 formFields">
@@ -379,10 +395,11 @@
                   </FormKit>
 
                   <FormKit name="eligibilityKpis" type="group">
-                    <FormKit :name="euTaxonomyKPIsModel.companyTypeToEligibilityKpis[copanyType.value]" type="group">
+                    <FormKit :name="euTaxonomyKPIsModel?.companyTypeToEligibilityKpis[copanyType.value]" type="group">
                       <div
                         v-for="kpiTypeEligibility of euTaxonomyKPIsModel.eligibilityKpis"
                         :key="kpiTypeEligibility"
+                        :data-test="kpiTypeEligibility"
                         class="uploadFormSection"
                       >
                         <div class="col-9 formFields">

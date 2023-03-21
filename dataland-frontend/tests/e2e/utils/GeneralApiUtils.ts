@@ -76,6 +76,7 @@ export function interceptAllAndCheckFor500Errors(): void {
  */
 export function getPreparedFixture<T>(name: string, preparedFixtures: FixtureData<T>[]): FixtureData<T> {
   const preparedFixture = preparedFixtures.find((it): boolean => it.companyInformation.companyName == name)!;
+  console.log("preparedFixture", preparedFixture);
   if (!preparedFixture) {
     throw new ReferenceError(
       "Variable preparedFixture is undefined because the provided company name could not be found in the prepared fixtures."

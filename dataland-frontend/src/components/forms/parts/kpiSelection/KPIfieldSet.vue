@@ -16,7 +16,7 @@
         name="value"
         validation-label=""
         placeholder="Value %"
-        step="0.01"
+        step="0.001"
         min="0"
         validation="required|number|between:0,100"
         :inner-class="{
@@ -42,14 +42,7 @@
           </div>
           <div>
             <UploadFormHeader :name="kpiNameMappings.page ?? ''" :explanation="kpiInfoMappings.page ?? ''" />
-            <FormKit
-              outer-class="w-100"
-              type="number"
-              validation="required"
-              name="page"
-              placeholder="Page"
-              validation-label="Page"
-            />
+            <FormKit outer-class="w-100" type="number" name="page" placeholder="Page" validation-label="Page" />
           </div>
         </div>
       </FormKit>
@@ -95,7 +88,7 @@ export default defineComponent({
   data: () => ({
     files: useFilesUploadedStore(),
     dataPointIsAvailable: true,
-    dataQualityList: ["Audited", "Reported", "Estimated", "Incomplete"],
+    dataQualityList: ["NA", "Audited", "Reported", "Estimated", "Incomplete"],
   }),
   props: {
     name: {

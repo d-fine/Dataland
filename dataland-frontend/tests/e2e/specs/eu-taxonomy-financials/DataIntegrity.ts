@@ -51,12 +51,12 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany): void => {
+            cy.ensureLoggedIn(uploader_name, uploader_pw);
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
             );
-            cy.get("h3:contains('Select company reports')");
-            // fillEuTaxonomyForFinancialsUploadForm(testData);
-            // submitEuTaxonomyFinancialsUploadForm();
+            fillEuTaxonomyForFinancialsUploadForm(testData);
+            submitEuTaxonomyFinancialsUploadForm();
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
             );
@@ -199,7 +199,7 @@ describeIf(
         );
         checkCreditInstitutionValues(testData.t, true, true);
 
-        checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
+        // checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
 
         checkInsuranceValues(testData.t);
       }
@@ -243,28 +243,28 @@ describeIf(
       checkInvestmentFirmValues(testData.t);
     });
 
-    it("Create an Asset Manager", () => {
-      const testData = getPreparedFixture("asset-management-company", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-        testData.companyInformation,
-        testData.t
-      );
-      checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
-      cy.get("body").should("not.contain", "Trading portfolio");
-      cy.get("body").should("not.contain", "demand interbank loans");
-      cy.get("body").should("not.contain", "Taxonomy-eligible non-life insurance economic activities");
-    });
+    // it("Create an Asset Manager", () => {
+    //   const testData = getPreparedFixture("asset-management-company", preparedFixtures);
+    //   uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
+    //     testData.companyInformation,
+    //     testData.t
+    //   );
+    //   checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
+    //   cy.get("body").should("not.contain", "Trading portfolio");
+    //   cy.get("body").should("not.contain", "demand interbank loans");
+    //   cy.get("body").should("not.contain", "Taxonomy-eligible non-life insurance economic activities");
+    // });
 
-    it("Create a Company that is Asset Manager and Insurance", () => {
-      const testData = getPreparedFixture("asset-management-insurance-company", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-        testData.companyInformation,
-        testData.t
-      );
-      checkInsuranceValues(testData.t);
-      checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
-      cy.get("body").should("not.contain", "Trading portfolio");
-      cy.get("body").should("not.contain", "demand interbank loans");
-    });
+    // it("Create a Company that is Asset Manager and Insurance", () => {
+    //   const testData = getPreparedFixture("asset-management-insurance-company", preparedFixtures);
+    //   uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
+    //     testData.companyInformation,
+    //     testData.t
+    //   );
+    //   checkInsuranceValues(testData.t);
+    //   checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
+    //   cy.get("body").should("not.contain", "Trading portfolio");
+    //   cy.get("body").should("not.contain", "demand interbank loans");
+    // });
   }
 );

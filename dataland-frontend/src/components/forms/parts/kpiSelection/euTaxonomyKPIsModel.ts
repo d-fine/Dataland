@@ -1,6 +1,7 @@
 export const euTaxonomyKPIsModel = {
   creditInstitutionKpis: ["tradingPortfolio", "interbankLoans", "tradingPortfolioAndInterbankLoans", "greenAssetRatio"],
   insuranceKpis: ["taxonomyEligibleNonLifeInsuranceActivities"],
+  investmentFirmKpis: ["greenAssetRatio"],
   eligibilityKpis: [
     "taxonomyEligibleActivity",
     "taxonomyNonEligibleActivity",
@@ -8,7 +9,6 @@ export const euTaxonomyKPIsModel = {
     "banksAndIssuers",
     "investmentNonNfrd",
   ],
-  investmentFirmKpis: ["greenAssetRatio"],
   companyTypeToEligibilityKpis: {
     creditInstitutionKpis: "CreditInstitution",
     insuranceKpis: "InsuranceOrReinsurance",
@@ -24,6 +24,7 @@ export const euTaxonomyKpiNameMappings = {
   taxonomyNonEligibleActivity: "Taxonomy non Eligible Activity",
   taxonomyEligibleActivity: "Taxonomy Eligible Activity",
   reportDate: "Report Date",
+  reportingObligation: "Reporting Obligation",
 
   iSfS: "IS/FS",
   fsCompanyType: "FS - Company Type",
@@ -115,6 +116,7 @@ export const euTaxonomyKpiNameMappings = {
 
 export const euTaxonomyKpiInfoMappings = {
   financialServicesTypes: "Financial Services Types",
+  reportingObligation: "Reporting Obligation",
   investmentNonNfrd: "Investment Non NFRD",
   banksAndIssuers: "Banks and Issuers",
   derivatives: "For financial companies (FS), the percentage of total assets exposed to derivatives",
