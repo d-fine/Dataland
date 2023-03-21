@@ -43,10 +43,10 @@ class CloudEventMessageHandler(
      * @param correlationId to be used as ID in header of CloudEvents message
      * @param exchange RabbitMQ exchange to send the constructed message to
      */
-    fun buildCEMessageAndSendToQueue(body: String, type: String, correlationId: String, exchange: String) {
+    fun buildCEMessageAndSendToQueue(body: String, type: String, correlationId: String, exchange: String, routingKey: String = "") {
         val messageInput = buildCEMessage(body, type, correlationId)
         try {
-            rabbitTemplate.send(exchange, "", messageInput)
+            rabbitTemplate.send(exchange, routingKey, messageInput)
         } catch (exception: AmqpException) {
             val internalMessage = "Error sending message to $exchange." +
                 " Received AmqpException with message: ${exception.message}. Correlation ID: $correlationId."

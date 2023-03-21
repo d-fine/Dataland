@@ -133,7 +133,7 @@ class DataManager(
                     ],
                 ),
                 exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
-                key = [""],
+                key = ["data"],
             ),
         ],
     )
