@@ -4,7 +4,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
-import org.dataland.documentmanager.model.Document
+import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentQAStatus
@@ -36,7 +36,7 @@ class DocumentManager(
      * retrieved for other use
      *
      * @param document the multipart file which contains the uploaded document
-     * @returns the metainformation for the document
+     * @returns the meta information for the document
      */
     fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentMetaInfo {
         val correlationId = randomUUID().toString()
@@ -91,11 +91,29 @@ class DocumentManager(
         return DocumentExistsResponse(documentExists)
     }
 
-    fun retrieveDocumentById(documentId: String): Document {
+    fun retrieveDocumentById(documentId: String): DocumentStream {
+        val correlationId = randomUUID().toString()
         val metaDataInfoEntity = documentMetaInfoRepository.findById(documentId).orElseThrow{
-            ResourceNotFoundApiException("No document found", "No document with ID: $documentId could be found")
+            ResourceNotFoundApiException("No document found",
+                "No document with ID: $documentId could be found. CorrelationId: $correlationId")
         }
-        val fileData = inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)
-        return Document(metaDataInfoEntity.displayTitle, fileData)
+        if (metaDataInfoEntity.qaStatus != DocumentQAStatus.Accepted){
+            throw ResourceNotFoundApiException("No accepted document found",
+                "A non-quality-assured document with ID: $documentId was found. " +
+                        "Only quality-assured documents can be retrieved. CorrelationId: $correlationId")
+        }
+
+        val documentDataStream = InputStreamResource(
+            inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)?.let {
+                logger.info("Received document $documentId from temporary storage")
+                ByteArrayInputStream(it)
+            } ?:
+                storageApi.selectBlobByHash(documentId, correlationId).inputStream()
+                    .let {
+                logger.info("Received document $documentId from storage service")
+                it
+            }
+        )
+        return DocumentStream(metaDataInfoEntity.displayTitle, documentDataStream)
     }
 }

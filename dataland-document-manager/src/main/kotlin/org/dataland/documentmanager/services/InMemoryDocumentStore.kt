@@ -1,6 +1,5 @@
 package org.dataland.documentmanager.services
 
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
