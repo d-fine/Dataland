@@ -1,6 +1,6 @@
 package org.dataland.datalandinternalstorage.services
 
-import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
+import org.dataland.documentmanager.openApiClient.api.TemporarilyCachedDocumentControllerApi
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,14 +11,14 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 class ConfigurationTemporarilyCachedDocumentControllerApi(
-    @Value("\${dataland.backend.base-url}")
-    private val backendBaseUrl: String,
+    @Value("\${dataland.document-manager.base-url}")
+    private val documentManagerBaseUrl: String,
 ) {
     /**
-     * The bean to configure the internal client StorageControllerApi
+     * The bean to configure the internal client TemporarilyCachedDocumentControllerApi
      */
     @Bean
-    fun getTemporarilyCachedDataApiClient(): TemporarilyCachedDataControllerApi {
-        return TemporarilyCachedDataControllerApi(basePath = backendBaseUrl)
+    fun getTemporarilyCachedDocumentApiClient(): TemporarilyCachedDocumentControllerApi {
+        return TemporarilyCachedDocumentControllerApi(basePath = documentManagerBaseUrl)
     }
 }
