@@ -3,6 +3,7 @@ package org.dataland.documentmanager.services
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
+import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentQAStatus
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
@@ -72,5 +73,16 @@ class DocumentManager(
             uploadTime = Instant.now().toEpochMilli(),
             qaStatus = DocumentQAStatus.Pending,
         )
+    }
+
+    fun checkIfDocumentExistsWithId(documentId: String): DocumentExistsResponse {
+        logger.info("Check if document exists with documentId: $documentId")
+        val documentExists = documentMetaInfoRepository.existsById(documentId)
+        if (documentExists) {
+            logger.info("Document with ID: $documentId exists")
+        } else {
+            logger.info("Document with ID: $documentId does not exist")
+        }
+        return DocumentExistsResponse(documentExists)
     }
 }
