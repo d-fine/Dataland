@@ -50,7 +50,6 @@ class DocumentManager(
     @Autowired val storageApi: StorageControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var messageUtils: MessageQueueUtils,
-    @Autowired var objectMapper: ObjectMapper,
     @Autowired private val pdfVerificationService: PdfVerificationService,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -232,7 +231,7 @@ class DocumentManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QACompleted)
-        val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
+        val documentId = ObjectMapper().readValue(jsonString, QaCompletedMessage::class.java).identifier
         if (documentId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
                 val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
