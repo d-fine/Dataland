@@ -38,9 +38,10 @@ services:
       - keycloak-db
       - api-key-manager-db
       - internal-storage-db
+      - document-manager-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5436:5433-5436"
+      - "127.0.0.1:5433-5437:5433-5437"
       - "127.0.0.1:5672:5672"
   api-key-manager:
     restart: always
@@ -78,6 +79,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal
+      - document-manager-db
     image: ${DOCUMENT_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_document_manager_test:${DATALAND_DOCUMENT_MANAGER_TEST_VERSION}}
     expose:
       - "8080"
@@ -85,6 +87,24 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS: ${RABBITMQ_PASS}
+      DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
+  document-manager-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - document-manager-db
+    image: postgres:15.2
+    volumes:
+      - document_manager_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: document_manager
+      POSTGRES_USER: document_manager
+      POSTGRES_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
+      PGUSER: document_manager
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
   backend:
     restart: always
     profiles: ["production", "testing"]
@@ -317,6 +337,7 @@ networks:
   backend-db:
   api-key-manager-db:
   internal-storage-db:
+  document-manager-db:
 volumes:
   keycloak_data:
     driver: local
@@ -333,4 +354,6 @@ volumes:
   pgadmin_config:
     driver: local
   frontend-dev-node-modules:
+    driver: local
+  document_manager_data:
     driver: local
