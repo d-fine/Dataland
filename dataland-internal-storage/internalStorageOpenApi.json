@@ -80,6 +80,67 @@
         }
       }
     },
+    "/blobs": {
+      "get": {
+        "tags": [
+          "storage-controller"
+        ],
+        "summary": "Request blobs by its sha256 hash",
+        "description": "Requests blobs by its sha256 hash",
+        "operationId": "selectBlobByHash",
+        "parameters": [
+          {
+            "name": "sha256hash",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "correlationId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved blob.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/actuator": {
       "get": {
         "tags": [

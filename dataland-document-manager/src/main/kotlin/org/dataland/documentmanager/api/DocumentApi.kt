@@ -64,4 +64,26 @@ interface DocumentApi {
     fun checkDocument(
         @PathVariable("documentId") documentId: String,
     ): ResponseEntity<DocumentExistsResponse>
+
+    /**
+     * Retrieve a document by its Id
+     * @param documentId the Id to check
+     */
+    @Operation(
+        summary = "Receive a document.",
+        description = "Receive a document by its Id from internal storage.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully received document."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{documentId}"],
+        produces = ["application/pdf"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getDocument(
+        @PathVariable("documentId") documentId: String,
+    ): ResponseEntity<ByteArray>
 }

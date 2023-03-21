@@ -8,4 +8,4 @@ RUN wget https://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.8.8
     rm ./jacoco-0.8.8.zip
 CMD ["java","-javaagent:/jar/jacocoagent.jar=excludes=org.springframework.*,","-jar","/jar/dataland-document-manager.jar","--spring.profiles.active=ci"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://document-manager:8080/api/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://document-manager:8080/documents/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false

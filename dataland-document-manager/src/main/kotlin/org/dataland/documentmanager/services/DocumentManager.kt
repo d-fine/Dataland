@@ -40,12 +40,16 @@ class DocumentManager(
     fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentMetaInfo {
         val correlationId = randomUUID().toString()
         val documentBody = document.bytes
+        val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
+        val documentExists = documentMetaInfoRepository.existsById(documentMetaInfo.documentId)
+        if (documentExists) {
+            return documentMetaInfo
+        }
         pdfVerificationService.assertThatBlobLooksLikeAPdf(documentBody, correlationId)
         logger.info("Started temporary storage process for document with correlationId: $correlationId")
-        val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
         saveMetaInfoToDatabase(documentMetaInfo)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
-        // TODO sent message
+        // TODO send message
         return documentMetaInfo
     }
 
