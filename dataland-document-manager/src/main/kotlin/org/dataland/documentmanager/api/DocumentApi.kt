@@ -20,6 +20,10 @@ import org.springframework.web.multipart.MultipartFile
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface DocumentApi {
+    /**
+     * Upload a document
+     * @param pdfDocument a PDF/A document
+     */
     @Operation(
         summary = "Upload a document.",
         description = "Upload a document and receive meta information",
@@ -34,7 +38,7 @@ interface DocumentApi {
         produces = ["application/json"],
         consumes = ["multipart/form-data"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun postDocument(
         @RequestPart("pdfDocument") pdfDocument: MultipartFile,
     ): ResponseEntity<DocumentMetaInfo>
