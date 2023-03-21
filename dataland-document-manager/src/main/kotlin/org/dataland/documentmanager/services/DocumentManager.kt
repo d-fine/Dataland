@@ -24,8 +24,9 @@ import java.util.UUID.randomUUID
  */
 @Component
 class DocumentManager(
-    @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired val documentMetaInfoRepository: DocumentMetaInfoRepository,
+    @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
+    @Autowired private val documentMetaInfoRepository: DocumentMetaInfoRepository,
+    @Autowired private val pdfVerificationService: PdfVerificationService
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -38,10 +39,12 @@ class DocumentManager(
      */
     fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentMetaInfo {
         val correlationId = randomUUID().toString()
+        val documentBody = document.bytes
+        pdfVerificationService.assertThatBlobLooksLikeAPdf(documentBody, correlationId)
         logger.info("Started temporary storage process for document with correlationId: $correlationId")
         val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
         saveMetaInfoToDatabase(documentMetaInfo)
-        inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, document.bytes)
+        inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         // TODO sent message
         return documentMetaInfo
     }

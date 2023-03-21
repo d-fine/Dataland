@@ -12,7 +12,7 @@ class PdfVerificationServiceTest {
     fun `verifies that a valid pdf document passes the basic checks`() {
         val testFileStream = javaClass.getResourceAsStream("samplePdfs/StandardWordExport.pdf")
         val testFileBytes = IOUtils.toByteArray(testFileStream)
-        pdfVerificationService.assertThatABlobLooksLikeAPdfOnTheSurface(testFileBytes)
+        pdfVerificationService.assertThatBlobLooksLikeAPdf(testFileBytes, "test-correlation-id")
     }
 
     @Test
@@ -20,7 +20,7 @@ class PdfVerificationServiceTest {
         val testFileStream = javaClass.getResourceAsStream("samplePdfs/EmptyExcelFile.xlsx")
         val testFileBytes = IOUtils.toByteArray(testFileStream)
         assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatABlobLooksLikeAPdfOnTheSurface(testFileBytes)
+            pdfVerificationService.assertThatBlobLooksLikeAPdf(testFileBytes, "test-correlation-id")
         }
     }
 }
