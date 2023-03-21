@@ -28,14 +28,15 @@ export default defineComponent({
      */
     initKeycloak(): Promise<Keycloak> {
       const keycloak = new Keycloak(this.keycloakInitOptions);
+
       keycloak.onAuthLogout = () => {
         console.log("Logging out")
-        keycloak.login()
       }
       keycloak.onAuthSuccess = () => {console.log("onAuthSuccess")}
       keycloak.onAuthError = () => {console.log("onAuthError")}
       keycloak.onAuthRefreshSuccess = () => {console.log("onAuthRefreshSuccess")}
       keycloak.onAuthRefreshError = () => {console.log("onAuthRefreshError")}
+
       return keycloak
         .init({
           onLoad: "check-sso",
@@ -60,8 +61,8 @@ export default defineComponent({
     const resolvedKeycloakPromise = await this.keycloakPromise
     if(resolvedKeycloakPromise) {
       setInterval(() => {
-        console.log("run")
-        resolvedKeycloakPromise.updateToken(5).then((refreshed) => {
+      // console.log(resolvedKeycloakPromise.loadUserInfo())
+      /*resolvedKeycloakPromise.updateToken(5).then((refreshed) => {
           if (refreshed) {
             console.log('Token refreshed' + refreshed);
           } else {
@@ -69,7 +70,7 @@ export default defineComponent({
           }
         }).catch(() => {
           console.error('Failed to refresh token');
-        });
+        });*/
       }, 6000)
     }
   },

@@ -28,6 +28,7 @@ export default defineComponent({
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
+            console.log("Authentication wrapper says your are not logged in anymore")
             return keycloak.login();
           }
         })
