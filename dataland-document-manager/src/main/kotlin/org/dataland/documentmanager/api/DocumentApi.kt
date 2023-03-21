@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 
 /**
- * Defines the restful dataland document manager API regarding data exchange
+ * Defines the restful dataland document manager API regarding document exchange
  */
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
