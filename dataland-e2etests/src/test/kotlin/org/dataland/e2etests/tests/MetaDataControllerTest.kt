@@ -328,9 +328,10 @@ class MetaDataControllerTest {
                 reportingPeriod
             )
         )
-        Thread.sleep(1000)
         val newNumberOfEmployees = (frameworkDataAlpha.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
         val frameworkDataBeta = frameworkDataAlpha.copy(numberOfEmployees = newNumberOfEmployees)
+        // Wait to avoid Error 500 when immediately uploading two datasets for same framework, company and reporting date
+        Thread.sleep(1000)
         uploadedMetadata.add(
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
                 companyId,
@@ -339,7 +340,6 @@ class MetaDataControllerTest {
             )
         )
         apiAccessor.ensureQaIsPassed(uploadedMetadata)
-        Thread.sleep(1000)
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val activeDataset =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEuTaxonomyDataForNonFinancials(

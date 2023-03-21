@@ -108,6 +108,11 @@ class ApiAccessor {
         )
     }
 
+    /**
+     * Uploads each of the datasets provided in [listOfFrameworkData] for each of the companies provided in
+     * [listOfCompanyInformation] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
+     * times for the same company a wait of at least [waitTimeBeforeNextUpload] is necessary to avoid an error 500.
+     */
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         listOfCompanyInformation: List<CompanyInformation>,
         listOfFrameworkData: List<T>,
@@ -119,19 +124,18 @@ class ApiAccessor {
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
         reportingPeriod: String = "",
         ensureQaPassed: Boolean = true,
+        waitTimeBeforeNextUpload: Long = 1000
     ): List<UploadInfo> {
+        val waitNecessary = (listOfFrameworkData.size>1)
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
-        listOfCompanyInformation.forEach { companyInformation ->
-            val receivedStoredCompany = companyDataControllerApi.postCompany(companyInformation)
-            listOfFrameworkData.forEach { frameworkDataSet ->
-                Thread.sleep(1000)
-                val receivedDataMetaInformation =
-                    frameworkDataUploadFunction(receivedStoredCompany.companyId, frameworkDataSet, reportingPeriod)
-                listOfUploadInfo.add(
-                    UploadInfo(companyInformation, receivedStoredCompany, receivedDataMetaInformation),
-                )
+        val storedCompanyInfos = listOfCompanyInformation.map{companyDataControllerApi.postCompany(it)}
+        listOfFrameworkData.forEach {frameworkDataSet ->
+            listOfCompanyInformation.zip(storedCompanyInfos).forEach { pair ->
+                val receivedDataMetaInformation = frameworkDataUploadFunction(pair.second.companyId,frameworkDataSet,reportingPeriod)
+                listOfUploadInfo.add(UploadInfo(pair.first,pair.second,receivedDataMetaInformation))
             }
+            if (waitNecessary) Thread.sleep(waitTimeBeforeNextUpload)
         }
         if (ensureQaPassed) ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo)
         return listOfUploadInfo
@@ -144,7 +148,7 @@ class ApiAccessor {
      * @param uploadInfos List of UploadInfo for which an update of the QAStatus should be checked and awaited
      * @return Input list of UplaodInfo but with updated metadata
      */
-    private fun ensureQaCompletedAndUpdateUploadInfo(uploadInfos: List<UploadInfo>) {
+    fun ensureQaCompletedAndUpdateUploadInfo(uploadInfos: List<UploadInfo>) {
         await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedAndUpdateUploadInfo(uploadInfos) }
     }
 
