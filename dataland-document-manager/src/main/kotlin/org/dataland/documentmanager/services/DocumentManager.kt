@@ -12,6 +12,11 @@ import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
 import java.util.UUID.randomUUID
 
+/**
+ * Implements the generation of document meta info, storage of the meta info temporarily locally
+ * @param inMemoryDocumentStore the wrapper for the map of the saved in memory document meta info
+ * @param documentMetaInfoRepository the repository for accessing the meta info database
+ */
 @Component
 class DocumentManager(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
