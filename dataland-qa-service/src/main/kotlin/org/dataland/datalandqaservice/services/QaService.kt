@@ -5,6 +5,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -48,8 +49,8 @@ class QaService(
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
-                key = [""],
+                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                key = [RoutingKeyNames.data],
             ),
         ],
     )
@@ -68,7 +69,7 @@ class QaService(
                     QaCompletedMessage(dataId, "By default, QA is passed"),
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, "data",
+                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.data,
                 )
             }
         } else {
@@ -78,7 +79,7 @@ class QaService(
 
     /**
      * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange
-     * @param documentHash the Hash of the document to be QAed
+     * @param documentId the Hash of the document to be QAed
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -93,27 +94,27 @@ class QaService(
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.documentStored, declare = "false"),
-                key = [""],
+                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                key = [RoutingKeyNames.document],
             ),
         ],
     )
     fun assureQualityOfDocument(
-        @Payload documentHash: String,
+        @Payload documentId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DocumentStored)
-        if (documentHash.isNotEmpty()) {
+        if (documentId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
                 logger.info(
-                    "Received document with Hash: $documentHash on QA message queue with Correlation Id: $correlationId",
+                    "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
                 )
                 val message = objectMapper.writeValueAsString(
-                    QaCompletedMessage(documentHash, "By default, QA is passed"),
+                    QaCompletedMessage(documentId, "By default, QA is passed"),
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, "document",
+                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.document,
                 )
             }
         } else {

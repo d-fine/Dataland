@@ -60,7 +60,7 @@
       "arguments": {}
     },
     {
-      "name": "dataStored",
+      "name": "itemStored",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,
@@ -69,7 +69,7 @@
       "arguments": {}
     },
     {
-      "name": "documentStored",
+      "name": "documentReceived",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,

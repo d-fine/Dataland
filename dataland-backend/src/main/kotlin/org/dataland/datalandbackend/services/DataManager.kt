@@ -14,6 +14,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -133,7 +134,7 @@ class DataManager(
                     ],
                 ),
                 exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
-                key = ["data"],
+                key = [RoutingKeyNames.data],
             ),
         ],
     )
@@ -144,7 +145,7 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QACompleted)
-        val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).dataId
+        val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
         if (dataId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
                 val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
@@ -226,8 +227,8 @@ class DataManager(
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
-                key = [""],
+                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                key = [RoutingKeyNames.data],
             ),
         ],
     )

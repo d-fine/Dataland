@@ -6,6 +6,7 @@ package org.dataland.datalandmessagequeueutils.constants
 object MessageType {
     const val DataReceived = "Data received"
     const val DataStored = "Data stored"
+    const val DocumentReceived = "Document received"
     const val DocumentStored = "Document stored"
     const val QACompleted = "QA completed"
 }

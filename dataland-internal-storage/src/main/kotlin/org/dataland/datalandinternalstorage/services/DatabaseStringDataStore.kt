@@ -74,11 +74,10 @@ class DatabaseStringDataStore(
             messageUtils.rejectMessageOnException {
                 logger.info("Received DataID $dataId and CorrelationId: $correlationId")
                 val data = temporarilyCachedDataClient.getReceivedData(dataId)
-                logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
                 logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
                 storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    dataId, MessageType.DataStored, correlationId, ExchangeNames.dataStored,
+                    dataId, MessageType.DataStored, correlationId, ExchangeNames.itemStored,
                 )
             }
         } else {

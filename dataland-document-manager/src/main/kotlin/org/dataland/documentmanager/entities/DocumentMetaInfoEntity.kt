@@ -17,7 +17,7 @@ data class DocumentMetaInfoEntity(
     val displayTitle: String,
     val uploaderId: String,
     val uploadTime: Long,
-    val qaStatus: DocumentQAStatus,
+    var qaStatus: DocumentQAStatus,
 ) {
     constructor(documentMetaInfo: DocumentMetaInfo) :
         this(

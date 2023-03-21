@@ -173,7 +173,7 @@ class DataManagerTest(
     fun `check an exception is thrown in updating of meta data when dataId is empty`() {
         val messageWithEmptyDataID = objectMapper.writeValueAsString(
             QaCompletedMessage(
-                dataId = "",
+                identifier = "",
                 validationResult = "By default, QA is passed",
             ),
         )
