@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.frameworks
 
+import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -16,18 +17,22 @@ class EuTaxonomyNonFinancials {
     @Test
     fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOfOneCompanyInformation,
-            listOfOneEuTaxonomyNonFinancialsDataSet,
+            listOfOneCompanyInformation, listOfOneEuTaxonomyNonFinancialsDataSet,
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
-        val listOfDataMetaInfoForTestCompany = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
-            receivedDataMetaInformation!!.companyId,
-            receivedDataMetaInformation.dataType,
+        val expectedDataMetaInformation = receivedDataMetaInformation?.copy(
+            currentlyActive = true,
+            qaStatus = QAStatus.accepted,
         )
-        Assertions.assertEquals(
-            listOfDataMetaInfoForTestCompany.component1().dataId, receivedDataMetaInformation.dataId,
-            "The expected data id was not found in the metadata database for the respective company.",
+        Thread.sleep(1000)
+        val listOfDataMetaInfoForTestCompany = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
+            expectedDataMetaInformation?.companyId,
+            expectedDataMetaInformation?.dataType,
+        )
+        Assertions.assertTrue(
+            listOfDataMetaInfoForTestCompany.contains(expectedDataMetaInformation),
+            "The all-data-sets-list of the posted company does not contain the posted data set.",
         )
     }
 

@@ -19,6 +19,7 @@ export function calculateDaysFromNow(endDateInMilliseconds: number): number {
   const daysFromNow = (endDateInMilliseconds - currentUtcDateInMilliseconds) / msPerDay;
   return Math.ceil(daysFromNow);
 }
+
 /**
  * Transforms the given unix time in milliseconds to a date string
  *
@@ -39,4 +40,15 @@ export function calculateExpiryDateAsDateString(expiryTimeDays: number): string 
   const currentUtcDateInMilliseconds = new Date().getTime();
   const expiryUtcDateInMilliseconds = currentUtcDateInMilliseconds + expiryTimeDays * msPerDay;
   return convertUnixTimeInMsToDateString(expiryUtcDateInMilliseconds);
+}
+
+/**
+ * Computes a hyphenated string (yyyy-MM-dd) of a date
+ *
+ * @param date the date to hyphenate
+ * @returns the hyphenated date string
+ */
+export function getHyphenatedDate(date: Date): string {
+  const delocalizedTime = date.getTime() - date.getTimezoneOffset() * 60 * 1000;
+  return new Date(delocalizedTime).toISOString().substring(0, 10);
 }

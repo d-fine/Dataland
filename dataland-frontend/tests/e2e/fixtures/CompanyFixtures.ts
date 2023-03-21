@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
-import { FixtureData, DataPoint } from "./FixtureUtils";
+import { DataPoint } from "./FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
 import { valueOrUndefined } from "./common/DataPointFixtures";

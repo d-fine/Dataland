@@ -6,7 +6,7 @@ import {
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForNonFinancialsControllerApi,
 } from "@clients/backend";
-import { FixtureData } from "../fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 
 /**
@@ -17,6 +17,7 @@ import Chainable = Cypress.Chainable;
  */
 export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
+  cy.get(`input[name="reportingPeriod"]`).type("2023");
   cy.get("select[name=assurance]").select("Limited Assurance");
   cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
     force: true,
@@ -40,12 +41,14 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): 
  *
  * @returns the first eutaxonomy-non-financials dataset from the fake fixtures
  */
-export function getFirstEuTaxonomyNonFinancialsDatasetFromFixtures(): Chainable<EuTaxonomyDataForNonFinancials> {
+export function getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures(): Chainable<
+  FixtureData<EuTaxonomyDataForNonFinancials>
+> {
   return cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
     const companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<
       FixtureData<EuTaxonomyDataForNonFinancials>
     >;
-    return companiesWithEuTaxonomyDataForNonFinancials[0].t;
+    return companiesWithEuTaxonomyDataForNonFinancials[0];
   });
 }
 
@@ -54,17 +57,20 @@ export function getFirstEuTaxonomyNonFinancialsDatasetFromFixtures(): Chainable<
  *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
+ * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
  */
 export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
   token: string,
   companyId: string,
-  data?: EuTaxonomyDataForFinancials
+  reportingPeriod: string,
+  data: EuTaxonomyDataForFinancials
 ): Promise<DataMetaInformation> {
   const dataMetaInformation = await new EuTaxonomyDataForNonFinancialsControllerApi(
     new Configuration({ accessToken: token })
   ).postCompanyAssociatedEuTaxonomyDataForNonFinancials({
     companyId,
+    reportingPeriod,
     data,
   });
   return dataMetaInformation.data;

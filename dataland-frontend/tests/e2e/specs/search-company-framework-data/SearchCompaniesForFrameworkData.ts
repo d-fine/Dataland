@@ -1,13 +1,13 @@
 import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
 import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { verifyTaxonomySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { FixtureData } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import {
-  getFirstEuTaxonomyNonFinancialsDatasetFromFixtures,
+  getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures,
   uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
@@ -19,7 +19,7 @@ before(function () {
   });
 });
 
-describe("As a user, I expect the search functionality on the /companies page to behave as I expect", function () {
+describe("As a user, I expect the search functionality on the /companies page to show me the desired results", function () {
   beforeEach(function () {
     cy.ensureLoggedIn();
   });
@@ -38,7 +38,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Scroll the page and check if search icon and search bar behave as expected", { scrollBehavior: false }, () => {
     cy.visitAndCheckAppMount("/companies");
-    verifyTaxonomySearchResultTable();
+    verifySearchResultTable();
     cy.get("button[name=search_bar_collapse]").should("not.be.visible");
 
     cy.scrollTo(0, 500, { duration: 300 });
@@ -68,28 +68,13 @@ describe("As a user, I expect the search functionality on the /companies page to
       const inputValue1 = "ABCDEFG";
       const inputValue2 = "XYZ";
       cy.visitAndCheckAppMount("/companies");
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       cy.get("input[id=search_bar_top]").type(inputValue1);
       cy.scrollTo(0, 500);
       cy.get("button[name=search_bar_collapse]").click();
       cy.get("input[id=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
       cy.scrollTo(0, 0);
       cy.get("input[id=search_bar_top]").should("have.value", inputValue1 + inputValue2);
-    }
-  );
-
-  it(
-    "Type b into the search bar, click on ViewAllResults, and check if all results for b are displayed",
-    { scrollBehavior: false },
-    () => {
-      cy.visitAndCheckAppMount("/companies");
-      cy.intercept("**/api/companies*").as("searchCompany");
-      cy.get("input[id=search_bar_top]").type("b");
-      cy.get(".p-autocomplete-item").contains("View all results").click();
-      cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-        verifyTaxonomySearchResultTable();
-        cy.url().should("include", "/companies?input=b");
-      });
     }
   );
 
@@ -109,7 +94,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       .type("{enter}")
       .should("have.value", inputValue);
     cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
-    verifyTaxonomySearchResultTable();
+    verifySearchResultTable();
   }
 
   it(
@@ -136,12 +121,12 @@ describe("As a user, I expect the search functionality on the /companies page to
       }
 
       cy.visitAndCheckAppMount("/companies");
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       const inputValue = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation.companyName;
       const permIdText = "Permanent Identifier (PermID)";
       checkPermIdToolTip(permIdText);
       executeCompanySearchWithStandardSearchBar(inputValue);
-      verifyTaxonomySearchResultTable();
+      verifySearchResultTable();
       checkViewButtonWorks();
       cy.get("h1").contains(inputValue);
       cy.get("[title=back_button").should("be.visible").click({ force: true });
@@ -180,17 +165,43 @@ describe("As a user, I expect the search functionality on the /companies page to
     });
   });
 
-  it("Click on an autocomplete-suggestion and check if forwarded to company framework data view page", () => {
+  it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
     getKeycloakToken(uploader_name, uploader_pw).then((token) => {
       cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies: Array<StoredCompany>) => {
-          const searchString = storedCompanies[0].companyInformation.companyName.substring(0, 4);
+          const primevueHighlightedSuggestionClass = "p-focus";
+          const searchString = storedCompanies[0].companyInformation.companyName;
+          const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
           cy.visitAndCheckAppMount("/companies");
           cy.intercept("**/api/companies*").as("searchCompany");
-          cy.get("input[id=search_bar_top]").click({ force: true }).type(searchString);
+          cy.get("input[id=search_bar_top]").type("b");
+          cy.get(".p-autocomplete-item").eq(0).get("span[class='font-semibold']").contains("b").should("exist");
+          cy.get(".p-autocomplete-item").contains("View all results").click();
+          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+            verifySearchResultTable();
+            cy.url().should("include", "/companies?input=b");
+          });
+          cy.get("input[id=search_bar_top]")
+            .click({ force: true })
+            .type("{backspace}")
+            .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
+          cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
+            cy.get("ul[class=p-autocomplete-items]").should("exist");
+            cy.get("input[id=search_bar_top]").type("{downArrow}");
+            cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
+            cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
+            cy.get("input[id=search_bar_top]").type("{downArrow}");
+            cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
+            cy.get(".p-autocomplete-item").eq(1).should("have.class", primevueHighlightedSuggestionClass);
+            cy.get("input[id=search_bar_top]").type("{upArrow}");
+            cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
+            cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
+          });
+          cy.get("input[id=search_bar_top]").click({ force: true }).type("{backspace}").type(searchString);
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             cy.get(".p-autocomplete-item")
               .eq(0)
+              .should("contain.text", searchString)
               .click({ force: true })
               .url()
               .should("include", "/companies/")
@@ -201,39 +212,6 @@ describe("As a user, I expect the search functionality on the /companies page to
       );
     });
   });
-
-  it(
-    "Navigate with arrow keys, press enter on an autocomplete-suggestion and check if forwarded to company framework data view page",
-    { scrollBehavior: false },
-    () => {
-      const primevueHighlightedSuggestionClass = "p-focus";
-      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
-      cy.visitAndCheckAppMount("/companies");
-      verifyTaxonomySearchResultTable();
-      cy.intercept("**/api/companies*").as("searchCompany");
-      cy.get("input[id=search_bar_top]")
-        .click({ force: true })
-        .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
-      cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-        cy.get("ul[class=p-autocomplete-items]").should("exist");
-        cy.get("input[id=search_bar_top]").type("{downArrow}");
-        cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
-        cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-        cy.get("input[id=search_bar_top]").type("{downArrow}");
-        cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
-        cy.get(".p-autocomplete-item").eq(1).should("have.class", primevueHighlightedSuggestionClass);
-        cy.get("input[id=search_bar_top]").type("{upArrow}");
-        cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
-        cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-        cy.get("input[id=search_bar_top]")
-          .type("{enter}")
-          .url()
-          .should("include", "/companies/")
-          .url()
-          .should("include", "/frameworks/");
-      });
-    }
-  );
 
   /**
    * Returns the first company from the fake fixture that has at least one alternative name
@@ -268,9 +246,14 @@ describe("As a user, I expect the search functionality on the /companies page to
         const highlightedSubString = "this_is_highlighted";
         const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-          getFirstEuTaxonomyNonFinancialsDatasetFromFixtures().then((data) => {
+          getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures().then((fixtureData) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(token, storedCompany.companyId, data);
+              return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+                token,
+                storedCompany.companyId,
+                fixtureData.reportingPeriod,
+                fixtureData.t
+              );
             });
           });
         });

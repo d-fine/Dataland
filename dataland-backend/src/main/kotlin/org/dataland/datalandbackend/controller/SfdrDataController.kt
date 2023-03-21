@@ -42,7 +42,11 @@ class SfdrDataController(
     }
 
     @Operation(operationId = "getAllCompanySfdrData")
-    override fun getAllCompanyData(companyId: String): ResponseEntity<List<DataAndMetaInformation<SfdrData>>> {
-        return super.getAllCompanyData(companyId)
+    override fun getFrameworkDatasetsForCompany(
+        companyId: String,
+        showOnlyActive: Boolean,
+        reportingPeriod: String?,
+    ): ResponseEntity<List<DataAndMetaInformation<SfdrData>>> {
+        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
     }
 }

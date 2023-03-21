@@ -9,14 +9,22 @@
 
       <div v-else>
         <div v-for="(dataMetaInfo, index) in listOfFrameworkData" :key="index">
-          <p
-            :class="[isFrontendViewPageExisting ? ['text-primary', 'cursor-pointer'] : '']"
-            class="font-semibold"
-            @click="redirectToViewPageIfEnabledInFrontend(dataMetaInfo)"
-          >
-            {{ dynamicDatasetTitle }}
-          </p>
-          <p>{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</p>
+          <div>
+            <router-link
+              v-if="this.isFrontendViewPageExisting"
+              :to="calculateDatasetLink(dataMetaInfo)"
+              class="text-primary font-semibold underline"
+            >
+              {{ getDynamicDatasetTitle(dataMetaInfo) }}
+            </router-link>
+            <span v-else class="font-semibold underline">
+              {{ getDynamicDatasetTitle(dataMetaInfo) }}
+            </span>
+          </div>
+          <div>
+            <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</span>
+            <DatasetStatusBadge :dataset-status="getDatasetStatus(dataMetaInfo)" />
+          </div>
         </div>
         <p class="mt-5">{{ dynamicButtonTitle }}</p>
         <PrimeButton
@@ -42,25 +50,17 @@ import { defineComponent } from "vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
 import PrimeButton from "primevue/button";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { humanizeString } from "@/utils/StringHumanizer";
+import { getDatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
 
 export default defineComponent({
   name: "MetaInfoPerComanyAndFramework",
-  components: { PrimeButton },
+  components: { PrimeButton, DatasetStatusBadge },
 
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    isFrontendViewPageExisting: {
-      type: Boolean,
-      default: true,
-    },
-    isFrontendUploadFormExisting: {
-      type: Boolean,
-      default: true,
-    },
-    frameworkUrlPath: {
+    dataType: {
       type: String,
       required: true,
     },
@@ -80,18 +80,20 @@ export default defineComponent({
 
   data() {
     return {
+      title: humanizeString(this.dataType),
+      isFrontendViewPageExisting: null as null | boolean,
+      isFrontendUploadFormExisting: null as null | boolean,
       convertUnixTimeInMsToDateString: convertUnixTimeInMsToDateString,
+      getDatasetStatus,
     };
   },
 
+  mounted() {
+    this.isFrontendViewPageExisting = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(this.dataType as DataTypeEnum);
+    this.isFrontendUploadFormExisting = ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum);
+  },
+
   computed: {
-    dynamicDatasetTitle() {
-      if (this.isFrontendViewPageExisting) {
-        return this.title;
-      } else {
-        return `${this.title} (only viewable via API)`;
-      }
-    },
     dynamicButtonTitle(): string {
       if (this.listOfFrameworkData.length === 0) {
         return "Be the first to create this dataset";
@@ -102,28 +104,38 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Executes a router push to the page of the given data set if the framework it belongs to is enabled in the frontend
+     * Calculates the link to the view page for the specified dataset
      *
-     * @param dataMetaInfoOfClickedDataSet the meta information of the data set in question
+     * @param dataMetaInfo the dataset to generate the link for
+     * @returns the link to the view page for the specified dataset
      */
-    async redirectToViewPageIfEnabledInFrontend(dataMetaInfoOfClickedDataSet: DataMetaInformation) {
-      if (this.isFrontendViewPageExisting) {
-        let dataIdQueryParamToSet: string;
-        if (dataMetaInfoOfClickedDataSet.dataType === DataTypeEnum.Lksg) {
-          dataIdQueryParamToSet = "";
-        } else {
-          dataIdQueryParamToSet = `?dataId=${dataMetaInfoOfClickedDataSet.dataId}`;
-        }
-        await this.$router.push(
-          `/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}${dataIdQueryParamToSet}`
-        );
-      }
+    calculateDatasetLink(dataMetaInfo: DataMetaInformation): string {
+      return `/companies/${this.companyId}/frameworks/${this.dataType}/${dataMetaInfo.dataId}`;
     },
+
+    /**
+     * Method to construct a title for a data meta information object depending on whether it is currently active and
+     * whether a corresponding frontend view page exists
+     *
+     * @param dataMetaInfo The data meta information object for which the title is constructed
+     * @returns the constrcted dataset title
+     */
+    getDynamicDatasetTitle(dataMetaInfo: DataMetaInformation): string {
+      let resultingTitle = `${this.title} dataset for reporting period: ${dataMetaInfo.reportingPeriod}`;
+      if (dataMetaInfo.currentlyActive) {
+        resultingTitle = `${resultingTitle} - latest version`;
+      }
+      if (!this.isFrontendViewPageExisting) {
+        resultingTitle = `${resultingTitle} (only viewable via API)`;
+      }
+      return resultingTitle;
+    },
+
     /**
      * Executes a router push to the upload page of a given company and framework
      */
     async redirectToUploadForm() {
-      await this.$router.push(`/companies/${this.companyId}/frameworks/${this.frameworkUrlPath}/upload`);
+      await this.$router.push(`/companies/${this.companyId}/frameworks/${this.dataType}/upload`);
     },
   },
 });
