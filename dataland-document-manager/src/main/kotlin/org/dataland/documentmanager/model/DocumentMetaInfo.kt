@@ -4,4 +4,6 @@ data class DocumentMetaInfo(
     val documentId: String,
     val displayTitle: String,
     val uploaderId: String,
+    val uploadTime: Long,
+    val qaStatus: DocumentQAStatus,
 )
