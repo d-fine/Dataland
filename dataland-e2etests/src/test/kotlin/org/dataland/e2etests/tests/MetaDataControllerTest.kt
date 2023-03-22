@@ -3,7 +3,6 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -324,15 +323,15 @@ class MetaDataControllerTest {
         val reportingPeriod = "2022"
         val uploadedMetadata: MutableList<DataMetaInformation> = mutableListOf()
         uploadedMetadata.add(
-            apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
+            apiAccessor.uploadWithWait(
                 companyId,
                 frameworkDataAlpha,
                 reportingPeriod,
+                apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
             ),
         )
         val newNumberOfEmployees = (frameworkDataAlpha.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
         val frameworkDataBeta = frameworkDataAlpha.copy(numberOfEmployees = newNumberOfEmployees)
-        Thread.sleep(1000)
         uploadedMetadata.add(
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
                 companyId,
@@ -352,48 +351,42 @@ class MetaDataControllerTest {
         )
     }
 
-    private fun validateReportingPeriodQueryParam(
-        listOfMetaData: List<DataMetaInformation>,
-        expectedNumberOfMetaData: Int,
-        listOfActiveMetaData: List<DataMetaInformation>,
-        listOfActiveMetaDataYearA: List<DataMetaInformation>,
-        listOfActiveMetaDataYearB: List<DataMetaInformation>,
-    ) {
-        assertTrue(
-            (listOfMetaData.size == expectedNumberOfMetaData),
-            "The number of meta datasets does not equal the expected one.",
-        )
-        assertTrue(
-            listOfActiveMetaDataYearA[0].dataId != listOfActiveMetaDataYearB[0].dataId,
-            "The active data meta info for the two different reporting Periods are identical.",
-        )
-        assertTrue(
-            listOfActiveMetaData.size == 2 && listOfActiveMetaData.map { it.dataId }.containsAll(
-                setOf(listOfActiveMetaDataYearA[0].dataId, listOfActiveMetaDataYearB[0].dataId),
-            ),
-            "The list of active meta data for all reporting periods does not consist of the expected elements.",
-        )
-    }
-
+    @Suppress("kotlin:S138")
     @Test
     fun `ensure that reportingPeriod field of metadata endpoint of meta data controller works`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val frameWorkData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
-        apiAccessor.repeatUploadWithWait<EuTaxonomyDataForNonFinancials>(
-            n = 2, companyId = companyId, uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
-            reportingPeriods = listOf("2022", "2023"), dataList = listOf(frameWorkData, frameWorkData), waitTime = 1000,
+        val uploadPairs = listOf(
+            Pair(frameWorkData, "2022"), Pair(frameWorkData, "2022"), Pair(frameWorkData, "2023"),
+            Pair(frameWorkData, "2023"),
         )
+        uploadPairs.forEach { pair ->
+            apiAccessor.uploadWithWait(
+                companyId, pair.first, pair.second,
+                apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            )
+        }
         val dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val listOfMetaData = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, false)
-        val listOfQadMetaData = apiAccessor.ensureQaIsPassed(listOfMetaData)
         val listOfActiveMetaData =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true)
         val listOfActiveMetaData2022 =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, "2022")
         val listOfActiveMetaData2023 =
             apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, true, "2023")
-        validateReportingPeriodQueryParam(
-            listOfQadMetaData, 4, listOfActiveMetaData, listOfActiveMetaData2023, listOfActiveMetaData2022,
+        assertTrue(
+            (listOfMetaData.size == 4),
+            "The number of meta datasets does not equal the expected one.",
+        )
+        assertTrue(
+            listOfActiveMetaData2022[0].dataId != listOfActiveMetaData2023[0].dataId,
+            "The active data meta info for the two different reporting Periods are identical.",
+        )
+        assertTrue(
+            listOfActiveMetaData.size == 2 && listOfActiveMetaData.map { it.dataId }.containsAll(
+                setOf(listOfActiveMetaData2022[0].dataId, listOfActiveMetaData2023[0].dataId),
+            ),
+            "The list of active meta data for all reporting periods does not consist of the expected elements.",
         )
     }
 }

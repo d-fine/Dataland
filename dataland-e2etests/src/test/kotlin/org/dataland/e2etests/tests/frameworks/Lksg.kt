@@ -1,6 +1,5 @@
 package org.dataland.e2etests.tests.frameworks
 
-import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -36,10 +35,12 @@ class Lksg {
     fun `check that reporting period and version history parameters of GET endpoint for companies work correctly`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val lksgData = apiAccessor.testDataProviderForLksgData.getTData(2)
-        apiAccessor.repeatUploadWithWait<LksgData>(
-            n = 2, companyId = companyId, dataList = lksgData, reportingPeriods = listOf("2022", "2023"),
-            waitTime = 1000, uploadFunction = apiAccessor.lksgUploaderFunction,
+        val uploadPairs = listOf(
+            Pair(lksgData[0], "2022"), Pair(lksgData[0], "2022"), Pair(lksgData[1], "2023"), Pair(lksgData[1], "2023"),
         )
+        uploadPairs.forEach { pair ->
+            apiAccessor.uploadWithWait(companyId, pair.first, pair.second, apiAccessor.lksgUploaderFunction)
+        }
         val lksgDataSets = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(companyId, false)
         val activeLksgDatasets = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(companyId, true)
         val lksgDatasets2023 = apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(companyId, false, "2023")

@@ -331,32 +331,21 @@ class ApiAccessor {
     }
 
     /**
-     * Upload the dataset provided in [dataList] via [uploadFunction] multiple times for the given [companyId] and
-     * [reportingPeriods] waiting [waitTime] ms in between each of the [n] sets of uploads.
-     * The i-th dataset in [dataList] is uploaded [n] times for the i-th reportingPeriod in [reportingPeriods].
-     * If [ensureQaIsPassed], it is ensured before return that QA is passed for all uploaded data sets.
+     * Upload the dataset provided in [frameworkData] via [uploadFunction] for the given [companyId] and
+     * [reportingPeriod] waiting 1000 ms after the upload. The wait circumvents error 500 if frameworkdata for the
+     * same company and reporting period is uploaded multiple times. It is also ensured that QA is passed before
+     * returning the current metadata of the uploaded data.
      */
-    fun <T> repeatUploadWithWait(
-        n: Int,
+    fun <T> uploadWithWait(
         companyId: String,
-        dataList: List<T>,
-        reportingPeriods: List<String>,
-        waitTime: Long,
+        frameworkData: T,
+        reportingPeriod: String,
         uploadFunction: (String, T, String) -> DataMetaInformation,
-    ): List<DataMetaInformation> {
-        if (dataList.size != reportingPeriods.size) {
-            throw IllegalArgumentException(
-                "Length of provided dataset and reporting period has to be the same.",
-            )
-        }
-        val uploadedMetaData: MutableList<DataMetaInformation> = mutableListOf()
-        for (i in 1..n) {
-            dataList.zip(reportingPeriods).forEach {
-                uploadedMetaData.add(uploadFunction(companyId, it.first, it.second))
-            }
-            if (i != n) Thread.sleep(waitTime)
-        }
-        return ensureQaIsPassed(uploadedMetaData)
+    ): DataMetaInformation {
+        val waitTime = 1000L
+        val uploadedMetaData = uploadFunction(companyId, frameworkData, reportingPeriod)
+        Thread.sleep(waitTime)
+        return ensureQaIsPassed(listOf(uploadedMetaData)).elementAt(0)
     }
 }
 
