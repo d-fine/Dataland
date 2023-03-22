@@ -6,6 +6,7 @@ COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.js
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
 COPY ./dataland-document-manager/documentManagerOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend
+COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-e2etests/ ./dataland-e2etests
 COPY ./testing/ ./testing
 COPY ./.git/ ./.git
