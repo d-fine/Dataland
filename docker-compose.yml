@@ -289,6 +289,7 @@ services:
     deploy:
       resources:
         limits:
+          # Always maintain 1.5 ratio between disk_free_limit.absolute of rabbitMQ conf and the memory here
           memory: 512M
   qa-service:
     restart: always
