@@ -376,3 +376,32 @@ export const lksgSubAreasNameMappings = {
   waste: "Waste",
   environment: "Environment",
 };
+
+export const lksgSubAreas = {
+  grievanceMechanism: ["grievanceHandlingMechanism", "grievanceHandlingMechanismUsedForReporting", "legalProceedings"],
+  evidenceCertificatesAndAttestations: [
+    "iso26000",
+    "sa8000Certification",
+    "smetaSocialAuditConcept",
+    "betterWorkProgramCertificate",
+    "iso45001Certification",
+    "iso14000Certification",
+    "emasCertification",
+    "iso37001Certification",
+    "iso37301Certification",
+    "riskManagementSystemCertification",
+    "amforiBsciAuditReport",
+    "initiativeClauseSocialCertification",
+    "responsibleBusinessAssociationCertification",
+    "fairLabourAssociationCertification",
+    "fairWorkingConditionsPolicy",
+    "fairAndEthicalRecruitmentPolicy",
+    "equalOpportunitiesAndNondiscriminationPolicy",
+    "healthAndSafetyPolicy",
+    "complaintsAndGrievancesPolicy",
+    "forcedLabourPolicy",
+    "childLabourPolicy",
+    "environmentalImpactPolicy",
+    "supplierCodeOfConduct",
+  ],
+};

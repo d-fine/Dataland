@@ -492,121 +492,16 @@
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="evidenceCertificatesAndAttestations">
+                    <FormKit
+                      v-for="area in lksgSubAreas.evidenceCertificatesAndAttestations"
+                      type="group"
+                      name="evidenceCertificatesAndAttestations"
+                      :key="area"
+                    >
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['iso26000']"
-                        :info="lksgKpisInfoMappings['iso26000']"
-                        :name="'iso26000'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['sa8000Certification']"
-                        :info="lksgKpisInfoMappings['sa8000Certification']"
-                        :name="'sa8000Certification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['smetaSocialAuditConcept']"
-                        :info="lksgKpisInfoMappings['smetaSocialAuditConcept']"
-                        :name="'smetaSocialAuditConcept'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['betterWorkProgramCertificate']"
-                        :info="lksgKpisInfoMappings['betterWorkProgramCertificate']"
-                        :name="'betterWorkProgramCertificate'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['iso45001Certification']"
-                        :info="lksgKpisInfoMappings['iso45001Certification']"
-                        :name="'iso45001Certification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['iso14000Certification']"
-                        :info="lksgKpisInfoMappings['iso14000Certification']"
-                        :name="'iso14000Certification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['emasCertification']"
-                        :info="lksgKpisInfoMappings['emasCertification']"
-                        :name="'emasCertification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['iso37001Certification']"
-                        :info="lksgKpisInfoMappings['iso37001Certification']"
-                        :name="'iso37001Certification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['iso37301Certification']"
-                        :info="lksgKpisInfoMappings['iso37301Certification']"
-                        :name="'iso37301Certification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['riskManagementSystemCertification']"
-                        :info="lksgKpisInfoMappings['riskManagementSystemCertification']"
-                        :name="'riskManagementSystemCertification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['amforiBsciAuditReport']"
-                        :info="lksgKpisInfoMappings['amforiBsciAuditReport']"
-                        :name="'amforiBsciAuditReport'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['initiativeClauseSocialCertification']"
-                        :info="lksgKpisInfoMappings['initiativeClauseSocialCertification']"
-                        :name="'initiativeClauseSocialCertification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['responsibleBusinessAssociationCertification']"
-                        :info="lksgKpisInfoMappings['responsibleBusinessAssociationCertification']"
-                        :name="'responsibleBusinessAssociationCertification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['fairLabourAssociationCertification']"
-                        :info="lksgKpisInfoMappings['fairLabourAssociationCertification']"
-                        :name="'fairLabourAssociationCertification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['fairWorkingConditionsPolicy']"
-                        :info="lksgKpisInfoMappings['fairWorkingConditionsPolicy']"
-                        :name="'fairWorkingConditionsPolicy'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['fairAndEthicalRecruitmentPolicy']"
-                        :info="lksgKpisInfoMappings['fairAndEthicalRecruitmentPolicy']"
-                        :name="'fairAndEthicalRecruitmentPolicy'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['equalOpportunitiesAndNondiscriminationPolicy']"
-                        :info="lksgKpisInfoMappings['equalOpportunitiesAndNondiscriminationPolicy']"
-                        :name="'equalOpportunitiesAndNondiscriminationPolicy'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['healthAndSafetyPolicy']"
-                        :info="lksgKpisInfoMappings['healthAndSafetyPolicy']"
-                        :name="'healthAndSafetyPolicy'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['complaintsAndGrievancesPolicy']"
-                        :info="lksgKpisInfoMappings['complaintsAndGrievancesPolicy']"
-                        :name="'complaintsAndGrievancesPolicy'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['forcedLabourPolicy']"
-                        :info="lksgKpisInfoMappings['forcedLabourPolicy']"
-                        :name="'forcedLabourPolicy'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['childLabourPolicy']"
-                        :info="lksgKpisInfoMappings['childLabourPolicy']"
-                        :name="'childLabourPolicy'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['environmentalImpactPolicy']"
-                        :info="lksgKpisInfoMappings['environmentalImpactPolicy']"
-                        :name="'environmentalImpactPolicy'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['supplierCodeOfConduct']"
-                        :info="lksgKpisInfoMappings['supplierCodeOfConduct']"
-                        :name="'supplierCodeOfConduct'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
                       />
                     </FormKit>
                   </div>
@@ -621,21 +516,16 @@
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="grievanceMechanism">
+                    <FormKit
+                      v-for="area in lksgSubAreas.grievanceMechanism"
+                      type="group"
+                      name="grievanceMechanism"
+                      :key="area"
+                    >
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['grievanceHandlingMechanism']"
-                        :info="lksgKpisInfoMappings['grievanceHandlingMechanism']"
-                        :name="'grievanceHandlingMechanism'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['grievanceHandlingMechanismUsedForReporting']"
-                        :info="lksgKpisInfoMappings['grievanceHandlingMechanismUsedForReporting']"
-                        :name="'grievanceHandlingMechanismUsedForReporting'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['legalProceedings']"
-                        :info="lksgKpisInfoMappings['legalProceedings']"
-                        :name="'legalProceedings'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
                       />
                     </FormKit>
                   </div>
@@ -1130,6 +1020,7 @@ import {
   lksgKpisInfoMappings,
   lksgKpisNameMappings,
   lksgSubAreasNameMappings,
+  lksgSubAreas,
 } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
@@ -1173,6 +1064,7 @@ export default defineComponent({
       lksgKpisInfoMappings,
       lksgKpisNameMappings,
       lksgSubAreasNameMappings,
+      lksgSubAreas,
       elementPosition: 0,
       scrollListener: (): null => null,
       isInHouseProductionOrContractProcessingMap: Object.fromEntries(
