@@ -233,11 +233,8 @@
             "content": {
               "application/octet-stream": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "byte"
-                  }
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
