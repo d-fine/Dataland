@@ -1,6 +1,5 @@
 package org.dataland.documentmanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -35,7 +34,6 @@ import java.util.*
 class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val pdfVerificationService: PdfVerificationService,
-    @Autowired private val objectMapper: ObjectMapper,
 ) {
     lateinit var mockStorageApi: StreamingStorageControllerApi
     lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
