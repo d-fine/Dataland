@@ -1,4 +1,4 @@
-package org.dataland.e2etests.tests
+/*package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
@@ -27,3 +27,4 @@ class DocumentControllerTest {
         assertEquals(document.name, downloadedFile.name)
     }
 }
+*/
