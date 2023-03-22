@@ -7,9 +7,11 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
+import org.dataland.documentmanager.model.DocumentQAStatus
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -31,13 +33,13 @@ import java.util.*
 @Transactional
 class DocumentManagerTest (
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired var messageUtils: MessageQueueUtils,
     @Autowired private val pdfVerificationService: PdfVerificationService,
 ) {
     lateinit var mockStorageApi: StorageControllerApi
     lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
     lateinit var mockSecurityContext: SecurityContext
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
+    lateinit var mockMessageUtils: MessageQueueUtils
     lateinit var documentManager: DocumentManager
 
     @BeforeEach
@@ -46,6 +48,7 @@ class DocumentManagerTest (
         mockStorageApi = mock(StorageControllerApi::class.java)
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+        mockMessageUtils = mock(MessageQueueUtils::class.java)
         val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
             username = "data_uploader",
             userId = "dummy-user-id",
@@ -58,10 +61,15 @@ class DocumentManagerTest (
             inMemoryDocumentStore = inMemoryDocumentStore,
             documentMetaInfoRepository = mockDocumentMetaInfoRepository,
             cloudEventMessageHandler = mockCloudEventMessageHandler,
-            messageUtils = messageUtils,
+            messageUtils = mockMessageUtils,
             pdfVerificationService = pdfVerificationService,
             storageApi = mockStorageApi
         )
+    }
+
+    @Test
+    fun `check that document retrieval is not possible if document does not exist`() {
+        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocumentById(documentId = "123") }
     }
 
     @Test
@@ -72,6 +80,22 @@ class DocumentManagerTest (
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
-        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocumentById(documentId = metaInfo.documentId) }
+        assertThrows<ResourceNotFoundApiException>{documentManager.retrieveDocumentById(documentId = metaInfo.documentId)}
     }
+
+    @Test
+    fun `check that document retrieval is possible on QAed documents`() {
+        val file = File("./public/test-report.pdf")
+        val mockMultipartFile = MockMultipartFile("test-report.pdf", "test-report.pdf",
+            "application/pdf", file.readBytes())
+        val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
+        metaInfo.qaStatus = DocumentQAStatus.Accepted
+        `when`(mockDocumentMetaInfoRepository.findById(anyString()))
+            .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
+        val downloadedDocument = documentManager.retrieveDocumentById(documentId = metaInfo.documentId)
+        assertEquals("test-report.pdf", downloadedDocument.title)
+        assertEquals(file.length() , downloadedDocument.content.contentLength() )
+        //TODO assert bytes are equal as well? There seems to be a bug...
+    }
+
 }
