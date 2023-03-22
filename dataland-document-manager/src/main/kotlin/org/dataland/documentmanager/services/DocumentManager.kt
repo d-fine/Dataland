@@ -152,7 +152,7 @@ class DocumentManager(
 
     private fun retrieveDocumentDataStream(
         documentId: String,
-        correlationId: String
+        correlationId: String,
     ) = InputStreamResource(
         inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)?.let {
             logger.info("Received document $documentId from temporary storage")
