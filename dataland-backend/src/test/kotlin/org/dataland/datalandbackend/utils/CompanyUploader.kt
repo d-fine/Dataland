@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.springframework.http.MediaType
 import org.springframework.security.core.Authentication
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication

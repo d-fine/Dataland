@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.utils.AuthenticationMock
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.junit.jupiter.api.Assertions

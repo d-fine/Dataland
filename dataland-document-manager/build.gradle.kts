@@ -53,6 +53,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito:mockito-inline")
     testImplementation("org.springframework.security:spring-security-test")
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))

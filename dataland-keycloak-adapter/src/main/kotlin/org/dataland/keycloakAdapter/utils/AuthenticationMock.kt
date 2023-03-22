@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.utils
+package org.dataland.keycloakAdapter.utils
 
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
