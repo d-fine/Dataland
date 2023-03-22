@@ -65,12 +65,11 @@ class DatabaseBlobDataStore(
         messageUtils.validateMessageType(type, MessageType.DataReceived)
         if (blobId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
-                logger.info("Received DocumentId $blobId and CorrelationId: $correlationId")
-                // TODO Check why getReceivedData is Array of ByteArrays
-                val blob = temporarilyCachedDocumentClient.getReceivedData(blobId)[0]
+                logger.info("Received BlobId $blobId and CorrelationId: $correlationId")
+                val blob = temporarilyCachedDocumentClient.getReceivedData(blobId).readBytes()
                 storeBlobToDatabase(blobId, blob)
                 logger.info(
-                    "Inserting document into database with documentId: $blobId and correlation id: " +
+                    "Inserting blob into database with BlobId: $blobId and correlation id: " +
                         "$correlationId.",
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -79,7 +78,7 @@ class DatabaseBlobDataStore(
                 )
             }
         } else {
-            throw MessageQueueRejectException("Provided document ID is empty")
+            throw MessageQueueRejectException("Provided BlobId is empty")
         }
         return blobId
     }
