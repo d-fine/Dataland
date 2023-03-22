@@ -3,6 +3,7 @@ package org.dataland.documentmanager.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,6 +31,5 @@ interface TemporarilyCachedDocumentApi {
         value = ["/{sha256hash}"],
         produces = ["application/octet-stream"],
     )
-    fun getReceivedData(@PathVariable("sha256hash") sha256hash: String):
-        ResponseEntity<ByteArray>
+    fun getReceivedData(@PathVariable("sha256hash") sha256hash: String): ResponseEntity<InputStreamResource>
 }

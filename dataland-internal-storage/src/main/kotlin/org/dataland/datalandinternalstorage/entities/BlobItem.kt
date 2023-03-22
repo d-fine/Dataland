@@ -13,8 +13,8 @@ import jakarta.persistence.Table
 @Table(name = "blob_items")
 data class BlobItem(
     @Id
-    @Column(name = "blob_sha256")
-    val sha256: String,
+    @Column(name = "blob_id")
+    val blobId: String,
 
     @Lob
     @Column(name = "data")

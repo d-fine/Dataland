@@ -38,11 +38,8 @@ class DatabaseBlobDataStore(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Stores the provided binary blob to the database and returns the
-     * sha256 hash of the blob. Also ensures that this function is not executed as part of any transaction.
-     * This will guarantee that the write is commited after exit of this method.
-     * @param blob the blob to store to the database
-     * @return the sha256 hash of the blob under which is it now accessible in the database
+     * Retrieves a blob from the document-manager and stores it in the postgres database.
+     * Emits a stored message after this has finshed
      */
     @RabbitListener(
         bindings = [
@@ -60,46 +57,57 @@ class DatabaseBlobDataStore(
             ),
         ],
     )
-    @Transactional(propagation = Propagation.NEVER)
-    fun storeBlobToDatabase(
-        @Payload documentId: String,
+    fun retrieveBlobFromDocumentManagerAndStoreToDatabase(
+        @Payload blobId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ): String {
         messageUtils.validateMessageType(type, MessageType.DataReceived)
-        if (documentId.isNotEmpty()) {
+        if (blobId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
-                logger.info("Received DocumentId $documentId and CorrelationId: $correlationId")
-                // TODO Check why getReceivedData is byte Array
-                val blob = temporarilyCachedDocumentClient.getReceivedData(documentId)[0]
-                val blobItem = BlobItem(documentId, blob)
+                logger.info("Received BlobId $blobId and CorrelationId: $correlationId")
+                val blob = temporarilyCachedDocumentClient.getReceivedData(blobId).readBytes()
+                storeBlobToDatabase(blobId, blob)
                 logger.info(
-                    "Inserting document into database with documentId: $documentId and correlation id: " +
+                    "Inserting blob into database with BlobId: $blobId and correlation id: " +
                         "$correlationId.",
                 )
-                blobItemRepository.save(blobItem)
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    documentId, MessageType.DocumentStored, correlationId, ExchangeNames.itemStored,
+                    blobId, MessageType.DocumentStored, correlationId, ExchangeNames.itemStored,
                     RoutingKeyNames.document,
                 )
             }
         } else {
-            throw MessageQueueRejectException("Provided document ID is empty")
+            throw MessageQueueRejectException("Provided BlobId is empty")
         }
-        return documentId
+        return blobId
+    }
+
+    /**
+     * Stores the provided binary blob to the database and returns the
+     * stored database entity. Also ensures that this function is not executed as part of any transaction.
+     * This will guarantee that the write is committed after exit of this method.
+     * @param blob the blob to store to the database
+     * @return the stored database entity
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun storeBlobToDatabase(blobId: String, blob: ByteArray): BlobItem {
+        val blobItem = BlobItem(blobId, blob)
+        blobItemRepository.save(blobItem)
+        return blobItem
     }
 
     /**
      * Retrieves the blob data from the database
-     * @param sha256hash the hash of the data to be retrieved
+     * @param blobId the hash of the data to be retrieved
      * @return the blob retrieved from the database
      */
-    fun selectBlobByHash(sha256hash: String, correlationId: String): ByteArray {
-        return blobItemRepository.findById(sha256hash).orElseThrow {
-            logger.info("Blob with hash: $sha256hash could not be found. Correlation id: $correlationId.")
+    fun selectBlobById(blobId: String, correlationId: String): ByteArray {
+        return blobItemRepository.findById(blobId).orElseThrow {
+            logger.info("Blob with id: $blobId could not be found. Correlation id: $correlationId.")
             ResourceNotFoundApiException(
                 "Dataset not found",
-                "No blob with the hash: $sha256hash could be found in the data store.",
+                "No blob with the id: $blobId could be found in the data store.",
             )
         }.data
     }

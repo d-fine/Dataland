@@ -30,9 +30,9 @@ class StorageController(
         return ResponseEntity.ok(stringDataStore.selectDataSet(dataId, correlationId))
     }
 
-    override fun selectBlobByHash(sha256hash: String, correlationId: String): ResponseEntity<InputStreamResource> {
-        logger.info("Selecting blob from database with hash: $sha256hash. Correlation id: $correlationId.")
-        val blob = blobDataStore.selectBlobByHash(sha256hash, correlationId)
+    override fun selectBlobById(blobId: String, correlationId: String): ResponseEntity<InputStreamResource> {
+        logger.info("Selecting blob from database with hash: $blobId. Correlation id: $correlationId.")
+        val blob = blobDataStore.selectBlobById(blobId, correlationId)
         val stream = ByteArrayInputStream(blob)
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
