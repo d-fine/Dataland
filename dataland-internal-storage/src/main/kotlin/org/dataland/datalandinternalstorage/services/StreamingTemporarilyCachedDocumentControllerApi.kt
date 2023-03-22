@@ -18,8 +18,10 @@ class StreamingTemporarilyCachedDocumentControllerApi(
     fun getReceivedData(blobId: String): InputStream {
         val request = Request.Builder().url("$documentManagerBaseUrl/internal/cached/$blobId").build()
         val response = client.newCall(request).execute()
-        if (!response.isSuccessful)
-            throw InternalServerErrorApiException("API call to temporarily cached document controller failed (code ${response.code}).")
+        if (!response.isSuccessful) {
+            throw InternalServerErrorApiException("API call to temporarily cached document controller failed " +
+                    "(code ${response.code}).")
+        }
         return response.body!!.byteStream()
     }
 }

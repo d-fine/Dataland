@@ -74,6 +74,10 @@ class DocumentManagerTest(
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
-        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocumentById(documentId = metaInfo.documentId) }
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.retrieveDocumentById(
+                documentId = metaInfo.documentId,
+            )
+        }
     }
 }
