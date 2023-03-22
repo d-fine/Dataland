@@ -53,5 +53,8 @@ interface StorageAPI {
         value = ["/blobs/{blobId}"],
         produces = ["application/json"],
     )
-    fun selectBlobById(@PathVariable("blobId") blobId: String, correlationId: String): ResponseEntity<InputStreamResource>
+    fun selectBlobById(
+        @PathVariable("blobId") blobId: String,
+        correlationId: String,
+    ): ResponseEntity<InputStreamResource>
 }
