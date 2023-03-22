@@ -67,7 +67,6 @@ class DocumentManagerTest(
             messageUtils = mockMessageUtils,
             pdfVerificationService = pdfVerificationService,
             storageApi = mockStorageApi,
-            objectMapper = objectMapper
         )
     }
 
