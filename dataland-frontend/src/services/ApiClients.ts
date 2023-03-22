@@ -16,8 +16,10 @@ import {
 } from "@clients/backend/api";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import { useTimeoutLogoutStore } from "@/stores/stores";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
+  timeoutLogoutStore = useTimeoutLogoutStore();
 
   constructor(keycloakPromise: Promise<Keycloak>) {
     this.keycloakPromise = keycloakPromise;
@@ -37,6 +39,7 @@ export class ApiClientProvider {
     constructor: new (configuration: Configuration | undefined, basePath: string) => T
   ): Promise<T> {
     const configuration = await this.getConfiguration();
+    this.timeoutLogoutStore.bumpTimerReset();
     return new constructor(configuration, "/api");
   }
 

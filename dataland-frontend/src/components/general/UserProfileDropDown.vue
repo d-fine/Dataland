@@ -31,6 +31,7 @@ import type { Ref } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import defaultProfilePicture from "@/assets/images/elements/default_user_icon.svg";
+import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "UserProfileDropDown",
@@ -98,9 +99,7 @@ export default defineComponent({
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (keycloak.authenticated) {
-            const baseUrl = window.location.origin;
-            const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}` });
-            location.assign(url);
+            logoutAndRedirectToUri(keycloak, "");
           }
         })
         .catch((error) => console.log(error));

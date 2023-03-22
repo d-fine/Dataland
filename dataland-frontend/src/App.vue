@@ -1,17 +1,22 @@
 <template>
+  <DynamicDialog />
   <router-view />
 </template>
 
 <script lang="ts">
-import Keycloak, {KeycloakError} from "keycloak-js";
+import Keycloak from "keycloak-js";
+import DynamicDialog from "primevue/dynamicdialog";
 import { computed, defineComponent } from "vue";
+import SessionTimeoutModal from "@/components/general/SessionTimeoutModal.vue";
+import { useTimeoutLogoutStore } from "@/stores/stores";
+import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "app",
+  components: { DynamicDialog },
   data() {
     return {
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
-      resolvedKeycloakPromise: undefined as undefined | Keycloak, // TODO
       keycloakAuthenticated: false,
       keycloakInitOptions: {
         realm: "datalandsecurity",
@@ -19,24 +24,19 @@ export default defineComponent({
         clientId: "dataland-public",
         onLoad: "login-required",
       },
+      sessionTimeoutSetIntervalFunctionId: undefined as undefined | number,
     };
   },
   methods: {
     /**
-     * Sets up the keycloak and keycloakPromise objects that are passed down
-     * to the other components to handle authentication
+     * Initializes the Keycloak adaptor and configures it according to the requirements of the Dataland application.
+     *
+     * @param authLogoutCallback The callback function to execute on auth logouts.
+     * @returns a promise which resolves to the Keycloak adaptor object
      */
-    initKeycloak(): Promise<Keycloak> {
+    initKeycloak(authLogoutCallback: () => void): Promise<Keycloak> {
       const keycloak = new Keycloak(this.keycloakInitOptions);
-
-      keycloak.onAuthLogout = () => {
-        console.log("Logging out")
-      }
-      keycloak.onAuthSuccess = () => {console.log("onAuthSuccess")}
-      keycloak.onAuthError = () => {console.log("onAuthError")}
-      keycloak.onAuthRefreshSuccess = () => {console.log("onAuthRefreshSuccess")}
-      keycloak.onAuthRefreshError = () => {console.log("onAuthRefreshError")}
-
+      keycloak.onAuthLogout = authLogoutCallback;
       return keycloak
         .init({
           onLoad: "check-sso",
@@ -44,6 +44,7 @@ export default defineComponent({
           pkceMethod: "S256",
         })
         .then((authenticated) => {
+          console.log("setting the keycloakAuthenticated value to " + authenticated.toString());
           this.keycloakAuthenticated = authenticated;
         })
         .catch((error) => {
@@ -52,26 +53,63 @@ export default defineComponent({
         })
         .then((): Keycloak => {
           return keycloak;
-        })
+        });
+    },
+
+    /**
+     * Executed as callback when the user is logged out: It stops the setInterval-function which monitors the duration
+     * of the current session and then opens a pop-up to show the user that she/he has been logged out.
+     *
+     */
+    handleAuthLogout() {
+      console.log("Logging out"); // TODO debugging
+      clearInterval(this.sessionTimeoutSetIntervalFunctionId);
+      this.openTimeoutModal("You have been logged out. Do you want to login again?", true);
+    },
+
+    /**
+     * Opens a pop-up and displays the passed text.
+     *
+     * @param headerText The text in the header of the pop-up
+     * @param showLogInButtonAndRedirectToHomeOnClose Decides if log-in button shall be visible and if closing the
+     * pop-up shall result in redirecting to the Welcome page
+     */
+    openTimeoutModal(headerText: string, showLogInButtonAndRedirectToHomeOnClose: boolean): void {
+      this.$dialog.open(SessionTimeoutModal, {
+        props: {
+          header: headerText,
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          showLogInButton: showLogInButtonAndRedirectToHomeOnClose,
+        },
+        onClose: () => {
+          if (showLogInButtonAndRedirectToHomeOnClose) {
+            void this.$router.push("/");
+          }
+        },
+      });
     },
   },
 
   async created() {
-    this.keycloakPromise = this.initKeycloak();
-    const resolvedKeycloakPromise = await this.keycloakPromise
-    if(resolvedKeycloakPromise) {
-      setInterval(() => {
-      // console.log(resolvedKeycloakPromise.loadUserInfo())
-      /*resolvedKeycloakPromise.updateToken(5).then((refreshed) => {
-          if (refreshed) {
-            console.log('Token refreshed' + refreshed);
-          } else {
-            console.log('Token not refreshed, valid for ' + Math.round(resolvedKeycloakPromise!.tokenParsed.exp + resolvedKeycloakPromise!.timeSkew - new Date().getTime() / 1000) + ' seconds');
-          }
-        }).catch(() => {
-          console.error('Failed to refresh token');
-        });*/
-      }, 6000)
+    this.keycloakPromise = this.initKeycloak(this.handleAuthLogout);
+    const resolvedKeycloakPromise = await this.keycloakPromise;
+    const timerIncrementInMs = 10 * 1000;
+    if (resolvedKeycloakPromise && resolvedKeycloakPromise.authenticated) {
+      const sessionStateStore = useTimeoutLogoutStore();
+      this.sessionTimeoutSetIntervalFunctionId = setInterval(() => {
+        sessionStateStore.reduceTimerBySeconds(timerIncrementInMs / 1000);
+        console.log(sessionStateStore.remainingSessionTimeInSeconds); // TODO debugging
+        if (sessionStateStore.remainingSessionTimeInSeconds === 30) {
+          // TODO increase time
+          this.openTimeoutModal("Your session is almost over.", false);
+        }
+        if (sessionStateStore.remainingSessionTimeInSeconds === 0) {
+          logoutAndRedirectToUri(resolvedKeycloakPromise, "?timeout=true");
+        }
+      }, timerIncrementInMs);
     }
   },
 

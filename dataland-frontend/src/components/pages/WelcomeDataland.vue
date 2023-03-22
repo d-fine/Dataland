@@ -14,6 +14,10 @@ import SampleSection from "@/components/resources/landing/SampleSection.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { defineComponent, inject } from "vue";
 import { NavigationFailure } from "vue-router";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { useRoute } from "vue-router";
+import SessionTimeoutModal from "@/components/general/SessionTimeoutModal.vue";
 
 export default defineComponent({
   name: "WelcomeDataland",
@@ -21,6 +25,7 @@ export default defineComponent({
   setup() {
     return {
       authenticated: inject<boolean>("authenticated"),
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
   props: {
@@ -29,6 +34,9 @@ export default defineComponent({
     },
   },
   mounted() {
+    if (useRoute().query.timeout === "true") {
+      this.openInactiveLogoutModal();
+    }
     void this.checkAuthenticatedAndRedirectIfLoggedIn();
   },
   watch: {
@@ -42,11 +50,33 @@ export default defineComponent({
      *
      * @returns a promise of the redirect operation (or a resolved promise if no redirect needs to occur)
      */
-    checkAuthenticatedAndRedirectIfLoggedIn(): Promise<NavigationFailure | void | undefined> {
-      if (this.authenticated === true) {
+    async checkAuthenticatedAndRedirectIfLoggedIn(): Promise<NavigationFailure | void | undefined> {
+      const keycloak = await assertDefined(this.getKeycloakPromise)();
+      if (keycloak.authenticated === true) {
         return this.$router.push({ path: "/companies", replace: true });
       }
       return Promise.resolve();
+    },
+
+    /**
+     * Opens a pop-up to show the user that he was logged out due to inactivity.
+     * A login button is displayed. On close of the pop-up, the user is redirected to the Welcome page.
+     *
+     */
+    openInactiveLogoutModal(): void {
+      this.$dialog.open(SessionTimeoutModal, {
+        props: {
+          header: "You were automatically logged out because of inactivity. Click the button to log in again.",
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          showLogInButton: true,
+        },
+        onClose: () => {
+          void this.$router.replace("");
+        },
+      });
     },
   },
 });

@@ -63,6 +63,9 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] monitoring.dataland.com 
 - [ ] (OPT) dataland.com
 
+## Check keycloak automatic logout if inactive
+- [ ] Check that you are automatically logged out if you are idle for too long and also get notified about this by a pop-up. The amount of time you need to be idle to see this is defined in our Constants.ts file in the frontend subproject.
+
 ## Check e-mails sent by keycloak
 - [ ] Check that the verification e-mail is sent and displayed correctly
 - [ ] Check that the reset password e-mail is sent and displayed correctly
