@@ -13,23 +13,41 @@ import Chainable = Cypress.Chainable;
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
  *
  * @param companyId The Id of the company to upload the dataset for
+ * @param valueFieldNotFilled Value which, if true, disables the value field
  * @returns the id of the dataset that has been uploaded
  */
-export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): Cypress.Chainable<string> {
+export function uploadEuTaxonomyDataForNonFinancialsViaForm(
+  companyId: string,
+  valueFieldNotFilled = false
+): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
-  cy.get(`input[name="reportingPeriod"]`).type("2023");
-  cy.get("select[name=assurance]").select("Limited Assurance");
-  cy.get('input[id="reportingObligation-option-yes"][value=Yes]').check({
-    force: true,
-  });
-  for (const argument of ["capex", "opex"]) {
-    cy.get(`div[title=${argument}] input`).each(($element, index) => {
-      const inputNumber = 10 * index + 7;
-      cy.wrap($element).type(inputNumber.toString(), { force: true });
+  cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
+  cy.get('input[name="fiscalYearEnd"]').type("2022-03-03", { force: true });
+  cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
+  cy.get('input[name="activityLevelReporting"][value="Yes"]').check();
+  cy.get('input[name="numberOfEmployees"]').type("333");
+  cy.get('input[name="reportingObligation"][value="Yes"]').check();
+
+  cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(1);
+  cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
+  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+
+  for (const argument of ["capexSection", "opexSection", "revenueSection"]) {
+    if (!valueFieldNotFilled) {
+      cy.get(`div[data-test=${argument}] input[name="value"]`).each(($element, index) => {
+        const inputNumber = 10 * index + 7;
+        cy.wrap($element).type(inputNumber.toString());
+      });
+    }
+    cy.get(`div[data-test=${argument}] select[name="report"]`).each(($element) => {
+      cy.wrap($element).select(1);
+    });
+    cy.get(`div[data-test=${argument}] select[name="quality"]`).each(($element) => {
+      cy.wrap($element).select(3);
     });
   }
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
-  cy.get('button[name="postEUData"]').click({ force: true });
+  cy.get('button[data-test="submitButton"]').click();
   cy.wait("@postCompanyAssociatedData");
   return cy.contains("h4", "dataId").then<string>(($dataId): string => {
     return $dataId.text();

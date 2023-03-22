@@ -5,7 +5,7 @@
       @click="dataPointAvailableToggle"
       v-model="dataPointIsAvailable"
     />
-    <h5 class="ml-2">{{dataPointIsAvailable ? "Data point is available" : "Data point is not available" }}</h5>
+    <h5 class="ml-2">{{ dataPointIsAvailable ? "Data point is available" : "Data point is not available" }}</h5>
   </div>
 
   <div v-if="dataPointIsAvailable">
@@ -18,7 +18,7 @@
         placeholder="Value %"
         step="any"
         min="0"
-        validation="required|number|between:0,100"
+        validation="number|between:0,100"
         :inner-class="{
           short: true,
         }"
@@ -105,7 +105,7 @@ export default defineComponent({
     toggleDataAvailable: {
       type: Boolean,
       default: true,
-    }
+    },
   },
   methods: {
     /**
