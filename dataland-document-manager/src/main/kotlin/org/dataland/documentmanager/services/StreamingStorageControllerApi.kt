@@ -1,4 +1,4 @@
-package org.dataland.datalandinternalstorage.services
+package org.dataland.documentmanager.services
 
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -9,26 +9,26 @@ import org.springframework.stereotype.Component
 import java.io.InputStream
 
 /**
- * An interface to the temporary storage of the document management service
+ * An interface to the document endpoint of the internal storage service
  * that allows raw access to the body data-stream
  */
 @Component
-class StreamingTemporarilyCachedDocumentControllerApi(
-    @Value("\${dataland.document-manager.base-url}")
-    private val documentManagerBaseUrl: String,
+class StreamingStorageControllerApi(
+    @Value("\${dataland.internalstorage.base-url}")
+    private val internalStorageBaseUrl: String,
 ) {
-
     private val client = OkHttpClient()
 
     /**
-     * Retrieves the blob identified by the blobId from the document manager and returns the input stream of the
+     * Retrieves the blob identified by the blobId from the internal storage and returns the input stream of the
      * body of the request.
      * @param blobId the id of the data to retrieve
+     * @param correlationId an identifier used to identify the transaction across services
      * @returns a stream of the blob
      */
-    fun getReceivedData(blobId: String): InputStream {
-        val requestUrl = "$documentManagerBaseUrl/internal/cached".toHttpUrl()
-            .newBuilder().addPathSegment(blobId)
+    fun getBlobFromInternalStorage(blobId: String, correlationId: String): InputStream {
+        val requestUrl = "$internalStorageBaseUrl/blobs".toHttpUrl()
+            .newBuilder().addPathSegment(blobId).addQueryParameter("correlationId", correlationId)
             .build()
         val request = Request.Builder().url(requestUrl).build()
         val response = client.newCall(request).execute()
@@ -38,6 +38,6 @@ class StreamingTemporarilyCachedDocumentControllerApi(
                     "(code ${response.code}).",
             )
         }
-        return response.body!!.byteStream()
+        return response.body.byteStream()
     }
 }

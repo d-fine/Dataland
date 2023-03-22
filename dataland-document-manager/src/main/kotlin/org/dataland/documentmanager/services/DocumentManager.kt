@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.sha256
-import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -47,12 +46,13 @@ import java.util.UUID.randomUUID
 class DocumentManager(
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val documentMetaInfoRepository: DocumentMetaInfoRepository,
-    @Autowired private val storageApi: StorageControllerApi,
+    @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val pdfVerificationService: PdfVerificationService,
-    @Autowired private val objectMapper: ObjectMapper,
+
 ) {
+    @Autowired private lateinit var objectMapper: ObjectMapper
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -159,7 +159,7 @@ class DocumentManager(
             logger.info("Received document $documentId from temporary storage")
             ByteArrayInputStream(it)
         }
-            ?: storageApi.selectBlobById(documentId, correlationId).inputStream()
+            ?: storageApi.getBlobFromInternalStorage(documentId, correlationId)
                 .let {
                     logger.info("Received document $documentId from storage service")
                     it
