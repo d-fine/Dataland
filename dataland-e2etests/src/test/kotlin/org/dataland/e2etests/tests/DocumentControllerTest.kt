@@ -3,10 +3,11 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.model.DocumentQAStatus
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
-import org.junit.jupiter.api.Test
+import org.dataland.documentmanager.openApiClient.model.DocumentQAStatus
 import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertFalse
 import java.io.File
 

@@ -69,8 +69,7 @@ class DatabaseBlobDataStore(
                 val blob = temporarilyCachedDocumentClient.getReceivedData(blobId).readBytes()
                 storeBlobToDatabase(blobId, blob)
                 logger.info(
-                    "Inserting blob into database with BlobId: $blobId and correlation id: " +
-                        "$correlationId.",
+                    "Inserting blob into database with BlobId: $blobId and correlation id: $correlationId.",
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     blobId, MessageType.DocumentStored, correlationId, ExchangeNames.itemStored,
