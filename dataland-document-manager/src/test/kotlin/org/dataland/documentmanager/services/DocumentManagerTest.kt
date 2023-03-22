@@ -3,7 +3,6 @@ package org.dataland.documentmanager.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.DatalandDocumentManager
@@ -38,7 +37,7 @@ class DocumentManagerTest(
     @Autowired private val pdfVerificationService: PdfVerificationService,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
-    lateinit var mockStorageApi: StorageControllerApi
+    lateinit var mockStorageApi: StreamingStorageControllerApi
     lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
     lateinit var mockSecurityContext: SecurityContext
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
@@ -48,7 +47,7 @@ class DocumentManagerTest(
     @BeforeEach
     fun mockStorageApi() {
         mockSecurityContext = mock(SecurityContext::class.java)
-        mockStorageApi = mock(StorageControllerApi::class.java)
+        mockStorageApi = mock(StreamingStorageControllerApi::class.java)
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
         mockMessageUtils = mock(MessageQueueUtils::class.java)

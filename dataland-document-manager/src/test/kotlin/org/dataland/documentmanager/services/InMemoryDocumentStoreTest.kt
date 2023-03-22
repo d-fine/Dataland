@@ -23,8 +23,6 @@ class InMemoryDocumentStoreTest {
 
         inMemoryStore.deleteFromInMemoryStore(expectedHash)
 
-        assertThrows<ResourceNotFoundApiException> {
-            inMemoryStore.retrieveDataFromMemoryStore(expectedHash)
-        }
+        assertEquals(inMemoryStore.retrieveDataFromMemoryStore(expectedHash), null)
     }
 }
