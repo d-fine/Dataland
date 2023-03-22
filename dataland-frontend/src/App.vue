@@ -7,9 +7,11 @@
 import Keycloak from "keycloak-js";
 import DynamicDialog from "primevue/dynamicdialog";
 import { computed, defineComponent } from "vue";
-import SessionTimeoutModal from "@/components/general/SessionTimeoutModal.vue";
-import { useTimeoutLogoutStore } from "@/stores/stores";
 import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
+import {
+  getSessionTimeoutTimestampFromLocalStorage,
+  resetSessionTimeoutTimestampInLocalStorage,
+} from "@/utils/SessionTimeoutUtils";
 
 export default defineComponent({
   name: "app",
@@ -17,6 +19,7 @@ export default defineComponent({
   data() {
     return {
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
+      resolvedKeycloakPromise: undefined as undefined | Keycloak,
       keycloakAuthenticated: false,
       keycloakInitOptions: {
         realm: "datalandsecurity",
@@ -24,7 +27,7 @@ export default defineComponent({
         clientId: "dataland-public",
         onLoad: "login-required",
       },
-      sessionTimeoutSetIntervalFunctionId: undefined as undefined | number,
+      timeDistanceBetweenSetIntervalExecutionsInMs: 5000 as number,
     };
   },
   methods: {
@@ -44,7 +47,7 @@ export default defineComponent({
           pkceMethod: "S256",
         })
         .then((authenticated) => {
-          console.log("setting the keycloakAuthenticated value to " + authenticated.toString());
+          console.log("setting the keycloakAuthenticated value to " + authenticated.toString()); // TODO debugging
           this.keycloakAuthenticated = authenticated;
         })
         .catch((error) => {
@@ -61,55 +64,32 @@ export default defineComponent({
      * of the current session and then opens a pop-up to show the user that she/he has been logged out.
      *
      */
-    handleAuthLogout() {
+    async handleAuthLogout() {
       console.log("Logging out"); // TODO debugging
-      clearInterval(this.sessionTimeoutSetIntervalFunctionId);
-      this.openTimeoutModal("You have been logged out. Do you want to login again?", true);
-    },
-
-    /**
-     * Opens a pop-up and displays the passed text.
-     *
-     * @param headerText The text in the header of the pop-up
-     * @param showLogInButtonAndRedirectToHomeOnClose Decides if log-in button shall be visible and if closing the
-     * pop-up shall result in redirecting to the Welcome page
-     */
-    openTimeoutModal(headerText: string, showLogInButtonAndRedirectToHomeOnClose: boolean): void {
-      this.$dialog.open(SessionTimeoutModal, {
-        props: {
-          header: headerText,
-          modal: true,
-          dismissableMask: true,
-        },
-        data: {
-          showLogInButton: showLogInButtonAndRedirectToHomeOnClose,
-        },
-        onClose: () => {
-          if (showLogInButtonAndRedirectToHomeOnClose) {
-            void this.$router.push("/");
-          }
-        },
-      });
+      logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, "?externalLogout=true");
     },
   },
 
   async created() {
     this.keycloakPromise = this.initKeycloak(this.handleAuthLogout);
-    const resolvedKeycloakPromise = await this.keycloakPromise;
-    const timerIncrementInMs = 10 * 1000;
-    if (resolvedKeycloakPromise && resolvedKeycloakPromise.authenticated) {
-      const sessionStateStore = useTimeoutLogoutStore();
-      this.sessionTimeoutSetIntervalFunctionId = setInterval(() => {
-        sessionStateStore.reduceTimerBySeconds(timerIncrementInMs / 1000);
-        console.log(sessionStateStore.remainingSessionTimeInSeconds); // TODO debugging
-        if (sessionStateStore.remainingSessionTimeInSeconds === 30) {
-          // TODO increase time
-          this.openTimeoutModal("Your session is almost over.", false);
+    this.resolvedKeycloakPromise = await this.keycloakPromise;
+    if (this.resolvedKeycloakPromise && this.resolvedKeycloakPromise.authenticated) {
+      resetSessionTimeoutTimestampInLocalStorage();
+      setInterval(() => {
+        console.log("setInterval is running once"); // TODO debugging
+        const currentTimestampInMs = new Date().getTime();
+        const logoutTimeStampInLocalStorage = getSessionTimeoutTimestampFromLocalStorage();
+        if (!logoutTimeStampInLocalStorage) {
+          logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, "");
+        } else {
+          if (currentTimestampInMs >= logoutTimeStampInLocalStorage) {
+            console.log("You have passed the logout timestamp. You'll be logged out now"); // TODO debugging
+            logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, "?timeout=true");
+          } else {
+            console.log("You have not reached the logoutTimeStamp in the local storage yet. You stay logged in"); // TODO debugging
+          }
         }
-        if (sessionStateStore.remainingSessionTimeInSeconds === 0) {
-          logoutAndRedirectToUri(resolvedKeycloakPromise, "?timeout=true");
-        }
-      }, timerIncrementInMs);
+      }, this.timeDistanceBetweenSetIntervalExecutionsInMs);
     }
   },
 

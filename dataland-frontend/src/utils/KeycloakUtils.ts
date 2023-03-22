@@ -46,7 +46,13 @@ export async function checkIfUserHasUploaderRights(keycloakPromiseGetter?: () =>
   } else return false;
 }
 
-export function logoutAndRedirectToUri(keycloak: Keycloak, redirectPath: string) {
+/**
+ * TODO
+ *
+ * @param keycloak
+ * @param redirectPath
+ */
+export function logoutAndRedirectToUri(keycloak: Keycloak, redirectPath: string): void {
   const baseUrl = window.location.origin;
   const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}${redirectPath}` });
   location.assign(url);

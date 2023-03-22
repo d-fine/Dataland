@@ -24,4 +24,4 @@ export const UPLOAD_MAX_FILE_SIZE_IN_BYTES = 2000000;
 
 export const TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS = 2000;
 
-export const SESSION_TIMEOUT_IN_SECONDS = 60; // TODO increase
+export const SESSION_TIMEOUT_IN_MS = 60 * 1000; // TODO increase

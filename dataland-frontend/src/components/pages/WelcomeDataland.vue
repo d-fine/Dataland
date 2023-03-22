@@ -35,7 +35,12 @@ export default defineComponent({
   },
   mounted() {
     if (useRoute().query.timeout === "true") {
-      this.openInactiveLogoutModal();
+      this.openLogoutModal(
+        "You were automatically logged out because of inactivity. Click the button to log in again."
+      );
+    }
+    if (useRoute().query.externalLogout === "true") {
+      this.openLogoutModal("You have been logged out. Do you want to login again?");
     }
     void this.checkAuthenticatedAndRedirectIfLoggedIn();
   },
@@ -59,14 +64,15 @@ export default defineComponent({
     },
 
     /**
-     * Opens a pop-up to show the user that he was logged out due to inactivity.
+     * Opens a pop-up to show the user that he was logged out due to inactivity. TODO
      * A login button is displayed. On close of the pop-up, the user is redirected to the Welcome page.
      *
+     * @param headerText TODO
      */
-    openInactiveLogoutModal(): void {
+    openLogoutModal(headerText: string): void {
       this.$dialog.open(SessionTimeoutModal, {
         props: {
-          header: "You were automatically logged out because of inactivity. Click the button to log in again.",
+          header: headerText,
           modal: true,
           dismissableMask: true,
         },
