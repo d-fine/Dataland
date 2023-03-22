@@ -1,11 +1,9 @@
 package org.dataland.documentmanager.services
 
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.sha256
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 class InMemoryDocumentStoreTest {
     private val inMemoryStore = InMemoryDocumentStore()
