@@ -13,13 +13,13 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.anyString
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.anyString
-import org.mockito.Mockito.`when`
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -29,7 +29,7 @@ import java.util.*
 @SpringBootTest(classes = [DatalandDocumentManager::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
-class DocumentManagerTest (
+class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired var messageUtils: MessageQueueUtils,
     @Autowired private val pdfVerificationService: PdfVerificationService,
@@ -60,15 +60,17 @@ class DocumentManagerTest (
             cloudEventMessageHandler = mockCloudEventMessageHandler,
             messageUtils = messageUtils,
             pdfVerificationService = pdfVerificationService,
-            storageApi = mockStorageApi
+            storageApi = mockStorageApi,
         )
     }
 
     @Test
     fun `check that document retrieval is not possible on non QAed documents`() {
         val file = File("./public/test-report.pdf")
-        val mockMultipartFile = MockMultipartFile("test-report.pdf", "test-report.pdf",
-            "application/pdf", file.readBytes())
+        val mockMultipartFile = MockMultipartFile(
+            "test-report.pdf", "test-report.pdf",
+            "application/pdf", file.readBytes(),
+        )
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
