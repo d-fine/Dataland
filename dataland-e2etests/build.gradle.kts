@@ -22,6 +22,7 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
+    implementation(project(":dataland-backend-utils"))
     implementation(libs.junit.jupiter)
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
@@ -45,6 +46,7 @@ tasks.withType<Test> {
 tasks.register("generateClients") {
     dependsOn("generateBackendClient")
     dependsOn("generateApiKeyManagerClient")
+    dependsOn("generateDocumentManagerClient")
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
@@ -86,10 +88,28 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     )
 }
 
+tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val documentManagerClientDestinationPackage = "org.dataland.documentmanager.openApiClient"
+    input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path
+    outputDir.set("$buildDir/clients/document-manager")
+    packageName.set(documentManagerClientDestinationPackage)
+    modelPackage.set("$documentManagerClientDestinationPackage.model")
+    apiPackage.set("$documentManagerClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java17",
+            "useTags" to "true",
+        ),
+    )
+}
+
 sourceSets {
     val main by getting
     main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
     main.kotlin.srcDir("$buildDir/clients/api-key-manager/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/document-manager/src/main/kotlin")
 }
 
 ktlint {
