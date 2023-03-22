@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/data": {
+    "/data/{dataId}": {
       "get": {
         "tags": [
           "storage-controller"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "dataId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -80,18 +80,18 @@
         }
       }
     },
-    "/blobs": {
+    "/blobs/{blobId}": {
       "get": {
         "tags": [
           "storage-controller"
         ],
-        "summary": "Request blobs by its sha256 hash",
-        "description": "Requests blobs by its sha256 hash",
-        "operationId": "selectBlobByHash",
+        "summary": "Request blobs by its blob id",
+        "description": "Requests blobs by its blob id",
+        "operationId": "selectBlobById",
         "parameters": [
           {
-            "name": "sha256hash",
-            "in": "query",
+            "name": "blobId",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"

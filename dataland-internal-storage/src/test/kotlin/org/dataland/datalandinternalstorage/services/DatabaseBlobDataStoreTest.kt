@@ -14,14 +14,14 @@ class DatabaseBlobDataStoreTest(
     @Autowired private val databaseBlobDataStore: DatabaseBlobDataStore,
 ) {
     @Test
-    fun `check that a blob can be stored and then retrieved by its sha256 hash`() {
+    fun `check that a blob can be stored and then retrieved by its blob id`() {
         val dataToStore = "Dataland is awesome".toByteArray(Charsets.UTF_8)
-        val expectedHash = "b5ebbb0e075e95be1d8e32002a7766deaa1f9c6c075b2d3c9f9822183a4eea27"
+        val blobId = "b5ebbb0e075e95be1d8e32002a7766deaa1f9c6c075b2d3c9f9822183a4eea27"
 
-        val storedHash = databaseBlobDataStore.storeBlobToDatabase(dataToStore)
-        assertEquals(storedHash, expectedHash)
+        val storedBlob = databaseBlobDataStore.storeBlobToDatabase(blobId, dataToStore)
+        assertEquals(blobId, storedBlob.blobId)
 
-        val retrievedData = databaseBlobDataStore.selectBlobByHash(expectedHash, "test-correlation-id")
+        val retrievedData = databaseBlobDataStore.selectBlobById(blobId, "test-correlation-id")
         assertArrayEquals(dataToStore, retrievedData)
     }
 }
