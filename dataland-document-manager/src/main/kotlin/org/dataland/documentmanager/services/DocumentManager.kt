@@ -146,19 +146,24 @@ class DocumentManager(
             )
         }
 
-        val documentDataStream = InputStreamResource(
-            inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)?.let {
-                logger.info("Received document $documentId from temporary storage")
-                ByteArrayInputStream(it)
-            }
-                ?: storageApi.selectBlobById(documentId, correlationId).inputStream()
-                    .let {
-                        logger.info("Received document $documentId from storage service")
-                        it
-                    },
-        )
+        val documentDataStream = retrieveDocumentDataStream(documentId, correlationId)
         return DocumentStream(metaDataInfoEntity.displayTitle, documentDataStream)
     }
+
+    private fun retrieveDocumentDataStream(
+        documentId: String,
+        correlationId: String
+    ) = InputStreamResource(
+        inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)?.let {
+            logger.info("Received document $documentId from temporary storage")
+            ByteArrayInputStream(it)
+        }
+            ?: storageApi.selectBlobById(documentId, correlationId).inputStream()
+                .let {
+                    logger.info("Received document $documentId from storage service")
+                    it
+                },
+    )
 
     /**
      * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
