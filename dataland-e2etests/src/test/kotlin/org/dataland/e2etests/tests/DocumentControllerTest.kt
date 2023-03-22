@@ -4,8 +4,8 @@ import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.model.DocumentQAStatus
 import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
-import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
+import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -13,16 +13,17 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 class DocumentControllerTest {
-    private val jwtHelper = JwtAuthenticationHelper()
+    private val apiAccessor = ApiAccessor()
     private val documentControllerClient = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
 
     private val document: File = File.createTempFile("test", ".pdf")
 
     @Test
-    fun `test that a dummy document can be uploaded and retrieved after successfull QA`() {
+    fun `test that a dummy document can be uploaded and retrieved after successful QA`() {
         document.writeText("this is content")
         val expectedHash = document.readBytes().sha256()
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        //TODO should this api logic be integrated in ApiAccessor.kt?
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         assertFalse(documentControllerClient.checkDocument(expectedHash).documentExists)
         val metaInfo = documentControllerClient.postDocument(document)
         assertEquals(expectedHash, metaInfo.documentId)
