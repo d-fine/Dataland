@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -12,6 +13,7 @@ import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -34,6 +36,7 @@ import java.util.*
 class DocumentManagerTest (
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val pdfVerificationService: PdfVerificationService,
+    @Autowired private val objectMapper: ObjectMapper,
 ) {
     lateinit var mockStorageApi: StorageControllerApi
     lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
@@ -63,7 +66,8 @@ class DocumentManagerTest (
             cloudEventMessageHandler = mockCloudEventMessageHandler,
             messageUtils = mockMessageUtils,
             pdfVerificationService = pdfVerificationService,
-            storageApi = mockStorageApi
+            storageApi = mockStorageApi,
+            objectMapper = objectMapper
         )
     }
 
@@ -100,8 +104,7 @@ class DocumentManagerTest (
             .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
         val downloadedDocument = documentManager.retrieveDocumentById(documentId = metaInfo.documentId)
         assertEquals("test-report.pdf", downloadedDocument.title)
-        assertEquals(file.length() , downloadedDocument.content.contentLength() )
-        //TODO assert bytes are equal as well? There seems to be a bug...
+        assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(file.readBytes()))
     }
 
 }
