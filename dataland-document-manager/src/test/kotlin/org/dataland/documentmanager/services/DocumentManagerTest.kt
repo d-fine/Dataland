@@ -31,7 +31,7 @@ import java.util.*
 @SpringBootTest(classes = [DatalandDocumentManager::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
-class DocumentManagerTest (
+class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val pdfVerificationService: PdfVerificationService,
 ) {
@@ -63,7 +63,7 @@ class DocumentManagerTest (
             cloudEventMessageHandler = mockCloudEventMessageHandler,
             messageUtils = mockMessageUtils,
             pdfVerificationService = pdfVerificationService,
-            storageApi = mockStorageApi
+            storageApi = mockStorageApi,
         )
     }
 
@@ -92,16 +92,17 @@ class DocumentManagerTest (
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
         val file = File("./public/test-report.pdf")
-        val mockMultipartFile = MockMultipartFile("test-report.pdf", "test-report.pdf",
-            "application/pdf", file.readBytes())
+        val mockMultipartFile = MockMultipartFile(
+            "test-report.pdf", "test-report.pdf",
+            "application/pdf", file.readBytes(),
+        )
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         metaInfo.qaStatus = DocumentQAStatus.Accepted
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
         val downloadedDocument = documentManager.retrieveDocumentById(documentId = metaInfo.documentId)
         assertEquals("test-report.pdf", downloadedDocument.title)
-        assertEquals(file.length() , downloadedDocument.content.contentLength() )
-        //TODO assert bytes are equal as well? There seems to be a bug...
+        assertEquals(file.length(), downloadedDocument.content.contentLength())
+        // TODO assert bytes are equal as well? There seems to be a bug...
     }
-
 }
