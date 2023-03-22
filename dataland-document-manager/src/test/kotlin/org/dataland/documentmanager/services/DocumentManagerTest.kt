@@ -43,8 +43,9 @@ class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val pdfVerificationService: PdfVerificationService,
     @Autowired private val messageUtils: MessageQueueUtils,
-    @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private var objectMapper: ObjectMapper
 ) {
+
     lateinit var mockStorageApi: StreamingStorageControllerApi
     lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
     lateinit var mockSecurityContext: SecurityContext
@@ -72,6 +73,7 @@ class DocumentManagerTest(
             messageUtils = messageUtils,
             pdfVerificationService = pdfVerificationService,
             storageApi = mockStorageApi,
+            objectMapper = objectMapper
         )
     }
 
@@ -133,7 +135,27 @@ class DocumentManagerTest(
     }
 
     @Test
-    fun `check that an exception is thrown in removing of storde document if documentId is empty`() {
+    fun `check that updating meta data after QA works for an existing document`() {
+        val file = File("./public/test-report.pdf")
+        val mockMultipartFile = MockMultipartFile(
+            "test-report.pdf", "test-report.pdf",
+            "application/pdf", file.readBytes(),
+        )
+        val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
+        val message = objectMapper.writeValueAsString(
+            QaCompletedMessage(
+                identifier = metaInfo.documentId,
+                validationResult = "By default, QA is passed",
+            ),
+        )
+
+        documentManager.updateDocumentMetaData(message, "", MessageType.QACompleted)
+
+        assertEquals(DocumentQAStatus.Accepted, metaInfo.qaStatus)
+    }
+
+    @Test
+    fun `check that an exception is thrown in removing of stored document if documentId is empty`() {
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             documentManager.removeStoredDocumentFromTemporaryStore("", "", MessageType.DocumentStored)
         }

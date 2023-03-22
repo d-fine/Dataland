@@ -44,15 +44,15 @@ import java.util.UUID.randomUUID
  */
 @Component
 class DocumentManager(
+    @Autowired val documentMetaInfoRepository: DocumentMetaInfoRepository,
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired private val documentMetaInfoRepository: DocumentMetaInfoRepository,
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val pdfVerificationService: PdfVerificationService,
+    @Autowired private var objectMapper: ObjectMapper
 
 ) {
-    @Autowired private lateinit var objectMapper: ObjectMapper
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
