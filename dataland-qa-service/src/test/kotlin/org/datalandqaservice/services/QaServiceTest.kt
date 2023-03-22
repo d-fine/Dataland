@@ -56,7 +56,7 @@ class QaServiceTest(
         )
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.data
+                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.data,
             ),
         ).thenThrow(
             AmqpException::class.java,
