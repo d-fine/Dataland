@@ -3,7 +3,6 @@ package org.dataland.documentmanager.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -21,9 +20,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.anyString
 import org.mockito.kotlin.eq
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.AmqpRejectAndDontRequeueException
@@ -46,7 +45,7 @@ class DocumentManagerTest(
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
-    lateinit var mockStorageApi: StorageControllerApi
+    lateinit var mockStorageApi: StreamingStorageControllerApi
     lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
     lateinit var mockSecurityContext: SecurityContext
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
@@ -55,7 +54,7 @@ class DocumentManagerTest(
     @BeforeEach
     fun mockStorageApi() {
         mockSecurityContext = mock(SecurityContext::class.java)
-        mockStorageApi = mock(StorageControllerApi::class.java)
+        mockStorageApi = mock(StreamingStorageControllerApi::class.java)
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
         val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
@@ -73,7 +72,6 @@ class DocumentManagerTest(
             messageUtils = messageUtils,
             pdfVerificationService = pdfVerificationService,
             storageApi = mockStorageApi,
-            objectMapper = objectMapper,
         )
     }
 
@@ -83,7 +81,7 @@ class DocumentManagerTest(
     }
 
     @Test
-    fun `check that document retrieval is not possible on non QAed documents`() {
+    fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
         val file = File("./public/test-report.pdf")
         val mockMultipartFile = MockMultipartFile(
             "test-report.pdf", "test-report.pdf",
@@ -121,7 +119,7 @@ class DocumentManagerTest(
     }
 
     @Test
-    fun `check an exception is thrown in updating of meta data when dataId is empty`() {
+    fun `check that an exception is thrown in updating of meta data when documentId is empty`() {
         val messageWithEmptyDocumentID = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 identifier = "",
@@ -135,7 +133,7 @@ class DocumentManagerTest(
     }
 
     @Test
-    fun `check an exception is thrown in logging of stored data when dataId is empty`() {
+    fun `check that an exception is thrown in removing of storde document if documentId is empty`() {
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             documentManager.removeStoredDocumentFromTemporaryStore("", "", MessageType.DocumentStored)
         }
@@ -143,7 +141,7 @@ class DocumentManagerTest(
     }
 
     @Test
-    fun `check an exception is thrown during storing a document when sending notification to message queue fails`() {
+    fun `check that an exception is thrown during storing a document when sending notification to message queue fails`() {
         val file = File("./public/test-report.pdf")
         val mockMultipartFile = MockMultipartFile(
             "test-report.pdf", "test-report.pdf",
@@ -151,7 +149,7 @@ class DocumentManagerTest(
         )
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                anyString(), eq(MessageType.DocumentReceived), anyString(), eq(ExchangeNames.documentReceived),eq("")
+                anyString(), eq(MessageType.DocumentReceived), anyString(), eq(ExchangeNames.documentReceived), eq(""),
             ),
         ).thenThrow(
             AmqpException::class.java,

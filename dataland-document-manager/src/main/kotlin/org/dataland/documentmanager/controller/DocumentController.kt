@@ -35,4 +35,5 @@ class DocumentController(
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=${document.title}")
             .body(document.content)
     }
+
 }
