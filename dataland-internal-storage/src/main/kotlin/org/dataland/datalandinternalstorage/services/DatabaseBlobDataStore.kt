@@ -10,7 +10,6 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.documentmanager.openApiClient.api.TemporarilyCachedDocumentControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -33,7 +32,7 @@ class DatabaseBlobDataStore(
     @Autowired private val blobItemRepository: BlobItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var messageUtils: MessageQueueUtils,
-    @Autowired var temporarilyCachedDocumentClient: TemporarilyCachedDocumentControllerApi,
+    @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedDocumentControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -53,7 +52,7 @@ class DatabaseBlobDataStore(
                     ],
                 ),
                 exchange = Exchange(ExchangeNames.documentReceived, declare = "false"),
-                key = [RoutingKeyNames.document],
+                key = [""],
             ),
         ],
     )
@@ -61,13 +60,13 @@ class DatabaseBlobDataStore(
         @Payload blobId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
-    ): String {
-        messageUtils.validateMessageType(type, MessageType.DataReceived)
+    ) {
+        messageUtils.validateMessageType(type, MessageType.DocumentReceived)
         if (blobId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
                 logger.info("Received BlobId $blobId and CorrelationId: $correlationId")
-                val blob = temporarilyCachedDocumentClient.getReceivedData(blobId).readBytes()
-                storeBlobToDatabase(blobId, blob)
+                val resource = temporarilyCachedDocumentClient.getReceivedData(blobId)
+                storeBlobToDatabase(blobId, resource.readBytes())
                 logger.info(
                     "Inserting blob into database with BlobId: $blobId and correlation id: $correlationId.",
                 )
@@ -79,7 +78,6 @@ class DatabaseBlobDataStore(
         } else {
             throw MessageQueueRejectException("Provided BlobId is empty")
         }
-        return blobId
     }
 
     /**

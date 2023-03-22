@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.controller
 
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.documentmanager.api.TemporarilyCachedDocumentApi
 import org.dataland.documentmanager.services.InMemoryDocumentStore
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +20,10 @@ class TemporarilyCachedDocumentController(
 ) : TemporarilyCachedDocumentApi {
     override fun getReceivedData(sha256hash: String): ResponseEntity<InputStreamResource> {
         val blob = inMemoryStore.retrieveDataFromMemoryStore(sha256hash)
+            ?: throw ResourceNotFoundApiException(
+                "Blob for hash \"$sha256hash\" not found in temporary storage",
+                "Dataland does not know the file identified by \"$sha256hash\"",
+            )
         val stream = ByteArrayInputStream(blob)
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
