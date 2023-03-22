@@ -151,7 +151,7 @@ class DocumentManager(
                 logger.info("Received document $documentId from temporary storage")
                 ByteArrayInputStream(it)
             }
-                ?: storageApi.selectBlobByHash(documentId, correlationId).inputStream()
+                ?: storageApi.selectBlobById(documentId, correlationId).inputStream()
                     .let {
                         logger.info("Received document $documentId from storage service")
                         it
