@@ -84,7 +84,7 @@ jobs:
         run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
         if: always()
       - name: Execute Backend unit tests
-        run: ./gradlew :dataland-backend:test :dataland-csvconverter:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test --no-daemon --stacktrace
+        run: ./gradlew :dataland-backend:test :dataland-csvconverter:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}

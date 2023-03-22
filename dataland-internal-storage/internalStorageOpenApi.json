@@ -110,7 +110,7 @@
           "200": {
             "description": "Successfully retrieved blob.",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
                   "type": "string",
                   "format": "binary"

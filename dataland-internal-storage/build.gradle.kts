@@ -99,32 +99,8 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
-tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
-    val documentManagerClientDestinationPackage = "org.dataland.documentmanager.openApiClient"
-    input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json")
-        .path
-    outputDir.set("$buildDir/clients/document-manager")
-    packageName.set(documentManagerClientDestinationPackage)
-    modelPackage.set("$documentManagerClientDestinationPackage.model")
-    apiPackage.set("$documentManagerClientDestinationPackage.api")
-    generatorName.set("kotlin")
-
-    additionalProperties.set(
-        mapOf(
-            "removeEnumValuePrefix" to false,
-        ),
-    )
-    configOptions.set(
-        mapOf(
-            "withInterfaces" to "true",
-            "withSeparateModelsAndApi" to "true",
-        ),
-    )
-}
-
 tasks.register("generateClients") {
     dependsOn("generateBackendClient")
-    dependsOn("generateDocumentManagerClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -134,7 +110,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 sourceSets {
     val main by getting
     main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
-    main.kotlin.srcDir("$buildDir/clients/document-manager/src/main/kotlin")
 }
 
 ktlint {

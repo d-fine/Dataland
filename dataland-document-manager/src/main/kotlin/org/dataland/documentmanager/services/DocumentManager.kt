@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.sha256
-import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -45,13 +44,15 @@ import java.util.UUID.randomUUID
  */
 @Component
 class DocumentManager(
-    @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired val documentMetaInfoRepository: DocumentMetaInfoRepository,
-    @Autowired val storageApi: StorageControllerApi,
-    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var messageUtils: MessageQueueUtils,
+    @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
+    @Autowired private val documentMetaInfoRepository: DocumentMetaInfoRepository,
+    @Autowired private val storageApi: StreamingStorageControllerApi,
+    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val pdfVerificationService: PdfVerificationService,
+
 ) {
+    @Autowired private lateinit var objectMapper: ObjectMapper
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -146,19 +147,24 @@ class DocumentManager(
             )
         }
 
-        val documentDataStream = InputStreamResource(
-            inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)?.let {
-                logger.info("Received document $documentId from temporary storage")
-                ByteArrayInputStream(it)
-            }
-                ?: storageApi.selectBlobById(documentId, correlationId).inputStream()
-                    .let {
-                        logger.info("Received document $documentId from storage service")
-                        it
-                    },
-        )
+        val documentDataStream = retrieveDocumentDataStream(documentId, correlationId)
         return DocumentStream(metaDataInfoEntity.displayTitle, documentDataStream)
     }
+
+    private fun retrieveDocumentDataStream(
+        documentId: String,
+        correlationId: String,
+    ) = InputStreamResource(
+        inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)?.let {
+            logger.info("Received document $documentId from temporary storage")
+            ByteArrayInputStream(it)
+        }
+            ?: storageApi.getBlobFromInternalStorage(documentId, correlationId)
+                .let {
+                    logger.info("Received document $documentId from storage service")
+                    it
+                },
+    )
 
     /**
      * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
@@ -232,7 +238,7 @@ class DocumentManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QACompleted)
-        val documentId = ObjectMapper().readValue(jsonString, QaCompletedMessage::class.java).identifier
+        val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
         if (documentId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
                 val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()

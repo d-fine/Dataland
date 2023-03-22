@@ -20,18 +20,7 @@ class PdfVerificationService {
      */
     fun assertThatBlobLooksLikeAPdf(blob: ByteArray, correlationId: String) {
         try {
-            PDDocument.load(blob).use {
-                if (it.numberOfPages <= 0) {
-                    logger.info(
-                        "PDF document uploaded with correlation id: $correlationId seems to have 0 pages, " +
-                            "aborting.",
-                    )
-                    throw InvalidInputApiException(
-                        "You seem to have uploaded an empty PDF",
-                        "We have detected that the pdf you uploaded has 0 pages.",
-                    )
-                }
-            }
+            checkIfPdfDocumentIsEmpty(blob, correlationId)
         } catch (ex: IOException) {
             logger.info("Document uploaded with correlation id: $correlationId cannot be parsed as a PDF, aborting.")
             throw InvalidInputApiException(
@@ -40,6 +29,20 @@ class PdfVerificationService {
                     " Please ensure that the file you uploaded has not been corrupted",
                 ex,
             )
+        }
+    }
+
+    private fun checkIfPdfDocumentIsEmpty(blob: ByteArray, correlationId: String) {
+        PDDocument.load(blob).use {
+            if (it.numberOfPages <= 0) {
+                logger.info(
+                    "PDF document uploaded with correlation id: $correlationId seems to have 0 pages, aborting.",
+                )
+                throw InvalidInputApiException(
+                    "You seem to have uploaded an empty PDF",
+                    "We have detected that the pdf you uploaded has 0 pages.",
+                )
+            }
         }
     }
 }
