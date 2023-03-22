@@ -51,7 +51,7 @@ interface StorageAPI {
     )
     @GetMapping(
         value = ["/blobs/{blobId}"],
-        produces = ["application/json"],
+        produces = ["application/octet-stream"],
     )
     fun selectBlobById(
         @PathVariable("blobId") blobId: String,

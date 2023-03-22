@@ -22,7 +22,6 @@ class InMemoryDocumentStore {
 
     /**
      * Retrieves the data identified by the given hash from the in-memory store.
-     * Throws a ResourceNotFoundException if no such dataset exists.
      */
     fun retrieveDataFromMemoryStore(sha256hash: String): ByteArray? {
         return dataInMemoryStorage[sha256hash]
