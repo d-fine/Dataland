@@ -23,12 +23,11 @@
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
                 <h4 id="uploadReports" class="anchor title">Reporting Period</h4>
-                Reporting Period
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
-                  :name="euTaxonomyKpiNameMappings.reportDate"
-                  :explanation="euTaxonomyKpiInfoMappings.reportDate"
+                  :name="euTaxonomyKpiNameMappings.reportingPeriod"
+                  :explanation="euTaxonomyKpiInfoMappings.reportingPeriod"
                 />
                 <div class="lg:col-6 md:col-6 col-12 p-0">
                   <Calendar
@@ -63,7 +62,6 @@
                     @select="onSelectedFiles"
                     :maxFileSize="maxFileSize"
                     invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
-                    :fileLimit="1"
                     :auto="true"
                   >
                     <template #header="{ chooseCallback }">
@@ -397,8 +395,8 @@
 
                   <FormKit :name="copanyType.value" type="group">
                     <div
-                      v-for="(kpiType, index) of euTaxonomyKPIsModel[copanyType.value]"
-                      :key="index"
+                      v-for="kpiType of euTaxonomyKPIsModel[copanyType.value]"
+                      :key="kpiType"
                       :data-test="kpiType"
                       class="uploadFormSection"
                     >
@@ -459,8 +457,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- rest -->
           </FormKit>
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
             <SuccessUpload
@@ -539,8 +535,8 @@ export default defineComponent({
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
       fiscalYearEnd: "",
-      reportingPeriod: new Date(),
       convertedFiscalYearEnd: "",
+      reportingPeriod: new Date(),
       assuranceData: [
         { label: "None", value: "None" },
         { label: "LimitedAssurance", value: "LimitedAssurance" },
@@ -706,7 +702,6 @@ export default defineComponent({
       } else {
         return;
       }
-      console.log("this.files", this.files.files);
     },
 
     /**

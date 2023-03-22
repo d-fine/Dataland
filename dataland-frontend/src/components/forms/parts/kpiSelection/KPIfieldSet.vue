@@ -1,11 +1,11 @@
 <template>
-  <div class="form-field vertical-middle">
+  <div v-if="toggleDataAvailable" class="form-field vertical-middle">
     <InputSwitch
       inputId="dataPointIsAvailableSwitch"
       @click="dataPointAvailableToggle"
       v-model="dataPointIsAvailable"
     />
-    <h5 class="ml-2">Data point is available</h5>
+    <h5 class="ml-2">{{dataPointIsAvailable ? "Data point is available" : "Data point is not available" }}</h5>
   </div>
 
   <div v-if="dataPointIsAvailable">
@@ -102,6 +102,10 @@ export default defineComponent({
       type: Object,
       default: null,
     },
+    toggleDataAvailable: {
+      type: Boolean,
+      default: true,
+    }
   },
   methods: {
     /**

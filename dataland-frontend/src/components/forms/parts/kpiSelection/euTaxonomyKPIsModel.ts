@@ -14,6 +14,7 @@ export const euTaxonomyKPIsModel = {
     insuranceKpis: "InsuranceOrReinsurance",
     investmentFirmKpis: "InvestmentFirm",
   },
+  euTaxonomyDetailsPerCashFlowType: ["alignedPercentage", "eligiblePercentage", "totalAmount"],
 };
 
 export const euTaxonomyKpiNameMappings = {
@@ -24,7 +25,11 @@ export const euTaxonomyKpiNameMappings = {
   taxonomyNonEligibleActivity: "Taxonomy non Eligible Activity",
   taxonomyEligibleActivity: "Taxonomy Eligible Activity",
   reportDate: "Report Date",
+  reportingPeriod: "Reporting Period",
   reportingObligation: "Reporting Obligation",
+  totalAmount: "Total Amount",
+  alignedPercentage: "Aligned Percentage",
+  eligiblePercentage: "Eligible Percentage",
 
   iSfS: "IS/FS",
   fsCompanyType: "FS - Company Type",
@@ -125,6 +130,10 @@ export const euTaxonomyKpiInfoMappings = {
   taxonomyEligibleActivity:
     "For financial companies (FS), the percentage of total assets exposed to taxonomy-eligible economic activities",
   reportDate: "Report Date",
+  reportingPeriod: "Reporting Period",
+  totalAmount: "totalAmount",
+  alignedPercentage: "Aligned Percentage",
+  eligiblePercentage: "Eligible Percentage",
 
   iSfS: "Distinguishes between non-financial companies (IS) and financial companies (FS)",
   fsCompanyType:
