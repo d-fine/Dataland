@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile
 interface DocumentApi {
     /**
      * Upload a document
-     * @param pdfDocument a PDF/A document
+     * @param pdfDocument a PDF document
      */
     @Operation(
         summary = "Upload a document.",

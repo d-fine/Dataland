@@ -49,6 +49,7 @@ server {
     }
 
     location /documents/ {
+      client_max_body_size 100M;
       proxy_pass http://document-manager:8080/documents/;
       include utils/proxy.conf;
       include utils/documentsErrors.conf;
