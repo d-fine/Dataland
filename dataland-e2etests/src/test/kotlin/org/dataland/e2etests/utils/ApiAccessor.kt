@@ -142,6 +142,21 @@ class ApiAccessor {
         return listOfUploadInfo
     }
 
+    fun <T> uploadSingleFrameworkDataSet(
+        companyId: String,
+        frameworkData: T,
+        reportingPeriod: String,
+        frameworkDataUploadFunction: (
+            companyId: String,
+            frameworkData: T,
+            reportingPeriod: String,
+        ) -> DataMetaInformation,
+    ): DataMetaInformation {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val dataMetaInformation = frameworkDataUploadFunction(companyId, frameworkData, reportingPeriod)
+        return ensureQaIsPassed(listOf(dataMetaInformation))[0]
+    }
+
     /**
      * Wait until QaStatus is accepted for all Upload Infos or throw error. The metadata of the provided uploadInfos
      * are updated in the process.
@@ -261,7 +276,7 @@ class ApiAccessor {
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials,
     ):
-        Map<String, String> {
+            Map<String, String> {
         val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
             listOf(companyInformation),
             listOf(euTaxonomyDataForNonFinancials),
@@ -343,9 +358,14 @@ class ApiAccessor {
         uploadFunction: (String, T, String) -> DataMetaInformation,
     ): DataMetaInformation {
         val waitTime = 1000L
-        val uploadedMetaData = uploadFunction(companyId, frameworkData, reportingPeriod)
+        val uploadedMetaData = uploadSingleFrameworkDataSet(
+            companyId = companyId,
+            frameworkData = frameworkData,
+            frameworkDataUploadFunction = uploadFunction,
+            reportingPeriod = reportingPeriod
+        )
         Thread.sleep(waitTime)
-        return ensureQaIsPassed(listOf(uploadedMetaData)).elementAt(0)
+        return uploadedMetaData
     }
 }
 
@@ -357,4 +377,4 @@ data class UploadInfo(
 
     var actualStoredDataMetaInfo: DataMetaInformation? = null,
 
-)
+    )
