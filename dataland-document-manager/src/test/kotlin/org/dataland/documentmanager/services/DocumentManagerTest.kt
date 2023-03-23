@@ -72,7 +72,6 @@ class DocumentManagerTest(
             inMemoryDocumentStore = inMemoryDocumentStore,
             documentMetaInfoRepository = mockDocumentMetaInfoRepository,
             cloudEventMessageHandler = mockCloudEventMessageHandler,
-            messageUtils = mockMessageUtils,
             pdfVerificationService = pdfVerificationService,
             storageApi = mockStorageApi,
             objectMapper = objectMapper,
@@ -150,8 +149,10 @@ class DocumentManagerTest(
     @Test
     fun `check that an exception is thrown in removing of stored document if documentId is empty`() {
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            documentManager.removeStoredDocumentFromTemporaryStore("", "",
-                                                                    MessageType.DocumentStored)
+            documentManager.removeStoredDocumentFromTemporaryStore(
+                "", "",
+                MessageType.DocumentStored,
+            )
         }
         assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
