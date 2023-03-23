@@ -52,6 +52,7 @@ class DocumentManagerTest(
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var documentManager: DocumentManager
     lateinit var mockMessageUtils: MessageQueueUtils
+    val reportName = "test-report.pdf"
 
     @BeforeEach
     fun mockStorageApi() {
@@ -85,7 +86,6 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
-        val reportName = "test-report.pdf"
         val mockMultipartFile = mockUploadableFile(reportName)
 
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
@@ -105,7 +105,6 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
-        val reportName = "test-report.pdf"
         val mockMultipartFile = mockUploadableFile(reportName)
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         metaInfo.qaStatus = DocumentQAStatus.Accepted
@@ -132,7 +131,6 @@ class DocumentManagerTest(
 
     @Test
     fun `check that updating meta data after QA works for an existing document`() {
-        val reportName = "test-report.pdf"
         val mockMultipartFile = mockUploadableFile(reportName)
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         val message = objectMapper.writeValueAsString(
@@ -161,7 +159,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that exception is thrown when sending notification to message queue fails during document storage`() {
-        val reportName = "test-report.pdf"
+
         val mockMultipartFile = mockUploadableFile(reportName)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
