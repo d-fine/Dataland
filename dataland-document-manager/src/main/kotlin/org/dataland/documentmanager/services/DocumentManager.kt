@@ -50,7 +50,7 @@ class DocumentManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val pdfVerificationService: PdfVerificationService,
-    @Autowired private var objectMapper: ObjectMapper
+    @Autowired private var objectMapper: ObjectMapper,
 
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)

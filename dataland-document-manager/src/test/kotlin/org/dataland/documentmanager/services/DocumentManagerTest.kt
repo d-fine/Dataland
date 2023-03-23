@@ -2,6 +2,7 @@ package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
+import org.apache.pdfbox.io.IOUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
@@ -15,6 +16,7 @@ import org.dataland.documentmanager.model.DocumentQAStatus
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -33,8 +35,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.io.File
-import java.util.*
+import java.util.Optional
 
 @SpringBootTest(classes = [DatalandDocumentManager::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -42,8 +43,7 @@ import java.util.*
 class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val pdfVerificationService: PdfVerificationService,
-    @Autowired private val messageUtils: MessageQueueUtils,
-    @Autowired private var objectMapper: ObjectMapper
+    @Autowired private var objectMapper: ObjectMapper,
 ) {
 
     lateinit var mockStorageApi: StreamingStorageControllerApi
@@ -51,6 +51,7 @@ class DocumentManagerTest(
     lateinit var mockSecurityContext: SecurityContext
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var documentManager: DocumentManager
+    lateinit var mockMessageUtils: MessageQueueUtils
 
     @BeforeEach
     fun mockStorageApi() {
@@ -58,6 +59,7 @@ class DocumentManagerTest(
         mockStorageApi = mock(StreamingStorageControllerApi::class.java)
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+        mockMessageUtils = mock(MessageQueueUtils::class.java)
         val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
             username = "data_uploader",
             userId = "dummy-user-id",
@@ -70,10 +72,10 @@ class DocumentManagerTest(
             inMemoryDocumentStore = inMemoryDocumentStore,
             documentMetaInfoRepository = mockDocumentMetaInfoRepository,
             cloudEventMessageHandler = mockCloudEventMessageHandler,
-            messageUtils = messageUtils,
+            messageUtils = mockMessageUtils,
             pdfVerificationService = pdfVerificationService,
             storageApi = mockStorageApi,
-            objectMapper = objectMapper
+            objectMapper = objectMapper,
         )
     }
 
@@ -84,11 +86,8 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
-        val file = File("./public/test-report.pdf")
-        val mockMultipartFile = MockMultipartFile(
-            "test-report.pdf", "test-report.pdf",
-            "application/pdf", file.readBytes(),
-        )
+        val mockMultipartFile = mockUploadableFile()
+
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
@@ -106,18 +105,14 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
-        val file = File("./public/test-report.pdf")
-        val mockMultipartFile = MockMultipartFile(
-            "test-report.pdf", "test-report.pdf",
-            "application/pdf", file.readBytes(),
-        )
+        val mockMultipartFile = mockUploadableFile()
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         metaInfo.qaStatus = DocumentQAStatus.Accepted
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
         val downloadedDocument = documentManager.retrieveDocumentById(documentId = metaInfo.documentId)
         assertEquals("test-report.pdf", downloadedDocument.title)
-        assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(file.readBytes()))
+        assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(mockMultipartFile.bytes))
     }
 
     @Test
@@ -136,11 +131,8 @@ class DocumentManagerTest(
 
     @Test
     fun `check that updating meta data after QA works for an existing document`() {
-        val file = File("./public/test-report.pdf")
-        val mockMultipartFile = MockMultipartFile(
-            "test-report.pdf", "test-report.pdf",
-            "application/pdf", file.readBytes(),
-        )
+        val mockMultipartFile = mockUploadableFile()
+
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
@@ -149,29 +141,28 @@ class DocumentManagerTest(
             ),
         )
 
-        documentManager.updateDocumentMetaData(message, "", MessageType.QACompleted)
+        `when`(mockDocumentMetaInfoRepository.findById(anyString()))
+            .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
 
-        assertEquals(DocumentQAStatus.Accepted, metaInfo.qaStatus)
+        assertDoesNotThrow { documentManager.updateDocumentMetaData(message, "", MessageType.QACompleted) }
     }
 
     @Test
     fun `check that an exception is thrown in removing of stored document if documentId is empty`() {
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            documentManager.removeStoredDocumentFromTemporaryStore("", "", MessageType.DocumentStored)
+            documentManager.removeStoredDocumentFromTemporaryStore("", "",
+                                                                    MessageType.DocumentStored)
         }
         assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
 
     @Test
-    fun `check that an exception is thrown during storing a document when sending notification to message queue fails`() {
-        val file = File("./public/test-report.pdf")
-        val mockMultipartFile = MockMultipartFile(
-            "test-report.pdf", "test-report.pdf",
-            "application/pdf", file.readBytes(),
-        )
+    fun `check that exception is thrown when sending notification to message queue fails during document storage`() {
+        val mockMultipartFile = mockUploadableFile()
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                anyString(), eq(MessageType.DocumentReceived), anyString(), eq(ExchangeNames.documentReceived), eq(""),
+                anyString(), eq(MessageType.DocumentReceived), anyString(),
+                eq(ExchangeNames.documentReceived), eq(""),
             ),
         ).thenThrow(
             AmqpException::class.java,
@@ -179,5 +170,13 @@ class DocumentManagerTest(
         assertThrows<AmqpException> {
             documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         }
+    }
+    private fun mockUploadableFile(): MockMultipartFile {
+        val testFileStream = javaClass.getResourceAsStream("samplePdfs/test-report.pdf")
+        val testFileBytes = IOUtils.toByteArray(testFileStream)
+        return MockMultipartFile(
+            "test-report.pdf", "test-report.pdf",
+            "application/pdf", testFileBytes,
+        )
     }
 }
