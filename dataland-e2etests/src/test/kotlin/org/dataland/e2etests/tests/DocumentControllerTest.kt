@@ -50,10 +50,13 @@ class DocumentControllerTest {
     private fun ensureQaCompletedAndUpdateMetadata(metaInfo: DocumentMetaInfo) {
         Awaitility.await().atMost(10, TimeUnit.SECONDS)
             .until {
-                try { documentControllerClient.getDocument(metaInfo.documentId!!)
-                    true } catch (e: ClientException) {
+                try {
+                    documentControllerClient.getDocument(metaInfo.documentId!!)
+                    true
+                } catch (e: ClientException) {
                     e.statusCode != HttpStatus.NOT_FOUND.value()
                 }
             }
+
     }
 }
