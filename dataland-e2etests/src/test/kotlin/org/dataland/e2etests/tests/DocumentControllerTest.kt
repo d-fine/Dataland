@@ -1,4 +1,4 @@
-/*package org.dataland.e2etests.tests
+package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility
 import org.dataland.datalandbackendutils.utils.sha256
@@ -60,4 +60,4 @@ class DocumentControllerTest {
 
     }
 }
-*/
+
