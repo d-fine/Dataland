@@ -276,7 +276,7 @@ class ApiAccessor {
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials,
     ):
-            Map<String, String> {
+        Map<String, String> {
         val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
             listOf(companyInformation),
             listOf(euTaxonomyDataForNonFinancials),
@@ -362,7 +362,7 @@ class ApiAccessor {
             companyId = companyId,
             frameworkData = frameworkData,
             frameworkDataUploadFunction = uploadFunction,
-            reportingPeriod = reportingPeriod
+            reportingPeriod = reportingPeriod,
         )
         Thread.sleep(waitTime)
         return uploadedMetaData
@@ -377,4 +377,4 @@ data class UploadInfo(
 
     var actualStoredDataMetaInfo: DataMetaInformation? = null,
 
-    )
+)
