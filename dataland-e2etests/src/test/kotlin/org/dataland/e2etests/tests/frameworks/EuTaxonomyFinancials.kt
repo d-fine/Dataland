@@ -22,7 +22,7 @@ class EuTaxonomyFinancials {
             listOfOneCompanyInformation, listOfOneEuTaxonomyFinancialsDataSet,
             apiAccessor.euTaxonomyFinancialsUploaderFunction,
         )
-        Thread.sleep(1000)
+        apiAccessor.ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo)
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForEuTaxonomyFinancials
             .getCompanyAssociatedEuTaxonomyDataForFinancials(receivedDataMetaInformation!!.dataId)
