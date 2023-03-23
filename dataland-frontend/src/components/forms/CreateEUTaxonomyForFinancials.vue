@@ -357,7 +357,7 @@
                         @click="confirmeSelectedKPIs"
                         data-test="addKpisButton"
                         class="m-0"
-                        :label="selectedKPIs.length ? 'ADD RELATED KPIS' : 'UPDATE KPIS'"
+                        :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
                     </div>
                   </div>
@@ -491,8 +491,7 @@ import { useFilesUploadedStore } from "@/stores/filesUploaded";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { getHyphenatedDate } from "@/utils/DateFormatUtils";
-import { formatSize } from "@/utils/DateFormatUtils";
+import { getHyphenatedDate, formatSize } from "@/utils/DateFormatUtils";
 import {
   euTaxonomyKPIsModel,
   euTaxonomyKpiInfoMappings,
@@ -651,16 +650,16 @@ export default defineComponent({
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
             this.formInputsModel
           );
-        // this.confirmedSelectedKPIs = [];
-        // this.fiscalYearEnd = "";
-        // this.files.filesNames = [];
-        // this.selectedKPIs = [];
-        // this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
+        this.confirmedSelectedKPIs = [];
+        this.fiscalYearEnd = "";
+        this.files.filesNames = [];
+        this.selectedKPIs = [];
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       }
     },
 

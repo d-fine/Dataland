@@ -485,7 +485,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { formatSize } from "@/utils/DateFormatUtils";
+import { formatSize, getHyphenatedDate } from "@/utils/DateFormatUtils";
 
 import {
   euTaxonomyKPIsModel,
@@ -496,7 +496,6 @@ import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/ba
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { getHyphenatedDate } from "@/utils/DateFormatUtils";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",

@@ -53,6 +53,11 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
     force: true,
   });
   cy.get('input[name="scopeOfEntities"][value="No"]').check();
+  cy.get('div[id="jumpLinks"] li:last').click();
+  cy.window().then((win) => {
+    const scrollPosition = win.scrollY;
+    expect(scrollPosition).to.be.greaterThan(0);
+  });
   cy.get(
     `input[name="activityLevelReporting"][value=${
       data.activityLevelReporting ? data.activityLevelReporting.toString() : "No"
