@@ -27,7 +27,7 @@ class DocumentControllerTest {
     fun `test that a dummy document can be uploaded and retrieved after successful QA`() {
         val expectedHash = document.readBytes().sha256()
         val nonExistentDocumentId = "nonExistentDocumentId"
-        //TODO should this api logic be integrated in ApiAccessor.kt?
+        // TODO should this api logic be integrated in ApiAccessor.kt?
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         assertFalse(documentControllerClient.checkDocument(nonExistentDocumentId).documentExists)
         val metaInfo = documentControllerClient.postDocument(document)
@@ -50,13 +50,10 @@ class DocumentControllerTest {
     private fun ensureQaCompletedAndUpdateMetadata(metaInfo: DocumentMetaInfo) {
         Awaitility.await().atMost(10, TimeUnit.SECONDS)
             .until {
-                try{ documentControllerClient.getDocument(metaInfo.documentId!!)
-                    true}
-                catch (e:ClientException) {
+                try { documentControllerClient.getDocument(metaInfo.documentId!!)
+                    true } catch (e: ClientException) {
                     e.statusCode != HttpStatus.NOT_FOUND.value()
                 }
-                }
-
+            }
     }
-
 }

@@ -53,7 +53,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito:mockito-inline")
-    //TODO no explicit versions should be given here
+    // TODO no explicit versions should be given here
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
     testImplementation("org.springframework.security:spring-security-test")
     implementation(project(":dataland-keycloak-adapter"))

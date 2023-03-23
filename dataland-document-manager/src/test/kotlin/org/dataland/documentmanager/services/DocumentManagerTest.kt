@@ -43,7 +43,7 @@ class DocumentManagerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val pdfVerificationService: PdfVerificationService,
     @Autowired private val messageUtils: MessageQueueUtils,
-    @Autowired private var objectMapper: ObjectMapper
+    @Autowired private var objectMapper: ObjectMapper,
 ) {
 
     lateinit var mockStorageApi: StreamingStorageControllerApi
@@ -73,7 +73,7 @@ class DocumentManagerTest(
             messageUtils = messageUtils,
             pdfVerificationService = pdfVerificationService,
             storageApi = mockStorageApi,
-            objectMapper = objectMapper
+            objectMapper = objectMapper,
         )
     }
 
@@ -163,7 +163,7 @@ class DocumentManagerTest(
     }
 
     @Test
-    fun `check that an exception is thrown during storing a document when sending notification to message queue fails`() {
+    fun `check that an exception is thrown during storing a document when sending message to message queue fails`() {
         val file = File("./public/test-report.pdf")
         val mockMultipartFile = MockMultipartFile(
             "test-report.pdf", "test-report.pdf",
