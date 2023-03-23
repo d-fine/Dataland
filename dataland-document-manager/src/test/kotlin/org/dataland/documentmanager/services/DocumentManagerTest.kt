@@ -159,7 +159,6 @@ class DocumentManagerTest(
 
     @Test
     fun `check that exception is thrown when sending notification to message queue fails during document storage`() {
-
         val mockMultipartFile = mockUploadableFile(reportName)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
