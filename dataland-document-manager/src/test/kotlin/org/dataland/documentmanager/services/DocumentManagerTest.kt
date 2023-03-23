@@ -90,13 +90,17 @@ class DocumentManagerTest(
 
         val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
-            .thenReturn(Optional.of(DocumentMetaInfoEntity(
-                documentId = uploadResponse.documentId,
-                displayTitle = mockMultipartFile.originalFilename,
-                uploaderId = "",
-                uploadTime = 0,
-                qaStatus = DocumentQAStatus.Pending,
-            )))
+            .thenReturn(
+                Optional.of(
+                    DocumentMetaInfoEntity(
+                        documentId = uploadResponse.documentId,
+                        displayTitle = mockMultipartFile.originalFilename,
+                        uploaderId = "",
+                        uploadTime = 0,
+                        qaStatus = DocumentQAStatus.Pending,
+                    ),
+                ),
+            )
         val thrown = assertThrows<ResourceNotFoundApiException> {
             documentManager.retrieveDocumentById(
                 documentId = uploadResponse.documentId,
@@ -114,13 +118,17 @@ class DocumentManagerTest(
         val mockMultipartFile = mockUploadableFile(reportName)
         val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
-            .thenReturn(Optional.of(DocumentMetaInfoEntity(
-                documentId = uploadResponse.documentId,
-                displayTitle = mockMultipartFile.originalFilename,
-                uploaderId = "",
-                uploadTime = 0,
-                qaStatus = DocumentQAStatus.Accepted,
-            )))
+            .thenReturn(
+                Optional.of(
+                    DocumentMetaInfoEntity(
+                        documentId = uploadResponse.documentId,
+                        displayTitle = mockMultipartFile.originalFilename,
+                        uploaderId = "",
+                        uploadTime = 0,
+                        qaStatus = DocumentQAStatus.Accepted,
+                    ),
+                ),
+            )
         val downloadedDocument = documentManager.retrieveDocumentById(documentId = uploadResponse.documentId)
         assertEquals(reportName, downloadedDocument.title)
         assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(mockMultipartFile.bytes))
@@ -153,13 +161,17 @@ class DocumentManagerTest(
         )
 
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
-            .thenReturn(Optional.of(DocumentMetaInfoEntity(
-                documentId = uploadResponse.documentId,
-                displayTitle = mockMultipartFile.originalFilename,
-                uploaderId = "",
-                uploadTime = 0,
-                qaStatus = DocumentQAStatus.Pending,
-            )))
+            .thenReturn(
+                Optional.of(
+                    DocumentMetaInfoEntity(
+                        documentId = uploadResponse.documentId,
+                        displayTitle = mockMultipartFile.originalFilename,
+                        uploaderId = "",
+                        uploadTime = 0,
+                        qaStatus = DocumentQAStatus.Pending,
+                    ),
+                ),
+            )
 
         assertDoesNotThrow { documentManager.updateDocumentMetaData(message, "", MessageType.QACompleted) }
     }
