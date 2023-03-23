@@ -29,6 +29,7 @@ mkdir -p ./dbdumps/${CYPRESS_TEST_GROUP}
 docker exec -i dala-e2e-test-backend-db-1 /bin/bash -c "PGPASSWORD=${BACKEND_DB_PASSWORD} pg_dump --username backend backend" > ./dbdumps/${CYPRESS_TEST_GROUP}/backend-db.sql || true
 docker exec -i dala-e2e-test-api-key-manager-db-1 /bin/bash -c "PGPASSWORD=${API_KEY_MANAGER_DB_PASSWORD} pg_dump --username api_key_manager api_key_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/backend-db.sql || true
 docker exec -i dala-e2e-test-internal-storage-db-1 /bin/bash -c "PGPASSWORD=${INTERNAL_STORAGE_DB_PASSWORD} pg_dump --username internal_storage internal_storage" > ./dbdumps/${CYPRESS_TEST_GROUP}/backend-db.sql || true
+docker exec -i dala-e2e-test-document-manager-db-1 /bin/bash -c "PGPASSWORD=${DOCUMENT_MANAGER_DB_PASSWORD} pg_dump --username document_manager document_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/backend-db.sql || true
 
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
 docker exec dala-e2e-test-backend-1 pkill -f java
@@ -38,6 +39,10 @@ docker cp dala-e2e-test-backend-1:/jacoco.exec ./backend-bootRun-${CYPRESS_TEST_
 docker exec dala-e2e-test-api-key-manager-1 pkill -f java
 timeout 90 sh -c "docker logs dala-e2e-test-api-key-manager-1 --follow" > /dev/null
 docker cp dala-e2e-test-api-key-manager-1:/jacoco.exec ./api-key-manager-bootRun-${CYPRESS_TEST_GROUP}.exec
+
+docker exec dala-e2e-test-document-manager-1 pkill -f java
+timeout 90 sh -c "docker logs dala-e2e-test-document-manager-1 --follow" > /dev/null
+docker cp dala-e2e-test-document-manager-1:/jacoco.exec ./document-manager-bootRun-${CYPRESS_TEST_GROUP}.exec
 
 docker exec dala-e2e-test-internal-storage-1 pkill -f java
 timeout 90 sh -c "docker logs dala-e2e-test-internal-storage-1 --follow" > /dev/null
