@@ -488,6 +488,7 @@ import FailedUpload from "@/components/messages/FailedUpload.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
+import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
@@ -527,7 +528,7 @@ export default defineComponent({
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
-      fiscalYearEnd: "",
+      fiscalYearEnd: new Date(),
       convertedFiscalYearEnd: "",
       reportingPeriod: new Date(),
       assuranceData: [
@@ -544,25 +545,28 @@ export default defineComponent({
       smoothScroll,
       checkCustomInputs,
       formatSize,
+      route: useRoute(),
+      waitingForData: false,
 
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
       postEuTaxonomyDataForFinancialsResponse: null,
       humanizeString: humanizeString,
-      onThisPageLinks: [
+      onThisPageLinksStart: [
         { label: "Upload company reports", value: "uploadReports" },
         { label: "Basic information", value: "basicInformation" },
         { label: "Assurance", value: "assurance" },
         { label: "Add KPIs", value: "addKpis" },
       ],
+      onThisPageLinks: [] as { label: string; value: string }[],
       kpisModel: [
         { label: "Credit Institution", value: "creditInstitutionKpis" },
         { label: "Investment Firm", value: "investmentFirmKpis" },
         { label: "Insurance & Re-insurance", value: "insuranceKpis" },
         { label: "Asset Management", value: "assetManagementKpis" },
       ],
-      selectedKPIs: [],
-      confirmedSelectedKPIs: [],
+      selectedKPIs: [] as { label: string; value: string }[],
+      confirmedSelectedKPIs: [] as { label: string; value: string }[],
       computedFinancialServicesTypes: [] as string[],
       reportingPeriodYear: new Date().getFullYear(),
     };
@@ -603,7 +607,14 @@ export default defineComponent({
       return JSON.parse(JSON.stringify(this.formInputsModel)) as CompanyAssociatedDataEuTaxonomyDataForFinancials;
     },
   },
+  beforeMount() {
+    const dataId = this.route.query.templateDataId;
+    if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+      void this.loadEuData(dataId);
+    }
+  },
   mounted() {
+    this.onThisPageLinks = [...this.onThisPageLinksStart];
     const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
     this.updateModelFromLocalStore();
 
@@ -624,6 +635,39 @@ export default defineComponent({
     window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
+    /**
+     * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
+     * from the dataset
+     *
+     * @param dataId the id of the dataset to load
+     */
+    async loadEuData(dataId: string): Promise<void> {
+      this.waitingForData = true;
+      const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getEuTaxonomyDataForFinancialsControllerApi();
+
+      const dataResponse =
+        await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(dataId);
+      const dataResponseData = dataResponse.data;
+      if (dataResponseData.data?.fiscalYearEnd) {
+        this.fiscalYearEnd = new Date(dataResponseData.data.fiscalYearEnd);
+      }
+      if (dataResponseData.data?.financialServicesTypes) {
+        // types of company financial services
+        const arrayWithCompanyKpiTypes = dataResponseData.data?.financialServicesTypes;
+        // all types of financial services
+        const allTypesOfFinancialServices = this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis;
+
+        this.selectedKPIs = this.kpisModel.filter((el: { label: string; value: string }) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          return arrayWithCompanyKpiTypes?.includes(allTypesOfFinancialServices[el.value]);
+        });
+      }
+      console.log("+++++", dataResponseData.data?.financialServicesTypes);
+      this.formInputsModel = dataResponseData;
+      this.waitingForData = false;
+    },
     /**
      * Checks if there is a stored form data object and if so loads it
      */
@@ -658,10 +702,8 @@ export default defineComponent({
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
-        this.confirmedSelectedKPIs = [];
         this.fiscalYearEnd = "";
         this.files.filesNames = [];
-        this.selectedKPIs = [];
         this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       }
     },
@@ -690,7 +732,7 @@ export default defineComponent({
      */
     confirmeSelectedKPIs() {
       this.confirmedSelectedKPIs = this.selectedKPIs;
-      this.onThisPageLinks = [...new Set(this.onThisPageLinks.concat(this.selectedKPIs))];
+      this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedKPIs))];
     },
 
     /**

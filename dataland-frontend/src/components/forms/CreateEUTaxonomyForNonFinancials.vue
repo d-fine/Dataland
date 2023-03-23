@@ -485,6 +485,7 @@ import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { defineComponent, inject } from "vue";
+import { useRoute } from "vue-router";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatSize, getHyphenatedDate } from "@/utils/DataFormatUtils";
@@ -522,7 +523,7 @@ export default defineComponent({
   data: () => ({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     files: useFilesUploadedStore(),
-    fiscalYearEnd: "",
+    fiscalYearEnd: new Date(),
     convertedFiscalYearEnd: "",
     reportingPeriod: new Date(),
     onThisPageLinks: [
@@ -533,6 +534,8 @@ export default defineComponent({
       { label: "OpEx", value: "opex" },
     ],
     elementPosition: 0,
+    route: useRoute(),
+    waitingForData: false,
     formatSize,
     scrollListener: (): null => null,
     smoothScroll,
@@ -585,11 +588,37 @@ export default defineComponent({
       return null;
     };
     window.addEventListener("scroll", this.scrollListener);
+
+    const dataId = this.route.query.templateDataId;
+    if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+      void this.loadEuData(dataId);
+    }
   },
   unmounted() {
     window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
+    /**
+     * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
+     * from the dataset
+     *
+     * @param dataId the id of the dataset to load
+     */
+    async loadEuData(dataId: string): Promise<void> {
+      this.waitingForData = true;
+      const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getEuTaxonomyDataForNonFinancialsControllerApi();
+
+      const dataResponse =
+        await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId);
+      const dataResponseData = dataResponse.data;
+      if (dataResponseData.data?.fiscalYearEnd) {
+        this.fiscalYearEnd = new Date(dataResponseData.data.fiscalYearEnd);
+      }
+      this.formInputsModel = dataResponseData;
+      this.waitingForData = false;
+    },
     /**
      * Creates a new EuTaxonomy-Non-Financials framework entry for the current company
      * with the data entered in the form by using the Dataland API
