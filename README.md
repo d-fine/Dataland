@@ -19,6 +19,9 @@ In this section, you find information that might be useful for you as a develope
 Especially under Windows, it's unclear which file permissions a script will get. 
 To explicitly mark a script executable, do:
 `git update-index --chmod=+x script.sh`
+## Git Hooks
+To add the provided git pre-hooks to your local development environment execute:
+`git config --local core.hooksPath ./githooks/`
 ## Environment Variables
 Some environment variables are used within the project. Find attached the variables and their meaning
 
