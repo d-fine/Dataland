@@ -1135,7 +1135,7 @@ import { AxiosError } from "axios";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { CompanyAssociatedDataLksgData, InHouseProductionOrContractProcessing } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { getHyphenatedDate } from "@/utils/DateFormatUtils";
+import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 

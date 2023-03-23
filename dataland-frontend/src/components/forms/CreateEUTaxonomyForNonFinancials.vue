@@ -485,7 +485,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { formatSize, getHyphenatedDate } from "@/utils/DateFormatUtils";
+import { formatSize, getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 import {
   euTaxonomyKPIsModel,

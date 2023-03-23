@@ -491,7 +491,7 @@ import { useFilesUploadedStore } from "@/stores/filesUploaded";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { getHyphenatedDate, formatSize } from "@/utils/DateFormatUtils";
+import { getHyphenatedDate, formatSize } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKPIsModel,
   euTaxonomyKpiInfoMappings,

@@ -48,7 +48,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
+import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import PrimeButton from "primevue/button";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
