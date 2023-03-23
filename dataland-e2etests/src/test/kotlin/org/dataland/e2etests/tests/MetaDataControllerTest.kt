@@ -351,7 +351,6 @@ class MetaDataControllerTest {
         )
     }
 
-    @Suppress("kotlin:S138")
     @Test
     fun `ensure that reportingPeriod field of metadata endpoint of meta data controller works`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId

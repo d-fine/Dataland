@@ -31,7 +31,6 @@ class Lksg {
         assertEquals(listOfOneLksgDataSet[0], downloadedAssociatedData.data)
     }
 
-    @Suppress("kotlin:S138")
     @Test
     fun `check that reporting period and version history parameters of GET endpoint for companies work correctly`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
