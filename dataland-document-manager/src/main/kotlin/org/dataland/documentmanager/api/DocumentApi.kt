@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.documentmanager.model.DocumentExistsResponse
-import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -42,7 +42,7 @@ interface DocumentApi {
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun postDocument(
         @RequestPart("pdfDocument") pdfDocument: MultipartFile,
-    ): ResponseEntity<DocumentMetaInfo>
+    ): ResponseEntity<DocumentUploadResponse>
 
     /**
      * Checks if a document with a given ID exists

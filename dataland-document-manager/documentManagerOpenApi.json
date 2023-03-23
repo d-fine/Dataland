@@ -52,7 +52,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfo"
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
                 }
               }
             }
@@ -487,33 +487,16 @@
   },
   "components": {
     "schemas": {
-      "DocumentMetaInfo": {
+      "DocumentUploadResponse": {
+        "required": [
+          "documentId"
+        ],
         "type": "object",
         "properties": {
           "documentId": {
             "type": "string"
-          },
-          "displayTitle": {
-            "type": "string"
-          },
-          "uploaderId": {
-            "type": "string"
-          },
-          "uploadTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "qaStatus": {
-            "$ref": "#/components/schemas/DocumentQAStatus"
           }
         }
-      },
-      "DocumentQAStatus": {
-        "type": "string",
-        "enum": [
-          "Pending",
-          "Accepted"
-        ]
       },
       "DocumentExistsResponse": {
         "required": [

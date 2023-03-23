@@ -4,8 +4,7 @@ import org.awaitility.Awaitility
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
-import org.dataland.documentmanager.openApiClient.model.DocumentMetaInfo
-import org.dataland.documentmanager.openApiClient.model.DocumentQAStatus
+import org.dataland.documentmanager.openApiClient.model.DocumentUploadResponse
 import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -30,33 +29,31 @@ class DocumentControllerTest {
         // TODO should this api logic be integrated in ApiAccessor.kt?
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         assertFalse(documentControllerClient.checkDocument(nonExistentDocumentId).documentExists)
-        val metaInfo = documentControllerClient.postDocument(document)
-        assertEquals(expectedHash, metaInfo.documentId)
-        assertEquals(DocumentQAStatus.pending, metaInfo.qaStatus)
-        assertTrue(documentControllerClient.checkDocument(metaInfo.documentId!!).documentExists)
-        ensureQaCompletedAndUpdateMetadata(metaInfo)
-        val downloadedFile = documentControllerClient.getDocument(metaInfo.documentId!!)
+        val uploadResponse = documentControllerClient.postDocument(document)
+        assertEquals(expectedHash, uploadResponse.documentId)
+        assertTrue(documentControllerClient.checkDocument(uploadResponse.documentId).documentExists)
+        val downloadedFile = ensureQaCompleted(uploadResponse)
         assertEquals(expectedHash, downloadedFile.readBytes().sha256())
         assertEquals(document.name, downloadedFile.name)
     }
 
     /**
-     * Wait until QaStatus is accepted for uploaded document or throw error. The metadata of the provided document
-     * is updated in the process.
+     * Wait until QaStatus is accepted for uploaded document.
      *
-     * @param metaInfo the meta info for which an update of the QAStatus should be checked and awaited
-     * @return Input list of UplaodInfo but with updated metadata
+     * @param uploadResponse the DocumentUploadResponse document's id for which an update of the QAStatus should be checked and awaited
+     * @returns the received file
      */
-    private fun ensureQaCompletedAndUpdateMetadata(metaInfo: DocumentMetaInfo) {
+    private fun ensureQaCompleted(uploadResponse: DocumentUploadResponse): File {
+        lateinit var downloadedFile: File
         Awaitility.await().atMost(10, TimeUnit.SECONDS)
             .until {
                 try {
-                    documentControllerClient.getDocument(metaInfo.documentId!!)
+                    downloadedFile = documentControllerClient.getDocument(uploadResponse.documentId)
                     true
                 } catch (e: ClientException) {
                     e.statusCode != HttpStatus.NOT_FOUND.value()
                 }
             }
-
+        return downloadedFile
     }
 }
