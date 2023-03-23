@@ -253,30 +253,30 @@ describeIf(
       checkInvestmentFirmValues(testData.t);
     });
 
-    // it("Create an Asset Manager", () => {
-    //   const testData = getPreparedFixture("asset-management-company", preparedFixtures);
-    //   uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-    //     testData.companyInformation,
-    //     testData.t,
-    //         testData.reportingPeriod
-    //   );
-    //   checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
-    //   cy.get("body").should("not.contain", "Trading portfolio");
-    //   cy.get("body").should("not.contain", "demand interbank loans");
-    //   cy.get("body").should("not.contain", "Taxonomy-eligible non-life insurance economic activities");
-    // });
+    it("Create an Asset Manager", () => {
+      const testData = getPreparedFixture("asset-management-company", preparedFixtures);
+      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
+        testData.companyInformation,
+        testData.t,
+        testData.reportingPeriod
+      );
+      checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
+      cy.get("body").should("not.contain", "Trading portfolio");
+      cy.get("body").should("not.contain", "demand interbank loans");
+      cy.get("body").should("not.contain", "Taxonomy-eligible non-life insurance economic activities");
+    });
 
-    // it("Create a Company that is Asset Manager and Insurance", () => {
-    //   const testData = getPreparedFixture("asset-management-insurance-company", preparedFixtures);
-    //   uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-    //     testData.companyInformation,
-    //     testData.t,
-    //         testData.reportingPeriod
-    //   );
-    //   checkInsuranceValues(testData.t);
-    //   checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
-    //   cy.get("body").should("not.contain", "Trading portfolio");
-    //   cy.get("body").should("not.contain", "demand interbank loans");
-    // });
+    it("Create a Company that is Asset Manager and Insurance", () => {
+      const testData = getPreparedFixture("asset-management-insurance-company", preparedFixtures);
+      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
+        testData.companyInformation,
+        testData.t,
+        testData.reportingPeriod
+      );
+      checkInsuranceValues(testData.t);
+      checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
+      cy.get("body").should("not.contain", "Trading portfolio");
+      cy.get("body").should("not.contain", "demand interbank loans");
+    });
   }
 );

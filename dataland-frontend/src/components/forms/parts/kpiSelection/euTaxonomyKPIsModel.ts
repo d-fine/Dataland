@@ -13,6 +13,7 @@ export const euTaxonomyKPIsModel = {
     creditInstitutionKpis: "CreditInstitution",
     insuranceKpis: "InsuranceOrReinsurance",
     investmentFirmKpis: "InvestmentFirm",
+    assetManagementKpis: "AssetManagement",
   },
   euTaxonomyDetailsPerCashFlowType: ["alignedPercentage", "eligiblePercentage", "totalAmount"],
 };

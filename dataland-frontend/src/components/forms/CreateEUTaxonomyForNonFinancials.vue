@@ -41,7 +41,7 @@
                 </div>
 
                 <FormKit
-                  type="text"
+                  type="hidden"
                   v-model="reportingPeriodYear"
                   name="reportingPeriod"
                   :outer-class="{ 'hidden-input': true }"
@@ -485,6 +485,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { formatSize } from "@/utils/DateFormatUtils";
 
 import {
   euTaxonomyKPIsModel,
@@ -495,6 +496,7 @@ import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/ba
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
+import { getHyphenatedDate } from "@/utils/DateFormatUtils";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
@@ -530,6 +532,7 @@ export default defineComponent({
       { label: "OpEx", value: "opex" },
     ],
     elementPosition: 0,
+    formatSize,
     scrollListener: (): null => null,
     smoothScroll,
     checkCustomInputs,
@@ -537,6 +540,7 @@ export default defineComponent({
     euTaxonomyKPIsModel,
     euTaxonomyKpiNameMappings,
     euTaxonomyKpiInfoMappings,
+    reportingPeriodYear: new Date().getFullYear(),
     assuranceData: {
       None: humanizeString("None"),
       LimitedAssurance: humanizeString("LimitedAssurance"),
@@ -548,15 +552,13 @@ export default defineComponent({
     postEuTaxonomyDataForNonFinancialsResponse: null,
     humanizeString: humanizeString,
   }),
-  computed: {
-    reportingPeriodYear(): number {
-      return this.reportingPeriod.getFullYear();
-    },
-  },
   watch: {
+    reportingPeriod: function (newValue: Date) {
+      this.reportingPeriodYear = newValue.getFullYear();
+    },
     fiscalYearEnd: function (newValue: Date) {
       if (newValue) {
-        this.convertedFiscalYearEnd = this.converteDateFormat(newValue);
+        this.convertedFiscalYearEnd = getHyphenatedDate(newValue);
       } else {
         this.convertedFiscalYearEnd = "";
       }
@@ -611,21 +613,6 @@ export default defineComponent({
       }
     },
     /**
-     * converte Date to yyyy-mm-dd Format
-     *
-     * @param date date in date format
-     * @returns date in yyyy-mm-dd format
-     */
-    converteDateFormat(date: Date): string {
-      if (date) {
-        return `${date.getFullYear()}-${("0" + (date.getMonth() + 1).toString()).slice(-2)}-${(
-          "0" + date.getDate().toString()
-        ).slice(-2)}`;
-      } else {
-        return "";
-      }
-    },
-    /**
      * Modifies the file object and adds it to the store
      *
      * @param event date in date format
@@ -641,22 +628,6 @@ export default defineComponent({
       } else {
         return;
       }
-    },
-    /**
-     * Formats the file size to display a more readable format
-     *
-     * @param bytes file size i bytes
-     * @returns file size in format (example 30 KB)
-     */
-    formatSize(bytes: number): string {
-      if (bytes === 0) {
-        return "0 B";
-      }
-      const k = 1000,
-        dm = 3,
-        sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
-        i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)).toString() + " " + sizes[i];
     },
   },
 });

@@ -175,7 +175,6 @@ describe("As a user, I expect the search functionality on the /companies page to
           cy.visitAndCheckAppMount("/companies");
           cy.intercept("**/api/companies*").as("searchCompany");
           cy.get("input[id=search_bar_top]").type("b");
-          // cy.get(".p-autocomplete-item").eq(0).get("span[class='font-medium']").contains("b").should("exist");
           cy.get(".p-autocomplete-item").contains("View all results").click();
           cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
             verifySearchResultTable();

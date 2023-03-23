@@ -40,12 +40,7 @@
                   />
                 </div>
 
-                <FormKit
-                  type="text"
-                  v-model="reportingPeriodYear"
-                  name="reportingPeriod"
-                  :outer-class="{ 'hidden-input': true }"
-                />
+                <FormKit type="hidden" v-model="reportingPeriodYear" name="reportingPeriod" />
               </div>
               <FormKit type="group" name="data" label="data">
                 <FormKit v-model="computedFinancialServicesTypes" type="hidden" name="financialServicesTypes" />
@@ -121,12 +116,7 @@
                             />
                           </div>
 
-                          <FormKit
-                            type="text"
-                            v-model="files.files[index].convertedReportDate"
-                            name="reportDate"
-                            :outer-class="{ 'hidden-input': true }"
-                          />
+                          <FormKit type="hidden" v-model="files.files[index].convertedReportDate" name="reportDate" />
                         </div>
 
                         <FormKit
@@ -365,10 +355,9 @@
 
                       <PrimeButton
                         @click="confirmeSelectedKPIs"
-                        :disabled="!selectedKPIs.length"
                         data-test="addKpisButton"
                         class="m-0"
-                        label="ADD RELATED KPIS"
+                        :label="selectedKPIs.length ? 'ADD RELATED KPIS' : 'UPDATE KPIS'"
                       />
                     </div>
                   </div>
@@ -393,7 +382,7 @@
                     ></PrimeButton>
                   </div>
 
-                  <FormKit :name="copanyType.value" type="group">
+                  <FormKit v-if="copanyType.value !== 'assetManagementKpis'" :name="copanyType.value" type="group">
                     <div
                       v-for="kpiType of euTaxonomyKPIsModel[copanyType.value]"
                       :key="kpiType"
@@ -502,6 +491,8 @@ import { useFilesUploadedStore } from "@/stores/filesUploaded";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
+import { getHyphenatedDate } from "@/utils/DateFormatUtils";
+import { formatSize } from "@/utils/DateFormatUtils";
 import {
   euTaxonomyKPIsModel,
   euTaxonomyKpiInfoMappings,
@@ -550,6 +541,7 @@ export default defineComponent({
       scrollListener: (): null => null,
       smoothScroll,
       checkCustomInputs,
+      formatSize,
 
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
@@ -565,16 +557,18 @@ export default defineComponent({
         { label: "Credit Institution", value: "creditInstitutionKpis" },
         { label: "Investment Firm", value: "investmentFirmKpis" },
         { label: "Insurance & Re-insurance", value: "insuranceKpis" },
+        { label: "Asset Management", value: "assetManagementKpis" },
       ],
       selectedKPIs: [],
       confirmedSelectedKPIs: [],
       computedFinancialServicesTypes: [] as string[],
+      reportingPeriodYear: new Date().getFullYear(),
     };
   },
   watch: {
     fiscalYearEnd: function (newValue: Date) {
       if (newValue) {
-        this.convertedFiscalYearEnd = this.converteDateFormat(newValue);
+        this.convertedFiscalYearEnd = getHyphenatedDate(newValue);
       } else {
         this.convertedFiscalYearEnd = "";
       }
@@ -593,6 +587,9 @@ export default defineComponent({
       },
       deep: true,
     },
+    reportingPeriod: function (newValue: Date) {
+      this.reportingPeriodYear = newValue.getFullYear();
+    },
   },
   props: {
     companyID: {
@@ -602,9 +599,6 @@ export default defineComponent({
   computed: {
     shadowFormInputsModel() {
       return JSON.parse(JSON.stringify(this.formInputsModel)) as CompanyAssociatedDataEuTaxonomyDataForFinancials;
-    },
-    reportingPeriodYear(): number {
-      return this.reportingPeriod.getFullYear();
     },
   },
   mounted() {
@@ -629,22 +623,6 @@ export default defineComponent({
   },
   methods: {
     /**
-     * converte Date to yyyy-mm-dd Format
-     *
-     * @param date date in date format
-     * @returns date in yyyy-mm-dd format
-     */
-    converteDateFormat(date: Date): string {
-      if (date) {
-        return `${date.getFullYear()}-${("0" + (date.getMonth() + 1).toString()).slice(-2)}-${(
-          "0" + date.getDate().toString()
-        ).slice(-2)}`;
-      } else {
-        return "";
-      }
-    },
-
-    /**
      * Checks if there is a stored form data object and if so loads it
      */
     updateModelFromLocalStore(): void {
@@ -663,7 +641,7 @@ export default defineComponent({
      */
     async postEuTaxonomyDataForFinancials(): Promise<void> {
       try {
-        console.log("lklklk", this.formInputsModel);
+        console.log("-->", this.formInputsModel);
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
@@ -673,11 +651,11 @@ export default defineComponent({
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
             this.formInputsModel
           );
-        this.confirmedSelectedKPIs = [];
-        this.fiscalYearEnd = "";
-        this.files.filesNames = [];
-        this.selectedKPIs = [];
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+        // this.confirmedSelectedKPIs = [];
+        // this.fiscalYearEnd = "";
+        // this.files.filesNames = [];
+        // this.selectedKPIs = [];
+        // this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
         console.error(error);
@@ -735,7 +713,7 @@ export default defineComponent({
       this.files.updatePropertyFilesUploaded(
         index,
         "convertedReportDate",
-        this.converteDateFormat(this.files.files[index].reportDate as unknown as Date)
+        getHyphenatedDate(this.files.files[index].reportDate as unknown as Date)
       );
       this.files.reRender();
     },
@@ -759,23 +737,6 @@ export default defineComponent({
       if (isDifference) {
         localStorage.setItem("formInputsModel", JSON.stringify(this.shadowFormInputsModel));
       }
-    },
-
-    /**
-     * Formats the file size to display a more readable format
-     *
-     * @param bytes file size i bytes
-     * @returns file size in format (example 30 KB)
-     */
-    formatSize(bytes: number): string {
-      if (bytes === 0) {
-        return "0 B";
-      }
-      const k = 1000,
-        dm = 3,
-        sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
-        i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)).toString() + " " + sizes[i];
     },
   },
 });
