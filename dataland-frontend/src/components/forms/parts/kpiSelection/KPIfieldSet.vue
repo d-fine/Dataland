@@ -5,7 +5,9 @@
       @click="dataPointAvailableToggle"
       v-model="dataPointIsAvailable"
     />
-    <h5 class="ml-2">{{ dataPointIsAvailable ? "Data point is available" : "Data point is not available" }}</h5>
+    <h5 data-test="dataPointToggleTitle" class="ml-2">
+      {{ dataPointIsAvailable ? "Data point is available" : "Data point is not available" }}
+    </h5>
   </div>
 
   <div v-if="dataPointIsAvailable">

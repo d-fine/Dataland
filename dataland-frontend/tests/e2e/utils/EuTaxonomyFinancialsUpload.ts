@@ -33,6 +33,12 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
+  cy.get('[data-test="reportingPeriod"] button').should("have.class", "p-datepicker-trigger").should("exist");
+  cy.get('button[data-test="uploadFiles"]').should("have.class", "m-0");
+  cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
+  cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
+  cy.get('input[name="reference"]').should("not.exist");
+  cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
     .get("div.p-multiselect-panel")
@@ -53,7 +59,12 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
     force: true,
   });
   cy.get('input[name="scopeOfEntities"][value="No"]').check();
-  cy.get('div[id="jumpLinks"] li:last').click();
+  cy.get('div[id="jumpLinks"] li:last a').click();
+  cy.window().then((win) => {
+    const scrollPosition = win.scrollY;
+    expect(scrollPosition).to.be.greaterThan(0);
+  });
+  cy.get('button[data-test="submitButton"]').click();
   cy.window().then((win) => {
     const scrollPosition = win.scrollY;
     expect(scrollPosition).to.be.greaterThan(0);
@@ -63,9 +74,11 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
       data.activityLevelReporting ? data.activityLevelReporting.toString() : "No"
     }]`
   ).check();
+  cy.get('[data-test="dataPointToggleTitle"]').should("exist");
   cy.get('input[name="numberOfEmployees"]').type(
     `${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`
   );
+  cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });

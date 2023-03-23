@@ -63,6 +63,7 @@
                       <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
                         <div class="flex gap-2">
                           <PrimeButton
+                            data-test="uploadFiles"
                             @click="chooseCallback()"
                             icon="pi pi-upload"
                             class="m-0"
@@ -179,6 +180,7 @@
                       />
                       <div class="lg:col-6 md:col-6 col-12 p-0">
                         <Calendar
+                          data-test="fiscalYearEnd"
                           inputId="fiscalYearEnd"
                           v-model="fiscalYearEnd"
                           :showIcon="true"
@@ -377,6 +379,7 @@
                     <PrimeButton
                       @click="removeKpisSection(copanyType.value)"
                       label="REMOVE THIS SECTION"
+                      data-test="removeSectionButton"
                       class="p-button-text ml-auto"
                       icon="pi pi-trash"
                     ></PrimeButton>

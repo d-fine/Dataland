@@ -68,6 +68,7 @@
                       <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
                         <div class="flex gap-2">
                           <PrimeButton
+                            data-test="uploadFiles"
                             @click="chooseCallback()"
                             icon="pi pi-upload"
                             class="m-0"
@@ -190,6 +191,7 @@
                         <Calendar
                           inputId="fiscalYearEnd"
                           v-model="fiscalYearEnd"
+                          data-test="fiscalYearEnd"
                           :showIcon="true"
                           dateFormat="D, M dd, yy"
                         />
