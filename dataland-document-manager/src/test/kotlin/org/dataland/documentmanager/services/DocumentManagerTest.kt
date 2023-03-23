@@ -85,7 +85,8 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
-        val mockMultipartFile = mockUploadableFile()
+        val reportName = "test-report.pdf"
+        val mockMultipartFile = mockUploadableFile(reportName)
 
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
@@ -104,13 +105,14 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
-        val mockMultipartFile = mockUploadableFile()
+        val reportName = "test-report.pdf"
+        val mockMultipartFile = mockUploadableFile(reportName)
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         metaInfo.qaStatus = DocumentQAStatus.Accepted
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
         val downloadedDocument = documentManager.retrieveDocumentById(documentId = metaInfo.documentId)
-        assertEquals("test-report.pdf", downloadedDocument.title)
+        assertEquals(reportName, downloadedDocument.title)
         assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(mockMultipartFile.bytes))
     }
 
@@ -130,8 +132,8 @@ class DocumentManagerTest(
 
     @Test
     fun `check that updating meta data after QA works for an existing document`() {
-        val mockMultipartFile = mockUploadableFile()
-
+        val reportName = "test-report.pdf"
+        val mockMultipartFile = mockUploadableFile(reportName)
         val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
@@ -159,7 +161,8 @@ class DocumentManagerTest(
 
     @Test
     fun `check that exception is thrown when sending notification to message queue fails during document storage`() {
-        val mockMultipartFile = mockUploadableFile()
+        val reportName = "test-report.pdf"
+        val mockMultipartFile = mockUploadableFile(reportName)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 anyString(), eq(MessageType.DocumentReceived), anyString(),
@@ -172,11 +175,11 @@ class DocumentManagerTest(
             documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         }
     }
-    private fun mockUploadableFile(): MockMultipartFile {
-        val testFileStream = javaClass.getResourceAsStream("samplePdfs/test-report.pdf")
+    private fun mockUploadableFile(reportName: String): MockMultipartFile {
+        val testFileStream = javaClass.getResourceAsStream("samplePdfs/$reportName")
         val testFileBytes = IOUtils.toByteArray(testFileStream)
         return MockMultipartFile(
-            "test-report.pdf", "test-report.pdf",
+            reportName, reportName,
             "application/pdf", testFileBytes,
         )
     }
