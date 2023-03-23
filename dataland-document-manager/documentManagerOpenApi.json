@@ -110,6 +110,12 @@
           "200": {
             "description": "Successfully received document.",
             "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
               "application/pdf": {
                 "schema": {
                   "type": "string",
