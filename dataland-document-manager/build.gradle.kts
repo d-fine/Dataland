@@ -52,8 +52,8 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.mockito:mockito-core")
     testImplementation("org.mockito:mockito-inline")
+    testImplementation(libs.mockito.kotlin)
     testImplementation("org.springframework.security:spring-security-test")
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
@@ -82,4 +82,42 @@ jacoco {
 
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
+}
+
+tasks.register("generateInternalStorageClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
+    input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
+        .path
+    outputDir.set("$buildDir/clients/internal-storage")
+    packageName.set(internalStorageClientDestinationPackage)
+    modelPackage.set("$internalStorageClientDestinationPackage.model")
+    apiPackage.set("$internalStorageClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateInternalStorageClient")
+}
+
+sourceSets {
+    val main by getting
+    main.kotlin.srcDir("$buildDir/clients/internal-storage/src/main/kotlin")
+}
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
+    }
 }

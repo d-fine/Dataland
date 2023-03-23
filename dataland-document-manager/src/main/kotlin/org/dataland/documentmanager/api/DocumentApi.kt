@@ -81,7 +81,7 @@ interface DocumentApi {
     )
     @GetMapping(
         value = ["/{documentId}"],
-        produces = ["application/octet-stream"],
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDocument(

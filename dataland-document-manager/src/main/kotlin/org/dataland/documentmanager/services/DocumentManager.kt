@@ -44,15 +44,15 @@ import java.util.UUID.randomUUID
  */
 @Component
 class DocumentManager(
+    @Autowired val documentMetaInfoRepository: DocumentMetaInfoRepository,
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired private val documentMetaInfoRepository: DocumentMetaInfoRepository,
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val pdfVerificationService: PdfVerificationService,
+    @Autowired private var objectMapper: ObjectMapper,
 
 ) {
-    @Autowired private lateinit var objectMapper: ObjectMapper
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -72,8 +72,7 @@ class DocumentManager(
         }
         val documentBody = document.bytes
         pdfVerificationService.assertThatBlobLooksLikeAPdf(documentBody, correlationId)
-        logger.info("Started temporary storage process for document with correlationId: $correlationId")
-        saveMetaInfoToDatabase(documentMetaInfo)
+        saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeNames.documentReceived,
@@ -87,7 +86,8 @@ class DocumentManager(
      * @param documentMetaInfo the document meta information to store
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun saveMetaInfoToDatabase(documentMetaInfo: DocumentMetaInfo) {
+    fun saveMetaInfoToDatabase(documentMetaInfo: DocumentMetaInfo, correlationId: String) {
+        logger.info("Saving meta info of document with correlationId: $correlationId")
         documentMetaInfoRepository.save(DocumentMetaInfoEntity(documentMetaInfo))
     }
 
