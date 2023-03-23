@@ -52,6 +52,7 @@ class DocumentManagerTest(
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var documentManager: DocumentManager
     lateinit var mockMessageUtils: MessageQueueUtils
+    val reportName = "test-report.pdf"
 
     @BeforeEach
     fun mockStorageApi() {
@@ -72,7 +73,6 @@ class DocumentManagerTest(
             inMemoryDocumentStore = inMemoryDocumentStore,
             documentMetaInfoRepository = mockDocumentMetaInfoRepository,
             cloudEventMessageHandler = mockCloudEventMessageHandler,
-            messageUtils = mockMessageUtils,
             pdfVerificationService = pdfVerificationService,
             storageApi = mockStorageApi,
             objectMapper = objectMapper,
@@ -86,7 +86,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
-        val mockMultipartFile = mockUploadableFile()
+        val mockMultipartFile = mockUploadableFile(reportName)
 
         val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
@@ -111,7 +111,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
-        val mockMultipartFile = mockUploadableFile()
+        val mockMultipartFile = mockUploadableFile(reportName)
         val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(Optional.of(DocumentMetaInfoEntity(
@@ -122,7 +122,7 @@ class DocumentManagerTest(
                 qaStatus = DocumentQAStatus.Accepted,
             )))
         val downloadedDocument = documentManager.retrieveDocumentById(documentId = uploadResponse.documentId)
-        assertEquals("test-report.pdf", downloadedDocument.title)
+        assertEquals(reportName, downloadedDocument.title)
         assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(mockMultipartFile.bytes))
     }
 
@@ -142,7 +142,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that updating meta data after QA works for an existing document`() {
-        val mockMultipartFile = mockUploadableFile()
+        val mockMultipartFile = mockUploadableFile(reportName)
 
         val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         val message = objectMapper.writeValueAsString(
@@ -167,15 +167,17 @@ class DocumentManagerTest(
     @Test
     fun `check that an exception is thrown in removing of stored document if documentId is empty`() {
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            documentManager.removeStoredDocumentFromTemporaryStore("", "",
-                                                                    MessageType.DocumentStored)
+            documentManager.removeStoredDocumentFromTemporaryStore(
+                "", "",
+                MessageType.DocumentStored,
+            )
         }
         assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
 
     @Test
     fun `check that exception is thrown when sending notification to message queue fails during document storage`() {
-        val mockMultipartFile = mockUploadableFile()
+        val mockMultipartFile = mockUploadableFile(reportName)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 anyString(), eq(MessageType.DocumentReceived), anyString(),
@@ -188,11 +190,11 @@ class DocumentManagerTest(
             documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         }
     }
-    private fun mockUploadableFile(): MockMultipartFile {
-        val testFileStream = javaClass.getResourceAsStream("samplePdfs/test-report.pdf")
+    private fun mockUploadableFile(reportName: String): MockMultipartFile {
+        val testFileStream = javaClass.getResourceAsStream("samplePdfs/$reportName")
         val testFileBytes = IOUtils.toByteArray(testFileStream)
         return MockMultipartFile(
-            "test-report.pdf", "test-report.pdf",
+            reportName, reportName,
             "application/pdf", testFileBytes,
         )
     }

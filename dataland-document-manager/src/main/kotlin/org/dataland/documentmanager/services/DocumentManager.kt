@@ -49,17 +49,17 @@ class DocumentManager(
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val messageUtils: MessageQueueUtils,
+    // @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val pdfVerificationService: PdfVerificationService,
     @Autowired private var objectMapper: ObjectMapper,
 
 ) {
+    lateinit var messageUtils: MessageQueueUtils
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Stores the meta information of a document, saves it temporarily locally and notifies that it can be
      * retrieved for other use
-     *
      * @param document the multipart file which contains the uploaded document
      * @returns the meta information for the document
      */
@@ -196,12 +196,14 @@ class DocumentManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
+        messageUtils = MessageQueueUtils()
         messageUtils.validateMessageType(type, MessageType.DocumentStored)
         if (documentId.isNotEmpty()) {
             logger.info("Internal Storage sent a message - job done")
             logger.info(
                 "Document with documentId $documentId was successfully stored. Correlation ID: $correlationId.",
             )
+
             messageUtils.rejectMessageOnException {
                 inMemoryDocumentStore.deleteFromInMemoryStore(documentId)
             }
@@ -238,8 +240,10 @@ class DocumentManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
+        messageUtils = MessageQueueUtils()
         messageUtils.validateMessageType(type, MessageType.QACompleted)
         val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
+        println("AchtungAchtung $documentId")
         if (documentId.isNotEmpty()) {
             messageUtils.rejectMessageOnException {
                 val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
