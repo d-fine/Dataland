@@ -58,6 +58,8 @@ jobs:
         with:
           name: lcovResults
           path: ./*.info
+      - name: Just Tests
+        run: find . -name *.info
       - name: Upload FE Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
