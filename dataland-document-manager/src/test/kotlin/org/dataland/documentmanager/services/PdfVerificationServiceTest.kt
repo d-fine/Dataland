@@ -41,4 +41,14 @@ class PdfVerificationServiceTest {
             pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
         }
     }
+
+    @Test
+    fun `verifies that a pdf document with unallowed characters in the filename does not pass the basic checks`() {
+        val testFileStream = javaClass.getResourceAsStream("samplePdfs/StandardWordExport.pdf")
+        val testFileBytes = IOUtils.toByteArray(testFileStream)
+        val testFile = MockMultipartFile("te/st.pdf", "te/st.pdf", "application/pdf", testFileBytes)
+        assertThrows<InvalidInputApiException> {
+            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
+        }
+    }
 }
