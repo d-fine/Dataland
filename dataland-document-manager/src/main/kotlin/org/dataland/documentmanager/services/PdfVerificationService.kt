@@ -24,7 +24,6 @@ class PdfVerificationService {
             checkIfPdfDocumentIsEmpty(document.bytes, correlationId)
             checkThatDocumentNameEndsOnPdf(document.name, correlationId)
             checkThatDocumentNameIsValid(document.name, correlationId)
-
         } catch (ex: IOException) {
             logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
             throw InvalidInputApiException(

@@ -220,7 +220,7 @@
         ]
       }
     },
-    "/internal/cached/{sha256hash}": {
+    "/internal/cached/{hash}": {
       "get": {
         "tags": [
           "temporarily-cached-document-controller"
@@ -230,7 +230,7 @@
         "operationId": "getReceivedData",
         "parameters": [
           {
-            "name": "sha256hash",
+            "name": "hash",
             "in": "path",
             "required": true,
             "schema": {
