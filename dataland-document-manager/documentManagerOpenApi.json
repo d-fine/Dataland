@@ -94,7 +94,7 @@
           "document-controller"
         ],
         "summary": "Receive a document.",
-        "description": "Receive a document by its Id from internal storage.",
+        "description": "Receive a document by its ID from internal storage.",
         "operationId": "getDocument",
         "parameters": [
           {
@@ -161,7 +161,7 @@
           "document-controller"
         ],
         "summary": "Check if a document exists.",
-        "description": "Check for a given documentId (hash) if the document already exists in the database.",
+        "description": "Check for a given document ID (hash) if the document already exists in the database.",
         "operationId": "checkDocument",
         "parameters": [
           {
