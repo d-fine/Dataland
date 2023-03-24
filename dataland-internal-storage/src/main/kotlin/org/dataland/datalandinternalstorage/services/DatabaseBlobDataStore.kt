@@ -65,18 +65,18 @@ class DatabaseBlobDataStore(
         if (blobId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
-            messageUtils.rejectMessageOnException {
-                logger.info("Received BlobId $blobId and CorrelationId: $correlationId")
-                val resource = temporarilyCachedDocumentClient.getReceivedData(blobId)
-                storeBlobToDatabase(blobId, resource.readBytes())
-                logger.info(
-                    "Inserting blob into database with blob ID: $blobId and correlation ID: $correlationId.",
-                )
-                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    blobId, MessageType.DocumentStored, correlationId, ExchangeNames.itemStored,
-                    RoutingKeyNames.document,
-                )
-            }
+        messageUtils.rejectMessageOnException {
+            logger.info("Received BlobId $blobId and CorrelationId: $correlationId")
+            val resource = temporarilyCachedDocumentClient.getReceivedData(blobId)
+            storeBlobToDatabase(blobId, resource.readBytes())
+            logger.info(
+                "Inserting blob into database with blob ID: $blobId and correlation ID: $correlationId.",
+            )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                blobId, MessageType.DocumentStored, correlationId, ExchangeNames.itemStored,
+                RoutingKeyNames.document,
+            )
+        }
     }
 
     /**

@@ -5,12 +5,12 @@ import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandbackend.model.lksg.LksgData
 import org.dataland.datalandbackend.services.CompanyManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.CompanyUploader
 import org.dataland.datalandbackend.utils.TestDataProvider
+import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals

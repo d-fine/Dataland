@@ -3,8 +3,8 @@ package org.dataland.documentmanager.services
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
-import org.springframework.web.multipart.MultipartFile
 import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 
 /**
