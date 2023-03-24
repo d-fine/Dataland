@@ -81,7 +81,7 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "200",
                 description = "Successfully received document.",
-                headers=[Header(name = HttpHeaders.CONTENT_DISPOSITION)],
+                headers = [Header(name = HttpHeaders.CONTENT_DISPOSITION)],
             ),
         ],
     )
