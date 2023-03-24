@@ -20,8 +20,8 @@ interface StorageAPI {
      * @return ResponseEntity containing the selected data
      */
     @Operation(
-        summary = "Request data by id.",
-        description = "Requests data by id.",
+        summary = "Request data by ID.",
+        description = "Requests data by ID.",
     )
     @ApiResponses(
         value = [
@@ -35,14 +35,14 @@ interface StorageAPI {
     fun selectDataById(@PathVariable("dataId") dataId: String, correlationId: String): ResponseEntity<String>
 
     /**
-     * A method to retrieve blobs from the internal storage using the blobs id
-     * @param blobId the id of the data stored in the internal storage which should be retrieved
+     * A method to retrieve blobs from the internal storage using the blobs ID
+     * @param blobId the ID of the data stored in the internal storage which should be retrieved
      * @param correlationId the correlation ID of the data get request
      * @return ResponseEntity containing the selected data
      */
     @Operation(
-        summary = "Request blobs by its blob id",
-        description = "Requests blobs by its blob id",
+        summary = "Request blobs by its blob ID",
+        description = "Requests blobs by its blob ID",
     )
     @ApiResponses(
         value = [

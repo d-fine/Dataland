@@ -250,7 +250,7 @@ class DocumentManager(
                 metaInformation.qaStatus = DocumentQAStatus.Accepted
                 logger.info(
                     "Received quality assurance for document upload with DataId: " +
-                        "$documentId with Correlation Id: $correlationId",
+                        "$documentId with Correlation ID: $correlationId",
                 )
             }
         } else {
