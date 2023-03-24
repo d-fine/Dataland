@@ -4,11 +4,11 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 
 describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {
-  it("Checks that the footer section works properly", () => {
+  it.only("Checks that the footer section works properly", () => {
     cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
     cy.visitAndCheckAppMount("/");
     cy.wait("@youtube");
-    cy.get('img[alt="Dataland logo"]').should("be.visible").should("have.attr", "src").should("include", "vision");
+    cy.get('img[alt="Dataland image logo"]').should("be.visible").should("have.attr", "src").should("include", "vision");
     cy.get("body").should("contain.text", "Legal");
     cy.get("body").should("contain.text", "Copyright © 2023 Dataland");
     cy.get('a span[title="imprint"]').should("contain.text", "Imprint").click({ force: true });

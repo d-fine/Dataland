@@ -1,6 +1,6 @@
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
-import { mount } from "@cypress/vue";
-import { checkImage } from "../../helper/utilityFunctions";
+import { mount } from "cypress/vue";
+import { checkImage } from "@ct/helper/utilityFunctions";
 
 describe("Component test for DatalandFooter", () => {
   it("Check if footer is as expected", () => {
