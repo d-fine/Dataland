@@ -2,6 +2,7 @@ package org.dataland.documentmanager.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -81,7 +82,7 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "200",
                 description = "Successfully received document.",
-                headers = [Header(name = HttpHeaders.CONTENT_DISPOSITION)],
+                headers = [Header(name = HttpHeaders.CONTENT_DISPOSITION, schema = Schema(type = "string"))],
             ),
         ],
     )
