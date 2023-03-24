@@ -103,12 +103,12 @@ class InviteManager(
         inviteResult: InviteResult,
     ): InviteMetaInfoEntity {
         val userId = DatalandAuthentication.fromContext().userId
-        val timestampInEpochSeconds = Instant.now().epochSecond.toString()
+        val timestampInEpochMillis = Instant.now().toEpochMilli()
         val newInviteMetaInfoEntity = InviteMetaInfoEntity(
             inviteId,
             userId,
             fileId,
-            timestampInEpochSeconds,
+            timestampInEpochMillis,
             inviteResult.isInviteSuccessful,
             inviteResult.inviteResultMessage,
         )
