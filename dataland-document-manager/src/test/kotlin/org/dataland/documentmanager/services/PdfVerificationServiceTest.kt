@@ -17,7 +17,8 @@ class PdfVerificationServiceTest {
             "test.pdf",
             "test.pdf",
             "application/pdf",
-            testFileBytes)
+            testFileBytes,
+        )
         pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
     }
 
@@ -47,7 +48,8 @@ class PdfVerificationServiceTest {
             "test.pdf",
             "test.pdf",
             "application/pdf",
-            testFileBytes)
+            testFileBytes,
+        )
         val thrown = assertThrows<InvalidInputApiException> {
             pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
         }
@@ -65,7 +67,8 @@ class PdfVerificationServiceTest {
             "test",
             "test",
             "application/pdf",
-            testFileBytes)
+            testFileBytes,
+        )
         val thrown = assertThrows<InvalidInputApiException> {
             pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
         }
@@ -80,12 +83,15 @@ class PdfVerificationServiceTest {
             "te${ch}st.pdf",
             "te${ch}st.pdf",
             "application/pdf",
-            testFileBytes)
+            testFileBytes,
+        )
         val thrown = assertThrows<InvalidInputApiException> {
             pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
         }
-        assertEquals("We have detected that the file name contains '$ch', which is not allowed",
-            thrown.message)
+        assertEquals(
+            "We have detected that the file name contains '$ch', which is not allowed",
+            thrown.message,
+        )
     }
 
     private fun loadExcelFileBytes(): ByteArray {
