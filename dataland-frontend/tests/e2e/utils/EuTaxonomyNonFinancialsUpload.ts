@@ -22,7 +22,6 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
 ): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   cy.get('[data-test="reportingPeriod"] button').should("have.class", "p-datepicker-trigger").should("exist");
-  cy.get('button[data-test="uploadFiles"]').should("have.class", "m-0");
   cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");

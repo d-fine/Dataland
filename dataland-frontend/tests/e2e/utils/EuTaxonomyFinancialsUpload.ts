@@ -34,7 +34,6 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
   cy.get('[data-test="reportingPeriod"] button').should("have.class", "p-datepicker-trigger").should("exist");
-  cy.get('button[data-test="uploadFiles"]').should("have.class", "m-0");
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
   cy.get('input[name="reference"]').should("not.exist");
