@@ -36,8 +36,11 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
   cy.get('[data-test="reportingPeriod"] button').should("have.class", "p-datepicker-trigger").should("exist");
   cy.get('[data-test="reportingPeriodLabel"]').find("em.info-icon").trigger("mouseover", { force: true });
   cy.get('[data-test="selectKPIsLabel"]').find("em.info-icon").trigger("mouseover", { force: true });
-  cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
-  cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
+  cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
+  cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
+  cy.get("div.p-datepicker").find('span:contains("13")').click();
+  cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "13");
+  cy.get('input[name="reportDate"]').should("not.exist");
   cy.get('input[name="reference"]').should("not.exist");
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
