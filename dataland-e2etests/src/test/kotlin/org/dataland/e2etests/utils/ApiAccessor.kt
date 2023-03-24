@@ -108,6 +108,11 @@ class ApiAccessor {
         )
     }
 
+    /**
+     * Uploads each of the datasets provided in [listOfFrameworkData] for each of the companies provided in
+     * [listOfCompanyInformation] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
+     * times for the same company a wait of at least 1000ms is necessary to avoid an error 500.
+     */
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         listOfCompanyInformation: List<CompanyInformation>,
         listOfFrameworkData: List<T>,
@@ -120,21 +125,36 @@ class ApiAccessor {
         reportingPeriod: String = "",
         ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
+        val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 1000L else 0L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
-        listOfCompanyInformation.forEach { companyInformation ->
-            val receivedStoredCompany = companyDataControllerApi.postCompany(companyInformation)
-            listOfFrameworkData.forEach { frameworkDataSet ->
-                Thread.sleep(1000)
-                val receivedDataMetaInformation =
-                    frameworkDataUploadFunction(receivedStoredCompany.companyId, frameworkDataSet, reportingPeriod)
-                listOfUploadInfo.add(
-                    UploadInfo(companyInformation, receivedStoredCompany, receivedDataMetaInformation),
+        val storedCompanyInfos = listOfCompanyInformation.map { companyDataControllerApi.postCompany(it) }
+        listOfFrameworkData.forEach { frameworkDataSet ->
+            listOfCompanyInformation.zip(storedCompanyInfos).forEach { pair ->
+                val receivedDataMetaInformation = frameworkDataUploadFunction(
+                    pair.second.companyId, frameworkDataSet, reportingPeriod,
                 )
+                listOfUploadInfo.add(UploadInfo(pair.first, pair.second, receivedDataMetaInformation))
             }
+            Thread.sleep(waitTimeBeforeNextUpload)
         }
-        if (ensureQaPassed) ensureQaCompletedAndUpdateMetadata(listOfUploadInfo)
+        if (ensureQaPassed) ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo)
         return listOfUploadInfo
+    }
+
+    fun <T> uploadSingleFrameworkDataSet(
+        companyId: String,
+        frameworkData: T,
+        reportingPeriod: String,
+        frameworkDataUploadFunction: (
+            companyId: String,
+            frameworkData: T,
+            reportingPeriod: String,
+        ) -> DataMetaInformation,
+    ): DataMetaInformation {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val dataMetaInformation = frameworkDataUploadFunction(companyId, frameworkData, reportingPeriod)
+        return ensureQaIsPassed(listOf(dataMetaInformation))[0]
     }
 
     /**
@@ -144,19 +164,39 @@ class ApiAccessor {
      * @param uploadInfos List of UploadInfo for which an update of the QAStatus should be checked and awaited
      * @return Input list of UplaodInfo but with updated metadata
      */
-    private fun ensureQaCompletedAndUpdateMetadata(uploadInfos: List<UploadInfo>) {
-        await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedAndUpdateMetadata(uploadInfos) }
+    fun ensureQaCompletedAndUpdateUploadInfo(uploadInfos: List<UploadInfo>) {
+        await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedAndUpdateUploadInfo(uploadInfos) }
     }
 
-    private fun checkIfQaPassedAndUpdateMetadata(uploadInfos: List<UploadInfo>): Boolean {
+    private fun checkIfQaPassedAndUpdateUploadInfo(uploadInfos: List<UploadInfo>): Boolean {
         return uploadInfos.all { uploadInfo ->
             val metaData = uploadInfo.actualStoredDataMetaInfo
                 ?: throw NullPointerException(
                     "To check QA Status, metadata is required but was null for $uploadInfo",
                 )
             if (metaData.qaStatus != QAStatus.accepted) {
-                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId) }
+                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
+            }
             return uploadInfo.actualStoredDataMetaInfo!!.qaStatus == QAStatus.accepted
+        }
+    }
+
+    /**
+     * Waits until the status of all provided [metaDatas] is QaStatus.Accepted. Then returns an updated list of metaData
+     * each of which has qaStatus = QaStatus.Accepted.
+     */
+    fun ensureQaIsPassed(metaDatas: List<DataMetaInformation>): List<DataMetaInformation> {
+        await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedForMetaDataList(metaDatas) }
+        val updatedMetaDatas = mutableListOf<DataMetaInformation>()
+        metaDatas.forEach() { metaData ->
+            updatedMetaDatas.add(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
+        }
+        return updatedMetaDatas
+    }
+
+    private fun checkIfQaPassedForMetaDataList(metaDatas: List<DataMetaInformation>): Boolean {
+        return metaDatas.all { metaData ->
+            return (metaDataControllerApi.getDataMetaInfo(metaData.dataId).qaStatus == QAStatus.accepted)
         }
     }
 
@@ -303,6 +343,29 @@ class ApiAccessor {
             showOnlyActive,
             reportingPeriod,
         ).size
+    }
+
+    /**
+     * Upload the dataset provided in [frameworkData] via [uploadFunction] for the given [companyId] and
+     * [reportingPeriod] waiting 1000 ms after the upload. The wait circumvents error 500 if frameworkdata for the
+     * same company and reporting period is uploaded multiple times. It is also ensured that QA is passed before
+     * returning the current metadata of the uploaded data.
+     */
+    fun <T> uploadWithWait(
+        companyId: String,
+        frameworkData: T,
+        reportingPeriod: String,
+        uploadFunction: (String, T, String) -> DataMetaInformation,
+    ): DataMetaInformation {
+        val waitTime = 1000L
+        val uploadedMetaData = uploadSingleFrameworkDataSet(
+            companyId = companyId,
+            frameworkData = frameworkData,
+            frameworkDataUploadFunction = uploadFunction,
+            reportingPeriod = reportingPeriod,
+        )
+        Thread.sleep(waitTime)
+        return uploadedMetaData
     }
 }
 
