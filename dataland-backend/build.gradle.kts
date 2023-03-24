@@ -31,7 +31,6 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.springdoc.openapi.ui)
-    implementation(libs.dataland.edc.client)
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
     implementation(libs.okhttp)
@@ -47,15 +46,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
-    runtimeOnly(libs.database.postgres)
-    runtimeOnly(libs.database.h2)
+    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("com.h2database:h2")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.mockito:mockito-core:5.1.1")
+    testImplementation("org.mockito:mockito-core")
     testImplementation("org.springframework.security:spring-security-test")
     implementation(project(":dataland-keycloak-adapter"))
-    implementation("com.mailjet:mailjet-client:5.2.2")
+    implementation(libs.mailjet.client)
     implementation(project(":dataland-message-queue-utils"))
 }
 

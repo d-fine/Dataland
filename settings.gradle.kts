@@ -34,9 +34,9 @@ dependencyResolutionManagement {
 
             library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.9")
 
-            library("log4j", "org.apache.logging.log4j:log4j:2.19.0")
-            library("log4j-api", "org.apache.logging.log4j:log4j-api:2.19.0")
-            library("log4j-to-slf4j", "org.apache.logging.log4j:log4j-to-slf4j:2.19.0")
+            library("log4j", "org.apache.logging.log4j:log4j:2.20.0")
+            library("log4j-api", "org.apache.logging.log4j:log4j-api:2.20.0")
+            library("log4j-to-slf4j", "org.apache.logging.log4j:log4j-to-slf4j:2.20.0")
 
             library("logback-classic", "ch.qos.logback:logback-classic:1.4.5")
             library("logback-core", "ch.qos.logback:logback-core:1.4.5")
@@ -48,11 +48,14 @@ dependencyResolutionManagement {
             library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
             library("jackson-kotlin", "com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
 
-            library("database-h2", "com.h2database:h2:2.1.214")
-            library("database-postgres", "org.postgresql:postgresql:42.5.3")
-
             library("bcpkix-jdk15on", "org.bouncycastle:bcpkix-jdk15on:1.70")
             library("bcprov-jdk15on", "org.bouncycastle:bcprov-jdk15on:1.70")
+
+            library("cloudevents-api", "io.cloudevents:cloudevents-api:2.4.2")
+            library("cloudevents-json-jackson", "io.cloudevents:cloudevents-json-jackson:2.4.2")
+            library("cloudevents-core", "io.cloudevents:cloudevents-core:2.4.2")
+            library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.1")
+            library("mailjet-client", "com.mailjet:mailjet-client:5.2.2")
         }
     }
 }

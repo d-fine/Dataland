@@ -1,6 +1,12 @@
 package org.dataland.datalandbackend.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.enums.data.QAStatus
+import org.dataland.datalandbackend.model.lksg.LksgData
+import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -9,17 +15,27 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.dao.DataIntegrityViolationException
 
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class DataMetaInformationManagerTest(
-    @Autowired val dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired private val companyManager: CompanyManager,
+    @Autowired private val objectMapper: ObjectMapper,
 ) {
+    private val testDataProvider = TestDataProvider(objectMapper)
+
     @Test
     fun `check that an exception is thrown when non existing company id is provided in meta data search`() {
         val nonExistingCompanyId = "nonExistingCompanyId"
         val thrown = assertThrows<ResourceNotFoundApiException> {
-            dataMetaInformationManager.searchDataMetaInfo(companyId = nonExistingCompanyId, dataType = null)
+            dataMetaInformationManager.searchDataMetaInfo(
+                companyId = nonExistingCompanyId,
+                dataType = null,
+                showOnlyActive = true,
+                reportingPeriod = "",
+            )
         }
         assertEquals(
             "Dataland does not know the company ID nonExistingCompanyId",
@@ -37,5 +53,25 @@ class DataMetaInformationManagerTest(
             "No dataset with the id: nonExistingDataId could be found in the data store.",
             thrown.message,
         )
+    }
+
+    @Test
+    fun `check that an exception is thrown when two meta data entries are uploaded simultaneously`() {
+        val companyInformation = testDataProvider.getCompanyInformation(1).first()
+        val storedCompanyEntity = companyManager.addCompany(companyInformation)
+        val dataMetaInfoEntityToStore = DataMetaInformationEntity(
+            dataId = "data-id-1",
+            company = storedCompanyEntity,
+            dataType = DataType.of(LksgData::class.java).toString(),
+            uploaderUserId = "uploader-user-id",
+            uploadTime = 0,
+            reportingPeriod = "reporting-period",
+            currentlyActive = null,
+            qaStatus = QAStatus.Accepted,
+        )
+        dataMetaInformationManager.storeDataMetaInformation(dataMetaInfoEntityToStore)
+        assertThrows<DataIntegrityViolationException> {
+            dataMetaInformationManager.storeDataMetaInformation(dataMetaInfoEntityToStore.copy(dataId = "data-id-2"))
+        }
     }
 }

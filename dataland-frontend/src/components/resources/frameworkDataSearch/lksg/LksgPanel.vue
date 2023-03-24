@@ -3,10 +3,10 @@
     <p class="font-medium text-xl">Loading LkSG Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="lksgDataAndMetaInfo && !waitingForData">
+  <div v-if="kpiDataObjects.length && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :dataDateOfDataSets="listOfDataDateToDisplayAsColumns"
+      :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
       :kpiNameMappings="lksgKpisNameMappings"
       :kpiInfoMappings="lksgKpisInfoMappings"
       :subAreaNameMappings="lksgSubAreasNameMappings"
@@ -17,11 +17,11 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData, QAStatus } from "@clients/backend";
+import { DataAndMetaInformationLksgData, DataMetaInformation, LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { sortDatesToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
   lksgSubAreasNameMappings,
@@ -34,9 +34,10 @@ export default defineComponent({
   components: { CompanyDataTable },
   data() {
     return {
+      firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
-      listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
+      listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       lksgKpisNameMappings,
       lksgKpisInfoMappings,
@@ -47,11 +48,20 @@ export default defineComponent({
     companyId: {
       type: String,
     },
+    singleDataMetaInfoToDisplay: {
+      type: Object as () => DataMetaInformation,
+    },
   },
   watch: {
     companyId() {
-      this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchAllAcceptedDatasets();
+      this.listOfColumnIdentifierObjects = [];
+      void this.fetchData();
+    },
+    singleDataMetaInfoToDisplay() {
+      if (!this.firstRender) {
+        this.listOfColumnIdentifierObjects = [];
+        void this.fetchData();
+      }
     },
   },
   setup() {
@@ -60,23 +70,30 @@ export default defineComponent({
     };
   },
   created() {
-    void this.fetchAllAcceptedDatasets();
+    void this.fetchData();
+    this.firstRender = false;
   },
   methods: {
     /**
      * Fetches all accepted LkSG datasets for the current company and converts them to the requried frontend format.
      */
-    async fetchAllAcceptedDatasets() {
+    async fetchData() {
       try {
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        this.lksgDataAndMetaInfo = (
-          await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
-        ).data.filter(
-          (dataAndMetaInfo: DataAndMetaInformationLksgData) => dataAndMetaInfo.metaInfo.qaStatus == QAStatus.Accepted
-        );
+        if (this.singleDataMetaInfoToDisplay) {
+          const singleLksgData = (
+            await lksgDataControllerApi.getCompanyAssociatedLksgData(this.singleDataMetaInfoToDisplay.dataId)
+          ).data.data as LksgData;
+
+          this.lksgDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleLksgData }];
+        } else {
+          this.lksgDataAndMetaInfo = (
+            await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
+          ).data;
+        }
         this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
@@ -124,10 +141,10 @@ export default defineComponent({
       if (this.lksgDataAndMetaInfo.length) {
         this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
           const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
-          const dataDateOfLksgDataset = oneLksgDataset.data.social?.general?.dataDate ?? "";
-          this.listOfDataDateToDisplayAsColumns.push({
+          const reportingPeriodOfLksgDataset = oneLksgDataset.metaInfo?.reportingPeriod ?? "";
+          this.listOfColumnIdentifierObjects.push({
             dataId: dataIdOfLksgDataset,
-            dataDate: dataDateOfLksgDataset,
+            reportingPeriod: reportingPeriodOfLksgDataset,
           });
           for (const areaObject of Object.values(oneLksgDataset.data)) {
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
@@ -138,7 +155,7 @@ export default defineComponent({
           }
         });
       }
-      this.listOfDataDateToDisplayAsColumns = sortDatesToDisplayAsColumns(this.listOfDataDateToDisplayAsColumns);
+      this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(this.listOfColumnIdentifierObjects);
     },
 
     /**

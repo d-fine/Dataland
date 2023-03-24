@@ -2,6 +2,7 @@ package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -9,7 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueUtils
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Simple implementation of a data store using a postgres database
@@ -34,6 +37,7 @@ class DatabaseDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
+    @Autowired var messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -60,25 +64,22 @@ class DatabaseDataStore(
             ),
         ],
     )
-    @Suppress("TooGenericExceptionCaught")
     fun persistentlyStoreDataAndSendMessage(
         @Payload dataId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.DataReceived)
+        messageUtils.validateMessageType(type, MessageType.DataReceived)
         if (dataId.isNotEmpty()) {
-            try {
+            messageUtils.rejectMessageOnException {
                 logger.info("Received DataID $dataId and CorrelationId: $correlationId")
                 val data = temporarilyCachedDataClient.getReceivedData(dataId)
                 logger.info("Received DataID $dataId and DataDataDataStoreStoreStore: $data")
                 logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
-                dataItemRepository.save(DataItem(dataId, objectMapper.writeValueAsString(data)))
+                storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     dataId, MessageType.DataStored, correlationId, ExchangeNames.dataStored,
                 )
-            } catch (e: Exception) {
-                throw MessageQueueRejectException(e)
             }
         } else {
             throw MessageQueueRejectException("Provided data ID is empty")
@@ -86,11 +87,27 @@ class DatabaseDataStore(
     }
 
     /**
+     * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
+     * is commited after exit of this method.
+     * @param dataItem the DataItem to be stored
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun storeDataItemWithoutTransaction(dataItem: DataItem) {
+        dataItemRepository.save(dataItem)
+    }
+
+    /**
      * Reads data from a database
      * @param dataId the id of the data to be retrieved
      * @return the data as json string with id dataId
      */
-    fun selectDataSet(dataId: String): String {
-        return dataItemRepository.findById(dataId).orElse(DataItem("", "")).data
+    fun selectDataSet(dataId: String, correlationId: String): String {
+        return dataItemRepository.findById(dataId).orElseThrow {
+            logger.info("Data with data id: $dataId could not be found. Correlation id: $correlationId.")
+            ResourceNotFoundApiException(
+                "Dataset not found",
+                "No dataset with the id: $dataId could be found in the data store.",
+            )
+        }.data
     }
 }

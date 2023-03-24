@@ -4,8 +4,18 @@ import { DataTypeEnum } from "@clients/backend";
  * Contains global constants
  */
 
-export const ARRAY_OF_FRONTEND_INCLUDED_FRAMEWORKS = Object.values(DataTypeEnum).filter(
-  (frameworkName) => ["sme"].indexOf(frameworkName) === -1
+export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = Object.values(DataTypeEnum).filter(
+  (frameworkName) => [DataTypeEnum.Sme as string].indexOf(frameworkName) === -1
+) as Array<DataTypeEnum>;
+
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = Object.values(DataTypeEnum).filter(
+  (frameworkName) =>
+    [
+      DataTypeEnum.EutaxonomyFinancials as string,
+      DataTypeEnum.EutaxonomyNonFinancials as string,
+      DataTypeEnum.Sfdr as string,
+      DataTypeEnum.Sme as string,
+    ].indexOf(frameworkName) === -1
 ) as Array<DataTypeEnum>;
 
 export const UPLOAD_FILE_SIZE_DISPLAY_DECIMALS = 2;

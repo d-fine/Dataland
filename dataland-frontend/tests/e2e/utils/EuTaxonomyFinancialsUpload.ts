@@ -7,7 +7,7 @@ import {
   DataMetaInformation,
   DataTypeEnum,
 } from "@clients/backend";
-import { FixtureData } from "../fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 
 /**
@@ -27,6 +27,8 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
+  cy.get(`input[name="reportingPeriod"]`).type("2023");
+
   cy.get("select[name=financialServicesTypes]").select(data.financialServicesTypes || []);
 
   if (data.assurance?.assurance !== undefined) {
@@ -92,10 +94,12 @@ function fillField(divName: string, inputName: string, value?: DataPointBigDecim
  *
  * @returns the first eutaxonomy-financials dataset from the fake fixtures
  */
-export function getFirstEuTaxonomyFinancialsDatasetFromFixtures(): Chainable<EuTaxonomyDataForFinancials> {
+export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable<
+  FixtureData<EuTaxonomyDataForFinancials>
+> {
   return cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancials").then(function (jsonContent) {
     const companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
-    return companiesWithEuTaxonomyDataForFinancials[0].t;
+    return companiesWithEuTaxonomyDataForFinancials[0];
   });
 }
 
@@ -104,17 +108,20 @@ export function getFirstEuTaxonomyFinancialsDatasetFromFixtures(): Chainable<EuT
  *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
+ * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
  */
 export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
   token: string,
   companyId: string,
+  reportingPeriod: string,
   data: EuTaxonomyDataForFinancials
 ): Promise<DataMetaInformation> {
   const response = await new EuTaxonomyDataForFinancialsControllerApi(
     new Configuration({ accessToken: token })
   ).postCompanyAssociatedEuTaxonomyDataForFinancials({
     companyId,
+    reportingPeriod,
     data,
   });
   return response.data;

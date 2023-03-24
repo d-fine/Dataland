@@ -11,11 +11,19 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       :rowHover="true"
       @row-click="rerouteRowClick"
+      sortField="uploadTimeInMs"
+      :sortOrder="-1"
     >
       <Column field="companyName" header="COMPANY" :sortable="true" class="w-3"></Column>
       <Column field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType" class="w-3">
         <template #body="{ data }">
           {{ humanizeString(data.dataType) }}
+        </template>
+      </Column>
+      <Column field="dataReportingPeriod" header="REPORTING PERIOD" :sortable="true"></Column>
+      <Column field="status" header="STATUS" :sortable="true">
+        <template #body="{ data }">
+          <DatasetStatusBadge :dataset-status="data.status" />
         </template>
       </Column>
       <Column field="uploadTimeInMs" header="SUBMISSION DATE" :sortable="true" sortField="uploadTimeInMs" class="w-2">
@@ -25,9 +33,10 @@
       </Column>
       <Column field="companyName" header="" class="w-2 d-bg-white d-datatable-column-right">
         <template #header>
-          <span class="w-12 p-input-icon-left">
+          <span class="w-12 p-input-icon-left p-input-icon-right">
             <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-            <InputText v-model="searchBarInput" placeholder="Search table" class="w-12 pl-6" />
+            <InputText v-model="searchBarInput" placeholder="Search table" class="w-12 pl-6 pr-6" />
+            <i v-if="loading" class="pi pi-spin pi-spinner right-0 mr-3" aria-hidden="true"></i>
           </span>
         </template>
         <template #body="{ data }">
@@ -59,16 +68,19 @@ import { defineComponent, inject } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import { DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
-import { DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
+  mounted() {
+    this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
+  },
   components: {
+    DatasetStatusBadge,
     DataTable,
     Column,
     InputText,
@@ -79,6 +91,8 @@ export default defineComponent({
       displayedDatasetTableInfos: [] as DatasetTableInfo[],
       humanizeString: humanizeString,
       convertDate: convertUnixTimeInMsToDateString,
+      loading: false,
+      latestSearchString: "" as string,
     };
   },
   setup() {
@@ -93,8 +107,8 @@ export default defineComponent({
     },
   },
   watch: {
-    searchBarInput() {
-      void this.applySearchFilter();
+    searchBarInput(newSearchString) {
+      this.applySearchFilter(newSearchString as string);
     },
     datasetTableInfos() {
       this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
@@ -108,22 +122,29 @@ export default defineComponent({
      * @returns the path depending on the status of the data set
      */
     getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
-      const dataTypesWithSingleView = [DataTypeEnum.Lksg] as DataTypeEnum[];
-      let queryParameters = "";
-      if (!dataTypesWithSingleView.includes(datasetTableInfo.dataType)) {
-        queryParameters = `?dataId=${datasetTableInfo.dataId}`;
-      }
-      return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}${queryParameters}`;
+      return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/${datasetTableInfo.dataId}`;
     },
+
     /**
      * Filter the given datasets for the search string in the company name
+     *
+     * @param searchString The search string to look for in the company names
      */
-    async applySearchFilter(): Promise<void> {
-      this.displayedDatasetTableInfos = await getMyDatasetTableInfos(
-        assertDefined(this.getKeycloakPromise),
-        this.searchBarInput
-      );
+    applySearchFilter(searchString: string): void {
+      this.loading = true;
+      let arrayToFilter: DatasetTableInfo[];
+      if (searchString.includes(this.latestSearchString)) {
+        arrayToFilter = this.displayedDatasetTableInfos;
+      } else {
+        arrayToFilter = this.datasetTableInfos as DatasetTableInfo[];
+      }
+      this.displayedDatasetTableInfos = arrayToFilter.filter((datasetTableInfo: DatasetTableInfo) => {
+        return datasetTableInfo.companyName.includes(searchString);
+      });
+      this.latestSearchString = searchString;
+      this.loading = false;
     },
+
     /**
      * Depending on the dataset status, executes a router push to either the dataset view page or an upload page
      *

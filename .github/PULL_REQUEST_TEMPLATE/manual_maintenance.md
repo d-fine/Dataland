@@ -5,7 +5,8 @@ Note: To create a PR using this template add the query parameter `template=manua
 ### Skipped updates
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
 - [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.22.0 (Failed to compile)
-- [ ] sonarqube 3.4.0.2513 not update to 3.5.X, due to issues in file resolving mechanism
+- [ ] Update to gradle 8.0.2 is skipped due to task dependency issues in the building process. Backlog: DALA-1295
+- [ ] Update keycloak 21.0.1 is skipped due to issues in the realm.json, the new docker image, account console
 
 ### Gradle update
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
@@ -20,7 +21,7 @@ The following known issues need to be reviewed in case a compatible version is a
 ### Dataland keycloak theme
 - [ ] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
 - [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in package.json
-- [ ]   Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues
+- [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check for security issues
 
 ### Dockerfile updates
 Update versions in the following dockerfiles
@@ -72,6 +73,10 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 ## Check e-mails sent by backend
 - [ ] Send an invitation request from one of the dev servers and check if the e-mail response contains the right attachments and is displayed correctly.
 
+## Check RabbitMQ dead letter queue and disk space
+- [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available disk space with `df` command. If the open disk space is close to the minimum requirement, clear up disk space with `docker image prune`.
+- [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual maintenance. If new messages have appeared this does need to be investigated. The dead letter queue can be accessed and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr; deadLetterQueue &rarr; Get message.
+
 ## Conclusion
 - [ ] After updating all components check if everything still works
 - [ ] The new version is deployed to the dev server using this branch and real data
@@ -79,6 +84,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
   - [ ] It's verified that real data has been used
   - [ ] It's verified that everything seems to be working fine by manually using the website
 - [ ] This template has been updated to reflect the latest state of tasks required and known issues with upgrades
+- [ ] The Merge Request commit message needs to contain 'manual maintenance' to satisfy the CI maintenance check in future commits
 
 # Review (to be completed by the reviewer)
 - [x] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.

@@ -18,6 +18,7 @@
           :disabled="true"
           :model-value="companyID"
         />
+        <FormKit type="text" name="reportingPeriod" label="Reporting Period" placeholder="Reporting Period" />
         <FormKit type="group" name="data" label="data">
           <FormKit type="group" name="assurance" label="Assurance">
             <FormKit

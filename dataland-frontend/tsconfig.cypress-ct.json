@@ -5,10 +5,17 @@
     "src/**/*",
     "src/**/*.vue",
     "build/clients/**/*",
-    "tests/component/**/*"
+    "tests/component/**/*",
+    "tests/sharedUtils/**/*"
   ],
   "compilerOptions": {
     "composite": true,
-    "types": ["cypress"]
-  },
+    "types": ["cypress"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@clients/*": ["./build/clients/*"],
+      "@ct/*": ["./tests/component/*"],
+      "@sharedUtils/*": ["./tests/sharedUtils/*"]
+    }
+  }
 }

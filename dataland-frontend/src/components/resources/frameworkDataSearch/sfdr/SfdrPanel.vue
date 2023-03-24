@@ -3,10 +3,10 @@
     <p class="font-medium text-xl">Loading SFDR Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="sfdrDataAndMetaInfo && !waitingForData">
+  <div v-if="kpiDataObjects.length && !waitingForData">
     <CompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :dataDateOfDataSets="listOfDataDateToDisplayAsColumns"
+      :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
       :kpiNameMappings="sfdrKpisNameMappings"
       :kpiInfoMappings="sfdrKpisInfoMappings"
       :subAreaNameMappings="sfdrSubAreasNameMappings"
@@ -17,11 +17,11 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationSfdrData, QAStatus } from "@clients/backend";
+import { SfdrData, DataAndMetaInformationSfdrData, DataMetaInformation } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { sortDatesToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
   sfdrSubAreasNameMappings,
@@ -32,16 +32,12 @@ import {
 export default defineComponent({
   name: "SfdrPanel",
   components: { CompanyDataTable },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
   data() {
     return {
+      firstRender: true,
       waitingForData: true,
       sfdrDataAndMetaInfo: [] as Array<DataAndMetaInformationSfdrData>,
-      listOfDataDateToDisplayAsColumns: [] as Array<{ dataId: string; dataDate: string }>,
+      listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
       sfdrKpisNameMappings,
       sfdrKpisInfoMappings,
@@ -52,25 +48,52 @@ export default defineComponent({
     companyId: {
       type: String,
     },
+    singleDataMetaInfoToDisplay: {
+      type: Object as () => DataMetaInformation,
+    },
+  },
+  watch: {
+    companyId() {
+      this.listOfColumnIdentifierObjects = [];
+      void this.fetchData();
+    },
+    singleDataMetaInfoToDisplay() {
+      if (!this.firstRender) {
+        this.listOfColumnIdentifierObjects = [];
+        void this.fetchData();
+      }
+    },
+  },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
   },
   created() {
-    void this.fetchAllAcceptedDatasets();
+    void this.fetchData();
+    this.firstRender = false;
   },
   methods: {
     /**
      * Fetches all accepted Sfdr datasets for the current company and converts them to the required frontend format.
      */
-    async fetchAllAcceptedDatasets() {
+    async fetchData() {
       try {
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getSfdrDataControllerApi();
-        this.sfdrDataAndMetaInfo = (
-          await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))
-        ).data.filter(
-          (dataAndMetaInfo: DataAndMetaInformationSfdrData) => dataAndMetaInfo.metaInfo.qaStatus == QAStatus.Accepted
-        );
+
+        if (this.singleDataMetaInfoToDisplay) {
+          const singleSfdrData = (
+            await sfdrDataControllerApi.getCompanyAssociatedSfdrData(this.singleDataMetaInfoToDisplay.dataId)
+          ).data.data as SfdrData;
+          this.sfdrDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSfdrData }];
+        } else {
+          this.sfdrDataAndMetaInfo = (
+            await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))
+          ).data;
+        }
         this.convertSfdrDataToFrontendFormat();
         this.waitingForData = false;
       } catch (error) {
@@ -109,16 +132,17 @@ export default defineComponent({
     },
 
     /**
-     * Retrieves and converts values from an array of SDFG datasets in order to make it displayable in the frontend.
+     * Retrieves and converts values from an array of SFDR datasets in order to make it displayable in the frontend.
+     *
      */
     convertSfdrDataToFrontendFormat(): void {
       if (this.sfdrDataAndMetaInfo.length) {
         this.sfdrDataAndMetaInfo.forEach((oneSfdrDataset: DataAndMetaInformationSfdrData) => {
           const dataIdOfSfdrDataset = oneSfdrDataset.metaInfo?.dataId ?? "";
-          const dataDateOfSfdrDataset = oneSfdrDataset.data.social?.general?.fiscalYearEnd ?? "";
-          this.listOfDataDateToDisplayAsColumns.push({
+          const reportingPeriodOfSfdrDataset = oneSfdrDataset.metaInfo?.reportingPeriod ?? "";
+          this.listOfColumnIdentifierObjects.push({
             dataId: dataIdOfSfdrDataset,
-            dataDate: dataDateOfSfdrDataset,
+            reportingPeriod: reportingPeriodOfSfdrDataset,
           });
           for (const areaObject of Object.values(oneSfdrDataset.data)) {
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
@@ -129,13 +153,7 @@ export default defineComponent({
           }
         });
       }
-      this.listOfDataDateToDisplayAsColumns = sortDatesToDisplayAsColumns(this.listOfDataDateToDisplayAsColumns);
-    },
-  },
-  watch: {
-    companyId() {
-      this.listOfDataDateToDisplayAsColumns = [];
-      void this.fetchAllAcceptedDatasets();
+      this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(this.listOfColumnIdentifierObjects);
     },
   },
 });

@@ -1,4 +1,5 @@
-import { FixtureData, DataPoint } from "@e2e/fixtures/FixtureUtils";
+import { DataPoint } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
 import {
   CompanyReport,
   CompanyReportReference,
@@ -147,5 +148,10 @@ export function getCsvSharedEuTaxonomyValuesMapping(
       "Assurance",
       (row): CompanyReportReference | undefined => row.t.assurance?.dataSource
     ),
+    {
+      label: "Reporting Period",
+      value: (row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>): string | undefined =>
+        row.reportingPeriod,
+    },
   ];
 }

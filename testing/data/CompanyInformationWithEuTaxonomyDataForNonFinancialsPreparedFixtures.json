@@ -2,216 +2,190 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [
-				"Koenig, Kühnel und Dragu",
-				"Strausa-Oberem"
-			],
-			"companyLegalForm": "AG",
-			"headquarters": "Vogelgsangburg",
-			"headquartersPostalCode": "71281",
-			"sector": "interfaces",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"headquarters": "Thrieneburg",
+			"sector": "synergies",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "i8sn955i6cfwg1h"
+					"identifierValue": "5lyyr0pbmsvbuao"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "p2g43yxs3"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "s4ll5b9idj3v"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "2hfgv3conwc3h79ji1wr"
+					"identifierValue": "dql04fo34"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "9ui1gzzexx"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "eza5nlg"
+					"identifierValue": "tfy7nsxrbz"
 				}
 			],
-			"countryCode": "CG",
+			"countryCode": "MF",
 			"isTeaserCompany": false,
-			"website": "https://außerordentlich-geologie.org"
+			"website": "https://beispielgebend-hurrikan.info"
 		},
 		"t": {
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "http://kultiviert-physik.com/gutm%C3%BCtig-teppich.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-09-22",
-					"currency": "SVC"
-				},
-				"AnnualReport": {
-					"reference": "http://musterhaft-brot.info/gro%C3%9Fz%C3%BCgig-bibliographie.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-03-15",
-					"currency": "KPW"
+				"IntegratedReport": {
+					"reference": "https://empathisch-wissenschaftler.org/farbenfroh-mars.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2023-02-16",
+					"currency": "MVR"
 				}
 			},
+			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"dataSource": {
-					"page": 291,
-					"report": "ESEFReport",
-					"tagName": "systems"
-				}
+				"assurance": "None"
 			},
 			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
+			"reportingObligation": "Yes",
 			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.5873,
+					"value": 0.705,
 					"dataSource": {
-						"page": 561,
-						"report": "ESEFReport",
-						"tagName": "e-services"
+						"page": 806,
+						"report": "IntegratedReport",
+						"tagName": "bandwidth"
 					},
-					"quality": "Audited",
-					"comment": "generate digital hard drive"
+					"quality": "Incomplete",
+					"comment": "override 1080p panel"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.9613,
+					"value": 0.5638,
 					"dataSource": {
-						"page": 144,
-						"report": "AnnualReport",
-						"tagName": "methodologies"
+						"page": 1120,
+						"report": "IntegratedReport",
+						"tagName": "platforms"
 					},
 					"quality": "Reported",
-					"comment": "override wireless bus"
+					"comment": "index online feed"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.3905,
-					"dataSource": {
-						"page": 410,
-						"report": "AnnualReport",
-						"tagName": "platforms"
-					},
-					"quality": "Reported",
-					"comment": "quantify mobile program"
+					"value": 0.9312,
+					"quality": "Estimated"
 				}
 			}
-		}
+		},
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Gruszecki-Häfner",
-				"Metzger, Keutel und Kowalick"
+				"Cordes KG"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"headquarters": "Lenialand",
-			"headquartersPostalCode": "90711",
-			"sector": "vortals",
+			"companyLegalForm": "GmbH",
+			"headquarters": "Nord Niklas",
+			"sector": "mindshare",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "7wrvh4iim5dqjjz"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "chgd4giup"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "dyc5ya7juhep"
-				},
-				{
 					"identifierType": "Lei",
-					"identifierValue": "zwtr3uqtmeju0pszqz9n"
+					"identifierValue": "bxcwifjwam0pqufge7fb"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "dwafzczr0x"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "fvc4pqw"
+					"identifierValue": "9zil4sh"
 				}
 			],
-			"countryCode": "PA",
-			"isTeaserCompany": false,
-			"website": "http://friedvoll-kartoffel.de"
+			"countryCode": "CR",
+			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"AnnualReport": {
-					"reference": "https://vermittelnd-mais.com/mobil-agnostizismus.pdf",
+				"ESEFReport": {
+					"reference": "https://monumental-wille.org/vern%C3%BCnftig-aids.pdf",
 					"isGroupLevel": "NA",
-					"reportDate": "2022-06-22",
-					"currency": "XCD"
+					"currency": "BYN"
 				},
-				"IntegratedReport": {
-					"reference": "http://xn--mitreiend-junge-vib.ch/theoretisch-arch%C3%A4ologie.pdf",
-					"reportDate": "2022-10-18",
-					"currency": "KMF"
+				"SustainabilityReport": {
+					"reference": "http://xn--geheimnisvoll-milchstrae-s7b.de/epochemachend-liberalismus.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "INR"
+				},
+				"AnnualReport": {
+					"reference": "https://xn--zh-fu-pqa4a.com/fett-feuer.pdf",
+					"isGroupLevel": "NA",
+					"currency": "HUF"
 				}
 			},
-			"fiscalYearEnd": "2022-12-13",
+			"fiscalYearDeviation": "Deviation",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Holinski-Kúhn"
+				"assurance": "ReasonableAssurance"
 			},
 			"scopeOfEntities": "Yes",
 			"reportingObligation": "Yes",
-			"numberOfEmployees": 69713,
+			"numberOfEmployees": 10924,
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 130233.53,
-					"quality": "Incomplete"
+					"value": 653239.11,
+					"dataSource": {
+						"page": 700,
+						"report": "SustainabilityReport",
+						"tagName": "e-tailers"
+					},
+					"quality": "Audited",
+					"comment": "hack multi-byte feed"
 				},
 				"eligiblePercentage": {
-					"value": 0.642,
-					"quality": "Incomplete"
+					"value": 0.0237,
+					"dataSource": {
+						"page": 1010,
+						"report": "AnnualReport",
+						"tagName": "e-tailers"
+					},
+					"quality": "Reported",
+					"comment": "copy solid state application"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 57178.21,
-					"quality": "Estimated"
+					"value": 645669.94,
+					"dataSource": {
+						"page": 431,
+						"report": "ESEFReport",
+						"tagName": "users"
+					},
+					"quality": "Audited",
+					"comment": "calculate neural interface"
 				},
 				"eligiblePercentage": {
-					"value": 0.2248,
+					"value": 0.3906,
 					"dataSource": {
-						"page": 1038,
+						"page": 961,
 						"report": "AnnualReport",
-						"tagName": "methodologies"
+						"tagName": "e-markets"
 					},
 					"quality": "Estimated",
-					"comment": "quantify solid state capacitor"
+					"comment": "calculate bluetooth firewall"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 425753.39,
+					"value": 834748.8,
 					"dataSource": {
-						"page": 820,
-						"report": "AnnualReport",
+						"page": 1154,
+						"report": "SustainabilityReport",
 						"tagName": "markets"
 					},
-					"quality": "Incomplete",
-					"comment": "hack neural panel"
+					"quality": "Audited",
+					"comment": "synthesize 1080p hard drive"
 				},
 				"eligiblePercentage": {
-					"value": 0.9543,
-					"dataSource": {
-						"page": 225,
-						"report": "AnnualReport",
-						"tagName": "communities"
-					},
-					"quality": "Incomplete",
-					"comment": "override optical port"
+					"value": 0.6847,
+					"quality": "Incomplete"
 				}
 			}
-		}
+		},
+		"reportingPeriod": "2020-Q1"
 	}
 ]

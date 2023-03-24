@@ -1,6 +1,7 @@
-import { FixtureData, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { SfdrData } from "@clients/backend";
 import { generateSfdrData } from "./SfdrDataFixtures";
+import { FixtureData } from "@sharedUtils/Fixtures";
 
 type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>;
 

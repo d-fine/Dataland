@@ -1,5 +1,6 @@
-import { FixtureData, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { EuTaxonomyDataForFinancials } from "@clients/backend";
+import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
+import { EuTaxonomyDataForFinancials, QualityOptions } from "@clients/backend";
 import {
   generateEuTaxonomyDataForFinancials,
   generateEuTaxonomyDataForFinancialsWithTypes,
@@ -22,6 +23,9 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
     createInsuranceCompany,
     createAssetManagementCompany,
     createAllValuesCompany,
+    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.26),
+    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.29),
+    createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.292),
   ];
   const fixtureBase = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
@@ -172,4 +176,29 @@ function createAllValuesCompany(
     },
   };
   return input;
+}
+
+/**
+ * Higher order function which returns a function that creates a fixture of a credit institution, but sets the value
+ * "taxonomyEligibleActivity" to the value of the input that is passed to the higher order function.
+ *
+ * @param eligibleActivityValue The value for the field "eligible activity".
+ * @returns a generator function that creates a dataset with the "eligbile activity" value set accordingly
+ */
+function createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(
+  eligibleActivityValue: number
+): (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials> {
+  return (input) => {
+    input.companyInformation.companyName = "eligible-activity-Point-" + eligibleActivityValue.toString();
+    input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+    input.t.eligibilityKpis = {
+      CreditInstitution: {
+        taxonomyEligibleActivity: {
+          value: eligibleActivityValue,
+          quality: QualityOptions.Reported,
+        },
+      },
+    };
+    return input;
+  };
 }
