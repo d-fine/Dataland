@@ -71,18 +71,17 @@ class DatabaseStringDataStore(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DataReceived)
-        if (dataId.isNotEmpty()) {
-            messageUtils.rejectMessageOnException {
-                logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-                val data = temporarilyCachedDataClient.getReceivedData(dataId)
-                logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
-                storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
-                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    dataId, MessageType.DataStored, correlationId, ExchangeNames.itemStored, RoutingKeyNames.data,
-                )
-            }
-        } else {
-            throw MessageQueueRejectException("Provided data ID is empty")
+        if (dataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided document ID is empty")
+        }
+        messageUtils.rejectMessageOnException {
+            logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+            val data = temporarilyCachedDataClient.getReceivedData(dataId)
+            logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
+            storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                dataId, MessageType.DataStored, correlationId, ExchangeNames.itemStored, RoutingKeyNames.data,
+            )
         }
     }
 
