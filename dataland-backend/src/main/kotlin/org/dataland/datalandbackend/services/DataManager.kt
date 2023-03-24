@@ -147,7 +147,7 @@ class DataManager(
         messageUtils.validateMessageType(type, MessageType.QACompleted)
         val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
         if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided document ID is empty")
+            throw MessageQueueRejectException("Provided data ID is empty")
         }
         messageUtils.rejectMessageOnException {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
@@ -238,7 +238,7 @@ class DataManager(
     ) {
         messageUtils.validateMessageType(type, MessageType.DataStored)
         if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided document ID is empty")
+            throw MessageQueueRejectException("Provided data ID is empty")
         }
         logger.info("Internal Storage sent a message - job done")
         logger.info(

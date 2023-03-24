@@ -61,7 +61,7 @@ class QaService(
     ) {
         messageUtils.validateMessageType(type, MessageType.DataStored)
         if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided document ID is empty")
+            throw MessageQueueRejectException("Provided data ID is empty")
         }
         messageUtils.rejectMessageOnException {
             logger.info(
