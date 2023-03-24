@@ -5,25 +5,22 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 
 class PdfVerificationServiceTest {
     private val pdfVerificationService = PdfVerificationService()
+    private val correlationId = "test-correlation-id"
 
     @Test
     fun `verifies that a valid pdf document passes the basic checks`() {
         val testFileBytes = loadPdfFileBytes()
-        val testFile = MockMultipartFile(
-            "test.pdf",
-            "test.pdf",
-            "application/pdf",
-            testFileBytes,
-        )
-        pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
+        val testFile = createPdfFromBytes(testFileBytes)
+        pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
     }
 
     @Test
-    fun `verifies that a non-pdf document does not pass the basic checks`() {
+    fun `verifies that a non pdf document does not pass the basic checks`() {
         val testFileBytes = loadExcelFileBytes()
         val testFile = MockMultipartFile(
             "test.xlsx",
@@ -32,7 +29,7 @@ class PdfVerificationServiceTest {
             testFileBytes,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
+            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
         }
         assertEquals(
             "We were unable to load the PDF document you provided." +
@@ -44,14 +41,9 @@ class PdfVerificationServiceTest {
     @Test
     fun `verifies that an invalid pdf document does not pass the basic checks`() {
         val testFileBytes = loadExcelFileBytes()
-        val testFile = MockMultipartFile(
-            "test.pdf",
-            "test.pdf",
-            "application/pdf",
-            testFileBytes,
-        )
+        val testFile = createPdfFromBytes(testFileBytes)
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
+            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
         }
         assertEquals(
             "We were unable to load the PDF document you provided." +
@@ -66,11 +58,11 @@ class PdfVerificationServiceTest {
         val testFile = MockMultipartFile(
             "test",
             "test",
-            "application/pdf",
+            MediaType.APPLICATION_PDF_VALUE,
             testFileBytes,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
+            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
         }
         assertEquals("We have detected that the file does not have a name ending on '.pdf'", thrown.message)
     }
@@ -82,11 +74,11 @@ class PdfVerificationServiceTest {
         val testFile = MockMultipartFile(
             "te${ch}st.pdf",
             "te${ch}st.pdf",
-            "application/pdf",
+            MediaType.APPLICATION_PDF_VALUE,
             testFileBytes,
         )
         val thrown = assertThrows<InvalidInputApiException> {
-            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
+            pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
         }
         assertEquals(
             "We have detected that the file name contains '$ch', which is not allowed",
@@ -102,5 +94,14 @@ class PdfVerificationServiceTest {
     private fun loadPdfFileBytes(): ByteArray {
         val testFileStream = javaClass.getResourceAsStream("samplePdfs/StandardWordExport.pdf")
         return IOUtils.toByteArray(testFileStream)
+    }
+
+    private fun createPdfFromBytes(bytes: ByteArray): MockMultipartFile {
+        return MockMultipartFile(
+            "test.pdf",
+            "test.pdf",
+            MediaType.APPLICATION_PDF_VALUE,
+            bytes,
+        )
     }
 }
