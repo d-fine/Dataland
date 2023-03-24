@@ -28,6 +28,8 @@ timeout 240 bash -c "while ! is_infrastructure_up; do echo 'infrastructure not y
 
 if [[ $CYPRESS_TEST_GROUP -eq 0 ]]; then
   ./gradlew :dataland-e2etests:test --no-daemon --stacktrace
+elif [[ $CYPRESS_TEST_GROUP -eq 9 ]]; then
+  npm --prefix ./dataland-frontend run testcomponent
 else
   npm --prefix ./dataland-frontend run testpipeline
 fi
