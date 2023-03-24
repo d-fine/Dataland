@@ -111,7 +111,10 @@
             "description": "Successfully received document.",
             "headers": {
               "Content-Disposition": {
-                "style": "simple"
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
