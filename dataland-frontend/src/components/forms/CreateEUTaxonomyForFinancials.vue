@@ -119,7 +119,12 @@
                           <FormKit type="hidden" v-model="files.files[index].convertedReportDate" name="reportDate" />
                         </div>
 
-                        <FormKit type="hidden" v-model="files.filesNames[index]" name="reference" />
+                        <FormKit
+                          type="text"
+                          v-model="files.filesNames[index]"
+                          name="reference"
+                          :outer-class="{ 'hidden-input': true }"
+                        />
 
                         <!-- Currency used in the report -->
                         <div class="form-field" data-test="currencyUsedInTheReport">
@@ -183,11 +188,12 @@
                       </div>
 
                       <FormKit
-                        type="hidden"
+                        type="text"
                         validation="required"
                         validation-label="Fiscal year"
                         name="fiscalYearEnd"
                         v-model="convertedFiscalYearEnd"
+                        :outer-class="{ 'hidden-input': true }"
                       />
                     </div>
 
@@ -632,7 +638,7 @@ export default defineComponent({
         await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(dataId);
       const dataResponseData = dataResponse.data;
       if (dataResponseData.data?.fiscalYearEnd) {
-        this.fiscalYearEnd = new Date(dataResponseData.data.fiscalYearEnd).toString();
+        this.fiscalYearEnd = new Date(dataResponseData.data.fiscalYearEnd);
       }
       if (dataResponseData.data?.financialServicesTypes) {
         // types of company financial services
@@ -673,7 +679,7 @@ export default defineComponent({
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
-        this.fiscalYearEnd = "";
+        this.fiscalYearEnd = undefined;
         this.files.filesNames = [];
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
