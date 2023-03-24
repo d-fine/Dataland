@@ -64,7 +64,7 @@ class DocumentManager(
      */
     fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentMetaInfo {
         val correlationId = randomUUID().toString()
-        logger.info("Started temporary storage process for document with correlationId: $correlationId")
+        logger.info("Started temporary storage process for document with correlation ID: $correlationId")
         val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
         val documentExists = documentMetaInfoRepository.existsById(documentMetaInfo.documentId)
         if (documentExists) {
@@ -87,12 +87,12 @@ class DocumentManager(
      */
     @Transactional(propagation = Propagation.NEVER)
     fun saveMetaInfoToDatabase(documentMetaInfo: DocumentMetaInfo, correlationId: String) {
-        logger.info("Saving meta info of document with correlationId: $correlationId")
+        logger.info("Saving meta info of document with correlation ID: $correlationId")
         documentMetaInfoRepository.save(DocumentMetaInfoEntity(documentMetaInfo))
     }
 
     private fun generateDocumentMetaInfo(document: MultipartFile, correlationId: String): DocumentMetaInfo {
-        logger.info("Generate document meta info for document with correlationId: $correlationId")
+        logger.info("Generate document meta info for document with correlation ID: $correlationId")
         val filename = document.originalFilename
             ?: throw InvalidInputApiException(
                 "Document without filename received",
@@ -100,8 +100,7 @@ class DocumentManager(
             )
         val documentId = document.bytes.sha256()
         logger.info(
-            "Generated hash: $documentId for document with correlationId: $correlationId. " +
-                "The hash is also the documentId.",
+            "Generated hash/document ID: $documentId for document with correlation ID: $correlationId. ",
         )
         return DocumentMetaInfo(
             documentId = documentId,
@@ -117,7 +116,7 @@ class DocumentManager(
      * @param documentId the documentId of the document to be checked
      */
     fun checkIfDocumentExistsWithId(documentId: String): DocumentExistsResponse {
-        logger.info("Check if document exists with documentId: $documentId")
+        logger.info("Check if document exists with ID: $documentId")
         val documentExists = documentMetaInfoRepository.existsById(documentId)
         if (documentExists) {
             logger.info("Document with ID: $documentId exists")
@@ -136,14 +135,14 @@ class DocumentManager(
         val metaDataInfoEntity = documentMetaInfoRepository.findById(documentId).orElseThrow {
             ResourceNotFoundApiException(
                 "No document found",
-                "No document with ID: $documentId could be found. CorrelationId: $correlationId",
+                "No document with ID: $documentId could be found. Correlation ID: $correlationId",
             )
         }
         if (metaDataInfoEntity.qaStatus != DocumentQAStatus.Accepted) {
             throw ResourceNotFoundApiException(
                 "No accepted document found",
                 "A non-quality-assured document with ID: $documentId was found. " +
-                    "Only quality-assured documents can be retrieved. CorrelationId: $correlationId",
+                    "Only quality-assured documents can be retrieved. Correlation ID: $correlationId",
             )
         }
 
@@ -197,17 +196,15 @@ class DocumentManager(
     ) {
         messageUtils = MessageQueueUtils()
         messageUtils.validateMessageType(type, MessageType.DocumentStored)
-        if (documentId.isNotEmpty()) {
-            logger.info("Internal Storage sent a message - job done")
-            logger.info(
-                "Document with documentId $documentId was successfully stored. Correlation ID: $correlationId.",
-            )
-
-            messageUtils.rejectMessageOnException {
-                inMemoryDocumentStore.deleteFromInMemoryStore(documentId)
-            }
-        } else {
+        if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
+        }
+        logger.info("Internal Storage sent a message - job done")
+        logger.info(
+            "Document with ID $documentId was successfully stored. Correlation ID: $correlationId."
+        )
+        messageUtils.rejectMessageOnException {
+            inMemoryDocumentStore.deleteFromInMemoryStore(documentId)
         }
     }
 
@@ -242,18 +239,16 @@ class DocumentManager(
         messageUtils = MessageQueueUtils()
         messageUtils.validateMessageType(type, MessageType.QACompleted)
         val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
-        println("AchtungAchtung $documentId")
-        if (documentId.isNotEmpty()) {
-            messageUtils.rejectMessageOnException {
-                val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
-                metaInformation.qaStatus = DocumentQAStatus.Accepted
-                logger.info(
-                    "Received quality assurance for document upload with DataId: " +
-                        "$documentId with Correlation Id: $correlationId",
-                )
-            }
-        } else {
+        if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
+        }
+        messageUtils.rejectMessageOnException {
+            val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
+            metaInformation.qaStatus = DocumentQAStatus.Accepted
+            logger.info(
+                "Received quality assurance for document upload with document ID: " +
+                        "$documentId with Correlation ID: $correlationId"
+            )
         }
     }
 }

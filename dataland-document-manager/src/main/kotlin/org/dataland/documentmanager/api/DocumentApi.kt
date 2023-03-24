@@ -50,7 +50,7 @@ interface DocumentApi {
      */
     @Operation(
         summary = "Check if a document exists.",
-        description = "Check for a given documentId (hash) if the document already exists in the database.",
+        description = "Check for a given document ID (hash) if the document already exists in the database.",
     )
     @ApiResponses(
         value = [
@@ -67,12 +67,12 @@ interface DocumentApi {
     ): ResponseEntity<DocumentExistsResponse>
 
     /**
-     * Retrieve a document by its Id
-     * @param documentId the Id to check
+     * Retrieve a document by its ID
+     * @param documentId the ID to check
      */
     @Operation(
         summary = "Receive a document.",
-        description = "Receive a document by its Id from internal storage.",
+        description = "Receive a document by its ID from internal storage.",
     )
     @ApiResponses(
         value = [
