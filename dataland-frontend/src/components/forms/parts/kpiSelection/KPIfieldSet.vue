@@ -21,7 +21,7 @@
         placeholder="Value %"
         step="any"
         min="0"
-        validation="required|number|between:0,100"
+        validation="number|between:0,100"
         :inner-class="{
           short: true,
         }"
