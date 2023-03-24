@@ -71,7 +71,6 @@
                             data-test="uploadFiles"
                             @click="chooseCallback()"
                             icon="pi pi-upload"
-                            class="m-0"
                             label="UPLOAD REPORTS"
                           />
                         </div>

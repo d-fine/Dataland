@@ -66,7 +66,6 @@
                             data-test="uploadFiles"
                             @click="chooseCallback()"
                             icon="pi pi-upload"
-                            class="m-0"
                             label="UPLOAD REPORTS"
                           />
                         </div>
@@ -358,7 +357,6 @@
                       <PrimeButton
                         @click="confirmeSelectedKPIs"
                         data-test="addKpisButton"
-                        class="m-0"
                         :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
                     </div>
@@ -600,8 +598,6 @@ export default defineComponent({
   mounted() {
     this.onThisPageLinks = [...this.onThisPageLinksStart];
     const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-    // this.updateModelFromLocalStore();
-
     this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
     this.scrollListener = (): null => {
       if (window.scrollY > this.elementPosition) {
