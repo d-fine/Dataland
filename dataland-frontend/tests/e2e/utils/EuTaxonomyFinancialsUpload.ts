@@ -74,7 +74,16 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
       data.activityLevelReporting ? data.activityLevelReporting.toString() : "No"
     }]`
   ).check();
-  cy.get('[data-test="dataPointToggleTitle"]').should("exist");
+  cy.get('[data-test="dataPointToggle"]')
+    .eq(1)
+    .should("exist")
+    .should("contain.text", "Data point is available")
+    .find('[data-test="dataPointToggleButton"]')
+    .click();
+  cy.get('[data-test="dataPointToggle"]').eq(1).find("h5").should("contain.text", "Data point is not available");
+  cy.get('[data-test="dataPointToggle"]').eq(1).find('[data-test="dataPointToggleButton"]').click();
+  cy.get('[data-test="dataPointToggle"]').eq(1).find("h5").should("contain.text", "Data point is available");
+
   cy.get('input[name="numberOfEmployees"]').type(
     `${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`
   );

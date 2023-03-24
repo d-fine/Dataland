@@ -1,11 +1,12 @@
 <template>
-  <div v-if="toggleDataAvailable" class="form-field vertical-middle">
+  <div v-if="toggleDataAvailable" data-test="dataPointToggle" class="form-field vertical-middle">
     <InputSwitch
+      data-test="dataPointToggleButton"
       inputId="dataPointIsAvailableSwitch"
       @click="dataPointAvailableToggle"
       v-model="dataPointIsAvailable"
     />
-    <h5 data-test="dataPointToggleTitle" class="ml-2">
+    <h5 class="ml-2">
       {{ dataPointIsAvailable ? "Data point is available" : "Data point is not available" }}
     </h5>
   </div>
