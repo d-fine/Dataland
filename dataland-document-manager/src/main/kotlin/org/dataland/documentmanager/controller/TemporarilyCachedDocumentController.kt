@@ -25,8 +25,6 @@ class TemporarilyCachedDocumentController(
                 "Dataland does not know the file identified by \"$sha256hash\"",
             )
         val stream = ByteArrayInputStream(blob)
-        return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .body(InputStreamResource(stream))
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(InputStreamResource(stream))
     }
 }
