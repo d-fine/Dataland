@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.DataAndMetaInformation
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.enums.data.QAStatus
+import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication

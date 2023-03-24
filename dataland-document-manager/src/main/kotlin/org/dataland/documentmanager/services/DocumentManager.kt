@@ -3,6 +3,7 @@ package org.dataland.documentmanager.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
@@ -15,7 +16,6 @@ import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentMetaInfo
-import org.dataland.documentmanager.model.DocumentQAStatus
 import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
@@ -72,7 +72,7 @@ class DocumentManager(
             return DocumentUploadResponse(documentMetaInfo.documentId)
         }
         val documentBody = document.bytes
-        pdfVerificationService.assertThatBlobLooksLikeAPdf(documentBody, correlationId)
+        pdfVerificationService.assertThatDocumentLooksLikeAPdf(document, correlationId)
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
@@ -108,7 +108,7 @@ class DocumentManager(
             displayTitle = filename,
             uploaderId = DatalandAuthentication.fromContext().userId,
             uploadTime = Instant.now().toEpochMilli(),
-            qaStatus = DocumentQAStatus.Pending,
+            qaStatus = QAStatus.Pending,
         )
     }
 
@@ -139,7 +139,7 @@ class DocumentManager(
                 "No document with ID: $documentId could be found. Correlation ID: $correlationId",
             )
         }
-        if (metaDataInfoEntity.qaStatus != DocumentQAStatus.Accepted) {
+        if (metaDataInfoEntity.qaStatus != QAStatus.Accepted) {
             throw ResourceNotFoundApiException(
                 "No accepted document found",
                 "A non-quality-assured document with ID: $documentId was found. " +
@@ -245,7 +245,7 @@ class DocumentManager(
         }
         messageUtils.rejectMessageOnException {
             val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
-            metaInformation.qaStatus = DocumentQAStatus.Accepted
+            metaInformation.qaStatus = QAStatus.Accepted
             logger.info(
                 "Received quality assurance for document upload with document ID: " +
                     "$documentId with Correlation ID: $correlationId",

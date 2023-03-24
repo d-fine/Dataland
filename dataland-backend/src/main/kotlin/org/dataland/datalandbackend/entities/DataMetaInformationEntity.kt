@@ -11,7 +11,7 @@ import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.enums.data.QAStatus
+import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 

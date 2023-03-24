@@ -3,6 +3,7 @@ package org.dataland.documentmanager.services
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
+import org.springframework.web.multipart.MultipartFile
 import org.springframework.stereotype.Component
 import java.io.IOException
 
@@ -18,9 +19,11 @@ class PdfVerificationService {
      * This function does not enforce anything else.
      * In particular a file passing this function is in no way guaranteed to be safe to open.
      */
-    fun assertThatBlobLooksLikeAPdf(blob: ByteArray, correlationId: String) {
+    fun assertThatDocumentLooksLikeAPdf(document: MultipartFile, correlationId: String) {
         try {
-            checkIfPdfDocumentIsEmpty(blob, correlationId)
+            checkIfPdfDocumentIsEmpty(document.bytes, correlationId)
+            checkThatDocumentNameEndsOnPdf(document.name, correlationId)
+
         } catch (ex: IOException) {
             logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
             throw InvalidInputApiException(
@@ -43,6 +46,15 @@ class PdfVerificationService {
                     "We have detected that the pdf you uploaded has 0 pages.",
                 )
             }
+        }
+    }
+
+    private fun checkThatDocumentNameEndsOnPdf(name: String, correlationId: String) {
+        if (name.takeLast(4) != ".pdf") {
+            throw InvalidInputApiException(
+                "You seem to have uploaded an empty PDF",
+                "We have detected that the pdf you uploaded has 0 pages.",
+            )
         }
     }
 }

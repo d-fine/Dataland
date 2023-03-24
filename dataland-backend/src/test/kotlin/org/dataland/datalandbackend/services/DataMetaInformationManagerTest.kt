@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.enums.data.QAStatus
+import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandbackend.model.lksg.LksgData
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException

@@ -18,13 +18,13 @@ import java.io.ByteArrayInputStream
 class TemporarilyCachedDocumentController(
     @Autowired private val inMemoryStore: InMemoryDocumentStore,
 ) : TemporarilyCachedDocumentApi {
-    override fun getReceivedData(sha256hash: String): ResponseEntity<InputStreamResource> {
-        val blob = inMemoryStore.retrieveDataFromMemoryStore(sha256hash)
+    override fun getReceivedData(hash: String): ResponseEntity<InputStreamResource> {
+        val blob = inMemoryStore.retrieveDataFromMemoryStore(hash)
             ?: throw ResourceNotFoundApiException(
-                "Blob for hash \"$sha256hash\" not found in temporary storage",
-                "Dataland does not know the file identified by \"$sha256hash\"",
+                "Blob for hash \"$hash\" not found in temporary storage",
+                "Dataland does not know the file identified by \"$hash\"",
             )
-        val stream = ByteArrayInputStream(blob)
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(InputStreamResource(stream))
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(InputStreamResource(ByteArrayInputStream(blob)))
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 interface TemporarilyCachedDocumentApi {
     /**
      * This method retrieves data entries from the temporary storage
-     * @param sha256hash filters the requested data to a specific entry.
+     * @param hash filters the requested data to a specific entry.
      */
     @Operation(
         summary = "Retrieve specific data from the cache store of the backend.",
@@ -28,8 +28,8 @@ interface TemporarilyCachedDocumentApi {
         ],
     )
     @GetMapping(
-        value = ["/{sha256hash}"],
+        value = ["/{hash}"],
         produces = ["application/octet-stream"],
     )
-    fun getReceivedData(@PathVariable("sha256hash") sha256hash: String): ResponseEntity<InputStreamResource>
+    fun getReceivedData(@PathVariable("hash") hash: String): ResponseEntity<InputStreamResource>
 }

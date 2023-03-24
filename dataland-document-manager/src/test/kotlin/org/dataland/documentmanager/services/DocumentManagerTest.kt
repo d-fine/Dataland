@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.apache.pdfbox.io.IOUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -12,7 +13,6 @@ import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
-import org.dataland.documentmanager.model.DocumentQAStatus
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -97,7 +97,7 @@ class DocumentManagerTest(
                         displayTitle = mockMultipartFile.originalFilename,
                         uploaderId = "",
                         uploadTime = 0,
-                        qaStatus = DocumentQAStatus.Pending,
+                        qaStatus = QAStatus.Pending,
                     ),
                 ),
             )
@@ -125,7 +125,7 @@ class DocumentManagerTest(
                         displayTitle = mockMultipartFile.originalFilename,
                         uploaderId = "",
                         uploadTime = 0,
-                        qaStatus = DocumentQAStatus.Accepted,
+                        qaStatus = QAStatus.Accepted,
                     ),
                 ),
             )
@@ -168,7 +168,7 @@ class DocumentManagerTest(
                         displayTitle = mockMultipartFile.originalFilename,
                         uploaderId = "",
                         uploadTime = 0,
-                        qaStatus = DocumentQAStatus.Pending,
+                        qaStatus = QAStatus.Pending,
                     ),
                 ),
             )
