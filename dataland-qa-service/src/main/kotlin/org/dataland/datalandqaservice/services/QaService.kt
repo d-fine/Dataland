@@ -60,21 +60,20 @@ class QaService(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DataStored)
-        if (dataId.isNotEmpty()) {
-            messageUtils.rejectMessageOnException {
-                logger.info(
-                    "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
-                )
-                val message = objectMapper.writeValueAsString(
-                    QaCompletedMessage(dataId, "By default, QA is passed"),
-                )
-                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
-                    RoutingKeyNames.data,
-                )
-            }
-        } else {
+        if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
+        }
+        messageUtils.rejectMessageOnException {
+            logger.info(
+                "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
+            )
+            val message = objectMapper.writeValueAsString(
+                QaCompletedMessage(dataId, "By default, QA is passed"),
+            )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+                RoutingKeyNames.data,
+            )
         }
     }
 
@@ -106,21 +105,20 @@ class QaService(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DocumentStored)
-        if (documentId.isNotEmpty()) {
-            messageUtils.rejectMessageOnException {
-                logger.info(
-                    "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
-                )
-                val message = objectMapper.writeValueAsString(
-                    QaCompletedMessage(documentId, "By default, QA is passed"),
-                )
-                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
-                    RoutingKeyNames.document,
-                )
-            }
-        } else {
-            throw MessageQueueRejectException("Provided document Hash is empty")
+        if (documentId.isEmpty()) {
+            throw MessageQueueRejectException("Provided document ID is empty")
+        }
+        messageUtils.rejectMessageOnException {
+            logger.info(
+                "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
+            )
+            val message = objectMapper.writeValueAsString(
+                QaCompletedMessage(documentId, "By default, QA is passed"),
+            )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+                RoutingKeyNames.document,
+            )
         }
     }
 }
