@@ -22,8 +22,8 @@ class PdfVerificationService {
     fun assertThatDocumentLooksLikeAPdf(document: MultipartFile, correlationId: String) {
         try {
             checkIfPdfDocumentIsEmpty(document.bytes, correlationId)
-            checkThatDocumentNameEndsOnPdf(document.name, correlationId)
-            checkThatDocumentNameIsValid(document.name, correlationId)
+            checkThatDocumentNameEndsOnPdf(document.originalFilename!!, correlationId)
+            checkThatDocumentNameIsValid(document.originalFilename!!, correlationId)
         } catch (ex: IOException) {
             logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
             throw InvalidInputApiException(
