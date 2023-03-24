@@ -50,7 +50,7 @@ interface DocumentApi {
      */
     @Operation(
         summary = "Check if a document exists.",
-        description = "Check for a given documentId (hash) if the document already exists in the database.",
+        description = "Check for a given document ID (hash) if the document already exists in the database.",
     )
     @ApiResponses(
         value = [
