@@ -27,7 +27,7 @@ export class ApiClientProvider {
   async getConfiguration(): Promise<Configuration | undefined> {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
-      await keycloak.updateToken(5);
+      await keycloak.updateToken(50000000); // TODO
       return new Configuration({ accessToken: keycloak.token });
     } else {
       return undefined;
