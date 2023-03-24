@@ -53,7 +53,7 @@ class PdfVerificationService {
         if (name.takeLast(expectedFileNameIdentifierLength) != ".pdf") {
             logger.info(
                 "PDF document uploaded with correlation ID: $correlationId " +
-                        "does not have a name ending on '.pdf', aborting.",
+                    "does not have a name ending on '.pdf', aborting.",
             )
             throw InvalidInputApiException(
                 "You seem to have uploaded an file that is not a pdf file",
