@@ -26,6 +26,7 @@
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
+                  data-test="reportingPeriodLabel"
                   :name="euTaxonomyKpiNameMappings.reportingPeriod"
                   :explanation="euTaxonomyKpiInfoMappings.reportingPeriod"
                 />
@@ -335,6 +336,7 @@
                     <!-- Data source -->
                     <div class="form-field">
                       <UploadFormHeader
+                        data-test="selectKPIsLabel"
                         :name="euTaxonomyKpiNameMappings.financialServicesTypes ?? ''"
                         :explanation="euTaxonomyKpiInfoMappings.financialServicesTypes ?? ''"
                       />

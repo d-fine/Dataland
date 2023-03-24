@@ -23,6 +23,11 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   cy.get('[data-test="reportingPeriod"] button').should("have.class", "p-datepicker-trigger").should("exist");
   cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
+  cy.get('div[id="jumpLinks"] li:last a').click();
+  cy.window().then((win) => {
+    const scrollPosition = win.scrollY;
+    expect(scrollPosition).to.be.greaterThan(0);
+  });
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
   cy.get('input[name="reference"]').should("not.exist");
