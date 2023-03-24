@@ -52,6 +52,12 @@ jobs:
       - name: Frontend component testing
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace
         if: always()
+      - name: Upload lcov Exec Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: lcovResults
+          path: ./*.info
       - name: Upload FE Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
