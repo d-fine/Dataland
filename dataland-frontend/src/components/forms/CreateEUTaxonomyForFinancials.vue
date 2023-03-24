@@ -402,7 +402,6 @@
                             <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              @dataPointAvailableToggle="updateModelFromLocalStore"
                             />
                           </div>
                         </FormKit>
@@ -428,7 +427,6 @@
                               <KPIfieldSet
                                 :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                 :kpiNameMappings="euTaxonomyKpiNameMappings"
-                                @dataPointAvailableToggle="updateModelFromLocalStore"
                               />
                             </div>
                           </FormKit>
@@ -528,7 +526,7 @@ export default defineComponent({
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
-      fiscalYearEnd: new Date(),
+      fiscalYearEnd: "",
       convertedFiscalYearEnd: "",
       reportingPeriod: new Date(),
       assuranceData: [
@@ -584,15 +582,6 @@ export default defineComponent({
         return this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis[el.value] as string;
       });
     },
-    shadowFormInputsModel: {
-      handler(
-        newValue: CompanyAssociatedDataEuTaxonomyDataForFinancials,
-        oldValue: CompanyAssociatedDataEuTaxonomyDataForFinancials
-      ) {
-        this.compareValuesInObjects(newValue, oldValue);
-      },
-      deep: true,
-    },
     reportingPeriod: function (newValue: Date) {
       this.reportingPeriodYear = newValue.getFullYear();
     },
@@ -600,11 +589,6 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
-    },
-  },
-  computed: {
-    shadowFormInputsModel() {
-      return JSON.parse(JSON.stringify(this.formInputsModel)) as CompanyAssociatedDataEuTaxonomyDataForFinancials;
     },
   },
   beforeMount() {
@@ -616,7 +600,7 @@ export default defineComponent({
   mounted() {
     this.onThisPageLinks = [...this.onThisPageLinksStart];
     const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-    this.updateModelFromLocalStore();
+    // this.updateModelFromLocalStore();
 
     this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
     this.scrollListener = (): null => {
@@ -668,26 +652,14 @@ export default defineComponent({
       this.formInputsModel = dataResponseData;
       this.waitingForData = false;
     },
-    /**
-     * Checks if there is a stored form data object and if so loads it
-     */
-    updateModelFromLocalStore(): void {
-      const formInputsFromLocalStorage = localStorage.getItem("formInputsModel");
-
-      if (formInputsFromLocalStorage) {
-        this.formInputsModel = JSON.parse(
-          formInputsFromLocalStorage
-        ) as CompanyAssociatedDataEuTaxonomyDataForFinancials;
-      }
-    },
 
     /**
      * Creates a new EuTaxonomy-Financials framework entry for the current company
      * with the data entered in the form by using the Dataland API
      */
     async postEuTaxonomyDataForFinancials(): Promise<void> {
+      console.log("-->", this.formInputsModel.data);
       try {
-        console.log("-->", this.formInputsModel);
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
@@ -704,7 +676,8 @@ export default defineComponent({
         this.postEuTaxonomyDataForFinancialsProcessed = true;
         this.fiscalYearEnd = "";
         this.files.filesNames = [];
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+        this.confirmedSelectedKPIs = [];
+        this.selectedKPIs = [];
       }
     },
 
@@ -760,27 +733,6 @@ export default defineComponent({
         getHyphenatedDate(this.files.files[index].reportDate as unknown as Date)
       );
       this.files.reRender();
-    },
-
-    /**
-     * Saves the state of the form fields to localStorage if the values have changed
-     *
-     * @param newValue new value of the form fields
-     * @param oldValue old value of the form fields
-     */
-    compareValuesInObjects(newValue: { [key: string]: never }, oldValue: { [key: string]: never }): void {
-      let isDifference = false;
-      for (const key in newValue) {
-        if (typeof newValue[key] === "object" && newValue[key] !== null) {
-          this.compareValuesInObjects(newValue[key], oldValue[key] ?? {});
-        } else if ((oldValue[key] ?? "") !== newValue[key] && typeof newValue[key] !== "undefined") {
-          this.shadowFormInputsModel[key] = newValue[key];
-          isDifference = true;
-        }
-      }
-      if (isDifference) {
-        localStorage.setItem("formInputsModel", JSON.stringify(this.shadowFormInputsModel));
-      }
     },
   },
 });

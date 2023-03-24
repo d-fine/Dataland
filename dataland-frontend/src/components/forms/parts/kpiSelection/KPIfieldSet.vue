@@ -6,22 +6,22 @@
       @click="dataPointAvailableToggle"
       v-model="dataPointIsAvailable"
     />
-    <h5 class="ml-2">
+    <h5 data-test="dataPointToggleTitle" class="ml-2">
       {{ dataPointIsAvailable ? "Data point is available" : "Data point is not available" }}
     </h5>
   </div>
-
-  <div v-if="dataPointIsAvailable">
+  <div v-show="dataPointIsAvailable">
     <div class="form-field">
       <UploadFormHeader name="Eligible Revenue (%) *" explanation="Eligible Revenue (%) *" />
       <FormKit
+        :disabled="!dataPointIsAvailable"
         type="number"
         name="value"
         validation-label=""
         placeholder="Value %"
         step="any"
         min="0"
-        validation="number|between:0,100"
+        validation="required|number|between:0,100"
         :inner-class="{
           short: true,
         }"
@@ -29,7 +29,7 @@
     </div>
 
     <div class="form-field">
-      <FormKit type="group" name="dataSource">
+      <FormKit type="group" :disabled="!dataPointIsAvailable" name="dataSource">
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
@@ -56,6 +56,7 @@
       <UploadFormHeader name="Data quality" explanation="Data quality" />
       <div class="lg:col-6 md:col-6 col-12 p-0">
         <FormKit
+          :disabled="!dataPointIsAvailable"
           type="select"
           name="quality"
           validation="required"
@@ -117,7 +118,6 @@ export default defineComponent({
      */
     dataPointAvailableToggle(): void {
       this.dataPointIsAvailable = !this.dataPointIsAvailable;
-      this.$emit("dataPointAvailableToggle", this.dataPointIsAvailable);
     },
   },
 });
