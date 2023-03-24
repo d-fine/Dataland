@@ -57,9 +57,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: lcovResults
-          path: ./*.info
-      - name: Just Tests
-        run: find . -name *.info
+          path: ./dataland-frontend/coverage/*.info
       - name: Upload FE Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
