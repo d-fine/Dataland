@@ -499,7 +499,14 @@ import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
-import { CompanyAssociatedDataEuTaxonomyDataForFinancials } from "@clients/backend";
+import {
+  CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  DataTypeEnum,
+  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
+  QAStatus
+} from "@clients/backend";
+import { DataMetaInformation } from "@clients/backend";
+import {AxiosResponse} from "axios";
 
 export default defineComponent({
   setup() {
@@ -526,7 +533,7 @@ export default defineComponent({
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
-      fiscalYearEnd: "",
+      fiscalYearEnd: undefined as Date | undefined,
       convertedFiscalYearEnd: "",
       reportingPeriod: new Date(),
       assuranceData: [
@@ -548,7 +555,7 @@ export default defineComponent({
 
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
-      postEuTaxonomyDataForFinancialsResponse: null,
+      postEuTaxonomyDataForFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
       humanizeString: humanizeString,
       onThisPageLinksStart: [
         { label: "Upload company reports", value: "uploadReports" },
@@ -579,7 +586,7 @@ export default defineComponent({
     },
     selectedKPIs: function (newValue: { label: string; value: string }[]) {
       this.computedFinancialServicesTypes = newValue.map((el: { label: string; value: string }): string => {
-        return this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis[el.value] as string;
+        return this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis[el.value as keyof typeof this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis] as string;
       });
     },
     reportingPeriod: function (newValue: Date) {
@@ -643,7 +650,9 @@ export default defineComponent({
 
         this.selectedKPIs = this.kpisModel.filter((el: { label: string; value: string }) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          return arrayWithCompanyKpiTypes?.includes(allTypesOfFinancialServices[el.value]);
+          return arrayWithCompanyKpiTypes
+              ?.includes(allTypesOfFinancialServices[el.value as keyof typeof allTypesOfFinancialServices] as
+                  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum);
         });
       }
       console.log("+++++", dataResponseData.data?.financialServicesTypes);
@@ -672,7 +681,7 @@ export default defineComponent({
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
-        this.fiscalYearEnd = "";
+        this.fiscalYearEnd = undefined;
         this.files.filesNames = [];
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
