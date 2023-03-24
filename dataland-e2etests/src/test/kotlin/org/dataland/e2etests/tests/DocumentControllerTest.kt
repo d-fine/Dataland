@@ -26,7 +26,6 @@ class DocumentControllerTest {
     fun `test that a dummy document can be uploaded and retrieved after successful QA`() {
         val expectedHash = document.readBytes().sha256()
         val nonExistentDocumentId = "nonExistentDocumentId"
-        // TODO should this api logic be integrated in ApiAccessor.kt?
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         assertFalse(documentControllerClient.checkDocument(nonExistentDocumentId).documentExists)
         val uploadResponse = documentControllerClient.postDocument(document)
@@ -34,7 +33,6 @@ class DocumentControllerTest {
         assertTrue(documentControllerClient.checkDocument(uploadResponse.documentId).documentExists)
         val downloadedFile = ensureQaCompleted(uploadResponse)
         assertEquals(expectedHash, downloadedFile.readBytes().sha256())
-        // TODO remove? assertEquals(document.name, downloadedFile.name)
     }
 
     /**

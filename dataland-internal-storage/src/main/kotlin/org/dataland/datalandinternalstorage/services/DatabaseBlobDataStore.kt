@@ -62,7 +62,9 @@ class DatabaseBlobDataStore(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DocumentReceived)
-        if (blobId.isNotEmpty()) {
+        if (blobId.isEmpty()) {
+            throw MessageQueueRejectException("Provided document ID is empty")
+        }
             messageUtils.rejectMessageOnException {
                 logger.info("Received BlobId $blobId and CorrelationId: $correlationId")
                 val resource = temporarilyCachedDocumentClient.getReceivedData(blobId)
@@ -75,9 +77,6 @@ class DatabaseBlobDataStore(
                     RoutingKeyNames.document,
                 )
             }
-        } else {
-            throw MessageQueueRejectException("Provided BlobId is empty")
-        }
     }
 
     /**
