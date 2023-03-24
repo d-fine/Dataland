@@ -13,7 +13,12 @@ class PdfVerificationServiceTest {
     @Test
     fun `verifies that a valid pdf document passes the basic checks`() {
         val testFileBytes = loadPdfFileBytes()
-        val testFile = MockMultipartFile("test.pdf", "test.pdf", "application/pdf", testFileBytes)
+        val testFile = MockMultipartFile(
+            "test.pdf",
+            "test.pdf",
+            "application/pdf",
+            testFileBytes,
+        )
         pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
     }
 
@@ -39,7 +44,12 @@ class PdfVerificationServiceTest {
     @Test
     fun `verifies that an invalid pdf document does not pass the basic checks`() {
         val testFileBytes = loadExcelFileBytes()
-        val testFile = MockMultipartFile("test.pdf", "test.pdf", "application/pdf", testFileBytes)
+        val testFile = MockMultipartFile(
+            "test.pdf",
+            "test.pdf",
+            "application/pdf",
+            testFileBytes,
+        )
         val thrown = assertThrows<InvalidInputApiException> {
             pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
         }
@@ -53,7 +63,12 @@ class PdfVerificationServiceTest {
     @Test
     fun `verifies that a pdf document with wrong name ending does not pass the basic checks`() {
         val testFileBytes = loadPdfFileBytes()
-        val testFile = MockMultipartFile("test", "test", "application/pdf", testFileBytes)
+        val testFile = MockMultipartFile(
+            "test",
+            "test",
+            "application/pdf",
+            testFileBytes,
+        )
         val thrown = assertThrows<InvalidInputApiException> {
             pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
         }
@@ -64,11 +79,19 @@ class PdfVerificationServiceTest {
     fun `verifies that a pdf document with forbidden characters in the filename does not pass the basic checks`() {
         val testFileBytes = loadPdfFileBytes()
         val ch = '/'
-        val testFile = MockMultipartFile("te/st.pdf", "te${ch}st.pdf", "application/pdf", testFileBytes)
+        val testFile = MockMultipartFile(
+            "te${ch}st.pdf",
+            "te${ch}st.pdf",
+            "application/pdf",
+            testFileBytes,
+        )
         val thrown = assertThrows<InvalidInputApiException> {
             pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, "test-correlation-id")
         }
-        assertEquals("We have detected that the file name contains '$ch', which is not allowed", thrown.message)
+        assertEquals(
+            "We have detected that the file name contains '$ch', which is not allowed",
+            thrown.message,
+        )
     }
 
     private fun loadExcelFileBytes(): ByteArray {
