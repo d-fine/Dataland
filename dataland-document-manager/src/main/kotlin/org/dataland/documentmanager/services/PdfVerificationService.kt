@@ -50,9 +50,10 @@ class PdfVerificationService {
     }
 
     private fun checkThatDocumentNameEndsOnPdf(name: String, correlationId: String) {
-        if (name.takeLast(4) != ".pdf") {
+        if (name.takeLast(expectedFileNameIdentifierLength) != ".pdf") {
             logger.info(
-                "PDF document uploaded with correlation ID: $correlationId does not have a name ending on '.pdf', aborting.",
+                "PDF document uploaded with correlation ID: $correlationId " +
+                        "does not have a name ending on '.pdf', aborting.",
             )
             throw InvalidInputApiException(
                 "You seem to have uploaded an file that is not a pdf file",
@@ -72,5 +73,9 @@ class PdfVerificationService {
                 "We have detected that the file name contains '$it', which is not allowed",
             )
         }
+    }
+
+    companion object {
+        const val expectedFileNameIdentifierLength: Int = 4
     }
 }
