@@ -32,4 +32,5 @@ elif [[ $CYPRESS_TEST_GROUP -eq 9 ]]; then
   npm --prefix ./dataland-frontend run testcomponent
 else
   npm --prefix ./dataland-frontend run testpipeline
+  npm --prefix ./dataland-frontend run testcomponent
 fi
