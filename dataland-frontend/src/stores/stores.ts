@@ -13,3 +13,11 @@ export const useFrameworkFiltersStore = defineStore("frameworkFilters", {
     },
   },
 });
+
+export const useFunctionIdsStore = defineStore("functionIds", {
+  state: () => {
+    return {
+      sessionCheckSetIntervalFunctionId: undefined as undefined | number,
+    };
+  },
+});

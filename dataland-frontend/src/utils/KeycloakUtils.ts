@@ -47,13 +47,14 @@ export async function checkIfUserHasUploaderRights(keycloakPromiseGetter?: () =>
 }
 
 /**
- * TODO
+ * Logs the user out and redirects her/him to the base url concatenated with the passed redirectPath.
  *
- * @param keycloak
- * @param redirectPath
+ * @param keycloak is the keycloak adaptor used to do the logout
+ * @param additionToBasePath is the addition to the base url to result in the final url that the user shall be
+ * redirected to
  */
-export function logoutAndRedirectToUri(keycloak: Keycloak, redirectPath: string): void {
+export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: string): void {
   const baseUrl = window.location.origin;
-  const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}${redirectPath}` });
+  const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}${additionToBasePath}` });
   location.assign(url);
 }
