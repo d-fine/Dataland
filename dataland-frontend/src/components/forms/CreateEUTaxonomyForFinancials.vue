@@ -501,12 +501,10 @@ import {
 } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
 import {
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
-  DataTypeEnum,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  QAStatus
 } from "@clients/backend";
 import { DataMetaInformation } from "@clients/backend";
-import {AxiosResponse} from "axios";
+import { AxiosResponse } from "axios";
 
 export default defineComponent({
   setup() {
@@ -586,7 +584,9 @@ export default defineComponent({
     },
     selectedKPIs: function (newValue: { label: string; value: string }[]) {
       this.computedFinancialServicesTypes = newValue.map((el: { label: string; value: string }): string => {
-        return this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis[el.value as keyof typeof this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis] as string;
+        return this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis[
+          el.value as keyof typeof this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis
+        ];
       });
     },
     reportingPeriod: function (newValue: Date) {
@@ -598,13 +598,12 @@ export default defineComponent({
       type: String,
     },
   },
-  beforeMount() {
+  mounted() {
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
       void this.loadEuData(dataId);
     }
-  },
-  mounted() {
+
     this.onThisPageLinks = [...this.onThisPageLinksStart];
     const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
     this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
@@ -650,9 +649,11 @@ export default defineComponent({
 
         this.selectedKPIs = this.kpisModel.filter((el: { label: string; value: string }) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          return arrayWithCompanyKpiTypes
-              ?.includes(allTypesOfFinancialServices[el.value as keyof typeof allTypesOfFinancialServices] as
-                  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum);
+          return arrayWithCompanyKpiTypes?.includes(
+            allTypesOfFinancialServices[
+              el.value as keyof typeof allTypesOfFinancialServices
+            ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
+          );
         });
       }
       console.log("+++++", dataResponseData.data?.financialServicesTypes);
