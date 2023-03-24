@@ -31,8 +31,9 @@ class PdfVerificationServiceTest {
         }
         assertEquals(
             "We were unable to load the PDF document you provided." +
-                    " Please ensure that the file you uploaded has not been corrupted",
-              thrown.message)
+                " Please ensure that the file you uploaded has not been corrupted",
+            thrown.message,
+        )
     }
 
     @Test
@@ -44,9 +45,9 @@ class PdfVerificationServiceTest {
         }
         assertEquals(
             "We were unable to load the PDF document you provided." +
-                    " Please ensure that the file you uploaded has not been corrupted",
-            thrown.message)
-
+                " Please ensure that the file you uploaded has not been corrupted",
+            thrown.message,
+        )
     }
 
     @Test
