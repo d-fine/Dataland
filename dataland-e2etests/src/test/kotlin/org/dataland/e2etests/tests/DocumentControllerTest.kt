@@ -40,7 +40,8 @@ class DocumentControllerTest {
     /**
      * Wait until QaStatus is accepted for uploaded document.
      *
-     * @param uploadResponse the DocumentUploadResponse document's id for which an update of the QAStatus should be checked and awaited
+     * @param uploadResponse the DocumentUploadResponse document's id for which an update of the QAStatus should be
+     * checked and awaited
      * @returns the received file
      */
     private fun ensureQaCompleted(uploadResponse: DocumentUploadResponse): File {
