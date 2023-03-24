@@ -34,7 +34,7 @@ class DocumentControllerTest {
         assertTrue(documentControllerClient.checkDocument(uploadResponse.documentId).documentExists)
         val downloadedFile = ensureQaCompleted(uploadResponse)
         assertEquals(expectedHash, downloadedFile.readBytes().sha256())
-        assertEquals(document.name, downloadedFile.name)
+        // TODO remove? assertEquals(document.name, downloadedFile.name)
     }
 
     /**

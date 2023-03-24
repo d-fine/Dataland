@@ -202,7 +202,7 @@ class DocumentManager(
         }
         logger.info("Internal Storage sent a message - job done")
         logger.info(
-            "Document with ID $documentId was successfully stored. Correlation ID: $correlationId."
+            "Document with ID $documentId was successfully stored. Correlation ID: $correlationId.",
         )
         messageUtils.rejectMessageOnException {
             inMemoryDocumentStore.deleteFromInMemoryStore(documentId)
@@ -248,7 +248,7 @@ class DocumentManager(
             metaInformation.qaStatus = DocumentQAStatus.Accepted
             logger.info(
                 "Received quality assurance for document upload with document ID: " +
-                        "$documentId with Correlation ID: $correlationId"
+                    "$documentId with Correlation ID: $correlationId",
             )
         }
     }
