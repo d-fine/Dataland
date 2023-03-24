@@ -50,7 +50,10 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Frontend component testing
-        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace
+        run: |
+          ./gradlew :dataland-frontend:generateClients --no-daemon --stacktrace
+          cd ./dataland-frontend
+          npm run testcomponent
         if: always()
       - name: Upload lcov Exec Results
         if: always()
