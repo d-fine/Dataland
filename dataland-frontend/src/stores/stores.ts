@@ -14,10 +14,11 @@ export const useFrameworkFiltersStore = defineStore("frameworkFilters", {
   },
 });
 
-export const useFunctionIdsStore = defineStore("functionIds", {
+export const useSessionStateStore = defineStore("sessionStateStore", {
   state: () => {
     return {
-      sessionCheckSetIntervalFunctionId: undefined as undefined | number,
+      sessionCheckSetIntervalFunctionId: undefined as undefined | number, // TODO rename
+      isRefreshTokenExpired: false,
     };
   },
 });

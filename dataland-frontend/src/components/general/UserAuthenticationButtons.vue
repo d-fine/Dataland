@@ -14,6 +14,7 @@ import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "UserAuthenticationButtons",
@@ -33,11 +34,7 @@ export default defineComponent({
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            const baseUrl = window.location.origin;
-            const url = keycloak.createLoginUrl({
-              redirectUri: `${baseUrl}/companies`,
-            });
-            location.assign(url);
+            loginAndRedirectToSearchPage(keycloak);
           }
         })
         .catch((error) => console.log(error));

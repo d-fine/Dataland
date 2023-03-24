@@ -58,3 +58,9 @@ export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: s
   const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}${additionToBasePath}` });
   location.assign(url);
 }
+
+export function loginAndRedirectToSearchPage(keycloak: Keycloak): void {
+  const baseUrl = window.location.origin;
+  const url = keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
+  location.assign(url);
+}

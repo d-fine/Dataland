@@ -8,8 +8,8 @@ import Keycloak from "keycloak-js";
 import DynamicDialog from "primevue/dynamicdialog";
 import { computed, defineComponent } from "vue";
 import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
-import { clearSessionSetIntervalFunction, tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
-import SessionTimeoutModal from "@/components/general/SessionTimeoutModal.vue";
+import { tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
+import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
 
 export default defineComponent({
@@ -90,23 +90,25 @@ export default defineComponent({
      */
     handleSurpassingTheExpiredSessionTimestamp() {
       this.openSessionWarningModal();
-      clearSessionSetIntervalFunction();
     },
 
     /**
      * Opens a pop-up to warn the user that the session will be closed soon and offers a button to refresh it.
-     * If it is closed, it also refreshes the session.
+     * If the refresh button is clicked or the pop-up is closed soon enough, the session is refreshed.
+     * Else the text changes and tells the user that the session was closed. That behaviour is activated in the
+     * SessionDialog via the variable isTrackingOfRefreshTokenExpiryEnabled.
      */
     openSessionWarningModal(): void {
-      // TODO write openModal as central function somewhere?
-      this.$dialog.open(SessionTimeoutModal, {
+      this.$dialog.open(SessionDialog, {
         props: {
-          header: "Your session will be closed soon. Please refresh it if you want to stay logged in.",
           modal: true,
           dismissableMask: true,
         },
         data: {
+          displayedText: "Your session will be closed soon. Please refresh it if you want to stay logged in.",
           showRefreshButton: true,
+          isTrackingOfRefreshTokenExpiryEnabled: true,
+          resolvedKeycloakPromise: this.resolvedKeycloakPromise,
         },
         onClose: () => {
           tryToRefreshSession(

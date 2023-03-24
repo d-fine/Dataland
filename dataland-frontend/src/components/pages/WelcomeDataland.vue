@@ -17,7 +17,7 @@ import { NavigationFailure } from "vue-router";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { useRoute } from "vue-router";
-import SessionTimeoutModal from "@/components/general/SessionTimeoutModal.vue";
+import SessionDialog from "@/components/general/SessionDialog.vue";
 
 export default defineComponent({
   name: "WelcomeDataland",
@@ -35,7 +35,7 @@ export default defineComponent({
   },
   mounted() {
     if (useRoute().query.sessionClosed === "true") {
-      this.openLogoutModal("Your session could not be refreshed because it is closed. Please log in again.");
+      this.openLogoutModal("Your have been logged because your session timed out. Do you want to login again?");
     }
     if (useRoute().query.externalLogout === "true") {
       this.openLogoutModal("You have been logged out. Do you want to login again?");
@@ -65,16 +65,16 @@ export default defineComponent({
      * Opens a pop-up to show the user that he was logged out. Since there can be multiple reasons for this, the
      * displayed text should be passed as param.
      *
-     * @param headerText contains the text to display in the header
+     * @param displayedText contains the text to display in the pop-up
      */
-    openLogoutModal(headerText: string): void {
-      this.$dialog.open(SessionTimeoutModal, {
+    openLogoutModal(displayedText: string): void {
+      this.$dialog.open(SessionDialog, {
         props: {
-          header: headerText,
           modal: true,
           dismissableMask: true,
         },
         data: {
+          displayedText: displayedText,
           showLogInButton: true,
         },
         onClose: () => {

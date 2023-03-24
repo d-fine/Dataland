@@ -1,9 +1,10 @@
 import { TIME_UNTIL_SESSION_WARNING_IN_MS, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
-import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
+import { loginAndRedirectToSearchPage, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 import Keycloak from "keycloak-js";
-import { useFunctionIdsStore } from "@/stores/stores";
+import { useSessionStateStore } from "@/stores/stores";
 
 const keyForSessionWarningTimestampInLocalStorage = "sessionWarningTimestamp";
+const minRequiredValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS + 1000;
 
 /**
  * Updates the timestamp for the session warning to the current timestamp plus the amount of time that should be allowed
@@ -46,7 +47,7 @@ function startSessionSetIntervalFunction(
   onSurpassingExpiredSessionTimestampCallback: () => void
 ): void {
   console.log("starting set interval from scratch"); //TODO
-  useFunctionIdsStore().sessionCheckSetIntervalFunctionId = setInterval(() => {
+  const functionId = setInterval(() => {
     console.log("setInterval is running once"); // TODO debugging
     const currentTimestampInMs = new Date().getTime();
     const sessionWarningTimestamp = getSessionWarningTimestampFromLocalStorage();
@@ -55,6 +56,7 @@ function startSessionSetIntervalFunction(
     } else {
       if (currentTimestampInMs >= sessionWarningTimestamp) {
         console.log("You have passed the logout timestamp. You'll get a session expired popup now."); // TODO debugging
+        clearInterval(functionId);
         onSurpassingExpiredSessionTimestampCallback();
       } else {
         console.log("You have not reached the logoutTimeStamp in the local storage yet. You stay logged in"); // TODO debugging
@@ -68,8 +70,27 @@ function startSessionSetIntervalFunction(
  * surpassed to then stop it.
  */
 export function clearSessionSetIntervalFunction(): void {
-  console.log("stopping setInterval"); // TODO debugging
-  clearInterval(useFunctionIdsStore().sessionCheckSetIntervalFunctionId);
+  // TODO naming
+  console.log("stopping setInterval for sesion warning check"); // TODO debugging
+  clearInterval(useSessionStateStore().sessionCheckSetIntervalFunctionId);
+}
+
+export function isCurrentRefreshTokenExpired(keycloak: Keycloak): boolean {
+  const currentTimestamp = new Date().getTime();
+  if (keycloak.refreshTokenParsed?.exp) {
+    const expiryTimestampOfCurrentRefreshTokenInMs = keycloak.refreshTokenParsed?.exp * 1000;
+    console.log(
+      "currentTime: " +
+        currentTimestamp.toString() +
+        " expiryTimestampOfCurrentRefreshToken: " +
+        expiryTimestampOfCurrentRefreshTokenInMs
+    ); // TODO debugging
+    return (
+      currentTimestamp + minRequiredValidityTimeOfRefreshTokenDuringCheck > expiryTimestampOfCurrentRefreshTokenInMs
+    );
+  } else {
+    throw Error("The refresh token cannot be parsed. This is not acceptable for running Dataland.");
+  }
 }
 
 /**
@@ -85,28 +106,19 @@ export function clearSessionSetIntervalFunction(): void {
  */
 export function tryToRefreshSession(keycloak: Keycloak, onSurpassingExpiredSessionTimestampCallback: () => void): void {
   console.log("refreshing session"); // TODO debugging
-  const currentTimestamp = new Date().getTime();
+  const sessionStateStore = useSessionStateStore();
   const maxTokenValidity = 600; // TODO discuss/adjust
-  const bufferUntilRefreshTokenExpiryInMs = 3000;
-  let expiryTimestampOfCurrentRefreshTokenInMs;
-  if (keycloak.refreshTokenParsed?.exp) {
-    expiryTimestampOfCurrentRefreshTokenInMs = keycloak.refreshTokenParsed?.exp * 1000;
-  }
-  console.log(
-    "currentTime: " + currentTimestamp.toString() + " expiryTimestampOfCurrentRefreshToken: " + expiryTimestampOfCurrentRefreshTokenInMs
-  ); // TODO debugging
-  if (expiryTimestampOfCurrentRefreshTokenInMs) {
-    const isRefreshTokenStillValid =
-      currentTimestamp < expiryTimestampOfCurrentRefreshTokenInMs - bufferUntilRefreshTokenExpiryInMs;
-    // TODO comment why this is necessary (grace time problem)
-    if (isRefreshTokenStillValid) {
-      console.log("refreshing session => refresh Token still valid => updating tokens"); // TODO debugging
-      keycloak.updateToken(maxTokenValidity);
-      updateSessionWarningTimestampInLocalStorage();
-      startSessionSetIntervalFunction(keycloak, onSurpassingExpiredSessionTimestampCallback);
-    } else {
-      console.log("refreshing session => refresh Token expired => logout"); // TODO debugging
-      logoutAndRedirectToUri(keycloak, "?sessionClosed=true");
-    }
+  const isRefreshTokenExpired = sessionStateStore.isRefreshTokenExpired;
+  // TODO comment why this is necessary (grace time problem)
+  if (isRefreshTokenExpired) {
+    console.log("refreshing session => refresh Token expired => logout"); // TODO debugging
+    loginAndRedirectToSearchPage(keycloak);
+    //logoutAndRedirectToUri(keycloak, "?sessionClosed=true");
+  } else {
+    console.log("refreshing session => refresh Token still valid => updating tokens"); // TODO debugging
+    keycloak.updateToken(maxTokenValidity);
+    sessionStateStore.isRefreshTokenExpired = false;
+    updateSessionWarningTimestampInLocalStorage();
+    startSessionSetIntervalFunction(keycloak, onSurpassingExpiredSessionTimestampCallback);
   }
 }
