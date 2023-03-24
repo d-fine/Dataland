@@ -23,6 +23,7 @@ class PdfVerificationService {
         try {
             checkIfPdfDocumentIsEmpty(document.bytes, correlationId)
             checkThatDocumentNameEndsOnPdf(document.name, correlationId)
+            checkThatDocumentNameIsValid(document.name, correlationId)
 
         } catch (ex: IOException) {
             logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
@@ -51,9 +52,25 @@ class PdfVerificationService {
 
     private fun checkThatDocumentNameEndsOnPdf(name: String, correlationId: String) {
         if (name.takeLast(4) != ".pdf") {
+            logger.info(
+                "PDF document uploaded with correlation ID: $correlationId does not have a name ending on '.pdf', aborting.",
+            )
             throw InvalidInputApiException(
-                "You seem to have uploaded an empty PDF",
-                "We have detected that the pdf you uploaded has 0 pages.",
+                "You seem to have uploaded an file that is not a pdf file",
+                "We have detected that the file does not have a name ending on '.pdf'",
+            )
+        }
+    }
+
+    private fun checkThatDocumentNameIsValid(name: String, correlationId: String) {
+        val forbiddenChars = charArrayOf('\u0000', '\\', '/', ':', '*', '?', '\"', '<', '>', '|')
+        forbiddenChars.find { it in name }?.let {
+            logger.info(
+                "PDF document uploaded with correlation ID: $correlationId has invalid name, aborting.",
+            )
+            throw InvalidInputApiException(
+                "You seem to have uploaded an file that has an invalid name",
+                "We have detected that the file contains '$it'",
             )
         }
     }
