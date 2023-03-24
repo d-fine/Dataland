@@ -13,8 +13,9 @@ class InMemoryDocumentStoreTest {
         val dataToStore = "Dataland is awesome".toByteArray(Charsets.UTF_8)
         val expectedHash = "b5ebbb0e075e95be1d8e32002a7766deaa1f9c6c075b2d3c9f9822183a4eea27"
 
-        val storedHash = inMemoryStore.storeDataInMemory(dataToStore.sha256(), dataToStore)
-        assertEquals(expectedHash, storedHash)
+        val documentId = dataToStore.sha256()
+        inMemoryStore.storeDataInMemory(documentId, dataToStore)
+        assertEquals(expectedHash, documentId)
 
         val retrievedDataset = inMemoryStore.retrieveDataFromMemoryStore(expectedHash)
         assertArrayEquals(dataToStore, retrievedDataset)

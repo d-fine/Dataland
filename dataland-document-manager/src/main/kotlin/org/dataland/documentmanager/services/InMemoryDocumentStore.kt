@@ -14,24 +14,23 @@ class InMemoryDocumentStore {
     /**
      * Stores the provided dataset in memory identified by its sha256 hash.
      */
-    fun storeDataInMemory(hash: String, data: ByteArray): String {
-        dataInMemoryStorage[hash] = data
-        logger.debug("Stored blob with hash $hash to the in-memory store")
-        return hash
+    fun storeDataInMemory(documentId: String, data: ByteArray) {
+        dataInMemoryStorage[documentId] = data
+        logger.debug("Stored blob with hash $documentId to the in-memory store")
     }
 
     /**
      * Retrieves the data identified by the given hash from the in-memory store.
      */
-    fun retrieveDataFromMemoryStore(sha256hash: String): ByteArray? {
-        return dataInMemoryStorage[sha256hash]
+    fun retrieveDataFromMemoryStore(documentId: String): ByteArray? {
+        return dataInMemoryStorage[documentId]
     }
 
     /**
      * Deletes a dataset from memory. Returns the previously stored dataset if it exists.
      */
-    fun deleteFromInMemoryStore(sha256hash: String): ByteArray? {
-        logger.debug("Deleting blob with hash $sha256hash from the in-memory store")
-        return dataInMemoryStorage.remove(sha256hash)
+    fun deleteFromInMemoryStore(documentId: String): ByteArray? {
+        logger.debug("Deleting blob with hash $documentId from the in-memory store")
+        return dataInMemoryStorage.remove(documentId)
     }
 }
