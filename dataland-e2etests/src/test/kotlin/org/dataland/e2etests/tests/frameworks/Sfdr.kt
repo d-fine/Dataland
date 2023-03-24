@@ -19,7 +19,6 @@ class Sfdr {
             listOfOneSfdrDataSet,
             apiAccessor.sfdrUploaderFunction,
         )
-        Thread.sleep(1000)
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForSfdrData
             .getCompanyAssociatedSfdrData(receivedDataMetaInformation!!.dataId)
