@@ -40,12 +40,7 @@
                   />
                 </div>
 
-                <FormKit
-                  type="hidden"
-                  v-model="reportingPeriodYear"
-                  name="reportingPeriod"
-                  :outer-class="{ 'hidden-input': true }"
-                />
+                <FormKit type="hidden" v-model="reportingPeriodYear" name="reportingPeriod" />
               </div>
 
               <FormKit type="group" name="data" label="data">
@@ -120,20 +115,10 @@
                             />
                           </div>
 
-                          <FormKit
-                            type="text"
-                            v-model="files.files[index].convertedReportDate"
-                            name="reportDate"
-                            :outer-class="{ 'hidden-input': true }"
-                          />
+                          <FormKit type="hidden" v-model="files.files[index].convertedReportDate" name="reportDate" />
                         </div>
 
-                        <FormKit
-                          type="text"
-                          v-model="files.filesNames[index]"
-                          name="reference"
-                          :outer-class="{ 'hidden-input': true }"
-                        />
+                        <FormKit type="hidden" v-model="files.filesNames[index]" name="reference" />
 
                         <!-- Currency used in the report -->
                         <div class="form-field" data-test="currencyUsedInTheReport">
@@ -197,12 +182,11 @@
                       </div>
 
                       <FormKit
-                        type="text"
+                        type="hidden"
                         validation="required"
                         validation-label="Fiscal year"
                         name="fiscalYearEnd"
                         v-model="convertedFiscalYearEnd"
-                        :outer-class="{ 'hidden-input': true }"
                       />
                     </div>
 
