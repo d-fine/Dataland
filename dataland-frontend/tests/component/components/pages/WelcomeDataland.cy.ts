@@ -1,6 +1,6 @@
 import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
-import { mount } from "@cypress/vue";
-import { checkButton, checkImage, checkFooter } from "../../helper/utilityFunctions";
+import { mount } from "cypress/vue";
+import { checkButton, checkImage, checkFooter } from "@ct/helper/utilityFunctions";
 
 describe("Component test for WelcomeDataland", () => {
   it("Check if essential elements are present", () => {
