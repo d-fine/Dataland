@@ -69,7 +69,7 @@ class PdfVerificationService {
             )
             throw InvalidInputApiException(
                 "You seem to have uploaded an file that has an invalid name",
-                "We have detected that the file contains '$it'",
+                "We have detected that the file name contains '$it'",
             )
         }
     }
