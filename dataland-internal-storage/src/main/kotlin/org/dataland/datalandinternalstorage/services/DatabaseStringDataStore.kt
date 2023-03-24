@@ -75,7 +75,7 @@ class DatabaseStringDataStore(
             messageUtils.rejectMessageOnException {
                 logger.info("Received DataID $dataId and CorrelationId: $correlationId")
                 val data = temporarilyCachedDataClient.getReceivedData(dataId)
-                logger.info("Inserting data into database with dataId: $dataId and correlation id: $correlationId.")
+                logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
                 storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     dataId, MessageType.DataStored, correlationId, ExchangeNames.itemStored, RoutingKeyNames.data,
@@ -98,15 +98,15 @@ class DatabaseStringDataStore(
 
     /**
      * Reads data from a database
-     * @param dataId the id of the data to be retrieved
-     * @return the data as json string with id dataId
+     * @param dataId the ID of the data to be retrieved
+     * @return the data as json string with ID dataId
      */
     fun selectDataSet(dataId: String, correlationId: String): String {
         return dataItemRepository.findById(dataId).orElseThrow {
-            logger.info("Data with data id: $dataId could not be found. Correlation id: $correlationId.")
+            logger.info("Data with data ID: $dataId could not be found. Correlation ID: $correlationId.")
             ResourceNotFoundApiException(
                 "Dataset not found",
-                "No dataset with the id: $dataId could be found in the data store.",
+                "No dataset with the ID: $dataId could be found in the data store.",
             )
         }.data
     }

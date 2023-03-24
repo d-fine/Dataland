@@ -68,7 +68,7 @@ class DatabaseBlobDataStore(
                 val resource = temporarilyCachedDocumentClient.getReceivedData(blobId)
                 storeBlobToDatabase(blobId, resource.readBytes())
                 logger.info(
-                    "Inserting blob into database with BlobId: $blobId and correlation id: $correlationId.",
+                    "Inserting blob into database with blob ID: $blobId and correlation ID: $correlationId.",
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     blobId, MessageType.DocumentStored, correlationId, ExchangeNames.itemStored,
@@ -101,10 +101,10 @@ class DatabaseBlobDataStore(
      */
     fun selectBlobById(blobId: String, correlationId: String): ByteArray {
         return blobItemRepository.findById(blobId).orElseThrow {
-            logger.info("Blob with id: $blobId could not be found. Correlation id: $correlationId.")
+            logger.info("Blob with ID: $blobId could not be found. Correlation ID: $correlationId.")
             ResourceNotFoundApiException(
                 "Dataset not found",
-                "No blob with the id: $blobId could be found in the data store.",
+                "No blob with the ID: $blobId could be found in the data store.",
             )
         }.data
     }

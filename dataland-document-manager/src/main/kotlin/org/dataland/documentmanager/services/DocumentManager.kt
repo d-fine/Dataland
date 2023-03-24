@@ -17,6 +17,7 @@ import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentQAStatus
 import org.dataland.documentmanager.model.DocumentStream
+import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -62,13 +63,13 @@ class DocumentManager(
      * @param document the multipart file which contains the uploaded document
      * @returns the meta information for the document
      */
-    fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentMetaInfo {
+    fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentUploadResponse {
         val correlationId = randomUUID().toString()
         logger.info("Started temporary storage process for document with correlation ID: $correlationId")
         val documentMetaInfo = generateDocumentMetaInfo(document, correlationId)
         val documentExists = documentMetaInfoRepository.existsById(documentMetaInfo.documentId)
         if (documentExists) {
-            return documentMetaInfo
+            return DocumentUploadResponse(documentMetaInfo.documentId)
         }
         val documentBody = document.bytes
         pdfVerificationService.assertThatBlobLooksLikeAPdf(documentBody, correlationId)
@@ -77,7 +78,7 @@ class DocumentManager(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeNames.documentReceived,
         )
-        return documentMetaInfo
+        return DocumentUploadResponse(documentMetaInfo.documentId)
     }
 
     /**

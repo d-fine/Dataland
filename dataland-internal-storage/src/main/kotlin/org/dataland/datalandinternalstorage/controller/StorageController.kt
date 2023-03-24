@@ -26,7 +26,7 @@ class StorageController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun selectDataById(dataId: String, correlationId: String): ResponseEntity<String> {
-        logger.info("Selecting data from database with data id: $dataId. Correlation id: $correlationId.")
+        logger.info("Selecting data from database with data ID: $dataId. Correlation ID: $correlationId.")
         return ResponseEntity.ok(stringDataStore.selectDataSet(dataId, correlationId))
     }
 

@@ -23,7 +23,7 @@ class StreamingTemporarilyCachedDocumentControllerApi(
     /**
      * Retrieves the blob identified by the blobId from the document manager and returns the input stream of the
      * body of the request.
-     * @param blobId the id of the data to retrieve
+     * @param blobId the ID of the data to retrieve
      * @returns a stream of the blob
      */
     fun getReceivedData(blobId: String): InputStream {

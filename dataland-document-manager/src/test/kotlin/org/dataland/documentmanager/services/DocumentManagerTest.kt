@@ -88,16 +88,26 @@ class DocumentManagerTest(
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
         val mockMultipartFile = mockUploadableFile(reportName)
 
-        val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
+        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
-            .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
+            .thenReturn(
+                Optional.of(
+                    DocumentMetaInfoEntity(
+                        documentId = uploadResponse.documentId,
+                        displayTitle = mockMultipartFile.originalFilename,
+                        uploaderId = "",
+                        uploadTime = 0,
+                        qaStatus = DocumentQAStatus.Pending,
+                    ),
+                ),
+            )
         val thrown = assertThrows<ResourceNotFoundApiException> {
             documentManager.retrieveDocumentById(
-                documentId = metaInfo.documentId,
+                documentId = uploadResponse.documentId,
             )
         }
         assertEquals(
-            "A non-quality-assured document with ID: ${metaInfo.documentId} was found. " +
+            "A non-quality-assured document with ID: ${uploadResponse.documentId} was found. " +
                 "Only quality-assured documents can be retrieved.",
             thrown.message.replaceAfterLast(".", ""),
         )
@@ -106,11 +116,20 @@ class DocumentManagerTest(
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
         val mockMultipartFile = mockUploadableFile(reportName)
-        val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
-        metaInfo.qaStatus = DocumentQAStatus.Accepted
+        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
-            .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
-        val downloadedDocument = documentManager.retrieveDocumentById(documentId = metaInfo.documentId)
+            .thenReturn(
+                Optional.of(
+                    DocumentMetaInfoEntity(
+                        documentId = uploadResponse.documentId,
+                        displayTitle = mockMultipartFile.originalFilename,
+                        uploaderId = "",
+                        uploadTime = 0,
+                        qaStatus = DocumentQAStatus.Accepted,
+                    ),
+                ),
+            )
+        val downloadedDocument = documentManager.retrieveDocumentById(documentId = uploadResponse.documentId)
         assertEquals(reportName, downloadedDocument.title)
         assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(mockMultipartFile.bytes))
     }
@@ -132,16 +151,27 @@ class DocumentManagerTest(
     @Test
     fun `check that updating meta data after QA works for an existing document`() {
         val mockMultipartFile = mockUploadableFile(reportName)
-        val metaInfo = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
+
+        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
-                identifier = metaInfo.documentId,
+                identifier = uploadResponse.documentId,
                 validationResult = "By default, QA is passed",
             ),
         )
 
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
-            .thenReturn(Optional.of(DocumentMetaInfoEntity(metaInfo)))
+            .thenReturn(
+                Optional.of(
+                    DocumentMetaInfoEntity(
+                        documentId = uploadResponse.documentId,
+                        displayTitle = mockMultipartFile.originalFilename,
+                        uploaderId = "",
+                        uploadTime = 0,
+                        qaStatus = DocumentQAStatus.Pending,
+                    ),
+                ),
+            )
 
         assertDoesNotThrow { documentManager.updateDocumentMetaData(message, "", MessageType.QACompleted) }
     }

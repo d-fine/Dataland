@@ -22,7 +22,7 @@ class PdfVerificationService {
         try {
             checkIfPdfDocumentIsEmpty(blob, correlationId)
         } catch (ex: IOException) {
-            logger.info("Document uploaded with correlation id: $correlationId cannot be parsed as a PDF, aborting.")
+            logger.info("Document uploaded with correlation ID: $correlationId cannot be parsed as a PDF, aborting.")
             throw InvalidInputApiException(
                 "Could not parse PDF document",
                 "We were unable to load the PDF document you provided." +
@@ -36,7 +36,7 @@ class PdfVerificationService {
         PDDocument.load(blob).use {
             if (it.numberOfPages <= 0) {
                 logger.info(
-                    "PDF document uploaded with correlation id: $correlationId seems to have 0 pages, aborting.",
+                    "PDF document uploaded with correlation ID: $correlationId seems to have 0 pages, aborting.",
                 )
                 throw InvalidInputApiException(
                     "You seem to have uploaded an empty PDF",
