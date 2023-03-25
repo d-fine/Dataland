@@ -649,7 +649,6 @@ export default defineComponent({
      * @param event.files files
      */
     onSelectedFiles(event: { files: Record<string, string>[]; originalEvent: Event }): void {
-      console.log("event", event);
       if (event.files.length) {
         event.files[0]["reportDate"] = "";
         event.files[0]["convertedReportDate"] = "";

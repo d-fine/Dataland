@@ -33,7 +33,7 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
-  cy.get('[data-test="reportingPeriod"] button').should("have.class", "p-datepicker-trigger").should("exist");
+  cy.get('[data-test="reportingPeriodLabel"]').should("contain", "Reporting Period");
   cy.get('[data-test="reportingPeriodLabel"]').find("em.info-icon").trigger("mouseover", { force: true });
   cy.get('[data-test="selectKPIsLabel"]').find("em.info-icon").trigger("mouseover", { force: true });
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();

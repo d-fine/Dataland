@@ -502,8 +502,8 @@ import {
 import {
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
+  DataMetaInformation,
 } from "@clients/backend";
-import { DataMetaInformation } from "@clients/backend";
 import { AxiosResponse } from "axios";
 
 export default defineComponent({
@@ -656,7 +656,6 @@ export default defineComponent({
           );
         });
       }
-      console.log("+++++", dataResponseData.data?.financialServicesTypes);
       this.formInputsModel = dataResponseData;
       this.waitingForData = false;
     },
@@ -666,7 +665,6 @@ export default defineComponent({
      * with the data entered in the form by using the Dataland API
      */
     async postEuTaxonomyDataForFinancials(): Promise<void> {
-      console.log("-->", this.formInputsModel.data);
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
@@ -697,7 +695,6 @@ export default defineComponent({
      * @param event.files files
      */
     onSelectedFiles(event: { files: Record<string, string>[]; originalEvent: Event }): void {
-      console.log("event", event);
       if (event.files.length) {
         event.files[0]["reportDate"] = "";
         event.files[0]["convertedReportDate"] = "";
