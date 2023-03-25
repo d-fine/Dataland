@@ -531,7 +531,7 @@ export default defineComponent({
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
-      fiscalYearEnd: undefined as Date | undefined,
+      fiscalYearEnd: "" as Date | "",
       convertedFiscalYearEnd: "",
       reportingPeriod: new Date(),
       assuranceData: [
@@ -682,7 +682,7 @@ export default defineComponent({
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
-        this.fiscalYearEnd = undefined;
+        this.fiscalYearEnd = "";
         this.files.filesNames = [];
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];

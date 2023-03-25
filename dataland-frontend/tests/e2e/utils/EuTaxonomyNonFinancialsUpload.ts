@@ -30,6 +30,8 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   });
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
+  cy.get('input[name="reportDate"]').should("not.exist");
+  cy.get('input[name="reference"]').should("not.exist");
   cy.get('input[name="reference"]').should("not.exist");
   cy.get('input[name="fiscalYearEnd"]').type("2022-03-03", { force: true });
   cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
