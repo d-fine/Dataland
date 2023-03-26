@@ -505,6 +505,7 @@ import {
   DataMetaInformation,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
+import { updateObject } from "@/utils/GenericUtils";
 
 export default defineComponent({
   setup() {
@@ -530,6 +531,7 @@ export default defineComponent({
   data() {
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
+      loadEuDataModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
       fiscalYearEnd: "" as Date | "",
       convertedFiscalYearEnd: "",
@@ -648,16 +650,19 @@ export default defineComponent({
         const allTypesOfFinancialServices = this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis;
 
         this.selectedKPIs = this.kpisModel.filter((el: { label: string; value: string }) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           return arrayWithCompanyKpiTypes?.includes(
             allTypesOfFinancialServices[
               el.value as keyof typeof allTypesOfFinancialServices
             ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
           );
         });
+        this.confirmeSelectedKPIs();
       }
-      this.formInputsModel = dataResponseData;
+      this.loadEuDataModel = dataResponseData;
       this.waitingForData = false;
+
+      await this.$nextTick();
+      updateObject(this.formInputsModel, this.loadEuDataModel);
     },
 
     /**
@@ -684,6 +689,7 @@ export default defineComponent({
         this.files.filesNames = [];
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
+        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       }
     },
 

@@ -448,7 +448,6 @@
             <SuccessUpload
               v-if="postEuTaxonomyDataForNonFinancialsResponse"
               msg="EU Taxonomy Data"
-              :message="postEuTaxonomyDataForNonFinancialsResponse.data"
               :messageId="messageCount"
             />
             <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
@@ -498,6 +497,7 @@ import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/ba
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
+import { updateObject } from "@/utils/GenericUtils";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
@@ -522,7 +522,7 @@ export default defineComponent({
   data: () => ({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     files: useFilesUploadedStore(),
-    fiscalYearEnd: new Date(),
+    fiscalYearEnd: "" as Date | "",
     convertedFiscalYearEnd: "",
     reportingPeriod: new Date(),
     onThisPageLinks: [
@@ -615,7 +615,7 @@ export default defineComponent({
       if (dataResponseData.data?.fiscalYearEnd) {
         this.fiscalYearEnd = new Date(dataResponseData.data.fiscalYearEnd);
       }
-      this.formInputsModel = dataResponseData;
+      updateObject(this.formInputsModel, dataResponseData);
       this.waitingForData = false;
     },
     /**
