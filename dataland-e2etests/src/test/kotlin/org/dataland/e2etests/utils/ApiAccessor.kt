@@ -125,7 +125,7 @@ class ApiAccessor {
         reportingPeriod: String = "",
         ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
-        val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 1000L else 0L
+        val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 1L else 0L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
         val storedCompanyInfos = listOfCompanyInformation.map { companyDataControllerApi.postCompany(it) }
@@ -357,7 +357,7 @@ class ApiAccessor {
         reportingPeriod: String,
         uploadFunction: (String, T, String) -> DataMetaInformation,
     ): DataMetaInformation {
-        val waitTime = 1000L
+        val waitTime = 1L
         val uploadedMetaData = uploadSingleFrameworkDataSet(
             companyId = companyId,
             frameworkData = frameworkData,
