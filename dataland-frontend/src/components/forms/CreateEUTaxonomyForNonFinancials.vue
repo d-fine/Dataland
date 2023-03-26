@@ -498,7 +498,7 @@ import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/ba
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { updateObject } from "@/utils/GenericUtils";
+import { updateObject } from "@/utils/updateObjectUtils";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",

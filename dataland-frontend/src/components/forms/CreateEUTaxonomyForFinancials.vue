@@ -505,7 +505,7 @@ import {
   DataMetaInformation,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
-import { updateObject } from "@/utils/GenericUtils";
+import { updateObject } from "@/utils/updateObjectUtils";
 
 export default defineComponent({
   setup() {
