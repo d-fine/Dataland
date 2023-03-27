@@ -76,7 +76,7 @@ class PdfVerificationService {
             throw InvalidInputApiException(
                 "You seem to have uploaded an file that has an invalid name",
                 "Please ensure that your filename only contains alphanumeric characters, hyphens, spaces," +
-                        " and periods up to maximum length of 254 characters.",
+                    " and periods up to maximum length of 254 characters.",
             )
         }
     }
