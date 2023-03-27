@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 import kotlin.math.abs
 
 class MetaDataControllerTest {
@@ -49,15 +47,15 @@ class MetaDataControllerTest {
         val actualDataMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
         val expectedDataMetaInfo = buildAcceptedAndActiveDataMetaInformation(
             dataId = uploadedMetaInfo.dataId, companyId = uploadedMetaInfo.companyId,
-            testDataType = testDataType, uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+            testDataType = testDataType, uploadTime = Instant.now().toEpochMilli(),
         )
         assertEquals(
             expectedDataMetaInfo, actualDataMetaInfo.copy(uploadTime = expectedDataMetaInfo.uploadTime),
             "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
         )
-        val timeDiffFromUploadToNow = actualDataMetaInfo.uploadTime - Instant.now().epochSecond
+        val timeDiffFromUploadToNow = actualDataMetaInfo.uploadTime - Instant.now().toEpochMilli()
         assertTrue(
-            abs(timeDiffFromUploadToNow) < 60, "The server-upload-time and the local upload time differ too much.",
+            abs(timeDiffFromUploadToNow) < 60000, "The server-upload-time and the local upload time differ too much.",
         )
     }
 

@@ -71,7 +71,7 @@ class DataManagerTest(
             companyId,
             DataType("eutaxonomy-non-financials"),
             "USER_ID_OF_AN_UPLOADING_USER",
-            Instant.now().epochSecond,
+            Instant.now().toEpochMilli(),
             "",
             euTaxonomyDataForNonFinancialsAsString,
         )
