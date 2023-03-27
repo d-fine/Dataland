@@ -6,7 +6,6 @@ COPY ./dataland-document-manager/ ./dataland-document-manager/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-message-queue-utils/ ./dataland-message-queue-utils/
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
-COPY ./dataland-internal-storage/internalStorageOpenApi.json ./dataland-internal-storage/internalStorageOpenApi.json
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
 COPY ./.git/ ./.git
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
