@@ -28,16 +28,6 @@
         "summary": "Create a Dataland invite.",
         "description": "Create a Dataland invite by uploading an Excel file containing the invite info.",
         "operationId": "submitInvite",
-        "parameters": [
-          {
-            "name": "isSubmitterNameHidden",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
