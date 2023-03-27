@@ -155,12 +155,12 @@ class DocumentManager(
         correlationId: String,
     ): InputStreamResource {
         val inMemoryStoredDocument = inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)
-        if (inMemoryStoredDocument == null) {
+        return if (inMemoryStoredDocument != null) {
             logger.info("Received document $documentId from temporary storage")
-            return InputStreamResource(ByteArrayInputStream(inMemoryStoredDocument))
+            InputStreamResource(ByteArrayInputStream(inMemoryStoredDocument))
         } else {
             logger.info("Received document $documentId from storage service")
-            return InputStreamResource(storageApi.getBlobFromInternalStorage(documentId, correlationId))
+            InputStreamResource(storageApi.getBlobFromInternalStorage(documentId, correlationId))
         }
     }
 
