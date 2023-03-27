@@ -33,7 +33,6 @@ describe("The page should behave well-defined when the user logs out in a differ
   }
 
   it("Tests that the popup gets displayed when the refresh token expires", () => {
-    //TODO: FIX TEST AFTER IMPLEMENTATION HAS FINISHED
     let cachedTokenResponse: TokenResponse | null = null;
     cy.intercept("**/token", (req) => {
       if (cachedTokenResponse) {
@@ -44,7 +43,7 @@ describe("The page should behave well-defined when the user logs out in a differ
       } else {
         req.continue((res) => {
           const body = res.body as TokenResponse;
-          const newExpTime = (new Date().getTime() + 15) / 1000;
+          const newExpTime = (new Date().getTime() + 30) / 1000;
           body.refresh_token = setJwtExpiryTime(body.refresh_token, newExpTime);
           cachedTokenResponse = body;
         });
@@ -52,6 +51,6 @@ describe("The page should behave well-defined when the user logs out in a differ
     });
 
     login();
-    cy.get("button[name=login_dataland_button]", { timeout: 10000 }).should("exist");
+    cy.get("button[name=refresh_session_button]", { timeout: 10000 }).should("exist");
   });
 });
