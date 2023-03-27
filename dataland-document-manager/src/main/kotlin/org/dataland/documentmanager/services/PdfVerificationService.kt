@@ -62,15 +62,21 @@ class PdfVerificationService {
         }
     }
 
+    /**
+     * We allow alphanumeric characters, hyphens, spaces, and periods up to a maximum length of 254 characters
+     * in our filenames
+     */
+    private val allowedFilenameRegex = Regex("^[\\w\\-. ]{1,254}\$")
+
     private fun checkThatDocumentNameIsValid(name: String, correlationId: String) {
-        val forbiddenChars = charArrayOf('\u0000', '\\', '/', ':', '*', '?', '\"', '<', '>', '|')
-        forbiddenChars.find { it in name }?.let {
+        if (!allowedFilenameRegex.matches(name)) {
             logger.info(
                 "PDF document uploaded with correlation ID: $correlationId has invalid name, aborting.",
             )
             throw InvalidInputApiException(
                 "You seem to have uploaded an file that has an invalid name",
-                "We have detected that the file name contains '$it', which is not allowed",
+                "Please ensure that your filename only contains alphanumeric characters, hyphens, spaces," +
+                        " and periods up to maximum length of 254 characters.",
             )
         }
     }
