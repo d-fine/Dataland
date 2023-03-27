@@ -49,7 +49,6 @@ class DocumentManager(
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private val storageApi: StreamingStorageControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    // @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val pdfVerificationService: PdfVerificationService,
     @Autowired private var objectMapper: ObjectMapper,
 
@@ -154,17 +153,16 @@ class DocumentManager(
     private fun retrieveDocumentDataStream(
         documentId: String,
         correlationId: String,
-    ) = InputStreamResource(
-        inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)?.let {
+    ): InputStreamResource {
+        val inMemoryStoredDocument = inMemoryDocumentStore.retrieveDataFromMemoryStore(documentId)
+        if (inMemoryStoredDocument == null) {
             logger.info("Received document $documentId from temporary storage")
-            ByteArrayInputStream(it)
+            return InputStreamResource(ByteArrayInputStream(inMemoryStoredDocument))
+        } else {
+            logger.info("Received document $documentId from storage service")
+            return InputStreamResource(storageApi.getBlobFromInternalStorage(documentId, correlationId))
         }
-            ?: storageApi.getBlobFromInternalStorage(documentId, correlationId)
-                .let {
-                    logger.info("Received document $documentId from storage service")
-                    it
-                },
-    )
+    }
 
     /**
      * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
