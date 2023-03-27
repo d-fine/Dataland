@@ -98,13 +98,6 @@
             </FileUpload>
           </div>
 
-          <div id="settings-section">
-            <h2>Additional Settings</h2>
-            <div>
-              <Checkbox class="mr-2" id="chkbox1" v-model="hideName" :binary="true" />
-              <label class="font-medium" for="chkbox1">Hide my name from the data request.</label>
-            </div>
-          </div>
         </div>
         <div class="m-0 fixed bottom-0 surface-900 h-4rem w-full align-items-center">
           <div class="flex justify-content-end flex-wrap">
