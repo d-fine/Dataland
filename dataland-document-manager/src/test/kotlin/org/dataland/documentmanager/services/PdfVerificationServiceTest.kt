@@ -81,7 +81,8 @@ class PdfVerificationServiceTest {
             pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
         }
         assertEquals(
-            "We have detected that the file name contains '$ch', which is not allowed",
+            "Please ensure that your filename only contains alphanumeric characters, hyphens, spaces," +
+                    " and periods up to maximum length of 254 characters.",
             thrown.message,
         )
     }
