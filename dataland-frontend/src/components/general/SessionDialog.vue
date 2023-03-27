@@ -1,5 +1,6 @@
 <template>
   <UserAuthenticationButtons v-if="showLogInButton" />
+  <h1 v-text="sessionStateStore.token" />
   {{ displayedText }}
   <PrimeButton
     v-if="showRefreshButton"
@@ -33,6 +34,7 @@ export default defineComponent({
 
   data() {
     return {
+      sessionStateStore: useSessionStateStore(),
       displayedText: undefined as undefined | string,
       showLogInButton: false,
       showRefreshButton: false,

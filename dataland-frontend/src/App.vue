@@ -1,6 +1,7 @@
 <template>
   <DynamicDialog />
   <router-view />
+  <h2>{{sessionStateStore.token}}</h2>
 </template>
 
 <script lang="ts">
@@ -11,6 +12,7 @@ import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 import { tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
+import { useSessionStateStore } from "@/stores/stores";
 
 export default defineComponent({
   name: "app",
@@ -18,6 +20,7 @@ export default defineComponent({
 
   data() {
     return {
+      sessionStateStore: useSessionStateStore(),
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
       resolvedKeycloakPromise: undefined as undefined | Keycloak,
       keycloakAuthenticated: false,
