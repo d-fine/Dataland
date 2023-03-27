@@ -283,7 +283,7 @@ export default defineComponent({
         const inviteControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getInviteControllerApi();
-        const response = await inviteControllerApi.submitInvite(this.hideName, selectedFile, {
+        const response = await inviteControllerApi.submitInvite(selectedFile, {
           onUploadProgress: (progressEvent) => {
             this.uploadProgressInPercent = (progressEvent.loaded / progressEvent.total) * 100;
           },

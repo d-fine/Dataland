@@ -2,7 +2,6 @@ import { Interception } from "cypress/types/net-stubbing";
 import { describeIf } from "@e2e/support/TestUtility";
 import { InviteMetaInfoEntity } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
-import { getBaseUrl } from "@e2e/utils/Cypress";
 
 describe("As a user I expect a data request page where I can download an excel template, fill it, and submit it", (): void => {
   describeIf(
@@ -119,19 +118,6 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.get(submitButtonSelector).should("be.disabled");
       }
 
-      /**
-       * Checks/unchecks the hideUsername checkbox depending on the provided boolean
-       *
-       * @param hideUsername whether to check or to uncheck the hide username checkbox
-       */
-      function setHideUsernameCheckbox(hideUsername: boolean): void {
-        if (hideUsername) {
-          cy.get("input[type=checkbox]").check({ force: true });
-        } else {
-          cy.get("input[type=checkbox]").uncheck({ force: true });
-        }
-      }
-
       beforeEach(() => {
         cy.ensureLoggedIn();
         cy.visitAndCheckAppMount("/requests");
@@ -200,29 +186,6 @@ describe("As a user I expect a data request page where I can download an excel t
           validateThatSubmitButtonIsDisabled();
           cy.get("button.p-message-close").click();
         });
-      });
-
-      //This test needs to be skipped until the anonymous data request feature is reintroduced
-      it.skip(`Test if the checkbox state is transferred correctly to the request (skipped)`, () => {
-        uploadDummyExcelFile("test.xlsx");
-        submitAndValidateSuccess((interception: Interception) => {
-          expect(interception.request.url.includes("isSubmitterNameHidden=false")).to.eq(true);
-        });
-
-        cy.get('button[name="back_to_home_button"]').click();
-        cy.url().should("eq", getBaseUrl() + "/companies");
-        cy.get("img.d-triangle-down").click().get("a#profile-picture-dropdown-data-request-button").click();
-        cy.url().should("eq", getBaseUrl() + "/requests");
-        uploadBoxShouldBeEmpty();
-        uploadDummyExcelFile("test.xlsx");
-        setHideUsernameCheckbox(true);
-        submitAndValidateSuccess((interception: Interception) => {
-          expect(interception.request.url.includes("isSubmitterNameHidden=true")).to.eq(true);
-        });
-
-        cy.get("#new-data-request div.p-card-content div.flex.align-items-center img").should("exist");
-        cy.get("#new-data-request div.p-card-content div.flex.align-items-center a").click();
-        uploadBoxShouldBeEmpty();
       });
 
       it(`Test the submit button and the upload success screen`, () => {
