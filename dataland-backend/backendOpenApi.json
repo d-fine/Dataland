@@ -1832,7 +1832,8 @@
             "type": "string"
           },
           "timeStamp": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "wasInviteSuccessful": {
             "type": "boolean"

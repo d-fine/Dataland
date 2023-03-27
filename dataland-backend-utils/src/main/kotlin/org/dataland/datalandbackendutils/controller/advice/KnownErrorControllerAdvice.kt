@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.HttpRequestMethodNotSupportedException
@@ -27,11 +28,13 @@ class KnownErrorControllerAdvice(
     private val logger = LoggerFactory.getLogger(javaClass)
     private fun prepareResponse(error: ErrorDetails, exception: Exception): ResponseEntity<ErrorResponse> {
         val returnedError = if (trace) error.copy(stackTrace = ExceptionUtils.getStackTrace(exception)) else error
-        return ResponseEntity.status(error.httpStatus).body(
-            ErrorResponse(
-                errors = listOf(returnedError),
-            ),
-        )
+        return ResponseEntity.status(error.httpStatus)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(
+                ErrorResponse(
+                    errors = listOf(returnedError),
+                ),
+            )
     }
 
     /**

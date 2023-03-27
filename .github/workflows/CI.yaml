@@ -84,7 +84,7 @@ jobs:
         run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
         if: always()
       - name: Execute Backend unit tests
-        run: ./gradlew :dataland-backend:test :dataland-csvconverter:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test --no-daemon --stacktrace
+        run: ./gradlew :dataland-backend:test :dataland-csvconverter:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
@@ -168,6 +168,7 @@ jobs:
           BACKEND_DB_PASSWORD: "password"
           API_KEY_MANAGER_DB_PASSWORD: "password"
           INTERNAL_STORAGE_DB_PASSWORD: "password"
+          DOCUMENT_MANAGER_DB_PASSWORD: "password"
           PGADMIN_PASSWORD: "password"
           KEYCLOAK_DATALAND_ADMIN_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="

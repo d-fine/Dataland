@@ -1,0 +1,584 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Dataland Document Manager API documentation",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/documents"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Actuator",
+      "description": "Monitor and interact",
+      "externalDocs": {
+        "description": "Spring Boot Actuator Web API Documentation",
+        "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
+      }
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Upload a document.",
+        "description": "Upload a document and receive meta information",
+        "operationId": "postDocument",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "pdfDocument"
+                ],
+                "type": "object",
+                "properties": {
+                  "pdfDocument": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully uploaded document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/{documentId}": {
+      "get": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Receive a document.",
+        "description": "Receive a document by its ID from internal storage.",
+        "operationId": "getDocument",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully received document.",
+            "headers": {
+              "Content-Disposition": {
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/{documentId}/exists": {
+      "get": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Check if a document exists.",
+        "description": "Check for a given document ID (hash) if the document already exists in the database.",
+        "operationId": "checkDocument",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked document existence.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentExistsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/internal/cached/{hash}": {
+      "get": {
+        "tags": [
+          "temporarily-cached-document-controller"
+        ],
+        "summary": "Retrieve specific data from the cache store of the backend.",
+        "description": "Data identified by the provided sha256 hash is retrieved.",
+        "operationId": "getReceivedData",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved blob.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator root web endpoint",
+        "operationId": "links",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/info": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027info\u0027",
+        "operationId": "info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027health\u0027",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health/**": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027health-path\u0027",
+        "operationId": "health-path",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DocumentUploadResponse": {
+        "required": [
+          "documentId"
+        ],
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string"
+          }
+        }
+      },
+      "DocumentExistsResponse": {
+        "required": [
+          "documentExists"
+        ],
+        "type": "object",
+        "properties": {
+          "documentExists": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ErrorDetails": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "number"
+          },
+          "errorType": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetails"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "default-bearer-auth": {
+        "type": "http",
+        "in": "header",
+        "scheme": "bearer"
+      },
+      "default-oauth": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth",
+            "tokenUrl": "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  }
+}
