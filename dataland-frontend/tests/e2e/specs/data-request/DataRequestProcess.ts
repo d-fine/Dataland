@@ -202,7 +202,8 @@ describe("As a user I expect a data request page where I can download an excel t
         });
       });
 
-      it(`Test if the checkbox state is transferred correctly to the request`, () => {
+      //This test needs to be skipped until the anonymous data request feature is reintroduced
+      it.skip(`Test if the checkbox state is transferred correctly to the request (skipped)`, () => {
         uploadDummyExcelFile("test.xlsx");
         submitAndValidateSuccess((interception: Interception) => {
           expect(interception.request.url.includes("isSubmitterNameHidden=false")).to.eq(true);
