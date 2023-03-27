@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
@@ -14,6 +14,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -133,7 +134,7 @@ class DataManager(
                     ],
                 ),
                 exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
-                key = [""],
+                key = [RoutingKeyNames.data],
             ),
         ],
     )
@@ -144,19 +145,18 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QACompleted)
-        val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).dataId
-        if (dataId.isNotEmpty()) {
-            messageUtils.rejectMessageOnException {
-                val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-                metaInformation.qaStatus = QAStatus.Accepted
-                metaDataManager.setActiveDataset(metaInformation)
-                logger.info(
-                    "Received quality assurance for data upload with DataId: " +
-                        "$dataId with Correlation Id: $correlationId",
-                )
-            }
-        } else {
+        val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
+        if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
+        }
+        messageUtils.rejectMessageOnException {
+            val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
+            metaInformation.qaStatus = QAStatus.Accepted
+            metaDataManager.setActiveDataset(metaInformation)
+            logger.info(
+                "Received quality assurance for data upload with DataId: " +
+                    "$dataId with Correlation Id: $correlationId",
+            )
         }
     }
 
@@ -226,8 +226,8 @@ class DataManager(
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataStored, declare = "false"),
-                key = [""],
+                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                key = [RoutingKeyNames.data],
             ),
         ],
     )
@@ -237,16 +237,15 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DataStored)
-        if (dataId.isNotEmpty()) {
-            logger.info("Internal Storage sent a message - job done")
-            logger.info(
-                "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
-            )
-            messageUtils.rejectMessageOnException {
-                dataInMemoryStorage.remove(dataId)
-            }
-        } else {
+        if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
+        }
+        logger.info("Internal Storage sent a message - job done")
+        logger.info(
+            "Dataset with dataId $dataId was successfully stored. Correlation ID: $correlationId.",
+        )
+        messageUtils.rejectMessageOnException {
+            dataInMemoryStorage.remove(dataId)
         }
     }
 

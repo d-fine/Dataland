@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.DatalandQaService
@@ -36,7 +37,7 @@ class QaServiceTest(
     }
 
     @Test
-    fun `check an exception is thrown in reading out message from upload queue when dataId is empty`() {
+    fun `check an exception is thrown in reading out message from data stored queue when dataId is empty`() {
         val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaService.assureQualityOfData("", correlationId, MessageType.DataStored)
@@ -49,13 +50,13 @@ class QaServiceTest(
         val correlationId = "correlationId"
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
-                dataId = dataId,
+                identifier = dataId,
                 validationResult = "By default, QA is passed",
             ),
         )
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.data,
             ),
         ).thenThrow(
             AmqpException::class.java,
@@ -63,5 +64,14 @@ class QaServiceTest(
         assertThrows<AmqpException> {
             qaService.assureQualityOfData(dataId, correlationId, MessageType.DataStored)
         }
+    }
+
+    @Test
+    fun `check an exception is thrown in reading out message from document stored queue when dataId is empty`() {
+        val correlationId = "correlationId"
+        val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
+            qaService.assureQualityOfDocument("", correlationId, MessageType.DocumentStored)
+        }
+        Assertions.assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
 }

@@ -11,6 +11,7 @@ include(
     "dataland-keycloak-adapter",
     "dataland-qa-service",
     "dataland-message-queue-utils",
+    "dataland-document-manager",
 )
 
 dependencyResolutionManagement {
@@ -56,6 +57,10 @@ dependencyResolutionManagement {
             library("cloudevents-core", "io.cloudevents:cloudevents-core:2.4.2")
             library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.1")
             library("mailjet-client", "com.mailjet:mailjet-client:5.2.2")
+
+            library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.27")
+
+            library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:4.1.0")
         }
     }
 }

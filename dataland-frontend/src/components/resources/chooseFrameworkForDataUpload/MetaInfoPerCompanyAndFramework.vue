@@ -22,7 +22,7 @@
             </span>
           </div>
           <div>
-            <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</span>
+            <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime) }}</span>
             <DatasetStatusBadge :dataset-status="getDatasetStatus(dataMetaInfo)" />
           </div>
         </div>

@@ -97,14 +97,6 @@
               </template>
             </FileUpload>
           </div>
-
-          <div id="settings-section">
-            <h2>Additional Settings</h2>
-            <div>
-              <Checkbox class="mr-2" id="chkbox1" v-model="hideName" :binary="true" />
-              <label class="font-medium" for="chkbox1">Hide my name from the data request.</label>
-            </div>
-          </div>
         </div>
         <div class="m-0 fixed bottom-0 surface-900 h-4rem w-full align-items-center">
           <div class="flex justify-content-end flex-wrap">
@@ -130,7 +122,6 @@
 <script lang="ts">
 import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import Message from "primevue/message";
-import Checkbox from "primevue/checkbox";
 import PrimeButton from "primevue/button";
 import { defineComponent, inject, ref } from "vue";
 import { AxiosResponse } from "axios";
@@ -158,7 +149,6 @@ export default defineComponent({
     ProgressBar,
     FileUpload,
     FileSelectMessage: Message,
-    Checkbox,
     DatalandFooter,
   },
   setup() {
@@ -293,7 +283,7 @@ export default defineComponent({
         const inviteControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getInviteControllerApi();
-        const response = await inviteControllerApi.submitInvite(this.hideName, selectedFile, {
+        const response = await inviteControllerApi.submitInvite(selectedFile, {
           onUploadProgress: (progressEvent) => {
             this.uploadProgressInPercent = (progressEvent.loaded / progressEvent.total) * 100;
           },
