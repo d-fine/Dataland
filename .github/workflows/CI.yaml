@@ -145,6 +145,8 @@ jobs:
           - testExecutor: "CYPRESS"
             testGroup: 4
           - testExecutor: "CYPRESS"
+            testGroup: 7
+          - testExecutor: "CYPRESS"
             testGroup: 8
           - testExecutor: "CYPRESS"
             testGroup: 9
