@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
     implementation(libs.okhttp)
+    implementation("org.mockito:mockito-core")
 }
 
 java {

@@ -6,5 +6,6 @@ COPY ./dataland-internal-storage/ ./dataland-internal-storage/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-message-queue-utils/ ./dataland-message-queue-utils/
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
+COPY ./dataland-document-manager/documentManagerOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json
 COPY ./.git/ ./.git
 RUN ./gradlew dataland-internal-storage:bootJar --no-daemon --stacktrace
