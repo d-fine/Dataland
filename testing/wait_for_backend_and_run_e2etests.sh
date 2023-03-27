@@ -31,7 +31,7 @@ if [[ $CYPRESS_TEST_GROUP -eq 0 ]]; then
 elif [[ $CYPRESS_TEST_GROUP -eq 9 ]]; then
   cd ./dataland-frontend
   npm run testcomponent
-  npm run testpipeline -- --env EXECUTION_ENVIRONMENT=""
+  npm run testpipeline -- --env EXECUTION_ENVIRONMENT="ci"
 else
   echo skipped
   #npm --prefix ./dataland-frontend run testpipeline
