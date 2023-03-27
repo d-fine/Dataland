@@ -1,44 +1,41 @@
-import { TIME_UNTIL_SESSION_WARNING_IN_MS, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
+import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS, TIME_UNTIL_SESSION_WARNING_IN_MS } from "@/utils/Constants";
 import { loginAndRedirectToSearchPage, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 import Keycloak from "keycloak-js";
 import { useSessionStateStore } from "@/stores/stores";
 
-const keyForSessionWarningTimestampInLocalStorage = "sessionWarningTimestamp";
 const minRequiredValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS + 1000;
 
 /**
  * Updates the timestamp for the session warning to the current timestamp plus the amount of time that should be allowed
- * to pass until the warning appears. Then it stores it in the local storage of the browser.
+ * to pass until the warning appears.
  */
-export function updateSessionWarningTimestampInLocalStorage(): void {
+export function updateSessionWarningTimestamp(): void {
   console.log("setting new timestamps"); // TODO debugging
   const currentTimeInMs = new Date().getTime();
-  const sessionWarningTimestampInMs = currentTimeInMs + TIME_UNTIL_SESSION_WARNING_IN_MS;
-  localStorage.setItem(keyForSessionWarningTimestampInLocalStorage, sessionWarningTimestampInMs.toString());
+  useSessionStateStore().sessionWarningTimestampInMs = currentTimeInMs + TIME_UNTIL_SESSION_WARNING_IN_MS;
 }
 
 /**
- * Gets the session warning timestamp from the local storage of the browser, parses it as number and return ist.
+ * Gets the current session warning timestamp.
  *
  * @returns the parsed session warning timestamp
  */
-function getSessionWarningTimestampFromLocalStorage(): number {
-  const sessionWarningTimestampInLocalStorage = localStorage.getItem(keyForSessionWarningTimestampInLocalStorage);
-  if (sessionWarningTimestampInLocalStorage) {
-    return parseInt(sessionWarningTimestampInLocalStorage);
+function getSessionWarningTimestamp(): number {
+  const sessionWarningTimestampInMs = useSessionStateStore().sessionWarningTimestampInMs;
+  if (sessionWarningTimestampInMs) {
+    return sessionWarningTimestampInMs;
   } else {
-    throw Error(`Required timestamp for the session warning could not be found in the local storage of the browser" +
-        "by using the key ${keyForSessionWarningTimestampInLocalStorage}.`);
+    throw Error(`Required timestamp for the session warning could not be found. 
+    This is not acceptable for running Dataland.`);
   }
 }
 
 /**
  * Starts the setInterval-method which in fixed time intervals checks if the session warning timestamp was surpassed.
  * If it is surpassed, the provided callback function will be executed.
- * The function ID of this setInterval-method is stored inside the window storage with by using pinia.
+ * The function ID of this setInterval-method is stored inside the window storage by using pinia.
  *
  * @param keycloak is the keycloak adaptor used to do a logout in case the session warning timestamp cannot be retrieved
- * from the local storage
  * @param onSurpassingExpiredSessionTimestampCallback is the callback function which will be executed as soon as the
  * session warning timestamp is surpassed
  */
@@ -46,11 +43,11 @@ function startSessionSetIntervalFunction(
   keycloak: Keycloak,
   onSurpassingExpiredSessionTimestampCallback: () => void
 ): void {
-  console.log("starting set interval from scratch"); //TODO
+  console.log("starting set interval from scratch"); //TODO debugging
   const functionId = setInterval(() => {
     console.log("setInterval is running once"); // TODO debugging
     const currentTimestampInMs = new Date().getTime();
-    const sessionWarningTimestamp = getSessionWarningTimestampFromLocalStorage();
+    const sessionWarningTimestamp = getSessionWarningTimestamp();
     if (!sessionWarningTimestamp) {
       logoutAndRedirectToUri(keycloak, ""); // TODO give a reason here for the logout? something like: due to an error
     } else {
@@ -63,16 +60,6 @@ function startSessionSetIntervalFunction(
       }
     }
   }, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS);
-}
-
-/**
- * Gets the function ID of the setInterval-method which continuously checks if the session warning timestamp is
- * surpassed to then stop it.
- */
-export function clearSessionSetIntervalFunction(): void {
-  // TODO naming
-  console.log("stopping setInterval for sesion warning check"); // TODO debugging
-  clearInterval(useSessionStateStore().sessionCheckSetIntervalFunctionId);
 }
 
 export function isCurrentRefreshTokenExpired(keycloak: Keycloak): boolean {
@@ -107,18 +94,16 @@ export function isCurrentRefreshTokenExpired(keycloak: Keycloak): boolean {
 export function tryToRefreshSession(keycloak: Keycloak, onSurpassingExpiredSessionTimestampCallback: () => void): void {
   console.log("refreshing session"); // TODO debugging
   const sessionStateStore = useSessionStateStore();
-  const maxTokenValidity = 600; // TODO discuss/adjust
   const isRefreshTokenExpired = sessionStateStore.isRefreshTokenExpired;
   // TODO comment why this is necessary (grace time problem)
   if (isRefreshTokenExpired) {
     console.log("refreshing session => refresh Token expired => logout"); // TODO debugging
     loginAndRedirectToSearchPage(keycloak);
-    //logoutAndRedirectToUri(keycloak, "?sessionClosed=true");
   } else {
     console.log("refreshing session => refresh Token still valid => updating tokens"); // TODO debugging
-    keycloak.updateToken(maxTokenValidity);
+    keycloak.updateToken(-1); // token => share storage
     sessionStateStore.isRefreshTokenExpired = false;
-    updateSessionWarningTimestampInLocalStorage();
+    updateSessionWarningTimestamp();
     startSessionSetIntervalFunction(keycloak, onSurpassingExpiredSessionTimestampCallback);
   }
 }

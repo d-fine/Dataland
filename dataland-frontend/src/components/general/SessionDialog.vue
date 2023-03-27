@@ -9,10 +9,10 @@
     @click="handleClickOnRefreshSession"
   />
   <PrimeButton
-    label="refreshTokens"
+    label="FOR DEBUGGIN: refreshTokens"
     class="p-button-sm uppercase d-letters text-primary bg-white-alpha-10 w-15rem"
     name="refresh_session_button"
-    @click="refreshTokens"
+    @click="refreshTokensDebuggingMethod"
   />
 </template>
 
@@ -60,9 +60,15 @@ export default defineComponent({
   },
 
   methods: {
-    refreshTokens() {
+    refreshTokensDebuggingMethod() {
+      // TODO dummy function only for debugging
       if (this.keycloak) {
-        this.keycloak?.updateToken(20000000);
+        this.keycloak?.updateToken(-1);
+        console.log("update token in method to " + this.keycloak.refreshToken);
+        console.log("set manually now");
+        const dummyNewString = (" " + this.keycloak.refreshToken).slice(1);
+        this.keycloak.refreshToken = dummyNewString;
+        console.log("new manually set refresh token " + this.keycloak.refreshToken);
       }
     },
 
@@ -91,7 +97,6 @@ export default defineComponent({
     },
 
     setIntervalForRefreshTokenExpiredCheck() {
-      //  TODO interval in name!
       console.log("starting setinveral for refresh token check"); // TODO debugging
       this.functionIdOfExpiryCheck = setInterval(() => {
         console.log("constantly checking if refresh token is expired"); // TODO debugging

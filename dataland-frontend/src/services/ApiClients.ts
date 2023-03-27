@@ -16,7 +16,7 @@ import {
 } from "@clients/backend/api";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import { updateSessionWarningTimestampInLocalStorage } from "@/utils/SessionTimeoutUtils";
+import { updateSessionWarningTimestamp } from "@/utils/SessionTimeoutUtils";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -39,7 +39,7 @@ export class ApiClientProvider {
   ): Promise<T> {
     console.log("getConstructedApiRuns"); // TODO debugging
     const configuration = await this.getConfiguration();
-    updateSessionWarningTimestampInLocalStorage();
+    updateSessionWarningTimestamp();
     return new constructor(configuration, "/api");
   }
 

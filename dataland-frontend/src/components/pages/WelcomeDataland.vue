@@ -34,9 +34,6 @@ export default defineComponent({
     },
   },
   mounted() {
-    if (useRoute().query.sessionClosed === "true") {
-      this.openLogoutModal("Your have been logged because your session timed out. Do you want to login again?");
-    }
     if (useRoute().query.externalLogout === "true") {
       this.openLogoutModal("You have been logged out. Do you want to login again?");
     }

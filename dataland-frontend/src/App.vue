@@ -28,7 +28,7 @@ export default defineComponent({
     this.keycloakPromise = this.initKeycloak();
     this.resolvedKeycloakPromise = await this.keycloakPromise;
     if (this.resolvedKeycloakPromise && this.resolvedKeycloakPromise.authenticated) {
-      tryToRefreshSession(this.resolvedKeycloakPromise as Keycloak, this.handleSurpassingTheExpiredSessionTimestamp);
+      tryToRefreshSession(this.resolvedKeycloakPromise as Keycloak, this.handleSurpassingTheSessionWarningTimestamp);
     }
   },
   provide() {
@@ -85,15 +85,14 @@ export default defineComponent({
     },
 
     /**
-     * Opens a pop-up window to inform the user about the expired session and stops the setInterval-function which
-     * constantly checks for an expired session.
+     * Opens a pop-up window to inform the user about the soon-to-be-expired session.
      */
-    handleSurpassingTheExpiredSessionTimestamp() {
+    handleSurpassingTheSessionWarningTimestamp() {
       this.openSessionWarningModal();
     },
 
     /**
-     * Opens a pop-up to warn the user that the session will be closed soon and offers a button to refresh it.
+     * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
      * If the refresh button is clicked or the pop-up is closed soon enough, the session is refreshed.
      * Else the text changes and tells the user that the session was closed. That behaviour is activated in the
      * SessionDialog via the variable isTrackingOfRefreshTokenExpiryEnabled.
@@ -105,7 +104,7 @@ export default defineComponent({
           dismissableMask: true,
         },
         data: {
-          displayedText: "Your session will be closed soon. Please refresh it if you want to stay logged in.",
+          displayedText: "Your session in this tab will expire soon. Please refresh it if you want to stay logged in.",
           showRefreshButton: true,
           isTrackingOfRefreshTokenExpiryEnabled: true,
           resolvedKeycloakPromise: this.resolvedKeycloakPromise,
@@ -113,7 +112,7 @@ export default defineComponent({
         onClose: () => {
           tryToRefreshSession(
             this.resolvedKeycloakPromise as Keycloak,
-            this.handleSurpassingTheExpiredSessionTimestamp
+            this.handleSurpassingTheSessionWarningTimestamp
           );
         },
       });

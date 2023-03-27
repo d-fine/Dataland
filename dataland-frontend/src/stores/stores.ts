@@ -17,8 +17,8 @@ export const useFrameworkFiltersStore = defineStore("frameworkFilters", {
 export const useSessionStateStore = defineStore("sessionStateStore", {
   state: () => {
     return {
-      sessionCheckSetIntervalFunctionId: undefined as undefined | number, // TODO rename
       isRefreshTokenExpired: false,
+      sessionWarningTimestampInMs: undefined as undefined | number,
     };
   },
 });
