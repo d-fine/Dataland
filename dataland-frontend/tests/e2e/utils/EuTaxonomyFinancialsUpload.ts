@@ -43,6 +43,16 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
   cy.get('input[name="reportDate"]').should("not.exist");
   cy.get('input[name="reference"]').should("not.exist");
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
+
+  cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
+    .click()
+    .get("div.p-multiselect-panel")
+    .find("li.p-multiselect-item")
+    .first()
+    .click();
+  cy.get('[data-test="addKpisButton"]').click({ force: true });
+  cy.get('[data-test="removeSectionButton"]').click({ force: true });
+
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
     .get("div.p-multiselect-panel")

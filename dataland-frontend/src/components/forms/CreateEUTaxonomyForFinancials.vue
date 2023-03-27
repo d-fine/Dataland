@@ -692,11 +692,10 @@ export default defineComponent({
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
         this.fiscalYearEnd = "";
-        this.files.filesNames = [];
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
-        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       }
     },
 

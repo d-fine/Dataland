@@ -205,7 +205,7 @@ describeIf(
         );
         checkCreditInstitutionValues(testData.t, true, true);
 
-        // checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
+        checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
 
         checkInsuranceValues(testData.t);
       }
