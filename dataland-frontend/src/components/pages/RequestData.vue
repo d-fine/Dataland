@@ -97,7 +97,6 @@
               </template>
             </FileUpload>
           </div>
-
         </div>
         <div class="m-0 fixed bottom-0 surface-900 h-4rem w-full align-items-center">
           <div class="flex justify-content-end flex-wrap">
@@ -123,7 +122,6 @@
 <script lang="ts">
 import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import Message from "primevue/message";
-import Checkbox from "primevue/checkbox";
 import PrimeButton from "primevue/button";
 import { defineComponent, inject, ref } from "vue";
 import { AxiosResponse } from "axios";
@@ -151,7 +149,6 @@ export default defineComponent({
     ProgressBar,
     FileUpload,
     FileSelectMessage: Message,
-    Checkbox,
     DatalandFooter,
   },
   setup() {
