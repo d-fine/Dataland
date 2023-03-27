@@ -44,7 +44,6 @@
                 <FormKit type="hidden" v-model="reportingPeriodYear" name="reportingPeriod" />
               </div>
               <FormKit type="group" name="data" label="data">
-                <FormKit v-model="computedFinancialServicesTypes" type="hidden" name="financialServicesTypes" />
                 <div class="col-3 p-3 topicLabel">
                   <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
                   <p>Please upload all relevant reports for this dataset in the PDF format.</p>
@@ -361,6 +360,14 @@
                         data-test="addKpisButton"
                         :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
+                      <FormKit
+                        v-model="computedFinancialServicesTypes"
+                        type="text"
+                        validationLabel="You must choose and confirm"
+                        validation="required"
+                        name="financialServicesTypes"
+                        :outer-class="{ 'hidden-input': true }"
+                      />
                     </div>
                   </div>
                 </div>
@@ -584,7 +591,7 @@ export default defineComponent({
         this.convertedFiscalYearEnd = "";
       }
     },
-    selectedKPIs: function (newValue: { label: string; value: string }[]) {
+    confirmedSelectedKPIs: function (newValue: { label: string; value: string }[]) {
       this.computedFinancialServicesTypes = newValue.map((el: { label: string; value: string }): string => {
         return this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis[
           el.value as keyof typeof this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis
