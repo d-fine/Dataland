@@ -32,5 +32,4 @@ export const KEYCLOAK_INIT_OPTIONS = {
   realm: "datalandsecurity",
   url: "/keycloak",
   clientId: "dataland-public",
-  onLoad: "login-required",
 };

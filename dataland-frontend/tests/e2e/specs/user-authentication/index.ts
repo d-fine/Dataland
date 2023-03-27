@@ -8,4 +8,5 @@ describe("User Authentication Tests", () => {
   require("./LandingPageRedirect");
   require("./VerifyPkceFlow");
   require("./VerifyEmailLogoExists");
+  require("./SessionTimeout");
 });
