@@ -82,7 +82,7 @@ class PdfVerificationServiceTest {
         }
         assertEquals(
             "Please ensure that your filename only contains alphanumeric characters, hyphens, spaces," +
-                    " and periods up to maximum length of 254 characters.",
+                " and periods up to maximum length of 254 characters.",
             thrown.message,
         )
     }
