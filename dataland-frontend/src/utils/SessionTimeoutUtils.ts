@@ -1,4 +1,7 @@
-import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS, TIME_UNTIL_SESSION_WARNING_IN_MS } from "@/utils/Constants";
+import {
+  TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS,
+  TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS,
+} from "@/utils/Constants";
 import { loginAndRedirectToSearchPage, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 import Keycloak from "keycloak-js";
 import { useSessionStateStore } from "@/stores/stores";
@@ -8,11 +11,16 @@ const minRequiredValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_SET_INTER
 /**
  * Updates the timestamp for the session warning to the current timestamp plus the amount of time that should be allowed
  * to pass until the warning appears.
+ *
+ * @param keycloak TODO
  */
-export function updateSessionWarningTimestamp(): void {
+export function updateSessionWarningTimestamp(keycloak: Keycloak): void {
   console.log("setting new timestamps"); // TODO debugging
-  const currentTimeInMs = new Date().getTime();
-  useSessionStateStore().sessionWarningTimestampInMs = currentTimeInMs + TIME_UNTIL_SESSION_WARNING_IN_MS;
+  if (keycloak.refreshTokenParsed?.exp) {
+    const expiryTimestampOfCurrentRefreshTokenInMs = keycloak.refreshTokenParsed?.exp * 1000;
+    useSessionStateStore().sessionWarningTimestampInMs =
+      expiryTimestampOfCurrentRefreshTokenInMs - TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS;
+  }
 }
 
 /**
@@ -105,7 +113,7 @@ export function tryToRefreshSession(keycloak: Keycloak, onSurpassingExpiredSessi
       console.log(`Could not refresh token`);
     }); // token => share storage
     sessionStateStore.isRefreshTokenExpired = false;
-    updateSessionWarningTimestamp();
+    updateSessionWarningTimestamp(keycloak);
     startSessionSetIntervalFunction(keycloak, onSurpassingExpiredSessionTimestampCallback);
   }
 }

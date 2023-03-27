@@ -24,9 +24,10 @@ export const UPLOAD_MAX_FILE_SIZE_IN_BYTES = 2000000;
 
 export const TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS = 2000;
 
-export const TIME_UNTIL_SESSION_WARNING_IN_MS = 20 * 1000; // TODO increase after dev is done
-
 export const TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS = 5000;
+
+// This always has to be shorter than the ssoSessionIdleTimeout value in the realm settings.
+export const TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS = 30 * 1000; // TODO set to 2*60*1000 before merge to main
 
 export const KEYCLOAK_INIT_OPTIONS = {
   realm: "datalandsecurity",
