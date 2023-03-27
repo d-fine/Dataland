@@ -27,7 +27,8 @@ export class ApiClientProvider {
   async getConfiguration(): Promise<Configuration | undefined> {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
-      await keycloak.updateToken(50000000); // TODO
+      await keycloak.updateToken(-1);
+      updateSessionWarningTimestamp(keycloak);
       return new Configuration({ accessToken: keycloak.token });
     } else {
       return undefined;
@@ -39,7 +40,6 @@ export class ApiClientProvider {
   ): Promise<T> {
     console.log("getConstructedApiRuns"); // TODO debugging
     const configuration = await this.getConfiguration();
-    updateSessionWarningTimestamp();
     return new constructor(configuration, "/api");
   }
 
