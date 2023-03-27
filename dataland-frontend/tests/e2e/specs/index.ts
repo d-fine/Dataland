@@ -56,7 +56,7 @@ if (testGroupingDisabled || cypressTestGroup === 4) {
   require("./data-request");
 }
 
-if (testGroupingDisabled || cypressTestGroup === 9) {
+if (testGroupingDisabled || cypressTestGroup === 8) {
   require("./prepopulation/AwaitPrepopulation");
   require("./landing-page");
   require("./swagger-ui");
