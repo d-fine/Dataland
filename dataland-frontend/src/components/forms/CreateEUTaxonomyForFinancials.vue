@@ -32,7 +32,7 @@
               CreditInstitution: humanizeString('CreditInstitution'),
               InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),
               AssetManagement: humanizeString('AssetManagement'),
-              InvestmentFirm: humanizeString('InvestmentFirm'),
+              InvestmentFirm: humanizeString('InvestmentFirmzz'),
             }"
             help="Select all that apply by holding command (macOS) or control (PC)."
           />
