@@ -1,11 +1,9 @@
 package org.dataland.datalandbackend.repositories
 
-import jakarta.persistence.QueryHint
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import org.springframework.data.jpa.repository.QueryHints
 import org.springframework.data.repository.query.Param
 
 /**
@@ -80,7 +78,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
             "LEFT JOIN FETCH company.identifiers WHERE company in :companies",
     )
-    @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value = "false"))
     fun fetchIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     /**
@@ -90,7 +87,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
             "LEFT JOIN FETCH company.companyAlternativeNames WHERE company in :companies",
     )
-    @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value = "false"))
     fun fetchAlternativeNames(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     /**
@@ -100,7 +96,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
             "LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company in :companies",
     )
-    @QueryHints(QueryHint(name = "hibernate.query.passDistinctThrough", value = "false"))
     fun fetchCompanyAssociatedByDataland(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
     /**
