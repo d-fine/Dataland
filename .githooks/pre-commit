@@ -7,7 +7,8 @@ if [ -z "$KT_FILES" ];
 then
   echo "No Kotlin staged files."
 else
-  echo "Running ktlint over all files:"
+  echo "Running ktlint over these files:"
+  echo "$KT_FILES"
 
   ./gradlew ktlintFormat -PinternalKtlintGitFilter="$KT_FILES"
 
