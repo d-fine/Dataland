@@ -16,6 +16,7 @@
             name="createLkSGForm"
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
+            :config="{ validationVisibility: 'dirty' }"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />

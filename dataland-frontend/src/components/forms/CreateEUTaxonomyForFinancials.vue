@@ -11,6 +11,7 @@
             id="createEuTaxonomyForFinancialsForm"
             @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
+            :config="{ validationVisibility: 'dirty' }"
           >
             <FormKit
               type="hidden"

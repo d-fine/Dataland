@@ -11,6 +11,7 @@
             id="createEuTaxonomyForNonFinancialsForm"
             @submit="postEuTaxonomyDataForNonFinancials"
             @submit-invalid="checkCustomInputs"
+            :config="{ validationVisibility: 'dirty' }"
           >
             <FormKit
               type="hidden"
