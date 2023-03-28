@@ -25,3 +25,21 @@ export function updateObject(baseObject: objectType, objectWithNewData: objectTy
     }
   }
 }
+
+/**
+ * Changes the value of a variable by dividing it by 100
+ *
+ * @param obj object in which it is looking for the value to change
+ * @returns Object modified
+ */
+export function modifyObjectKeys(obj: objectType): objectType {
+  const objectModified = obj;
+  for (const key in objectModified) {
+    if (key === "value") {
+      objectModified[key] = (parseInt(objectModified[key] as string) / 100).toString();
+    } else if (typeof objectModified[key] === "object") {
+      modifyObjectKeys(objectModified[key] as unknown as objectType);
+    }
+  }
+  return objectModified;
+}

@@ -515,7 +515,7 @@ import {
   DataMetaInformation,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
-import { updateObject } from "@/utils/updateObjectUtils";
+import { modifyObjectKeys, updateObject } from "@/utils/updateObjectUtils";
 
 export default defineComponent({
   setup() {
@@ -688,7 +688,7 @@ export default defineComponent({
         ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-            this.formInputsModel
+            modifyObjectKeys(this.formInputsModel)
           );
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
