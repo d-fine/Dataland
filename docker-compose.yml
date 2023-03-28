@@ -136,17 +136,7 @@ services:
     # don't work anymore after a certain amount of requests
     # https://github.com/docker/for-win/issues/8861
     restart: always
-    profiles: ["development"]
-    image: node:19.7.0
-    networks:
-      - internal
-    volumes:
-      - ./dataland-frontend:/app
-      - frontend-dev-node-modules:/app/node_modules
-    command: sh -c "cd /app && npm install && npm run dev"
-  frontend:
-    restart: always
-    profiles: ["production", "testing"]
+    profiles: ["development", "testing"]
     image: node:19.7.0
     expose:
       - "80"
@@ -156,6 +146,18 @@ services:
       - ./dataland-frontend:/app
       - frontend-dev-node-modules:/app/node_modules
     command: sh -c "cd /app && npm install && npm run dev"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost/health/frontend | tee /dev/stderr | grep -q 'UP' || false" ]
+      interval: 30s
+      timeout: 3s
+  frontend:
+    restart: always
+    profiles: ["production"]
+    image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
+    expose:
+      - "80"
+    networks:
+      - internal
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
