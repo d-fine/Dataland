@@ -446,7 +446,7 @@
               </FormKit>
 
               <!--------- SUBMIT --------->
-              <SubmitFormBar :label="this.updatingData ? 'UPDATE DATA' : 'ADD DATA'" />
+              <SubmitFormBar />
             </div>
           </FormKit>
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
@@ -601,11 +601,6 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
-    },
-  },
-  computed: {
-    updatingData() {
-      return this.route.query.templateDataId !== undefined;
     },
   },
   mounted() {

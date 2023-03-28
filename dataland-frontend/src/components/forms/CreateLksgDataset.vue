@@ -1064,7 +1064,7 @@
             </FormKit>
 
             <!--------- SUBMIT --------->
-            <SubmitFormBar :label="this.updatingData ? 'UPDATE DATA' : 'ADD DATA'" />
+            <SubmitFormBar />
           </FormKit>
 
           <div v-if="postLkSGDataProcessed">
@@ -1213,9 +1213,6 @@ export default defineComponent({
       set() {
         // IGNORED
       },
-    },
-    updatingData() {
-      return this.route.query.templateDataId !== undefined;
     },
   },
   props: {

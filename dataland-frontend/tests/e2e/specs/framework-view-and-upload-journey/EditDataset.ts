@@ -38,7 +38,7 @@ describeIf(
           cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
           cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
           cy.get("div").contains("New Dataset - LkSG").should("be.visible");
-          cy.get("button").contains("ADD DATA").should("exist").click();
+          cy.get("button").contains("UPDATE DATA").should("exist").click();
           cy.get("h4")
             .contains("Upload successfully executed.")
             .should("exist")
