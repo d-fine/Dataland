@@ -4,10 +4,10 @@ set -euxo pipefail
 
 EDIT_FILES="$(git --no-pager diff --name-status --no-color --cached | awk '$1 != "D" && $2 ~ /\.kts|\.kt/ { print $2}')"
 
-if [ -z "$EDIT_FILES" ]; then
-    echo "No Kotlin staged files."
-    exit 0
-fi;
+#if [ -z "$EDIT_FILES" ]; then
+#    echo "No Kotlin staged files."
+#    exit 0
+#fi;
 
 echo "Running ktlint over these files:"
 echo "$EDIT_FILES"
