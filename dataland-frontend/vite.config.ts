@@ -58,7 +58,7 @@ export default defineConfig({
     sourcemap: true,
   },
   server: {
-    port: 80,
+    port: 8090,
     host: "0.0.0.0",
     strictPort: true,
     watch: {
