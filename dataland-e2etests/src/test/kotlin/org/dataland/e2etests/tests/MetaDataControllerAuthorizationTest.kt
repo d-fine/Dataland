@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.Instant
 
 class MetaDataControllerAuthorizationTest {
 
@@ -33,7 +32,7 @@ class MetaDataControllerAuthorizationTest {
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val dataMetaInformation = apiAccessor.unauthorizedMetaDataControllerApi.getDataMetaInfo(testDataId)
-        val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+        val uploadTime = Instant.now().toEpochMilli()
         Assertions.assertEquals(
             metaDataControllerTest.buildAcceptedAndActiveDataMetaInformation(
                 testDataId,
@@ -66,7 +65,7 @@ class MetaDataControllerAuthorizationTest {
         )
         val testDataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId
         val testCompanyId = listOfUploadInfo[0].actualStoredCompany.companyId
-        val uploadTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+        val uploadTime = Instant.now().toEpochMilli()
         val expectedMetaInformation = metaDataControllerTest.buildAcceptedAndActiveDataMetaInformation(
             dataId = testDataId, companyId = testCompanyId,
             testDataType = testDataType,

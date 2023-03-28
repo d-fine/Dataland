@@ -24,7 +24,7 @@ class ApiKeyManager(
 ) {
 
     companion object {
-        private const val secondsInADay = 86400
+        private const val milliSecondsInADay = 86400000
     }
 
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
@@ -58,7 +58,7 @@ class ApiKeyManager(
         checkIfDaysValidValueIsValid(daysValid)
         return when (daysValid) {
             null -> null
-            else -> (daysValid * secondsInADay) + Instant.now().epochSecond
+            else -> (daysValid * milliSecondsInADay) + Instant.now().toEpochMilli()
         }
     }
 
@@ -75,7 +75,7 @@ class ApiKeyManager(
     }
 
     private fun isApiKeyExpired(expiryDateOfApiKey: Long?): Boolean {
-        return (expiryDateOfApiKey ?: Instant.now().epochSecond) < Instant.now().epochSecond
+        return (expiryDateOfApiKey ?: Instant.now().toEpochMilli()) < Instant.now().toEpochMilli()
     }
 
     /**

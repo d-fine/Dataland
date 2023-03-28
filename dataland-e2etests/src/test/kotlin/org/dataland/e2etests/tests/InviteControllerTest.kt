@@ -22,7 +22,7 @@ class InviteControllerTest {
     fun `post invite request with empty file and check if it gets rejected`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val file: File = File.createTempFile("test", ".xlsx")
-        val inviteMetaInfoEntity = inviteControllerApi.submitInvite(false, file)
+        val inviteMetaInfoEntity = inviteControllerApi.submitInvite(file)
         assertFalse(inviteMetaInfoEntity.wasInviteSuccessful!!)
         assertTrue(inviteMetaInfoEntity.inviteResultMessage!!.contains("file is empty"))
         assertTrue(file.delete())
@@ -33,7 +33,7 @@ class InviteControllerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val file: File = File.createTempFile("test", ".png")
         file.writeText("this is content")
-        val inviteMetaInfoEntity = inviteControllerApi.submitInvite(false, file)
+        val inviteMetaInfoEntity = inviteControllerApi.submitInvite(file)
         assertFalse(inviteMetaInfoEntity.wasInviteSuccessful!!)
         assertTrue(inviteMetaInfoEntity.inviteResultMessage!!.contains(".xlsx format"))
         assertTrue(file.delete())
@@ -45,7 +45,7 @@ class InviteControllerTest {
         val file: File = File.createTempFile("test", ".xlsx")
         val exception =
             assertThrows<ClientException> {
-                inviteControllerApi.submitInvite(false, file)
+                inviteControllerApi.submitInvite(file)
             }
         val response = exception.response
         assertTrue(response is ClientError<*>)

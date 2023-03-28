@@ -111,7 +111,7 @@ class ApiAccessor {
     /**
      * Uploads each of the datasets provided in [listOfFrameworkData] for each of the companies provided in
      * [listOfCompanyInformation] via [frameworkDataUploadFunction]. If data for the same framework is uploaded multiple
-     * times for the same company a wait of at least 1000ms is necessary to avoid an error 500.
+     * times for the same company a wait of at least 1ms is necessary to avoid an error 500.
      */
     fun <T> uploadCompanyAndFrameworkDataForOneFramework(
         listOfCompanyInformation: List<CompanyInformation>,
@@ -125,7 +125,7 @@ class ApiAccessor {
         reportingPeriod: String = "",
         ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
-        val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 1000L else 0L
+        val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 1L else 0L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(uploadingTechnicalUser)
         val storedCompanyInfos = listOfCompanyInformation.map { companyDataControllerApi.postCompany(it) }
@@ -185,7 +185,7 @@ class ApiAccessor {
      * Waits until the status of all provided [metaDatas] is QaStatus.Accepted. Then returns an updated list of metaData
      * each of which has qaStatus = QaStatus.Accepted.
      */
-    fun ensureQaIsPassed(metaDatas: List<DataMetaInformation>): List<DataMetaInformation> {
+    private fun ensureQaIsPassed(metaDatas: List<DataMetaInformation>): List<DataMetaInformation> {
         await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedForMetaDataList(metaDatas) }
         val updatedMetaDatas = mutableListOf<DataMetaInformation>()
         metaDatas.forEach() { metaData ->
@@ -347,7 +347,7 @@ class ApiAccessor {
 
     /**
      * Upload the dataset provided in [frameworkData] via [uploadFunction] for the given [companyId] and
-     * [reportingPeriod] waiting 1000 ms after the upload. The wait circumvents error 500 if frameworkdata for the
+     * [reportingPeriod] waiting 1ms after the upload. The wait circumvents error 500 if frameworkdata for the
      * same company and reporting period is uploaded multiple times. It is also ensured that QA is passed before
      * returning the current metadata of the uploaded data.
      */
@@ -357,7 +357,7 @@ class ApiAccessor {
         reportingPeriod: String,
         uploadFunction: (String, T, String) -> DataMetaInformation,
     ): DataMetaInformation {
-        val waitTime = 1000L
+        val waitTime = 1L
         val uploadedMetaData = uploadSingleFrameworkDataSet(
             companyId = companyId,
             frameworkData = frameworkData,

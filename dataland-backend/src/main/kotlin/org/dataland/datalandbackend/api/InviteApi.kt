@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.entities.InviteMetaInfoEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 
@@ -22,8 +21,6 @@ interface InviteApi {
     /**
      * A method to initiate an invitation request to Dataland from the infos of the uploaded excel file
      * @param excelFile is the Excel file which contains the invite info
-     * @param isSubmitterNameHidden flag that decides if info about the submitter shall be
-     * included
      * @return a response object with info about the result and the success of the invite process
      */
     @Operation(
@@ -43,7 +40,6 @@ interface InviteApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun submitInvite(
         @RequestPart("excelFile") excelFile: MultipartFile,
-        @RequestParam isSubmitterNameHidden: Boolean,
     ):
         ResponseEntity<InviteMetaInfoEntity>
 }

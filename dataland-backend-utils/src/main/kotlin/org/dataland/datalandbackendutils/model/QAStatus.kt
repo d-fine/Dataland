@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.enums.data
+package org.dataland.datalandbackendutils.model
 
 import io.swagger.v3.oas.annotations.media.Schema
 

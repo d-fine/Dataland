@@ -22,7 +22,7 @@ data class InviteMetaInfoEntity(
     var fileId: String,
 
     @Column(name = "timestamp")
-    var timeStamp: String,
+    var timeStamp: Long,
 
     @Column(name = "was_invite_successful")
     var wasInviteSuccessful: Boolean,
