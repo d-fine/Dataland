@@ -42,7 +42,7 @@ class DataControllerTest {
                 testDataEuTaxonomyNonFinancials,
             ),
             companyAssociatedDataEuTaxonomyDataForNonFinancials,
-            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
+            "The posted and the received eu taxonomy data sets and/or their company IDs are not equalzz.",
         )
     }
 
