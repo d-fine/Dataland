@@ -7,15 +7,15 @@ if [ -z "$KT_FILES" ];
 then
   echo "No Kotlin staged files."
 else
-  echo "Running ktlint and detekt over these files:"
+  echo "Running ktlint over these files:"
   echo "$KT_FILES"
 
-  ./gradlew --quiet ktlintFormat -PinternalKtlintGitFilter="$KT_FILES"
+  ./gradlew --quiet ktlintFormat -- "$KT_FILES"
 
   echo "Completed ktlint run."
 
   echo "Starting detekt run"
-  ./gradlew detekt -PinternalKtlintGitFilter="$KT_FILES"
+  ./gradlew detekt
   echo "Completed detekt run"
 
   echo "$KT_FILES" | while read -r file; do
