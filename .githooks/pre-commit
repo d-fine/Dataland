@@ -1,34 +1,29 @@
 #!/bin/sh
 set -euxo pipefail
-######## KTLINT-GRADLE HOOK START ########
 
-EDIT_FILES="$(git --no-pager diff --name-status --no-color --cached | awk '$1 != "D" && $2 ~ /\.kts|\.kt/ { print $2}')"
+KT_FILES="$(git --no-pager diff --name-status --no-color --cached | awk '$1 != "D" && $2 ~ /\.kts|\.kt/ { print $2}')"
 
-#if [ -z "$EDIT_FILES" ]; then
-#    echo "No Kotlin staged files."
-#    exit 0
-#fi;
+if [ -z "$KT_FILES" ];
+then
+  echo "No Kotlin staged files."
+else
+  echo "Running ktlint and detekt over these files:"
+  echo "$KT_FILES"
 
-echo "Running ktlint over these files:"
-echo "$EDIT_FILES"
+  ./gradlew --quiet ktlintFormat -PinternalKtlintGitFilter="$KT_FILES"
 
-./gradlew --quiet ktlintFormat -PinternalKtlintGitFilter="$EDIT_FILES"
+  echo "Completed ktlint run."
 
-echo "Completed ktlint run."
+  echo "Starting detekt run"
+  ./gradlew detekt -PinternalKtlintGitFilter="$KT_FILES"
+  echo "Completed detekt run"
 
-echo "$EDIT_FILES" | while read -r file; do
-    if [ -f $file ]; then
-        git add $file
-    fi
-done
+  echo "$KT_FILES" | while read -r file; do
+      if [ -f $file ]; then
+          git add $file
+      fi
+  done
+fi;
 
-echo "Completed ktlint hook."
-######## KTLINT-GRADLE HOOK END ########
-######## KTLINT-DETEKT HOOK ############
-echo "Starting detekt hook"
-./gradlew detekt -PinternalKtlintGitFilter="$EDIT_FILES"
-######## KTLINT-DETEKT HOOK END ########
-######## ESLINT HOOK ############
 echo "Starting eslint hook"
 npx --prefix ./dataland-frontend lint-staged
-######## KTLINT-DETEKT HOOK END ########
