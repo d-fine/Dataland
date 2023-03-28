@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box
 }
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -11,35 +12,42 @@
   flex-direction: column;
   margin: unset
 }
+
 body {
   font-family: $ibm-plex-sans;
   font-size: $fs-base;
   font-weight: $fw-normal;
-  margin:0;
-  padding:0
+  margin: 0;
+  padding: 0
 }
+
 .p-component {
   &:disabled {
     opacity: .8
   }
 }
+
 .d-content {
-  flex:1;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
+
 .d-header {
   z-index: 100
 }
-.p-fluid{
+
+.p-fluid {
   .p-button, .p-inputtext {
     width: 100%
   }
+
   .p-input-icon-left, .p-input-icon-right {
     display: block;
     width: 100%
   }
 }
+
 .p-badge {
   color: $btn-primary-color;
   background: $btn-primary-bg;
@@ -53,17 +61,21 @@ body {
   display: inline-block;
   border-radius: .25rem;
   padding: 0 .5rem;
+
   &.round {
     border-radius: 50%;
   }
+
   &.badge-yellow {
     color: var(--yellow-700);
     background: var(--yellow-100);
   }
+
   &.badge-green {
     color: var(--green-700);
     background: var(--green-100);
   }
+
   &.badge-blue {
     color: var(--blue-700);
     background: var(--blue-100);
@@ -79,6 +91,7 @@ body {
     background: #E2D9C5;
   }
 }
+
 .d-center-div {
   position: absolute;
   top: 50%;
@@ -86,46 +99,84 @@ body {
   transform: translate(-50%, -50%);
   background-color: white;
 }
+
 .d-letters {
   letter-spacing: .05em
 }
+
 .d-small-logo {
   height: 1.25em
 }
+
 // sections
 .third-section {
   background-color: $brown-lighter;
   color: $white
 }
+
 .second-section {
   background-color: $paper-white;
   color: $aquamarine-dark
 }
+
 .paper-section {
   background-color: $paper-white
 }
+
 // We want this classes to always overwrite styles to main colors
 .text-primary, .primary-color {
   color: $main-color !important
 }
+
 .bg-primary {
   color: $bg-text-primary !important;
   background-color: $main-color !important
 }
+
 .bg-white {
   background-color: $white !important
 }
+
 // --- //
-.fs-xs { font-size: $fs-xs} // 12px
-.fs-sm{ font-size: $fs-sm}  // 14px
-.fs-base{ font-size: $fs-base}  // 16px
-.fs-lg{ font-size: $fs-lg}  // 18px
-.fs-xl{ font-size: $fs-xl}  // 24px
-.fs-xxl{ font-size: $fs-xxl}  // 32px
+.fs-xs {
+  font-size: $fs-xs
+}
+
+// 12px
+.fs-sm {
+  font-size: $fs-sm
+}
+
+// 14px
+.fs-base {
+  font-size: $fs-base
+}
+
+// 16px
+.fs-lg {
+  font-size: $fs-lg
+}
+
+// 18px
+.fs-xl {
+  font-size: $fs-xl
+}
+
+// 24px
+.fs-xxl {
+  font-size: $fs-xxl
+}
+
+// 32px
 
 // Typography //
-.gray-text{ color: $gray }
-.gray-text-light{ color: $gray-light }
+.gray-text {
+  color: $gray
+}
+
+.gray-text-light {
+  color: $gray-light
+}
 
 // Home Page
 .video-container {
@@ -134,6 +185,7 @@ body {
   padding-bottom: 56.25%;
   height: 0
 }
+
 .video-container iframe {
   position: absolute;
   top: 0;
@@ -142,16 +194,25 @@ body {
   height: 100%;
   border: 0
 }
+
 .top-left-blue-border {
   border-style: solid;
   border-width: 1px 0 0 1px;
   border-color: $blue-light
 }
+
 .right-bottom-blue-border {
   border-style: solid;
   border-width: 0 1px 1px 0;
   border-color: $blue-light
 }
+
+.all-sides-blue-border {
+  border-style: solid;
+  border-width: 1px 1px 1px 1px;
+  border-color: $blue-light
+}
+
 .middle-center-div {
   flex: 1;
   align-items: center;
@@ -160,6 +221,7 @@ body {
   justify-content: center;
   justify-items: center;
 }
+
 .p-disabled, .p-component:disabled {
   opacity: .5;
 }
