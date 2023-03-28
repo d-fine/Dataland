@@ -10,7 +10,7 @@ else
   echo "Running ktlint over these files:"
   echo "$KT_FILES"
 
-  ./gradlew --quiet ktlintFormat -- "$KT_FILES"
+  ./gradlew ktlintFormat -- "$KT_FILES"
 
   echo "Completed ktlint run."
 
