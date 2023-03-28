@@ -23,7 +23,7 @@ class CompanyDataControllerTest {
             uploadInfo.inputCompanyInformation,
             uploadInfo.actualStoredCompany.companyInformation,
             "The company information in the post-response does not match " +
-                "the actual information of the company to be postedzz.",
+                "the actual information of the company to be posted.",
         )
         assertTrue(
             uploadInfo.actualStoredCompany.companyId.isNotEmpty(),

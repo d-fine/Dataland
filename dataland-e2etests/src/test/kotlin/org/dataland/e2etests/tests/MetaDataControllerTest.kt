@@ -167,7 +167,7 @@ class MetaDataControllerTest {
         assertEquals(1, activeDatasets.size, "Metadata for exactly one active dataset should exist.")
         assertTrue(
             (activeDatasets[0].uploadTime == allDatasets.maxOfOrNull { it.uploadTime }),
-            "The active result is not the one with the highest upload timezz.",
+            "The active result is not the one with the highest upload time.",
         )
         val retrievedDataset =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
