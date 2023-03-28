@@ -1,6 +1,8 @@
 <template>
   <Card class="col-12 page-wrapper-card">
-    <template #title>Create EU Taxonomy Dataset for a Non-Financial Company/Service</template>
+    <template #title
+      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
+    >
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -119,7 +121,7 @@
                               inputId="icon"
                               :showIcon="true"
                               dateFormat="D, M dd, yy"
-                              @update:modelValue="updateReportDate(index)"
+                              @update:modelValue="updateReportDateHandler(index)"
                             />
                           </div>
 
@@ -510,7 +512,7 @@ import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/ba
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { modifyObjectKeys, updateObject } from "@/utils/updateObjectUtils";
+import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
@@ -544,8 +546,10 @@ export default defineComponent({
       { label: "Assurance", value: "assurance" },
       { label: "CapEx", value: "capex" },
       { label: "OpEx", value: "opex" },
+      { label: "Revenue", value: "revenue" },
     ],
     elementPosition: 0,
+    isItUploadForm: false,
     route: useRoute(),
     waitingForData: false,
     formatSize,
@@ -603,6 +607,7 @@ export default defineComponent({
 
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+      this.isItUploadForm = true;
       void this.loadEuData(dataId);
     }
   },
@@ -628,7 +633,11 @@ export default defineComponent({
       if (dataResponseData.data?.fiscalYearEnd) {
         this.fiscalYearEnd = new Date(dataResponseData.data.fiscalYearEnd);
       }
-      updateObject(this.formInputsModel, dataResponseData);
+      const receivedFormInputsModel = modifyObjectKeys(
+        JSON.parse(JSON.stringify(dataResponseData)) as objectType,
+        "receive"
+      );
+      updateObject(this.formInputsModel, receivedFormInputsModel);
       this.waitingForData = false;
     },
     /**
@@ -639,12 +648,16 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
+        const formInputsModelToSend = modifyObjectKeys(
+          JSON.parse(JSON.stringify(this.formInputsModel)) as objectType,
+          "send"
+        );
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         this.postEuTaxonomyDataForNonFinancialsResponse =
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            modifyObjectKeys(this.formInputsModel)
+            formInputsModelToSend
           );
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       } catch (error) {
@@ -654,6 +667,20 @@ export default defineComponent({
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
       }
     },
+
+    /**
+     * Updates the date of a single report file
+     *
+     * @param index file to update
+     */
+    updateReportDateHandler(index: number) {
+      this.files.updatePropertyFilesUploaded(
+        index,
+        "convertedReportDate",
+        getHyphenatedDate(this.files.files[index].reportDate as unknown as Date)
+      );
+    },
+
     /**
      * Modifies the file object and adds it to the store
      *

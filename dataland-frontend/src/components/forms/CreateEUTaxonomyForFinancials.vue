@@ -115,7 +115,7 @@
                               inputId="icon"
                               :showIcon="true"
                               dateFormat="D, M dd, yy"
-                              @update:modelValue="updateReportDate(index)"
+                              @update:modelValue="updateReportDateHandler(index)"
                             />
                           </div>
 
@@ -515,7 +515,7 @@ import {
   DataMetaInformation,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
-import { modifyObjectKeys, updateObject } from "@/utils/updateObjectUtils";
+import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 
 export default defineComponent({
   setup() {
@@ -541,7 +541,6 @@ export default defineComponent({
   data() {
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
-      loadEuDataModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
       fiscalYearEnd: "" as Date | "",
       convertedFiscalYearEnd: "",
@@ -668,11 +667,14 @@ export default defineComponent({
         });
         this.confirmeSelectedKPIs();
       }
-      this.loadEuDataModel = dataResponseData;
+      const receivedFormInputsModel = modifyObjectKeys(
+        JSON.parse(JSON.stringify(dataResponseData)) as objectType,
+        "receive"
+      );
       this.waitingForData = false;
 
       await this.$nextTick();
-      updateObject(this.formInputsModel, this.loadEuDataModel);
+      updateObject(this.formInputsModel, receivedFormInputsModel);
     },
 
     /**
@@ -683,12 +685,16 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
+        const formInputsModelToSend = modifyObjectKeys(
+          JSON.parse(JSON.stringify(this.formInputsModel)) as objectType,
+          "send"
+        );
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-            modifyObjectKeys(this.formInputsModel)
+            formInputsModelToSend
           );
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
@@ -746,13 +752,12 @@ export default defineComponent({
      *
      * @param index file to update
      */
-    updateReportDate(index: number) {
+    updateReportDateHandler(index: number) {
       this.files.updatePropertyFilesUploaded(
         index,
         "convertedReportDate",
         getHyphenatedDate(this.files.files[index].reportDate as unknown as Date)
       );
-      this.files.reRender();
     },
   },
 });

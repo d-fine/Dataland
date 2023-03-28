@@ -1,4 +1,4 @@
-type objectType = { [key: string]: string | object };
+export type objectType = { [key: string]: string | object };
 /**
  * Updates keys from one object to another
  *
@@ -30,15 +30,20 @@ export function updateObject(baseObject: objectType, objectWithNewData: objectTy
  * Changes the value of a variable by dividing it by 100
  *
  * @param obj object in which it is looking for the value to change
+ * @param typeOfModification determines how we change object values
  * @returns Object modified
  */
-export function modifyObjectKeys(obj: objectType): objectType {
+export function modifyObjectKeys(obj: objectType, typeOfModification: string): objectType {
   const objectModified = obj;
   for (const key in objectModified) {
     if (key === "value" && objectModified[key]) {
-      objectModified[key] = (parseInt(objectModified[key] as string) / 100).toFixed(2).toString();
-    } else if (typeof objectModified[key] === "object" && objectModified.constructor.name !== "totalAmount") {
-      modifyObjectKeys(objectModified[key] as unknown as objectType);
+      if (typeOfModification === "send") {
+        objectModified[key] = (Math.round(+objectModified[key] * 100) / 100 / 100).toString();
+      } else if (typeOfModification === "receive") {
+        objectModified[key] = (Math.round(+objectModified[key] * 100 * 100) / 100).toString();
+      }
+    } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
+      modifyObjectKeys(objectModified[key] as unknown as objectType, typeOfModification);
     }
   }
   return objectModified;
