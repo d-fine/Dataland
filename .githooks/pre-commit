@@ -30,5 +30,5 @@ echo "Starting detekt hook"
 ######## KTLINT-DETEKT HOOK END ########
 ######## ESLINT HOOK ############
 echo "Starting eslint hook"
-npm --prefix ./dataland-frontend lint-staged
+npx --prefix ./dataland-frontend lint-staged
 ######## KTLINT-DETEKT HOOK END ########
