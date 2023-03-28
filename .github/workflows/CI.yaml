@@ -58,6 +58,12 @@ jobs:
         with:
           name: lcovResults
           path: ./dataland-frontend/coverage/*.info
+      - name: Upload coverage Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverageResults
+          path: ./dataland-frontend/coverage
       - name: Upload FE Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
