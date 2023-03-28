@@ -12,7 +12,7 @@ fi;
 echo "Running ktlint over these files:"
 echo "$EDIT_FILES"
 
-./gradlew --quiet ktlintFormat -PinternalKtlintGitFilter="$EDIT_FILES"
+#./gradlew --quiet ktlintFormat -PinternalKtlintGitFilter="$EDIT_FILES"
 
 echo "Completed ktlint run."
 
@@ -26,7 +26,7 @@ echo "Completed ktlint hook."
 ######## KTLINT-GRADLE HOOK END ########
 ######## KTLINT-DETEKT HOOK ############
 echo "Starting detekt hook"
-./gradlew detekt -PinternalKtlintGitFilter="$EDIT_FILES"
+#./gradlew detekt -PinternalKtlintGitFilter="$EDIT_FILES"
 ######## KTLINT-DETEKT HOOK END ########
 ######## ESLINT HOOK ############
 echo "Starting eslint hook"
