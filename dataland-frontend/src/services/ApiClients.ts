@@ -42,8 +42,7 @@ export class ApiClientProvider {
   async getConstructedApiKeyManager<T>(
     constructor: new (configuration: Configuration | undefined, basePath: string) => T
   ): Promise<T> {
-    const configuration = await this.getConfiguration();
-    return new constructor(configuration, "/api-keys");
+    const configuration = await this.getConfiguration(); return new constructor(configuration, "/api-keys");
   }
 
   async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
