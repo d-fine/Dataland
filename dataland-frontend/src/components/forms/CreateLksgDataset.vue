@@ -1191,7 +1191,6 @@ export default defineComponent({
       ),
       smoothScroll,
       checkCustomInputs,
-      updatingData: false,
     };
   },
   computed: {
@@ -1214,6 +1213,9 @@ export default defineComponent({
       set() {
         // IGNORED
       },
+    },
+    updatingData() {
+      return this.route.query.templateDataId !== undefined;
     },
   },
   props: {
