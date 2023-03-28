@@ -147,11 +147,15 @@ services:
   frontend:
     restart: always
     profiles: ["production", "testing"]
-    image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
+    image: node:19.7.0
     expose:
       - "80"
     networks:
       - internal
+    volumes:
+      - ./dataland-frontend:/app
+      - frontend-dev-node-modules:/app/node_modules
+    command: sh -c "cd /app && npm install && npm run dev"
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
