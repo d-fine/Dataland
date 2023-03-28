@@ -27,3 +27,8 @@ echo "Completed ktlint hook."
 ######## KTLINT-DETEKT HOOK ############
 echo "Starting detekt hook"
 ./gradlew detekt -PinternalKtlintGitFilter="$EDIT_FILES"
+######## KTLINT-DETEKT HOOK END ########
+######## ESLINT HOOK ############
+echo "Starting eslint hook"
+npm --prefix ./dataland-frontend lint-staged
+######## KTLINT-DETEKT HOOK END ########
