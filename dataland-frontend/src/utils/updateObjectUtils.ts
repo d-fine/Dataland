@@ -35,9 +35,9 @@ export function updateObject(baseObject: objectType, objectWithNewData: objectTy
 export function modifyObjectKeys(obj: objectType): objectType {
   const objectModified = obj;
   for (const key in objectModified) {
-    if (key === "value") {
-      objectModified[key] = (parseInt(objectModified[key] as string) / 100).toString();
-    } else if (typeof objectModified[key] === "object") {
+    if (key === "value" && objectModified[key]) {
+      objectModified[key] = (parseInt(objectModified[key] as string) / 100).toFixed(2).toString();
+    } else if (typeof objectModified[key] === "object" && objectModified.constructor.name !== "totalAmount") {
       modifyObjectKeys(objectModified[key] as unknown as objectType);
     }
   }

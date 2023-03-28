@@ -353,14 +353,17 @@
                       >
                         <FormKit :name="detailCashFlowType" type="group">
                           <div class="form-field">
-                            <UploadFormHeader
-                              :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                              :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                            />
+                            <span class="subtitle">
+                              <UploadFormHeader
+                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
+                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
+                              />
+                            </span>
                             <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
+                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
                             />
                           </div>
                         </FormKit>
@@ -386,14 +389,17 @@
                       >
                         <FormKit :name="detailCashFlowType" type="group">
                           <div class="form-field">
-                            <UploadFormHeader
-                              :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                              :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                            />
+                            <span class="subtitle">
+                              <UploadFormHeader
+                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
+                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
+                              />
+                            </span>
                             <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
+                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
                             />
                           </div>
                         </FormKit>
@@ -419,14 +425,17 @@
                       >
                         <FormKit :name="detailCashFlowType" type="group">
                           <div class="form-field">
-                            <UploadFormHeader
-                              :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                              :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                            />
+                            <span class="subtitle">
+                              <UploadFormHeader
+                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
+                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
+                              />
+                            </span>
                             <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
+                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
                             />
                           </div>
                         </FormKit>
@@ -501,7 +510,7 @@ import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/ba
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { updateObject } from "@/utils/updateObjectUtils";
+import { modifyObjectKeys, updateObject } from "@/utils/updateObjectUtils";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
@@ -635,7 +644,7 @@ export default defineComponent({
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         this.postEuTaxonomyDataForNonFinancialsResponse =
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            this.formInputsModel
+            modifyObjectKeys(this.formInputsModel)
           );
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       } catch (error) {
