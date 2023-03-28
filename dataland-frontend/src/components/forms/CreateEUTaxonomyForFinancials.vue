@@ -29,7 +29,8 @@
             label="Financial Services Types"
             placeholder="Please choose"
             :options="{
-              CreditInstitution: humanizeString('CreditInstitution'),InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),AssetManagement: humanizeString('AssetManagement'),InvestmentFirm: humanizeString('InvestmentFirm'),
+              CreditInstitution: humanizeString('CreditInstitution'),InsuranceOrReinsurance: humanizeString('InsuranceOrReinsurance'),AssetManagement: humanizeString('AssetManagement')
+              ,InvestmentFirm: humanizeString('InvestmentFirm'),
             }"
             help="Select all that apply by holding command (macOS) or control (PC)."
           />
