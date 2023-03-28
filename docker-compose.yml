@@ -141,7 +141,9 @@ services:
     expose:
       - "80"
     networks:
-      - internal
+      internal:
+        aliases:
+          - frontend
     volumes:
       - ./dataland-frontend:/app
       - frontend-dev-node-modules:/app/node_modules
