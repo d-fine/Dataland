@@ -445,14 +445,7 @@
               </FormKit>
 
               <!--------- SUBMIT --------->
-
-              <div class="uploadFormSection grid">
-                <div class="col-3"></div>
-
-                <div class="col-9">
-                  <PrimeButton data-test="submitButton" type="submit" label="SUBMIT FORM" />
-                </div>
-              </div>
+              <SubmitFormBar />
             </div>
           </FormKit>
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
@@ -513,6 +506,7 @@ import {
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
 import { updateObject } from "@/utils/updateObjectUtils";
+import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
 
 export default defineComponent({
   setup() {
@@ -522,6 +516,7 @@ export default defineComponent({
   },
   name: "CreateEUTaxonomyForFinancials",
   components: {
+    SubmitFormBar,
     FailedUpload,
     FormKit,
     SuccessUpload,

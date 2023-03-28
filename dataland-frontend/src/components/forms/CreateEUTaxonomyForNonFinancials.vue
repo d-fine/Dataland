@@ -434,14 +434,7 @@
               </FormKit>
 
               <!--------- SUBMIT --------->
-
-              <div class="uploadFormSection grid">
-                <div class="col-3"></div>
-
-                <div class="col-9">
-                  <PrimeButton data-test="submitButton" type="submit" label="SUBMIT FORM" />
-                </div>
-              </div>
+              <SubmitFormBar />
             </div>
           </FormKit>
           <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
@@ -499,10 +492,12 @@ import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { updateObject } from "@/utils/updateObjectUtils";
+import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: {
+    SubmitFormBar,
     Calendar,
     UploadFormHeader,
     PrimeButton,
