@@ -63,7 +63,7 @@
                       <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
                         <div class="flex gap-2">
                           <PrimeButton
-                            data-test="uploadFiles"
+                            data-test="upload-files-button"
                             @click="chooseCallback()"
                             icon="pi pi-upload"
                             label="UPLOAD REPORTS"
@@ -72,16 +72,19 @@
                       </div>
                     </template>
                     <template #content="{ uploadedFiles, removeUploadedFileCallback }">
-                      <div v-if="uploadedFiles.length > 0">
+                      <div v-if="uploadedFiles.length > 0" data-test="uploaded-files">
                         <div
                           v-for="(file, index) of files.files"
                           :key="file.name + file.reportDate"
                           class="flex w-full align-items-center file-upload-item"
                         >
-                          <span class="font-semibold flex-1">{{ file.name }}</span>
-                          <div class="mx-2 text-black-alpha-50">{{ formatSize(file.size) }}</div>
+                          <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
+                          <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
+                            {{ formatSize(file.size) }}
+                          </div>
                           <PrimeButton
                             icon="pi pi-times"
+                            data-test="uploaded-files-remove"
                             @click="files.removeReportFromFilesUploaded(file, removeUploadedFileCallback, index)"
                             class="p-button-rounded"
                           />
