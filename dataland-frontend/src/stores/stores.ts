@@ -19,6 +19,11 @@ export const useSessionStateStore = defineStore("sessionStateStore", {
     return {
       isRefreshTokenExpired: false,
       sessionWarningTimestampInMs: undefined as undefined | number,
+      token: "123SampleToken321",
     };
+  },
+
+  share: {
+    enable: true,
   },
 });

@@ -109,9 +109,14 @@ export function tryToRefreshSession(keycloak: Keycloak, onSurpassingExpiredSessi
     loginAndRedirectToSearchPage(keycloak);
   } else {
     console.log("refreshing session => refresh Token still valid => updating tokens"); // TODO debugging
-    keycloak.updateToken(-1).catch(() => {
-      console.log(`Could not refresh token`);
-    }); // token => share storage
+    keycloak
+      .updateToken(-1)
+      .then(() => {
+        sessionStateStore.token = keycloak.refreshTokenParsed?.jti;
+      })
+      .catch(() => {
+        console.log(`Could not refresh token`);
+      }); // token => share storage
     sessionStateStore.isRefreshTokenExpired = false;
     updateSessionWarningTimestamp(keycloak);
     startSessionSetIntervalFunction(keycloak, onSurpassingExpiredSessionTimestampCallback);

@@ -28,6 +28,7 @@
     "keycloak-js": "^21.0.1",
     "material-icons": "^1.13.2",
     "pinia": "^2.0.33",
+    "pinia-shared-state": "^0.3.0",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primevue": "~3.26.0",
