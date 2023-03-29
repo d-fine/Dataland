@@ -674,5 +674,8 @@ input[type="checkbox"], input[type="radio"]{
 }
 
 .button-disabled {
-  opacity: 0.6;
+  opacity: 0.4;
+  &:hover {
+    background: $btn-primary-bg !important;
+  }
 }

@@ -11,6 +11,7 @@
             id="createEuTaxonomyForFinancialsForm"
             @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
+            #default="{ state: { valid } }"
             :config="{ validationVisibility: 'dirty' }"
           >
             <FormKit
@@ -449,7 +450,7 @@
               </FormKit>
 
               <!--------- SUBMIT --------->
-              <SubmitFormBar />
+              <SubmitFormBar :formIsValid="valid" />
             </div>
           </FormKit>
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
@@ -538,7 +539,7 @@ export default defineComponent({
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
-      fiscalYearEnd: "" as Date | "",
+      fiscalYearEnd: undefined as Date | undefined,
       convertedFiscalYearEnd: "",
       reportingPeriod: new Date(),
       assuranceData: [
@@ -579,6 +580,7 @@ export default defineComponent({
       confirmedSelectedKPIs: [] as { label: string; value: string }[],
       computedFinancialServicesTypes: [] as string[],
       reportingPeriodYear: new Date().getFullYear(),
+      valid: false,
     };
   },
   watch: {
@@ -701,7 +703,7 @@ export default defineComponent({
         this.formInputsModel = {};
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
-        this.fiscalYearEnd = "";
+        this.fiscalYearEnd = undefined;
       }
     },
 

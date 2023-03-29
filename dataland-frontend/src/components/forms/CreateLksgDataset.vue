@@ -16,6 +16,7 @@
             name="createLkSGForm"
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
+            #default="{ state: { valid } }"
             :config="{ validationVisibility: 'dirty' }"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
@@ -1064,7 +1065,7 @@
             </FormKit>
 
             <!--------- SUBMIT --------->
-            <SubmitFormBar />
+            <SubmitFormBar :formIsValid="valid" />
           </FormKit>
 
           <div v-if="postLkSGDataProcessed">
@@ -1191,6 +1192,7 @@ export default defineComponent({
       ),
       smoothScroll,
       checkCustomInputs,
+      valid: false,
     };
   },
   computed: {

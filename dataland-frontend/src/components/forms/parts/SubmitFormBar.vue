@@ -7,7 +7,7 @@
       data-test="submitButton"
       type="submit"
       :label="updatingData ? 'UPDATE DATA' : 'ADD DATA'"
-      :class="dynamicClasses"
+      :class="formIsValid ? '' : 'button-disabled'"
     />
   </div>
 </template>
@@ -27,17 +27,15 @@ export default defineComponent({
       route: useRoute(),
     };
   },
+  props: {
+    formIsValid: {
+      type: Boolean,
+      required: true,
+    }
+  },
   computed: {
     updatingData(): boolean {
       return this.route.query.templateDataId !== undefined;
-    },
-    dynamicClasses(): string {
-      const formIsInvalid = !this.$formkit.get("createLkSGForm")?.context?.state.valid;
-      if (formIsInvalid) {
-        return "button-disabled";
-      } else {
-        return "";
-      }
     },
   },
 });

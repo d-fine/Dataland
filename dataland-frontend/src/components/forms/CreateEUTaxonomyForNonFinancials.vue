@@ -13,6 +13,7 @@
             id="createEuTaxonomyForNonFinancialsForm"
             @submit="postEuTaxonomyDataForNonFinancials"
             @submit-invalid="checkCustomInputs"
+            #default="{ state: { valid } }"
             :config="{ validationVisibility: 'dirty' }"
           >
             <FormKit
@@ -449,7 +450,7 @@
               </FormKit>
 
               <!--------- SUBMIT --------->
-              <SubmitFormBar />
+              <SubmitFormBar :formIsValid="valid" />
             </div>
           </FormKit>
           <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
@@ -533,7 +534,7 @@ export default defineComponent({
   data: () => ({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     files: useFilesUploadedStore(),
-    fiscalYearEnd: "" as Date | "",
+    fiscalYearEnd: undefined as Date | undefined,
     convertedFiscalYearEnd: "",
     reportingPeriod: new Date(),
     onThisPageLinks: [
@@ -567,6 +568,7 @@ export default defineComponent({
     messageCount: 0,
     postEuTaxonomyDataForNonFinancialsResponse: null,
     humanizeString: humanizeString,
+    valid: false,
   }),
   watch: {
     reportingPeriod: function (newValue: Date) {
