@@ -32,7 +32,7 @@
     </div>
 
     <div class="form-field">
-      <FormKit type="group" :disabled="!dataPointIsAvailable" name="dataSource">
+      <FormKit type="group" v-if="dataPointIsAvailable" name="dataSource">
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
@@ -40,15 +40,25 @@
             <FormKit
               type="select"
               name="report"
+              v-model="currentReportValue"
+              :disabled="!dataPointIsAvailable"
               placeholder="Select a report"
-              validation="required"
+              :validation="dataPointIsAvailable ? 'required' : ''"
               validation-label="Select a report"
               :options="['None...', ...this.files.filesNames]"
             />
           </div>
           <div>
             <UploadFormHeader :name="kpiNameMappings.page ?? ''" :explanation="kpiInfoMappings.page ?? ''" />
-            <FormKit outer-class="w-100" type="number" name="page" placeholder="Page" validation-label="Page" />
+            <FormKit
+              outer-class="w-100"
+              :disabled="!dataPointIsAvailable"
+              v-model="currentPageValue"
+              type="number"
+              name="page"
+              placeholder="Page"
+              validation-label="Page"
+            />
           </div>
         </div>
       </FormKit>
@@ -61,8 +71,9 @@
         <FormKit
           :disabled="!dataPointIsAvailable"
           type="select"
+          v-model="currentQualityValue"
           name="quality"
-          validation="required"
+          :validation="dataPointIsAvailable ? 'required' : ''"
           validation-label="Data quality"
           placeholder="Data quality"
           :options="dataQualityList"
@@ -87,6 +98,7 @@ import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
+import {DatasetTableInfo} from "@/components/resources/datasetOverview/DatasetTableInfo";
 
 export default defineComponent({
   name: "KPIfieldSet",
@@ -96,7 +108,28 @@ export default defineComponent({
     files: useFilesUploadedStore(),
     dataPointIsAvailable: true,
     dataQualityList: ["NA", "Audited", "Reported", "Estimated", "Incomplete"],
+    qualityValueBeforeDataPointWasDisabled: "",
+    currentReportValue: "",
+    currentQualityValue: "",
+    currentPageValue: "",
+    qualityValueWhenDataPointIsDisabled: "",
+    pageValueWhenDataPointIsDisabled: "",
+    reportValueWhenDataPointIsDisabled: "",
   }),
+  watch: {
+    dataPointIsAvailable(newValue: boolean) {
+      if(!newValue) {
+        this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
+        this.pageValueWhenDataPointIsDisabled = this.currentPageValue;
+        this.reportValueWhenDataPointIsDisabled = this.currentReportValue;
+        this.currentQualityValue = "NA";
+      } else {
+        this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
+        this.currentPageValue = this.pageValueWhenDataPointIsDisabled;
+        this.currentReportValue = this.reportValueWhenDataPointIsDisabled;
+      }
+    },
+  },
   props: {
     name: {
       type: String,
