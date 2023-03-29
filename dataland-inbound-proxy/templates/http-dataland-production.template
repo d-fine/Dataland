@@ -26,6 +26,9 @@ server {
       proxy_pass http://frontend:8090;
       #proxy_pass http://frontend:80;
       #include utils/proxy.conf;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $connection_upgrade;
+      proxy_read_timeout 86400;
     }
 
     location /api-keys/ {
