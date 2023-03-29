@@ -18,9 +18,9 @@ export default defineConfig({
     env: {
         commit_id: require("git-commit-id")({cwd: "../"}),
         prepopulate_timeout_s: 180,
-        short_timeout_in_ms: 100000,
-        medium_timeout_in_ms: 300000,
-        long_timeout_in_ms: 1200000,
+        short_timeout_in_ms: 10000,
+        medium_timeout_in_ms: 30000,
+        long_timeout_in_ms: 120000,
         AWAIT_PREPOPULATION_RETRIES: 250,
         EXECUTION_ENVIRONMENT: "developmentLocal",
         DATA_ENVIRONMENT: getDataEnvironmentBasedOnOperatingSystemEnv(),
