@@ -31,7 +31,7 @@ export default defineComponent({
     formIsValid: {
       type: Boolean,
       required: true,
-    }
+    },
   },
   computed: {
     updatingData(): boolean {
