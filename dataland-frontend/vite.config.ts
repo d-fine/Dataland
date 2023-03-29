@@ -42,8 +42,9 @@ export default defineConfig({
       include: "src/*",
       exclude: ["node_modules", "tests"],
       extension: [".js", ".ts", ".vue"],
-      requireEnv: true,
-      forceBuildInstrument: process.env.BUILD_INSTRUMENTED === "true",
+      requireEnv: false,
+      forceBuildInstrument: true,
+      checkProd: false,
     }),
   ],
   resolve: {
@@ -66,4 +67,7 @@ export default defineConfig({
       usePolling: true,
     },
   },
+  preview: {
+    port: 8090,
+  }
 });
