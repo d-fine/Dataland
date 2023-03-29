@@ -25,6 +25,7 @@ export const useFilesUploadedStore = defineStore("reportsFilesUploaded", {
     updatePropertyFilesUploaded(indexFileToUpload: number, property: string, value: string) {
       if (Object.hasOwn(this.files[indexFileToUpload], property)) {
         this.files[indexFileToUpload][property] = value;
+        this.reRender();
       } else {
         return;
       }

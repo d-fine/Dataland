@@ -1,6 +1,8 @@
 <template>
   <Card class="col-12 page-wrapper-card">
-    <template #title>Create EU Taxonomy Dataset for a Non-Financial Company/Service</template>
+    <template #title
+      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
+    >
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -69,7 +71,7 @@
                       <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
                         <div class="flex gap-2">
                           <PrimeButton
-                            data-test="uploadFiles"
+                            data-test="upload-files-button"
                             @click="chooseCallback()"
                             icon="pi pi-upload"
                             label="UPLOAD REPORTS"
@@ -78,15 +80,18 @@
                       </div>
                     </template>
                     <template #content="{ uploadedFiles, removeUploadedFileCallback }">
-                      <div v-if="uploadedFiles.length > 0">
+                      <div v-if="uploadedFiles.length > 0" data-test="uploaded-files">
                         <div
                           v-for="(file, index) of files.files"
                           :key="file.name + file.reportDate"
                           class="flex w-full align-items-center file-upload-item"
                         >
-                          <span class="font-semibold flex-1">{{ file.name }}</span>
-                          <div class="mx-2 text-black-alpha-50">{{ formatSize(file.size) }}</div>
+                          <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
+                          <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
+                            {{ formatSize(file.size) }}
+                          </div>
                           <PrimeButton
+                            data-test="uploaded-files-remove"
                             icon="pi pi-times"
                             @click="files.removeReportFromFilesUploaded(file, removeUploadedFileCallback, index)"
                             class="p-button-rounded"
@@ -117,7 +122,7 @@
                               inputId="icon"
                               :showIcon="true"
                               dateFormat="D, M dd, yy"
-                              @update:modelValue="updateReportDate(index)"
+                              @update:modelValue="updateReportDateHandler(index)"
                             />
                           </div>
 
@@ -351,14 +356,17 @@
                       >
                         <FormKit :name="detailCashFlowType" type="group">
                           <div class="form-field">
-                            <UploadFormHeader
-                              :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                              :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                            />
+                            <span class="subtitle">
+                              <UploadFormHeader
+                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
+                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
+                              />
+                            </span>
                             <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
+                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
                             />
                           </div>
                         </FormKit>
@@ -384,14 +392,17 @@
                       >
                         <FormKit :name="detailCashFlowType" type="group">
                           <div class="form-field">
-                            <UploadFormHeader
-                              :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                              :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                            />
+                            <span class="subtitle">
+                              <UploadFormHeader
+                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
+                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
+                              />
+                            </span>
                             <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
+                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
                             />
                           </div>
                         </FormKit>
@@ -417,14 +428,17 @@
                       >
                         <FormKit :name="detailCashFlowType" type="group">
                           <div class="form-field">
-                            <UploadFormHeader
-                              :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                              :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                            />
+                            <span class="subtitle">
+                              <UploadFormHeader
+                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
+                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
+                              />
+                            </span>
                             <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
+                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
                             />
                           </div>
                         </FormKit>
@@ -492,7 +506,7 @@ import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/ba
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { updateObject } from "@/utils/updateObjectUtils";
+import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
 
 export default defineComponent({
@@ -528,8 +542,10 @@ export default defineComponent({
       { label: "Assurance", value: "assurance" },
       { label: "CapEx", value: "capex" },
       { label: "OpEx", value: "opex" },
+      { label: "Revenue", value: "revenue" },
     ],
     elementPosition: 0,
+    isItUploadForm: false,
     route: useRoute(),
     waitingForData: false,
     formatSize,
@@ -587,6 +603,7 @@ export default defineComponent({
 
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+      this.isItUploadForm = true;
       void this.loadEuData(dataId);
     }
   },
@@ -612,7 +629,11 @@ export default defineComponent({
       if (dataResponseData.data?.fiscalYearEnd) {
         this.fiscalYearEnd = new Date(dataResponseData.data.fiscalYearEnd);
       }
-      updateObject(this.formInputsModel, dataResponseData);
+      const receivedFormInputsModel = modifyObjectKeys(
+        JSON.parse(JSON.stringify(dataResponseData)) as objectType,
+        "receive"
+      );
+      updateObject(this.formInputsModel, receivedFormInputsModel);
       this.waitingForData = false;
     },
     /**
@@ -623,12 +644,16 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
+        const formInputsModelToSend = modifyObjectKeys(
+          JSON.parse(JSON.stringify(this.formInputsModel)) as objectType,
+          "send"
+        );
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         this.postEuTaxonomyDataForNonFinancialsResponse =
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            this.formInputsModel
+            formInputsModelToSend
           );
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       } catch (error) {
@@ -638,6 +663,20 @@ export default defineComponent({
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
       }
     },
+
+    /**
+     * Updates the date of a single report file
+     *
+     * @param index file to update
+     */
+    updateReportDateHandler(index: number) {
+      this.files.updatePropertyFilesUploaded(
+        index,
+        "convertedReportDate",
+        getHyphenatedDate(this.files.files[index].reportDate as unknown as Date)
+      );
+    },
+
     /**
      * Modifies the file object and adds it to the store
      *

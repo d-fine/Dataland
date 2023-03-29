@@ -12,16 +12,19 @@
   </div>
   <div v-show="dataPointIsAvailable">
     <div class="form-field">
-      <UploadFormHeader name="Eligible Revenue (%) *" explanation="Eligible Revenue (%) *" />
+      <UploadFormHeader
+        :name="valueType === 'percent' ? 'Eligible Revenue (%)' : 'Eligible Revenue'"
+        explanation="Eligible Revenue (%) *"
+      />
       <FormKit
         :disabled="!dataPointIsAvailable"
         type="number"
         name="value"
         validation-label=""
-        placeholder="Value %"
+        :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
         step="any"
         min="0"
-        validation="number|between:0,100"
+        :validation="valueType === 'percent' ? 'number|between:0,100' : 'number'"
         :inner-class="{
           short: true,
         }"
@@ -109,6 +112,10 @@ export default defineComponent({
     toggleDataAvailable: {
       type: Boolean,
       default: true,
+    },
+    valueType: {
+      type: String,
+      default: "percent",
     },
   },
   methods: {

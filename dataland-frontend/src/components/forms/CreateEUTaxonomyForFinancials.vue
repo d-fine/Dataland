@@ -64,7 +64,7 @@
                       <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
                         <div class="flex gap-2">
                           <PrimeButton
-                            data-test="uploadFiles"
+                            data-test="upload-files-button"
                             @click="chooseCallback()"
                             icon="pi pi-upload"
                             label="UPLOAD REPORTS"
@@ -73,16 +73,19 @@
                       </div>
                     </template>
                     <template #content="{ uploadedFiles, removeUploadedFileCallback }">
-                      <div v-if="uploadedFiles.length > 0">
+                      <div v-if="uploadedFiles.length > 0" data-test="uploaded-files">
                         <div
                           v-for="(file, index) of files.files"
                           :key="file.name + file.reportDate"
                           class="flex w-full align-items-center file-upload-item"
                         >
-                          <span class="font-semibold flex-1">{{ file.name }}</span>
-                          <div class="mx-2 text-black-alpha-50">{{ formatSize(file.size) }}</div>
+                          <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
+                          <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
+                            {{ formatSize(file.size) }}
+                          </div>
                           <PrimeButton
                             icon="pi pi-times"
+                            data-test="uploaded-files-remove"
                             @click="files.removeReportFromFilesUploaded(file, removeUploadedFileCallback, index)"
                             class="p-button-rounded"
                           />
@@ -113,7 +116,7 @@
                               inputId="icon"
                               :showIcon="true"
                               dateFormat="D, M dd, yy"
-                              @update:modelValue="updateReportDate(index)"
+                              @update:modelValue="updateReportDateHandler(index)"
                             />
                           </div>
 
@@ -506,7 +509,7 @@ import {
   DataMetaInformation,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
-import { updateObject } from "@/utils/updateObjectUtils";
+import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
 
 export default defineComponent({
@@ -534,7 +537,6 @@ export default defineComponent({
   data() {
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
-      loadEuDataModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
       fiscalYearEnd: "" as Date | "",
       convertedFiscalYearEnd: "",
@@ -661,11 +663,14 @@ export default defineComponent({
         });
         this.confirmeSelectedKPIs();
       }
-      this.loadEuDataModel = dataResponseData;
+      const receivedFormInputsModel = modifyObjectKeys(
+        JSON.parse(JSON.stringify(dataResponseData)) as objectType,
+        "receive"
+      );
       this.waitingForData = false;
 
       await this.$nextTick();
-      updateObject(this.formInputsModel, this.loadEuDataModel);
+      updateObject(this.formInputsModel, receivedFormInputsModel);
     },
 
     /**
@@ -676,23 +681,27 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
+        const formInputsModelToSend = modifyObjectKeys(
+          JSON.parse(JSON.stringify(this.formInputsModel)) as objectType,
+          "send"
+        );
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-            this.formInputsModel
+            formInputsModelToSend
           );
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
-        this.fiscalYearEnd = "";
-        this.files.filesNames = [];
+        this.formInputsModel = {};
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
-        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
+        this.fiscalYearEnd = "";
       }
     },
 
@@ -740,13 +749,12 @@ export default defineComponent({
      *
      * @param index file to update
      */
-    updateReportDate(index: number) {
+    updateReportDateHandler(index: number) {
       this.files.updatePropertyFilesUploaded(
         index,
         "convertedReportDate",
         getHyphenatedDate(this.files.files[index].reportDate as unknown as Date)
       );
-      this.files.reRender();
     },
   },
 });
