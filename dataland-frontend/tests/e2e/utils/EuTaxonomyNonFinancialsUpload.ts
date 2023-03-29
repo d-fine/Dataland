@@ -8,6 +8,7 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
+import { submitFormBar } from "@sharedUtils/components/SubmitFormBar";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
@@ -21,6 +22,8 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   valueFieldNotFilled = false
 ): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
+  submitFormBar.buttonIsAddDataButton();
+  submitFormBar.buttonAppearsDisabled();
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
   cy.get("div.p-datepicker").find('span:contains("11")').click();
@@ -60,8 +63,9 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
       cy.wrap($element).select(3);
     });
   }
+  submitFormBar.buttonAppearsEnabled();
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
-  cy.get('button[data-test="submitButton"]').click();
+  submitFormBar.clickButton();
   cy.wait("@postCompanyAssociatedData");
   return cy.contains("h4", "dataId").then<string>(($dataId): string => {
     return $dataId.text();

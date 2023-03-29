@@ -9,6 +9,7 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
+import { submitFormBar } from "@sharedUtils/components/SubmitFormBar";
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
@@ -17,7 +18,7 @@ import Chainable = Cypress.Chainable;
  */
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
-  cy.get('button[data-test="submitButton"]').click();
+  submitFormBar.clickButton();
   cy.on("uncaught:exception", (err) => {
     expect(err.message).to.include("unhandled promise rejection");
     return false;
