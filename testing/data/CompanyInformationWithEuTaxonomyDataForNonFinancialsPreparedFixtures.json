@@ -3,186 +3,213 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Huckestein-Evers"
+				"Barr-Keller",
+				"Ochs, Ostendarp und Lienshöft",
+				"Pohl-Niklaus"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"headquarters": "Nord Mathildeland",
-			"headquartersPostalCode": "91296",
-			"sector": "functionalities",
+			"companyLegalForm": "GmbH & Co. KG",
+			"headquarters": "Räntschscheid",
+			"headquartersPostalCode": "48839",
+			"sector": "e-services",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "1iz41w0df9fnxdg"
+					"identifierType": "Lei",
+					"identifierValue": "ykwtka1bxreab730i0k5"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "om53ax5"
+					"identifierValue": "7wwyhqk"
 				}
 			],
-			"countryCode": "GE",
+			"countryCode": "CO",
 			"isTeaserCompany": false,
-			"website": "http://einfach-gesellschaft.info"
+			"website": "https://empathisch-mineral.ch"
 		},
 		"t": {
 			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "http://vortrefflich-krieg.ch/konziliant-wolkenkratzer.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "TZS"
+				},
 				"AnnualReport": {
-					"reference": "https://uralt-platin.org/agil-tisch.pdf",
+					"reference": "http://resolut-drache.org/gl%C3%BCcklich-wolke.pdf",
+					"currency": "JPY"
+				},
+				"SustainabilityReport": {
+					"reference": "http://xn--unbestechlich-sure-ztb.name/tapfer-br%C3%BCcke.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-10-09",
+					"currency": "AUD"
+				},
+				"ESEFReport": {
+					"reference": "http://leuchtend-krankheiten.net/qualit%C3%A4tsvoll-%C3%A4sthetik.pdf",
 					"isGroupLevel": "NA",
-					"reportDate": "2022-07-06",
-					"currency": "KRW"
+					"reportDate": "2022-06-19",
+					"currency": "ZMW"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-07-09",
+			"fiscalYearEnd": "2022-04-12",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance"
 			},
+			"scopeOfEntities": "No",
+			"reportingObligation": "No",
+			"numberOfEmployees": 36636,
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.2414,
+					"value": 0.323,
 					"dataSource": {
-						"page": 562,
+						"page": 53,
 						"report": "AnnualReport",
-						"tagName": "infomediaries"
+						"tagName": "communities"
 					},
-					"quality": "Estimated",
-					"comment": "copy digital port"
+					"quality": "Audited",
+					"comment": "calculate virtual firewall"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.3397,
-					"quality": "Estimated"
+					"value": 0.9995,
+					"dataSource": {
+						"page": 858,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
+					},
+					"quality": "Estimated",
+					"comment": "synthesize primary circuit"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.3215,
-					"dataSource": {
-						"page": 684,
-						"report": "AnnualReport",
-						"tagName": "blockchains"
-					},
-					"quality": "Audited",
-					"comment": "navigate virtual bandwidth"
+					"value": 0.6009,
+					"quality": "Estimated"
 				}
 			}
 		},
-		"reportingPeriod": "2021-Q2"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Brinkmann-Helpling"
+				"Semisch GmbH & Co. KG"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"headquarters": "Bad Nadine",
-			"sector": "e-business",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"headquarters": "Elisadorf",
+			"headquartersPostalCode": "80051",
+			"sector": "web services",
 			"identifiers": [
 				{
-					"identifierType": "Isin",
-					"identifierValue": "k5tdsslqmh1m"
+					"identifierType": "Duns",
+					"identifierValue": "z9jc4z8a8"
 				},
 				{
-					"identifierType": "Lei",
-					"identifierValue": "pgskspflm5xcdg0mm15c"
+					"identifierType": "PermId",
+					"identifierValue": "a62eovd8kp"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "iceu4kz"
+					"identifierValue": "whndpiu"
 				}
 			],
-			"countryCode": "TC",
+			"countryCode": "BV",
 			"isTeaserCompany": false,
-			"website": "http://transzendent-telefon.org"
+			"website": "https://erfolgreich-judentum.info"
 		},
 		"t": {
 			"referencedReports": {
 				"ESEFReport": {
-					"reference": "https://xn--y-frmig-tanz-6ib.name/relevant-teppich.pdf",
-					"reportDate": "2022-12-07",
-					"currency": "TTD"
+					"reference": "http://xn--grozgig-agnostizismus-2yb28d.net/chaotisch-laden.pdf",
+					"isGroupLevel": "No",
+					"currency": "BSD"
 				},
 				"AnnualReport": {
-					"reference": "http://harmonisch-blume.com/flott-fu%C3%9Fball.pdf",
-					"reportDate": "2022-10-21",
-					"currency": "XPT"
-				},
-				"SustainabilityReport": {
-					"reference": "https://xn--hochmtig-elektronik-99b.org/richtungsgebend-anderes.pdf",
-					"currency": "MUR"
+					"reference": "https://qualifiziert-busen.com/ungew%C3%B6hnlich-auge.pdf",
+					"isGroupLevel": "Yes",
+					"currency": "AZN"
 				},
 				"IntegratedReport": {
-					"reference": "https://friedlich-verben.org/galant-m%C3%B6bel.pdf",
-					"isGroupLevel": "No",
-					"currency": "XAU"
+					"reference": "http://raffiniert-ellenbogen.info/automatisch-kernschmelze.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-09-21",
+					"currency": "LBP"
 				}
 			},
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-01-03",
+			"fiscalYearEnd": "2022-10-20",
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 548,
+					"report": "ESEFReport",
+					"tagName": "content"
+				}
 			},
-			"scopeOfEntities": "Yes",
-			"numberOfEmployees": 4570,
-			"activityLevelReporting": "Yes",
+			"reportingObligation": "Yes",
+			"numberOfEmployees": 90694,
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 666547.92,
+					"value": 605136.79,
 					"dataSource": {
-						"page": 838,
+						"page": 911,
 						"report": "IntegratedReport",
-						"tagName": "blockchains"
+						"tagName": "architectures"
 					},
-					"quality": "Incomplete",
-					"comment": "calculate haptic monitor"
+					"quality": "Audited",
+					"comment": "quantify 1080p capacitor"
 				},
 				"eligiblePercentage": {
-					"value": 0.658,
+					"value": 0.5472,
 					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 406163.89,
-					"quality": "Incomplete"
-				},
-				"eligiblePercentage": {
-					"value": 0.6199,
+					"value": 747981.25,
 					"dataSource": {
-						"page": 777,
+						"page": 324,
 						"report": "ESEFReport",
-						"tagName": "markets"
+						"tagName": "methodologies"
 					},
 					"quality": "Reported",
-					"comment": "quantify haptic circuit"
+					"comment": "hack bluetooth pixel"
+				},
+				"eligiblePercentage": {
+					"value": 0.8204,
+					"dataSource": {
+						"page": 1019,
+						"report": "IntegratedReport",
+						"tagName": "communities"
+					},
+					"quality": "Incomplete",
+					"comment": "parse virtual protocol"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 536563.45,
+					"value": 240596.54,
 					"dataSource": {
-						"page": 392,
-						"report": "SustainabilityReport",
-						"tagName": "relationships"
+						"page": 1042,
+						"report": "IntegratedReport",
+						"tagName": "convergence"
 					},
 					"quality": "Reported",
-					"comment": "copy redundant system"
+					"comment": "synthesize online program"
 				},
 				"eligiblePercentage": {
-					"value": 0.6521,
+					"value": 0.4072,
 					"dataSource": {
-						"page": 732,
-						"report": "AnnualReport",
-						"tagName": "experiences"
+						"page": 830,
+						"report": "IntegratedReport",
+						"tagName": "functionalities"
 					},
-					"quality": "Reported",
-					"comment": "compress cross-platform pixel"
+					"quality": "Audited",
+					"comment": "override haptic system"
 				}
 			}
 		},
-		"reportingPeriod": "2020-Q1"
+		"reportingPeriod": "2019"
 	}
 ]
