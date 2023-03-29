@@ -23,9 +23,9 @@ server {
       proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header X-Forwarded-Host $host;
 
-      proxy_pass http://frontend:4173;
-      #proxy_pass http://frontend:80;
-      #include utils/proxy.conf;
+      proxy_pass http://frontend-dev:4173;
+
+      # proxy ws
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection $connection_upgrade;
       proxy_read_timeout 86400;
