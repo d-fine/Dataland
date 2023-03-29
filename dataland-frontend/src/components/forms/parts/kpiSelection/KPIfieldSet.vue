@@ -43,8 +43,6 @@
               v-model="currentReportValue"
               :disabled="!dataPointIsAvailable"
               placeholder="Select a report"
-              :validation="dataPointIsAvailable ? 'required' : ''"
-              validation-label="Select a report"
               :options="['None...', ...this.files.filesNames]"
             />
           </div>
@@ -98,7 +96,6 @@ import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
-import {DatasetTableInfo} from "@/components/resources/datasetOverview/DatasetTableInfo";
 
 export default defineComponent({
   name: "KPIfieldSet",
@@ -118,7 +115,7 @@ export default defineComponent({
   }),
   watch: {
     dataPointIsAvailable(newValue: boolean) {
-      if(!newValue) {
+      if (!newValue) {
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
         this.pageValueWhenDataPointIsDisabled = this.currentPageValue;
         this.reportValueWhenDataPointIsDisabled = this.currentReportValue;
