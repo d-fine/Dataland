@@ -696,15 +696,16 @@ export default defineComponent({
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
             formInputsModelToSend
           );
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
-        this.fiscalYearEnd = "";
+        this.formInputsModel = {};
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
+        this.fiscalYearEnd = "";
       }
     },
 
