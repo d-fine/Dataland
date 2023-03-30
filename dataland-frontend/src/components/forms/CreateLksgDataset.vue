@@ -34,6 +34,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.dataDate"
                           :explanation="lksgKpisInfoMappings.dataDate"
+                          :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12">
                           <Calendar
@@ -60,6 +61,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.lksgInScope"
                           :explanation="lksgKpisInfoMappings.lksgInScope"
+                          :is-required="true"
                         />
                         <FormKit
                           type="radio"
@@ -84,6 +86,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.vatIdentificationNumber"
                           :explanation="lksgKpisInfoMappings.vatIdentificationNumber"
+                          :is-required="true"
                         />
                         <FormKit
                           type="text"
@@ -98,6 +101,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.numberOfEmployees"
                           :explanation="lksgKpisInfoMappings.numberOfEmployees"
+                          :is-required="true"
                         />
                         <FormKit
                           type="number"
@@ -115,6 +119,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.shareOfTemporaryWorkers"
                           :explanation="lksgKpisInfoMappings.shareOfTemporaryWorkers"
+                          :is-required="true"
                         />
                         <FormKit
                           type="number"
@@ -134,6 +139,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.totalRevenue"
                           :explanation="lksgKpisInfoMappings.totalRevenue"
+                          :is-required="true"
                         />
                         <FormKit
                           type="number"
@@ -153,6 +159,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.totalRevenueCurrency"
                           :explanation="lksgKpisInfoMappings.totalRevenueCurrency"
+                          :is-required="true"
                         />
                         <FormKit
                           type="text"
@@ -170,6 +177,7 @@
                         <UploadFormHeader
                           :name="'Is your company a manufacturing company?'"
                           :explanation="lksgKpisInfoMappings.listOfProductionSites"
+                          :is-required="true"
                         />
                         <FormKit
                           type="radio"
@@ -217,6 +225,7 @@
                               <UploadFormHeader
                                 :name="lksgKpisNameMappings.productionSiteName"
                                 :explanation="lksgKpisInfoMappings.productionSiteName"
+                                :is-required="true"
                               />
                               <FormKit
                                 type="text"
@@ -230,6 +239,7 @@
                               <UploadFormHeader
                                 :name="lksgKpisNameMappings.inHouseProductionOrContractProcessing"
                                 :explanation="lksgKpisInfoMappings.inHouseProductionOrContractProcessing"
+                                :is-required="true"
                               />
                               <FormKit
                                 type="radio"
@@ -254,6 +264,7 @@
                               <UploadFormHeader
                                 :name="lksgKpisNameMappings.addressesOfProductionSites"
                                 :explanation="lksgKpisInfoMappings.addressesOfProductionSites"
+                                :is-required="true"
                               />
 
                               <FormKit
