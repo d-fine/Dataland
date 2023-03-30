@@ -33,13 +33,18 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-backend/DockerfileBase`
 - [ ] `./dataland-backend/DockerfileTest`
 - [ ] `./dataland-csvconverter/Dockerfile`
+- [ ] `./dataland-document-manager/Dockerfile`
+- [ ] `./dataland-document-manager/DockerfileBase`
+- [ ] `./dataland-document-manager/DockerfileTest`
 - [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-internal-storage/Dockerfile`
+- [ ] `./dataland-internal-storage/DockerfileBase`
 - [ ] `./dataland-internal-storage/DockerfileTest`
 - [ ] `./dataland-qa-service/Dockerfile`
+- [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
 - [ ] `./dataland-rabbitmq/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
@@ -48,7 +53,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
-- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db and frontend-dev
+- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db, document-manager-db and frontend-dev
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 
 ## Dataland Monitoring
