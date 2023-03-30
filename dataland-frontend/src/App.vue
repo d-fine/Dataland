@@ -1,7 +1,11 @@
 <template>
+  <div class="col-10">
+    <h4 class="top-50 fixed" style="z-index: 20" data-test="123hallo">
+      {{ currentTokenSliced + "---and:  " + currentRefreshTokenInStore?.slice(-20) }}
+    </h4>
+  </div>
   <DynamicDialog />
   <router-view />
-  <h2>{{sessionStateStore.token}}</h2>
 </template>
 
 <script lang="ts">
@@ -9,10 +13,14 @@ import Keycloak from "keycloak-js";
 import DynamicDialog from "primevue/dynamicdialog";
 import { computed, defineComponent } from "vue";
 import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
-import { tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
+import {
+  startSessionSetIntervalFunction,
+  tryToRefreshSession,
+   updateTokenAndItsExpiryTimestampAndStoreBoth,
+} from "@/utils/SessionTimeoutUtils";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
-import { useSessionStateStore } from "@/stores/stores";
+import { useFunctionIdsStore, useSessionStateStore } from "@/stores/stores";
 
 export default defineComponent({
   name: "app",
@@ -20,18 +28,37 @@ export default defineComponent({
 
   data() {
     return {
-      sessionStateStore: useSessionStateStore(),
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
       resolvedKeycloakPromise: undefined as undefined | Keycloak,
       keycloakAuthenticated: false,
+      currentTokenSliced: useSessionStateStore().refreshToken, // TODO remove at the end
     };
+  },
+
+  watch: {
+    currentRefreshTokenInStore(newRefreshToken) {
+      console.log("NOTE: session store token changed!  update warning timestamp and restart session!");
+      if (this.resolvedKeycloakPromise && newRefreshToken) {
+        console.log("NOTE2: new refresh token is actually defined, so Dataland is reacting to the change...")
+        this.resolvedKeycloakPromise.refreshToken = newRefreshToken;
+        this.currentTokenSliced = newRefreshToken.slice(-20); // TODO debugging
+        clearInterval(useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning);
+        startSessionSetIntervalFunction(this.resolvedKeycloakPromise, this.openSessionWarningModal);
+      }
+    },
+  },
+
+  computed: {
+    currentRefreshTokenInStore() {
+      return useSessionStateStore().refreshToken;
+    },
   },
 
   async created() {
     this.keycloakPromise = this.initKeycloak();
     this.resolvedKeycloakPromise = await this.keycloakPromise;
     if (this.resolvedKeycloakPromise && this.resolvedKeycloakPromise.authenticated) {
-      tryToRefreshSession(this.resolvedKeycloakPromise as Keycloak, this.handleSurpassingTheSessionWarningTimestamp);
+      updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise)
     }
   },
   provide() {
@@ -58,6 +85,15 @@ export default defineComponent({
       keycloak.onAuthRefreshSuccess = () => {
         console.log("refreshed tokens");
       }; // TODO debugging
+      keycloak.onAuthRefreshError = () => {
+        console.log("ERROR!!!: refresherror");
+      }; // TODO debugging
+      keycloak.onAuthError = () => {
+        console.log("ERROR!!!: autherror");
+      }; // TODO debugging
+      keycloak.onAuthSuccess = () => {
+        console.log("SUCCESS: auth!") // TODO debugging
+      }
       return keycloak
         .init({
           onLoad: "check-sso",
@@ -87,16 +123,10 @@ export default defineComponent({
       logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, "?externalLogout=true");
     },
 
-    /**
-     * Opens a pop-up window to inform the user about the soon-to-be-expired session.
-     */
-    handleSurpassingTheSessionWarningTimestamp() {
-      this.openSessionWarningModal();
-    },
 
     /**
      * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
-     * If the refresh button is clicked or the pop-up is closed soon enough, the session is refreshed.
+     * If the refresh button is  clicked or the pop-up is closed soon enough, the session is refreshed.
      * Else the text changes and tells the user that the session was closed. That behaviour is activated in the
      * SessionDialog via the variable isTrackingOfRefreshTokenExpiryEnabled.
      */
@@ -104,19 +134,14 @@ export default defineComponent({
       this.$dialog.open(SessionDialog, {
         props: {
           modal: true,
-          dismissableMask: true,
+          closable: false,
+          closeOnEscape: false
         },
         data: {
           displayedText: "Your session in this tab will expire soon. Please refresh it if you want to stay logged in.",
           showRefreshButton: true,
           isTrackingOfRefreshTokenExpiryEnabled: true,
           resolvedKeycloakPromise: this.resolvedKeycloakPromise,
-        },
-        onClose: () => {
-          tryToRefreshSession(
-            this.resolvedKeycloakPromise as Keycloak,
-            this.handleSurpassingTheSessionWarningTimestamp
-          );
         },
       });
     },

@@ -1,16 +1,15 @@
 <template>
   <UserAuthenticationButtons v-if="showLogInButton" />
-  <h1 v-text="sessionStateStore.token" />
   {{ displayedText }}
   <PrimeButton
     v-if="showRefreshButton"
     :label="refreshButtonLabel"
     class="p-button-sm uppercase d-letters text-primary bg-white-alpha-10 w-15rem"
     name="refresh_session_button"
-    @click="handleClickOnRefreshSession"
+    @click="handleRefreshSession"
   />
   <PrimeButton
-    label="FOR DEBUGGIN: refreshTokens"
+    label="FOR DEBUGGING: refreshTokens"
     class="p-button-sm uppercase d-letters text-primary bg-white-alpha-10 w-15rem"
     name="refresh_session_button"
     @click="refreshTokensDebuggingMethod"
@@ -22,10 +21,14 @@ import { defineComponent } from "vue";
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons.vue";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
-import { isCurrentRefreshTokenExpired } from "@/utils/SessionTimeoutUtils";
+import {
+  isCurrentRefreshTokenExpired,
+  startSessionSetIntervalFunction, tryToRefreshSession,
+  updateTokenAndItsExpiryTimestampAndStoreBoth,
+} from "@/utils/SessionTimeoutUtils";
 import Keycloak from "keycloak-js";
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
-import { useSessionStateStore } from "@/stores/stores";
+import { useFunctionIdsStore, useSessionStateStore } from "@/stores/stores";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -34,7 +37,6 @@ export default defineComponent({
 
   data() {
     return {
-      sessionStateStore: useSessionStateStore(),
       displayedText: undefined as undefined | string,
       showLogInButton: false,
       showRefreshButton: false,
@@ -45,11 +47,25 @@ export default defineComponent({
     };
   },
 
+  watch: {
+    currentRefreshTokenInStore(newValue) {
+      console.log("session dialog is open and noticed new refresh token => closing dialog");
+      this.closeTheDialog();
+    },
+  },
+
+  computed: {
+    currentRefreshTokenInStore() {
+      const currentRefreshTokenInStore = useSessionStateStore().refreshToken;
+      if (currentRefreshTokenInStore) return currentRefreshTokenInStore; // you could inject the current refresh token from App.vue TODO
+    },
+  },
+
   mounted() {
     this.getDataFromParentAndSet();
     console.log("mounting the pop up"); // TODO debugging
     if (this.isTrackingOfRefreshTokenExpiryEnabled) {
-      this.setIntervalForRefreshTokenExpiredCheck();
+      this.setIntervalForRefreshTokenExpiryCheck();
     }
   },
 
@@ -62,22 +78,23 @@ export default defineComponent({
   },
 
   methods: {
+    handleRefreshSession() {
+      tryToRefreshSession(this.keycloak as Keycloak)
+      this.closeTheDialog()
+    },
+
     refreshTokensDebuggingMethod() {
       // TODO dummy function only for debugging
       if (this.keycloak) {
-        this.keycloak?.updateToken(-1);
+        updateTokenAndItsExpiryTimestampAndStoreBoth(this.keycloak);
         console.log("update token in method to " + this.keycloak.refreshToken);
-        console.log("set manually now");
-        const dummyNewString = (" " + this.keycloak.refreshToken).slice(1);
-        this.keycloak.refreshToken = dummyNewString;
-        console.log("new manually set refresh token " + this.keycloak.refreshToken);
       }
     },
 
     /**
-     * Handles the click-event on the "refresh session" button.
+     * Closes the dialog.
      */
-    handleClickOnRefreshSession() {
+    closeTheDialog() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       dialogRefToDisplay.close();
     },
@@ -98,12 +115,11 @@ export default defineComponent({
       this.keycloak = dialogRefData.resolvedKeycloakPromise;
     },
 
-    setIntervalForRefreshTokenExpiredCheck() {
+    setIntervalForRefreshTokenExpiryCheck() {
       console.log("starting setinveral for refresh token check"); // TODO debugging
       this.functionIdOfExpiryCheck = setInterval(() => {
         console.log("constantly checking if refresh token is expired"); // TODO debugging
-        if (isCurrentRefreshTokenExpired(this.keycloak as Keycloak)) {
-          useSessionStateStore().isRefreshTokenExpired = true;
+        if (isCurrentRefreshTokenExpired()) {
           console.log("refresh token is expired => stopping this setInterval and changing texts on pop-up"); // TODO debugging
           this.displayedText = "Your session was closed due to inactivity. Login to start a new session.";
           this.refreshButtonLabel = "Login";

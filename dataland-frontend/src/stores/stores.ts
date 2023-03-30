@@ -14,12 +14,20 @@ export const useFrameworkFiltersStore = defineStore("frameworkFilters", {
   },
 });
 
+export const useFunctionIdsStore = defineStore("functionIdsStore", {
+  state: () => {
+    return {
+      functionIdOfSetIntervalForSessionWarning: undefined as undefined | number,
+    };
+  },
+});
+
 export const useSessionStateStore = defineStore("sessionStateStore", {
   state: () => {
     return {
-      isRefreshTokenExpired: false,
+      refreshToken: undefined as undefined | string,
+      refreshTokenExpiryTimestampInMs: undefined as undefined | number,
       sessionWarningTimestampInMs: undefined as undefined | number,
-      token: "123SampleToken321",
     };
   },
 

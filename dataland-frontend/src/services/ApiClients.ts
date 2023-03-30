@@ -16,7 +16,7 @@ import {
 } from "@clients/backend/api";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import { updateSessionWarningTimestamp } from "@/utils/SessionTimeoutUtils";
+import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -27,8 +27,8 @@ export class ApiClientProvider {
   async getConfiguration(): Promise<Configuration | undefined> {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
-      await keycloak.updateToken(-1);
-      updateSessionWarningTimestamp(keycloak);
+      console.log("API being used = updating token"); // TODO debugging
+      updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
       return new Configuration({ accessToken: keycloak.token });
     } else {
       return undefined;
@@ -38,7 +38,6 @@ export class ApiClientProvider {
   async getConstructedApi<T>(
     constructor: new (configuration: Configuration | undefined, basePath: string) => T
   ): Promise<T> {
-    console.log("getConstructedApiRuns"); // TODO debugging
     const configuration = await this.getConfiguration();
     return new constructor(configuration, "/api");
   }
