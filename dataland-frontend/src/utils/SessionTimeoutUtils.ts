@@ -12,13 +12,14 @@ export function updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak: Keycloak)
   keycloak
     .updateToken(-1) // TODO at then end of dev change this value
     .then(() => {
-      const refreshTokenExpiryTime = keycloak.refreshTokenParsed?.exp
+      const refreshTokenExpiryTime = keycloak.refreshTokenParsed?.exp;
       if (refreshTokenExpiryTime) {
         useSessionStateStore().refreshToken = keycloak.refreshToken;
         useSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
-        useSessionStateStore().sessionWarningTimestampInMs = refreshTokenExpiryTime * 1000 - // TODO you could set this in the store itself
-            TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS
-        console.log("--------------NEW SESSION WARNING TIMESTAMP IS: " + refreshTokenExpiryTime * 1000)
+        useSessionStateStore().sessionWarningTimestampInMs =
+          refreshTokenExpiryTime * 1000 - // TODO you could set this in the store itself
+          TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS;
+        console.log("--------------NEW SESSION WARNING TIMESTAMP IS: " + refreshTokenExpiryTime * 1000);
       }
     })
     .catch(() => {
@@ -75,7 +76,7 @@ export function startSessionSetIntervalFunction(
 
 export function isCurrentRefreshTokenExpired(): boolean {
   const currentTimestamp = new Date().getTime();
-  const expiryTimestampOfCurrentRefreshTokenInMs = useSessionStateStore().refreshTokenExpiryTimestampInMs
+  const expiryTimestampOfCurrentRefreshTokenInMs = useSessionStateStore().refreshTokenExpiryTimestampInMs;
   if (expiryTimestampOfCurrentRefreshTokenInMs) {
     console.log(
       "currentTime: " +
@@ -87,8 +88,10 @@ export function isCurrentRefreshTokenExpired(): boolean {
       currentTimestamp + minRequiredValidityTimeOfRefreshTokenDuringCheck > expiryTimestampOfCurrentRefreshTokenInMs
     );
   } else {
-    throw Error("No expiry timestamp for the current refresh token could be found in the store. " +
-        "This is not acceptable for running Dataland.");
+    throw Error(
+      "No expiry timestamp for the current refresh token could be found in the store. " +
+        "This is not acceptable for running Dataland."
+    );
   }
 }
 

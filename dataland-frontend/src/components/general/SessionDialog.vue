@@ -8,12 +8,6 @@
     name="refresh_session_button"
     @click="handleRefreshSession"
   />
-  <PrimeButton
-    label="FOR DEBUGGING: refreshTokens"
-    class="p-button-sm uppercase d-letters text-primary bg-white-alpha-10 w-15rem"
-    name="refresh_session_button"
-    @click="refreshTokensDebuggingMethod"
-  />
 </template>
 
 <script lang="ts">
@@ -21,14 +15,10 @@ import { defineComponent } from "vue";
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons.vue";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
-import {
-  isCurrentRefreshTokenExpired,
-  startSessionSetIntervalFunction, tryToRefreshSession,
-  updateTokenAndItsExpiryTimestampAndStoreBoth,
-} from "@/utils/SessionTimeoutUtils";
+import { isCurrentRefreshTokenExpired, tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
 import Keycloak from "keycloak-js";
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
-import { useFunctionIdsStore, useSessionStateStore } from "@/stores/stores";
+import { useSessionStateStore } from "@/stores/stores";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -48,7 +38,7 @@ export default defineComponent({
   },
 
   watch: {
-    currentRefreshTokenInStore(newValue) {
+    currentRefreshTokenInStore() {
       console.log("session dialog is open and noticed new refresh token => closing dialog");
       this.closeTheDialog();
     },
@@ -79,16 +69,8 @@ export default defineComponent({
 
   methods: {
     handleRefreshSession() {
-      tryToRefreshSession(this.keycloak as Keycloak)
-      this.closeTheDialog()
-    },
-
-    refreshTokensDebuggingMethod() {
-      // TODO dummy function only for debugging
-      if (this.keycloak) {
-        updateTokenAndItsExpiryTimestampAndStoreBoth(this.keycloak);
-        console.log("update token in method to " + this.keycloak.refreshToken);
-      }
+      tryToRefreshSession(this.keycloak as Keycloak);
+      this.closeTheDialog();
     },
 
     /**
