@@ -15,12 +15,11 @@
 
 <script lang="ts">
 import {defineComponent, inject} from "vue";
-import {CompanyReport,} from "@clients/backend";
+import {CompanyReport} from "@clients/backend";
 import {AxiosResponse} from "axios";
 import {ApiClientProvider} from "@/services/ApiClients";
 import {assertDefined} from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
-import { DocumentMetaInfo } from "@clients/documentmanager";
 
 export default defineComponent({
   setup() {
@@ -30,14 +29,14 @@ export default defineComponent({
   },
   name: "ShowReportsBanner",
   props: {
-    reports: { type: Map<string, CompanyReport> },
+    reports: {type: Map<string, CompanyReport>},
   },
   data() {
     return {
       reportCounter: 10,
       test: "test",
       getDocumentsFromStorageProcessed: false,
-      getDocumentsFromStorageResponse: null as AxiosResponse<DocumentMetaInfo> | null,
+      getDocumentsFromStorageResponse: null as AxiosResponse<File> | null,
       messageCount: 0,
     };
   },
@@ -49,9 +48,7 @@ export default defineComponent({
     resetReportsCount() {
       this.reportCounter = 0;
     },
-    getReferencedDocument(hash: string) {
-      return 0;
-    },
+
     /**
      * Retrieves document for from the storage
      */
@@ -62,10 +59,7 @@ export default defineComponent({
         const documentControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)()
         ).getDocumentControllerApi();
-        this.getDocumentsFromStorageResponse =
-            await documentControllerApi.getDocument(
-                documentId
-            );
+        this.getDocumentsFromStorageResponse = await documentControllerApi.getDocument(documentId);
         this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.getDocumentsFromStorageResponse = null;
