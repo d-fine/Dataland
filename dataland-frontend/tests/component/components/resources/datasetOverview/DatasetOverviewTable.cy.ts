@@ -53,12 +53,7 @@ describe("Component test for DatasetOverviewTable", () => {
 
   it("Check if the table rows look as expected", () => {
     prepareSimpleDatasetOverviewTable([datasetTableInfoMockForAlpha]);
-    const expectedRowContents = [
-      nameOfCompanyAlpha,
-      humanizeString(dataTypeOfDatasetForAlpha),
-      "2023",
-      "APPROVED",
-    ];
+    const expectedRowContents = [nameOfCompanyAlpha, humanizeString(dataTypeOfDatasetForAlpha), "2023", "APPROVED"];
     cy.get("tbody td").should((elements) => {
       expect(elements.length).to.equal(6);
     });

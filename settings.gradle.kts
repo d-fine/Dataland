@@ -17,7 +17,7 @@ include(
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
 
             library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.2")
             library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.9.2")
