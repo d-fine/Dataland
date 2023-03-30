@@ -147,6 +147,7 @@
                           <UploadFormHeader
                             :name="euTaxonomyKpiNameMappings.currency"
                             :explanation="euTaxonomyKpiInfoMappings.currency"
+                            :is-required="true"
                           />
                           <div class="lg:col-4 md:col-4 col-12 p-0">
                             <FormKit
@@ -192,6 +193,7 @@
                       <UploadFormHeader
                         :name="euTaxonomyKpiNameMappings.fiscalYearEnd"
                         :explanation="euTaxonomyKpiInfoMappings.fiscalYearEnd"
+                        :is-required="true"
                       />
                       <div class="lg:col-6 md:col-6 col-12 p-0">
                         <Calendar
@@ -236,6 +238,7 @@
                       <UploadFormHeader
                         :name="euTaxonomyKpiNameMappings.numberOfEmployees"
                         :explanation="euTaxonomyKpiInfoMappings.numberOfEmployees"
+                        :is-required="true"
                       />
                       <div class="lg:col-4 md:col-4 col-6 p-0">
                         <FormKit
@@ -275,6 +278,7 @@
                         <UploadFormHeader
                           :name="euTaxonomyKpiNameMappings.assurance ?? ''"
                           :explanation="euTaxonomyKpiInfoMappings.assurance ?? ''"
+                          :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12 p-0">
                           <FormKit
@@ -310,6 +314,7 @@
                               <UploadFormHeader
                                 :name="euTaxonomyKpiNameMappings.report ?? ''"
                                 :explanation="euTaxonomyKpiInfoMappings.report ?? ''"
+                                :is-required="true"
                               />
                               <FormKit
                                 type="select"

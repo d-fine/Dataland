@@ -15,6 +15,7 @@
       <UploadFormHeader
         :name="valueType === 'percent' ? 'Eligible Revenue (%)' : 'Eligible Revenue'"
         explanation="Eligible Revenue (%) *"
+        :is-required="true"
       />
       <FormKit
         :disabled="!dataPointIsAvailable"
@@ -36,7 +37,11 @@
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
-            <UploadFormHeader :name="kpiNameMappings.report ?? ''" :explanation="kpiInfoMappings.report ?? ''" />
+            <UploadFormHeader
+                :name="kpiNameMappings.report ?? ''"
+                :explanation="kpiInfoMappings.report ?? ''"
+                :is-required="true"
+            />
             <FormKit
               type="select"
               name="report"
@@ -56,7 +61,7 @@
 
     <!-- Data quality -->
     <div class="form-field">
-      <UploadFormHeader name="Data quality" explanation="Data quality" />
+      <UploadFormHeader name="Data quality" explanation="Data quality" :is-required="true" />
       <div class="lg:col-6 md:col-6 col-12 p-0">
         <FormKit
           :disabled="!dataPointIsAvailable"
