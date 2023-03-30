@@ -15,7 +15,7 @@ import { defineComponent } from "vue";
 import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons.vue";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
-import { isCurrentRefreshTokenExpired, tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
+import { isRefreshTokenExpiryTimestampInSharedStoreReached, tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
 import Keycloak from "keycloak-js";
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { useSessionStateStore } from "@/stores/stores";
@@ -45,9 +45,13 @@ export default defineComponent({
   },
 
   computed: {
-    currentRefreshTokenInStore() {
+    currentRefreshTokenInStore(): string | undefined {
       const currentRefreshTokenInStore = useSessionStateStore().refreshToken;
-      if (currentRefreshTokenInStore) return currentRefreshTokenInStore; // you could inject the current refresh token from App.vue TODO
+      if (currentRefreshTokenInStore) {
+        return currentRefreshTokenInStore; // you could inject the current refresh token from App.vue TODO
+      } else {
+        return undefined;
+      }
     },
   },
 
@@ -68,6 +72,9 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Handles a click on the refresh button.
+     */
     handleRefreshSession() {
       tryToRefreshSession(this.keycloak as Keycloak);
       this.closeTheDialog();
@@ -81,6 +88,10 @@ export default defineComponent({
       dialogRefToDisplay.close();
     },
 
+    /**
+     * Gets all the data that is passed down by the component which has opened this modal and stores it in the
+     * component-level data object.
+     */
     getDataFromParentAndSet() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       const dialogRefData = dialogRefToDisplay.data as {
@@ -97,11 +108,18 @@ export default defineComponent({
       this.keycloak = dialogRefData.resolvedKeycloakPromise;
     },
 
+    /**
+     * Starts a setInterval-method which - in fixed time intervals - checks if the refresh token expiry timestamp has
+     * been surpassed.
+     * If it has been surpassed, the text in the modal changes to inform the user that the session can be considered
+     * closed. It also clears this setInterval method.
+     * Else it keeps going.
+     */
     setIntervalForRefreshTokenExpiryCheck() {
       console.log("starting setinveral for refresh token check"); // TODO debugging
       this.functionIdOfExpiryCheck = setInterval(() => {
         console.log("constantly checking if refresh token is expired"); // TODO debugging
-        if (isCurrentRefreshTokenExpired()) {
+        if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
           console.log("refresh token is expired => stopping this setInterval and changing texts on pop-up"); // TODO debugging
           this.displayedText = "Your session was closed due to inactivity. Login to start a new session.";
           this.refreshButtonLabel = "Login";

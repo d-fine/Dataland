@@ -35,12 +35,12 @@ export default defineComponent({
   },
 
   watch: {
-    currentRefreshTokenInStore(newRefreshToken) {
+    currentRefreshTokenInStore(newRefreshToken: string) {
       console.log("NOTE: session store token changed!  update warning timestamp and restart session!");
       if (this.resolvedKeycloakPromise && newRefreshToken) {
         console.log("NOTE2: new refresh token is actually defined, so Dataland is reacting to the change...");
         this.resolvedKeycloakPromise.refreshToken = newRefreshToken;
-        this.currentTokenSliced = newRefreshToken.slice(-20); // TODO debugging
+        this.currentTokenSliced = newRefreshToken.toString().slice(-20); // TODO debugging
         clearInterval(useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning);
         startSessionSetIntervalFunction(this.resolvedKeycloakPromise, this.openSessionWarningModal);
       }
@@ -81,16 +81,16 @@ export default defineComponent({
     initKeycloak(): Promise<Keycloak> {
       const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
       keycloak.onAuthLogout = this.handleAuthLogout;
-      keycloak.onAuthRefreshSuccess = () => {
+      keycloak.onAuthRefreshSuccess = (): void => {
         console.log("refreshed tokens");
       }; // TODO debugging
-      keycloak.onAuthRefreshError = () => {
+      keycloak.onAuthRefreshError = (): void => {
         console.log("ERROR!!!: refresherror");
       }; // TODO debugging
-      keycloak.onAuthError = () => {
+      keycloak.onAuthError = (): void => {
         console.log("ERROR!!!: autherror");
       }; // TODO debugging
-      keycloak.onAuthSuccess = () => {
+      keycloak.onAuthSuccess = (): void => {
         console.log("SUCCESS: auth!");
       }; // TODO debugging
       return keycloak
@@ -117,7 +117,7 @@ export default defineComponent({
      * logout uri, where the user is instantly re-redirected back to the Welcome page with a specific query param
      * in the url which triggers a pop-up to open and inform the user that she/he was just logged out.
      */
-    async handleAuthLogout() {
+    handleAuthLogout() {
       console.log("Logging out"); // TODO debugging
       logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, "?externalLogout=true");
     },
