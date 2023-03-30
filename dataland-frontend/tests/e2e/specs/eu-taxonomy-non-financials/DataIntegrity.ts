@@ -100,6 +100,29 @@ describeIf(
       });
     });
 
+    it("Upload EU Taxonomy Dataset via form and assure that it can be viewed on the framework ", () => {
+      getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
+          (storedCompany) => {
+            uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
+            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveFullTaxonomyData");
+            cy.visitAndCheckAppMount(
+              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+            );
+            cy.wait("@retrieveFullTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
+              cy.get("h1[class='mb-0']").contains("All fields filled");
+              cy.get("body").should("contain", "Eligible Revenue").should("contain", "%");
+              cy.get("body").should("contain", "Aligned Revenue").should("contain", "%");
+              cy.get("body").should("contain", "Eligible CapEx").should("contain", "%");
+              cy.get("body").should("contain", "Aligned CapEx").should("contain", "%");
+              cy.get("body").should("contain", "Eligible OpEx").should("contain", "%");
+              cy.get("body").should("contain", "Aligned OpEx").should("contain", "%");
+            });
+          }
+        );
+      });
+    });
+
     it(
       "Upload EU Taxonomy Dataset via form with no values for revenue and assure that it can be viewed on the framework " +
         "data view page with an appropriate message shown for the missing revenue data",
@@ -108,7 +131,7 @@ describeIf(
         const missingDataMessage = "No data has been reported";
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-            uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
+            uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId, true);
             cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`

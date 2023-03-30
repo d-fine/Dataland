@@ -47,7 +47,7 @@
 <script lang="ts">
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
-import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
+import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import { defineComponent } from "vue";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 
