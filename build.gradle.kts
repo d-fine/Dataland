@@ -38,7 +38,7 @@ tasks.dependencyUpdates.configure {
 }
 
 dependencies {
-    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.20.0")
+    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.22.0")
     detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.10")
 }
 
