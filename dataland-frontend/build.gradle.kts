@@ -37,6 +37,7 @@ tasks.withType<NpmTask> {
 tasks.register("generateClients") {
     dependsOn("generateBackendClient")
     dependsOn("generateApiKeyManagerClient")
+    dependsOn("generateDocumentManagerClient")
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {

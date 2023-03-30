@@ -14,10 +14,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { CompanyReport } from "@clients/backend";
+import {defineComponent, inject} from "vue";
+import {CompanyReport,} from "@clients/backend";
+import {AxiosResponse} from "axios";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {assertDefined} from "@/utils/TypeScriptUtils";
+import Keycloak from "keycloak-js";
+import { DocumentMetaInfo } from "@clients/documentmanager";
 
 export default defineComponent({
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   name: "ShowReportsBanner",
   props: {
     reports: { type: Map<string, CompanyReport> },
@@ -26,6 +36,9 @@ export default defineComponent({
     return {
       reportCounter: 10,
       test: "test",
+      getDocumentsFromStorageProcessed: false,
+      getDocumentsFromStorageResponse: null as AxiosResponse<DocumentMetaInfo> | null,
+      messageCount: 0,
     };
   },
   computed: {},
@@ -38,6 +51,28 @@ export default defineComponent({
     },
     getReferencedDocument(hash: string) {
       return 0;
+    },
+    /**
+     * Retrieves document for from the storage
+     */
+    async getDocumentsFromStorage(): Promise<void> {
+      try {
+        this.getDocumentsFromStorageProcessed = false;
+        this.messageCount++;
+        const documentControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+        ).getDocumentControllerApi();
+        this.getDocumentsFromStorageResponse =
+            await documentControllerApi.getDocument(
+                documentId
+            );
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+      } catch (error) {
+        this.getDocumentsFromStorageResponse = null;
+        console.error(error);
+      } finally {
+        this.getDocumentsFromStorageProcessed = true;
+      }
     },
   },
 });

@@ -14,6 +14,7 @@ import {
   SfdrDataControllerApiInterface,
   InviteControllerApi,
 } from "@clients/backend/api";
+import { DocumentControllerApi } from "@clients/documentmanager";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 export class ApiClientProvider {
@@ -57,6 +58,10 @@ export class ApiClientProvider {
 
   async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
+  }
+
+  async getDocumentControllerApi(): Promise<DocumentControllerApi> {
+    return this.getConstructedApi(DocumentControllerApi);
   }
 
   async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {
