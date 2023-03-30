@@ -18,7 +18,7 @@ import PrimeButton from "primevue/button";
 import { isRefreshTokenExpiryTimestampInSharedStoreReached, tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
 import Keycloak from "keycloak-js";
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
-import { useSessionStateStore } from "@/stores/stores";
+import { useSharedSessionStateStore } from "@/stores/stores";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -38,17 +38,17 @@ export default defineComponent({
   },
 
   watch: {
-    currentRefreshTokenInStore() {
-      console.log("session dialog is open and noticed new refresh token => closing dialog");
+    currentRefreshTokenInSharedStore() {
+      console.log("session dialog is open and noticed new refresh token => closing dialog"); // TODO debugging
       this.closeTheDialog();
     },
   },
 
   computed: {
-    currentRefreshTokenInStore(): string | undefined {
-      const currentRefreshTokenInStore = useSessionStateStore().refreshToken;
-      if (currentRefreshTokenInStore) {
-        return currentRefreshTokenInStore; // you could inject the current refresh token from App.vue TODO
+    currentRefreshTokenInSharedStore(): string | undefined {
+      const currentRefreshTokenInSharedStore = useSharedSessionStateStore().refreshToken;
+      if (currentRefreshTokenInSharedStore) {
+        return currentRefreshTokenInSharedStore; // TODO you could inject the current refresh token from App.vue
       } else {
         return undefined;
       }

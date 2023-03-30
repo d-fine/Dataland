@@ -1,7 +1,7 @@
 <template>
   <div class="col-10">
     <h4 class="top-50 fixed" style="z-index: 20" data-test="123hallo">
-      {{ currentTokenSliced + "---and:  " + currentRefreshTokenInStore?.slice(-20) }}
+      {{ currentTokenSliced + "---and:  " + currentRefreshTokenInSharedStore?.slice(-20) }}
     </h4>
   </div>
   <DynamicDialog />
@@ -19,7 +19,7 @@ import {
 } from "@/utils/SessionTimeoutUtils";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
-import { useFunctionIdsStore, useSessionStateStore } from "@/stores/stores";
+import { useFunctionIdsStore, useSharedSessionStateStore } from "@/stores/stores";
 
 export default defineComponent({
   name: "app",
@@ -30,29 +30,31 @@ export default defineComponent({
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
       resolvedKeycloakPromise: undefined as undefined | Keycloak,
       keycloakAuthenticated: false,
-      currentTokenSliced: useSessionStateStore().refreshToken, // TODO remove at the end
+      currentTokenSliced: useSharedSessionStateStore().refreshToken, // TODO remove at the end
     };
   },
 
   watch: {
-    currentRefreshTokenInStore(newRefreshToken: string) {
-      console.log("NOTE: session store token changed!  update warning timestamp and restart session!");
+    currentRefreshTokenInSharedStore(newRefreshToken: string) {
+      console.log("NOTE: session store token changed! "); // TODO debugging
       if (this.resolvedKeycloakPromise && newRefreshToken) {
-        console.log("NOTE2: new refresh token is actually defined, so Dataland is reacting to the change...");
+        console.log("NOTE2: new refresh token is actually defined, so Dataland is reacting to the change..."); // TODO debugging
         this.resolvedKeycloakPromise.refreshToken = newRefreshToken;
         this.currentTokenSliced = newRefreshToken.toString().slice(-20); // TODO debugging
         clearInterval(useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning);
-        startSessionSetIntervalFunction(this.resolvedKeycloakPromise, this.openSessionWarningModal);
+        const openSessionWarningModalBound = this.openSessionWarningModal.bind(this);
+        startSessionSetIntervalFunction(this.resolvedKeycloakPromise, openSessionWarningModalBound);
       }
     },
   },
 
   computed: {
-    currentRefreshTokenInStore() {
-      return useSessionStateStore().refreshToken;
+    currentRefreshTokenInSharedStore() {
+      return useSharedSessionStateStore().refreshToken;
     },
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   async created() {
     this.keycloakPromise = this.initKeycloak();
     this.resolvedKeycloakPromise = await this.keycloakPromise;
@@ -60,11 +62,12 @@ export default defineComponent({
       updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise);
     }
   },
+
   provide() {
     return {
       getKeycloakPromise: (): Promise<Keycloak> => {
         if (this.keycloakPromise) return this.keycloakPromise;
-        throw new Error("The keycloak promise has not yet been initialised. This should not be possible...");
+        throw new Error("The Keycloak promise has not yet been initialised. This should not be possible...");
       },
       authenticated: computed(() => {
         return this.keycloakAuthenticated;
@@ -80,7 +83,8 @@ export default defineComponent({
      */
     initKeycloak(): Promise<Keycloak> {
       const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
-      keycloak.onAuthLogout = this.handleAuthLogout;
+      const handleAuthLogoutBound = this.handleAuthLogout.bind(this);
+      keycloak.onAuthLogout = handleAuthLogoutBound;
       keycloak.onAuthRefreshSuccess = (): void => {
         console.log("refreshed tokens");
       }; // TODO debugging
@@ -104,7 +108,7 @@ export default defineComponent({
           this.keycloakAuthenticated = authenticated;
         })
         .catch((error) => {
-          console.log("Error in init keycloak ", error);
+          console.log("Error in init Keycloak ", error);
           this.keycloakAuthenticated = false;
         })
         .then((): Keycloak => {
@@ -124,7 +128,7 @@ export default defineComponent({
 
     /**
      * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
-     * If the refresh button is  clicked or the pop-up is closed soon enough, the session is refreshed.
+     * If the refresh button is  clicked soon enough, the session is refreshed.
      * Else the text changes and tells the user that the session was closed. That behaviour is activated in the
      * SessionDialog via the variable isTrackingOfRefreshTokenExpiryEnabled.
      */

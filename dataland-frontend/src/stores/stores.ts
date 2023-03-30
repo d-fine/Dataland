@@ -23,7 +23,7 @@ export const useFunctionIdsStore = defineStore("functionIdsStore", {
   },
 });
 
-export const useSessionStateStore = defineStore("sessionStateStore", {
+export const useSharedSessionStateStore = defineStore("sharedSessionStateStore", {
   state: () => {
     return {
       refreshToken: undefined as undefined | string,

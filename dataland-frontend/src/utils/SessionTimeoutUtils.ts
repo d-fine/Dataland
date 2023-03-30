@@ -1,7 +1,7 @@
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { loginAndRedirectToSearchPage, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 import Keycloak from "keycloak-js";
-import { useFunctionIdsStore, useSessionStateStore } from "@/stores/stores";
+import { useFunctionIdsStore, useSharedSessionStateStore } from "@/stores/stores";
 
 const minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS + 1000;
 
@@ -16,8 +16,8 @@ export function updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak: Keycloak)
     .then(() => {
       const refreshTokenExpiryTime = keycloak.refreshTokenParsed?.exp;
       if (refreshTokenExpiryTime) {
-        useSessionStateStore().refreshToken = keycloak.refreshToken;
-        useSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
+        useSharedSessionStateStore().refreshToken = keycloak.refreshToken;
+        useSharedSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
         console.log("--------------NEW SESSION WARNING TIMESTAMP IS: " + (refreshTokenExpiryTime * 1000).toString());
       }
     })
@@ -43,7 +43,7 @@ export function startSessionSetIntervalFunction(
   useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning = setInterval(() => {
     console.log("setInterval is running once"); // TODO debugging
     const currentTimestampInMs = new Date().getTime();
-    const sessionWarningTimestamp = useSessionStateStore().sessionWarningTimestampInMs;
+    const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs;
     if (!sessionWarningTimestamp) {
       logoutAndRedirectToUri(keycloak, "");
     } else {
@@ -66,7 +66,7 @@ export function startSessionSetIntervalFunction(
  */
 export function isRefreshTokenExpiryTimestampInSharedStoreReached(): boolean {
   const currentTimestamp = new Date().getTime();
-  const refreshTokenExpiryTimestampInMs = useSessionStateStore().refreshTokenExpiryTimestampInMs;
+  const refreshTokenExpiryTimestampInMs = useSharedSessionStateStore().refreshTokenExpiryTimestampInMs;
   if (refreshTokenExpiryTimestampInMs) {
     console.log(
       "currentTime: " +
