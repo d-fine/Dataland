@@ -63,7 +63,7 @@ export default defineConfig({
     strictPort: true,
     watch: {
       ignored: ["**/coverage/**"],
-      usePolling: process.env.CYPRESS_EXECUTION_ENVIRONMENT !== "ci",
+      usePolling: process.env.POLLING === "true",
     },
   },
 });
