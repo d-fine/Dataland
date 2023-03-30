@@ -30,22 +30,15 @@ export function updateObject(baseObject: objectType, objectWithNewData: objectTy
 export function modifyObjectKeys(obj: objectType, typeOfModification: string): objectType {
   const objectModified = obj;
   for (const key in objectModified) {
-    if (typeOfModification === "send") {
-      if (key === "value" && objectModified[key]) {
+    if (key === "value" && objectModified[key]) {
+      if (typeOfModification === "send") {
         objectModified[key] = (Math.round(+objectModified[key] * 100) / 100 / 100).toString();
-      } else if (key === "dataSource" && Object.keys(key).length === 0) {
-        delete objectModified[key];
-      } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
-        modifyObjectKeys(objectModified[key] as unknown as objectType, typeOfModification);
       }
-    } else if (typeOfModification === "receive") {
-      if (key === "value" && objectModified[key]) {
+      if (typeOfModification === "receive") {
         objectModified[key] = (Math.round(+objectModified[key] * 100 * 100) / 100).toString();
-      } else if (key === "dataSource" && objectModified[key] == null) {
-        objectModified[key] = {};
-      } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
-        modifyObjectKeys(objectModified[key] as unknown as objectType, typeOfModification);
       }
+    } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
+      modifyObjectKeys(objectModified[key] as unknown as objectType, typeOfModification);
     }
   }
   return objectModified;
