@@ -5,7 +5,8 @@
       type="radio"
       :name="name"
       :validation-label="displayName"
-      :options="['Yes', 'No']"
+      :options="radioButtonsOptions"
+      :validation="required"
       :outer-class="{
         'yes-no-radio': true,
       }"
@@ -31,12 +32,23 @@ export default defineComponent({
   props: {
     name: {
       type: String,
+      default: "",
     },
     info: {
       type: String,
+      default: "",
     },
     displayName: {
       type: String,
+      default: "",
+    },
+    radioButtonsOptions: {
+      type: Array as () => Array<string>,
+      default: () => ["Yes", "No"],
+    },
+    required: {
+      type: String,
+      default: "",
     },
   },
 });

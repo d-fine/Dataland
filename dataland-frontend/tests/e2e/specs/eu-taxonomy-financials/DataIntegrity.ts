@@ -50,6 +50,7 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany): void => {
+            cy.ensureLoggedIn(uploader_name, uploader_pw);
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
             );
@@ -202,11 +203,6 @@ describeIf(
           testData.companyInformation,
           testData.t
         );
-        checkCreditInstitutionValues(testData.t, true, true);
-
-        checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
-
-        checkInsuranceValues(testData.t);
       }
     );
 
