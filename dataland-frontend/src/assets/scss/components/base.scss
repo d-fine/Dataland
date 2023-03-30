@@ -71,7 +71,7 @@ body {
     background: var(--yellow-100);
   }
 
-  &.badge-green {
+  &.badge-green, &.p-badge-success {
     color: var(--green-700);
     background: var(--green-100);
   }
@@ -221,7 +221,10 @@ body {
   justify-content: center;
   justify-items: center;
 }
-
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
 .p-disabled, .p-component:disabled {
   opacity: .5;
 }

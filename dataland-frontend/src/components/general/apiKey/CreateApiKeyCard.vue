@@ -79,7 +79,7 @@ import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
-import { calculateExpiryDateAsDateString, calculateDaysFromNow } from "@/utils/DateFormatUtils";
+import { calculateExpiryDateAsDateString, calculateDaysFromNow } from "@/utils/DataFormatUtils";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
