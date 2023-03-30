@@ -515,6 +515,15 @@ input[type="checkbox"], input[type="radio"]{
   .title {
     margin: .25rem 0;
   }
+  .subtitle {
+    display: block;
+    padding-bottom: 1rem;
+    .form-field-label {
+      h5 {
+        font-size: $fs-base;
+      }
+    }
+  }
   .form-field-label {
     display: flex;
     align-items: center;
@@ -670,4 +679,10 @@ input[type="checkbox"], input[type="radio"]{
   border-color: #cb6b29;
   background: #cb6b29;
   color: #fff
+}
+
+.button-disabled {
+  opacity: 0.4;
+  background: $btn-primary-bg !important;
+  border: 0 !important;
 }

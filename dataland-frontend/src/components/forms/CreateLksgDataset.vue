@@ -16,6 +16,8 @@
             name="createLkSGForm"
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
+            #default="{ state: { valid } }"
+            :config="{ validationVisibility: 'dirty' }"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
@@ -1074,18 +1076,7 @@
             </FormKit>
 
             <!--------- SUBMIT --------->
-
-            <div class="uploadFormSection grid">
-              <div class="col-3"></div>
-
-              <div class="col-9">
-                <PrimeButton
-                  data-test="submitButton"
-                  type="submit"
-                  :label="this.updatingData ? 'UPDATE DATA' : 'ADD DATA'"
-                />
-              </div>
-            </div>
+            <SubmitFormBar :formIsValid="valid" />
           </FormKit>
 
           <div v-if="postLkSGDataProcessed">
@@ -1149,6 +1140,7 @@ import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
+import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
 
 export default defineComponent({
   setup() {
@@ -1157,7 +1149,17 @@ export default defineComponent({
     };
   },
   name: "CreateLksgDataset",
-  components: { UploadFormHeader, SuccessUpload, FailedUpload, FormKit, Card, PrimeButton, YesNoComponent, Calendar },
+  components: {
+    SubmitFormBar,
+    UploadFormHeader,
+    SuccessUpload,
+    FailedUpload,
+    FormKit,
+    Card,
+    PrimeButton,
+    YesNoComponent,
+    Calendar,
+  },
   directives: {
     tooltip: Tooltip,
   },
@@ -1201,7 +1203,7 @@ export default defineComponent({
       ),
       smoothScroll,
       checkCustomInputs,
-      updatingData: false,
+      valid: false,
     };
   },
   computed: {

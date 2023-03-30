@@ -8,6 +8,7 @@ import {
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
+import { submitFormBar } from "@sharedUtils/components/SubmitFormBar";
 
 /**
  * Uploads a single LKSG data entry for a company
@@ -106,7 +107,8 @@ export function uploadLksgDataViaForm(): void {
     "mercuryAddedProductsHandlingRiskOfDisposal",
     "hazardousAndOtherWasteImport",
   ];
-
+  submitFormBar.buttonIsAddDataButton();
+  submitFormBar.buttonAppearsDisabled();
   cy.get('[data-test="lksgDataDate"]').click();
   cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
   cy.get("div.p-datepicker").find('span:contains("13")').click();
@@ -142,7 +144,8 @@ export function uploadLksgDataViaForm(): void {
   yesNoInputs.forEach((name) => {
     cy.get(`input[name=${name}][value="Yes"]`).click().should("be.checked");
   });
-  cy.get('button[data-test="submitButton"]').click();
+  submitFormBar.buttonAppearsEnabled();
+  submitFormBar.clickButton();
   cy.get("div.p-message-success").should("be.visible");
 }
 ///

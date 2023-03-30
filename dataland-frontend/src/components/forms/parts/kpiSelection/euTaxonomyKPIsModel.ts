@@ -15,7 +15,7 @@ export const euTaxonomyKPIsModel = {
     investmentFirmKpis: "InvestmentFirm",
     assetManagementKpis: "AssetManagement",
   },
-  euTaxonomyDetailsPerCashFlowType: ["alignedPercentage", "eligiblePercentage", "totalAmount"],
+  euTaxonomyDetailsPerCashFlowType: ["totalAmount", "alignedPercentage", "eligiblePercentage"],
 };
 
 export const euTaxonomyKpiNameMappings = {
