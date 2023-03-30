@@ -64,7 +64,7 @@ export default defineConfig({
     strictPort: true,
     watch: {
       ignored: ["**/coverage/**"],
-      usePolling: true,
+      usePolling: false,
     },
   },
   preview: {

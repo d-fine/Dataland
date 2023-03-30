@@ -147,7 +147,7 @@ services:
     volumes:
       - ./dataland-frontend:/app
       - frontend-dev-node-modules:/app/node_modules
-    command: sh -c "cd /app && npm install && npm run build && npm run preview"
+    command: sh -c "cd /app && npm install && npm run dev"
     healthcheck:
       test: [ "CMD-SHELL", "curl localhost:8090" ]
       interval: 30s
