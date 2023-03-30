@@ -133,7 +133,7 @@ describeIf(
     }
 
     /**
-     * Verifies that the frontend correctly displays the insurenace firm KPIs
+     * Verifies that the frontend correctly displays the insurance firm KPIs
      *
      * @param testData the dataset used as the source of truth
      */
