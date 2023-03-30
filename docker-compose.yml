@@ -38,9 +38,10 @@ services:
       - keycloak-db
       - api-key-manager-db
       - internal-storage-db
+      - document-manager-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5436:5433-5436"
+      - "127.0.0.1:5433-5437:5433-5437"
       - "127.0.0.1:5672:5672"
   api-key-manager:
     restart: always
@@ -69,6 +70,37 @@ services:
       POSTGRES_USER: api_key_manager
       POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PGUSER: api_key_manager
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
+  document-manager:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - internal
+      - document-manager-db
+    image: ${DOCUMENT_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_document_manager_test:${DATALAND_DOCUMENT_MANAGER_TEST_VERSION}}
+    expose:
+      - "8080"
+    environment:
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
+  document-manager-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - document-manager-db
+    image: postgres:15.2
+    volumes:
+      - document_manager_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: document_manager
+      POSTGRES_USER: document_manager
+      POSTGRES_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
+      PGUSER: document_manager
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
@@ -259,6 +291,7 @@ services:
       - api-key-manager-db
       - internal
       - internal-storage-db
+      - document-manager-db
     profiles: ["production", "testing", "development"]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
@@ -269,6 +302,7 @@ services:
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
+      DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
   rabbitmq:
@@ -286,6 +320,11 @@ services:
       test: rabbitmq-diagnostics -q alarms
       interval: 30s
       timeout: 3s
+    deploy:
+      resources:
+        limits:
+          # Always maintain 1.5 ratio between disk_free_limit.absolute of rabbitMQ conf and the memory here
+          memory: 512M
   qa-service:
     restart: always
     profiles: ["production", "testing", "development"]
@@ -305,6 +344,7 @@ networks:
   backend-db:
   api-key-manager-db:
   internal-storage-db:
+  document-manager-db:
 volumes:
   keycloak_data:
     driver: local
@@ -321,4 +361,6 @@ volumes:
   pgadmin_config:
     driver: local
   frontend-dev-node-modules:
+    driver: local
+  document_manager_data:
     driver: local

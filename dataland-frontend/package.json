@@ -19,6 +19,7 @@
     "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*'"
   },
   "dependencies": {
+    "@formkit/core": "^1.0.0-beta.15",
     "@formkit/themes": "^1.0.0-beta.15",
     "@formkit/vue": "^1.0.0-beta.15",
     "@ibm/plex": "^6.2.0",

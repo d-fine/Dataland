@@ -6,12 +6,12 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.enums.data.QAStatus
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -71,7 +71,7 @@ class DataManagerTest(
             companyId,
             DataType("eutaxonomy-non-financials"),
             "USER_ID_OF_AN_UPLOADING_USER",
-            Instant.now().epochSecond,
+            Instant.now().toEpochMilli(),
             "",
             euTaxonomyDataForNonFinancialsAsString,
         )
@@ -173,7 +173,7 @@ class DataManagerTest(
     fun `check an exception is thrown in updating of meta data when dataId is empty`() {
         val messageWithEmptyDataID = objectMapper.writeValueAsString(
             QaCompletedMessage(
-                dataId = "",
+                identifier = "",
                 validationResult = "By default, QA is passed",
             ),
         )

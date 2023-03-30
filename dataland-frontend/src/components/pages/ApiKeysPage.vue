@@ -78,7 +78,7 @@
 
           <ApiKeyCard
             :userRoles="userRolesAccordingToApiKey"
-            :expiryDateInMilliseconds="expiryDate * 1000"
+            :expiryDateInMilliseconds="expiryDate"
             @revokeKey="revokeApiKey"
           />
           <div id="apiKeyUsageInfoMessage" class="surface-card shadow-1 p-3 border-round-sm border-round mt-3">

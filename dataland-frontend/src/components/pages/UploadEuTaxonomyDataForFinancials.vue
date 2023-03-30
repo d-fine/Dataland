@@ -3,16 +3,9 @@
     <TheHeader />
     <UploaderRoleWrapper>
       <TheContent>
-        <MarginWrapper>
-          <div class="grid align-items-end">
-            <div class="col-9">
-              <CompanyInformation :companyID="companyID" />
-            </div>
-          </div>
-        </MarginWrapper>
-        <MarginWrapper bg-class="paper-section" class="text-left">
-          <CreateEUTaxonomyForFinancials :companyID="companyID" />
-        </MarginWrapper>
+        <BackButton id="backButton" />
+        <CompanyInformation :companyID="companyID" />
+        <CreateEUTaxonomyForFinancials :companyID="companyID" />
       </TheContent>
     </UploaderRoleWrapper>
     <DatalandFooter />
@@ -25,8 +18,8 @@ import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CreateEUTaxonomyForFinancials from "@/components/forms/CreateEUTaxonomyForFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import BackButton from "@/components/general/BackButton.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
 
 export default {
@@ -38,7 +31,7 @@ export default {
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
-    MarginWrapper,
+    BackButton,
     DatalandFooter,
   },
   props: {

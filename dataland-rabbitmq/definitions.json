@@ -60,7 +60,16 @@
       "arguments": {}
     },
     {
-      "name": "dataStored",
+      "name": "itemStored",
+      "vhost": "vhost",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "documentReceived",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,

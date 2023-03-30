@@ -43,7 +43,8 @@ expected_vars=( \
   RABBITMQ_USER \
   RABBITMQ_PASS \
   RABBITMQ_PASS_HASH \
-  INTERNAL_BACKEND_URL
+  INTERNAL_BACKEND_URL \
+  DOCUMENT_MANAGER_DB_PASSWORD
 )
 
 for var in "${expected_vars[@]}"
