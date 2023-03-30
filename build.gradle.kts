@@ -38,7 +38,7 @@ tasks.dependencyUpdates.configure {
 }
 
 dependencies {
-    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.22.0")
+    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.20.0")
     detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.10")
 }
 
@@ -46,7 +46,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
     id("com.github.jk1.dependency-license-report") version "2.1"
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("com.github.node-gradle.node") version "3.5.1" apply false
     id("org.springframework.boot") version "3.0.5" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"

@@ -4,6 +4,7 @@ Note: To create a PR using this template add the query parameter `template=manua
 ## Dataland
 ### Skipped updates
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they appear.
+- [ ] org.springdoc:springdoc-openapi-starter-webmvc-ui 2.0.4 (Does not allow non-nullable non-required request parameters in get endpoints)
 - [ ] io.gitlab.arturbosch.detekt:detekt-cli 1.22.0 (Failed to compile)
 - [ ] Update to gradle 8.0.2 is skipped due to task dependency issues in the building process. Backlog: DALA-1295
 - [ ] Update keycloak 21.0.1 is skipped due to issues in the realm.json, the new docker image, account console
