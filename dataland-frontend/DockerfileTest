@@ -15,6 +15,7 @@ COPY ./dataland-frontend /app/dataland-frontend
 COPY --from=build-stage /app/dataland-frontend/build/clients /app/dataland-frontend/build/clients
 
 WORKDIR /app/dataland-frontend
+RUN npm install
 CMD ["npm", "run", "dev"]
 
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8090
