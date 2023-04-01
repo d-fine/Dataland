@@ -168,7 +168,7 @@ services:
     # don't work anymore after a certain amount of requests
     # https://github.com/docker/for-win/issues/8861
     restart: always
-    profiles: ["development", "testing"]
+    profiles: ["development"]
     image: node:19.7.0
     networks:
       - internal
@@ -182,10 +182,8 @@ services:
       timeout: 3s
   frontend:
     restart: always
-    profiles: ["production"]
+    profiles: ["production", "testing"]
     image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
-    expose:
-      - "80"
     networks:
       - internal
   internal-storage:
