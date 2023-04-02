@@ -237,6 +237,7 @@ jobs:
           subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
   sonar:
     runs-on: ubuntu-latest
+    if: always()
     needs:
       - e2e-tests
       - gradle-based-tests
