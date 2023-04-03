@@ -63,7 +63,7 @@ export default defineConfig({
     strictPort: true,
     watch: {
       ignored: ["**/coverage/**"],
-      usePolling: false,
+      usePolling: process.env.POLLING === "true",
     },
   },
 });
