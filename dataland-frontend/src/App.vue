@@ -1,9 +1,4 @@
 <template>
-  <div class="col-10">
-    <h4 class="top-50 fixed" style="z-index: 20" data-test="123hallo">
-      {{ currentTokenSliced + "---and:  " + currentRefreshTokenInSharedStore?.slice(-20) }}
-    </h4>
-  </div>
   <DynamicDialog />
   <router-view />
 </template>
