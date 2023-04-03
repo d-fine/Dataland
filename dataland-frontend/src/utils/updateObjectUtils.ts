@@ -14,14 +14,8 @@ export function updateObject(baseObject: objectType, objectWithNewData: objectTy
         baseObject[key] = {};
         updateObject(baseObject[key] as unknown as objectType, objectWithNewData[key] as unknown as objectType);
       }
-    } else {
-      if (
-        Object.prototype.hasOwnProperty.call(baseObject, key) ||
-        baseObject[key] === null ||
-        baseObject[key] === undefined
-      ) {
-        baseObject[key] = objectWithNewData[key];
-      }
+    } else if (objectWithNewData[key] !== null) {
+      baseObject[key] = objectWithNewData[key];
     }
   }
 }
@@ -39,7 +33,8 @@ export function modifyObjectKeys(obj: objectType, typeOfModification: string): o
     if (key === "value" && objectModified[key]) {
       if (typeOfModification === "send") {
         objectModified[key] = (Math.round(+objectModified[key] * 100) / 100 / 100).toString();
-      } else if (typeOfModification === "receive") {
+      }
+      if (typeOfModification === "receive") {
         objectModified[key] = (Math.round(+objectModified[key] * 100 * 100) / 100).toString();
       }
     } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {

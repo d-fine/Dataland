@@ -11,8 +11,6 @@
             id="createEuTaxonomyForFinancialsForm"
             @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
-            #default="{ state: { valid } }"
-            :config="{ validationVisibility: 'dirty' }"
           >
             <FormKit
               type="hidden"
@@ -136,7 +134,6 @@
                           <UploadFormHeader
                             :name="euTaxonomyKpiNameMappings.currency"
                             :explanation="euTaxonomyKpiInfoMappings.currency"
-                            :is-required="true"
                           />
                           <div class="lg:col-4 md:col-4 col-12 p-0">
                             <FormKit
@@ -182,7 +179,6 @@
                       <UploadFormHeader
                         :name="euTaxonomyKpiNameMappings.fiscalYearEnd"
                         :explanation="euTaxonomyKpiInfoMappings.fiscalYearEnd"
-                        :is-required="true"
                       />
                       <div class="lg:col-6 md:col-6 col-12 p-0">
                         <Calendar
@@ -227,7 +223,6 @@
                       <UploadFormHeader
                         :name="euTaxonomyKpiNameMappings.numberOfEmployees"
                         :explanation="euTaxonomyKpiInfoMappings.numberOfEmployees"
-                        :is-required="true"
                       />
                       <div class="lg:col-4 md:col-4 col-6 p-0">
                         <FormKit
@@ -267,7 +262,6 @@
                         <UploadFormHeader
                           :name="euTaxonomyKpiNameMappings.assurance ?? ''"
                           :explanation="euTaxonomyKpiInfoMappings.assurance ?? ''"
-                          :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12 p-0">
                           <FormKit
@@ -303,7 +297,6 @@
                               <UploadFormHeader
                                 :name="euTaxonomyKpiNameMappings.report ?? ''"
                                 :explanation="euTaxonomyKpiInfoMappings.report ?? ''"
-                                :is-required="true"
                               />
                               <FormKit
                                 type="select"
@@ -348,7 +341,6 @@
                         data-test="selectKPIsLabel"
                         :name="euTaxonomyKpiNameMappings.financialServicesTypes ?? ''"
                         :explanation="euTaxonomyKpiInfoMappings.financialServicesTypes ?? ''"
-                        :is-required="true"
                       />
 
                       <MultiSelect
@@ -456,7 +448,14 @@
               </FormKit>
 
               <!--------- SUBMIT --------->
-              <SubmitFormBar :formIsValid="valid" />
+
+              <div class="uploadFormSection grid">
+                <div class="col-3"></div>
+
+                <div class="col-9">
+                  <PrimeButton data-test="submitButton" type="submit" label="SUBMIT FORM" />
+                </div>
+              </div>
             </div>
           </FormKit>
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
@@ -517,7 +516,6 @@ import {
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
-import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
 
 export default defineComponent({
   setup() {
@@ -527,7 +525,6 @@ export default defineComponent({
   },
   name: "CreateEUTaxonomyForFinancials",
   components: {
-    SubmitFormBar,
     FailedUpload,
     FormKit,
     SuccessUpload,
@@ -545,7 +542,7 @@ export default defineComponent({
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
-      fiscalYearEnd: undefined as Date | undefined,
+      fiscalYearEnd: "" as Date | "",
       convertedFiscalYearEnd: "",
       reportingPeriod: new Date(),
       assuranceData: [
@@ -586,7 +583,6 @@ export default defineComponent({
       confirmedSelectedKPIs: [] as { label: string; value: string }[],
       computedFinancialServicesTypes: [] as string[],
       reportingPeriodYear: new Date().getFullYear(),
-      valid: false,
     };
   },
   watch: {
@@ -709,7 +705,7 @@ export default defineComponent({
         this.formInputsModel = {};
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
-        this.fiscalYearEnd = undefined;
+        this.fiscalYearEnd = "";
       }
     },
 

@@ -24,7 +24,6 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitFormBar.buttonIsAddDataButton();
   submitFormBar.buttonAppearsDisabled();
-
   cy.get('button[data-test="upload-files-button"]').click();
   cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
   cy.get('div[data-test="uploaded-files"]')

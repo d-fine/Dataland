@@ -17,7 +17,6 @@
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
             #default="{ state: { valid } }"
-            :config="{ validationVisibility: 'dirty' }"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
@@ -1203,6 +1202,7 @@ export default defineComponent({
       ),
       smoothScroll,
       checkCustomInputs,
+      updatingData: false,
       valid: false,
     };
   },

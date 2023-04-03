@@ -15,7 +15,6 @@
       <UploadFormHeader
         :name="valueType === 'percent' ? 'Eligible Revenue (%)' : 'Eligible Revenue'"
         explanation="Eligible Revenue (%) *"
-        :is-required="true"
       />
       <FormKit
         :disabled="!dataPointIsAvailable"
@@ -33,27 +32,35 @@
     </div>
 
     <div class="form-field">
-      <FormKit type="group" :disabled="!dataPointIsAvailable" name="dataSource">
+      <FormKit type="group" v-if="dataPointIsAvailable" name="dataSource">
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
             <UploadFormHeader
-                :name="kpiNameMappings.report ?? ''"
-                :explanation="kpiInfoMappings.report ?? ''"
-                :is-required="true"
+                    :name="kpiNameMappings.report ?? ''"
+                    :explanation="kpiInfoMappings.report ?? ''"
+                    :is-required="true"
             />
             <FormKit
               type="select"
               name="report"
+              v-model="currentReportValue"
+              :disabled="!dataPointIsAvailable"
               placeholder="Select a report"
-              validation="required"
-              validation-label="Select a report"
               :options="['None...', ...this.files.filesNames]"
             />
           </div>
           <div>
             <UploadFormHeader :name="kpiNameMappings.page ?? ''" :explanation="kpiInfoMappings.page ?? ''" />
-            <FormKit outer-class="w-100" type="number" name="page" placeholder="Page" validation-label="Page" />
+            <FormKit
+              outer-class="w-100"
+              :disabled="!dataPointIsAvailable"
+              v-model="currentPageValue"
+              type="number"
+              name="page"
+              placeholder="Page"
+              validation-label="Page"
+            />
           </div>
         </div>
       </FormKit>
@@ -61,13 +68,14 @@
 
     <!-- Data quality -->
     <div class="form-field">
-      <UploadFormHeader name="Data quality" explanation="Data quality" :is-required="true" />
+      <UploadFormHeader name="Data quality" explanation="Data quality" :is-required="dataPointIsAvailable" />
       <div class="lg:col-6 md:col-6 col-12 p-0">
         <FormKit
           :disabled="!dataPointIsAvailable"
           type="select"
+          v-model="currentQualityValue"
           name="quality"
-          validation="required"
+          :validation="dataPointIsAvailable ? 'required' : ''"
           validation-label="Data quality"
           placeholder="Data quality"
           :options="dataQualityList"
@@ -101,7 +109,28 @@ export default defineComponent({
     files: useFilesUploadedStore(),
     dataPointIsAvailable: true,
     dataQualityList: ["NA", "Audited", "Reported", "Estimated", "Incomplete"],
+    qualityValueBeforeDataPointWasDisabled: "",
+    currentReportValue: "",
+    currentQualityValue: "",
+    currentPageValue: "",
+    qualityValueWhenDataPointIsDisabled: "",
+    pageValueWhenDataPointIsDisabled: "",
+    reportValueWhenDataPointIsDisabled: "",
   }),
+  watch: {
+    dataPointIsAvailable(newValue: boolean) {
+      if (!newValue) {
+        this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
+        this.pageValueWhenDataPointIsDisabled = this.currentPageValue;
+        this.reportValueWhenDataPointIsDisabled = this.currentReportValue;
+        this.currentQualityValue = "NA";
+      } else {
+        this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
+        this.currentPageValue = this.pageValueWhenDataPointIsDisabled;
+        this.currentReportValue = this.reportValueWhenDataPointIsDisabled;
+      }
+    },
+  },
   props: {
     name: {
       type: String,
