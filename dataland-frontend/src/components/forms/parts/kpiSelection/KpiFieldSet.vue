@@ -36,10 +36,7 @@
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
-            <UploadFormHeader
-                    :name="kpiNameMappings.report ?? ''"
-                    :explanation="kpiInfoMappings.report ?? ''"
-            />
+            <UploadFormHeader :name="kpiNameMappings.report ?? ''" :explanation="kpiInfoMappings.report ?? ''" />
             <FormKit
               type="select"
               name="report"

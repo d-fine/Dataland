@@ -1,7 +1,7 @@
 <template>
   <div class="form-field-label">
     <h5>{{ name }}</h5>
-    <div class="asterisk" v-if="isRequired"> * </div>
+    <div class="asterisk" v-if="isRequired">*</div>
     <em
       class="material-icons info-icon"
       aria-hidden="true"
@@ -28,7 +28,7 @@ export default defineComponent({
     explanation: String,
     isRequired: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
 });
