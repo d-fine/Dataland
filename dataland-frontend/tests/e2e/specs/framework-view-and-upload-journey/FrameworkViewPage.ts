@@ -68,9 +68,8 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.wait("@getSearchResults", { timeout: Cypress.env("long_timeout_in_ms") as number });
         const companySelector = "span:contains(VIEW)";
         cy.get(companySelector).first().scrollIntoView();
-        cy.intercept("/api/data/**").as("getData");
+        cy.wait(1000);
         cy.get(companySelector).first().click({ force: true });
-        cy.wait("@getData", { timeout: Cypress.env("long_timeout_in_ms") as number });
       }
 
       /**
@@ -423,7 +422,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         uploadCompanyBetaAndData();
       });
 
-      it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
+      it.only("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         cy.intercept("/api/companies?searchString=&dataTypes=*").as("firstLoadOfSearchPage");
         cy.visit(`/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}`);

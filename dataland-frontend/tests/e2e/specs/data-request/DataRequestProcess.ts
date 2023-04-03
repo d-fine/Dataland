@@ -54,6 +54,7 @@ describe("As a user I expect a data request page where I can download an excel t
         moreValidation: (interception: Interception) => void = (): void => undefined
       ): void {
         submit();
+        cy.wait(1000);
         cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
           if (interception.response === undefined) {
             expect(interception.response).not.to.equal(undefined);
@@ -121,7 +122,7 @@ describe("As a user I expect a data request page where I can download an excel t
       beforeEach(() => {
         cy.ensureLoggedIn();
         cy.visitAndCheckAppMount("/requests");
-        cy.intercept("**/api/invite*").as(inviteInterceptionAlias);
+        cy.intercept("**/api/invite").as(inviteInterceptionAlias);
       });
 
       it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
