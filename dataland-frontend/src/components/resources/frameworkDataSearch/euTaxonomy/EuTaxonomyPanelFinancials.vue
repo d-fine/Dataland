@@ -201,6 +201,7 @@ export default defineComponent({
               assertDefined(this.dataID)
             );
           this.dataSet = companyAssociatedData.data.data;
+          console.log('<----------->', this.dataSet)
           this.waitingForData = false;
         }
       } catch (error) {

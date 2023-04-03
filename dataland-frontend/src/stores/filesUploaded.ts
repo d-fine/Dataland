@@ -3,14 +3,15 @@ import { defineStore } from "pinia";
 export const useFilesUploadedStore = defineStore("reportsFilesUploaded", {
   state: () => {
     return {
-      files: [] as Record<string, string>[],
+      filesCtx: [] as Record<string, string>[],
       filesNames: [] as Array<string>,
     };
   },
   actions: {
-    setReportsFilesUploaded(fileToSet: Record<string, string>) {
-      this.files = [...this.files, fileToSet];
-      this.filesNames = this.files.map((el) => el.name);
+    setReportsFilesUploaded(filesToSet: []) {
+      console.log('wczytuje', filesToSet)
+      this.filesCtx = Array.from(new Set([...this.filesCtx, ...filesToSet]));
+      this.filesNames = this.filesCtx.map((el) => el.name);
     },
     removeReportFromFilesUploaded(
       fileToRemove: Record<string, string>,
@@ -18,20 +19,30 @@ export const useFilesUploadedStore = defineStore("reportsFilesUploaded", {
       index: number
     ) {
       fileRemoveCallback(index);
-      this.files = this.files.filter((el) => {
+      this.filesCtx = this.filesCtx.filter((el) => {
         return el.name !== fileToRemove.name;
+      });
+      this.filesNames = this.filesNames.filter((el) => {
+        return el !== fileToRemove.name;
       });
     },
     updatePropertyFilesUploaded(indexFileToUpload: number, property: string, value: string) {
-      if (Object.hasOwn(this.files[indexFileToUpload], property)) {
-        this.files[indexFileToUpload][property] = value;
-        this.reRender();
+      console.log('property', property)
+      console.log('property', value)
+      if (Object.hasOwn(this.filesCtx[indexFileToUpload], property)) {
+        this.filesCtx[indexFileToUpload][property] = value;
       } else {
         return;
       }
+      this.reRender();
+      console.log('this.filesCtx[indexFileToUpload][property]', this.filesCtx)
     },
     reRender() {
-      this.files = [...this.files];
+      this.filesCtx = [...this.filesCtx];
+    },
+    clearFiles() {
+      this.filesCtx = [];
+      this.filesNames = [];
     },
   },
 });

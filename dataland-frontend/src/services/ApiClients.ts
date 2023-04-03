@@ -16,6 +16,7 @@ import {
 } from "@clients/backend/api";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import {DocumentControllerApi, DocumentControllerApiInterface} from "@clients/documentmanager";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -47,6 +48,13 @@ export class ApiClientProvider {
     return new constructor(configuration, "/api-keys");
   }
 
+  async getConstructedApiDocumentUpload<T>(
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T
+  ): Promise<T> {
+    const configuration = await this.getConfiguration();
+    return new constructor(configuration, "/documents");
+  }
+
   async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
     return this.getConstructedApi(CompanyDataControllerApi);
   }
@@ -73,6 +81,10 @@ export class ApiClientProvider {
 
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
     return this.getConstructedApiKeyManager(ApiKeyControllerApi);
+  }
+
+  async getDocumentUploadController(): Promise<DocumentControllerApiInterface> {
+    return this.getConstructedApiDocumentUpload(DocumentControllerApi);
   }
 
   async getInviteControllerApi(): Promise<InviteControllerApi> {

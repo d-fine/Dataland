@@ -10,7 +10,7 @@
             type="form"
             id="createEuTaxonomyForFinancialsForm"
             @submit="postEuTaxonomyDataForFinancials"
-            @submit-invalid="checkCustomInputs"
+            @submit-invalid="postEuTaxonomyDataForFinancials"
           >
             <FormKit
               type="hidden"
@@ -52,40 +52,43 @@
                 <div class="col-9 formFields uploaded-files">
                   <h3 class="mt-0">Select company reports</h3>
                   <FileUpload
+                    ref="fileUpload"
                     name="fileUpload"
                     accept=".pdf"
+                    :customUpload="true"
+                    :multiple="true"
                     @select="onSelectedFiles"
                     :maxFileSize="maxFileSize"
                     invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
-                    :auto="true"
+                    :auto="false"
                   >
-                    <template #header="{ chooseCallback }">
+                    <template #header="{ chooseCallback, clearCallback }">
                       <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
                         <div class="flex gap-2">
                           <PrimeButton
                             data-test="upload-files-button"
                             @click="chooseCallback()"
                             icon="pi pi-upload"
-                            label="UPLOAD REPORTS"
+                            label="SELECT REPORTS"
                           />
                         </div>
                       </div>
                     </template>
-                    <template #content="{ uploadedFiles, removeUploadedFileCallback }">
-                      <div v-if="uploadedFiles.length > 0" data-test="uploaded-files">
+                    <template #content="{ files, removeFileCallback }">
+                      <div v-if="files.length > 0" data-test="uploaded-files">
                         <div
-                          v-for="(file, index) of files.files"
+                          v-for="(file, index) of filesCtx.filesCtx"
                           :key="file.name + file.reportDate"
                           class="flex w-full align-items-center file-upload-item"
                         >
                           <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
                           <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
-                            {{ formatSize(file.size) }}
+                            {{ formatBytesUserFriendly(file.size) }}
                           </div>
                           <PrimeButton
                             icon="pi pi-times"
                             data-test="uploaded-files-remove"
-                            @click="files.removeReportFromFilesUploaded(file, removeUploadedFileCallback, index)"
+                            @click="filesCtx.removeReportFromFilesUploaded(file, removeFileCallback, index)"
                             class="p-button-rounded"
                           />
                         </div>
@@ -97,9 +100,9 @@
                 <div class="uploadFormSection">
                   <FormKit name="referencedReports" type="group">
                     <!-- Select company reports -->
-                    <div v-for="(file, index) of files.files" :key="file.name" class="col-9 formFields">
+                    <div v-for="(file, index) of filesCtx.filesCtx" :key="file.name" class="col-9 formFields">
                       <div class="form-field-label">
-                        <h3 class="mt-0">{{ file.name }}</h3>
+                        <h3 class="mt-0">{{ file.name.split('.')[0] }}</h3>
                       </div>
                       <FormKit :name="file.name.split('.')[0]" type="group">
                         <!-- Date of the report -->
@@ -111,7 +114,7 @@
                           <div class="lg:col-6 md:col-6 col-12 p-0">
                             <Calendar
                               data-test="reportDate"
-                              v-model="files.files[index].reportDate"
+                              v-model="filesCtx.filesCtx[index].reportDate"
                               inputId="icon"
                               :showIcon="true"
                               dateFormat="D, M dd, yy"
@@ -119,12 +122,17 @@
                             />
                           </div>
 
-                          <FormKit type="hidden" v-model="files.files[index].convertedReportDate" name="reportDate" />
+                          <FormKit
+                            type="hidden"
+                            v-model="filesCtx.filesCtx[index].convertedReportDate"
+                            name="reportDate"
+                          />
                         </div>
+                        <h2>ssssssssssss {{JSON.stringify(filesCtx.filesCtx[index])}}</h2>
 
                         <FormKit
                           type="text"
-                          v-model="files.filesNames[index]"
+                          v-model="filesCtx.filesCtx[index].documentId"
                           name="reference"
                           :outer-class="{ 'hidden-input': true }"
                         />
@@ -304,7 +312,7 @@
                                 placeholder="Select a report"
                                 validation-label="Select a report"
                                 validation="required"
-                                :options="['None...', ...this.files.filesNames]"
+                                :options="['None...', ...this.filesCtx.filesNames]"
                               />
                             </div>
                             <div>
@@ -497,13 +505,13 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { useRoute } from "vue-router";
-import { defineComponent, inject } from "vue";
+import {defineComponent, inject, ref} from "vue";
 import Keycloak from "keycloak-js";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { getHyphenatedDate, formatSize } from "@/utils/DataFormatUtils";
+import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKPIsModel,
   euTaxonomyKpiInfoMappings,
@@ -516,6 +524,8 @@ import {
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
+import { DocumentExistsResponse } from "@clients/documentmanager";
 
 export default defineComponent({
   setup() {
@@ -541,7 +551,7 @@ export default defineComponent({
   data() {
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
-      files: useFilesUploadedStore(),
+      filesCtx: useFilesUploadedStore(),
       fiscalYearEnd: "" as Date | "",
       convertedFiscalYearEnd: "",
       reportingPeriod: new Date(),
@@ -558,7 +568,7 @@ export default defineComponent({
       scrollListener: (): null => null,
       smoothScroll,
       checkCustomInputs,
-      formatSize,
+      formatBytesUserFriendly,
       route: useRoute(),
       waitingForData: false,
 
@@ -611,6 +621,8 @@ export default defineComponent({
   },
   mounted() {
     const dataId = this.route.query.templateDataId;
+
+    console.log("<___!___>", dataId);
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
       void this.loadEuData(dataId);
     }
@@ -685,27 +697,57 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
-        const formInputsModelToSend = modifyObjectKeys(
-          JSON.parse(JSON.stringify(this.formInputsModel)) as objectType,
-          "send"
-        );
+        let allFileUploadedSuccessful = true;
+        const documentUploadControllerControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getDocumentUploadController();
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
-        this.postEuTaxonomyDataForFinancialsResponse =
-          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-            formInputsModelToSend
+
+        // this.filesCtx.filesCtx.forEach(async (file, index) => {
+        //   const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(file as File);
+        //   if (!uploadFileSuccessful) {
+        //         allFileUploadedSuccessful = false;
+        //       } else if (uploadFileSuccessful) {
+        //         this.filesCtx.updatePropertyFilesUploaded(index, "documentId", uploadFileSuccessful.data.documentId);
+        //       }
+        // })
+
+        let index = 0;
+        for (const file of this.filesCtx.filesCtx) {
+          const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(file as File);
+          if (!uploadFileSuccessful) {
+            allFileUploadedSuccessful = false;
+            break;
+          } else if (uploadFileSuccessful) {
+            this.filesCtx.updatePropertyFilesUploaded(index, "documentId", uploadFileSuccessful.data.documentId);
+            console.log('file', this.filesCtx.filesCtx[index])
+            index++;
+          }
+        }
+        if (allFileUploadedSuccessful) {
+          const formInputsModelToSend = modifyObjectKeys(
+            JSON.parse(JSON.stringify(this.formInputsModel)) as objectType,
+            "send"
           );
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+          // this.postEuTaxonomyDataForFinancialsResponse =
+          //   await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
+          //     formInputsModelToSend
+          //   );
+          console.log('formInputsModelToSend', this.formInputsModel)
+        }
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
         console.error(error);
       } finally {
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
         this.postEuTaxonomyDataForFinancialsProcessed = true;
-        this.formInputsModel = {};
-        this.confirmedSelectedKPIs = [];
-        this.selectedKPIs = [];
-        this.fiscalYearEnd = "";
+        // this.confirmedSelectedKPIs = [];
+        // this.selectedKPIs = [];
+        // this.fiscalYearEnd = "";
+        // this.filesCtx.clearFiles();
+        // this.$refs.fileUpload.clear();
       }
     },
 
@@ -717,10 +759,15 @@ export default defineComponent({
      * @param event.files files
      */
     onSelectedFiles(event: { files: Record<string, string>[]; originalEvent: Event }): void {
+      console.log("Event files", event);
       if (event.files.length) {
-        event.files[0]["reportDate"] = "";
-        event.files[0]["convertedReportDate"] = "";
-        this.files.setReportsFilesUploaded(event.files[0]);
+        event.files.forEach((file) => {
+          file["reportDate"] = "";
+          file["convertedReportDate"] = "";
+          file["documentId"] = "";
+        });
+        console.log("EVENT", event);
+        this.filesCtx.setReportsFilesUploaded(event.files);
       } else {
         return;
       }
@@ -748,16 +795,58 @@ export default defineComponent({
       this.onThisPageLinks = this.onThisPageLinks.filter((el: { label: string; value: string }) => el.value !== value);
     },
 
+    async checkForm() {
+
+      const documentUploadControllerControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+      ).getDocumentUploadController();
+      let allFileUploadedSuccessful = true;
+
+      let index = 0;
+      for (const file of this.filesCtx.filesCtx) {
+        const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(file as File);
+        if (!uploadFileSuccessful) {
+          allFileUploadedSuccessful = false;
+          break;
+        } else if (uploadFileSuccessful) {
+          this.filesCtx.updatePropertyFilesUploaded(index, "documentId", uploadFileSuccessful.data.documentId);
+          index++;
+        }
+      }
+      if (allFileUploadedSuccessful) {
+        console.log('formInputsModelToSend', this.formInputsModel)
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+        this.filesCtx.clearFiles();
+        this.$refs.fileUpload.clear();
+      }
+    },
+
+    async checkIfDocumentExists(): Promise<void> {
+      try {
+        this.messageCount++;
+        const documentId = "bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7";
+
+        const documentUploadControllerControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getDocumentUploadController();
+        const isDocumentExists = await documentUploadControllerControllerApi.checkDocument(documentId);
+        console.log("isDocumentExists", isDocumentExists);
+      } catch (error) {
+        console.error(error);
+      } finally {
+      }
+    },
+
     /**
      * Updates the date of a single report file
      *
      * @param index file to update
      */
     updateReportDateHandler(index: number) {
-      this.files.updatePropertyFilesUploaded(
+      this.filesCtx.updatePropertyFilesUploaded(
         index,
         "convertedReportDate",
-        getHyphenatedDate(this.files.files[index].reportDate as unknown as Date)
+        getHyphenatedDate(this.filesCtx.filesCtx[index].reportDate as unknown as Date)
       );
     },
   },
