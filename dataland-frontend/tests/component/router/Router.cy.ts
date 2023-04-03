@@ -2,6 +2,7 @@ import { routes } from "@/router";
 import { shallowMount, mount, VueWrapper } from "@vue/test-utils";
 import App from "@/App.vue";
 import { createRouter, createWebHistory, Router } from "vue-router";
+import { createPinia, setActivePinia } from "pinia";
 
 /**
  * Mounts the main vue component with the specified router
@@ -12,7 +13,7 @@ import { createRouter, createWebHistory, Router } from "vue-router";
 function mountAppWithRouter(routerToBeUsedWithMount: Router): VueWrapper {
   return mount(App, {
     global: {
-      plugins: [routerToBeUsedWithMount],
+      plugins: [routerToBeUsedWithMount, setActivePinia(createPinia())],
     },
   });
 }
