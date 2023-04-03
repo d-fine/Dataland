@@ -12,8 +12,8 @@ describeIf(
     dataEnvironments: ["fakeFixtures"],
   },
   () => {
-    let allPages = [] as string[];
-    let uploaderPages = [] as string[];
+    let readerAndUploaderPages = [] as string[];
+    let uploaderOnlyPages = [] as string[];
     let companyId: string;
     const noUploaderRightsMessageSelector = "h1:contains('no uploader status')";
 
@@ -21,7 +21,7 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
         const storedCompany = await uploadCompanyViaApi(token, generateCompanyInformation());
         companyId = storedCompany.companyId;
-        allPages = [
+        readerAndUploaderPages = [
           "",
           `samples/${DataTypeEnum.EutaxonomyNonFinancials}`,
           "companies",
@@ -34,28 +34,29 @@ describeIf(
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}`,
+          `/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}`,
         ];
-        uploaderPages = [
+        uploaderOnlyPages = [
           "/companies/choose",
           `/companies/${companyId}/frameworks/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}/upload`,
+          `/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}/upload`,
         ];
       });
     });
 
     it("Check if a non uploader user can access only the corresponding pages", () => {
       cy.ensureLoggedIn(reader_name, reader_pw);
-      allPages.forEach((page) => {
+      readerAndUploaderPages.forEach((page) => {
         it(`Non uploader should be able to access ${page}`, () => {
-          cy.visit(page);
           cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
             "not.exist"
           );
         });
       });
-      uploaderPages.forEach((page) => {
+      uploaderOnlyPages.forEach((page) => {
         cy.visit(page);
         cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
           "exist"
@@ -65,13 +66,13 @@ describeIf(
 
     it("Check if an uploader user can access the corresponding pages", () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
-      allPages.forEach((page) => {
+      readerAndUploaderPages.forEach((page) => {
         cy.visit(page);
         cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
           "not.exist"
         );
       });
-      uploaderPages.forEach((page) => {
+      uploaderOnlyPages.forEach((page) => {
         cy.visit(page);
         cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
           "not.exist"
