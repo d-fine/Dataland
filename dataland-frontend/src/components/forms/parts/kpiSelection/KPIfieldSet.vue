@@ -39,7 +39,6 @@
             <UploadFormHeader
                     :name="kpiNameMappings.report ?? ''"
                     :explanation="kpiInfoMappings.report ?? ''"
-                    :is-required="true"
             />
             <FormKit
               type="select"
