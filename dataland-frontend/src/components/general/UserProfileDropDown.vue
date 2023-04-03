@@ -55,7 +55,7 @@ export default defineComponent({
      * Used as an event handler through the on scroll event.
      */
     function hideDropdownMenu(): void {
-        assertDefined(menu.value).hide();
+      assertDefined(menu.value).hide();
     }
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -98,10 +98,10 @@ export default defineComponent({
     };
   },
   mounted() {
-      window.addEventListener("scroll", this.hideDropdownMenu);
+    window.addEventListener("scroll", this.hideDropdownMenu);
   },
   unmounted() {
-      window.removeEventListener("scroll", this.hideDropdownMenu);
+    window.removeEventListener("scroll", this.hideDropdownMenu);
   },
   methods: {
     /**
