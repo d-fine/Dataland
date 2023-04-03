@@ -367,7 +367,7 @@
                                 :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
                               />
                             </span>
-                            <KPIfieldSet
+                            <KpiFieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
@@ -403,7 +403,7 @@
                                 :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
                               />
                             </span>
-                            <KPIfieldSet
+                            <KpiFieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
@@ -439,7 +439,7 @@
                                 :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
                               />
                             </span>
-                            <KPIfieldSet
+                            <KpiFieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
@@ -491,7 +491,7 @@ import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload from "primevue/fileupload";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
-import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
+import KpiFieldSet from "@/components/forms/parts/kpiSelection/KpiFieldSet.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import Card from "primevue/card";
@@ -524,7 +524,7 @@ export default defineComponent({
     PrimeButton,
     FileUpload,
     YesNoComponent,
-    KPIfieldSet,
+    KpiFieldSet,
     FailedUpload,
     Card,
     FormKit,

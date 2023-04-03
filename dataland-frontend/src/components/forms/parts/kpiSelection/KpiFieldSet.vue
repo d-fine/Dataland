@@ -101,7 +101,7 @@ import { FormKit } from "@formkit/vue";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
 
 export default defineComponent({
-  name: "KPIfieldSet",
+  name: "KpiFieldSet",
   components: { UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({
