@@ -11,6 +11,7 @@
             id="createEuTaxonomyForFinancialsForm"
             @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
+            #default="{ state: { valid } }"
           >
             <FormKit
               type="hidden"
@@ -448,14 +449,7 @@
               </FormKit>
 
               <!--------- SUBMIT --------->
-
-              <div class="uploadFormSection grid">
-                <div class="col-3"></div>
-
-                <div class="col-9">
-                  <PrimeButton data-test="submitButton" type="submit" label="SUBMIT FORM" />
-                </div>
-              </div>
+              <SubmitFormBar :formIsValid="valid" />
             </div>
           </FormKit>
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
@@ -516,6 +510,7 @@ import {
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
 
 export default defineComponent({
   setup() {
@@ -525,6 +520,7 @@ export default defineComponent({
   },
   name: "CreateEUTaxonomyForFinancials",
   components: {
+    SubmitFormBar,
     FailedUpload,
     FormKit,
     SuccessUpload,
@@ -542,7 +538,7 @@ export default defineComponent({
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
-      fiscalYearEnd: "" as Date | "",
+      fiscalYearEnd: undefined as Date | undefined,
       convertedFiscalYearEnd: "",
       reportingPeriod: new Date(),
       assuranceData: [
@@ -583,6 +579,7 @@ export default defineComponent({
       confirmedSelectedKPIs: [] as { label: string; value: string }[],
       computedFinancialServicesTypes: [] as string[],
       reportingPeriodYear: new Date().getFullYear(),
+      valid: false,
     };
   },
   watch: {
@@ -705,7 +702,7 @@ export default defineComponent({
         this.formInputsModel = {};
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
-        this.fiscalYearEnd = "";
+        this.fiscalYearEnd = undefined;
       }
     },
 
