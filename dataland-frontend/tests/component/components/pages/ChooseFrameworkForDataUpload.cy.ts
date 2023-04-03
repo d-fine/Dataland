@@ -10,7 +10,7 @@ describe("Component tests for the ChooseFrameworkForDataUpload page", () => {
         getKeycloakPromise() {
           return Promise.resolve({
             authenticated: true,
-            updateToken: () => undefined,
+            updateToken: () => Promise.resolve(true),
           });
         },
       },
