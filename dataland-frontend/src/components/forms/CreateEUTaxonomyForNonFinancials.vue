@@ -13,6 +13,7 @@
             id="createEuTaxonomyForNonFinancialsForm"
             @submit="postEuTaxonomyDataForNonFinancials"
             @submit-invalid="checkCustomInputs"
+            #default="{ state: { valid } }"
           >
             <FormKit
               type="hidden"
@@ -449,13 +450,7 @@
 
               <!--------- SUBMIT --------->
 
-              <div class="uploadFormSection grid">
-                <div class="col-3"></div>
-
-                <div class="col-9">
-                  <PrimeButton data-test="submitButton" type="submit" label="SUBMIT FORM" />
-                </div>
-              </div>
+              <SubmitFormBar :formIsValid="valid" />
             </div>
           </FormKit>
           <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
@@ -513,10 +508,12 @@ import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: {
+    SubmitFormBar,
     Calendar,
     UploadFormHeader,
     PrimeButton,
@@ -537,7 +534,7 @@ export default defineComponent({
   data: () => ({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     files: useFilesUploadedStore(),
-    fiscalYearEnd: "" as Date | "",
+    fiscalYearEnd: undefined as Date | undefined,
     convertedFiscalYearEnd: "",
     reportingPeriod: new Date(),
     onThisPageLinks: [
