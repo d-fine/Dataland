@@ -50,11 +50,19 @@ export default defineComponent({
         menu.value.toggle(event);
       }
     }
+    /**
+     * Hides the dropdown menu.
+     * Used as an event handler through the on scroll event.
+     */
+    function hideDropdownMenu(): void {
+        assertDefined(menu.value).hide();
+    }
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
       authenticated: inject<boolean>("authenticated"),
       menu,
       toggleDropdownMenu,
+      hideDropdownMenu,
     };
   },
 
@@ -89,7 +97,12 @@ export default defineComponent({
       profilePictureSource: defaultProfilePicture,
     };
   },
-
+  mounted() {
+      window.addEventListener("scroll", this.hideDropdownMenu);
+  },
+  unmounted() {
+      window.removeEventListener("scroll", this.hideDropdownMenu);
+  },
   methods: {
     /**
      * Logs the user out and redirects him to the dataland homepage
