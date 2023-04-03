@@ -7,18 +7,19 @@
       {{ resetReportsCount() }}
       <span v-for="[name, rep] in Object.entries(reports)" :key="name">
         {{ reportPlus() }}
-        <a :href="rep.reference">{{ name }}</a> <span v-if="reportCounter < Object.keys(reports).length">, </span>
+        <button @click="downloadReport(rep)">{{ name }}</button>
+        <span v-if="reportCounter < Object.keys(reports).length">, </span>
       </span>
     </p>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, inject} from "vue";
-import {CompanyReport} from "@clients/backend";
-import {AxiosResponse} from "axios";
-import {ApiClientProvider} from "@/services/ApiClients";
-import {assertDefined} from "@/utils/TypeScriptUtils";
+import { defineComponent, inject } from "vue";
+import { CompanyReport } from "@clients/backend";
+import { AxiosResponse } from "axios";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 
 export default defineComponent({
@@ -29,7 +30,7 @@ export default defineComponent({
   },
   name: "ShowReportsBanner",
   props: {
-    reports: {type: Map<string, CompanyReport>},
+    reports: { type: Map<string, CompanyReport> },
   },
   data() {
     return {
@@ -37,10 +38,14 @@ export default defineComponent({
       test: "test",
       getDocumentsFromStorageProcessed: false,
       getDocumentsFromStorageResponse: null as AxiosResponse<File> | null,
+      reportContents: [File],
       messageCount: 0,
     };
   },
   computed: {},
+  mounted() {
+    this.getAllReports();
+  },
   methods: {
     reportPlus() {
       this.reportCounter++;
@@ -51,13 +56,15 @@ export default defineComponent({
 
     /**
      * Retrieves document for from the storage
+     *
+     * @param documentId
      */
-    async getDocumentsFromStorage(documentId: String): Promise<void> {
+    async getDocumentsFromStorage(documentId: string): Promise<void> {
       try {
         this.getDocumentsFromStorageProcessed = false;
         this.messageCount++;
         const documentControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)()
         ).getDocumentControllerApi();
         this.getDocumentsFromStorageResponse = await documentControllerApi.getDocument(documentId);
       } catch (error) {
@@ -68,14 +75,35 @@ export default defineComponent({
       }
     },
     getAllReports() {
-      try{Object.values(this.reports).forEach((report) =>
-        {
-          this.getDocumentsFromStorage(report.reference)
-        })}
-        catch(error) {
-          console.error(error);
+      try {
+        Object.values(this.reports).forEach((report) => {
+          this.getDocumentsFromStorage(report.reference);
+          if (this.getDocumentsFromStorageResponse != null) {
+            this.reportContents.push(this.getDocumentsFromStorageResponse);
+          }
+          window.URL.createObjectURL(this.getDocumentsFromStorageResponse);
+          console.log(this.getDocumentsFromStorageResponse);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    downloadReport(report) {
+      try {
+        this.getDocumentsFromStorage(report.reference);
+        if (this.getDocumentsFromStorageResponse != null) {
+          this.reportContents.push(this.getDocumentsFromStorageResponse);
         }
-    }
+        const docUrl = document.createElement("a");
+        docUrl.href = window.URL.createObjectURL(new Blob([this.getDocumentsFromStorageResponse.data]));
+        docUrl.setAttribute("download", this.getDocumentsFromStorageResponse.headers);
+        document.body.appendChild(docUrl);
+        docUrl.click();
+        //console.log(this.getDocumentsFromStorageResponse);
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 });
 </script>
@@ -83,6 +111,5 @@ export default defineComponent({
 <style>
 a:link {
   color: var(--yellow-700);
-  text-decoration: none;
 }
 </style>
