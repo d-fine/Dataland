@@ -21,6 +21,7 @@ import { AxiosResponse } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
+import {RawAxiosResponseHeaders} from "axios/index";
 
 export default defineComponent({
   setup() {
@@ -96,7 +97,13 @@ export default defineComponent({
         }
         const docUrl = document.createElement("a");
         docUrl.href = window.URL.createObjectURL(new Blob([this.getDocumentsFromStorageResponse.data]));
-        docUrl.setAttribute("download", this.getDocumentsFromStorageResponse.headers);
+        const filename = this.getDocumentsFromStorageResponse.headers.get('content-disposition')
+            .split(';')
+            .find((n: string | string[]) => n.includes('filename='))
+            .replace('filename=', '')
+            .trim()
+        ;
+        docUrl.setAttribute("download",filename);
         document.body.appendChild(docUrl);
         docUrl.click();
         //console.log(this.getDocumentsFromStorageResponse);
