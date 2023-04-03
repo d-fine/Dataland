@@ -68,7 +68,9 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.wait("@getSearchResults", { timeout: Cypress.env("long_timeout_in_ms") as number });
         const companySelector = "span:contains(VIEW)";
         cy.get(companySelector).first().scrollIntoView();
+        cy.intercept("/api/data/**").as("getData");
         cy.get(companySelector).first().click({ force: true });
+        cy.wait("@getData", { timeout: Cypress.env("long_timeout_in_ms") as number });
       }
 
       /**
