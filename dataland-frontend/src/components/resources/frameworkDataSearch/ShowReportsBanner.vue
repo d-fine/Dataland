@@ -52,7 +52,7 @@ export default defineComponent({
     /**
      * Retrieves document for from the storage
      */
-    async getDocumentsFromStorage(): Promise<void> {
+    async getDocumentsFromStorage(documentId: String): Promise<void> {
       try {
         this.getDocumentsFromStorageProcessed = false;
         this.messageCount++;
@@ -60,7 +60,6 @@ export default defineComponent({
             assertDefined(this.getKeycloakPromise)()
         ).getDocumentControllerApi();
         this.getDocumentsFromStorageResponse = await documentControllerApi.getDocument(documentId);
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.getDocumentsFromStorageResponse = null;
         console.error(error);
@@ -68,6 +67,15 @@ export default defineComponent({
         this.getDocumentsFromStorageProcessed = true;
       }
     },
+    getAllReports() {
+      try{Object.values(this.reports).forEach((report) =>
+        {
+          this.getDocumentsFromStorage(report.reference)
+        })}
+        catch(error) {
+          console.error(error);
+        }
+    }
   },
 });
 </script>
