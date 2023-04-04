@@ -25,17 +25,13 @@ export default defineComponent({
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
       resolvedKeycloakPromise: undefined as undefined | Keycloak,
       keycloakAuthenticated: false,
-      currentTokenSliced: useSharedSessionStateStore().refreshToken, // TODO remove at the end
     };
   },
 
   watch: {
     currentRefreshTokenInSharedStore(newRefreshToken: string) {
-      console.log("NOTE: session store token changed! "); // TODO debugging
       if (this.resolvedKeycloakPromise && newRefreshToken) {
-        console.log("NOTE2: new refresh token is actually defined, so Dataland is reacting to the change..."); // TODO debugging
         this.resolvedKeycloakPromise.refreshToken = newRefreshToken;
-        this.currentTokenSliced = newRefreshToken.toString().slice(-20); // TODO debugging
         clearInterval(useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning);
         const openSessionWarningModalBound = this.openSessionWarningModal.bind(this);
         startSessionSetIntervalFunction(this.resolvedKeycloakPromise, openSessionWarningModalBound);
@@ -80,18 +76,6 @@ export default defineComponent({
       const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
       const handleAuthLogoutBound = this.handleAuthLogout.bind(this);
       keycloak.onAuthLogout = handleAuthLogoutBound;
-      keycloak.onAuthRefreshSuccess = (): void => {
-        console.log("refreshed tokens");
-      }; // TODO debugging
-      keycloak.onAuthRefreshError = (): void => {
-        console.log("ERROR!!!: refresherror");
-      }; // TODO debugging
-      keycloak.onAuthError = (): void => {
-        console.log("ERROR!!!: autherror");
-      }; // TODO debugging
-      keycloak.onAuthSuccess = (): void => {
-        console.log("SUCCESS: auth!");
-      }; // TODO debugging
       return keycloak
         .init({
           onLoad: "check-sso",
@@ -99,7 +83,6 @@ export default defineComponent({
           pkceMethod: "S256",
         })
         .then((authenticated) => {
-          console.log("setting the keycloakAuthenticated value to " + authenticated.toString()); // TODO debugging
           this.keycloakAuthenticated = authenticated;
         })
         .catch((error) => {
@@ -117,7 +100,6 @@ export default defineComponent({
      * in the url which triggers a pop-up to open and inform the user that she/he was just logged out.
      */
     handleAuthLogout() {
-      console.log("Logging out"); // TODO debugging
       logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, "?externalLogout=true");
     },
 

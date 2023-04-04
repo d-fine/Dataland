@@ -21,7 +21,6 @@ export function updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak: Keycloak,
         if (refreshTokenExpiryTime) {
           useSharedSessionStateStore().refreshToken = keycloak.refreshToken;
           useSharedSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
-          console.log("--------------NEW SESSION WARNING TIMESTAMP IS: " + (refreshTokenExpiryTime * 1000).toString());
         }
       }
     })
@@ -43,20 +42,15 @@ export function startSessionSetIntervalFunction(
   keycloak: Keycloak,
   onSurpassingExpiredSessionTimestampCallback: () => void
 ): void {
-  console.log("starting set interval from scratch"); //TODO debugging
   useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning = setInterval(() => {
-    console.log("setInterval is running once"); // TODO debugging
     const currentTimestampInMs = new Date().getTime();
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs;
     if (!sessionWarningTimestamp) {
       logoutAndRedirectToUri(keycloak, "");
     } else {
       if (currentTimestampInMs >= sessionWarningTimestamp) {
-        console.log("You have passed the sessionWarningTimestamp timestamp. You'll get a session expired popup now."); // TODO debugging
         clearInterval(useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning);
         onSurpassingExpiredSessionTimestampCallback();
-      } else {
-        console.log("You have not reached the sessionWarningTimestamp in the local storage yet. You stay logged in"); // TODO debugging
       }
     }
   }, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS);
@@ -72,12 +66,6 @@ export function isRefreshTokenExpiryTimestampInSharedStoreReached(): boolean {
   const currentTimestamp = new Date().getTime();
   const refreshTokenExpiryTimestampInMs = useSharedSessionStateStore().refreshTokenExpiryTimestampInMs;
   if (refreshTokenExpiryTimestampInMs) {
-    console.log(
-      "currentTime: " +
-        currentTimestamp.toString() +
-        " expiryTimestampOfCurrentRefreshToken: " +
-        refreshTokenExpiryTimestampInMs.toString()
-    ); // TODO debugging
     return (
       currentTimestamp + minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck > refreshTokenExpiryTimestampInMs
     );
@@ -97,7 +85,6 @@ export function isRefreshTokenExpiryTimestampInSharedStoreReached(): boolean {
  * @param keycloak is the keycloak adaptor used to do the required actions (logout or token update)
  */
 export function tryToRefreshSession(keycloak: Keycloak): void {
-  console.log("refreshing session"); // TODO debugging
   /*
   Even after the session idle timeout in the Keycloak settings is reached (which means the refresh token
   is invalid too), Keycloak still keeps the session alive for 2 minutes (observed behaviour).
@@ -105,10 +92,8 @@ export function tryToRefreshSession(keycloak: Keycloak): void {
   After the grace time, you will be redirected to the usual Keycloak login page.
    */
   if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
-    console.log("refreshing session => refresh Token expired => logout"); // TODO debugging
     loginAndRedirectToSearchPage(keycloak);
   } else {
-    console.log("refreshing session => refresh Token still valid => updating tokens"); // TODO debugging
     updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
   }
 }

@@ -39,7 +39,6 @@ export default defineComponent({
 
   watch: {
     currentRefreshTokenInSharedStore() {
-      console.log("session dialog is open and noticed new refresh token => closing dialog"); // TODO debugging
       this.closeTheDialog();
     },
   },
@@ -57,16 +56,13 @@ export default defineComponent({
 
   mounted() {
     this.getDataFromParentAndSet();
-    console.log("mounting the pop up"); // TODO debugging
     if (this.isTrackingOfRefreshTokenExpiryEnabled) {
       this.setIntervalForRefreshTokenExpiryCheck();
     }
   },
 
   beforeUnmount() {
-    console.log("pop will be unmounted now"); // TODO debugging
     if (this.functionIdOfExpiryCheck) {
-      console.log("clearing the expiry check setInterval"); // TODO debugging
       clearInterval(this.functionIdOfExpiryCheck);
     }
   },
@@ -116,11 +112,8 @@ export default defineComponent({
      * Else it keeps going.
      */
     setIntervalForRefreshTokenExpiryCheck() {
-      console.log("starting setinveral for refresh token check"); // TODO debugging
       this.functionIdOfExpiryCheck = setInterval(() => {
-        console.log("constantly checking if refresh token is expired"); // TODO debugging
         if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
-          console.log("refresh token is expired => stopping this setInterval and changing texts on pop-up"); // TODO debugging
           this.displayedText = "Your session was closed due to inactivity. Login to start a new session.";
           this.refreshButtonLabel = "Login";
           clearInterval(this.functionIdOfExpiryCheck);

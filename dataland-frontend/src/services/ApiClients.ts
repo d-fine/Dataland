@@ -27,7 +27,6 @@ export class ApiClientProvider {
   async getConfiguration(): Promise<Configuration | undefined> {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
-      console.log("API being used"); // TODO debugging
       updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
       return new Configuration({ accessToken: keycloak.token });
     } else {
