@@ -169,7 +169,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:19.7.0
+    image: node:19.8.1
     networks:
       - internal
     volumes:

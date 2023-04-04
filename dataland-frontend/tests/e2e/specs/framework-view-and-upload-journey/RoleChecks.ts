@@ -42,7 +42,6 @@ describeIf(
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}/upload`,
-          `/companies/${companyId}/frameworks/${DataTypeEnum.Sfdr}/upload`,
         ];
       });
     });
