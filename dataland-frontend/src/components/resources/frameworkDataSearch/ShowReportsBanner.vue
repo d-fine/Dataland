@@ -7,7 +7,7 @@
       {{ resetReportsCount() }}
       <span v-for="[name, rep] in Object.entries(reports)" :key="name">
         {{ reportPlus() }}
-        <button @click="downloadReport(rep)">{{ name }}</button>
+        <button @click="downloadReport(rep.reference)">{{ name }}</button>
         <span v-if="reportCounter < Object.keys(reports).length">, </span>
       </span>
     </p>
@@ -44,21 +44,34 @@ export default defineComponent({
   },
   computed: {},
   methods: {
+    /**
+     * Counter to correctly build the list of reports
+     */
     reportPlus() {
       this.reportCounter++;
     },
+    /**
+     * Rsets the counter used to correctly build the list of reports
+     */
     resetReportsCount() {
       this.reportCounter = 0;
     },
-
-    async downloadReport(report: { reference: string }) {
+    /**
+     * Method to download available reports
+     *
+     * @param reference hash of the report to be downloaded
+     */
+    async downloadReport(reference: string) {
       try {
         const docUrl = document.createElement("a");
         const documentControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+          assertDefined(this.getKeycloakPromise)()
         ).getDocumentControllerApi();
-        const getDocumentsFromStorageResponse = await documentControllerApi.getDocument(report.reference, {headers:{"accept": "application/pdf"}, responseType: 'arraybuffer'});
-        const newBlob = new Blob([(getDocumentsFromStorageResponse.data)], {type: 'application/pdf'})
+        const getDocumentsFromStorageResponse = await documentControllerApi.getDocument(reference, {
+          headers: { accept: "application/pdf" },
+          responseType: "arraybuffer",
+        });
+        const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
         docUrl.href = URL.createObjectURL(newBlob);
         const filename = getDocumentsFromStorageResponse.headers
           .get("content-disposition")
