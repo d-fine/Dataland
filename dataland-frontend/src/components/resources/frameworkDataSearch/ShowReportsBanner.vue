@@ -67,22 +67,25 @@ export default defineComponent({
         const documentControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getDocumentControllerApi();
-        const getDocumentsFromStorageResponse = await documentControllerApi.getDocument(reference, {
-          headers: { accept: "application/pdf" },
-          responseType: "arraybuffer",
-        });
-        const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
-        docUrl.href = URL.createObjectURL(newBlob);
-        const filename = getDocumentsFromStorageResponse.headers
-          .get("content-disposition")
-          .split(";")
-          .find((n: string | string[]) => n.includes("filename="))
-          .replace("filename=", "")
-          .trim();
-        docUrl.setAttribute("download", filename);
-        document.body.appendChild(docUrl);
-        docUrl.click();
-        console.log(getDocumentsFromStorageResponse);
+        await documentControllerApi
+          .getDocument(assertDefined(reference), {
+            headers: { accept: "application/pdf" },
+            responseType: "arraybuffer",
+          })
+          .then((getDocumentsFromStorageResponse) => {
+            const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
+            docUrl.href = URL.createObjectURL(newBlob);
+            const filename: string = assertDefined(getDocumentsFromStorageResponse.headers)
+              .get("content-disposition")
+              .split(";")
+              .find((n: string | string[]) => n.includes("filename="))
+              .replace("filename=", "")
+              .trim();
+            docUrl.setAttribute("download", assertDefined(filename));
+            document.body.appendChild(docUrl);
+            docUrl.click();
+            console.log(getDocumentsFromStorageResponse);
+          });
       } catch (error) {
         console.error(error);
       }
