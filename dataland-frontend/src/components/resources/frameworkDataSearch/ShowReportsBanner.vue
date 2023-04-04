@@ -21,7 +21,6 @@ import { AxiosResponse } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
-import {RawAxiosResponseHeaders} from "axios/index";
 
 export default defineComponent({
   setup() {
@@ -44,9 +43,9 @@ export default defineComponent({
     };
   },
   computed: {},
-  mounted() {
-    this.getAllReports();
-  },
+  //mounted() {
+  //  this.getAllReports();
+  //},
   methods: {
     reportPlus() {
       this.reportCounter++;
@@ -75,7 +74,7 @@ export default defineComponent({
         this.getDocumentsFromStorageProcessed = true;
       }
     },
-    getAllReports() {
+    /*getAllReports() {
       try {
         Object.values(this.reports).forEach((report) => {
           this.getDocumentsFromStorage(report.reference);
@@ -88,25 +87,31 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
-    },
-    downloadReport(report) {
+    },*/
+    async downloadReport(report: { reference: string }) {
       try {
-        this.getDocumentsFromStorage(report.reference);
+        await this.getDocumentsFromStorage(report.reference);
         if (this.getDocumentsFromStorageResponse != null) {
-          this.reportContents.push(this.getDocumentsFromStorageResponse);
+          //this.reportContents.push(this.getDocumentsFromStorageResponse);
         }
         const docUrl = document.createElement("a");
-        docUrl.href = window.URL.createObjectURL(new Blob([this.getDocumentsFromStorageResponse.data]));
-        const filename = this.getDocumentsFromStorageResponse.headers.get('content-disposition')
-            .split(';')
-            .find((n: string | string[]) => n.includes('filename='))
-            .replace('filename=', '')
-            .trim()
-        ;
-        docUrl.setAttribute("download",filename);
+        const documentControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+        ).getDocumentControllerApi();
+        const getDocumentsFromStorageResponse = await documentControllerApi.getDocument(report.reference);
+        const fileData: File = getDocumentsFromStorageResponse.data
+        console.log(typeof fileData)
+        docUrl.href = URL.createObjectURL(fileData);
+        const filename = getDocumentsFromStorageResponse.headers
+          .get("content-disposition")
+          .split(";")
+          .find((n: string | string[]) => n.includes("filename="))
+          .replace("filename=", "")
+          .trim();
+        docUrl.setAttribute("download", filename);
         document.body.appendChild(docUrl);
         docUrl.click();
-        //console.log(this.getDocumentsFromStorageResponse);
+        console.log(getDocumentsFromStorageResponse);
       } catch (error) {
         console.error(error);
       }
