@@ -21,7 +21,7 @@ To explicitly mark a script executable, do:
 `git update-index --chmod=+x script.sh`
 ## Git Hooks
 To add the provided git pre-hooks to your local development environment execute:
-`git config --local core.hooksPath ./githooks/`
+`git config --local core.hookspath ./.githooks/`
 ## Environment Variables
 Some environment variables are used within the project. Find attached the variables and their meaning
 
