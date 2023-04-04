@@ -54,8 +54,8 @@ describe("As a user I expect a data request page where I can download an excel t
         moreValidation: (interception: Interception) => void = (): void => undefined
       ): void {
         submit();
-        cy.wait(2000);
         cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
+          cy.wait(2000);
           if (interception.response === undefined) {
             expect(interception.response).not.to.equal(undefined);
             return;
