@@ -47,7 +47,7 @@ export default defineComponent({
     currentRefreshTokenInSharedStore(): string | undefined {
       const currentRefreshTokenInSharedStore = useSharedSessionStateStore().refreshToken;
       if (currentRefreshTokenInSharedStore) {
-        return currentRefreshTokenInSharedStore; // TODO you could inject the current refresh token from App.vue
+        return currentRefreshTokenInSharedStore;
       } else {
         return undefined;
       }

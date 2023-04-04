@@ -13,10 +13,9 @@ import MarketingSection from "@/components/resources/landing/MarketingSection.vu
 import SampleSection from "@/components/resources/landing/SampleSection.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import { defineComponent, inject } from "vue";
-import { NavigationFailure } from "vue-router";
+import { NavigationFailure, useRoute } from "vue-router";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { useRoute } from "vue-router";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { useSharedSessionStateStore } from "@/stores/stores";
 
