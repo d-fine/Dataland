@@ -17,10 +17,3 @@ export function checkImage(name: string, file: string): void {
 export function checkButton(name: string, message: string): void {
   cy.get(`button[name=${name}]`).should("be.visible").should("contain.text", message);
 }
-
-/**
- * Checks if the dataland footer element is present
- */
-export function checkFooter(): void {
-  cy.get('[data-test="dataland footer"]').should("exist");
-}

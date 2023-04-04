@@ -2,30 +2,9 @@ import { getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
 import { DataTypeEnum } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
+import { checkFooter } from "@sharedUtils/elementChecks";
 
 describe("As a user, I expect the footer section to be present and contain relevant legal links", () => {
-  it("Checks that the footer section works properly", () => {
-    cy.intercept("https://www.youtube-nocookie.com/**", { forceNetworkError: false }).as("youtube");
-    cy.visitAndCheckAppMount("/");
-    cy.wait("@youtube");
-    cy.get('img[alt="Dataland image logo"]')
-      .should("be.visible")
-      .should("have.attr", "src")
-      .should("include", "vision");
-    cy.get("body").should("contain.text", "Legal");
-    cy.get("body").should("contain.text", "Copyright © 2023 Dataland");
-    cy.get('a span[title="imprint"]').should("contain.text", "Imprint").click({ force: true });
-    cy.get("[data-test='Imprint-Text']").should("exist");
-    cy.url().should("include", "/imprint");
-    cy.get("h2").contains("Imprint");
-    cy.get("[title=back_button").click({ force: true });
-    cy.wait("@youtube");
-    cy.get('a p[title="data privacy"]').should("contain.text", "Data Privacy").click({ force: true });
-    cy.get("[data-test='DataPrivacy-Text']").should("exist");
-    cy.url().should("include", "/dataprivacy");
-    cy.get("h2").contains("Data Privacy");
-  });
-
   describe("Checks that the footer section is present on many pages", () => {
     beforeEach(() => {
       cy.ensureLoggedIn();
@@ -33,17 +12,10 @@ describe("As a user, I expect the footer section to be present and contain relev
 
     const pagesToCheck = ["/companies", `/samples/${DataTypeEnum.EutaxonomyNonFinancials}`];
 
-    /**
-     * Verifies that the Dataland footer is present
-     */
-    function assertFooterPresence(): void {
-      cy.get('a p[title="data privacy"]').should("contain.text", "Data Privacy");
-    }
-
     pagesToCheck.forEach((page) => {
       it(`Checks that the footer is present on ${page}`, () => {
         cy.visitAndCheckAppMount(page);
-        assertFooterPresence();
+        checkFooter();
       });
     });
 
@@ -57,7 +29,7 @@ describe("As a user, I expect the footer section to be present and contain relev
             (storedCompanies) => {
               const companyId = storedCompanies[0].companyId;
               cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${framework}`);
-              assertFooterPresence();
+              checkFooter();
             }
           );
         });
