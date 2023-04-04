@@ -7,7 +7,6 @@ import {
   LksgData,
   CompanyAssociatedDataLksgData,
   DataMetaInformation,
-  ProductionSite,
   DataTypeEnum,
   QAStatus,
 } from "@clients/backend";
@@ -82,26 +81,13 @@ describe("Component test for LksgPanel", () => {
 
     cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
 
-    cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-    const listOfProductionSites = lksgData.social!.general!.listOfProductionSites!;
-    if (listOfProductionSites.length < 2) {
-      throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
-    }
-    listOfProductionSites.forEach((productionSite: ProductionSite) => {
-      if (productionSite.streetAndHouseNumber) {
-        cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.streetAndHouseNumber})`);
-      }
-    });
-    /*
-    cy.get("div.p-dialog-mask").click({ force: true });
-
     cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("The date until for which");
     cy.get("em.info-icon").eq(0).trigger("mouseleave");
 
     cy.get("table.p-datatable-table")
       .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
-      .should("exist"); */ // TODO Florian is migrating this part to an e2e test
+      .should("exist");
   });
 
   /**
