@@ -43,9 +43,6 @@ export default defineComponent({
     };
   },
   computed: {},
-  //mounted() {
-  //  this.getAllReports();
-  //},
   methods: {
     reportPlus() {
       this.reportCounter++;
@@ -54,54 +51,15 @@ export default defineComponent({
       this.reportCounter = 0;
     },
 
-    /**
-     * Retrieves document for from the storage
-     *
-     * @param documentId
-     */
-    async getDocumentsFromStorage(documentId: string): Promise<void> {
-      try {
-        this.getDocumentsFromStorageProcessed = false;
-        this.messageCount++;
-        const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getDocumentControllerApi();
-        this.getDocumentsFromStorageResponse = await documentControllerApi.getDocument(documentId);
-      } catch (error) {
-        this.getDocumentsFromStorageResponse = null;
-        console.error(error);
-      } finally {
-        this.getDocumentsFromStorageProcessed = true;
-      }
-    },
-    /*getAllReports() {
-      try {
-        Object.values(this.reports).forEach((report) => {
-          this.getDocumentsFromStorage(report.reference);
-          if (this.getDocumentsFromStorageResponse != null) {
-            this.reportContents.push(this.getDocumentsFromStorageResponse);
-          }
-          window.URL.createObjectURL(this.getDocumentsFromStorageResponse);
-          console.log(this.getDocumentsFromStorageResponse);
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    },*/
     async downloadReport(report: { reference: string }) {
       try {
-        await this.getDocumentsFromStorage(report.reference);
-        if (this.getDocumentsFromStorageResponse != null) {
-          //this.reportContents.push(this.getDocumentsFromStorageResponse);
-        }
         const docUrl = document.createElement("a");
         const documentControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)()
         ).getDocumentControllerApi();
-        const getDocumentsFromStorageResponse = await documentControllerApi.getDocument(report.reference);
-        const fileData: File = getDocumentsFromStorageResponse.data
-        console.log(typeof fileData)
-        docUrl.href = URL.createObjectURL(fileData);
+        const getDocumentsFromStorageResponse = await documentControllerApi.getDocument(report.reference, {headers:{"accept": "application/pdf"}, responseType: 'arraybuffer'});
+        const newBlob = new Blob([(getDocumentsFromStorageResponse.data)], {type: 'application/pdf'})
+        docUrl.href = URL.createObjectURL(newBlob);
         const filename = getDocumentsFromStorageResponse.headers
           .get("content-disposition")
           .split(";")
