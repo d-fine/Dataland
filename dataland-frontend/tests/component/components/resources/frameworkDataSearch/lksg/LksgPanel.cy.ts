@@ -92,6 +92,7 @@ describe("Component test for LksgPanel", () => {
         cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.streetAndHouseNumber})`);
       }
     });
+    /*
     cy.get("div.p-dialog-mask").click({ force: true });
 
     cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
@@ -100,7 +101,7 @@ describe("Component test for LksgPanel", () => {
 
     cy.get("table.p-datatable-table")
       .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
-      .should("exist");
+      .should("exist"); */ // TODO Florian is migrating this part to an e2e test
   });
 
   /**
