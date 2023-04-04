@@ -422,7 +422,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         uploadCompanyBetaAndData();
       });
 
-      it.only("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
+      it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         cy.intercept("/api/companies?searchString=&dataTypes=*").as("firstLoadOfSearchPage");
         cy.visit(`/companies?framework=${DataTypeEnum.EutaxonomyNonFinancials}`);

@@ -122,7 +122,7 @@ describe("As a user I expect a data request page where I can download an excel t
       beforeEach(() => {
         cy.ensureLoggedIn();
         cy.visitAndCheckAppMount("/requests");
-        cy.intercept("**/api/invite").as(inviteInterceptionAlias);
+        cy.intercept("**/api/invite*").as(inviteInterceptionAlias);
       });
 
       it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
