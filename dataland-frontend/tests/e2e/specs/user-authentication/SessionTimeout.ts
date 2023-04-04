@@ -26,9 +26,9 @@ describe("The page should behave well-defined when the user logs out in a differ
    */
   function setJwtExpiryTime(jwt: string, newExpiryTime: number): string {
     const split = jwt.split(".");
-    const decodedBody = JSON.parse(atob(split[1])) as { exp: number };
+    const decodedBody = JSON.parse(Buffer.from(split[1], "base64").toString("binary")) as { exp: number };
     decodedBody.exp = newExpiryTime;
-    split[1] = btoa(JSON.stringify(decodedBody));
+    split[1] = Buffer.from(JSON.stringify(decodedBody), "binary").toString("base64");
     return split.join(".");
   }
 
