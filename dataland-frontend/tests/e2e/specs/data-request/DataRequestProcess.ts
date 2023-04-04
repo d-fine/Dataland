@@ -11,8 +11,6 @@ describe("As a user I expect a data request page where I can download an excel t
       dataEnvironments: ["fakeFixtures"],
     },
     (): void => {
-      const inviteInterceptionAlias = "invite";
-
       const uploadBoxSelector = "div.p-fileupload-content";
       const uploadBoxEmptySelector = "div.p-fileupload-empty";
       const uploadFilenameSelector = "span.font-semibold.mr-2";
@@ -53,8 +51,10 @@ describe("As a user I expect a data request page where I can download an excel t
       function submitAndValidateSuccess(
         moreValidation: (interception: Interception) => void = (): void => undefined
       ): void {
+        cy.intercept("**/api/invite").as("invite");
         submit();
-        cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
+        cy.wait(`@invite`).then((interception) => {
+          cy.writeFile("cypress/log/interception.txt", interception);
           if (interception.response === undefined) {
             expect(interception.response).not.to.equal(undefined);
             return;
@@ -63,11 +63,6 @@ describe("As a user I expect a data request page where I can download an excel t
           if (interception.response.statusCode < 300) {
             expect((interception.response.body as InviteMetaInfoEntity).wasInviteSuccessful).to.equal(true);
           }
-          // eslint-disable-next-line
-          cy.log(interception.request.body);
-          cy.log(interception.request.headers.toString());
-          // eslint-disable-next-line
-          cy.log(interception.response.body);
           moreValidation(interception);
         });
       }
@@ -126,7 +121,6 @@ describe("As a user I expect a data request page where I can download an excel t
       beforeEach(() => {
         cy.ensureLoggedIn();
         cy.visitAndCheckAppMount("/requests");
-        cy.intercept("**/api/invite*").as(inviteInterceptionAlias);
       });
 
       it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
