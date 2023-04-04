@@ -1,13 +1,16 @@
 <template>
+  <h1>{{ displayedHeader }}</h1>
+  <h3>{{ displayedText }}</h3>
   <UserAuthenticationButtons v-if="showLogInButton" />
-  {{ displayedText }}
-  <PrimeButton
-    v-if="showRefreshButton"
-    :label="refreshButtonLabel"
-    class="p-button-sm uppercase d-letters text-primary bg-white-alpha-10 w-15rem"
-    name="refresh_session_button"
-    @click="handleRefreshSession"
-  />
+  <div class="mt-5 flex flex-row-reverse flex-wrap">
+    <PrimeButton
+      v-if="showRefreshButton"
+      :label="refreshButtonLabel"
+      class="p-button-sm uppercase d-letters w-15rem"
+      name="refresh_session_button"
+      @click="handleRefreshSession"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -27,6 +30,7 @@ export default defineComponent({
 
   data() {
     return {
+      displayedHeader: undefined as undefined | string,
       displayedText: undefined as undefined | string,
       showLogInButton: false,
       showRefreshButton: false,
@@ -91,12 +95,14 @@ export default defineComponent({
     getDataFromParentAndSet() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       const dialogRefData = dialogRefToDisplay.data as {
+        displayedHeader: string;
         displayedText: string;
         showLogInButton: boolean;
         showRefreshButton: boolean;
         isTrackingOfRefreshTokenExpiryEnabled: boolean;
         resolvedKeycloakPromise: Keycloak;
       };
+      this.displayedHeader = dialogRefData.displayedHeader;
       this.displayedText = dialogRefData.displayedText;
       this.showLogInButton = dialogRefData.showLogInButton;
       this.showRefreshButton = dialogRefData.showRefreshButton;
@@ -114,7 +120,8 @@ export default defineComponent({
     setIntervalForRefreshTokenExpiryCheck() {
       this.functionIdOfExpiryCheck = setInterval(() => {
         if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
-          this.displayedText = "Your session was closed due to inactivity. Login to start a new session.";
+          this.displayedHeader = "Session closed";
+          this.displayedText = "Your session has been closed due to inactivity. Login to start a new session.";
           this.refreshButtonLabel = "Login";
           clearInterval(this.functionIdOfExpiryCheck);
         }

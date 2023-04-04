@@ -35,7 +35,7 @@ export default defineComponent({
   },
   mounted() {
     if (useRoute().query.externalLogout === "true") {
-      this.openLogoutModal("You have been logged out. Do you want to login again?");
+      this.openLogoutModal();
     }
     void this.checkAuthenticatedAndRedirectIfLoggedIn();
   },
@@ -73,14 +73,15 @@ export default defineComponent({
      *
      * @param displayedText contains the text to display in the pop-up
      */
-    openLogoutModal(displayedText: string): void {
+    openLogoutModal(): void {
       this.$dialog.open(SessionDialog, {
         props: {
           modal: true,
           dismissableMask: true,
         },
         data: {
-          displayedText: displayedText,
+          displayedHeader: "Logged out",
+          displayedText: "You have been logged out. Do you want to login again?",
           showLogInButton: true,
         },
         onClose: () => {

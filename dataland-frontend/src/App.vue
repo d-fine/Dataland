@@ -117,7 +117,8 @@ export default defineComponent({
           closeOnEscape: false,
         },
         data: {
-          displayedText: "Your session in this tab will expire soon. Please refresh it if you want to stay logged in.",
+          displayedHeader: "Session expires soon",
+          displayedText: "To refresh it, please click on the button below. Otherwise you will be logged out soon.",
           showRefreshButton: true,
           isTrackingOfRefreshTokenExpiryEnabled: true,
           resolvedKeycloakPromise: this.resolvedKeycloakPromise,
