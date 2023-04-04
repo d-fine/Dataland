@@ -54,7 +54,6 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.intercept("**/api/invite").as("invite");
         submit();
         cy.wait(`@invite`).then((interception) => {
-          cy.writeFile("cypress/log/interception.txt", interception);
           if (interception.response === undefined) {
             expect(interception.response).not.to.equal(undefined);
             return;
