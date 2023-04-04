@@ -54,7 +54,7 @@ export default defineComponent({
     this.keycloakPromise = this.initKeycloak();
     this.resolvedKeycloakPromise = await this.keycloakPromise;
     if (this.resolvedKeycloakPromise && this.resolvedKeycloakPromise.authenticated) {
-      updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise);
+      updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
     }
   },
 

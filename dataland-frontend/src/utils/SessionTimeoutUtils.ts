@@ -9,16 +9,20 @@ const minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_
  * Updates the token, parses its expiry timestamp, and stores both of these values in the shared pina store.
  *
  * @param keycloak is the keycloak adaptor used to actually update the token
+ * @param forceStoringValues forces storing the refresh token and its expiry timestamp in the shared storage, even if
+ * the updateToken() has not done an update itself because of the minValidity value
  */
-export function updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak: Keycloak): void {
+export function updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak: Keycloak, forceStoringValues = false): void {
   keycloak
-    .updateToken(-1) // TODO at then end of dev change this value
-    .then(() => {
-      const refreshTokenExpiryTime = keycloak.refreshTokenParsed?.exp;
-      if (refreshTokenExpiryTime) {
-        useSharedSessionStateStore().refreshToken = keycloak.refreshToken;
-        useSharedSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
-        console.log("--------------NEW SESSION WARNING TIMESTAMP IS: " + (refreshTokenExpiryTime * 1000).toString());
+    .updateToken(1)
+    .then((hasTokenBeenUpdated) => {
+      if (hasTokenBeenUpdated || forceStoringValues) {
+        const refreshTokenExpiryTime = keycloak.refreshTokenParsed?.exp;
+        if (refreshTokenExpiryTime) {
+          useSharedSessionStateStore().refreshToken = keycloak.refreshToken;
+          useSharedSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
+          console.log("--------------NEW SESSION WARNING TIMESTAMP IS: " + (refreshTokenExpiryTime * 1000).toString());
+        }
       }
     })
     .catch(() => {
