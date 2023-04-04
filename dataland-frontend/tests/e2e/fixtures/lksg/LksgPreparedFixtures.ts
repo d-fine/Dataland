@@ -122,7 +122,7 @@ function manipulateFixtureToContainEveryField(input: FixtureData<LksgData>): Fix
         shareOfTemporaryWorkers: faker.datatype.number({ min: 0, max: 30, precision: 0.01 }),
         totalRevenue: faker.datatype.number({ min: 10000000, max: 100000000000 }),
         totalRevenueCurrency: generateIso4217CurrencyCode(),
-        listOfProductionSites: [generateProductionSite(0), generateProductionSite(0)],
+        listOfProductionSites: [generateProductionSite(), generateProductionSite()],
       },
       grievanceMechanism: {
         grievanceHandlingMechanism: randomYesNo(),

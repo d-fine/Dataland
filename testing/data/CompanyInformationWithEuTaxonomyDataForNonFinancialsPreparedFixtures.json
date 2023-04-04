@@ -3,213 +3,203 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Barr-Keller",
-				"Ochs, Ostendarp und Lienshöft",
-				"Pohl-Niklaus"
+				"Assmus, Paesler und Pöge",
+				"Reif, Mächtig und Plotzitzka",
+				"Zschunke, Vey und Weyel"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"headquarters": "Räntschscheid",
-			"headquartersPostalCode": "48839",
-			"sector": "e-services",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"headquarters": "Bad Gerritstadt",
+			"sector": "e-business",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "ykwtka1bxreab730i0k5"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "7wwyhqk"
+					"identifierType": "Duns",
+					"identifierValue": "xgub06wht"
 				}
 			],
-			"countryCode": "CO",
-			"isTeaserCompany": false,
-			"website": "https://empathisch-mineral.ch"
+			"countryCode": "NR",
+			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-12-02",
+			"numberOfEmployees": 29953,
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "http://vortrefflich-krieg.ch/konziliant-wolkenkratzer.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "TZS"
-				},
-				"AnnualReport": {
-					"reference": "http://resolut-drache.org/gl%C3%BCcklich-wolke.pdf",
-					"currency": "JPY"
-				},
 				"SustainabilityReport": {
-					"reference": "http://xn--unbestechlich-sure-ztb.name/tapfer-br%C3%BCcke.pdf",
+					"reference": "http://musterhaft-geist.org/w%C3%BCnschenswert-fahrer.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-03-06",
+					"currency": "LRD"
+				},
+				"IntegratedReport": {
+					"reference": "https://respektvoll-anderes.net/real-spiel.pdf",
 					"isGroupLevel": "No",
-					"reportDate": "2022-10-09",
-					"currency": "AUD"
+					"reportDate": "2022-04-13",
+					"currency": "MUR"
 				},
 				"ESEFReport": {
-					"reference": "http://leuchtend-krankheiten.net/qualit%C3%A4tsvoll-%C3%A4sthetik.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-06-19",
-					"currency": "ZMW"
+					"reference": "https://entschlossen-frau.name/mysteri%C3%B6s-mineral.pdf",
+					"isGroupLevel": "No",
+					"reportDate": "2022-05-26",
+					"currency": "BBD"
+				},
+				"AnnualReport": {
+					"reference": "http://salzig-fahrer.ch/exklusiv-fl%C3%A4che.pdf",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-11-28",
+					"currency": "UAH"
 				}
 			},
-			"fiscalYearEnd": "2022-04-12",
 			"assurance": {
 				"assurance": "ReasonableAssurance"
 			},
-			"scopeOfEntities": "No",
+			"scopeOfEntities": "NA",
 			"reportingObligation": "No",
-			"numberOfEmployees": 36636,
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.323,
+					"value": 0.1107,
 					"dataSource": {
-						"page": 53,
+						"page": 1097,
 						"report": "AnnualReport",
-						"tagName": "communities"
+						"tagName": "markets"
 					},
-					"quality": "Audited",
-					"comment": "calculate virtual firewall"
+					"quality": "Incomplete",
+					"comment": "back up mobile system"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.9995,
+					"value": 0.4568,
 					"dataSource": {
-						"page": 858,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
+						"page": 875,
+						"report": "ESEFReport",
+						"tagName": "niches"
 					},
-					"quality": "Estimated",
-					"comment": "synthesize primary circuit"
+					"quality": "Audited",
+					"comment": "bypass neural hard drive"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.6009,
-					"quality": "Estimated"
+					"value": 0.9707,
+					"dataSource": {
+						"page": 342,
+						"report": "IntegratedReport",
+						"tagName": "solutions"
+					},
+					"quality": "Incomplete",
+					"comment": "back up multi-byte feed"
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Semisch GmbH & Co. KG"
+				"Schönfeld GmbH"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"headquarters": "Elisadorf",
-			"headquartersPostalCode": "80051",
-			"sector": "web services",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"headquarters": "Minadorf",
+			"headquartersPostalCode": "23457",
+			"sector": "vortals",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "z9jc4z8a8"
-				},
-				{
 					"identifierType": "PermId",
-					"identifierValue": "a62eovd8kp"
+					"identifierValue": "cglmzrpqe5"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "whndpiu"
+					"identifierValue": "nget5mu"
 				}
 			],
-			"countryCode": "BV",
+			"countryCode": "RE",
 			"isTeaserCompany": false,
-			"website": "https://erfolgreich-judentum.info"
+			"website": "https://zartfühlend-säugling.name"
 		},
 		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-10-19",
+			"numberOfEmployees": 56702,
 			"referencedReports": {
 				"ESEFReport": {
-					"reference": "http://xn--grozgig-agnostizismus-2yb28d.net/chaotisch-laden.pdf",
-					"isGroupLevel": "No",
-					"currency": "BSD"
+					"reference": "http://xn--zurechnungsfhig-konjunktion-mkc.com/engelsgleich-essen.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-10-10",
+					"currency": "BMD"
+				},
+				"SustainabilityReport": {
+					"reference": "https://brandneu-verstand.net/un%C3%BCbertroffen-hotel.pdf",
+					"isGroupLevel": "NA",
+					"currency": "SBD"
 				},
 				"AnnualReport": {
-					"reference": "https://qualifiziert-busen.com/ungew%C3%B6hnlich-auge.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "AZN"
-				},
-				"IntegratedReport": {
-					"reference": "http://raffiniert-ellenbogen.info/automatisch-kernschmelze.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-09-21",
-					"currency": "LBP"
+					"reference": "https://sexuell-fluss.ch/produktiv-cricket.pdf",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-11-13",
+					"currency": "SCR"
 				}
 			},
-			"fiscalYearEnd": "2022-10-20",
 			"assurance": {
 				"assurance": "LimitedAssurance",
 				"dataSource": {
-					"page": 548,
+					"page": 491,
 					"report": "ESEFReport",
-					"tagName": "content"
+					"tagName": "niches"
 				}
 			},
-			"reportingObligation": "Yes",
-			"numberOfEmployees": 90694,
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 605136.79,
+					"value": 87203.92,
 					"dataSource": {
-						"page": 911,
-						"report": "IntegratedReport",
-						"tagName": "architectures"
+						"page": 1186,
+						"report": "SustainabilityReport",
+						"tagName": "infomediaries"
 					},
 					"quality": "Audited",
-					"comment": "quantify 1080p capacitor"
+					"comment": "calculate wireless matrix"
 				},
 				"eligiblePercentage": {
-					"value": 0.5472,
-					"quality": "Incomplete"
+					"value": 0.5521,
+					"dataSource": {
+						"page": 231,
+						"report": "AnnualReport",
+						"tagName": "metrics"
+					},
+					"quality": "Incomplete",
+					"comment": "reboot cross-platform program"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 747981.25,
-					"dataSource": {
-						"page": 324,
-						"report": "ESEFReport",
-						"tagName": "methodologies"
-					},
-					"quality": "Reported",
-					"comment": "hack bluetooth pixel"
+					"value": 78980.99,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.8204,
-					"dataSource": {
-						"page": 1019,
-						"report": "IntegratedReport",
-						"tagName": "communities"
-					},
-					"quality": "Incomplete",
-					"comment": "parse virtual protocol"
+					"value": 0.7088,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 240596.54,
-					"dataSource": {
-						"page": 1042,
-						"report": "IntegratedReport",
-						"tagName": "convergence"
-					},
-					"quality": "Reported",
-					"comment": "synthesize online program"
+					"value": 950776.28,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.4072,
+					"value": 0.2442,
 					"dataSource": {
-						"page": 830,
-						"report": "IntegratedReport",
-						"tagName": "functionalities"
+						"page": 1175,
+						"report": "AnnualReport",
+						"tagName": "web services"
 					},
 					"quality": "Audited",
-					"comment": "override haptic system"
+					"comment": "navigate multi-byte matrix"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2021-Q2"
 	}
 ]

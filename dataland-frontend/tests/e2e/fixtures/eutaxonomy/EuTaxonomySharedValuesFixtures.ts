@@ -12,9 +12,21 @@ import { getCsvDataSourceMapping } from "@e2e/fixtures/common/DataSourceFixtures
 import { generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";
-import { randomPastDateOrUndefined } from "@e2e/fixtures/common/DateFixtures";
-import { randomNumberOrUndefined } from "@e2e/fixtures/common/NumberFixtures";
-import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
+import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
+import { randomNumber } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
+
+/**
+ * Generates a new Eu Taxonomy instance fitting for either "financials" or "non-financials"
+ * @returns Eu Taxonomy instance with mandatory fields already assigned
+ */
+export function generateEuTaxonomyWithRequiredFields(): EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials {
+  return {
+    fiscalYearDeviation: randomFiscalYearDeviation(),
+    fiscalYearEnd: randomPastDate(),
+    numberOfEmployees: randomNumber(100000),
+  }
+}
 
 /**
  * Fills in random values for fields shared between the eutaxonomy frameworks
@@ -23,12 +35,9 @@ import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/Fisca
  */
 export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials): void {
   input.referencedReports = generateReferencedReports();
-  input.fiscalYearDeviation = randomFiscalYearDeviationOrUndefined();
-  input.fiscalYearEnd = randomPastDateOrUndefined();
   input.assurance = generateAssuranceData(input.referencedReports);
   input.scopeOfEntities = randomYesNoNaUndefined();
   input.reportingObligation = randomYesNoUndefined();
-  input.numberOfEmployees = randomNumberOrUndefined(100000);
   input.activityLevelReporting = randomYesNoUndefined();
 }
 
