@@ -2,6 +2,9 @@
 set -euxo pipefail
 # Utility script to generate a mapping between a folder of pdf reports and the ISINs in the real data set. 
 # Expects two inputs: the csv file containing the real data and the folder with the pdfs for mapping
+# In order to check which pdfs to not comply with the expected format run:
+# ls *.pdf | grep -Pv '_[A-Z0-9]{12}_(Annual|Sustainability|Integrated)'
+# inside the folder containing the pdfs
 
 csv_file="$1"
 pdf_folder="$2"
