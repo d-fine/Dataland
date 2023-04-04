@@ -63,6 +63,11 @@ describe("As a user I expect a data request page where I can download an excel t
           if (interception.response.statusCode < 300) {
             expect((interception.response.body as InviteMetaInfoEntity).wasInviteSuccessful).to.equal(true);
           }
+          // eslint-disable-next-line
+          cy.log(interception.request.body);
+          cy.log(interception.request.headers.toString());
+          // eslint-disable-next-line
+          cy.log(interception.response.body);
           moreValidation(interception);
         });
       }
@@ -159,7 +164,11 @@ describe("As a user I expect a data request page where I can download an excel t
         uploadDummyExcelFile(sufficientlySmallFilename);
         uploadBoxEntryShouldBe(sufficientlySmallFilename);
 
-        submitAndValidateSuccess();
+        submitAndValidateSuccess((interception) => {
+          expect(interception.request.body).to.contain(sufficientlySmallFilename);
+          expect(interception.request.body).to.not.contain(removeFilename);
+          expect(interception.request.body).to.not.contain(overrideFile);
+        });
       });
 
       it(`Test that the right error messages are displayed at the right time`, () => {
