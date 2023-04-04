@@ -42,9 +42,8 @@ export default defineConfig({
       include: "src/*",
       exclude: ["node_modules", "tests"],
       extension: [".js", ".ts", ".vue"],
-      requireEnv: false,
-      forceBuildInstrument: true,
-      checkProd: false,
+      requireEnv: true,
+      forceBuildInstrument: process.env.BUILD_INSTRUMENTED === "true",
     }),
   ],
   resolve: {
@@ -64,10 +63,7 @@ export default defineConfig({
     strictPort: true,
     watch: {
       ignored: ["**/coverage/**"],
-      usePolling: false,
+      usePolling: true,
     },
   },
-  preview: {
-    port: 8090,
-  }
 });

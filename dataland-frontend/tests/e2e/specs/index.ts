@@ -55,18 +55,3 @@ if (testGroupingDisabled || cypressTestGroup === 4) {
   require("./search-company-framework-data");
   require("./data-request");
 }
-
-if (testGroupingDisabled || cypressTestGroup === 8 || cypressTestGroup === 7) {
-  require("./prepopulation/AwaitPrepopulation");
-  require("./landing-page");
-  require("./swagger-ui");
-  require("./user-api-key");
-  require("./framework-view-and-upload-journey");
-  require("./eu-taxonomy-non-financials");
-  require("./eu-taxonomy-financials");
-  require("./lksg");
-  require("./user-authentication");
-  require("./admin-tools");
-  require("./search-company-framework-data");
-  require("./data-request");
-}

@@ -52,18 +52,6 @@ jobs:
       - name: Frontend component testing
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace
         if: always()
-      - name: Upload lcov Exec Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: lcovResults
-          path: ./dataland-frontend/coverage/*.info
-      - name: Upload coverage Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverageResults
-          path: ./dataland-frontend/coverage
       - name: Upload FE Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -150,23 +138,12 @@ jobs:
             testGroup: 3
           - testExecutor: "CYPRESS"
             testGroup: 4
-          - testExecutor: "CYPRESS"
-            testGroup: 7
-          - testExecutor: "CYPRESS"
-            testGroup: 8
-          - testExecutor: "CYPRESS"
-            testGroup: 9
           - testExecutor: "E2ETESTS"
             testGroup: 0
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
       - uses: ./.github/workflows/downloadImageVersions
       - uses: ./.github/workflows/logObjects
         name: log job contexts
