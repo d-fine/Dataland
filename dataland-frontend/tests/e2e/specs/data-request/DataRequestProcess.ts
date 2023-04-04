@@ -55,7 +55,6 @@ describe("As a user I expect a data request page where I can download an excel t
       ): void {
         submit();
         cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
-          cy.wait(2000);
           if (interception.response === undefined) {
             expect(interception.response).not.to.equal(undefined);
             return;
@@ -158,12 +157,9 @@ describe("As a user I expect a data request page where I can download an excel t
 
         const sufficientlySmallFilename = "sufficiently_small_file.xlsx";
         uploadDummyExcelFile(sufficientlySmallFilename);
+        uploadBoxEntryShouldBe(sufficientlySmallFilename);
 
-        submitAndValidateSuccess((interception) => {
-          expect(interception.request.body).to.contain(sufficientlySmallFilename);
-          expect(interception.request.body).to.not.contain(removeFilename);
-          expect(interception.request.body).to.not.contain(overrideFile);
-        });
+        submitAndValidateSuccess();
       });
 
       it(`Test that the right error messages are displayed at the right time`, () => {
