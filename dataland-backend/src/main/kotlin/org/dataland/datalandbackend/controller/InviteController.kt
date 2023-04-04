@@ -22,8 +22,8 @@ class InviteController(
 
     override fun submitInvite(
         excelFile: MultipartFile,
-        isSubmitterNameHidden: Boolean,
     ): ResponseEntity<InviteMetaInfoEntity> {
+        val isSubmitterNameHidden = false
         logger.info(
             "Received a request to submit an invite. Hiding the requester is set to $isSubmitterNameHidden.",
         )

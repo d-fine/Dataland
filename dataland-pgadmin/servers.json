@@ -39,6 +39,16 @@
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
       "PassFile": "../../pgpass"
+    },
+    "5": {
+      "Name": "DocumentManagerDb",
+      "Group": "DocumentManagerDb",
+      "Port": 5432,
+      "Username": "document_manager",
+      "Host": "document-manager-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "PassFile": "../../pgpass"
     }
   }
 }

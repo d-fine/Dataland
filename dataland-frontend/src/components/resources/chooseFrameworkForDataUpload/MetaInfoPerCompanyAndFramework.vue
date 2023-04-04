@@ -22,7 +22,7 @@
             </span>
           </div>
           <div>
-            <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime * 1000) }}</span>
+            <span class="mr-3">{{ convertUnixTimeInMsToDateString(dataMetaInfo.uploadTime) }}</span>
             <DatasetStatusBadge :dataset-status="getDatasetStatus(dataMetaInfo)" />
           </div>
         </div>
@@ -31,6 +31,7 @@
           class="uppercase p-button p-button-sm d-letters mt-3"
           :disabled="!isFrontendUploadFormExisting"
           label="Create Dataset"
+          data-test="createDatasetButton"
           icon="pi pi-plus"
           @click="redirectToUploadForm"
         />
@@ -47,7 +48,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { convertUnixTimeInMsToDateString } from "@/utils/DateFormatUtils";
+import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
 import PrimeButton from "primevue/button";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
@@ -56,7 +57,7 @@ import { getDatasetStatus } from "@/components/resources/datasetOverview/Dataset
 import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
 
 export default defineComponent({
-  name: "MetaInfoPerComanyAndFramework",
+  name: "MetaInfoPerCompanyAndFramework",
   components: { PrimeButton, DatasetStatusBadge },
 
   props: {

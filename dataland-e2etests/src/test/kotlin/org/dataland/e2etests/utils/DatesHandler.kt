@@ -23,10 +23,10 @@ class DatesHandler {
         }
     }
 
-    fun convertUnixTimeToSimpleFormattedDate(unixTimeInSeconds: Long? = null): String? {
-        return when (unixTimeInSeconds) {
+    fun convertUnixTimeToSimpleFormattedDate(unixTimeInMilliseconds: Long? = null): String? {
+        return when (unixTimeInMilliseconds) {
             null -> null
-            else -> formatDateAsSimpleDateString(Date(unixTimeInSeconds * 1000))
+            else -> formatDateAsSimpleDateString(Date(unixTimeInMilliseconds))
         }
     }
 }

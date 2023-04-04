@@ -5,6 +5,8 @@ const val BASE_PATH_TO_DATALAND_BACKEND = "https://local-dev.dataland.com:443/ap
 
 const val BASE_PATH_TO_API_KEY_MANAGER = "https://local-dev.dataland.com:443/api-keys"
 
+const val BASE_PATH_TO_DOCUMENT_MANAGER = "https://local-dev.dataland.com:443/documents"
+
 const val PATH_TO_KEYCLOAK_TOKENENDPOINT =
     "https://local-dev.dataland.com:443/keycloak/realms/datalandsecurity/protocol/openid-connect/token"
 

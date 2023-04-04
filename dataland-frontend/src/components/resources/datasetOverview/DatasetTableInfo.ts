@@ -74,7 +74,7 @@ export async function getMyDatasetTableInfos(
           new DatasetTableInfo(
             company.companyInformation.companyName,
             dataMetaInfo.dataType,
-            dataMetaInfo.uploadTime * 1000,
+            dataMetaInfo.uploadTime,
             company.companyId,
             dataMetaInfo.dataId,
             dataMetaInfo.reportingPeriod,
