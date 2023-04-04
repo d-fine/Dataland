@@ -16,7 +16,7 @@ import {
 } from "@clients/backend/api";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import {DocumentControllerApi, DocumentControllerApiInterface} from "@clients/documentmanager";
+import { DocumentControllerApi, DocumentControllerApiInterface } from "@clients/documentmanager";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 

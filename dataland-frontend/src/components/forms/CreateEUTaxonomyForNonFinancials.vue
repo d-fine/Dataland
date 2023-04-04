@@ -1,7 +1,7 @@
 <template>
   <Card class="col-12 page-wrapper-card">
     <template #title
-      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
+      >{{ editMode ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
     >
     <template #content>
       <div class="grid uploadFormWrapper">
@@ -42,29 +42,26 @@
                   />
                 </div>
 
-                <FormKit
-                  type="hidden"
-                  v-model="reportingPeriodYear"
-                  name="reportingPeriod"
-                  :outer-class="{ 'hidden-input': true }"
-                />
+                <FormKit type="hidden" v-model="reportingPeriodYear" name="reportingPeriod" />
               </div>
 
               <FormKit type="group" name="data" label="data">
-                <div class="col-3 p-3 topicLabel">
+                <div v-if="!editMode" class="col-3 p-3 topicLabel">
                   <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
                   <p>Please upload all relevant reports for this dataset in the PDF format.</p>
                 </div>
                 <!-- Select company reports -->
-                <div class="col-9 formFields uploaded-files">
+                <div v-if="!editMode" class="col-9 formFields uploaded-files">
                   <h3 class="mt-0">Select company reports</h3>
                   <FileUpload
                     name="fileUpload"
+                    ref="fileUpload"
                     accept=".pdf"
                     @select="onSelectedFiles"
+                    :multiple="true"
                     :maxFileSize="maxFileSize"
                     invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
-                    :auto="true"
+                    :auto="false"
                   >
                     <template #header="{ chooseCallback }">
                       <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
@@ -73,26 +70,26 @@
                             data-test="upload-files-button"
                             @click="chooseCallback()"
                             icon="pi pi-upload"
-                            label="UPLOAD REPORTS"
+                            :label="editMode ? 'ADD REPORTS' : 'SELECT REPORTS'"
                           />
                         </div>
                       </div>
                     </template>
-                    <template #content="{ uploadedFiles, removeUploadedFileCallback }">
-                      <div v-if="uploadedFiles.length > 0" data-test="uploaded-files">
+                    <template #content="{ files, removeFileCallback }">
+                      <div v-if="files.length > 0" data-test="uploaded-files">
                         <div
-                          v-for="(file, index) of files.files"
+                          v-for="(file, index) of filesToUpload"
                           :key="file.name + file.reportDate"
                           class="flex w-full align-items-center file-upload-item"
                         >
                           <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
                           <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
-                            {{ formatSize(file.size) }}
+                            {{ formatBytesUserFriendly(file.size) }}
                           </div>
                           <PrimeButton
                             data-test="uploaded-files-remove"
                             icon="pi pi-times"
-                            @click="files.removeReportFromFilesUploaded(file, removeUploadedFileCallback, index)"
+                            @click="removeReportFromFilesUploaded(file, removeFileCallback, index)"
                             class="p-button-rounded"
                           />
                         </div>
@@ -103,9 +100,12 @@
                 <div class="uploadFormSection">
                   <FormKit name="referencedReports" type="group">
                     <!-- Select company reports -->
-                    <div v-for="(file, index) of files.files" :key="file.name" class="col-9 formFields">
+                    <div v-if="editMode" class="col-3 p-3 topicLabel">
+                      <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
+                    </div>
+                    <div v-for="(file, index) of filesToUpload" :key="file.name" class="col-9 formFields">
                       <div class="form-field-label">
-                        <h3 class="mt-0">{{ file.name }}</h3>
+                        <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
                       </div>
                       <FormKit :name="file.name.split('.')[0]" type="group">
                         <!-- Date of the report -->
@@ -117,7 +117,7 @@
                           <div class="lg:col-6 md:col-6 col-12 p-0">
                             <Calendar
                               data-test="reportDate"
-                              v-model="files.files[index].reportDate"
+                              v-model="filesToUpload[index].reportDate"
                               inputId="icon"
                               :showIcon="true"
                               dateFormat="D, M dd, yy"
@@ -125,20 +125,10 @@
                             />
                           </div>
 
-                          <FormKit
-                            type="text"
-                            v-model="files.files[index].convertedReportDate"
-                            name="reportDate"
-                            :outer-class="{ 'hidden-input': true }"
-                          />
+                          <FormKit type="hidden" v-model="filesToUpload[index].convertedReportDate" name="reportDate" />
                         </div>
 
-                        <FormKit
-                          type="text"
-                          v-model="files.filesNames[index]"
-                          name="reference"
-                          :outer-class="{ 'hidden-input': true }"
-                        />
+                        <FormKit type="hidden" v-model="filesToUpload[index].documentId" name="reference" />
 
                         <!-- Currency used in the report -->
                         <div class="form-field" data-test="currencyUsedInTheReport">
@@ -315,7 +305,7 @@
                                 placeholder="Select a report"
                                 validation-label="Select a report"
                                 validation="required"
-                                :options="['None...', ...this.files.filesNames]"
+                                :options="['None...', ...namesOfFilesToUpload]"
                               />
                             </div>
                             <div>
@@ -366,6 +356,7 @@
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
                               :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
+                              :reportsName="namesOfFilesToUpload"
                             />
                           </div>
                         </FormKit>
@@ -402,6 +393,7 @@
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
                               :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
+                              :reportsName="namesOfFilesToUpload"
                             />
                           </div>
                         </FormKit>
@@ -438,6 +430,7 @@
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
                               :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
+                              :reportsName="namesOfFilesToUpload"
                             />
                           </div>
                         </FormKit>
@@ -486,7 +479,6 @@ import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { FormKit } from "@formkit/vue";
 
 import Calendar from "primevue/calendar";
-import { useFilesUploadedStore } from "@/stores/filesUploaded";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload from "primevue/fileupload";
@@ -501,7 +493,7 @@ import { defineComponent, inject } from "vue";
 import { useRoute } from "vue-router";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { formatSize, getHyphenatedDate } from "@/utils/DataFormatUtils";
+import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 import {
   euTaxonomyKPIsModel,
@@ -513,6 +505,8 @@ import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
+import { ExtendedFile } from "@/components/forms/Types";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
@@ -536,10 +530,10 @@ export default defineComponent({
 
   data: () => ({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-    files: useFilesUploadedStore(),
     fiscalYearEnd: "" as Date | "",
     convertedFiscalYearEnd: "",
     reportingPeriod: new Date(),
+    filesToUpload: [] as ExtendedFile[],
     onThisPageLinks: [
       { label: "Upload company reports", value: "uploadReports" },
       { label: "Basic information", value: "basicInformation" },
@@ -549,13 +543,13 @@ export default defineComponent({
       { label: "Revenue", value: "revenue" },
     ],
     elementPosition: 0,
-    isItUploadForm: false,
     route: useRoute(),
+    editMode: false,
     waitingForData: false,
-    formatSize,
     scrollListener: (): null => null,
     smoothScroll,
     checkCustomInputs,
+    formatBytesUserFriendly,
     maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
     euTaxonomyKPIsModel,
     euTaxonomyKpiNameMappings,
@@ -584,6 +578,11 @@ export default defineComponent({
       }
     },
   },
+  computed: {
+    namesOfFilesToUpload(): string[] {
+      return this.filesToUpload.map((el) => el.name.split(".")[0]);
+    },
+  },
   props: {
     companyID: {
       type: String,
@@ -607,7 +606,7 @@ export default defineComponent({
 
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
-      this.isItUploadForm = true;
+      this.editMode = true;
       void this.loadEuData(dataId);
     }
   },
@@ -633,6 +632,15 @@ export default defineComponent({
       if (dataResponseData.data?.fiscalYearEnd) {
         this.fiscalYearEnd = new Date(dataResponseData.data.fiscalYearEnd);
       }
+      if (dataResponseData.data?.referencedReports) {
+        const propertiesOfFilesAssignedToDataID = dataResponseData.data.referencedReports;
+        for (const key in propertiesOfFilesAssignedToDataID) {
+          this.filesToUpload.push({
+            name: key,
+            ...propertiesOfFilesAssignedToDataID[key],
+          });
+        }
+      }
       const receivedFormInputsModel = modifyObjectKeys(
         JSON.parse(JSON.stringify(dataResponseData)) as objectType,
         "receive"
@@ -648,23 +656,48 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
-        const formInputsModelToSend = modifyObjectKeys(
-          JSON.parse(JSON.stringify(this.formInputsModel)) as objectType,
-          "send"
-        );
+        let allFileUploadedSuccessful = true;
+
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
-        this.postEuTaxonomyDataForNonFinancialsResponse =
-          await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            formInputsModelToSend
+
+        const documentUploadControllerControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getDocumentUploadController();
+
+        if (!this.editMode) {
+          for (let index = 0; index < this.filesToUpload.length; index++) {
+            const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
+              this.filesToUpload[index]
+            );
+            if (!uploadFileSuccessful) {
+              allFileUploadedSuccessful = false;
+              break;
+            } else if (uploadFileSuccessful) {
+              this.updatePropertyFilesUploaded(index, "documentId", uploadFileSuccessful.data.documentId);
+            }
+          }
+        }
+
+        if (allFileUploadedSuccessful) {
+          await this.$nextTick();
+          const formInputsModelToSend = modifyObjectKeys(
+            JSON.parse(JSON.stringify(this.formInputsModel)) as objectType,
+            "send"
           );
-        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
+          this.postEuTaxonomyDataForNonFinancialsResponse =
+            await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+              formInputsModelToSend
+            );
+          console.log("Qqqqq", formInputsModelToSend);
+        }
       } catch (error) {
         this.postEuTaxonomyDataForNonFinancialsResponse = null;
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
+        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       }
     },
 
@@ -674,28 +707,66 @@ export default defineComponent({
      * @param index file to update
      */
     updateReportDateHandler(index: number) {
-      this.files.updatePropertyFilesUploaded(
+      this.updatePropertyFilesUploaded(
         index,
         "convertedReportDate",
-        getHyphenatedDate(this.files.files[index].reportDate as unknown as Date)
+        getHyphenatedDate(this.filesToUpload[index].reportDate as unknown as Date)
       );
     },
 
     /**
-     * Modifies the file object and adds it to the store
+     * Add files to object filesToUpload
      *
      * @param event date in date format
      * @param event.originalEvent event
      * @param event.files files
      */
     onSelectedFiles(event: { files: Record<string, string>[]; originalEvent: Event }): void {
+      console.log("Event files", event);
       if (event.files.length) {
-        event.files[0]["reportDate"] = "";
-        event.files[0]["convertedReportDate"] = "";
-        this.files.setReportsFilesUploaded(event.files[0]);
+        event.files.forEach((file) => {
+          file["reportDate"] = "";
+          file["convertedReportDate"] = "";
+          file["documentId"] = "";
+        });
+        console.log("EVENT", event);
+
+        this.filesToUpload = Array.from(new Set([...this.filesToUpload, ...event.files])) as ExtendedFile[];
       } else {
         return;
       }
+    },
+
+    /**
+     * Update property in uploaded files
+     *
+     * @param indexFileToUpload Index number of the report
+     * @param property Property which is to be updated
+     * @param value Value to which it is to be changed
+     */
+    updatePropertyFilesUploaded(indexFileToUpload: number, property: string, value: string) {
+      if (Object.prototype.hasOwnProperty.call(this.filesToUpload[indexFileToUpload], property)) {
+        this.filesToUpload[indexFileToUpload][property] = value;
+        this.filesToUpload = [...this.filesToUpload];
+      }
+    },
+
+    /**
+     * Remove report from files uploaded
+     *
+     * @param fileToRemove File To Remove
+     * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
+     * @param index Index number of the report
+     */
+    removeReportFromFilesUploaded(
+      fileToRemove: Record<string, string>,
+      fileRemoveCallback: (x: number) => void,
+      index: number
+    ) {
+      fileRemoveCallback(index);
+      this.filesToUpload = this.filesToUpload.filter((el) => {
+        return el.name !== fileToRemove.name;
+      });
     },
   },
 });

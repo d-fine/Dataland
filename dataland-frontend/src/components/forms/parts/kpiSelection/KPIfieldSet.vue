@@ -43,7 +43,7 @@
               v-model="currentReportValue"
               :disabled="!dataPointIsAvailable"
               placeholder="Select a report"
-              :options="['None...', ...this.files.filesNames]"
+              :options="['None...', ...reportsName]"
             />
           </div>
           <div>
@@ -95,14 +95,12 @@ import { defineComponent } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
-import { useFilesUploadedStore } from "@/stores/filesUploaded";
 
 export default defineComponent({
   name: "KPIfieldSet",
   components: { UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({
-    files: useFilesUploadedStore(),
     dataPointIsAvailable: true,
     dataQualityList: ["NA", "Audited", "Reported", "Estimated", "Incomplete"],
     qualityValueBeforeDataPointWasDisabled: "",
@@ -146,6 +144,10 @@ export default defineComponent({
     valueType: {
       type: String,
       default: "percent",
+    },
+    reportsName: {
+      type: Array,
+      default: () => [],
     },
   },
   methods: {
