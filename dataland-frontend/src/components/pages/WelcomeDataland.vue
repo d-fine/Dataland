@@ -18,6 +18,7 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { useRoute } from "vue-router";
 import SessionDialog from "@/components/general/SessionDialog.vue";
+import { useSharedSessionStateStore } from "@/stores/stores";
 
 export default defineComponent({
   name: "WelcomeDataland",
@@ -43,7 +44,16 @@ export default defineComponent({
     authenticated() {
       void this.checkAuthenticatedAndRedirectIfLoggedIn();
     },
+    currentRefreshTokenInSharedStore() {
+      void this.$router.push({ path: "/companies", replace: true });
+    },
   },
+  computed: {
+    currentRefreshTokenInSharedStore() {
+      return useSharedSessionStateStore().refreshToken;
+    },
+  },
+
   methods: {
     /**
      * Redirects to the /companies page if the user is logged in. Does nothing otherwise
