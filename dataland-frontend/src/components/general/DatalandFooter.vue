@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="surface-ground pt-8 footer" data-cy="dataland footer">
+    <div class="surface-ground pt-8 footer" data-test="dataland footer">
       <div class="grid m-0">
         <div class="lg:col-4 md:col-4 col-12 legend">
           <div class="grid text-left">
@@ -22,10 +22,10 @@
               <p class="font-semibold m-0">Legal</p>
             </div>
             <div class="col-12">
-              <router-link to="/imprint" class="no-underline" data-cy="imprint">
+              <router-link to="/imprint" class="no-underline" data-test="imprint">
                 <span class="font-semibold underline text-primary cursor-pointer" title="imprint">Imprint</span>
               </router-link>
-              <router-link to="/dataprivacy" class="no-underline" data-cy="data privacy">
+              <router-link to="/dataprivacy" class="no-underline" data-test="data privacy">
                 <p class="font-semibold underline text-primary cursor-pointer" title="data privacy">Data Privacy</p>
               </router-link>
             </div>

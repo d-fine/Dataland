@@ -22,7 +22,7 @@
 
       <div data-test="landing-page-graphic-vision" class="grid align-items-center m-0">
         <div class="col-5 col-offset-1">
-          <h1 class="text-left text-6xl font-normal" data-cy="banner message">THE ALTERNATIVE TO DATA MONOPOLIES</h1>
+          <h1 class="text-left text-6xl font-normal" data-test="banner message">THE ALTERNATIVE TO DATA MONOPOLIES</h1>
         </div>
         <div data-test="landing-page-graphic-vision-img" class="col-4 col-offset-1">
           <img alt="Dataland image logo" src="@/assets/images/logos/bg_graphic_vision.svg" class="mx-auto" />
