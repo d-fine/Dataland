@@ -13,7 +13,6 @@ export function randomFiscalYearDeviation(): FiscalYearDeviation {
   return faker.helpers.arrayElement(possibleFiscalYearDeviationValues);
 }
 
-
 /**
  * Generates a random fiscal year deviation or undefined
  *

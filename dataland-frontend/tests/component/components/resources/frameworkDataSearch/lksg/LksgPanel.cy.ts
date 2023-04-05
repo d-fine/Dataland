@@ -65,15 +65,15 @@ describe("Component test for LksgPanel", () => {
       },
     });
 
-    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate!.substring(0, 4));
+    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate.substring(0, 4));
 
-    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
-
-    cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("not.exist");
+    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate})`).should("exist");
 
     cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
+    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate})`).should("not.exist");
+
+    cy.get("button.p-row-toggler").eq(0).click();
+    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.social!.general!.dataDate})`).should("exist");
 
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
 
@@ -83,7 +83,7 @@ describe("Component test for LksgPanel", () => {
     cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
 
     cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-    const listOfProductionSites = lksgData.social!.general!.listOfProductionSites!;
+    const listOfProductionSites = lksgData.social!.general!.listOfProductionSites;
     if (listOfProductionSites.length < 2) {
       throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
     }
@@ -99,7 +99,7 @@ describe("Component test for LksgPanel", () => {
     cy.get("em.info-icon").eq(0).trigger("mouseleave");
 
     cy.get("table.p-datatable-table")
-      .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+      .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber})`)
       .should("exist");
   });
 

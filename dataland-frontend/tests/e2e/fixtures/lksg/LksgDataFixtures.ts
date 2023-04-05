@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { InHouseProductionOrContractProcessing, LksgData, ProductionSite } from "@clients/backend";
-import {randomYesNo, randomYesNoUndefined} from "@e2e/fixtures/common/YesNoFixtures";
+import { randomYesNo, randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";

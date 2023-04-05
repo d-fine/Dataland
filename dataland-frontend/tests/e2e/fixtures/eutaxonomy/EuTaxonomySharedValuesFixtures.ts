@@ -18,6 +18,7 @@ import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviat
 
 /**
  * Generates a new Eu Taxonomy instance fitting for either "financials" or "non-financials"
+ *
  * @returns Eu Taxonomy instance with mandatory fields already assigned
  */
 export function generateEuTaxonomyWithRequiredFields(): EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials {
@@ -25,7 +26,7 @@ export function generateEuTaxonomyWithRequiredFields(): EuTaxonomyDataForFinanci
     fiscalYearDeviation: randomFiscalYearDeviation(),
     fiscalYearEnd: randomPastDate(),
     numberOfEmployees: randomNumber(100000),
-  }
+  };
 }
 
 /**
