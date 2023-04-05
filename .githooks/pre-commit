@@ -3,8 +3,7 @@ set -euxo pipefail
 
 KT_FILES="$(git --no-pager diff --name-status --no-color --cached | awk '$1 != "D" && $2 ~ /\.kts|\.kt/ { print $2}')"
 
-if [ -z "$KT_FILES" ];
-then
+if [ -z "$KT_FILES" ]; then
   echo "No Kotlin staged files."
 else
   echo "Running ktlint over these files:"
@@ -18,13 +17,19 @@ else
   ./gradlew detekt
   echo "Completed detekt run"
 
-  echo "$KT_FILES" | while read -r file; do
-      if [ -f $file ]; then
-          git add $file
-      fi
+#  echo "$KT_FILES" | while read -r file; do
+#    if [ -f $file ]; then
+#      git add $file
+#    fi
+#  done
+
+  for file in $KT_FILES; do
+    if [ -f $file ]; then
+      git add $file
+    fi
   done
 
-fi;
+fi
 
 echo "Starting eslint hook"
 npx --prefix ./dataland-frontend lint-staged
