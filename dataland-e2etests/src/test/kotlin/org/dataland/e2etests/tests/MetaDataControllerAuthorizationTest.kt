@@ -41,7 +41,7 @@ class MetaDataControllerAuthorizationTest {
                 uploadTime,
             ),
             dataMetaInformation.copy(uploadTime = uploadTime),
-            "The meta info of the posted eu taxonomy data does not match the retrieved meta infozz."
+            "The meta info of the posted eu taxonomy data does not match the retrieved meta infozz.",
         )
     }
 
