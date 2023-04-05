@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import Card from "primevue/card";
-import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons.vue";
+import UserAuthenticationButtons from "@/components/general/AuthenticationButton.vue";
 import JoinDatalandButton from "@/components/general/JoinDatalandButton.vue";
 import BuildersAndSponsors from "@/components/resources/landing/BuildersAndSponsors.vue";
 import { defineComponent } from "vue";
