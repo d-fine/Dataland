@@ -29,7 +29,7 @@ class FiscalYearParser {
      */
     fun getFiscalYearDeviation(csvLineData: Map<String, String>): FiscalYearDeviation {
         return columnMappingFiscalYear.getCsvValue("fiscalYearDeviation", csvLineData)
-                .let { fiscalYearDeviationParser.parse("fiscalYearDeviation", it) }
+            .let { fiscalYearDeviationParser.parse("fiscalYearDeviation", it) }
     }
 
     /**
