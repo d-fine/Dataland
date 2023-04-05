@@ -2,7 +2,7 @@
   <div>
     <Message severity="success" :sticky="true" :key:="messageId">
       <h4>Upload successfully executed.</h4>
-      <h4>{{ message }}</h4>
+      <h4 v-if="message">{{ message }}</h4>
     </Message>
   </div>
 </template>
@@ -14,7 +14,10 @@ export default {
   name: "SuccessUpload",
   components: { Message },
   props: {
-    message: String,
+    message: {
+      type: String,
+      default: "",
+    },
     messageId: Number,
   },
 };

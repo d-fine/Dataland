@@ -53,12 +53,7 @@ describe("Component test for DatasetOverviewTable", () => {
 
   it("Check if the table rows look as expected", () => {
     prepareSimpleDatasetOverviewTable([datasetTableInfoMockForAlpha]);
-    const expectedRowContents = [
-      `COMPANY${nameOfCompanyAlpha}`,
-      `DATA FRAMEWORK${humanizeString(dataTypeOfDatasetForAlpha)}`,
-      `REPORTING PERIOD2023`,
-      "STATUSAPPROVED",
-    ];
+    const expectedRowContents = [nameOfCompanyAlpha, humanizeString(dataTypeOfDatasetForAlpha), "2023", "APPROVED"];
     cy.get("tbody td").should((elements) => {
       expect(elements.length).to.equal(6);
     });
@@ -66,7 +61,7 @@ describe("Component test for DatasetOverviewTable", () => {
       if (index < expectedRowContents.length) {
         expect(element.text()).to.equal(expectedRowContents[index]);
       } else if (index == 4) {
-        expect(Date.parse(element.text().substring(15)).toString()).not.to.equal(NaN.toString());
+        expect(Date.parse(element.text()).toString()).not.to.equal(NaN.toString());
       } else if (index == 5) {
         expect(element.text()).to.contain("VIEW");
       }

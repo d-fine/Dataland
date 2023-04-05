@@ -132,12 +132,9 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.get("div[id=eutaxonomyDataSetsContainer]").contains(
           "Create another dataset for EU Taxonomy for financial companies"
         );
-        cy.get("div[id=eutaxonomyDataSetsContainer]").contains(
-          "Uploading data for this framework is currently not enabled on the Dataland frontend."
-        );
         cy.get("div[id=eutaxonomyDataSetsContainer]")
-          .find('button.p-disabled[aria-label="Create Dataset"]')
-          .should("exist");
+          .find("[data-test='createDatasetButton']")
+          .should("have.length", 2);
 
         cy.get("div[id=sfdrContainer]").contains("Be the first to create this dataset");
         cy.get("div[id=sfdrContainer]").contains(
