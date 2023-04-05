@@ -1,7 +1,7 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
 import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
-import org.dataland.csvconverter.csv.CsvUtils.readCsvDecimal
+import org.dataland.csvconverter.csv.CsvUtils.readCsvDecimalNotAllowingNull
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
@@ -49,7 +49,7 @@ class EuTaxonomyCommonFieldParser(
     /**
      * Returns the number of employees for a specific company
      */
-    fun getNumberOfEmployees(csvLineData: Map<String, String>): BigDecimal? {
-        return columnMappingEuTaxonomyUtils.readCsvDecimal("numberOfEmployees", csvLineData)
+    fun getNumberOfEmployees(csvLineData: Map<String, String>): BigDecimal {
+        return columnMappingEuTaxonomyUtils.readCsvDecimalNotAllowingNull("numberOfEmployees", csvLineData)
     }
 }
