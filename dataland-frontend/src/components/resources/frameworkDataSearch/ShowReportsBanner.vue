@@ -7,7 +7,7 @@
       {{ resetReportsCount() }}
       <span v-for="[name, rep] in Object.entries(reports)" :key="name">
         {{ reportPlus() }}
-        <button @click="downloadReport(rep.reference)">{{ name }}</button>
+        <span @click="downloadReport(rep.reference)" class="font-semibold underline text-primary cursor-pointer no-underline" title="imprint">{{ name }}</span>
         <span v-if="reportCounter < Object.keys(reports).length">, </span>
       </span>
     </p>
@@ -94,7 +94,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 a:link {
   color: var(--yellow-700);
 }
