@@ -65,12 +65,22 @@ class MalformedRawRequestTests {
             .build()
         val request = Request.Builder()
             .url(endpointUrl)
-            .post("{\"companyId\": \"doesntexist\",\"data\": {\"heyo\": \"Hey\"}}".toRequestBody(jsonMediaType))
+            .post(
+                (
+                    "{\"companyId\": \"doesntexist\", " +
+                        "\"data\": {\"reportingPeriod\": \"2022\", " +
+                        "\"fiscalYearDeviation\": \"NoDeviation\", " +
+                        "\"fiscalYearEnd\": \"2022-12-31\", " +
+                        "\"numberOfEmployees\": \"100\"}}"
+                    )
+                    .toRequestBody(jsonMediaType),
+            )
             .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
             .build()
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body.string()
+        println(responseBodyString)
         assertTrue(responseBodyString.contains("Unrecognized field"))
         assertEquals(400, response.code)
     }
