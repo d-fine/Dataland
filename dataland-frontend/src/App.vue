@@ -115,10 +115,11 @@ export default defineComponent({
           modal: true,
           closable: false,
           closeOnEscape: false,
+          showHeader: false,
         },
         data: {
           displayedHeader: "Session expires soon",
-          displayedText: "To refresh it, please click on the button below. Otherwise you will be logged out soon.",
+          displayedText: "To refresh it, please click on the button below.",
           showRefreshButton: true,
           isTrackingOfRefreshTokenExpiryEnabled: true,
           resolvedKeycloakPromise: this.resolvedKeycloakPromise,

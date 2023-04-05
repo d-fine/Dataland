@@ -1,12 +1,10 @@
 <template>
-  <div class="col-12">
-    <PrimeButton
-      label="Login to preview account"
-      class="p-button-sm uppercase d-letters text-primary bg-white-alpha-10 w-15rem"
-      name="login_dataland_button"
-      @click="login"
-    />
-  </div>
+  <PrimeButton
+    label="Login to preview account"
+    :class="customClassForButton"
+    name="login_dataland_button"
+    @click="login"
+  />
 </template>
 
 <script lang="ts">
@@ -24,6 +22,13 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
       authenticated: inject<boolean>("authenticated"),
     };
+  },
+
+  props: {
+    customClassForButton: {
+      type: String,
+      default: "p-button-sm uppercase d-letters text-primary bg-white-alpha-10 w-15rem",
+    },
   },
 
   methods: {

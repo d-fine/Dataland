@@ -1,12 +1,12 @@
 <template>
   <h1>{{ displayedHeader }}</h1>
-  <h3>{{ displayedText }}</h3>
-  <UserAuthenticationButtons v-if="showLogInButton" />
+  <span>{{ displayedText }}</span>
   <div class="mt-5 flex flex-row-reverse flex-wrap">
+    <UserAuthenticationButtons v-if="showLogInButton" :customClassForButton="buttonClass" />
     <PrimeButton
       v-if="showRefreshButton"
       :label="refreshButtonLabel"
-      class="p-button-sm uppercase d-letters w-15rem"
+      :class="buttonClass"
       name="refresh_session_button"
       @click="handleRefreshSession"
     />
@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import UserAuthenticationButtons from "@/components/general/UserAuthenticationButtons.vue";
+import UserAuthenticationButtons from "@/components/general/AuthenticationButton.vue";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
 import { isRefreshTokenExpiryTimestampInSharedStoreReached, tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
@@ -38,6 +38,7 @@ export default defineComponent({
       isTrackingOfRefreshTokenExpiryEnabled: false,
       keycloak: undefined as undefined | Keycloak,
       functionIdOfExpiryCheck: undefined as undefined | number,
+      buttonClass: "p-button-sm uppercase d-letters w-15rem",
     };
   },
 

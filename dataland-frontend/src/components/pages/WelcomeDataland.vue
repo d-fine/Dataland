@@ -76,10 +76,11 @@ export default defineComponent({
         props: {
           modal: true,
           dismissableMask: true,
+          showHeader: false,
         },
         data: {
-          displayedHeader: "Logged out",
-          displayedText: "You have been logged out. Do you want to login again?",
+          displayedHeader: "You have been logged out",
+          displayedText: "Do you want to login again?",
           showLogInButton: true,
         },
         onClose: () => {
