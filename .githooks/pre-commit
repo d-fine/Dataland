@@ -18,11 +18,19 @@ else
   ./gradlew detekt
   echo "Completed detekt run"
 
-  echo "$KT_FILES" | while read -r file; do
-      if [ -f $file ]; then
-          git add $file
-      fi
+#  echo "$KT_FILES" | while read -r file; do
+#      if [ -f $file ]; then
+#          git add $file
+#      fi
+#  done
+
+  for file in "$KT_FILES"
+  do
+    if [ -f $file ]; then
+        git add $file
+    fi
   done
+
 fi;
 
 echo "Starting eslint hook"

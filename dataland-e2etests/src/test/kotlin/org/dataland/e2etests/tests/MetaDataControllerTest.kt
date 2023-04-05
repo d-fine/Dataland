@@ -228,7 +228,7 @@ class MetaDataControllerTest {
             listOfActiveMetaData.size == 2 && listOfActiveMetaData.map { it.dataId }.containsAll(
                 setOf(listOfActiveMetaData2022[0].dataId, listOfActiveMetaData2023[0].dataId),
             ),
-            "The list of active meta data for all reporting periods does not consist of the expected elementz.",
+            "The list of active meta data for all reporting periods does not consist of the expected element."
         )
     }
 
