@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import { CompanyReport } from "@clients/backend";
-import { AxiosResponse } from "axios";
+import { AxiosResponse, AxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
@@ -68,20 +68,20 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getDocumentControllerApi();
         await documentControllerApi
-          .getDocument(assertDefined(reference), {
+          .getDocument(reference, {
             headers: { accept: "application/pdf" },
             responseType: "arraybuffer",
           })
           .then((getDocumentsFromStorageResponse) => {
             const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
             docUrl.href = URL.createObjectURL(newBlob);
-            const filename: string = assertDefined(getDocumentsFromStorageResponse.headers)
-              .get("content-disposition")
-              .split(";")
-              .find((n: string | string[]) => n.includes("filename="))
-              .replace("filename=", "")
-              .trim();
-            docUrl.setAttribute("download", assertDefined(filename));
+            const contentDisposition: string =
+              ((getDocumentsFromStorageResponse.headers as AxiosResponseHeaders).get(
+                "content-disposition"
+              ) as string) ?? "";
+            const filename = this.constructFileName(contentDisposition, reference);
+
+            docUrl.setAttribute("download", filename);
             document.body.appendChild(docUrl);
             docUrl.click();
             console.log(getDocumentsFromStorageResponse);
@@ -89,6 +89,28 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
+    },
+
+    /**
+     * construct file name from response header, as a fallback the hash is used as file name
+     *
+     * @param contentDisposition the part of the header that should contain the file name
+     * @param reference the hash as a fallback value
+     * @returns filename the name of the downloaded file
+     */
+    constructFileName(contentDisposition: string, reference: string): string {
+      let filename: string;
+      try {
+        filename =
+          contentDisposition
+            .split(";")
+            .find((n: string | string[]) => n.includes("filename="))
+            .replace("filename=", "")
+            .trim() ?? reference + ".pdf";
+      } catch {
+        filename = reference + ".pdf";
+      }
+      return filename;
     },
   },
 });
