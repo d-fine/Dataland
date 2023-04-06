@@ -278,14 +278,7 @@
             <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
           </template>
         </div>
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
-          <h4 id="topicTitles" class="title">On this page</h4>
-          <ul>
-            <li v-for="(element, index) in onThisPageLinks" :key="index">
-              <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
-            </li>
-          </ul>
-        </div>
+        <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
       </div>
     </template>
   </Card>
@@ -321,15 +314,16 @@ import {
 } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
 import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
-import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
+import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: {
+    JumpLinksSection,
     Calendar,
     UploadFormHeader,
     PrimeButton,
@@ -364,8 +358,6 @@ export default defineComponent({
     route: useRoute(),
     editMode: false,
     waitingForData: false,
-    scrollListener: (): null => null,
-    smoothScroll,
     checkCustomInputs,
     formatBytesUserFriendly,
     maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
@@ -402,30 +394,13 @@ export default defineComponent({
     },
   },
   mounted() {
-    const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-
-    this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
-    this.scrollListener = (): null => {
-      if (window.scrollY > this.elementPosition) {
-        jumpLinkselement.style.position = "fixed";
-        jumpLinkselement.style.top = "60px";
-      } else {
-        jumpLinkselement.style.position = "relative";
-        jumpLinkselement.style.top = "0";
-      }
-      return null;
-    };
-    window.addEventListener("scroll", this.scrollListener);
-
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
       void this.loadEuData(dataId);
     }
   },
-  unmounted() {
-    window.removeEventListener("scroll", this.scrollListener);
-  },
+
   methods: {
     /**
      * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
@@ -606,3 +581,5 @@ export default defineComponent({
   },
 });
 </script>
+
+// TODO the back button is missing. in the CreateEuTaxonomy for financials it is there

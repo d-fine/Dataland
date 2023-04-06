@@ -470,15 +470,7 @@
             <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
           </template>
         </div>
-
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
-          <h4 id="topicTitles" class="title">On this page</h4>
-          <ul>
-            <li v-for="(element, index) in onThisPageLinks" :key="index">
-              <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
-            </li>
-          </ul>
-        </div>
+        <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
       </div>
     </template>
   </Card>
@@ -503,7 +495,6 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
@@ -520,6 +511,7 @@ import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedFile } from "@/components/forms/Types";
+import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 
 export default defineComponent({
   setup() {
@@ -529,6 +521,7 @@ export default defineComponent({
   },
   name: "CreateEUTaxonomyForFinancials",
   components: {
+    JumpLinksSection,
     FailedUpload,
     FormKit,
     SuccessUpload,
@@ -558,9 +551,6 @@ export default defineComponent({
       euTaxonomyKPIsModel,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
-      elementPosition: 0,
-      scrollListener: (): null => null,
-      smoothScroll,
       checkCustomInputs,
       formatBytesUserFriendly,
       route: useRoute(),
@@ -628,23 +618,8 @@ export default defineComponent({
     }
 
     this.onThisPageLinks = [...this.onThisPageLinksStart];
-    const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-    this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
-    this.scrollListener = (): null => {
-      if (window.scrollY > this.elementPosition) {
-        jumpLinkselement.style.position = "fixed";
-        jumpLinkselement.style.top = "60px";
-      } else {
-        jumpLinkselement.style.position = "relative";
-        jumpLinkselement.style.top = "0";
-      }
-      return null;
-    };
-    window.addEventListener("scroll", this.scrollListener);
   },
-  unmounted() {
-    window.removeEventListener("scroll", this.scrollListener);
-  },
+
   methods: {
     /**
      * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
