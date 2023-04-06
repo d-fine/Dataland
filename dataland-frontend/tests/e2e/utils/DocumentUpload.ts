@@ -31,25 +31,23 @@ export function fillCompanyUploadFields(companyName: string): void {
 /**
  * Uploads all documents provided in the <> folder and saves the hashes in a file for later referencing in the datasets
  *
- * @param token
+ * @param token the keycloak token for authentication
  * @returns a cypress chainable containing the company meta information of the newly created company
  */
-export async function uploadAllDocuments(token: string) {
+export function uploadAllDocuments(token: string): string[] {
   const documentDirectory = "..\\testing\\data\\documents";
-  let documentIds: string[];
-  cy.task("readdir", { path: documentDirectory }).then((fileNames) => {
-    (fileNames as string[]).forEach((name) => {
-      console.log(name);
-      cy.task("readFile", { path: documentDirectory + name }).then((file) => {
-        uploadDocumentViaApi(token, file as File)
-          .then((documentId) => {
-            documentIds.push(documentId.documentId);
-          })
-          .catch((error) => console.log(error));
-      });
+  const documentIds: string[] = [];
+  cy.task("readdir", documentDirectory).then((fileContents) => {
+    (fileContents as File[]).forEach((file: File) => {
+      uploadDocumentViaApi(token, file)
+        .then((documentId) => {
+          documentIds.push(documentId.documentId);
+        })
+        .catch((error) => console.log(error));
     });
-    return documentIds;
+    console.log(documentIds);
   });
+  return documentIds;
 }
 
 /**
@@ -60,5 +58,6 @@ export async function uploadAllDocuments(token: string) {
  */
 export async function uploadDocumentViaApi(token: string, document: File): Promise<DocumentUploadResponse> {
   const response = await new DocumentControllerApi(new Configuration({ accessToken: token })).postDocument(document);
+  console.log(response);
   return response.data;
 }
