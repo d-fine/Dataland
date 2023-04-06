@@ -18,9 +18,9 @@ server {
     add_header Content-Security-Policy $default_content_security_policy always;
 
     # locations
-    include                 utils/locations/frontend${FRONTEND_LOCATION_CONFIG}.conf
-    include                 utils/locations/backend${BACKEND_LOCATION_CONFIG}.conf
-    include                 utils/locations/common.conf
+    include                 utils/locations/frontend${FRONTEND_LOCATION_CONFIG}.conf;
+    include                 utils/locations/backend${BACKEND_LOCATION_CONFIG}.conf;
+    include                 utils/locations/common.conf;
 
     # additional config
     include                 utils/keycloak.conf;
