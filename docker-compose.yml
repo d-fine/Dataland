@@ -8,7 +8,7 @@ version: "3.8"
 
 services:
   proxy:
-    image: ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy_development:${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION}}
+    image: ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy:${DATALAND_INBOUND_PROXY_VERSION}}
     restart: always
     profiles: ["production", "testing", "development"]
     networks:
@@ -27,6 +27,8 @@ services:
       PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
       # These are the config options for the initial LetsEncrypt certificate request
       PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
+      FRONTEND_LOCATION_CONFIG: ${FRONTEND_LOCATION_CONFIG}
+      BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
   admin-proxy:
     image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
@@ -171,7 +173,9 @@ services:
     profiles: ["development"]
     image: node:19.8.1
     networks:
-      - internal
+      internal:
+        aliases:
+          - frontend
     volumes:
       - ./dataland-frontend:/app
       - frontend-dev-node-modules:/app/node_modules
@@ -180,8 +184,6 @@ services:
     restart: always
     profiles: ["production", "testing"]
     image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
-    expose:
-      - "80"
     networks:
       - internal
   internal-storage:

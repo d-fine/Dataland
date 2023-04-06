@@ -68,6 +68,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.wait("@getSearchResults", { timeout: Cypress.env("long_timeout_in_ms") as number });
         const companySelector = "span:contains(VIEW)";
         cy.get(companySelector).first().scrollIntoView();
+        cy.wait(1000);
         cy.get(companySelector).first().click({ force: true });
       }
 
