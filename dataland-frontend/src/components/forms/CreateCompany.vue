@@ -6,9 +6,9 @@
         <FormKit :actions="false" type="form" id="createCompanyForm" @submit="postCompanyInformation">
           <h4>Name & location</h4>
           <UploadFormHeader
-                  :name="companyDataNames.companyName"
-                  :explanation="companyDataExplanations.companyName"
-                  :is-required="true"
+            :name="companyDataNames.companyName"
+            :explanation="companyDataExplanations.companyName"
+            :is-required="true"
           />
           <FormKit
             name="companyName"
@@ -176,9 +176,9 @@
           <h4>GICS classification</h4>
 
           <UploadFormHeader
-                  :name="companyDataNames.sector"
-                  :explanation="companyDataExplanations.sector"
-                  :is-required="true"
+            :name="companyDataNames.sector"
+            :explanation="companyDataExplanations.sector"
+            :is-required="true"
           />
           <FormKit
             name="sector"
