@@ -11,13 +11,13 @@ import {
 import { countCompaniesAndDataSetsForDataType } from "@e2e//utils/GeneralApiUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
 import { describeIf } from "@e2e/support/TestUtility";
+import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
 
 const chunkSize = 15;
 

@@ -35,17 +35,19 @@ export function fillCompanyUploadFields(companyName: string): void {
  * @returns a cypress chainable containing the company meta information of the newly created company
  */
 export function uploadAllDocuments(token: string): string[] {
-  const documentDirectory = "..\\testing\\data\\documents";
+  const documentDirectory = "..\\testing\\data\\documents\\";
   const documentIds: string[] = [];
-  cy.task("readdir", documentDirectory).then((fileContents) => {
-    (fileContents as File[]).forEach((file: File) => {
-      uploadDocumentViaApi(token, file)
-        .then((documentId) => {
-          documentIds.push(documentId.documentId);
-        })
-        .catch((error) => console.log(error));
+  cy.task("readdir", documentDirectory).then((fileNames) => {
+    (fileNames as string[]).forEach((name) => {
+      cy.readFile(documentDirectory + name).then((file) => {
+        console.log(file);
+        uploadDocumentViaApi(token, file as File)
+          .then((documentId) => {
+            documentIds.push(documentId.documentId);
+          })
+          .catch((error) => console.log(error));
+      });
     });
-    console.log(documentIds);
   });
   return documentIds;
 }
@@ -57,7 +59,12 @@ export function uploadAllDocuments(token: string): string[] {
  * @param document the pdf document to be uploaded as File
  */
 export async function uploadDocumentViaApi(token: string, document: File): Promise<DocumentUploadResponse> {
-  const response = await new DocumentControllerApi(new Configuration({ accessToken: token })).postDocument(document);
+  const response = await new DocumentControllerApi(
+    new Configuration({
+      accessToken: token,
+      contentType: "application/pdf",
+    })
+  ).postDocument(document);
   console.log(response);
   return response.data;
 }

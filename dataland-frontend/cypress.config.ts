@@ -1,6 +1,5 @@
 import {defineConfig} from "cypress";
-import {readdir, rmdir} from "fs";
-import {readFile} from "fs/promises";
+import {promises, rmdir} from "fs";
 
 let returnEmail: string;
 let returnPassword: string;
@@ -105,15 +104,7 @@ export default defineConfig({
             });
             on('task', {
                 async readdir(path: string) {
-                    let fileContents: File[] = [];
-                    readdir(path, async (err, files) => {
-                        files.forEach(async (file) => {
-                                fileContents.push(await readFile(path + "\\" + file))
-                                console.log(fileContents)
-                            }
-                        )
-                    });
-                    return fileContents;
+                    return await promises.readdir(path);
                 },
             });
             return config
