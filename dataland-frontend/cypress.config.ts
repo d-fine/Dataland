@@ -1,5 +1,5 @@
 import {defineConfig} from "cypress";
-import {rmdir} from "fs";
+import {readdir, readFileSync, rmdir} from "fs";
 
 let returnEmail: string;
 let returnPassword: string;
@@ -100,6 +100,18 @@ export default defineConfig({
                             resolve(null);
                         });
                     });
+                },
+            });
+            on('task', {
+                readdir(path: string) {
+                    return readdir(path, (err, files) => {
+                        return files;
+                    });
+                },
+            });
+            on('task', {
+                readFile(path) {
+                    return new File([readFileSync(path)], path.name);
                 },
             });
             return config

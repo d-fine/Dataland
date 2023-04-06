@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { DataPointBigDecimal, QualityOptions, CompanyReportReference, DataPointYesNo } from "@clients/backend";
+import { CompanyReportReference, DataPointBigDecimal, DataPointYesNo, QualityOptions } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "./YesNoFixtures";
@@ -37,6 +37,16 @@ export function valueOrUndefined<T>(value: T): T | undefined {
  */
 export function generateLinkToPdf(): string {
   return new URL(`${faker.internet.domainWord()}.pdf`, faker.internet.url()).href;
+}
+
+/**
+ * Generates hash to fixture pdf that is used for all fake fixture references
+ *
+ * @returns documentId ID of a pdf that is stored in internal storage and can be referenced
+ */
+export function getReferencedDocumentId(): string {
+  const documentId = ""; //TODO: Upload a document with prepopulation and get hash
+  return documentId;
 }
 
 /**
