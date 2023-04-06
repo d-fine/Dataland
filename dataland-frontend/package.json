@@ -56,6 +56,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.10.0",
     "git-commit-id": "^2.0.1",
+    "lint-staged": "^13.2.0",
     "mocha": "^10.2.0",
     "npm-check-updates": "^16.9.0",
     "otplib": "^12.0.1",
@@ -67,5 +68,9 @@
   },
   "prettier": {
     "printWidth": 120
+  },
+  "lint-staged": {
+    "*.vue": "eslint --fix",
+    "*.ts": "eslint --fix"
   }
 }
