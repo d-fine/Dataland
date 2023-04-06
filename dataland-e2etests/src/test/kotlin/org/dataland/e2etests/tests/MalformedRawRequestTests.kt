@@ -80,7 +80,6 @@ class MalformedRawRequestTests {
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body.string()
-        println(responseBodyString)
         assertTrue(responseBodyString.contains("Unrecognized field"))
         assertEquals(400, response.code)
     }
