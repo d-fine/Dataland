@@ -73,7 +73,7 @@
                 <Calendar
                     data-test="reportDate"
                     inputId="icon"
-                    v-model="formsDatesFilesToUpload[index]"
+                    :modelValue="filesToUpload[index].convertedReportDate"
                     :showIcon="true"
                     dateFormat="D, M dd, yy"
                     @update:modelValue="updateReportDateHandler(index, $event, 'filesToUpload')"
@@ -202,26 +202,10 @@ export default defineComponent({
   data() {
     return {
       formsDatesFilesToUpload: [] as string[] | undefined,
-      formsDatesUploadedFiles: [] as string[] | undefined,
       formatBytesUserFriendly,
     }
   },
-  watch: {
-    uploadFiles(newValue) {
-      console.log("qqqq", newValue);
-    },
-  },
-  mounted() {
-    this.reassignDate();
-  },
   methods: {
-    reassignDate() {
-      console.log('eleleleleleclel', this.uploadFiles.slice())
-      this.formsDatesUploadedFiles = this.uploadFiles.map((el) => {
-        console.log('eleleleleleclel', el)
-        return new Date(el.reportDate);
-      })
-    },
     /**
      * Function to emit event when files are selected
      *

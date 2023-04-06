@@ -61,95 +61,10 @@
                   @updateReportDateHandler="updateReportDateHandler"
                 />
 
-                <div class="uploadFormSection">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="basicInformation" class="anchor title">Basic information</h4>
-                  </div>
-                  <!-- Basic information -->
-                  <div class="col-9 formFields">
-                    <h3 class="mt-0">Basic information</h3>
-
-                    <YesNoComponent
-                      :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
-                      :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
-                      :name="'fiscalYearDeviation'"
-                      :radioButtonsOptions="['Deviation', 'NoDeviation']"
-                      required="required"
-                    />
-
-                    <!-- The date the fiscal year ends -->
-                    <div class="form-field">
-                      <UploadFormHeader
-                        :name="euTaxonomyKpiNameMappings.fiscalYearEnd"
-                        :explanation="euTaxonomyKpiInfoMappings.fiscalYearEnd"
-                      />
-                      <div class="lg:col-6 md:col-6 col-12 p-0">
-                        <Calendar
-                          inputId="fiscalYearEnd"
-                          v-model="fiscalYearEnd"
-                          data-test="fiscalYearEnd"
-                          :showIcon="true"
-                          dateFormat="D, M dd, yy"
-                        />
-                      </div>
-
-                      <FormKit
-                        type="text"
-                        validation="required"
-                        validation-label="Fiscal year"
-                        name="fiscalYearEnd"
-                        v-model="convertedFiscalYearEnd"
-                        :outer-class="{ 'hidden-input': true }"
-                      />
-                    </div>
-
-                    <!-- Scope of entities -->
-                    <div class="form-field">
-                      <YesNoComponent
-                        :displayName="euTaxonomyKpiNameMappings.scopeOfEntities"
-                        :info="euTaxonomyKpiInfoMappings.scopeOfEntities"
-                        :name="'scopeOfEntities'"
-                      />
-                    </div>
-
-                    <!-- EU Taxonomy activity level reporting -->
-                    <div class="form-field">
-                      <YesNoComponent
-                        :displayName="euTaxonomyKpiNameMappings.activityLevelReporting"
-                        :info="euTaxonomyKpiInfoMappings.activityLevelReporting"
-                        :name="'activityLevelReporting'"
-                      />
-                    </div>
-
-                    <!-- Number of employees -->
-                    <div class="form-field">
-                      <UploadFormHeader
-                        :name="euTaxonomyKpiNameMappings.numberOfEmployees"
-                        :explanation="euTaxonomyKpiInfoMappings.numberOfEmployees"
-                      />
-                      <div class="lg:col-4 md:col-4 col-6 p-0">
-                        <FormKit
-                          type="number"
-                          name="numberOfEmployees"
-                          validation-label="Number of employees"
-                          placeholder="Value"
-                          validation="required|number"
-                          step="1"
-                          min="0"
-                        />
-                      </div>
-                    </div>
-
-                    <!-- EU Taxonomy activity level reporting -->
-                    <div class="form-field">
-                      <YesNoComponent
-                        :displayName="euTaxonomyKpiNameMappings.reportingObligation"
-                        :info="euTaxonomyKpiInfoMappings.reportingObligation"
-                        :name="'reportingObligation'"
-                      />
-                    </div>
-                  </div>
-                </div>
+                <BasicInformationFields
+                  :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
+                  :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
+                />
 
                 <div class="uploadFormSection">
                   <div class="col-3 p-3 topicLabel">
@@ -384,11 +299,11 @@ import Calendar from "primevue/calendar";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 
-import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
+import BasicInformationFields from "@/components/forms/parts/BasicInformationFields.vue";
 
 import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -404,13 +319,13 @@ import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
-import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials, CompanyReport } from "@clients/backend";
+import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import {ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles} from "@/components/forms/Types";
+import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
@@ -419,7 +334,7 @@ export default defineComponent({
     UploadFormHeader,
     PrimeButton,
     UploadReports,
-    YesNoComponent,
+    BasicInformationFields,
     KPIfieldSet,
     FailedUpload,
     Card,
@@ -434,8 +349,6 @@ export default defineComponent({
 
   data: () => ({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-    fiscalYearEnd: "" as Date | "",
-    convertedFiscalYearEnd: "",
     reportingPeriod: new Date(),
     filesToUpload: [] as ExtendedFile[],
     uploadFiles: [] as ExtendedCompanyReport[],
@@ -474,13 +387,6 @@ export default defineComponent({
   watch: {
     reportingPeriod: function (newValue: Date) {
       this.reportingPeriodYear = newValue.getFullYear();
-    },
-    fiscalYearEnd: function (newValue: Date) {
-      if (newValue) {
-        this.convertedFiscalYearEnd = getHyphenatedDate(newValue);
-      } else {
-        this.convertedFiscalYearEnd = "";
-      }
     },
   },
   computed: {
@@ -629,7 +535,7 @@ export default defineComponent({
      * @param whichSetOfFiles which set of files will be edited
      */
     updateReportDateHandler(index: number, dateValue: Date, whichSetOfFiles: WhichSetOfFiles) {
-      this.updatePropertyFilesUploaded(index, "convertedReportDate", dateValue.toString(), whichSetOfFiles);
+      this.updatePropertyFilesUploaded(index, "convertedReportDate", dateValue, whichSetOfFiles);
       this.updatePropertyFilesUploaded(index, "reportDate", getHyphenatedDate(dateValue), whichSetOfFiles);
     },
 
