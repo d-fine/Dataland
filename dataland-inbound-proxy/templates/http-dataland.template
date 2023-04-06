@@ -1,0 +1,41 @@
+server {
+    listen                  443 ssl http2;
+    listen                  [::]:443 ssl http2;
+    server_name             ${PROXY_PRIMARY_URL};
+
+    # SSL
+
+    # The /certs/dataland directory is a symlink directory that either points
+    # to /etc/letsencrypt/live/$DOMAIN or to dummy certificates depending on weather LetsEncrypt certs are present
+    # This symlink is managed in the /scripts/check-letsencrypt-certs.sh
+
+    ssl_certificate         /certs/dataland/fullchain.pem;
+    ssl_certificate_key     /certs/dataland/privkey.pem;
+
+    # security
+    include                 utils/security.conf;
+
+    add_header Content-Security-Policy $default_content_security_policy always;
+
+    # locations
+    include                 utils/locations/frontend${FRONTEND_LOCATION_CONFIG}.conf
+    include                 utils/locations/backend${BACKEND_LOCATION_CONFIG}.conf
+    include                 utils/locations/common.conf
+
+    # additional config
+    include                 utils/keycloak.conf;
+    include                 utils/general.conf;
+    include                 utils/error.conf;
+}
+
+server {
+   listen                  443 ssl http2 default_server;
+   listen                  [::]:443 ssl http2 default_server;
+
+   ssl_certificate         /certs/dataland/fullchain.pem;
+   ssl_certificate_key     /certs/dataland/privkey.pem;
+
+   location / {
+       return 301 https://${PROXY_PRIMARY_URL}$request_uri;
+   }
+}
