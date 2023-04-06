@@ -1082,30 +1082,7 @@
             <FailedUpload v-else :message="message" :messageId="messageCounter" />
           </div>
         </div>
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
-          <h4 id="topicTitles" class="title">On this page</h4>
-          <ul>
-            <li><a @click="smoothScroll('#general')">General</a></li>
-            <li><a @click="smoothScroll('#childLabour')">Child labour</a></li>
-            <li>
-              <a @click="smoothScroll('#forcedLabourSlaveryAndDebtBondage')">Forced labour, slavery and debt bondage</a>
-            </li>
-            <li>
-              <a @click="smoothScroll('#evidenceCertificatesAndAttestations')"
-                >Evidence, certificates and attestations</a
-              >
-            </li>
-            <li><a @click="smoothScroll('#grievanceMechanism')">Grievance mechanism</a></li>
-            <li><a @click="smoothScroll('#osh')">OSH</a></li>
-            <li><a @click="smoothScroll('#freedomOfAssociation')">Freedom of association</a></li>
-            <li><a @click="smoothScroll('#humanRights')">Human rights</a></li>
-            <li><a @click="smoothScroll('#socialAndEmployeeMatters')">Social and employee matters</a></li>
-            <li><a @click="smoothScroll('#environment')">Environment</a></li>
-            <li><a @click="smoothScroll('#riskManagement')">Risk management</a></li>
-            <li><a @click="smoothScroll('#codeOfConduct')">Code of Conduct</a></li>
-            <li><a @click="smoothScroll('#waste')">Waste</a></li>
-          </ul>
-        </div>
+        <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
       </div>
     </template>
   </Card>
@@ -1136,8 +1113,8 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { CompanyAssociatedDataLksgData, InHouseProductionOrContractProcessing } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
-import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
+import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 
 export default defineComponent({
   setup() {
@@ -1146,7 +1123,17 @@ export default defineComponent({
     };
   },
   name: "CreateLksgDataset",
-  components: { UploadFormHeader, SuccessUpload, FailedUpload, FormKit, Card, PrimeButton, YesNoComponent, Calendar },
+  components: {
+    JumpLinksSection,
+    UploadFormHeader,
+    SuccessUpload,
+    FailedUpload,
+    FormKit,
+    Card,
+    PrimeButton,
+    YesNoComponent,
+    Calendar,
+  },
   directives: {
     tooltip: Tooltip,
   },
@@ -1168,14 +1155,26 @@ export default defineComponent({
       lkSGDataModel: {} as CompanyAssociatedDataLksgData,
       route: useRoute(),
       message: "",
+      onThisPageLinks: [
+        { label: "General", value: "general" },
+        { label: "Child labour", value: "childLabour" },
+        { label: "Forced labour, slavery and debt bondage", value: "forcedLabourSlaveryAndDebtBondage" },
+        { label: "Evidence, certificates and attestations", value: "evidenceCertificatesAndAttestations" },
+        { label: "Grievance mechanism", value: "grievanceMechanism" },
+        { label: "", value: "osh" },
+        { label: "Freedom of association", value: "freedomOfAssociation" },
+        { label: "Human rights", value: "humanRights" },
+        { label: "Social and employee matters", value: "socialAndEmployeeMatters" },
+        { label: "Environment", value: "environment" },
+        { label: "Risk management", value: "riskManagement" },
+        { label: "Waste", value: "waste" },
+      ],
       uploadSucceded: false,
       postLkSGDataProcessed: false,
       messageCounter: 0,
       lksgKpisInfoMappings,
       lksgKpisNameMappings,
       lksgSubAreasNameMappings,
-      elementPosition: 0,
-      scrollListener: (): null => null,
       isInHouseProductionOrContractProcessingMap: Object.fromEntries(
         new Map<string, string>([
           [
@@ -1188,7 +1187,6 @@ export default defineComponent({
           ],
         ])
       ),
-      smoothScroll,
       checkCustomInputs,
       updatingData: false,
     };
@@ -1221,27 +1219,10 @@ export default defineComponent({
     },
   },
   mounted() {
-    const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-    this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
-    this.scrollListener = (): null => {
-      if (window.scrollY > this.elementPosition) {
-        jumpLinkselement.style.position = "fixed";
-        jumpLinkselement.style.top = "60px";
-      } else {
-        jumpLinkselement.style.position = "relative";
-        jumpLinkselement.style.top = "0";
-      }
-      return null;
-    };
-    window.addEventListener("scroll", this.scrollListener);
-
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
       void this.loadLKSGData(dataId);
     }
-  },
-  unmounted() {
-    window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
     /**
@@ -1370,3 +1351,6 @@ export default defineComponent({
   scroll-margin-top: 100px;
 }
 </style>
+
+// TODO is the styling here still necessary after the jumpLinks-feature was extracted into own component
+JumpLinksSection.vue
