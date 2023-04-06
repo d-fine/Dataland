@@ -39,9 +39,8 @@ export function uploadAllDocuments(token: string): string[] {
   const documentIds: string[] = [];
   cy.task("readdir", documentDirectory).then((fileNames) => {
     (fileNames as string[]).forEach((name) => {
-      cy.task("readFile", documentDirectory + name).then((fileBuffer) => {
-        console.log(typeof fileBuffer);
-        uploadDocumentViaApi(token, fileBuffer.data, name)
+      cy.task<Buffer>("readFile", documentDirectory + name).then((fileBuffer) => {
+        uploadDocumentViaApi(token, fileBuffer, name)
           .then((documentId) => {
             documentIds.push(documentId.documentId);
           })

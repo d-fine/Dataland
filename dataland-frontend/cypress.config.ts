@@ -110,9 +110,9 @@ export default defineConfig({
             });
 
             on('task', {
-                async readFile(path: string) {
-                    const bufferObject = await promises.readFile(path);
-                    return bufferObject;
+                async readFile(path: string): Promise<Buffer> {
+                    return await promises.readFile(path);
+
                 },
             });
             return config
