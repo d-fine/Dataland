@@ -15,7 +15,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
-  name: "UserAuthenticationButtons",
+  name: "AuthenticationButton",
   components: { PrimeButton },
   setup() {
     return {

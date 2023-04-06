@@ -2,7 +2,7 @@
   <h1>{{ displayedHeader }}</h1>
   <span>{{ displayedText }}</span>
   <div class="mt-5 flex flex-row-reverse flex-wrap">
-    <UserAuthenticationButtons v-if="showLogInButton" :customClassForButton="buttonClass" />
+    <AuthenticationButton v-if="showLogInButton" :customClassForButton="buttonClass" />
     <PrimeButton
       v-if="showRefreshButton"
       :label="refreshButtonLabel"
@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import UserAuthenticationButtons from "@/components/general/AuthenticationButton.vue";
+import AuthenticationButton from "@/components/general/AuthenticationButton.vue";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
 import { isRefreshTokenExpiryTimestampInSharedStoreReached, tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
@@ -26,7 +26,7 @@ import { useSharedSessionStateStore } from "@/stores/stores";
 export default defineComponent({
   inject: ["dialogRef"],
   name: "SessionTimeoutModal",
-  components: { UserAuthenticationButtons, PrimeButton },
+  components: { AuthenticationButton, PrimeButton },
 
   data() {
     return {

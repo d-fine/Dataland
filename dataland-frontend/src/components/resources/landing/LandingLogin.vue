@@ -16,7 +16,7 @@
           </router-link>
         </div>
         <div data-test="landing-page-login-button" class="col-2 col-offset-3">
-          <UserAuthenticationButtons />
+          <AuthenticationButton />
         </div>
       </div>
 
@@ -56,14 +56,14 @@
 
 <script lang="ts">
 import Card from "primevue/card";
-import UserAuthenticationButtons from "@/components/general/AuthenticationButton.vue";
+import AuthenticationButton from "@/components/general/AuthenticationButton.vue";
 import JoinDatalandButton from "@/components/general/JoinDatalandButton.vue";
 import BuildersAndSponsors from "@/components/resources/landing/BuildersAndSponsors.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "LandingLogin",
-  components: { JoinDatalandButton, UserAuthenticationButtons, Card, BuildersAndSponsors },
+  components: { JoinDatalandButton, AuthenticationButton, Card, BuildersAndSponsors },
 });
 </script>
 <style scoped lang="scss">
