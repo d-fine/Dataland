@@ -8,7 +8,7 @@ version: "3.8"
 
 services:
   proxy:
-    image: ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy_development:${DATALAND_INBOUND_PROXY_DEVELOPMENT_VERSION}}
+    image: ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy:${DATALAND_INBOUND_PROXY_VERSION}}
     restart: always
     profiles: ["production", "testing", "development"]
     networks:
