@@ -2,11 +2,9 @@
   <AuthenticationWrapper>
     <TheHeader />
     <UploaderRoleWrapper>
-        <MarginWrapper>
-          <BackButton id="backButton" />
-          <CompanyInformation :companyID="companyID" />
-        </MarginWrapper>
-        <CreateLksgDataset :companyID="companyID" />
+      <BackButton id="backButton" class="mt-2 pl-3" />
+      <CompanyInformation :companyID="companyID" />
+      <CreateLksgDataset :companyID="companyID" />
     </UploaderRoleWrapper>
     <TheFooter />
   </AuthenticationWrapper>

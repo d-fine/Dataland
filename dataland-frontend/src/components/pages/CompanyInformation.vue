@@ -1,5 +1,5 @@
 <template>
-  <TheContent>
+  <div class="p-3">
     <div v-if="waitingForData" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading company information...</p>
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
@@ -21,7 +21,7 @@
     <div v-else-if="companyIdDoesNotExist" class="col-12">
       <h1 class="mb-0" data-test="noCompanyWithThisIdErrorIndicator">No company with this ID present</h1>
     </div>
-  </TheContent>
+  </div>
 </template>
 
 <script lang="ts">

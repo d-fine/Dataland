@@ -1,5 +1,5 @@
 <template>
-  <Card class="col-12 page-wrapper-card">
+  <Card class="col-12 page-wrapper-card p-3">
     <template #title>Create EU Taxonomy Dataset for a Financial Company/Service</template>
     <template #content>
       <div class="grid uploadFormWrapper">

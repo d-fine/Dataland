@@ -2,11 +2,9 @@
   <AuthenticationWrapper>
     <TheHeader />
     <UploaderRoleWrapper>
-      <TheContent>
-        <BackButton id="backButton" />
-        <CompanyInformation :companyID="companyID" />
-        <CreateEUTaxonomyForFinancials :companyID="companyID" />
-      </TheContent>
+      <BackButton id="backButton" class="mt-2 pl-3" />
+      <CompanyInformation :companyID="companyID" />
+      <CreateEUTaxonomyForFinancials :companyID="companyID" />
     </UploaderRoleWrapper>
     <TheFooter />
   </AuthenticationWrapper>
