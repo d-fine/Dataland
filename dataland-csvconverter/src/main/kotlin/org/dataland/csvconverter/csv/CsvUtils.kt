@@ -103,8 +103,7 @@ object CsvUtils {
     }
 
     /**
-     * Tries to parse a decimal value from the CSV file with the expected format allowing null
-     * XXX.XXX,XXX
+     * Tries to parse a decimal value from the CSV file with the expected format XXX.XXX,XXX allowing null
      */
     fun Map<String, String>.readCsvDecimal(
         property: String,
@@ -120,31 +119,6 @@ object CsvUtils {
             )
         }
 
-        return rawValue
-            .replace(".", "")
-            .replace(",", ".")
-            .toBigDecimal()
-            .multiply(scaleFactor)
-            .stripTrailingZeros()
-    }
-
-    /**
-     * Tries to parse a decimal value from the CSV file with the expected format
-     * XXX.XXX,XXX
-     */
-    fun Map<String, String>.readCsvDecimalNotAllowingNull(
-        property: String,
-        csvData: Map<String, String>,
-        scaleFactor: BigDecimal = BigDecimal.ONE,
-    ): BigDecimal {
-        val rawValue = this.getCsvValue(property, csvData).trim()
-        val expectedFormat = "(\\d+(\\.)?)+(,\\d+)?".toRegex()
-        if (!rawValue.matches(expectedFormat)) {
-            throw IllegalArgumentException(
-                "The input string \"$rawValue\" for column ${this[property]} does not " +
-                    "match the expected format for a decimal value",
-            )
-        }
         return rawValue
             .replace(".", "")
             .replace(",", ".")
