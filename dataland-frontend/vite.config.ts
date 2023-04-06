@@ -31,6 +31,9 @@ export default defineConfig({
       "primevue/textarea",
       "primevue/dropdown",
       "primevue/calendar",
+      "primevue/multiselect",
+      "primevue/overlaypanel",
+      "primevue/fileupload",
       "@formkit/vue",
       "axios",
       "i18n-iso-countries",
@@ -63,7 +66,7 @@ export default defineConfig({
     strictPort: true,
     watch: {
       ignored: ["**/coverage/**"],
-      usePolling: true,
+      usePolling: process.env.POLLING === "true",
     },
   },
 });
