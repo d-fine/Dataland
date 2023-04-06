@@ -1,7 +1,7 @@
 <template>
   <Card class="col-12 page-wrapper-card">
     <template #title
-      >{{ editMode ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
+      >{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
     >
     <template #content>
       <div class="grid uploadFormWrapper">
@@ -44,120 +44,22 @@
 
                 <FormKit type="hidden" v-model="reportingPeriodYear" name="reportingPeriod" />
               </div>
+            </div>
 
+            <div class="uploadFormSection grid">
               <FormKit type="group" name="data" label="data">
-                <div v-if="!editMode" class="col-3 p-3 topicLabel">
-                  <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
-                  <p>Please upload all relevant reports for this dataset in the PDF format.</p>
-                </div>
-                <!-- Select company reports -->
-                <div v-if="!editMode" class="col-9 formFields uploaded-files">
-                  <h3 class="mt-0">Select company reports</h3>
-                  <FileUpload
-                    name="fileUpload"
-                    ref="fileUpload"
-                    accept=".pdf"
-                    @select="onSelectedFiles"
-                    :multiple="true"
-                    :maxFileSize="maxFileSize"
-                    invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
-                    :auto="false"
-                  >
-                    <template #header="{ chooseCallback }">
-                      <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
-                        <div class="flex gap-2">
-                          <PrimeButton
-                            data-test="upload-files-button"
-                            @click="chooseCallback()"
-                            icon="pi pi-upload"
-                            :label="editMode ? 'ADD REPORTS' : 'SELECT REPORTS'"
-                          />
-                        </div>
-                      </div>
-                    </template>
-                    <template #content="{ files, removeFileCallback }">
-                      <div v-if="files.length > 0" data-test="uploaded-files">
-                        <div
-                          v-for="(file, index) of filesToUpload"
-                          :key="file.name + file.reportDate"
-                          class="flex w-full align-items-center file-upload-item"
-                        >
-                          <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
-                          <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
-                            {{ formatBytesUserFriendly(file.size) }}
-                          </div>
-                          <PrimeButton
-                            data-test="uploaded-files-remove"
-                            icon="pi pi-times"
-                            @click="removeReportFromFilesUploaded(file, removeFileCallback, index)"
-                            class="p-button-rounded"
-                          />
-                        </div>
-                      </div>
-                    </template>
-                  </FileUpload>
-                </div>
-                <div class="uploadFormSection">
-                  <FormKit name="referencedReports" type="group">
-                    <!-- Select company reports -->
-                    <div v-if="editMode" class="col-3 p-3 topicLabel">
-                      <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
-                    </div>
-                    <div v-for="(file, index) of filesToUpload" :key="file.name" class="col-9 formFields">
-                      <div class="form-field-label">
-                        <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
-                      </div>
-                      <FormKit :name="file.name.split('.')[0]" type="group">
-                        <!-- Date of the report -->
-                        <div class="form-field">
-                          <UploadFormHeader
-                            :name="euTaxonomyKpiNameMappings.reportDate"
-                            :explanation="euTaxonomyKpiInfoMappings.reportDate"
-                          />
-                          <div class="lg:col-6 md:col-6 col-12 p-0">
-                            <Calendar
-                              data-test="reportDate"
-                              v-model="filesToUpload[index].reportDate"
-                              inputId="icon"
-                              :showIcon="true"
-                              dateFormat="D, M dd, yy"
-                              @update:modelValue="updateReportDateHandler(index)"
-                            />
-                          </div>
-
-                          <FormKit type="hidden" v-model="filesToUpload[index].convertedReportDate" name="reportDate" />
-                        </div>
-
-                        <FormKit type="hidden" v-model="filesToUpload[index].documentId" name="reference" />
-
-                        <!-- Currency used in the report -->
-                        <div class="form-field" data-test="currencyUsedInTheReport">
-                          <UploadFormHeader
-                            :name="euTaxonomyKpiNameMappings.currency"
-                            :explanation="euTaxonomyKpiInfoMappings.currency"
-                          />
-                          <div class="lg:col-4 md:col-4 col-12 p-0">
-                            <FormKit
-                              type="text"
-                              name="currency"
-                              validation="required|length:2,3"
-                              validation-label="Currency used in the report"
-                              placeholder="Currency used in the report"
-                            />
-                          </div>
-                        </div>
-                        <!-- Integrated report is on a group level -->
-                        <div class="form-field">
-                          <YesNoComponent
-                            :displayName="euTaxonomyKpiNameMappings.groupLevelIntegratedReport"
-                            :info="euTaxonomyKpiInfoMappings.groupLevelIntegratedReport"
-                            :name="'isGroupLevel'"
-                          />
-                        </div>
-                      </FormKit>
-                    </div>
-                  </FormKit>
-                </div>
+                <UploadReports
+                  ref="UploadReports"
+                  :filesToUpload="filesToUpload"
+                  :uploadFiles="uploadFiles"
+                  :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
+                  :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
+                  :maxFileSize="maxFileSize"
+                  :editMode="editMode"
+                  @selectedFiles="onSelectedFilesHandler"
+                  @removeReportFromFilesToUpload="removeReportFromFilesToUpload"
+                  @updateReportDateHandler="updateReportDateHandler"
+                />
 
                 <div class="uploadFormSection">
                   <div class="col-3 p-3 topicLabel">
@@ -481,11 +383,13 @@ import { FormKit } from "@formkit/vue";
 import Calendar from "primevue/calendar";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
-import FileUpload from "primevue/fileupload";
+
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
+import UploadReports from "@/components/forms/parts/UploadReports.vue";
+
 import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeString } from "@/utils/StringHumanizer";
@@ -500,13 +404,13 @@ import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
-import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials, CompanyReport } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { ExtendedFile } from "@/components/forms/Types";
+import {ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles} from "@/components/forms/Types";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
@@ -514,7 +418,7 @@ export default defineComponent({
     Calendar,
     UploadFormHeader,
     PrimeButton,
-    FileUpload,
+    UploadReports,
     YesNoComponent,
     KPIfieldSet,
     FailedUpload,
@@ -534,6 +438,7 @@ export default defineComponent({
     convertedFiscalYearEnd: "",
     reportingPeriod: new Date(),
     filesToUpload: [] as ExtendedFile[],
+    uploadFiles: [] as ExtendedCompanyReport[],
     onThisPageLinks: [
       { label: "Upload company reports", value: "uploadReports" },
       { label: "Basic information", value: "basicInformation" },
@@ -580,7 +485,9 @@ export default defineComponent({
   },
   computed: {
     namesOfFilesToUpload(): string[] {
-      return this.filesToUpload.map((el) => el.name.split(".")[0]);
+      const namesFromFilesToUpload = this.filesToUpload.map((el) => el.name.split(".")[0]);
+      const namesFromUploadedFiles = this.uploadFiles.map((el) => el.name.split(".")[0]);
+      return [...namesFromFilesToUpload, ...namesFromUploadedFiles];
     },
   },
   props: {
@@ -635,11 +542,16 @@ export default defineComponent({
       if (dataResponseData.data?.referencedReports) {
         const propertiesOfFilesAssignedToDataID = dataResponseData.data.referencedReports;
         for (const key in propertiesOfFilesAssignedToDataID) {
-          this.filesToUpload.push({
+          this.uploadFiles.push({
             name: key,
-            ...propertiesOfFilesAssignedToDataID[key],
+            currency: propertiesOfFilesAssignedToDataID[key].currency,
+            isGroupLevel: propertiesOfFilesAssignedToDataID[key].isGroupLevel,
+            reference: propertiesOfFilesAssignedToDataID[key].reference,
+            reportDate: propertiesOfFilesAssignedToDataID[key].reportDate,
+            convertedReportDate: new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string),
           });
         }
+        console.log("lllll", this.uploadFiles);
       }
       const receivedFormInputsModel = modifyObjectKeys(
         JSON.parse(JSON.stringify(dataResponseData)) as objectType,
@@ -666,7 +578,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getDocumentUploadController();
 
-        if (!this.editMode) {
+        if (this.filesToUpload.length) {
           for (let index = 0; index < this.filesToUpload.length; index++) {
             const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
               this.filesToUpload[index]
@@ -675,7 +587,12 @@ export default defineComponent({
               allFileUploadedSuccessful = false;
               break;
             } else if (uploadFileSuccessful) {
-              this.updatePropertyFilesUploaded(index, "documentId", uploadFileSuccessful.data.documentId);
+              this.updatePropertyFilesUploaded(
+                index,
+                "documentId",
+                uploadFileSuccessful.data.documentId,
+                "filesToUpload"
+              );
             }
           }
         }
@@ -698,6 +615,9 @@ export default defineComponent({
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
+        this.$refs.UploadReports.clearAllNotUploadedFiles();
+        this.fiscalYearEnd = "";
+        this.filesToUpload = [];
       }
     },
 
@@ -705,13 +625,12 @@ export default defineComponent({
      * Updates the date of a single report file
      *
      * @param index file to update
+     * @param dateValue new date value
+     * @param whichSetOfFiles which set of files will be edited
      */
-    updateReportDateHandler(index: number) {
-      this.updatePropertyFilesUploaded(
-        index,
-        "convertedReportDate",
-        getHyphenatedDate(this.filesToUpload[index].reportDate as unknown as Date)
-      );
+    updateReportDateHandler(index: number, dateValue: Date, whichSetOfFiles: WhichSetOfFiles) {
+      this.updatePropertyFilesUploaded(index, "convertedReportDate", dateValue.toString(), whichSetOfFiles);
+      this.updatePropertyFilesUploaded(index, "reportDate", getHyphenatedDate(dateValue), whichSetOfFiles);
     },
 
     /**
@@ -721,13 +640,17 @@ export default defineComponent({
      * @param event.originalEvent event
      * @param event.files files
      */
-    onSelectedFiles(event: { files: Record<string, string>[]; originalEvent: Event }): void {
+    onSelectedFilesHandler(event: { files: Record<string, string>[]; originalEvent: Event }): void {
       console.log("Event files", event);
       if (event.files.length) {
         event.files.forEach((file) => {
-          file["reportDate"] = "";
-          file["convertedReportDate"] = "";
-          file["documentId"] = "";
+          if (this.namesOfFilesToUpload.includes(file.name.split(".")[0])) {
+            file["nameAlreadyExists"] = "true";
+          } else {
+            file["reportDate"] = "";
+            file["convertedReportDate"] = "";
+            file["documentId"] = "";
+          }
         });
         console.log("EVENT", event);
 
@@ -743,11 +666,17 @@ export default defineComponent({
      * @param indexFileToUpload Index number of the report
      * @param property Property which is to be updated
      * @param value Value to which it is to be changed
+     * @param whichSetOfFiles which set of files will be edited
      */
-    updatePropertyFilesUploaded(indexFileToUpload: number, property: string, value: string) {
-      if (Object.prototype.hasOwnProperty.call(this.filesToUpload[indexFileToUpload], property)) {
-        this.filesToUpload[indexFileToUpload][property] = value;
-        this.filesToUpload = [...this.filesToUpload];
+    updatePropertyFilesUploaded(
+      indexFileToUpload: number,
+      property: string,
+      value: string,
+      whichSetOfFiles: WhichSetOfFiles
+    ) {
+      if (Object.prototype.hasOwnProperty.call(this[whichSetOfFiles][indexFileToUpload], property)) {
+        this[whichSetOfFiles][indexFileToUpload][property] = value;
+        this[whichSetOfFiles] = [...this[whichSetOfFiles]];
       }
     },
 
@@ -758,7 +687,7 @@ export default defineComponent({
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param index Index number of the report
      */
-    removeReportFromFilesUploaded(
+    removeReportFromFilesToUpload(
       fileToRemove: Record<string, string>,
       fileRemoveCallback: (x: number) => void,
       index: number
