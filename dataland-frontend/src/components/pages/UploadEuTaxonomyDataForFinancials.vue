@@ -12,7 +12,6 @@
 
 <script lang="ts">
 import TheHeader from "@/components/generics/TheHeader.vue";
-import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CreateEUTaxonomyForFinancials from "@/components/forms/CreateEUTaxonomyForFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
@@ -25,7 +24,6 @@ export default {
   components: {
     UploaderRoleWrapper,
     CreateEUTaxonomyForFinancials,
-    TheContent,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,

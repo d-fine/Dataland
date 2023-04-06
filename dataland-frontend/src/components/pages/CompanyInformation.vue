@@ -30,11 +30,9 @@ import { defineComponent, inject } from "vue";
 import { CompanyInformation } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import TheContent from "@/components/generics/TheContent.vue";
 
 export default defineComponent({
   name: "CompanyInformation",
-  components: { TheContent },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),

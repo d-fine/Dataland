@@ -10,7 +10,7 @@
             v-model="formInputsModel"
             :actions="false"
             type="form"
-            id="createEuTaxonomyForNonFinancialsForm"
+            :id="formId"
             @submit="postEuTaxonomyDataForNonFinancials"
             @submit-invalid="checkCustomInputs"
             #default="{ state: { valid } }"
@@ -452,10 +452,6 @@
                   </div>
                 </div>
               </FormKit>
-
-              <!--------- SUBMIT --------->
-
-              <SubmitFormBar :formIsValid="valid" />
             </div>
           </FormKit>
           <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
@@ -479,6 +475,7 @@
       </div>
     </template>
   </Card>
+  <SubmitFormBar :formId="formId" />
 </template>
 
 <script lang="ts">
@@ -537,6 +534,7 @@ export default defineComponent({
   },
 
   data: () => ({
+    formId: "createEuTaxonomyForNonFinancialsForm",
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     files: useFilesUploadedStore(),
     fiscalYearEnd: undefined as Date | undefined,
@@ -662,7 +660,7 @@ export default defineComponent({
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
             formInputsModelToSend
           );
-        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
+        this.$formkit.reset(this.formId);
       } catch (error) {
         this.postEuTaxonomyDataForNonFinancialsResponse = null;
         console.error(error);

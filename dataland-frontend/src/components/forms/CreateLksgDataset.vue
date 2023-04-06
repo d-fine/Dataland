@@ -1,6 +1,6 @@
 <template>
-  <Card class="col-12 page-wrapper-card">
-    <template #title>New Dataset - LkSG </template>
+  <Card class="col-12 page-wrapper-card p-3">
+    <template #title> New Dataset - LkSG </template>
     <template #content>
       <div v-show="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading LkSG data...</p>
@@ -12,11 +12,10 @@
             v-model="lkSGDataModel"
             :actions="false"
             type="form"
-            id="createLkSGForm"
-            name="createLkSGForm"
+            :id="formId"
+            :name="formId"
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
-            #default="{ state: { valid } }"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
@@ -24,7 +23,9 @@
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="general" class="anchor title">{{ lksgSubAreasNameMappings._general }}</h4>
+                    <h4 id="general" class="anchor title">
+                      {{ lksgSubAreasNameMappings._general }}
+                    </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                     <p>Please input all relevant basic information about the dataset</p>
                   </div>
@@ -368,7 +369,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="childLabour" class="anchor title">{{ lksgSubAreasNameMappings.childLabour }}</h4>
+                    <h4 id="childLabour" class="anchor title">
+                      {{ lksgSubAreasNameMappings.childLabour }}
+                    </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
@@ -791,7 +794,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="humanRights" class="anchor title">{{ lksgSubAreasNameMappings.humanRights }}</h4>
+                    <h4 id="humanRights" class="anchor title">
+                      {{ lksgSubAreasNameMappings.humanRights }}
+                    </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
@@ -861,7 +866,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="environment" class="anchor title">{{ lksgSubAreasNameMappings.environment }}</h4>
+                    <h4 id="environment" class="anchor title">
+                      {{ lksgSubAreasNameMappings.environment }}
+                    </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -893,7 +900,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="riskManagement" class="anchor title">{{ lksgSubAreasNameMappings.riskManagement }}</h4>
+                    <h4 id="riskManagement" class="anchor title">
+                      {{ lksgSubAreasNameMappings.riskManagement }}
+                    </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -909,7 +918,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 p-3 topicLabel">
-                    <h4 id="codeOfConduct" class="anchor title">{{ lksgSubAreasNameMappings.codeOfConduct }}</h4>
+                    <h4 id="codeOfConduct" class="anchor title">
+                      {{ lksgSubAreasNameMappings.codeOfConduct }}
+                    </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -1073,9 +1084,6 @@
                 </div>
               </FormKit>
             </FormKit>
-
-            <!--------- SUBMIT --------->
-            <SubmitFormBar :formIsValid="valid" />
           </FormKit>
 
           <div v-if="postLkSGDataProcessed">
@@ -1110,6 +1118,7 @@
       </div>
     </template>
   </Card>
+  <SubmitFormBar :formId="formId" />
 </template>
 
 <script lang="ts">
@@ -1165,6 +1174,7 @@ export default defineComponent({
 
   data() {
     return {
+      formId: "createLkSGForm",
       isYourCompanyManufacturingCompany: "No",
       listOfProductionSites: [
         {
@@ -1203,7 +1213,6 @@ export default defineComponent({
       smoothScroll,
       checkCustomInputs,
       updatingData: false,
-      valid: false,
     };
   },
   computed: {
@@ -1231,6 +1240,7 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
+      required: true,
     },
   },
   mounted() {
@@ -1302,7 +1312,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.lkSGDataModel);
-        this.$formkit.reset("createLkSGForm");
+        this.$formkit.reset(this.formId);
         this.isYourCompanyManufacturingCompany = "No";
         this.listOfProductionSites = [
           {
