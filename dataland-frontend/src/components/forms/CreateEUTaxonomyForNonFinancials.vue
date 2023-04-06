@@ -13,7 +13,6 @@
             :id="formId"
             @submit="postEuTaxonomyDataForNonFinancials"
             @submit-invalid="checkCustomInputs"
-            #default="{ state: { valid } }"
           >
             <FormKit
               type="hidden"
@@ -571,7 +570,6 @@ export default defineComponent({
     messageCount: 0,
     postEuTaxonomyDataForNonFinancialsResponse: null,
     humanizeString: humanizeString,
-    valid: false,
   }),
   watch: {
     reportingPeriod: function (newValue: Date) {

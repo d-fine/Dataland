@@ -11,7 +11,6 @@
             :id="formId"
             @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
-            #default="{ state: { valid } }"
           >
             <FormKit
               type="hidden"
@@ -584,7 +583,6 @@ export default defineComponent({
       confirmedSelectedKPIs: [] as { label: string; value: string }[],
       computedFinancialServicesTypes: [] as string[],
       reportingPeriodYear: new Date().getFullYear(),
-      valid: false,
     };
   },
   watch: {
