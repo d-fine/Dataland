@@ -115,7 +115,7 @@
         </div>
       </div>
     </TheContent>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -136,7 +136,7 @@ import ProgressBar from "@/components/general/ProgressBar.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatBytesUserFriendly, roundNumber } from "@/utils/NumberConversionUtils";
 import { UPLOAD_FILE_SIZE_DISPLAY_DECIMALS, UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 
 export default defineComponent({
   name: "RequestData",
@@ -149,7 +149,7 @@ export default defineComponent({
     ProgressBar,
     FileUpload,
     FileSelectMessage: Message,
-    DatalandFooter,
+    TheFooter,
   },
   setup() {
     return {

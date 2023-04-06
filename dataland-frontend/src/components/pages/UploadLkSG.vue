@@ -2,13 +2,13 @@
   <AuthenticationWrapper>
     <TheHeader />
     <UploaderRoleWrapper>
-      <TheContent>
-        <BackButton id="backButton" />
-        <CompanyInformation :companyID="companyID" />
+        <MarginWrapper>
+          <BackButton id="backButton" />
+          <CompanyInformation :companyID="companyID" />
+        </MarginWrapper>
         <CreateLksgDataset :companyID="companyID" />
-      </TheContent>
     </UploaderRoleWrapper>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -18,20 +18,22 @@ import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 
 export default {
   name: "UploadLkSG",
   components: {
+    MarginWrapper,
     UploaderRoleWrapper,
     CreateLksgDataset,
     TheContent,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
-    DatalandFooter,
+    TheFooter,
     BackButton,
   },
   props: {

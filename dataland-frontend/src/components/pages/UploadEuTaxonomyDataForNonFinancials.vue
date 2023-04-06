@@ -8,7 +8,7 @@
         <CreateEUTaxonomyForNonFinancials :companyID="companyID" />
       </TheContent>
     </UploaderRoleWrapper>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -18,7 +18,7 @@ import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CreateEUTaxonomyForNonFinancials from "@/components/forms/CreateEUTaxonomyForNonFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";
 
@@ -32,7 +32,7 @@ export default {
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
-    DatalandFooter,
+    TheFooter,
   },
   props: {
     companyID: {

@@ -34,7 +34,7 @@
         </TheContent>
       </TabPanel>
     </TabView>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -43,7 +43,7 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import { defineComponent, inject } from "vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import PrimeButton from "primevue/button";
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -59,7 +59,7 @@ export default defineComponent({
     AuthenticationWrapper,
     TheHeader,
     TheContent,
-    DatalandFooter,
+    TheFooter,
     PrimeButton,
     DatasetOverviewTable,
     TabView,

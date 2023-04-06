@@ -83,7 +83,7 @@
       </TabPanel>
       <TabPanel header="MY DATASETS"> </TabPanel>
     </TabView>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -105,7 +105,7 @@ import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSear
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import { useFiltersStore } from "@/stores/filters";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
@@ -131,7 +131,7 @@ export default defineComponent({
     FrameworkDataSearchBar,
     PrimeButton,
     FrameworkDataSearchResults,
-    DatalandFooter,
+    TheFooter,
     TabView,
     TabPanel,
   },
