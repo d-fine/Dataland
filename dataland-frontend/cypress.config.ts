@@ -102,9 +102,17 @@ export default defineConfig({
                     });
                 },
             });
+
             on('task', {
                 async readdir(path: string) {
                     return await promises.readdir(path);
+                },
+            });
+
+            on('task', {
+                async readFile(path: string) {
+                    const bufferObject = await promises.readFile(path);
+                    return bufferObject;
                 },
             });
             return config

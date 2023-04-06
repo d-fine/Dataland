@@ -39,9 +39,9 @@ export function uploadAllDocuments(token: string): string[] {
   const documentIds: string[] = [];
   cy.task("readdir", documentDirectory).then((fileNames) => {
     (fileNames as string[]).forEach((name) => {
-      cy.readFile(documentDirectory + name).then((file) => {
-        console.log(file);
-        uploadDocumentViaApi(token, file as File)
+      cy.task("readFile", documentDirectory + name).then((fileBuffer) => {
+        console.log(typeof fileBuffer);
+        uploadDocumentViaApi(token, fileBuffer.data, name)
           .then((documentId) => {
             documentIds.push(documentId.documentId);
           })
@@ -56,15 +56,20 @@ export function uploadAllDocuments(token: string): string[] {
  * Uses the Dataland API to upload a document
  *
  * @param token the bearer token used to authorize the API requests
- * @param document the pdf document to be uploaded as File
+ * @param buffer the pdf document as an arrayBuffer to be uploaded as File
+ * @param name the file name
  */
-export async function uploadDocumentViaApi(token: string, document: File): Promise<DocumentUploadResponse> {
+export async function uploadDocumentViaApi(
+  token: string,
+  buffer: ArrayBuffer,
+  name: string
+): Promise<DocumentUploadResponse> {
+  const arr = new Uint8Array(buffer);
+  const file = new File([arr], name, { type: "application/pdf" });
   const response = await new DocumentControllerApi(
     new Configuration({
       accessToken: token,
-      contentType: "application/pdf",
     })
-  ).postDocument(document);
-  console.log(response);
+  ).postDocument(file);
   return response.data;
 }
