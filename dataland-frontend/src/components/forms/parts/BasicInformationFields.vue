@@ -24,10 +24,11 @@
         <div class="lg:col-6 md:col-6 col-12 p-0">
           <Calendar
             inputId="fiscalYearEnd"
-            v-model="fiscalYearEnd"
+            :modelValue="fiscalYearEnd"
             data-test="fiscalYearEnd"
             :showIcon="true"
             dateFormat="D, M dd, yy"
+            @update:modelValue="updateFiscalYearEndHandler($event)"
           />
         </div>
 
@@ -35,8 +36,8 @@
           type="hidden"
           validation="required"
           validation-label="Fiscal year"
+          :modelValue="convertedFiscalYearEnd"
           name="fiscalYearEnd"
-          v-model="convertedFiscalYearEnd"
         />
       </div>
 
@@ -94,28 +95,31 @@ import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import { FormKit } from "@formkit/vue";
-import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import Calendar from "primevue/calendar";
 
 export default defineComponent({
   name: "BasicInformationFields",
   components: { UploadFormHeader, Calendar, FormKit, YesNoComponent },
-  data: () => ({
-    fiscalYearEnd: "" as Date | "",
-    convertedFiscalYearEnd: "",
-  }),
-  watch: {
-    fiscalYearEnd: function (newValue: Date) {
-      if (newValue) {
-        this.convertedFiscalYearEnd = getHyphenatedDate(newValue);
-      } else {
-        this.convertedFiscalYearEnd = "";
-      }
-    },
-  },
+  emits: ["updateFiscalYearEndHandler"],
   props: {
     euTaxonomyKpiNameMappings: {},
     euTaxonomyKpiInfoMappings: {},
+    fiscalYearEnd: {
+      type: [Date, String],
+    },
+    convertedFiscalYearEnd: {
+      type: String,
+    },
+  },
+  methods: {
+    /**
+     * Function to emit event to update the Fiscal Year End value
+     *
+     * @param event new date value
+     */
+    updateFiscalYearEndHandler(event: Date) {
+      this.$emit("updateFiscalYearEndHandler", event);
+    },
   },
 });
 </script>

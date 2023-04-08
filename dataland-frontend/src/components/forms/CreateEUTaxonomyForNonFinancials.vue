@@ -24,7 +24,7 @@
             />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
-                <h4 id="uploadReports" class="anchor title">Reporting Period</h4>
+                <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
@@ -64,6 +64,9 @@
                 <BasicInformationFields
                   :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
                   :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
+                  :fiscalYearEnd="fiscalYearEnd"
+                  :convertedFiscalYearEnd="convertedFiscalYearEnd"
+                  @updateFiscalYearEndHandler="updateFiscalYearEndHandler"
                 />
 
                 <div class="uploadFormSection">
@@ -343,6 +346,8 @@ export default defineComponent({
 
   data: () => ({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+    fiscalYearEnd: "" as Date | "",
+    convertedFiscalYearEnd: "",
     reportingPeriod: new Date(),
     filesToUpload: [] as ExtendedFile[],
     uploadFiles: [] as ExtendedCompanyReport[],
@@ -432,15 +437,15 @@ export default defineComponent({
             convertedReportDate: new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string),
           });
         }
-        console.log("lllll", this.uploadFiles);
       }
       const receivedFormInputsModel = modifyObjectKeys(
         JSON.parse(JSON.stringify(dataResponseData)) as objectType,
         "receive"
       );
-      updateObject(this.formInputsModel, receivedFormInputsModel);
       this.waitingForData = false;
+      updateObject(this.formInputsModel, receivedFormInputsModel);
     },
+
     /**
      * Creates a new EuTaxonomy-Non-Financials framework entry for the current company
      * with the data entered in the form by using the Dataland API
@@ -496,10 +501,21 @@ export default defineComponent({
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         this.$refs.UploadReports.clearAllNotUploadedFiles();
         this.fiscalYearEnd = "";
         this.filesToUpload = [];
       }
+    },
+
+    /**
+     * Updates the Fiscal Year End value
+     *
+     * @param dateValue new date value
+     */
+    updateFiscalYearEndHandler(dateValue: Date) {
+      this.convertedFiscalYearEnd = getHyphenatedDate(dateValue);
+      this.fiscalYearEnd = dateValue;
     },
 
     /**
@@ -522,10 +538,9 @@ export default defineComponent({
      * @param event.files files
      */
     onSelectedFilesHandler(event: { files: Record<string, string>[]; originalEvent: Event }): void {
-      console.log("Event files", event);
       if (event.files.length) {
         event.files.forEach((file) => {
-          if (this.namesOfFilesToUpload.includes(file.name.split(".")[0])) {
+          if (this.uploadFiles.some((objfile) => objfile.name === file.name.split(".")[0])) {
             file["nameAlreadyExists"] = "true";
           } else {
             file["reportDate"] = "";
@@ -533,7 +548,6 @@ export default defineComponent({
             file["documentId"] = "";
           }
         });
-        console.log("EVENT", event);
 
         this.filesToUpload = Array.from(new Set([...this.filesToUpload, ...event.files])) as ExtendedFile[];
       } else {

@@ -22,7 +22,7 @@
             />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
-                <h4 id="uploadReports" class="anchor title">Reporting Period</h4>
+                <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
@@ -44,210 +44,26 @@
                 <FormKit type="hidden" v-model="reportingPeriodYear" name="reportingPeriod" />
               </div>
               <FormKit type="group" name="data" label="data">
-                <div v-if="!editMode" class="col-3 p-3 topicLabel">
-                  <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
-                  <p>Please upload all relevant reports for this dataset in the PDF format.</p>
-                </div>
-                <!-- Select company reports -->
-                <div v-if="!editMode" class="col-9 formFields uploaded-files">
-                  <h3 class="mt-0">Select company reports</h3>
-                  <FileUpload
-                    ref="fileUpload"
-                    name="fileUpload"
-                    accept=".pdf"
-                    :customUpload="true"
-                    :multiple="true"
-                    @select="onSelectedFiles"
-                    :maxFileSize="maxFileSize"
-                    invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
-                    :auto="false"
-                  >
-                    <template #header="{ chooseCallback }">
-                      <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
-                        <div class="flex gap-2">
-                          <PrimeButton
-                            data-test="upload-files-button"
-                            @click="chooseCallback()"
-                            icon="pi pi-upload"
-                            :label="editMode ? 'ADD REPORTS' : 'SELECT REPORTS'"
-                          />
-                        </div>
-                      </div>
-                    </template>
-                    <template #content="{ files, removeFileCallback }">
-                      <div v-if="files.length > 0" data-test="uploaded-files">
-                        <div
-                          v-for="(file, index) of filesToUpload"
-                          :key="file.name + file.reportDate"
-                          class="flex w-full align-items-center file-upload-item"
-                        >
-                          <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
-                          <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
-                            {{ formatBytesUserFriendly(file.size) }}
-                          </div>
-                          <PrimeButton
-                            icon="pi pi-times"
-                            data-test="uploaded-files-remove"
-                            @click="removeReportFromFilesUploaded(file, removeFileCallback, index)"
-                            class="p-button-rounded"
-                          />
-                        </div>
-                      </div>
-                    </template>
-                  </FileUpload>
-                </div>
+                <UploadReports
+                  ref="UploadReports"
+                  :filesToUpload="filesToUpload"
+                  :uploadFiles="uploadFiles"
+                  :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
+                  :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
+                  :maxFileSize="maxFileSize"
+                  :editMode="editMode"
+                  @selectedFiles="onSelectedFilesHandler"
+                  @removeReportFromFilesToUpload="removeReportFromFilesToUpload"
+                  @updateReportDateHandler="updateReportDateHandler"
+                />
 
-                <div class="uploadFormSection">
-                  <FormKit name="referencedReports" type="group">
-                    <!-- Select company reports -->
-                    <div v-if="editMode" class="col-3 p-3 topicLabel">
-                      <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
-                    </div>
-                    <div v-for="(file, index) of filesToUpload" :key="file.name" class="col-9 formFields">
-                      <div class="form-field-label">
-                        <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
-                      </div>
-                      <FormKit :name="file.name.split('.')[0]" type="group">
-                        <!-- Date of the report -->
-                        <div class="form-field">
-                          <UploadFormHeader
-                            :name="euTaxonomyKpiNameMappings.reportDate"
-                            :explanation="euTaxonomyKpiInfoMappings.reportDate"
-                          />
-                          <div class="lg:col-6 md:col-6 col-12 p-0">
-                            <Calendar
-                              data-test="reportDate"
-                              v-model="filesToUpload[index].reportDate"
-                              inputId="icon"
-                              :showIcon="true"
-                              dateFormat="D, M dd, yy"
-                              @update:modelValue="updateReportDateHandler(index)"
-                            />
-                          </div>
-
-                          <FormKit type="hidden" v-model="filesToUpload[index].convertedReportDate" name="reportDate" />
-                        </div>
-
-                        <FormKit type="hidden" v-model="filesToUpload[index].documentId" name="reference" />
-
-                        <!-- Currency used in the report -->
-                        <div class="form-field" data-test="currencyUsedInTheReport">
-                          <UploadFormHeader
-                            :name="euTaxonomyKpiNameMappings.currency"
-                            :explanation="euTaxonomyKpiInfoMappings.currency"
-                          />
-                          <div class="lg:col-4 md:col-4 col-12 p-0">
-                            <FormKit
-                              type="text"
-                              name="currency"
-                              validation="required|length:2,3"
-                              validation-label="Currency used in the report"
-                              placeholder="Currency used in the report"
-                            />
-                          </div>
-                        </div>
-                        <!-- Integrated report is on a group level -->
-                        <div class="form-field">
-                          <YesNoComponent
-                            :displayName="euTaxonomyKpiNameMappings.groupLevelIntegratedReport"
-                            :info="euTaxonomyKpiInfoMappings.groupLevelIntegratedReport"
-                            :name="'isGroupLevel'"
-                          />
-                        </div>
-                      </FormKit>
-                    </div>
-                  </FormKit>
-                </div>
-
-                <div class="uploadFormSection">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="basicInformation" class="anchor title">Basic information</h4>
-                  </div>
-                  <!-- Basic information -->
-                  <div class="col-9 formFields">
-                    <h3 class="mt-0">Basic information</h3>
-
-                    <YesNoComponent
-                      :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
-                      :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
-                      :name="'fiscalYearDeviation'"
-                      :radioButtonsOptions="['Deviation', 'NoDeviation']"
-                      required="required"
-                    />
-
-                    <!-- The date the fiscal year ends -->
-                    <div class="form-field">
-                      <UploadFormHeader
-                        :name="euTaxonomyKpiNameMappings.fiscalYearEnd"
-                        :explanation="euTaxonomyKpiInfoMappings.fiscalYearEnd"
-                      />
-                      <div class="lg:col-6 md:col-6 col-12 p-0">
-                        <Calendar
-                          data-test="fiscalYearEnd"
-                          inputId="fiscalYearEnd"
-                          v-model="fiscalYearEnd"
-                          :showIcon="true"
-                          dateFormat="D, M dd, yy"
-                        />
-                      </div>
-
-                      <FormKit
-                        type="text"
-                        validation="required"
-                        validation-label="Fiscal year"
-                        name="fiscalYearEnd"
-                        v-model="convertedFiscalYearEnd"
-                        :outer-class="{ 'hidden-input': true }"
-                      />
-                    </div>
-
-                    <!-- Scope of entities -->
-                    <div class="form-field">
-                      <YesNoComponent
-                        :displayName="euTaxonomyKpiNameMappings.scopeOfEntities"
-                        :info="euTaxonomyKpiInfoMappings.scopeOfEntities"
-                        :name="'scopeOfEntities'"
-                      />
-                    </div>
-
-                    <!-- EU Taxonomy activity level reporting -->
-                    <div class="form-field">
-                      <YesNoComponent
-                        :displayName="euTaxonomyKpiNameMappings.activityLevelReporting"
-                        :info="euTaxonomyKpiInfoMappings.activityLevelReporting"
-                        :name="'activityLevelReporting'"
-                      />
-                    </div>
-
-                    <!-- Number of employees -->
-                    <div class="form-field">
-                      <UploadFormHeader
-                        :name="euTaxonomyKpiNameMappings.numberOfEmployees"
-                        :explanation="euTaxonomyKpiInfoMappings.numberOfEmployees"
-                      />
-                      <div class="lg:col-4 md:col-4 col-6 p-0">
-                        <FormKit
-                          type="number"
-                          name="numberOfEmployees"
-                          validation-label="Number of employees"
-                          placeholder="Value"
-                          validation="required|number"
-                          step="1"
-                          min="0"
-                        />
-                      </div>
-                    </div>
-
-                    <!-- EU Taxonomy activity level reporting -->
-                    <div class="form-field">
-                      <YesNoComponent
-                        :displayName="euTaxonomyKpiNameMappings.reportingObligation"
-                        :info="euTaxonomyKpiInfoMappings.reportingObligation"
-                        :name="'reportingObligation'"
-                      />
-                    </div>
-                  </div>
-                </div>
+                <BasicInformationFields
+                  :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
+                  :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
+                  :fiscalYearEnd="fiscalYearEnd"
+                  :convertedFiscalYearEnd="convertedFiscalYearEnd"
+                  @updateFiscalYearEndHandler="updateFiscalYearEndHandler"
+                />
 
                 <div class="uploadFormSection">
                   <div class="col-3 p-3 topicLabel">
@@ -479,11 +295,13 @@
 <script lang="ts">
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { FormKit } from "@formkit/vue";
-import FileUpload, { FileUploadEmits } from "primevue/fileupload";
+
+import UploadReports from "@/components/forms/parts/UploadReports.vue";
+import BasicInformationFields from "@/components/forms/parts/BasicInformationFields.vue";
+
 import PrimeButton from "primevue/button";
 import MultiSelect from "primevue/multiselect";
 import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
-import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
@@ -510,7 +328,7 @@ import {
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { ExtendedFile } from "@/components/forms/Types";
+import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 
 export default defineComponent({
@@ -527,11 +345,13 @@ export default defineComponent({
     SuccessUpload,
     UploadFormHeader,
     Card,
-    FileUpload,
+
+    UploadReports,
+    BasicInformationFields,
+
     PrimeButton,
     Calendar,
     MultiSelect,
-    YesNoComponent,
     KPIfieldSet,
   },
 
@@ -539,6 +359,7 @@ export default defineComponent({
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       filesToUpload: [] as ExtendedFile[],
+      uploadFiles: [] as ExtendedCompanyReport[],
       fiscalYearEnd: "" as Date | "",
       convertedFiscalYearEnd: "",
       reportingPeriod: new Date(),
@@ -582,17 +403,12 @@ export default defineComponent({
   },
   computed: {
     namesOfFilesToUpload(): string[] {
-      return this.filesToUpload.map((el) => el.name.split(".")[0]);
+      const namesFromFilesToUpload = this.filesToUpload.map((el) => el.name.split(".")[0]);
+      const namesFromUploadedFiles = this.uploadFiles.map((el) => el.name.split(".")[0]);
+      return [...new Set([...namesFromFilesToUpload, ...namesFromUploadedFiles])];
     },
   },
   watch: {
-    fiscalYearEnd: function (newValue: Date) {
-      if (newValue) {
-        this.convertedFiscalYearEnd = getHyphenatedDate(newValue);
-      } else {
-        this.convertedFiscalYearEnd = "";
-      }
-    },
     confirmedSelectedKPIs: function (newValue: { label: string; value: string }[]) {
       this.computedFinancialServicesTypes = newValue.map((el: { label: string; value: string }): string => {
         return this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis[
@@ -636,16 +452,19 @@ export default defineComponent({
       const dataResponse =
         await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(dataId);
       const dataResponseData = dataResponse.data;
-      console.log("dataResponseData", dataResponseData);
       if (dataResponseData.data?.fiscalYearEnd) {
         this.fiscalYearEnd = new Date(dataResponseData.data.fiscalYearEnd);
       }
       if (dataResponseData.data?.referencedReports) {
         const propertiesOfFilesAssignedToDataID = dataResponseData.data.referencedReports;
         for (const key in propertiesOfFilesAssignedToDataID) {
-          this.filesToUpload.push({
+          this.uploadFiles.push({
             name: key,
-            ...propertiesOfFilesAssignedToDataID[key],
+            currency: propertiesOfFilesAssignedToDataID[key].currency,
+            isGroupLevel: propertiesOfFilesAssignedToDataID[key].isGroupLevel,
+            reference: propertiesOfFilesAssignedToDataID[key].reference,
+            reportDate: propertiesOfFilesAssignedToDataID[key].reportDate,
+            convertedReportDate: new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string),
           });
         }
       }
@@ -720,11 +539,14 @@ export default defineComponent({
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
-        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
         this.fiscalYearEnd = "";
-        (this.$refs.fileUpload as FileUploadEmits).clear();
+        this.filesToUpload = [];
+        this.uploadFiles = [];
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        this.$refs.UploadReports.clearAllNotUploadedFiles();
       }
     },
 
@@ -735,15 +557,17 @@ export default defineComponent({
      * @param event.originalEvent event
      * @param event.files files
      */
-    onSelectedFiles(event: { files: Record<string, string>[]; originalEvent: Event }): void {
-      console.log("Event files", event);
+    onSelectedFilesHandler(event: { files: Record<string, string>[]; originalEvent: Event }): void {
       if (event.files.length) {
         event.files.forEach((file) => {
-          file["reportDate"] = "";
-          file["convertedReportDate"] = "";
-          file["documentId"] = "";
+          if (this.uploadFiles.some((objfile) => objfile.name === file.name.split(".")[0])) {
+            file["nameAlreadyExists"] = "true";
+          } else {
+            file["reportDate"] = "";
+            file["convertedReportDate"] = "";
+            file["documentId"] = "";
+          }
         });
-        console.log("EVENT", event);
 
         this.filesToUpload = Array.from(new Set([...this.filesToUpload, ...event.files])) as ExtendedFile[];
       } else {
@@ -758,7 +582,7 @@ export default defineComponent({
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param index Index number of the report
      */
-    removeReportFromFilesUploaded(
+    removeReportFromFilesToUpload(
       fileToRemove: Record<string, string>,
       fileRemoveCallback: (x: number) => void,
       index: number
@@ -775,11 +599,17 @@ export default defineComponent({
      * @param indexFileToUpload Index number of the report
      * @param property Property which is to be updated
      * @param value Value to which it is to be changed
+     * @param whichSetOfFiles which set of files will be edited
      */
-    updatePropertyFilesUploaded(indexFileToUpload: number, property: string, value: string) {
-      if (Object.prototype.hasOwnProperty.call(this.filesToUpload[indexFileToUpload], property)) {
-        this.filesToUpload[indexFileToUpload][property] = value;
-        this.filesToUpload = [...this.filesToUpload];
+    updatePropertyFilesUploaded(
+      indexFileToUpload: number,
+      property: string,
+      value: string,
+      whichSetOfFiles: WhichSetOfFiles
+    ) {
+      if (Object.prototype.hasOwnProperty.call(this[whichSetOfFiles][indexFileToUpload], property)) {
+        this[whichSetOfFiles][indexFileToUpload][property] = value;
+        this[whichSetOfFiles] = [...this[whichSetOfFiles]];
       }
     },
 
@@ -809,13 +639,22 @@ export default defineComponent({
      * Updates the date of a single report file
      *
      * @param index file to update
+     * @param dateValue new date value
+     * @param whichSetOfFiles which set of files will be edited
      */
-    updateReportDateHandler(index: number) {
-      this.updatePropertyFilesUploaded(
-        index,
-        "convertedReportDate",
-        getHyphenatedDate(this.filesToUpload[index].reportDate as unknown as Date)
-      );
+    updateReportDateHandler(index: number, dateValue: Date, whichSetOfFiles: WhichSetOfFiles) {
+      this.updatePropertyFilesUploaded(index, "convertedReportDate", dateValue, whichSetOfFiles);
+      this.updatePropertyFilesUploaded(index, "reportDate", getHyphenatedDate(dateValue), whichSetOfFiles);
+    },
+
+    /**
+     * Updates the Fiscal Year End value
+     *
+     * @param dateValue new date value
+     */
+    updateFiscalYearEndHandler(dateValue: Date) {
+      this.convertedFiscalYearEnd = getHyphenatedDate(dateValue);
+      this.fiscalYearEnd = dateValue;
     },
   },
 });

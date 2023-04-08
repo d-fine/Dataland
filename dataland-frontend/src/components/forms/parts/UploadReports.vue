@@ -54,9 +54,12 @@
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
       <div v-for="(file, index) of filesToUpload" :key="file.name" class="col-9 formFields">
-
         <div v-if="file.nameAlreadyExists">
-          <p>File with name: <h3>{{file.name.split(".")[0]}}</h3> Already exist. Please upload file with different name.</p>
+          <div>
+            File with name:
+            <h3>{{ file.name.split(".")[0] }}</h3>
+            Already exist. Please upload file with different name.
+          </div>
         </div>
         <div v-else>
           <div class="form-field-label">
@@ -66,17 +69,17 @@
             <!-- Date of the report -->
             <div class="form-field">
               <UploadFormHeader
-                  :name="euTaxonomyKpiNameMappings?.reportDate ?? 'Report Date'"
-                  :explanation="euTaxonomyKpiInfoMappings?.reportDate ?? 'Report Date'"
+                :name="euTaxonomyKpiNameMappings?.reportDate ?? 'Report Date'"
+                :explanation="euTaxonomyKpiInfoMappings?.reportDate ?? 'Report Date'"
               />
               <div class="lg:col-6 md:col-6 col-12 p-0">
                 <Calendar
-                    data-test="reportDate"
-                    inputId="icon"
-                    :modelValue="filesToUpload[index].convertedReportDate"
-                    :showIcon="true"
-                    dateFormat="D, M dd, yy"
-                    @update:modelValue="updateReportDateHandler(index, $event, 'filesToUpload')"
+                  data-test="reportDate"
+                  inputId="icon"
+                  :modelValue="filesToUpload[index].convertedReportDate"
+                  :showIcon="true"
+                  dateFormat="D, M dd, yy"
+                  @update:modelValue="updateReportDateHandler(index, $event, 'filesToUpload')"
                 />
               </div>
 
@@ -88,42 +91,39 @@
             <!-- Currency used in the report -->
             <div class="form-field" data-test="currencyUsedInTheReport">
               <UploadFormHeader
-                  :name="euTaxonomyKpiNameMappings?.currency ?? 'Currency'"
-                  :explanation="euTaxonomyKpiInfoMappings?.currency ?? 'Currency'"
+                :name="euTaxonomyKpiNameMappings?.currency ?? 'Currency'"
+                :explanation="euTaxonomyKpiInfoMappings?.currency ?? 'Currency'"
               />
               <div class="lg:col-4 md:col-4 col-12 p-0">
                 <FormKit
-                    type="text"
-                    name="currency"
-                    validation="required|length:2,3"
-                    validation-label="Currency used in the report"
-                    placeholder="Currency used in the report"
+                  type="text"
+                  name="currency"
+                  validation="required|length:2,3"
+                  validation-label="Currency used in the report"
+                  placeholder="Currency used in the report"
                 />
               </div>
             </div>
             <!-- Integrated report is on a group level -->
             <div class="form-field">
               <YesNoComponent
-                  :displayName="euTaxonomyKpiNameMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
-                  :info="euTaxonomyKpiInfoMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
-                  :name="'isGroupLevel'"
+                :displayName="euTaxonomyKpiNameMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
+                :info="euTaxonomyKpiInfoMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
+                :name="'isGroupLevel'"
               />
             </div>
           </FormKit>
         </div>
-
-
       </div>
     </div>
     <div v-if="editMode" class="uploadFormSection">
       <!-- List of company reports -->
-      <div class="col-3 p-3 topicLabel">
+      <div v-if="uploadFiles.length" class="col-3 p-3 topicLabel">
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
       </div>
       <div v-for="(file, index) of uploadFiles" :key="file.name" class="col-9 formFields">
         <div class="form-field-label">
           <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
-          {{JSON.stringify(file)}}
         </div>
         <FormKit :name="file.name.split('.')[0]" type="group">
           <!-- Date of the report -->
@@ -142,7 +142,6 @@
                 @update:modelValue="updateReportDateHandler(index, $event, 'uploadFiles')"
               />
             </div>
-{{uploadFiles[index].convertedReportDate}}
             <FormKit type="text" :modelValue="uploadFiles[index].reportDate" name="reportDate" />
           </div>
 
@@ -160,7 +159,7 @@
                 name="currency"
                 validation="required|length:2,3"
                 validation-label="Currency used in the report"
-                placeholder="Currency used in the report"
+                placeholder="!Currency used in the report"
               />
             </div>
           </div>
@@ -187,7 +186,7 @@ import PrimeButton from "primevue/button";
 import FileUpload, { FileUploadEmits } from "primevue/fileupload";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import {ExtendedCompanyReport, WhichSetOfFiles} from "@/components/forms/Types";
+import { WhichSetOfFiles } from "@/components/forms/Types";
 
 export default defineComponent({
   name: "UploadReports",
@@ -203,7 +202,7 @@ export default defineComponent({
     return {
       formsDatesFilesToUpload: [] as string[] | undefined,
       formatBytesUserFriendly,
-    }
+    };
   },
   methods: {
     /**
