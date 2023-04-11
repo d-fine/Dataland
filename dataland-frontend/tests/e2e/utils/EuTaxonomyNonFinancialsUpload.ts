@@ -33,6 +33,14 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.get('button[data-test="uploaded-files-remove"]').click();
   cy.get('div[data-test="uploaded-files"]').should("not.exist");
 
+  cy.get('button[data-test="upload-files-button"]').click();
+  cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
+  cy.get('div[data-test="uploaded-files"]')
+    .should("exist")
+    .find('[data-test="uploaded-files-title"]')
+    .should("contain", "pdf");
+  cy.get('input[name="currency"]').type("qqq");
+
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
   cy.get("div.p-datepicker").find('span:contains("11")').click();
@@ -45,10 +53,8 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   });
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
-  cy.get('input[name="reportDate"]').should("not.exist");
-  cy.get('input[name="reference"]').should("not.exist");
-  cy.get('input[name="reference"]').should("not.exist");
   cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
+
   cy.get('input[name="activityLevelReporting"][value="Yes"]').check();
   cy.get('[data-test="dataPointToggleTitle"]').should("not.exist");
   cy.get('input[name="numberOfEmployees"]').type("333");

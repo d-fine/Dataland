@@ -142,10 +142,15 @@
                 @update:modelValue="updateReportDateHandler(index, $event, 'uploadFiles')"
               />
             </div>
-            <FormKit type="text" :modelValue="uploadFiles[index].reportDate" name="reportDate" />
+            <FormKit
+              type="text"
+              :modelValue="uploadFiles[index].reportDate"
+              name="reportDate"
+              :outer-class="{ 'hidden-input': true }"
+            />
           </div>
 
-          <FormKit type="text" :modelValue="uploadFiles[index].reference" name="reference" />
+          <FormKit type="hidden" :modelValue="uploadFiles[index].reference" name="reference" />
 
           <!-- Currency used in the report -->
           <div class="form-field" data-test="currencyUsedInTheReport">

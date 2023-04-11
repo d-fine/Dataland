@@ -33,11 +33,12 @@
         </div>
 
         <FormKit
-          type="hidden"
+          type="text"
           validation="required"
           validation-label="Fiscal year"
           :modelValue="convertedFiscalYearEnd"
           name="fiscalYearEnd"
+          :outer-class="{ 'hidden-input': true }"
         />
       </div>
 

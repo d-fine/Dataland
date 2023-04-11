@@ -390,7 +390,7 @@ export default defineComponent({
     namesOfFilesToUpload(): string[] {
       const namesFromFilesToUpload = this.filesToUpload.map((el) => el.name.split(".")[0]);
       const namesFromUploadedFiles = this.uploadFiles.map((el) => el.name.split(".")[0]);
-      return [...namesFromFilesToUpload, ...namesFromUploadedFiles];
+      return [...new Set([...namesFromFilesToUpload, ...namesFromUploadedFiles])];
     },
   },
   props: {
@@ -427,6 +427,7 @@ export default defineComponent({
       }
       if (dataResponseData.data?.referencedReports) {
         const propertiesOfFilesAssignedToDataID = dataResponseData.data.referencedReports;
+        console.log("<---->", propertiesOfFilesAssignedToDataID);
         for (const key in propertiesOfFilesAssignedToDataID) {
           this.uploadFiles.push({
             name: key,
@@ -434,7 +435,9 @@ export default defineComponent({
             isGroupLevel: propertiesOfFilesAssignedToDataID[key].isGroupLevel,
             reference: propertiesOfFilesAssignedToDataID[key].reference,
             reportDate: propertiesOfFilesAssignedToDataID[key].reportDate,
-            convertedReportDate: new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string),
+            convertedReportDate: propertiesOfFilesAssignedToDataID[key].reportDate
+              ? new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string)
+              : "",
           });
         }
       }
@@ -495,16 +498,16 @@ export default defineComponent({
             );
           console.log("Qqqqq", formInputsModelToSend);
         }
-      } catch (error) {
-        this.postEuTaxonomyDataForNonFinancialsResponse = null;
-        console.error(error);
-      } finally {
-        this.postEuTaxonomyDataForNonFinancialsProcessed = true;
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         this.$refs.UploadReports.clearAllNotUploadedFiles();
         this.fiscalYearEnd = "";
         this.filesToUpload = [];
+      } catch (error) {
+        this.postEuTaxonomyDataForNonFinancialsResponse = null;
+        console.error(error);
+      } finally {
+        this.postEuTaxonomyDataForNonFinancialsProcessed = true;
       }
     },
 
@@ -543,13 +546,13 @@ export default defineComponent({
           if (this.uploadFiles.some((objfile) => objfile.name === file.name.split(".")[0])) {
             file["nameAlreadyExists"] = "true";
           } else {
-            file["reportDate"] = "";
-            file["convertedReportDate"] = "";
-            file["documentId"] = "";
+            file["reportDate"] = file["reportDate"] ?? "";
+            file["convertedReportDate"] = file["convertedReportDate"] ?? "";
+            file["documentId"] = file["documentId"] ?? "";
           }
         });
 
-        this.filesToUpload = Array.from(new Set([...this.filesToUpload, ...event.files])) as ExtendedFile[];
+        this.filesToUpload = [...event.files] as ExtendedFile[];
       } else {
         return;
       }
@@ -566,7 +569,7 @@ export default defineComponent({
     updatePropertyFilesUploaded(
       indexFileToUpload: number,
       property: string,
-      value: string,
+      value: string | Date,
       whichSetOfFiles: WhichSetOfFiles
     ) {
       if (Object.prototype.hasOwnProperty.call(this[whichSetOfFiles][indexFileToUpload], property)) {

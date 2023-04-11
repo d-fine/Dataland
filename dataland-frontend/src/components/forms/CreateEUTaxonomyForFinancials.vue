@@ -464,7 +464,9 @@ export default defineComponent({
             isGroupLevel: propertiesOfFilesAssignedToDataID[key].isGroupLevel,
             reference: propertiesOfFilesAssignedToDataID[key].reference,
             reportDate: propertiesOfFilesAssignedToDataID[key].reportDate,
-            convertedReportDate: new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string),
+            convertedReportDate: propertiesOfFilesAssignedToDataID[key].reportDate
+              ? new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string)
+              : "",
           });
         }
       }
@@ -509,7 +511,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
 
-        if (!this.editMode) {
+        if (this.filesToUpload.length) {
           for (let index = 0; index < this.filesToUpload.length; index++) {
             const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
               this.filesToUpload[index]
@@ -518,7 +520,12 @@ export default defineComponent({
               allFileUploadedSuccessful = false;
               break;
             } else if (uploadFileSuccessful) {
-              this.updatePropertyFilesUploaded(index, "documentId", uploadFileSuccessful.data.documentId);
+              this.updatePropertyFilesUploaded(
+                index,
+                "documentId",
+                uploadFileSuccessful.data.documentId,
+                "filesToUpload"
+              );
             }
           }
         }
@@ -563,13 +570,13 @@ export default defineComponent({
           if (this.uploadFiles.some((objfile) => objfile.name === file.name.split(".")[0])) {
             file["nameAlreadyExists"] = "true";
           } else {
-            file["reportDate"] = "";
-            file["convertedReportDate"] = "";
-            file["documentId"] = "";
+            file["reportDate"] = file["reportDate"] ?? "";
+            file["convertedReportDate"] = file["convertedReportDate"] ?? "";
+            file["documentId"] = file["documentId"] ?? "";
           }
         });
 
-        this.filesToUpload = Array.from(new Set([...this.filesToUpload, ...event.files])) as ExtendedFile[];
+        this.filesToUpload = [...event.files] as ExtendedFile[];
       } else {
         return;
       }
@@ -604,7 +611,7 @@ export default defineComponent({
     updatePropertyFilesUploaded(
       indexFileToUpload: number,
       property: string,
-      value: string,
+      value: string | Date,
       whichSetOfFiles: WhichSetOfFiles
     ) {
       if (Object.prototype.hasOwnProperty.call(this[whichSetOfFiles][indexFileToUpload], property)) {

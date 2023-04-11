@@ -79,7 +79,6 @@
       </div>
     </div>
   </div>
-
   <div class="form-field">
     <FormKit
       type="textarea"
