@@ -72,7 +72,7 @@
                 :name="euTaxonomyKpiNameMappings?.reportDate ?? 'Report Date'"
                 :explanation="euTaxonomyKpiInfoMappings?.reportDate ?? 'Report Date'"
               />
-              <div class="lg:col-6 md:col-6 col-12 p-0">
+              <div class="md:col-6 col-12 p-0">
                 <Calendar
                   data-test="reportDate"
                   inputId="icon"
@@ -83,7 +83,12 @@
                 />
               </div>
 
-              <FormKit type="text" :modelValue="filesToUpload[index].reportDate" name="reportDate" />
+              <FormKit
+                type="text"
+                :modelValue="filesToUpload[index].reportDate"
+                name="reportDate"
+                :outer-class="{ 'hidden-input': false }"
+              />
             </div>
 
             <FormKit type="text" :modelValue="filesToUpload[index].documentId" name="reference" />
@@ -132,7 +137,7 @@
               :name="euTaxonomyKpiNameMappings?.reportDate ?? 'Report Date'"
               :explanation="euTaxonomyKpiInfoMappings?.reportDate ?? 'Report Date'"
             />
-            <div class="lg:col-6 md:col-6 col-12 p-0">
+            <div class="md:col-6 col-12 p-0">
               <Calendar
                 data-test="reportDate"
                 inputId="icon"
@@ -146,11 +151,11 @@
               type="text"
               :modelValue="uploadFiles[index].reportDate"
               name="reportDate"
-              :outer-class="{ 'hidden-input': true }"
+              :outer-class="{ 'hidden-input': false }"
             />
           </div>
 
-          <FormKit type="hidden" :modelValue="uploadFiles[index].reference" name="reference" />
+          <FormKit type="text" :modelValue="uploadFiles[index].reference" name="reference" />
 
           <!-- Currency used in the report -->
           <div class="form-field" data-test="currencyUsedInTheReport">

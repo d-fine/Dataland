@@ -34,7 +34,7 @@
                   :name="euTaxonomyKpiNameMappings.reportingPeriod"
                   :explanation="euTaxonomyKpiInfoMappings.reportingPeriod"
                 />
-                <div class="lg:col-6 md:col-6 col-12 p-0">
+                <div class="md:col-6 col-12 p-0">
                   <Calendar
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"

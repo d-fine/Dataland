@@ -1,5 +1,5 @@
 <template>
-  <div v-if="toggleDataAvailable" data-test="dataPointToggle" class="form-field vertical-middle">
+  <div data-test="dataPointToggle" class="form-field vertical-middle">
     <InputSwitch
       data-test="dataPointToggleButton"
       inputId="dataPointIsAvailableSwitch"
@@ -13,8 +13,8 @@
   <div v-show="dataPointIsAvailable">
     <div class="form-field">
       <UploadFormHeader
-        :name="valueType === 'percent' ? 'Eligible Revenue (%)' : 'Eligible Revenue'"
-        explanation="Eligible Revenue (%) *"
+        :name="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : kpiNameMappings[name]"
+        :explanation="kpiInfoMappings[name] ?? ''"
       />
       <FormKit
         :disabled="!dataPointIsAvailable"
@@ -65,7 +65,7 @@
     <!-- Data quality -->
     <div class="form-field">
       <UploadFormHeader name="Data quality" explanation="Data quality" />
-      <div class="lg:col-6 md:col-6 col-12 p-0">
+      <div class="md:col-6 col-12 p-0">
         <FormKit
           :disabled="!dataPointIsAvailable"
           type="select"

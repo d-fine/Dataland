@@ -33,7 +33,7 @@
                   :name="euTaxonomyKpiNameMappings.reportingPeriod"
                   :explanation="euTaxonomyKpiInfoMappings.reportingPeriod"
                 />
-                <div class="lg:col-6 md:col-6 col-12 p-0">
+                <div class="md:col-6 col-12 p-0">
                   <Calendar
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
@@ -156,24 +156,24 @@
                   </div>
 
                   <!-- CapEx -->
-                  <div data-test="capexSection" class="col-9 formFields">
-                    <h3 class="mt-0">CapEx</h3>
+                  <div data-test="capexSection" class="col-9 p-0">
                     <FormKit name="capex" type="group">
                       <div
                         v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
-                        class="form-field"
+                        class="formFields"
                       >
-                        <FormKit :name="detailCashFlowType" type="group">
+                        <FormKit
+                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
+                          type="group"
+                        >
                           <div class="form-field">
-                            <span class="subtitle">
-                              <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                              />
-                            </span>
+                            <h3>
+                              {{ euTaxonomyKpiNameMappings[`${detailCashFlowType}CapEx`] ?? "" }}
+                            </h3>
                             <KPIfieldSet
+                              :name="`${detailCashFlowType}CapEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
@@ -193,24 +193,24 @@
                   </div>
 
                   <!-- OpEx -->
-                  <div data-test="opexSection" class="col-9 formFields">
-                    <h3 class="mt-0">OpEx</h3>
+                  <div data-test="opexSection" class="col-9 p-0">
                     <FormKit name="opex" type="group">
                       <div
                         v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
-                        class="form-field"
+                        class="formFields"
                       >
-                        <FormKit :name="detailCashFlowType" type="group">
+                        <FormKit
+                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
+                          type="group"
+                        >
                           <div class="form-field">
-                            <span class="subtitle">
-                              <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                              />
-                            </span>
+                            <h3>
+                              {{ euTaxonomyKpiNameMappings[`${detailCashFlowType}OpEx`] ?? "" }}
+                            </h3>
                             <KPIfieldSet
+                              :name="`${detailCashFlowType}OpEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
@@ -230,24 +230,24 @@
                   </div>
 
                   <!-- Revenue -->
-                  <div data-test="revenueSection" class="col-9 formFields">
-                    <h3 class="mt-0">Revenue</h3>
+                  <div data-test="revenueSection" class="col-9 p-0">
                     <FormKit name="revenue" type="group">
                       <div
                         v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
-                        class="form-field"
+                        class="formFields"
                       >
-                        <FormKit :name="detailCashFlowType" type="group">
+                        <FormKit
+                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
+                          type="group"
+                        >
                           <div class="form-field">
-                            <span class="subtitle">
-                              <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                              />
-                            </span>
+                            <h3>
+                              {{ euTaxonomyKpiNameMappings[`${detailCashFlowType}Revenue`] ?? "" }}
+                            </h3>
                             <KPIfieldSet
+                              :name="`${detailCashFlowType}Revenue`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"

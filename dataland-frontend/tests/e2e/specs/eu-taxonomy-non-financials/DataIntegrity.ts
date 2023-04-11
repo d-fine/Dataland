@@ -119,6 +119,11 @@ describeIf(
               cy.get("body").should("contain", "Aligned OpEx").should("contain", "%");
               cy.get('button[data-test="editDatasetButton"]').click();
               cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
+              cy.get('[data-test="reportDate"] button').should("have.class", "p-datepicker-trigger").click();
+              cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
+              cy.get("div.p-datepicker").find('span:contains("9")').click();
+              cy.get('input[name="reportDate"]').invoke("val").should("contain", "9");
+              cy.get('button[data-test="submitButton"]').click();
             });
           }
         );

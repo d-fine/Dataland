@@ -21,7 +21,7 @@
           :name="euTaxonomyKpiNameMappings.fiscalYearEnd"
           :explanation="euTaxonomyKpiInfoMappings.fiscalYearEnd"
         />
-        <div class="lg:col-6 md:col-6 col-12 p-0">
+        <div class="md:col-6 col-12 p-0">
           <Calendar
             inputId="fiscalYearEnd"
             :modelValue="fiscalYearEnd"
