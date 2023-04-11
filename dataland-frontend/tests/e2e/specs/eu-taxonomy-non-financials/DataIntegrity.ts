@@ -110,13 +110,15 @@ describeIf(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
             );
             cy.wait("@retrieveFullTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
-              cy.get("h1[class='mb-0']").contains("All fields filled");
+              cy.get("[data-test='companyNameTitle']").contains("All fields filled");
               cy.get("body").should("contain", "Eligible Revenue").should("contain", "%");
               cy.get("body").should("contain", "Aligned Revenue").should("contain", "%");
               cy.get("body").should("contain", "Eligible CapEx").should("contain", "%");
               cy.get("body").should("contain", "Aligned CapEx").should("contain", "%");
               cy.get("body").should("contain", "Eligible OpEx").should("contain", "%");
               cy.get("body").should("contain", "Aligned OpEx").should("contain", "%");
+              cy.get('button[data-test="editDatasetButton"]').click();
+              cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
             });
           }
         );

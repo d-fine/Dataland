@@ -1,6 +1,10 @@
 <template>
   <Card class="col-12 page-wrapper-card">
-    <template #title>{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Financial Company/Service</template>
+    <template #title
+      ><span data-test="pageWrapperTitle"
+        >{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Financial Company/Service</span
+      ></template
+    >
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -539,7 +543,6 @@ export default defineComponent({
             await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
               formInputsModelToSend
             );
-          console.log("Qqqqq", formInputsModelToSend);
         }
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;

@@ -1,7 +1,9 @@
 <template>
   <Card class="col-12 page-wrapper-card">
     <template #title
-      >{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
+      ><span data-test="pageWrapperTitle"
+        >{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</span
+      ></template
     >
     <template #content>
       <div class="grid uploadFormWrapper">
@@ -427,7 +429,6 @@ export default defineComponent({
       }
       if (dataResponseData.data?.referencedReports) {
         const propertiesOfFilesAssignedToDataID = dataResponseData.data.referencedReports;
-        console.log("<---->", propertiesOfFilesAssignedToDataID);
         for (const key in propertiesOfFilesAssignedToDataID) {
           this.uploadFiles.push({
             name: key,
@@ -496,7 +497,6 @@ export default defineComponent({
             await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
               formInputsModelToSend
             );
-          console.log("Qqqqq", formInputsModelToSend);
         }
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
