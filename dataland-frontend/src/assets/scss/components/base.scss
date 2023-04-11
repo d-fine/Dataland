@@ -138,36 +138,37 @@ body {
 }
 
 // --- //
+
+// 12px
 .fs-xs {
   font-size: $fs-xs
 }
 
-// 12px
+// 14px
 .fs-sm {
   font-size: $fs-sm
 }
 
-// 14px
+// 16px
 .fs-base {
   font-size: $fs-base
 }
 
-// 16px
+// 18px
 .fs-lg {
   font-size: $fs-lg
 }
 
-// 18px
+// 24px
 .fs-xl {
   font-size: $fs-xl
 }
 
-// 24px
+// 32px
 .fs-xxl {
   font-size: $fs-xxl
 }
 
-// 32px
 
 // Typography //
 .gray-text {
@@ -221,10 +222,12 @@ body {
   justify-content: center;
   justify-items: center;
 }
+
 .vertical-middle {
   display: flex;
   align-items: center;
 }
+
 .p-disabled, .p-component:disabled {
   opacity: .5;
 }
