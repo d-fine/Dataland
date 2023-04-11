@@ -32,13 +32,18 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-backend/DockerfileBase`
 - [ ] `./dataland-backend/DockerfileTest`
 - [ ] `./dataland-csvconverter/Dockerfile`
+- [ ] `./dataland-document-manager/Dockerfile`
+- [ ] `./dataland-document-manager/DockerfileBase`
+- [ ] `./dataland-document-manager/DockerfileTest`
 - [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-internal-storage/Dockerfile`
+- [ ] `./dataland-internal-storage/DockerfileBase`
 - [ ] `./dataland-internal-storage/DockerfileTest`
 - [ ] `./dataland-qa-service/Dockerfile`
+- [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
 - [ ] `./dataland-rabbitmq/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
@@ -47,7 +52,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
-- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db and frontend-dev
+- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db, document-manager-db and frontend-dev
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 
 ## Dataland Monitoring
@@ -74,12 +79,12 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] Send an invitation request from one of the dev servers and check if the e-mail response contains the right attachments and is displayed correctly.
 
 ## Check RabbitMQ dead letter queue and disk space
-- [ ] RabbitMQ does need at least 6GB of free disk space to operate. `ssh` into all servers and check the available disk space with `df` command. If the open disk space is close to the minimum requirement, clear up disk space with `docker image prune`.
+- [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available disk space with `df` command. If the open disk space is close to the minimum requirement, clear up disk space with `docker image prune`.
 - [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual maintenance. If new messages have appeared this does need to be investigated. The dead letter queue can be accessed and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr; deadLetterQueue &rarr; Get message.
 
 ## Conclusion
 - [ ] After updating all components check if everything still works
-- [ ] The new version is deployed to the dev server using this branch and real data
+- [ ] The new version is deployed to a dev server using this branch and real data
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that real data has been used
   - [ ] It's verified that everything seems to be working fine by manually using the website
@@ -93,7 +98,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] The PR actually implements what is described above
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
-- [ ] The new version is deployed to the dev server using this branch
+- [ ] The new version is deployed to a dev server using this branch
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that everything seems to be working fine by manually using the website
   - [ ] All implemented Social Logins have been tested manually in the UI

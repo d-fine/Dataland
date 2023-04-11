@@ -1,0 +1,71 @@
+const msPerDay = 86400000;
+export const dateFormatOptions = {
+  weekday: "short",
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+} as Intl.DateTimeFormatOptions;
+
+/**
+ * Given a unix time in milliseconds calculates how many days the timestamp is in the future (rounding up)
+ *
+ * @param endDateInMilliseconds the unix time in milliseconds to
+ * @returns the number of days until endDateInMilliseconds (rounding up)
+ */
+export function calculateDaysFromNow(endDateInMilliseconds: number): number {
+  const currentUtcDateInMilliseconds = new Date().getTime();
+  const daysFromNow = (endDateInMilliseconds - currentUtcDateInMilliseconds) / msPerDay;
+  return Math.ceil(daysFromNow);
+}
+
+/**
+ * Transforms the given unix time in milliseconds to a date string
+ *
+ * @param unixTimeInMs the unix time in milliseconds
+ * @returns a date string representing the given unix time
+ */
+export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
+  return new Date(unixTimeInMs).toLocaleDateString("en-gb", dateFormatOptions);
+}
+
+/**
+ * Calculates an expiry date in the future based on the number of valid days from now
+ *
+ * @param expiryTimeDays the time in days to move into the future
+ * @returns the resulting expiry date in the future in the format of "Wed, 25 Jan 2023, 10:38"
+ */
+export function calculateExpiryDateAsDateString(expiryTimeDays: number): string {
+  const currentUtcDateInMilliseconds = new Date().getTime();
+  const expiryUtcDateInMilliseconds = currentUtcDateInMilliseconds + expiryTimeDays * msPerDay;
+  return convertUnixTimeInMsToDateString(expiryUtcDateInMilliseconds);
+}
+
+/**
+ * Computes a hyphenated string (yyyy-MM-dd) of a date
+ *
+ * @param date the date to hyphenate
+ * @returns the hyphenated date string
+ */
+export function getHyphenatedDate(date: Date): string {
+  const newDate = new Date(date.toString());
+  const delocalizedTime = newDate.getTime() - newDate.getTimezoneOffset() * 60 * 1000;
+  return new Date(delocalizedTime).toISOString().substring(0, 10);
+}
+
+/**
+ * Formats the file size to display a more readable format
+ *
+ * @param bytes file size i bytes
+ * @returns file size in format (example 30 KB)
+ */
+export function formatSize(bytes: number): string {
+  if (bytes === 0) {
+    return "0 B";
+  }
+  const k = 1000,
+    sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+    i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(3)).toString() + " " + sizes[i];
+}

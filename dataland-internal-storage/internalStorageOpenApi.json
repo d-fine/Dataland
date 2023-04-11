@@ -20,18 +20,18 @@
     }
   ],
   "paths": {
-    "/data": {
+    "/data/{dataId}": {
       "get": {
         "tags": [
           "storage-controller"
         ],
-        "summary": "Request data by id.",
-        "description": "Requests data by id.",
+        "summary": "Request data by ID.",
+        "description": "Requests data by ID.",
         "operationId": "selectDataById",
         "parameters": [
           {
             "name": "dataId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -53,6 +53,67 @@
               "application/json": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blobs/{blobId}": {
+      "get": {
+        "tags": [
+          "storage-controller"
+        ],
+        "summary": "Request blobs by its blob ID",
+        "description": "Requests blobs by its blob ID",
+        "operationId": "selectBlobById",
+        "parameters": [
+          {
+            "name": "blobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "correlationId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved blob.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }

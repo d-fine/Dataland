@@ -52,6 +52,12 @@ jobs:
       - name: Frontend component testing
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_testcomponent --no-daemon --stacktrace
         if: always()
+      - name: Upload lcov Exec Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: lcovResults
+          path: ./dataland-frontend/coverage/*.info
       - name: Upload FE Cypress Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -84,7 +90,7 @@ jobs:
         run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
         if: always()
       - name: Execute Backend unit tests
-        run: ./gradlew :dataland-backend:test :dataland-csvconverter:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test --no-daemon --stacktrace
+        run: ./gradlew :dataland-backend:test :dataland-csvconverter:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
@@ -168,6 +174,7 @@ jobs:
           BACKEND_DB_PASSWORD: "password"
           API_KEY_MANAGER_DB_PASSWORD: "password"
           INTERNAL_STORAGE_DB_PASSWORD: "password"
+          DOCUMENT_MANAGER_DB_PASSWORD: "password"
           PGADMIN_PASSWORD: "password"
           KEYCLOAK_DATALAND_ADMIN_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="
@@ -184,7 +191,7 @@ jobs:
           KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
           PROXY_PRIMARY_URL: local-dev.dataland.com
           PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/local-dev.dataland.com
-          PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy_production:${{ env.DATALAND_INBOUND_PROXY_PRODUCTION_VERSION }}
+          PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy:${{ env.DATALAND_INBOUND_PROXY_VERSION }}
           CYPRESS_EXECUTION_ENVIRONMENT: "ci"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
@@ -197,6 +204,7 @@ jobs:
           RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
+          FRONTEND_LOCATION_CONFIG: "Test"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@v3

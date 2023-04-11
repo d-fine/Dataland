@@ -1003,7 +1003,6 @@
 
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
-import { FormKitNode } from "@formkit/core";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { defineComponent, inject } from "vue";
@@ -1027,7 +1026,9 @@ import { AxiosError } from "axios";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { CompanyAssociatedDataLksgData, InHouseProductionOrContractProcessing } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { getHyphenatedDate } from "@/utils/DateFormatUtils";
+import { getHyphenatedDate } from "@/utils/DataFormatUtils";
+import { smoothScroll } from "@/utils/smoothScroll";
+import { checkCustomInputs } from "@/utils/validationsUtils";
 
 export default defineComponent({
   setup() {
@@ -1079,6 +1080,8 @@ export default defineComponent({
           ],
         ])
       ),
+      smoothScroll,
+      checkCustomInputs,
       updatingData: false,
     };
   },
@@ -1110,15 +1113,15 @@ export default defineComponent({
     },
   },
   mounted() {
-    const element = this.$refs.jumpLinks as HTMLElement;
-    this.elementPosition = element.getBoundingClientRect().top;
+    const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
+    this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
     this.scrollListener = (): null => {
       if (window.scrollY > this.elementPosition) {
-        element.style.position = "fixed";
-        element.style.top = "60px";
+        jumpLinkselement.style.position = "fixed";
+        jumpLinkselement.style.top = "60px";
       } else {
-        element.style.position = "relative";
-        element.style.top = "0";
+        jumpLinkselement.style.position = "relative";
+        jumpLinkselement.style.top = "0";
       }
       return null;
     };
@@ -1206,28 +1209,6 @@ export default defineComponent({
     },
 
     /**
-     * Checks which inputs are not filled correctly
-     *
-     * @param node - single form field
-     */
-    checkCustomInputs(node: FormKitNode) {
-      const invalidElements: HTMLElement[] = [];
-      node.walk((child: FormKitNode) => {
-        // Check if this child has errors
-        if ((child.ledger.value("blocking") || child.ledger.value("errors")) && child.type !== "group") {
-          // We found an input with validation errors
-          if (typeof child.props.id === "string") {
-            const invalidElement = document.getElementById(child.props.id);
-            if (invalidElement) {
-              invalidElements.push(invalidElement);
-            }
-          }
-        }
-      }, true);
-      invalidElements.find((el) => el !== null)?.scrollIntoView({ behavior: "smooth", block: "center" });
-    },
-
-    /**
      * Adds a new Object to the ProductionSite array
      */
     addNewProductionSite() {
@@ -1272,30 +1253,6 @@ export default defineComponent({
       this.listOfProductionSites[index].listOfGoodsOrServices = this.listOfProductionSites[
         index
       ].listOfGoodsOrServices.filter((el) => el !== item);
-    },
-    /**
-     * Smooth scroling
-     *
-     * @param target - target element
-     */
-    smoothScroll(target: string) {
-      const targetElement = document.querySelector(target) as HTMLElement;
-      const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - 100;
-      const startPosition = window.scrollY;
-      const distance = targetPosition - startPosition;
-      const duration = 300;
-      let startTime = null as unknown as number;
-
-      const animation = (currentTime: number): void => {
-        if (!startTime) {
-          startTime = currentTime;
-        }
-        const elapsedTime = currentTime - startTime;
-        const scrollPosition = distance * (elapsedTime / duration) + startPosition;
-        window.scrollTo(0, scrollPosition);
-        if (elapsedTime < duration) requestAnimationFrame(animation);
-      };
-      requestAnimationFrame(animation);
     },
   },
 });
