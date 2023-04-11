@@ -112,7 +112,12 @@ export default defineConfig({
             on('task', {
                 async readFile(path: string): Promise<Buffer> {
                     return await promises.readFile(path);
+                },
+            });
 
+            on('task', {
+                async fsWriteFile(nameContent: string[]) {
+                    return await promises.writeFile(nameContent[0], nameContent[1]);
                 },
             });
             return config

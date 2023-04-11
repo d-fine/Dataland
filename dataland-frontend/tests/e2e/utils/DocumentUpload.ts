@@ -5,23 +5,16 @@ import { DocumentControllerApi, DocumentUploadResponse } from "@clients/document
  * Uploads all documents provided in the <> folder and saves the hashes in a file for later referencing in the datasets
  *
  * @param token the keycloak token for authentication
- * @returns a cypress chainable containing the company meta information of the newly created company
  */
-export function uploadAllDocuments(token: string): string[] {
+export function uploadAllDocuments(token: string): void {
   const documentDirectory = "..\\testing\\data\\documents\\";
-  const documentIds: string[] = [];
   cy.task("readdir", documentDirectory).then((fileNames) => {
-    (fileNames as string[]).forEach((name) => {
-      cy.task<Buffer>("readFile", documentDirectory + name).then((fileBuffer) => {
-        uploadDocumentViaApi(token, fileBuffer, name)
-          .then((documentId) => {
-            documentIds.push(documentId.documentId);
-          })
-          .catch((error) => console.log(error));
+    cy.wrap(fileNames as string[]).each((name: string, _index, _list) => {
+      cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
+        uploadDocumentViaApi(token, bufferObject.data, name).catch((error) => console.log(error));
       });
     });
   });
-  return documentIds;
 }
 
 /**

@@ -87,8 +87,7 @@ describe(
 
     before(function uploadDocumentsAndStoreDocumentIds() {
       cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        const documentIds = uploadAllDocuments(token);
-        console.log(documentIds);
+        uploadAllDocuments(token);
       });
     });
 
