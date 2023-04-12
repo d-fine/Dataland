@@ -405,3 +405,7 @@ export const lksgSubAreas = {
     "supplierCodeOfConduct",
   ],
 };
+
+export const lksgFieldDependencies = {
+  employeeUnder18Apprentices: "this.lkSGDataModel.data?.social?.childLabour?.employeeUnder18 ?? 'No'",
+};

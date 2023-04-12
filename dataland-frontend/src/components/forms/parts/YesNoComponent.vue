@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field">
+  <div class="form-field" v-if="displayed === 'Yes'">
     <UploadFormHeader :name="displayName" :explanation="info" />
     <FormKit
       type="radio"
@@ -49,6 +49,10 @@ export default defineComponent({
     required: {
       type: String,
       default: "",
+    },
+    displayed: {
+      type: String,
+      default: "Yes",
     },
   },
 });

@@ -371,16 +371,19 @@
                         :displayName="lksgKpisNameMappings['employeeUnder15']"
                         :info="lksgKpisInfoMappings['employeeUnder15']"
                         :name="'employeeUnder15'"
+                        :displayed="lkSGDataModel.data?.social?.childLabour?.employeeUnder18 ?? 'No'"
                       />
                       <YesNoComponent
                         :displayName="lksgKpisNameMappings['employeeUnder18Apprentices']"
                         :info="lksgKpisInfoMappings['employeeUnder18Apprentices']"
                         :name="'employeeUnder18Apprentices'"
+                        :displayed="getYesNoValue(lksgFieldDependencies['employeeUnder18Apprentices'])"
                       />
                       <YesNoComponent
                         :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePrevention']"
                         :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePrevention']"
                         :name="'employmentUnderLocalMinimumAgePrevention'"
+                        :displayed="getYesNoValue(lksgFieldDependencies['employmentUnderLocalMinimumAgePrevention'])"
                       />
                       <YesNoComponent
                         :displayName="
@@ -1020,6 +1023,7 @@ import {
   lksgKpisNameMappings,
   lksgSubAreasNameMappings,
   lksgSubAreas,
+  lksgFieldDependencies,
 } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
@@ -1066,6 +1070,7 @@ export default defineComponent({
       lksgKpisNameMappings,
       lksgSubAreasNameMappings,
       lksgSubAreas,
+      lksgFieldDependencies,
       elementPosition: 0,
       scrollListener: (): null => null,
       isInHouseProductionOrContractProcessingMap: Object.fromEntries(
@@ -1137,7 +1142,19 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Loads the LKGS-Dataset identified by the provided dataId and pre-configures the form to contain the data
+     * Returns the value of a given YesNo variable
+     *
+     * @param variable the string representation of the YesNo variable to be read out
+     * @returns either "Yes" or "No"
+     */
+    getYesNoValue(variable: string | undefined): string {
+      if (variable == undefined) {
+        return "Yes";
+      }
+      return eval(variable) as string;
+    },
+    /**
+     * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
      *
      * @param dataId the id of the dataset to load
