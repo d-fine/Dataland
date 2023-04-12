@@ -14,7 +14,7 @@ const minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_
  */
 export function updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak: Keycloak, forceStoringValues = false): void {
   keycloak
-    .updateToken(1)
+    .updateToken(60)
     .then((hasTokenBeenUpdated) => {
       if (hasTokenBeenUpdated || forceStoringValues) {
         const refreshTokenExpiryTime = keycloak.refreshTokenParsed?.exp;
