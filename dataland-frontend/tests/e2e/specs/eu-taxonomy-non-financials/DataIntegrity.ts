@@ -100,7 +100,7 @@ describeIf(
       });
     });
 
-    it("Upload EU Taxonomy Dataset via form and assure that it can be viewed on the framework ", () => {
+    it("Upload EU Taxonomy Dataset via form and assure that it can be viewed on the framework and it can be editable", () => {
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
           (storedCompany) => {
@@ -121,8 +121,8 @@ describeIf(
               cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
               cy.get('[data-test="reportDate"] button').should("have.class", "p-datepicker-trigger").click();
               cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
-              cy.get("div.p-datepicker").find('span:contains("9")').click();
-              cy.get('input[name="reportDate"]').invoke("val").should("contain", "9");
+              cy.get("div.p-datepicker").find('span:contains("19")').click();
+              cy.get('input[name="reportDate"]').invoke("val").should("contain", "19");
               cy.get('button[data-test="submitButton"]').click();
             });
           }

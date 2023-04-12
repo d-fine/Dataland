@@ -177,7 +177,7 @@
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
-                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
+                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfFilesToUpload"
                             />
                           </div>
@@ -214,7 +214,7 @@
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
-                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
+                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfFilesToUpload"
                             />
                           </div>
@@ -251,7 +251,7 @@
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
-                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
+                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfFilesToUpload"
                             />
                           </div>
@@ -432,10 +432,10 @@ export default defineComponent({
         for (const key in propertiesOfFilesAssignedToDataID) {
           this.uploadFiles.push({
             name: key,
-            currency: propertiesOfFilesAssignedToDataID[key].currency,
-            isGroupLevel: propertiesOfFilesAssignedToDataID[key].isGroupLevel,
             reference: propertiesOfFilesAssignedToDataID[key].reference,
+            currency: propertiesOfFilesAssignedToDataID[key].currency,
             reportDate: propertiesOfFilesAssignedToDataID[key].reportDate,
+            isGroupLevel: propertiesOfFilesAssignedToDataID[key].isGroupLevel,
             convertedReportDate: propertiesOfFilesAssignedToDataID[key].reportDate
               ? new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string)
               : "",
@@ -503,6 +503,7 @@ export default defineComponent({
         this.$refs.UploadReports.clearAllNotUploadedFiles();
         this.fiscalYearEnd = "";
         this.filesToUpload = [];
+        this.uploadFiles = [];
       } catch (error) {
         this.postEuTaxonomyDataForNonFinancialsResponse = null;
         console.error(error);
@@ -546,9 +547,9 @@ export default defineComponent({
           if (this.uploadFiles.some((objfile) => objfile.name === file.name.split(".")[0])) {
             file["nameAlreadyExists"] = "true";
           } else {
+            file["documentId"] = file["documentId"] ?? "";
             file["reportDate"] = file["reportDate"] ?? "";
             file["convertedReportDate"] = file["convertedReportDate"] ?? "";
-            file["documentId"] = file["documentId"] ?? "";
           }
         });
 
