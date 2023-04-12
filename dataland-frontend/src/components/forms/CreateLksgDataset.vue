@@ -361,60 +361,12 @@
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="childLabour">
+                    <FormKit v-for="area in lksgSubAreas.childLabour" type="group" name="childLabour" :key="area">
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['employeeUnder18']"
-                        :info="lksgKpisInfoMappings['employeeUnder18']"
-                        :name="'employeeUnder18'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['employeeUnder15']"
-                        :info="lksgKpisInfoMappings['employeeUnder15']"
-                        :name="'employeeUnder15'"
-                        :displayed="lkSGDataModel.data?.social?.childLabour?.employeeUnder18 ?? 'No'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['employeeUnder18Apprentices']"
-                        :info="lksgKpisInfoMappings['employeeUnder18Apprentices']"
-                        :name="'employeeUnder18Apprentices'"
-                        :displayed="getYesNoValue(lksgFieldDependencies['employeeUnder18Apprentices'])"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePrevention']"
-                        :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePrevention']"
-                        :name="'employmentUnderLocalMinimumAgePrevention'"
-                        :displayed="getYesNoValue(lksgFieldDependencies['employmentUnderLocalMinimumAgePrevention'])"
-                      />
-                      <YesNoComponent
-                        :displayName="
-                          lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionEmploymentContracts']
-                        "
-                        :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionEmploymentContracts']"
-                        :name="'employmentUnderLocalMinimumAgePreventionEmploymentContracts'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionJobDescription']"
-                        :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionJobDescription']"
-                        :name="'employmentUnderLocalMinimumAgePreventionJobDescription'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionIdentityDocuments']"
-                        :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionIdentityDocuments']"
-                        :name="'employmentUnderLocalMinimumAgePreventionIdentityDocuments'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionTraining']"
-                        :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionTraining']"
-                        :name="'employmentUnderLocalMinimumAgePreventionTraining'"
-                      />
-                      <YesNoComponent
-                        :displayName="
-                          lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge']
-                        "
-                        :info="
-                          lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge']
-                        "
-                        :name="'employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
@@ -429,58 +381,17 @@
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="forcedLabourSlaveryAndDebtBondage">
+                    <FormKit
+                      v-for="area in lksgSubAreas.forcedLabourSlaveryAndDebtBondage"
+                      type="group"
+                      name="forcedLabourSlaveryAndDebtBondage"
+                      :key="area"
+                    >
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPrevention']"
-                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPrevention']"
-                        :name="'forcedLabourAndSlaveryPrevention'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionEmploymentContracts']"
-                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionEmploymentContracts']"
-                        :name="'forcedLabourAndSlaveryPreventionEmploymentContracts'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionIdentityDocuments']"
-                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionIdentityDocuments']"
-                        :name="'forcedLabourAndSlaveryPreventionIdentityDocuments'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionFreeMovement']"
-                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionFreeMovement']"
-                        :name="'forcedLabourAndSlaveryPreventionFreeMovement'"
-                      />
-                      <YesNoComponent
-                        :displayName="
-                          lksgKpisNameMappings['forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets']
-                        "
-                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets']"
-                        :name="'forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionTraining']"
-                        :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionTraining']"
-                        :name="'forcedLabourAndSlaveryPreventionTraining'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['documentedWorkingHoursAndWages']"
-                        :info="lksgKpisInfoMappings['documentedWorkingHoursAndWages']"
-                        :name="'documentedWorkingHoursAndWages'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['adequateLivingWage']"
-                        :info="lksgKpisInfoMappings['adequateLivingWage']"
-                        :name="'adequateLivingWage'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['regularWagesProcessFlow']"
-                        :info="lksgKpisInfoMappings['regularWagesProcessFlow']"
-                        :name="'regularWagesProcessFlow'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['fixedHourlyWages']"
-                        :info="lksgKpisInfoMappings['fixedHourlyWages']"
-                        :name="'fixedHourlyWages'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
@@ -505,6 +416,7 @@
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
@@ -541,91 +453,12 @@
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="osh">
+                    <FormKit v-for="area in lksgSubAreas.osh" type="group" name="osh" :key="area">
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshMonitoring']"
-                        :info="lksgKpisInfoMappings['oshMonitoring']"
-                        :name="'oshMonitoring'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicy']"
-                        :info="lksgKpisInfoMappings['oshPolicy']"
-                        :name="'oshPolicy'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicyPersonalProtectiveEquipment']"
-                        :info="lksgKpisInfoMappings['oshPolicyPersonalProtectiveEquipment']"
-                        :name="'oshPolicyPersonalProtectiveEquipment'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicyMachineSafety']"
-                        :info="lksgKpisInfoMappings['oshPolicyMachineSafety']"
-                        :name="'oshPolicyMachineSafety'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicyDisasterBehaviouralResponse']"
-                        :info="lksgKpisInfoMappings['oshPolicyDisasterBehaviouralResponse']"
-                        :name="'oshPolicyDisasterBehaviouralResponse'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicyAccidentsBehaviouralResponse']"
-                        :info="lksgKpisInfoMappings['oshPolicyAccidentsBehaviouralResponse']"
-                        :name="'oshPolicyAccidentsBehaviouralResponse'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicyWorkplaceErgonomics']"
-                        :info="lksgKpisInfoMappings['oshPolicyWorkplaceErgonomics']"
-                        :name="'oshPolicyWorkplaceErgonomics'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicyHandlingChemicalsAndOtherHazardousSubstances']"
-                        :info="lksgKpisInfoMappings['oshPolicyHandlingChemicalsAndOtherHazardousSubstances']"
-                        :name="'oshPolicyHandlingChemicalsAndOtherHazardousSubstances'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicyFireProtection']"
-                        :info="lksgKpisInfoMappings['oshPolicyFireProtection']"
-                        :name="'oshPolicyFireProtection'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicyWorkingHours']"
-                        :info="lksgKpisInfoMappings['oshPolicyWorkingHours']"
-                        :name="'oshPolicyWorkingHours'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicyTrainingAddressed']"
-                        :info="lksgKpisInfoMappings['oshPolicyTrainingAddressed']"
-                        :name="'oshPolicyTrainingAddressed'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshPolicyTraining']"
-                        :info="lksgKpisInfoMappings['oshPolicyTraining']"
-                        :name="'oshPolicyTraining'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshManagementSystem']"
-                        :info="lksgKpisInfoMappings['oshManagementSystem']"
-                        :name="'oshManagementSystem'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshManagementSystemInternationalCertification']"
-                        :info="lksgKpisInfoMappings['oshManagementSystemInternationalCertification']"
-                        :name="'oshManagementSystemInternationalCertification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshManagementSystemNationalCertification']"
-                        :info="lksgKpisInfoMappings['oshManagementSystemNationalCertification']"
-                        :name="'oshManagementSystemNationalCertification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['workplaceAccidentsUnder10']"
-                        :info="lksgKpisInfoMappings['workplaceAccidentsUnder10']"
-                        :name="'workplaceAccidentsUnder10'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['oshTraining']"
-                        :info="lksgKpisInfoMappings['oshTraining']"
-                        :name="'oshTraining'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
@@ -640,31 +473,17 @@
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="freedomOfAssociation">
+                    <FormKit
+                      v-for="area in lksgSubAreas.freedomOfAssociation"
+                      type="group"
+                      name="freedomOfAssociation"
+                      :key="area"
+                    >
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['freedomOfAssociation']"
-                        :info="lksgKpisInfoMappings['freedomOfAssociation']"
-                        :name="'freedomOfAssociation'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['discriminationForTradeUnionMembers']"
-                        :info="lksgKpisInfoMappings['discriminationForTradeUnionMembers']"
-                        :name="'discriminationForTradeUnionMembers'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['freedomOfOperationForTradeUnion']"
-                        :info="lksgKpisInfoMappings['freedomOfOperationForTradeUnion']"
-                        :name="'freedomOfOperationForTradeUnion'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['freedomOfAssociationTraining']"
-                        :info="lksgKpisInfoMappings['freedomOfAssociationTraining']"
-                        :name="'freedomOfAssociationTraining'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['worksCouncil']"
-                        :info="lksgKpisInfoMappings['worksCouncil']"
-                        :name="'worksCouncil'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
@@ -677,43 +496,12 @@
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="humanRights">
+                    <FormKit v-for="area in lksgSubAreas.humanRights" type="group" name="humanRights" :key="area">
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['diversityAndInclusionRole']"
-                        :info="lksgKpisInfoMappings['diversityAndInclusionRole']"
-                        :name="'diversityAndInclusionRole'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['preventionOfMistreatments']"
-                        :info="lksgKpisInfoMappings['preventionOfMistreatments']"
-                        :name="'preventionOfMistreatments'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['equalOpportunitiesOfficer']"
-                        :info="lksgKpisInfoMappings['equalOpportunitiesOfficer']"
-                        :name="'equalOpportunitiesOfficer'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['riskOfHarmfulPollution']"
-                        :info="lksgKpisInfoMappings['riskOfHarmfulPollution']"
-                        :name="'riskOfHarmfulPollution'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['unlawfulEvictionAndTakingOfLand']"
-                        :info="lksgKpisInfoMappings['unlawfulEvictionAndTakingOfLand']"
-                        :name="'unlawfulEvictionAndTakingOfLand'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['useOfPrivatePublicSecurityForces']"
-                        :info="lksgKpisInfoMappings['useOfPrivatePublicSecurityForces']"
-                        :name="'useOfPrivatePublicSecurityForces'"
-                      />
-                      <YesNoComponent
-                        :displayName="
-                          lksgKpisNameMappings['useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights']
-                        "
-                        :info="lksgKpisInfoMappings['useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights']"
-                        :name="'useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
@@ -730,11 +518,17 @@
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="socialAndEmployeeMatters">
+                    <FormKit
+                      v-for="area in lksgSubAreas.socialAndEmployeeMatters"
+                      type="group"
+                      name="socialAndEmployeeMatters"
+                      :key="area"
+                    >
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['responsibilitiesForFairWorkingConditions']"
-                        :info="lksgKpisInfoMappings['responsibilitiesForFairWorkingConditions']"
-                        :name="'responsibilitiesForFairWorkingConditions'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
@@ -746,11 +540,12 @@
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="environment">
+                    <FormKit v-for="area in lksgSubAreas.environment" type="group" name="environment" :key="area">
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['responsibilitiesForTheEnvironment']"
-                        :info="lksgKpisInfoMappings['responsibilitiesForTheEnvironment']"
-                        :name="'responsibilitiesForTheEnvironment'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
@@ -778,11 +573,12 @@
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="riskManagement">
+                    <FormKit v-for="area in lksgSubAreas.riskManagement" type="group" name="riskManagement" :key="area">
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['riskManagementSystem']"
-                        :info="lksgKpisInfoMappings['riskManagementSystem']"
-                        :name="'riskManagementSystem'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
@@ -794,21 +590,12 @@
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="codeOfConduct">
+                    <FormKit v-for="area in lksgSubAreas.codeOfConduct" type="group" name="codeOfConduct" :key="area">
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['codeOfConduct']"
-                        :info="lksgKpisInfoMappings['codeOfConduct']"
-                        :name="'codeOfConduct'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['codeOfConductRiskManagementTopics']"
-                        :info="lksgKpisInfoMappings['codeOfConductRiskManagementTopics']"
-                        :name="'codeOfConductRiskManagementTopics'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['codeOfConductTraining']"
-                        :info="lksgKpisInfoMappings['codeOfConductTraining']"
-                        :name="'codeOfConductTraining'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
@@ -823,131 +610,12 @@
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit type="group" name="waste">
+                    <FormKit v-for="area in lksgSubAreas.waste" type="group" name="waste" :key="area">
                       <YesNoComponent
-                        :displayName="lksgKpisNameMappings['mercuryAndMercuryWasteHandling']"
-                        :info="lksgKpisInfoMappings['mercuryAndMercuryWasteHandling']"
-                        :name="'mercuryAndMercuryWasteHandling'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['mercuryAndMercuryWasteHandlingPolicy']"
-                        :info="lksgKpisInfoMappings['mercuryAndMercuryWasteHandlingPolicy']"
-                        :name="'mercuryAndMercuryWasteHandlingPolicy'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['chemicalHandling']"
-                        :info="lksgKpisInfoMappings['chemicalHandling']"
-                        :name="'chemicalHandling'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['environmentalManagementSystem']"
-                        :info="lksgKpisInfoMappings['environmentalManagementSystem']"
-                        :name="'environmentalManagementSystem'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['environmentalManagementSystemInternationalCertification']"
-                        :info="lksgKpisInfoMappings['environmentalManagementSystemInternationalCertification']"
-                        :name="'environmentalManagementSystemInternationalCertification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['environmentalManagementSystemNationalCertification']"
-                        :info="lksgKpisInfoMappings['environmentalManagementSystemNationalCertification']"
-                        :name="'environmentalManagementSystemNationalCertification'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['legalRestrictedWaste']"
-                        :info="lksgKpisInfoMappings['legalRestrictedWaste']"
-                        :name="'legalRestrictedWaste'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['legalRestrictedWasteProcesses']"
-                        :info="lksgKpisInfoMappings['legalRestrictedWasteProcesses']"
-                        :name="'legalRestrictedWasteProcesses'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['mercuryAddedProductsHandling']"
-                        :info="lksgKpisInfoMappings['mercuryAddedProductsHandling']"
-                        :name="'mercuryAddedProductsHandling'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['mercuryAddedProductsHandlingRiskOfExposure']"
-                        :info="lksgKpisInfoMappings['mercuryAddedProductsHandlingRiskOfExposure']"
-                        :name="'mercuryAddedProductsHandlingRiskOfExposure'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['mercuryAddedProductsHandlingRiskOfDisposal']"
-                        :info="lksgKpisInfoMappings['mercuryAddedProductsHandlingRiskOfDisposal']"
-                        :name="'mercuryAddedProductsHandlingRiskOfDisposal'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['mercuryAndMercuryCompoundsProductionAndUse']"
-                        :info="lksgKpisInfoMappings['mercuryAndMercuryCompoundsProductionAndUse']"
-                        :name="'mercuryAndMercuryCompoundsProductionAndUse'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure']"
-                        :info="lksgKpisInfoMappings['mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure']"
-                        :name="'mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUse']"
-                        :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUse']"
-                        :name="'persistentOrganicPollutantsProductionAndUse'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseRiskOfExposure']"
-                        :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseRiskOfExposure']"
-                        :name="'persistentOrganicPollutantsProductionAndUseRiskOfExposure'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseRiskOfDisposal']"
-                        :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseRiskOfDisposal']"
-                        :name="'persistentOrganicPollutantsProductionAndUseRiskOfDisposal'"
-                      />
-                      <YesNoComponent
-                        :displayName="
-                          lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseTransboundaryMovements']
-                        "
-                        :info="
-                          lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseTransboundaryMovements']
-                        "
-                        :name="'persistentOrganicPollutantsProductionAndUseTransboundaryMovements'"
-                      />
-                      <YesNoComponent
-                        :displayName="
-                          lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseRiskForImportingState']
-                        "
-                        :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseRiskForImportingState']"
-                        :name="'persistentOrganicPollutantsProductionAndUseRiskForImportingState'"
-                      />
-                      <YesNoComponent
-                        :displayName="
-                          lksgKpisNameMappings['hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein']
-                        "
-                        :info="lksgKpisInfoMappings['hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein']"
-                        :name="'hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein'"
-                      />
-                      <YesNoComponent
-                        :displayName="
-                          lksgKpisNameMappings['hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein']
-                        "
-                        :info="lksgKpisInfoMappings['hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein']"
-                        :name="'hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['hazardousWasteDisposal']"
-                        :info="lksgKpisInfoMappings['hazardousWasteDisposal']"
-                        :name="'hazardousWasteDisposal'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['hazardousWasteDisposalRiskOfImport']"
-                        :info="lksgKpisInfoMappings['hazardousWasteDisposalRiskOfImport']"
-                        :name="'hazardousWasteDisposalRiskOfImport'"
-                      />
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['hazardousAndOtherWasteImport']"
-                        :info="lksgKpisInfoMappings['hazardousAndOtherWasteImport']"
-                        :name="'hazardousAndOtherWasteImport'"
+                        :displayName="lksgKpisNameMappings[area]"
+                        :info="lksgKpisInfoMappings[area]"
+                        :name="area"
+                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
                       />
                     </FormKit>
                   </div>
