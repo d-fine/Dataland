@@ -15,14 +15,6 @@ export const useFrameworkFiltersStore = defineStore("frameworkFilters", {
   },
 });
 
-export const useFunctionIdsStore = defineStore("functionIdsStore", {
-  state: () => {
-    return {
-      functionIdOfSetIntervalForSessionWarning: undefined as undefined | number,
-    };
-  },
-});
-
 export const useSharedSessionStateStore = defineStore("sharedSessionStateStore", {
   state: () => {
     return {

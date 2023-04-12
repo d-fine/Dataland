@@ -1,7 +1,7 @@
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { loginAndRedirectToSearchPage, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 import Keycloak from "keycloak-js";
-import { useFunctionIdsStore, useSharedSessionStateStore } from "@/stores/stores";
+import { useSharedSessionStateStore } from "@/stores/stores";
 
 const minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS + 1000;
 
@@ -32,28 +32,29 @@ export function updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak: Keycloak,
 /**
  * Starts a setInterval-method which - in fixed time intervals - checks if the session warning timestamp was surpassed.
  * If it is surpassed, the provided callback function will be executed.
- * The function ID of this setInterval-method is stored inside the window storage by using pinia.
  *
  * @param keycloak is the keycloak adaptor used to do a logout in case the session warning timestamp cannot be retrieved
  * @param onSurpassingExpiredSessionTimestampCallback is the callback function which will be executed as soon as the
  * session warning timestamp is surpassed
+ * @returns the function ID of the setInterval-execution as number
  */
-export function startSessionSetIntervalFunction(
+export function startSessionSetIntervalFunctionAndReturnItsId(
   keycloak: Keycloak,
   onSurpassingExpiredSessionTimestampCallback: () => void
-): void {
-  useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning = setInterval(() => {
+): number {
+  const functionIdOfSetInterval = setInterval(() => {
     const currentTimestampInMs = new Date().getTime();
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs;
     if (!sessionWarningTimestamp) {
       logoutAndRedirectToUri(keycloak, "");
     } else {
       if (currentTimestampInMs >= sessionWarningTimestamp) {
-        clearInterval(useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning);
+        clearInterval(functionIdOfSetInterval);
         onSurpassingExpiredSessionTimestampCallback();
       }
     }
   }, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS);
+  return functionIdOfSetInterval;
 }
 
 /**

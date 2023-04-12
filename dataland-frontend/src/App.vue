@@ -9,12 +9,12 @@ import DynamicDialog from "primevue/dynamicdialog";
 import { computed, defineComponent } from "vue";
 import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 import {
-  startSessionSetIntervalFunction,
+  startSessionSetIntervalFunctionAndReturnItsId,
   updateTokenAndItsExpiryTimestampAndStoreBoth,
 } from "@/utils/SessionTimeoutUtils";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
-import { useFunctionIdsStore, useSharedSessionStateStore } from "@/stores/stores";
+import { useSharedSessionStateStore } from "@/stores/stores";
 
 export default defineComponent({
   name: "app",
@@ -25,6 +25,7 @@ export default defineComponent({
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
       resolvedKeycloakPromise: undefined as undefined | Keycloak,
       keycloakAuthenticated: false,
+      functionIdOfSessionSetInterval: undefined as number | undefined,
     };
   },
 
@@ -32,9 +33,12 @@ export default defineComponent({
     currentRefreshTokenInSharedStore(newRefreshToken: string) {
       if (this.resolvedKeycloakPromise && newRefreshToken) {
         this.resolvedKeycloakPromise.refreshToken = newRefreshToken;
-        clearInterval(useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning);
+        clearInterval(this.functionIdOfSessionSetInterval);
         const openSessionWarningModalBound = this.openSessionWarningModal.bind(this);
-        startSessionSetIntervalFunction(this.resolvedKeycloakPromise, openSessionWarningModalBound);
+        this.functionIdOfSessionSetInterval = startSessionSetIntervalFunctionAndReturnItsId(
+          this.resolvedKeycloakPromise,
+          openSessionWarningModalBound
+        );
       }
     },
   },
