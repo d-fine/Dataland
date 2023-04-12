@@ -13,7 +13,7 @@
           data-test="Report-Download"
           >{{ name }}</span
         >
-        <span v-if="reportCounter < Object.keys(reports).length">, </span>
+        <span v-if="reportCounter < Object.keys(reports).length"> | </span>
       </span>
     </p>
   </div>
@@ -39,11 +39,9 @@ export default defineComponent({
   },
   data() {
     return {
-      reportCounter: 10,
-      test: "test",
+      reportCounter: 0,
       getDocumentsFromStorageProcessed: false,
       getDocumentsFromStorageResponse: null as AxiosResponse<File> | null,
-      reportContents: [File],
       messageCount: 0,
     };
   },
@@ -56,7 +54,7 @@ export default defineComponent({
       this.reportCounter++;
     },
     /**
-     * Rsets the counter used to correctly build the list of reports
+     * Resets the counter used to correctly build the list of reports
      */
     resetReportsCount() {
       this.reportCounter = 0;
@@ -104,18 +102,13 @@ export default defineComponent({
      * @returns filename the name of the downloaded file
      */
     constructFileName(contentDisposition: string, reference: string): string {
-      let filename: string;
-      try {
-        filename =
-          contentDisposition
-            .split(";")
-            .find((n: string | string[]) => n.includes("filename="))
-            .replace("filename=", "")
-            .trim() ?? reference + ".pdf";
-      } catch {
-        filename = reference + ".pdf";
+      const regex = /(?<=filename=)[^;]+/;
+      const filename = regex.exec(contentDisposition);
+      if (filename !== null) {
+        return filename[0];
+      } else {
+        return reference + ".pdf";
       }
-      return filename;
     },
   },
 });

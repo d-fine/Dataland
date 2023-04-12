@@ -4,6 +4,7 @@
     <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="dataSet && !waitingForData">
+    <ShowReportsBanner :reports="dataSet.referencedReports" />
     <div class="grid">
       <div class="col-6">
         <TaxoInfoCard
@@ -89,10 +90,11 @@ import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import ShowReportsBanner from "@/components/resources/frameworkDataSearch/ShowReportsBanner.vue";
 
 export default defineComponent({
   name: "EuTaxonomyPanelNonFinancials",
-  components: { TaxoCard, TaxoInfoCard },
+  components: { TaxoCard, TaxoInfoCard, ShowReportsBanner },
   data() {
     return {
       dataSet: null as EuTaxonomyDataForNonFinancials | null | undefined,
