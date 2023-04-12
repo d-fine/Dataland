@@ -24,7 +24,7 @@ import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constant
 import { useSharedSessionStateStore } from "@/stores/stores";
 
 export default defineComponent({
-  inject: ["dialogRef"],
+  inject: ["dialogRef"], // TODO try if you can inject keycloak Promise instead of passing it via the dialogRef
   name: "SessionTimeoutModal",
   components: { AuthenticationButton, PrimeButton },
 
@@ -36,6 +36,7 @@ export default defineComponent({
       showRefreshButton: false,
       refreshButtonLabel: "Refresh Session",
       isTrackingOfRefreshTokenExpiryEnabled: false,
+      hasExternalLogoutOccurred: false,
       keycloak: undefined as undefined | Keycloak,
       functionIdOfExpiryCheck: undefined as undefined | number,
       buttonClass: "p-button-sm uppercase d-letters w-15rem",
@@ -45,6 +46,9 @@ export default defineComponent({
   watch: {
     currentRefreshTokenInSharedStore() {
       this.closeTheDialog();
+      if (this.hasExternalLogoutOccurred) {
+        void this.$router.push({ path: "/companies", replace: true });
+      }
     },
   },
 
@@ -101,6 +105,7 @@ export default defineComponent({
         showLogInButton: boolean;
         showRefreshButton: boolean;
         isTrackingOfRefreshTokenExpiryEnabled: boolean;
+        hasExternalLogoutOccurred: boolean;
         resolvedKeycloakPromise: Keycloak;
       };
       this.displayedHeader = dialogRefData.displayedHeader;
@@ -108,6 +113,7 @@ export default defineComponent({
       this.showLogInButton = dialogRefData.showLogInButton;
       this.showRefreshButton = dialogRefData.showRefreshButton;
       this.isTrackingOfRefreshTokenExpiryEnabled = dialogRefData.isTrackingOfRefreshTokenExpiryEnabled;
+      this.hasExternalLogoutOccurred = dialogRefData.hasExternalLogoutOccurred;
       this.keycloak = dialogRefData.resolvedKeycloakPromise;
     },
 
