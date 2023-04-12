@@ -87,11 +87,16 @@
                 type="text"
                 :modelValue="filesToUpload[index].reportDate"
                 name="reportDate"
-                :outer-class="{ 'hidden-input': false }"
+                :outer-class="{ 'hidden-input': true }"
               />
             </div>
 
-            <FormKit type="text" :modelValue="filesToUpload[index].documentId" name="reference" />
+            <FormKit
+              type="text"
+              :modelValue="filesToUpload[index].documentId"
+              name="reference"
+              :outer-class="{ 'hidden-input': true }"
+            />
 
             <!-- Currency used in the report -->
             <div class="form-field" data-test="currencyUsedInTheReport">
@@ -151,11 +156,16 @@
               type="text"
               :modelValue="uploadFiles[index].reportDate"
               name="reportDate"
-              :outer-class="{ 'hidden-input': false }"
+              :outer-class="{ 'hidden-input': true }"
             />
           </div>
 
-          <FormKit type="text" :modelValue="uploadFiles[index].reference" name="reference" />
+          <FormKit
+            type="text"
+            :modelValue="uploadFiles[index].reference"
+            name="reference"
+            :outer-class="{ 'hidden-input': true }"
+          />
 
           <!-- Currency used in the report -->
           <div class="form-field" data-test="currencyUsedInTheReport">

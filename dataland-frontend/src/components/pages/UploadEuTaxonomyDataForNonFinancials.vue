@@ -3,16 +3,9 @@
     <TheHeader />
     <UploaderRoleWrapper>
       <TheContent>
-        <MarginWrapper>
-          <div class="grid align-items-end">
-            <div class="col-9">
-              <CompanyInformation :companyID="companyID" />
-            </div>
-          </div>
-        </MarginWrapper>
-        <MarginWrapper bg-class="paper-section" class="text-left">
-          <CreateEUTaxonomyForNonFinancials :companyID="companyID" />
-        </MarginWrapper>
+        <BackButton id="backButton" />
+        <CompanyInformation :companyID="companyID" />
+        <CreateEUTaxonomyForNonFinancials :companyID="companyID" />
       </TheContent>
     </UploaderRoleWrapper>
     <DatalandFooter />
@@ -25,9 +18,9 @@ import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CreateEUTaxonomyForNonFinancials from "@/components/forms/CreateEUTaxonomyForNonFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
+import BackButton from "@/components/general/BackButton.vue";
 
 export default {
   name: "UploadEutaxonomyDataForNonFinancials",
@@ -38,8 +31,8 @@ export default {
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
-    MarginWrapper,
     DatalandFooter,
+    BackButton,
   },
   props: {
     companyID: {

@@ -432,7 +432,7 @@ export default defineComponent({
   mounted() {
     const dataId = this.route.query.templateDataId;
 
-    if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+    if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
       void this.loadEuData(dataId);
     }
@@ -563,8 +563,8 @@ export default defineComponent({
     /**
      * Add files to object filesToUpload
      *
-     * @param event date in date format
-     * @param event.originalEvent event
+     * @param event full event object containing the files
+     * @param event.originalEvent event information
      * @param event.files files
      */
     onSelectedFilesHandler(event: { files: Record<string, string>[]; originalEvent: Event }): void {
