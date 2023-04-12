@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="pl-0 min-h-screen paper-section">
+    <TheContent class="min-h-screen paper-section">
       <ProgressBar
         v-if="submissionInProgress || submissionFinished"
         :processHasStarted="submissionInProgress"

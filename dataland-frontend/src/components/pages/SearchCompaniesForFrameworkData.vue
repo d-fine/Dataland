@@ -3,7 +3,7 @@
     <TheHeader />
     <TabView class="col-12" v-model:activeIndex="activeTabIndex" @tab-change="handleTabChange">
       <TabPanel header="AVAILABLE DATASETS">
-        <TheContent class="pl-0 pt-0 min-h-screen paper-section relative">
+        <TheContent class="min-h-screen paper-section relative">
           <div
             id="searchBarAndFiltersContainer"
             class="w-full bg-white pt-4"
