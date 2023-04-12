@@ -309,8 +309,8 @@ describe("The shared header of the framework pages should act as expected", { sc
                 );
               });
             })
-            .then(() => {
-              return uploadOneSfdrDataset(token, companyIdOfAlpha, "2019", generateSfdrData());
+            .then(async () => {
+              return uploadOneSfdrDataset(token, companyIdOfAlpha, "2019", await generateSfdrData());
             })
             .then(() => {
               return uploadOneEuTaxonomyFinancialsDatasetViaApi(
@@ -342,12 +342,12 @@ describe("The shared header of the framework pages should act as expected", { sc
                 );
               });
             })
-            .then(() => {
+            .then(async () => {
               return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
                 token,
                 companyIdOfAlpha,
                 "2015",
-                generateEuTaxonomyDataForNonFinancials()
+                await generateEuTaxonomyDataForNonFinancials()
               );
             });
         });
@@ -360,16 +360,16 @@ describe("The shared header of the framework pages should act as expected", { sc
       function uploadCompanyBetaAndData(): void {
         getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
-            .then((storedCompany) => {
+            .then(async (storedCompany) => {
               companyIdOfBeta = storedCompany.companyId;
-              return uploadOneLksgDatasetViaApi(token, companyIdOfBeta, "2015", generateLksgData());
+              return uploadOneLksgDatasetViaApi(token, companyIdOfBeta, "2015", await generateLksgData());
             })
-            .then(() => {
+            .then(async () => {
               return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
                 token,
                 companyIdOfBeta,
                 "2014",
-                generateEuTaxonomyDataForNonFinancials()
+                await generateEuTaxonomyDataForNonFinancials()
               );
             });
         });

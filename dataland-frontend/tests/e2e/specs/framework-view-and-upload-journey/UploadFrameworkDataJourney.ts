@@ -44,13 +44,13 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             .then(() => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany));
             })
-            .then((storedCompany) => {
+            .then(async (storedCompany) => {
               storedCompanyForManyDatasetsCompany = storedCompany;
               return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
                 "2023",
-                generateEuTaxonomyDataForFinancials()
+                await generateEuTaxonomyDataForFinancials()
               );
             })
             .then((dataMetaInformationOfFirstUpload) => {
@@ -58,21 +58,21 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
               const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 2000;
               return cy
                 .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
-                .then(() => {
+                .then(async () => {
                   return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     "2022",
-                    generateEuTaxonomyDataForFinancials()
+                    await generateEuTaxonomyDataForFinancials()
                   );
                 })
-                .then((dataMetaInformationOfSecondUpload) => {
+                .then(async (dataMetaInformationOfSecondUpload) => {
                   dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
                   return uploadOneLksgDatasetViaApi(
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     getRandomReportingPeriod(),
-                    generateLksgData()
+                    await generateLksgData()
                   );
                 })
                 .then((dataMetaInformationLksgUpload) => {
