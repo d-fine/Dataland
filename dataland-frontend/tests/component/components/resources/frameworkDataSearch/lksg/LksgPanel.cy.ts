@@ -83,7 +83,7 @@ describe("Component test for LksgPanel", () => {
     cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
 
     cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-    const listOfProductionSites = lksgData.social!.general!.listOfProductionSites;
+    const listOfProductionSites = lksgData.social!.general!.listOfProductionSites!;
     if (listOfProductionSites.length < 2) {
       throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
     }

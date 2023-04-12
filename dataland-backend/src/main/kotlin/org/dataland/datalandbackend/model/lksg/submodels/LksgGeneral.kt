@@ -32,6 +32,5 @@ data class LksgGeneral(
     @field:JsonProperty(required = true)
     val totalRevenueCurrency: String,
 
-    @field:JsonProperty(required = true)
-    val listOfProductionSites: List<ProductionSite>,
+    val listOfProductionSites: List<ProductionSite>?,
 )

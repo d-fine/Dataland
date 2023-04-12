@@ -2849,7 +2849,6 @@
       "LksgGeneral": {
         "required": [
           "dataDate",
-          "listOfProductionSites",
           "lksgInScope",
           "numberOfEmployees",
           "shareOfTemporaryWorkers",
