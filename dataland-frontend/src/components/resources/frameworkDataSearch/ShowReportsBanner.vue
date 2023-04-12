@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12 text-left bg-white mb-4 mp-0 all-sides-blue-border" style="width: 99%">
+  <div class="col-12 text-left bg-white mb-4 mp-0 all-sides-blue-border" data-test="reportsBanner" style="width: 99%">
     <p class="font-bold text-gray-800 mt-0 mb-0 mp-0 ml-0 mr-0" style="font-size: 11pt">
       Data extracted from the company report. Company reports:
     </p>
@@ -87,7 +87,6 @@ export default defineComponent({
             docUrl.setAttribute("download", filename);
             document.body.appendChild(docUrl);
             docUrl.click();
-            console.log(getDocumentsFromStorageResponse);
           });
       } catch (error) {
         console.error(error);

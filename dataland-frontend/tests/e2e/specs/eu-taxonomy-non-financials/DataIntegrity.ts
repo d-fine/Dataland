@@ -100,6 +100,29 @@ describeIf(
       });
     });
 
+    it("Create a EU Taxonomy Dataset via Api and ensure the reports banner exists and documents can be downloaded", () => {
+      const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
+      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
+        cy.get("div[data-test='reportsBanner']").should("exist");
+        const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + "/test-report.pdf";
+
+        cy.readFile(expectedPathToDownloadedReport).should("not.exist");
+        const downloadLinkSelector = "span[data-test='Report-Download']";
+        cy.get(downloadLinkSelector)
+          .click({ multiple: true })
+          .then(() => {
+            cy.readFile("../testing/data/documents/test-report.pdf", "binary", {
+              timeout: Cypress.env("medium_timeout_in_ms") as number,
+            }).then((expectedPdfBinary) => {
+              cy.readFile(expectedPathToDownloadedReport, "binary", {
+                timeout: Cypress.env("medium_timeout_in_ms") as number,
+              }).should("eq", expectedPdfBinary);
+            });
+            cy.task("deleteFolder", Cypress.config("downloadsFolder"));
+          });
+      });
+    });
+
     it("Upload EU Taxonomy Dataset via form and assure that it can be viewed on the framework ", () => {
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
