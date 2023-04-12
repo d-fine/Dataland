@@ -115,11 +115,6 @@ export default defineConfig({
                 },
             });
 
-            on('task', {
-                async fsWriteFile(nameContent: string[]) {
-                    return await promises.writeFile(nameContent[0], nameContent[1]);
-                },
-            });
             return config
         },
         supportFile: "tests/e2e/support/index.ts",

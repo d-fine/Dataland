@@ -8,14 +8,18 @@ import {
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateDatapoint } from "@e2e/fixtures/common/DataPointFixtures";
 
-type generatorFunction = (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials>;
+type generatorFunction = (
+  input: FixtureData<EuTaxonomyDataForFinancials>
+) => Promise<FixtureData<EuTaxonomyDataForFinancials>>;
 
 /**
  * Generates prepared fixtures for the eutaxonomy-financials framework
  *
  * @returns the generated fixtures
  */
-export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<FixtureData<EuTaxonomyDataForFinancials>> {
+export async function generateEuTaxonomyForFinancialsPreparedFixtures(): Promise<
+  Array<FixtureData<EuTaxonomyDataForFinancials>>
+> {
   const creationFunctions: Array<generatorFunction> = [
     createAssetManagementAndInsuranceCompany,
     createCreditInstitutionDualFieldSubmission,
@@ -27,13 +31,13 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
     createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.29),
     createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(0.292),
   ];
-  const fixtureBase = generateFixtureDataset<EuTaxonomyDataForFinancials>(
+  const fixtureBase = await generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
     creationFunctions.length
   );
   const preparedFixtures = [];
   for (let i = 0; i < creationFunctions.length; i++) {
-    preparedFixtures.push(creationFunctions[i](fixtureBase[i]));
+    preparedFixtures.push(await creationFunctions[i](fixtureBase[i]));
   }
   return preparedFixtures;
 }
@@ -44,11 +48,11 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
-function createCreditInstitutionDualFieldSubmission(
+async function createCreditInstitutionDualFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForFinancials> {
+): Promise<FixtureData<EuTaxonomyDataForFinancials>> {
   input.companyInformation.companyName = "credit-institution-dual-field-submission";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+  input.t = await generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
     interbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
     tradingPortfolio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
@@ -63,11 +67,11 @@ function createCreditInstitutionDualFieldSubmission(
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
-function createCreditInstitutionSingleFieldSubmission(
+async function createCreditInstitutionSingleFieldSubmission(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForFinancials> {
+): Promise<FixtureData<EuTaxonomyDataForFinancials>> {
   input.companyInformation.companyName = "credit-institution-single-field-submission";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+  input.t = await generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
   input.t.creditInstitutionKpis = {
     tradingPortfolioAndInterbankLoans: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
     greenAssetRatio: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
@@ -81,11 +85,11 @@ function createCreditInstitutionSingleFieldSubmission(
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
-function createInsuranceCompany(
+async function createInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForFinancials> {
+): Promise<FixtureData<EuTaxonomyDataForFinancials>> {
   input.companyInformation.companyName = "insurance-company";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["InsuranceOrReinsurance"]);
+  input.t = await generateEuTaxonomyDataForFinancialsWithTypes(["InsuranceOrReinsurance"]);
   return input;
 }
 
@@ -95,11 +99,11 @@ function createInsuranceCompany(
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
-function createAssetManagementCompany(
+async function createAssetManagementCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForFinancials> {
+): Promise<FixtureData<EuTaxonomyDataForFinancials>> {
   input.companyInformation.companyName = "asset-management-company";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement"]);
+  input.t = await generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement"]);
   return input;
 }
 
@@ -109,11 +113,11 @@ function createAssetManagementCompany(
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
-function createAssetManagementAndInsuranceCompany(
+async function createAssetManagementAndInsuranceCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForFinancials> {
+): Promise<FixtureData<EuTaxonomyDataForFinancials>> {
   input.companyInformation.companyName = "asset-management-insurance-company";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement", "InsuranceOrReinsurance"]);
+  input.t = await generateEuTaxonomyDataForFinancialsWithTypes(["AssetManagement", "InsuranceOrReinsurance"]);
   return input;
 }
 
@@ -123,11 +127,11 @@ function createAssetManagementAndInsuranceCompany(
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
-function createAllValuesCompany(
+async function createAllValuesCompany(
   input: FixtureData<EuTaxonomyDataForFinancials>
-): FixtureData<EuTaxonomyDataForFinancials> {
+): Promise<FixtureData<EuTaxonomyDataForFinancials>> {
   input.companyInformation.companyName = "company-for-all-types";
-  input.t = generateEuTaxonomyDataForFinancialsWithTypes([
+  input.t = await generateEuTaxonomyDataForFinancialsWithTypes([
     "CreditInstitution",
     "AssetManagement",
     "InsuranceOrReinsurance",
@@ -187,10 +191,10 @@ function createAllValuesCompany(
  */
 function createGeneratorForCreditInstitutionWithEligibleActivitySetToValue(
   eligibleActivityValue: number
-): (input: FixtureData<EuTaxonomyDataForFinancials>) => FixtureData<EuTaxonomyDataForFinancials> {
-  return (input) => {
+): (input: FixtureData<EuTaxonomyDataForFinancials>) => Promise<FixtureData<EuTaxonomyDataForFinancials>> {
+  return async (input) => {
     input.companyInformation.companyName = "eligible-activity-Point-" + eligibleActivityValue.toString();
-    input.t = generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
+    input.t = await generateEuTaxonomyDataForFinancialsWithTypes(["CreditInstitution"]);
     input.t.eligibilityKpis = {
       CreditInstitution: {
         taxonomyEligibleActivity: {

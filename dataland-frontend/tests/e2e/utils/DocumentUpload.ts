@@ -7,9 +7,9 @@ import { DocumentControllerApi, DocumentUploadResponse } from "@clients/document
  * @param token the keycloak token for authentication
  */
 export function uploadAllDocuments(token: string): void {
-  const documentDirectory = "..\\testing\\data\\documents\\";
+  const documentDirectory = "../testing/data/documents/";
   cy.task("readdir", documentDirectory).then((fileNames) => {
-    cy.wrap(fileNames as string[]).each((name: string, _index, _list) => {
+    (fileNames as string[]).forEach((name: string) => {
       cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
         uploadDocumentViaApi(token, bufferObject.data, name).catch((error) => console.log(error));
       });

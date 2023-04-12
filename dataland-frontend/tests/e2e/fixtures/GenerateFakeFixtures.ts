@@ -4,17 +4,20 @@ import { exportFixturesEuTaxonomyNonFinancial } from "./eutaxonomy/non-financial
 import { exportFixturesLksg } from "./lksg";
 import { exportFixturesSfdrData } from "./sfdr";
 import { exportFixturesSme } from "./sme";
+
 faker.locale = "de";
 
 /**
  * The main entrypoint of the fake fixture generator
  */
-function main(): void {
-  exportFixturesEuTaxonomyFinancial();
-  exportFixturesEuTaxonomyNonFinancial();
-  exportFixturesLksg();
-  exportFixturesSfdrData();
-  exportFixturesSme();
+async function main(): Promise<void> {
+  await exportFixturesEuTaxonomyFinancial();
+  await exportFixturesEuTaxonomyNonFinancial();
+  await exportFixturesLksg();
+  await exportFixturesSfdrData();
+  await exportFixturesSme();
 }
 
-main();
+main().catch((err) => {
+  console.log(err);
+});

@@ -38,9 +38,9 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedReports): E
  *
  * @returns the generated fixture
  */
-export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
+export async function generateEuTaxonomyDataForNonFinancials(): Promise<EuTaxonomyDataForNonFinancials> {
   const returnBase: EuTaxonomyDataForNonFinancials = {};
-  populateSharedValues(returnBase);
+  await populateSharedValues(returnBase);
 
   returnBase.opex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
   returnBase.capex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);

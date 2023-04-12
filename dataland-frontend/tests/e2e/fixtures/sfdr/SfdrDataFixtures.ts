@@ -1,9 +1,9 @@
 import { SfdrData } from "@clients/backend";
 import {
-  generateNumericOrEmptyDatapoint,
-  generateYesNoOrEmptyDatapoint,
-  generateReferencedReports,
   generateLinkToPdf,
+  generateNumericOrEmptyDatapoint,
+  generateReferencedReports,
+  generateYesNoOrEmptyDatapoint,
 } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomYesNoNaUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
@@ -18,8 +18,8 @@ import { randomStringOrUndefined } from "@e2e/utils/FakeFixtureUtils";
  * @param fiscalYearEnd Optional parameter if a specific date should be set instead of a random one
  * @returns a random SFDR dataset
  */
-export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
-  const reports = generateReferencedReports();
+export async function generateSfdrData(fiscalYearEnd?: string): Promise<SfdrData> {
+  const reports = await generateReferencedReports();
   return {
     social: {
       general: {

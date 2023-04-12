@@ -2,214 +2,215 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [
-				"Barr-Keller",
-				"Ochs, Ostendarp und Lienshöft",
-				"Pohl-Niklaus"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"headquarters": "Räntschscheid",
-			"headquartersPostalCode": "48839",
-			"sector": "e-services",
+			"companyAlternativeNames": [],
+			"headquarters": "Süd Lyn",
+			"headquartersPostalCode": "34643",
+			"sector": "metrics",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "ykwtka1bxreab730i0k5"
+					"identifierType": "Isin",
+					"identifierValue": "4bv221smtev4"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "m7yffio06i"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "7wwyhqk"
+					"identifierValue": "27foowx"
 				}
 			],
-			"countryCode": "CO",
-			"isTeaserCompany": false,
-			"website": "https://empathisch-mineral.ch"
+			"countryCode": "HU",
+			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "http://vortrefflich-krieg.ch/konziliant-wolkenkratzer.pdf",
+				"SustainabilityReport": {
+					"reference": "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f",
 					"isGroupLevel": "Yes",
-					"currency": "TZS"
+					"currency": "PYG"
 				},
 				"AnnualReport": {
-					"reference": "http://resolut-drache.org/gl%C3%BCcklich-wolke.pdf",
-					"currency": "JPY"
-				},
-				"SustainabilityReport": {
-					"reference": "http://xn--unbestechlich-sure-ztb.name/tapfer-br%C3%BCcke.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-10-09",
-					"currency": "AUD"
-				},
-				"ESEFReport": {
-					"reference": "http://leuchtend-krankheiten.net/qualit%C3%A4tsvoll-%C3%A4sthetik.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-06-19",
-					"currency": "ZMW"
+					"reference": "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f",
+					"currency": "CUP"
 				}
 			},
-			"fiscalYearEnd": "2022-04-12",
+			"fiscalYearEnd": "2022-10-08",
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "ReasonableAssurance",
+				"provider": "Uhrig, Nabein und Duma",
+				"dataSource": {
+					"page": 832,
+					"report": "AnnualReport",
+					"tagName": "communities"
+				}
 			},
-			"scopeOfEntities": "No",
+			"scopeOfEntities": "NA",
 			"reportingObligation": "No",
-			"numberOfEmployees": 36636,
+			"numberOfEmployees": 71365,
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.323,
+					"value": 0.2689,
 					"dataSource": {
-						"page": 53,
-						"report": "AnnualReport",
-						"tagName": "communities"
+						"page": 853,
+						"report": "SustainabilityReport",
+						"tagName": "ROI"
 					},
 					"quality": "Audited",
-					"comment": "calculate virtual firewall"
+					"comment": "back up primary matrix"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.9995,
+					"value": 0.3701,
 					"dataSource": {
-						"page": 858,
+						"page": 586,
 						"report": "SustainabilityReport",
-						"tagName": "convergence"
+						"tagName": "platforms"
 					},
 					"quality": "Estimated",
-					"comment": "synthesize primary circuit"
+					"comment": "program redundant panel"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.6009,
+					"value": 0.0117,
 					"quality": "Estimated"
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021-Q2"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Semisch GmbH & Co. KG"
+				"Bolm GmbH",
+				"Lepthin, Uhlemann und Itt",
+				"Liebe GmbH & Co. KG",
+				"Steuk GmbH & Co. KG"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"headquarters": "Elisadorf",
-			"headquartersPostalCode": "80051",
-			"sector": "web services",
+			"companyLegalForm": "AG",
+			"headquarters": "Bad Emilyland",
+			"headquartersPostalCode": "96329",
+			"sector": "e-business",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "z9jc4z8a8"
+					"identifierValue": "fulh0jldc"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "4pjgplbtbjie"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "07mwnsek1ugbs9ofr6c8"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "a62eovd8kp"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "whndpiu"
+					"identifierValue": "74bu1xgy78"
 				}
 			],
-			"countryCode": "BV",
+			"countryCode": "AF",
 			"isTeaserCompany": false,
-			"website": "https://erfolgreich-judentum.info"
+			"website": "http://konstitutiv-zeitalter.org"
 		},
 		"t": {
 			"referencedReports": {
 				"ESEFReport": {
-					"reference": "http://xn--grozgig-agnostizismus-2yb28d.net/chaotisch-laden.pdf",
-					"isGroupLevel": "No",
-					"currency": "BSD"
+					"reference": "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-08-08",
+					"currency": "ALL"
 				},
 				"AnnualReport": {
-					"reference": "https://qualifiziert-busen.com/ungew%C3%B6hnlich-auge.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "AZN"
+					"reference": "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f",
+					"isGroupLevel": "No",
+					"reportDate": "2022-11-18",
+					"currency": "KGS"
 				},
 				"IntegratedReport": {
-					"reference": "http://raffiniert-ellenbogen.info/automatisch-kernschmelze.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-09-21",
-					"currency": "LBP"
+					"reference": "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f",
+					"reportDate": "2022-07-11",
+					"currency": "BMD"
 				}
 			},
-			"fiscalYearEnd": "2022-10-20",
+			"fiscalYearEnd": "2022-12-23",
 			"assurance": {
 				"assurance": "LimitedAssurance",
+				"provider": "Zahn, Burger und Vater",
 				"dataSource": {
-					"page": 548,
-					"report": "ESEFReport",
-					"tagName": "content"
+					"page": 1136,
+					"report": "AnnualReport",
+					"tagName": "technologies"
 				}
 			},
+			"scopeOfEntities": "Yes",
 			"reportingObligation": "Yes",
-			"numberOfEmployees": 90694,
-			"activityLevelReporting": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 605136.79,
+					"value": 975651.22,
 					"dataSource": {
-						"page": 911,
-						"report": "IntegratedReport",
-						"tagName": "architectures"
+						"page": 1085,
+						"report": "AnnualReport",
+						"tagName": "blockchains"
 					},
 					"quality": "Audited",
-					"comment": "quantify 1080p capacitor"
+					"comment": "navigate auxiliary capacitor"
 				},
 				"eligiblePercentage": {
-					"value": 0.5472,
-					"quality": "Incomplete"
+					"value": 0.3498,
+					"dataSource": {
+						"page": 35,
+						"report": "IntegratedReport",
+						"tagName": "relationships"
+					},
+					"quality": "Estimated",
+					"comment": "parse cross-platform monitor"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 747981.25,
+					"value": 658445.98,
 					"dataSource": {
-						"page": 324,
-						"report": "ESEFReport",
-						"tagName": "methodologies"
+						"page": 401,
+						"report": "AnnualReport",
+						"tagName": "relationships"
 					},
-					"quality": "Reported",
-					"comment": "hack bluetooth pixel"
+					"quality": "Audited",
+					"comment": "generate 1080p sensor"
 				},
 				"eligiblePercentage": {
-					"value": 0.8204,
+					"value": 0.2706,
 					"dataSource": {
-						"page": 1019,
-						"report": "IntegratedReport",
-						"tagName": "communities"
+						"page": 985,
+						"report": "ESEFReport",
+						"tagName": "platforms"
 					},
-					"quality": "Incomplete",
-					"comment": "parse virtual protocol"
+					"quality": "Audited",
+					"comment": "connect online bus"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 240596.54,
+					"value": 350805.67,
 					"dataSource": {
-						"page": 1042,
+						"page": 976,
 						"report": "IntegratedReport",
-						"tagName": "convergence"
+						"tagName": "mindshare"
 					},
-					"quality": "Reported",
-					"comment": "synthesize online program"
+					"quality": "Estimated",
+					"comment": "generate virtual hard drive"
 				},
 				"eligiblePercentage": {
-					"value": 0.4072,
-					"dataSource": {
-						"page": 830,
-						"report": "IntegratedReport",
-						"tagName": "functionalities"
-					},
-					"quality": "Audited",
-					"comment": "override haptic system"
+					"value": 0.4648,
+					"quality": "Incomplete"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2021-Q2"
 	}
 ]

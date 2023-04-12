@@ -1,4 +1,6 @@
 import { faker } from "@faker-js/faker";
+import { promises } from "fs";
+import { createHash } from "crypto";
 import { CompanyReportReference, DataPointBigDecimal, DataPointYesNo, QualityOptions } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
@@ -44,9 +46,10 @@ export function generateLinkToPdf(): string {
  *
  * @returns documentId ID of a pdf that is stored in internal storage and can be referenced
  */
-export function getReferencedDocumentId(): string {
-  const documentId = ""; //TODO: Upload a document with prepopulation and get hash
-  return documentId;
+export async function getReferencedDocumentId(): Promise<string> {
+  const documentDirectory = "..\\testing\\data\\documents\\";
+  const fileContent: Buffer = await promises.readFile(documentDirectory + "\\test-report.pdf");
+  return createHash("sha256").update(fileContent).digest("hex");
 }
 
 /**
@@ -54,19 +57,19 @@ export function getReferencedDocumentId(): string {
  *
  * @returns a random non-empty set of reports
  */
-export function generateReferencedReports(): ReferencedReports {
+export async function generateReferencedReports(): Promise<ReferencedReports> {
   const availableReports = faker.helpers.arrayElements(possibleReports);
   if (availableReports.length == 0) availableReports.push(possibleReports[0]);
 
   const referencedReports: ReferencedReports = {};
-  availableReports.forEach((reportName) => {
+  for await (const reportName of availableReports) {
     referencedReports[reportName] = {
-      reference: generateLinkToPdf(),
+      reference: await getReferencedDocumentId(),
       isGroupLevel: randomYesNoNaUndefined(),
       reportDate: randomPastDateOrUndefined(),
       currency: faker.finance.currencyCode(),
     };
-  });
+  }
   return referencedReports;
 }
 
