@@ -458,7 +458,7 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
-        let allFileUploadedSuccessful = true;
+        let allFilesWasUploadedSuccessful = true;
 
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -474,7 +474,7 @@ export default defineComponent({
               this.filesToUpload[index]
             );
             if (!uploadFileSuccessful) {
-              allFileUploadedSuccessful = false;
+              allFilesWasUploadedSuccessful = false;
               break;
             } else if (uploadFileSuccessful) {
               this.updatePropertyFilesUploaded(
@@ -487,7 +487,7 @@ export default defineComponent({
           }
         }
 
-        if (allFileUploadedSuccessful) {
+        if (allFilesWasUploadedSuccessful) {
           await this.$nextTick();
           const formInputsModelToSend = modifyObjectKeys(
             JSON.parse(JSON.stringify(this.formInputsModel)) as objectType,
@@ -544,7 +544,7 @@ export default defineComponent({
     onSelectedFilesHandler(event: { files: Record<string, string>[]; originalEvent: Event }): void {
       if (event.files.length) {
         event.files.forEach((file) => {
-          if (this.uploadFiles.some((objfile) => objfile.name === file.name.split(".")[0])) {
+          if (this.uploadFiles.some((existingFile) => existingFile.name === file.name.split(".")[0])) {
             file["nameAlreadyExists"] = "true";
           } else {
             file["convertedReportDate"] = file["convertedReportDate"] ?? "";
