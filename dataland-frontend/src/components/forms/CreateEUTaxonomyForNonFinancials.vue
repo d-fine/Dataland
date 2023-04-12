@@ -176,7 +176,6 @@
                               :name="`${detailCashFlowType}CapEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :toggleDataAvailable="false"
                               :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfFilesToUpload"
                             />
@@ -213,7 +212,6 @@
                               :name="`${detailCashFlowType}OpEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :toggleDataAvailable="false"
                               :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfFilesToUpload"
                             />
@@ -250,7 +248,6 @@
                               :name="`${detailCashFlowType}Revenue`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :toggleDataAvailable="false"
                               :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfFilesToUpload"
                             />

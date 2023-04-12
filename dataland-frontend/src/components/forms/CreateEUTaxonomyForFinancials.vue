@@ -226,11 +226,11 @@
                       <div class="col-9 formFields">
                         <FormKit :name="kpiType" type="group">
                           <div class="form-field">
-                            <UploadFormHeader
-                              :name="euTaxonomyKpiNameMappings[kpiType] ?? ''"
-                              :explanation="euTaxonomyKpiInfoMappings[kpiType] ?? ''"
-                            />
+                            <h3>
+                              {{ euTaxonomyKpiNameMappings[kpiType] ?? "" }}
+                            </h3>
                             <KPIfieldSet
+                              :name="kpiType ?? ''"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :reportsName="namesOfFilesToUpload"
@@ -252,11 +252,11 @@
                         <div class="col-9 formFields">
                           <FormKit :name="kpiTypeEligibility" type="group">
                             <div class="form-field">
-                              <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings[kpiTypeEligibility] ?? ''"
-                              />
+                              <h3>
+                                {{ euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? "" }}
+                              </h3>
                               <KPIfieldSet
+                                :name="kpiTypeEligibility ?? ''"
                                 :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                 :kpiNameMappings="euTaxonomyKpiNameMappings"
                                 :reportsName="namesOfFilesToUpload"
@@ -549,14 +549,16 @@ export default defineComponent({
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
         this.fiscalYearEnd = "";
         this.filesToUpload = [];
         this.uploadFiles = [];
+        this.formInputsModel = {};
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         this.$refs.UploadReports.clearAllNotUploadedFiles();
+        await this.$nextTick();
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       }
     },
 
