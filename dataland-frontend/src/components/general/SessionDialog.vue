@@ -2,11 +2,17 @@
   <h1>{{ displayedHeader }}</h1>
   <span>{{ displayedText }}</span>
   <div class="mt-5 flex flex-row-reverse flex-wrap">
-    <AuthenticationButton v-if="showLogInButton" :customClassForButton="buttonClass" />
+    <PrimeButton
+      v-if="showLogInButton"
+      label="Login to preview account"
+      class="p-button-sm uppercase d-letters w-15rem"
+      name="login_dataland_button"
+      @click="login"
+    />
     <PrimeButton
       v-if="showRefreshButton"
       :label="refreshButtonLabel"
-      :class="buttonClass"
+      class="p-button-sm uppercase d-letters w-15rem"
       name="refresh_session_button"
       @click="handleRefreshSession"
     />
@@ -15,18 +21,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import AuthenticationButton from "@/components/general/AuthenticationButton.vue";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
 import { isRefreshTokenExpiryTimestampInSharedStoreReached, tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
 import Keycloak from "keycloak-js";
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/stores";
+import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   inject: ["dialogRef"], // TODO try if you can inject keycloak Promise instead of passing it via the dialogRef
   name: "SessionTimeoutModal",
-  components: { AuthenticationButton, PrimeButton },
+  components: { PrimeButton },
 
   data() {
     return {
@@ -39,7 +45,6 @@ export default defineComponent({
       hasExternalLogoutOccurred: false,
       keycloak: undefined as undefined | Keycloak,
       functionIdOfExpiryCheck: undefined as undefined | number,
-      buttonClass: "p-button-sm uppercase d-letters w-15rem",
     };
   },
 
@@ -77,6 +82,15 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Sends the user to the keycloak login page
+     */
+    login() {
+      if (this.keycloak) {
+        loginAndRedirectToSearchPage(this.keycloak);
+      }
+    },
+
     /**
      * Handles a click on the refresh button.
      */
