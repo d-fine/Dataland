@@ -475,7 +475,7 @@
       </div>
     </template>
   </Card>
-  <SubmitFormBar :formId="formId" />
+  <SubmitButton :formId="formId" />
 </template>
 
 <script lang="ts">
@@ -513,7 +513,7 @@ import {
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
-import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 
 export default defineComponent({
   setup() {
@@ -523,7 +523,7 @@ export default defineComponent({
   },
   name: "CreateEUTaxonomyForFinancials",
   components: {
-    SubmitFormBar,
+    SubmitButton,
     FailedUpload,
     FormKit,
     SuccessUpload,

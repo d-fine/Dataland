@@ -1,8 +1,8 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3">
     <template #title
-      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
-    >
+      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service
+    </template>
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -453,6 +453,9 @@
               </FormKit>
             </div>
           </FormKit>
+        </div>
+        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
+          <SubmitButton :formId="formId" />
           <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
             <SuccessUpload
               v-if="postEuTaxonomyDataForNonFinancialsResponse"
@@ -462,9 +465,7 @@
             />
             <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
           </template>
-        </div>
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
-          <h4 id="topicTitles" class="title">On this page</h4>
+          <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
             <li v-for="(element, index) in onThisPageLinks" :key="index">
               <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
@@ -474,7 +475,6 @@
       </div>
     </template>
   </Card>
-  <SubmitFormBar :formId="formId" />
 </template>
 
 <script lang="ts">
@@ -509,12 +509,12 @@ import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
-import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: {
-    SubmitFormBar,
+    SubmitButton,
     Calendar,
     UploadFormHeader,
     PrimeButton,

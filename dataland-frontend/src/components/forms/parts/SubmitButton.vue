@@ -1,8 +1,5 @@
 <template>
-  <div
-    data-test="submitFormBar"
-    class="sticky d-header fixed bottom-0 left-0 right-0 m-0 p-1 pr-3 w-full surface-900 grid justify-content-end"
-  >
+  <div data-test="submitButton" class="text-center p-3">
     <PrimeButton
       data-test="submitButton"
       type="submit"
@@ -20,7 +17,7 @@ import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
-  name: "SubmitFormBar",
+  name: "SubmitButton",
   components: {
     PrimeButton,
   },
@@ -53,11 +50,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.sticky {
-  position: -webkit-sticky;
-  position: sticky;
-  bottom: 0;
-}
-</style>

@@ -1118,7 +1118,7 @@
       </div>
     </template>
   </Card>
-  <SubmitFormBar :formId="formId" />
+  <SubmitButton :formId="formId" />
 </template>
 
 <script lang="ts">
@@ -1148,7 +1148,7 @@ import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import SubmitFormBar from "@/components/forms/parts/SubmitFormBar.vue";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 
 export default defineComponent({
   setup() {
@@ -1158,7 +1158,7 @@ export default defineComponent({
   },
   name: "CreateLksgDataset",
   components: {
-    SubmitFormBar,
+    SubmitButton,
     UploadFormHeader,
     SuccessUpload,
     FailedUpload,
