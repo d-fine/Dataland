@@ -84,7 +84,6 @@
     <FormKit
       type="textarea"
       name="comment"
-      rows="10"
       placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
     />
   </div>
@@ -98,7 +97,7 @@ import { FormKit } from "@formkit/vue";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
 
 export default defineComponent({
-  name: "KPIfieldSet",
+  name: "DataPointForm",
   components: { UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({

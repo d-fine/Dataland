@@ -361,10 +361,9 @@
                                 :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
                               />
                             </span>
-                            <KPIfieldSet
+                            <DataPointForm
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :toggleDataAvailable="false"
                               :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
                             />
                           </div>
@@ -397,10 +396,9 @@
                                 :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
                               />
                             </span>
-                            <KPIfieldSet
+                            <DataPointForm
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :toggleDataAvailable="false"
                               :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
                             />
                           </div>
@@ -433,10 +431,9 @@
                                 :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
                               />
                             </span>
-                            <KPIfieldSet
+                            <DataPointForm
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :toggleDataAvailable="false"
                               :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
                             />
                           </div>
@@ -491,7 +488,6 @@ import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload from "primevue/fileupload";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
-import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import Card from "primevue/card";
@@ -513,16 +509,17 @@ import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: {
+    DataPointForm,
     Calendar,
     UploadFormHeader,
     PrimeButton,
     FileUpload,
     YesNoComponent,
-    KPIfieldSet,
     FailedUpload,
     Card,
     FormKit,

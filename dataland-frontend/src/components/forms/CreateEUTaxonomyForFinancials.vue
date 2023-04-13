@@ -80,7 +80,7 @@
                         >
                           <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
                           <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
-                            {{ formatSize(file.size) }}
+                            {{ formatSize(Number(file.size)) }}
                           </div>
                           <PrimeButton
                             icon="pi pi-times"
@@ -359,7 +359,7 @@
                       </ul>
 
                       <PrimeButton
-                        @click="confirmeSelectedKPIs"
+                        @click="confirmSelectedKPIs"
                         data-test="addKpisButton"
                         :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
@@ -376,18 +376,18 @@
                 </div>
 
                 <div
-                  v-for="copanyType of confirmedSelectedKPIs"
-                  :key="copanyType"
-                  :data-test="copanyType.value"
+                  v-for="companyType of confirmedSelectedKPIs"
+                  :key="companyType"
+                  :data-test="companyType.value"
                   class="uploadFormSection"
                 >
                   <div class="flex w-full">
                     <div class="p-3 topicLabel">
-                      <h3 :id="copanyType.value" class="anchor title">{{ copanyType.label }}</h3>
+                      <h3 :id="companyType.value" class="anchor title">{{ companyType.label }}</h3>
                     </div>
 
                     <PrimeButton
-                      @click="removeKpisSection(copanyType.value)"
+                      @click="removeKpisSection(companyType.value)"
                       label="REMOVE THIS SECTION"
                       data-test="removeSectionButton"
                       class="p-button-text ml-auto"
@@ -395,9 +395,9 @@
                     ></PrimeButton>
                   </div>
 
-                  <FormKit v-if="copanyType.value !== 'assetManagementKpis'" :name="copanyType.value" type="group">
+                  <FormKit v-if="companyType.value !== 'assetManagementKpis'" :name="companyType.value" type="group">
                     <div
-                      v-for="kpiType of euTaxonomyKPIsModel[copanyType.value]"
+                      v-for="kpiType of euTaxonomyKPIsModel[companyType.value]"
                       :key="kpiType"
                       :data-test="kpiType"
                       class="uploadFormSection"
@@ -409,7 +409,7 @@
                               :name="euTaxonomyKpiNameMappings[kpiType] ?? ''"
                               :explanation="euTaxonomyKpiInfoMappings[kpiType] ?? ''"
                             />
-                            <KPIfieldSet
+                            <DataPointForm
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                             />
@@ -420,7 +420,7 @@
                   </FormKit>
 
                   <FormKit name="eligibilityKpis" type="group">
-                    <FormKit :name="euTaxonomyKPIsModel?.companyTypeToEligibilityKpis[copanyType.value]" type="group">
+                    <FormKit :name="euTaxonomyKPIsModel?.companyTypeToEligibilityKpis[companyType.value]" type="group">
                       <div
                         v-for="kpiTypeEligibility of euTaxonomyKPIsModel.eligibilityKpis"
                         :key="kpiTypeEligibility"
@@ -434,7 +434,7 @@
                                 :name="euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? ''"
                                 :explanation="euTaxonomyKpiInfoMappings[kpiTypeEligibility] ?? ''"
                               />
-                              <KPIfieldSet
+                              <DataPointForm
                                 :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                 :kpiNameMappings="euTaxonomyKpiNameMappings"
                               />
@@ -487,7 +487,7 @@ import { FormKit } from "@formkit/vue";
 import FileUpload from "primevue/fileupload";
 import PrimeButton from "primevue/button";
 import MultiSelect from "primevue/multiselect";
-import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
+import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
@@ -535,7 +535,7 @@ export default defineComponent({
     Calendar,
     MultiSelect,
     YesNoComponent,
-    KPIfieldSet,
+    DataPointForm,
   },
   emits: ["datasetCreated"],
   data() {
@@ -665,7 +665,7 @@ export default defineComponent({
             ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
           );
         });
-        this.confirmeSelectedKPIs();
+        this.confirmSelectedKPIs();
       }
       const receivedFormInputsModel = modifyObjectKeys(
         JSON.parse(JSON.stringify(dataResponseData)) as objectType,
@@ -731,7 +731,7 @@ export default defineComponent({
      * Confirms the list of kpis to be generated
      *
      */
-    confirmeSelectedKPIs() {
+    confirmSelectedKPIs() {
       this.confirmedSelectedKPIs = this.selectedKPIs;
       this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedKPIs))];
     },
