@@ -454,6 +454,9 @@
               </FormKit>
             </div>
           </FormKit>
+        </div>
+        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
+          <SubmitButton :formId="formId" />
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
             <SuccessUpload
               v-if="postEuTaxonomyDataForFinancialsResponse"
@@ -462,10 +465,7 @@
             />
             <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
           </template>
-        </div>
-
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
-          <h4 id="topicTitles" class="title">On this page</h4>
+          <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
             <li v-for="(element, index) in onThisPageLinks" :key="index">
               <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
@@ -475,7 +475,6 @@
       </div>
     </template>
   </Card>
-  <SubmitButton :formId="formId" />
 </template>
 
 <script lang="ts">
