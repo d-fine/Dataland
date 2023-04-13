@@ -11,7 +11,10 @@
           </div>
         </MarginWrapper>
         <MarginWrapper bg-class="paper-section" class="text-left">
-          <CreateEUTaxonomyForNonFinancials :companyID="companyID" />
+          <CreateEUTaxonomyForNonFinancials
+            :companyID="companyID"
+            @datasetCreated="redirectToMyDatasets(this.$router)"
+          />
         </MarginWrapper>
       </TheContent>
     </UploaderRoleWrapper>
@@ -28,8 +31,10 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
+import { redirectToMyDatasets } from "@/components/resources/uploadDataset/datasetCreationRedirect";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "UploadEutaxonomyDataForNonFinancials",
   components: {
     UploaderRoleWrapper,
@@ -46,5 +51,11 @@ export default {
       type: String,
     },
   },
-};
+  methods: {
+    /**
+     * Executes a router push to the myDatasets page
+     */
+    redirectToMyDatasets,
+  },
+});
 </script>

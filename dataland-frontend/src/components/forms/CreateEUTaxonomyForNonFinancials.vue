@@ -1,8 +1,8 @@
 <template>
   <Card class="col-12 page-wrapper-card">
     <template #title
-      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
-    >
+      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service
+    </template>
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -504,9 +504,9 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatSize, getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 import {
-  euTaxonomyKPIsModel,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
+  euTaxonomyKPIsModel,
 } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
 import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
@@ -533,7 +533,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-
+  emits: ["datasetCreated"],
   data: () => ({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     files: useFilesUploadedStore(),
@@ -659,6 +659,7 @@ export default defineComponent({
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
             formInputsModelToSend
           );
+        this.$emit("datasetCreated");
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForNonFinancialsResponse = null;

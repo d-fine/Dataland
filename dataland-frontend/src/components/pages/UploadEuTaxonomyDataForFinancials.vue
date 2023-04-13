@@ -5,7 +5,7 @@
       <TheContent>
         <BackButton id="backButton" />
         <CompanyInformation :companyID="companyID" />
-        <CreateEUTaxonomyForFinancials :companyID="companyID" @datasetCreated="handleDatasetCreated" />
+        <CreateEUTaxonomyForFinancials :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
       </TheContent>
     </UploaderRoleWrapper>
     <DatalandFooter />
@@ -21,7 +21,7 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
-import { TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS } from "@/utils/Constants";
+import { redirectToMyDatasets } from "@/components/resources/uploadDataset/datasetCreationRedirect";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -45,11 +45,7 @@ export default defineComponent({
     /**
      * Executes a router push to the myDatasets page
      */
-    handleDatasetCreated(): void {
-      setTimeout(() => {
-        void this.$router.push(`datasets`);
-      }, TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS);
-    },
+    redirectToMyDatasets,
   },
 });
 </script>
