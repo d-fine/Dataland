@@ -3,15 +3,15 @@
   <span>{{ displayedText }}</span>
   <div class="mt-5 flex flex-row-reverse flex-wrap">
     <PrimeButton
-      v-if="showLogInButton"
+      v-if="isInExternalLogoutMode"
       label="Login to preview account"
       class="p-button-sm uppercase d-letters w-15rem"
       name="login_dataland_button_on_session_modal"
       @click="login"
     />
     <PrimeButton
-      v-if="showRefreshButton"
-      :label="refreshButtonLabel"
+      v-if="isInSessionWarningMode || isInSessionClosedMode"
+      :label="isInSessionClosedMode ? 'Login' : 'Refresh Session'"
       class="p-button-sm uppercase d-letters w-15rem"
       name="refresh_session_button"
       @click="handleRefreshSession"
@@ -43,21 +43,17 @@ export default defineComponent({
 
   data() {
     return {
-      displayedHeader: undefined as undefined | string,
-      displayedText: undefined as undefined | string,
-      showLogInButton: false,
-      showRefreshButton: false,
-      refreshButtonLabel: "Refresh Session",
-      isTrackingOfRefreshTokenExpiryEnabled: false,
-      hasExternalLogoutOccurred: false,
       functionIdOfExpiryCheck: undefined as undefined | number,
+      isInSessionWarningMode: false,
+      isInSessionClosedMode: false,
+      isInExternalLogoutMode: false,
     };
   },
 
   watch: {
     currentRefreshTokenInSharedStore() {
       this.closeTheDialog();
-      if (this.hasExternalLogoutOccurred) {
+      if (this.isInExternalLogoutMode) {
         void this.$router.push({ path: "/companies", replace: true });
       }
     },
@@ -67,11 +63,35 @@ export default defineComponent({
     currentRefreshTokenInSharedStore(): string | undefined {
       return useSharedSessionStateStore().refreshToken || undefined;
     },
+    displayedHeader(): string | undefined {
+      switch (true) {
+        case this.isInSessionWarningMode:
+          return "Session expires soon";
+        case this.isInSessionClosedMode:
+          return "Session closed";
+        case this.isInExternalLogoutMode:
+          return "You have been logged out";
+        default:
+          return "";
+      }
+    },
+    displayedText(): string | undefined {
+      switch (true) {
+        case this.isInSessionWarningMode:
+          return "To refresh it, please click on the button below.";
+        case this.isInSessionClosedMode:
+          return "Your session has been closed due to inactivity. Login to start a new session.";
+        case this.isInExternalLogoutMode:
+          return "Do you want to login again?";
+        default:
+          return "";
+      }
+    },
   },
 
   mounted() {
     this.getDataFromParentAndSet();
-    if (this.isTrackingOfRefreshTokenExpiryEnabled) {
+    if (this.isInSessionWarningMode) {
       this.setIntervalForRefreshTokenExpiryCheck();
     }
   },
@@ -125,19 +145,11 @@ export default defineComponent({
     getDataFromParentAndSet() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       const dialogRefData = dialogRefToDisplay.data as {
-        displayedHeader: string;
-        displayedText: string;
-        showLogInButton: boolean;
-        showRefreshButton: boolean;
-        isTrackingOfRefreshTokenExpiryEnabled: boolean;
-        hasExternalLogoutOccurred: boolean;
+        isInSessionWarningMode: boolean;
+        isInExternalLogoutMode: boolean;
       };
-      this.displayedHeader = dialogRefData.displayedHeader;
-      this.displayedText = dialogRefData.displayedText;
-      this.showLogInButton = dialogRefData.showLogInButton;
-      this.showRefreshButton = dialogRefData.showRefreshButton;
-      this.isTrackingOfRefreshTokenExpiryEnabled = dialogRefData.isTrackingOfRefreshTokenExpiryEnabled;
-      this.hasExternalLogoutOccurred = dialogRefData.hasExternalLogoutOccurred;
+      this.isInSessionWarningMode = dialogRefData.isInSessionWarningMode;
+      this.isInExternalLogoutMode = dialogRefData.isInExternalLogoutMode;
     },
 
     /**
@@ -150,9 +162,8 @@ export default defineComponent({
     setIntervalForRefreshTokenExpiryCheck() {
       this.functionIdOfExpiryCheck = setInterval(() => {
         if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
-          this.displayedHeader = "Session closed";
-          this.displayedText = "Your session has been closed due to inactivity. Login to start a new session.";
-          this.refreshButtonLabel = "Login";
+          this.isInSessionWarningMode = false;
+          this.isInSessionClosedMode = true;
           clearInterval(this.functionIdOfExpiryCheck);
         }
       }, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS);

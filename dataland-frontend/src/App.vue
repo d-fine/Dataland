@@ -122,10 +122,7 @@ export default defineComponent({
           showHeader: false,
         },
         data: {
-          displayedHeader: "Session expires soon",
-          displayedText: "To refresh it, please click on the button below.",
-          showRefreshButton: true,
-          isTrackingOfRefreshTokenExpiryEnabled: true,
+          isInSessionWarningMode: true,
         },
       });
     },

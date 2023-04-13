@@ -79,10 +79,7 @@ export default defineComponent({
           showHeader: false,
         },
         data: {
-          displayedHeader: "You have been logged out",
-          displayedText: "Do you want to login again?",
-          showLogInButton: true,
-          hasExternalLogoutOccurred: true,
+          isInExternalLogoutMode: true,
         },
         onClose: () => {
           void this.$router.replace("");
