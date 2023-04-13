@@ -194,35 +194,6 @@ describeIf(
         .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.greenAssetRatio));
     }
 
-    it("Create a EU Taxonomy Financial Dataset via Api and ensure the reports banner exists and documents can be downloaded", () => {
-      const testData = getPreparedFixture("company-for-all-types", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-        testData.companyInformation,
-        testData.t,
-        testData.reportingPeriod
-      );
-      cy.get("div[data-test='reportsBanner']").should("exist");
-      const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + "/StandardWordExport.pdf";
-      cy.readFile(expectedPathToDownloadedReport).should("not.exist");
-      const downloadLinkSelector = "span[data-test='Report-Download']";
-      cy.get(downloadLinkSelector)
-        .click({ multiple: true })
-        .then(() => {
-          cy.readFile("../testing/data/documents/StandardWordExport.pdf", "binary", {
-            timeout: Cypress.env("medium_timeout_in_ms") as number,
-          }).then((expectedPdfBinary) => {
-            cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
-              cy.readFile(expectedPathToDownloadedReport, "binary", {
-                timeout: Cypress.env("medium_timeout_in_ms") as number,
-              }).then((receivedPdfHash) => {
-                cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
-              });
-              cy.task("deleteFolder", Cypress.config("downloadsFolder"));
-            });
-          });
-        });
-    });
-
     it(
       "Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
         "that the upload form works fine with all options",

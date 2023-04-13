@@ -51,8 +51,6 @@ describe(
       uploadOneFrameworkDataset: UploadFunction<T>
     ): void {
       cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        //const documentIds = uploadAllDocuments(token);
-        //console.log(documentIds);
         doThingsInChunks(fixtureDataForFrameworkT, chunkSize, async (fixtureData) => {
           const storedCompany = await uploadCompanyViaApi(token, fixtureData.companyInformation);
           await uploadOneFrameworkDataset(token, storedCompany.companyId, fixtureData.reportingPeriod, fixtureData.t);
