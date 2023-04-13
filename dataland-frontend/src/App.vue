@@ -126,7 +126,6 @@ export default defineComponent({
           displayedText: "To refresh it, please click on the button below.",
           showRefreshButton: true,
           isTrackingOfRefreshTokenExpiryEnabled: true,
-          resolvedKeycloakPromise: this.resolvedKeycloakPromise,
         },
       });
     },

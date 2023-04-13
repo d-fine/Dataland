@@ -6,7 +6,7 @@
       v-if="showLogInButton"
       label="Login to preview account"
       class="p-button-sm uppercase d-letters w-15rem"
-      name="login_dataland_button"
+      name="login_dataland_button_on_session_modal"
       @click="login"
     />
     <PrimeButton
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
 import { isRefreshTokenExpiryTimestampInSharedStoreReached, tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
@@ -28,11 +28,18 @@ import Keycloak from "keycloak-js";
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/stores";
 import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
-  inject: ["dialogRef"], // TODO try if you can inject keycloak Promise instead of passing it via the dialogRef
+  inject: ["dialogRef"],
   name: "SessionTimeoutModal",
   components: { PrimeButton },
+
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
 
   data() {
     return {
@@ -43,7 +50,6 @@ export default defineComponent({
       refreshButtonLabel: "Refresh Session",
       isTrackingOfRefreshTokenExpiryEnabled: false,
       hasExternalLogoutOccurred: false,
-      keycloak: undefined as undefined | Keycloak,
       functionIdOfExpiryCheck: undefined as undefined | number,
     };
   },
@@ -81,17 +87,27 @@ export default defineComponent({
      * Sends the user to the keycloak login page
      */
     login() {
-      if (this.keycloak) {
-        loginAndRedirectToSearchPage(this.keycloak);
-      }
+      assertDefined(this.getKeycloakPromise)()
+        .then((keycloak) => {
+          if (!keycloak.authenticated) {
+            loginAndRedirectToSearchPage(keycloak);
+          }
+        })
+        .catch((error) => console.log(error));
     },
 
     /**
      * Handles a click on the refresh button.
      */
     handleRefreshSession() {
-      tryToRefreshSession(this.keycloak as Keycloak);
-      this.closeTheDialog();
+      assertDefined(this.getKeycloakPromise)()
+        .then((keycloak) => {
+          if (keycloak.authenticated) {
+            tryToRefreshSession(keycloak);
+            this.closeTheDialog();
+          }
+        })
+        .catch((error) => console.log(error));
     },
 
     /**
@@ -115,7 +131,6 @@ export default defineComponent({
         showRefreshButton: boolean;
         isTrackingOfRefreshTokenExpiryEnabled: boolean;
         hasExternalLogoutOccurred: boolean;
-        resolvedKeycloakPromise: Keycloak;
       };
       this.displayedHeader = dialogRefData.displayedHeader;
       this.displayedText = dialogRefData.displayedText;
@@ -123,7 +138,6 @@ export default defineComponent({
       this.showRefreshButton = dialogRefData.showRefreshButton;
       this.isTrackingOfRefreshTokenExpiryEnabled = dialogRefData.isTrackingOfRefreshTokenExpiryEnabled;
       this.hasExternalLogoutOccurred = dialogRefData.hasExternalLogoutOccurred;
-      this.keycloak = dialogRefData.resolvedKeycloakPromise;
     },
 
     /**
