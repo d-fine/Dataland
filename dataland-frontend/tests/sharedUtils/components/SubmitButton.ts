@@ -1,9 +1,7 @@
-const barSelector = "[data-test='submitFormBar']";
-const submitButtonSelector = "[data-test='submitFormBar'] [data-test='submitButton']";
+const submitButtonSelector = "[data-test='submitButton'] [data-test='submitButton']";
 
-export const submitFormBar = {
+export const submitButton = {
   exists(): void {
-    cy.get(barSelector).should("exist");
     cy.get(submitButtonSelector).should("exist");
   },
   buttonAppearsDisabled(): void {

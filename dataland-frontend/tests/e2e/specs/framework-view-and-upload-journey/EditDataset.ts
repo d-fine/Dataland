@@ -5,7 +5,7 @@ import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { submitFormBar } from "@sharedUtils/components/SubmitFormBar";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -39,9 +39,9 @@ describeIf(
           cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
           cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
           cy.get("div").contains("New Dataset - LkSG").should("be.visible");
-          submitFormBar.buttonIsUpdateDataButton();
-          submitFormBar.buttonAppearsEnabled();
-          submitFormBar.clickButton();
+          submitButton.buttonIsUpdateDataButton();
+          submitButton.buttonAppearsEnabled();
+          submitButton.clickButton();
           cy.get("h4")
             .contains("Upload successfully executed.")
             .should("exist")

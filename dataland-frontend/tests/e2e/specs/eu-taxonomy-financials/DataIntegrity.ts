@@ -15,7 +15,7 @@ import {
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { submitFormBar } from "@sharedUtils/components/SubmitFormBar";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -55,10 +55,10 @@ describeIf(
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
             );
-            submitFormBar.buttonIsAddDataButton();
-            submitFormBar.buttonAppearsDisabled();
+            submitButton.buttonIsAddDataButton();
+            submitButton.buttonAppearsDisabled();
             fillEuTaxonomyForFinancialsUploadForm(testData);
-            submitFormBar.buttonAppearsEnabled();
+            submitButton.buttonAppearsEnabled();
             submitEuTaxonomyFinancialsUploadForm();
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`

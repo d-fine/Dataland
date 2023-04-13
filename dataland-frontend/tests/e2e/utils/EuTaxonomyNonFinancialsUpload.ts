@@ -8,7 +8,7 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
-import { submitFormBar } from "@sharedUtils/components/SubmitFormBar";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
@@ -22,8 +22,8 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   valueFieldNotFilled = false
 ): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
-  submitFormBar.buttonIsAddDataButton();
-  submitFormBar.buttonAppearsDisabled();
+  submitButton.buttonIsAddDataButton();
+  submitButton.buttonAppearsDisabled();
   cy.get('button[data-test="upload-files-button"]').click();
   cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
   cy.get('div[data-test="uploaded-files"]')
@@ -74,9 +74,9 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
       cy.wrap($element).select(3);
     });
   }
-  submitFormBar.buttonAppearsEnabled();
+  submitButton.buttonAppearsEnabled();
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
-  submitFormBar.clickButton();
+  submitButton.clickButton();
   cy.wait("@postCompanyAssociatedData");
   return cy.contains("h4", "dataId").then<string>(($dataId): string => {
     return $dataId.text();
