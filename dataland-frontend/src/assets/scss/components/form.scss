@@ -504,7 +504,7 @@ input[type="checkbox"], input[type="radio"]{
     .formkit-options {
       display: flex;
       padding: .5rem 0 0 0;
-      .formkit-option:nth-child(2n) {
+      .formkit-option:nth-child(n+2) {
         margin-left: 10%;
       }
     }
