@@ -2,215 +2,216 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [],
-			"headquarters": "Süd Lyn",
-			"headquartersPostalCode": "34643",
-			"sector": "metrics",
+			"companyAlternativeNames": [
+				"Bozsik, Kutzner und Hasse",
+				"Sören-Hessek",
+				"Wassilew-Schmalzle"
+			],
+			"headquarters": "Heiserland",
+			"headquartersPostalCode": "81839",
+			"sector": "systems",
 			"identifiers": [
 				{
-					"identifierType": "Isin",
-					"identifierValue": "4bv221smtev4"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "q37rfmosdvddxna"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "v16j4qminalpbvo742zk"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "m7yffio06i"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "27foowx"
+					"identifierValue": "cy7c968vx1"
 				}
 			],
-			"countryCode": "HU",
-			"isTeaserCompany": false
+			"countryCode": "AZ",
+			"isTeaserCompany": false,
+			"website": "https://weich-fußball.org"
 		},
 		"t": {
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f",
-					"isGroupLevel": "Yes",
-					"currency": "PYG"
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"currency": "TMT"
 				},
-				"AnnualReport": {
-					"reference": "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f",
-					"currency": "CUP"
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "SBD"
 				}
 			},
-			"fiscalYearEnd": "2022-10-08",
+			"fiscalYearDeviation": "Deviation",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Uhrig, Nabein und Duma",
-				"dataSource": {
-					"page": 832,
-					"report": "AnnualReport",
-					"tagName": "communities"
-				}
+				"assurance": "LimitedAssurance"
 			},
 			"scopeOfEntities": "NA",
 			"reportingObligation": "No",
-			"numberOfEmployees": 71365,
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.2689,
+					"value": 0.643,
 					"dataSource": {
-						"page": 853,
-						"report": "SustainabilityReport",
+						"page": 155,
+						"report": "IntegratedReport",
 						"tagName": "ROI"
 					},
 					"quality": "Audited",
-					"comment": "back up primary matrix"
+					"comment": "navigate open-source hard drive"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.3701,
+					"value": 0.8511,
 					"dataSource": {
-						"page": 586,
+						"page": 68,
 						"report": "SustainabilityReport",
-						"tagName": "platforms"
+						"tagName": "infrastructures"
 					},
-					"quality": "Estimated",
-					"comment": "program redundant panel"
+					"quality": "Audited",
+					"comment": "connect solid state alarm"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.0117,
-					"quality": "Estimated"
+					"value": 0.1015,
+					"quality": "Incomplete"
 				}
 			}
 		},
-		"reportingPeriod": "2021-Q2"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Bolm GmbH",
-				"Lepthin, Uhlemann und Itt",
-				"Liebe GmbH & Co. KG",
-				"Steuk GmbH & Co. KG"
+				"Erm, Poser und Kulimann"
 			],
-			"companyLegalForm": "AG",
-			"headquarters": "Bad Emilyland",
-			"headquartersPostalCode": "96329",
-			"sector": "e-business",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"headquarters": "Kleiberstadt",
+			"headquartersPostalCode": "41978",
+			"sector": "paradigms",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "s5nkpykrajbk92z"
+				},
+				{
 					"identifierType": "Duns",
-					"identifierValue": "fulh0jldc"
+					"identifierValue": "4rgj3vyzh"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "4pjgplbtbjie"
+					"identifierValue": "v336z15h2gt6"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "07mwnsek1ugbs9ofr6c8"
+					"identifierValue": "z7fuo3w4tuzjh504lg0s"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "74bu1xgy78"
+					"identifierValue": "bxtne1jnto"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "oxaytur"
 				}
 			],
-			"countryCode": "AF",
+			"countryCode": "YT",
 			"isTeaserCompany": false,
-			"website": "http://konstitutiv-zeitalter.org"
+			"website": "https://glatt-sessel.ch"
 		},
 		"t": {
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-08-08",
-					"currency": "ALL"
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "AED"
 				},
 				"AnnualReport": {
-					"reference": "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f",
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "No",
-					"reportDate": "2022-11-18",
-					"currency": "KGS"
+					"currency": "USD"
 				},
-				"IntegratedReport": {
-					"reference": "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f",
-					"reportDate": "2022-07-11",
-					"currency": "BMD"
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-08-28",
+					"currency": "AZN"
 				}
 			},
-			"fiscalYearEnd": "2022-12-23",
+			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Zahn, Burger und Vater",
+				"assurance": "ReasonableAssurance",
+				"provider": "Wissing-Wollmann",
 				"dataSource": {
-					"page": 1136,
+					"page": 1078,
 					"report": "AnnualReport",
-					"tagName": "technologies"
+					"tagName": "e-markets"
 				}
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "NA",
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 975651.22,
+					"value": 460980.39,
 					"dataSource": {
-						"page": 1085,
-						"report": "AnnualReport",
-						"tagName": "blockchains"
-					},
-					"quality": "Audited",
-					"comment": "navigate auxiliary capacitor"
-				},
-				"eligiblePercentage": {
-					"value": 0.3498,
-					"dataSource": {
-						"page": 35,
-						"report": "IntegratedReport",
-						"tagName": "relationships"
+						"page": 1064,
+						"report": "ESEFReport",
+						"tagName": "users"
 					},
 					"quality": "Estimated",
-					"comment": "parse cross-platform monitor"
+					"comment": "bypass mobile bandwidth"
+				},
+				"eligiblePercentage": {
+					"value": 0.5022,
+					"dataSource": {
+						"page": 1153,
+						"report": "SustainabilityReport",
+						"tagName": "supply-chains"
+					},
+					"quality": "Reported",
+					"comment": "bypass open-source matrix"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 658445.98,
-					"dataSource": {
-						"page": 401,
-						"report": "AnnualReport",
-						"tagName": "relationships"
-					},
-					"quality": "Audited",
-					"comment": "generate 1080p sensor"
+					"value": 748005.31,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.2706,
+					"value": 0.3364,
 					"dataSource": {
-						"page": 985,
+						"page": 533,
 						"report": "ESEFReport",
-						"tagName": "platforms"
+						"tagName": "bandwidth"
 					},
-					"quality": "Audited",
-					"comment": "connect online bus"
+					"quality": "Estimated",
+					"comment": "reboot multi-byte interface"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 350805.67,
+					"value": 488882.04,
 					"dataSource": {
-						"page": 976,
-						"report": "IntegratedReport",
-						"tagName": "mindshare"
+						"page": 1159,
+						"report": "ESEFReport",
+						"tagName": "content"
 					},
-					"quality": "Estimated",
-					"comment": "generate virtual hard drive"
+					"quality": "Audited",
+					"comment": "back up multi-byte transmitter"
 				},
 				"eligiblePercentage": {
-					"value": 0.4648,
-					"quality": "Incomplete"
+					"value": 0.101,
+					"dataSource": {
+						"page": 61,
+						"report": "SustainabilityReport",
+						"tagName": "markets"
+					},
+					"quality": "Estimated",
+					"comment": "navigate multi-byte driver"
 				}
 			}
 		},
-		"reportingPeriod": "2021-Q2"
+		"reportingPeriod": "2021"
 	}
 ]
