@@ -47,17 +47,9 @@ export function generateLinkToPdf(): string {
  * @returns documentId ID of a pdf that is stored in internal storage and can be referenced
  */
 export async function getReferencedDocumentId(): Promise<string> {
-  const testDocumentPath = "../testing/data/documents/test-report.pdf";
-  // Both generateFakeFixtures and Cypress use this function to generate fixture data
-  // Cypress, however, is not able to resolve any path as it seems to have its own directory system
-  // Thus the catch statement for the case of cypress generating fixture data itself
-  // TODO: Fix the path to work in both cases
-  try {
-    const fileContent: Buffer = await promises.readFile(testDocumentPath);
-    return createHash("sha256").update(fileContent).digest("hex");
-  } catch {
-    return "98a1e04dafb477634b8dd9c812d14891e3103d26d000910222fdf7438fd59c2f";
-  }
+  const testDocumentPath = "../testing/data/documents/StandardWordExport.pdf";
+  const fileContent: Buffer = await promises.readFile(testDocumentPath);
+  return createHash("sha256").update(fileContent).digest("hex");
 }
 
 /**

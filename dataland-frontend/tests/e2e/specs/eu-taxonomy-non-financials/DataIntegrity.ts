@@ -104,21 +104,24 @@ describeIf(
       const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
         cy.get("div[data-test='reportsBanner']").should("exist");
-        const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + "/test-report.pdf";
-
+        const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + "/StandardWordExport.pdf";
         cy.readFile(expectedPathToDownloadedReport).should("not.exist");
         const downloadLinkSelector = "span[data-test='Report-Download']";
         cy.get(downloadLinkSelector)
           .click({ multiple: true })
           .then(() => {
-            cy.readFile("../testing/data/documents/test-report.pdf", "binary", {
+            cy.readFile("../testing/data/documents/StandardWordExport.pdf", "binary", {
               timeout: Cypress.env("medium_timeout_in_ms") as number,
             }).then((expectedPdfBinary) => {
-              cy.readFile(expectedPathToDownloadedReport, "binary", {
-                timeout: Cypress.env("medium_timeout_in_ms") as number,
-              }).should("eq", expectedPdfBinary);
+              cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
+                cy.readFile(expectedPathToDownloadedReport, "binary", {
+                  timeout: Cypress.env("medium_timeout_in_ms") as number,
+                }).then((receivedPdfHash) => {
+                  cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
+                });
+                cy.task("deleteFolder", Cypress.config("downloadsFolder"));
+              });
             });
-            cy.task("deleteFolder", Cypress.config("downloadsFolder"));
           });
       });
     });

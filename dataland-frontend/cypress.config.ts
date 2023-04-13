@@ -1,5 +1,6 @@
 import {defineConfig} from "cypress";
 import {promises, rmdir} from "fs";
+import {createHash} from "crypto";
 
 let returnEmail: string;
 let returnPassword: string;
@@ -112,6 +113,12 @@ export default defineConfig({
             on('task', {
                 async readFile(path: string): Promise<Buffer> {
                     return await promises.readFile(path);
+                },
+            });
+
+            on('task', {
+                calculateHash(file: Buffer): string {
+                    return createHash("sha256").update(file).digest("hex");
                 },
             });
 
