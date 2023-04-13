@@ -14,11 +14,11 @@ type generatorFunction = (
  *
  * @returns the generated prepared fixtures
  */
-export async function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Promise<
-  Array<FixtureData<EuTaxonomyDataForNonFinancials>>
+export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
+  FixtureData<EuTaxonomyDataForNonFinancials>
 > {
   const creationFunctions: Array<generatorFunction> = [createOnlyEglibileNumbers, createOnlyEligibleAndTotalNumbers];
-  const fixtureBase = await generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
+  const fixtureBase = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
     generateEuTaxonomyDataForNonFinancials,
     creationFunctions.length
   );

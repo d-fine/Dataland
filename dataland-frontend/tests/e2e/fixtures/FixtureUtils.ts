@@ -14,14 +14,14 @@ export type ReferencedReports = { [key: string]: CompanyReport };
  * @param reportingPeriodGenerator a generator that generates a reporting period
  * @returns a list of numElements pairs of randomly generated companies associated to randomly generated framework datasets
  */
-export async function generateFixtureDataset<T>(
-  frameworkDataGenerator: () => Promise<T>,
+export function generateFixtureDataset<T>(
+  frameworkDataGenerator: () => T,
   numElements: number,
   reportingPeriodGenerator: (dataSet: T) => string = getRandomReportingPeriod
-): Promise<Array<FixtureData<T>>> {
+): Array<FixtureData<T>> {
   const fixtureDataset = [];
   for (let id = 1; id <= numElements; id++) {
-    const data = await frameworkDataGenerator();
+    const data = frameworkDataGenerator();
     fixtureDataset.push({
       companyInformation: generateCompanyInformation(),
       t: data,

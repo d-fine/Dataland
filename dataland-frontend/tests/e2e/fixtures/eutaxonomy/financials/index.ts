@@ -10,8 +10,8 @@ import { generateEuTaxonomyForFinancialsPreparedFixtures } from "./EuTaxonomyDat
 /**
  * Generates and exports fake fixtures for the eutaxonomy-financials framework
  */
-export async function exportFixturesEuTaxonomyFinancial(): Promise<void> {
-  const companyInformationWithEuTaxonomyDataForFinancials = await generateFixtureDataset<EuTaxonomyDataForFinancials>(
+export function exportFixturesEuTaxonomyFinancial(): void {
+  const companyInformationWithEuTaxonomyDataForFinancials = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
     100
   );
@@ -23,7 +23,7 @@ export async function exportFixturesEuTaxonomyFinancial(): Promise<void> {
     "../testing/data/csvTestEuTaxonomyDataForFinancials.csv",
     generateCSVDataForFinancials(companyInformationWithEuTaxonomyDataForFinancials)
   );
-  const preparedFixtureEuTaxonomyDataForFinancials = await generateEuTaxonomyForFinancialsPreparedFixtures();
+  const preparedFixtureEuTaxonomyDataForFinancials = generateEuTaxonomyForFinancialsPreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures.json",
     JSON.stringify(preparedFixtureEuTaxonomyDataForFinancials, null, "\t")

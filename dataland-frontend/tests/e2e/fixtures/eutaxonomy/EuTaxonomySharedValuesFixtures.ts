@@ -21,10 +21,8 @@ import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/Fisca
  *
  * @param input the framework object to fill in data for
  */
-export async function populateSharedValues(
-  input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials
-): Promise<void> {
-  input.referencedReports = await generateReferencedReports();
+export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials): void {
+  input.referencedReports = generateReferencedReports();
   input.fiscalYearDeviation = randomFiscalYearDeviationOrUndefined();
   input.fiscalYearEnd = randomPastDateOrUndefined();
   input.assurance = generateAssuranceData(input.referencedReports);

@@ -86,11 +86,11 @@ export function generateInvestmentFirmKpis(referencedReports: ReferencedReports)
  * @param financialServicesTypes the financial services of the company to generate data for
  * @returns a random eutaxonomy-financials fixture
  */
-export async function generateEuTaxonomyDataForFinancialsWithTypes(
+export function generateEuTaxonomyDataForFinancialsWithTypes(
   financialServicesTypes: Array<EuTaxonomyDataForFinancialsFinancialServicesTypesEnum>
-): Promise<EuTaxonomyDataForFinancials> {
+): EuTaxonomyDataForFinancials {
   const returnBase: EuTaxonomyDataForFinancials = {};
-  await populateSharedValues(returnBase);
+  populateSharedValues(returnBase);
   const eligibilityKpis = Object.fromEntries(
     financialServicesTypes.map((it) => [it, generateEligibilityKpis(returnBase.referencedReports!)])
   );
@@ -116,11 +116,11 @@ export async function generateEuTaxonomyDataForFinancialsWithTypes(
  *
  * @returns a random eutaxonomy-financials fixture
  */
-export async function generateEuTaxonomyDataForFinancials(): Promise<EuTaxonomyDataForFinancials> {
+export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancials {
   const financialServicesTypes = faker.helpers.arrayElements(
     Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum)
   );
-  return await generateEuTaxonomyDataForFinancialsWithTypes(financialServicesTypes);
+  return generateEuTaxonomyDataForFinancialsWithTypes(financialServicesTypes);
 }
 
 /**

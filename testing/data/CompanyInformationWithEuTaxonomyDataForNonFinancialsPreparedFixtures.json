@@ -2,216 +2,201 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [
-				"Bozsik, Kutzner und Hasse",
-				"Sören-Hessek",
-				"Wassilew-Schmalzle"
-			],
-			"headquarters": "Heiserland",
-			"headquartersPostalCode": "81839",
-			"sector": "systems",
+			"companyAlternativeNames": [],
+			"headquarters": "Neu Fietescheid",
+			"sector": "solutions",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "q37rfmosdvddxna"
+					"identifierValue": "8fer2ccbfzkqadv"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "8p0nqivew"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "v16j4qminalpbvo742zk"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "cy7c968vx1"
+					"identifierValue": "rtrcim4b1dxeyzodou7t"
 				}
 			],
-			"countryCode": "AZ",
+			"countryCode": "SC",
 			"isTeaserCompany": false,
-			"website": "https://weich-fußball.org"
+			"website": "https://nachdrücklich-bett.name"
 		},
 		"t": {
 			"referencedReports": {
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "TMT"
+					"isGroupLevel": "Yes",
+					"currency": "BRL"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"reportDate": "2023-01-27",
+					"currency": "GNF"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "Yes",
-					"currency": "SBD"
+					"currency": "AZN"
 				}
 			},
-			"fiscalYearDeviation": "Deviation",
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-06-30",
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "None"
 			},
 			"scopeOfEntities": "NA",
-			"reportingObligation": "No",
-			"activityLevelReporting": "No",
+			"reportingObligation": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.643,
+					"value": 0.0042,
 					"dataSource": {
-						"page": 155,
+						"page": 798,
 						"report": "IntegratedReport",
-						"tagName": "ROI"
+						"tagName": "applications"
 					},
-					"quality": "Audited",
-					"comment": "navigate open-source hard drive"
+					"quality": "Reported",
+					"comment": "copy online protocol"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.8511,
+					"value": 0.2355,
 					"dataSource": {
-						"page": 68,
-						"report": "SustainabilityReport",
+						"page": 1107,
+						"report": "AnnualReport",
 						"tagName": "infrastructures"
 					},
-					"quality": "Audited",
-					"comment": "connect solid state alarm"
+					"quality": "Reported",
+					"comment": "calculate online matrix"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.1015,
+					"value": 0.9174,
 					"quality": "Incomplete"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Erm, Poser und Kulimann"
+				"Dobler, Zekl und Brehmer",
+				"Giesa, Balkow und Dauer",
+				"Tress-Moguenara"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"headquarters": "Kleiberstadt",
-			"headquartersPostalCode": "41978",
-			"sector": "paradigms",
+			"companyLegalForm": "GmbH & Co. KG",
+			"headquarters": "Neubertstadt",
+			"headquartersPostalCode": "23554",
+			"sector": "deliverables",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "s5nkpykrajbk92z"
+					"identifierValue": "jylzuf33axb262r"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "4rgj3vyzh"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "v336z15h2gt6"
+					"identifierValue": "j3pgzzb0p"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "z7fuo3w4tuzjh504lg0s"
+					"identifierValue": "eadprixuhxm5owa6ln2d"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "bxtne1jnto"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "oxaytur"
+					"identifierValue": "f7sh8gqpyw"
 				}
 			],
-			"countryCode": "YT",
+			"countryCode": "UM",
 			"isTeaserCompany": false,
-			"website": "https://glatt-sessel.ch"
+			"website": "http://amüsant-rudern.net"
 		},
 		"t": {
 			"referencedReports": {
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "AED"
+					"isGroupLevel": "Yes",
+					"currency": "XBB"
 				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"currency": "USD"
-				},
-				"ESEFReport": {
+				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "NA",
-					"reportDate": "2022-08-28",
-					"currency": "AZN"
+					"reportDate": "2023-02-17",
+					"currency": "NIO"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearDeviation": "Deviation",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Wissing-Wollmann",
-				"dataSource": {
-					"page": 1078,
-					"report": "AnnualReport",
-					"tagName": "e-markets"
-				}
+				"assurance": "None"
 			},
 			"scopeOfEntities": "NA",
-			"activityLevelReporting": "No",
+			"reportingObligation": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 460980.39,
-					"dataSource": {
-						"page": 1064,
-						"report": "ESEFReport",
-						"tagName": "users"
-					},
-					"quality": "Estimated",
-					"comment": "bypass mobile bandwidth"
+					"value": 465635.4,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.5022,
+					"value": 0.6658,
 					"dataSource": {
-						"page": 1153,
+						"page": 66,
 						"report": "SustainabilityReport",
-						"tagName": "supply-chains"
+						"tagName": "bandwidth"
 					},
-					"quality": "Reported",
-					"comment": "bypass open-source matrix"
+					"quality": "Audited",
+					"comment": "program primary bus"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 748005.31,
-					"quality": "Incomplete"
+					"value": 770153.44,
+					"dataSource": {
+						"page": 1178,
+						"report": "IntegratedReport",
+						"tagName": "mindshare"
+					},
+					"quality": "Reported",
+					"comment": "back up mobile bandwidth"
 				},
 				"eligiblePercentage": {
-					"value": 0.3364,
+					"value": 0.5327,
 					"dataSource": {
-						"page": 533,
-						"report": "ESEFReport",
-						"tagName": "bandwidth"
+						"page": 937,
+						"report": "SustainabilityReport",
+						"tagName": "metrics"
 					},
-					"quality": "Estimated",
-					"comment": "reboot multi-byte interface"
+					"quality": "Audited",
+					"comment": "copy mobile firewall"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 488882.04,
+					"value": 704463.01,
 					"dataSource": {
-						"page": 1159,
-						"report": "ESEFReport",
-						"tagName": "content"
-					},
-					"quality": "Audited",
-					"comment": "back up multi-byte transmitter"
-				},
-				"eligiblePercentage": {
-					"value": 0.101,
-					"dataSource": {
-						"page": 61,
-						"report": "SustainabilityReport",
-						"tagName": "markets"
+						"page": 1112,
+						"report": "IntegratedReport",
+						"tagName": "web-readiness"
 					},
 					"quality": "Estimated",
-					"comment": "navigate multi-byte driver"
+					"comment": "bypass multi-byte firewall"
+				},
+				"eligiblePercentage": {
+					"value": 0.1299,
+					"dataSource": {
+						"page": 107,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
+					},
+					"quality": "Reported",
+					"comment": "transmit bluetooth hard drive"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020-Q1"
 	}
 ]

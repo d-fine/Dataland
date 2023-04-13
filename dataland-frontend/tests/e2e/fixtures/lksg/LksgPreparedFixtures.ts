@@ -15,7 +15,7 @@ type generatorFunction = (input: FixtureData<LksgData>) => FixtureData<LksgData>
  *
  * @returns the prepared fixtures
  */
-export async function generateLksgPreparedFixtures(): Promise<Array<FixtureData<LksgData>>> {
+export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   const manipulatorFunctions: Array<generatorFunction> = [
     manipulateFixtureForSixLksgDataSetsInDifferentYears,
     manipulateFixtureForOneLksgDataSetWithProductionSites,
@@ -24,7 +24,7 @@ export async function generateLksgPreparedFixtures(): Promise<Array<FixtureData<
     manipulateFixtureForVat2022,
     manipulateFixtureToContainEveryField,
   ];
-  const preparedFixturesBeforeManipulation = await generateLksgFixture(manipulatorFunctions.length);
+  const preparedFixturesBeforeManipulation = generateLksgFixture(manipulatorFunctions.length);
   const preparedFixtures = [];
   for (let i = 0; i < manipulatorFunctions.length; i++) {
     preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));

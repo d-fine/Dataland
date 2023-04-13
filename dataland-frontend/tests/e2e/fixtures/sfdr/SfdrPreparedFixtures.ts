@@ -11,12 +11,12 @@ type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>
  *
  * @returns the prepared fixtures
  */
-export async function generateSfdrPreparedFixtures(): Promise<Array<FixtureData<SfdrData>>> {
+export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   const manipulatorFunctions: Array<generatorFunction> = [
     manipulateFixtureForOneSfdr,
     manipulateFixtureForTwoSfdrDataSetsInDifferentYears,
   ];
-  const preparedFixturesBeforeManipulation = await generateFixtureDataset<SfdrData>(
+  const preparedFixturesBeforeManipulation = generateFixtureDataset<SfdrData>(
     generateSfdrData,
     manipulatorFunctions.length
   );

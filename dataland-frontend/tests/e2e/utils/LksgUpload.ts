@@ -1,10 +1,10 @@
 import {
-  CompanyInformation,
   Configuration,
-  DataMetaInformation,
-  InHouseProductionOrContractProcessing,
   LksgData,
   LksgDataControllerApi,
+  DataMetaInformation,
+  CompanyInformation,
+  InHouseProductionOrContractProcessing,
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
@@ -15,7 +15,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyU
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
- * @param data The Dataset to upload wrapped in a promise
+ * @param data The Dataset to upload
  */
 export async function uploadOneLksgDatasetViaApi(
   token: string,
@@ -145,5 +145,4 @@ export function uploadLksgDataViaForm(): void {
   cy.get('button[data-test="submitButton"]').click();
   cy.get("div.p-message-success").should("be.visible");
 }
-
 ///
