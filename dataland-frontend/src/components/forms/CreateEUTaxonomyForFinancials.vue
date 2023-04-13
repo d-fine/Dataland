@@ -503,16 +503,16 @@ import { useFilesUploadedStore } from "@/stores/filesUploaded";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { getHyphenatedDate, formatSize } from "@/utils/DataFormatUtils";
+import { formatSize, getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
-  euTaxonomyKPIsModel,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
+  euTaxonomyKPIsModel,
 } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
 import {
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
-  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   DataMetaInformation,
+  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
@@ -537,7 +537,7 @@ export default defineComponent({
     YesNoComponent,
     KPIfieldSet,
   },
-
+  emits: ["datasetCreated"],
   data() {
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
@@ -696,6 +696,7 @@ export default defineComponent({
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
             formInputsModelToSend
           );
+        this.$emit("datasetCreated");
         this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;

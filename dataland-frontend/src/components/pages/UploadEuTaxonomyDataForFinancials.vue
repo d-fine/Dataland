@@ -5,7 +5,7 @@
       <TheContent>
         <BackButton id="backButton" />
         <CompanyInformation :companyID="companyID" />
-        <CreateEUTaxonomyForFinancials :companyID="companyID" />
+        <CreateEUTaxonomyForFinancials :companyID="companyID" @datasetCreated="handleDatasetCreated" />
       </TheContent>
     </UploaderRoleWrapper>
     <DatalandFooter />
@@ -21,8 +21,10 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
+import { TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS } from "@/utils/Constants";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "UploadEuTaxonomyDataForFinancials",
   components: {
     UploaderRoleWrapper,
@@ -39,5 +41,15 @@ export default {
       type: String,
     },
   },
-};
+  methods: {
+    /**
+     * Executes a router push to the myDatasets page
+     */
+    handleDatasetCreated(): void {
+      setTimeout(() => {
+        void this.$router.push(`datasets`);
+      }, TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS);
+    },
+  },
+});
 </script>
