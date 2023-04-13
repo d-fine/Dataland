@@ -59,12 +59,7 @@ export default defineComponent({
 
   computed: {
     currentRefreshTokenInSharedStore(): string | undefined {
-      const currentRefreshTokenInSharedStore = useSharedSessionStateStore().refreshToken;
-      if (currentRefreshTokenInSharedStore) {
-        return currentRefreshTokenInSharedStore;
-      } else {
-        return undefined;
-      }
+      return useSharedSessionStateStore().refreshToken || undefined;
     },
   },
 
