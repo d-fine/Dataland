@@ -1,0 +1,43 @@
+location /api-keys/ {
+  proxy_pass http://api-key-manager:8080/api-keys/;
+  include utils/proxy.conf;
+  include utils/apiKeysErrors.conf;
+}
+
+location /api/internal/ {
+  return 301 https://${PROXY_PRIMARY_URL}/nocontent;
+}
+
+location /documents/ {
+  client_max_body_size 100M;
+  proxy_pass http://document-manager:8080/documents/;
+  include utils/proxy.conf;
+  include utils/documentsErrors.conf;
+}
+
+location /documents/internal/ {
+  return 301 https://${PROXY_PRIMARY_URL}/nocontent;
+}
+
+location /internal-storage/ {
+  proxy_pass http://internal-storage:8080/internal-storage/;
+  include utils/proxy.conf;
+}
+
+location /qa/actuator/health {
+  proxy_pass http://qa-service:8080/qa/actuator/health;
+  include utils/proxy.conf;
+}
+
+location /images/ {
+  root /var/www;
+}
+
+location = /gitinfo {
+  root /var/www/html;
+  default_type application/json;
+}
+
+location = /health/proxy {
+  return 200 'UP';
+}
