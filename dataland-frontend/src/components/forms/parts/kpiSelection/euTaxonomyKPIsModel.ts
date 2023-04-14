@@ -33,7 +33,7 @@ export const euTaxonomyKpiNameMappings = {
   reportDate: "Report Date",
   reportingPeriod: "Reporting Period",
   reportingObligation: "Reporting Obligation",
-  totalAmount: "totalAmount",
+  totalAmount: "Total Amount",
   alignedPercentage: "Aligned Percentage",
   eligiblePercentage: "Eligible Percentage",
 
@@ -137,7 +137,7 @@ export const euTaxonomyKpiInfoMappings = {
     "For financial companies (FS), the percentage of total assets exposed to taxonomy-eligible economic activities",
   reportDate: "The date for which the information presented in the report is valid through",
   reportingPeriod: "Reporting Period",
-  totalAmount: "totalAmount",
+  totalAmount: "Total Amount",
   alignedPercentage: "Aligned Percentage",
   eligiblePercentage: "Eligible Percentage",
 

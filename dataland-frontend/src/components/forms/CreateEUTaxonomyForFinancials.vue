@@ -405,10 +405,9 @@
                       <div class="col-9 formFields">
                         <FormKit :name="kpiType" type="group">
                           <div class="form-field">
-                            <UploadFormHeader
-                              :name="euTaxonomyKpiNameMappings[kpiType] ?? ''"
-                              :explanation="euTaxonomyKpiInfoMappings[kpiType] ?? ''"
-                            />
+                            <h3>
+                              {{ euTaxonomyKpiNameMappings[kpiType] ?? "" }}
+                            </h3>
                             <DataPointForm
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -430,10 +429,9 @@
                         <div class="col-9 formFields">
                           <FormKit :name="kpiTypeEligibility" type="group">
                             <div class="form-field">
-                              <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings[kpiTypeEligibility] ?? ''"
-                              />
+                              <h3>
+                                {{ euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? "" }}
+                              </h3>
                               <DataPointForm
                                 :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                 :kpiNameMappings="euTaxonomyKpiNameMappings"
