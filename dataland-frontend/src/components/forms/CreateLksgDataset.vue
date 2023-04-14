@@ -1113,7 +1113,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { CompanyAssociatedDataLksgData, InHouseProductionOrContractProcessing } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
-import { checkCustomInputs } from "@/utils/validationsUtils";
+import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 
 export default defineComponent({

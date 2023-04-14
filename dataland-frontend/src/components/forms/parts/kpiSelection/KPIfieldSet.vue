@@ -84,7 +84,6 @@
     <FormKit
       type="textarea"
       name="comment"
-      rows="10"
       placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
     />
   </div>

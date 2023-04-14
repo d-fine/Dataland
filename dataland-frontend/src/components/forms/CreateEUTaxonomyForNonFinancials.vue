@@ -270,11 +270,11 @@
               </div>
             </div>
           </FormKit>
-          <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
+          <template>
             <SuccessUpload
               v-if="postEuTaxonomyDataForNonFinancialsResponse"
               msg="EU Taxonomy Data"
-              :message="postEuTaxonomyDataForNonFinancialsResponse.data"
+              message=""
               :messageId="messageCount"
             />
             <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
@@ -316,8 +316,8 @@ import {
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
 import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
-import { checkCustomInputs } from "@/utils/validationsUtils";
-import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import { checkCustomInputs } from "@/utils/ValidationsUtils";
+import { modifyObjectKeys, objectType, updateObject } from "@/utils/UpdateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";

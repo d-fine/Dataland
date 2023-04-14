@@ -8,7 +8,7 @@ export function smoothScroll(target: string): void {
   const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - 100;
   const startPosition = window.scrollY;
   const distance = targetPosition - startPosition;
-  const duration = 300;
+  const duration = 300 + Math.abs(distance) / 10;
   let startTime = null as unknown as number;
 
   const animation = (currentTime: number): void => {

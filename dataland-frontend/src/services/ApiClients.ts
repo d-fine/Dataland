@@ -35,24 +35,11 @@ export class ApiClientProvider {
   }
 
   async getConstructedApi<T>(
-    constructor: new (configuration: Configuration | undefined, basePath: string) => T
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T,
+    basePath = "/api"
   ): Promise<T> {
     const configuration = await this.getConfiguration();
-    return new constructor(configuration, "/api");
-  }
-
-  async getConstructedApiKeyManager<T>(
-    constructor: new (configuration: Configuration | undefined, basePath: string) => T
-  ): Promise<T> {
-    const configuration = await this.getConfiguration();
-    return new constructor(configuration, "/api-keys");
-  }
-
-  async getConstructedApiDocumentUpload<T>(
-    constructor: new (configuration: Configuration | undefined, basePath: string) => T
-  ): Promise<T> {
-    const configuration = await this.getConfiguration();
-    return new constructor(configuration, "/documents");
+    return new constructor(configuration, basePath);
   }
 
   async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
@@ -80,11 +67,11 @@ export class ApiClientProvider {
   }
 
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
-    return this.getConstructedApiKeyManager(ApiKeyControllerApi);
+    return this.getConstructedApi(ApiKeyControllerApi, "/api-keys");
   }
 
   async getDocumentUploadController(): Promise<DocumentControllerApiInterface> {
-    return this.getConstructedApiDocumentUpload(DocumentControllerApi);
+    return this.getConstructedApi(DocumentControllerApi, "/documents");
   }
 
   async getInviteControllerApi(): Promise<InviteControllerApi> {

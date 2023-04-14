@@ -38,7 +38,7 @@
           validation-label="Fiscal year"
           :modelValue="convertedFiscalYearEnd"
           name="fiscalYearEnd"
-          :outer-class="{ 'hidden-input': true }"
+          :outer-class="{ 'hidden-input': false }"
         />
       </div>
 
