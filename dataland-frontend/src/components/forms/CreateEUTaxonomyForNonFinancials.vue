@@ -274,7 +274,7 @@
             <SuccessUpload
               v-if="postEuTaxonomyDataForNonFinancialsResponse"
               msg="EU Taxonomy Data"
-              message=""
+              :message="postEuTaxonomyDataForNonFinancialsResponse.data"
               :messageId="messageCount"
             />
             <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
