@@ -1161,7 +1161,7 @@ export default defineComponent({
         { label: "Forced labour, slavery and debt bondage", value: "forcedLabourSlaveryAndDebtBondage" },
         { label: "Evidence, certificates and attestations", value: "evidenceCertificatesAndAttestations" },
         { label: "Grievance mechanism", value: "grievanceMechanism" },
-        { label: "", value: "osh" },
+        { label: "OSH", value: "osh" },
         { label: "Freedom of association", value: "freedomOfAssociation" },
         { label: "Human rights", value: "humanRights" },
         { label: "Social and employee matters", value: "socialAndEmployeeMatters" },
@@ -1346,11 +1346,3 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped lang="scss">
-.anchor {
-  scroll-margin-top: 100px;
-}
-</style>
-
-// TODO is the styling here still necessary after the jumpLinks-feature was extracted into own component
-JumpLinksSection.vue

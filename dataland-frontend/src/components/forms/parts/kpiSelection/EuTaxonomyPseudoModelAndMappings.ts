@@ -1,4 +1,4 @@
-export const euTaxonomyKPIsModel = {
+export const euTaxonomyPseudoModelAndMappings = {
   creditInstitutionKpis: ["tradingPortfolio", "interbankLoans", "tradingPortfolioAndInterbankLoans", "greenAssetRatio"],
   insuranceKpis: ["taxonomyEligibleNonLifeInsuranceActivities"],
   investmentFirmKpis: ["greenAssetRatio"],

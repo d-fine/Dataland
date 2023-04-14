@@ -310,10 +310,10 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 import {
-  euTaxonomyKPIsModel,
+  euTaxonomyPseudoModelAndMappings,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
+} from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
 import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { checkCustomInputs } from "@/utils/validationsUtils";
@@ -365,7 +365,7 @@ export default defineComponent({
     checkCustomInputs,
     formatBytesUserFriendly,
     maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-    euTaxonomyKPIsModel,
+    euTaxonomyKPIsModel: euTaxonomyPseudoModelAndMappings,
     euTaxonomyKpiNameMappings,
     euTaxonomyKpiInfoMappings,
     reportingPeriodYear: new Date().getFullYear(),

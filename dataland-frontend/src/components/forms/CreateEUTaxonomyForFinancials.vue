@@ -320,10 +320,10 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
-  euTaxonomyKPIsModel,
+  euTaxonomyPseudoModelAndMappings,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
+} from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
 import {
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
@@ -373,7 +373,7 @@ export default defineComponent({
         { label: "ReasonableAssurance", value: "ReasonableAssurance" },
       ],
       maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-      euTaxonomyKPIsModel,
+      euTaxonomyKPIsModel: euTaxonomyPseudoModelAndMappings,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       checkCustomInputs,
