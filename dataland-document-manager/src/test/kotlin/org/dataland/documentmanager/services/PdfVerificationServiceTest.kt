@@ -14,14 +14,14 @@ class PdfVerificationServiceTest {
 
     @Test
     fun `verifies that a valid pdf document passes the basic checks`() {
-        val testFileBytes = loadPdfFileBytes()
+        val testFileBytes = loadFileBytes("samplePdfs/StandardWordExport.pdf")
         val testFile = createPdfFromBytes(testFileBytes)
         pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
     }
 
     @Test
     fun `verifies that a non pdf document does not pass the basic checks`() {
-        val testFileBytes = loadExcelFileBytes()
+        val testFileBytes = loadFileBytes("samplePdfs/EmptyExcelFile.xlsx")
         val testFile = MockMultipartFile(
             "test.xlsx",
             "test.xlsx",
@@ -40,7 +40,7 @@ class PdfVerificationServiceTest {
 
     @Test
     fun `verifies that an invalid pdf document does not pass the basic checks`() {
-        val testFileBytes = loadExcelFileBytes()
+        val testFileBytes = loadFileBytes("samplePdfs/EmptyExcelFile.xlsx")
         val testFile = createPdfFromBytes(testFileBytes)
         val thrown = assertThrows<InvalidInputApiException> {
             pdfVerificationService.assertThatDocumentLooksLikeAPdf(testFile, correlationId)
@@ -54,7 +54,7 @@ class PdfVerificationServiceTest {
 
     @Test
     fun `verifies that a pdf document with wrong name ending does not pass the basic checks`() {
-        val testFileBytes = loadPdfFileBytes()
+        val testFileBytes = loadFileBytes("samplePdfs/StandardWordExport.pdf")
         val testFile = MockMultipartFile(
             "test",
             "test",
@@ -69,7 +69,7 @@ class PdfVerificationServiceTest {
 
     @Test
     fun `verifies that a pdf document with forbidden characters in the filename does not pass the basic checks`() {
-        val testFileBytes = loadPdfFileBytes()
+        val testFileBytes = loadFileBytes("samplePdfs/StandardWordExport.pdf")
         val ch = '/'
         val testFile = MockMultipartFile(
             "te${ch}st.pdf",
@@ -87,13 +87,8 @@ class PdfVerificationServiceTest {
         )
     }
 
-    private fun loadExcelFileBytes(): ByteArray {
-        val testFileStream = javaClass.getResourceAsStream("samplePdfs/EmptyExcelFile.xlsx")
-        return IOUtils.toByteArray(testFileStream)
-    }
-
-    private fun loadPdfFileBytes(): ByteArray {
-        val testFileStream = javaClass.getResourceAsStream("samplePdfs/StandardWordExport.pdf")
+    private fun loadFileBytes(path: String): ByteArray {
+        val testFileStream = javaClass.getResourceAsStream(path)
         return IOUtils.toByteArray(testFileStream)
     }
 

@@ -1,8 +1,8 @@
 import { Configuration } from "@clients/backend";
-import { DocumentControllerApi, DocumentUploadResponse } from "@clients/documentmanager";
+import { DocumentControllerApi } from "@clients/documentmanager";
 
 /**
- * Uploads all documents provided in the <> folder and saves the hashes in a file for later referencing in the datasets
+ * Uploads all documents provided in the documentDirectory folder
  *
  * @param token the keycloak token for authentication
  */
@@ -24,17 +24,12 @@ export function uploadAllDocuments(token: string): void {
  * @param buffer the pdf document as an arrayBuffer to be uploaded as File
  * @param name the file name
  */
-export async function uploadDocumentViaApi(
-  token: string,
-  buffer: ArrayBuffer,
-  name: string
-): Promise<DocumentUploadResponse> {
+export async function uploadDocumentViaApi(token: string, buffer: ArrayBuffer, name: string): Promise<void> {
   const arr = new Uint8Array(buffer);
   const file = new File([arr], name, { type: "application/pdf" });
-  const response = await new DocumentControllerApi(
+  await new DocumentControllerApi(
     new Configuration({
       accessToken: token,
     })
   ).postDocument(file);
-  return response.data;
 }
