@@ -15,7 +15,12 @@ export const euTaxonomyKPIsModel = {
     investmentFirmKpis: "InvestmentFirm",
     assetManagementKpis: "AssetManagement",
   },
-  euTaxonomyDetailsPerCashFlowType: ["totalAmount", "alignedPercentage", "eligiblePercentage"],
+  euTaxonomyDetailsPerCashFlowType: ["total", "aligned", "eligible"],
+  euTaxonomyDetailsPerCashFlowFilesNames: {
+    total: "totalAmount",
+    aligned: "alignedPercentage",
+    eligible: "eligiblePercentage",
+  },
 };
 
 export const euTaxonomyKpiNameMappings = {
@@ -28,7 +33,7 @@ export const euTaxonomyKpiNameMappings = {
   reportDate: "Report Date",
   reportingPeriod: "Reporting Period",
   reportingObligation: "Reporting Obligation",
-  totalAmount: "Total Amount",
+  totalAmount: "totalAmount",
   alignedPercentage: "Aligned Percentage",
   eligiblePercentage: "Eligible Percentage",
 
@@ -130,7 +135,7 @@ export const euTaxonomyKpiInfoMappings = {
     "For financial companies (FS), the percentage of total assets exposed to taxonomy non-eligible economic activities. i.e., to types of economic activity that is not described and does not have technical screening criteria set out in the EU Taxonomy Regulation",
   taxonomyEligibleActivity:
     "For financial companies (FS), the percentage of total assets exposed to taxonomy-eligible economic activities",
-  reportDate: "Report Date",
+  reportDate: "The date for which the information presented in the report is valid through",
   reportingPeriod: "Reporting Period",
   totalAmount: "totalAmount",
   alignedPercentage: "Aligned Percentage",

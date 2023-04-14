@@ -11,15 +11,16 @@
     </h5>
   </div>
   <div v-show="dataPointIsAvailable">
-    <div class="form-field">
+    <div class="form-field" v-if="dataPointIsAvailable">
       <UploadFormHeader
-        :name="valueType === 'percent' ? 'Eligible Revenue (%)' : 'Eligible Revenue'"
-        explanation="Eligible Revenue (%) *"
+        :name="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]} amount`"
+        :explanation="kpiInfoMappings[name] ?? ''"
       />
       <FormKit
         :disabled="!dataPointIsAvailable"
         type="number"
         name="value"
+        v-model="currentMainValue"
         validation-label=""
         :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
         step="any"
@@ -104,13 +105,15 @@ export default defineComponent({
     files: useFilesUploadedStore(),
     dataPointIsAvailable: true,
     dataQualityList: ["NA", "Audited", "Reported", "Estimated", "Incomplete"],
-    qualityValueBeforeDataPointWasDisabled: "",
+    currentMainValue: "",
     currentReportValue: "",
     currentQualityValue: "",
     currentPageValue: "",
+    qualityValueBeforeDataPointWasDisabled: "",
     qualityValueWhenDataPointIsDisabled: "",
     pageValueWhenDataPointIsDisabled: "",
     reportValueWhenDataPointIsDisabled: "",
+    mainValueWhenDataPointIsDisabled: "",
   }),
   watch: {
     dataPointIsAvailable(newValue: boolean) {
@@ -118,11 +121,13 @@ export default defineComponent({
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
         this.pageValueWhenDataPointIsDisabled = this.currentPageValue;
         this.reportValueWhenDataPointIsDisabled = this.currentReportValue;
+        this.mainValueWhenDataPointIsDisabled = this.currentMainValue;
         this.currentQualityValue = "NA";
       } else {
         this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
         this.currentPageValue = this.pageValueWhenDataPointIsDisabled;
         this.currentReportValue = this.reportValueWhenDataPointIsDisabled;
+        this.currentMainValue = this.mainValueWhenDataPointIsDisabled;
       }
     },
   },
@@ -145,6 +150,10 @@ export default defineComponent({
     valueType: {
       type: String,
       default: "percent",
+    },
+    reportsName: {
+      type: Array,
+      default: () => [],
     },
   },
   methods: {
