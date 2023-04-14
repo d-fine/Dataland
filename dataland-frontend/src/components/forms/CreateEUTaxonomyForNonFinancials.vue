@@ -354,9 +354,7 @@
                           type="group"
                         >
                           <div class="form-field">
-                            <h3>
-                              {{ euTaxonomyKpiNameMappings[`${detailCashFlowType}CapEx`] ?? "" }}
-                            </h3>
+                            <DataPointHeader :name="euTaxonomyKpiNameMappings[`${detailCashFlowType}CapEx`]" />
                             <DataPointForm
                               :name="`${detailCashFlowType}CapEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
@@ -389,9 +387,7 @@
                           type="group"
                         >
                           <div class="form-field">
-                            <h3>
-                              {{ euTaxonomyKpiNameMappings[`${detailCashFlowType}OpEx`] ?? "" }}
-                            </h3>
+                            <DataPointHeader :name="euTaxonomyKpiNameMappings[`${detailCashFlowType}OpEx`]" />
                             <DataPointForm
                               :name="`${detailCashFlowType}OpEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
@@ -424,9 +420,7 @@
                           type="group"
                         >
                           <div class="form-field">
-                            <h3>
-                              {{ euTaxonomyKpiNameMappings[`${detailCashFlowType}Revenue`] ?? "" }}
-                            </h3>
+                            <DataPointHeader :name="euTaxonomyKpiNameMappings[`${detailCashFlowType}Revenue`]" />
                             <DataPointForm
                               :name="`${detailCashFlowType}Revenue`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
@@ -508,10 +502,12 @@ import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
+import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: {
+    DataPointHeader,
     DataPointForm,
     Calendar,
     UploadFormHeader,

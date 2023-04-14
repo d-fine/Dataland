@@ -405,10 +405,9 @@
                       <div class="col-9 formFields">
                         <FormKit :name="kpiType" type="group">
                           <div class="form-field">
-                            <h3>
-                              {{ euTaxonomyKpiNameMappings[kpiType] ?? "" }}
-                            </h3>
+                            <DataPointHeader :name="euTaxonomyKpiNameMappings[kpiType]" />
                             <DataPointForm
+                              :name="kpiType"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                             />
@@ -429,10 +428,9 @@
                         <div class="col-9 formFields">
                           <FormKit :name="kpiTypeEligibility" type="group">
                             <div class="form-field">
-                              <h3>
-                                {{ euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? "" }}
-                              </h3>
+                              <DataPointHeader :name="euTaxonomyKpiNameMappings[kpiTypeEligibility]" />
                               <DataPointForm
+                                :name="kpiTypeEligibility"
                                 :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                 :kpiNameMappings="euTaxonomyKpiNameMappings"
                               />
@@ -514,6 +512,7 @@ import {
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 
 export default defineComponent({
   setup() {
@@ -523,6 +522,7 @@ export default defineComponent({
   },
   name: "CreateEUTaxonomyForFinancials",
   components: {
+    DataPointHeader,
     FailedUpload,
     FormKit,
     SuccessUpload,
