@@ -362,7 +362,8 @@
 
                   <div class="col-9 formFields">
                     <FormKit v-for="area in lksgSubAreas.childLabour" type="group" name="childLabour" :key="area">
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -387,7 +388,8 @@
                       name="forcedLabourSlaveryAndDebtBondage"
                       :key="area"
                     >
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -412,7 +414,8 @@
                       name="evidenceCertificatesAndAttestations"
                       :key="area"
                     >
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -437,7 +440,8 @@
                       name="grievanceMechanism"
                       :key="area"
                     >
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -454,7 +458,8 @@
 
                   <div class="col-9 formFields">
                     <FormKit v-for="area in lksgSubAreas.osh" type="group" name="osh" :key="area">
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -479,7 +484,8 @@
                       name="freedomOfAssociation"
                       :key="area"
                     >
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -497,7 +503,8 @@
 
                   <div class="col-9 formFields">
                     <FormKit v-for="area in lksgSubAreas.humanRights" type="group" name="humanRights" :key="area">
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -524,7 +531,8 @@
                       name="socialAndEmployeeMatters"
                       :key="area"
                     >
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -541,7 +549,8 @@
                   </div>
                   <div class="col-9 formFields">
                     <FormKit v-for="area in lksgSubAreas.environment" type="group" name="environment" :key="area">
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -574,7 +583,8 @@
                   </div>
                   <div class="col-9 formFields">
                     <FormKit v-for="area in lksgSubAreas.riskManagement" type="group" name="riskManagement" :key="area">
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -591,7 +601,8 @@
                   </div>
                   <div class="col-9 formFields">
                     <FormKit v-for="area in lksgSubAreas.codeOfConduct" type="group" name="codeOfConduct" :key="area">
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -611,7 +622,8 @@
 
                   <div class="col-9 formFields">
                     <FormKit v-for="area in lksgSubAreas.waste" type="group" name="waste" :key="area">
-                      <YesNoComponent
+                      <component
+                        :is="lksgFieldComponentTypes[area]"
                         :displayName="lksgKpisNameMappings[area]"
                         :info="lksgKpisInfoMappings[area]"
                         :name="area"
@@ -692,6 +704,7 @@ import {
   lksgSubAreasNameMappings,
   lksgSubAreas,
   lksgFieldDependencies,
+  lksgFieldComponentTypes,
 } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
@@ -739,6 +752,7 @@ export default defineComponent({
       lksgSubAreasNameMappings,
       lksgSubAreas,
       lksgFieldDependencies,
+      lksgFieldComponentTypes,
       elementPosition: 0,
       scrollListener: (): null => null,
       isInHouseProductionOrContractProcessingMap: Object.fromEntries(
