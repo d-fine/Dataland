@@ -122,7 +122,7 @@ export default defineComponent({
           showHeader: false,
         },
         data: {
-          sessionDialogMode: SessionDialogMode.SessionClosed,
+          sessionDialogMode: SessionDialogMode.SessionWarning,
         },
       });
     },
