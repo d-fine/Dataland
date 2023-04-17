@@ -107,6 +107,7 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
 sourceSets {
     val main by getting
     main.java.srcDir("$buildDir/clients/backend/src/main/kotlin")
+    main.java.srcDir("$buildDir/clients/documentmanager/src/main/kotlin")
 }
 
 ktlint {
