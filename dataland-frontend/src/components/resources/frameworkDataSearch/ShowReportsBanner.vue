@@ -4,9 +4,9 @@
       Data extracted from the company report. Company reports:
     </p>
     <p id="reportList">
-      <!--{{ resetReportsCount() }}-->
+      {{ resetReportsCount() }}
       <span v-for="[name, rep] in Object.entries(reports)" :key="name">
-        <!--{{ reportPlus() }}-->
+        {{ reportPlus() }}
         <span
           @click="downloadReport(rep.reference)"
           class="font-semibold underline text-primary cursor-pointer"
