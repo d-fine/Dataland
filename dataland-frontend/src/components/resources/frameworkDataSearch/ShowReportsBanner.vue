@@ -5,15 +5,17 @@
     </p>
     <p id="reportList">
       {{ resetReportsCount() }}
-      <span v-for="[name, rep] in Object.entries(reports)" :key="name">
+      <span>
+        Test text
+        <!--<span v-for="[name, rep] in Object.entries(reports)" :key="name">
         {{ reportPlus() }}
         <span
           @click="downloadReport(rep.reference)"
           class="font-semibold underline text-primary cursor-pointer"
           data-test="Report-Download"
           >{{ name }}</span
-        >
-        <span v-if="reportCounter < Object.keys(reports).length"> | </span>
+        >-->
+        <!--<span v-if="reportCounter < Object.keys(reports).length"> | </span>-->
       </span>
     </p>
   </div>
