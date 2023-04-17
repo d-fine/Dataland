@@ -52,9 +52,6 @@ export default defineComponent({
       sessionDialogMode: undefined as undefined | number,
       SessionDialogMode,
       functionIdOfExpiryCheck: undefined as undefined | number,
-      isInSessionWarningMode: false,
-      isInSessionClosedMode: false,
-      isInExternalLogoutMode: false,
     };
   },
 
