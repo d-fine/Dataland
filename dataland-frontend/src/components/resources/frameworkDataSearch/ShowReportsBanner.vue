@@ -1,116 +1,32 @@
 <template>
-  <div class="col-12 text-left bg-white mb-4 mp-0 all-sides-blue-border" data-test="reportsBanner" style="width: 99%">
+  <div class="col-12 text-left bg-white mb-4 mp-0 all-sides-blue-border" data-test="reportsBanner" style="width: 100%">
     <p class="font-bold text-gray-800 mt-0 mb-0 mp-0 ml-0 mr-0" style="font-size: 11pt">
       Data extracted from the company report. Company reports:
     </p>
-    <p id="reportList">
-      {{ resetReportsCount() }}
-
-      <!--<span v-for="[name, rep] in Object.entries(reports)" :key="name"> -->
-
-      {{ reportPlus() }}
-      <span
-        @click="downloadReport(Object.values(reports)[0])"
-        class="font-semibold underline text-primary cursor-pointer"
-        data-test="Report-Download"
-        >{{ name }}</span
-      >
-      <!--<span v-if="reportCounter < Object.keys(reports).length"> | </span>-->
-      <!--</span>-->
-    </p>
+    <span id="reportList">
+      <span v-for="(report, name, index) in reports" :key="index">
+        <ReportLink :name="name" :report="report" :index="Number(index)" :reportsNumber="reportsNumber()" />
+      </span>
+    </span>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
-import { CompanyReport } from "@clients/backend";
-import { AxiosResponse /*AxiosResponseHeaders*/ } from "axios";
-//import { ApiClientProvider } from "@/services/ApiClients";
-//import { assertDefined } from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
+import { defineComponent } from "vue";
+import ReportLink from "@/components/resources/frameworkDataSearch/ReportLink.vue";
 
 export default defineComponent({
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
   name: "ShowReportsBanner",
+  components: { ReportLink },
   props: {
-    reports: { type: Map<string, CompanyReport> },
+    reports: { type: Object, required: true },
   },
-  data() {
-    return {
-      reportCounter: 0,
-      getDocumentsFromStorageProcessed: false,
-      getDocumentsFromStorageResponse: null as AxiosResponse<File> | null,
-      messageCount: 0,
-    };
-  },
-  computed: {},
   methods: {
     /**
-     * Counter to correctly build the list of reports
+     * @returns the number of reports
      */
-    reportPlus() {
-      this.reportCounter++;
-    },
-    /**
-     * Resets the counter used to correctly build the list of reports
-     */
-    resetReportsCount() {
-      this.reportCounter = 0;
-    },
-    /**
-     * Method to download available reports
-     *
-     * @param reference
-     */
-    downloadReport(reference: string) {
-      /*try {
-        const docUrl = document.createElement("a");
-        const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getDocumentControllerApi();
-        await documentControllerApi
-          .getDocument(reference, {
-            headers: { accept: "application/pdf" },
-            responseType: "arraybuffer",
-          })
-          .then((getDocumentsFromStorageResponse) => {
-            const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
-            docUrl.href = URL.createObjectURL(newBlob);
-            const contentDisposition: string =
-              ((getDocumentsFromStorageResponse.headers as AxiosResponseHeaders).get(
-                "content-disposition"
-              ) as string) ?? "";
-            const filename = this.constructFileName(contentDisposition, reference);
-
-            docUrl.setAttribute("download", filename);
-            document.body.appendChild(docUrl);
-            docUrl.click();
-          });
-      } catch (error) {
-        console.error(error);
-      }*/
-      console.log(reference);
-    },
-
-    /**
-     * construct file name from response header, as a fallback the hash is used as file name
-     *
-     * @param contentDisposition the part of the header that should contain the file name
-     * @param reference the hash as a fallback value
-     * @returns filename the name of the downloaded file
-     */
-    constructFileName(contentDisposition: string, reference: string): string {
-      const regex = /(?<=filename=)[^;]+/;
-      const filename = regex.exec(contentDisposition);
-      if (filename !== null) {
-        return filename[0];
-      } else {
-        return reference + ".pdf";
-      }
+    reportsNumber(): number {
+      return Object.keys(this.reports).length;
     },
   },
 });

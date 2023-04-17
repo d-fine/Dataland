@@ -4,7 +4,10 @@
     <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="dataSet && !waitingForData">
-    <ShowReportsBanner :reports="dataSet.referencedReports" />
+    <ShowReportsBanner
+      v-if="dataSet.referencedReports !== undefined && Object.keys(dataSet.referencedReports).length > 0"
+      :reports="dataSet.referencedReports"
+    />
     <div class="grid">
       <div class="col-6">
         <TaxoInfoCard
