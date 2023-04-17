@@ -18,6 +18,7 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { useSharedSessionStateStore } from "@/stores/stores";
+import { SessionDialogMode } from "@/utils/SessionTimeoutUtils";
 
 export default defineComponent({
   name: "WelcomeDataland",
@@ -68,8 +69,7 @@ export default defineComponent({
     },
 
     /**
-     * Opens a pop-up to show the user that he was logged out. Since there can be multiple reasons for this, the
-     * displayed text should be passed as param.
+     * Opens a pop-up to show the user that she/he was logged out.
      */
     openLogoutModal(): void {
       this.$dialog.open(SessionDialog, {
@@ -79,9 +79,7 @@ export default defineComponent({
           showHeader: false,
         },
         data: {
-          displayedHeader: "You have been logged out",
-          displayedText: "Do you want to login again?",
-          showLogInButton: true,
+          sessionDialogMode: SessionDialogMode.ExternalLogout,
         },
         onClose: () => {
           void this.$router.replace("");

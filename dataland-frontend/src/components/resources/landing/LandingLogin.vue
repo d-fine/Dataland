@@ -16,7 +16,12 @@
           </router-link>
         </div>
         <div data-test="landing-page-login-button" class="col-2 col-offset-3">
-          <AuthenticationButton />
+          <PrimeButton
+            label="Login to preview account"
+            class="p-button-sm uppercase d-letters text-primary bg-white-alpha-10 w-15rem"
+            name="login_dataland_button"
+            @click="login"
+          />
         </div>
       </div>
 
@@ -56,14 +61,37 @@
 
 <script lang="ts">
 import Card from "primevue/card";
-import AuthenticationButton from "@/components/general/AuthenticationButton.vue";
 import JoinDatalandButton from "@/components/general/JoinDatalandButton.vue";
 import BuildersAndSponsors from "@/components/resources/landing/BuildersAndSponsors.vue";
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
+import PrimeButton from "primevue/button";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import Keycloak from "keycloak-js";
 
 export default defineComponent({
   name: "LandingLogin",
-  components: { JoinDatalandButton, AuthenticationButton, Card, BuildersAndSponsors },
+  components: { PrimeButton, JoinDatalandButton, Card, BuildersAndSponsors },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
+
+  methods: {
+    /**
+     * Sends the user to the keycloak login page (if not authenticated already)
+     */
+    login() {
+      assertDefined(this.getKeycloakPromise)()
+        .then((keycloak) => {
+          if (!keycloak.authenticated) {
+            loginAndRedirectToSearchPage(keycloak);
+          }
+        })
+        .catch((error) => console.log(error));
+    },
+  },
 });
 </script>
 <style scoped lang="scss">

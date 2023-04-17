@@ -9,12 +9,13 @@ import DynamicDialog from "primevue/dynamicdialog";
 import { computed, defineComponent } from "vue";
 import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 import {
-  startSessionSetIntervalFunction,
+  SessionDialogMode,
+  startSessionSetIntervalFunctionAndReturnItsId,
   updateTokenAndItsExpiryTimestampAndStoreBoth,
 } from "@/utils/SessionTimeoutUtils";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
-import { useFunctionIdsStore, useSharedSessionStateStore } from "@/stores/stores";
+import { useSharedSessionStateStore } from "@/stores/stores";
 
 export default defineComponent({
   name: "app",
@@ -25,6 +26,7 @@ export default defineComponent({
       keycloakPromise: undefined as undefined | Promise<Keycloak>,
       resolvedKeycloakPromise: undefined as undefined | Keycloak,
       keycloakAuthenticated: false,
+      functionIdOfSessionSetInterval: undefined as number | undefined,
     };
   },
 
@@ -32,9 +34,12 @@ export default defineComponent({
     currentRefreshTokenInSharedStore(newRefreshToken: string) {
       if (this.resolvedKeycloakPromise && newRefreshToken) {
         this.resolvedKeycloakPromise.refreshToken = newRefreshToken;
-        clearInterval(useFunctionIdsStore().functionIdOfSetIntervalForSessionWarning);
+        clearInterval(this.functionIdOfSessionSetInterval);
         const openSessionWarningModalBound = this.openSessionWarningModal.bind(this);
-        startSessionSetIntervalFunction(this.resolvedKeycloakPromise, openSessionWarningModalBound);
+        this.functionIdOfSessionSetInterval = startSessionSetIntervalFunctionAndReturnItsId(
+          this.resolvedKeycloakPromise,
+          openSessionWarningModalBound
+        );
       }
     },
   },
@@ -105,9 +110,8 @@ export default defineComponent({
 
     /**
      * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
-     * If the refresh button is  clicked soon enough, the session is refreshed.
-     * Else the text changes and tells the user that the session was closed. That behaviour is activated in the
-     * SessionDialog via the variable isTrackingOfRefreshTokenExpiryEnabled.
+     * If the refresh button is clicked soon enough, the session is refreshed.
+     * Else the text changes and tells the user that the session was closed.
      */
     openSessionWarningModal(): void {
       this.$dialog.open(SessionDialog, {
@@ -118,11 +122,7 @@ export default defineComponent({
           showHeader: false,
         },
         data: {
-          displayedHeader: "Session expires soon",
-          displayedText: "To refresh it, please click on the button below.",
-          showRefreshButton: true,
-          isTrackingOfRefreshTokenExpiryEnabled: true,
-          resolvedKeycloakPromise: this.resolvedKeycloakPromise,
+          sessionDialogMode: SessionDialogMode.SessionWarning,
         },
       });
     },
