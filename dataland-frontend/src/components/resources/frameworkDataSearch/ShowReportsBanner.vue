@@ -7,13 +7,13 @@
       {{ resetReportsCount() }}
 
       <!--<span v-for="[name, rep] in Object.entries(reports)" :key="name"> -->
-
       {{ reportPlus() }}
+      {{ console.log(reports.toString()) }}
       <span
-        @click="downloadReport(Object.values(reports)[0])"
+        @click="downloadReport(reports.toString())"
         class="font-semibold underline text-primary cursor-pointer"
         data-test="Report-Download"
-        >{{ name }}</span
+        >{{ name }} {{ console.log(reports.toString()) }}</span
       >
       <!--<span v-if="reportCounter < Object.keys(reports).length"> | </span>-->
       <!--</span>-->
