@@ -1,10 +1,10 @@
 <template>
-  <div data-test="submitButton" class="text-center p-3">
+  <div data-test="submitButton" class="text-left">
     <PrimeButton
       data-test="submitButton"
       type="submit"
       :label="updatingData ? 'UPDATE DATA' : 'ADD DATA'"
-      :class="formIsValid ? '' : 'button-disabled'"
+      :class="formIsValid ? 'col-12 m-0' : 'button-disabled col-12 m-0'"
       @click="submit"
     />
   </div>
