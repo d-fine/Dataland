@@ -357,18 +357,18 @@
                 <div class="uploadFormSection grid" v-for="section in lksgDataModel.social.categories" :key="section">
                   <div class="col-3 p-3 topicLabel">
                     <h4 class="anchor title">{{ section.name }}</h4>
-                    <div class="p-badge {{lksgDataModel.social.color}}">
-                      <span>{{ lksgDataModel.social.name }}</span>
+                    <div :class="`p-badge badge-${lksgDataModel.social.color}`">
+                      <span>{{ lksgDataModel.social.label.toUpperCase() }}</span>
                     </div>
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit v-for="field in section.fields" type="group" :name="section.variable" :key="field">
+                    <FormKit v-for="field in section.fields" type="group" :name="section.name" :key="field">
                       <component
                         :is="field.component"
-                        :displayName="field.name"
+                        :displayName="field.label"
                         :info="field.description"
-                        :name="field.variable"
+                        :name="field.name"
                         :displayed="getYesNoValue(field.dependency)"
                       />
                     </FormKit>

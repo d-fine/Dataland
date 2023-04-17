@@ -718,26 +718,27 @@ export const test3 = {
 
 export const lksgDataModel = {
   social: {
-    color: "badge-blue",
-    name: "Social",
+    name: "social",
+    label: "Social",
+    color: "yellow",
     categories: [
       {
-        variable: "childLabour",
-        name: "Child Labor",
+        name: "childLabour",
+        label: "Child Labor",
         fields: [
           {
-            variable: "employeeUnder18",
-            name: "Employee Under 18",
+            name: "employeeUnder18",
+            label: "Employee Under 18",
             description: "Does your company have employees under the age of 18?",
             component: "YesNoComponent",
             dependency: "",
           },
           {
-            variable: "employeeUnder15",
-            name: "Employee Under 15",
+            name: "employeeUnder15",
+            label: "Employee Under 15",
             description: "Does your company have employees under the age of 15?",
             component: "YesNoComponent",
-            dependency: "this.lkSGDataModel.data?.social?.childLabour?.employeeUnder18 ?? 'No'",
+            dependency: "this.companyAssociatedLksgData.data?.social?.childLabour?.employeeUnder18 ?? 'No'",
           },
         ],
       },
