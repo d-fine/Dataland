@@ -76,6 +76,7 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
  *                                         countries specified by the country codes are returned
  * @param sectorFilter                     If not empty only companies whose sector is in the set is returned
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
+ * @returns the search result companies
  */
 export async function getCompanyDataForFrameworkDataSearchPage(
   searchString: string,

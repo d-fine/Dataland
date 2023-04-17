@@ -78,6 +78,7 @@ export function generateDummyCompanyInformation(companyName: string, sector = "I
  *
  * @param token the bearer token used to authorize the API requests
  * @param companyInformation information about the company to create
+ * @returns a promise on the requested company
  */
 export async function uploadCompanyViaApi(
   token: string,
