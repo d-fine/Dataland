@@ -703,3 +703,44 @@ export const lksgFieldComponentTypes = {
   hazardousWasteDisposalRiskOfImport: "YesNoComponent",
   hazardousAndOtherWasteImport: "YesNoComponent",
 };
+
+export const test = {
+  categories: ["childLabour"],
+};
+
+export const test2 = {
+  Social: "badge-blue",
+};
+
+export const test3 = {
+  childLabour: "Social",
+};
+
+export const lksgDataModel = {
+  social: {
+    color: "badge-blue",
+    name: "Social",
+    categories: [
+      {
+        variable: "childLabour",
+        name: "Child Labor",
+        fields: [
+          {
+            variable: "employeeUnder18",
+            name: "Employee Under 18",
+            description: "Does your company have employees under the age of 18?",
+            component: "YesNoComponent",
+            dependency: "",
+          },
+          {
+            variable: "employeeUnder15",
+            name: "Employee Under 15",
+            description: "Does your company have employees under the age of 15?",
+            component: "YesNoComponent",
+            dependency: "this.lkSGDataModel.data?.social?.childLabour?.employeeUnder18 ?? 'No'",
+          },
+        ],
+      },
+    ],
+  },
+};
