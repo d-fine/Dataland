@@ -151,10 +151,6 @@ export default defineComponent({
       type: String,
       default: "percent",
     },
-    reportsName: {
-      type: Array,
-      default: () => [],
-    },
   },
   methods: {
     /**

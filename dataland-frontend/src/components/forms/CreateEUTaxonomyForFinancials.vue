@@ -80,7 +80,7 @@
                         >
                           <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
                           <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
-                            {{ formatSize(Number(file.size)) }}
+                            {{ formatBytesUserFriendly(Number(file.size), 3) }}
                           </div>
                           <PrimeButton
                             icon="pi pi-times"
@@ -499,7 +499,7 @@ import { useFilesUploadedStore } from "@/stores/filesUploaded";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { formatSize, getHyphenatedDate } from "@/utils/DataFormatUtils";
+import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
@@ -513,6 +513,7 @@ import {
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
+import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
   setup() {
@@ -556,7 +557,7 @@ export default defineComponent({
       scrollListener: (): null => null,
       smoothScroll,
       checkCustomInputs,
-      formatSize,
+      formatBytesUserFriendly,
       route: useRoute(),
       waitingForData: false,
 

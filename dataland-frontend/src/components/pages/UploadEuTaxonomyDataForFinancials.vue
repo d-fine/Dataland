@@ -41,11 +41,10 @@ export default defineComponent({
       type: String,
     },
   },
-  methods: {
-    /**
-     * Executes a router push to the myDatasets page
-     */
-    redirectToMyDatasets,
+  data() {
+    return {
+      redirectToMyDatasets,
+    };
   },
 });
 </script>
