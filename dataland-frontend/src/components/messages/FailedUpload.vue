@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style scoped>
-::v-deep(.p-message-wrapper){
-  padding: .25rem;
+::v-deep(.p-message-wrapper) {
+  padding: 0.25rem;
 }
 </style>

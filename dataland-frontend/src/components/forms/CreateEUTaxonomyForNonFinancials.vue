@@ -1,7 +1,7 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3">
     <template #title
-    >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service
+      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service
     </template>
     <template #content>
       <div class="grid uploadFormWrapper">
@@ -455,7 +455,7 @@
           </FormKit>
         </div>
         <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
-          <SubmitButton :formId="formId"/>
+          <SubmitButton :formId="formId" />
           <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
             <SuccessUpload
               v-if="postEuTaxonomyDataForNonFinancialsResponse"
@@ -464,7 +464,7 @@
               :messageId="messageCount"
               class="p0 px-2"
             />
-            <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount"/>
+            <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
           </template>
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
@@ -480,10 +480,10 @@
 
 <script lang="ts">
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
-import {FormKit} from "@formkit/vue";
+import { FormKit } from "@formkit/vue";
 
 import Calendar from "primevue/calendar";
-import {useFilesUploadedStore} from "@/stores/filesUploaded";
+import { useFilesUploadedStore } from "@/stores/filesUploaded";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload from "primevue/fileupload";
@@ -492,24 +492,24 @@ import KpiFieldSet from "@/components/forms/parts/kpiSelection/KpiFieldSet.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import Card from "primevue/card";
-import {ApiClientProvider} from "@/services/ApiClients";
-import {humanizeString} from "@/utils/StringHumanizer";
-import {defineComponent, inject} from "vue";
-import {useRoute} from "vue-router";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { humanizeString } from "@/utils/StringHumanizer";
+import { defineComponent, inject } from "vue";
+import { useRoute } from "vue-router";
 import Keycloak from "keycloak-js";
-import {assertDefined} from "@/utils/TypeScriptUtils";
-import {formatSize, getHyphenatedDate} from "@/utils/DataFormatUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { formatSize, getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 import {
   euTaxonomyKPIsModel,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
-import {CompanyAssociatedDataEuTaxonomyDataForNonFinancials} from "@clients/backend";
-import {UPLOAD_MAX_FILE_SIZE_IN_BYTES} from "@/utils/Constants";
-import {smoothScroll} from "@/utils/smoothScroll";
-import {checkCustomInputs} from "@/utils/validationsUtils";
-import {modifyObjectKeys, objectType, updateObject} from "@/utils/updateObjectUtils";
+import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
+import { smoothScroll } from "@/utils/smoothScroll";
+import { checkCustomInputs } from "@/utils/validationsUtils";
+import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 
 export default defineComponent({
@@ -541,12 +541,12 @@ export default defineComponent({
     convertedFiscalYearEnd: "",
     reportingPeriod: new Date(),
     onThisPageLinks: [
-      {label: "Upload company reports", value: "uploadReports"},
-      {label: "Basic information", value: "basicInformation"},
-      {label: "Assurance", value: "assurance"},
-      {label: "CapEx", value: "capex"},
-      {label: "OpEx", value: "opex"},
-      {label: "Revenue", value: "revenue"},
+      { label: "Upload company reports", value: "uploadReports" },
+      { label: "Basic information", value: "basicInformation" },
+      { label: "Assurance", value: "assurance" },
+      { label: "CapEx", value: "capex" },
+      { label: "OpEx", value: "opex" },
+      { label: "Revenue", value: "revenue" },
     ],
     elementPosition: 0,
     isItUploadForm: false,
