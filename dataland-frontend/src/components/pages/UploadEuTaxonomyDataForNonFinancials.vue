@@ -31,7 +31,7 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
-import { redirectToMyDatasets } from "@/components/resources/uploadDataset/datasetCreationRedirect";
+import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
 import { defineComponent } from "vue";
 
 export default defineComponent({

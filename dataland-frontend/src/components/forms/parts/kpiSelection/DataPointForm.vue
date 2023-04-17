@@ -1,4 +1,5 @@
 <template>
+  <DataPointHeader :name="kpiNameMappings[name]" />
   <div v-if="toggleDataAvailable" data-test="dataPointToggle" class="form-field vertical-middle">
     <InputSwitch
       data-test="dataPointToggleButton"
@@ -96,10 +97,11 @@ import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
+import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 
 export default defineComponent({
   name: "DataPointForm",
-  components: { UploadFormHeader, FormKit, InputSwitch },
+  components: { DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({
     files: useFilesUploadedStore(),
