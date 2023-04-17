@@ -354,24 +354,27 @@
                   </div>
                 </div>
 
-                <div class="uploadFormSection grid" v-for="section in lksgDataModel.social.categories" :key="section">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 class="anchor title">{{ section.name }}</h4>
-                    <div :class="`p-badge badge-${lksgDataModel.social.color}`">
-                      <span>{{ lksgDataModel.social.label.toUpperCase() }}</span>
+                <div v-for="section in lksgDataModel" :key="section">
+                  <div class="uploadFormSection grid" v-for="subsection in section.categories" :key="subsection">
+                    <div class="col-3 p-3 topicLabel">
+                      <h4 class="anchor title">{{ subsection.label }}</h4>
+                      <div :class="`p-badge badge-${section.color}`">
+                        <span>{{ section.label.toUpperCase() }}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="col-9 formFields">
-                    <FormKit v-for="field in section.fields" type="group" :name="section.name" :key="field">
-                      <component
-                        :is="field.component"
-                        :displayName="field.label"
-                        :info="field.description"
-                        :name="field.name"
-                        :displayed="getYesNoValue(field.dependency)"
-                      />
-                    </FormKit>
+                    <div class="col-9 formFields">
+                      <FormKit v-for="field in subsection.fields" type="group" :name="subsection.name" :key="field">
+                        <component
+                          :is="field.component"
+                          :displayName="field.label"
+                          :info="field.description"
+                          :name="field.name"
+                          :displayed="getYesNoValue(field.dependency)"
+                          :placeholder="field.placeholder"
+                        />
+                      </FormKit>
+                    </div>
                   </div>
                 </div>
 
@@ -720,6 +723,7 @@ import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
+import FreeTextComponent from "@/components/forms/parts/FreeTextComponent.vue";
 
 export default defineComponent({
   setup() {
@@ -728,7 +732,17 @@ export default defineComponent({
     };
   },
   name: "CreateLksgDataset",
-  components: { UploadFormHeader, SuccessUpload, FailedUpload, FormKit, Card, PrimeButton, YesNoComponent, Calendar },
+  components: {
+    UploadFormHeader,
+    SuccessUpload,
+    FailedUpload,
+    FormKit,
+    Card,
+    PrimeButton,
+    YesNoComponent,
+    FreeTextComponent,
+    Calendar,
+  },
   directives: {
     tooltip: Tooltip,
   },

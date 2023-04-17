@@ -716,8 +716,8 @@ export const test3 = {
   childLabour: "Social",
 };
 
-export const lksgDataModel = {
-  social: {
+export const lksgDataModel = [
+  {
     name: "social",
     label: "Social",
     color: "yellow",
@@ -731,7 +731,6 @@ export const lksgDataModel = {
             label: "Employee Under 18",
             description: "Does your company have employees under the age of 18?",
             component: "YesNoComponent",
-            dependency: "",
           },
           {
             name: "employeeUnder15",
@@ -740,8 +739,39 @@ export const lksgDataModel = {
             component: "YesNoComponent",
             dependency: "this.companyAssociatedLksgData.data?.social?.childLabour?.employeeUnder18 ?? 'No'",
           },
-        ],
+        ] as Field[],
       },
     ],
   },
-};
+  {
+    name: "environmental",
+    label: "Environmental",
+    color: "blue",
+    categories: [
+      {
+        name: "waste",
+        label: "Waste",
+        fields: [
+          {
+            name: "mercuryAndMercuryWasteHandling",
+            label: "Mercury And Mercury Waste Handling",
+            description: "Does your company deal with mercury and mercury waste as part of its business model?",
+            component: "FreeTextComponent",
+            dependency: "",
+            validation: "required",
+          },
+        ] as Field[],
+      },
+    ],
+  },
+];
+
+interface Field {
+  name: string;
+  label: string;
+  description: string;
+  component: string;
+  dependency: string;
+  validation: string;
+  placeholder: string;
+}
