@@ -4,6 +4,7 @@
     <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
   <div v-if="dataSet && !waitingForData">
+    {{ console.log(dataSet.referencedReports.toString()) }}
     <ShowReportsBanner :reports="dataSet.referencedReports" />
     <div class="grid">
       <div class="col-6">
