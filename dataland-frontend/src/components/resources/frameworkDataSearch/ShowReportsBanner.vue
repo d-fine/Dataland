@@ -22,9 +22,9 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import { CompanyReport } from "@clients/backend";
-import { AxiosResponse, AxiosResponseHeaders } from "axios";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import { AxiosResponse /*AxiosResponseHeaders*/ } from "axios";
+//import { ApiClientProvider } from "@/services/ApiClients";
+//import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 
 export default defineComponent({
@@ -62,10 +62,10 @@ export default defineComponent({
     /**
      * Method to download available reports
      *
-     * @param reference hash of the report to be downloaded
+     * @param reference
      */
-    async downloadReport(reference: string) {
-      try {
+    downloadReport(reference: string) {
+      /*try {
         const docUrl = document.createElement("a");
         const documentControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -90,7 +90,8 @@ export default defineComponent({
           });
       } catch (error) {
         console.error(error);
-      }
+      }*/
+      console.log("Test Logging");
     },
 
     /**
