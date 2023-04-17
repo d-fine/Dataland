@@ -68,8 +68,7 @@ export default defineComponent({
     },
 
     /**
-     * Opens a pop-up to show the user that he was logged out. Since there can be multiple reasons for this, the
-     * displayed text should be passed as param.
+     * Opens a pop-up to show the user that she/he was logged out.
      */
     openLogoutModal(): void {
       this.$dialog.open(SessionDialog, {
