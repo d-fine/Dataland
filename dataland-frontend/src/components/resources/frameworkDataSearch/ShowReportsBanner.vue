@@ -5,18 +5,18 @@
     </p>
     <p id="reportList">
       {{ resetReportsCount() }}
-      <span>
-        Test text
-        <!--<span v-for="[name, rep] in Object.entries(reports)" :key="name">
-        {{ reportPlus() }}
-        <span
-          @click="downloadReport(rep.reference)"
-          class="font-semibold underline text-primary cursor-pointer"
-          data-test="Report-Download"
-          >{{ name }}</span
-        >-->
-        <!--<span v-if="reportCounter < Object.keys(reports).length"> | </span>-->
-      </span>
+
+      <!--<span v-for="[name, rep] in Object.entries(reports)" :key="name"> -->
+
+      {{ reportPlus() }}
+      <span
+        @click="downloadReport(Object.values(reports)[0])"
+        class="font-semibold underline text-primary cursor-pointer"
+        data-test="Report-Download"
+        >{{ name }}</span
+      >
+      <!--<span v-if="reportCounter < Object.keys(reports).length"> | </span>-->
+      <!--</span>-->
     </p>
   </div>
 </template>
@@ -93,7 +93,7 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }*/
-      console.log("Test Logging");
+      console.log(reference);
     },
 
     /**
