@@ -9,6 +9,7 @@ import DynamicDialog from "primevue/dynamicdialog";
 import { computed, defineComponent } from "vue";
 import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 import {
+  SessionDialogMode,
   startSessionSetIntervalFunctionAndReturnItsId,
   updateTokenAndItsExpiryTimestampAndStoreBoth,
 } from "@/utils/SessionTimeoutUtils";
@@ -109,9 +110,8 @@ export default defineComponent({
 
     /**
      * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
-     * If the refresh button is  clicked soon enough, the session is refreshed.
-     * Else the text changes and tells the user that the session was closed. That behaviour is activated in the
-     * SessionDialog via the variable isTrackingOfRefreshTokenExpiryEnabled.
+     * If the refresh button is clicked soon enough, the session is refreshed.
+     * Else the text changes and tells the user that the session was closed.
      */
     openSessionWarningModal(): void {
       this.$dialog.open(SessionDialog, {
@@ -122,7 +122,7 @@ export default defineComponent({
           showHeader: false,
         },
         data: {
-          isInSessionWarningMode: true,
+          sessionDialogMode: SessionDialogMode.SessionClosed,
         },
       });
     },

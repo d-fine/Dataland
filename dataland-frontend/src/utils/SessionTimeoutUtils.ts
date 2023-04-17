@@ -3,6 +3,12 @@ import { loginAndRedirectToSearchPage, logoutAndRedirectToUri } from "@/utils/Ke
 import Keycloak from "keycloak-js";
 import { useSharedSessionStateStore } from "@/stores/stores";
 
+export enum SessionDialogMode {
+  SessionWarning,
+  SessionClosed,
+  ExternalLogout,
+}
+
 const minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS + 1000;
 
 /**

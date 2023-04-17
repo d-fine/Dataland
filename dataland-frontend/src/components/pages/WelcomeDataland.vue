@@ -18,6 +18,7 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { useSharedSessionStateStore } from "@/stores/stores";
+import { SessionDialogMode } from "@/utils/SessionTimeoutUtils";
 
 export default defineComponent({
   name: "WelcomeDataland",
@@ -78,7 +79,7 @@ export default defineComponent({
           showHeader: false,
         },
         data: {
-          isInExternalLogoutMode: true,
+          sessionDialogMode: SessionDialogMode.ExternalLogout,
         },
         onClose: () => {
           void this.$router.replace("");

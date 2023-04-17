@@ -3,15 +3,17 @@
   <span>{{ displayedText }}</span>
   <div class="mt-5 flex flex-row-reverse flex-wrap">
     <PrimeButton
-      v-if="isInExternalLogoutMode"
+      v-if="sessionDialogMode === SessionDialogMode.ExternalLogout"
       label="Login to preview account"
       class="p-button-sm uppercase d-letters w-15rem"
       name="login_dataland_button_on_session_modal"
       @click="login"
     />
     <PrimeButton
-      v-if="isInSessionWarningMode || isInSessionClosedMode"
-      :label="isInSessionClosedMode ? 'Login' : 'Refresh Session'"
+      v-if="
+        sessionDialogMode === SessionDialogMode.SessionWarning || sessionDialogMode === SessionDialogMode.SessionClosed
+      "
+      :label="sessionDialogMode === SessionDialogMode.SessionClosed ? 'Login' : 'Refresh Session'"
       class="p-button-sm uppercase d-letters w-15rem"
       name="refresh_session_button"
       @click="handleRefreshSession"
@@ -23,7 +25,11 @@
 import { defineComponent, inject } from "vue";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
-import { isRefreshTokenExpiryTimestampInSharedStoreReached, tryToRefreshSession } from "@/utils/SessionTimeoutUtils";
+import {
+  isRefreshTokenExpiryTimestampInSharedStoreReached,
+  SessionDialogMode,
+  tryToRefreshSession,
+} from "@/utils/SessionTimeoutUtils";
 import Keycloak from "keycloak-js";
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/stores";
@@ -43,6 +49,8 @@ export default defineComponent({
 
   data() {
     return {
+      sessionDialogMode: undefined as undefined | number,
+      SessionDialogMode,
       functionIdOfExpiryCheck: undefined as undefined | number,
       isInSessionWarningMode: false,
       isInSessionClosedMode: false,
@@ -53,7 +61,7 @@ export default defineComponent({
   watch: {
     currentRefreshTokenInSharedStore() {
       this.closeTheDialog();
-      if (this.isInExternalLogoutMode) {
+      if (this.sessionDialogMode === SessionDialogMode.ExternalLogout) {
         void this.$router.push({ path: "/companies", replace: true });
       }
     },
@@ -64,24 +72,25 @@ export default defineComponent({
       return useSharedSessionStateStore().refreshToken || undefined;
     },
     displayedHeader(): string | undefined {
-      switch (true) {
-        case this.isInSessionWarningMode:
+      switch (this.sessionDialogMode) {
+        case SessionDialogMode.SessionWarning:
           return "Session expires soon";
-        case this.isInSessionClosedMode:
+        case SessionDialogMode.SessionClosed:
           return "Session closed";
-        case this.isInExternalLogoutMode:
+        case SessionDialogMode.ExternalLogout:
           return "You have been logged out";
         default:
           return "";
       }
     },
+
     displayedText(): string | undefined {
-      switch (true) {
-        case this.isInSessionWarningMode:
+      switch (this.sessionDialogMode) {
+        case SessionDialogMode.SessionWarning:
           return "To refresh it, please click on the button below.";
-        case this.isInSessionClosedMode:
+        case SessionDialogMode.SessionClosed:
           return "Your session has been closed due to inactivity. Login to start a new session.";
-        case this.isInExternalLogoutMode:
+        case SessionDialogMode.ExternalLogout:
           return "Do you want to login again?";
         default:
           return "";
@@ -91,7 +100,7 @@ export default defineComponent({
 
   mounted() {
     this.getDataFromParentAndSet();
-    if (this.isInSessionWarningMode) {
+    if (this.sessionDialogMode === SessionDialogMode.SessionWarning) {
       this.setIntervalForRefreshTokenExpiryCheck();
     }
   },
@@ -145,11 +154,9 @@ export default defineComponent({
     getDataFromParentAndSet() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       const dialogRefData = dialogRefToDisplay.data as {
-        isInSessionWarningMode: boolean;
-        isInExternalLogoutMode: boolean;
+        sessionDialogMode: number;
       };
-      this.isInSessionWarningMode = dialogRefData.isInSessionWarningMode;
-      this.isInExternalLogoutMode = dialogRefData.isInExternalLogoutMode;
+      this.sessionDialogMode = dialogRefData.sessionDialogMode;
     },
 
     /**
@@ -162,8 +169,7 @@ export default defineComponent({
     setIntervalForRefreshTokenExpiryCheck() {
       this.functionIdOfExpiryCheck = setInterval(() => {
         if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
-          this.isInSessionWarningMode = false;
-          this.isInSessionClosedMode = true;
+          this.sessionDialogMode = SessionDialogMode.SessionClosed;
           clearInterval(this.functionIdOfExpiryCheck);
         }
       }, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS);
