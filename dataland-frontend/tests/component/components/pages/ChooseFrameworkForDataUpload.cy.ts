@@ -1,6 +1,7 @@
 import ChooseFrameworkForDataUpload from "@/components/pages/ChooseFrameworkForDataUpload.vue";
 import { shallowMount } from "@vue/test-utils";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
 describe("Component tests for the ChooseFrameworkForDataUpload page", () => {
   const wrapper = shallowMount(ChooseFrameworkForDataUpload, {
@@ -8,10 +9,7 @@ describe("Component tests for the ChooseFrameworkForDataUpload page", () => {
       provide: {
         authenticated: true,
         getKeycloakPromise() {
-          return Promise.resolve({
-            authenticated: true,
-            updateToken: () => undefined,
-          });
+          return Promise.resolve(minimalKeycloakMock({}));
         },
       },
     },

@@ -55,7 +55,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             })
             .then((dataMetaInformationOfFirstUpload) => {
               dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod = dataMetaInformationOfFirstUpload.dataId;
-              const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 2000;
+              const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
               return cy
                 .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
                 .then(() => {
