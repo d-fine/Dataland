@@ -29,6 +29,11 @@
                   </div>
 
                   <div class="col-9 formFields">
+                    <div>
+                      <!-- TODO: PROTOTYPE -->
+                      <h1>TODO: NACE SELECTOR PROTOTYPE</h1>
+                      <NaceSectorSelector v-model="selectedNaceCodes" />
+                    </div>
                     <FormKit type="group" name="general" :label="lksgSubAreasNameMappings._general">
                       <div class="form-field">
                         <UploadFormHeader
@@ -714,6 +719,7 @@ import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
+import NaceSectorSelector from "@/components/forms/parts/NaceSectorSelector.vue";
 
 export default defineComponent({
   setup() {
@@ -722,13 +728,24 @@ export default defineComponent({
     };
   },
   name: "CreateLksgDataset",
-  components: { UploadFormHeader, SuccessUpload, FailedUpload, FormKit, Card, PrimeButton, YesNoComponent, Calendar },
+  components: {
+    NaceSectorSelector,
+    UploadFormHeader,
+    SuccessUpload,
+    FailedUpload,
+    FormKit,
+    Card,
+    PrimeButton,
+    YesNoComponent,
+    Calendar,
+  },
   directives: {
     tooltip: Tooltip,
   },
 
   data() {
     return {
+      selectedNaceCodes: [], // TODO: PROTOTYPE
       isYourCompanyManufacturingCompany: "No",
       listOfProductionSites: [
         {
