@@ -776,7 +776,7 @@ export const lksgDataModel = [
   },
 ];
 
-interface Field {
+export interface Field {
   name: string;
   label: string;
   description: string;
@@ -791,7 +791,7 @@ interface Field {
   options: Option[];
 }
 
-interface Option {
+export interface Option {
   label: string;
   value: string;
 }

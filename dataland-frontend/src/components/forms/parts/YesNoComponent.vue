@@ -1,27 +1,25 @@
 <template>
-  <div class="form-field">
-    <UploadFormHeader :name="displayName" :explanation="info" />
-    <FormKit
-      type="radio"
-      :name="name"
-      :validation-label="displayName"
-      :options="radioButtonsOptions"
-      :validation="validation"
-      outer-class="yes-no-radio"
-      inner-class="formkit-inner"
-      input-class="formkit-input p-radiobutton"
-    />
-  </div>
+  <RadioButtonsForm
+    :name="name"
+    :info="info"
+    :display-name="displayName"
+    :radio-buttons-options="radioButtonsOptions!.map((value) => ({ value: value, label: value } as Option))"
+    :validation="validation"
+  />
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
+import RadioButtonsForm from "@/components/forms/parts/RadioButtonsForm.vue";
 
 export default defineComponent({
   name: "YesNoComponent",
-  components: { UploadFormHeader, FormKit },
+  data() {
+    return {
+      Option,
+    };
+  },
+  components: { RadioButtonsForm },
   props: {
     name: {
       type: String,

@@ -1,22 +1,22 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName" :explanation="info" />
-    <MultiSelect
-      v-model="selections"
-      :options="options"
-      :placeholder="placeholder"
-      option-label="label"
-      option-value="value"
-      :show-toggle-all="false"
-      class="short"
-    />
     <FormKit
-      type="list"
-      :validation-label="displayName"
-      :validation="validation"
+      type="radio"
       :name="name"
-      v-model="selections"
-      outer-class="hidden-input"
+      :validation-label="displayName"
+      :options="radioButtonsOptions"
+      :validation="validation"
+      :outer-class="{
+        'yes-no-radio': true,
+      }"
+      :inner-class="{
+        'formkit-inner': false,
+      }"
+      :input-class="{
+        'formkit-input': false,
+        'p-radiobutton': true,
+      }"
     />
   </div>
 </template>
@@ -25,21 +25,15 @@
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import MultiSelect from "primevue/multiselect";
 import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
-  name: "MultiSelectForm",
-  components: { UploadFormHeader, FormKit, MultiSelect },
-  data() {
-    return {
-      selections: [] as string[],
-    };
-  },
+  name: "RadioButtonsForm",
+  components: { UploadFormHeader, FormKit },
   props: {
     name: {
       type: String,
-      required: true,
+      default: "",
     },
     info: {
       type: String,
@@ -49,17 +43,13 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    radioButtonsOptions: {
+      type: Array as () => Array<Option>,
+      required: true,
+    },
     validation: {
       type: String,
       default: "",
-    },
-    placeholder: {
-      type: String,
-      default: "",
-    },
-    options: {
-      type: Array as () => Array<Option>,
-      required: true,
     },
   },
 });
