@@ -725,6 +725,7 @@ import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import FreeTextComponent from "@/components/forms/parts/FreeTextComponent.vue";
 import NumberComponent from "@/components/forms/parts/NumberComponent.vue";
+import DateComponent from "@/components/forms/parts/DateComponent.vue";
 
 export default defineComponent({
   setup() {
@@ -740,10 +741,11 @@ export default defineComponent({
     FormKit,
     Card,
     PrimeButton,
+    Calendar,
     YesNoComponent,
     FreeTextComponent,
     NumberComponent,
-    Calendar,
+    DateComponent,
   },
   directives: {
     tooltip: Tooltip,
