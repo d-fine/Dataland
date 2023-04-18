@@ -11,6 +11,11 @@ convertToCamelCase () {
   done
   echo "${result,}"
 }
+if [ "$#" -ne 1 ]
+then
+  echo "Usage: ./generateMappings.sh <fileName>.csv"
+  exit 1
+fi
 
 csv_file="$1"
 if [[ ! -f "$csv_file" ]]; then
@@ -32,12 +37,13 @@ type_mapping=$output_dir/types.csv
 
 while read -r line; do
   name=$(echo "$line" | cut -d';' -f1 | tr -cd '[:alnum:] ')
-  description=$(echo "$line" | cut -d';' -f2-)
+  description=$(echo "$line" | cut -d';' -f2)
+  component=$(echo "$line" | cut -d';' -f3)
   variable=$(convertToCamelCase "$name")
   echo "$variable: \"$description\"," >> ./$description_mapping
   echo "$variable: \"$name\"," >> ./$name_mapping
   echo "$variable" >> ./$variable_file
-  echo "$variable: \"YesNoComponent\"," >> ./$type_mapping
+  echo "$variable: \"$component\"," >> ./$type_mapping
 done < "$csv_file"
 
 
