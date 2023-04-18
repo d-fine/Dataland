@@ -5,11 +5,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  data: () => ({elementPosition: 0,
-  scrollListener: (): null => null,}),
+  data: () => ({ elementPosition: 0, scrollListener: (): null => null }),
   mounted() {
     const submitSideBar = this.$refs.submitSideBar as HTMLElement;
 
@@ -29,8 +28,7 @@ export default defineComponent({
   unmounted() {
     window.removeEventListener("scroll", this.scrollListener);
   },
-
-})
+});
 </script>
 
 <style scoped>
@@ -38,9 +36,11 @@ export default defineComponent({
   margin-block-start: 0.5rem;
   margin-block-end: 0.5rem;
 }
-:deep(button.p-message-close){
-  min-width: 10px;
+
+:deep(button.p-message-close) {
+  min-width: 8px;
 }
+
 :deep(.p-message-wrapper) {
   padding: 0.5rem;
 }

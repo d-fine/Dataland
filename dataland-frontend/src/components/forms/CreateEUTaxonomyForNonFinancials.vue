@@ -455,24 +455,24 @@
           </FormKit>
         </div>
         <SubmitSideBar>
-<!--          <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">-->
-            <SubmitButton :formId="formId"/>
-            <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
-              <SuccessUpload
-                v-if="postEuTaxonomyDataForNonFinancialsResponse"
-                msg="EU Taxonomy Data"
-                :message="postEuTaxonomyDataForNonFinancialsResponse.data"
-                :messageId="messageCount"
-              />
-              <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount"/>
-            </template>
-            <h4 id="topicTitles" class="title pt-3">On this page</h4>
-            <ul>
-              <li v-for="(element, index) in onThisPageLinks" :key="index">
-                <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
-              </li>
-            </ul>
-<!--          </div>-->
+          <!--          <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">-->
+          <SubmitButton :formId="formId" />
+          <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
+            <SuccessUpload
+              v-if="postEuTaxonomyDataForNonFinancialsResponse"
+              msg="EU Taxonomy Data"
+              :message="postEuTaxonomyDataForNonFinancialsResponse.data"
+              :messageId="messageCount"
+            />
+            <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
+          </template>
+          <h4 id="topicTitles" class="title pt-3">On this page</h4>
+          <ul>
+            <li v-for="(element, index) in onThisPageLinks" :key="index">
+              <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
+            </li>
+          </ul>
+          <!--          </div>-->
         </SubmitSideBar>
       </div>
     </template>
@@ -669,6 +669,7 @@ export default defineComponent({
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
       }
+      console.log("We are in postEuTaxonomyDataForNonFinancials function.");
     },
 
     /**
