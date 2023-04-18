@@ -756,7 +756,7 @@ export const lksgDataModel = [
             name: "testField",
             label: "Mercury And Mercury Waste Handling",
             description: "Does your company deal with mercury and mercury waste as part of its business model?",
-            component: "SingleSelectForm",
+            component: "SingleSelectFormElement",
             validation: "required",
             placeholder: "Select",
             options: [
