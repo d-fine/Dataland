@@ -455,7 +455,6 @@
           </FormKit>
         </div>
         <SubmitSideBar>
-          <!--          <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">-->
           <SubmitButton :formId="formId" />
           <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
             <SuccessUpload
@@ -471,7 +470,6 @@
               <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
             </li>
           </ul>
-          <!--          </div>-->
         </SubmitSideBar>
       </div>
     </template>
