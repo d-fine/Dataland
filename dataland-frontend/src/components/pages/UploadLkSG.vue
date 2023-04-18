@@ -5,7 +5,7 @@
       <TheContent>
         <BackButton id="backButton" />
         <CompanyInformation :companyID="companyID" />
-        <CreateLksgDataset :companyID="companyID" />
+        <CreateLksgDataset :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
       </TheContent>
     </UploaderRoleWrapper>
     <DatalandFooter />
@@ -21,6 +21,7 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
+import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
 
 export default {
   name: "UploadLkSG",
@@ -39,5 +40,6 @@ export default {
       type: String,
     },
   },
+  methods: { redirectToMyDatasets },
 };
 </script>

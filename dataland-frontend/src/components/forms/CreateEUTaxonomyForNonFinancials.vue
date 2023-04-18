@@ -1,8 +1,8 @@
 <template>
   <Card class="col-12 page-wrapper-card">
     <template #title
-      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
-    >
+      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service
+    </template>
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -24,7 +24,7 @@
             />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
-                <h4 id="uploadReports" class="anchor title">Reporting Period</h4>
+                <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
@@ -42,14 +42,11 @@
                   />
                 </div>
 
-                <FormKit
-                  type="hidden"
-                  v-model="reportingPeriodYear"
-                  name="reportingPeriod"
-                  :outer-class="{ 'hidden-input': true }"
-                />
+                <FormKit type="hidden" v-model="reportingPeriodYear" name="reportingPeriod" />
               </div>
+            </div>
 
+            <div class="uploadFormSection grid">
               <FormKit type="group" name="data" label="data">
                 <div class="col-3 p-3 topicLabel">
                   <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
@@ -87,7 +84,7 @@
                         >
                           <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
                           <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
-                            {{ formatSize(file.size) }}
+                            {{ formatBytesUserFriendly(Number(file.size), 3) }}
                           </div>
                           <PrimeButton
                             data-test="uploaded-files-remove"
@@ -344,28 +341,24 @@
                   </div>
 
                   <!-- CapEx -->
-                  <div data-test="capexSection" class="col-9 formFields">
-                    <h3 class="mt-0">CapEx</h3>
+                  <div data-test="capexSection" class="col-9 p-0">
                     <FormKit name="capex" type="group">
                       <div
                         v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
-                        class="form-field"
+                        class="formFields"
                       >
-                        <FormKit :name="detailCashFlowType" type="group">
+                        <FormKit
+                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
+                          type="group"
+                        >
                           <div class="form-field">
-                            <span class="subtitle">
-                              <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                              />
-                            </span>
-                            <KPIfieldSet
+                            <DataPointForm
+                              :name="`${detailCashFlowType}CapEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :toggleDataAvailable="false"
-                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
+                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                             />
                           </div>
                         </FormKit>
@@ -380,28 +373,24 @@
                   </div>
 
                   <!-- OpEx -->
-                  <div data-test="opexSection" class="col-9 formFields">
-                    <h3 class="mt-0">OpEx</h3>
+                  <div data-test="opexSection" class="col-9 p-0">
                     <FormKit name="opex" type="group">
                       <div
                         v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
-                        class="form-field"
+                        class="formFields"
                       >
-                        <FormKit :name="detailCashFlowType" type="group">
+                        <FormKit
+                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
+                          type="group"
+                        >
                           <div class="form-field">
-                            <span class="subtitle">
-                              <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                              />
-                            </span>
-                            <KPIfieldSet
+                            <DataPointForm
+                              :name="`${detailCashFlowType}OpEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :toggleDataAvailable="false"
-                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
+                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                             />
                           </div>
                         </FormKit>
@@ -416,28 +405,24 @@
                   </div>
 
                   <!-- Revenue -->
-                  <div data-test="revenueSection" class="col-9 formFields">
-                    <h3 class="mt-0">Revenue</h3>
+                  <div data-test="revenueSection" class="col-9 p-0">
                     <FormKit name="revenue" type="group">
                       <div
                         v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
-                        class="form-field"
+                        class="formFields"
                       >
-                        <FormKit :name="detailCashFlowType" type="group">
+                        <FormKit
+                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
+                          type="group"
+                        >
                           <div class="form-field">
-                            <span class="subtitle">
-                              <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings[detailCashFlowType] ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
-                              />
-                            </span>
-                            <KPIfieldSet
+                            <DataPointForm
+                              :name="`${detailCashFlowType}Revenue`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :toggleDataAvailable="false"
-                              :valueType="detailCashFlowType === 'totalAmount' ? 'number' : 'percent'"
+                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                             />
                           </div>
                         </FormKit>
@@ -491,7 +476,6 @@ import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload from "primevue/fileupload";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
-import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import Card from "primevue/card";
@@ -501,28 +485,30 @@ import { defineComponent, inject } from "vue";
 import { useRoute } from "vue-router";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { formatSize, getHyphenatedDate } from "@/utils/DataFormatUtils";
+import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 import {
-  euTaxonomyKPIsModel,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
+  euTaxonomyKPIsModel,
+} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
+import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: {
+    DataPointForm,
     Calendar,
     UploadFormHeader,
     PrimeButton,
     FileUpload,
     YesNoComponent,
-    KPIfieldSet,
     FailedUpload,
     Card,
     FormKit,
@@ -533,7 +519,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-
+  emits: ["datasetCreated"],
   data: () => ({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     files: useFilesUploadedStore(),
@@ -552,7 +538,7 @@ export default defineComponent({
     isItUploadForm: false,
     route: useRoute(),
     waitingForData: false,
-    formatSize,
+    formatBytesUserFriendly,
     scrollListener: (): null => null,
     smoothScroll,
     checkCustomInputs,
@@ -659,6 +645,7 @@ export default defineComponent({
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
             formInputsModelToSend
           );
+        this.$emit("datasetCreated");
         this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForNonFinancialsResponse = null;
