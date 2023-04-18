@@ -22,7 +22,7 @@ export default defineComponent({
   },
   props: {
     datasetStatus: {
-      type: Object as PropType<DatasetStatus>,
+      type: Number as PropType<DatasetStatus>,
       required: true,
     },
   },

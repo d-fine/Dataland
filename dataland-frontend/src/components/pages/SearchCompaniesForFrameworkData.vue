@@ -106,7 +106,7 @@ import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheFooter from "@/components/general/TheFooter.vue";
-import { useFiltersStore } from "@/stores/filters";
+import { useFrameworkFiltersStore } from "@/stores/stores";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import Keycloak from "keycloak-js";
@@ -146,7 +146,7 @@ export default defineComponent({
   },
   data() {
     return {
-      frameworksFilters: useFiltersStore(),
+      frameworkFilters: useFrameworkFiltersStore(),
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
@@ -326,7 +326,7 @@ export default defineComponent({
      * An update of the combined filter object automatically triggers a new search.
      */
     updateCombinedFilterIfRequired() {
-      this.frameworksFilters.setSelectedFiltersForFrameworks(this.currentFilteredFrameworks);
+      this.frameworkFilters.setSelectedFiltersForFrameworks(this.currentFilteredFrameworks);
       if (
         !arraySetEquals(this.currentFilteredFrameworks, this.currentCombinedFilter.frameworkFilter) ||
         !arraySetEquals(this.currentFilteredSectors, this.currentCombinedFilter.sectorFilter) ||
