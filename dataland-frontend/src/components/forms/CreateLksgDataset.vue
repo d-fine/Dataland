@@ -755,7 +755,7 @@ export default defineComponent({
     NumberComponent,
     DateComponent,
     SingleSelectForm,
-      NaceSectorSelector,
+    NaceSectorSelector,
   },
   directives: {
     tooltip: Tooltip,
