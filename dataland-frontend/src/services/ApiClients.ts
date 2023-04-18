@@ -17,7 +17,7 @@ import {
 import { DocumentControllerApi } from "@clients/documentmanager";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-
+import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -28,7 +28,7 @@ export class ApiClientProvider {
   async getConfiguration(): Promise<Configuration | undefined> {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
-      await keycloak.updateToken(5);
+      updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
       return new Configuration({ accessToken: keycloak.token });
     } else {
       return undefined;

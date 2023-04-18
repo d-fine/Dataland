@@ -278,7 +278,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        *
        */
       function uploadCompanyAlphaAndData(): void {
-        const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 2000;
+        const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
         getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyAlpha))
             .then((storedCompany) => {
