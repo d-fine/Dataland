@@ -24,8 +24,6 @@ export const euTaxonomyKpiNameMappings = {
   investmentNonNfrd: "Investment Non NFRD",
   banksAndIssuers: "Banks and Issuers",
   derivatives: "Exposures To Derivatives",
-  taxonomyNonEligibleActivity: "Taxonomy non Eligible Activity",
-  taxonomyEligibleActivity: "Taxonomy Eligible Activity",
   reportDate: "Report Date",
   reportingPeriod: "Reporting Period",
   reportingObligation: "NFRD Mandatory",
@@ -373,10 +371,6 @@ export const euTaxonomyKpiInfoMappings = {
   investmentNonNfrd: "Investment Non NFRD",
   banksAndIssuers: "Banks and Issuers",
   derivatives: "For financial companies (FS), the percentage of total assets exposed to derivatives",
-  taxonomyNonEligibleActivity:
-    "For financial companies (FS), the percentage of total assets exposed to taxonomy non-eligible economic activities. i.e., to types of economic activity that is not described and does not have technical screening criteria set out in the EU Taxonomy Regulation",
-  taxonomyEligibleActivity:
-    "For financial companies (FS), the percentage of total assets exposed to taxonomy-eligible economic activities",
   provider: "Name of the Audit company which provide assurance to EU Taxonomy data points ",
   greenAssetRatio:
     "The proportion of the of credit institution’s assets financing and invested in taxonomy-aligned economic activities as a proportion of total covered assets",
