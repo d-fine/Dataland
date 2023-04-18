@@ -27,7 +27,7 @@ export const euTaxonomyKpiNameMappings = {
   taxonomyEligibleActivity: "Taxonomy Eligible Activity",
   reportDate: "Report Date",
   reportingPeriod: "Reporting Period",
-  reportingObligation: "Reporting Obligation",
+  reportingObligation: "NFRD Mandatory",
   totalAmount: "Total Amount",
   alignedPercentage: "Aligned Percentage",
   eligiblePercentage: "Eligible Percentage",
@@ -122,7 +122,7 @@ export const euTaxonomyKpiNameMappings = {
 
 export const euTaxonomyKpiInfoMappings = {
   financialServicesTypes: "Financial Services Types",
-  reportingObligation: "Reporting Obligation",
+  reportingObligation: "NFRD Mandatory",
   investmentNonNfrd: "Investment Non NFRD",
   banksAndIssuers: "Banks and Issuers",
   derivatives: "For financial companies (FS), the percentage of total assets exposed to derivatives",
