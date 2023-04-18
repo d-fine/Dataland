@@ -53,19 +53,3 @@ export function getHyphenatedDate(date: Date): string {
   const delocalizedTime = newDate.getTime() - newDate.getTimezoneOffset() * 60 * 1000;
   return new Date(delocalizedTime).toISOString().substring(0, 10);
 }
-
-/**
- * Formats the file size to display a more readable format
- *
- * @param bytes file size i bytes
- * @returns file size in format (example 30 KB)
- */
-export function formatSize(bytes: number): string {
-  if (bytes === 0) {
-    return "0 B";
-  }
-  const k = 1000,
-    sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
-    i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(3)).toString() + " " + sizes[i];
-}
