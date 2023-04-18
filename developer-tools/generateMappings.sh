@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 convertToCamelCase () {
-  local string="$1"
+  local string=$(echo "$1" | tr -cs '[:alnum:] ' ' ')
   local result=""
   local lower=""
   for part in $string; do
@@ -30,13 +30,13 @@ output_dir=mappings
 rm -r ./$output_dir 2>/dev/null || true
 mkdir -p ./$output_dir
 
-description_mapping=$output_dir/description.csv
-name_mapping=$output_dir/name.csv
-variable_file=$output_dir/variables.csv
-type_mapping=$output_dir/types.csv
+description_mapping=$output_dir/description.txt
+name_mapping=$output_dir/name.txt
+variable_file=$output_dir/variables.txt
+type_mapping=$output_dir/types.txt
 
 while read -r line; do
-  name=$(echo "$line" | cut -d';' -f1 | tr -cd '[:alnum:] ')
+  name=$(echo "$line" | cut -d';' -f1)
   description=$(echo "$line" | cut -d';' -f2)
   component=$(echo "$line" | cut -d';' -f3)
   variable=$(convertToCamelCase "$name")
