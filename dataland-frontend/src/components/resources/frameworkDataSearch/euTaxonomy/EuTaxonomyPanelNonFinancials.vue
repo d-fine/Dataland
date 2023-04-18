@@ -5,9 +5,12 @@
   </div>
   <div v-if="dataSet && !waitingForData">
     <ShowReportsBanner
-      v-if="dataSet.referencedReports !== undefined && Object.keys(dataSet.referencedReports).length > 0"
+      v-if="
+        'referencedReports' in dataSet && dataSet.referencedReports !== undefined && dataSet.referencedReports !== null
+      "
       :reports="dataSet.referencedReports"
     />
+    <div v-else class="pb-3"></div>
     <div class="grid">
       <div class="col-6">
         <TaxoInfoCard

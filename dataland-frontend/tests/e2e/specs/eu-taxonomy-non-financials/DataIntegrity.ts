@@ -66,6 +66,13 @@ describeIf(
       });
     });
 
+    it("Create a EU Taxonomy Dataset via Api without referenced reports and ensure that the reports banner is not displayed", () => {
+      const preparedFixture = getPreparedFixture("company_without_reports", preparedFixtures);
+      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
+        cy.get("div[data-test='reportsBanner']").should("not.exist");
+      });
+    });
+
     it("Upload EU Taxonomy Dataset via form and assure that it can be viewed on the framework ", () => {
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(

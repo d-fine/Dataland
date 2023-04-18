@@ -17,7 +17,11 @@ type generatorFunction = (
 export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
   FixtureData<EuTaxonomyDataForNonFinancials>
 > {
-  const creationFunctions: Array<generatorFunction> = [createOnlyEglibileNumbers, createOnlyEligibleAndTotalNumbers];
+  const creationFunctions: Array<generatorFunction> = [
+    createOnlyEglibileNumbers,
+    createOnlyEligibleAndTotalNumbers,
+    createDatasetWithoutReferencedReports,
+  ];
   const fixtureBase = generateFixtureDataset<EuTaxonomyDataForNonFinancials>(
     generateEuTaxonomyDataForNonFinancials,
     creationFunctions.length
@@ -82,5 +86,20 @@ function createOnlyEligibleAndTotalNumbers(
     totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
     eligiblePercentage: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
   };
+  return input;
+}
+
+/**
+ * Creates a prepared fixture that has no referenced reports
+ *
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
+function createDatasetWithoutReferencedReports(
+  input: FixtureData<EuTaxonomyDataForNonFinancials>
+): FixtureData<EuTaxonomyDataForNonFinancials> {
+  input.companyInformation.companyName = "company_without_reports";
+  input.t.referencedReports = undefined;
+
   return input;
 }

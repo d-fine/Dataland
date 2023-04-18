@@ -5,7 +5,7 @@
     data-test="Report-Download"
     >{{ name }}</span
   >
-  <span v-if="index < reportsNumber"> | </span>
+  <span v-if="index < reportsNumber - 1"> | </span>
 </template>
 
 <script lang="ts">
