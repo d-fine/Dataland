@@ -1,4 +1,5 @@
 <template>
+  <DynamicDialog />
   <div class="card">
     <DataTable
       :value="kpiDataObjectsToDisplay"
@@ -81,10 +82,11 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import DynamicDialog from "primevue/dynamicdialog";
 
 export default defineComponent({
   name: "CompanyDataTable",
-  components: { DataTable, Column },
+  components: { DataTable, Column, DynamicDialog },
   directives: {
     tooltip: Tooltip,
   },
