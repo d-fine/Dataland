@@ -455,7 +455,7 @@
             </div>
           </FormKit>
         </div>
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
+        <SubmitSideBar>
           <SubmitButton :formId="formId" />
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
             <SuccessUpload
@@ -471,7 +471,7 @@
               <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
             </li>
           </ul>
-        </div>
+        </SubmitSideBar>
       </div>
     </template>
   </Card>
@@ -479,6 +479,7 @@
 
 <script lang="ts">
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import { FormKit } from "@formkit/vue";
 import FileUpload from "primevue/fileupload";
 import PrimeButton from "primevue/button";
@@ -523,6 +524,7 @@ export default defineComponent({
   name: "CreateEUTaxonomyForFinancials",
   components: {
     SubmitButton,
+    SubmitSideBar,
     FailedUpload,
     FormKit,
     SuccessUpload,
@@ -553,8 +555,6 @@ export default defineComponent({
       euTaxonomyKPIsModel,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
-      elementPosition: 0,
-      scrollListener: (): null => null,
       smoothScroll,
       checkCustomInputs,
       formatSize,
@@ -615,22 +615,6 @@ export default defineComponent({
     }
 
     this.onThisPageLinks = [...this.onThisPageLinksStart];
-    const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-    this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
-    this.scrollListener = (): null => {
-      if (window.scrollY > this.elementPosition) {
-        jumpLinkselement.style.position = "fixed";
-        jumpLinkselement.style.top = "60px";
-      } else {
-        jumpLinkselement.style.position = "relative";
-        jumpLinkselement.style.top = "0";
-      }
-      return null;
-    };
-    window.addEventListener("scroll", this.scrollListener);
-  },
-  unmounted() {
-    window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
     /**

@@ -1086,7 +1086,7 @@
             </FormKit>
           </FormKit>
         </div>
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
+        <SubmitSideBar>
           <SubmitButton :formId="formId" />
           <div v-if="postLkSGDataProcessed">
             <SuccessUpload v-if="uploadSucceded" :messageId="messageCounter" />
@@ -1114,7 +1114,7 @@
             <li><a @click="smoothScroll('#codeOfConduct')">Code of Conduct</a></li>
             <li><a @click="smoothScroll('#waste')">Waste</a></li>
           </ul>
-        </div>
+        </SubmitSideBar>
       </div>
     </template>
   </Card>
@@ -1148,6 +1148,7 @@ import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 
 export default defineComponent({
   setup() {
@@ -1158,6 +1159,7 @@ export default defineComponent({
   name: "CreateLksgDataset",
   components: {
     SubmitButton,
+    SubmitSideBar,
     UploadFormHeader,
     SuccessUpload,
     FailedUpload,
@@ -1195,8 +1197,6 @@ export default defineComponent({
       lksgKpisInfoMappings,
       lksgKpisNameMappings,
       lksgSubAreasNameMappings,
-      elementPosition: 0,
-      scrollListener: (): null => null,
       isInHouseProductionOrContractProcessingMap: Object.fromEntries(
         new Map<string, string>([
           [
@@ -1243,27 +1243,10 @@ export default defineComponent({
     },
   },
   mounted() {
-    const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-    this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
-    this.scrollListener = (): null => {
-      if (window.scrollY > this.elementPosition) {
-        jumpLinkselement.style.position = "fixed";
-        jumpLinkselement.style.top = "60px";
-      } else {
-        jumpLinkselement.style.position = "relative";
-        jumpLinkselement.style.top = "0";
-      }
-      return null;
-    };
-    window.addEventListener("scroll", this.scrollListener);
-
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
       void this.loadLKSGData(dataId);
     }
-  },
-  unmounted() {
-    window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
     /**
