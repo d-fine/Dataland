@@ -728,6 +728,7 @@ import FreeTextComponent from "@/components/forms/parts/FreeTextComponent.vue";
 import NumberComponent from "@/components/forms/parts/NumberComponent.vue";
 import DateComponent from "@/components/forms/parts/DateComponent.vue";
 import SingleSelectForm from "@/components/forms/parts/SingleSelectForm.vue";
+import MultiSelectForm from "@/components/forms/parts/MultiSelectForm.vue";
 
 export default defineComponent({
   setup() {
@@ -749,6 +750,7 @@ export default defineComponent({
     NumberComponent,
     DateComponent,
     SingleSelectForm,
+    MultiSelectForm,
   },
   directives: {
     tooltip: Tooltip,

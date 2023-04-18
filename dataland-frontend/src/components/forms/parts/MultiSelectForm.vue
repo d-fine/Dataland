@@ -1,20 +1,21 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName" :explanation="info" />
-    <Dropdown
-      v-model="selection"
+    <MultiSelect
+      v-model="selections"
       :options="options"
       :placeholder="placeholder"
       option-label="label"
       option-value="value"
+      :show-toggle-all="false"
       class="short"
     />
     <FormKit
-      type="text"
+      type="list"
       :validation-label="displayName"
       :validation="validation"
       :name="name"
-      v-model="selection"
+      v-model="selections"
       outer-class="hidden-input"
     />
   </div>
@@ -24,14 +25,14 @@
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import Dropdown from "primevue/dropdown";
+import MultiSelect from "primevue/multiselect";
 
 export default defineComponent({
-  name: "SingleSelectForm",
-  components: { UploadFormHeader, FormKit, Dropdown },
+  name: "MultiSelectForm",
+  components: { UploadFormHeader, FormKit, MultiSelect },
   data() {
     return {
-      selection: "",
+      selections: [] as string[],
     };
   },
   props: {
