@@ -1,8 +1,8 @@
 <template>
   <Card class="col-12 page-wrapper-card">
     <template #title
-      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</template
-    >
+      >{{ isItUploadForm ? "Update" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service
+    </template>
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -177,12 +177,9 @@
                   <div class="col-9 formFields">
                     <h3 class="mt-0">Basic information</h3>
 
-                    <YesNoComponent
+                    <FiscalYearDeviatingComponent
                       :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
                       :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
-                      :name="'fiscalYearDeviation'"
-                      :radioButtonsOptions="['Deviation', 'NoDeviation']"
-                      required="required"
                     />
 
                     <!-- The date the fiscal year ends -->
@@ -504,19 +501,21 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatSize, getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 import {
-  euTaxonomyKPIsModel,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
+  euTaxonomyKPIsModel,
 } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
 import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import FiscalYearDeviatingComponent from "@/components/forms/parts/FiscalYearDeviatingComponent.vue";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: {
+    FiscalYearDeviatingComponent,
     Calendar,
     UploadFormHeader,
     PrimeButton,
