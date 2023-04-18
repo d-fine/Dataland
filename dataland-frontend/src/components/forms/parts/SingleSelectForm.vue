@@ -1,23 +1,19 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName" :explanation="info" />
-    <div class="lg:col-4 md:col-6 col-12 pl-0">
-      <Calendar
-        inputId="icon"
-        v-model="date"
-        :showIcon="true"
-        dateFormat="D, M dd, yy"
-        :maxDate="todayAsMax ? new Date() : undefined"
-        :placeholder="placeholder"
-      />
-    </div>
-
+    <Dropdown
+      v-model="selection"
+      :options="options"
+      :placeholder="placeholder"
+      option-label="label"
+      option-value="value"
+    />
     <FormKit
       type="text"
       :validation-label="displayName"
       :validation="validation"
       :name="name"
-      v-model="hyphenatedDate"
+      v-model="selection"
       outer-class="hidden-input"
     />
   </div>
@@ -27,26 +23,15 @@
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { getHyphenatedDate } from "@/utils/DataFormatUtils";
-import Calendar from "primevue/calendar";
+import Dropdown from "primevue/dropdown";
 
 export default defineComponent({
-  name: "DateComponent",
-  components: { UploadFormHeader, FormKit, Calendar },
+  name: "SingleSelectForm",
+  components: { UploadFormHeader, FormKit, Dropdown },
   data() {
     return {
-      date: undefined as Date | undefined,
-      Date,
+      selection: "",
     };
-  },
-  computed: {
-    hyphenatedDate(): string {
-      if (this.date) {
-        return getHyphenatedDate(this.date);
-      } else {
-        return "";
-      }
-    },
   },
   props: {
     name: {
@@ -69,9 +54,9 @@ export default defineComponent({
       type: String,
       default: "",
     },
-    todayAsMax: {
-      type: Boolean,
-      default: false,
+    options: {
+      type: Array,
+      required: true,
     },
   },
 });

@@ -753,11 +753,22 @@ export const lksgDataModel = [
         label: "Waste",
         fields: [
           {
-            name: "mercuryAndMercuryWasteHandling",
+            name: "testField",
             label: "Mercury And Mercury Waste Handling",
             description: "Does your company deal with mercury and mercury waste as part of its business model?",
-            component: "DateComponent",
+            component: "SingleSelectForm",
             validation: "required",
+            placeholder: "Select",
+            options: [
+              {
+                label: "Option 1",
+                value: "option1",
+              },
+              {
+                label: "Option 2",
+                value: "option2",
+              },
+            ] as Option[],
           },
         ] as Field[],
       },
@@ -775,4 +786,12 @@ interface Field {
 
   // input field specific values
   placeholder: string;
+
+  // selection specific values
+  options: Option[];
+}
+
+interface Option {
+  label: string;
+  value: string;
 }
