@@ -2,7 +2,7 @@
   <div class="form-field">
     <UploadFormHeader :name="displayName" :explanation="info" />
     <FormKit
-      type="text"
+      type="number"
       :name="name!"
       :validation-label="displayName!"
       :validation="validation!"
@@ -18,7 +18,7 @@ import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
 
 export default defineComponent({
-  name: "FreeTextComponent",
+  name: "NumberComponent",
   components: { UploadFormHeader, FormKit },
   props: {
     name: {
@@ -43,4 +43,6 @@ export default defineComponent({
     },
   },
 });
+
+// TODO what about props for e.g. min and step size
 </script>

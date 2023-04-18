@@ -364,13 +364,13 @@
                     </div>
 
                     <div class="col-9 formFields">
-                      <FormKit v-for="field in subsection.fields" type="group" :name="subsection.name" :key="field">
+                      <FormKit v-for="field in subsection.fields" :key="field" type="group" :name="subsection.name">
                         <component
+                          v-if="isYes(field.dependency)"
                           :is="field.component"
                           :displayName="field.label"
                           :info="field.description"
                           :name="field.name"
-                          :displayed="getYesNoValue(field.dependency)"
                           :placeholder="field.placeholder"
                         />
                       </FormKit>
@@ -724,6 +724,7 @@ import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import FreeTextComponent from "@/components/forms/parts/FreeTextComponent.vue";
+import NumberComponent from "@/components/forms/parts/NumberComponent.vue";
 
 export default defineComponent({
   setup() {
@@ -741,6 +742,7 @@ export default defineComponent({
     PrimeButton,
     YesNoComponent,
     FreeTextComponent,
+    NumberComponent,
     Calendar,
   },
   directives: {
@@ -858,6 +860,18 @@ export default defineComponent({
         return "Yes";
       }
       return eval(variable) as string;
+    },
+    /**
+     * Returns the value of a given YesNo variable is Yes
+     *
+     * @param variable the string representation of the YesNo variable to be read out
+     * @returns the boolean result
+     */
+    isYes(variable: string | undefined): boolean {
+      if (variable == undefined || variable == "") {
+        return true;
+      }
+      return eval(variable) === "Yes";
     },
     /**
      * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data

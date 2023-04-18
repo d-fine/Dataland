@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field" v-if="displayed === 'Yes'">
+  <div class="form-field">
     <UploadFormHeader :name="displayName" :explanation="info" />
     <FormKit
       type="radio"
@@ -7,16 +7,9 @@
       :validation-label="displayName"
       :options="radioButtonsOptions"
       :validation="validation"
-      :outer-class="{
-        'yes-no-radio': true,
-      }"
-      :inner-class="{
-        'formkit-inner': false,
-      }"
-      :input-class="{
-        'formkit-input': false,
-        'p-radiobutton': true,
-      }"
+      outer-class="yes-no-radio"
+      inner-class="formkit-inner"
+      input-class="formkit-input p-radiobutton"
     />
   </div>
 </template>
@@ -49,10 +42,6 @@ export default defineComponent({
     validation: {
       type: String,
       default: "",
-    },
-    displayed: {
-      type: String,
-      default: "Yes",
     },
   },
 });

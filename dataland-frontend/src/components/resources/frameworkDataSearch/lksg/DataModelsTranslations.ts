@@ -737,7 +737,7 @@ export const lksgDataModel = [
             label: "Employee Under 15",
             description: "Does your company have employees under the age of 15?",
             component: "YesNoComponent",
-            dependency: "this.companyAssociatedLksgData.data?.social?.childLabour?.employeeUnder18 ?? 'No'",
+            dependency: "this.companyAssociatedLksgData.data?.social?.childLabour?.employeeUnder18",
           },
         ] as Field[],
       },
@@ -746,7 +746,7 @@ export const lksgDataModel = [
   {
     name: "environmental",
     label: "Environmental",
-    color: "blue",
+    color: "green",
     categories: [
       {
         name: "waste",
@@ -756,7 +756,7 @@ export const lksgDataModel = [
             name: "mercuryAndMercuryWasteHandling",
             label: "Mercury And Mercury Waste Handling",
             description: "Does your company deal with mercury and mercury waste as part of its business model?",
-            component: "FreeTextComponent",
+            component: "NumberComponent",
             dependency: "",
             validation: "required",
           },
@@ -773,5 +773,7 @@ interface Field {
   component: string;
   dependency: string;
   validation: string;
+
+  // input field specific values
   placeholder: string;
 }
