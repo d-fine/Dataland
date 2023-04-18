@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import RadioButtonsForm from "@/components/forms/parts/RadioButtonsForm.vue";
+import RadioButtonsForm from "@/components/forms/parts/RadioButtonsFormElement.vue";
 
 export default defineComponent({
   name: "YesNoComponent",

@@ -1,21 +1,13 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName" :explanation="info" />
-    <Dropdown
-      v-model="selection"
-      :options="options"
-      :placeholder="placeholder"
-      option-label="label"
-      option-value="value"
-      class="short"
-    />
+    <UploadFormHeader :name="displayName!" :explanation="info!" />
     <FormKit
       type="text"
-      :validation-label="displayName"
-      :validation="validation"
-      :name="name"
-      v-model="selection"
-      outer-class="hidden-input"
+      :name="name!"
+      :validation-label="displayName!"
+      :validation="validation!"
+      :placeholder="placeholder"
+      inner-class="short"
     />
   </div>
 </template>
@@ -24,16 +16,10 @@
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import Dropdown from "primevue/dropdown";
 
 export default defineComponent({
-  name: "SingleSelectForm",
-  components: { UploadFormHeader, FormKit, Dropdown },
-  data() {
-    return {
-      selection: "",
-    };
-  },
+  name: "FreeTextFormElement",
+  components: { UploadFormHeader, FormKit },
   props: {
     name: {
       type: String,
@@ -54,10 +40,6 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: "",
-    },
-    options: {
-      type: Array,
-      required: true,
     },
   },
 });

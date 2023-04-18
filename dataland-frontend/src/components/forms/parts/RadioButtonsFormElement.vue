@@ -1,12 +1,12 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName" :explanation="info" />
+    <UploadFormHeader :name="displayName!" :explanation="info!" />
     <FormKit
       type="radio"
-      :name="name"
-      :validation-label="displayName"
+      :name="name!"
+      :validation-label="displayName!"
       :options="radioButtonsOptions"
-      :validation="validation"
+      :validation="validation!"
       :outer-class="{
         'yes-no-radio': true,
       }"
@@ -28,7 +28,7 @@ import { FormKit } from "@formkit/vue";
 import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
-  name: "RadioButtonsForm",
+  name: "RadioButtonsFormElement",
   components: { UploadFormHeader, FormKit },
   props: {
     name: {

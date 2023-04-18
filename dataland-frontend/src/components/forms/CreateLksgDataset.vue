@@ -17,7 +17,7 @@
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
+            <FormKit type="hidden" name="companyId" :model-value="companyID!" disabled="true" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
@@ -730,11 +730,11 @@ import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import NaceSectorSelector from "@/components/forms/parts/NaceSectorSelector.vue";
-import FreeTextComponent from "@/components/forms/parts/FreeTextComponent.vue";
-import NumberComponent from "@/components/forms/parts/NumberComponent.vue";
-import DateComponent from "@/components/forms/parts/DateComponent.vue";
-import SingleSelectForm from "@/components/forms/parts/SingleSelectForm.vue";
-import MultiSelectForm from "@/components/forms/parts/MultiSelectForm.vue";
+import FreeTextFormElement from "@/components/forms/parts/FreeTextFormElement.vue";
+import NumberFormElement from "@/components/forms/parts/NumberFormElement.vue";
+import DateFormElement from "@/components/forms/parts/DateFormElement.vue";
+import SingleSelectFormElement from "@/components/forms/parts/SingleSelectFormElement.vue";
+import MultiSelectFormElement from "@/components/forms/parts/MultiSelectFormElement.vue";
 
 export default defineComponent({
   setup() {
@@ -752,11 +752,11 @@ export default defineComponent({
     PrimeButton,
     Calendar,
     YesNoComponent,
-    FreeTextComponent,
-    NumberComponent,
-    DateComponent,
-    SingleSelectForm,
-    MultiSelectForm,
+    FreeTextFormElement,
+    NumberFormElement,
+    DateFormElement,
+    SingleSelectFormElement,
+    MultiSelectFormElement,
     NaceSectorSelector,
   },
   directives: {
@@ -814,25 +814,15 @@ export default defineComponent({
     };
   },
   computed: {
-    yearOfDataDate: {
-      get(): string {
-        return this.dataDate?.getFullYear()?.toString() || "";
-      },
-      set() {
-        // IGNORED
-      },
+    yearOfDataDate(): string {
+      return this.dataDate?.getFullYear()?.toString() || "";
     },
-    convertedDataDate: {
-      get(): string {
-        if (this.dataDate) {
-          return getHyphenatedDate(this.dataDate);
-        } else {
-          return "";
-        }
-      },
-      set() {
-        // IGNORED
-      },
+    convertedDataDate(): string {
+      if (this.dataDate) {
+        return getHyphenatedDate(this.dataDate);
+      } else {
+        return "";
+      }
     },
   },
   props: {

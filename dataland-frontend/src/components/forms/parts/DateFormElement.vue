@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName" :explanation="info" />
+    <UploadFormHeader :name="displayName!" :explanation="info!" />
     <div class="lg:col-4 md:col-6 col-12 pl-0">
       <Calendar
         inputId="icon"
@@ -14,8 +14,8 @@
 
     <FormKit
       type="text"
-      :validation-label="displayName"
-      :validation="validation"
+      :validation-label="displayName!"
+      :validation="validation!"
       :name="name"
       v-model="hyphenatedDate"
       outer-class="hidden-input"
@@ -31,7 +31,7 @@ import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import Calendar from "primevue/calendar";
 
 export default defineComponent({
-  name: "DateComponent",
+  name: "DateFormElement",
   components: { UploadFormHeader, FormKit, Calendar },
   data() {
     return {

@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName" :explanation="info" />
+    <UploadFormHeader :name="displayName!" :explanation="info!" />
     <MultiSelect
       v-model="selections"
       :options="options"
@@ -12,8 +12,8 @@
     />
     <FormKit
       type="list"
-      :validation-label="displayName"
-      :validation="validation"
+      :validation-label="displayName!"
+      :validation="validation!"
       :name="name"
       v-model="selections"
       outer-class="hidden-input"
@@ -29,7 +29,7 @@ import MultiSelect from "primevue/multiselect";
 import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
-  name: "MultiSelectForm",
+  name: "MultiSelectFormElement",
   components: { UploadFormHeader, FormKit, MultiSelect },
   data() {
     return {
