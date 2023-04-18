@@ -454,25 +454,26 @@
             </div>
           </FormKit>
         </div>
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
-          <SubmitButton :formId="formId" />
-          <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
-            <SuccessUpload
-              v-if="postEuTaxonomyDataForNonFinancialsResponse"
-              msg="EU Taxonomy Data"
-              :message="postEuTaxonomyDataForNonFinancialsResponse.data"
-              :messageId="messageCount"
-              class="p0 px-2"
-            />
-            <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
-          </template>
-          <h4 id="topicTitles" class="title pt-3">On this page</h4>
-          <ul>
-            <li v-for="(element, index) in onThisPageLinks" :key="index">
-              <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
-            </li>
-          </ul>
-        </div>
+        <SubmitSideBar>
+<!--          <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">-->
+            <SubmitButton :formId="formId"/>
+            <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
+              <SuccessUpload
+                v-if="postEuTaxonomyDataForNonFinancialsResponse"
+                msg="EU Taxonomy Data"
+                :message="postEuTaxonomyDataForNonFinancialsResponse.data"
+                :messageId="messageCount"
+              />
+              <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount"/>
+            </template>
+            <h4 id="topicTitles" class="title pt-3">On this page</h4>
+            <ul>
+              <li v-for="(element, index) in onThisPageLinks" :key="index">
+                <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
+              </li>
+            </ul>
+<!--          </div>-->
+        </SubmitSideBar>
       </div>
     </template>
   </Card>
@@ -489,6 +490,7 @@ import PrimeButton from "primevue/button";
 import FileUpload from "primevue/fileupload";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import KpiFieldSet from "@/components/forms/parts/kpiSelection/KpiFieldSet.vue";
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import Card from "primevue/card";
@@ -523,6 +525,7 @@ export default defineComponent({
     YesNoComponent,
     KpiFieldSet,
     FailedUpload,
+    SubmitSideBar,
     Card,
     FormKit,
     SuccessUpload,
@@ -548,12 +551,12 @@ export default defineComponent({
       { label: "OpEx", value: "opex" },
       { label: "Revenue", value: "revenue" },
     ],
-    elementPosition: 0,
+    // elementPosition: 0,
     isItUploadForm: false,
     route: useRoute(),
     waitingForData: false,
     formatSize,
-    scrollListener: (): null => null,
+    // scrollListener: (): null => null,
     smoothScroll,
     checkCustomInputs,
     maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
@@ -590,20 +593,20 @@ export default defineComponent({
     },
   },
   mounted() {
-    const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-
-    this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
-    this.scrollListener = (): null => {
-      if (window.scrollY > this.elementPosition) {
-        jumpLinkselement.style.position = "fixed";
-        jumpLinkselement.style.top = "60px";
-      } else {
-        jumpLinkselement.style.position = "relative";
-        jumpLinkselement.style.top = "0";
-      }
-      return null;
-    };
-    window.addEventListener("scroll", this.scrollListener);
+    // const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
+    //
+    // this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
+    // this.scrollListener = (): null => {
+    //   if (window.scrollY > this.elementPosition) {
+    //     jumpLinkselement.style.position = "fixed";
+    //     jumpLinkselement.style.top = "60px";
+    //   } else {
+    //     jumpLinkselement.style.position = "relative";
+    //     jumpLinkselement.style.top = "0";
+    //   }
+    //   return null;
+    // };
+    // window.addEventListener("scroll", this.scrollListener);
 
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
@@ -612,7 +615,7 @@ export default defineComponent({
     }
   },
   unmounted() {
-    window.removeEventListener("scroll", this.scrollListener);
+    // window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
     /**

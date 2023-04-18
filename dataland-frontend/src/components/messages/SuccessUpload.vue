@@ -22,13 +22,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-::v-deep(.p-message-wrapper) {
-  padding: 0.5rem;
-}
-::v-deep(.h4) {
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
-}
-</style>
