@@ -22,7 +22,7 @@
             />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
-                <h4 id="uploadReports" class="anchor title">Reporting Period</h4>
+                <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
