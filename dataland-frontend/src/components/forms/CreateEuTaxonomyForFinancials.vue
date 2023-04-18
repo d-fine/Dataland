@@ -12,7 +12,7 @@
             v-model="formInputsModel"
             :actions="false"
             type="form"
-            id="createEuTaxonomyForFinancialsForm"
+            id="CreateEuTaxonomyForFinancialsForm"
             @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
           >
@@ -51,7 +51,7 @@
                 <UploadReports
                   ref="UploadReports"
                   :filesToUpload="filesToUpload"
-                  :uploadFiles="uploadFiles"
+                  :listOfUploadedReportsInfo="listOfUploadedReportsInfo"
                   :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
                   :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
                   :maxFileSize="maxFileSize"
@@ -64,8 +64,8 @@
                 <BasicInformationFields
                   :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
                   :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
+                  :fiscalYearEndAsDate="fiscalYearEndAsDate"
                   :fiscalYearEnd="fiscalYearEnd"
-                  :convertedFiscalYearEnd="convertedFiscalYearEnd"
                   @updateFiscalYearEndHandler="updateFiscalYearEndHandler"
                 />
 
@@ -125,7 +125,7 @@
                                 placeholder="Select a report"
                                 validation-label="Select a report"
                                 validation="required"
-                                :options="['None...', ...namesOfFilesToUpload]"
+                                :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
                               />
                             </div>
                             <div>
@@ -180,7 +180,7 @@
                       </ul>
 
                       <PrimeButton
-                        @click="confirmeSelectedKPIs"
+                        @click="confirmSelectedKPIs"
                         data-test="addKpisButton"
                         :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
@@ -233,7 +233,7 @@
                               :name="kpiType ?? ''"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :reportsName="namesOfFilesToUpload"
+                              :reportsName="namesOfAllCompanyReportsForTheDataset"
                             />
                           </div>
                         </FormKit>
@@ -259,7 +259,7 @@
                                 :name="kpiTypeEligibility ?? ''"
                                 :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                 :kpiNameMappings="euTaxonomyKpiNameMappings"
-                                :reportsName="namesOfFilesToUpload"
+                                :reportsName="namesOfAllCompanyReportsForTheDataset"
                               />
                             </div>
                           </FormKit>
@@ -281,13 +281,9 @@
               </div>
             </div>
           </FormKit>
-          <template v-if="postEuTaxonomyDataForFinancialsProcessed">
-            <SuccessUpload
-              v-if="postEuTaxonomyDataForFinancialsResponse"
-              msg="EU Taxonomy Data"
-              :messageId="messageCount"
-            />
-            <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
+          <template>
+            <SuccessUpload msg="EU Taxonomy Data" :messageId="messageCount" />
+            <FailedUpload msg="EU Taxonomy Data" :messageId="messageCount" />
           </template>
         </div>
         <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
@@ -328,12 +324,17 @@ import {
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   DataMetaInformation,
+  AssuranceDataAssuranceEnum,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
-import { modifyObjectKeys, objectType, updateObject } from "@/utils/UpdateObjectUtils";
+import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
+import {
+  completeInformationAboutSelectedFileWithAdditionalFields,
+  updatePropertyFilesUploaded,
+} from "@/utils/EuTaxonomyUtils";
 
 export default defineComponent({
   setup() {
@@ -341,7 +342,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  name: "CreateEUTaxonomyForFinancials",
+  name: "CreateEuTaxonomyForFinancials",
   components: {
     JumpLinksSection,
     FailedUpload,
@@ -363,21 +364,22 @@ export default defineComponent({
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       filesToUpload: [] as ExtendedFile[],
-      uploadFiles: [] as ExtendedCompanyReport[],
-      fiscalYearEnd: "" as Date | "",
-      convertedFiscalYearEnd: "",
+      listOfUploadedReportsInfo: [] as ExtendedCompanyReport[],
+      fiscalYearEndAsDate: null as Date | null,
+      fiscalYearEnd: "",
       reportingPeriod: new Date(),
-      assuranceData: [
-        { label: "None", value: "None" },
-        { label: "LimitedAssurance", value: "LimitedAssurance" },
-        { label: "ReasonableAssurance", value: "ReasonableAssurance" },
-      ],
+      assuranceData: {
+        None: humanizeString(AssuranceDataAssuranceEnum.None),
+        LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
+        ReasonableAssurance: humanizeString(AssuranceDataAssuranceEnum.ReasonableAssurance),
+      },
       maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       euTaxonomyKPIsModel: euTaxonomyPseudoModelAndMappings,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       checkCustomInputs,
       formatBytesUserFriendly,
+      updatePropertyFilesUploaded,
       route: useRoute(),
       waitingForData: false,
       editMode: false,
@@ -406,10 +408,10 @@ export default defineComponent({
     };
   },
   computed: {
-    namesOfFilesToUpload(): string[] {
+    namesOfAllCompanyReportsForTheDataset(): string[] {
       const namesFromFilesToUpload = this.filesToUpload.map((el) => el.name.split(".")[0]);
-      const namesFromUploadedFiles = this.uploadFiles.map((el) => el.name.split(".")[0]);
-      return [...new Set([...namesFromFilesToUpload, ...namesFromUploadedFiles])];
+      const namesFromListOfUploadedReports = this.listOfUploadedReportsInfo.map((el) => el.name.split(".")[0]);
+      return [...new Set([...namesFromFilesToUpload, ...namesFromListOfUploadedReports])];
     },
   },
   watch: {
@@ -457,18 +459,18 @@ export default defineComponent({
         await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(dataId);
       const dataResponseData = dataResponse.data;
       if (dataResponseData.data?.fiscalYearEnd) {
-        this.fiscalYearEnd = new Date(dataResponseData.data.fiscalYearEnd);
+        this.fiscalYearEndAsDate = new Date(dataResponseData.data.fiscalYearEnd);
       }
       if (dataResponseData.data?.referencedReports) {
         const propertiesOfFilesAssignedToDataID = dataResponseData.data.referencedReports;
         for (const key in propertiesOfFilesAssignedToDataID) {
-          this.uploadFiles.push({
+          this.listOfUploadedReportsInfo.push({
             name: key,
             currency: propertiesOfFilesAssignedToDataID[key].currency,
             isGroupLevel: propertiesOfFilesAssignedToDataID[key].isGroupLevel,
             reference: propertiesOfFilesAssignedToDataID[key].reference,
             reportDate: propertiesOfFilesAssignedToDataID[key].reportDate,
-            convertedReportDate: propertiesOfFilesAssignedToDataID[key].reportDate
+            reportDateAsDate: propertiesOfFilesAssignedToDataID[key].reportDate
               ? new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string)
               : "",
           });
@@ -487,10 +489,10 @@ export default defineComponent({
             ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
           );
         });
-        this.confirmeSelectedKPIs();
+        this.confirmSelectedKPIs();
       }
       const receivedFormInputsModel = modifyObjectKeys(
-        JSON.parse(JSON.stringify(dataResponseData)) as objectType,
+        JSON.parse(JSON.stringify(dataResponseData)) as ObjectType,
         "receive"
       );
       this.waitingForData = false;
@@ -536,7 +538,7 @@ export default defineComponent({
         if (allFileUploadedSuccessful) {
           await this.$nextTick();
           const formInputsModelToSend = modifyObjectKeys(
-            JSON.parse(JSON.stringify(this.formInputsModel)) as objectType,
+            JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,
             "send"
           );
           this.postEuTaxonomyDataForFinancialsResponse =
@@ -551,14 +553,14 @@ export default defineComponent({
         this.postEuTaxonomyDataForFinancialsProcessed = true;
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
-        this.fiscalYearEnd = "";
+        this.fiscalYearEnd = null;
         this.filesToUpload = [];
-        this.uploadFiles = [];
+        this.listOfUploadedReportsInfo = [];
         this.formInputsModel = {};
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        this.$refs.UploadReports.clearAllNotUploadedFiles();
+        this.$refs.UploadReports.clearAllSelectedFiles();
         await this.$nextTick();
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+        this.$formkit.reset("CreateEuTaxonomyForFinancialsForm");
       }
     },
 
@@ -571,17 +573,9 @@ export default defineComponent({
      */
     onSelectedFilesHandler(event: { files: Record<string, string>[]; originalEvent: Event }): void {
       if (event.files.length) {
-        event.files.forEach((file) => {
-          if (this.uploadFiles.some((objfile) => objfile.name === file.name.split(".")[0])) {
-            file["nameAlreadyExists"] = "true";
-          } else {
-            file["reportDate"] = file["reportDate"] ?? "";
-            file["convertedReportDate"] = file["convertedReportDate"] ?? "";
-            file["documentId"] = file["documentId"] ?? "";
-          }
-        });
-
-        this.filesToUpload = [...event.files] as ExtendedFile[];
+        this.filesToUpload = [
+          ...completeInformationAboutSelectedFileWithAdditionalFields(event.files, this.listOfUploadedReportsInfo),
+        ] as ExtendedFile[];
       } else {
         return;
       }
@@ -606,30 +600,10 @@ export default defineComponent({
     },
 
     /**
-     * Update property in uploaded files
-     *
-     * @param indexFileToUpload Index number of the report
-     * @param property Property which is to be updated
-     * @param value Value to which it is to be changed
-     * @param whichSetOfFiles which set of files will be edited
-     */
-    updatePropertyFilesUploaded(
-      indexFileToUpload: number,
-      property: string,
-      value: string | Date,
-      whichSetOfFiles: WhichSetOfFiles
-    ) {
-      if (Object.prototype.hasOwnProperty.call(this[whichSetOfFiles][indexFileToUpload], property)) {
-        this[whichSetOfFiles][indexFileToUpload][property] = value;
-        this[whichSetOfFiles] = [...this[whichSetOfFiles]];
-      }
-    },
-
-    /**
      * Confirms the list of kpis to be generated
      *
      */
-    confirmeSelectedKPIs() {
+    confirmSelectedKPIs() {
       this.confirmedSelectedKPIs = this.selectedKPIs;
       this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedKPIs))];
     },
@@ -655,8 +629,14 @@ export default defineComponent({
      * @param whichSetOfFiles which set of files will be edited
      */
     updateReportDateHandler(index: number, dateValue: Date, whichSetOfFiles: WhichSetOfFiles) {
-      this.updatePropertyFilesUploaded(index, "convertedReportDate", dateValue, whichSetOfFiles);
-      this.updatePropertyFilesUploaded(index, "reportDate", getHyphenatedDate(dateValue), whichSetOfFiles);
+      const updatedSetOfFiles = this.updatePropertyFilesUploaded(
+        index,
+        "reportDateAsDate",
+        dateValue,
+        this[whichSetOfFiles]
+      );
+      this[whichSetOfFiles] = [...updatedSetOfFiles];
+      console.log("whichSetOfFiles", this[whichSetOfFiles]);
     },
 
     /**
@@ -665,7 +645,7 @@ export default defineComponent({
      * @param dateValue new date value
      */
     updateFiscalYearEndHandler(dateValue: Date) {
-      this.convertedFiscalYearEnd = getHyphenatedDate(dateValue);
+      this.fiscalYearEnd = getHyphenatedDate(dateValue);
       this.fiscalYearEnd = dateValue;
     },
   },

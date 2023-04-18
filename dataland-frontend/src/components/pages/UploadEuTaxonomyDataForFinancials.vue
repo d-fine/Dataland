@@ -5,7 +5,7 @@
       <TheContent>
         <BackButton id="backButton" />
         <CompanyInformation :companyID="companyID" />
-        <CreateEUTaxonomyForFinancials :companyID="companyID" />
+        <CreateEuTaxonomyForFinancials :companyID="companyID" />
       </TheContent>
     </UploaderRoleWrapper>
     <DatalandFooter />
@@ -16,7 +16,7 @@
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import CreateEUTaxonomyForFinancials from "@/components/forms/CreateEUTaxonomyForFinancials.vue";
+import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
@@ -26,7 +26,7 @@ export default {
   name: "UploadEuTaxonomyDataForFinancials",
   components: {
     UploaderRoleWrapper,
-    CreateEUTaxonomyForFinancials,
+    CreateEuTaxonomyForFinancials,
     TheContent,
     TheHeader,
     AuthenticationWrapper,

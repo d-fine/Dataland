@@ -362,49 +362,49 @@
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="childLabour">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['employeeUnder18']"
                         :info="lksgKpisInfoMappings['employeeUnder18']"
                         :name="'employeeUnder18'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['employeeUnder15']"
                         :info="lksgKpisInfoMappings['employeeUnder15']"
                         :name="'employeeUnder15'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['employeeUnder18Apprentices']"
                         :info="lksgKpisInfoMappings['employeeUnder18Apprentices']"
                         :name="'employeeUnder18Apprentices'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePrevention']"
                         :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePrevention']"
                         :name="'employmentUnderLocalMinimumAgePrevention'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="
                           lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionEmploymentContracts']
                         "
                         :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionEmploymentContracts']"
                         :name="'employmentUnderLocalMinimumAgePreventionEmploymentContracts'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionJobDescription']"
                         :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionJobDescription']"
                         :name="'employmentUnderLocalMinimumAgePreventionJobDescription'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionIdentityDocuments']"
                         :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionIdentityDocuments']"
                         :name="'employmentUnderLocalMinimumAgePreventionIdentityDocuments'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionTraining']"
                         :info="lksgKpisInfoMappings['employmentUnderLocalMinimumAgePreventionTraining']"
                         :name="'employmentUnderLocalMinimumAgePreventionTraining'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="
                           lksgKpisNameMappings['employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge']
                         "
@@ -427,54 +427,54 @@
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="forcedLabourSlaveryAndDebtBondage">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPrevention']"
                         :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPrevention']"
                         :name="'forcedLabourAndSlaveryPrevention'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionEmploymentContracts']"
                         :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionEmploymentContracts']"
                         :name="'forcedLabourAndSlaveryPreventionEmploymentContracts'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionIdentityDocuments']"
                         :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionIdentityDocuments']"
                         :name="'forcedLabourAndSlaveryPreventionIdentityDocuments'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionFreeMovement']"
                         :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionFreeMovement']"
                         :name="'forcedLabourAndSlaveryPreventionFreeMovement'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="
                           lksgKpisNameMappings['forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets']
                         "
                         :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets']"
                         :name="'forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['forcedLabourAndSlaveryPreventionTraining']"
                         :info="lksgKpisInfoMappings['forcedLabourAndSlaveryPreventionTraining']"
                         :name="'forcedLabourAndSlaveryPreventionTraining'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['documentedWorkingHoursAndWages']"
                         :info="lksgKpisInfoMappings['documentedWorkingHoursAndWages']"
                         :name="'documentedWorkingHoursAndWages'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['adequateLivingWage']"
                         :info="lksgKpisInfoMappings['adequateLivingWage']"
                         :name="'adequateLivingWage'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['regularWagesProcessFlow']"
                         :info="lksgKpisInfoMappings['regularWagesProcessFlow']"
                         :name="'regularWagesProcessFlow'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['fixedHourlyWages']"
                         :info="lksgKpisInfoMappings['fixedHourlyWages']"
                         :name="'fixedHourlyWages'"
@@ -493,117 +493,117 @@
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="evidenceCertificatesAndAttestations">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['iso26000']"
                         :info="lksgKpisInfoMappings['iso26000']"
                         :name="'iso26000'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['sa8000Certification']"
                         :info="lksgKpisInfoMappings['sa8000Certification']"
                         :name="'sa8000Certification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['smetaSocialAuditConcept']"
                         :info="lksgKpisInfoMappings['smetaSocialAuditConcept']"
                         :name="'smetaSocialAuditConcept'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['betterWorkProgramCertificate']"
                         :info="lksgKpisInfoMappings['betterWorkProgramCertificate']"
                         :name="'betterWorkProgramCertificate'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['iso45001Certification']"
                         :info="lksgKpisInfoMappings['iso45001Certification']"
                         :name="'iso45001Certification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['iso14000Certification']"
                         :info="lksgKpisInfoMappings['iso14000Certification']"
                         :name="'iso14000Certification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['emasCertification']"
                         :info="lksgKpisInfoMappings['emasCertification']"
                         :name="'emasCertification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['iso37001Certification']"
                         :info="lksgKpisInfoMappings['iso37001Certification']"
                         :name="'iso37001Certification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['iso37301Certification']"
                         :info="lksgKpisInfoMappings['iso37301Certification']"
                         :name="'iso37301Certification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['riskManagementSystemCertification']"
                         :info="lksgKpisInfoMappings['riskManagementSystemCertification']"
                         :name="'riskManagementSystemCertification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['amforiBsciAuditReport']"
                         :info="lksgKpisInfoMappings['amforiBsciAuditReport']"
                         :name="'amforiBsciAuditReport'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['initiativeClauseSocialCertification']"
                         :info="lksgKpisInfoMappings['initiativeClauseSocialCertification']"
                         :name="'initiativeClauseSocialCertification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['responsibleBusinessAssociationCertification']"
                         :info="lksgKpisInfoMappings['responsibleBusinessAssociationCertification']"
                         :name="'responsibleBusinessAssociationCertification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['fairLabourAssociationCertification']"
                         :info="lksgKpisInfoMappings['fairLabourAssociationCertification']"
                         :name="'fairLabourAssociationCertification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['fairWorkingConditionsPolicy']"
                         :info="lksgKpisInfoMappings['fairWorkingConditionsPolicy']"
                         :name="'fairWorkingConditionsPolicy'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['fairAndEthicalRecruitmentPolicy']"
                         :info="lksgKpisInfoMappings['fairAndEthicalRecruitmentPolicy']"
                         :name="'fairAndEthicalRecruitmentPolicy'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['equalOpportunitiesAndNondiscriminationPolicy']"
                         :info="lksgKpisInfoMappings['equalOpportunitiesAndNondiscriminationPolicy']"
                         :name="'equalOpportunitiesAndNondiscriminationPolicy'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['healthAndSafetyPolicy']"
                         :info="lksgKpisInfoMappings['healthAndSafetyPolicy']"
                         :name="'healthAndSafetyPolicy'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['complaintsAndGrievancesPolicy']"
                         :info="lksgKpisInfoMappings['complaintsAndGrievancesPolicy']"
                         :name="'complaintsAndGrievancesPolicy'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['forcedLabourPolicy']"
                         :info="lksgKpisInfoMappings['forcedLabourPolicy']"
                         :name="'forcedLabourPolicy'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['childLabourPolicy']"
                         :info="lksgKpisInfoMappings['childLabourPolicy']"
                         :name="'childLabourPolicy'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['environmentalImpactPolicy']"
                         :info="lksgKpisInfoMappings['environmentalImpactPolicy']"
                         :name="'environmentalImpactPolicy'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['supplierCodeOfConduct']"
                         :info="lksgKpisInfoMappings['supplierCodeOfConduct']"
                         :name="'supplierCodeOfConduct'"
@@ -622,17 +622,17 @@
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="grievanceMechanism">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['grievanceHandlingMechanism']"
                         :info="lksgKpisInfoMappings['grievanceHandlingMechanism']"
                         :name="'grievanceHandlingMechanism'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['grievanceHandlingMechanismUsedForReporting']"
                         :info="lksgKpisInfoMappings['grievanceHandlingMechanismUsedForReporting']"
                         :name="'grievanceHandlingMechanismUsedForReporting'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['legalProceedings']"
                         :info="lksgKpisInfoMappings['legalProceedings']"
                         :name="'legalProceedings'"
@@ -649,87 +649,87 @@
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="osh">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshMonitoring']"
                         :info="lksgKpisInfoMappings['oshMonitoring']"
                         :name="'oshMonitoring'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicy']"
                         :info="lksgKpisInfoMappings['oshPolicy']"
                         :name="'oshPolicy'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicyPersonalProtectiveEquipment']"
                         :info="lksgKpisInfoMappings['oshPolicyPersonalProtectiveEquipment']"
                         :name="'oshPolicyPersonalProtectiveEquipment'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicyMachineSafety']"
                         :info="lksgKpisInfoMappings['oshPolicyMachineSafety']"
                         :name="'oshPolicyMachineSafety'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicyDisasterBehaviouralResponse']"
                         :info="lksgKpisInfoMappings['oshPolicyDisasterBehaviouralResponse']"
                         :name="'oshPolicyDisasterBehaviouralResponse'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicyAccidentsBehaviouralResponse']"
                         :info="lksgKpisInfoMappings['oshPolicyAccidentsBehaviouralResponse']"
                         :name="'oshPolicyAccidentsBehaviouralResponse'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicyWorkplaceErgonomics']"
                         :info="lksgKpisInfoMappings['oshPolicyWorkplaceErgonomics']"
                         :name="'oshPolicyWorkplaceErgonomics'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicyHandlingChemicalsAndOtherHazardousSubstances']"
                         :info="lksgKpisInfoMappings['oshPolicyHandlingChemicalsAndOtherHazardousSubstances']"
                         :name="'oshPolicyHandlingChemicalsAndOtherHazardousSubstances'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicyFireProtection']"
                         :info="lksgKpisInfoMappings['oshPolicyFireProtection']"
                         :name="'oshPolicyFireProtection'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicyWorkingHours']"
                         :info="lksgKpisInfoMappings['oshPolicyWorkingHours']"
                         :name="'oshPolicyWorkingHours'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicyTrainingAddressed']"
                         :info="lksgKpisInfoMappings['oshPolicyTrainingAddressed']"
                         :name="'oshPolicyTrainingAddressed'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshPolicyTraining']"
                         :info="lksgKpisInfoMappings['oshPolicyTraining']"
                         :name="'oshPolicyTraining'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshManagementSystem']"
                         :info="lksgKpisInfoMappings['oshManagementSystem']"
                         :name="'oshManagementSystem'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshManagementSystemInternationalCertification']"
                         :info="lksgKpisInfoMappings['oshManagementSystemInternationalCertification']"
                         :name="'oshManagementSystemInternationalCertification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshManagementSystemNationalCertification']"
                         :info="lksgKpisInfoMappings['oshManagementSystemNationalCertification']"
                         :name="'oshManagementSystemNationalCertification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['workplaceAccidentsUnder10']"
                         :info="lksgKpisInfoMappings['workplaceAccidentsUnder10']"
                         :name="'workplaceAccidentsUnder10'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['oshTraining']"
                         :info="lksgKpisInfoMappings['oshTraining']"
                         :name="'oshTraining'"
@@ -748,27 +748,27 @@
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="freedomOfAssociation">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['freedomOfAssociation']"
                         :info="lksgKpisInfoMappings['freedomOfAssociation']"
                         :name="'freedomOfAssociation'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['discriminationForTradeUnionMembers']"
                         :info="lksgKpisInfoMappings['discriminationForTradeUnionMembers']"
                         :name="'discriminationForTradeUnionMembers'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['freedomOfOperationForTradeUnion']"
                         :info="lksgKpisInfoMappings['freedomOfOperationForTradeUnion']"
                         :name="'freedomOfOperationForTradeUnion'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['freedomOfAssociationTraining']"
                         :info="lksgKpisInfoMappings['freedomOfAssociationTraining']"
                         :name="'freedomOfAssociationTraining'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['worksCouncil']"
                         :info="lksgKpisInfoMappings['worksCouncil']"
                         :name="'worksCouncil'"
@@ -785,37 +785,37 @@
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="humanRights">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['diversityAndInclusionRole']"
                         :info="lksgKpisInfoMappings['diversityAndInclusionRole']"
                         :name="'diversityAndInclusionRole'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['preventionOfMistreatments']"
                         :info="lksgKpisInfoMappings['preventionOfMistreatments']"
                         :name="'preventionOfMistreatments'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['equalOpportunitiesOfficer']"
                         :info="lksgKpisInfoMappings['equalOpportunitiesOfficer']"
                         :name="'equalOpportunitiesOfficer'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['riskOfHarmfulPollution']"
                         :info="lksgKpisInfoMappings['riskOfHarmfulPollution']"
                         :name="'riskOfHarmfulPollution'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['unlawfulEvictionAndTakingOfLand']"
                         :info="lksgKpisInfoMappings['unlawfulEvictionAndTakingOfLand']"
                         :name="'unlawfulEvictionAndTakingOfLand'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['useOfPrivatePublicSecurityForces']"
                         :info="lksgKpisInfoMappings['useOfPrivatePublicSecurityForces']"
                         :name="'useOfPrivatePublicSecurityForces'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="
                           lksgKpisNameMappings['useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights']
                         "
@@ -838,7 +838,7 @@
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="socialAndEmployeeMatters">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['responsibilitiesForFairWorkingConditions']"
                         :info="lksgKpisInfoMappings['responsibilitiesForFairWorkingConditions']"
                         :name="'responsibilitiesForFairWorkingConditions'"
@@ -854,7 +854,7 @@
                   </div>
                   <div class="col-9 formFields">
                     <FormKit type="group" name="environment">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['responsibilitiesForTheEnvironment']"
                         :info="lksgKpisInfoMappings['responsibilitiesForTheEnvironment']"
                         :name="'responsibilitiesForTheEnvironment'"
@@ -870,7 +870,7 @@
                   </div>
                   <div class="col-9 formFields">
                     <FormKit type="group" name="osh">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['responsibilitiesForOccupationalSafety']"
                         :info="lksgKpisInfoMappings['responsibilitiesForOccupationalSafety']"
                         :name="'responsibilitiesForOccupationalSafety'"
@@ -886,7 +886,7 @@
                   </div>
                   <div class="col-9 formFields">
                     <FormKit type="group" name="riskManagement">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['riskManagementSystem']"
                         :info="lksgKpisInfoMappings['riskManagementSystem']"
                         :name="'riskManagementSystem'"
@@ -902,17 +902,17 @@
                   </div>
                   <div class="col-9 formFields">
                     <FormKit type="group" name="codeOfConduct">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['codeOfConduct']"
                         :info="lksgKpisInfoMappings['codeOfConduct']"
                         :name="'codeOfConduct'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['codeOfConductRiskManagementTopics']"
                         :info="lksgKpisInfoMappings['codeOfConductRiskManagementTopics']"
                         :name="'codeOfConductRiskManagementTopics'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['codeOfConductTraining']"
                         :info="lksgKpisInfoMappings['codeOfConductTraining']"
                         :name="'codeOfConductTraining'"
@@ -931,87 +931,87 @@
 
                   <div class="col-9 formFields">
                     <FormKit type="group" name="waste">
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['mercuryAndMercuryWasteHandling']"
                         :info="lksgKpisInfoMappings['mercuryAndMercuryWasteHandling']"
                         :name="'mercuryAndMercuryWasteHandling'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['mercuryAndMercuryWasteHandlingPolicy']"
                         :info="lksgKpisInfoMappings['mercuryAndMercuryWasteHandlingPolicy']"
                         :name="'mercuryAndMercuryWasteHandlingPolicy'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['chemicalHandling']"
                         :info="lksgKpisInfoMappings['chemicalHandling']"
                         :name="'chemicalHandling'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['environmentalManagementSystem']"
                         :info="lksgKpisInfoMappings['environmentalManagementSystem']"
                         :name="'environmentalManagementSystem'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['environmentalManagementSystemInternationalCertification']"
                         :info="lksgKpisInfoMappings['environmentalManagementSystemInternationalCertification']"
                         :name="'environmentalManagementSystemInternationalCertification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['environmentalManagementSystemNationalCertification']"
                         :info="lksgKpisInfoMappings['environmentalManagementSystemNationalCertification']"
                         :name="'environmentalManagementSystemNationalCertification'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['legalRestrictedWaste']"
                         :info="lksgKpisInfoMappings['legalRestrictedWaste']"
                         :name="'legalRestrictedWaste'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['legalRestrictedWasteProcesses']"
                         :info="lksgKpisInfoMappings['legalRestrictedWasteProcesses']"
                         :name="'legalRestrictedWasteProcesses'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['mercuryAddedProductsHandling']"
                         :info="lksgKpisInfoMappings['mercuryAddedProductsHandling']"
                         :name="'mercuryAddedProductsHandling'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['mercuryAddedProductsHandlingRiskOfExposure']"
                         :info="lksgKpisInfoMappings['mercuryAddedProductsHandlingRiskOfExposure']"
                         :name="'mercuryAddedProductsHandlingRiskOfExposure'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['mercuryAddedProductsHandlingRiskOfDisposal']"
                         :info="lksgKpisInfoMappings['mercuryAddedProductsHandlingRiskOfDisposal']"
                         :name="'mercuryAddedProductsHandlingRiskOfDisposal'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['mercuryAndMercuryCompoundsProductionAndUse']"
                         :info="lksgKpisInfoMappings['mercuryAndMercuryCompoundsProductionAndUse']"
                         :name="'mercuryAndMercuryCompoundsProductionAndUse'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure']"
                         :info="lksgKpisInfoMappings['mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure']"
                         :name="'mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUse']"
                         :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUse']"
                         :name="'persistentOrganicPollutantsProductionAndUse'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseRiskOfExposure']"
                         :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseRiskOfExposure']"
                         :name="'persistentOrganicPollutantsProductionAndUseRiskOfExposure'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseRiskOfDisposal']"
                         :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseRiskOfDisposal']"
                         :name="'persistentOrganicPollutantsProductionAndUseRiskOfDisposal'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="
                           lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseTransboundaryMovements']
                         "
@@ -1020,38 +1020,38 @@
                         "
                         :name="'persistentOrganicPollutantsProductionAndUseTransboundaryMovements'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="
                           lksgKpisNameMappings['persistentOrganicPollutantsProductionAndUseRiskForImportingState']
                         "
                         :info="lksgKpisInfoMappings['persistentOrganicPollutantsProductionAndUseRiskForImportingState']"
                         :name="'persistentOrganicPollutantsProductionAndUseRiskForImportingState'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="
                           lksgKpisNameMappings['hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein']
                         "
                         :info="lksgKpisInfoMappings['hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein']"
                         :name="'hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="
                           lksgKpisNameMappings['hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein']
                         "
                         :info="lksgKpisInfoMappings['hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein']"
                         :name="'hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['hazardousWasteDisposal']"
                         :info="lksgKpisInfoMappings['hazardousWasteDisposal']"
                         :name="'hazardousWasteDisposal'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['hazardousWasteDisposalRiskOfImport']"
                         :info="lksgKpisInfoMappings['hazardousWasteDisposalRiskOfImport']"
                         :name="'hazardousWasteDisposalRiskOfImport'"
                       />
-                      <YesNoComponent
+                      <RadioButtonsGroup
                         :displayName="lksgKpisNameMappings['hazardousAndOtherWasteImport']"
                         :info="lksgKpisInfoMappings['hazardousAndOtherWasteImport']"
                         :name="'hazardousAndOtherWasteImport'"
@@ -1098,7 +1098,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
-import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
+import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import Calendar from "primevue/calendar";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
@@ -1131,7 +1131,7 @@ export default defineComponent({
     FormKit,
     Card,
     PrimeButton,
-    YesNoComponent,
+    RadioButtonsGroup,
     Calendar,
   },
   directives: {

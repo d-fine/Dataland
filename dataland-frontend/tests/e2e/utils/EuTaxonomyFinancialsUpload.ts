@@ -18,10 +18,6 @@ import Chainable = Cypress.Chainable;
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
   cy.get('button[data-test="submitButton"]').click();
-  cy.on("uncaught:exception", (err) => {
-    expect(err.message).to.include("unhandled promise rejection");
-    return false;
-  });
   return cy.wait("@postCompanyAssociatedData").then((interception) => {
     expect(interception.response?.statusCode).to.eq(200);
   });

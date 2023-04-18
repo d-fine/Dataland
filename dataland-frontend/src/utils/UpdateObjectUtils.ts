@@ -1,18 +1,18 @@
-export type objectType = { [key: string]: string | object };
+export type ObjectType = { [key: string]: string | object };
 /**
  * Updates keys from one object to another
  *
  * @param baseObject object to be updated
  * @param objectWithNewData object to be updated
  */
-export function updateObject(baseObject: objectType, objectWithNewData: objectType): void {
+export function updateObject(baseObject: ObjectType, objectWithNewData: ObjectType): void {
   for (const key in objectWithNewData) {
     if (typeof objectWithNewData[key] === "object" && objectWithNewData[key] !== null) {
       if (baseObject[key]) {
-        updateObject(baseObject[key] as unknown as objectType, objectWithNewData[key] as unknown as objectType);
+        updateObject(baseObject[key] as unknown as ObjectType, objectWithNewData[key] as unknown as ObjectType);
       } else {
         baseObject[key] = {};
-        updateObject(baseObject[key] as unknown as objectType, objectWithNewData[key] as unknown as objectType);
+        updateObject(baseObject[key] as unknown as ObjectType, objectWithNewData[key] as unknown as ObjectType);
       }
     } else if (objectWithNewData[key] !== null) {
       baseObject[key] = objectWithNewData[key];
@@ -27,7 +27,7 @@ export function updateObject(baseObject: objectType, objectWithNewData: objectTy
  * @param typeOfModification determines how we change object values
  * @returns Object modified
  */
-export function modifyObjectKeys(obj: objectType, typeOfModification: string): objectType {
+export function modifyObjectKeys(obj: ObjectType, typeOfModification: string): ObjectType {
   const objectModified = obj;
   for (const key in objectModified) {
     if (key === "value" && objectModified[key]) {
@@ -38,7 +38,7 @@ export function modifyObjectKeys(obj: objectType, typeOfModification: string): o
         objectModified[key] = (Math.round(+objectModified[key] * 100 * 100) / 100).toString();
       }
     } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
-      modifyObjectKeys(objectModified[key] as unknown as objectType, typeOfModification);
+      modifyObjectKeys(objectModified[key] as unknown as ObjectType, typeOfModification);
     }
   }
   return objectModified;

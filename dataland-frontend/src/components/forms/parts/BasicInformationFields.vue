@@ -7,12 +7,12 @@
     <div class="col-9 formFields">
       <h3 class="mt-0">Basic information</h3>
 
-      <YesNoComponent
+      <RadioButtonsGroup
         :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
         :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
         :name="'fiscalYearDeviation'"
         :radioButtonsOptions="['Deviation', 'NoDeviation']"
-        required="required"
+        :required="true"
       />
 
       <!-- The date the fiscal year ends -->
@@ -23,9 +23,9 @@
         />
         <div class="md:col-6 col-12 p-0">
           <Calendar
-            inputId="fiscalYearEnd"
-            :modelValue="fiscalYearEnd"
-            data-test="fiscalYearEnd"
+            inputId="fiscalYearEndAsDate"
+            :modelValue="fiscalYearEndAsDate"
+            :data-test="fiscalYearEnd"
             :showIcon="true"
             dateFormat="D, M dd, yy"
             @update:modelValue="updateFiscalYearEndHandler($event)"
@@ -36,15 +36,15 @@
           type="text"
           validation="required"
           validation-label="Fiscal year"
-          :modelValue="convertedFiscalYearEnd"
+          :modelValue="fiscalYearEnd"
           name="fiscalYearEnd"
-          :outer-class="{ 'hidden-input': true }"
+          :outer-class="{ 'hidden-input': false }"
         />
       </div>
 
       <!-- Scope of entities -->
       <div class="form-field">
-        <YesNoComponent
+        <RadioButtonsGroup
           :displayName="euTaxonomyKpiNameMappings.scopeOfEntities"
           :info="euTaxonomyKpiInfoMappings.scopeOfEntities"
           :name="'scopeOfEntities'"
@@ -53,7 +53,7 @@
 
       <!-- EU Taxonomy activity level reporting -->
       <div class="form-field">
-        <YesNoComponent
+        <RadioButtonsGroup
           :displayName="euTaxonomyKpiNameMappings.activityLevelReporting"
           :info="euTaxonomyKpiInfoMappings.activityLevelReporting"
           :name="'activityLevelReporting'"
@@ -81,7 +81,7 @@
 
       <!-- EU Taxonomy activity level reporting -->
       <div class="form-field">
-        <YesNoComponent
+        <RadioButtonsGroup
           :displayName="euTaxonomyKpiNameMappings.reportingObligation"
           :info="euTaxonomyKpiInfoMappings.reportingObligation"
           :name="'reportingObligation'"
@@ -94,21 +94,21 @@
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
+import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import { FormKit } from "@formkit/vue";
 import Calendar from "primevue/calendar";
 
 export default defineComponent({
   name: "BasicInformationFields",
-  components: { UploadFormHeader, Calendar, FormKit, YesNoComponent },
+  components: { UploadFormHeader, Calendar, FormKit, RadioButtonsGroup },
   emits: ["updateFiscalYearEndHandler"],
   props: {
     euTaxonomyKpiNameMappings: {},
     euTaxonomyKpiInfoMappings: {},
-    fiscalYearEnd: {
-      type: [Date, String],
+    fiscalYearEndAsDate: {
+      type: Date,
     },
-    convertedFiscalYearEnd: {
+    fiscalYearEnd: {
       type: String,
     },
   },

@@ -6,7 +6,7 @@
       :name="name"
       :validation-label="displayName"
       :options="radioButtonsOptions"
-      :validation="required"
+      :validation="required ? 'required' : ''"
       :outer-class="{
         'yes-no-radio': true,
       }"
@@ -27,7 +27,7 @@ import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
 
 export default defineComponent({
-  name: "YesNoComponent",
+  name: "RadioButtonsGroup",
   components: { UploadFormHeader, FormKit },
   props: {
     name: {
@@ -47,8 +47,7 @@ export default defineComponent({
       default: () => ["Yes", "No"],
     },
     required: {
-      type: String,
-      default: "",
+      type: Boolean,
     },
   },
 });

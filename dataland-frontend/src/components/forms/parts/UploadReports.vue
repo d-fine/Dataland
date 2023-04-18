@@ -76,7 +76,7 @@
                 <Calendar
                   data-test="reportDate"
                   inputId="icon"
-                  :modelValue="filesToUpload[index].convertedReportDate"
+                  :modelValue="filesToUpload[index].reportDateAsDate"
                   :showIcon="true"
                   dateFormat="D, M dd, yy"
                   @update:modelValue="updateReportDateHandler(index, $event, 'filesToUpload')"
@@ -87,7 +87,7 @@
                 type="text"
                 :modelValue="filesToUpload[index].reportDate"
                 name="reportDate"
-                :outer-class="{ 'hidden-input': true }"
+                :outer-class="{ 'hidden-input': false }"
               />
             </div>
 
@@ -95,7 +95,7 @@
               type="text"
               :modelValue="filesToUpload[index].documentId"
               name="reference"
-              :outer-class="{ 'hidden-input': true }"
+              :outer-class="{ 'hidden-input': false }"
             />
 
             <!-- Currency used in the report -->
@@ -116,7 +116,7 @@
             </div>
             <!-- Integrated report is on a group level -->
             <div class="form-field">
-              <YesNoComponent
+              <RadioButtonsGroup
                 :displayName="euTaxonomyKpiNameMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
                 :info="euTaxonomyKpiInfoMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
                 :name="'isGroupLevel'"
@@ -128,10 +128,10 @@
     </div>
     <div v-if="editMode" class="uploadFormSection">
       <!-- List of company reports -->
-      <div v-if="uploadFiles.length" class="col-3 p-3 topicLabel">
+      <div v-if="listOfUploadedReportsInfo.length" class="col-3 p-3 topicLabel">
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
       </div>
-      <div v-for="(file, index) of uploadFiles" :key="file.name" class="col-9 formFields">
+      <div v-for="(file, index) of listOfUploadedReportsInfo" :key="file.name" class="col-9 formFields">
         <div class="form-field-label">
           <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
         </div>
@@ -146,25 +146,25 @@
               <Calendar
                 data-test="reportDate"
                 inputId="icon"
-                :modelValue="uploadFiles[index].convertedReportDate"
+                :modelValue="listOfUploadedReportsInfo[index].reportDateAsDate"
                 :showIcon="true"
                 dateFormat="D, M dd, yy"
-                @update:modelValue="updateReportDateHandler(index, $event, 'uploadFiles')"
+                @update:modelValue="updateReportDateHandler(index, $event, 'listOfUploadedReportsInfo')"
               />
             </div>
             <FormKit
               type="text"
-              :modelValue="uploadFiles[index].reportDate"
+              :modelValue="listOfUploadedReportsInfo[index].reportDate"
               name="reportDate"
-              :outer-class="{ 'hidden-input': true }"
+              :outer-class="{ 'hidden-input': false }"
             />
           </div>
 
           <FormKit
             type="text"
-            :modelValue="uploadFiles[index].reference"
+            :modelValue="listOfUploadedReportsInfo[index].reference"
             name="reference"
-            :outer-class="{ 'hidden-input': true }"
+            :outer-class="{ 'hidden-input': false }"
           />
 
           <!-- Currency used in the report -->
@@ -185,7 +185,7 @@
           </div>
           <!-- Integrated report is on a group level -->
           <div class="form-field">
-            <YesNoComponent
+            <RadioButtonsGroup
               :displayName="euTaxonomyKpiNameMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
               :info="euTaxonomyKpiInfoMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
               :name="'isGroupLevel'"
@@ -204,7 +204,7 @@ import Calendar from "primevue/calendar";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload, { FileUploadEmits } from "primevue/fileupload";
-import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
+import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { WhichSetOfFiles } from "@/components/forms/Types";
 
@@ -215,7 +215,7 @@ export default defineComponent({
     UploadFormHeader,
     PrimeButton,
     FileUpload,
-    YesNoComponent,
+    RadioButtonsGroup,
   },
   emits: ["selectedFiles", "removeReportFromFilesToUpload", "updateReportDateHandler"],
   data() {
@@ -263,7 +263,7 @@ export default defineComponent({
      * Function to clear all not uploaded files
      *
      */
-    clearAllNotUploadedFiles(): void {
+    clearAllSelectedFiles(): void {
       (this.$refs.fileUpload as FileUploadEmits).clear();
     },
   },
@@ -272,7 +272,7 @@ export default defineComponent({
     filesToUpload: {
       type: Array,
     },
-    uploadFiles: {
+    listOfUploadedReportsInfo: {
       type: Array,
     },
     editMode: {
