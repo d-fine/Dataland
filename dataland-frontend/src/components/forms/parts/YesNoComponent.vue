@@ -3,7 +3,7 @@
     :name="name"
     :info="info"
     :display-name="displayName"
-    :radio-buttons-options="radioButtonsOptions!.map((value) => ({ value: value, label: value } as Option))"
+    :radio-buttons-options="radioButtonsOptions!.map((value) => ({ value: value, label: value }))"
     :validation="validation"
   />
 </template>
@@ -14,11 +14,6 @@ import RadioButtonsForm from "@/components/forms/parts/RadioButtonsFormElement.v
 
 export default defineComponent({
   name: "YesNoComponent",
-  data() {
-    return {
-      Option,
-    };
-  },
   components: { RadioButtonsForm },
   props: {
     name: {
