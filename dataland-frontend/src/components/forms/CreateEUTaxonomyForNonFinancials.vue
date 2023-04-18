@@ -182,7 +182,7 @@
                       :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
                       :name="'fiscalYearDeviation'"
                       :radioButtonsOptions="['Deviation', 'NoDeviation']"
-                      required="required"
+                      validation="required"
                     />
 
                     <!-- The date the fiscal year ends -->

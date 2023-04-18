@@ -703,3 +703,95 @@ export const lksgFieldComponentTypes = {
   hazardousWasteDisposalRiskOfImport: "YesNoComponent",
   hazardousAndOtherWasteImport: "YesNoComponent",
 };
+
+export const test = {
+  categories: ["childLabour"],
+};
+
+export const test2 = {
+  Social: "badge-blue",
+};
+
+export const test3 = {
+  childLabour: "Social",
+};
+
+export const lksgDataModel = [
+  {
+    name: "social",
+    label: "Social",
+    color: "yellow",
+    categories: [
+      {
+        name: "childLabour",
+        label: "Child Labor",
+        fields: [
+          {
+            name: "employeeUnder18",
+            label: "Employee Under 18",
+            description: "Does your company have employees under the age of 18?",
+            component: "YesNoComponent",
+          },
+          {
+            name: "employeeUnder15",
+            label: "Employee Under 15",
+            description: "Does your company have employees under the age of 15?",
+            component: "YesNoComponent",
+            dependency: "this.companyAssociatedLksgData.data?.social?.childLabour?.employeeUnder18",
+          },
+        ] as Field[],
+      },
+    ],
+  },
+  {
+    name: "environmental",
+    label: "Environmental",
+    color: "green",
+    categories: [
+      {
+        name: "waste",
+        label: "Waste",
+        fields: [
+          {
+            name: "testField",
+            label: "Mercury And Mercury Waste Handling",
+            description: "Does your company deal with mercury and mercury waste as part of its business model?",
+            component: "SingleSelectForm",
+            validation: "required",
+            placeholder: "Select",
+            options: [
+              {
+                label: "Option 1",
+                value: "option1",
+              },
+              {
+                label: "Option 2",
+                value: "option2",
+              },
+            ] as Option[],
+          },
+        ] as Field[],
+      },
+    ],
+  },
+];
+
+interface Field {
+  name: string;
+  label: string;
+  description: string;
+  component: string;
+  dependency: string;
+  validation: string;
+
+  // input field specific values
+  placeholder: string;
+
+  // selection specific values
+  options: Option[];
+}
+
+interface Option {
+  label: string;
+  value: string;
+}

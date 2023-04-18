@@ -9,7 +9,7 @@
       <div v-show="!waitingForData" class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-            v-model="lkSGDataModel"
+            v-model="companyAssociatedLksgData"
             :actions="false"
             type="form"
             id="createLkSGForm"
@@ -359,22 +359,28 @@
                   </div>
                 </div>
 
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="childLabour" class="anchor title">{{ lksgSubAreasNameMappings.childLabour }}</h4>
-                    <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-                  </div>
+                <div v-for="section in lksgDataModel" :key="section">
+                  <div class="uploadFormSection grid" v-for="subsection in section.categories" :key="subsection">
+                    <div class="col-3 p-3 topicLabel">
+                      <h4 class="anchor title">{{ subsection.label }}</h4>
+                      <div :class="`p-badge badge-${section.color}`">
+                        <span>{{ section.label.toUpperCase() }}</span>
+                      </div>
+                    </div>
 
-                  <div class="col-9 formFields">
-                    <FormKit v-for="area in lksgSubAreas.childLabour" type="group" name="childLabour" :key="area">
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
+                    <div class="col-9 formFields">
+                      <FormKit v-for="field in subsection.fields" :key="field" type="group" :name="subsection.name">
+                        <component
+                          v-if="isYes(field.dependency)"
+                          :is="field.component"
+                          :displayName="field.label"
+                          :info="field.description"
+                          :name="field.name"
+                          :placeholder="field.placeholder"
+                          :options="field.options"
+                        />
+                      </FormKit>
+                    </div>
                   </div>
                 </div>
 
@@ -710,6 +716,10 @@ import {
   lksgSubAreas,
   lksgFieldDependencies,
   lksgFieldComponentTypes,
+  test,
+  test2,
+  test3,
+  lksgDataModel,
 } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
@@ -720,6 +730,10 @@ import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import NaceSectorSelector from "@/components/forms/parts/NaceSectorSelector.vue";
+import FreeTextComponent from "@/components/forms/parts/FreeTextComponent.vue";
+import NumberComponent from "@/components/forms/parts/NumberComponent.vue";
+import DateComponent from "@/components/forms/parts/DateComponent.vue";
+import SingleSelectForm from "@/components/forms/parts/SingleSelectForm.vue";
 
 export default defineComponent({
   setup() {
@@ -729,15 +743,19 @@ export default defineComponent({
   },
   name: "CreateLksgDataset",
   components: {
-    NaceSectorSelector,
     UploadFormHeader,
     SuccessUpload,
     FailedUpload,
     FormKit,
     Card,
     PrimeButton,
-    YesNoComponent,
     Calendar,
+    YesNoComponent,
+    FreeTextComponent,
+    NumberComponent,
+    DateComponent,
+    SingleSelectForm,
+      NaceSectorSelector,
   },
   directives: {
     tooltip: Tooltip,
@@ -758,7 +776,7 @@ export default defineComponent({
       allCountry: getAllCountryNamesWithCodes(),
       waitingForData: false,
       dataDate: undefined as Date | undefined,
-      lkSGDataModel: {} as CompanyAssociatedDataLksgData,
+      companyAssociatedLksgData: {} as CompanyAssociatedDataLksgData,
       route: useRoute(),
       message: "",
       uploadSucceded: false,
@@ -770,6 +788,10 @@ export default defineComponent({
       lksgSubAreas,
       lksgFieldDependencies,
       lksgFieldComponentTypes,
+      test,
+      test2,
+      test3,
+      lksgDataModel,
       elementPosition: 0,
       scrollListener: (): null => null,
       isInHouseProductionOrContractProcessingMap: Object.fromEntries(
@@ -847,10 +869,22 @@ export default defineComponent({
      * @returns either "Yes" or "No"
      */
     getYesNoValue(variable: string | undefined): string {
-      if (variable == undefined) {
+      if (variable == undefined || variable == "") {
         return "Yes";
       }
       return eval(variable) as string;
+    },
+    /**
+     * Returns the value of a given YesNo variable is Yes
+     *
+     * @param variable the string representation of the YesNo variable to be read out
+     * @returns the boolean result
+     */
+    isYes(variable: string | undefined): boolean {
+      if (variable == undefined || variable == "") {
+        return true;
+      }
+      return eval(variable) === "Yes";
     },
     /**
      * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
@@ -884,7 +918,7 @@ export default defineComponent({
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
       }
-      this.lkSGDataModel = lksgDataset;
+      this.companyAssociatedLksgData = lksgDataset;
       this.waitingForData = false;
     },
     /**
@@ -896,7 +930,7 @@ export default defineComponent({
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.lkSGDataModel);
+        await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$formkit.reset("createLkSGForm");
         this.isYourCompanyManufacturingCompany = "No";
         this.listOfProductionSites = [

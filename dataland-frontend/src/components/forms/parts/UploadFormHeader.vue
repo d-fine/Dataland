@@ -23,8 +23,17 @@ export default defineComponent({
     tooltip: Tooltip,
   },
   props: {
-    name: String,
-    explanation: String,
+    name: {
+      type: String,
+      required: true,
+    },
+    explanation: {
+      type: String,
+      required: true,
+    },
   },
 });
+
+// TODO when setting the title of the <em /> to an empty string it is not displayed (at least in chrome)
+// TODO i think this is preferable
 </script>
