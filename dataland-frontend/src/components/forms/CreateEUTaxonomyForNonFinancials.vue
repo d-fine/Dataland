@@ -593,29 +593,11 @@ export default defineComponent({
     },
   },
   mounted() {
-    // const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-    //
-    // this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
-    // this.scrollListener = (): null => {
-    //   if (window.scrollY > this.elementPosition) {
-    //     jumpLinkselement.style.position = "fixed";
-    //     jumpLinkselement.style.top = "60px";
-    //   } else {
-    //     jumpLinkselement.style.position = "relative";
-    //     jumpLinkselement.style.top = "0";
-    //   }
-    //   return null;
-    // };
-    // window.addEventListener("scroll", this.scrollListener);
-
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
       this.isItUploadForm = true;
       void this.loadEuData(dataId);
     }
-  },
-  unmounted() {
-    // window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
     /**
