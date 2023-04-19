@@ -739,8 +739,44 @@ export const lksgDataModelExperimental = [
           {
             name: "testField",
             label: "Mercury And Mercury Waste Handling",
-            description: "Does your company deal with mercury and mercury waste as part of its business model?",
-            component: "FreeTextFormElement",
+            description: "Does your company deal with Mercury and Mercury waste as part of its business model?",
+            component: "NumberFormField",
+            validation: "required",
+            placeholder: "Select",
+            options: [
+              {
+                label: "Option 1",
+                value: "option1",
+              },
+              {
+                label: "Option 2",
+                value: "option2",
+              },
+            ] as Option[],
+          },
+          {
+            name: "testField",
+            label: "Jupiter And Jupiter Waste Handling",
+            description: "Does your company deal with jupiter and jupiter waste as part of its business model?",
+            component: "InputTextFormField",
+            validation: "required",
+            placeholder: "Select",
+            options: [
+              {
+                label: "Option 1",
+                value: "option1",
+              },
+              {
+                label: "Option 2",
+                value: "option2",
+              },
+            ] as Option[],
+          },
+          {
+            name: "testField",
+            label: "Pluto And Pluto Waste Handling",
+            description: "Does your company deal with Pluto and Pluto waste as part of its business model?",
+            component: "InputTextFormField",
             validation: "required",
             placeholder: "Select",
             options: [
@@ -775,7 +811,7 @@ interface Field {
   options: Option[];
 }
 
-interface Option {
+export interface Option {
   label: string;
   value: string;
 }
