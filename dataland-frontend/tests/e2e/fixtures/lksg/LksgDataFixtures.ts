@@ -1,12 +1,31 @@
 import { faker } from "@faker-js/faker";
-import { InHouseProductionOrContractProcessing, LksgData, ProductionSite } from "@clients/backend";
-import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
+import {
+  InHouseProductionOrContractProcessing,
+  LksgAddress,
+  LksgData,
+  NationalOrInternationalMarket, ShareOfTemporaryWorkers,
+} from "@clients/backend";
+import {randomYesNo, randomYesNoNaUndefined, randomYesNoUndefined} from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { randomStringOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import {
+  randomListOfStringOrUndefined,
+  randomStringOrUndefined
+} from "@e2e/utils/FakeFixtureUtils";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
+import {
+  randomEuroValue,
+  randomNumber,
+  randomNumberOrUndefined,
+  randomPercentageValue
+} from "@e2e/fixtures/common/NumberFixtures";
+import {
+  generateIso2CountryCode,
+  generateListOfIso2CountryCodes,
+  generateListOfIso2CountryCodesOrUndefined
+} from "@e2e/fixtures/common/CountryFixtures";
 
 /**
  * Generates a set number of LKSG fixtures
@@ -18,45 +37,20 @@ export function generateLksgFixture(numFixtures: number): FixtureData<LksgData>[
   return generateFixtureDataset<LksgData>(
     generateLksgData,
     numFixtures,
-    (dataSet) => dataSet?.social?.general?.dataDate?.substring(0, 4) || getRandomReportingPeriod()
+    (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || getRandomReportingPeriod()
   );
 }
 
 /**
- * Generates a random production site
+ * Generates a random list of goods or services
  *
- * @param undefinedPercentage the percentage of undefined values in the returned production site
- * @returns a random production site
+ * @returns random list of goods or services
  */
-export function generateProductionSite(undefinedPercentage = 0.5): ProductionSite {
+export function generateListOfGoodsOrServices(): string[] {
   const fakeGoodsOrServices = Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
     return faker.commerce.productName();
   });
-
-  return {
-    name: randomStringOrUndefined(faker.company.name(), undefinedPercentage),
-    isInHouseProductionOrIsContractProcessing: faker.helpers.arrayElement([
-      InHouseProductionOrContractProcessing.InHouseProduction,
-      InHouseProductionOrContractProcessing.ContractProcessing,
-    ]),
-    country: randomStringOrUndefined(faker.address.countryCode(), undefinedPercentage),
-    city: randomStringOrUndefined(faker.address.city(), undefinedPercentage),
-    streetAndHouseNumber: randomStringOrUndefined(
-      faker.address.street() + " " + faker.address.buildingNumber(),
-      undefinedPercentage
-    ),
-    postalCode: randomStringOrUndefined(faker.address.zipCode(), undefinedPercentage),
-    listOfGoodsOrServices: fakeGoodsOrServices,
-  };
-}
-
-/**
- * Generates an array consisting of 1 to 5 random production sites
- *
- * @returns 1 to 5 random production sites
- */
-export function generateArrayOfProductionSites(): ProductionSite[] {
-  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, generateProductionSite);
+  return fakeGoodsOrServices
 }
 
 /**
@@ -69,6 +63,40 @@ export function generateVatIdentificationNumber(): string {
   const randomNineDigitNumber = faker.random.numeric(9);
   return fakeCountryCode + randomNineDigitNumber.toString();
 }
+
+/**
+ * Generates a random address
+ *
+ * @returns a random address
+ */
+export function generateAddress(): LksgAddress {
+  return {
+    streetAndHouseNumber: faker.address.street() + " " + faker.address.buildingNumber(),
+    city: faker.address.city(),
+    state: faker.address.state(),
+    postalCode: faker.address.zipCode(),
+    country: faker.address.country()
+  }
+}
+
+/**
+ * Generates an array consisting of 1 to 5 random addresses
+ *
+ * @returns 1 to 5 random addresses
+ */
+export function generateListOfAddresses(): LksgAddress[] {
+  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, generateAddress);
+}
+
+/**
+ * Randomly returns <10%, 10-25%, 25-50% or >50%
+ *
+ * @returns one of the four percentage intervals as string
+ */
+export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers {
+  return faker.helpers.arrayElement(Object(ShareOfTemporaryWorkers));
+}
+
 /**
  * Generates a random LKSG dataset
  *
@@ -77,54 +105,177 @@ export function generateVatIdentificationNumber(): string {
  */
 export function generateLksgData(dataDate?: string): LksgData {
   return {
-    social: {
-      general: {
+    general: {
+      masterData: {
         dataDate: dataDate === undefined ? randomFutureDate() : dataDate,
-        lksgInScope: randomYesNoUndefined(),
-        vatIdentificationNumber: generateVatIdentificationNumber(),
-        numberOfEmployees: faker.datatype.number({ min: 1000, max: 200000 }),
-        shareOfTemporaryWorkers: faker.datatype.number({ min: 0, max: 30, precision: 0.01 }),
-        totalRevenue: faker.datatype.float({ min: 10000000, max: 100000000000 }),
+        name: faker.company.name(),
+        address: generateAddress(),
+        headOffice: randomYesNo(),
+        commercialRegister: generateVatIdentificationNumber(),
+        groupOfCompanies: randomYesNo(),
+        groupOfCompaniesName: faker.company.name(),
+        industry: faker.name.jobArea(),
+        numberOfEmployees: randomNumber(10000),
+        seasonalOrMigrantWorkers: randomYesNo(),
+        shareOfTemporaryWorkers: randomShareOfTemporaryWorkersInterval(),
         totalRevenueCurrency: generateIso4217CurrencyCode(),
-        listOfProductionSites: generateArrayOfProductionSites(),
+        totalRevenue: randomEuroValue(),
+        fixedAndWorkingCapital: randomNumberOrUndefined(10000000),
       },
-      grievanceMechanism: {
+      productionspecific: {
+        listOfProductionSites: randomYesNo(),
+        capacity: randomEuroValue(),
+        isInhouseProductionOrIsContractProcessing: faker.helpers.arrayElement([
+            InHouseProductionOrContractProcessing.InHouseProduction,
+            InHouseProductionOrContractProcessing.ContractProcessing,
+        ]),
+        subcontractingCompaniesCountries: generateListOfIso2CountryCodes(),
+        subcontractingCompaniesIndustries: Array.from(
+            { length: faker.datatype.number({ min: 0, max: 5 }) },
+            faker.name.jobArea
+        ),
+        productionSites: randomYesNo(),
+        numberOfProductionSites: randomNumber(1000),
+        nameOfProductionSites: [faker.company.name()],
+        addressesOfProductionSites: generateListOfAddresses(),
+        listOfGoodsOrServices: generateListOfGoodsOrServices(),
+        market: faker.helpers.arrayElement([
+            NationalOrInternationalMarket.National,
+            NationalOrInternationalMarket.International,
+            NationalOrInternationalMarket.Both
+        ]),
+        specificProcurement: randomYesNo(),
+      },
+      productionspecificOwnOperations: {
+        mostImportantProducts: randomListOfStringOrUndefined(""),
+        productionSteps: randomListOfStringOrUndefined(""),
+        relatedCorporateSupplyChain: randomListOfStringOrUndefined(""),
+        productCategories: randomListOfStringOrUndefined(""),
+        definitionProductTypeService: randomListOfStringOrUndefined(""),
+        sourcingCountryPerCategory: Array.from(
+            { length: faker.datatype.number({ min: 0, max: 5 }) },
+            generateIso2CountryCode
+        ),
+        numberOfDirectSuppliers: randomNumberOrUndefined(100),
+        orderVolumePerProcurement: randomNumberOrUndefined(1000),
+      },
+      riskManagementOwnOperations: {
+        adequateAndEffectiveRiskManagementSystem: randomYesNoUndefined(),
+        riskManagementSystemFiscalYear: randomYesNoUndefined(),
+        riskManagementSystemRisks: randomYesNoUndefined(),
+        riskManagementSystemIdentifiedRisks: randomListOfStringOrUndefined(""),
+        riskManagementSystemCounteract: randomYesNoUndefined(),
+        riskManagementSystemMeasures: randomListOfStringOrUndefined(""),
+        riskManagementSystemResponsibility: randomYesNoUndefined(),
+        environmentalManagementSystem: randomYesNoUndefined(),
+        environmentalManagementSystemInternationalCertification: randomYesNoUndefined(),
+        environmentalManagementSystemNationalCertification: randomYesNoUndefined(),
+      },
+      grievanceMechanismOwnOperations: {
         grievanceHandlingMechanism: randomYesNoUndefined(),
         grievanceHandlingMechanismUsedForReporting: randomYesNoUndefined(),
-        legalProceedings: randomYesNoUndefined(),
+        grievanceMechanismInformationProvided: randomYesNoUndefined(),
+        grievanceMechanismSupportProvided: randomYesNoUndefined(),
+        grievanceMechanismAccessToExpertise: randomYesNoUndefined(),
+        grievanceMechanismComplaints: randomYesNoUndefined(),
+        grievanceMechanismComplaintsNumber: randomNumberOrUndefined(100),
+        grievanceMechanismComplaintsReason: randomListOfStringOrUndefined(""),
+        grievanceMechanismComplaintsAction: randomYesNoUndefined(),
+        grievanceMechanismComplaintsActionUndertaken: randomListOfStringOrUndefined(""),
+        grievanceMechanismPublicAccess: randomYesNoUndefined(),
+        grievanceMechanismProtection: randomYesNoUndefined(),
+        grievanceMechanismDueDiligenceProcess: randomYesNoUndefined(),
       },
-      childLabour: {
+    },
+    governance: {
+      evidenceCertificatesAndAttestations: {
+        sa8000Certification: randomYesNo(),
+        smetaSocialAuditConcept: randomYesNo(),
+        betterWorkProgramCertificate: randomYesNo(),
+        iso45001Certification: randomYesNo(),
+        iso14000Certification: randomYesNo(),
+        emasCertification: randomYesNo(),
+        iso37001Certification: randomYesNo(),
+        iso37301Certification: randomYesNo(),
+        riskManagementSystemCertification: randomYesNo(),
+        amforiBsciAuditReport: randomYesNo(),
+        responsibleBusinessAssociationCertification: randomYesNo(),
+        fairLaborAssociationCertification: randomYesNo(),
+        additionalAudits: randomListOfStringOrUndefined(""),
+      },
+      humanRights: {
+        codeOfConduct: randomYesNo(),
+        codeOfConductTraining: randomYesNo(),
+        supplierCodeOfConduct: randomYesNo(),
+        policyStatement: randomYesNo(),
+        humanRightsStrategy: randomListOfStringOrUndefined(""),
+        environmentalImpactPolicy: randomYesNo(),
+        fairWorkingConditionsPolicy: randomYesNo(),
+        responsibilitiesForFairWorkingConditions: randomYesNo(),
+        responsibilitiesForTheEnvironment: randomYesNo(),
+        responsibilitiesForOccupationalSafety: randomYesNo(),
+        legalProceedings: randomYesNo(),
+        humanRightsViolation: randomYesNo(),
+        humanRightsViolationLocation: [""],
+        humanRightsViolationAction: randomYesNo(),
+        humanRightsViolationActionMeasures: [""],
+        highRiskCountriesRawMaterials: randomYesNo(),
+        highRiskCountriesRawMaterialsLocation: generateListOfIso2CountryCodes(),
+        highRiskCountriesActivity: randomYesNo(),
+        highRiskCountries: generateListOfIso2CountryCodes(),
+        highRiskCountriesProcurement: randomYesNo(),
+        highRiskCountriesProcurementName: generateListOfIso2CountryCodesOrUndefined(),
+      },
+    },
+    social: {
+      childLabor: {
         employeeUnder18: randomYesNoUndefined(),
-        employeeUnder15: randomYesNoUndefined(),
+        employeeUnder18Under15: randomYesNoUndefined(),
         employeeUnder18Apprentices: randomYesNoUndefined(),
+        worstFormsOfChildLabor: randomYesNoUndefined(),
+        worstFormsOfChildLaborForms: randomListOfStringOrUndefined(""),
         employmentUnderLocalMinimumAgePrevention: randomYesNoUndefined(),
         employmentUnderLocalMinimumAgePreventionEmploymentContracts: randomYesNoUndefined(),
         employmentUnderLocalMinimumAgePreventionJobDescription: randomYesNoUndefined(),
         employmentUnderLocalMinimumAgePreventionIdentityDocuments: randomYesNoUndefined(),
         employmentUnderLocalMinimumAgePreventionTraining: randomYesNoUndefined(),
         employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: randomYesNoUndefined(),
+        childLaborMeasures: randomListOfStringOrUndefined(""),
+        childLaborPolicy: randomYesNoUndefined(),
       },
-      forcedLabourSlaveryAndDebtBondage: {
-        forcedLabourAndSlaveryPrevention: randomYesNoUndefined(),
-        forcedLabourAndSlaveryPreventionEmploymentContracts: randomYesNoUndefined(),
-        forcedLabourAndSlaveryPreventionIdentityDocuments: randomYesNoUndefined(),
-        forcedLabourAndSlaveryPreventionFreeMovement: randomYesNoUndefined(),
-        forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets: randomYesNoUndefined(),
-        forcedLabourAndSlaveryPreventionTraining: randomYesNoUndefined(),
+      forcedLaborSlavery: {
+        forcedLaborAndSlaveryPrevention: randomYesNoUndefined(),
+        forcedLaborAndSlaveryPreventionPractices: randomListOfStringOrUndefined(""),
+        forcedLaborAndSlaveryPreventionMeasures: randomYesNoUndefined(),
+        forcedLaborAndSlaveryPreventionEmploymentContracts: randomYesNoUndefined(),
+        forcedLaborAndSlaveryPreventionIdentityDocuments: randomYesNoUndefined(),
+        forcedLaborAndSlaveryPreventionFreeMovement: randomYesNoUndefined(),
+        forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets: randomYesNoUndefined(),
+        forcedLaborAndSlaveryPreventionTraining: randomYesNoUndefined(),
+        forcedLaborAndSlaveryMeasures: randomListOfStringOrUndefined(""),
+        forcedLaborPolicy: randomYesNoUndefined(),
+      },
+      withholdingAdequateWages: {
+        adequatWage: randomYesNoUndefined(),
+        adequatWageBeingWithheld: randomYesNoUndefined(),
         documentedWorkingHoursAndWages: randomYesNoUndefined(),
         adequateLivingWage: randomYesNoUndefined(),
         regularWagesProcessFlow: randomYesNoUndefined(),
-        fixedHourlyWages: randomYesNoUndefined(),
+        fixedHourlyWages: randomYesNoNaUndefined(),
+        fixedPieceworkWages: randomYesNoNaUndefined(),
+        adequateWageMeasures: randomListOfStringOrUndefined(""),
       },
-      osh: {
-        oshMonitoring: randomYesNoUndefined(),
+      disregardForOccupationalHealthSafety: {
+        lowSkillWork: randomYesNoUndefined(),
+        hazardousMachines: randomYesNoUndefined(),
         oshPolicy: randomYesNoUndefined(),
-        oshPolicyPersonalProtectiveEquipment: randomYesNoUndefined(),
-        oshPolicyMachineSafety: randomYesNoUndefined(),
+        oshPolicyPersonalProtectiveEquipment: randomYesNoNaUndefined(),
+        oshPolicyMachineSafety: randomYesNoNaUndefined(),
         oshPolicyDisasterBehaviouralResponse: randomYesNoUndefined(),
         oshPolicyAccidentsBehaviouralResponse: randomYesNoUndefined(),
         oshPolicyWorkplaceErgonomics: randomYesNoUndefined(),
-        oshPolicyHandlingChemicalsAndOtherHazardousSubstances: randomYesNoUndefined(),
+        oshPolicyAccessToWork: randomYesNoUndefined(),
+        oshPolicyHandlingChemicalsAndOtherHazardousSubstances: randomYesNoNaUndefined(),
         oshPolicyFireProtection: randomYesNoUndefined(),
         oshPolicyWorkingHours: randomYesNoUndefined(),
         oshPolicyTrainingAddressed: randomYesNoUndefined(),
@@ -134,90 +285,84 @@ export function generateLksgData(dataDate?: string): LksgData {
         oshManagementSystemNationalCertification: randomYesNoUndefined(),
         workplaceAccidentsUnder10: randomYesNoUndefined(),
         oshTraining: randomYesNoUndefined(),
+        healthAndSafetyPolicy: randomYesNoUndefined(),
       },
-      freedomOfAssociation: {
+      disregardForFreedomOfAssociation: {
         freedomOfAssociation: randomYesNoUndefined(),
+        representedEmployees: randomPercentageValue(),
         discriminationForTradeUnionMembers: randomYesNoUndefined(),
         freedomOfOperationForTradeUnion: randomYesNoUndefined(),
         freedomOfAssociationTraining: randomYesNoUndefined(),
         worksCouncil: randomYesNoUndefined(),
       },
-      humanRights: {
+      unequalTreatmentOfEmployment: {
+        unequalTreatmentOfEmployment: randomYesNoUndefined(),
         diversityAndInclusionRole: randomYesNoUndefined(),
         preventionOfMistreatments: randomYesNoUndefined(),
         equalOpportunitiesOfficer: randomYesNoUndefined(),
-        riskOfHarmfulPollution: randomYesNoUndefined(),
-        unlawfulEvictionAndTakingOfLand: randomYesNoUndefined(),
-        useOfPrivatePublicSecurityForces: randomYesNoUndefined(),
-        useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: randomYesNoUndefined(),
-      },
-      evidenceCertificatesAndAttestations: {
-        iso26000: randomYesNoUndefined(),
-        sa8000Certification: randomYesNoUndefined(),
-        smetaSocialAuditConcept: randomYesNoUndefined(),
-        betterWorkProgramCertificate: randomYesNoUndefined(),
-        iso45001Certification: randomYesNoUndefined(),
-        iso14000Certification: randomYesNoUndefined(),
-        emasCertification: randomYesNoUndefined(),
-        iso37001Certification: randomYesNoUndefined(),
-        iso37301Certification: randomYesNoUndefined(),
-        riskManagementSystemCertification: randomYesNoUndefined(),
-        amforiBsciAuditReport: randomYesNoUndefined(),
-        initiativeClauseSocialCertification: randomYesNoUndefined(),
-        responsibleBusinessAssociationCertification: randomYesNoUndefined(),
-        fairLabourAssociationCertification: randomYesNoUndefined(),
-        fairWorkingConditionsPolicy: randomYesNoUndefined(),
         fairAndEthicalRecruitmentPolicy: randomYesNoUndefined(),
         equalOpportunitiesAndNondiscriminationPolicy: randomYesNoUndefined(),
-        healthAndSafetyPolicy: randomYesNoUndefined(),
-        complaintsAndGrievancesPolicy: randomYesNoUndefined(),
-        forcedLabourPolicy: randomYesNoUndefined(),
-        childLabourPolicy: randomYesNoUndefined(),
-        environmentalImpactPolicy: randomYesNoUndefined(),
-        supplierCodeOfConduct: randomYesNoUndefined(),
       },
-    },
-    governance: {
-      socialAndEmployeeMatters: {
-        responsibilitiesForFairWorkingConditions: randomYesNoUndefined(),
+      contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption: {
+        harmfulSoilChange: randomYesNoUndefined(),
+        soilDegradation: randomYesNoUndefined(),
+        soilErosion: randomYesNoUndefined(),
+        soilBornDiseases: randomYesNoUndefined(),
+        soilContamination: randomYesNoUndefined(),
+        soilSalinisation: randomYesNoUndefined(),
+        harmfulWaterPollution: randomYesNoUndefined(),
+        fertilisersOrPollutants: randomYesNoUndefined(),
+        wasteWaterFiltration: randomYesNoUndefined(),
+        harmfulAirPollution: randomYesNoUndefined(),
+        airFiltration: randomYesNoUndefined(),
+        harmfulNoiseEmission: randomYesNoUndefined(),
+        reduceNoiseEmissions: randomYesNoUndefined(),
+        excessiveWaterConsumption: randomYesNoUndefined(),
+        waterSavingMeasures: randomYesNoUndefined(),
+        waterSavingMeasuresName: randomListOfStringOrUndefined(""),
+        pipeMaintaining: randomYesNoUndefined(),
+        waterSources: randomYesNoUndefined(),
+        contaminationMeasures: randomListOfStringOrUndefined(""),
       },
-      environment: {
-        responsibilitiesForTheEnvironment: randomYesNoUndefined(),
+      unlawfulEvictionDeprivationOfLandForestAndWater: {
+        unlawfulEvictionAndTakingOfLand: randomYesNoUndefined(),
+        unlawfulEvictionAndTakingOfLandRisk: randomStringOrUndefined(""),
+        unlawfulEvictionAndTakingOfLandStrategies: randomYesNoUndefined(),
+        unlawfulEvictionAndTakingOfLandStrategiesName: randomListOfStringOrUndefined(""),
+        voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: randomYesNoUndefined(),
       },
-      osh: {
-        responsibilitiesForOccupationalSafety: randomYesNoUndefined(),
-      },
-      riskManagement: {
-        riskManagementSystem: randomYesNoUndefined(),
-      },
-      codeOfConduct: {
-        codeOfConduct: randomYesNoUndefined(),
-        codeOfConductRiskManagementTopics: randomYesNoUndefined(),
-        codeOfConductTraining: randomYesNoUndefined(),
+      useOfPrivatePublicSecurityForcesWithDisregardForHumanRights: {
+        useOfPrivatePublicSecurityForces: randomYesNoUndefined(),
+        useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: randomYesNoUndefined(),
+        instructionOfSecurityForces: randomYesNoUndefined(),
+        humanRightsTraining: randomYesNoUndefined(),
+        stateSecurityForces:randomYesNoNaUndefined(),
+        privateSecurityForces: randomYesNoNaUndefined(),
+        useOfPrivatePublicSecurityForcesMeasures: randomListOfStringOrUndefined(""),
       },
     },
     environmental: {
-      waste: {
+      useOfMercuryMercuryWasteMinamataConvention: {
         mercuryAndMercuryWasteHandling: randomYesNoUndefined(),
         mercuryAndMercuryWasteHandlingPolicy: randomYesNoUndefined(),
-        chemicalHandling: randomYesNoUndefined(),
-        environmentalManagementSystem: randomYesNoUndefined(),
-        environmentalManagementSystemInternationalCertification: randomYesNoUndefined(),
-        environmentalManagementSystemNationalCertification: randomYesNoUndefined(),
-        legalRestrictedWaste: randomYesNoUndefined(),
-        legalRestrictedWasteProcesses: randomYesNoUndefined(),
         mercuryAddedProductsHandling: randomYesNoUndefined(),
         mercuryAddedProductsHandlingRiskOfExposure: randomYesNoUndefined(),
         mercuryAddedProductsHandlingRiskOfDisposal: randomYesNoUndefined(),
         mercuryAndMercuryCompoundsProductionAndUse: randomYesNoUndefined(),
         mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: randomYesNoUndefined(),
+      },
+      productionAndUseOfPersistentOrganicPollutantsPopsConvention: {
         persistentOrganicPollutantsProductionAndUse: randomYesNoUndefined(),
+        persistentOrganicPollutantsUsed: randomListOfStringOrUndefined(""),
         persistentOrganicPollutantsProductionAndUseRiskOfExposure: randomYesNoUndefined(),
         persistentOrganicPollutantsProductionAndUseRiskOfDisposal: randomYesNoUndefined(),
+        legalRestrictedWasteProcesses: randomYesNoUndefined(),
+      },
+      exportImportOfHazardousWasteBaselConvention: {
         persistentOrganicPollutantsProductionAndUseTransboundaryMovements: randomYesNoUndefined(),
         persistentOrganicPollutantsProductionAndUseRiskForImportingState: randomYesNoUndefined(),
-        hazardousWasteTransboundaryMovementsLocatedOECDEULiechtenstein: randomYesNoUndefined(),
-        hazardousWasteTransboundaryMovementsOutsideOECDEULiechtenstein: randomYesNoUndefined(),
+        hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein: randomYesNoUndefined(),
+        hazardousWasteTransboundaryMovementsOutsideOecdEuLiechtenstein: randomYesNoUndefined(),
         hazardousWasteDisposal: randomYesNoUndefined(),
         hazardousWasteDisposalRiskOfImport: randomYesNoUndefined(),
         hazardousAndOtherWasteImport: randomYesNoUndefined(),

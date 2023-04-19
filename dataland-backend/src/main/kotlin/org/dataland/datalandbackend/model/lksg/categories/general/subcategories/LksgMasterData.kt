@@ -25,7 +25,7 @@ data class LksgMasterData(
     val headOffice: YesNo,
 
     @field:JsonProperty(required = true)
-    val commercialRegister: BigDecimal,
+    val commercialRegister: String,
 
     @field:JsonProperty(required = true)
     val groupOfCompanies: YesNo,
