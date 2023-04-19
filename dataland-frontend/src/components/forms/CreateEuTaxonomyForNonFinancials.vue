@@ -44,7 +44,7 @@
                   />
                 </div>
 
-                <FormKit type="hidden" v-model="reportingPeriodYear" name="reportingPeriod" />
+                <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
               </div>
             </div>
 
@@ -56,7 +56,6 @@
                   :listOfUploadedReportsInfo="listOfUploadedReportsInfo"
                   :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
                   :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
-                  :maxFileSize="maxFileSize"
                   :editMode="editMode"
                   @selectedFiles="onSelectedFilesHandler"
                   @removeReportFromFilesToUpload="removeReportFromFilesToUpload"
@@ -159,13 +158,15 @@
                   <div data-test="capexSection" class="col-9 p-0">
                     <FormKit name="capex" type="group">
                       <div
-                        v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
+                        v-for="detailCashFlowType of euTaxonomyPseudoModelAndMappings.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
                         class="formFields"
                       >
                         <FormKit
-                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
+                          :name="
+                            euTaxonomyPseudoModelAndMappings?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]
+                          "
                           type="group"
                         >
                           <div class="form-field">
@@ -195,13 +196,15 @@
                   <div data-test="opexSection" class="col-9 p-0">
                     <FormKit name="opex" type="group">
                       <div
-                        v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
+                        v-for="detailCashFlowType of euTaxonomyPseudoModelAndMappings.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
                         class="formFields"
                       >
                         <FormKit
-                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
+                          :name="
+                            euTaxonomyPseudoModelAndMappings?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]
+                          "
                           type="group"
                         >
                           <div class="form-field">
@@ -231,13 +234,15 @@
                   <div data-test="revenueSection" class="col-9 p-0">
                     <FormKit name="revenue" type="group">
                       <div
-                        v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
+                        v-for="detailCashFlowType of euTaxonomyPseudoModelAndMappings.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
                         class="formFields"
                       >
                         <FormKit
-                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
+                          :name="
+                            euTaxonomyPseudoModelAndMappings?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]
+                          "
                           type="group"
                         >
                           <div class="form-field">
@@ -270,11 +275,11 @@
               </div>
             </div>
           </FormKit>
-          <template>
+          <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
             <SuccessUpload
-              v-if="postEuTaxonomyDataForNonFinancialsResponse"
+              v-if="postEuTaxonomyDataForNonFinancialsResponse?.status === 200"
               msg="EU Taxonomy Data"
-              :message="postEuTaxonomyDataForNonFinancialsResponse.data"
+              :message="`New data has dataId: ${postEuTaxonomyDataForNonFinancialsResponse.data.dataId}`"
               :messageId="messageCount"
             />
             <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
@@ -319,7 +324,6 @@ import {
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
 import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
-import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
@@ -370,11 +374,9 @@ export default defineComponent({
     checkCustomInputs,
     formatBytesUserFriendly,
     updatePropertyFilesUploaded,
-    maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-    euTaxonomyKPIsModel: euTaxonomyPseudoModelAndMappings,
+    euTaxonomyPseudoModelAndMappings,
     euTaxonomyKpiNameMappings,
     euTaxonomyKpiInfoMappings,
-    reportingPeriodYear: new Date().getFullYear(),
     assuranceData: {
       None: humanizeString(AssuranceDataAssuranceEnum.None),
       LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
@@ -386,16 +388,14 @@ export default defineComponent({
     postEuTaxonomyDataForNonFinancialsResponse: null,
     humanizeString: humanizeString,
   }),
-  watch: {
-    reportingPeriod: function (newValue: Date) {
-      this.reportingPeriodYear = newValue.getFullYear();
-    },
-  },
   computed: {
     namesOfAllCompanyReportsForTheDataset(): string[] {
       const namesFromFilesToUpload = this.filesToUpload.map((el) => el.name.split(".")[0]);
       const namesFromListOfUploadedReports = this.listOfUploadedReportsInfo.map((el) => el.name.split(".")[0]);
       return [...new Set([...namesFromFilesToUpload, ...namesFromListOfUploadedReports])];
+    },
+    reportingPeriodYear(): number {
+      return this.reportingPeriod.getFullYear();
     },
   },
   props: {
@@ -430,17 +430,20 @@ export default defineComponent({
       if (dataResponseData.data?.fiscalYearEnd) {
         this.fiscalYearEndAsDate = new Date(dataResponseData.data.fiscalYearEnd);
       }
+      if (dataResponseData?.reportingPeriod) {
+        this.reportingPeriod = new Date(dataResponseData.reportingPeriod);
+      }
       if (dataResponseData.data?.referencedReports) {
-        const propertiesOfFilesAssignedToDataID = dataResponseData.data.referencedReports;
-        for (const key in propertiesOfFilesAssignedToDataID) {
+        const referencedReportsForDataId = dataResponseData.data.referencedReports;
+        for (const key in referencedReportsForDataId) {
           this.listOfUploadedReportsInfo.push({
             name: key,
-            reference: propertiesOfFilesAssignedToDataID[key].reference,
-            currency: propertiesOfFilesAssignedToDataID[key].currency,
-            reportDate: propertiesOfFilesAssignedToDataID[key].reportDate,
-            isGroupLevel: propertiesOfFilesAssignedToDataID[key].isGroupLevel,
-            reportDateAsDate: propertiesOfFilesAssignedToDataID[key].reportDate
-              ? new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string)
+            reference: referencedReportsForDataId[key].reference,
+            currency: referencedReportsForDataId[key].currency,
+            reportDate: referencedReportsForDataId[key].reportDate,
+            isGroupLevel: referencedReportsForDataId[key].isGroupLevel,
+            reportDateAsDate: referencedReportsForDataId[key].reportDate
+              ? new Date(referencedReportsForDataId[key].reportDate as string)
               : "",
           });
         }
@@ -508,7 +511,6 @@ export default defineComponent({
         this.filesToUpload = [];
         this.listOfUploadedReportsInfo = [];
       } catch (error) {
-        this.postEuTaxonomyDataForNonFinancialsResponse = null;
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
@@ -540,7 +542,6 @@ export default defineComponent({
         this[whichSetOfFiles]
       );
       this[whichSetOfFiles] = [...updatedSetOfFiles];
-      console.log("whichSetOfFiles", this[whichSetOfFiles]);
     },
 
     /**

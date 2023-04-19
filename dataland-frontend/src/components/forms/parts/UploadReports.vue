@@ -12,7 +12,7 @@
       accept=".pdf"
       @select="onSelectedFiles"
       :multiple="true"
-      :maxFileSize="maxFileSize"
+      :maxFileSize="UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
       :auto="false"
     >
@@ -87,7 +87,7 @@
                 type="text"
                 :modelValue="filesToUpload[index].reportDate"
                 name="reportDate"
-                :outer-class="{ 'hidden-input': false }"
+                :outer-class="{ 'hidden-input': true }"
               />
             </div>
 
@@ -95,7 +95,7 @@
               type="text"
               :modelValue="filesToUpload[index].documentId"
               name="reference"
-              :outer-class="{ 'hidden-input': false }"
+              :outer-class="{ 'hidden-input': true }"
             />
 
             <!-- Currency used in the report -->
@@ -156,7 +156,7 @@
               type="text"
               :modelValue="listOfUploadedReportsInfo[index].reportDate"
               name="reportDate"
-              :outer-class="{ 'hidden-input': false }"
+              :outer-class="{ 'hidden-input': true }"
             />
           </div>
 
@@ -164,7 +164,7 @@
             type="text"
             :modelValue="listOfUploadedReportsInfo[index].reference"
             name="reference"
-            :outer-class="{ 'hidden-input': false }"
+            :outer-class="{ 'hidden-input': true }"
           />
 
           <!-- Currency used in the report -->
@@ -207,6 +207,7 @@ import FileUpload, { FileUploadEmits } from "primevue/fileupload";
 import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { WhichSetOfFiles } from "@/components/forms/Types";
+import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 
 export default defineComponent({
   name: "UploadReports",
@@ -222,6 +223,7 @@ export default defineComponent({
     return {
       formsDatesFilesToUpload: [] as string[] | undefined,
       formatBytesUserFriendly,
+      UPLOAD_MAX_FILE_SIZE_IN_BYTES,
     };
   },
   methods: {
@@ -277,9 +279,6 @@ export default defineComponent({
     },
     editMode: {
       type: Boolean,
-    },
-    maxFileSize: {
-      type: Number,
     },
     euTaxonomyKpiNameMappings: {},
     euTaxonomyKpiInfoMappings: {},

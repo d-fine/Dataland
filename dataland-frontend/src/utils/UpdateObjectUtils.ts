@@ -21,13 +21,13 @@ export function updateObject(baseObject: ObjectType, objectWithNewData: ObjectTy
 }
 
 /**
- * Changes the value of a variable by dividing it by 100
+ * Changes the value of a variable to maintain different number formatting between backend and frontend
  *
  * @param obj object in which it is looking for the value to change
  * @param typeOfModification determines how we change object values
  * @returns Object modified
  */
-export function modifyObjectKeys(obj: ObjectType, typeOfModification: string): ObjectType {
+export function modifyObjectKeys(obj: ObjectType, typeOfModification: "send" | "receive"): ObjectType {
   const objectModified = obj;
   for (const key in objectModified) {
     if (key === "value" && objectModified[key]) {

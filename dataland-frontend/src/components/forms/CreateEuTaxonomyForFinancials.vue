@@ -45,7 +45,7 @@
                   />
                 </div>
 
-                <FormKit type="hidden" v-model="reportingPeriodYear" name="reportingPeriod" />
+                <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
               </div>
               <FormKit type="group" name="data" label="data">
                 <UploadReports
@@ -54,7 +54,6 @@
                   :listOfUploadedReportsInfo="listOfUploadedReportsInfo"
                   :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
                   :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
-                  :maxFileSize="maxFileSize"
                   :editMode="editMode"
                   @selectedFiles="onSelectedFilesHandler"
                   @removeReportFromFilesToUpload="removeReportFromFilesToUpload"
@@ -218,7 +217,7 @@
 
                   <FormKit v-if="copanyType.value !== 'assetManagementKpis'" :name="copanyType.value" type="group">
                     <div
-                      v-for="kpiType of euTaxonomyKPIsModel[copanyType.value]"
+                      v-for="kpiType of euTaxonomyPseudoModelAndMappings[copanyType.value]"
                       :key="kpiType"
                       :data-test="kpiType"
                       class="uploadFormSection"
@@ -242,9 +241,12 @@
                   </FormKit>
 
                   <FormKit name="eligibilityKpis" type="group">
-                    <FormKit :name="euTaxonomyKPIsModel?.companyTypeToEligibilityKpis[copanyType.value]" type="group">
+                    <FormKit
+                      :name="euTaxonomyPseudoModelAndMappings?.companyTypeToEligibilityKpis[copanyType.value]"
+                      type="group"
+                    >
                       <div
-                        v-for="kpiTypeEligibility of euTaxonomyKPIsModel.eligibilityKpis"
+                        v-for="kpiTypeEligibility of euTaxonomyPseudoModelAndMappings.eligibilityKpis"
                         :key="kpiTypeEligibility"
                         :data-test="kpiTypeEligibility"
                         class="uploadFormSection"
@@ -281,9 +283,13 @@
               </div>
             </div>
           </FormKit>
-          <template>
-            <SuccessUpload msg="EU Taxonomy Data" :messageId="messageCount" />
-            <FailedUpload msg="EU Taxonomy Data" :messageId="messageCount" />
+          <template v-if="postEuTaxonomyDataForFinancialsProcessed">
+            <SuccessUpload
+              v-if="postEuTaxonomyDataForFinancialsResponse?.status === 200"
+              msg="EU Taxonomy Data"
+              :messageId="messageCount"
+            />
+            <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
           </template>
         </div>
         <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
@@ -302,7 +308,6 @@ import BasicInformationFields from "@/components/forms/parts/BasicInformationFie
 import PrimeButton from "primevue/button";
 import MultiSelect from "primevue/multiselect";
 import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
-import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
@@ -373,8 +378,7 @@ export default defineComponent({
         LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
         ReasonableAssurance: humanizeString(AssuranceDataAssuranceEnum.ReasonableAssurance),
       },
-      maxFileSize: UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-      euTaxonomyKPIsModel: euTaxonomyPseudoModelAndMappings,
+      euTaxonomyPseudoModelAndMappings,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       checkCustomInputs,
@@ -403,8 +407,6 @@ export default defineComponent({
       ],
       selectedKPIs: [] as { label: string; value: string }[],
       confirmedSelectedKPIs: [] as { label: string; value: string }[],
-      computedFinancialServicesTypes: [] as string[],
-      reportingPeriodYear: new Date().getFullYear(),
     };
   },
   computed: {
@@ -413,17 +415,15 @@ export default defineComponent({
       const namesFromListOfUploadedReports = this.listOfUploadedReportsInfo.map((el) => el.name.split(".")[0]);
       return [...new Set([...namesFromFilesToUpload, ...namesFromListOfUploadedReports])];
     },
-  },
-  watch: {
-    confirmedSelectedKPIs: function (newValue: { label: string; value: string }[]) {
-      this.computedFinancialServicesTypes = newValue.map((el: { label: string; value: string }): string => {
-        return this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis[
-          el.value as keyof typeof this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis
+    reportingPeriodYear(): number {
+      return this.reportingPeriod.getFullYear();
+    },
+    computedFinancialServicesTypes(): string[] {
+      return this.confirmedSelectedKPIs.map((el: { label: string; value: string }): string => {
+        return euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis[
+          el.value as keyof typeof euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis
         ];
       });
-    },
-    reportingPeriod: function (newValue: Date) {
-      this.reportingPeriodYear = newValue.getFullYear();
     },
   },
   props: {
@@ -433,7 +433,6 @@ export default defineComponent({
   },
   mounted() {
     const dataId = this.route.query.templateDataId;
-
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
       void this.loadEuData(dataId);
@@ -458,20 +457,23 @@ export default defineComponent({
       const dataResponse =
         await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(dataId);
       const dataResponseData = dataResponse.data;
+      if (dataResponseData?.reportingPeriod) {
+        this.reportingPeriod = new Date(dataResponseData.reportingPeriod);
+      }
       if (dataResponseData.data?.fiscalYearEnd) {
         this.fiscalYearEndAsDate = new Date(dataResponseData.data.fiscalYearEnd);
       }
       if (dataResponseData.data?.referencedReports) {
-        const propertiesOfFilesAssignedToDataID = dataResponseData.data.referencedReports;
-        for (const key in propertiesOfFilesAssignedToDataID) {
+        const referencedReportsForDataId = dataResponseData.data.referencedReports;
+        for (const key in referencedReportsForDataId) {
           this.listOfUploadedReportsInfo.push({
             name: key,
-            currency: propertiesOfFilesAssignedToDataID[key].currency,
-            isGroupLevel: propertiesOfFilesAssignedToDataID[key].isGroupLevel,
-            reference: propertiesOfFilesAssignedToDataID[key].reference,
-            reportDate: propertiesOfFilesAssignedToDataID[key].reportDate,
-            reportDateAsDate: propertiesOfFilesAssignedToDataID[key].reportDate
-              ? new Date(propertiesOfFilesAssignedToDataID[key].reportDate as string)
+            currency: referencedReportsForDataId[key].currency,
+            isGroupLevel: referencedReportsForDataId[key].isGroupLevel,
+            reference: referencedReportsForDataId[key].reference,
+            reportDate: referencedReportsForDataId[key].reportDate,
+            reportDateAsDate: referencedReportsForDataId[key].reportDate
+              ? new Date(referencedReportsForDataId[key].reportDate as string)
               : "",
           });
         }
@@ -480,7 +482,7 @@ export default defineComponent({
         // types of company financial services
         const arrayWithCompanyKpiTypes = dataResponseData.data?.financialServicesTypes;
         // all types of financial services
-        const allTypesOfFinancialServices = this.euTaxonomyKPIsModel.companyTypeToEligibilityKpis;
+        const allTypesOfFinancialServices = euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis;
 
         this.selectedKPIs = this.kpisModel.filter((el: { label: string; value: string }) => {
           return arrayWithCompanyKpiTypes?.includes(
@@ -530,7 +532,7 @@ export default defineComponent({
                 index,
                 "documentId",
                 uploadFileSuccessful.data.documentId,
-                "filesToUpload"
+                this.filesToUpload
               );
             }
           }
@@ -547,13 +549,12 @@ export default defineComponent({
             );
         }
       } catch (error) {
-        this.postEuTaxonomyDataForFinancialsResponse = null;
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
-        this.fiscalYearEnd = null;
+        this.fiscalYearEndAsDate = null;
         this.filesToUpload = [];
         this.listOfUploadedReportsInfo = [];
         this.formInputsModel = {};
@@ -636,7 +637,6 @@ export default defineComponent({
         this[whichSetOfFiles]
       );
       this[whichSetOfFiles] = [...updatedSetOfFiles];
-      console.log("whichSetOfFiles", this[whichSetOfFiles]);
     },
 
     /**
@@ -646,7 +646,7 @@ export default defineComponent({
      */
     updateFiscalYearEndHandler(dateValue: Date) {
       this.fiscalYearEnd = getHyphenatedDate(dateValue);
-      this.fiscalYearEnd = dateValue;
+      this.fiscalYearEndAsDate = dateValue;
     },
   },
 });
