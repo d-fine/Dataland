@@ -704,8 +704,8 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
-import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
+import YesNoComponent from "@/components/forms/parts/elements/YesNoComponent.vue";
 import Calendar from "primevue/calendar";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
@@ -730,11 +730,11 @@ import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import NaceSectorSelector from "@/components/forms/parts/NaceSectorSelector.vue";
-import FreeTextFormElement from "@/components/forms/parts/FreeTextFormElement.vue";
-import NumberFormElement from "@/components/forms/parts/NumberFormElement.vue";
-import DateFormElement from "@/components/forms/parts/DateFormElement.vue";
-import SingleSelectFormElement from "@/components/forms/parts/SingleSelectFormElement.vue";
-import MultiSelectFormElement from "@/components/forms/parts/MultiSelectFormElement.vue";
+import FreeTextFormElement from "@/components/forms/parts/elements/FreeTextFormElement.vue";
+import NumberFormElement from "@/components/forms/parts/elements/NumberFormElement.vue";
+import DateFormElement from "@/components/forms/parts/elements/DateFormElement.vue";
+import SingleSelectFormElement from "@/components/forms/parts/elements/SingleSelectFormElement.vue";
+import MultiSelectFormElement from "@/components/forms/parts/elements/MultiSelectFormElement.vue";
 
 export default defineComponent({
   setup() {

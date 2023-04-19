@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
 import Dropdown from "primevue/dropdown";

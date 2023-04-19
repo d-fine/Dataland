@@ -1,5 +1,5 @@
 <template>
-  <RadioButtonsForm
+  <RadioButtonsFormElement
     :name="name"
     :info="info"
     :display-name="displayName"
@@ -10,11 +10,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import RadioButtonsForm from "@/components/forms/parts/RadioButtonsFormElement.vue";
+import RadioButtonsFormElement from "@/components/forms/parts/elements/RadioButtonsFormElement.vue";
 
 export default defineComponent({
   name: "YesNoComponent",
-  components: { RadioButtonsForm },
+  components: { RadioButtonsFormElement },
   props: {
     name: {
       type: String,

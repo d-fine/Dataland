@@ -487,10 +487,10 @@ import { FormKit } from "@formkit/vue";
 
 import Calendar from "primevue/calendar";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload from "primevue/fileupload";
-import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
+import YesNoComponent from "@/components/forms/parts/elements/YesNoComponent.vue";
 import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
