@@ -6,7 +6,7 @@
     option-label="label"
     option-value="value"
     :show-toggle-all="false"
-    class="short"
+    :class="innerClass"
   />
   <FormKit
     type="list"
@@ -52,6 +52,10 @@ export default defineComponent({
     options: {
       type: Array as () => Array<Option>,
       required: true,
+    },
+    innerClass: {
+      type: String,
+      default: "",
     },
   },
 });

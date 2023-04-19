@@ -1,18 +1,25 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <NumberFormElement :name="name" :display-name="displayName" :validation="validation" :placeholder="placeholder" />
+    <FormKit
+      type="number"
+      :name="name!"
+      :validation-label="displayName!"
+      :validation="validation!"
+      :placeholder="placeholder"
+      inner-class="short"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import NumberFormElement from "@/components/forms/parts/elements/basic/NumberFormElement.vue";
+import { FormKit } from "@formkit/vue";
 
 export default defineComponent({
   name: "NumberFormField",
-  components: { NumberFormElement, UploadFormHeader },
+  components: { FormKit, UploadFormHeader },
   props: {
     name: {
       type: String,

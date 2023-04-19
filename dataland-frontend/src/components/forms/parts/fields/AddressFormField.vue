@@ -1,31 +1,18 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <MultiSelectFormElement
-      :name="name"
-      :display-name="displayName"
-      :validation="validation"
-      :placeholder="placeholder"
-      :options="options"
-      inner-class="short"
-    />
+    <AddressFormElement :name="name" :display-name="displayName" :validation="validation" :placeholder="placeholder" />
   </div>
 </template>
 
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
-import MultiSelectFormElement from "@/components/forms/parts/elements/basic/MultiSelectFormElement.vue";
+import AddressFormElement from "@/components/forms/parts/elements/derived/AddressFormElement.vue";
 
 export default defineComponent({
-  name: "MultiSelectFormField",
-  components: { MultiSelectFormElement, UploadFormHeader },
-  data() {
-    return {
-      selections: [] as string[],
-    };
-  },
+  name: "AddressFormField",
+  components: { AddressFormElement, UploadFormHeader },
   props: {
     name: {
       type: String,
@@ -46,10 +33,6 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: "",
-    },
-    options: {
-      type: Array as () => Array<Option>,
-      required: true,
     },
   },
 });

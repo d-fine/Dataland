@@ -1,11 +1,13 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <InputTextFormElement
-      :name="name"
-      :display-name="displayName"
-      :validation="validation"
+    <FormKit
+      type="text"
+      :name="name!"
+      :validation-label="displayName!"
+      :validation="validation!"
       :placeholder="placeholder"
+      inner-class="short"
     />
   </div>
 </template>
@@ -13,11 +15,11 @@
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import InputTextFormElement from "@/components/forms/parts/elements/basic/InputTextFormElement.vue";
+import { FormKit } from "@formkit/vue";
 
 export default defineComponent({
   name: "InputTextFormField",
-  components: { InputTextFormElement, UploadFormHeader },
+  components: { FormKit, UploadFormHeader },
   props: {
     name: {
       type: String,

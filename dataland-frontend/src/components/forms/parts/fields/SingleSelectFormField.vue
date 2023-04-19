@@ -7,6 +7,7 @@
       :validation="validation"
       :placeholder="placeholder"
       :options="options"
+      inner-class="short"
     />
   </div>
 </template>

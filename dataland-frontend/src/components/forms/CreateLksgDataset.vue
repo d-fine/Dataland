@@ -18,7 +18,7 @@
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID!" disabled="true" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
+            <FormKit type="hidden" name="reportingPeriod" :value="yearOfDataDate" disabled="true" />
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
@@ -56,7 +56,7 @@
                           :validation-label="lksgKpisNameMappings.dataDate"
                           validation="required"
                           name="dataDate"
-                          v-model="convertedDataDate"
+                          :value="convertedDataDate"
                           :outer-class="{ 'hidden-input': true }"
                         />
                       </div>
@@ -478,6 +478,7 @@ import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue
 import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
+import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -502,6 +503,7 @@ export default defineComponent({
     SingleSelectFormField,
     MultiSelectFormField,
     NaceSectorSelector,
+    AddressFormField,
   },
   directives: {
     tooltip: Tooltip,

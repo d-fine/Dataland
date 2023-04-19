@@ -5,7 +5,7 @@
     :placeholder="placeholder"
     option-label="label"
     option-value="value"
-    class="short"
+    :class="innerClass"
   />
   <FormKit
     type="text"
@@ -51,6 +51,10 @@ export default defineComponent({
     options: {
       type: Array as () => Array<Option>,
       required: true,
+    },
+    innerClass: {
+      type: String,
+      default: "",
     },
   },
 });
