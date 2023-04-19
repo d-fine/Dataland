@@ -14,7 +14,7 @@
   <div v-show="dataPointIsAvailable">
     <div class="form-field" v-if="dataPointIsAvailable">
       <UploadFormHeader
-        :name="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]} amount`"
+        :name="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]}`"
         :explanation="kpiInfoMappings[name] ?? ''"
       />
       <FormKit
