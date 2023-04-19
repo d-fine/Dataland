@@ -1,13 +1,15 @@
 <template>
-  <div class="col-12 text-left bg-white mb-4 mp-0 all-sides-blue-border" data-test="reportsBanner" style="width: 99.5%">
-    <span class="font-bold text-gray-800 mt-0 mb-0 mp-0 ml-0 mr-0" style="font-size: 11pt">
-      Data extracted from the company report. Company reports:
-    </span>
-    <span id="reportList">
-      <span v-for="(report, name, index) in reports" :key="index">
-        <ReportLink :name="name" :report="report" :index="Number(index)" :reportsNumber="reportsNumber()" />
+  <div style="display: flex; align-content: start">
+    <div class="text-left bg-white mb-4 mr-2 p-3 all-sides-blue-border" data-test="reportsBanner">
+      <span class="font-bold text-gray-800 mt-0 mb-0 mp-0 ml-0 mr-1" style="font-size: 11pt">
+        Data extracted from the company report. Company reports:
       </span>
-    </span>
+      <span id="reportList">
+        <span v-for="(report, name, index) in reports" :key="index">
+          <ReportLink :name="name" :report="report" :index="Number(index)" :reportsNumber="reportsNumber()" />
+        </span>
+      </span>
+    </div>
   </div>
 </template>
 
