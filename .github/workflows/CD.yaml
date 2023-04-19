@@ -56,11 +56,11 @@ jobs:
         run: |
           mkdir -p ./dataland-frontend/ 
           docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} -r /app/dataland-frontend/build/ /hostdir/dataland-frontend
-      - name: Store generated frontend API client for use by cypress
+      - name: Store generated frontend API clients for use by cypress
         uses: actions/upload-artifact@v3
         with:
-          name: frontendApiClient
-          path: ./dataland-frontend/build/clients/backend/
+          name: frontendClients
+          path: ./dataland-frontend/build/clients/
   deploy-to-server-with-latest-built-images:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
@@ -171,15 +171,15 @@ jobs:
             echo "Retrieving real data"
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.17
           fi
-      - name: Download frontend API client
+      - name: Download frontend API clients
         uses: actions/download-artifact@v3
         with:
-          name: frontendApiClient
-          path: ./dataland-frontend/build/clients/backend/
+          name: frontendClients
+          path: ./dataland-frontend/build/clients/
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
       - name: Setup SSH tunnel to admin NGINX
-        run:  |
+        run: |
           if [[ ${{ matrix.testGroup }} == 3 ]]; then
             ./deployment/setup_admin_ssh_tunnel.sh
           else

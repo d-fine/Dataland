@@ -1,5 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { DataPointBigDecimal, QualityOptions, CompanyReportReference, DataPointYesNo } from "@clients/backend";
+import { readFileSync } from "fs";
+import { createHash } from "crypto";
+import { CompanyReportReference, DataPointBigDecimal, DataPointYesNo, QualityOptions } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "./YesNoFixtures";
@@ -40,6 +42,17 @@ export function generateLinkToPdf(): string {
 }
 
 /**
+ * Generates hash to fixture pdf that is used for all fake fixture references
+ *
+ * @returns documentId ID of a pdf that is stored in internal storage and can be referenced
+ */
+export function getReferencedDocumentId(): string {
+  const testDocumentPath = "../testing/data/documents/StandardWordExport.pdf";
+  const fileContent: Buffer = readFileSync(testDocumentPath);
+  return createHash("sha256").update(fileContent).digest("hex");
+}
+
+/**
  * Generates a random non-empty set of reports that can be referenced
  *
  * @returns a random non-empty set of reports
@@ -49,14 +62,14 @@ export function generateReferencedReports(): ReferencedReports {
   if (availableReports.length == 0) availableReports.push(possibleReports[0]);
 
   const referencedReports: ReferencedReports = {};
-  availableReports.forEach((reportName) => {
+  for (const reportName of availableReports) {
     referencedReports[reportName] = {
-      reference: generateLinkToPdf(),
+      reference: getReferencedDocumentId(),
       isGroupLevel: randomYesNoNaUndefined(),
       reportDate: randomPastDateOrUndefined(),
       currency: faker.finance.currencyCode(),
     };
-  });
+  }
   return referencedReports;
 }
 

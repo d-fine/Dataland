@@ -1,6 +1,6 @@
 <template>
   <Card class="col-12 page-wrapper-card">
-    <template #title>New Dataset - LkSG </template>
+    <template #title>New Dataset - LkSG</template>
     <template #content>
       <div v-show="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading LkSG data...</p>
@@ -1150,7 +1150,7 @@ export default defineComponent({
   directives: {
     tooltip: Tooltip,
   },
-
+  emits: ["datasetCreated"],
   data() {
     return {
       isYourCompanyManufacturingCompany: "No",
@@ -1289,6 +1289,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.lkSGDataModel);
+        this.$emit("datasetCreated");
         this.$formkit.reset("createLkSGForm");
         this.isYourCompanyManufacturingCompany = "No";
         this.listOfProductionSites = [

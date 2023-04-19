@@ -68,6 +68,9 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] monitoring.dataland.com 
 - [ ] (OPT) dataland.com
 
+## Check keycloak automatic logout if inactive
+- [ ] Check that you are automatically logged out if you are idle for too long and also get notified about this by a pop-up. Timeouts are defined as `TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS` in `./dataland-frontend/src/utils/Constants.ts` and `ssoSessionIdleTimeout` in `./dataland-keycloak/realms/datalandsecurity-realm.json`.
+
 ## Check e-mails sent by keycloak
 - [ ] Check that the verification e-mail is sent and displayed correctly
 - [ ] Check that the reset password e-mail is sent and displayed correctly

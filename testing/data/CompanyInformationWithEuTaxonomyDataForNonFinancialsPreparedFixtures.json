@@ -3,210 +3,302 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Barr-Keller",
-				"Ochs, Ostendarp und Lienshöft",
-				"Pohl-Niklaus"
+				"Orthmann-Gottschalk",
+				"Sihler-Delonge"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"headquarters": "Räntschscheid",
-			"headquartersPostalCode": "48839",
-			"sector": "e-services",
+			"companyLegalForm": "Sole Trader",
+			"headquarters": "Ummingerburg",
+			"sector": "web-readiness",
 			"identifiers": [
 				{
+					"identifierType": "Duns",
+					"identifierValue": "juwylq1zs"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "az5x7zjerpey"
+				},
+				{
 					"identifierType": "Lei",
-					"identifierValue": "ykwtka1bxreab730i0k5"
+					"identifierValue": "4hdcvdnsy3tqqlio8r8j"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "gjokwre5k7"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "7wwyhqk"
+					"identifierValue": "ekbaurx"
 				}
 			],
-			"countryCode": "CO",
-			"isTeaserCompany": false,
-			"website": "https://empathisch-mineral.ch"
+			"countryCode": "TZ",
+			"isTeaserCompany": false
 		},
 		"t": {
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "http://vortrefflich-krieg.ch/konziliant-wolkenkratzer.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "TZS"
-				},
 				"AnnualReport": {
-					"reference": "http://resolut-drache.org/gl%C3%BCcklich-wolke.pdf",
-					"currency": "JPY"
-				},
-				"SustainabilityReport": {
-					"reference": "http://xn--unbestechlich-sure-ztb.name/tapfer-br%C3%BCcke.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-10-09",
-					"currency": "AUD"
-				},
-				"ESEFReport": {
-					"reference": "http://leuchtend-krankheiten.net/qualit%C3%A4tsvoll-%C3%A4sthetik.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-06-19",
-					"currency": "ZMW"
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-03-22",
+					"currency": "XAU"
 				}
 			},
-			"fiscalYearEnd": "2022-04-12",
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-07-01",
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "ReasonableAssurance",
+				"provider": "Jungbluth KG"
 			},
-			"scopeOfEntities": "No",
+			"scopeOfEntities": "Yes",
 			"reportingObligation": "No",
-			"numberOfEmployees": 36636,
-			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.323,
+					"value": 0.9971,
 					"dataSource": {
-						"page": 53,
+						"page": 275,
 						"report": "AnnualReport",
-						"tagName": "communities"
+						"tagName": "blockchains"
 					},
 					"quality": "Audited",
-					"comment": "calculate virtual firewall"
+					"comment": "bypass haptic sensor"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.9995,
+					"value": 0.6255,
 					"dataSource": {
-						"page": 858,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
+						"page": 106,
+						"report": "AnnualReport",
+						"tagName": "portals"
 					},
-					"quality": "Estimated",
-					"comment": "synthesize primary circuit"
+					"quality": "Reported",
+					"comment": "input redundant driver"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.6009,
-					"quality": "Estimated"
+					"value": 0.0872,
+					"dataSource": {
+						"page": 589,
+						"report": "AnnualReport",
+						"tagName": "initiatives"
+					},
+					"quality": "Reported",
+					"comment": "quantify solid state matrix"
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Semisch GmbH & Co. KG"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"headquarters": "Elisadorf",
-			"headquartersPostalCode": "80051",
-			"sector": "web services",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"headquarters": "Maybachland",
+			"headquartersPostalCode": "12011",
+			"sector": "portals",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "ng742rri8fkse34"
+				},
+				{
 					"identifierType": "Duns",
-					"identifierValue": "z9jc4z8a8"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "a62eovd8kp"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "whndpiu"
+					"identifierValue": "xan9ol3yb"
 				}
 			],
-			"countryCode": "BV",
+			"countryCode": "PL",
 			"isTeaserCompany": false,
-			"website": "https://erfolgreich-judentum.info"
+			"website": "http://gefeiert-schach.org"
 		},
 		"t": {
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "http://xn--grozgig-agnostizismus-2yb28d.net/chaotisch-laden.pdf",
-					"isGroupLevel": "No",
-					"currency": "BSD"
-				},
-				"AnnualReport": {
-					"reference": "https://qualifiziert-busen.com/ungew%C3%B6hnlich-auge.pdf",
-					"isGroupLevel": "Yes",
-					"currency": "AZN"
-				},
 				"IntegratedReport": {
-					"reference": "http://raffiniert-ellenbogen.info/automatisch-kernschmelze.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-09-21",
-					"currency": "LBP"
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"reportDate": "2023-04-17",
+					"currency": "SGD"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "JMD"
 				}
 			},
-			"fiscalYearEnd": "2022-10-20",
+			"fiscalYearEnd": "2022-10-15",
 			"assurance": {
-				"assurance": "LimitedAssurance",
+				"assurance": "ReasonableAssurance",
+				"provider": "Strutz AG",
 				"dataSource": {
-					"page": 548,
-					"report": "ESEFReport",
-					"tagName": "content"
+					"page": 444,
+					"report": "SustainabilityReport",
+					"tagName": "applications"
 				}
 			},
-			"reportingObligation": "Yes",
-			"numberOfEmployees": 90694,
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "NA",
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 605136.79,
+					"value": 514814.84,
+					"quality": "Estimated"
+				},
+				"eligiblePercentage": {
+					"value": 0.9586,
 					"dataSource": {
-						"page": 911,
+						"page": 563,
+						"report": "SustainabilityReport",
+						"tagName": "platforms"
+					},
+					"quality": "Audited",
+					"comment": "transmit neural circuit"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 544153.21,
+					"quality": "Estimated"
+				},
+				"eligiblePercentage": {
+					"value": 0.7038,
+					"dataSource": {
+						"page": 952,
+						"report": "IntegratedReport",
+						"tagName": "e-markets"
+					},
+					"quality": "Estimated",
+					"comment": "connect cross-platform bandwidth"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 139884.09,
+					"dataSource": {
+						"page": 33,
 						"report": "IntegratedReport",
 						"tagName": "architectures"
 					},
 					"quality": "Audited",
-					"comment": "quantify 1080p capacitor"
+					"comment": "generate auxiliary feed"
 				},
 				"eligiblePercentage": {
-					"value": 0.5472,
+					"value": 0.4326,
+					"dataSource": {
+						"page": 970,
+						"report": "SustainabilityReport",
+						"tagName": "channels"
+					},
+					"quality": "Incomplete",
+					"comment": "connect auxiliary hard drive"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"companyAlternativeNames": [
+				"Tietze OHG"
+			],
+			"companyLegalForm": "Sole Trader",
+			"headquarters": "Nabeinland",
+			"headquartersPostalCode": "19310",
+			"sector": "vortals",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "hw6z1uccez7gq4r"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "cmqru7l4h2l2k9wiyqkv"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "q3g76u45uo"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "qhmdl0j"
+				}
+			],
+			"countryCode": "MQ",
+			"isTeaserCompany": false,
+			"website": "https://visionär-tee.org"
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "No",
+			"numberOfEmployees": 88153,
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 853613.27,
+					"quality": "Estimated"
+				},
+				"alignedPercentage": {
+					"value": 0.5679,
+					"dataSource": {
+						"page": 826,
+						"report": "SustainabilityReport",
+						"tagName": "e-commerce"
+					},
+					"quality": "Audited",
+					"comment": "transmit open-source application"
+				},
+				"eligiblePercentage": {
+					"value": 0.1201,
 					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 747981.25,
+					"value": 943171.62,
+					"quality": "Incomplete"
+				},
+				"alignedPercentage": {
+					"value": 0.2186,
 					"dataSource": {
-						"page": 324,
-						"report": "ESEFReport",
-						"tagName": "methodologies"
+						"page": 372,
+						"report": "SustainabilityReport",
+						"tagName": "partnerships"
 					},
 					"quality": "Reported",
-					"comment": "hack bluetooth pixel"
+					"comment": "hack virtual protocol"
 				},
 				"eligiblePercentage": {
-					"value": 0.8204,
-					"dataSource": {
-						"page": 1019,
-						"report": "IntegratedReport",
-						"tagName": "communities"
-					},
-					"quality": "Incomplete",
-					"comment": "parse virtual protocol"
+					"value": 0.0943,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 240596.54,
+					"value": 128765.46,
 					"dataSource": {
-						"page": 1042,
-						"report": "IntegratedReport",
-						"tagName": "convergence"
-					},
-					"quality": "Reported",
-					"comment": "synthesize online program"
-				},
-				"eligiblePercentage": {
-					"value": 0.4072,
-					"dataSource": {
-						"page": 830,
-						"report": "IntegratedReport",
-						"tagName": "functionalities"
+						"page": 781,
+						"report": "SustainabilityReport",
+						"tagName": "relationships"
 					},
 					"quality": "Audited",
-					"comment": "override haptic system"
+					"comment": "program redundant application"
+				},
+				"alignedPercentage": {
+					"value": 0.8622,
+					"dataSource": {
+						"page": 849,
+						"report": "SustainabilityReport",
+						"tagName": "partnerships"
+					},
+					"quality": "Reported",
+					"comment": "synthesize virtual hard drive"
+				},
+				"eligiblePercentage": {
+					"value": 0.5156,
+					"quality": "Incomplete"
 				}
 			}
 		},
