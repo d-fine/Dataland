@@ -158,7 +158,7 @@
                         </div>
                         <!-- Integrated report is on a group level -->
                         <div class="form-field">
-                          <YesNoComponent
+                          <YesNoFormField
                             :displayName="euTaxonomyKpiNameMappings.groupLevelIntegratedReport"
                             :info="euTaxonomyKpiInfoMappings.groupLevelIntegratedReport"
                             :name="'isGroupLevel'"
@@ -177,7 +177,7 @@
                   <div class="col-9 formFields">
                     <h3 class="mt-0">Basic information</h3>
 
-                    <YesNoComponent
+                    <YesNoFormField
                       :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
                       :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
                       :name="'fiscalYearDeviation'"
@@ -213,7 +213,7 @@
 
                     <!-- Scope of entities -->
                     <div class="form-field">
-                      <YesNoComponent
+                      <YesNoFormField
                         :displayName="euTaxonomyKpiNameMappings.scopeOfEntities"
                         :info="euTaxonomyKpiInfoMappings.scopeOfEntities"
                         :name="'scopeOfEntities'"
@@ -222,7 +222,7 @@
 
                     <!-- EU Taxonomy activity level reporting -->
                     <div class="form-field">
-                      <YesNoComponent
+                      <YesNoFormField
                         :displayName="euTaxonomyKpiNameMappings.activityLevelReporting"
                         :info="euTaxonomyKpiInfoMappings.activityLevelReporting"
                         :name="'activityLevelReporting'"
@@ -250,7 +250,7 @@
 
                     <!-- EU Taxonomy activity level reporting -->
                     <div class="form-field">
-                      <YesNoComponent
+                      <YesNoFormField
                         :displayName="euTaxonomyKpiNameMappings.reportingObligation"
                         :info="euTaxonomyKpiInfoMappings.reportingObligation"
                         :name="'reportingObligation'"
@@ -487,10 +487,10 @@ import { FormKit } from "@formkit/vue";
 
 import Calendar from "primevue/calendar";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload from "primevue/fileupload";
-import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
+import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
@@ -508,7 +508,7 @@ import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
-import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials, DataMetaInformation } from "@clients/backend";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
@@ -521,7 +521,7 @@ export default defineComponent({
     UploadFormHeader,
     PrimeButton,
     FileUpload,
-    YesNoComponent,
+    YesNoFormField,
     KPIfieldSet,
     FailedUpload,
     Card,
@@ -569,7 +569,7 @@ export default defineComponent({
 
     postEuTaxonomyDataForNonFinancialsProcessed: false,
     messageCount: 0,
-    postEuTaxonomyDataForNonFinancialsResponse: null,
+    postEuTaxonomyDataForNonFinancialsResponse: null as DataMetaInformation | null,
     humanizeString: humanizeString,
   }),
   watch: {

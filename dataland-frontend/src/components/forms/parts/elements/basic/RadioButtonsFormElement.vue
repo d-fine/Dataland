@@ -1,0 +1,48 @@
+<template>
+  <FormKit
+    type="radio"
+    :name="name!"
+    :validation-label="displayName!"
+    :options="options"
+    :validation="validation!"
+    :outer-class="{
+      'yes-no-radio': true,
+    }"
+    :inner-class="{
+      'formkit-inner': false,
+    }"
+    :input-class="{
+      'formkit-input': false,
+      'p-radiobutton': true,
+    }"
+  />
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import { FormKit } from "@formkit/vue";
+import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+
+export default defineComponent({
+  name: "RadioButtonsFormElement",
+  components: { FormKit },
+  props: {
+    name: {
+      type: String,
+      default: "",
+    },
+    displayName: {
+      type: String,
+      default: "",
+    },
+    options: {
+      type: Array as () => Array<Option>,
+      required: true,
+    },
+    validation: {
+      type: String,
+      default: "",
+    },
+  },
+});
+</script>
