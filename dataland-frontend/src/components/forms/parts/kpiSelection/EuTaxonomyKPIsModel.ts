@@ -32,7 +32,7 @@ export const euTaxonomyKpiNameMappings = {
   taxonomyEligibleNonLifeInsuranceActivities: "Taxonomy-eligible Non-life Insurance Economic Activities",
   greenAssetRatio: "Green Asset Ratio",
   tradingPortfolio: "Trading Portfolio",
-  tradingPortfolioInterbankLoans: "Trading Portfolio & On-demand Interbank Loans",
+  tradingPortfolioAndInterbankLoans: "Trading Portfolio & On-demand Interbank Loans",
   interbankLoans: "On-demand Interbank Loans",
   reportDate: "Report Date",
   reportingPeriod: "Reporting Period",
@@ -102,9 +102,9 @@ export const euTaxonomyKpiInfoMappings = {
   taxonomyEligibleNonLifeInsuranceActivities:
     "For Insurance/Reinsurance companies, the percentage of Taxonomy-eligible non-life insurance economics activities. Insurance and reinsurance undertakings other than life insurance undertakings shall calculate the KPI related to underwriting activities and present the ‘gross premiums written’ non-life insurance revenue or, as applicable, reinsurance revenue corresponding to Taxonomy-aligned insurance or reinsurance activities",
   greenAssetRatio:
-    "The proportion of the of credit institution’s assets financing and invested in taxonomy-aligned economic activities as a proportion of total covered assets",
+    "The proportion of assets financing and invested in taxonomy-aligned economic activities as a proportion of total covered assets",
   tradingPortfolio: "For Credit Institutions, the trading portfolio as a percentage of total assets",
-  tradingPortfolioInterbankLoans:
+  tradingPortfolioAndInterbankLoans:
     "For Credit Institutions, the trading portfolio and the on demand interbank loans as a percentage of total assets",
   interbankLoans: "For Credit Institutions, the on demand interbank loans as a percentage of total assets",
   reportDate: "The date the report was published",
