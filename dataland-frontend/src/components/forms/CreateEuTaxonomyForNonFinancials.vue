@@ -483,12 +483,14 @@ export default defineComponent({
               allFilesWasUploadedSuccessful = false;
               break;
             } else if (uploadFileSuccessful) {
-              this.updatePropertyFilesUploaded(
-                index,
-                "documentId",
-                uploadFileSuccessful.data.documentId,
-                this.filesToUpload
-              );
+              this.filesToUpload = [
+                ...this.updatePropertyFilesUploaded(
+                  index,
+                  "documentId",
+                  uploadFileSuccessful.data.documentId,
+                  this.filesToUpload
+                ),
+              ];
             }
           }
         }
