@@ -1,25 +1,18 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <FormKit
-      type="textarea"
-      :name="name"
-      :validation-label="displayName!"
-      :validation="validation!"
-      :placeholder="placeholder"
-      inner-class="short"
-    />
+    <FreeTextFormElement :name="name" :display-name="displayName" :validation="validation" :placeholder="placeholder" />
   </div>
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
+import FreeTextFormElement from "@/components/forms/parts/elements/basic/FreeTextFormElement.vue";
 
 export default defineComponent({
-  name: "FreeTextFormElement",
-  components: { UploadFormHeader, FormKit },
+  name: "FreeTextFormField",
+  components: { FreeTextFormElement, UploadFormHeader },
   props: {
     name: {
       type: String,

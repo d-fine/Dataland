@@ -490,7 +490,7 @@ import MultiSelect from "primevue/multiselect";
 import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
-import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import { humanizeString } from "@/utils/StringHumanizer";

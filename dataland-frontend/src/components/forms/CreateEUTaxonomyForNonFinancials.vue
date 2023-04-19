@@ -487,7 +487,7 @@ import { FormKit } from "@formkit/vue";
 
 import Calendar from "primevue/calendar";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
-import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload from "primevue/fileupload";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";

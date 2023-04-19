@@ -1,27 +1,22 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <YesNoFormElement
-      :name="name"
-      :display-name="displayName"
-      :validation="validation"
-      :radioButtonsOptions="radioButtonsOptions"
-    />
+    <NumberFormElement :name="name" :display-name="displayName" :validation="validation" :placeholder="placeholder" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import YesNoFormElement from "@/components/forms/parts/elements/derived/YesNoFormElement.vue";
+import { defineComponent } from "vue";
+import NumberFormElement from "@/components/forms/parts/elements/basic/NumberFormElement.vue";
 
 export default defineComponent({
-  name: "YesNoFormField",
-  components: { YesNoFormElement, UploadFormHeader },
+  name: "NumberFormField",
+  components: { NumberFormElement, UploadFormHeader },
   props: {
     name: {
       type: String,
-      default: "",
+      required: true,
     },
     info: {
       type: String,
@@ -35,10 +30,12 @@ export default defineComponent({
       type: String,
       default: "",
     },
-    radioButtonsOptions: {
-      type: Array as () => Array<string>,
-      default: () => ["Yes", "No"],
+    placeholder: {
+      type: String,
+      default: "",
     },
   },
 });
+
+// TODO what about props for e.g. min and step size
 </script>

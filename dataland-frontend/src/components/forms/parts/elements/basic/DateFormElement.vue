@@ -1,30 +1,26 @@
 <template>
-  <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <div class="lg:col-4 md:col-6 col-12 pl-0">
-      <Calendar
-        inputId="icon"
-        v-model="date"
-        :showIcon="true"
-        dateFormat="D, M dd, yy"
-        :maxDate="todayAsMax ? new Date() : undefined"
-        :placeholder="placeholder"
-      />
-    </div>
-
-    <FormKit
-      type="text"
-      :validation-label="displayName!"
-      :validation="validation!"
-      :name="name"
-      v-model="hyphenatedDate"
-      outer-class="hidden-input"
+  <div class="lg:col-4 md:col-6 col-12 pl-0">
+    <Calendar
+      inputId="icon"
+      v-model="date"
+      :showIcon="true"
+      dateFormat="D, M dd, yy"
+      :maxDate="todayAsMax ? new Date() : undefined"
+      :placeholder="placeholder"
     />
   </div>
+
+  <FormKit
+    type="text"
+    :validation-label="displayName!"
+    :validation="validation!"
+    :name="name"
+    v-model="hyphenatedDate"
+    outer-class="hidden-input"
+  />
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
@@ -32,7 +28,7 @@ import Calendar from "primevue/calendar";
 
 export default defineComponent({
   name: "DateFormElement",
-  components: { UploadFormHeader, FormKit, Calendar },
+  components: { FormKit, Calendar },
   data() {
     return {
       date: undefined as Date | undefined,
@@ -52,10 +48,6 @@ export default defineComponent({
     name: {
       type: String,
       required: true,
-    },
-    info: {
-      type: String,
-      default: "",
     },
     displayName: {
       type: String,

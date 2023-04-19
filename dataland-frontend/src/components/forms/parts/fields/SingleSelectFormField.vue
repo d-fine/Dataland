@@ -1,35 +1,25 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <Dropdown
-      v-model="selection"
-      :options="options"
-      :placeholder="placeholder"
-      option-label="label"
-      option-value="value"
-      class="short"
-    />
-    <FormKit
-      type="text"
-      :validation-label="displayName!"
-      :validation="validation!"
+    <SingleSelectFormElement
       :name="name"
-      v-model="selection"
-      outer-class="hidden-input"
+      :display-name="displayName"
+      :validation="validation"
+      :placeholder="placeholder"
+      :options="options"
     />
   </div>
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
-import Dropdown from "primevue/dropdown";
 import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
 
 export default defineComponent({
-  name: "SingleSelectFormElement",
-  components: { UploadFormHeader, FormKit, Dropdown },
+  name: "SingleSelectFormField",
+  components: { SingleSelectFormElement, UploadFormHeader },
   data() {
     return {
       selection: "",

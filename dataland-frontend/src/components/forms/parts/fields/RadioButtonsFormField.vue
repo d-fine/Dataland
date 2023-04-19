@@ -1,23 +1,19 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <YesNoFormElement
-      :name="name"
-      :display-name="displayName"
-      :validation="validation"
-      :radioButtonsOptions="radioButtonsOptions"
-    />
+    <RadioButtonsFormElement :name="name" :display-name="displayName" :validation="validation" :options="options" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import YesNoFormElement from "@/components/forms/parts/elements/derived/YesNoFormElement.vue";
+import { defineComponent } from "vue";
+import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 
 export default defineComponent({
-  name: "YesNoFormField",
-  components: { YesNoFormElement, UploadFormHeader },
+  name: "RadioButtonsFormField",
+  components: { RadioButtonsFormElement, UploadFormHeader },
   props: {
     name: {
       type: String,
@@ -35,9 +31,9 @@ export default defineComponent({
       type: String,
       default: "",
     },
-    radioButtonsOptions: {
-      type: Array as () => Array<string>,
-      default: () => ["Yes", "No"],
+    options: {
+      type: Array as () => Array<Option>,
+      required: true,
     },
   },
 });

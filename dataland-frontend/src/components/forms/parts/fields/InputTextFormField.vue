@@ -1,25 +1,23 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <FormKit
-      type="text"
-      :name="name!"
-      :validation-label="displayName!"
-      :validation="validation!"
+    <InputTextFormElement
+      :name="name"
+      :display-name="displayName"
+      :validation="validation"
       :placeholder="placeholder"
-      inner-class="short"
     />
   </div>
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
+import InputTextFormElement from "@/components/forms/parts/elements/basic/InputTextFormElement.vue";
 
 export default defineComponent({
-  name: "FreeTextFormElement",
-  components: { UploadFormHeader, FormKit },
+  name: "InputTextFormField",
+  components: { InputTextFormElement, UploadFormHeader },
   props: {
     name: {
       type: String,

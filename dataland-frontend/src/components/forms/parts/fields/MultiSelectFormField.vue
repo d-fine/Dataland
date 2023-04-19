@@ -1,36 +1,25 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <MultiSelect
-      v-model="selections"
-      :options="options"
-      :placeholder="placeholder"
-      option-label="label"
-      option-value="value"
-      :show-toggle-all="false"
-      class="short"
-    />
-    <FormKit
-      type="list"
-      :validation-label="displayName!"
-      :validation="validation!"
+    <MultiSelectFormElement
       :name="name"
-      v-model="selections"
-      outer-class="hidden-input"
+      :display-name="displayName"
+      :validation="validation"
+      :placeholder="placeholder"
+      :options="options"
     />
   </div>
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
-import MultiSelect from "primevue/multiselect";
 import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import MultiSelectFormElement from "@/components/forms/parts/elements/basic/MultiSelectFormElement.vue";
 
 export default defineComponent({
-  name: "MultiSelectFormElement",
-  components: { UploadFormHeader, FormKit, MultiSelect },
+  name: "MultiSelectFormField",
+  components: { MultiSelectFormElement, UploadFormHeader },
   data() {
     return {
       selections: [] as string[],

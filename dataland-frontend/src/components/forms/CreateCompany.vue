@@ -214,7 +214,7 @@ import {
   companyDataExplanations,
   gicsSectors,
 } from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
-import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { AxiosError } from "axios";
 import { FormKitNode } from "@formkit/core";
 
