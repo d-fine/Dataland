@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
@@ -73,11 +73,13 @@ describeIf(
       });
     });
 
-    it("Upload EU Taxonomy Dataset via form and assure that it can be viewed on the framework ", () => {
+    it("Upload EU Taxonomy Dataset via form, check that redirect to MyDatasets works and assure that it can be viewed on the framework ", () => {
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
           (storedCompany) => {
-            uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
+            uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId)
+              .url()
+              .should("eq", getBaseUrl() + "/datasets");
             cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveFullTaxonomyData");
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
