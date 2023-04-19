@@ -1,13 +1,16 @@
-package org.dataland.datalandbackend.model.lksg.submodels
+package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the LKSG questionnaire regarding the impact topic "Freedom of association"
+ * Fields of the LKSG questionnaire regarding the impact topic "Disregard for freedom of association"
  */
-data class LksgFreedomOfAssociation(
+data class LksgDisregardForFreedomOfAssociation(
     val freedomOfAssociation: YesNo?,
+
+    val representedEmployees: BigDecimal?,
 
     val discriminationForTradeUnionMembers: YesNo?,
 

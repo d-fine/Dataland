@@ -1,19 +1,22 @@
-package org.dataland.datalandbackend.model.lksg.submodels
+package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 
 /**
  * --- API model ---
- * Fields of the LKSG questionnaire regarding the impact topic "OSH" of the impact area "Social"
+ * Fields of the LKSG questionnaire regarding the impact topic "Disregard for occupational health / safety"
  */
-data class LksgSocialOsh(
-    val oshMonitoring: YesNo?,
+data class LksgDisregardForOccupationalHealthSafety(
+    val lowSkillWork: YesNo?,
+
+    val hazardousMachines: YesNo?,
 
     val oshPolicy: YesNo?,
 
-    val oshPolicyPersonalProtectiveEquipment: YesNo?,
+    val oshPolicyPersonalProtectiveEquipment: YesNoNa?,
 
-    val oshPolicyMachineSafety: YesNo?,
+    val oshPolicyMachineSafety: YesNoNa?,
 
     val oshPolicyDisasterBehaviouralResponse: YesNo?,
 
@@ -21,7 +24,9 @@ data class LksgSocialOsh(
 
     val oshPolicyWorkplaceErgonomics: YesNo?,
 
-    val oshPolicyHandlingChemicalsAndOtherHazardousSubstances: YesNo?,
+    val oshPolicyAccessToWork: YesNo?,
+
+    val oshPolicyHandlingChemicalsAndOtherHazardousSubstances: YesNoNa?,
 
     val oshPolicyFireProtection: YesNo?,
 
@@ -40,4 +45,6 @@ data class LksgSocialOsh(
     val workplaceAccidentsUnder10: YesNo?,
 
     val oshTraining: YesNo?,
+
+    val healthAndSafetyPolicy: YesNo?,
 )

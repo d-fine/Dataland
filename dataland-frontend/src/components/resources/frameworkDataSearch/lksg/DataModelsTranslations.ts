@@ -830,21 +830,21 @@ export const lksgDataModel = [
             name: "dataDate",
             label: "Data Date",
             description: "The date until for which the information collected is valid",
-            component: "YesNoComponent",
+            component: "CalenderComponent",
             dependency: "",
           },
           {
             name: "name",
             label: "Name",
             description: "Give the name (including legal form) of your company",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency: "",
           },
           {
             name: "address",
             label: "Address",
             description: "Enter the address of your company (format: street, house number, zip code, city, country)",
-            component: "YesNoComponent",
+            component: "AddressComponent",
             dependency: "",
           },
           {
@@ -859,7 +859,7 @@ export const lksgDataModel = [
             name: "commercialRegister",
             label: "Commercial Register",
             description: "State your VAT number",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency: "",
           },
           {
@@ -873,14 +873,14 @@ export const lksgDataModel = [
             name: "groupOfCompaniesName",
             label: "Group of Companies Name",
             description: "If yes, which one?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency: "this.companyAssociatedLksgData.data?.general?.masterData?.groupOfCompanies",
           },
           {
             name: "industry",
             label: "Industry",
             description: "In which industry is your company primarily active?",
-            component: "YesNoComponent",
+            component: "TreeComponent",
             dependency: "",
           },
           {
@@ -888,7 +888,7 @@ export const lksgDataModel = [
             label: "Number Of Employees",
             description:
               "What is the total number of employees (including temporary workers with assignment duration >6 months)",
-            component: "YesNoComponent",
+            component: "NumberComponent",
             dependency: "",
           },
           {
@@ -902,34 +902,28 @@ export const lksgDataModel = [
             name: "shareOfTemporaryWorkers",
             label: "Share Of Temporary Workers",
             description: "What is the share of temporary workers vs total number of employees in the company",
-            component: "YesNoComponent",
+            component: "RadioComponents",
             dependency: "",
           },
           {
             name: "totalRevenueCurrency",
             label: "Total Revenue Currency",
             description: "The 3-letter alpha code that represents the currency used for the total revenue",
-            component: "YesNoComponent",
+            component: "SingleSelectDropdownComponent",
             dependency: "",
           },
           {
             name: "totalRevenue",
             label: "Total Revenue",
-            description: "Total revenue p. a",
-            component: "YesNoComponent",
+            description: "Total revenue p. a.",
+            component: "NumberComponent",
             dependency: "",
           },
-        ] as Field[],
-      },
-      {
-        name: "masterDataOwnOperationsOo",
-        label: "Master Data - Own Operations (OO)",
-        fields: [
           {
             name: "fixedAndWorkigCapital",
             label: "Fixed and Workig Capital",
             description: "What is your fixed and working capital? (only for own operations)",
-            component: "YesNoComponent",
+            component: "NumberComponent",
             dependency: "",
           },
         ] as Field[],
@@ -949,7 +943,7 @@ export const lksgDataModel = [
             name: "capacity",
             label: "Capacity",
             description: "If yes, what is your production capacity per year, e.g. units/year?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency: "this.companyAssociatedLksgData.data?.general?.productionspecific?.listOfProductionSites",
           },
           {
@@ -963,7 +957,7 @@ export const lksgDataModel = [
             name: "subcontractingCompaniesCountries",
             label: "Subcontracting Companies Countries",
             description: "In which countries do the subcontracting companies operate?",
-            component: "YesNoComponent",
+            component: "MultiselectDropdownComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.general?.productionspecific?.isInhouseProductionOrIsContractProcessing",
           },
@@ -971,7 +965,7 @@ export const lksgDataModel = [
             name: "subcontractingCompaniesIndustries",
             label: "Subcontracting Companies Industries",
             description: "In which industries do the subcontracting companies operate?",
-            component: "YesNoComponent",
+            component: "TreeComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.general?.productionspecific?.isInhouseProductionOrIsContractProcessing",
           },
@@ -986,14 +980,14 @@ export const lksgDataModel = [
             name: "numberOfProductionSites",
             label: "Number of Production Sites",
             description: "If yes, how many?",
-            component: "YesNoComponent",
+            component: "NumberComponent",
             dependency: "this.companyAssociatedLksgData.data?.general?.productionspecific?.productionSites",
           },
           {
             name: "nameOfProductionSites",
             label: "Name Of Production Sites",
-            description: "If yes, please state the names of the production sites",
-            component: "YesNoComponent",
+            description: "If yes, please state the names of the production sites.",
+            component: "TextComponent",
             dependency: "this.companyAssociatedLksgData.data?.general?.productionspecific?.productionSites",
           },
           {
@@ -1001,21 +995,21 @@ export const lksgDataModel = [
             label: "Addresses Of Production Sites",
             description:
               "If yes, please state the addresses of the production sites. (format: street, house number, zip code, city, country)",
-            component: "YesNoComponent",
+            component: "AddressComponent",
             dependency: "this.companyAssociatedLksgData.data?.general?.productionspecific?.productionSites",
           },
           {
             name: "listOfGoodsOrServices",
             label: "List Of Goods Or Services",
             description: "Which goods/services are manufactured or provided per (production) site?",
-            component: "YesNoComponent",
+            component: "TreeComponent",
             dependency: "this.companyAssociatedLksgData.data?.general?.productionspecific?.productionSites",
           },
           {
             name: "market",
             label: "Market",
             description: "Does your business focus predominantly on national or international markets?",
-            component: "YesNoComponent",
+            component: "RadioComponents",
             dependency: "",
           },
           {
@@ -1037,14 +1031,14 @@ export const lksgDataModel = [
             label: "Most Important Products",
             description:
               "Please give an overview of the most important products or services in terms of sales that your company manufactures and/or distributes or offers (own operations)",
-            component: "YesNoComponent",
+            component: "TreeComponent",
             dependency: "",
           },
           {
             name: "productionSteps",
             label: "Production Steps",
             description: "Please give a brief overview of the production steps/activities undertaken",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency: "",
           },
           {
@@ -1052,35 +1046,35 @@ export const lksgDataModel = [
             label: "Related Corporate Supply Chain",
             description:
               "Please give an overview of the related corporate supply chain(s) and key business relationships (by procurement or order volume) (own operations)",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency: "",
           },
           {
             name: "productCategories",
             label: "Product Categories",
             description: "Name their procurement categories (products, raw materials, services) (own operations)",
-            component: "YesNoComponent",
+            component: "TreeComponent",
             dependency: "",
           },
           {
             name: "definitionProductTypeservice",
             label: "Definition Product Type/Service",
             description: "Define the procured product types/services per category (own operations)",
-            component: "YesNoComponent",
+            component: "TreeComponent",
             dependency: "",
           },
           {
             name: "sourcingCountryPerCategory",
             label: "Sourcing Country per Category",
             description: "Name the sourcing countries per category (own operations)",
-            component: "YesNoComponent",
+            component: "MultiselectDropdownComponent",
             dependency: "",
           },
           {
             name: "numberOfDirectSuppliers",
             label: "Number of direct Suppliers",
             description: "State the number of direct suppliers per procurement category and country (own operations)",
-            component: "YesNoComponent",
+            component: "NumberComponent",
             dependency: "",
           },
           {
@@ -1088,7 +1082,7 @@ export const lksgDataModel = [
             label: "Order Volume per Procurement",
             description:
               "State your order volume per procurement category in the last fiscal year (percentage of total volume) (own operations)",
-            component: "YesNoComponent",
+            component: "NumberComponent",
             dependency: "",
           },
         ] as Field[],
@@ -1124,7 +1118,7 @@ export const lksgDataModel = [
             name: "riskManagementSystemIdentifiedRisks",
             label: "Risk Management System Identified Risks",
             description: "If yes, which risks were specifically identified in the risk analysis?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.general?.riskManagementOwnOperations?.riskManagementSystemRisks",
           },
@@ -1140,7 +1134,7 @@ export const lksgDataModel = [
             name: "riskManagementSystemMeasures",
             label: "Risk Management System Measures",
             description: "If yes, what measures have been applied to counteract the risks?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.general?.riskManagementOwnOperations?.riskManagementSystemCounteract",
           },
@@ -1237,7 +1231,7 @@ export const lksgDataModel = [
             name: "grievanceMechanismComplaintsNumber",
             label: "Grievance Mechanism Complaints Number",
             description: "If yes, how many complaints have been received?",
-            component: "YesNoComponent",
+            component: "NumberComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.general?.grievanceMechanismOwnOperations?.grievanceMechanismComplaints",
           },
@@ -1245,7 +1239,7 @@ export const lksgDataModel = [
             name: "grievanceMechanismComplaintsReason",
             label: "Grievance Mechanism Complaints Reason",
             description: "If yes, what complaints have been received?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.general?.grievanceMechanismOwnOperations?.grievanceMechanismComplaints",
           },
@@ -1261,7 +1255,7 @@ export const lksgDataModel = [
             name: "grievanceMechanismComplaintsActionUndertaken",
             label: "Grievance Mechanism Complaints Action undertaken",
             description: "If yes, what actions have been taken?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.general?.grievanceMechanismOwnOperations?.grievanceMechanismComplaintsAction",
           },
@@ -1296,14 +1290,13 @@ export const lksgDataModel = [
     ],
   },
   {
-    name: "certification",
-    label: "Certification",
+    name: "governance",
+    label: "Governance",
     color: "blue",
     categories: [
       {
-        name: "childLaborForcedLaborSlaveryWithholdingAdequateWagesUnequalTreatmentOfEmploymentDisregardForFreedomOfAssociationDisregardForOccupationalHealthsafety",
-        label:
-          "Child Labor, Forced Labor, Slavery, Withholding adequate wages, Unequal treatment of employment, Disregard for freedom of association, Disregard for occupational health/safety",
+        name: "evidenceCertificatesAndAttestations",
+        label: "Evidence, certificates and attestations",
         fields: [
           {
             name: "sa8000Certification",
@@ -1314,21 +1307,6 @@ export const lksgDataModel = [
             dependency: "",
           },
           {
-            name: "fairLaborAssociationCertification",
-            label: "Fair Labor Association Certification",
-            description:
-              "Is your company Fair Labor Association (FLA) certified? If yes, please share the certificate with us. (Adherence to international and national labor laws)",
-            component: "YesNoComponent",
-            dependency: "",
-          },
-        ] as Field[],
-      },
-      {
-        name: "childLaborForcedLaborSlaveryWithholdingAdequateWagesUnequalTreatmentOfEmploymentDisregardForFreedomOfAssociationDisregardForOccupationalHealthsafetyContaminationOfSoilwaterairNoiseEmissionsExcessiveWaterConsumptionUseOfPrivatepublicSecurityForcesWithDisregardForHumanRights",
-        label:
-          "Child Labor, Forced Labor, Slavery, Withholding adequate wages, Unequal treatment of employment, Disregard for freedom of association, Disregard for occupational health/safety, Contamination of soil/water/air, noise emissions, excessive water consumption, Use of private/public security forces with disregard for human rights",
-        fields: [
-          {
             name: "smetaSocialAuditConcept",
             label: "SMETA Social Audit Concept",
             description:
@@ -1336,17 +1314,26 @@ export const lksgDataModel = [
             component: "YesNoComponent",
             dependency: "",
           },
-        ] as Field[],
-      },
-      {
-        name: "evidenceCertificatesAndAttestations",
-        label: "Evidence, certificates and attestations",
-        fields: [
           {
             name: "betterWorkProgramCertificate",
             label: "Better Work Program Certificate",
             description:
               "Do the production sites where the goods are produced participate in the BetterWork program? If yes, please share the certificate with us. (private label only)",
+            component: "YesNoComponent",
+            dependency: "",
+          },
+          {
+            name: "iso45001Certification",
+            label: "ISO 45001 Certification",
+            description:
+              "Is your company ISO45001 certified? If yes, please share the certificate with us. (Management Systems of Occupational Health and Safety)",
+            component: "YesNoComponent",
+            dependency: "",
+          },
+          {
+            name: "iso14000Certification",
+            label: "ISO 14000 Certification",
+            description: "Is your company ISO14000 certified? If yes, please share the certificate with us.",
             component: "YesNoComponent",
             dependency: "",
           },
@@ -1382,6 +1369,14 @@ export const lksgDataModel = [
             dependency: "",
           },
           {
+            name: "amforiBsciAuditReport",
+            label: "amfori BSCI Audit Report",
+            description:
+              "Does your company have a current amfori BSCI audit report? If yes, please share the certificate with us.",
+            component: "YesNoComponent",
+            dependency: "",
+          },
+          {
             name: "responsibleBusinessAssociationCertification",
             label: "Responsible Business Association Certification",
             description:
@@ -1390,66 +1385,26 @@ export const lksgDataModel = [
             dependency: "",
           },
           {
+            name: "fairLaborAssociationCertification",
+            label: "Fair Labor Association Certification",
+            description:
+              "Is your company Fair Labor Association (FLA) certified? If yes, please share the certificate with us. (Adherence to international and national labor laws)",
+            component: "YesNoComponent",
+            dependency: "",
+          },
+          {
             name: "additionalAudits",
             label: "Additional Audits",
-            description: "Please list other (sector-specific) audits (if available) to which your company is certified",
-            component: "YesNoComponent",
-            dependency: "",
-          },
-        ] as Field[],
-      },
-      {
-        name: "disregardForOccupationalHealthsafety",
-        label: "Disregard for occupational health/safety",
-        fields: [
-          {
-            name: "iso45001Certification",
-            label: "ISO 45001 Certification",
             description:
-              "Is your company ISO45001 certified? If yes, please share the certificate with us. (Management Systems of Occupational Health and Safety)",
-            component: "YesNoComponent",
+              "Please list other (sector-specific) audits (if available) to which your company is certified.",
+            component: "TextComponent",
             dependency: "",
           },
         ] as Field[],
       },
       {
-        name: "contaminationOfSoilwaterairNoiseEmissionsExcessiveWaterConsumption",
-        label: "Contamination of soil/water/air, noise emissions, excessive water consumption",
-        fields: [
-          {
-            name: "iso14000Certification",
-            label: "ISO 14000 Certification",
-            description: "Is your company ISO14000 certified? If yes, please share the certificate with us",
-            component: "YesNoComponent",
-            dependency: "",
-          },
-        ] as Field[],
-      },
-      {
-        name: "childLaborForcedLaborSlaveryWithholdingAdequateWagesUnequalTreatmentOfEmploymentDisregardForFreedomOfAssociationDisregardForOccupationalHealthsafetyContaminationOfSoilwaterairNoiseEmissionsExcessiveWaterConsumption",
-        label:
-          "Child Labor, Forced Labor, Slavery, Withholding adequate wages, Unequal treatment of employment, Disregard for freedom of association, Disregard for occupational health/safety, Contamination of soil/water/air, noise emissions, excessive water consumption",
-        fields: [
-          {
-            name: "amforiBsciAuditReport",
-            label: "amfori BSCI Audit Report",
-            description:
-              "Does your company have a current amfori BSCI audit report? If yes, please share the certificate with us",
-            component: "YesNoComponent",
-            dependency: "",
-          },
-        ] as Field[],
-      },
-    ],
-  },
-  {
-    name: "policy",
-    label: "Policy",
-    color: "blue",
-    categories: [
-      {
-        name: "codeOfConduct",
-        label: "Code Of Conduct",
+        name: "humanRights",
+        label: "Human rights",
         fields: [
           {
             name: "codeOfConduct",
@@ -1465,7 +1420,7 @@ export const lksgDataModel = [
             description:
               "Are your employees regularly made aware of the internal rules of conduct and trained on them?",
             component: "YesNoComponent",
-            dependency: "this.companyAssociatedLksgData.data?.policy?.codeOfConduct?.codeOfConduct",
+            dependency: "this.companyAssociatedLksgData.data?.governance?.humanRights?.codeOfConduct",
           },
           {
             name: "supplierCodeOfConduct",
@@ -1475,12 +1430,6 @@ export const lksgDataModel = [
             component: "YesNoComponent",
             dependency: "",
           },
-        ] as Field[],
-      },
-      {
-        name: "humanRightsStrategy",
-        label: "Human rights strategy",
-        fields: [
           {
             name: "policyStatement",
             label: "Policy Statement",
@@ -1493,15 +1442,9 @@ export const lksgDataModel = [
             label: "Human Rights Strategy",
             description:
               "In which relevant departments/business processes has the anchoring of the human rights strategy been ensured",
-            component: "YesNoComponent",
-            dependency: "this.companyAssociatedLksgData.data?.policy?.humanRightsStrategy?.policyStatement",
+            component: "TextComponent",
+            dependency: "this.companyAssociatedLksgData.data?.governance?.humanRights?.policyStatement",
           },
-        ] as Field[],
-      },
-      {
-        name: "policy",
-        label: "Policy",
-        fields: [
           {
             name: "environmentalImpactPolicy",
             label: "Environmental Impact Policy",
@@ -1510,13 +1453,6 @@ export const lksgDataModel = [
             component: "YesNoComponent",
             dependency: "",
           },
-        ] as Field[],
-      },
-      {
-        name: "childLaborForcedLaborSlaveryWithholdingAdequateWagesUnequalTreatmentOfEmploymentDisregardForFreedomOfAssociationDisregardForOccupationalHealthsafety",
-        label:
-          "Child Labor, Forced Labor, Slavery, Withholding adequate wages, Unequal treatment of employment, Disregard for freedom of association, Disregard for occupational health/safety",
-        fields: [
           {
             name: "fairWorkingConditionsPolicy",
             label: "Fair Working Conditions Policy",
@@ -1525,19 +1461,6 @@ export const lksgDataModel = [
             component: "YesNoComponent",
             dependency: "",
           },
-        ] as Field[],
-      },
-    ],
-  },
-  {
-    name: "responsibilites",
-    label: "Responsibilites",
-    color: "blue",
-    categories: [
-      {
-        name: "responsibilities",
-        label: "Responsibilities",
-        fields: [
           {
             name: "responsibilitiesForFairWorkingConditions",
             label: "Responsibilities For Fair Working Conditions",
@@ -1562,19 +1485,6 @@ export const lksgDataModel = [
             component: "YesNoComponent",
             dependency: "",
           },
-        ] as Field[],
-      },
-    ],
-  },
-  {
-    name: "risksViolations",
-    label: "Risks & violations",
-    color: "blue",
-    categories: [
-      {
-        name: "violation",
-        label: "Violation",
-        fields: [
           {
             name: "legalProceedings",
             label: "Legal Proceedings",
@@ -1595,29 +1505,23 @@ export const lksgDataModel = [
             name: "humanRightsViolationLocation",
             label: "Human Rights Violation Location",
             description: "If yes, what were the violations?",
-            component: "YesNoComponent",
-            dependency: "this.companyAssociatedLksgData.data?.risksViolations?.violation?.humanRightsViolation",
+            component: "TextComponent",
+            dependency: "this.companyAssociatedLksgData.data?.governance?.humanRights?.humanRightsViolation",
           },
           {
             name: "humanRightsViolationAction",
             label: "Human Rights Violation Action",
             description: "If yes, has action been taken to address the violations?",
             component: "YesNoComponent",
-            dependency: "this.companyAssociatedLksgData.data?.risksViolations?.violation?.humanRightsViolation",
+            dependency: "this.companyAssociatedLksgData.data?.governance?.humanRights?.humanRightsViolation",
           },
           {
             name: "humanRightsViolationActionMeasures",
             label: "Human Rights Violation Action Measures",
             description: "If yes, what measures have been taken?",
-            component: "YesNoComponent",
-            dependency: "this.companyAssociatedLksgData.data?.risksViolations?.violation?.humanRightsViolationAction",
+            component: "TextComponent",
+            dependency: "this.companyAssociatedLksgData.data?.governance?.humanRights?.humanRightsViolationAction",
           },
-        ] as Field[],
-      },
-      {
-        name: "risks",
-        label: "Risks",
-        fields: [
           {
             name: "highRiskCountriesRawMaterials",
             label: "High Risk Countries Raw Materials",
@@ -1629,8 +1533,8 @@ export const lksgDataModel = [
             name: "highRiskCountriesRawMaterialsLocation",
             label: "High Risk Countries Raw Materials Location",
             description: "If yes, from which conflict/high-risk regions do you source your raw materials?",
-            component: "YesNoComponent",
-            dependency: "this.companyAssociatedLksgData.data?.risksViolations?.risks?.highRiskCountriesRawMaterials",
+            component: "MultiselectDropdownComponent",
+            dependency: "this.companyAssociatedLksgData.data?.governance?.humanRights?.highRiskCountriesRawMaterials",
           },
           {
             name: "highRiskCountriesAcivitiy",
@@ -1644,8 +1548,8 @@ export const lksgDataModel = [
             name: "highRiskCountries",
             label: "High Risk Countries",
             description: "If yes, which ones?",
-            component: "YesNoComponent",
-            dependency: "this.companyAssociatedLksgData.data?.risksViolations?.risks?.highRiskCountriesAcivitiy",
+            component: "MultiselectDropdownComponent",
+            dependency: "this.companyAssociatedLksgData.data?.governance?.humanRights?.highRiskCountriesAcivitiy",
           },
           {
             name: "highRiskCountriesProcurement",
@@ -1659,8 +1563,8 @@ export const lksgDataModel = [
             name: "highRiskCountriesProcurementName",
             label: "High Risk Countries Procurement Name",
             description: "If yes, which ones?",
-            component: "YesNoComponent",
-            dependency: "this.companyAssociatedLksgData.data?.risksViolations?.risks?.highRiskCountriesProcurement",
+            component: "MultiselectDropdownComponent",
+            dependency: "this.companyAssociatedLksgData.data?.governance?.humanRights?.highRiskCountriesProcurement",
           },
         ] as Field[],
       },
@@ -1710,7 +1614,7 @@ export const lksgDataModel = [
             name: "worstFormsOfChildLaborForms",
             label: "Worst Forms of Child Labor Forms",
             description: "What forms of worst forms of child labor have been identified?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency: "this.companyAssociatedLksgData.data?.social?.childLabor?.worstFormsOfChildLabor",
           },
           {
@@ -1770,7 +1674,7 @@ export const lksgDataModel = [
             label: "Child Labor Measures",
             description:
               "Please list any other measures (if available) you take to prevent the employment of children under the locally applicable minimum age?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.social?.childLabor?.employmentUnderLocalMinimumAgePrevention",
           },
@@ -1799,7 +1703,7 @@ export const lksgDataModel = [
             name: "forcedLaborAndSlaveryPreventionPractices",
             label: "Forced Labor And Slavery Prevention Practices",
             description: "If yes, please specify which of the points do exist?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPrevention",
           },
@@ -1857,7 +1761,7 @@ export const lksgDataModel = [
             name: "forcedLaborAndSlaveryMeasures",
             label: "Forced Labor and Slavery Measures",
             description: "Please list other measures (if available) you take to prevent forced labor and slavery?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures",
           },
@@ -1900,7 +1804,7 @@ export const lksgDataModel = [
             name: "adequateLivingWage",
             label: "Adequate Living Wage",
             description:
-              "Does your company pay employees a reasonable wage? (the appropriate wage is at least the minimum wage set by the applicable law and is otherwise measured according to the law of the place of employment)",
+              "Does your company pay employees a reasonable wage? (the appropriate wage is at least the minimum wage set by the applicable law and is otherwise measured according to the law of the place of employment).",
             component: "YesNoComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.social?.withholdingAdequateWages?.adequatWageBeingWithheld",
@@ -1935,7 +1839,7 @@ export const lksgDataModel = [
             label: "Adequate Wage Measures",
             description:
               "Please list other measures (if available) you take to prevent the withholding adequate wages?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.social?.withholdingAdequateWages?.adequatWageBeingWithheld",
           },
@@ -2111,7 +2015,7 @@ export const lksgDataModel = [
             name: "representedEmployees",
             label: "Represented Employees",
             description: "What is your percentage of employees who are represented by trade unions?",
-            component: "YesNoComponent",
+            component: "NumberComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.social?.disregardForFreedomOfAssociation?.freedomOfAssociation",
           },
@@ -2331,7 +2235,7 @@ export const lksgDataModel = [
             name: "waterSavingMeasuresName",
             label: "Water Saving Measures Name",
             description: "If yes, which ones?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.social?.contaminationOfSoilwaterairNoiseEmissionsExcessiveWaterConsumption?.waterSavingMeasures",
           },
@@ -2357,7 +2261,7 @@ export const lksgDataModel = [
             label: "Contamination Measures",
             description:
               "Please list any other measures (if available) you are taking to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: O significantly affects the natural basis for food preservation and production O denies a person access to safe drinking water O impedes or destroys a person's access to sanitary facilities, or O harms the health of any person",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency: "",
           },
         ] as Field[],
@@ -2378,7 +2282,7 @@ export const lksgDataModel = [
             name: "unlawfulEvictionAndTakingOfLandRisk",
             label: "Unlawful Eviction And Taking Of Land Risk",
             description: "If so, what exactly is the risk?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.social?.unlawfulEvictiondeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLand",
           },
@@ -2394,7 +2298,7 @@ export const lksgDataModel = [
             name: "unlawfulEvictionAndTakingOfLandStrategiesName",
             label: "Unlawful Eviction And Taking Of Land Strategies Name",
             description: "If yes, which ones?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.social?.unlawfulEvictiondeprivationOfLandForestAndWater?.unlawfulEvictionAndTakingOfLandStrategies",
           },
@@ -2468,7 +2372,7 @@ export const lksgDataModel = [
             label: "Use Of Private Public Security Forces Measures",
             description:
               "Please list any other measures (if available) you are taking to prevent the use of private/public security forces in violation of human rights?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.social?.useOfPrivatepublicSecurityForcesWithDisregardForHumanRights?.useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights",
           },
@@ -2562,7 +2466,7 @@ export const lksgDataModel = [
             name: "persistentOrganicPollutantsUsed",
             label: "Persistent Organic Pollutants Used",
             description: "If yes, which organic pollutants are used?",
-            component: "YesNoComponent",
+            component: "TextComponent",
             dependency:
               "this.companyAssociatedLksgData.data?.environmental?.productionAndUseOfPersistentOrganicPollutantsPopsConvention?.persistentOrganicPollutantsProductionAndUse",
           },
