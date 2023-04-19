@@ -9,7 +9,7 @@
       <div v-show="!waitingForData" class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-            v-model="lkSGDataModel"
+            v-model="companyAssociatedLksgData"
             :actions="false"
             type="form"
             id="createLkSGForm"
@@ -17,7 +17,7 @@
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
+            <FormKit type="hidden" name="companyId" :model-value="companyID!" disabled="true" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
@@ -29,6 +29,11 @@
                   </div>
 
                   <div class="col-9 formFields">
+                    <div>
+                      <!-- TODO: PROTOTYPE -->
+                      <h1>TODO: NACE SELECTOR PROTOTYPE</h1>
+                      <NaceSectorSelector v-model="selectedNaceCodes" />
+                    </div>
                     <FormKit type="group" name="general" :label="lksgSubAreasNameMappings._general">
                       <div class="form-field">
                         <UploadFormHeader
@@ -353,281 +358,33 @@
                     </FormKit>
                   </div>
                 </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="childLabour" class="anchor title">{{ lksgSubAreasNameMappings.childLabour }}</h4>
-                    <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-                  </div>
-
-                  <div class="col-9 formFields">
-                    <FormKit v-for="area in lksgSubAreas.childLabour" type="group" name="childLabour" :key="area">
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="forcedLabourSlaveryAndDebtBondage" class="anchor title">
-                      {{ lksgSubAreasNameMappings.forcedLabourSlaveryAndDebtBondage }}
-                    </h4>
-                    <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-                  </div>
-
-                  <div class="col-9 formFields">
-                    <FormKit
-                      v-for="area in lksgSubAreas.forcedLabourSlaveryAndDebtBondage"
-                      type="group"
-                      name="forcedLabourSlaveryAndDebtBondage"
-                      :key="area"
-                    >
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="evidenceCertificatesAndAttestations" class="anchor title">
-                      {{ lksgSubAreasNameMappings.evidenceCertificatesAndAttestations }}
-                    </h4>
-                    <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-                  </div>
-
-                  <div class="col-9 formFields">
-                    <FormKit
-                      v-for="area in lksgSubAreas.evidenceCertificatesAndAttestations"
-                      type="group"
-                      name="evidenceCertificatesAndAttestations"
-                      :key="area"
-                    >
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="grievanceMechanism" class="anchor title">
-                      {{ lksgSubAreasNameMappings.grievanceMechanism }}
-                    </h4>
-                    <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-                  </div>
-
-                  <div class="col-9 formFields">
-                    <FormKit
-                      v-for="area in lksgSubAreas.grievanceMechanism"
-                      type="group"
-                      name="grievanceMechanism"
-                      :key="area"
-                    >
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 p-3 topicLabel">
-                    <h4 id="osh" class="anchor title">{{ lksgSubAreasNameMappings.osh }}</h4>
-                    <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-                  </div>
-
-                  <div class="col-9 formFields">
-                    <FormKit v-for="area in lksgSubAreas.osh" type="group" name="osh" :key="area">
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="freedomOfAssociation" class="anchor title">
-                      {{ lksgSubAreasNameMappings.freedomOfAssociation }}
-                    </h4>
-                    <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-                  </div>
-
-                  <div class="col-9 formFields">
-                    <FormKit
-                      v-for="area in lksgSubAreas.freedomOfAssociation"
-                      type="group"
-                      name="freedomOfAssociation"
-                      :key="area"
-                    >
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="humanRights" class="anchor title">{{ lksgSubAreasNameMappings.humanRights }}</h4>
-                    <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-                  </div>
-
-                  <div class="col-9 formFields">
-                    <FormKit v-for="area in lksgSubAreas.humanRights" type="group" name="humanRights" :key="area">
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
               </FormKit>
 
-              <FormKit type="group" name="governance" label="governance">
-                <div class="uploadFormSection grid">
+              <FormKit
+                type="group"
+                v-for="section in lksgDataModel"
+                :key="section"
+                :label="section.label"
+                :name="section.name"
+              >
+                <div class="uploadFormSection grid" v-for="subsection in section.categories" :key="subsection">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="socialAndEmployeeMatters" class="anchor title">
-                      {{ lksgSubAreasNameMappings.socialAndEmployeeMatters }}
-                    </h4>
-                    <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
+                    <h4 class="anchor title">{{ subsection.label }}</h4>
+                    <div :class="`p-badge badge-${section.color}`">
+                      <span>{{ section.label.toUpperCase() }}</span>
+                    </div>
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit
-                      v-for="area in lksgSubAreas.socialAndEmployeeMatters"
-                      type="group"
-                      name="socialAndEmployeeMatters"
-                      :key="area"
-                    >
+                    <FormKit v-for="field in subsection.fields" :key="field" type="group" :name="subsection.name">
                       <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="environment" class="anchor title">{{ lksgSubAreasNameMappings.environment }}</h4>
-                    <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
-                  </div>
-                  <div class="col-9 formFields">
-                    <FormKit v-for="area in lksgSubAreas.environment" type="group" name="environment" :key="area">
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="osh_governance" class="anchor title">{{ lksgSubAreasNameMappings.osh }}</h4>
-                    <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
-                  </div>
-                  <div class="col-9 formFields">
-                    <FormKit type="group" name="osh">
-                      <YesNoComponent
-                        :displayName="lksgKpisNameMappings['responsibilitiesForOccupationalSafety']"
-                        :info="lksgKpisInfoMappings['responsibilitiesForOccupationalSafety']"
-                        :name="'responsibilitiesForOccupationalSafety'"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="riskManagement" class="anchor title">{{ lksgSubAreasNameMappings.riskManagement }}</h4>
-                    <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
-                  </div>
-                  <div class="col-9 formFields">
-                    <FormKit v-for="area in lksgSubAreas.riskManagement" type="group" name="riskManagement" :key="area">
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 p-3 topicLabel">
-                    <h4 id="codeOfConduct" class="anchor title">{{ lksgSubAreasNameMappings.codeOfConduct }}</h4>
-                    <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
-                  </div>
-                  <div class="col-9 formFields">
-                    <FormKit v-for="area in lksgSubAreas.codeOfConduct" type="group" name="codeOfConduct" :key="area">
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
-                      />
-                    </FormKit>
-                  </div>
-                </div>
-              </FormKit>
-
-              <FormKit type="group" name="environmental" label="environmental">
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="waste" class="anchor title">{{ lksgSubAreasNameMappings.waste }}</h4>
-                    <div class="p-badge badge-green"><span>ENVIRONMENTAL</span></div>
-                  </div>
-
-                  <div class="col-9 formFields">
-                    <FormKit v-for="area in lksgSubAreas.waste" type="group" name="waste" :key="area">
-                      <component
-                        :is="lksgFieldComponentTypes[area]"
-                        :displayName="lksgKpisNameMappings[area]"
-                        :info="lksgKpisInfoMappings[area]"
-                        :name="area"
-                        :displayed="getYesNoValue(lksgFieldDependencies[area])"
+                        v-if="isYes(field.dependency)"
+                        :is="field.component"
+                        :displayName="field.label"
+                        :info="field.description"
+                        :name="field.name"
+                        :placeholder="field.placeholder"
+                        :options="field.options"
                       />
                     </FormKit>
                   </div>
@@ -693,8 +450,8 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
-import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
@@ -703,8 +460,8 @@ import {
   lksgKpisNameMappings,
   lksgSubAreasNameMappings,
   lksgSubAreas,
-  lksgFieldDependencies,
   lksgFieldComponentTypes,
+  lksgDataModel,
 } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
@@ -714,6 +471,13 @@ import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
+import NaceSectorSelector from "@/components/forms/parts/NaceSectorSelector.vue";
+import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
+import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
+import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
+import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
+import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -722,13 +486,30 @@ export default defineComponent({
     };
   },
   name: "CreateLksgDataset",
-  components: { UploadFormHeader, SuccessUpload, FailedUpload, FormKit, Card, PrimeButton, YesNoComponent, Calendar },
+  components: {
+    UploadFormHeader,
+    SuccessUpload,
+    FailedUpload,
+    FormKit,
+    Card,
+    PrimeButton,
+    Calendar,
+    YesNoFormField,
+    InputTextFormField,
+    FreeTextFormField,
+    NumberFormField,
+    DateFormField,
+    SingleSelectFormField,
+    MultiSelectFormField,
+    NaceSectorSelector,
+  },
   directives: {
     tooltip: Tooltip,
   },
 
   data() {
     return {
+      selectedNaceCodes: [], // TODO: PROTOTYPE
       isYourCompanyManufacturingCompany: "No",
       listOfProductionSites: [
         {
@@ -741,7 +522,7 @@ export default defineComponent({
       allCountry: getAllCountryNamesWithCodes(),
       waitingForData: false,
       dataDate: undefined as Date | undefined,
-      lkSGDataModel: {} as CompanyAssociatedDataLksgData,
+      companyAssociatedLksgData: {} as CompanyAssociatedDataLksgData,
       route: useRoute(),
       message: "",
       uploadSucceded: false,
@@ -751,8 +532,8 @@ export default defineComponent({
       lksgKpisNameMappings,
       lksgSubAreasNameMappings,
       lksgSubAreas,
-      lksgFieldDependencies,
       lksgFieldComponentTypes,
+      lksgDataModel,
       elementPosition: 0,
       scrollListener: (): null => null,
       isInHouseProductionOrContractProcessingMap: Object.fromEntries(
@@ -773,25 +554,15 @@ export default defineComponent({
     };
   },
   computed: {
-    yearOfDataDate: {
-      get(): string {
-        return this.dataDate?.getFullYear()?.toString() || "";
-      },
-      set() {
-        // IGNORED
-      },
+    yearOfDataDate(): string {
+      return this.dataDate?.getFullYear()?.toString() || "";
     },
-    convertedDataDate: {
-      get(): string {
-        if (this.dataDate) {
-          return getHyphenatedDate(this.dataDate);
-        } else {
-          return "";
-        }
-      },
-      set() {
-        // IGNORED
-      },
+    convertedDataDate(): string {
+      if (this.dataDate) {
+        return getHyphenatedDate(this.dataDate);
+      } else {
+        return "";
+      }
     },
   },
   props: {
@@ -830,10 +601,22 @@ export default defineComponent({
      * @returns either "Yes" or "No"
      */
     getYesNoValue(variable: string | undefined): string {
-      if (variable == undefined) {
+      if (variable == undefined || variable == "") {
         return "Yes";
       }
       return eval(variable) as string;
+    },
+    /**
+     * Returns the value of a given YesNo variable is Yes
+     *
+     * @param variable the string representation of the YesNo variable to be read out
+     * @returns the boolean result
+     */
+    isYes(variable: string | undefined): boolean {
+      if (variable == undefined || variable == "") {
+        return true;
+      }
+      return eval(variable) === "Yes";
     },
     /**
      * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
@@ -867,7 +650,7 @@ export default defineComponent({
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
       }
-      this.lkSGDataModel = lksgDataset;
+      this.companyAssociatedLksgData = lksgDataset;
       this.waitingForData = false;
     },
     /**
@@ -879,7 +662,7 @@ export default defineComponent({
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
-        await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.lkSGDataModel);
+        await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$formkit.reset("createLkSGForm");
         this.isYourCompanyManufacturingCompany = "No";
         this.listOfProductionSites = [

@@ -93,7 +93,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import InputSwitch from "primevue/inputswitch";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
 
@@ -158,4 +158,6 @@ export default defineComponent({
     },
   },
 });
+
+// TODO since kpiNameMappings.report is "undefined": Aren't such values framework independent and can be stored in a seperate mapping?
 </script>
