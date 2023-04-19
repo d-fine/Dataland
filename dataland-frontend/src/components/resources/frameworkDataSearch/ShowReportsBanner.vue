@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; align-content: start">
+  <div style="display: flex">
     <div class="text-left bg-white mb-4 mr-2 p-3 all-sides-blue-border" data-test="reportsBanner">
       <span class="font-bold text-gray-800 mt-0 mb-0 mp-0 ml-0 mr-1" style="font-size: 11pt">
         Data extracted from the company report. Company reports:
