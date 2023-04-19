@@ -578,7 +578,7 @@
                   </div>
                   <div class="col-9 formFields">
                     <FormKit type="group" name="osh">
-                      <YesNoComponent
+                      <YesNoFormField
                         :displayName="lksgKpisNameMappings['responsibilitiesForOccupationalSafety']"
                         :info="lksgKpisInfoMappings['responsibilitiesForOccupationalSafety']"
                         :name="'responsibilitiesForOccupationalSafety'"
@@ -705,7 +705,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/elements/UploadFormHeader.vue";
-import YesNoComponent from "@/components/forms/parts/elements/YesNoComponent.vue";
+import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
@@ -751,7 +751,7 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
-    YesNoComponent,
+    YesNoFormField,
     FreeTextFormElement,
     NumberFormElement,
     DateFormElement,

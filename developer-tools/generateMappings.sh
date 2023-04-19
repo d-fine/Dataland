@@ -45,7 +45,7 @@ while read -r line; do
   echo "$name_variable: \"$description\"," >> ./$description_mapping
   echo "$name_variable: \"$name\"," >> ./$name_mapping
   echo "$name_variable" >> ./$variable_file
-  echo "$name_variable: \"YesNoComponent\"," >> ./$type_mapping
+  echo "$name_variable: \"YesNoFormField\"," >> ./$type_mapping
   echo "$category_variable","$sub_category_variable","$name_variable" >> ./$hierarchy_file
   echo "$category_variable: \"$category\"," >> ./$category_mapping
   echo "$sub_category_variable: \"$sub_category\"," >> ./$sub_category_mapping

@@ -13,7 +13,7 @@ import { defineComponent } from "vue";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/RadioButtonsFormElement.vue";
 
 export default defineComponent({
-  name: "YesNoComponent",
+  name: "YesNoFormField",
   components: { RadioButtonsFormElement },
   props: {
     name: {
