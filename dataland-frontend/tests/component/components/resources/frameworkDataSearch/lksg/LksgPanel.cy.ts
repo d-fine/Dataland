@@ -3,11 +3,11 @@ import { mount } from "cypress/vue";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
-  DataAndMetaInformationLksgData,
-  LksgData,
   CompanyAssociatedDataLksgData,
+  DataAndMetaInformationLksgData,
   DataMetaInformation,
   DataTypeEnum,
+  LksgData,
   QAStatus,
 } from "@clients/backend";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";

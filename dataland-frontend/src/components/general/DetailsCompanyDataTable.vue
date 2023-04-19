@@ -23,8 +23,8 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import {
-  TypeOfProductionSitesNames,
   TypeOfProductionSitesConvertedNames,
+  TypeOfProductionSitesNames,
 } from "@/components/resources/frameworkDataSearch/DataModelsTypes";
 import { humanizeString } from "@/utils/StringHumanizer";
 
@@ -55,7 +55,13 @@ export default defineComponent({
      */
     generateColsNames(): void {
       if (this.listOfProductionSitesNames.length && Array.isArray(this.listOfProductionSitesNames)) {
-        for (const key of Object.keys(this.listOfProductionSitesNames[0])) {
+        const presentKeys = this.listOfProductionSitesNames.reduce(function (keyList: string[], productionSite) {
+          for (const key of Object.keys(productionSite)) {
+            if (keyList.indexOf(key) === -1) keyList.push(key);
+          }
+          return keyList;
+        }, []);
+        for (const key of presentKeys) {
           this.columns.push({ field: `${key}`, header: `${key}` });
         }
       }
