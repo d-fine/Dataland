@@ -1,11 +1,11 @@
 package org.dataland.datalandbackend.model.lksg.categories.general
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.model.lksg.LksgProductionSite
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgGrievanceMechanismOwnOperations
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgMasterData
-import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgProductionspecific
-import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgProductionspecificOwnOperations
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgRiskManagementOwnOperations
+import java.math.BigDecimal
 
 /**
  * --- API model ---
@@ -14,10 +14,11 @@ import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.
 data class LksgGeneral(
     val masterData: LksgMasterData?,
 
-    @field:JsonProperty(required = true)
-    val productionspecific: LksgProductionspecific,
+    val manufacturingCompany: YesNo?,
 
-    val productionspecificOwnOperations: LksgProductionspecificOwnOperations?,
+    val numberOfProductionSites: BigDecimal?,
+
+    val listOfProductionSites: List<LksgProductionSite>?,
 
     val riskManagementOwnOperations: LksgRiskManagementOwnOperations?,
 
