@@ -149,4 +149,18 @@ export function uploadLksgDataViaForm(): void {
   submitButton.clickButton();
   cy.get("div.p-message-success").should("be.visible");
 }
+
+/**
+ * Scrolls to the top and bottom of the LKSG input form and checks if the sidebar correctly switches from sticky to non-sticky while doing so.
+ */
+export function checkStickynessOfSubmitSideBar(): void {
+  cy.wait(20);
+  cy.scrollTo("bottom");
+  cy.get("[id='submitSideBar']").should("have.css", "position", "fixed").and("have.css", "top", "60px");
+  cy.wait(20);
+  cy.scrollTo("top");
+  cy.get("[id='submitSideBar']").should("have.css", "position", "relative").and("have.css", "top", "0");
+  cy.wait(20);
+}
+
 ///
