@@ -366,7 +366,7 @@
                                 :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
                               />
                             </span>
-                            <KpiFieldSet
+                            <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
@@ -402,7 +402,7 @@
                                 :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
                               />
                             </span>
-                            <KpiFieldSet
+                            <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
@@ -438,7 +438,7 @@
                                 :explanation="euTaxonomyKpiInfoMappings[detailCashFlowType] ?? ''"
                               />
                             </span>
-                            <KpiFieldSet
+                            <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                               :toggleDataAvailable="false"
@@ -486,7 +486,7 @@ import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload from "primevue/fileupload";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
-import KpiFieldSet from "@/components/forms/parts/kpiSelection/KpiFieldSet.vue";
+import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
@@ -520,7 +520,7 @@ export default defineComponent({
     PrimeButton,
     FileUpload,
     YesNoComponent,
-    KpiFieldSet,
+    KPIfieldSet,
     FailedUpload,
     SubmitSideBar,
     Card,

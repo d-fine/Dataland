@@ -415,7 +415,7 @@
                               :name="euTaxonomyKpiNameMappings[kpiType] ?? ''"
                               :explanation="euTaxonomyKpiInfoMappings[kpiType] ?? ''"
                             />
-                            <KpiFieldSet
+                            <KPIfieldSet
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                             />
@@ -440,7 +440,7 @@
                                 :name="euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? ''"
                                 :explanation="euTaxonomyKpiInfoMappings[kpiTypeEligibility] ?? ''"
                               />
-                              <KpiFieldSet
+                              <KPIfieldSet
                                 :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                 :kpiNameMappings="euTaxonomyKpiNameMappings"
                               />
@@ -484,7 +484,7 @@ import { FormKit } from "@formkit/vue";
 import FileUpload from "primevue/fileupload";
 import PrimeButton from "primevue/button";
 import MultiSelect from "primevue/multiselect";
-import KpiFieldSet from "@/components/forms/parts/kpiSelection/KpiFieldSet.vue";
+import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 import YesNoComponent from "@/components/forms/parts/YesNoComponent.vue";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
@@ -535,7 +535,7 @@ export default defineComponent({
     Calendar,
     MultiSelect,
     YesNoComponent,
-    KpiFieldSet,
+    KPIfieldSet,
   },
 
   data() {
