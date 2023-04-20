@@ -2,7 +2,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
+import { checkStickynessOfSubmitSideBar, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
@@ -39,8 +39,10 @@ describeIf(
           cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
           cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
           cy.get("div").contains("New Dataset - LkSG").should("be.visible");
+          cy.get(".p-card-title").contains("Update").should("be.visible");
           submitButton.buttonIsUpdateDataButton();
           submitButton.buttonAppearsEnabled();
+          checkStickynessOfSubmitSideBar();
           submitButton.clickButton();
           cy.get("h4")
             .contains("Upload successfully executed.")

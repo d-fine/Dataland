@@ -1,5 +1,5 @@
 <template>
-  <div id="submitSideBar" ref="submitSideBar" class="col-3 p-3 text-left jumpLinks">
+  <div data-test="submitSideBar" ref="submitSideBar" class="col-3 p-3 text-left jumpLinks">
     <slot></slot>
   </div>
 </template>

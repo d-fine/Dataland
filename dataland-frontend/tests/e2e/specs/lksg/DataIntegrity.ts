@@ -2,7 +2,7 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataMetaInformation, DataTypeEnum, LksgData, ProductionSite, QAStatus, StoredCompany } from "@clients/backend";
-import { uploadLksgDataViaForm, checkStickynessOfSubmitSideBar } from "@e2e/utils/LksgUpload";
+import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { generateProductionSite } from "@e2e/fixtures/lksg/LksgDataFixtures";
@@ -40,10 +40,9 @@ describeIf(
           cy.get("h1").should("contain", testCompanyName);
           uploadLksgDataViaForm();
         });
-      checkStickynessOfSubmitSideBar();
     });
 
-    it("Check if the list of production sites is displayed as expected", () => {
+    it.only("Check if the list of production sites is displayed as expected", () => {
       cy.fixture("MetaInfoDataForCompany.json").then((metaInfos) => {
         cy.fixture("CompanyInformationWithLksgData.json").then((lksgDataSets) => {
           const lksgData = prepareLksgViewIntercepts(

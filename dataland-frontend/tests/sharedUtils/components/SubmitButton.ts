@@ -5,10 +5,16 @@ export const submitButton = {
     cy.get(submitButtonSelector).should("exist");
   },
   buttonAppearsDisabled(): void {
-    cy.get(submitButtonSelector).should("have.class", "button-disabled");
+    cy.get(submitButtonSelector)
+      .should("have.class", "button-disabled")
+      .and("have.class", "m-0")
+      .and("have.class", "col-12");
   },
   buttonAppearsEnabled(): void {
-    cy.get(submitButtonSelector).should("not.have.class", "button-disabled");
+    cy.get(submitButtonSelector)
+      .should("have.class", "col-12")
+      .and("have.class", "m-0")
+      .and("not.have.class", "button-disabled");
   },
   buttonIsAddDataButton(): void {
     cy.get(submitButtonSelector).contains("ADD DATA").should("exist");
