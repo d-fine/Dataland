@@ -57,6 +57,7 @@
                   :editMode="editMode"
                   @selectedFiles="onSelectedFilesHandler"
                   @removeReportFromFilesToUpload="removeReportFromFilesToUpload"
+                  @removeReportFromUploadedReports="removeReportFromUploadedReports"
                   @updateReportDateHandler="updateReportDateHandler"
                 />
 
@@ -585,7 +586,7 @@ export default defineComponent({
     },
 
     /**
-     * Remove report from files uploaded
+     * Removes a report from the list of files to be uploaded
      *
      * @param fileToRemove File To Remove
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
@@ -600,6 +601,16 @@ export default defineComponent({
       this.filesToUpload = this.filesToUpload.filter((el) => {
         return el.name !== fileToRemove.name;
       });
+    },
+
+    /**
+     * Removes a report from the list of already uploaded reports while the user edits a dataset. That way it is no
+     * longer included as referenced report after the edit it submitted.
+     *
+     * @param indexOfFileToRemove Index of the report that shall no longer be referenced by the dataset
+     */
+    removeReportFromUploadedReports(indexOfFileToRemove: number) {
+      this.listOfUploadedReportsInfo.splice(indexOfFileToRemove, 1);
     },
 
     /**
