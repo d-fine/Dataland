@@ -21,7 +21,7 @@
               name="companyId"
               label="Company ID"
               placeholder="Company ID"
-              :model-value="companyID"
+              :modelValue="companyID"
               disabled="true"
             />
             <div class="uploadFormSection grid">
@@ -490,7 +490,7 @@ export default defineComponent({
                   uploadFileSuccessful.data.documentId,
                   this.filesToUpload
                 ),
-              ];
+              ] as ExtendedFile[];
             }
           }
         }

@@ -21,7 +21,7 @@
               name="companyId"
               label="Company ID"
               placeholder="Company ID"
-              :model-value="companyID"
+              :modelValue="companyID"
               disabled="true"
             />
             <div class="uploadFormSection grid">
@@ -184,9 +184,9 @@
                         :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
                       <FormKit
-                        v-model="computedFinancialServicesTypes"
+                        :modelValue="computedFinancialServicesTypes"
                         type="text"
-                        validationLabel="You must choose and confirm"
+                        validationLabel="You must choose and confirm this "
                         validation="required"
                         name="financialServicesTypes"
                         :outer-class="{ 'hidden-input': true }"
@@ -535,7 +535,7 @@ export default defineComponent({
                   uploadFileSuccessful.data.documentId,
                   this.filesToUpload
                 ),
-              ];
+              ] as ExtendedFile[];
             }
           }
         }
