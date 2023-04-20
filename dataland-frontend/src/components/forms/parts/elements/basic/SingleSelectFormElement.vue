@@ -1,36 +1,23 @@
 <template>
-  <Dropdown
-    v-model="selection"
-    :options="options"
-    :placeholder="placeholder"
-    option-label="label"
-    option-value="value"
-    :class="innerClass"
-  />
   <FormKit
-    type="text"
+    type="select"
     :validation-label="displayName!"
     :validation="validation!"
+    :placeholder="placeholder"
     :name="name"
-    v-model="selection"
-    outer-class="hidden-input"
+    :options="options"
+    :inner-class="innerClass"
   />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import Dropdown from "primevue/dropdown";
 import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   name: "SingleSelectFormElement",
-  components: { FormKit, Dropdown },
-  data() {
-    return {
-      selection: undefined as string | undefined,
-    };
-  },
+  components: { FormKit },
   props: {
     name: {
       type: String,
