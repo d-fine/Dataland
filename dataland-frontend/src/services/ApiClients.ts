@@ -2,18 +2,19 @@ import { Configuration } from "@clients/backend/configuration";
 import {
   CompanyDataControllerApi,
   CompanyDataControllerApiInterface,
-  EuTaxonomyDataForNonFinancialsControllerApi,
-  EuTaxonomyDataForNonFinancialsControllerApiInterface,
   EuTaxonomyDataForFinancialsControllerApi,
   EuTaxonomyDataForFinancialsControllerApiInterface,
-  MetaDataControllerApi,
-  MetaDataControllerApiInterface,
+  EuTaxonomyDataForNonFinancialsControllerApi,
+  EuTaxonomyDataForNonFinancialsControllerApiInterface,
+  InviteControllerApi,
   LksgDataControllerApi,
   LksgDataControllerApiInterface,
+  MetaDataControllerApi,
+  MetaDataControllerApiInterface,
   SfdrDataControllerApi,
   SfdrDataControllerApiInterface,
-  InviteControllerApi,
 } from "@clients/backend/api";
+import { DocumentControllerApi } from "@clients/documentmanager";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
@@ -48,6 +49,13 @@ export class ApiClientProvider {
     return new constructor(configuration, "/api-keys");
   }
 
+  async getConstructedDocumentManager<T>(
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T
+  ): Promise<T> {
+    const configuration = await this.getConfiguration();
+    return new constructor(configuration, "/documents");
+  }
+
   async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
     return this.getConstructedApi(CompanyDataControllerApi);
   }
@@ -58,6 +66,10 @@ export class ApiClientProvider {
 
   async getEuTaxonomyDataForFinancialsControllerApi(): Promise<EuTaxonomyDataForFinancialsControllerApiInterface> {
     return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
+  }
+
+  async getDocumentControllerApi(): Promise<DocumentControllerApi> {
+    return this.getConstructedDocumentManager(DocumentControllerApi);
   }
 
   async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {

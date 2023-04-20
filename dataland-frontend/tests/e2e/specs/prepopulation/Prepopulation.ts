@@ -1,12 +1,12 @@
-import { doThingsInChunks, wrapPromiseToCypressPromise, uploader_pw, uploader_name } from "@e2e/utils/Cypress";
+import { doThingsInChunks, uploader_name, uploader_pw, wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
 import {
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
+  DataMetaInformation,
   DataTypeEnum,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForNonFinancials,
   LksgData,
   SfdrData,
   SmeData,
-  DataMetaInformation,
 } from "@clients/backend";
 import { countCompaniesAndDataSetsForDataType } from "@e2e//utils/GeneralApiUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
@@ -17,6 +17,8 @@ import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
 import { describeIf } from "@e2e/support/TestUtility";
+import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
+
 const chunkSize = 15;
 
 describe(
@@ -80,6 +82,12 @@ describe(
           );
         });
     }
+
+    before(function uploadDocumentsAndStoreDocumentIds() {
+      cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        uploadAllDocuments(token);
+      });
+    });
 
     describe("Upload and validate EuTaxonomy for financials data", () => {
       let fixtureDataForEuTaxonomyFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
