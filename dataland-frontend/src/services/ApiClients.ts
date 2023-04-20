@@ -2,21 +2,22 @@ import { Configuration } from "@clients/backend/configuration";
 import {
   CompanyDataControllerApi,
   CompanyDataControllerApiInterface,
-  EuTaxonomyDataForNonFinancialsControllerApi,
-  EuTaxonomyDataForNonFinancialsControllerApiInterface,
   EuTaxonomyDataForFinancialsControllerApi,
   EuTaxonomyDataForFinancialsControllerApiInterface,
-  MetaDataControllerApi,
-  MetaDataControllerApiInterface,
+  EuTaxonomyDataForNonFinancialsControllerApi,
+  EuTaxonomyDataForNonFinancialsControllerApiInterface,
+  InviteControllerApi,
   LksgDataControllerApi,
   LksgDataControllerApiInterface,
+  MetaDataControllerApi,
+  MetaDataControllerApiInterface,
   SfdrDataControllerApi,
   SfdrDataControllerApiInterface,
-  InviteControllerApi,
 } from "@clients/backend/api";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import { DocumentControllerApi, DocumentControllerApiInterface } from "@clients/documentmanager";
+import { DocumentControllerApi } from "@clients/documentmanager";
+
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -40,6 +41,13 @@ export class ApiClientProvider {
   ): Promise<T> {
     const configuration = await this.getConfiguration();
     return new constructor(configuration, basePath);
+  }
+
+  async getConstructedDocumentManager<T>(
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T
+  ): Promise<T> {
+    const configuration = await this.getConfiguration();
+    return new constructor(configuration, "/documents");
   }
 
   async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
@@ -70,8 +78,8 @@ export class ApiClientProvider {
     return this.getConstructedApi(ApiKeyControllerApi, "/api-keys");
   }
 
-  async getDocumentUploadController(): Promise<DocumentControllerApiInterface> {
-    return this.getConstructedApi(DocumentControllerApi, "/documents");
+  async getDocumentControllerApi(): Promise<DocumentControllerApi> {
+    return this.getConstructedDocumentManager(DocumentControllerApi);
   }
 
   async getInviteControllerApi(): Promise<InviteControllerApi> {

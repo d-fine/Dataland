@@ -319,16 +319,15 @@ import {
 } from "@/utils/EuTaxonomyUtils";
 
 import {
-  euTaxonomyPseudoModelAndMappings,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
+  euTaxonomyPseudoModelAndMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
-import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { AssuranceDataAssuranceEnum, CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
-import { AssuranceDataAssuranceEnum } from "@clients/backend";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 
 export default defineComponent({
@@ -472,7 +471,7 @@ export default defineComponent({
 
         const documentUploadControllerControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
-        ).getDocumentUploadController();
+        ).getDocumentControllerApi();
 
         if (this.filesToUpload.length) {
           for (let index = 0; index < this.filesToUpload.length; index++) {

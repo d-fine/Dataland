@@ -322,15 +322,15 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
-  euTaxonomyPseudoModelAndMappings,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
+  euTaxonomyPseudoModelAndMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
 import {
-  CompanyAssociatedDataEuTaxonomyDataForFinancials,
-  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  DataMetaInformation,
   AssuranceDataAssuranceEnum,
+  CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  DataMetaInformation,
+  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
@@ -341,7 +341,8 @@ import {
   completeInformationAboutSelectedFileWithAdditionalFields,
   updatePropertyFilesUploaded,
 } from "@/utils/EuTaxonomyUtils";
-import {calculateSha256HashFromFile} from "@/utils/GenericUtils";
+import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
+import { DocumentExistsResponse } from "@clients/documentmanager";
 
 export default defineComponent({
   setup() {
@@ -409,6 +410,7 @@ export default defineComponent({
       ],
       selectedKPIs: [] as { label: string; value: string }[],
       confirmedSelectedKPIs: [] as { label: string; value: string }[],
+      computedFinancialServicesTypes: [] as string[],
     };
   },
   computed: {
@@ -420,6 +422,8 @@ export default defineComponent({
     reportingPeriodYear(): number {
       return this.reportingPeriod.getFullYear();
     },
+  },
+  watch: {
     computedFinancialServicesTypes(): string[] {
       return this.confirmedSelectedKPIs.map((el: { label: string; value: string }): string => {
         return euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis[
@@ -428,6 +432,7 @@ export default defineComponent({
       });
     },
   },
+
   props: {
     companyID: {
       type: String,
@@ -516,35 +521,44 @@ export default defineComponent({
         let allFileUploadedSuccessful = true;
         const documentUploadControllerControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
-        ).getDocumentUploadController();
+        ).getDocumentControllerApi();
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
 
         if (this.filesToUpload.length) {
           for (let index = 0; index < this.filesToUpload.length; index++) {
-
-              calculateSha256HashFromFile(this.filesToUpload[index])
-                  .then(hash => {
-                      console.log('SHA-256 hash:', hash);
-                  })
-
-
-            const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
-              this.filesToUpload[index]
+            const hash = await calculateSha256HashFromFile(this.filesToUpload[index]);
+            console.log("SHA-256 hash of document:", hash);
+            const documentExists: DocumentExistsResponse = await documentUploadControllerControllerApi.checkDocument(
+              hash
             );
-            if (!uploadFileSuccessful) {
-              allFileUploadedSuccessful = false;
-              break;
-            } else if (uploadFileSuccessful) {
-              this.filesToUpload = [
-                ...this.updatePropertyFilesUploaded(
-                  index,
-                  "documentId",
-                  uploadFileSuccessful.data.documentId,
-                  this.filesToUpload
-                ),
-              ];
+            console.log(typeof documentExists.documentExists);
+            console.log(documentExists.documentExists);
+            if (!documentExists.documentExists) {
+              const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
+                this.filesToUpload[index]
+              );
+              console.log("SHA-256 hash of uploaded document:", uploadFileSuccessful.data.documentId);
+              if (!uploadFileSuccessful) {
+                allFileUploadedSuccessful = false;
+                break;
+              } else if (uploadFileSuccessful) {
+                //this.filesToUpload[index]["documentId"] = hash;
+                this.filesToUpload = [
+                  ...this.updatePropertyFilesUploaded(
+                    index,
+                    "documentId",
+                    uploadFileSuccessful.data.documentId,
+                    this.filesToUpload
+                  ),
+                ];
+              }
+            } else {
+              console.log("SHA-256 hash of already existing document:", hash);
+              // We trick the frontend to think upload was successful to prevent unnecessary api calls,
+              // in the case of the document already existing
+              this.filesToUpload = [...this.updatePropertyFilesUploaded(index, "documentId", hash, this.filesToUpload)];
             }
           }
         }
