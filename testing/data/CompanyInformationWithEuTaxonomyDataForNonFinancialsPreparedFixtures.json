@@ -3,305 +3,338 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Orthmann-Gottschalk",
-				"Sihler-Delonge"
+				"Thöne GmbH & Co. KG",
+				"Uliczka OHG"
 			],
-			"companyLegalForm": "Sole Trader",
-			"headquarters": "Ummingerburg",
-			"sector": "web-readiness",
-			"identifiers": [
-				{
-					"identifierType": "Duns",
-					"identifierValue": "juwylq1zs"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "az5x7zjerpey"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "4hdcvdnsy3tqqlio8r8j"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "gjokwre5k7"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "ekbaurx"
-				}
-			],
-			"countryCode": "TZ",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"referencedReports": {
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-03-22",
-					"currency": "XAU"
-				}
-			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-07-01",
-			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Jungbluth KG"
-			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
-			"opex": {
-				"eligiblePercentage": {
-					"value": 0.9971,
-					"dataSource": {
-						"page": 275,
-						"report": "AnnualReport",
-						"tagName": "blockchains"
-					},
-					"quality": "Audited",
-					"comment": "bypass haptic sensor"
-				}
-			},
-			"capex": {
-				"eligiblePercentage": {
-					"value": 0.6255,
-					"dataSource": {
-						"page": 106,
-						"report": "AnnualReport",
-						"tagName": "portals"
-					},
-					"quality": "Reported",
-					"comment": "input redundant driver"
-				}
-			},
-			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.0872,
-					"dataSource": {
-						"page": 589,
-						"report": "AnnualReport",
-						"tagName": "initiatives"
-					},
-					"quality": "Reported",
-					"comment": "quantify solid state matrix"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"headquarters": "Maybachland",
-			"headquartersPostalCode": "12011",
-			"sector": "portals",
+			"headquarters": "Nord Marvindorf",
+			"headquartersPostalCode": "41443",
+			"sector": "infrastructures",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "ng742rri8fkse34"
+					"identifierValue": "th8i6h9ylhuy6mx"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "xan9ol3yb"
+					"identifierValue": "ddim3tz1n"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "z2uep0o6h6i9"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "q7p21r8plaj415qd69ph"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "ujvjj4lm8y"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "s941oa9"
 				}
 			],
-			"countryCode": "PL",
+			"countryCode": "MK",
 			"isTeaserCompany": false,
-			"website": "http://gefeiert-schach.org"
+			"website": "http://verspielt-go.de"
 		},
 		"t": {
 			"referencedReports": {
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-04-17",
-					"currency": "SGD"
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-04-01",
+					"currency": "KZT"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "JMD"
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-07-04",
+					"currency": "XPD"
 				}
 			},
-			"fiscalYearEnd": "2022-10-15",
+			"fiscalYearEnd": "2022-06-02",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Strutz AG",
-				"dataSource": {
-					"page": 444,
-					"report": "SustainabilityReport",
-					"tagName": "applications"
-				}
+				"assurance": "LimitedAssurance"
 			},
 			"scopeOfEntities": "NA",
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
+			"numberOfEmployees": 24825,
+			"opex": {
+				"eligiblePercentage": {
+					"value": 0.0177,
+					"dataSource": {
+						"page": 266,
+						"report": "IntegratedReport",
+						"tagName": "infrastructures"
+					},
+					"quality": "Incomplete",
+					"comment": "index mobile bus"
+				}
+			},
+			"capex": {
+				"eligiblePercentage": {
+					"value": 0.3068,
+					"dataSource": {
+						"page": 463,
+						"report": "SustainabilityReport",
+						"tagName": "synergies"
+					},
+					"quality": "Incomplete",
+					"comment": "navigate redundant capacitor"
+				}
+			},
+			"revenue": {
+				"eligiblePercentage": {
+					"value": 0.854,
+					"dataSource": {
+						"page": 705,
+						"report": "SustainabilityReport",
+						"tagName": "content"
+					},
+					"quality": "Reported",
+					"comment": "program multi-byte feed"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"companyAlternativeNames": [
+				"Bürger, Diezel und Edorh",
+				"Leyckes-Boyde"
+			],
+			"companyLegalForm": "AG",
+			"headquarters": "Rüdigerburg",
+			"headquartersPostalCode": "20452",
+			"sector": "vortals",
+			"identifiers": [
+				{
+					"identifierType": "Isin",
+					"identifierValue": "nqopx7sl5frc"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "im0ffeo6w1"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "yd6s7e7"
+				}
+			],
+			"countryCode": "CF",
+			"isTeaserCompany": false,
+			"website": "http://ideal-politiker.info"
+		},
+		"t": {
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-09-07",
+					"currency": "DOP"
+				}
+			},
+			"fiscalYearEnd": "2022-06-12",
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Teufel-Umbach",
+				"dataSource": {
+					"page": 460,
+					"report": "IntegratedReport",
+					"tagName": "models"
+				}
+			},
+			"scopeOfEntities": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 514814.84,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.9586,
+					"value": 672968.84,
 					"dataSource": {
-						"page": 563,
-						"report": "SustainabilityReport",
-						"tagName": "platforms"
+						"page": 275,
+						"report": "IntegratedReport",
+						"tagName": "partnerships"
 					},
 					"quality": "Audited",
-					"comment": "transmit neural circuit"
+					"comment": "connect solid state array"
+				},
+				"eligiblePercentage": {
+					"value": 0.407,
+					"dataSource": {
+						"page": 938,
+						"report": "IntegratedReport",
+						"tagName": "experiences"
+					},
+					"quality": "Reported",
+					"comment": "override open-source application"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 544153.21,
-					"quality": "Estimated"
+					"value": 543071.7,
+					"dataSource": {
+						"page": 588,
+						"report": "IntegratedReport",
+						"tagName": "supply-chains"
+					},
+					"quality": "Reported",
+					"comment": "reboot bluetooth matrix"
 				},
 				"eligiblePercentage": {
-					"value": 0.7038,
+					"value": 0.1251,
 					"dataSource": {
-						"page": 952,
+						"page": 777,
 						"report": "IntegratedReport",
-						"tagName": "e-markets"
+						"tagName": "functionalities"
 					},
-					"quality": "Estimated",
-					"comment": "connect cross-platform bandwidth"
+					"quality": "Audited",
+					"comment": "generate 1080p bandwidth"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 139884.09,
+					"value": 701962.36,
 					"dataSource": {
-						"page": 33,
+						"page": 538,
 						"report": "IntegratedReport",
-						"tagName": "architectures"
+						"tagName": "e-business"
 					},
 					"quality": "Audited",
-					"comment": "generate auxiliary feed"
+					"comment": "generate primary transmitter"
 				},
 				"eligiblePercentage": {
-					"value": 0.4326,
+					"value": 0.3752,
 					"dataSource": {
-						"page": 970,
-						"report": "SustainabilityReport",
-						"tagName": "channels"
+						"page": 799,
+						"report": "IntegratedReport",
+						"tagName": "infrastructures"
 					},
-					"quality": "Incomplete",
-					"comment": "connect auxiliary hard drive"
+					"quality": "Reported",
+					"comment": "synthesize bluetooth driver"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
 			"companyAlternativeNames": [
-				"Tietze OHG"
+				"Friedrich, Franzmann und Rodowski",
+				"Klapper-Plotzitzka"
 			],
-			"companyLegalForm": "Sole Trader",
-			"headquarters": "Nabeinland",
-			"headquartersPostalCode": "19310",
-			"sector": "vortals",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"headquarters": "Görlichburg",
+			"headquartersPostalCode": "34111",
+			"sector": "interfaces",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "hw6z1uccez7gq4r"
+					"identifierValue": "k488d2enw71c6td"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ontt9wdc4"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "irubhsplfwp7"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "cmqru7l4h2l2k9wiyqkv"
+					"identifierValue": "iprs2n61o3xcrgdz7f7o"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "q3g76u45uo"
+					"identifierValue": "nxumtre6fz"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "qhmdl0j"
+					"identifierValue": "ijixrlg"
 				}
 			],
-			"countryCode": "MQ",
-			"isTeaserCompany": false,
-			"website": "https://visionär-tee.org"
+			"countryCode": "PY",
+			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
 			"assurance": {
 				"assurance": "None"
 			},
 			"scopeOfEntities": "No",
-			"numberOfEmployees": 88153,
-			"activityLevelReporting": "Yes",
+			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 853613.27,
-					"quality": "Estimated"
+					"value": 50578.99,
+					"dataSource": {
+						"page": 778,
+						"report": "IntegratedReport",
+						"tagName": "convergence"
+					},
+					"quality": "Estimated",
+					"comment": "index 1080p bus"
 				},
 				"alignedPercentage": {
-					"value": 0.5679,
-					"dataSource": {
-						"page": 826,
-						"report": "SustainabilityReport",
-						"tagName": "e-commerce"
-					},
-					"quality": "Audited",
-					"comment": "transmit open-source application"
+					"value": 0.093,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.1201,
-					"quality": "Incomplete"
+					"value": 0.3236,
+					"dataSource": {
+						"page": 430,
+						"report": "ESEFReport",
+						"tagName": "web services"
+					},
+					"quality": "Estimated",
+					"comment": "input solid state hard drive"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 943171.62,
-					"quality": "Incomplete"
+					"value": 971044.9,
+					"dataSource": {
+						"page": 354,
+						"report": "SustainabilityReport",
+						"tagName": "e-services"
+					},
+					"quality": "Audited",
+					"comment": "index bluetooth sensor"
 				},
 				"alignedPercentage": {
-					"value": 0.2186,
+					"value": 0.1093,
 					"dataSource": {
-						"page": 372,
-						"report": "SustainabilityReport",
-						"tagName": "partnerships"
+						"page": 109,
+						"report": "ESEFReport",
+						"tagName": "deliverables"
 					},
 					"quality": "Reported",
-					"comment": "hack virtual protocol"
+					"comment": "quantify back-end transmitter"
 				},
 				"eligiblePercentage": {
-					"value": 0.0943,
+					"value": 0.428,
 					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 128765.46,
-					"dataSource": {
-						"page": 781,
-						"report": "SustainabilityReport",
-						"tagName": "relationships"
-					},
-					"quality": "Audited",
-					"comment": "program redundant application"
+					"value": 519525.58,
+					"quality": "Incomplete"
 				},
 				"alignedPercentage": {
-					"value": 0.8622,
+					"value": 0.7528,
 					"dataSource": {
-						"page": 849,
-						"report": "SustainabilityReport",
-						"tagName": "partnerships"
+						"page": 1054,
+						"report": "AnnualReport",
+						"tagName": "supply-chains"
 					},
-					"quality": "Reported",
-					"comment": "synthesize virtual hard drive"
+					"quality": "Incomplete",
+					"comment": "generate digital program"
 				},
 				"eligiblePercentage": {
-					"value": 0.5156,
-					"quality": "Incomplete"
+					"quality": "NA"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2020"
 	}
 ]

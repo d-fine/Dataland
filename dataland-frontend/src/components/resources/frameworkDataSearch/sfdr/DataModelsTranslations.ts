@@ -266,7 +266,7 @@ export const sfdrKpisInfoMappings = {
   waterStressAreaExposure:
     "Does the company have sites located in areas of high water stress without a water management policy?",
   supplierCodeOfConduct:
-    "Does the company have a Supplier Code Of Conduct? If yes, please provide us with the Supplier Code Of Conduct.",
+    "Does the company have a Supplier Code Of Conduct (against unsafe working conditions, precarious work, child labour and forced labour)?",
   grievanceHandlingMechanism:
     "Has your company implemented a grievance mechanism (e.g., anonymous whistleblowing system) to protect human and environmental rights in your business?",
   totalRevenue:
