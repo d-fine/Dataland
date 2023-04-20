@@ -17,6 +17,7 @@
     :name="name"
     v-model="hyphenatedDate"
     outer-class="hidden-input"
+    :ignore="!isRequired && hyphenatedDate.length == 0"
   />
 </template>
 
@@ -25,6 +26,7 @@ import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import Calendar from "primevue/calendar";
+import { isInputRequired } from "@/utils/validationsUtils";
 
 export default defineComponent({
   name: "DateFormElement",
@@ -42,6 +44,9 @@ export default defineComponent({
       } else {
         return "";
       }
+    },
+    isRequired(): boolean {
+      return isInputRequired(this.validation);
     },
   },
   props: {

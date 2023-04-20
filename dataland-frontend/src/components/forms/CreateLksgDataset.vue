@@ -18,7 +18,7 @@
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID!" disabled="true" />
-            <FormKit type="hidden" name="reportingPeriod" :value="yearOfDataDate" disabled="true" />
+            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
@@ -35,31 +35,14 @@
                       <NaceSectorSelector v-model="selectedNaceCodes" />
                     </div>
                     <FormKit type="group" name="general" :label="lksgSubAreasNameMappings._general">
-                      <div class="form-field">
-                        <UploadFormHeader
-                          :name="lksgKpisNameMappings.dataDate"
-                          :explanation="lksgKpisInfoMappings.dataDate"
-                        />
-                        <div class="lg:col-4 md:col-6 col-12">
-                          <Calendar
-                            data-test="lksgDataDate"
-                            inputId="icon"
-                            v-model="dataDate"
-                            :showIcon="true"
-                            dateFormat="D, M dd, yy"
-                            :maxDate="new Date()"
-                          />
-                        </div>
-
-                        <FormKit
-                          type="text"
-                          :validation-label="lksgKpisNameMappings.dataDate"
-                          validation="required"
-                          name="dataDate"
-                          :value="convertedDataDate"
-                          :outer-class="{ 'hidden-input': true }"
-                        />
-                      </div>
+                      <DateFormField
+                        data-test="lksgDataDate"
+                        name="dataDate"
+                        :display-name="lksgKpisNameMappings.dataDate"
+                        :info="lksgKpisInfoMappings.dataDate"
+                        validation="required"
+                        today-as-max
+                      />
 
                       <div class="form-field" data-test="lksgInScope">
                         <UploadFormHeader
@@ -479,6 +462,7 @@ import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
 import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
+import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -504,6 +488,7 @@ export default defineComponent({
     MultiSelectFormField,
     NaceSectorSelector,
     AddressFormField,
+    RadioButtonsFormField,
   },
   directives: {
     tooltip: Tooltip,

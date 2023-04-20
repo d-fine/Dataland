@@ -115,7 +115,7 @@
               v-model="lei"
               type="text"
               :placeholder="companyDataNames.lei"
-              validation="identifierDoesNotExistValidator:Lei"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Lei}`"
             />
 
             <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
@@ -124,7 +124,7 @@
               v-model="isin"
               type="text"
               :placeholder="companyDataNames.isin"
-              validation="identifierDoesNotExistValidator:Isin"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Isin}`"
             />
 
             <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker" />
@@ -133,7 +133,7 @@
               v-model="ticker"
               type="text"
               :placeholder="companyDataNames.ticker"
-              validation="identifierDoesNotExistValidator:Ticker"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Ticker}`"
             />
 
             <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId" />
@@ -142,7 +142,7 @@
               v-model="permId"
               type="text"
               :placeholder="companyDataNames.permId"
-              validation="identifierDoesNotExistValidator:PermId"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.PermId}`"
             />
 
             <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
@@ -151,7 +151,7 @@
               v-model="duns"
               type="text"
               :placeholder="companyDataNames.duns"
-              validation="identifierDoesNotExistValidator:Duns"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Duns}`"
             />
 
             <UploadFormHeader
@@ -163,7 +163,7 @@
               v-model="companyRegistrationNumber"
               type="text"
               :placeholder="companyDataNames.companyRegistrationNumber"
-              validation="identifierDoesNotExistValidator:CompanyRegistrationNumber"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber}`"
             />
           </FormKit>
 
@@ -262,6 +262,7 @@ export default defineComponent({
     companyDataExplanations,
     companyDataNames,
     gicsSectors,
+    CompanyIdentifierIdentifierTypeEnum,
   }),
   methods: {
     /**

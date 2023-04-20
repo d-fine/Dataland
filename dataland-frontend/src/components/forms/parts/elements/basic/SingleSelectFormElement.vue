@@ -28,7 +28,7 @@ export default defineComponent({
   components: { FormKit, Dropdown },
   data() {
     return {
-      selection: "",
+      selection: undefined as string | undefined,
     };
   },
   props: {

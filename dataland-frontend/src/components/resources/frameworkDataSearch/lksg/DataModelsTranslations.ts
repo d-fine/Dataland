@@ -755,7 +755,7 @@ export const lksgDataModelExperimental = [
             ] as Option[],
           },
           {
-            name: "testField",
+            name: "testField2",
             label: "Jupiter And Jupiter Waste Handling",
             description: "Does your company deal with jupiter and jupiter waste as part of its business model?",
             component: "InputTextFormField",
@@ -773,10 +773,100 @@ export const lksgDataModelExperimental = [
             ] as Option[],
           },
           {
-            name: "testField",
+            name: "testField3",
             label: "Pluto And Pluto Waste Handling",
             description: "Does your company deal with Pluto and Pluto waste as part of its business model?",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
+            validation: "required",
+            placeholder: "Select",
+            options: [
+              {
+                label: "Option 1",
+                value: "option1",
+              },
+              {
+                label: "Option 2",
+                value: "option2",
+              },
+            ] as Option[],
+          },
+          {
+            name: "testField4",
+            label: "Mercury And Mercury Waste Handling",
+            description: "Does your company deal with Mercury and Mercury waste as part of its business model?",
+            component: "DateFormField",
+            validation: "required",
+            placeholder: "Select",
+            options: [
+              {
+                label: "Option 1",
+                value: "option1",
+              },
+              {
+                label: "Option 2",
+                value: "option2",
+              },
+            ] as Option[],
+          },
+          {
+            name: "testField5",
+            label: "Jupiter And Jupiter Waste Handling",
+            description: "Does your company deal with jupiter and jupiter waste as part of its business model?",
+            component: "MultiSelectFormField",
+            validation: "required",
+            placeholder: "Select",
+            options: [
+              {
+                label: "Option 1",
+                value: "option1",
+              },
+              {
+                label: "Option 2",
+                value: "option2",
+              },
+            ] as Option[],
+          },
+          {
+            name: "testField6",
+            label: "Pluto And Pluto Waste Handling",
+            description: "Does your company deal with Pluto and Pluto waste as part of its business model?",
+            component: "SingleSelectFormField",
+            validation: "required",
+            placeholder: "Select",
+            options: [
+              {
+                label: "Option 1",
+                value: "option1",
+              },
+              {
+                label: "Option 2",
+                value: "option2",
+              },
+            ] as Option[],
+          },
+          {
+            name: "testField7",
+            label: "Jupiter And Jupiter Waste Handling",
+            description: "Does your company deal with jupiter and jupiter waste as part of its business model?",
+            component: "RadioButtonsFormField",
+            validation: "required",
+            placeholder: "Select",
+            options: [
+              {
+                label: "Option 1",
+                value: "option1",
+              },
+              {
+                label: "Option 2",
+                value: "option2",
+              },
+            ] as Option[],
+          },
+          {
+            name: "testField8",
+            label: "Pluto And Pluto Waste Handling",
+            description: "Does your company deal with Pluto and Pluto waste as part of its business model?",
+            component: "AddressFormField",
             validation: "required",
             placeholder: "Select",
             options: [
