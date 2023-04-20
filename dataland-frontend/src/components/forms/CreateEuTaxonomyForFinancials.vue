@@ -341,6 +341,7 @@ import {
   completeInformationAboutSelectedFileWithAdditionalFields,
   updatePropertyFilesUploaded,
 } from "@/utils/EuTaxonomyUtils";
+import {calculateSha256HashFromFile} from "@/utils/GenericUtils";
 
 export default defineComponent({
   setup() {
@@ -522,6 +523,13 @@ export default defineComponent({
 
         if (this.filesToUpload.length) {
           for (let index = 0; index < this.filesToUpload.length; index++) {
+
+              calculateSha256HashFromFile(this.filesToUpload[index])
+                  .then(hash => {
+                      console.log('SHA-256 hash:', hash);
+                  })
+
+
             const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
               this.filesToUpload[index]
             );

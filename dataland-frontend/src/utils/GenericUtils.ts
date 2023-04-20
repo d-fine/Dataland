@@ -10,3 +10,20 @@ export function getKeysFromMapAndReturnAsAlphabeticallySortedArray<T>(inputMap: 
     else return 0;
   });
 }
+
+export function calculateSha256HashFromFile(file: File): Promise<string>{
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const buffer = reader.result as ArrayBuffer
+      const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      resolve(hashHex);
+    };
+    reader.onerror = () => {
+      reject(reader.error);
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
