@@ -154,8 +154,8 @@ export const sfdrKpisInfoMappings = {
   rareOrEndangeredEcosystemsExposure:
     "Does the company have sites/operations located in  areas designated for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature, subject to their recognition by the Commission (Commission may also recognise areas for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature), unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes  - where activities of the company negatively affect those areas?",
   inorganicPollutants: "Amount of emissions of Inorganic Pollutants",
-  airPollutants: "Value of Air Pollutants as defined in the RTS:",
-  ozoneDepletionSubstances: "Value of Ozone Depletion Substances as defined in the RTS:",
+  airPollutants: "Amount of emissions of Air Pollutants",
+  ozoneDepletionSubstances: "Amount of emissions of Ozone Depletion Substances",
   carbonReductionInitiatives:
     "Has policies and procedures for a carbon emission reduction initiative aimed at aligning with the Paris Agreement. Has programs to reduce carbon emissions",
   highImpactClimateSectorEnergyConsumptionNaceA: "Total energy consumption per high impact climate sector",
@@ -167,7 +167,7 @@ export const sfdrKpisInfoMappings = {
   highImpactClimateSectorEnergyConsumptionNaceG: "Total energy consumption per high impact climate sector",
   highImpactClimateSectorEnergyConsumptionNaceH: "Total energy consumption per high impact climate sector",
   highImpactClimateSectorEnergyConsumptionNaceL: "Total energy consumption per high impact climate sector",
-  nonRenewableEnergyConsumption: "Energy consumption by non-renewable energy",
+  nonRenewableEnergyConsumption: "Value of energy consumed from non-renewable energy sources",
   nonRenewableEnergyConsumptionCoal: "Energy consumption by non-renewable energy sources such as coal",
   nonRenewableEnergyConsumptionCrudeOil: "Energy consumption by non-renewable energy sources such as crude oil",
   nonRenewableEnergyConsumptionFossilFuels: "Total amount of non-renewable energy consumption",
@@ -179,7 +179,7 @@ export const sfdrKpisInfoMappings = {
     "Energy consumption by non-renewable energy sources from any other available (used) non-renewable source of energy",
   nonRenewableEnergyProduction: "Value of energy produced from non-renewable energy sources",
   renewableEnergyConsumption: "Value of energy consumed from renewable energy sources",
-  renewableEnergyProduction: "Value of energy produced from non-renewable energy sources",
+  renewableEnergyProduction: "Value of energy produced from renewable energy sources",
   totalHighImpactClimateSectorEnergyConsumption: "Total energy consumption per high impact climate sector",
   enterpriseValue:
     "Enterprise value calculated as the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents",
@@ -268,7 +268,7 @@ export const sfdrKpisInfoMappings = {
   supplierCodeOfConduct:
     "Does the company have a Supplier Code Of Conduct (against unsafe working conditions, precarious work, child labour and forced labour)?",
   grievanceHandlingMechanism:
-    "Has your company implemented a grievance mechanism (e.g., anonymous whistleblowing system) to protect human and environmental rights in your business?",
+    "Does the company have a grievance/complaints handling mechanism related to employee matters?",
   totalRevenue:
     "Total Revenue in MM (Millions) for the financial year. i.e., Income arising in the course of an entity's ordinary activities., the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time",
 };
