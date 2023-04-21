@@ -185,7 +185,7 @@
                         :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
                       <FormKit
-                        v-model="computedFinancialServicesTypes"
+                        :model-value="computedFinancialServicesTypes"
                         type="text"
                         validationLabel="You must choose and confirm"
                         validation="required"
@@ -342,7 +342,6 @@ import {
   updatePropertyFilesUploaded,
 } from "@/utils/EuTaxonomyUtils";
 import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
-import { DocumentExistsResponse } from "@clients/documentmanager";
 
 export default defineComponent({
   setup() {
@@ -424,8 +423,8 @@ export default defineComponent({
     },
   },
   watch: {
-    computedFinancialServicesTypes(): string[] {
-      return this.confirmedSelectedKPIs.map((el: { label: string; value: string }): string => {
+    confirmedSelectedKPIs: function (newValue: { label: string; value: string }[]) {
+      this.computedFinancialServicesTypes = newValue.map((el: { label: string; value: string }): string => {
         return euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis[
           el.value as keyof typeof euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis
         ];
@@ -530,12 +529,10 @@ export default defineComponent({
           for (let index = 0; index < this.filesToUpload.length; index++) {
             const hash = await calculateSha256HashFromFile(this.filesToUpload[index]);
             console.log("SHA-256 hash of document:", hash);
-            const documentExists: DocumentExistsResponse = await documentUploadControllerControllerApi.checkDocument(
-              hash
-            );
-            console.log(typeof documentExists.documentExists);
-            console.log(documentExists.documentExists);
-            if (!documentExists.documentExists) {
+            const documentExists = await documentUploadControllerControllerApi.checkDocument(hash);
+            console.log(documentExists);
+            console.log(documentExists.data.documentExists);
+            if (!documentExists.data.documentExists) {
               const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
                 this.filesToUpload[index]
               );
