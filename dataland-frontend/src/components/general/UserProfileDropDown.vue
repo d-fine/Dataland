@@ -43,7 +43,6 @@ export default defineComponent({
     /**
      * Toggles the dropdown menu (shows/hides it) on a mouse click.
      * Used as an event handler by the dropdown-toggle UI element.
-     *
      * @param event the event of the click
      */
     function toggleDropdownMenu(event: Event): void {

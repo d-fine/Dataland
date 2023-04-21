@@ -8,7 +8,6 @@ export interface FixtureData<T> {
 
 /**
  * Generic function to retrieve the first prepared fixture whose company name equals the provided search string
- *
  * @param name Search string to look for in the prepared fixtures
  * @param preparedFixtures The parsed array of prepared fixtures
  * @returns the first prepared fixture whose name equals the provided search string

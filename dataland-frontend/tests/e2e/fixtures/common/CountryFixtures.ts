@@ -2,7 +2,6 @@ import { faker } from "@faker-js/faker";
 
 /**
  * Randomly returns a country from "BE", "DE", "FR", "IT", "LU", "PL", "PT", "ES"
- *
  * @returns the randomly chosen country code
  */
 export function generateIso2CountryCode(): string {
@@ -12,7 +11,6 @@ export function generateIso2CountryCode(): string {
 
 /**
  * Generates an array consisting of 1 to 8 random country codes
- *
  * @returns 1 to 8 random country codes
  */
 export function generateListOfIso2CountryCodes(): string[] {
@@ -21,7 +19,6 @@ export function generateListOfIso2CountryCodes(): string[] {
 
 /**
  * Generates an array consisting of 1 to 8 random country codes or undefined
- *
  * @returns 1 to 8 random country codes or undefined
  */
 export function generateListOfIso2CountryCodesOrUndefined(): string[] | undefined {

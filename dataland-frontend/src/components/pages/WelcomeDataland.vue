@@ -57,7 +57,6 @@ export default defineComponent({
   methods: {
     /**
      * Redirects to the /companies page if the user is logged in. Does nothing otherwise
-     *
      * @returns a promise of the redirect operation (or a resolved promise if no redirect needs to occur)
      */
     async checkAuthenticatedAndRedirectIfLoggedIn(): Promise<NavigationFailure | void | undefined> {

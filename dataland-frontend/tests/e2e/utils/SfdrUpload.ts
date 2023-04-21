@@ -10,7 +10,6 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyU
 
 /**
  * Uploads a single SFDR data entry for a company
- *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
@@ -34,7 +33,6 @@ export async function uploadOneSfdrDataset(
 
 /**
  * Uploads a company and single SFDR data entry for a company
- *
  * @param token The API bearer token to use
  * @param companyInformation The company information to use for the company upload
  * @param testData The Dataset to upload

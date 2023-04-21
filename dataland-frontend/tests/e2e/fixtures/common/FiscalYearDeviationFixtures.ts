@@ -5,7 +5,6 @@ const possibleFiscalYearDeviationUndefinedValues = [undefined, ...Object.values(
 
 /**
  * Generates a random fiscal year deviation or undefined
- *
  * @returns a random fiscal year deviation or undefined
  */
 export function randomFiscalYearDeviationOrUndefined(): FiscalYearDeviation | undefined {

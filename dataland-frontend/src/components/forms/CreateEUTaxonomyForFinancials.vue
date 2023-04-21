@@ -632,7 +632,6 @@ export default defineComponent({
     /**
      * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     *
      * @param dataId the id of the dataset to load
      */
     async loadEuData(dataId: string): Promise<void> {
@@ -707,7 +706,6 @@ export default defineComponent({
 
     /**
      * Modifies the file object and adds it to the store
-     *
      * @param event date in date format
      * @param event.originalEvent event
      * @param event.files files
@@ -733,7 +731,6 @@ export default defineComponent({
 
     /**
      * Deletes the specified kpis section
-     *
      * @param value section name
      */
     removeKpisSection(value: string) {
@@ -746,7 +743,6 @@ export default defineComponent({
 
     /**
      * Updates the date of a single report file
-     *
      * @param index file to update
      */
     updateReportDateHandler(index: number) {
