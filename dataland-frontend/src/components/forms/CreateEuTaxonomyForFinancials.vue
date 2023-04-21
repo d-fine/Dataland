@@ -322,9 +322,9 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
-  euTaxonomyPseudoModelAndMappings,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
+  euTaxonomyPseudoModelAndMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
 import {
   AssuranceDataAssuranceEnum,
@@ -538,7 +538,6 @@ export default defineComponent({
                 this.uploadFileResponse = await documentUploadControllerControllerApi.postDocument(
                   this.filesToUpload[index]
                 );
-                console.log(this.uploadFileResponse);
                 this.filesToUpload[index]["documentId"] = this.uploadFileResponse.data.documentId;
               } else {
                 this.filesToUpload[index]["documentId"] = hash;
@@ -573,6 +572,7 @@ export default defineComponent({
             );
         }
       } catch (error) {
+        this.messageCount++;
         console.error(error);
         if (error instanceof AxiosError) {
           this.message = "An error occurred: " + error.message;
