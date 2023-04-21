@@ -96,7 +96,7 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
     }]`
   ).check();
   cy.get('input[name="scopeOfEntities"][value="No"]').check();
-  cy.get('div[id="jumpLinks"] li:last a').click();
+  cy.get('div[data-test="submitSideBar"] li:last a').click();
   cy.window().then((win) => {
     const scrollPosition = win.scrollY;
     expect(scrollPosition).to.be.greaterThan(0);

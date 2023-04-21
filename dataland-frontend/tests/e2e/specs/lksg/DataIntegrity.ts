@@ -42,7 +42,7 @@ describeIf(
         });
     });
 
-    it.only("Check if the list of production sites is displayed as expected", () => {
+    it("Check if the list of production sites is displayed as expected", () => {
       cy.fixture("MetaInfoDataForCompany.json").then((metaInfos) => {
         cy.fixture("CompanyInformationWithLksgData.json").then((lksgDataSets) => {
           const lksgData = prepareLksgViewIntercepts(

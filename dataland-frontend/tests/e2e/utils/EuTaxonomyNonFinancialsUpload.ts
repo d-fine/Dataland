@@ -40,7 +40,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.get("div.p-datepicker").find('span:contains("11")').click();
   cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "11");
   cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
-  cy.get('div[id="jumpLinks"] li:last a').click();
+  cy.get('div[data-test="submitSideBar"] li:last a').click();
   cy.window().then((win) => {
     const scrollPosition = win.scrollY;
     expect(scrollPosition).to.be.greaterThan(0);
