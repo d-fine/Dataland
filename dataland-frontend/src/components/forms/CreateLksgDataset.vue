@@ -304,7 +304,7 @@
                                   >info</em
                                 >
                                 <PrimeButton
-                                  :disabled="listOfProductionSites[index].listOfGoodsOrServicesString === ''"
+                                  :disabled="listOfProductionSites[index].allGoodsOrServicesAsString === ''"
                                   @click="addNewItemsTolistOfProductionSites(index)"
                                   label="Add"
                                   class="p-button-text"
@@ -315,7 +315,7 @@
                                 data-test="listOfGoodsOrServices"
                                 type="text"
                                 :ignore="true"
-                                v-model="listOfProductionSites[index].listOfGoodsOrServicesString"
+                                v-model="listOfProductionSites[index].allGoodsOrServicesAsString"
                                 placeholder="Add comma (,) for more than one value"
                               />
                               <FormKit
@@ -1145,7 +1145,7 @@ export default defineComponent({
         {
           id: 0,
           listOfGoodsOrServices: [] as string[],
-          listOfGoodsOrServicesString: "",
+          allGoodsOrServicesAsString: "",
         },
       ],
       idCounter: 0,
@@ -1249,7 +1249,7 @@ export default defineComponent({
           this.listOfProductionSites.push({
             id: i,
             listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices || [],
-            listOfGoodsOrServicesString: "",
+            allGoodsOrServicesAsString: "",
           });
         }
       }
@@ -1276,7 +1276,7 @@ export default defineComponent({
           {
             id: 0,
             listOfGoodsOrServices: [],
-            listOfGoodsOrServicesString: "",
+            allGoodsOrServicesAsString: "",
           },
         ];
         this.idCounter = 0;
@@ -1305,7 +1305,7 @@ export default defineComponent({
       this.listOfProductionSites.push({
         id: this.idCounter,
         listOfGoodsOrServices: [],
-        listOfGoodsOrServicesString: "",
+        allGoodsOrServicesAsString: "",
       });
     },
 
@@ -1324,14 +1324,14 @@ export default defineComponent({
      * @param index - index of the element in the listOfProductionSites array
      */
     addNewItemsTolistOfProductionSites(index: number) {
-      const listOfGoodsOrServicesToAdd = this.listOfProductionSites[index].listOfGoodsOrServicesString
+      const listOfGoodsOrServicesToAdd = this.listOfProductionSites[index].allGoodsOrServicesAsString
         .split(";")
         .map((item) => item.trim());
       this.listOfProductionSites[index].listOfGoodsOrServices = [
         ...this.listOfProductionSites[index].listOfGoodsOrServices,
         ...listOfGoodsOrServicesToAdd,
       ];
-      this.listOfProductionSites[index].listOfGoodsOrServicesString = "";
+      this.listOfProductionSites[index].allGoodsOrServicesAsString = "";
     },
 
     /**

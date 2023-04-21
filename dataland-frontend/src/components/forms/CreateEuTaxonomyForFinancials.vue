@@ -591,7 +591,9 @@ export default defineComponent({
      */
     removeReportFromFilesToUpload(fileToRemove: ExtendedFile, fileRemoveCallback: (x: number) => void, index: number) {
       fileRemoveCallback(index);
-      this.filesToUpload.splice(index, 1);
+      this.filesToUpload = this.filesToUpload.filter((el) => {
+        return el.name !== fileToRemove.name;
+      });
     },
 
     /**

@@ -30,7 +30,7 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  */
 export function fillAndValidateEuTaxonomyForFInancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
   cy.get('button[data-test="upload-files-button"]').click();
-  cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
+  cy.get("input[type=file]").selectFile("../testing/data/pdfTest.pdf", { force: true });
   cy.get('div[data-test="uploaded-files"]')
     .should("exist")
     .find('[data-test="uploaded-files-title"]')

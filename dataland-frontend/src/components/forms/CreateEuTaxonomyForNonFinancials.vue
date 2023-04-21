@@ -321,12 +321,11 @@ import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
-import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { CompanyAssociatedDataEuTaxonomyDataForNonFinancials, AssuranceDataAssuranceEnum } from "@clients/backend";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
-import { AssuranceDataAssuranceEnum } from "@clients/backend";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 
 export default defineComponent({
@@ -570,7 +569,9 @@ export default defineComponent({
      */
     removeReportFromFilesToUpload(fileToRemove: ExtendedFile, fileRemoveCallback: (x: number) => void, index: number) {
       fileRemoveCallback(index);
-      this.filesToUpload.splice(index, 1);
+      this.filesToUpload = this.filesToUpload.filter((el) => {
+        return el.name !== fileToRemove.name;
+      });
     },
   },
 });

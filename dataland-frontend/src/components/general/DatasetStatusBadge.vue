@@ -4,7 +4,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 import { DatasetStatus } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -22,7 +22,7 @@ export default defineComponent({
   },
   props: {
     datasetStatus: {
-      type: Object as PropType<DatasetStatus>,
+      type: Number,
       required: true,
     },
   },

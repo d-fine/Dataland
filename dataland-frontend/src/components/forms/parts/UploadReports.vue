@@ -42,7 +42,7 @@
             <PrimeButton
               data-test="uploaded-files-remove"
               icon="pi pi-times"
-              @click="removeReportFromFilesToUpload(removeFileCallback, index)"
+              @click="removeReportFromFilesToUpload(file, removeFileCallback, index)"
               class="p-button-rounded"
             />
           </div>
@@ -206,7 +206,7 @@ import PrimeButton from "primevue/button";
 import FileUpload, { FileUploadEmits } from "primevue/fileupload";
 import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { WhichSetOfFiles } from "@/components/forms/Types";
+import { ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 
 export default defineComponent({
@@ -240,11 +240,12 @@ export default defineComponent({
     /**
      * Function to emit event when files are selected remove report from files to upload
      *
+     * @param fileToRemove File To Remove
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param index Index number of the report
      */
-    removeReportFromFilesToUpload(fileRemoveCallback: (x: number) => void, index: number) {
-      this.$emit("removeReportFromFilesToUpload", fileRemoveCallback, index);
+    removeReportFromFilesToUpload(fileToRemove: ExtendedFile, fileRemoveCallback: (x: number) => void, index: number) {
+      this.$emit("removeReportFromFilesToUpload", fileToRemove, fileRemoveCallback, index);
     },
     /**
      * Function to emit event to update the date of a single report file
