@@ -9,6 +9,7 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
+import { dateFormElement } from "@sharedUtils/components/DateFormElement";
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
@@ -31,26 +32,8 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
-  cy.get('[data-test="reportingPeriodLabel"]').should("contain", "Reporting Period");
-
-  cy.get('button[data-test="upload-files-button"]').click();
-  cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
-  cy.get('div[data-test="uploaded-files"]')
-    .should("exist")
-    .find('[data-test="uploaded-files-title"]')
-    .should("contain", "pdf");
-  cy.get('div[data-test="uploaded-files"]').find('[data-test="uploaded-files-size"]').should("contain", "KB");
-  cy.get('input[name="currency"]').type("www");
-  cy.get('button[data-test="uploaded-files-remove"]').click();
-  cy.get('div[data-test="uploaded-files"]').should("not.exist");
-
-  cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
-  cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
-  cy.get("div.p-datepicker").find('span:contains("12")').click();
-  cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "12");
-  cy.get('input[name="reportDate"]').should("not.exist");
-  cy.get('input[name="reference"]').should("not.exist");
-  cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
+  dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
+  dateFormElement.validateDay("fiscalYearEnd", 12);
 
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
