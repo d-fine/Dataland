@@ -49,6 +49,9 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   });
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
+  cy.get('input[name="reportDate"]').should("not.exist");
+  cy.get('input[name="reference"]').should("not.exist");
+  cy.get('input[name="reference"]').should("not.exist");
   cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
 
   cy.get('input[name="activityLevelReporting"][value="Yes"]').check();
@@ -59,6 +62,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
   cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
 
+  cy.get('[data-test="dataPointToggleTitle"]').should("exist");
   for (const argument of ["capexSection", "opexSection", "revenueSection"]) {
     if (!valueFieldNotFilled) {
       cy.get(`div[data-test=${argument}] input[name="value"]`).each(($element, index) => {

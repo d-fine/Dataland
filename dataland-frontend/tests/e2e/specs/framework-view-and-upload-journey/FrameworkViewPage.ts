@@ -2,16 +2,19 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { DataTypeEnum, EuTaxonomyDataForFinancials, LksgData } from "@clients/backend";
+import {
+  DataTypeEnum,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForNonFinancials,
+  LksgData,
+  SfdrData,
+} from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
-import { generateSfdrData } from "@e2e/fixtures/sfdr/SfdrDataFixtures";
-import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
 
 describe("The shared header of the framework pages should act as expected", { scrollBehavior: false }, () => {
   describeIf(
@@ -68,6 +71,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.wait("@getSearchResults", { timeout: Cypress.env("long_timeout_in_ms") as number });
         const companySelector = "span:contains(VIEW)";
         cy.get(companySelector).first().scrollIntoView();
+        cy.wait(1000);
         cy.get(companySelector).first().click({ force: true });
       }
 
@@ -274,7 +278,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        *
        */
       function uploadCompanyAlphaAndData(): void {
-        const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 2000;
+        const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
         getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyAlpha))
             .then((storedCompany) => {
@@ -309,7 +313,12 @@ describe("The shared header of the framework pages should act as expected", { sc
               });
             })
             .then(() => {
-              return uploadOneSfdrDataset(token, companyIdOfAlpha, "2019", generateSfdrData());
+              return uploadOneSfdrDataset(
+                token,
+                companyIdOfAlpha,
+                "2019",
+                getPreparedFixture("company-with-one-sfdr-data-set", sfdrPreparedFixtures).t
+              );
             })
             .then(() => {
               return uploadOneEuTaxonomyFinancialsDatasetViaApi(
@@ -346,7 +355,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfAlpha,
                 "2015",
-                generateEuTaxonomyDataForNonFinancials()
+                getPreparedFixture("only-eligible-and-total-numbers", euTaxoNonFinancialPreparedFixtures).t
               );
             });
         });
@@ -359,16 +368,21 @@ describe("The shared header of the framework pages should act as expected", { sc
       function uploadCompanyBetaAndData(): void {
         getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
-            .then((storedCompany) => {
+            .then(async (storedCompany) => {
               companyIdOfBeta = storedCompany.companyId;
-              return uploadOneLksgDatasetViaApi(token, companyIdOfBeta, "2015", generateLksgData());
+              return uploadOneLksgDatasetViaApi(
+                token,
+                companyIdOfBeta,
+                "2015",
+                getPreparedFixture("vat-2022", lksgPreparedFixtures).t
+              );
             })
-            .then(() => {
+            .then(async () => {
               return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
                 token,
                 companyIdOfBeta,
                 "2014",
-                generateEuTaxonomyDataForNonFinancials()
+                getPreparedFixture("only-eligible-and-total-numbers", euTaxoNonFinancialPreparedFixtures).t
               );
             });
         });
@@ -407,14 +421,22 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+      let euTaxoNonFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
       let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
+      let sfdrPreparedFixtures: Array<FixtureData<SfdrData>>;
 
       before(() => {
         cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
           euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
         });
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
+          euTaxoNonFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+        });
         cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
           lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+        });
+        cy.fixture("CompanyInformationWithSfdrPreparedFixtures").then(function (jsonContent) {
+          sfdrPreparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
         });
 
         uploadCompanyAlphaAndData();

@@ -7,10 +7,10 @@ import {
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
-  EuTaxonomyDataForFinancials,
-  EligibilityKpis,
   DataPointBigDecimal,
   DataTypeEnum,
+  EligibilityKpis,
+  EuTaxonomyDataForFinancials,
 } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";

@@ -2,22 +2,22 @@ import { Configuration } from "@clients/backend/configuration";
 import {
   CompanyDataControllerApi,
   CompanyDataControllerApiInterface,
-  EuTaxonomyDataForFinancialsControllerApi,
-  EuTaxonomyDataForFinancialsControllerApiInterface,
   EuTaxonomyDataForNonFinancialsControllerApi,
   EuTaxonomyDataForNonFinancialsControllerApiInterface,
-  InviteControllerApi,
-  LksgDataControllerApi,
-  LksgDataControllerApiInterface,
+  EuTaxonomyDataForFinancialsControllerApi,
+  EuTaxonomyDataForFinancialsControllerApiInterface,
   MetaDataControllerApi,
   MetaDataControllerApiInterface,
+  LksgDataControllerApi,
+  LksgDataControllerApiInterface,
   SfdrDataControllerApi,
   SfdrDataControllerApiInterface,
+  InviteControllerApi,
 } from "@clients/backend/api";
+import { DocumentControllerApi } from "@clients/documentmanager";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import { DocumentControllerApi } from "@clients/documentmanager";
-
+import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -28,7 +28,7 @@ export class ApiClientProvider {
   async getConfiguration(): Promise<Configuration | undefined> {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
-      await keycloak.updateToken(5);
+      updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
       return new Configuration({ accessToken: keycloak.token });
     } else {
       return undefined;

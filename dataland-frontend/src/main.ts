@@ -12,7 +12,8 @@ import { plugin, defaultConfig } from "@formkit/vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
 import DialogService from "primevue/dialogservice";
-import { createPinia } from "pinia";
+import { createPinia, PiniaPlugin } from "pinia";
+import { PiniaSharedState } from "pinia-shared-state";
 
 /**
  * The main entrypoint of the dataland frontend initiating the vue app
@@ -20,6 +21,14 @@ import { createPinia } from "pinia";
 function instantiateVueApp(): void {
   const app = createApp(App);
   const pinia = createPinia();
+  pinia.use(
+    // TODO
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    PiniaSharedState({
+      enable: false,
+      type: "native",
+    }) as PiniaPlugin
+  );
   app.use(plugin, defaultConfig);
   app.use(DialogService);
   app.use(router);

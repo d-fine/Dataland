@@ -1,11 +1,11 @@
 import {
-  EuTaxonomyDataForFinancials,
-  EligibilityKpis,
-  DataPointBigDecimal,
-  EuTaxonomyDataForFinancialsControllerApi,
   Configuration,
   DataMetaInformation,
+  DataPointBigDecimal,
   DataTypeEnum,
+  EligibilityKpis,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForFinancialsControllerApi,
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
@@ -31,6 +31,8 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
+  cy.get('[data-test="reportingPeriodLabel"]').should("contain", "Reporting Period");
+
   cy.get('button[data-test="upload-files-button"]').click();
   cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
   cy.get('div[data-test="uploaded-files"]')
@@ -186,6 +188,7 @@ function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecima
     }
   }
 }
+
 /**
  * Extracts the first eutaxonomy-financials dataset from the fake fixtures
  *

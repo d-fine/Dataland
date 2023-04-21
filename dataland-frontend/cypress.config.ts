@@ -1,5 +1,6 @@
 import {defineConfig} from "cypress";
-import {rmdir} from "fs";
+import {promises, rmdir} from "fs";
+import {createHash} from "crypto";
 
 let returnEmail: string;
 let returnPassword: string;
@@ -102,6 +103,25 @@ export default defineConfig({
                     });
                 },
             });
+
+            on('task', {
+                async readdir(path: string) {
+                    return await promises.readdir(path);
+                },
+            });
+
+            on('task', {
+                async readFile(path: string): Promise<Buffer> {
+                    return await promises.readFile(path);
+                },
+            });
+
+            on('task', {
+                calculateHash(file: Buffer): string {
+                    return createHash("sha256").update(file).digest("hex");
+                },
+            });
+
             return config
         },
         supportFile: "tests/e2e/support/index.ts",

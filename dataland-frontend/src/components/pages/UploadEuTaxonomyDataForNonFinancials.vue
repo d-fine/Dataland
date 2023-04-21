@@ -5,7 +5,7 @@
       <TheContent>
         <BackButton id="backButton" />
         <CompanyInformation :companyID="companyID" />
-        <CreateEuTaxonomyForNonFinancials :companyID="companyID" />
+        <CreateEuTaxonomyForNonFinancials :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
       </TheContent>
     </UploaderRoleWrapper>
     <DatalandFooter />
@@ -21,8 +21,10 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import DatalandFooter from "@/components/general/DatalandFooter.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";
+import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "UploadEutaxonomyDataForNonFinancials",
   components: {
     UploaderRoleWrapper,
@@ -39,5 +41,10 @@ export default {
       type: String,
     },
   },
-};
+  data() {
+    return {
+      redirectToMyDatasets,
+    };
+  },
+});
 </script>
