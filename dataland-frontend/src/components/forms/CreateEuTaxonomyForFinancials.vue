@@ -185,7 +185,7 @@
                         :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
                       <FormKit
-                        v-model="computedFinancialServicesTypes"
+                        :modelValue="computedFinancialServicesTypes"
                         type="text"
                         validationLabel="You must choose and confirm"
                         validation="required"
@@ -410,7 +410,6 @@ export default defineComponent({
       ],
       selectedKPIs: [] as { label: string; value: string }[],
       confirmedSelectedKPIs: [] as { label: string; value: string }[],
-      computedFinancialServicesTypes: [] as string[],
     };
   },
   computed: {
@@ -422,8 +421,6 @@ export default defineComponent({
     reportingPeriodYear(): number {
       return this.reportingPeriod.getFullYear();
     },
-  },
-  watch: {
     computedFinancialServicesTypes(): string[] {
       return this.confirmedSelectedKPIs.map((el: { label: string; value: string }): string => {
         return euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis[
@@ -436,6 +433,7 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
+      required: true,
     },
   },
   mounted() {
