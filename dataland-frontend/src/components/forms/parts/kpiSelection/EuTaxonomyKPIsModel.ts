@@ -118,34 +118,33 @@ export const euTaxonomyKpiInfoMappings = {
   financialServicesTypes:
     "Defines the type of financial company. Credit Institution (1), Insurance/Reinsurance (2), Asset Manager (3), Investment Firm (4)",
 
+  fiscalYearDeviation: "Does the fiscal year deviate from the calender year?",
   fiscalYear: "Fiscal Year (Deviation/ No Deviation)",
-  fiscalYearEnd: "The date the fiscal year ends",
+  fiscalYearEnd: "The date at which the fiscal year ends",
 
   annualReport: "Link to Annual Report",
-  groupLevelAnnualReport: "Is Annual Report on a Group level?",
-  annualReportDate: "The date for which the information presented in the report is valid through",
+  groupLevelAnnualReport: "Is the Annual Report on a Group level?",
+  annualReportDate: "The date until which the information presented in the report is valid",
   annualReportCurrency: "The 3-letter alpha code that represents the currency used in the report",
 
-  activityLevelReporting: "Activity Level disclosure",
-  fiscalYearDeviation: "Is fiscal year deviating from calender year?",
+  activityLevelReporting: "Does the company report on the EU Taxonomy",
   numberOfEmployees: "Total number of employees (including temporary workers)",
-  scopeOfEntities:
-    "Does a list of legal entities covered by Sust./Annual/Integrated/ESEF report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
+  scopeOfEntities: "Are all Group legal entities covered in the report",
   currency: "The 3-letter alpha code that represents the currency used in the report",
 
   sustainabilityReport: "Link to Sustainability Report",
-  groupLevelSustainabilityReport: "Is Sustainability Report on a Group level?",
-  sustainabilityReportDate: "The date for which the information presented in the report is valid through",
+  groupLevelSustainabilityReport: "Is the Sustainability Report on a Group level?",
+  sustainabilityReportDate: "The date until which the information presented in the report is valid",
   sustainabilityReportCurrency: "The 3-letter alpha code that represents the currency used in the report",
   integratedReport: "Link to Integrated Report",
-  groupLevelIntegratedReport: "Is Integrated Report on a Group level?",
-  integratedReportDate: "The date for which the information presented in the report is valid through",
+  groupLevelIntegratedReport: "Is the Integrated Report on a Group level?",
+  integratedReportDate: "The date until which the information presented in the report is valid",
   integratedReportCurrency: "The 3-letter alpha code that represents the currency used in the report",
   esefReport: "Link to ESEF Report",
-  groupLevelEsefReport: "Is ESEF Report on a Group level?",
-  esefReportDate: "The date for which the information presented in the report is valid through",
+  groupLevelEsefReport: "Is the ESEF Report on a Group level?",
+  esefReportDate: "The date until which the information presented in the report is valid",
   esefReportCurrency: "The 3-letter alpha code that represents the currency used in the report",
-  nfrdMandatory: "The reporting obligation for companies whose number of employees is greater or equal to 500",
+  nfrdMandatory: "Does the company fall under NFRD?",
 
   quality: "The level of confidence associated to the value",
   page: "The page number of the document from where the information was sourced",
@@ -156,7 +155,7 @@ export const euTaxonomyKpiInfoMappings = {
   assurance: "Level of Assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
   provider: "Name of the Audit company which provides assurance to EU Taxonomy data points",
   AssurancePage:
-    "The page number from where the text which proof that EU Taxonomy disclosures included in Assurance statement was sourced",
+    "The page number of the text proving that the EU Taxonomy disclosures are included in Assurance statement",
   AssuranceReport: "Link to Assurance Report",
   eligibleRevenue:
     "Percentage of the revenue where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria)",
