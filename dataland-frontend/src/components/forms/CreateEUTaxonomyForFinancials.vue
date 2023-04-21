@@ -22,7 +22,7 @@
             />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
-                <h4 id="uploadReports" class="anchor title">Reporting Period</h4>
+                <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
@@ -80,7 +80,7 @@
                         >
                           <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
                           <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
-                            {{ formatSize(file.size) }}
+                            {{ formatBytesUserFriendly(Number(file.size), 3) }}
                           </div>
                           <PrimeButton
                             icon="pi pi-times"
@@ -359,7 +359,7 @@
                       </ul>
 
                       <PrimeButton
-                        @click="confirmeSelectedKPIs"
+                        @click="confirmSelectedKPIs"
                         data-test="addKpisButton"
                         :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
@@ -376,18 +376,18 @@
                 </div>
 
                 <div
-                  v-for="copanyType of confirmedSelectedKPIs"
-                  :key="copanyType"
-                  :data-test="copanyType.value"
+                  v-for="companyType of confirmedSelectedKPIs"
+                  :key="companyType"
+                  :data-test="companyType.value"
                   class="uploadFormSection"
                 >
                   <div class="flex w-full">
                     <div class="p-3 topicLabel">
-                      <h3 :id="copanyType.value" class="anchor title">{{ copanyType.label }}</h3>
+                      <h3 :id="companyType.value" class="anchor title">{{ companyType.label }}</h3>
                     </div>
 
                     <PrimeButton
-                      @click="removeKpisSection(copanyType.value)"
+                      @click="removeKpisSection(companyType.value)"
                       label="REMOVE THIS SECTION"
                       data-test="removeSectionButton"
                       class="p-button-text ml-auto"
@@ -395,9 +395,9 @@
                     ></PrimeButton>
                   </div>
 
-                  <FormKit v-if="copanyType.value !== 'assetManagementKpis'" :name="copanyType.value" type="group">
+                  <FormKit v-if="companyType.value !== 'assetManagementKpis'" :name="companyType.value" type="group">
                     <div
-                      v-for="kpiType of euTaxonomyKPIsModel[copanyType.value]"
+                      v-for="kpiType of euTaxonomyKPIsModel[companyType.value]"
                       :key="kpiType"
                       :data-test="kpiType"
                       class="uploadFormSection"
@@ -405,11 +405,8 @@
                       <div class="col-9 formFields">
                         <FormKit :name="kpiType" type="group">
                           <div class="form-field">
-                            <UploadFormHeader
-                              :name="euTaxonomyKpiNameMappings[kpiType] ?? ''"
-                              :explanation="euTaxonomyKpiInfoMappings[kpiType] ?? ''"
-                            />
-                            <KPIfieldSet
+                            <DataPointForm
+                              :name="kpiType"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
                             />
@@ -420,7 +417,7 @@
                   </FormKit>
 
                   <FormKit name="eligibilityKpis" type="group">
-                    <FormKit :name="euTaxonomyKPIsModel?.companyTypeToEligibilityKpis[copanyType.value]" type="group">
+                    <FormKit :name="euTaxonomyKPIsModel?.companyTypeToEligibilityKpis[companyType.value]" type="group">
                       <div
                         v-for="kpiTypeEligibility of euTaxonomyKPIsModel.eligibilityKpis"
                         :key="kpiTypeEligibility"
@@ -430,11 +427,8 @@
                         <div class="col-9 formFields">
                           <FormKit :name="kpiTypeEligibility" type="group">
                             <div class="form-field">
-                              <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings[kpiTypeEligibility] ?? ''"
-                              />
-                              <KPIfieldSet
+                              <DataPointForm
+                                :name="kpiTypeEligibility"
                                 :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                 :kpiNameMappings="euTaxonomyKpiNameMappings"
                               />
@@ -487,7 +481,7 @@ import { FormKit } from "@formkit/vue";
 import FileUpload from "primevue/fileupload";
 import PrimeButton from "primevue/button";
 import MultiSelect from "primevue/multiselect";
-import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
+import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -503,19 +497,20 @@ import { useFilesUploadedStore } from "@/stores/filesUploaded";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import { getHyphenatedDate, formatSize } from "@/utils/DataFormatUtils";
+import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
-  euTaxonomyKPIsModel,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/euTaxonomyKPIsModel";
+  euTaxonomyKPIsModel,
+} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
-  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   DataMetaInformation,
+  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
   setup() {
@@ -535,9 +530,9 @@ export default defineComponent({
     Calendar,
     MultiSelect,
     YesNoFormField,
-    KPIfieldSet,
+    DataPointForm,
   },
-
+  emits: ["datasetCreated"],
   data() {
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
@@ -558,7 +553,7 @@ export default defineComponent({
       scrollListener: (): null => null,
       smoothScroll,
       checkCustomInputs,
-      formatSize,
+      formatBytesUserFriendly,
       route: useRoute(),
       waitingForData: false,
 
@@ -665,7 +660,7 @@ export default defineComponent({
             ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
           );
         });
-        this.confirmeSelectedKPIs();
+        this.confirmSelectedKPIs();
       }
       const receivedFormInputsModel = modifyObjectKeys(
         JSON.parse(JSON.stringify(dataResponseData)) as objectType,
@@ -696,6 +691,7 @@ export default defineComponent({
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
             formInputsModelToSend
           );
+        this.$emit("datasetCreated");
         this.$formkit.reset("createEuTaxonomyForFinancialsForm");
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
@@ -730,7 +726,7 @@ export default defineComponent({
      * Confirms the list of kpis to be generated
      *
      */
-    confirmeSelectedKPIs() {
+    confirmSelectedKPIs() {
       this.confirmedSelectedKPIs = this.selectedKPIs;
       this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedKPIs))];
     },

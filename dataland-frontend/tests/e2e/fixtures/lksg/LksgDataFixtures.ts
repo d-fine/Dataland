@@ -86,10 +86,10 @@ export function generateArrayOfProductionSites(): LksgProductionSite[] {
  *
  * @returns random list of goods or services
  */
-export function generateListOfGoodsOrServices(): string {
+export function generateListOfGoodsOrServices(): string[] {
   return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
     return faker.commerce.productName();
-  }).join(", ");
+  });
 }
 
 /**
