@@ -75,7 +75,7 @@
           :validation="dataPointIsAvailable ? 'required' : ''"
           validation-label="Data quality"
           placeholder="Data quality"
-          :options="dataQualityList"
+          :options="QualityOptions"
         />
       </div>
     </div>
@@ -94,6 +94,7 @@ import { defineComponent } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
+import { QualityOptions } from "@clients/backend";
 
 export default defineComponent({
   name: "KPIfieldSet",
@@ -101,7 +102,7 @@ export default defineComponent({
   emits: ["dataPointAvailableToggle"],
   data: () => ({
     dataPointIsAvailable: true,
-    dataQualityList: ["NA", "Audited", "Reported", "Estimated", "Incomplete"],
+    QualityOptions,
     currentMainValue: "",
     currentReportValue: "",
     currentQualityValue: "",
@@ -145,7 +146,7 @@ export default defineComponent({
       default: true,
     },
     valueType: {
-      type: String,
+      type: String as () => "percent" | "number",
       default: "percent",
     },
     reportsName: {

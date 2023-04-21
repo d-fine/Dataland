@@ -28,13 +28,13 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  *
  * @param data the data to fill the form with
  */
-export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
+export function fillAndValidateEuTaxonomyForFInancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
   cy.get('button[data-test="upload-files-button"]').click();
   cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
   cy.get('div[data-test="uploaded-files"]')
     .should("exist")
     .find('[data-test="uploaded-files-title"]')
-    .should("contain", "pdf");
+    .should("contain", "pdfTest");
   cy.get('div[data-test="uploaded-files"]').find('[data-test="uploaded-files-size"]').should("contain", "KB");
   cy.get('input[name="currency"]').type("www");
   cy.get('button[data-test="uploaded-files-remove"]').click();
@@ -157,10 +157,10 @@ function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined):
  */
 function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
   if (value !== undefined && value.value !== undefined) {
-    const eligibleRevenue = value.value.toString();
+    const valueAsString = value.value.toString();
     if (divTag === "") {
-      cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(eligibleRevenue);
-      cy.get(`[data-test="${inputsTag}"]`).find('input[name="page"]').type(eligibleRevenue);
+      cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(valueAsString);
+      cy.get(`[data-test="${inputsTag}"]`).find('input[name="page"]').type("13");
       cy.get(`[data-test="${inputsTag}"]`).find('select[name="report"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`).find('select[name="quality"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`)
@@ -170,7 +170,7 @@ function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecima
       cy.get(`[data-test="${divTag}"]`)
         .find(`[data-test="${inputsTag}"]`)
         .find('input[name="value"]')
-        .type(eligibleRevenue);
+        .type(valueAsString);
       cy.get(`[data-test="${divTag}"]`)
         .find(`[data-test="${inputsTag}"]`)
         .find('input[name="page"]')

@@ -97,14 +97,20 @@ import { defineComponent } from "vue";
 import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import { FormKit } from "@formkit/vue";
 import Calendar from "primevue/calendar";
+import {
+  euTaxonomyKpiInfoMappings,
+  euTaxonomyKpiNameMappings,
+} from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
 
 export default defineComponent({
   name: "BasicInformationFields",
   components: { UploadFormHeader, Calendar, FormKit, RadioButtonsGroup },
   emits: ["updateFiscalYearEndHandler"],
+  data: () => ({
+    euTaxonomyKpiInfoMappings,
+    euTaxonomyKpiNameMappings,
+  }),
   props: {
-    euTaxonomyKpiNameMappings: {},
-    euTaxonomyKpiInfoMappings: {},
     fiscalYearEndAsDate: {
       type: Date,
     },

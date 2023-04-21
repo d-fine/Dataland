@@ -24,7 +24,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
 
   cy.get('button[data-test="upload-files-button"]').click();
   cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
-  cy.get('div[data-test="uploaded-files"]').find('[data-test="uploaded-files-title"]').should("contain", "pdf");
+  cy.get('div[data-test="uploaded-files"]').find('[data-test="uploaded-files-title"]').should("contain", "pdfTest");
   cy.get('div[data-test="uploaded-files"]').find('[data-test="uploaded-files-size"]').should("contain", "KB");
   cy.get('button[data-test="uploaded-files-remove"]').click();
   cy.get('div[data-test="uploaded-files"]').should("not.exist");
@@ -34,7 +34,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.get('div[data-test="uploaded-files"]')
     .should("exist")
     .find('[data-test="uploaded-files-title"]')
-    .should("contain", "pdf");
+    .should("contain", "pdfTest");
   cy.get('input[name="currency"]').type("qqq");
 
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();

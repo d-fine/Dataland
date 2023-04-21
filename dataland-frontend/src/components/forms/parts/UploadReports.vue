@@ -42,7 +42,7 @@
             <PrimeButton
               data-test="uploaded-files-remove"
               icon="pi pi-times"
-              @click="removeReportFromFilesToUpload(file, removeFileCallback, index)"
+              @click="removeReportFromFilesToUpload(removeFileCallback, index)"
               class="p-button-rounded"
             />
           </div>
@@ -240,16 +240,11 @@ export default defineComponent({
     /**
      * Function to emit event when files are selected remove report from files to upload
      *
-     * @param fileToRemove File To Remove
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param index Index number of the report
      */
-    removeReportFromFilesToUpload(
-      fileToRemove: Record<string, string>,
-      fileRemoveCallback: (x: number) => void,
-      index: number
-    ) {
-      this.$emit("removeReportFromFilesToUpload", fileToRemove, fileRemoveCallback, index);
+    removeReportFromFilesToUpload(fileRemoveCallback: (x: number) => void, index: number) {
+      this.$emit("removeReportFromFilesToUpload", fileRemoveCallback, index);
     },
     /**
      * Function to emit event to update the date of a single report file

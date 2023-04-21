@@ -61,8 +61,6 @@
                 />
 
                 <BasicInformationFields
-                  :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
-                  :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
                   :fiscalYearEndAsDate="fiscalYearEndAsDate"
                   :fiscalYearEnd="fiscalYearEnd"
                   @updateFiscalYearEndHandler="updateFiscalYearEndHandler"
@@ -122,7 +120,7 @@
                                 type="select"
                                 name="report"
                                 placeholder="Select a report"
-                                validation-label="Select a report"
+                                validation-label="Selecting a report"
                                 validation="required"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
                               />
@@ -186,7 +184,7 @@
                       <FormKit
                         :modelValue="computedFinancialServicesTypes"
                         type="text"
-                        validationLabel="You must choose and confirm this "
+                        validationLabel="Choosing a Financials Services Type and adding KPIs for it "
                         validation="required"
                         name="financialServicesTypes"
                         :outer-class="{ 'hidden-input': true }"
@@ -521,18 +519,18 @@ export default defineComponent({
 
         if (this.filesToUpload.length) {
           for (let index = 0; index < this.filesToUpload.length; index++) {
-            const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
+            const documentUploadeResponse = await documentUploadControllerControllerApi.postDocument(
               this.filesToUpload[index]
             );
-            if (!uploadFileSuccessful) {
+            if (!documentUploadeResponse) {
               allFileUploadedSuccessful = false;
               break;
-            } else if (uploadFileSuccessful) {
+            } else if (documentUploadeResponse?.status === 200) {
               this.filesToUpload = [
                 ...this.updatePropertyFilesUploaded(
                   index,
                   "documentId",
-                  uploadFileSuccessful.data.documentId,
+                  documentUploadeResponse.data.documentId,
                   this.filesToUpload
                 ),
               ] as ExtendedFile[];
@@ -591,15 +589,9 @@ export default defineComponent({
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param index Index number of the report
      */
-    removeReportFromFilesToUpload(
-      fileToRemove: Record<string, string>,
-      fileRemoveCallback: (x: number) => void,
-      index: number
-    ) {
+    removeReportFromFilesToUpload(fileToRemove: ExtendedFile, fileRemoveCallback: (x: number) => void, index: number) {
       fileRemoveCallback(index);
-      this.filesToUpload = this.filesToUpload.filter((el) => {
-        return el.name !== fileToRemove.name;
-      });
+      this.filesToUpload.splice(index, 1);
     },
 
     /**

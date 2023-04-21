@@ -1,7 +1,7 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import {
-  fillEuTaxonomyForFinancialsUploadForm,
+  fillAndValidateEuTaxonomyForFInancialsUploadForm,
   submitEuTaxonomyFinancialsUploadForm,
   uploadOneEuTaxonomyFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
@@ -54,7 +54,7 @@ describeIf(
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
             );
-            fillEuTaxonomyForFinancialsUploadForm(testData);
+            fillAndValidateEuTaxonomyForFInancialsUploadForm(testData);
             submitEuTaxonomyFinancialsUploadForm();
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`

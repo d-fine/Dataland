@@ -1324,10 +1324,12 @@ export default defineComponent({
      * @param index - index of the element in the listOfProductionSites array
      */
     addNewItemsTolistOfProductionSites(index: number) {
-      const items = this.listOfProductionSites[index].listOfGoodsOrServicesString.split(";").map((item) => item.trim());
+      const listOfGoodsOrServicesToAdd = this.listOfProductionSites[index].listOfGoodsOrServicesString
+        .split(";")
+        .map((item) => item.trim());
       this.listOfProductionSites[index].listOfGoodsOrServices = [
         ...this.listOfProductionSites[index].listOfGoodsOrServices,
-        ...items,
+        ...listOfGoodsOrServicesToAdd,
       ];
       this.listOfProductionSites[index].listOfGoodsOrServicesString = "";
     },
