@@ -1,5 +1,6 @@
 /**
  * Utility function to ensure that a given input is not null or undefined
+ *
  * @param input to be checked
  * @returns the input but checked that it is neither null nor undefined
  */

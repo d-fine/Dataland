@@ -91,6 +91,7 @@ export default defineComponent({
   methods: {
     /**
      * Navigates to the view framework data page on a click on the row of the company
+     *
      * @param event the row click event
      * @param event.data the company the user clicked on
      * @returns the promise of the router push action
@@ -100,6 +101,7 @@ export default defineComponent({
     },
     /**
      * A wrapper around th getRouterLinkTargetFramework function so it can be used in the vue template
+     *
      * @param companyData the company to get the link for
      * @returns a link to the view framework data page for the company
      */
@@ -116,6 +118,7 @@ export default defineComponent({
     /**
      * Called when the id of the first row is updated (i.e. when the user navigates to the next page)
      * Scrolls back to the top and propagates the event
+     *
      * @param event the new number of the first row
      */
     firstUpdated(event: never) {

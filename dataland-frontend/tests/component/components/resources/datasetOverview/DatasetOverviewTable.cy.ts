@@ -15,6 +15,7 @@ describe("Component test for DatasetOverviewTable", () => {
 
   /**
    * Creates a DatasetTableInfo-object based on the inputs
+   *
    * @param companyName The company name that the DatasetTableInfo-object shall have
    * @param dataType The datatype that the DatasetTableInfo-object shall have
    * @returns the created DatasetTableInfo-object
@@ -33,6 +34,7 @@ describe("Component test for DatasetOverviewTable", () => {
 
   /**
    * Mounts the DatasetOverviewTable with all dataset table entries passed to it
+   *
    * @param mockDatasetTableInfos The DatasetTableInfo-objects that shall be used to write some entries into the table
    */
   function prepareSimpleDatasetOverviewTable(mockDatasetTableInfos: DatasetTableInfo[]): void {

@@ -1,6 +1,7 @@
 export type objectType = { [key: string]: string | object };
 /**
  * Updates keys from one object to another
+ *
  * @param baseObject object to be updated
  * @param objectWithNewData object to be updated
  */
@@ -21,6 +22,7 @@ export function updateObject(baseObject: objectType, objectWithNewData: objectTy
 
 /**
  * Changes the value of a variable by dividing it by 100
+ *
  * @param obj object in which it is looking for the value to change
  * @param typeOfModification determines how we change object values
  * @returns Object modified

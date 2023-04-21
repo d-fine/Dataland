@@ -4,6 +4,7 @@
 
 /**
  * round a number with a defined precision
+ *
  * @param  {number} rawNumber is the number that needs to be rounded
  * @param  {number} precision is the number that defines how many digits should be considered after the decimal point
  * @returns rawNumber rounded to precision digits
@@ -15,6 +16,7 @@ export function roundNumber(rawNumber: number, precision: number): number {
 
 /**
  * convert the number of bytes for a file to a human-readable text
+ *
  * @param  {number} numberOfBytes is the number of bytes
  * @param  {number} precision is the number that defines how many digits should be considered after the decimal point
  * @returns a human-readable string of the number of bytes

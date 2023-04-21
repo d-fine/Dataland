@@ -64,6 +64,7 @@ export default defineComponent({
   methods: {
     /**
      * Executed, whenever the search bar input is focused. Opens the Tree Overlay.
+     *
      * @param event the onclick event
      */
     inputFocused(event: Event) {
@@ -71,6 +72,7 @@ export default defineComponent({
     },
     /**
      * Marks a treeNode as selected given its key
+     *
      * @param key the key of the node
      */
     selectNode(key: string) {
@@ -81,6 +83,7 @@ export default defineComponent({
     /**
      * Deselects a treeNode when it has been previously selected.
      * When the given node is not selected, nothing happens.
+     *
      * @param key the key of the node
      */
     unselectNode(key: string) {
@@ -93,6 +96,7 @@ export default defineComponent({
     },
     /**
      * Checks if the node identified by the provided key is selected or not
+     *
      * @param key the key of the node to check
      * @returns true iff the given node is selected, false otherwise
      */
@@ -103,6 +107,7 @@ export default defineComponent({
     },
     /**
      * Recursively expands the given nodes and all its children
+     *
      * @param node the node to expand
      * @param dict the dict to store the keys of the expanded nodes to
      */

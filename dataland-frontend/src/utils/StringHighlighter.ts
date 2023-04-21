@@ -8,6 +8,7 @@ export interface StringSplitSearchMatch {
  * Segments matching the searchString are marked as highlighted.
  * (i.e. using input "this is a test" with searchString "a" will return the split "this is " + "a" + " test"
  * with the segment "a" being marked as highlighted
+ *
  * @param rawText the text to split
  * @param searchString the search string to split by
  * @returns a list of segments that make up rawText.

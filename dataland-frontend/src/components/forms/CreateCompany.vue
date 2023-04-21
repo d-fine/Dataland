@@ -267,6 +267,7 @@ export default defineComponent({
   methods: {
     /**
      * Validates if there is already a company with an identifier of value of a FormKit input field
+     *
      * @param node the node corresponding the FormKit input field
      * @param identifierType the type of the identifier to check
      * @returns true if and only if there is no company with the in the node specified identifier of the specified type
@@ -288,6 +289,7 @@ export default defineComponent({
     },
     /**
      * Adds a CompanyIdentifier to the array of identifiers
+     *
      * @param identifierType the type of the identifier as specified in CompanyIdentifierIdentifierTypeEnum
      * @param identifierValue the value of the identifier
      */
@@ -327,6 +329,7 @@ export default defineComponent({
     },
     /**
      * Removes the n-th company alternative name from the corresponding array
+     *
      * @param index specifies the n-th alternative name to be removed
      */
     removeAlternativeName(index: number): void {
@@ -334,6 +337,7 @@ export default defineComponent({
     },
     /**
      * Builds a CompanyInformation object using the currently entered inputs and returns it
+     *
      * @returns the CompanyInformation object build
      */
     getCompanyInformation(): CompanyInformation {

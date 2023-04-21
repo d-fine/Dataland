@@ -20,6 +20,7 @@ export function logout(): void {
 
 /**
  * Logs in via the keycloak login form with the provided credentials. Verifies that the login worked.
+ *
  * @param username the username to use (defaults to data_reader)
  * @param password the password to use (defaults to the password of data_reader)
  * @param otpGenerator an optional function for obtaining a TOTP code if 2FA is enabled
@@ -58,6 +59,7 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
 /**
  * Performs a login if required to ensure that the user is logged in with the credentials.
  * Sessions are cached for enhanced performance
+ *
  * @param username the username to use (defaults to data_reader)
  * @param password the password to use (defaults to the password of data_reader)
  */
@@ -93,6 +95,7 @@ export function ensureLoggedIn(username?: string, password?: string): void {
 
 /**
  * Obtains a fresh JWT token from keycloak by using a password grant. The result is wrapped in a cypress chainable
+ *
  * @param username the username to use (defaults to data_reader)
  * @param password the password to use (defaults to the password of data_reader)
  * @param client_id the keycloak client id to use (defaults to dataland-public)

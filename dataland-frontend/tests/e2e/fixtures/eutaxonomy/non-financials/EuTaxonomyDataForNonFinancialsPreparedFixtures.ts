@@ -11,6 +11,7 @@ type generatorFunction = (
 
 /**
  * Generates prepared fixtures for the eutaxonomy-non-financials framework
+ *
  * @returns the generated prepared fixtures
  */
 export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
@@ -34,6 +35,7 @@ export function generateEuTaxonomyForNonFinancialsPreparedFixtures(): Array<
 
 /**
  * Creates a prepared fixture that only has eligible entries (no alignedPercentage/totalAmount)
+ *
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
@@ -61,6 +63,7 @@ function createOnlyEglibileNumbers(
 
 /**
  * Creates a prepared fixture that only has eligible and total KPI entries (no alignedPercentage)
+ *
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
@@ -88,6 +91,7 @@ function createOnlyEligibleAndTotalNumbers(
 
 /**
  * Creates a prepared fixture that has no referenced reports
+ *
  * @param input the base fixture to modify
  * @returns the modified fixture
  */

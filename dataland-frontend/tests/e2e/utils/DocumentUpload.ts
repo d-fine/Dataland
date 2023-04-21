@@ -3,6 +3,7 @@ import { DocumentControllerApi } from "@clients/documentmanager";
 
 /**
  * Uploads all documents provided in the documentDirectory folder
+ *
  * @param token the keycloak token for authentication
  */
 export function uploadAllDocuments(token: string): void {
@@ -18,6 +19,7 @@ export function uploadAllDocuments(token: string): void {
 
 /**
  * Uses the Dataland API to upload a document
+ *
  * @param token the bearer token used to authorize the API requests
  * @param buffer the pdf document as an arrayBuffer to be uploaded as File
  * @param name the file name

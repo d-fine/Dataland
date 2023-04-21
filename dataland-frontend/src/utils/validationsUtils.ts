@@ -2,6 +2,7 @@ import { FormKitNode } from "@formkit/core";
 
 /**
  * Checks which inputs are not filled correctly
+ *
  * @param node - single form field
  */
 export function checkCustomInputs(node: FormKitNode): void {
@@ -23,6 +24,7 @@ export function checkCustomInputs(node: FormKitNode): void {
 
 /**
  * Checks if for a given validation the corresponding formkit field requires some input
+ *
  * @param validation the formkit validation string
  * @returns true if the validation string contains required else false
  */

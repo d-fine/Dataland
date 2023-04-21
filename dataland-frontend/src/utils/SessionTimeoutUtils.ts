@@ -13,6 +13,7 @@ const minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_
 
 /**
  * Updates the token, parses its expiry timestamp, and stores both of these values in the shared pina store.
+ *
  * @param keycloak is the keycloak adaptor used to actually update the token
  * @param forceStoringValues forces storing the refresh token and its expiry timestamp in the shared storage, even if
  * the updateToken() has not done an update itself because of the minValidity value
@@ -37,6 +38,7 @@ export function updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak: Keycloak,
 /**
  * Starts a setInterval-method which - in fixed time intervals - checks if the session warning timestamp was surpassed.
  * If it is surpassed, the provided callback function will be executed.
+ *
  * @param keycloak is the keycloak adaptor used to do a logout in case the session warning timestamp cannot be retrieved
  * @param onSurpassingExpiredSessionTimestampCallback is the callback function which will be executed as soon as the
  * session warning timestamp is surpassed
@@ -64,6 +66,7 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
 /**
  * Checks if the expiry timestamp for the refresh token, which is stored in the shared pinia store, has already
  * been reached in the moment of the function execution.
+ *
  * @returns a boolean to express if the timestamp has already been reached or not
  */
 export function isRefreshTokenExpiryTimestampInSharedStoreReached(): boolean {
@@ -85,6 +88,7 @@ export function isRefreshTokenExpiryTimestampInSharedStoreReached(): boolean {
  * Tries to refresh a session. If the refresh token expiry timestamp in the shared store has been reached during the
  * execution of this method, it logs out the user out to finally close the session.
  * Else it refreshes the session by updating the token.
+ *
  * @param keycloak is the keycloak adaptor used to do the required actions (logout or token update)
  */
 export function tryToRefreshSession(keycloak: Keycloak): void {

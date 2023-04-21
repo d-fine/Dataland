@@ -9,6 +9,7 @@ export type DataEnvironment = "fakeFixtures" | "realData";
 
 /**
  * This higher-level function can be used to control in which environments a given test suite is executed
+ *
  * @param name the name of the test suite
  * @param execConfig controls in which environments the test suite is executed
  * @param fn the test suite

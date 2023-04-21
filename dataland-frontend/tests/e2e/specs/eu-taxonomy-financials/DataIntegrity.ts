@@ -39,6 +39,7 @@ describeIf(
      * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
      * via the form in the frontend, and then visits the view page where that dataset is displayed
      * and
+     *
      * @param companyInformation Company information to be used for the company upload
      * @param testData EU Taxonomy dataset for financial companies to be uploaded
      */
@@ -66,6 +67,7 @@ describeIf(
     /**
      * Uploads the provided company and dataset to Dataland via the API and navigates to the page of the uploaded
      * dataset
+     *
      * @param companyInformation the company information to upload
      * @param testData the dataset to upload
      * @param reportingPeriod the period associated to the EU Taxonomy data for Financials to upload
@@ -96,6 +98,7 @@ describeIf(
     /**
      * Formats a datapoint as a percentage value rounded to a precision of 0.01%.
      * Returns "No data has been reported" if the datapoint contains no value
+     *
      * @param value the value of the datapoint to format as a percentage
      * @returns the formatted string
      */
@@ -107,6 +110,7 @@ describeIf(
 
     /**
      * Verifies that the frontend correctly displays eligibilityKPIs for a specific company type
+     *
      * @param financialCompanyType the company type to check
      * @param eligibilityKpis the dataset used as the source of truth
      */
@@ -130,6 +134,7 @@ describeIf(
 
     /**
      * Verifies that the frontend correctly displays the insurance firm KPIs
+     *
      * @param testData the dataset used as the source of truth
      */
     function checkInsuranceValues(testData: EuTaxonomyDataForFinancials): void {
@@ -141,6 +146,7 @@ describeIf(
 
     /**
      * Verifies that the frontend correctly displays the investment firm KPIs
+     *
      * @param testData the dataset used as the source of truth
      */
     function checkInvestmentFirmValues(testData: EuTaxonomyDataForFinancials): void {
@@ -152,6 +158,7 @@ describeIf(
 
     /**
      * Verifies that the frontend correctly displays the credit institution KPIs
+     *
      * @param testData he dataset used as the source of truth
      * @param individualFieldSubmission whether individual field submission is expected
      * @param dualFieldSubmission whether dual field submission is expected

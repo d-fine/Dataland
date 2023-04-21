@@ -76,6 +76,7 @@ describeIf(
 
     /**
      * Sets the stubs for the API requests on the LkSG view page
+     *
      * @param lksgDataFixture a fixture with company information and test LkSG data
      * @param dataMetaInfo a set of meta data to be adapted
      * @returns the LkSG data used for the data stub
