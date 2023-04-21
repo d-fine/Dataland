@@ -21,7 +21,7 @@
               name="companyId"
               label="Company ID"
               placeholder="Company ID"
-              :model-value="companyID"
+              :modelValue="companyID"
               disabled="true"
             />
             <div class="uploadFormSection grid">
@@ -185,9 +185,9 @@
                         :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
                       <FormKit
-                        v-model="computedFinancialServicesTypes"
+                        :modelValue="computedFinancialServicesTypes"
                         type="text"
-                        validationLabel="You must choose and confirm"
+                        validationLabel="You must choose and confirm this "
                         validation="required"
                         name="financialServicesTypes"
                         :outer-class="{ 'hidden-input': true }"
@@ -322,9 +322,9 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
+  euTaxonomyPseudoModelAndMappings,
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-  euTaxonomyPseudoModelAndMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
 import {
   AssuranceDataAssuranceEnum,
@@ -539,12 +539,12 @@ export default defineComponent({
               const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
                 this.filesToUpload[index]
               );
-              console.log("SHA-256 hash of uploaded document:", uploadFileSuccessful.data.documentId);
+              console.log("SHA-256 hash of uploaded document:", uploadFileSuccessful.data.documentId); // TODO console logs at the end drop!
               if (!uploadFileSuccessful) {
                 allFileUploadedSuccessful = false;
                 break;
               } else if (uploadFileSuccessful) {
-                //this.filesToUpload[index]["documentId"] = hash;
+                //this.filesToUpload[index]["documentId"] = hash; TODO
                 this.filesToUpload = [
                   ...this.updatePropertyFilesUploaded(
                     index,
@@ -552,7 +552,7 @@ export default defineComponent({
                     uploadFileSuccessful.data.documentId,
                     this.filesToUpload
                   ),
-                ];
+                ] as ExtendedFile[];
               }
             } else {
               console.log("SHA-256 hash of already existing document:", hash);

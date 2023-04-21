@@ -17,7 +17,7 @@
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
+            <FormKit type="hidden" name="companyId" :modelValue="companyID" disabled="true" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
             <FormKit type="group" name="data" label="data">
               <FormKit type="group" name="social" label="social">
