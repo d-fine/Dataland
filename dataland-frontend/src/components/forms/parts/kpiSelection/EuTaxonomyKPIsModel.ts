@@ -107,7 +107,7 @@ export const euTaxonomyKpiInfoMappings = {
   tradingPortfolioAndInterbankLoans:
     "For Credit Institutions, the trading portfolio and the on demand interbank loans as a percentage of total assets",
   interbankLoans: "For Credit Institutions, the on demand interbank loans as a percentage of total assets",
-  reportDate: "The date the report was published",
+  reportDate: "The date until which the information presented in the report is valid",
   reportingPeriod: "The reporting period the dataset belongs to (e.g. a fiscal year)",
   reportingObligation: "The reporting obligation for companies whose number of employees is greater or equal to 500",
   totalAmount: "Total Amount",
