@@ -8,6 +8,7 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
+import {uploadReports} from "@sharedUtils/components/UploadReports";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
@@ -22,20 +23,16 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
 ): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
 
-  cy.get('button[data-test="upload-files-button"]').click();
-  cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
-  cy.get('div[data-test="uploaded-files"]').find('[data-test="uploaded-files-title"]').should("contain", "pdf");
-  cy.get('div[data-test="uploaded-files"]').find('[data-test="uploaded-files-size"]').should("contain", "KB");
-  cy.get('button[data-test="uploaded-files-remove"]').click();
-  cy.get('div[data-test="uploaded-files"]').should("not.exist");
+  const filename = "pdfTest.pdf";
+  uploadReports.uploadFile(filename)
+  uploadReports.validateSingleFileInUploadedList(filename, "KB")
+  uploadReports.validateSingleFileInfo()
+  uploadReports.removeSingleUploadedFileFromUploadedList()
+  uploadReports.checkNoReportIsListed()
 
-  cy.get('button[data-test="upload-files-button"]').click();
-  cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
-  cy.get('div[data-test="uploaded-files"]')
-    .should("exist")
-    .find('[data-test="uploaded-files-title"]')
-    .should("contain", "pdf");
-  cy.get('input[name="currency"]').type("qqq");
+  uploadReports.uploadFile(filename)
+  uploadReports.validateSingleFileInUploadedList(filename, "KB")
+  uploadReports.validateSingleFileInfo()
 
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();

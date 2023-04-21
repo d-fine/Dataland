@@ -438,6 +438,7 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
+      required: true,
     },
   },
   mounted() {
@@ -684,17 +685,6 @@ export default defineComponent({
       this.fiscalYearEnd = getHyphenatedDate(dateValue);
       this.fiscalYearEndAsDate = dateValue;
     },
-  },
-
-  constructErrorMessage: function (error: Error) {
-    this.messageCount++;
-    console.error(error);
-    if (error instanceof AxiosError) {
-      this.message = "An error occurred: " + error.message;
-    } else {
-      this.message =
-        "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
-    }
   },
 });
 </script>
