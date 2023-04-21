@@ -12,7 +12,7 @@
             v-model="formInputsModel"
             :actions="false"
             type="form"
-            id="CreateEuTaxonomyForFinancialsForm"
+            id="createEuTaxonomyForFinancialsForm"
             @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
           >
@@ -34,7 +34,7 @@
                   :name="euTaxonomyKpiNameMappings.reportingPeriod"
                   :explanation="euTaxonomyKpiInfoMappings.reportingPeriod"
                 />
-                <div class="md:col-6 col-12 p-0">
+                <div class="lg:col-6 md:col-6 col-12 p-0">
                   <Calendar
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
@@ -367,7 +367,7 @@ export default defineComponent({
     MultiSelect,
     KPIfieldSet,
   },
-
+  emits: ["datasetCreated"],
   data() {
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
@@ -587,6 +587,7 @@ export default defineComponent({
         this.$refs.UploadReports.clearAllSelectedFiles();
         await this.$nextTick();
         this.$formkit.reset("CreateEuTaxonomyForFinancialsForm");
+        this.$emit("datasetCreated");
       }
     },
 
