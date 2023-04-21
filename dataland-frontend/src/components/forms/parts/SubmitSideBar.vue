@@ -19,7 +19,7 @@ export default defineComponent({
         submitSideBar.style.top = "60px";
       } else {
         submitSideBar.style.position = "relative";
-        submitSideBar.style.top = "0";
+        submitSideBar.style.top = "0px";
       }
       return null;
     };

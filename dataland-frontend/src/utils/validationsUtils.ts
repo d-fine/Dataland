@@ -7,7 +7,6 @@ import { FormKitNode } from "@formkit/core";
  */
 export function checkCustomInputs(node: FormKitNode): void {
   const invalidElements: HTMLElement[] = [];
-  console.log("We are in checkCustomInputs");
   node.walk((child: FormKitNode) => {
     // Check if this child has errors
     if ((child.ledger.value("blocking") || child.ledger.value("errors")) && child.type !== "group") {
