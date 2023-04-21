@@ -194,7 +194,6 @@ export default defineComponent({
   mounted() {
     void this.getApiKeyMetaInfoForUser();
   },
-  watch: {},
   methods: {
     /**
      * Updates the page state. Possible options are "view" and "create"

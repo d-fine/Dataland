@@ -32,13 +32,18 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-backend/DockerfileBase`
 - [ ] `./dataland-backend/DockerfileTest`
 - [ ] `./dataland-csvconverter/Dockerfile`
+- [ ] `./dataland-document-manager/Dockerfile`
+- [ ] `./dataland-document-manager/DockerfileBase`
+- [ ] `./dataland-document-manager/DockerfileTest`
 - [ ] `./dataland-e2etests/Dockerfile`
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
 - [ ] `./dataland-internal-storage/Dockerfile`
+- [ ] `./dataland-internal-storage/DockerfileBase`
 - [ ] `./dataland-internal-storage/DockerfileTest`
 - [ ] `./dataland-qa-service/Dockerfile`
+- [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
 - [ ] `./dataland-rabbitmq/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
@@ -47,7 +52,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
-- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db and frontend-dev
+- [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db, document-manager-db and frontend-dev
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new service that is not covered by the tasks above)
 
 ## Dataland Monitoring
@@ -62,6 +67,9 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] letsencrypt.dataland.com
 - [ ] monitoring.dataland.com 
 - [ ] (OPT) dataland.com
+
+## Check keycloak automatic logout if inactive
+- [ ] Check that you are automatically logged out if you are idle for too long and also get notified about this by a pop-up. Timeouts are defined as `TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS` in `./dataland-frontend/src/utils/Constants.ts` and `ssoSessionIdleTimeout` in `./dataland-keycloak/realms/datalandsecurity-realm.json`.
 
 ## Check e-mails sent by keycloak
 - [ ] Check that the verification e-mail is sent and displayed correctly
@@ -79,7 +87,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 
 ## Conclusion
 - [ ] After updating all components check if everything still works
-- [ ] The new version is deployed to the dev server using this branch and real data
+- [ ] The new version is deployed to a dev server using this branch and real data
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that real data has been used
   - [ ] It's verified that everything seems to be working fine by manually using the website
@@ -93,7 +101,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] The PR actually implements what is described above
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
-- [ ] The new version is deployed to the dev server using this branch
+- [ ] The new version is deployed to a dev server using this branch
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that everything seems to be working fine by manually using the website
   - [ ] All implemented Social Logins have been tested manually in the UI

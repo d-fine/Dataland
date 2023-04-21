@@ -14,9 +14,10 @@ import {
   SfdrDataControllerApiInterface,
   InviteControllerApi,
 } from "@clients/backend/api";
+import { DocumentControllerApi } from "@clients/documentmanager";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import { DocumentControllerApi, DocumentControllerApiInterface } from "@clients/documentmanager";
+import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
 export class ApiClientProvider {
   keycloakPromise: Promise<Keycloak>;
 
@@ -27,7 +28,7 @@ export class ApiClientProvider {
   async getConfiguration(): Promise<Configuration | undefined> {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
-      await keycloak.updateToken(5);
+      updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
       return new Configuration({ accessToken: keycloak.token });
     } else {
       return undefined;
@@ -40,6 +41,13 @@ export class ApiClientProvider {
   ): Promise<T> {
     const configuration = await this.getConfiguration();
     return new constructor(configuration, basePath);
+  }
+
+  async getConstructedDocumentManager<T>(
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T
+  ): Promise<T> {
+    const configuration = await this.getConfiguration();
+    return new constructor(configuration, "/documents");
   }
 
   async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
@@ -70,8 +78,8 @@ export class ApiClientProvider {
     return this.getConstructedApi(ApiKeyControllerApi, "/api-keys");
   }
 
-  async getDocumentUploadController(): Promise<DocumentControllerApiInterface> {
-    return this.getConstructedApi(DocumentControllerApi, "/documents");
+  async getDocumentControllerApi(): Promise<DocumentControllerApi> {
+    return this.getConstructedDocumentManager(DocumentControllerApi);
   }
 
   async getInviteControllerApi(): Promise<InviteControllerApi> {

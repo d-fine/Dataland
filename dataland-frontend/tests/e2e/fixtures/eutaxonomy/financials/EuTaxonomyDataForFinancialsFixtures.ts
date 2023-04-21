@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
 import {
-  EuTaxonomyDataForFinancials,
+  CreditInstitutionKpis,
   EligibilityKpis,
+  EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   InsuranceKpis,
-  CreditInstitutionKpis,
   InvestmentFirmKpis,
 } from "@clients/backend";
 
@@ -35,6 +35,7 @@ export function generateInsuranceKpis(referencedReports: ReferencedReports): Ins
     ),
   };
 }
+
 /**
  * Generates random credit institution KPIs
  *

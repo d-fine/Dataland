@@ -65,7 +65,7 @@
           <div class="form-field-label">
             <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
           </div>
-          <FormKit :name="file.name.split('.')[0]" type="group">
+          <FormKit :name="file.name.split('.')[0]" type="group" data-test="report-info">
             <!-- Date of the report -->
             <div class="form-field">
               <UploadFormHeader
@@ -133,7 +133,10 @@
       </div>
       <div v-for="(file, index) of listOfUploadedReportsInfo" :key="file.name" class="col-9 formFields">
         <div class="form-field-label">
-          <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
+          <div class="flex w-full">
+            <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
+            <PrimeButton icon="pi pi-times" @click="removeReportFromUploadedReports(index)" class="p-button-rounded" />
+          </div>
         </div>
         <FormKit :name="file.name.split('.')[0]" type="group">
           <!-- Date of the report -->
@@ -218,7 +221,12 @@ export default defineComponent({
     FileUpload,
     RadioButtonsGroup,
   },
-  emits: ["selectedFiles", "removeReportFromFilesToUpload", "updateReportDateHandler"],
+  emits: [
+    "selectedFiles",
+    "removeReportFromFilesToUpload",
+    "removeReportFromUploadedReports",
+    "updateReportDateHandler",
+  ],
   data() {
     return {
       formsDatesFilesToUpload: [] as string[] | undefined,
@@ -238,7 +246,8 @@ export default defineComponent({
       this.$emit("selectedFiles", event);
     },
     /**
-     * Function to emit event when files are selected remove report from files to upload
+     * Function to emit an event when the X besides selected files is clicked, because the user does not want to
+     * upload them
      *
      * @param fileToRemove File To Remove
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
@@ -247,6 +256,17 @@ export default defineComponent({
     removeReportFromFilesToUpload(fileToRemove: ExtendedFile, fileRemoveCallback: (x: number) => void, index: number) {
       this.$emit("removeReportFromFilesToUpload", fileToRemove, fileRemoveCallback, index);
     },
+
+    /**
+     * Function to emit an event when the X besides existing reports is clicked, because the user does not want to
+     * include them in the new version of the dataset anymore
+     *
+     * @param indexOfFileToRemove Index of the report that shall no longer be referenced by the dataset
+     */
+    removeReportFromUploadedReports(indexOfFileToRemove: number) {
+      this.$emit("removeReportFromUploadedReports", indexOfFileToRemove);
+    },
+
     /**
      * Function to emit event to update the date of a single report file
      *

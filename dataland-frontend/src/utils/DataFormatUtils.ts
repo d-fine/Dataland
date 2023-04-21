@@ -49,6 +49,7 @@ export function calculateExpiryDateAsDateString(expiryTimeDays: number): string 
  * @returns the hyphenated date string
  */
 export function getHyphenatedDate(date: Date): string {
-  const delocalizedTime = date.getTime() - date.getTimezoneOffset() * 60 * 1000;
+  const newDate = new Date(date.toString());
+  const delocalizedTime = newDate.getTime() - newDate.getTimezoneOffset() * 60 * 1000;
   return new Date(delocalizedTime).toISOString().substring(0, 10);
 }

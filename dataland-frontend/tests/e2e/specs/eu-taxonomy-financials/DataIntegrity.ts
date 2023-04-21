@@ -1,20 +1,21 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import {
-  fillAndValidateEuTaxonomyForFInancialsUploadForm,
+  fillEuTaxonomyForFinancialsUploadForm,
   submitEuTaxonomyFinancialsUploadForm,
   uploadOneEuTaxonomyFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
-  EuTaxonomyDataForFinancials,
-  EligibilityKpis,
   DataPointBigDecimal,
   DataTypeEnum,
+  EligibilityKpis,
+  EuTaxonomyDataForFinancials,
 } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import { uploadReports } from "@sharedUtils/components/UploadReports";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -43,7 +44,7 @@ describeIf(
      * @param companyInformation Company information to be used for the company upload
      * @param testData EU Taxonomy dataset for financial companies to be uploaded
      */
-    function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+    function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndTestFormAndVisitFrameworkDataViewPage(
       companyInformation: CompanyInformation,
       testData: EuTaxonomyDataForFinancials
     ): void {
@@ -54,7 +55,13 @@ describeIf(
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
             );
-            fillAndValidateEuTaxonomyForFInancialsUploadForm(testData);
+            const filename = "pdfTest.pdf";
+            uploadReports.uploadFile(filename);
+            uploadReports.validateSingleFileInUploadedList(filename, "KB");
+            uploadReports.validateSingleFileInfo();
+            uploadReports.removeSingleUploadedFileFromUploadedList();
+            uploadReports.checkNoReportIsListed();
+            fillEuTaxonomyForFinancialsUploadForm(testData);
             submitEuTaxonomyFinancialsUploadForm();
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
@@ -199,7 +206,7 @@ describeIf(
         "that the upload form works fine with all options",
       () => {
         const testData = getPreparedFixture("company-for-all-types", preparedFixtures);
-        uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndVisitFrameworkDataViewPage(
+        uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndTestFormAndVisitFrameworkDataViewPage(
           testData.companyInformation,
           testData.t
         );
