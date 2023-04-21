@@ -619,10 +619,10 @@ export default defineComponent({
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
       const lksgDataset = dataResponse.data;
-      const numberOfProductionSites = lksgDataset.data?.social?.general?.listOfProductionSites?.length || 0;
+      const numberOfProductionSites = lksgDataset.data?.general?.listOfProductionSites?.length || 0;
       if (numberOfProductionSites > 0) {
         this.isYourCompanyManufacturingCompany = "Yes";
-        const productionSites = assertDefined(lksgDataset.data?.social?.general?.listOfProductionSites);
+        const productionSites = assertDefined(lksgDataset.data?.general?.listOfProductionSites);
         this.listOfProductionSites = [];
         this.idCounter = numberOfProductionSites;
         for (let i = 0; i < numberOfProductionSites; i++) {
@@ -633,7 +633,7 @@ export default defineComponent({
           });
         }
       }
-      const dataDateFromDataset = lksgDataset.data?.social?.general?.dataDate;
+      const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
       }

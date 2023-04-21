@@ -3230,7 +3230,10 @@
             "type": "string"
           },
           "listOfGoodsOrServices": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "capacity": {
             "type": "number"

@@ -22,7 +22,7 @@ data class LksgProductionSite(
 
     val subcontractingCompaniesIndustries: String?,
 
-    val listOfGoodsOrServices: String?,
+    val listOfGoodsOrServices: List<String>?,
 
     val capacity: BigDecimal,
 

@@ -7,9 +7,9 @@ import {
   LksgData,
   CompanyAssociatedDataLksgData,
   DataMetaInformation,
-  ProductionSite,
   DataTypeEnum,
   QAStatus,
+  LksgProductionSite,
 } from "@clients/backend";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
@@ -23,12 +23,14 @@ describe("Component test for LksgPanel", () => {
   });
 
   it("Should display the total revenue kpi in the correct format", () => {
-    const pseudoLksgData = { social: { general: { dataDate: "2023-01-01", totalRevenue: 1234567.89 } } };
+    const pseudoLksgData = {
+      general: { masterData: { dataDate: "2023-01-01", totalRevenue: 1234567.89 } },
+    } as LksgData;
     mount(LksgPanel, {
       data() {
         return {
           waitingForData: false,
-          lksgDataAndMetaInfo: [{ data: pseudoLksgData as LksgData } as DataAndMetaInformationLksgData],
+          lksgDataAndMetaInfo: [{ data: pseudoLksgData } as DataAndMetaInformationLksgData],
         };
       },
       created() {
@@ -65,15 +67,15 @@ describe("Component test for LksgPanel", () => {
       },
     });
 
-    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate!.substring(0, 4));
+    cy.get(`span.p-column-title`).should("contain.text", lksgData.general!.masterData!.dataDate.substring(0, 4));
 
-    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
-
-    cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("not.exist");
+    cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
 
     cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
+    cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("not.exist");
+
+    cy.get("button.p-row-toggler").eq(0).click();
+    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
 
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
 
@@ -83,13 +85,15 @@ describe("Component test for LksgPanel", () => {
     cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
 
     cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-    const listOfProductionSites = lksgData.social!.general!.listOfProductionSites!;
+    const listOfProductionSites = lksgData.general!.listOfProductionSites!;
     if (listOfProductionSites.length < 2) {
       throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
     }
-    listOfProductionSites.forEach((productionSite: ProductionSite) => {
-      if (productionSite.streetAndHouseNumber) {
-        cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.streetAndHouseNumber})`);
+    listOfProductionSites.forEach((productionSite: LksgProductionSite) => {
+      if (productionSite.addressOfProductionSite && productionSite.addressOfProductionSite.streetAndHouseNumber) {
+        cy.get("tbody.p-datatable-tbody").find(
+          `span:contains(${productionSite.addressOfProductionSite.streetAndHouseNumber})`
+        );
       }
     });
     cy.get("div.p-dialog-mask").click({ force: true });
@@ -99,7 +103,7 @@ describe("Component test for LksgPanel", () => {
     cy.get("em.info-icon").eq(0).trigger("mouseleave");
 
     cy.get("table.p-datatable-table")
-      .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+      .find(`span:contains(${lksgData.general!.masterData!.commercialRegister!})`)
       .should("exist");
   });
 
@@ -117,7 +121,7 @@ describe("Component test for LksgPanel", () => {
       const reportingYear = 2023 + i;
       const reportingDate = `${reportingYear}-01-01`;
       const lksgData = structuredClone(baseDataset) as LksgData;
-      lksgData.social!.general!.dataDate = reportingDate;
+      lksgData.general!.masterData!.dataDate = reportingDate;
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
         reportingPeriod: reportingYear.toString(),
