@@ -15,7 +15,7 @@ import {
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import {uploadReports} from "@sharedUtils/components/UploadReports";
+import { uploadReports } from "@sharedUtils/components/UploadReports";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -56,11 +56,11 @@ describeIf(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
             );
             const filename = "pdfTest.pdf";
-            uploadReports.uploadFile(filename)
-            uploadReports.validateSingleFileInUploadedList(filename, "KB")
-            uploadReports.validateSingleFileInfo()
-            uploadReports.removeSingleUploadedFileFromUploadedList()
-            uploadReports.checkNoReportIsListed()
+            uploadReports.uploadFile(filename);
+            uploadReports.validateSingleFileInUploadedList(filename, "KB");
+            uploadReports.validateSingleFileInfo();
+            uploadReports.removeSingleUploadedFileFromUploadedList();
+            uploadReports.checkNoReportIsListed();
             fillEuTaxonomyForFinancialsUploadForm(testData);
             submitEuTaxonomyFinancialsUploadForm();
             cy.visitAndCheckAppMount(

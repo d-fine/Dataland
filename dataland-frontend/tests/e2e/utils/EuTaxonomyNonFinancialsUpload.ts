@@ -8,7 +8,7 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
-import {uploadReports} from "@sharedUtils/components/UploadReports";
+import { uploadReports } from "@sharedUtils/components/UploadReports";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
@@ -24,15 +24,15 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
 
   const filename = "pdfTest.pdf";
-  uploadReports.uploadFile(filename)
-  uploadReports.validateSingleFileInUploadedList(filename, "KB")
-  uploadReports.validateSingleFileInfo()
-  uploadReports.removeSingleUploadedFileFromUploadedList()
-  uploadReports.checkNoReportIsListed()
+  uploadReports.uploadFile(filename);
+  uploadReports.validateSingleFileInUploadedList(filename, "KB");
+  uploadReports.validateSingleFileInfo();
+  uploadReports.removeSingleUploadedFileFromUploadedList();
+  uploadReports.checkNoReportIsListed();
 
-  uploadReports.uploadFile(filename)
-  uploadReports.validateSingleFileInUploadedList(filename, "KB")
-  uploadReports.validateSingleFileInfo()
+  uploadReports.uploadFile(filename);
+  uploadReports.validateSingleFileInUploadedList(filename, "KB");
+  uploadReports.validateSingleFileInfo();
 
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();

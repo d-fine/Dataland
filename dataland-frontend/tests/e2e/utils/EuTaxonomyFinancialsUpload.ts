@@ -9,7 +9,7 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
-import {dateFormElement} from "@sharedUtils/components/DateFormElement";
+import { dateFormElement } from "@sharedUtils/components/DateFormElement";
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
@@ -30,8 +30,8 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
-  dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12)
-  dateFormElement.validateDay("fiscalYearEnd", 12)
+  dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
+  dateFormElement.validateDay("fiscalYearEnd", 12);
 
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
