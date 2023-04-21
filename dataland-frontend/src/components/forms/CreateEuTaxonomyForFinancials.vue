@@ -187,7 +187,7 @@
                       <FormKit
                         :model-value="computedFinancialServicesTypes"
                         type="text"
-                        validationLabel="You must choose and confirm"
+                        validationLabel="You must choose and confirm this "
                         validation="required"
                         name="financialServicesTypes"
                         :outer-class="{ 'hidden-input': true }"
@@ -342,6 +342,7 @@ import {
   updatePropertyFilesUploaded,
 } from "@/utils/EuTaxonomyUtils";
 import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
+
 
 export default defineComponent({
   setup() {
@@ -528,20 +529,16 @@ export default defineComponent({
         if (this.filesToUpload.length) {
           for (let index = 0; index < this.filesToUpload.length; index++) {
             const hash = await calculateSha256HashFromFile(this.filesToUpload[index]);
-            console.log("SHA-256 hash of document:", hash);
             const documentExists = await documentUploadControllerControllerApi.checkDocument(hash);
-            console.log(documentExists);
-            console.log(documentExists.data.documentExists);
             if (!documentExists.data.documentExists) {
               const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
                 this.filesToUpload[index]
               );
-              console.log("SHA-256 hash of uploaded document:", uploadFileSuccessful.data.documentId);
               if (!uploadFileSuccessful) {
                 allFileUploadedSuccessful = false;
                 break;
               } else if (uploadFileSuccessful) {
-                //this.filesToUpload[index]["documentId"] = hash;
+                //this.filesToUpload[index]["documentId"] = hash; TODO
                 this.filesToUpload = [
                   ...this.updatePropertyFilesUploaded(
                     index,
@@ -549,13 +546,13 @@ export default defineComponent({
                     uploadFileSuccessful.data.documentId,
                     this.filesToUpload
                   ),
-                ];
+                ] as ExtendedFile[];
               }
             } else {
               console.log("SHA-256 hash of already existing document:", hash);
               // We trick the frontend to think upload was successful to prevent unnecessary api calls,
               // in the case of the document already existing
-              this.filesToUpload = [...this.updatePropertyFilesUploaded(index, "documentId", hash, this.filesToUpload)];
+              this.filesToUpload = [...this.updatePropertyFilesUploaded(index, "documentId", hash, this.filesToUpload)]  as ExtendedFile[];
             }
           }
         }

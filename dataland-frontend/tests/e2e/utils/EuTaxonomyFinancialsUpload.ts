@@ -18,9 +18,11 @@ import Chainable = Cypress.Chainable;
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
   cy.get('button[data-test="submitButton"]').click();
-  return cy.wait("@postCompanyAssociatedData").then((interception) => {
-    expect(interception.response?.statusCode).to.eq(200);
-  });
+  return cy
+    .wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+    .then((interception) => {
+      expect(interception.response?.statusCode).to.eq(200);
+    });
 }
 
 /**
