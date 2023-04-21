@@ -65,7 +65,7 @@
           <div class="form-field-label">
             <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
           </div>
-          <FormKit :name="file.name.split('.')[0]" type="group">
+          <FormKit :name="file.name.split('.')[0]" type="group" data-test="report-info">
             <!-- Date of the report -->
             <div class="form-field">
               <UploadFormHeader
