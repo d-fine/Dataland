@@ -3,203 +3,305 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Assmus, Paesler und Pöge",
-				"Reif, Mächtig und Plotzitzka",
-				"Zschunke, Vey und Weyel"
+				"Orthmann-Gottschalk",
+				"Sihler-Delonge"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"headquarters": "Bad Gerritstadt",
-			"sector": "e-business",
+			"companyLegalForm": "Sole Trader",
+			"headquarters": "Ummingerburg",
+			"sector": "web-readiness",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "xgub06wht"
+					"identifierValue": "juwylq1zs"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "az5x7zjerpey"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "4hdcvdnsy3tqqlio8r8j"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "gjokwre5k7"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "ekbaurx"
 				}
 			],
-			"countryCode": "NR",
+			"countryCode": "TZ",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-12-02",
-			"numberOfEmployees": 29953,
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "http://musterhaft-geist.org/w%C3%BCnschenswert-fahrer.pdf",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-03-06",
-					"currency": "LRD"
-				},
-				"IntegratedReport": {
-					"reference": "https://respektvoll-anderes.net/real-spiel.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-04-13",
-					"currency": "MUR"
-				},
-				"ESEFReport": {
-					"reference": "https://entschlossen-frau.name/mysteri%C3%B6s-mineral.pdf",
-					"isGroupLevel": "No",
-					"reportDate": "2022-05-26",
-					"currency": "BBD"
-				},
 				"AnnualReport": {
-					"reference": "http://salzig-fahrer.ch/exklusiv-fl%C3%A4che.pdf",
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "Yes",
-					"reportDate": "2022-11-28",
-					"currency": "UAH"
+					"reportDate": "2023-03-22",
+					"currency": "XAU"
 				}
 			},
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-07-01",
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "ReasonableAssurance",
+				"provider": "Jungbluth KG"
 			},
-			"scopeOfEntities": "NA",
+			"scopeOfEntities": "Yes",
 			"reportingObligation": "No",
-			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.1107,
+					"value": 0.9971,
 					"dataSource": {
-						"page": 1097,
+						"page": 275,
 						"report": "AnnualReport",
-						"tagName": "markets"
+						"tagName": "blockchains"
 					},
-					"quality": "Incomplete",
-					"comment": "back up mobile system"
+					"quality": "Audited",
+					"comment": "bypass haptic sensor"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.4568,
+					"value": 0.6255,
 					"dataSource": {
-						"page": 875,
-						"report": "ESEFReport",
-						"tagName": "niches"
+						"page": 106,
+						"report": "AnnualReport",
+						"tagName": "portals"
 					},
-					"quality": "Audited",
-					"comment": "bypass neural hard drive"
+					"quality": "Reported",
+					"comment": "input redundant driver"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.9707,
+					"value": 0.0872,
 					"dataSource": {
-						"page": 342,
-						"report": "IntegratedReport",
-						"tagName": "solutions"
+						"page": 589,
+						"report": "AnnualReport",
+						"tagName": "initiatives"
 					},
-					"quality": "Incomplete",
-					"comment": "back up multi-byte feed"
+					"quality": "Reported",
+					"comment": "quantify solid state matrix"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Schönfeld GmbH"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"headquarters": "Minadorf",
-			"headquartersPostalCode": "23457",
-			"sector": "vortals",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"headquarters": "Maybachland",
+			"headquartersPostalCode": "12011",
+			"sector": "portals",
 			"identifiers": [
 				{
-					"identifierType": "PermId",
-					"identifierValue": "cglmzrpqe5"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "ng742rri8fkse34"
 				},
 				{
-					"identifierType": "Ticker",
-					"identifierValue": "nget5mu"
+					"identifierType": "Duns",
+					"identifierValue": "xan9ol3yb"
 				}
 			],
-			"countryCode": "RE",
+			"countryCode": "PL",
 			"isTeaserCompany": false,
-			"website": "https://zartfühlend-säugling.name"
+			"website": "http://gefeiert-schach.org"
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-10-19",
-			"numberOfEmployees": 56702,
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "http://xn--zurechnungsfhig-konjunktion-mkc.com/engelsgleich-essen.pdf",
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "NA",
-					"reportDate": "2022-10-10",
-					"currency": "BMD"
+					"reportDate": "2023-04-17",
+					"currency": "SGD"
 				},
 				"SustainabilityReport": {
-					"reference": "https://brandneu-verstand.net/un%C3%BCbertroffen-hotel.pdf",
-					"isGroupLevel": "NA",
-					"currency": "SBD"
-				},
-				"AnnualReport": {
-					"reference": "https://sexuell-fluss.ch/produktiv-cricket.pdf",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-11-13",
-					"currency": "SCR"
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "JMD"
 				}
 			},
+			"fiscalYearEnd": "2022-10-15",
 			"assurance": {
-				"assurance": "LimitedAssurance",
+				"assurance": "ReasonableAssurance",
+				"provider": "Strutz AG",
 				"dataSource": {
-					"page": 491,
-					"report": "ESEFReport",
-					"tagName": "niches"
+					"page": 444,
+					"report": "SustainabilityReport",
+					"tagName": "applications"
 				}
 			},
-			"scopeOfEntities": "Yes",
+			"scopeOfEntities": "NA",
+			"reportingObligation": "No",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 87203.92,
-					"dataSource": {
-						"page": 1186,
-						"report": "SustainabilityReport",
-						"tagName": "infomediaries"
-					},
-					"quality": "Audited",
-					"comment": "calculate wireless matrix"
+					"value": 514814.84,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.5521,
+					"value": 0.9586,
 					"dataSource": {
-						"page": 231,
-						"report": "AnnualReport",
-						"tagName": "metrics"
+						"page": 563,
+						"report": "SustainabilityReport",
+						"tagName": "platforms"
 					},
-					"quality": "Incomplete",
-					"comment": "reboot cross-platform program"
+					"quality": "Audited",
+					"comment": "transmit neural circuit"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 78980.99,
-					"quality": "Incomplete"
+					"value": 544153.21,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.7088,
+					"value": 0.7038,
+					"dataSource": {
+						"page": 952,
+						"report": "IntegratedReport",
+						"tagName": "e-markets"
+					},
+					"quality": "Estimated",
+					"comment": "connect cross-platform bandwidth"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 139884.09,
+					"dataSource": {
+						"page": 33,
+						"report": "IntegratedReport",
+						"tagName": "architectures"
+					},
+					"quality": "Audited",
+					"comment": "generate auxiliary feed"
+				},
+				"eligiblePercentage": {
+					"value": 0.4326,
+					"dataSource": {
+						"page": 970,
+						"report": "SustainabilityReport",
+						"tagName": "channels"
+					},
+					"quality": "Incomplete",
+					"comment": "connect auxiliary hard drive"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"companyAlternativeNames": [
+				"Tietze OHG"
+			],
+			"companyLegalForm": "Sole Trader",
+			"headquarters": "Nabeinland",
+			"headquartersPostalCode": "19310",
+			"sector": "vortals",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "hw6z1uccez7gq4r"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "cmqru7l4h2l2k9wiyqkv"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "q3g76u45uo"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "qhmdl0j"
+				}
+			],
+			"countryCode": "MQ",
+			"isTeaserCompany": false,
+			"website": "https://visionär-tee.org"
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "No",
+			"numberOfEmployees": 88153,
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 853613.27,
+					"quality": "Estimated"
+				},
+				"alignedPercentage": {
+					"value": 0.5679,
+					"dataSource": {
+						"page": 826,
+						"report": "SustainabilityReport",
+						"tagName": "e-commerce"
+					},
+					"quality": "Audited",
+					"comment": "transmit open-source application"
+				},
+				"eligiblePercentage": {
+					"value": 0.1201,
+					"quality": "Incomplete"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 943171.62,
+					"quality": "Incomplete"
+				},
+				"alignedPercentage": {
+					"value": 0.2186,
+					"dataSource": {
+						"page": 372,
+						"report": "SustainabilityReport",
+						"tagName": "partnerships"
+					},
+					"quality": "Reported",
+					"comment": "hack virtual protocol"
+				},
+				"eligiblePercentage": {
+					"value": 0.0943,
 					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 950776.28,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.2442,
+					"value": 128765.46,
 					"dataSource": {
-						"page": 1175,
-						"report": "AnnualReport",
-						"tagName": "web services"
+						"page": 781,
+						"report": "SustainabilityReport",
+						"tagName": "relationships"
 					},
 					"quality": "Audited",
-					"comment": "navigate multi-byte matrix"
+					"comment": "program redundant application"
+				},
+				"alignedPercentage": {
+					"value": 0.8622,
+					"dataSource": {
+						"page": 849,
+						"report": "SustainabilityReport",
+						"tagName": "partnerships"
+					},
+					"quality": "Reported",
+					"comment": "synthesize virtual hard drive"
+				},
+				"eligiblePercentage": {
+					"value": 0.5156,
+					"quality": "Incomplete"
 				}
 			}
 		},
-		"reportingPeriod": "2021-Q2"
+		"reportingPeriod": "2019"
 	}
 ]

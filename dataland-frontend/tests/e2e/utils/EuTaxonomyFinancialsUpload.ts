@@ -1,11 +1,11 @@
 import {
-  EuTaxonomyDataForFinancials,
-  EligibilityKpis,
-  DataPointBigDecimal,
-  EuTaxonomyDataForFinancialsControllerApi,
   Configuration,
   DataMetaInformation,
+  DataPointBigDecimal,
   DataTypeEnum,
+  EligibilityKpis,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForFinancialsControllerApi,
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
@@ -191,6 +191,7 @@ function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecima
     }
   }
 }
+
 /**
  * Extracts the first eutaxonomy-financials dataset from the fake fixtures
  *

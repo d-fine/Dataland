@@ -4,7 +4,7 @@
     <UploaderRoleWrapper>
       <BackButton id="backButton" class="mt-2 pl-3" />
       <CompanyInformation :companyID="companyID" />
-      <CreateLksgDataset :companyID="companyID" />
+      <CreateLksgDataset :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)"/>
     </UploaderRoleWrapper>
     <TheFooter />
   </AuthenticationWrapper>
@@ -18,6 +18,7 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
+import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
 
 export default {
   name: "UploadLkSG",
@@ -35,5 +36,6 @@ export default {
       type: String,
     },
   },
+  methods: { redirectToMyDatasets },
 };
 </script>

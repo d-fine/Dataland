@@ -52,7 +52,6 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.get('input[name="reference"]').should("not.exist");
   cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
   cy.get('input[name="activityLevelReporting"][value="Yes"]').check();
-  cy.get('[data-test="dataPointToggleTitle"]').should("not.exist");
   cy.get('input[name="numberOfEmployees"]').type("333");
   cy.get('input[name="reportingObligation"][value="Yes"]').check();
 
@@ -60,6 +59,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
   cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
 
+  cy.get('[data-test="dataPointToggleTitle"]').should("exist");
   for (const argument of ["capexSection", "opexSection", "revenueSection"]) {
     if (!valueFieldNotFilled) {
       cy.get(`div[data-test=${argument}] input[name="value"]`).each(($element, index) => {

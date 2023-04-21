@@ -1,4 +1,5 @@
 <template>
+  <DataPointHeader :name="kpiNameMappings[name]" />
   <div v-if="toggleDataAvailable" data-test="dataPointToggle" class="form-field vertical-middle">
     <InputSwitch
       data-test="dataPointToggleButton"
@@ -11,15 +12,16 @@
     </h5>
   </div>
   <div v-show="dataPointIsAvailable">
-    <div class="form-field">
+    <div class="form-field" v-if="dataPointIsAvailable">
       <UploadFormHeader
-        :name="valueType === 'percent' ? 'Eligible Revenue (%)' : 'Eligible Revenue'"
-        explanation="Eligible Revenue (%) *"
+        :name="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]} amount`"
+        :explanation="kpiInfoMappings[name] ?? ''"
       />
       <FormKit
         :disabled="!dataPointIsAvailable"
         type="number"
         name="value"
+        v-model="currentMainValue"
         validation-label=""
         :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
         step="any"
@@ -84,7 +86,6 @@
     <FormKit
       type="textarea"
       name="comment"
-      rows="10"
       placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
     />
   </div>
@@ -96,22 +97,25 @@ import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
+import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 
 export default defineComponent({
-  name: "KPIfieldSet",
-  components: { UploadFormHeader, FormKit, InputSwitch },
+  name: "DataPointForm",
+  components: { DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({
     files: useFilesUploadedStore(),
     dataPointIsAvailable: true,
     dataQualityList: ["NA", "Audited", "Reported", "Estimated", "Incomplete"],
-    qualityValueBeforeDataPointWasDisabled: "",
+    currentMainValue: "",
     currentReportValue: "",
     currentQualityValue: "",
     currentPageValue: "",
+    qualityValueBeforeDataPointWasDisabled: "",
     qualityValueWhenDataPointIsDisabled: "",
     pageValueWhenDataPointIsDisabled: "",
     reportValueWhenDataPointIsDisabled: "",
+    mainValueWhenDataPointIsDisabled: "",
   }),
   watch: {
     dataPointIsAvailable(newValue: boolean) {
@@ -119,11 +123,13 @@ export default defineComponent({
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
         this.pageValueWhenDataPointIsDisabled = this.currentPageValue;
         this.reportValueWhenDataPointIsDisabled = this.currentReportValue;
+        this.mainValueWhenDataPointIsDisabled = this.currentMainValue;
         this.currentQualityValue = "NA";
       } else {
         this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
         this.currentPageValue = this.pageValueWhenDataPointIsDisabled;
         this.currentReportValue = this.reportValueWhenDataPointIsDisabled;
+        this.currentMainValue = this.mainValueWhenDataPointIsDisabled;
       }
     },
   },
