@@ -25,7 +25,7 @@
           <Calendar
             inputId="fiscalYearEndAsDate"
             :modelValue="fiscalYearEndAsDate"
-            :data-test="fiscalYearEnd"
+            data-test="fiscalYearEnd"
             :showIcon="true"
             dateFormat="D, M dd, yy"
             @update:modelValue="updateFiscalYearEndHandler($event)"
