@@ -111,7 +111,8 @@ jobs:
         run: testing/verifyOpenApiFiles.sh
       - name: verify no it.only exists
         if: always()
-        run: ! grep -riq "it\.only" dataland-frontend/tests/
+        run: |
+          ! grep -riq "it\.only" dataland-frontend/tests/
       - name: Upload Test and Coverage Reports
         if: always()
         uses: actions/upload-artifact@v3
