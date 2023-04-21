@@ -39,7 +39,6 @@ describeIf(
           cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
           cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
           cy.get("div").contains("New Dataset - LkSG").should("be.visible");
-          cy.get(".p-card-title").contains("Update").should("be.visible");
           submitButton.buttonIsUpdateDataButton();
           submitButton.buttonAppearsEnabled();
           checkStickynessOfSubmitSideBar();

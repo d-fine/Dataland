@@ -78,7 +78,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
   submitButton.clickButton();
   cy.wait("@postCompanyAssociatedData");
-  return cy.contains("h4", "dataId").then<string>(($dataId): string => {
+  return cy.contains("h4", "Upload successfully executed.").then<string>(($dataId): string => {
     return $dataId.text();
   });
 }

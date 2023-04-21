@@ -4,7 +4,7 @@
     <UploaderRoleWrapper>
       <BackButton id="backButton" class="mt-2 pl-3" />
       <CompanyInformation :companyID="companyID" />
-      <CreateEUTaxonomyForNonFinancials :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)"/>
+      <CreateEUTaxonomyForNonFinancials :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
     </UploaderRoleWrapper>
     <TheFooter />
   </AuthenticationWrapper>
