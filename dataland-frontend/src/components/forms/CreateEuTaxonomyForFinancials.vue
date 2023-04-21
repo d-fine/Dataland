@@ -586,7 +586,7 @@ export default defineComponent({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         this.$refs.UploadReports.clearAllSelectedFiles();
         await this.$nextTick();
-        this.$formkit.reset("CreateEuTaxonomyForFinancialsForm");
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
         this.$emit("datasetCreated");
       }
     },
