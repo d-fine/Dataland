@@ -7,45 +7,45 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Human rights"
  */
 data class LksgHumanRights(
-    val codeOfConduct: YesNo,
+    val codeOfConduct: YesNo?,
 
-    val codeOfConductTraining: YesNo,
+    val codeOfConductTraining: YesNo?,
 
-    val supplierCodeOfConduct: YesNo,
+    val supplierCodeOfConduct: YesNo?,
 
-    val policyStatement: YesNo,
+    val policyStatement: YesNo?,
 
-    val humanRightsStrategy: List<String>?,
+    val humanRightsStrategy: String?,
 
-    val environmentalImpactPolicy: YesNo,
+    val environmentalImpactPolicy: YesNo?,
 
-    val fairWorkingConditionsPolicy: YesNo,
+    val fairWorkingConditionsPolicy: YesNo?,
 
-    val responsibilitiesForFairWorkingConditions: YesNo,
+    val responsibilitiesForFairWorkingConditions: YesNo?,
 
-    val responsibilitiesForTheEnvironment: YesNo,
+    val responsibilitiesForTheEnvironment: YesNo?,
 
-    val responsibilitiesForOccupationalSafety: YesNo,
+    val responsibilitiesForOccupationalSafety: YesNo?,
 
-    val legalProceedings: YesNo,
+    val legalProceedings: YesNo?,
 
-    val humanRightsViolation: YesNo,
+    val humanRightsViolation: YesNo?,
 
-    val humanRightsViolationLocation: List<String>,
+    val humanRightsViolationLocation: String?,
 
-    val humanRightsViolationAction: YesNo,
+    val humanRightsViolationAction: YesNo?,
 
-    val humanRightsViolationActionMeasures: List<String>,
+    val humanRightsViolationActionMeasures: String?,
 
-    val highRiskCountriesRawMaterials: YesNo,
+    val highRiskCountriesRawMaterials: YesNo?,
 
-    val highRiskCountriesRawMaterialsLocation: List<String>,
+    val highRiskCountriesRawMaterialsLocation: String?,
 
-    val highRiskCountriesActivity: YesNo,
+    val highRiskCountriesActivity: YesNo?,
 
-    val highRiskCountries: List<String>,
+    val highRiskCountries: String?,
 
-    val highRiskCountriesProcurement: YesNo,
+    val highRiskCountriesProcurement: YesNo?,
 
-    val highRiskCountriesProcurementName: List<String>?,
+    val highRiskCountriesProcurementName: String?,
 )

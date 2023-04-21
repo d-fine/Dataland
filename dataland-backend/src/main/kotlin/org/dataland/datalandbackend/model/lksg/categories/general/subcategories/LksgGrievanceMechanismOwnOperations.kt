@@ -22,11 +22,11 @@ data class LksgGrievanceMechanismOwnOperations(
 
     val grievanceMechanismComplaintsNumber: BigDecimal?,
 
-    val grievanceMechanismComplaintsReason: List<String>?,
+    val grievanceMechanismComplaintsReason: String?,
 
     val grievanceMechanismComplaintsAction: YesNo?,
 
-    val grievanceMechanismComplaintsActionUndertaken: List<String>?,
+    val grievanceMechanismComplaintsActionUndertaken: String?,
 
     val grievanceMechanismPublicAccess: YesNo?,
 

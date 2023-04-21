@@ -2,13 +2,13 @@ import { faker } from "@faker-js/faker";
 import { DataPointBigDecimal, QualityOptions, CompanyReportReference, DataPointYesNo } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
-import { randomYesNoNaUndefined, randomYesNoUndefined } from "./YesNoFixtures";
+import { randomYesNo, randomYesNoNaUndefined } from "./YesNoFixtures";
 import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 import { randomPastDateOrUndefined } from "./DateFixtures";
+import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
 const nullRatio = 0.1;
-const undefinedRatio = 0.25;
 
 /**
  * Randomly returns the specified value or null
@@ -18,16 +18,6 @@ const undefinedRatio = 0.25;
  */
 export function valueOrNull<T>(value: T): T | null {
   return Math.random() > nullRatio ? value : null;
-}
-
-/**
- * Randomly returns the specified value or undefined
- *
- * @param value the value to return
- * @returns the value or undefined
- */
-export function valueOrUndefined<T>(value: T): T | undefined {
-  return Math.random() > undefinedRatio ? value : undefined;
 }
 
 /**
@@ -72,8 +62,7 @@ export function generateNumericOrEmptyDatapoint(
   reports: ReferencedReports,
   value: number | null = valueOrNull(faker.datatype.number())
 ): DataPointBigDecimal | undefined {
-  if (Math.random() < undefinedRatio) return undefined;
-  return generateDatapoint(value, reports);
+  return valueOrUndefined(generateDatapoint(value, reports));
 }
 
 /**
@@ -83,9 +72,7 @@ export function generateNumericOrEmptyDatapoint(
  * @returns the generated datapoint or undefined
  */
 export function generateYesNoOrEmptyDatapoint(reports: ReferencedReports): DataPointYesNo | undefined {
-  const value = valueOrNull(randomYesNoUndefined());
-  if (value === undefined) return undefined;
-  return generateDatapoint(value, reports);
+  return valueOrUndefined(generateDatapoint(randomYesNo(), reports));
 }
 
 /**

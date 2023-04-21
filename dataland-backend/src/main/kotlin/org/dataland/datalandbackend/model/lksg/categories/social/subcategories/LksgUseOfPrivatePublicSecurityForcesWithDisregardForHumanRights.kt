@@ -21,5 +21,5 @@ data class LksgUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights(
 
     val privateSecurityForces: YesNoNa?,
 
-    val useOfPrivatePublicSecurityForcesMeasures: List<String>?,
+    val useOfPrivatePublicSecurityForcesMeasures: String?,
 )

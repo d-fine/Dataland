@@ -5,13 +5,13 @@ package org.dataland.datalandbackend.model.lksg
  * Addresses for LkSG framework
  */
 data class LksgAddress(
-    val streetAndHouseNumber: String,
+    val streetAndHouseNumber: String?,
 
-    val city: String,
+    val city: String?,
 
-    val state: String,
+    val state: String?,
 
-    val postalCode: String,
+    val postalCode: String?,
 
-    val country: String,
+    val country: String?,
 )

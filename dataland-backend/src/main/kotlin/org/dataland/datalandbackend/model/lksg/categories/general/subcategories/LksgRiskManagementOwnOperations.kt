@@ -13,11 +13,11 @@ data class LksgRiskManagementOwnOperations(
 
     val riskManagementSystemRisks: YesNo?,
 
-    val riskManagementSystemIdentifiedRisks: List<String>?,
+    val riskManagementSystemIdentifiedRisks: String?,
 
     val riskManagementSystemCounteract: YesNo?,
 
-    val riskManagementSystemMeasures: List<String>?,
+    val riskManagementSystemMeasures: String?,
 
     val riskManagementSystemResponsibility: YesNo?,
 

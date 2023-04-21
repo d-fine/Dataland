@@ -38,11 +38,11 @@ data class LksgContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumptio
 
     val waterSavingMeasures: YesNo?,
 
-    val waterSavingMeasuresName: List<String>?,
+    val waterSavingMeasuresName: String?,
 
     val pipeMaintaining: YesNo?,
 
     val waterSources: YesNo?,
 
-    val contaminationMeasures: List<String>?,
+    val contaminationMeasures: String?,
 )

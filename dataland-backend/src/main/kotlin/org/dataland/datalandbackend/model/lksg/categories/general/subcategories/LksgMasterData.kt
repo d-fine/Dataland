@@ -15,27 +15,27 @@ data class LksgMasterData(
     @field:JsonProperty(required = true)
     val dataDate: LocalDate,
 
-    val name: String,
+    val name: String?,
 
     val address: LksgAddress,
 
-    val headOffice: YesNo,
+    val headOffice: YesNo?,
 
-    val commercialRegister: String,
+    val commercialRegister: String?,
 
-    val groupOfCompanies: YesNo,
+    val groupOfCompanies: YesNo?,
 
-    val groupOfCompaniesName: String,
+    val groupOfCompaniesName: String?,
 
-    val industry: String,
+    val industry: String?,
 
     val numberOfEmployees: BigDecimal,
 
-    val seasonalOrMigrantWorkers: YesNo,
+    val seasonalOrMigrantWorkers: YesNo?,
 
     val shareOfTemporaryWorkers: ShareOfTemporaryWorkers,
 
-    val totalRevenueCurrency: String,
+    val totalRevenueCurrency: String?,
 
     val totalRevenue: BigDecimal,
 

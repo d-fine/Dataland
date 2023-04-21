@@ -2642,13 +2642,6 @@
         ]
       },
       "LksgAddress": {
-        "required": [
-          "city",
-          "country",
-          "postalCode",
-          "state",
-          "streetAndHouseNumber"
-        ],
         "type": "object",
         "properties": {
           "streetAndHouseNumber": {
@@ -2684,10 +2677,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "worstFormsOfChildLaborForms": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "employmentUnderLocalMinimumAgePrevention": {
             "$ref": "#/components/schemas/YesNo"
@@ -2708,10 +2698,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "childLaborMeasures": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "childLaborPolicy": {
             "$ref": "#/components/schemas/YesNo"
@@ -2767,10 +2754,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "waterSavingMeasuresName": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "pipeMaintaining": {
             "$ref": "#/components/schemas/YesNo"
@@ -2779,10 +2763,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "contaminationMeasures": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           }
         }
       },
@@ -2906,20 +2887,6 @@
         }
       },
       "LksgEvidenceCertificatesAndAttestations": {
-        "required": [
-          "amforiBsciAuditReport",
-          "betterWorkProgramCertificate",
-          "emasCertification",
-          "fairLaborAssociationCertification",
-          "iso14000Certification",
-          "iso37001Certification",
-          "iso37301Certification",
-          "iso45001Certification",
-          "responsibleBusinessAssociationCertification",
-          "riskManagementSystemCertification",
-          "sa8000Certification",
-          "smetaSocialAuditConcept"
-        ],
         "type": "object",
         "properties": {
           "sa8000Certification": {
@@ -2959,10 +2926,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "additionalAudits": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           }
         }
       },
@@ -2999,10 +2963,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "forcedLaborAndSlaveryPreventionPractices": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "forcedLaborAndSlaveryPreventionMeasures": {
             "$ref": "#/components/schemas/YesNo"
@@ -3023,10 +2984,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "forcedLaborAndSlaveryMeasures": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "forcedLaborPolicy": {
             "$ref": "#/components/schemas/YesNo"
@@ -3034,19 +2992,22 @@
         }
       },
       "LksgGeneral": {
-        "required": [
-          "productionspecific"
-        ],
         "type": "object",
         "properties": {
           "masterData": {
             "$ref": "#/components/schemas/LksgMasterData"
           },
-          "productionspecific": {
-            "$ref": "#/components/schemas/LksgProductionspecific"
+          "manufacturingCompany": {
+            "$ref": "#/components/schemas/YesNo"
           },
-          "productionspecificOwnOperations": {
-            "$ref": "#/components/schemas/LksgProductionspecificOwnOperations"
+          "numberOfProductionSites": {
+            "type": "number"
+          },
+          "listOfProductionSites": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LksgProductionSite"
+            }
           },
           "riskManagementOwnOperations": {
             "$ref": "#/components/schemas/LksgRiskManagementOwnOperations"
@@ -3092,19 +3053,13 @@
             "type": "number"
           },
           "grievanceMechanismComplaintsReason": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "grievanceMechanismComplaintsAction": {
             "$ref": "#/components/schemas/YesNo"
           },
           "grievanceMechanismComplaintsActionUndertaken": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "grievanceMechanismPublicAccess": {
             "$ref": "#/components/schemas/YesNo"
@@ -3118,27 +3073,6 @@
         }
       },
       "LksgHumanRights": {
-        "required": [
-          "codeOfConduct",
-          "codeOfConductTraining",
-          "environmentalImpactPolicy",
-          "fairWorkingConditionsPolicy",
-          "highRiskCountries",
-          "highRiskCountriesActivity",
-          "highRiskCountriesProcurement",
-          "highRiskCountriesRawMaterials",
-          "highRiskCountriesRawMaterialsLocation",
-          "humanRightsViolation",
-          "humanRightsViolationAction",
-          "humanRightsViolationActionMeasures",
-          "humanRightsViolationLocation",
-          "legalProceedings",
-          "policyStatement",
-          "responsibilitiesForFairWorkingConditions",
-          "responsibilitiesForOccupationalSafety",
-          "responsibilitiesForTheEnvironment",
-          "supplierCodeOfConduct"
-        ],
         "type": "object",
         "properties": {
           "codeOfConduct": {
@@ -3154,10 +3088,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "humanRightsStrategy": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "environmentalImpactPolicy": {
             "$ref": "#/components/schemas/YesNo"
@@ -3181,64 +3112,37 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "humanRightsViolationLocation": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "humanRightsViolationAction": {
             "$ref": "#/components/schemas/YesNo"
           },
           "humanRightsViolationActionMeasures": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "highRiskCountriesRawMaterials": {
             "$ref": "#/components/schemas/YesNo"
           },
           "highRiskCountriesRawMaterialsLocation": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "highRiskCountriesActivity": {
             "$ref": "#/components/schemas/YesNo"
           },
           "highRiskCountries": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "highRiskCountriesProcurement": {
             "$ref": "#/components/schemas/YesNo"
           },
           "highRiskCountriesProcurementName": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           }
         }
       },
       "LksgMasterData": {
         "required": [
-          "address",
-          "commercialRegister",
-          "dataDate",
-          "groupOfCompanies",
-          "groupOfCompaniesName",
-          "headOffice",
-          "industry",
-          "name",
-          "numberOfEmployees",
-          "seasonalOrMigrantWorkers",
-          "shareOfTemporaryWorkers",
-          "totalRevenue",
-          "totalRevenueCurrency"
+          "dataDate"
         ],
         "type": "object",
         "properties": {
@@ -3294,10 +3198,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "persistentOrganicPollutantsUsed": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "persistentOrganicPollutantsProductionAndUseRiskOfExposure": {
             "$ref": "#/components/schemas/YesNo"
@@ -3310,114 +3211,53 @@
           }
         }
       },
-      "LksgProductionspecific": {
-        "required": [
-          "addressesOfProductionSites",
-          "capacity",
-          "isInhouseProductionOrIsContractProcessing",
-          "listOfGoodsOrServices",
-          "listOfProductionSites",
-          "market",
-          "nameOfProductionSites",
-          "numberOfProductionSites",
-          "productionSites",
-          "specificProcurement",
-          "subcontractingCompaniesCountries",
-          "subcontractingCompaniesIndustries"
-        ],
+      "LksgProductionSite": {
         "type": "object",
         "properties": {
-          "listOfProductionSites": {
-            "$ref": "#/components/schemas/YesNo"
+          "nameOfProductionSite": {
+            "type": "string"
           },
-          "capacity": {
-            "type": "number"
+          "addressOfProductionSite": {
+            "$ref": "#/components/schemas/LksgAddress"
           },
-          "isInhouseProductionOrIsContractProcessing": {
+          "isInHouseProductionOrIsContractProcessing": {
             "$ref": "#/components/schemas/InHouseProductionOrContractProcessing"
           },
           "subcontractingCompaniesCountries": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "subcontractingCompaniesIndustries": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "productionSites": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "numberOfProductionSites": {
-            "type": "number"
-          },
-          "nameOfProductionSites": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "addressesOfProductionSites": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LksgAddress"
-            }
+            "type": "string"
           },
           "listOfGoodsOrServices": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
+          },
+          "capacity": {
+            "type": "number"
           },
           "market": {
             "$ref": "#/components/schemas/NationalOrInternationalMarket"
           },
           "specificProcurement": {
             "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "LksgProductionspecificOwnOperations": {
-        "type": "object",
-        "properties": {
+          },
           "mostImportantProducts": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "productionSteps": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "relatedCorporateSupplyChain": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "productCategories": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "definitionProductTypeService": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "sourcingCountryPerCategory": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "numberOfDirectSuppliers": {
             "type": "number"
@@ -3440,19 +3280,13 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "riskManagementSystemIdentifiedRisks": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "riskManagementSystemCounteract": {
             "$ref": "#/components/schemas/YesNo"
           },
           "riskManagementSystemMeasures": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "riskManagementSystemResponsibility": {
             "$ref": "#/components/schemas/YesNo"
@@ -3536,10 +3370,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "unlawfulEvictionAndTakingOfLandStrategiesName": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": {
             "$ref": "#/components/schemas/YesNo"
@@ -3594,10 +3425,7 @@
             "$ref": "#/components/schemas/YesNoNa"
           },
           "useOfPrivatePublicSecurityForcesMeasures": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           }
         }
       },
@@ -3626,10 +3454,7 @@
             "$ref": "#/components/schemas/YesNoNa"
           },
           "adequateWageMeasures": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           }
         }
       },

@@ -7,29 +7,29 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Evidence, certificates and attestations"
  */
 data class LksgEvidenceCertificatesAndAttestations(
-    val sa8000Certification: YesNo,
+    val sa8000Certification: YesNo?,
 
-    val smetaSocialAuditConcept: YesNo,
+    val smetaSocialAuditConcept: YesNo?,
 
-    val betterWorkProgramCertificate: YesNo,
+    val betterWorkProgramCertificate: YesNo?,
 
-    val iso45001Certification: YesNo,
+    val iso45001Certification: YesNo?,
 
-    val iso14000Certification: YesNo,
+    val iso14000Certification: YesNo?,
 
-    val emasCertification: YesNo,
+    val emasCertification: YesNo?,
 
-    val iso37001Certification: YesNo,
+    val iso37001Certification: YesNo?,
 
-    val iso37301Certification: YesNo,
+    val iso37301Certification: YesNo?,
 
-    val riskManagementSystemCertification: YesNo,
+    val riskManagementSystemCertification: YesNo?,
 
-    val amforiBsciAuditReport: YesNo,
+    val amforiBsciAuditReport: YesNo?,
 
-    val responsibleBusinessAssociationCertification: YesNo,
+    val responsibleBusinessAssociationCertification: YesNo?,
 
-    val fairLaborAssociationCertification: YesNo,
+    val fairLaborAssociationCertification: YesNo?,
 
-    val additionalAudits: List<String>?,
+    val additionalAudits: String?,
 )

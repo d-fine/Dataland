@@ -15,7 +15,7 @@ data class LksgChildLabor(
 
     val worstFormsOfChildLabor: YesNo?,
 
-    val worstFormsOfChildLaborForms: List<String>?,
+    val worstFormsOfChildLaborForms: String?,
 
     val employmentUnderLocalMinimumAgePrevention: YesNo?,
 
@@ -29,7 +29,7 @@ data class LksgChildLabor(
 
     val employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: YesNo?,
 
-    val childLaborMeasures: List<String>?,
+    val childLaborMeasures: String?,
 
     val childLaborPolicy: YesNo?,
 )

@@ -10,11 +10,12 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { getAssurance, getFiscalYearDeviation, humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 import { getCsvDataSourceMapping } from "@e2e/fixtures/common/DataSourceFixtures";
 import { generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
-import { randomYesNoNaUndefined, randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
+import { randomYesNoNaUndefined, randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";
 import { randomPastDateOrUndefined } from "@e2e/fixtures/common/DateFixtures";
-import { randomNumberOrUndefined } from "@e2e/fixtures/common/NumberFixtures";
+import { randomNumber } from "@e2e/fixtures/common/NumberFixtures";
 import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
+import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Fills in random values for fields shared between the eutaxonomy frameworks
@@ -27,9 +28,9 @@ export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxo
   input.fiscalYearEnd = randomPastDateOrUndefined();
   input.assurance = generateAssuranceData(input.referencedReports);
   input.scopeOfEntities = randomYesNoNaUndefined();
-  input.reportingObligation = randomYesNoUndefined();
-  input.numberOfEmployees = randomNumberOrUndefined(100000);
-  input.activityLevelReporting = randomYesNoUndefined();
+  input.reportingObligation = valueOrUndefined(randomYesNo());
+  input.numberOfEmployees = valueOrUndefined(randomNumber(100000));
+  input.activityLevelReporting = valueOrUndefined(randomYesNo());
 }
 
 /**

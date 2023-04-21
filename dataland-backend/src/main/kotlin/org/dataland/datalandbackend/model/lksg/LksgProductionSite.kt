@@ -18,29 +18,29 @@ data class LksgProductionSite(
     @field:JsonProperty()
     val isInHouseProductionOrIsContractProcessing: InHouseProductionOrContractProcessing?,
 
-    val subcontractingCompaniesCountries: List<String>,
+    val subcontractingCompaniesCountries: String?,
 
-    val subcontractingCompaniesIndustries: List<String>,
+    val subcontractingCompaniesIndustries: String?,
 
-    val listOfGoodsOrServices: List<String>?,
+    val listOfGoodsOrServices: String?,
 
     val capacity: BigDecimal,
 
     val market: NationalOrInternationalMarket,
 
-    val specificProcurement: YesNo,
+    val specificProcurement: YesNo?,
 
-    val mostImportantProducts: List<String>?,
+    val mostImportantProducts: String?,
 
-    val productionSteps: List<String>?,
+    val productionSteps: String?,
 
-    val relatedCorporateSupplyChain: List<String>?,
+    val relatedCorporateSupplyChain: String?,
 
-    val productCategories: List<String>?,
+    val productCategories: String?,
 
-    val definitionProductTypeService: List<String>?,
+    val definitionProductTypeService: String?,
 
-    val sourcingCountryPerCategory: List<String>?,
+    val sourcingCountryPerCategory: String?,
 
     val numberOfDirectSuppliers: BigDecimal?,
 

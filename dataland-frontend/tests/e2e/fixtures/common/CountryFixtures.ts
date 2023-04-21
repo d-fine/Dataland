@@ -1,4 +1,4 @@
-import {faker} from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 
 /**
  * Randomly returns a country from "BE", "DE", "FR", "IT", "LU", "PL", "PT", "ES"
@@ -16,11 +16,7 @@ export function generateIso2CountryCode(): string {
  * @returns 1 to 8 random country codes
  */
 export function generateListOfIso2CountryCodes(): string[] {
-  const listOfCountryCodes = Array.from(
-      { length: faker.datatype.number({ min: 0, max: 8 }) },
-      generateIso2CountryCode
-  );
-  return listOfCountryCodes
+  return Array.from({ length: faker.datatype.number({ min: 0, max: 8 }) }, generateIso2CountryCode);
 }
 
 /**
@@ -29,9 +25,6 @@ export function generateListOfIso2CountryCodes(): string[] {
  * @returns 1 to 8 random country codes or undefined
  */
 export function generateListOfIso2CountryCodesOrUndefined(): string[] | undefined {
-  const listOfCountryCodes = Array.from(
-      { length: faker.datatype.number({ min: 0, max: 8 }) },
-      generateIso2CountryCode
-  );
+  const listOfCountryCodes = Array.from({ length: faker.datatype.number({ min: 0, max: 8 }) }, generateIso2CountryCode);
   return faker.datatype.boolean() ? listOfCountryCodes : undefined;
 }

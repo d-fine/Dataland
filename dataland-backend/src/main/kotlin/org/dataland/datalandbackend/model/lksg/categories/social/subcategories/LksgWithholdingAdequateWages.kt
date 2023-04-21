@@ -22,5 +22,5 @@ data class LksgWithholdingAdequateWages(
 
     val fixedPieceworkWages: YesNoNa?,
 
-    val adequateWageMeasures: List<String>?,
+    val adequateWageMeasures: String?,
 )

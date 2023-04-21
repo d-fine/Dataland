@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention(
     val persistentOrganicPollutantsProductionAndUse: YesNo?,
 
-    val persistentOrganicPollutantsUsed: List<String>?,
+    val persistentOrganicPollutantsUsed: String?,
 
     val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo?,
 
