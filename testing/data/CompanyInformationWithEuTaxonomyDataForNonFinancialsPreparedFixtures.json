@@ -3,215 +3,191 @@
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
 			"companyAlternativeNames": [
-				"Thöne GmbH & Co. KG",
-				"Uliczka OHG"
+				"Herweg UG",
+				"Hesse-Bohge",
+				"Kirch-Wolfarth"
 			],
-			"headquarters": "Nord Marvindorf",
-			"headquartersPostalCode": "41443",
-			"sector": "infrastructures",
+			"headquarters": "Süd Franka",
+			"headquartersPostalCode": "09930",
+			"sector": "eyeballs",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "th8i6h9ylhuy6mx"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "ddim3tz1n"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "z2uep0o6h6i9"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "q7p21r8plaj415qd69ph"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "ujvjj4lm8y"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "s941oa9"
+					"identifierValue": "5vtr7v3oatkqla2"
 				}
 			],
-			"countryCode": "MK",
+			"countryCode": "TL",
 			"isTeaserCompany": false,
-			"website": "http://verspielt-go.de"
+			"website": "https://unübertroffen-magnetismus.info"
 		},
 		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-08-18",
+			"numberOfEmployees": 20734,
 			"referencedReports": {
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-04-01",
-					"currency": "KZT"
+					"reportDate": "2022-12-20",
+					"currency": "SLL"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"currency": "BYN"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"currency": "BIF"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-07-04",
-					"currency": "XPD"
+					"isGroupLevel": "NA",
+					"reportDate": "2023-04-09",
+					"currency": "MOP"
 				}
 			},
-			"fiscalYearEnd": "2022-06-02",
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
-			"numberOfEmployees": 24825,
+			"scopeOfEntities": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.0177,
+					"value": 0.8536,
 					"dataSource": {
-						"page": 266,
+						"page": 742,
 						"report": "IntegratedReport",
-						"tagName": "infrastructures"
+						"tagName": "platforms"
 					},
-					"quality": "Incomplete",
-					"comment": "index mobile bus"
+					"quality": "Estimated",
+					"comment": "input primary monitor"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.3068,
+					"value": 0.041,
 					"dataSource": {
-						"page": 463,
-						"report": "SustainabilityReport",
-						"tagName": "synergies"
+						"page": 1106,
+						"report": "ESEFReport",
+						"tagName": "infrastructures"
 					},
-					"quality": "Incomplete",
-					"comment": "navigate redundant capacitor"
+					"quality": "Reported",
+					"comment": "parse back-end microchip"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.854,
+					"value": 0.5985,
 					"dataSource": {
-						"page": 705,
-						"report": "SustainabilityReport",
-						"tagName": "content"
+						"page": 441,
+						"report": "IntegratedReport",
+						"tagName": "web services"
 					},
-					"quality": "Reported",
-					"comment": "program multi-byte feed"
+					"quality": "Incomplete",
+					"comment": "synthesize redundant bus"
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2022"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
 			"companyAlternativeNames": [
-				"Bürger, Diezel und Edorh",
-				"Leyckes-Boyde"
+				"Röse-Fenner"
 			],
 			"companyLegalForm": "AG",
-			"headquarters": "Rüdigerburg",
-			"headquartersPostalCode": "20452",
-			"sector": "vortals",
+			"headquarters": "Ost Marlene",
+			"headquartersPostalCode": "88777",
+			"sector": "eyeballs",
 			"identifiers": [
 				{
-					"identifierType": "Isin",
-					"identifierValue": "nqopx7sl5frc"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "im0ffeo6w1"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "yd6s7e7"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "lb9te2s8ctca8kq"
 				}
 			],
-			"countryCode": "CF",
+			"countryCode": "RE",
 			"isTeaserCompany": false,
-			"website": "http://ideal-politiker.info"
+			"website": "https://gewaltig-epistemologie.ch"
 		},
 		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-11-29",
+			"numberOfEmployees": 78040,
 			"referencedReports": {
-				"IntegratedReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-09-07",
-					"currency": "DOP"
+					"isGroupLevel": "NA",
+					"reportDate": "2023-01-08",
+					"currency": "CRC"
 				}
 			},
-			"fiscalYearEnd": "2022-06-12",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Teufel-Umbach",
-				"dataSource": {
-					"page": 460,
-					"report": "IntegratedReport",
-					"tagName": "models"
-				}
+				"assurance": "ReasonableAssurance"
 			},
-			"scopeOfEntities": "No",
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 672968.84,
+					"value": 340227.59,
 					"dataSource": {
-						"page": 275,
-						"report": "IntegratedReport",
-						"tagName": "partnerships"
+						"page": 553,
+						"report": "SustainabilityReport",
+						"tagName": "markets"
 					},
-					"quality": "Audited",
-					"comment": "connect solid state array"
+					"quality": "Incomplete",
+					"comment": "navigate auxiliary circuit"
 				},
 				"eligiblePercentage": {
-					"value": 0.407,
+					"value": 0.6808,
 					"dataSource": {
-						"page": 938,
-						"report": "IntegratedReport",
-						"tagName": "experiences"
+						"page": 517,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
 					},
 					"quality": "Reported",
-					"comment": "override open-source application"
+					"comment": "connect neural alarm"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 543071.7,
+					"value": 88300.39,
 					"dataSource": {
-						"page": 588,
-						"report": "IntegratedReport",
-						"tagName": "supply-chains"
+						"page": 508,
+						"report": "SustainabilityReport",
+						"tagName": "interfaces"
 					},
-					"quality": "Reported",
-					"comment": "reboot bluetooth matrix"
+					"quality": "Estimated",
+					"comment": "reboot virtual hard drive"
 				},
 				"eligiblePercentage": {
-					"value": 0.1251,
+					"value": 0.8424,
 					"dataSource": {
-						"page": 777,
-						"report": "IntegratedReport",
-						"tagName": "functionalities"
+						"page": 764,
+						"report": "SustainabilityReport",
+						"tagName": "solutions"
 					},
-					"quality": "Audited",
-					"comment": "generate 1080p bandwidth"
+					"quality": "Estimated",
+					"comment": "index 1080p panel"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 701962.36,
-					"dataSource": {
-						"page": 538,
-						"report": "IntegratedReport",
-						"tagName": "e-business"
-					},
-					"quality": "Audited",
-					"comment": "generate primary transmitter"
+					"value": 956246.6,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.3752,
+					"value": 0.7548,
 					"dataSource": {
-						"page": 799,
-						"report": "IntegratedReport",
-						"tagName": "infrastructures"
+						"page": 86,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
 					},
-					"quality": "Reported",
-					"comment": "synthesize bluetooth driver"
+					"quality": "Incomplete",
+					"comment": "quantify neural capacitor"
 				}
 			}
 		},
@@ -221,120 +197,139 @@
 		"companyInformation": {
 			"companyName": "company_without_reports",
 			"companyAlternativeNames": [
-				"Friedrich, Franzmann und Rodowski",
-				"Klapper-Plotzitzka"
+				"Birkemeyer, Mordhorst und Pingpank",
+				"Frank-Zschunke",
+				"Moguenara KG",
+				"Walz-Klabuhn"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"headquarters": "Görlichburg",
-			"headquartersPostalCode": "34111",
-			"sector": "interfaces",
+			"headquarters": "Salomestadt",
+			"headquartersPostalCode": "96872",
+			"sector": "synergies",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "k488d2enw71c6td"
+					"identifierValue": "67cpxzkznx7r10y"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "ontt9wdc4"
+					"identifierValue": "b2z060qul"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "irubhsplfwp7"
+					"identifierValue": "4e631517evak"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "iprs2n61o3xcrgdz7f7o"
+					"identifierValue": "mb3p8nwnsfcqcyzo1tpi"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "nxumtre6fz"
+					"identifierValue": "zqdjkzq2j4"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "ijixrlg"
+					"identifierValue": "66292vf"
 				}
 			],
-			"countryCode": "PY",
-			"isTeaserCompany": false
+			"countryCode": "PN",
+			"isTeaserCompany": false,
+			"website": "https://konsequent-schwimmen.ch"
 		},
 		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-01-01",
+			"numberOfEmployees": 98932,
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"provider": "Klopsch-Maier"
 			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "No",
+			"scopeOfEntities": "NA",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 50578.99,
-					"dataSource": {
-						"page": 778,
-						"report": "IntegratedReport",
-						"tagName": "convergence"
-					},
-					"quality": "Estimated",
-					"comment": "index 1080p bus"
-				},
-				"alignedPercentage": {
-					"value": 0.093,
+					"value": 451587.82,
 					"quality": "Estimated"
 				},
-				"eligiblePercentage": {
-					"value": 0.3236,
+				"alignedPercentage": {
+					"value": 0.0328,
 					"dataSource": {
-						"page": 430,
-						"report": "ESEFReport",
-						"tagName": "web services"
+						"page": 718,
+						"report": "AnnualReport",
+						"tagName": "supply-chains"
+					},
+					"quality": "Audited",
+					"comment": "index solid state hard drive"
+				},
+				"eligiblePercentage": {
+					"value": 0.8055,
+					"dataSource": {
+						"page": 1148,
+						"report": "IntegratedReport",
+						"tagName": "paradigms"
 					},
 					"quality": "Estimated",
-					"comment": "input solid state hard drive"
+					"comment": "transmit digital circuit"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 971044.9,
+					"value": 437139.31,
 					"dataSource": {
-						"page": 354,
+						"page": 1192,
 						"report": "SustainabilityReport",
-						"tagName": "e-services"
+						"tagName": "markets"
 					},
 					"quality": "Audited",
-					"comment": "index bluetooth sensor"
+					"comment": "override haptic port"
 				},
 				"alignedPercentage": {
-					"value": 0.1093,
+					"value": 0.4561,
 					"dataSource": {
-						"page": 109,
-						"report": "ESEFReport",
-						"tagName": "deliverables"
+						"page": 316,
+						"report": "AnnualReport",
+						"tagName": "schemas"
 					},
-					"quality": "Reported",
-					"comment": "quantify back-end transmitter"
+					"quality": "Audited",
+					"comment": "hack virtual array"
 				},
 				"eligiblePercentage": {
-					"value": 0.428,
-					"quality": "Estimated"
+					"value": 0.8878,
+					"dataSource": {
+						"page": 31,
+						"report": "SustainabilityReport",
+						"tagName": "solutions"
+					},
+					"quality": "Audited",
+					"comment": "program auxiliary program"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 519525.58,
-					"quality": "Incomplete"
+					"quality": "NA"
 				},
 				"alignedPercentage": {
-					"value": 0.7528,
+					"value": 0.0689,
 					"dataSource": {
-						"page": 1054,
-						"report": "AnnualReport",
-						"tagName": "supply-chains"
+						"page": 1018,
+						"report": "IntegratedReport",
+						"tagName": "eyeballs"
 					},
-					"quality": "Incomplete",
-					"comment": "generate digital program"
+					"quality": "Reported",
+					"comment": "transmit virtual bus"
 				},
 				"eligiblePercentage": {
-					"quality": "NA"
+					"value": 0.2293,
+					"dataSource": {
+						"page": 224,
+						"report": "AnnualReport",
+						"tagName": "content"
+					},
+					"quality": "Incomplete",
+					"comment": "input neural panel"
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	}
 ]
