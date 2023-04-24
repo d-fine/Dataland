@@ -174,9 +174,12 @@
                   <div class="col-9 formFields">
                     <h3 class="mt-0">Basic information</h3>
 
-                    <FiscalYearDeviatingComponent
+                    <YesNoComponent
                       :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
                       :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
+                      :name="'fiscalYearDeviation'"
+                      :radioButtonsOptions="['Deviation', 'No Deviation']"
+                      required="required"
                     />
 
                     <!-- The date the fiscal year ends -->
@@ -494,7 +497,6 @@ import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
-import FiscalYearDeviatingComponent from "@/components/forms/parts/FiscalYearDeviatingComponent.vue";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 
@@ -502,7 +504,6 @@ export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: {
     DataPointForm,
-    FiscalYearDeviatingComponent,
     Calendar,
     UploadFormHeader,
     PrimeButton,

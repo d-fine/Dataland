@@ -166,9 +166,12 @@
                   <div class="col-9 formFields">
                     <h3 class="mt-0">Basic information</h3>
 
-                    <FiscalYearDeviatingComponent
+                    <YesNoComponent
                       :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
                       :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
+                      :name="'fiscalYearDeviation'"
+                      :radioButtonsOptions="['Deviation', 'No Deviation']"
+                      required="required"
                     />
 
                     <!-- The date the fiscal year ends -->
@@ -508,7 +511,6 @@ import {
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import FiscalYearDeviatingComponent from "@/components/forms/parts/FiscalYearDeviatingComponent.vue";
 
 export default defineComponent({
   setup() {
@@ -518,7 +520,6 @@ export default defineComponent({
   },
   name: "CreateEUTaxonomyForFinancials",
   components: {
-    FiscalYearDeviatingComponent,
     FailedUpload,
     FormKit,
     SuccessUpload,
