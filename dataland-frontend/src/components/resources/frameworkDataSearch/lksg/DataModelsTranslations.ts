@@ -970,7 +970,7 @@ export const lksgDataModel = [
             name: "industry",
             label: "Industry",
             description: "In which industry is your company primarily active?",
-            component: "NaceSectorSelector",
+            component: "NaceCodeFormField",
             dependency: "",
           },
           {
@@ -1055,7 +1055,7 @@ export const lksgDataModel = [
             name: "subcontractingCompaniesIndustries",
             label: "Subcontracting Companies Industries",
             description: "In which industries do the subcontracting companies operate?",
-            component: "NaceSectorSelector",
+            component: "NaceCodeFormField",
             dependency:
               "this.companyAssociatedLksgData.data?.general?.productionspecific?.isInhouseProductionOrIsContractProcessing",
           },
@@ -1092,7 +1092,7 @@ export const lksgDataModel = [
             name: "listOfGoodsOrServices",
             label: "List Of Goods Or Services",
             description: "Which goods/services are manufactured or provided per (production) site?",
-            component: "NaceSectorSelector",
+            component: "NaceCodeFormField",
             dependency: "this.companyAssociatedLksgData.data?.general?.productionspecific?.productionSites",
           },
           {
@@ -1121,7 +1121,7 @@ export const lksgDataModel = [
             label: "Most Important Products",
             description:
               "Please give an overview of the most important products or services in terms of sales that your company manufactures and/or distributes or offers (own operations)",
-            component: "NaceSectorSelector",
+            component: "NaceCodeFormField",
             dependency: "",
           },
           {
@@ -1143,14 +1143,14 @@ export const lksgDataModel = [
             name: "productCategories",
             label: "Product Categories",
             description: "Name their procurement categories (products, raw materials, services) (own operations)",
-            component: "NaceSectorSelector",
+            component: "NaceCodeFormField",
             dependency: "",
           },
           {
             name: "definitionProductTypeservice",
             label: "Definition Product Type/Service",
             description: "Define the procured product types/services per category (own operations)",
-            component: "NaceSectorSelector",
+            component: "NaceCodeFormField",
             dependency: "",
           },
           {

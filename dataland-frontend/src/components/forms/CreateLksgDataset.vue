@@ -29,11 +29,6 @@
                   </div>
 
                   <div class="col-9 formFields">
-                    <div>
-                      <!-- TODO: PROTOTYPE -->
-                      <h1>TODO: NACE SELECTOR PROTOTYPE</h1>
-                      <NaceSectorSelector v-model="selectedNaceCodes" />
-                    </div>
                     <FormKit type="group" name="general" :label="lksgSubAreasNameMappings._general">
                       <DateFormField
                         data-test="lksgDataDate"
@@ -454,7 +449,7 @@ import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import NaceSectorSelector from "@/components/forms/parts/NaceSectorSelector.vue";
+import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
@@ -486,7 +481,7 @@ export default defineComponent({
     DateFormField,
     SingleSelectFormField,
     MultiSelectFormField,
-    NaceSectorSelector,
+    NaceCodeFormField,
     AddressFormField,
     RadioButtonsFormField,
   },
@@ -496,7 +491,6 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
-      selectedNaceCodes: [], // TODO: PROTOTYPE
       isYourCompanyManufacturingCompany: "No",
       listOfProductionSites: [
         {

@@ -23,7 +23,7 @@ export function filterNodes(nodes: Array<TreeNode>, searchTerm: string): Array<T
  * (Ref https://ec.europa.eu/eurostat/ramon/nomenclatures/index.cfm?TargetUrl=LST_NOM_DTL&StrNom=NACE_REV2&StrLanguageCode=EN)
  * Transformed into TreeNode format by the (TODO: UPLOAD CONVERTER CODE AND REFERENCE IT HERE)
  */
-export const naceData: Array<TreeNode> = [
+export const naceCodeTree: Array<TreeNode> = [
   {
     key: "A",
     label: "A - Agriculture, hunting and forestry",
@@ -2934,3 +2934,19 @@ export const naceData: Array<TreeNode> = [
     ],
   },
 ];
+
+export const naceCodeMap: Map<string, TreeNode> = new Map();
+
+/**
+ * Transforms the nace code tree to a nace code map
+ *
+ * @param input an array of nace code tree nodes
+ */
+function populateNaceCodeMap(input: Array<TreeNode>): void {
+  for (let i = 0; i < input.length; i++) {
+    naceCodeMap.set(assertDefined(input[i].key), input[i]);
+    populateNaceCodeMap(input[i].children || []);
+  }
+}
+
+populateNaceCodeMap(naceCodeTree);
