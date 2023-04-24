@@ -171,7 +171,7 @@
                       :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
                       :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
                       :name="'fiscalYearDeviation'"
-                      :radioButtonsOptions="['Deviation', 'NoDeviation']"
+                      :radioButtonsOptions="['Deviation', 'No Deviation']"
                       required="required"
                     />
 
@@ -271,7 +271,7 @@
                           <FormKit
                             type="select"
                             name="assurance"
-                            placeholder="Please chose..."
+                            placeholder="Please choose..."
                             :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
                             validation="required"
                             :options="assuranceData"

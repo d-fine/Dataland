@@ -179,7 +179,7 @@
                       :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
                       :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
                       :name="'fiscalYearDeviation'"
-                      :radioButtonsOptions="['Deviation', 'NoDeviation']"
+                      :radioButtonsOptions="['Deviation', 'No Deviation']"
                       required="required"
                     />
 
@@ -279,7 +279,7 @@
                           <FormKit
                             type="select"
                             name="assurance"
-                            placeholder="Please chose..."
+                            placeholder="Please choose..."
                             :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
                             validation="required"
                             :options="assuranceData"
@@ -493,8 +493,8 @@ import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
-import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
+import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 
 export default defineComponent({
@@ -633,7 +633,6 @@ export default defineComponent({
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
       }
-      console.log("We are in postEuTaxonomyDataForNonFinancials function.");
     },
 
     /**
