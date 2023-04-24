@@ -144,10 +144,10 @@ function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined):
  */
 function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
   if (value !== undefined && value.value !== undefined) {
-    const eligibleRevenue = value.value.toString();
+    const valueAsString = value.value.toString();
     if (divTag === "") {
-      cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(eligibleRevenue);
-      cy.get(`[data-test="${inputsTag}"]`).find('input[name="page"]').type(eligibleRevenue);
+      cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(valueAsString);
+      cy.get(`[data-test="${inputsTag}"]`).find('input[name="page"]').type("13");
       cy.get(`[data-test="${inputsTag}"]`).find('select[name="report"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`).find('select[name="quality"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`)
@@ -157,7 +157,7 @@ function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecima
       cy.get(`[data-test="${divTag}"]`)
         .find(`[data-test="${inputsTag}"]`)
         .find('input[name="value"]')
-        .type(eligibleRevenue);
+        .type(valueAsString);
       cy.get(`[data-test="${divTag}"]`)
         .find(`[data-test="${inputsTag}"]`)
         .find('input[name="page"]')

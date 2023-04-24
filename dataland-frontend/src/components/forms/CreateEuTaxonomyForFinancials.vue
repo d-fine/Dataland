@@ -62,8 +62,6 @@
                 />
 
                 <BasicInformationFields
-                  :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
-                  :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
                   :fiscalYearEndAsDate="fiscalYearEndAsDate"
                   :fiscalYearEnd="fiscalYearEnd"
                   @updateFiscalYearEndHandler="updateFiscalYearEndHandler"
@@ -88,7 +86,7 @@
                           <FormKit
                             type="select"
                             name="assurance"
-                            placeholder="Please chose..."
+                            placeholder="Please choose..."
                             :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
                             validation="required"
                             :options="assuranceData"
@@ -123,7 +121,7 @@
                                 type="select"
                                 name="report"
                                 placeholder="Select a report"
-                                validation-label="Select a report"
+                                validation-label="Selecting a report"
                                 validation="required"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
                               />
@@ -187,7 +185,7 @@
                       <FormKit
                         :modelValue="computedFinancialServicesTypes"
                         type="text"
-                        validationLabel="You must choose and confirm this "
+                        validationLabel="Choosing a Financials Services Type and adding KPIs for it "
                         validation="required"
                         name="financialServicesTypes"
                         :outer-class="{ 'hidden-input': true }"
@@ -197,18 +195,18 @@
                 </div>
 
                 <div
-                  v-for="copanyType of confirmedSelectedKPIs"
-                  :key="copanyType"
-                  :data-test="copanyType.value"
+                  v-for="companyType of confirmedSelectedKPIs"
+                  :key="companyType"
+                  :data-test="companyType.value"
                   class="uploadFormSection"
                 >
                   <div class="flex w-full">
                     <div class="p-3 topicLabel">
-                      <h3 :id="copanyType.value" class="anchor title">{{ copanyType.label }}</h3>
+                      <h3 :id="companyType.value" class="anchor title">{{ companyType.label }}</h3>
                     </div>
 
                     <PrimeButton
-                      @click="removeKpisSection(copanyType.value)"
+                      @click="removeKpisSection(companyType.value)"
                       label="REMOVE THIS SECTION"
                       data-test="removeSectionButton"
                       class="p-button-text ml-auto"
@@ -216,9 +214,9 @@
                     ></PrimeButton>
                   </div>
 
-                  <FormKit v-if="copanyType.value !== 'assetManagementKpis'" :name="copanyType.value" type="group">
+                  <FormKit v-if="companyType.value !== 'assetManagementKpis'" :name="companyType.value" type="group">
                     <div
-                      v-for="kpiType of euTaxonomyPseudoModelAndMappings[copanyType.value]"
+                      v-for="kpiType of euTaxonomyPseudoModelAndMappings[companyType.value]"
                       :key="kpiType"
                       :data-test="kpiType"
                       class="uploadFormSection"
@@ -226,10 +224,7 @@
                       <div class="col-9 formFields">
                         <FormKit :name="kpiType" type="group">
                           <div class="form-field">
-                            <h3>
-                              {{ euTaxonomyKpiNameMappings[kpiType] ?? "" }}
-                            </h3>
-                            <KPIfieldSet
+                            <DataPointForm
                               :name="kpiType ?? ''"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -243,7 +238,7 @@
 
                   <FormKit name="eligibilityKpis" type="group">
                     <FormKit
-                      :name="euTaxonomyPseudoModelAndMappings?.companyTypeToEligibilityKpis[copanyType.value]"
+                      :name="euTaxonomyPseudoModelAndMappings?.companyTypeToEligibilityKpis[companyType.value]"
                       type="group"
                     >
                       <div
@@ -255,10 +250,7 @@
                         <div class="col-9 formFields">
                           <FormKit :name="kpiTypeEligibility" type="group">
                             <div class="form-field">
-                              <h3>
-                                {{ euTaxonomyKpiNameMappings[kpiTypeEligibility] ?? "" }}
-                              </h3>
-                              <KPIfieldSet
+                              <DataPointForm
                                 :name="kpiTypeEligibility ?? ''"
                                 :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                 :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -308,7 +300,6 @@ import BasicInformationFields from "@/components/forms/parts/BasicInformationFie
 
 import PrimeButton from "primevue/button";
 import MultiSelect from "primevue/multiselect";
-import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
@@ -319,7 +310,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
+import { checkCustomInputs, checkThatAllReportsAreReferenced } from "@/utils/ValidationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -333,7 +324,7 @@ import {
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "@clients/backend";
 import { AxiosError, AxiosResponse } from "axios";
-import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
+import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/ObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
@@ -343,6 +334,7 @@ import {
 } from "@/utils/EuTaxonomyUtils";
 import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
 import { DocumentUploadResponse } from "@clients/documentmanager";
+import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 
 export default defineComponent({
   setup() {
@@ -365,7 +357,7 @@ export default defineComponent({
     PrimeButton,
     Calendar,
     MultiSelect,
-    KPIfieldSet,
+    DataPointForm,
   },
   emits: ["datasetCreated"],
   data() {
@@ -384,9 +376,9 @@ export default defineComponent({
       euTaxonomyPseudoModelAndMappings,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
-      checkCustomInputs,
       formatBytesUserFriendly,
       updatePropertyFilesUploaded,
+      checkCustomInputs,
       route: useRoute(),
       waitingForData: false,
       editMode: false,
@@ -521,6 +513,10 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
+        checkThatAllReportsAreReferenced(
+          this.formInputsModel.data as ObjectType,
+          this.namesOfAllCompanyReportsForTheDataset
+        );
         let allFileUploadedSuccessful = true;
         const documentUploadControllerControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -537,7 +533,7 @@ export default defineComponent({
               if (!documentExists.data.documentExists) {
                 this.uploadFileResponse = await documentUploadControllerControllerApi.postDocument(
                   this.filesToUpload[index]
-                );
+                ); // TODO why is this a vue data field?
                 this.filesToUpload[index]["documentId"] = this.uploadFileResponse.data.documentId;
               } else {
                 this.filesToUpload[index]["documentId"] = hash;
@@ -570,29 +566,14 @@ export default defineComponent({
             await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
               formInputsModelToSend
             );
+          this.$emit("datasetCreated");
         }
-      } catch (error) {
+      } catch (error: Error) {
         this.messageCount++;
+        this.message = (error as Error).message;
         console.error(error);
-        if (error instanceof AxiosError) {
-          this.message = "An error occurred: " + error.message;
-        } else {
-          this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
-        }
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
-        this.confirmedSelectedKPIs = [];
-        this.selectedKPIs = [];
-        this.fiscalYearEndAsDate = null;
-        this.filesToUpload = [];
-        this.listOfUploadedReportsInfo = [];
-        this.formInputsModel = {};
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        this.$refs.UploadReports.clearAllSelectedFiles();
-        await this.$nextTick();
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
-        this.$emit("datasetCreated");
       }
     },
 
@@ -620,11 +601,7 @@ export default defineComponent({
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param index Index number of the report
      */
-    removeReportFromFilesToUpload(
-      fileToRemove: Record<string, string>,
-      fileRemoveCallback: (x: number) => void,
-      index: number
-    ) {
+    removeReportFromFilesToUpload(fileToRemove: ExtendedFile, fileRemoveCallback: (x: number) => void, index: number) {
       fileRemoveCallback(index);
       this.filesToUpload = this.filesToUpload.filter((el) => {
         return el.name !== fileToRemove.name;

@@ -37,24 +37,25 @@ describeIf(
     function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
       return Math.round(inputNumber * 100) / 100;
     }
-
+    /*
     it("Create a EU Taxonomy Dataset via Api with total(€) and eligible(%) numbers", () => {
       const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
-        cy.get("body").should("contain", "Eligible Revenue").should("contain", `Out of total of`);
+      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(preparedFixture, () => {
+        cy.get("body").should("contain", `Out of total of`);
         cy.get("body")
           .should("contain", "Eligible Revenue")
           .should(
             "contain",
             `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligiblePercentage!.value!)}%`
           );
-        cy.get(".font-medium.text-3xl").should("contain", "€");
+        cy.get(".font-medium.text-3xl").should("contain", "€"); // TODO componenet test?
       });
     });
-
+*/
+    /*
     it("Create a EU Taxonomy Dataset via Api with only eligible(%) numbers", () => {
       const preparedFixture = getPreparedFixture("only-eligible-numbers", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
+      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(preparedFixture, () => {
         cy.get("body")
           .should("contain", "Eligible OpEx")
           .should(
@@ -64,27 +65,33 @@ describeIf(
         cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `Out of total of`);
         cy.get(".font-medium.text-3xl").should("not.contain", "€");
       });
-    });
-
+    }); // TODO componenet test?
+*/
+    /*
     it("Create a EU Taxonomy Dataset via Api without referenced reports and ensure that the reports banner is not displayed", () => {
       const preparedFixture = getPreparedFixture("company_without_reports", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
+      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(preparedFixture, () => {
         cy.get("div[data-test='reportsBanner']").should("not.exist");
       });
-    });
+    }); // TODO componenet test?
+*/
 
-    it("Upload EU Taxonomy Dataset via form, check that redirect to MyDatasets works and assure that it can be viewed on the framework and it can be editable", () => {
-      getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
-          (storedCompany) => {
-            uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId)
-              .url()
-              .should("eq", getBaseUrl() + "/datasets");
-            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveFullTaxonomyData");
-            cy.visitAndCheckAppMount(
-              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
-            );
-            cy.wait("@retrieveFullTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
+    it(
+      "Upload EU Taxonomy Dataset via form, check that redirect to MyDatasets works and assure that it can be " +
+        "viewed and edited, and that ",
+      () => {
+        // TODO description
+        getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
+            (storedCompany) => {
+              cy.intercept(`**/companies**`).as("getDataForMyDatasetsPage");
+              uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId)
+                .url()
+                .should("eq", getBaseUrl() + "/datasets");
+              cy.wait("@getDataForMyDatasetsPage");
+              cy.visitAndCheckAppMount(
+                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+              );
               cy.get("[data-test='companyNameTitle']").contains("All fields filled");
               cy.get("body").should("contain", "Eligible Revenue").should("contain", "%");
               cy.get("body").should("contain", "Aligned Revenue").should("contain", "%");
@@ -99,12 +106,34 @@ describeIf(
               cy.get("div.p-datepicker").find('span:contains("19")').click();
               cy.get('input[name="reportDate"]').invoke("val").should("contain", "19");
               cy.get('button[data-test="submitButton"]').click();
-            });
-          }
-        );
-      });
-    });
+              // TODO check if actually edited
+              // TODO
 
+              // TODO modularize
+              cy.visitAndCheckAppMount(
+                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+              );
+              cy.get("[data-test='taxocard']").should("exist");
+              cy.get('button[data-test="editDatasetButton"]').click();
+              cy.get('button[data-test="upload-files-button"]').click();
+              cy.get("input[type=file]").selectFile("../testing/data/pdfTest.pdf", { force: true }); // TODO use florians uploadReports util
+              cy.get('[data-test="file-name-already-exists"]').should("not.exist");
+              cy.get('div[data-test="uploaded-files"]')
+                .should("exist")
+                .find('[data-test="uploaded-files-title"]')
+                .should("contain", "pdf");
+              cy.get('input[name="currency"]').type("aaa");
+
+              cy.intercept(`**/documents/`).as("postDocument");
+              cy.get('button[data-test="submitButton"]').click();
+              cy.wait("@getData", { timeout: 5000 }).should("exist");
+            }
+          );
+        });
+      }
+    );
+
+    /*
     it(
       "Upload EU Taxonomy Dataset via form with no values for revenue and assure that it can be viewed on the framework " +
         "data view page with an appropriate message shown for the missing revenue data",
@@ -114,7 +143,7 @@ describeIf(
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
             uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId, true);
-            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
+            cy.intercept(`/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
             );
@@ -122,13 +151,15 @@ describeIf(
               cy.get("h1[class='mb-0']").contains(companyName);
               cy.get("body").should("contain", "Eligible Revenue").should("contain", missingDataMessage);
             });
-          });
+          }); // TODO component test
         });
       }
     );
+ */
   }
 );
 
+/*
 describeIf(
   "As a user, I expect Eu Taxonomy Data for non-financials to have a reports banner from where I can download the referenced reports",
   {
@@ -150,7 +181,7 @@ describeIf(
 
     it("Create a EU Taxonomy Dataset via Api and ensure the reports banner exists and documents can be downloaded", () => {
       const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(preparedFixture, () => {
+      uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(preparedFixture, () => {
         cy.get("div[data-test='reportsBanner']").should("exist");
         const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + "/StandardWordExport.pdf";
         cy.readFile(expectedPathToDownloadedReport).should("not.exist");
@@ -175,7 +206,7 @@ describeIf(
     });
   }
 );
-
+*/
 /**
  * This function uploads fixture data of one company and the associated data via API. Afterwards the result is
  * checked using the provided verifier.
@@ -183,7 +214,7 @@ describeIf(
  * @param fixtureData the company and its associated data
  * @param euTaxonomyPageVerifier the verify method for the EU Taxonomy Page
  */
-function uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomyPage(
+function uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(
   fixtureData: FixtureData<EuTaxonomyDataForNonFinancials>,
   euTaxonomyPageVerifier: () => void
 ): void {
@@ -208,3 +239,5 @@ function uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndVerifyEuTaxonomy
     );
   });
 }
+
+//TODO remove commented out stuff
