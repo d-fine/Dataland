@@ -3,7 +3,7 @@
     <TheHeader />
     <TabView class="col-12" v-model:activeIndex="activeTabIndex" @tab-change="handleTabChange">
       <TabPanel header="AVAILABLE DATASETS">
-        <TheContent class="pl-0 pt-0 min-h-screen paper-section relative">
+        <TheContent class="min-h-screen paper-section relative">
           <div
             id="searchBarAndFiltersContainer"
             class="w-full bg-white pt-4"
@@ -83,7 +83,7 @@
       </TabPanel>
       <TabPanel header="MY DATASETS"> </TabPanel>
     </TabView>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -105,7 +105,7 @@ import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSear
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import { useFrameworkFiltersStore } from "@/stores/stores";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
@@ -131,7 +131,7 @@ export default defineComponent({
     FrameworkDataSearchBar,
     PrimeButton,
     FrameworkDataSearchResults,
-    DatalandFooter,
+    TheFooter,
     TabView,
     TabPanel,
   },

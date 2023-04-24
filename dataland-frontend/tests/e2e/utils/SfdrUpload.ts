@@ -15,6 +15,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyU
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
+ * @returns a promise on the created data meta information
  */
 export async function uploadOneSfdrDataset(
   token: string,
