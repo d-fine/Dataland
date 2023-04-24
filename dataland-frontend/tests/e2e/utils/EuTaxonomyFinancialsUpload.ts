@@ -1,15 +1,15 @@
 import {
-  EuTaxonomyDataForFinancials,
-  EligibilityKpis,
-  DataPointBigDecimal,
-  EuTaxonomyDataForFinancialsControllerApi,
   Configuration,
   DataMetaInformation,
+  DataPointBigDecimal,
   DataTypeEnum,
+  EligibilityKpis,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForFinancialsControllerApi,
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
-import {dateFormElement} from "@sharedUtils/components/DateFormElement";
+import { dateFormElement } from "@sharedUtils/components/DateFormElement";
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
@@ -19,9 +19,11 @@ import {dateFormElement} from "@sharedUtils/components/DateFormElement";
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
   cy.get('button[data-test="submitButton"]').click();
-  return cy.wait("@postCompanyAssociatedData", { timeout: 100000 }).then((interception) => {
-    expect(interception.response?.statusCode).to.eq(200);
-  });
+  return cy
+    .wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number })
+    .then((interception) => {
+      expect(interception.response?.statusCode).to.eq(200);
+    });
 }
 
 /**
@@ -30,8 +32,8 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
-  dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12)
-  dateFormElement.validateDay("fiscalYearEnd", 12)
+  dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
+  dateFormElement.validateDay("fiscalYearEnd", 12);
 
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
@@ -169,6 +171,7 @@ function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecima
     }
   }
 }
+
 /**
  * Extracts the first eutaxonomy-financials dataset from the fake fixtures
  *

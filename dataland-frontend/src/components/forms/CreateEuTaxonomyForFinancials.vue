@@ -12,7 +12,7 @@
             v-model="formInputsModel"
             :actions="false"
             type="form"
-            id="CreateEuTaxonomyForFinancialsForm"
+            id="createEuTaxonomyForFinancialsForm"
             @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
           >
@@ -21,7 +21,7 @@
               name="companyId"
               label="Company ID"
               placeholder="Company ID"
-              :model-value="companyID"
+              :modelValue="companyID"
               disabled="true"
             />
             <div class="uploadFormSection grid">
@@ -34,7 +34,7 @@
                   :name="euTaxonomyKpiNameMappings.reportingPeriod"
                   :explanation="euTaxonomyKpiInfoMappings.reportingPeriod"
                 />
-                <div class="md:col-6 col-12 p-0">
+                <div class="lg:col-6 md:col-6 col-12 p-0">
                   <Calendar
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
@@ -187,7 +187,7 @@
                       <FormKit
                         :modelValue="computedFinancialServicesTypes"
                         type="text"
-                        validationLabel="You must choose and confirm"
+                        validationLabel="You must choose and confirm this "
                         validation="required"
                         name="financialServicesTypes"
                         :outer-class="{ 'hidden-input': true }"
@@ -290,7 +290,7 @@
               msg="EU Taxonomy Data"
               :messageId="messageCount"
             />
-            <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
+            <FailedUpload v-else :message="message" :messageId="messageCount" />
           </template>
         </div>
         <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
@@ -332,7 +332,7 @@ import {
   DataMetaInformation,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "@clients/backend";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
@@ -342,7 +342,7 @@ import {
   updatePropertyFilesUploaded,
 } from "@/utils/EuTaxonomyUtils";
 import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
-import { DocumentExistsResponse } from "@clients/documentmanager";
+import { DocumentUploadResponse } from "@clients/documentmanager";
 
 export default defineComponent({
   setup() {
@@ -367,7 +367,7 @@ export default defineComponent({
     MultiSelect,
     KPIfieldSet,
   },
-
+  emits: ["datasetCreated"],
   data() {
     return {
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
@@ -394,6 +394,7 @@ export default defineComponent({
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
       postEuTaxonomyDataForFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
+      uploadFileResponse: null as AxiosResponse<DocumentUploadResponse> | null,
       humanizeString: humanizeString,
       onThisPageLinksStart: [
         { label: "Upload company reports", value: "uploadReports" },
@@ -410,6 +411,8 @@ export default defineComponent({
       ],
       selectedKPIs: [] as { label: string; value: string }[],
       confirmedSelectedKPIs: [] as { label: string; value: string }[],
+      computedFinancialServicesTypes: [] as string[],
+      message: "",
     };
   },
   computed: {
@@ -421,8 +424,10 @@ export default defineComponent({
     reportingPeriodYear(): number {
       return this.reportingPeriod.getFullYear();
     },
-    computedFinancialServicesTypes(): string[] {
-      return this.confirmedSelectedKPIs.map((el: { label: string; value: string }): string => {
+  },
+  watch: {
+    confirmedSelectedKPIs: function (newValue: { label: string; value: string }[]) {
+      this.computedFinancialServicesTypes = newValue.map((el: { label: string; value: string }): string => {
         return euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis[
           el.value as keyof typeof euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis
         ];
@@ -526,37 +531,32 @@ export default defineComponent({
 
         if (this.filesToUpload.length) {
           for (let index = 0; index < this.filesToUpload.length; index++) {
-            const hash = await calculateSha256HashFromFile(this.filesToUpload[index]);
-            console.log("SHA-256 hash of document:", hash);
-            const documentExists: DocumentExistsResponse = await documentUploadControllerControllerApi.checkDocument(
-              hash
-            );
-            console.log(typeof documentExists.documentExists);
-            console.log(documentExists.documentExists);
-            if (!documentExists.documentExists) {
-              const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
-                this.filesToUpload[index]
-              );
-              console.log("SHA-256 hash of uploaded document:", uploadFileSuccessful.data.documentId);
-              if (!uploadFileSuccessful) {
-                allFileUploadedSuccessful = false;
-                break;
-              } else if (uploadFileSuccessful) {
-                //this.filesToUpload[index]["documentId"] = hash;
-                this.filesToUpload = [
-                  ...this.updatePropertyFilesUploaded(
-                    index,
-                    "documentId",
-                    uploadFileSuccessful.data.documentId,
-                    this.filesToUpload
-                  ),
-                ];
+            try {
+              const hash = await calculateSha256HashFromFile(this.filesToUpload[index]);
+              const documentExists = await documentUploadControllerControllerApi.checkDocument(hash);
+              if (!documentExists.data.documentExists) {
+                this.uploadFileResponse = await documentUploadControllerControllerApi.postDocument(
+                  this.filesToUpload[index]
+                );
+                this.filesToUpload[index]["documentId"] = this.uploadFileResponse.data.documentId;
+              } else {
+                this.filesToUpload[index]["documentId"] = hash;
               }
-            } else {
-              console.log("SHA-256 hash of already existing document:", hash);
-              // We trick the frontend to think upload was successful to prevent unnecessary api calls,
-              // in the case of the document already existing
-              this.filesToUpload = [...this.updatePropertyFilesUploaded(index, "documentId", hash, this.filesToUpload)];
+            } catch (error) {
+              this.messageCount++;
+              console.error(error);
+              if (error instanceof AxiosError) {
+                this.message =
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                  (error.response?.data.errors[0]?.summary as string) +
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                  (error.response?.data.errors[0]?.message as string); //TODO: fix types
+              } else {
+                this.message =
+                  "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+              }
+              allFileUploadedSuccessful = false;
+              break;
             }
           }
         }
@@ -572,7 +572,14 @@ export default defineComponent({
             );
         }
       } catch (error) {
+        this.messageCount++;
         console.error(error);
+        if (error instanceof AxiosError) {
+          this.message = "An error occurred: " + error.message;
+        } else {
+          this.message =
+            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+        }
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
         this.confirmedSelectedKPIs = [];
@@ -584,7 +591,8 @@ export default defineComponent({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         this.$refs.UploadReports.clearAllSelectedFiles();
         await this.$nextTick();
-        this.$formkit.reset("CreateEuTaxonomyForFinancialsForm");
+        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+        this.$emit("datasetCreated");
       }
     },
 

@@ -12,7 +12,7 @@
             v-model="formInputsModel"
             :actions="false"
             type="form"
-            id="CreateEuTaxonomyForNonFinancialsForm"
+            id="createEuTaxonomyForNonFinancialsForm"
             @submit="postEuTaxonomyDataForNonFinancials"
             @submit-invalid="checkCustomInputs"
           >
@@ -33,7 +33,7 @@
                   :name="euTaxonomyKpiNameMappings.reportingPeriod"
                   :explanation="euTaxonomyKpiInfoMappings.reportingPeriod"
                 />
-                <div class="md:col-6 col-12 p-0">
+                <div class="lg:col-6 md:col-6 col-12 p-0">
                   <Calendar
                     data-test="reportingPeriod"
                     v-model="reportingPeriod"
@@ -89,7 +89,7 @@
                           <FormKit
                             type="select"
                             name="assurance"
-                            placeholder="Please chose..."
+                            placeholder="Please choose..."
                             :validation-label="euTaxonomyKpiNameMappings.assurance ?? ''"
                             validation="required"
                             :options="assuranceData"
@@ -323,12 +323,20 @@ import {
   euTaxonomyKpiNameMappings,
   euTaxonomyPseudoModelAndMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
-import { AssuranceDataAssuranceEnum, CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import {
+  AssuranceDataAssuranceEnum,
+  CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  DataMetaInformation,
+} from "@clients/backend";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
+import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
+import { AxiosResponse } from "axios/index";
+import { DocumentUploadResponse } from "@clients/documentmanager";
+import { AxiosError } from "axios";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -350,7 +358,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-
+  emits: ["datasetCreated"],
   data: () => ({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     fiscalYearEndAsDate: null as Date | null,
@@ -384,8 +392,10 @@ export default defineComponent({
 
     postEuTaxonomyDataForNonFinancialsProcessed: false,
     messageCount: 0,
-    postEuTaxonomyDataForNonFinancialsResponse: null,
+    postEuTaxonomyDataForNonFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
+    uploadFileResponse: null as AxiosResponse<DocumentUploadResponse> | null,
     humanizeString: humanizeString,
+    message: "",
   }),
   computed: {
     namesOfAllCompanyReportsForTheDataset(): string[] {
@@ -475,21 +485,33 @@ export default defineComponent({
 
         if (this.filesToUpload.length) {
           for (let index = 0; index < this.filesToUpload.length; index++) {
-            const uploadFileSuccessful = await documentUploadControllerControllerApi.postDocument(
-              this.filesToUpload[index]
-            );
-            if (!uploadFileSuccessful) {
+            try {
+              const hash = await calculateSha256HashFromFile(this.filesToUpload[index]);
+              const documentExists = await documentUploadControllerControllerApi.checkDocument(hash);
+              if (!documentExists.data.documentExists) {
+                this.uploadFileResponse = await documentUploadControllerControllerApi.postDocument(
+                  this.filesToUpload[index]
+                );
+                console.log(this.uploadFileResponse);
+                this.filesToUpload[index]["documentId"] = this.uploadFileResponse.data.documentId;
+              } else {
+                this.filesToUpload[index]["documentId"] = hash;
+              }
+            } catch (error) {
+              this.messageCount++;
+              console.error(error);
+              if (error instanceof AxiosError) {
+                this.message =
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                  (error.response?.data.errors[0]?.summary as string) +
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                  (error.response?.data.errors[0]?.message as string); //TODO: fix types
+              } else {
+                this.message =
+                  "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+              }
               allFilesWasUploadedSuccessful = false;
               break;
-            } else if (uploadFileSuccessful) {
-              this.filesToUpload = [
-                ...this.updatePropertyFilesUploaded(
-                  index,
-                  "documentId",
-                  uploadFileSuccessful.data.documentId,
-                  this.filesToUpload
-                ),
-              ];
             }
           }
         }
@@ -515,6 +537,8 @@ export default defineComponent({
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
+        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
+        this.$emit("datasetCreated");
       }
     },
 

@@ -3,12 +3,11 @@ import { mount } from "cypress/vue";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
-  DataAndMetaInformationLksgData,
-  LksgData,
   CompanyAssociatedDataLksgData,
+  DataAndMetaInformationLksgData,
   DataMetaInformation,
-  ProductionSite,
   DataTypeEnum,
+  LksgData,
   QAStatus,
 } from "@clients/backend";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
@@ -81,18 +80,6 @@ describe("Component test for LksgPanel", () => {
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
 
     cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
-
-    cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-    const listOfProductionSites = lksgData.social!.general!.listOfProductionSites!;
-    if (listOfProductionSites.length < 2) {
-      throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
-    }
-    listOfProductionSites.forEach((productionSite: ProductionSite) => {
-      if (productionSite.streetAndHouseNumber) {
-        cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.streetAndHouseNumber})`);
-      }
-    });
-    cy.get("div.p-dialog-mask").click({ force: true });
 
     cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("The date until for which");

@@ -11,8 +11,6 @@ describe("As a user I expect a data request page where I can download an excel t
       dataEnvironments: ["fakeFixtures"],
     },
     (): void => {
-      const inviteInterceptionAlias = "invite";
-
       const uploadBoxSelector = "div.p-fileupload-content";
       const uploadBoxEmptySelector = "div.p-fileupload-empty";
       const uploadFilenameSelector = "span.font-semibold.mr-2";
@@ -53,8 +51,9 @@ describe("As a user I expect a data request page where I can download an excel t
       function submitAndValidateSuccess(
         moreValidation: (interception: Interception) => void = (): void => undefined
       ): void {
+        cy.intercept("**/api/invite").as("invite");
         submit();
-        cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
+        cy.wait(`@invite`).then((interception) => {
           if (interception.response === undefined) {
             expect(interception.response).not.to.equal(undefined);
             return;
@@ -121,7 +120,6 @@ describe("As a user I expect a data request page where I can download an excel t
       beforeEach(() => {
         cy.ensureLoggedIn();
         cy.visitAndCheckAppMount("/requests");
-        cy.intercept("**/api/invite*").as(inviteInterceptionAlias);
       });
 
       it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
@@ -157,6 +155,7 @@ describe("As a user I expect a data request page where I can download an excel t
 
         const sufficientlySmallFilename = "sufficiently_small_file.xlsx";
         uploadDummyExcelFile(sufficientlySmallFilename);
+        uploadBoxEntryShouldBe(sufficientlySmallFilename);
 
         submitAndValidateSuccess((interception) => {
           expect(interception.request.body).to.contain(sufficientlySmallFilename);
