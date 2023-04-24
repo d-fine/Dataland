@@ -2,11 +2,14 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
+// import { FixtureData getPreparedFixture } from "@sharedUtils/Fixtures"; TODO: include  in the import again when tests using it are no longer commented out.
+import {
+  DataTypeEnum,
+  // EuTaxonomyDataForNonFinancials
+} from "@clients/backend";
 import {
   uploadEuTaxonomyDataForNonFinancialsViaForm,
-  uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
+  // uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 describeIf(
@@ -20,13 +23,13 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
-    let preparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
-
-    before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-        preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
-      });
-    });
+    // let preparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+    //
+    // before(function () {
+    //   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
+    //     preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+    //   });
+    // });
 
     /**
      * Rounds a number to two decimal places.
@@ -34,9 +37,9 @@ describeIf(
      * @param inputNumber The number which should be rounded
      * @returns the rounded number
      */
-    function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
-      return Math.round(inputNumber * 100) / 100;
-    }
+    // function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
+    //   return Math.round(inputNumber * 100) / 100;
+    // }
     /*
     it("Create a EU Taxonomy Dataset via Api with total(€) and eligible(%) numbers", () => {
       const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
@@ -89,6 +92,7 @@ describeIf(
                 .url()
                 .should("eq", getBaseUrl() + "/datasets");
               cy.wait("@getDataForMyDatasetsPage");
+
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
@@ -99,34 +103,37 @@ describeIf(
               cy.get("body").should("contain", "Aligned CapEx").should("contain", "%");
               cy.get("body").should("contain", "Eligible OpEx").should("contain", "%");
               cy.get("body").should("contain", "Aligned OpEx").should("contain", "%");
-              cy.get('button[data-test="editDatasetButton"]').click();
-              cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
-              cy.get('[data-test="reportDate"] button').should("have.class", "p-datepicker-trigger").click();
-              cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
-              cy.get("div.p-datepicker").find('span:contains("19")').click();
-              cy.get('input[name="reportDate"]').invoke("val").should("contain", "19");
-              cy.get('button[data-test="submitButton"]').click();
-              // TODO check if actually edited
-              // TODO
 
-              // TODO modularize
+              const newValueForEligibleRevenueAfterEdit = "30";
+              cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("getDataToPrefillForm");
+              cy.get('button[data-test="editDatasetButton"]').click();
+              cy.wait("@getDataToPrefillForm");
+              cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
+              cy.get(`div[data-test=revenueSection] div[data-test=eligible] input[name="value"]`)
+                .clear()
+                .type(newValueForEligibleRevenueAfterEdit);
+              cy.get('button[data-test="submitButton"]').click();
+              cy.wait("@getDataForMyDatasetsPage");
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
-              cy.get("[data-test='taxocard']").should("exist");
-              cy.get('button[data-test="editDatasetButton"]').click();
-              cy.get('button[data-test="upload-files-button"]').click();
-              cy.get("input[type=file]").selectFile("../testing/data/pdfTest.pdf", { force: true }); // TODO use florians uploadReports util
-              cy.get('[data-test="file-name-already-exists"]').should("not.exist");
-              cy.get('div[data-test="uploaded-files"]')
-                .should("exist")
-                .find('[data-test="uploaded-files-title"]')
-                .should("contain", "pdf");
-              cy.get('input[name="currency"]').type("aaa");
+              cy.get("body")
+                .should("contain", "Eligible Revenue")
+                .should("contain", newValueForEligibleRevenueAfterEdit + "%");
 
-              cy.intercept(`**/documents/`).as("postDocument");
+              cy.get('button[data-test="editDatasetButton"]').click();
+              cy.wait("@getDataToPrefillForm");
+              cy.get('button[data-test="upload-files-button"]').click();
+              cy.get("input[type=file]").selectFile("../testing/data/pdfTest.pdf", { force: true });
+              cy.get('[data-test="file-name-already-exists"]').should("exist");
+              cy.get(`[data-test="pdfTestToUploadContainer"]`).should("not.exist");
               cy.get('button[data-test="submitButton"]').click();
-              cy.wait("@getData", { timeout: 5000 }).should("exist");
+              cy.get('[data-test="failedUploadMessage"]').should("exist");
+
+              // TODO select same file with different name and check if no actual re-upload
+              cy.intercept(`**/documents/`).as("postDocument");
+              //cy.get('button[data-test="submitButton"]').click(); // TODO wip
+              //cy.wait("@getData", { timeout: 5000 }).should("exist"); // TODO wip
             }
           );
         });
@@ -214,30 +221,30 @@ describeIf(
  * @param fixtureData the company and its associated data
  * @param euTaxonomyPageVerifier the verify method for the EU Taxonomy Page
  */
-function uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(
-  fixtureData: FixtureData<EuTaxonomyDataForNonFinancials>,
-  euTaxonomyPageVerifier: () => void
-): void {
-  getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-    return uploadCompanyViaApi(token, generateDummyCompanyInformation(fixtureData.companyInformation.companyName)).then(
-      (storedCompany) => {
-        return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
-          token,
-          storedCompany.companyId,
-          fixtureData.reportingPeriod,
-          fixtureData.t
-        ).then(() => {
-          cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
-          cy.visitAndCheckAppMount(
-            `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
-          );
-          cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
-            euTaxonomyPageVerifier();
-          });
-        });
-      }
-    );
-  });
-}
+// function uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(
+//   fixtureData: FixtureData<EuTaxonomyDataForNonFinancials>,
+//   euTaxonomyPageVerifier: () => void
+// ): void {
+//   getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+//     return uploadCompanyViaApi(token, generateDummyCompanyInformation(fixtureData.companyInformation.companyName)).then(
+//       (storedCompany) => {
+//         return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+//           token,
+//           storedCompany.companyId,
+//           fixtureData.reportingPeriod,
+//           fixtureData.t
+//         ).then(() => {
+//           cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
+//           cy.visitAndCheckAppMount(
+//             `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+//           );
+//           cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
+//             euTaxonomyPageVerifier();
+//           });
+//         });
+//       }
+//     );
+//   });
+// }
 
 //TODO remove commented out stuff

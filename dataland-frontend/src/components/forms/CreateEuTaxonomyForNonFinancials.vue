@@ -271,7 +271,7 @@
               :message="`New data has dataId: ${postEuTaxonomyDataForNonFinancialsResponse.data.dataId}`"
               :messageId="messageCount"
             />
-            <FailedUpload v-else :message="message" :messageId="messageCount" />
+            <FailedUpload v-else data-test="failedUploadMessage" :message="message" :messageId="messageCount" />
           </template>
         </div>
         <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
@@ -353,7 +353,6 @@ export default defineComponent({
     reportingPeriod: new Date(),
     filesToUpload: [] as ExtendedFile[],
     listOfUploadedReportsInfo: [] as ExtendedCompanyReport[],
-    selectedReports: [] as string[],
     onThisPageLinks: [
       { label: "Upload company reports", value: "uploadReports" },
       { label: "Basic information", value: "basicInformation" },
