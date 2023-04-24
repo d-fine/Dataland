@@ -26,13 +26,13 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   const filename = "pdfTest";
   uploadReports.uploadFile(filename);
   uploadReports.validateSingleFileInUploadedList(filename, "KB");
-  uploadReports.validateSingleFileInfo(filename);
+  uploadReports.validateFileInfo(filename);
   uploadReports.removeSingleUploadedFileFromUploadedList();
   uploadReports.checkNoReportIsListed();
 
   uploadReports.uploadFile(filename);
   uploadReports.validateSingleFileInUploadedList(filename, "KB");
-  uploadReports.validateSingleFileInfo(filename);
+  uploadReports.validateFileInfo(filename);
 
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();

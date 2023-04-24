@@ -22,11 +22,14 @@ export const uploadReports = {
       .should("contain", fileDimension);
     cy.get('input[name="reference"]').should("exist");
   },
-  validateSingleFileInfo(filename: string): void {
+  validateFileInfo(filename: string): void {
     cy.get(`[data-test="${filename}ToUploadContainer"]`).find('input[name="currency"]').type("www"); // TODO this is typing, not a validation?
   },
   removeSingleUploadedFileFromUploadedList(): void {
     cy.get('button[data-test="uploaded-files-remove"]').click();
+  },
+  removeUploadedReportFromReportInfos(filename: string): Cypress.Chainable {
+    return cy.get(`[data-test="${filename}AlreadyUploadedContainer"] button`).click();
   },
   checkNoReportIsListed(): void {
     cy.get('div[data-test="uploaded-files"]').should("not.exist");

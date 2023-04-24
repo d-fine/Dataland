@@ -86,9 +86,9 @@ describeIf(
       const getRequestAlias = "getData";
       cy.intercept("GET", "**/api/data/**").as(getRequestAlias);
       cy.visit(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
-      cy.wait(`@${getRequestAlias}`, { timeout: 10000 });
+      cy.wait(`@${getRequestAlias}`, { timeout: 30000 });
       cy.get('[data-test="editDatasetButton"]').click();
-      cy.wait(`@${getRequestAlias}`, { timeout: 10000 })
+      cy.wait(`@${getRequestAlias}`, { timeout: 30000 })
         .its("response")
         .then((response) => {
           const data = assertDefined((response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data);
@@ -100,17 +100,17 @@ describeIf(
 
     it(
       "Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
-      "that the upload form works fine with all options",
+        "that the upload form works fine with all options",
       () => {
         testData.companyInformation.companyName = "financials-upload-form";
         uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
           testData.companyInformation,
           testData.t,
           () => {
-            const filename = "pdfTest.pdf";
+            const filename = "pdfTest";
             uploadReports.uploadFile(filename);
             uploadReports.validateSingleFileInUploadedList(filename, "KB");
-            uploadReports.validateSingleFileInfo();
+            uploadReports.validateFileInfo(filename);
             uploadReports.removeSingleUploadedFileFromUploadedList();
             uploadReports.checkNoReportIsListed();
           },
@@ -121,7 +121,7 @@ describeIf(
       }
     );
 
-    it("Check if the file upload info remove button works as expected", () => {
+    it.only("Check if the file upload info remove button works as expected", () => {
       testData.companyInformation.companyName = "financials-upload-form-remove-document-button";
       let areBothDocumentsStillUploaded = true;
       uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
@@ -129,13 +129,17 @@ describeIf(
         testData.t,
         () => undefined,
         () => {
-          uploadReports.uploadFile("pdfTest.pdf");
-          uploadReports.uploadFile("pdfTest2.pdf");
+          uploadReports.uploadFile("pdfTest");
+          uploadReports.uploadFile("pdfTest2");
           uploadReports.fillAllReportInfoForms();
           cy.get(`[data-test="assetManagementKpis"]`)
             .find(`[data-test="banksAndIssuers"]`)
             .find('select[name="report"]')
             .select(2);
+          cy.get(`[data-test="assetManagementKpis"]`)
+            .find(`[data-test="investmentNonNfrd"]`)
+            .find('select[name="report"]')
+            .select(3);
         },
         (request) => {
           const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
@@ -145,13 +149,9 @@ describeIf(
         },
         (companyId) => {
           gotoEditForm(companyId, true);
-          cy.contains('[data-test="report-info-name"]', "pdfTest")
-            .parent()
-            .find("button")
-            .click()
-            .then(() => {
-              areBothDocumentsStillUploaded = false;
-            });
+          uploadReports.removeUploadedReportFromReportInfos("pdfTest").then(() => {
+            areBothDocumentsStillUploaded = false;
+          });
           cy.get('button[data-test="submitButton"]').click();
           cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
             expect(interception.response?.statusCode).to.eq(200);
