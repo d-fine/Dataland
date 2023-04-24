@@ -57,11 +57,11 @@
         <div v-if="file.nameAlreadyExists">
           <div>
             File with name:
-            <h3>{{ file.name.split(".")[0] }}</h3>
-            Already exist. Please upload file with different name.
+            <h3 data-test="file-name-already-exists">{{ file.name.split(".")[0] }}</h3>
+            Already exists. Please upload file with different name.
           </div>
         </div>
-        <div v-else>
+        <div v-else :data-test="file.name.split('.')[0] + 'ToUploadContainer'">
           <div class="form-field-label">
             <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
           </div>
@@ -132,7 +132,7 @@
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
       </div>
       <div v-for="(file, index) of listOfUploadedReportsInfo" :key="file.name" class="col-9 formFields">
-        <div class="form-field-label">
+        <div :data-test="file.name.split('.')[0] + 'AlreadyUploadedContainer'" class="form-field-label">
           <div class="flex w-full">
             <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
             <PrimeButton icon="pi pi-times" @click="removeReportFromUploadedReports(index)" class="p-button-rounded" />
@@ -301,3 +301,6 @@ export default defineComponent({
   },
 });
 </script>
+
+// TODO data-test="uploaded-files" is not a very good named marker, since the list it refers to is actually the list of
+files to upload!

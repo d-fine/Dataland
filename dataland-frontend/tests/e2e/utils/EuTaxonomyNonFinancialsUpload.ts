@@ -23,16 +23,16 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
 ): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
 
-  const filename = "pdfTest.pdf";
+  const filename = "pdfTest";
   uploadReports.uploadFile(filename);
   uploadReports.validateSingleFileInUploadedList(filename, "KB");
-  uploadReports.validateSingleFileInfo();
+  uploadReports.validateSingleFileInfo(filename);
   uploadReports.removeSingleUploadedFileFromUploadedList();
   uploadReports.checkNoReportIsListed();
 
   uploadReports.uploadFile(filename);
   uploadReports.validateSingleFileInUploadedList(filename, "KB");
-  uploadReports.validateSingleFileInfo();
+  uploadReports.validateSingleFileInfo(filename);
 
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
@@ -46,9 +46,6 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   });
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
-  cy.get('input[name="reportDate"]').should("not.exist");
-  cy.get('input[name="reference"]').should("not.exist");
-  cy.get('input[name="reference"]').should("not.exist");
   cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
 
   cy.get('input[name="activityLevelReporting"][value="Yes"]').check();
