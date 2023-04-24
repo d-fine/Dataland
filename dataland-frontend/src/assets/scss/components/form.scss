@@ -388,13 +388,13 @@ input[type="checkbox"], input[type="radio"]{
 
 
 .p-tooltip {
-  min-width: 25%;
   .p-tooltip-text {
     background: $input-label-color;
     color: $bg-text-primary;
     padding: .5rem;
     border-radius: 0;
-    width: 300px;
+    width: max-content;
+    max-width: 300px;
   }
   &.p-tooltip-right .p-tooltip-arrow {
     border-right-color: $input-label-color

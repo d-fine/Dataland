@@ -7,7 +7,12 @@
       class="d-nace-textinput"
     ></InputText>
     <div class="pl-1 d-nace-chipview">
-      <span class="form-list-item" v-tooltip="getNodeLabel(naceCode)" :key="naceCode" v-for="naceCode in modelValue">
+      <span
+        class="form-list-item"
+        v-tooltip.top="getNodeLabel(naceCode)"
+        :key="naceCode"
+        v-for="naceCode in modelValue"
+      >
         {{ naceCode }}
         <em @click="this.selectedTreeNodes.delete(naceCode)" class="material-icons">close</em>
       </span>
