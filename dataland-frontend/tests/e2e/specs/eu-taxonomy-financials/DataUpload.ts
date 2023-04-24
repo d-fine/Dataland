@@ -121,7 +121,7 @@ describeIf(
       }
     );
 
-    it.only("Check if the file upload info remove button works as expected", () => {
+    it("Check if the file upload info remove button works as expected", () => {
       testData.companyInformation.companyName = "financials-upload-form-remove-document-button";
       let areBothDocumentsStillUploaded = true;
       uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
