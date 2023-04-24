@@ -100,7 +100,7 @@ describeIf(
 
     it(
       "Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
-      "that the upload form works fine with all options",
+        "that the upload form works fine with all options",
       () => {
         testData.companyInformation.companyName = "financials-upload-form";
         uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
@@ -110,7 +110,7 @@ describeIf(
             const filename = "pdfTest.pdf";
             uploadReports.uploadFile(filename);
             uploadReports.validateSingleFileInUploadedList(filename, "KB");
-            uploadReports.validateSingleFileInfo();
+            uploadReports.validateSingleFileInfo(filename);
             uploadReports.removeSingleUploadedFileFromUploadedList();
             uploadReports.checkNoReportIsListed();
           },
