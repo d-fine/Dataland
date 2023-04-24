@@ -53,7 +53,7 @@
   <FormKit name="referencedReports" type="group">
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
-      <div v-for="(file, index) of filesToUpload" :key="file.name" class="col-9 formFields">
+      <div v-for="(file, index) of filesToUpload" :key="file.name" class="col-9 formFields" data-test="report-info">
         <div v-if="file.nameAlreadyExists">
           <div>
             File with name:
@@ -65,7 +65,7 @@
           <div class="form-field-label">
             <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
           </div>
-          <FormKit :name="file.name.split('.')[0]" type="group" data-test="report-info">
+          <FormKit :name="file.name.split('.')[0]" type="group">
             <!-- Date of the report -->
             <div class="form-field">
               <UploadFormHeader
