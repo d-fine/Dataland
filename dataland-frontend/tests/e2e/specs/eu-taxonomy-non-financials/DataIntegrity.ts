@@ -2,11 +2,14 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
+// import { FixtureData getPreparedFixture } from "@sharedUtils/Fixtures"; TODO: include  in the import again when tests using it are no longer commented out.
+import {
+  DataTypeEnum,
+  // EuTaxonomyDataForNonFinancials
+} from "@clients/backend";
 import {
   uploadEuTaxonomyDataForNonFinancialsViaForm,
-  uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
+  // uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 describeIf(
@@ -20,13 +23,13 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
-    let preparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
-
-    before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-        preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
-      });
-    });
+    // let preparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+    //
+    // before(function () {
+    //   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
+    //     preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+    //   });
+    // });
 
     /**
      * Rounds a number to two decimal places.
@@ -34,9 +37,9 @@ describeIf(
      * @param inputNumber The number which should be rounded
      * @returns the rounded number
      */
-    function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
-      return Math.round(inputNumber * 100) / 100;
-    }
+    // function roundNumberToTwoDecimalPlaces(inputNumber: number): number {
+    //   return Math.round(inputNumber * 100) / 100;
+    // }
     /*
     it("Create a EU Taxonomy Dataset via Api with total(€) and eligible(%) numbers", () => {
       const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
@@ -214,30 +217,30 @@ describeIf(
  * @param fixtureData the company and its associated data
  * @param euTaxonomyPageVerifier the verify method for the EU Taxonomy Page
  */
-function uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(
-  fixtureData: FixtureData<EuTaxonomyDataForNonFinancials>,
-  euTaxonomyPageVerifier: () => void
-): void {
-  getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-    return uploadCompanyViaApi(token, generateDummyCompanyInformation(fixtureData.companyInformation.companyName)).then(
-      (storedCompany) => {
-        return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
-          token,
-          storedCompany.companyId,
-          fixtureData.reportingPeriod,
-          fixtureData.t
-        ).then(() => {
-          cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
-          cy.visitAndCheckAppMount(
-            `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
-          );
-          cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
-            euTaxonomyPageVerifier();
-          });
-        });
-      }
-    );
-  });
-}
+// function uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(
+//   fixtureData: FixtureData<EuTaxonomyDataForNonFinancials>,
+//   euTaxonomyPageVerifier: () => void
+// ): void {
+//   getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+//     return uploadCompanyViaApi(token, generateDummyCompanyInformation(fixtureData.companyInformation.companyName)).then(
+//       (storedCompany) => {
+//         return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
+//           token,
+//           storedCompany.companyId,
+//           fixtureData.reportingPeriod,
+//           fixtureData.t
+//         ).then(() => {
+//           cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");
+//           cy.visitAndCheckAppMount(
+//             `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
+//           );
+//           cy.wait("@retrieveTaxonomyData", { timeout: Cypress.env("long_timeout_in_ms") as number }).then(() => {
+//             euTaxonomyPageVerifier();
+//           });
+//         });
+//       }
+//     );
+//   });
+// }
 
 //TODO remove commented out stuff
