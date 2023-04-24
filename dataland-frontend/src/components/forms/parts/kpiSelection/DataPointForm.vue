@@ -1,6 +1,6 @@
 <template>
   <DataPointHeader :name="kpiNameMappings[name]" />
-  <div v-if="toggleDataAvailable" data-test="dataPointToggle" class="form-field vertical-middle">
+  <div data-test="dataPointToggle" class="form-field vertical-middle">
     <InputSwitch
       data-test="dataPointToggleButton"
       inputId="dataPointIsAvailableSwitch"
@@ -14,7 +14,7 @@
   <div v-show="dataPointIsAvailable">
     <div class="form-field" v-if="dataPointIsAvailable">
       <UploadFormHeader
-        :name="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]} amount`"
+        :name="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : kpiNameMappings[name]"
         :explanation="kpiInfoMappings[name] ?? ''"
       />
       <FormKit
@@ -45,7 +45,7 @@
               v-model="currentReportValue"
               :disabled="!dataPointIsAvailable"
               placeholder="Select a report"
-              :options="['None...', ...this.files.filesNames]"
+              :options="['None...', ...reportsName]"
             />
           </div>
           <div>
@@ -67,7 +67,7 @@
     <!-- Data quality -->
     <div class="form-field">
       <UploadFormHeader name="Data quality" explanation="Data quality" />
-      <div class="lg:col-6 md:col-6 col-12 p-0">
+      <div class="md:col-6 col-12 p-0">
         <FormKit
           :disabled="!dataPointIsAvailable"
           type="select"
@@ -76,12 +76,11 @@
           :validation="dataPointIsAvailable ? 'required' : ''"
           validation-label="Data quality"
           placeholder="Data quality"
-          :options="dataQualityList"
+          :options="QualityOptions"
         />
       </div>
     </div>
   </div>
-
   <div class="form-field">
     <FormKit
       type="textarea"
@@ -96,17 +95,16 @@ import { defineComponent } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
-import { useFilesUploadedStore } from "@/stores/filesUploaded";
+import { QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 
 export default defineComponent({
-  name: "DataPointForm",
+  name: "KPIfieldSet",
   components: { DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({
-    files: useFilesUploadedStore(),
     dataPointIsAvailable: true,
-    dataQualityList: ["NA", "Audited", "Reported", "Estimated", "Incomplete"],
+    QualityOptions,
     currentMainValue: "",
     currentReportValue: "",
     currentQualityValue: "",
@@ -150,8 +148,12 @@ export default defineComponent({
       default: true,
     },
     valueType: {
-      type: String,
+      type: String as () => "percent" | "number",
       default: "percent",
+    },
+    reportsName: {
+      type: Array,
+      default: () => [],
     },
   },
   methods: {
