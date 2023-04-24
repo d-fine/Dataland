@@ -1,10 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import {
-  fillEuTaxonomyForFinancialsUploadForm,
-  submitEuTaxonomyFinancialsUploadForm,
-  uploadOneEuTaxonomyFinancialsDatasetViaApi,
-} from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
   DataPointBigDecimal,
