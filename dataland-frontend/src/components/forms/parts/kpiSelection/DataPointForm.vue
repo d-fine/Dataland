@@ -66,7 +66,11 @@
 
     <!-- Data quality -->
     <div class="form-field">
-      <UploadFormHeader :name="kpiNameMappings.quality" :explanation="kpiInfoMappings.quality" />
+      <UploadFormHeader
+        :name="kpiNameMappings.quality"
+        :explanation="kpiInfoMappings.quality"
+        :is-required="dataPointIsAvailable"
+      />
       <div class="lg:col-6 md:col-6 col-12 p-0">
         <FormKit
           :disabled="!dataPointIsAvailable"
