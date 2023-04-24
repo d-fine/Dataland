@@ -60,7 +60,7 @@ import PrimeProgressBar from "primevue/progressbar";
 import PrimeButton from "primevue/button";
 
 export default defineComponent({
-  name: "BackButton",
+  name: "ProgressBar",
   components: {
     PrimeProgressBar,
     PrimeButton,

@@ -60,7 +60,7 @@
         </Card>
       </TheContent>
     </UploaderRoleWrapper>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -78,13 +78,13 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "ChooseFramework",
   components: {
-    DatalandFooter,
+    TheFooter,
     UploaderRoleWrapper,
     CompanyInformation,
     AuthenticationWrapper,
@@ -121,6 +121,7 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
+      required: true,
     },
   },
 

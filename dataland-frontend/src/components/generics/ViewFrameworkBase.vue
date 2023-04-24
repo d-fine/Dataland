@@ -69,7 +69,7 @@
       </div>
       <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>
     </TheContent>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -89,7 +89,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
 
@@ -107,7 +107,7 @@ export default defineComponent({
     Dropdown,
     AuthenticationWrapper,
     CompanyInformation,
-    DatalandFooter,
+    TheFooter,
     PrimeButton,
     OverlayPanel,
     SelectReportingPeriodDialog,

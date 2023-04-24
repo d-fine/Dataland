@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  * Defines the restful dataland-document-manager API regarding internal data exchange
  */
 @RequestMapping("/internal/cached")
-interface TemporarilyCachedDocumentApi {
+fun interface TemporarilyCachedDocumentApi {
     /**
      * This method retrieves data entries from the temporary storage
      * @param hash filters the requested data to a specific entry.

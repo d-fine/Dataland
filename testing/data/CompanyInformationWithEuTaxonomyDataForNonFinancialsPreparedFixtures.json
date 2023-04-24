@@ -2,306 +2,334 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [
-				"Orthmann-Gottschalk",
-				"Sihler-Delonge"
-			],
-			"companyLegalForm": "Sole Trader",
-			"headquarters": "Ummingerburg",
-			"sector": "web-readiness",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"headquarters": "Bad Svenja",
+			"headquartersPostalCode": "84154",
+			"sector": "e-commerce",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "juwylq1zs"
+					"identifierValue": "042wdsoyo"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "az5x7zjerpey"
+					"identifierValue": "efth5h2928y5"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "4hdcvdnsy3tqqlio8r8j"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "gjokwre5k7"
+					"identifierValue": "9xrnjs5jfix819s79j9a"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "ekbaurx"
+					"identifierValue": "6kliu6f"
 				}
 			],
-			"countryCode": "TZ",
-			"isTeaserCompany": false
+			"countryCode": "SR",
+			"isTeaserCompany": false,
+			"website": "http://überlegen-knie.com"
 		},
 		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-07-14",
+			"numberOfEmployees": 41825,
 			"referencedReports": {
-				"AnnualReport": {
+				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-03-22",
-					"currency": "XAU"
+					"currency": "KWD"
 				}
 			},
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-07-01",
 			"assurance": {
 				"assurance": "ReasonableAssurance",
-				"provider": "Jungbluth KG"
+				"provider": "Freimann, Maier und Manns"
 			},
-			"scopeOfEntities": "Yes",
 			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.9971,
+					"value": 0.6444,
 					"dataSource": {
-						"page": 275,
-						"report": "AnnualReport",
-						"tagName": "blockchains"
+						"page": 819,
+						"report": "IntegratedReport",
+						"tagName": "e-tailers"
 					},
-					"quality": "Audited",
-					"comment": "bypass haptic sensor"
+					"quality": "Incomplete",
+					"comment": "bypass virtual alarm"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.6255,
-					"dataSource": {
-						"page": 106,
-						"report": "AnnualReport",
-						"tagName": "portals"
-					},
-					"quality": "Reported",
-					"comment": "input redundant driver"
+					"value": 0.0328,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.0872,
-					"dataSource": {
-						"page": 589,
-						"report": "AnnualReport",
-						"tagName": "initiatives"
-					},
-					"quality": "Reported",
-					"comment": "quantify solid state matrix"
+					"value": 0.9838,
+					"quality": "Estimated"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"headquarters": "Maybachland",
-			"headquartersPostalCode": "12011",
-			"sector": "portals",
+			"companyAlternativeNames": [
+				"Schilling Gruppe",
+				"Soller KG"
+			],
+			"headquarters": "Neu Conner",
+			"sector": "eyeballs",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "ng742rri8fkse34"
+					"identifierType": "Lei",
+					"identifierValue": "ztp4qln66cdummitzy76"
 				},
 				{
-					"identifierType": "Duns",
-					"identifierValue": "xan9ol3yb"
+					"identifierType": "PermId",
+					"identifierValue": "rrinwc67je"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "r1401dd"
 				}
 			],
-			"countryCode": "PL",
-			"isTeaserCompany": false,
-			"website": "http://gefeiert-schach.org"
+			"countryCode": "TW",
+			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-09-30",
+			"numberOfEmployees": 2275,
 			"referencedReports": {
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-04-17",
-					"currency": "SGD"
+					"isGroupLevel": "No",
+					"currency": "ILS"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "JMD"
+					"currency": "LBP"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "SCR"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "BAM"
 				}
 			},
-			"fiscalYearEnd": "2022-10-15",
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Strutz AG",
+				"assurance": "LimitedAssurance",
+				"provider": "Krabbe Gruppe",
 				"dataSource": {
-					"page": 444,
+					"page": 873,
 					"report": "SustainabilityReport",
-					"tagName": "applications"
+					"tagName": "architectures"
 				}
 			},
-			"scopeOfEntities": "NA",
+			"scopeOfEntities": "No",
 			"reportingObligation": "No",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 514814.84,
-					"quality": "Estimated"
+					"value": 958177.97,
+					"dataSource": {
+						"page": 312,
+						"report": "ESEFReport",
+						"tagName": "metrics"
+					},
+					"quality": "Reported",
+					"comment": "parse redundant program"
 				},
 				"eligiblePercentage": {
-					"value": 0.9586,
+					"value": 0.9012,
 					"dataSource": {
-						"page": 563,
-						"report": "SustainabilityReport",
-						"tagName": "platforms"
+						"page": 285,
+						"report": "ESEFReport",
+						"tagName": "action-items"
 					},
-					"quality": "Audited",
-					"comment": "transmit neural circuit"
+					"quality": "Incomplete",
+					"comment": "navigate 1080p firewall"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 544153.21,
-					"quality": "Estimated"
+					"value": 265337.97,
+					"dataSource": {
+						"page": 655,
+						"report": "IntegratedReport",
+						"tagName": "content"
+					},
+					"quality": "Reported",
+					"comment": "quantify auxiliary card"
 				},
 				"eligiblePercentage": {
-					"value": 0.7038,
-					"dataSource": {
-						"page": 952,
-						"report": "IntegratedReport",
-						"tagName": "e-markets"
-					},
-					"quality": "Estimated",
-					"comment": "connect cross-platform bandwidth"
+					"value": 0.9058,
+					"quality": "Incomplete"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 139884.09,
+					"value": 410769.75,
 					"dataSource": {
-						"page": 33,
-						"report": "IntegratedReport",
-						"tagName": "architectures"
+						"page": 708,
+						"report": "AnnualReport",
+						"tagName": "applications"
 					},
-					"quality": "Audited",
-					"comment": "generate auxiliary feed"
+					"quality": "Reported",
+					"comment": "connect 1080p bandwidth"
 				},
 				"eligiblePercentage": {
-					"value": 0.4326,
+					"value": 0.4859,
 					"dataSource": {
-						"page": 970,
+						"page": 59,
 						"report": "SustainabilityReport",
-						"tagName": "channels"
+						"tagName": "niches"
 					},
-					"quality": "Incomplete",
-					"comment": "connect auxiliary hard drive"
+					"quality": "Reported",
+					"comment": "compress open-source application"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
 			"companyAlternativeNames": [
-				"Tietze OHG"
+				"Eckhardt, Kraft und Dietzsch",
+				"Knies, Ritz und Ziegler"
 			],
-			"companyLegalForm": "Sole Trader",
-			"headquarters": "Nabeinland",
-			"headquartersPostalCode": "19310",
-			"sector": "vortals",
+			"headquarters": "Grotkestadt",
+			"headquartersPostalCode": "57567",
+			"sector": "architectures",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "hw6z1uccez7gq4r"
+					"identifierValue": "m0epgahcad9619e"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "1gm7fgv8d"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "dli6egkje4le"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "cmqru7l4h2l2k9wiyqkv"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "q3g76u45uo"
+					"identifierValue": "ec9ly6r7c8xudsbyq7qr"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "qhmdl0j"
+					"identifierValue": "5lzplny"
 				}
 			],
-			"countryCode": "MQ",
+			"countryCode": "CL",
 			"isTeaserCompany": false,
-			"website": "https://visionär-tee.org"
+			"website": "http://durchschlagend-beschleunigung.de"
 		},
 		"t": {
 			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-12-15",
+			"numberOfEmployees": 39893,
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "No",
-			"numberOfEmployees": 88153,
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 853613.27,
-					"quality": "Estimated"
+					"value": 186412.03,
+					"dataSource": {
+						"page": 720,
+						"report": "ESEFReport",
+						"tagName": "models"
+					},
+					"quality": "Reported",
+					"comment": "bypass open-source alarm"
 				},
 				"alignedPercentage": {
-					"value": 0.5679,
+					"value": 0.19,
 					"dataSource": {
-						"page": 826,
-						"report": "SustainabilityReport",
-						"tagName": "e-commerce"
+						"page": 89,
+						"report": "ESEFReport",
+						"tagName": "systems"
 					},
-					"quality": "Audited",
-					"comment": "transmit open-source application"
+					"quality": "Estimated",
+					"comment": "program online alarm"
 				},
 				"eligiblePercentage": {
-					"value": 0.1201,
-					"quality": "Incomplete"
+					"value": 0.9684,
+					"dataSource": {
+						"page": 785,
+						"report": "SustainabilityReport",
+						"tagName": "portals"
+					},
+					"quality": "Incomplete",
+					"comment": "transmit virtual card"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 943171.62,
-					"quality": "Incomplete"
+					"value": 744802.08,
+					"quality": "Estimated"
 				},
 				"alignedPercentage": {
-					"value": 0.2186,
+					"value": 0.4079,
 					"dataSource": {
-						"page": 372,
-						"report": "SustainabilityReport",
-						"tagName": "partnerships"
+						"page": 1183,
+						"report": "ESEFReport",
+						"tagName": "platforms"
 					},
-					"quality": "Reported",
-					"comment": "hack virtual protocol"
+					"quality": "Audited",
+					"comment": "index wireless pixel"
 				},
 				"eligiblePercentage": {
-					"value": 0.0943,
-					"quality": "Estimated"
+					"value": 0.065,
+					"dataSource": {
+						"page": 431,
+						"report": "AnnualReport",
+						"tagName": "web-readiness"
+					},
+					"quality": "Incomplete",
+					"comment": "compress back-end panel"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 128765.46,
-					"dataSource": {
-						"page": 781,
-						"report": "SustainabilityReport",
-						"tagName": "relationships"
-					},
-					"quality": "Audited",
-					"comment": "program redundant application"
+					"value": 676729.56,
+					"quality": "Estimated"
 				},
 				"alignedPercentage": {
-					"value": 0.8622,
+					"value": 0.4857,
 					"dataSource": {
-						"page": 849,
-						"report": "SustainabilityReport",
-						"tagName": "partnerships"
+						"page": 1176,
+						"report": "IntegratedReport",
+						"tagName": "convergence"
 					},
-					"quality": "Reported",
-					"comment": "synthesize virtual hard drive"
+					"quality": "Audited",
+					"comment": "generate multi-byte bandwidth"
 				},
 				"eligiblePercentage": {
-					"value": 0.5156,
-					"quality": "Incomplete"
+					"value": 0.0816,
+					"dataSource": {
+						"page": 798,
+						"report": "IntegratedReport",
+						"tagName": "systems"
+					},
+					"quality": "Audited",
+					"comment": "transmit bluetooth feed"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2020"
 	}
 ]

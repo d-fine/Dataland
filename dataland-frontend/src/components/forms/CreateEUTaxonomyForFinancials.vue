@@ -1,5 +1,5 @@
 <template>
-  <Card class="col-12 page-wrapper-card">
+  <Card class="col-12 page-wrapper-card p-3">
     <template #title>Create EU Taxonomy Dataset for a Financial Company/Service</template>
     <template #content>
       <div class="grid uploadFormWrapper">
@@ -8,7 +8,7 @@
             v-model="formInputsModel"
             :actions="false"
             type="form"
-            id="createEuTaxonomyForFinancialsForm"
+            :id="formId"
             @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
           >
@@ -134,6 +134,7 @@
                           <UploadFormHeader
                             :name="euTaxonomyKpiNameMappings.currency"
                             :explanation="euTaxonomyKpiInfoMappings.currency"
+                            :is-required="true"
                           />
                           <div class="lg:col-4 md:col-4 col-12 p-0">
                             <FormKit
@@ -179,6 +180,7 @@
                       <UploadFormHeader
                         :name="euTaxonomyKpiNameMappings.fiscalYearEnd"
                         :explanation="euTaxonomyKpiInfoMappings.fiscalYearEnd"
+                        :is-required="true"
                       />
                       <div class="lg:col-6 md:col-6 col-12 p-0">
                         <Calendar
@@ -223,6 +225,7 @@
                       <UploadFormHeader
                         :name="euTaxonomyKpiNameMappings.numberOfEmployees"
                         :explanation="euTaxonomyKpiInfoMappings.numberOfEmployees"
+                        :is-required="true"
                       />
                       <div class="lg:col-4 md:col-4 col-6 p-0">
                         <FormKit
@@ -262,6 +265,7 @@
                         <UploadFormHeader
                           :name="euTaxonomyKpiNameMappings.assurance ?? ''"
                           :explanation="euTaxonomyKpiInfoMappings.assurance ?? ''"
+                          :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12 p-0">
                           <FormKit
@@ -297,6 +301,7 @@
                               <UploadFormHeader
                                 :name="euTaxonomyKpiNameMappings.report ?? ''"
                                 :explanation="euTaxonomyKpiInfoMappings.report ?? ''"
+                                :is-required="true"
                               />
                               <FormKit
                                 type="select"
@@ -341,6 +346,7 @@
                         data-test="selectKPIsLabel"
                         :name="euTaxonomyKpiNameMappings.financialServicesTypes ?? ''"
                         :explanation="euTaxonomyKpiInfoMappings.financialServicesTypes ?? ''"
+                        :is-required="true"
                       />
 
                       <MultiSelect
@@ -440,18 +446,11 @@
                   </FormKit>
                 </div>
               </FormKit>
-
-              <!--------- SUBMIT --------->
-
-              <div class="uploadFormSection grid">
-                <div class="col-3"></div>
-
-                <div class="col-9">
-                  <PrimeButton data-test="submitButton" type="submit" label="SUBMIT FORM" />
-                </div>
-              </div>
             </div>
           </FormKit>
+        </div>
+        <SubmitSideBar>
+          <SubmitButton :formId="formId" />
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
             <SuccessUpload
               v-if="postEuTaxonomyDataForFinancialsResponse"
@@ -460,16 +459,13 @@
             />
             <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
           </template>
-        </div>
-
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
-          <h4 id="topicTitles" class="title">On this page</h4>
+          <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
             <li v-for="(element, index) in onThisPageLinks" :key="index">
               <a @click="smoothScroll(`#${element.value}`)">{{ element.label }}</a>
             </li>
           </ul>
-        </div>
+        </SubmitSideBar>
       </div>
     </template>
   </Card>
@@ -477,6 +473,7 @@
 
 <script lang="ts">
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import { FormKit } from "@formkit/vue";
 import FileUpload from "primevue/fileupload";
 import PrimeButton from "primevue/button";
@@ -510,6 +507,7 @@ import {
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
 import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObjectUtils";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 
 export default defineComponent({
@@ -520,6 +518,8 @@ export default defineComponent({
   },
   name: "CreateEUTaxonomyForFinancials",
   components: {
+    SubmitButton,
+    SubmitSideBar,
     FailedUpload,
     FormKit,
     SuccessUpload,
@@ -535,9 +535,10 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
+      formId: "createEuTaxonomyForFinancialsForm",
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       files: useFilesUploadedStore(),
-      fiscalYearEnd: "" as Date | "",
+      fiscalYearEnd: undefined as Date | undefined,
       convertedFiscalYearEnd: "",
       reportingPeriod: new Date(),
       assuranceData: [
@@ -549,8 +550,6 @@ export default defineComponent({
       euTaxonomyKPIsModel,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
-      elementPosition: 0,
-      scrollListener: (): null => null,
       smoothScroll,
       checkCustomInputs,
       formatBytesUserFriendly,
@@ -611,22 +610,6 @@ export default defineComponent({
     }
 
     this.onThisPageLinks = [...this.onThisPageLinksStart];
-    const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-    this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
-    this.scrollListener = (): null => {
-      if (window.scrollY > this.elementPosition) {
-        jumpLinkselement.style.position = "fixed";
-        jumpLinkselement.style.top = "60px";
-      } else {
-        jumpLinkselement.style.position = "relative";
-        jumpLinkselement.style.top = "0";
-      }
-      return null;
-    };
-    window.addEventListener("scroll", this.scrollListener);
-  },
-  unmounted() {
-    window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
     /**
@@ -692,7 +675,7 @@ export default defineComponent({
             formInputsModelToSend
           );
         this.$emit("datasetCreated");
-        this.$formkit.reset("createEuTaxonomyForFinancialsForm");
+        this.$formkit.reset(this.formId);
       } catch (error) {
         this.postEuTaxonomyDataForFinancialsResponse = null;
         console.error(error);
@@ -701,7 +684,7 @@ export default defineComponent({
         this.formInputsModel = {};
         this.confirmedSelectedKPIs = [];
         this.selectedKPIs = [];
-        this.fiscalYearEnd = "";
+        this.fiscalYearEnd = undefined;
       }
     },
 
