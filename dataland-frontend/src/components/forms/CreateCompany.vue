@@ -3,8 +3,13 @@
     <template #title>Create a Company</template>
     <template #content>
       <div class="uploadFormWrapper">
-        <FormKit :actions="false" type="form" id="createCompanyForm" @submit="postCompanyInformation"
-                 @submit-invalid="checkCustomInputs">
+        <FormKit
+          :actions="false"
+          type="form"
+          id="createCompanyForm"
+          @submit="postCompanyInformation"
+          @submit-invalid="checkCustomInputs"
+        >
           <h4>Name & location</h4>
           <UploadFormHeader
             :name="companyDataNames.companyName"
@@ -103,8 +108,8 @@
             :placeholder="companyDataNames.companyLegalForm"
           />
 
-          <UploadFormHeader :name="companyDataNames.website" :explanation="companyDataExplanations.website"/>
-          <FormKit name="website" v-model="website" type="text" :placeholder="companyDataNames.website"/>
+          <UploadFormHeader :name="companyDataNames.website" :explanation="companyDataExplanations.website" />
+          <FormKit name="website" v-model="website" type="text" :placeholder="companyDataNames.website" />
 
           <h4>Identifier</h4>
 
@@ -116,7 +121,7 @@
               validationVisibility: 'live',
             }"
           >
-            <UploadFormHeader :name="companyDataNames.lei" :explanation="companyDataExplanations.lei"/>
+            <UploadFormHeader :name="companyDataNames.lei" :explanation="companyDataExplanations.lei" />
             <FormKit
               name="lei"
               v-model="lei"
@@ -125,7 +130,7 @@
               validation="identifierDoesNotExistValidator:Lei"
             />
 
-            <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin"/>
+            <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
             <FormKit
               name="isin"
               v-model="isin"
@@ -134,7 +139,7 @@
               validation="identifierDoesNotExistValidator:Isin"
             />
 
-            <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker"/>
+            <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker" />
             <FormKit
               name="ticker"
               v-model="ticker"
@@ -143,7 +148,7 @@
               validation="identifierDoesNotExistValidator:Ticker"
             />
 
-            <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId"/>
+            <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId" />
             <FormKit
               name="permId"
               v-model="permId"
@@ -152,7 +157,7 @@
               validation="identifierDoesNotExistValidator:PermId"
             />
 
-            <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns"/>
+            <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
             <FormKit
               name="duns"
               v-model="duns"
@@ -191,11 +196,11 @@
             :options="gicsSectors"
           />
 
-          <PrimeButton type="submit" label="ADD COMPANY" name="addCompany"/>
+          <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
         </FormKit>
         <template v-if="postCompanyProcessed">
-          <SuccessUpload v-if="uploadSucceded" :message="message" :messageId="messageCounter"/>
-          <FailedUpload v-else :message="message" :messageId="messageCounter"/>
+          <SuccessUpload v-if="uploadSucceded" :message="message" :messageId="messageCounter" />
+          <FailedUpload v-else :message="message" :messageId="messageCounter" />
         </template>
       </div>
     </template>
@@ -203,9 +208,9 @@
 </template>
 
 <script lang="ts">
-import {FormKit} from "@formkit/vue";
+import { FormKit } from "@formkit/vue";
 import Card from "primevue/card";
-import {defineComponent, inject} from "vue";
+import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import {
   CompanyInformation,
@@ -213,13 +218,13 @@ import {
   CompanyIdentifierIdentifierTypeEnum,
   StoredCompany,
 } from "@clients/backend";
-import {ApiClientProvider} from "@/services/ApiClients";
+import { ApiClientProvider } from "@/services/ApiClients";
 import PrimeButton from "primevue/button";
-import {getAllCountryCodes} from "@/utils/CountryCodeConverter";
-import {assertDefined} from "@/utils/TypeScriptUtils";
+import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
-import {checkCustomInputs} from "@/utils/validationsUtils";
+import { checkCustomInputs } from "@/utils/validationsUtils";
 import Tooltip from "primevue/tooltip";
 import {
   companyDataNames,
@@ -227,8 +232,8 @@ import {
   gicsSectors,
 } from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
-import {AxiosError} from "axios";
-import {FormKitNode} from "@formkit/core";
+import { AxiosError } from "axios";
+import { FormKitNode } from "@formkit/core";
 
 export default defineComponent({
   name: "CreateCompany",
