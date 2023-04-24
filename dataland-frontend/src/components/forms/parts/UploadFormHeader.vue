@@ -1,7 +1,7 @@
 <template>
   <div class="form-field-label">
     <h5>{{ name }}</h5>
-    <div class="asterisk" v-if="isRequired">*</div>
+    <span class="asterisk" v-if="isRequired">*</span>
     <em
       class="material-icons info-icon"
       aria-hidden="true"
