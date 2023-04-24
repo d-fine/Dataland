@@ -138,34 +138,36 @@ export const sfdrKpisInfoMappings = {
   esefReportCurrency: "The 3-letter alpha code that represents the currency used in the report",
   scopeOfEntities:
     "Does a list of legal entities covered by Sust./Annual/Integrated/ESEF report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
-  isGroupLevel: "Is Group Level",
-  reportDate: "Report Date",
-  currency: "Currency",
-  reference: "Reference",
-  reportedCasesOfBriberyCorruption: "Reported Cases Of Bribery Corruption",
-  reportedConvictionsOfBriberyCorruption: "Reported Convictions Of Bribery Corruption",
-  reportedFinesOfBriberyCorruption: "Reported Fines Of Bribery Corruption",
+  isGroupLevel: "Is the report on a Group Level",
+  reportDate: "The date for which the information presented in the report is valid through",
+  currency: "The 3-letter alpha code that represents the currency used in the report",
+  reference: "The original report in PDF format",
+  reportedCasesOfBriberyCorruption:
+    "Number of cases with identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery",
+  reportedConvictionsOfBriberyCorruption:
+    "Numbers of convictions for violations of anti-corruption and anti-bribery laws",
+  reportedFinesOfBriberyCorruption: "Amount of fines for violations of anti-corruption and anti-bribery laws.",
   primaryForestAndWoodedLandOfNativeSpeciesExposure:
     "Does the company have sites/operations located in primary forest and other wooded land, that is forest and other wooded land of native species, where there is no clearly visible indication of human activity and the ecological processes are not significantly disturbed - where activities of the company negatively affect those areas?",
   protectedAreasExposure:
-    "Does the company have sites/operations located in areas designatedby law or by the relevant competent authority for nature protection purposes, unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes - where activities of the company negatively affect those areas?",
+    "Does the company have sites/operations located in areas designated by law or by the relevant competent authority for nature protection purposes, unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes - where activities of the company negatively affect those areas?",
   rareOrEndangeredEcosystemsExposure:
     "Does the company have sites/operations located in  areas designated for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature, subject to their recognition by the Commission (Commission may also recognise areas for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature), unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes  - where activities of the company negatively affect those areas?",
   inorganicPollutants: "Amount of emissions of Inorganic Pollutants",
-  airPollutants: "Value of Air Pollutants as defined in the RTS:",
-  ozoneDepletionSubstances: "Value of Ozone Depletion Substances as defined in the RTS:",
+  airPollutants: "Amount of emissions of Air Pollutants",
+  ozoneDepletionSubstances: "Amount of emissions of Ozone Depletion Substances",
   carbonReductionInitiatives:
-    "Have policies and procedures for a carbon emission reduction initiative aimed at aligning with the Paris Agreement_ Has programs to reduce air emissions",
+    "Has policies and procedures for a carbon emission reduction initiative aimed at aligning with the Paris Agreement. Has programs to reduce carbon emissions",
   highImpactClimateSectorEnergyConsumptionNaceA: "Total energy consumption per high impact climate sector",
   highImpactClimateSectorEnergyConsumptionNaceB: "Total energy consumption per high impact climate sector",
-  highImpactClimateSectorEnergyConsumptionNaceC: ":Total energy consumption per high impact climate sector",
-  highImpactClimateSectorEnergyConsumptionNaceD: ":Total energy consumption per high impact climate sector",
-  highImpactClimateSectorEnergyConsumptionNaceE: ":Total energy consumption per high impact climate sector",
-  highImpactClimateSectorEnergyConsumptionNaceF: ":Total energy consumption per high impact climate sector",
-  highImpactClimateSectorEnergyConsumptionNaceG: ":Total energy consumption per high impact climate sector",
-  highImpactClimateSectorEnergyConsumptionNaceH: ":Total energy consumption per high impact climate sector",
-  highImpactClimateSectorEnergyConsumptionNaceL: ":Total energy consumption per high impact climate sector",
-  nonRenewableEnergyConsumption: "Energy consumption by non-renewable energy",
+  highImpactClimateSectorEnergyConsumptionNaceC: "Total energy consumption per high impact climate sector",
+  highImpactClimateSectorEnergyConsumptionNaceD: "Total energy consumption per high impact climate sector",
+  highImpactClimateSectorEnergyConsumptionNaceE: "Total energy consumption per high impact climate sector",
+  highImpactClimateSectorEnergyConsumptionNaceF: "Total energy consumption per high impact climate sector",
+  highImpactClimateSectorEnergyConsumptionNaceG: "Total energy consumption per high impact climate sector",
+  highImpactClimateSectorEnergyConsumptionNaceH: "Total energy consumption per high impact climate sector",
+  highImpactClimateSectorEnergyConsumptionNaceL: "Total energy consumption per high impact climate sector",
+  nonRenewableEnergyConsumption: "Value of energy consumed from non-renewable energy sources",
   nonRenewableEnergyConsumptionCoal: "Energy consumption by non-renewable energy sources such as coal",
   nonRenewableEnergyConsumptionCrudeOil: "Energy consumption by non-renewable energy sources such as crude oil",
   nonRenewableEnergyConsumptionFossilFuels: "Total amount of non-renewable energy consumption",
@@ -177,9 +179,10 @@ export const sfdrKpisInfoMappings = {
     "Energy consumption by non-renewable energy sources from any other available (used) non-renewable source of energy",
   nonRenewableEnergyProduction: "Value of energy produced from non-renewable energy sources",
   renewableEnergyConsumption: "Value of energy consumed from renewable energy sources",
-  renewableEnergyProduction: "Value of energy produced from non-renewable energy sources",
+  renewableEnergyProduction: "Value of energy produced from renewable energy sources",
   totalHighImpactClimateSectorEnergyConsumption: "Total energy consumption per high impact climate sector",
-  enterpriseValue: "Company Enterprise Value",
+  enterpriseValue:
+    "Enterprise value calculated as the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents",
   fossilFuelSectorExposure: "Does the company derive any revenues from fossil fuels?",
   scope1:
     "Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets",
@@ -209,8 +212,8 @@ export const sfdrKpisInfoMappings = {
     "Does the company have a policies and procedures to abolish all forms of child labour, forced labour and eliminate discrimination in the workplace?",
 
   controversialWeaponsExposure:
-    "Does the company involved in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons?",
-  corruptionLegalProceedings: "Does the company have  been involved in corruption related legal proceedings?",
+    "Is the company involved in the manufacture or selling of controversial weapons such as anti-personnel mines, cluster munitions, chemical weapons and biological weapons?",
+  corruptionLegalProceedings: "Has the company been involved in corruption related legal proceedings?",
 
   environmentalPolicy: "Does the company have a statement of environmental policy?",
   fairBusinessMarketingAdvertisingPolicy:
@@ -222,7 +225,7 @@ export const sfdrKpisInfoMappings = {
   humanRightsDueDiligencePolicy:
     "Does the company have a policies and procedures to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact?",
   humanRightsLegalProceedings: "Does the company have been involved in Human Rights related legal proceedings?",
-  iloCoreLabourStandards: "Does the company abides by ILO Core Labour Standards",
+  iloCoreLabourStandards: "Does the company abide by ILO Core Labour Standards?",
   iso14001: "Does the company have an ISO 14001 certificate?",
   maleBoardMembers:
     "Number of females on the board. Board means the administrative, management or supervisory body of a company",
@@ -258,14 +261,14 @@ export const sfdrKpisInfoMappings = {
   wasteNonRecycled: "Tonnes of non-recycled waste generated by the company.",
   emissionsToWater: "Tonnes of Emissions To Water generated by the company.",
   waterConsumption: "Amount of water consumed by the company",
-  waterManagementPolicy: "Does the compant have a policies and procedures for water management?",
+  waterManagementPolicy: "Does the company have a policies and procedures for water management?",
   waterReused: "Amount of water reused/reclaimed by the company",
   waterStressAreaExposure:
-    "Does the company has sites located in areas of high water stress without a water management policy?",
+    "Does the company have sites located in areas of high water stress without a water management policy?",
   supplierCodeOfConduct:
-    "Does your company have a Supplier Code Of Conduct? If yes, please provide us with the Supplier Code Of Conduct.",
+    "Does the company have a Supplier Code Of Conduct (against unsafe working conditions, precarious work, child labour and forced labour)?",
   grievanceHandlingMechanism:
-    "Has your company implemented a grievance mechanism (e.g., anonymous whistleblowing system) to protect human and environmental rights in your business?",
+    "Does the company have a grievance/complaints handling mechanism related to employee matters?",
   totalRevenue:
     "Total Revenue in MM (Millions) for the financial year. i.e., Income arising in the course of an entity's ordinary activities., the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time",
 };

@@ -103,8 +103,7 @@ object CsvUtils {
     }
 
     /**
-     * Tries to parse a decimal value from the CSV file with the expected format
-     * XXX.XXX,XXX
+     * Tries to parse a decimal value from the CSV file with the expected format XXX.XXX,XXX allowing null
      */
     fun Map<String, String>.readCsvDecimal(
         property: String,

@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName" :explanation="info" />
+    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required === 'required'" />
     <FormKit
       type="radio"
       :name="name"
