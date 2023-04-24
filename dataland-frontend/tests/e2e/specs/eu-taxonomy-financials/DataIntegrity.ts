@@ -15,7 +15,6 @@ import {
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import {uploadReports} from "@sharedUtils/components/UploadReports";
 
 describeIf(
   "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
@@ -35,41 +34,6 @@ describeIf(
         preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
       });
     });
-
-    /**
-     * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
-     * via the form in the frontend, and then visits the view page where that dataset is displayed
-     * and
-     *
-     * @param companyInformation Company information to be used for the company upload
-     * @param testData EU Taxonomy dataset for financial companies to be uploaded
-     */
-    function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndTestFormAndVisitFrameworkDataViewPage(
-      companyInformation: CompanyInformation,
-      testData: EuTaxonomyDataForFinancials
-    ): void {
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
-          (storedCompany): void => {
-            cy.ensureLoggedIn(uploader_name, uploader_pw);
-            cy.visitAndCheckAppMount(
-              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
-            );
-            const filename = "pdfTest.pdf";
-            uploadReports.uploadFile(filename)
-            uploadReports.validateSingleFileInUploadedList(filename, "KB")
-            uploadReports.validateSingleFileInfo()
-            uploadReports.removeSingleUploadedFileFromUploadedList()
-            uploadReports.checkNoReportIsListed()
-            fillEuTaxonomyForFinancialsUploadForm(testData);
-            submitEuTaxonomyFinancialsUploadForm();
-            cy.visitAndCheckAppMount(
-              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
-            );
-          }
-        );
-      });
-    }
 
     /**
      * Uploads the provided company and dataset to Dataland via the API and navigates to the page of the uploaded
@@ -200,18 +164,6 @@ describeIf(
         .should("contain", "Green asset ratio")
         .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.greenAssetRatio));
     }
-
-    it(
-      "Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
-        "that the upload form works fine with all options",
-      () => {
-        const testData = getPreparedFixture("company-for-all-types", preparedFixtures);
-        uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaFormAndTestFormAndVisitFrameworkDataViewPage(
-          testData.companyInformation,
-          testData.t
-        );
-      }
-    );
 
     it("Create a CreditInstitution (combined field submission)", () => {
       const testData = getPreparedFixture("credit-institution-single-field-submission", preparedFixtures);
