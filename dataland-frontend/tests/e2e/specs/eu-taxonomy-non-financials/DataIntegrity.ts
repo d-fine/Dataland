@@ -89,6 +89,7 @@ describeIf(
                 .url()
                 .should("eq", getBaseUrl() + "/datasets");
               cy.wait("@getDataForMyDatasetsPage");
+
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
@@ -99,34 +100,37 @@ describeIf(
               cy.get("body").should("contain", "Aligned CapEx").should("contain", "%");
               cy.get("body").should("contain", "Eligible OpEx").should("contain", "%");
               cy.get("body").should("contain", "Aligned OpEx").should("contain", "%");
-              cy.get('button[data-test="editDatasetButton"]').click();
-              cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
-              cy.get('[data-test="reportDate"] button').should("have.class", "p-datepicker-trigger").click();
-              cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
-              cy.get("div.p-datepicker").find('span:contains("19")').click();
-              cy.get('input[name="reportDate"]').invoke("val").should("contain", "19");
-              cy.get('button[data-test="submitButton"]').click();
-              // TODO check if actually edited
-              // TODO
 
-              // TODO modularize
+              const newValueForEligibleRevenueAfterEdit = "30";
+              cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("getDataToPrefillForm");
+              cy.get('button[data-test="editDatasetButton"]').click();
+              cy.wait("@getDataToPrefillForm");
+              cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
+              cy.get(`div[data-test=revenueSection] div[data-test=eligible] input[name="value"]`)
+                .clear()
+                .type(newValueForEligibleRevenueAfterEdit);
+              cy.get('button[data-test="submitButton"]').click();
+              cy.wait("@getDataForMyDatasetsPage");
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
-              cy.get("[data-test='taxocard']").should("exist");
-              cy.get('button[data-test="editDatasetButton"]').click();
-              cy.get('button[data-test="upload-files-button"]').click();
-              cy.get("input[type=file]").selectFile("../testing/data/pdfTest.pdf", { force: true }); // TODO use florians uploadReports util
-              cy.get('[data-test="file-name-already-exists"]').should("not.exist");
-              cy.get('div[data-test="uploaded-files"]')
-                .should("exist")
-                .find('[data-test="uploaded-files-title"]')
-                .should("contain", "pdf");
-              cy.get('input[name="currency"]').type("aaa");
+              cy.get("body")
+                .should("contain", "Eligible Revenue")
+                .should("contain", newValueForEligibleRevenueAfterEdit + "%");
 
-              cy.intercept(`**/documents/`).as("postDocument");
+              cy.get('button[data-test="editDatasetButton"]').click();
+              cy.wait("@getDataToPrefillForm");
+              cy.get('button[data-test="upload-files-button"]').click();
+              cy.get("input[type=file]").selectFile("../testing/data/pdfTest.pdf", { force: true });
+              cy.get('[data-test="file-name-already-exists"]').should("exist");
+              cy.get(`[data-test="pdfTestToUploadContainer"]`).should("not.exist");
               cy.get('button[data-test="submitButton"]').click();
-              cy.wait("@getData", { timeout: 5000 }).should("exist");
+              cy.get('[data-test="failedUploadMessage"]').should("exist");
+
+              // TODO select same file with different name and check if no actual re-upload
+              cy.intercept(`**/documents/`).as("postDocument");
+              //cy.get('button[data-test="submitButton"]').click(); // TODO wip
+              //cy.wait("@getData", { timeout: 5000 }).should("exist"); // TODO wip
             }
           );
         });

@@ -280,7 +280,7 @@
               :message="`New data has dataId: ${postEuTaxonomyDataForNonFinancialsResponse.data.dataId}`"
               :messageId="messageCount"
             />
-            <FailedUpload v-else msg="EU Taxonomy Data" :messageId="messageCount" />
+            <FailedUpload v-else data-test="failedUploadMessage" msg="EU Taxonomy Data" :messageId="messageCount" />
           </template>
         </div>
         <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
