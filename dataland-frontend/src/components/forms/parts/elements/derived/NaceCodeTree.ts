@@ -21,7 +21,7 @@ export function filterNodes(nodes: Array<TreeNode>, searchTerm: string): Array<T
 /**
  * An excerpt of the Nace Rev 2. definition
  * (Ref https://ec.europa.eu/eurostat/ramon/nomenclatures/index.cfm?TargetUrl=LST_NOM_DTL&StrNom=NACE_REV2&StrLanguageCode=EN)
- * Transformed into TreeNode format by the (TODO: UPLOAD CONVERTER CODE AND REFERENCE IT HERE)
+ * Transformed into TreeNode format by the DatalandNaceConverter (https://github.com/d-fine/DatalandNaceConverter)
  */
 export const naceCodeTree: Array<TreeNode> = [
   {

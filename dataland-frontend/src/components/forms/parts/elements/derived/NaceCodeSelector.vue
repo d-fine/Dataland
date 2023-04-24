@@ -2,7 +2,7 @@
   <div class="flex align-items-end">
     <InputText
       v-model="searchFilter"
-      placeholder="Search for NACE Rev2 codes"
+      placeholder="Search for NACE Rev 2 Codes"
       @focus="inputFocused"
       class="d-nace-textinput"
     ></InputText>
