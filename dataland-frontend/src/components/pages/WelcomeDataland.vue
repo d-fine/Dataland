@@ -3,7 +3,7 @@
   <LandingLoginMobile v-if="isMobile" />
   <SampleSection v-if="!isMobile" />
   <MarketingSection :isMobile="isMobile" />
-  <DatalandFooter :isMobile="isMobile" />
+  <TheFooter :isMobile="isMobile" />
 </template>
 
 <script lang="ts">
@@ -11,7 +11,7 @@ import LandingLogin from "@/components/resources/landing/LandingLogin.vue";
 import LandingLoginMobile from "@/components/resources/landing/LandingLoginMobile.vue";
 import MarketingSection from "@/components/resources/landing/MarketingSection.vue";
 import SampleSection from "@/components/resources/landing/SampleSection.vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import { defineComponent, inject } from "vue";
 import { NavigationFailure, useRoute } from "vue-router";
 import Keycloak from "keycloak-js";
@@ -22,7 +22,7 @@ import { SessionDialogMode } from "@/utils/SessionTimeoutUtils";
 
 export default defineComponent({
   name: "WelcomeDataland",
-  components: { SampleSection, MarketingSection, LandingLogin, LandingLoginMobile, DatalandFooter },
+  components: { SampleSection, MarketingSection, LandingLogin, LandingLoginMobile, TheFooter },
   setup() {
     return {
       authenticated: inject<boolean>("authenticated"),

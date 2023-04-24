@@ -1,6 +1,6 @@
 package org.dataland.csvconverter.csv.commonfieldparsers
 
-import org.dataland.csvconverter.csv.CsvUtils.getCsvValueAllowingNull
+import org.dataland.csvconverter.csv.CsvUtils.getCsvValue
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import java.time.LocalDate
@@ -27,16 +27,16 @@ class FiscalYearParser {
     /**
      * Method to retrieve information about the deviation of the fiscal year from the csv file
      */
-    fun getFiscalYearDeviation(csvLineData: Map<String, String>): FiscalYearDeviation? {
-        return columnMappingFiscalYear.getCsvValueAllowingNull("fiscalYearDeviation", csvLineData)
-            ?.let { fiscalYearDeviationParser.parseAllowingNull("fiscalYearDeviation", it) }
+    fun getFiscalYearDeviation(csvLineData: Map<String, String>): FiscalYearDeviation {
+        return columnMappingFiscalYear.getCsvValue("fiscalYearDeviation", csvLineData)
+            .let { fiscalYearDeviationParser.parse("fiscalYearDeviation", it) }
     }
 
     /**
      * Method to retrieve the end date of the fiscal year from the csv file
      */
-    fun getFiscalYearEnd(csvLineData: Map<String, String>): LocalDate? {
-        val fiscalYearEndString = columnMappingFiscalYear.getCsvValueAllowingNull("fiscalYearEnd", csvLineData)
-        return if (fiscalYearEndString.isNullOrBlank()) null else LocalDate.parse(fiscalYearEndString)
+    fun getFiscalYearEnd(csvLineData: Map<String, String>): LocalDate {
+        val fiscalYearEndString = columnMappingFiscalYear.getCsvValue("fiscalYearEnd", csvLineData)
+        return LocalDate.parse(fiscalYearEndString)
     }
 }

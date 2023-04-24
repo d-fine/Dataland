@@ -9,6 +9,7 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
@@ -17,7 +18,7 @@ import Chainable = Cypress.Chainable;
  */
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
-  cy.get('button[data-test="submitButton"]').click();
+  submitButton.clickButton();
   cy.on("uncaught:exception", (err) => {
     expect(err.message).to.include("unhandled promise rejection");
     return false;
@@ -95,7 +96,7 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
     }]`
   ).check();
   cy.get('input[name="scopeOfEntities"][value="No"]').check();
-  cy.get('div[id="jumpLinks"] li:last a').click();
+  cy.get('div[data-test="submitSideBar"] li:last a').click();
   cy.window().then((win) => {
     const scrollPosition = win.scrollY;
     expect(scrollPosition).to.be.greaterThan(0);
@@ -212,6 +213,7 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
+ * @returns a promise on the created data meta information
  */
 export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
   token: string,

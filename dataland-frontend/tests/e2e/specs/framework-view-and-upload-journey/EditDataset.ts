@@ -2,9 +2,10 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
+import { checkStickynessOfSubmitSideBar, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -38,7 +39,10 @@ describeIf(
           cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
           cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
           cy.get("div").contains("New Dataset - LkSG").should("be.visible");
-          cy.get("button").contains("ADD DATA").should("exist").click();
+          submitButton.buttonIsUpdateDataButton();
+          submitButton.buttonAppearsEnabled();
+          checkStickynessOfSubmitSideBar();
+          submitButton.clickButton();
           cy.get("h4")
             .contains("Upload successfully executed.")
             .should("exist")

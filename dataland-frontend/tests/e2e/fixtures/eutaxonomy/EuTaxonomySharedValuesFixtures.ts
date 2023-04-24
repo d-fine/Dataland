@@ -12,10 +12,23 @@ import { getCsvDataSourceMapping } from "@e2e/fixtures/common/DataSourceFixtures
 import { generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomYesNoNaUndefined, randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";
-import { randomPastDateOrUndefined } from "@e2e/fixtures/common/DateFixtures";
+import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { randomNumber } from "@e2e/fixtures/common/NumberFixtures";
-import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
+import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+
+/**
+ * Generates a new Eu Taxonomy instance fitting for either "financials" or "non-financials"
+ *
+ * @returns Eu Taxonomy instance with mandatory fields already assigned
+ */
+export function generateEuTaxonomyWithRequiredFields(): EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials {
+  return {
+    fiscalYearDeviation: randomFiscalYearDeviation(),
+    fiscalYearEnd: randomPastDate(),
+    numberOfEmployees: randomNumber(100000),
+  };
+}
 
 /**
  * Fills in random values for fields shared between the eutaxonomy frameworks
@@ -24,12 +37,9 @@ import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
  */
 export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials): void {
   input.referencedReports = generateReferencedReports();
-  input.fiscalYearDeviation = randomFiscalYearDeviationOrUndefined();
-  input.fiscalYearEnd = randomPastDateOrUndefined();
   input.assurance = generateAssuranceData(input.referencedReports);
   input.scopeOfEntities = randomYesNoNaUndefined();
   input.reportingObligation = valueOrUndefined(randomYesNo());
-  input.numberOfEmployees = valueOrUndefined(randomNumber(100000));
   input.activityLevelReporting = valueOrUndefined(randomYesNo());
 }
 
