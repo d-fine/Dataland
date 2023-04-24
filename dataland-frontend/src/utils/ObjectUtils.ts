@@ -1,4 +1,5 @@
 export type ObjectType = { [key: string]: string | object };
+
 /**
  * Updates keys from one object to another
  *
@@ -42,4 +43,25 @@ export function modifyObjectKeys(obj: ObjectType, typeOfModification: "send" | "
     }
   }
   return objectModified;
+}
+
+/**
+ * A recursive function that is able to retrieve all values for a provided key in an arbitrarily deeply nested object.
+ * Example: the datasource.reference in the EUTaxonomyDataModel occurs for several data points and you might want to get
+ * a list of all references in one dataset.
+ *
+ * @param [obj] object in which it is looking for the value to change
+ * @param [keyToFind] the key which is to be found
+ * @returns all the values corresponding to the key
+ */
+export function findAllValuesForKey(obj: ObjectType, keyToFind: string): Array<string> {
+  return Object.entries(obj).reduce(
+    (acc: Array<string>, [key, value]) =>
+      key === keyToFind
+        ? acc.concat(value as string)
+        : typeof value === "object"
+        ? acc.concat(findAllValuesForKey(value as ObjectType, keyToFind))
+        : acc,
+    []
+  );
 }

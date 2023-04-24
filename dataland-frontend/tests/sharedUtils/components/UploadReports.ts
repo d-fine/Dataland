@@ -3,6 +3,15 @@ export const uploadReports = {
     cy.get('button[data-test="upload-files-button"]').click();
     cy.get("input[type=file]").selectFile(`../testing/data/${filename}.pdf`, { force: true });
   },
+  fillAllReportInfoForms(): void {
+    cy.get('[data-test="report-info"]').each((element) => {
+      cy.wrap(element).find(`[data-test="reportDate"] button`).should("have.class", "p-datepicker-trigger").click();
+      cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
+      cy.get("div.p-datepicker").find(`span:contains("12")`).click();
+      cy.wrap(element).find(`input[name="currency"]`).type("zzz");
+      cy.wrap(element).find(`input[value="No"]`).click();
+    });
+  },
   validateSingleFileInUploadedList(filename: string, fileDimension: string): void {
     cy.get('div[data-test="uploaded-files"]')
       .should("exist")

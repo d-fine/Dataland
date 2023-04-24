@@ -64,15 +64,21 @@ describe("Component test for LksgPanel", () => {
       },
     });
 
-    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate!.substring(0, 4));
+    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate.substring(0, 4));
 
-    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
+    cy.get("tbody")
+      .find(`span:contains(${lksgData.social!.general!.dataDate as string})`)
+      .should("exist");
 
     cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("not.exist");
+    cy.get("tbody")
+      .find(`span:contains(${lksgData.social!.general!.dataDate as string})`)
+      .should("not.exist");
 
     cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
+    cy.get("table.p-datatable-table")
+      .find(`span:contains(${lksgData.social!.general!.dataDate as string})`)
+      .should("exist");
 
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
 
@@ -86,7 +92,7 @@ describe("Component test for LksgPanel", () => {
     cy.get("em.info-icon").eq(0).trigger("mouseleave");
 
     cy.get("table.p-datatable-table")
-      .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+      .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber as string})`)
       .should("exist");
   });
 

@@ -168,10 +168,7 @@
                           type="group"
                         >
                           <div class="form-field">
-                            <h3>
-                              {{ euTaxonomyKpiNameMappings[`${detailCashFlowType}CapEx`] ?? "" }}
-                            </h3>
-                            <KPIfieldSet
+                            <DataPointForm
                               :name="`${detailCashFlowType}CapEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -206,10 +203,7 @@
                           type="group"
                         >
                           <div class="form-field">
-                            <h3>
-                              {{ euTaxonomyKpiNameMappings[`${detailCashFlowType}OpEx`] ?? "" }}
-                            </h3>
-                            <KPIfieldSet
+                            <DataPointForm
                               :name="`${detailCashFlowType}OpEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -244,10 +238,7 @@
                           type="group"
                         >
                           <div class="form-field">
-                            <h3>
-                              {{ euTaxonomyKpiNameMappings[`${detailCashFlowType}Revenue`] ?? "" }}
-                            </h3>
-                            <KPIfieldSet
+                            <DataPointForm
                               :name="`${detailCashFlowType}Revenue`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
@@ -280,7 +271,7 @@
               :message="`New data has dataId: ${postEuTaxonomyDataForNonFinancialsResponse.data.dataId}`"
               :messageId="messageCount"
             />
-            <FailedUpload v-else data-test="failedUploadMessage" msg="EU Taxonomy Data" :messageId="messageCount" />
+            <FailedUpload v-else data-test="failedUploadMessage" :message="message" :messageId="messageCount" />
           </template>
         </div>
         <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
@@ -296,8 +287,6 @@ import { FormKit } from "@formkit/vue";
 import Calendar from "primevue/calendar";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
-
-import KPIfieldSet from "@/components/forms/parts/kpiSelection/KPIfieldSet.vue";
 
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
@@ -326,15 +315,15 @@ import {
   CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
   DataMetaInformation,
 } from "@clients/backend";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
-import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
+import { checkCustomInputs, checkThatAllReportsAreReferenced } from "@/utils/ValidationsUtils";
+import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/ObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
-import { AxiosResponse } from "axios/index";
+import { AxiosError, AxiosResponse } from "axios";
 import { DocumentUploadResponse } from "@clients/documentmanager";
-import { AxiosError } from "axios";
+import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -345,7 +334,7 @@ export default defineComponent({
     PrimeButton,
     UploadReports,
     BasicInformationFields,
-    KPIfieldSet,
+    DataPointForm,
     FailedUpload,
     Card,
     FormKit,
@@ -471,8 +460,11 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
+        checkThatAllReportsAreReferenced(
+          this.formInputsModel.data as ObjectType,
+          this.namesOfAllCompanyReportsForTheDataset
+        );
         let allFilesWasUploadedSuccessful = true;
-
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
@@ -490,8 +482,8 @@ export default defineComponent({
                 this.uploadFileResponse = await documentUploadControllerControllerApi.postDocument(
                   this.filesToUpload[index]
                 );
-                console.log(this.uploadFileResponse);
-                this.filesToUpload[index]["documentId"] = this.uploadFileResponse.data.documentId;
+                this.formInputsModel.data.referencedReports[0].reference = this.uploadFileResponse.data.documentId;
+                this.filesToUpload[index].documentId = this.uploadFileResponse.data.documentId;
               } else {
                 this.filesToUpload[index]["documentId"] = hash;
               }
@@ -524,19 +516,14 @@ export default defineComponent({
             await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
               formInputsModelToSend
             );
+          this.$emit("datasetCreated");
         }
-        this.$formkit.reset("CreateEuTaxonomyForNonFinancialsForm");
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        this.$refs.UploadReports.clearAllSelectedFiles();
-        this.fiscalYearEndAsDate = null;
-        this.filesToUpload = [];
-        this.listOfUploadedReportsInfo = [];
-      } catch (error) {
+      } catch (error: Error) {
+        this.messageCount++;
+        this.message = (error as Error).message;
         console.error(error);
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
-        this.$formkit.reset("createEuTaxonomyForNonFinancialsForm");
-        this.$emit("datasetCreated");
       }
     },
 
