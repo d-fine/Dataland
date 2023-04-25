@@ -345,7 +345,7 @@
                 :label="section.label"
                 :name="section.name"
               >
-                <div class="uploadFormSection grid" v-for="subsection in section.categories" :key="subsection">
+                <div class="uploadFormSection grid" v-for="subsection in section.subcategories" :key="subsection">
                   <div class="col-3 p-3 topicLabel">
                     <h4 class="anchor title">{{ subsection.label }}</h4>
                     <div :class="`p-badge badge-${section.color}`">
@@ -361,7 +361,6 @@
                         :displayName="field.label"
                         :info="field.description"
                         :name="field.name"
-                        :placeholder="field.placeholder"
                         :options="field.options"
                       />
                     </FormKit>
@@ -458,6 +457,8 @@ import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectF
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
 import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
 import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
+import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
+import CurrencyCodeFormField from "@/components/forms/parts/fields/CurrencyCodeFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -484,6 +485,7 @@ export default defineComponent({
     NaceCodeFormField,
     AddressFormField,
     RadioButtonsFormField,
+    YesNoNaFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -575,30 +577,6 @@ export default defineComponent({
     window.removeEventListener("scroll", this.scrollListener);
   },
   methods: {
-    /**
-     * Returns the value of a given YesNo variable
-     *
-     * @param variable the string representation of the YesNo variable to be read out
-     * @returns either "Yes" or "No"
-     */
-    getYesNoValue(variable: string | undefined): string {
-      if (variable == undefined || variable == "") {
-        return "Yes";
-      }
-      return eval(variable) as string;
-    },
-    /**
-     * Returns the value of a given YesNo variable is Yes
-     *
-     * @param variable the string representation of the YesNo variable to be read out
-     * @returns the boolean result
-     */
-    isYes(variable: string | undefined): boolean {
-      if (variable == undefined || variable == "") {
-        return true;
-      }
-      return eval(variable) === "Yes";
-    },
     /**
      * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset

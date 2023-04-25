@@ -13,6 +13,10 @@
         label: 'No',
         value: 'No',
       },
+      {
+        label: 'N/A',
+        value: 'NA',
+      },
     ]"
   ></RadioButtonsFormField>
 </template>
@@ -22,7 +26,7 @@ import { defineComponent } from "vue";
 import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
 
 export default defineComponent({
-  name: "YesNoFormField",
+  name: "YesNoNaFormField",
   components: { RadioButtonsFormField },
   inheritAttrs: false,
   props: {
