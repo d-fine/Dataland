@@ -356,7 +356,9 @@
                   <div class="col-9 formFields">
                     <FormKit v-for="field in subsection.fields" :key="field" type="group" :name="subsection.name">
                       <component
-                        v-if="isYes(field.dependency)"
+                        v-if="
+                          field.showIf(companyAssociatedLksgData.data) && field.component != 'SingleSelectFormField'
+                        "
                         :is="field.component"
                         :displayName="field.label"
                         :info="field.description"
