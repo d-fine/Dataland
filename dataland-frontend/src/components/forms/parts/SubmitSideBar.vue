@@ -8,6 +8,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  name: "SubmitSideBar",
   data: () => ({ elementPosition: 0, scrollListener: (): null => null }),
   mounted() {
     const submitSideBar = this.$refs.submitSideBar as HTMLElement;

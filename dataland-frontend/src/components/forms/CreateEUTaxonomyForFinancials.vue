@@ -267,16 +267,6 @@
                   </FormKit>
                 </div>
               </FormKit>
-
-              <!--------- SUBMIT --------->
-
-              <div class="uploadFormSection grid">
-                <div class="col-3"></div>
-
-                <div class="col-9">
-                  <PrimeButton data-test="submitButton" type="submit" label="SUBMIT FORM" />
-                </div>
-              </div>
             </div>
           </FormKit>
         </div>
