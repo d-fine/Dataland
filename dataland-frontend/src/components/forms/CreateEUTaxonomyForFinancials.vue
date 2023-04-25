@@ -173,7 +173,7 @@
                       :name="'fiscalYearDeviation'"
                       :options="[
                         { label: 'Deviation', value: 'Deviation' },
-                        { label: 'No Deviation', value: 'No Deviation' },
+                        { label: 'No Deviation', value: 'NoDeviation' },
                       ]"
                       validation="required"
                       :required="true"
