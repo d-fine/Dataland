@@ -290,9 +290,9 @@
             />
             <FailedUpload v-else :message="message" :messageId="messageCount" />
           </template>
-        <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
-      </SubmitSideBar>
-    </div>
+          <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
+        </SubmitSideBar>
+      </div>
     </template>
   </Card>
 </template>

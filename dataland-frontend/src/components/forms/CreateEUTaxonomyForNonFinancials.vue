@@ -267,7 +267,7 @@
             />
             <FailedUpload v-else data-test="failedUploadMessage" :message="message" :messageId="messageCount" />
           </template>
-        <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
+          <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
         </SubmitSideBar>
       </div>
     </template>
@@ -280,7 +280,6 @@ import { FormKit } from "@formkit/vue";
 
 import Calendar from "primevue/calendar";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
-import PrimeButton from "primevue/button";
 
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
