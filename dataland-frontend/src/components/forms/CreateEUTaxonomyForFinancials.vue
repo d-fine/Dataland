@@ -527,7 +527,7 @@ export default defineComponent({
         checkThatAllReportsAreReferenced(
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
-        );
+        ); // TODO dont throw an error but use validation???
         let allFileUploadedSuccessful = true;
         const documentUploadControllerControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
