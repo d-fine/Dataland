@@ -17,7 +17,7 @@ data class LksgMasterData(
 
     val name: String?,
 
-    val address: LksgAddress,
+    val address: LksgAddress?,
 
     val headOffice: YesNo?,
 
@@ -29,15 +29,15 @@ data class LksgMasterData(
 
     val industry: String?,
 
-    val numberOfEmployees: BigDecimal,
+    val numberOfEmployees: BigDecimal?,
 
     val seasonalOrMigrantWorkers: YesNo?,
 
-    val shareOfTemporaryWorkers: ShareOfTemporaryWorkers,
+    val shareOfTemporaryWorkers: ShareOfTemporaryWorkers?,
 
     val totalRevenueCurrency: String?,
 
-    val totalRevenue: BigDecimal,
+    val totalRevenue: BigDecimal?,
 
     val fixedAndWorkingCapital: BigDecimal?,
 )
