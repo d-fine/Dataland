@@ -2,7 +2,7 @@
   <Card class="col-12 page-wrapper-card">
     <template #title
       ><span data-test="pageWrapperTitle"
-        >{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</span
+        >{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Financial Company/Service</span
       ></template
     >
     <template #content>
@@ -12,8 +12,8 @@
             v-model="formInputsModel"
             :actions="false"
             type="form"
-            id="createEuTaxonomyForNonFinancialsForm"
-            @submit="postEuTaxonomyDataForNonFinancials"
+            id="createEuTaxonomyForFinancialsForm"
+            @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
           >
             <FormKit
@@ -30,6 +30,7 @@
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
+                  data-test="reportingPeriodLabel"
                   :name="euTaxonomyKpiNameMappings.reportingPeriod"
                   :explanation="euTaxonomyKpiInfoMappings.reportingPeriod"
                 />
@@ -46,9 +47,6 @@
 
                 <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
               </div>
-            </div>
-
-            <div class="uploadFormSection grid">
               <FormKit type="group" name="data" label="data">
                 <UploadReports
                   ref="UploadReports"
@@ -59,6 +57,7 @@
                   :editMode="editMode"
                   @selectedFiles="onSelectedFilesHandler"
                   @removeReportFromFilesToUpload="removeReportFromFilesToUpload"
+                  @removeReportFromUploadedReports="removeReportFromUploadedReports"
                   @updateReportDateHandler="updateReportDateHandler"
                 />
 
@@ -149,107 +148,120 @@
 
                 <div class="uploadFormSection">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="capex" class="anchor title">CapEx</h4>
+                    <h4 id="addKpis" class="anchor title">Add KPIs</h4>
+                    <p>Select at least one services type to add the related section of KPIs.</p>
                   </div>
 
-                  <!-- CapEx -->
-                  <div data-test="capexSection" class="col-9 p-0">
-                    <FormKit name="capex" type="group">
-                      <div
-                        v-for="detailCashFlowType of euTaxonomyPseudoModelAndMappings.euTaxonomyDetailsPerCashFlowType"
-                        :key="detailCashFlowType"
-                        :data-test="detailCashFlowType"
-                        class="formFields"
-                      >
-                        <FormKit
-                          :name="
-                            euTaxonomyPseudoModelAndMappings?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]
-                          "
-                          type="group"
-                        >
-                          <div class="form-field">
-                            <DataPointForm
-                              :name="`${detailCashFlowType}CapEx`"
-                              :kpiInfoMappings="euTaxonomyKpiInfoMappings"
-                              :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
-                              :reportsName="namesOfAllCompanyReportsForTheDataset"
-                            />
-                          </div>
-                        </FormKit>
-                      </div>
-                    </FormKit>
+                  <!-- Add KPIs -->
+                  <div class="col-9 formFields">
+                    <!-- Data source -->
+                    <div class="form-field">
+                      <UploadFormHeader
+                        data-test="selectKPIsLabel"
+                        :name="euTaxonomyKpiNameMappings.financialServicesTypes ?? ''"
+                        :explanation="euTaxonomyKpiInfoMappings.financialServicesTypes ?? ''"
+                      />
+
+                      <MultiSelect
+                        v-model="selectedKPIs"
+                        :options="kpisModel"
+                        data-test="MultiSelectfinancialServicesTypes"
+                        name="MultiSelectfinancialServicesTypes"
+                        optionLabel="label"
+                        validation-label="Services Types"
+                        validation="required"
+                        placeholder="Select..."
+                        class="mb-3"
+                      />
+                      <ul v-if="selectedKPIs.length">
+                        <li :key="index" v-for="(file, index) of selectedKPIs">{{ file.label }}</li>
+                      </ul>
+
+                      <PrimeButton
+                        @click="confirmSelectedKPIs"
+                        data-test="addKpisButton"
+                        :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
+                      />
+                      <FormKit
+                        :modelValue="computedFinancialServicesTypes"
+                        type="text"
+                        validationLabel="Choosing a Financials Services Type and adding KPIs for it "
+                        validation="required"
+                        name="financialServicesTypes"
+                        :outer-class="{ 'hidden-input': true }"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div class="uploadFormSection">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="opex" class="anchor title">OpEx</h4>
+                <div
+                  v-for="companyType of confirmedSelectedKPIs"
+                  :key="companyType"
+                  :data-test="companyType.value"
+                  class="uploadFormSection"
+                >
+                  <div class="flex w-full">
+                    <div class="p-3 topicLabel">
+                      <h3 :id="companyType.value" class="anchor title">{{ companyType.label }}</h3>
+                    </div>
+
+                    <PrimeButton
+                      @click="removeKpisSection(companyType.value)"
+                      label="REMOVE THIS SECTION"
+                      data-test="removeSectionButton"
+                      class="p-button-text ml-auto"
+                      icon="pi pi-trash"
+                    ></PrimeButton>
                   </div>
 
-                  <!-- OpEx -->
-                  <div data-test="opexSection" class="col-9 p-0">
-                    <FormKit name="opex" type="group">
-                      <div
-                        v-for="detailCashFlowType of euTaxonomyPseudoModelAndMappings.euTaxonomyDetailsPerCashFlowType"
-                        :key="detailCashFlowType"
-                        :data-test="detailCashFlowType"
-                        class="formFields"
-                      >
-                        <FormKit
-                          :name="
-                            euTaxonomyPseudoModelAndMappings?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]
-                          "
-                          type="group"
-                        >
+                  <FormKit v-if="companyType.value !== 'assetManagementKpis'" :name="companyType.value" type="group">
+                    <div
+                      v-for="kpiType of euTaxonomyPseudoModelAndMappings[companyType.value]"
+                      :key="kpiType"
+                      :data-test="kpiType"
+                      class="uploadFormSection"
+                    >
+                      <div class="col-9 formFields">
+                        <FormKit :name="kpiType" type="group">
                           <div class="form-field">
                             <DataPointForm
-                              :name="`${detailCashFlowType}OpEx`"
+                              :name="kpiType ?? ''"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfAllCompanyReportsForTheDataset"
                             />
                           </div>
                         </FormKit>
                       </div>
-                    </FormKit>
-                  </div>
-                </div>
+                    </div>
+                  </FormKit>
 
-                <div class="uploadFormSection">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="revenue" class="anchor title">Revenue</h4>
-                  </div>
-
-                  <!-- Revenue -->
-                  <div data-test="revenueSection" class="col-9 p-0">
-                    <FormKit name="revenue" type="group">
+                  <FormKit name="eligibilityKpis" type="group">
+                    <FormKit
+                      :name="euTaxonomyPseudoModelAndMappings?.companyTypeToEligibilityKpis[companyType.value]"
+                      type="group"
+                    >
                       <div
-                        v-for="detailCashFlowType of euTaxonomyPseudoModelAndMappings.euTaxonomyDetailsPerCashFlowType"
-                        :key="detailCashFlowType"
-                        :data-test="detailCashFlowType"
-                        class="formFields"
+                        v-for="kpiTypeEligibility of euTaxonomyPseudoModelAndMappings.eligibilityKpis"
+                        :key="kpiTypeEligibility"
+                        :data-test="kpiTypeEligibility"
+                        class="uploadFormSection"
                       >
-                        <FormKit
-                          :name="
-                            euTaxonomyPseudoModelAndMappings?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]
-                          "
-                          type="group"
-                        >
-                          <div class="form-field">
-                            <DataPointForm
-                              :name="`${detailCashFlowType}Revenue`"
-                              :kpiInfoMappings="euTaxonomyKpiInfoMappings"
-                              :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
-                              :reportsName="namesOfAllCompanyReportsForTheDataset"
-                            />
-                          </div>
-                        </FormKit>
+                        <div class="col-9 formFields">
+                          <FormKit :name="kpiTypeEligibility" type="group">
+                            <div class="form-field">
+                              <DataPointForm
+                                :name="kpiTypeEligibility ?? ''"
+                                :kpiInfoMappings="euTaxonomyKpiInfoMappings"
+                                :kpiNameMappings="euTaxonomyKpiNameMappings"
+                                :reportsName="namesOfAllCompanyReportsForTheDataset"
+                              />
+                            </div>
+                          </FormKit>
+                        </div>
                       </div>
                     </FormKit>
-                  </div>
+                  </FormKit>
                 </div>
               </FormKit>
 
@@ -264,14 +276,13 @@
               </div>
             </div>
           </FormKit>
-          <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
+          <template v-if="postEuTaxonomyDataForFinancialsProcessed">
             <SuccessUpload
-              v-if="postEuTaxonomyDataForNonFinancialsResponse?.status === 200"
+              v-if="postEuTaxonomyDataForFinancialsResponse?.status === 200"
               msg="EU Taxonomy Data"
-              :message="`New data has dataId: ${postEuTaxonomyDataForNonFinancialsResponse.data.dataId}`"
               :messageId="messageCount"
             />
-            <FailedUpload v-else data-test="failedUploadMessage" :message="message" :messageId="messageCount" />
+            <FailedUpload v-else :message="message" :messageId="messageCount" />
           </template>
         </div>
         <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
@@ -284,27 +295,23 @@
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import { FormKit } from "@formkit/vue";
 
-import Calendar from "primevue/calendar";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
-import PrimeButton from "primevue/button";
-
-import FailedUpload from "@/components/messages/FailedUpload.vue";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import BasicInformationFields from "@/components/forms/parts/BasicInformationFields.vue";
 
-import Card from "primevue/card";
-import { ApiClientProvider } from "@/services/ApiClients";
+import PrimeButton from "primevue/button";
+import MultiSelect from "primevue/multiselect";
+import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import Calendar from "primevue/calendar";
+import FailedUpload from "@/components/messages/FailedUpload.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { defineComponent, inject } from "vue";
+import { ApiClientProvider } from "@/services/ApiClients";
+import Card from "primevue/card";
 import { useRoute } from "vue-router";
+import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { checkCustomInputs, checkThatAllReportsAreReferenced } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
-import {
-  completeInformationAboutSelectedFileWithAdditionalFields,
-  updatePropertyFilesUploaded,
-} from "@/utils/EuTaxonomyUtils";
-
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
@@ -312,78 +319,94 @@ import {
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
 import {
   AssuranceDataAssuranceEnum,
-  CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  CompanyAssociatedDataEuTaxonomyDataForFinancials,
   DataMetaInformation,
+  EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "@clients/backend";
-import { checkCustomInputs, checkThatAllReportsAreReferenced } from "@/utils/ValidationsUtils";
-import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/ObjectUtils";
+import { AxiosError, AxiosResponse } from "axios";
+import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
+import {
+  completeInformationAboutSelectedFileWithAdditionalFields,
+  updatePropertyFilesUploaded,
+} from "@/utils/EuTaxonomyUtils";
 import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
-import { AxiosError, AxiosResponse } from "axios";
 import { DocumentUploadResponse } from "@clients/documentmanager";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 
 export default defineComponent({
-  name: "CreateEuTaxonomyForNonFinancials",
-  components: {
-    JumpLinksSection,
-    Calendar,
-    UploadFormHeader,
-    PrimeButton,
-    UploadReports,
-    BasicInformationFields,
-    DataPointForm,
-    FailedUpload,
-    Card,
-    FormKit,
-    SuccessUpload,
-  },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  emits: ["datasetCreated"],
-  data: () => ({
-    formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-    fiscalYearEndAsDate: null as Date | null,
-    fiscalYearEnd: "",
-    reportingPeriod: new Date(),
-    filesToUpload: [] as ExtendedFile[],
-    listOfUploadedReportsInfo: [] as ExtendedCompanyReport[],
-    onThisPageLinks: [
-      { label: "Upload company reports", value: "uploadReports" },
-      { label: "Basic information", value: "basicInformation" },
-      { label: "Assurance", value: "assurance" },
-      { label: "CapEx", value: "capex" },
-      { label: "OpEx", value: "opex" },
-      { label: "Revenue", value: "revenue" },
-    ],
-    elementPosition: 0,
-    route: useRoute(),
-    editMode: false,
-    waitingForData: false,
-    checkCustomInputs,
-    formatBytesUserFriendly,
-    updatePropertyFilesUploaded,
-    euTaxonomyPseudoModelAndMappings,
-    euTaxonomyKpiNameMappings,
-    euTaxonomyKpiInfoMappings,
-    assuranceData: {
-      None: humanizeString(AssuranceDataAssuranceEnum.None),
-      LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
-      ReasonableAssurance: humanizeString(AssuranceDataAssuranceEnum.ReasonableAssurance),
-    },
+  name: "CreateEuTaxonomyForFinancials",
+  components: {
+    JumpLinksSection,
+    FailedUpload,
+    FormKit,
+    SuccessUpload,
+    UploadFormHeader,
+    Card,
 
-    postEuTaxonomyDataForNonFinancialsProcessed: false,
-    messageCount: 0,
-    postEuTaxonomyDataForNonFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
-    uploadFileResponse: null as AxiosResponse<DocumentUploadResponse> | null,
-    humanizeString: humanizeString,
-    message: "",
-  }),
+    UploadReports,
+    BasicInformationFields,
+
+    PrimeButton,
+    Calendar,
+    MultiSelect,
+    DataPointForm,
+  },
+  emits: ["datasetCreated"],
+  data() {
+    return {
+      formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
+      filesToUpload: [] as ExtendedFile[],
+      listOfUploadedReportsInfo: [] as ExtendedCompanyReport[],
+      fiscalYearEndAsDate: null as Date | null,
+      fiscalYearEnd: "",
+      reportingPeriod: new Date(),
+      assuranceData: {
+        None: humanizeString(AssuranceDataAssuranceEnum.None),
+        LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
+        ReasonableAssurance: humanizeString(AssuranceDataAssuranceEnum.ReasonableAssurance),
+      },
+      euTaxonomyPseudoModelAndMappings,
+      euTaxonomyKpiNameMappings,
+      euTaxonomyKpiInfoMappings,
+      formatBytesUserFriendly,
+      updatePropertyFilesUploaded,
+      checkCustomInputs,
+      route: useRoute(),
+      waitingForData: false,
+      editMode: false,
+
+      postEuTaxonomyDataForFinancialsProcessed: false,
+      messageCount: 0,
+      postEuTaxonomyDataForFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
+      uploadFileResponse: null as AxiosResponse<DocumentUploadResponse> | null,
+      humanizeString: humanizeString,
+      onThisPageLinksStart: [
+        { label: "Upload company reports", value: "uploadReports" },
+        { label: "Basic information", value: "basicInformation" },
+        { label: "Assurance", value: "assurance" },
+        { label: "Add KPIs", value: "addKpis" },
+      ],
+      onThisPageLinks: [] as { label: string; value: string }[],
+      kpisModel: [
+        { label: "Credit Institution", value: "creditInstitutionKpis" },
+        { label: "Investment Firm", value: "investmentFirmKpis" },
+        { label: "Insurance & Re-insurance", value: "insuranceKpis" },
+        { label: "Asset Management", value: "assetManagementKpis" },
+      ],
+      selectedKPIs: [] as { label: string; value: string }[],
+      confirmedSelectedKPIs: [] as { label: string; value: string }[],
+      computedFinancialServicesTypes: [] as string[],
+      message: "",
+    };
+  },
   computed: {
     namesOfAllCompanyReportsForTheDataset(): string[] {
       const namesFromFilesToUpload = this.filesToUpload.map((el) => el.name.split(".")[0]);
@@ -394,9 +417,20 @@ export default defineComponent({
       return this.reportingPeriod.getFullYear();
     },
   },
+  watch: {
+    confirmedSelectedKPIs: function (newValue: { label: string; value: string }[]) {
+      this.computedFinancialServicesTypes = newValue.map((el: { label: string; value: string }): string => {
+        return euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis[
+          el.value as keyof typeof euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis
+        ];
+      });
+    },
+  },
+
   props: {
     companyID: {
       type: String,
+      required: true,
     },
   },
   mounted() {
@@ -405,6 +439,8 @@ export default defineComponent({
       this.editMode = true;
       void this.loadEuData(dataId);
     }
+
+    this.onThisPageLinks = [...this.onThisPageLinksStart];
   },
 
   methods: {
@@ -416,62 +452,78 @@ export default defineComponent({
      */
     async loadEuData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
+      const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
-      ).getEuTaxonomyDataForNonFinancialsControllerApi();
+      ).getEuTaxonomyDataForFinancialsControllerApi();
 
       const dataResponse =
-        await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId);
+        await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(dataId);
       const dataResponseData = dataResponse.data;
-      if (dataResponseData.data?.fiscalYearEnd) {
-        this.fiscalYearEndAsDate = new Date(dataResponseData.data.fiscalYearEnd);
-      }
       if (dataResponseData?.reportingPeriod) {
         this.reportingPeriod = new Date(dataResponseData.reportingPeriod);
+      }
+      if (dataResponseData.data?.fiscalYearEnd) {
+        this.fiscalYearEndAsDate = new Date(dataResponseData.data.fiscalYearEnd);
       }
       if (dataResponseData.data?.referencedReports) {
         const referencedReportsForDataId = dataResponseData.data.referencedReports;
         for (const key in referencedReportsForDataId) {
           this.listOfUploadedReportsInfo.push({
             name: key,
-            reference: referencedReportsForDataId[key].reference,
             currency: referencedReportsForDataId[key].currency,
-            reportDate: referencedReportsForDataId[key].reportDate,
             isGroupLevel: referencedReportsForDataId[key].isGroupLevel,
+            reference: referencedReportsForDataId[key].reference,
+            reportDate: referencedReportsForDataId[key].reportDate,
             reportDateAsDate: referencedReportsForDataId[key].reportDate
               ? new Date(referencedReportsForDataId[key].reportDate as string)
               : "",
           });
         }
       }
+      if (dataResponseData.data?.financialServicesTypes) {
+        // types of company financial services
+        const arrayWithCompanyKpiTypes = dataResponseData.data?.financialServicesTypes;
+        // all types of financial services
+        const allTypesOfFinancialServices = euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis;
+
+        this.selectedKPIs = this.kpisModel.filter((el: { label: string; value: string }) => {
+          return arrayWithCompanyKpiTypes?.includes(
+            allTypesOfFinancialServices[
+              el.value as keyof typeof allTypesOfFinancialServices
+            ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
+          );
+        });
+        this.confirmSelectedKPIs();
+      }
       const receivedFormInputsModel = modifyObjectKeys(
         JSON.parse(JSON.stringify(dataResponseData)) as ObjectType,
         "receive"
       );
       this.waitingForData = false;
+
+      await this.$nextTick();
       updateObject(this.formInputsModel, receivedFormInputsModel);
     },
 
     /**
-     * Creates a new EuTaxonomy-Non-Financials framework entry for the current company
+     * Creates a new EuTaxonomy-Financials framework entry for the current company
      * with the data entered in the form by using the Dataland API
      */
-    async postEuTaxonomyDataForNonFinancials() {
+    async postEuTaxonomyDataForFinancials(): Promise<void> {
       try {
-        this.postEuTaxonomyDataForNonFinancialsProcessed = false;
+        this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
         checkThatAllReportsAreReferenced(
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-        let allFilesWasUploadedSuccessful = true;
-        const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getEuTaxonomyDataForNonFinancialsControllerApi();
-
+        let allFileUploadedSuccessful = true;
         const documentUploadControllerControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getDocumentControllerApi();
+        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getEuTaxonomyDataForFinancialsControllerApi();
 
         if (this.filesToUpload.length) {
           for (let index = 0; index < this.filesToUpload.length; index++) {
@@ -481,9 +533,8 @@ export default defineComponent({
               if (!documentExists.data.documentExists) {
                 this.uploadFileResponse = await documentUploadControllerControllerApi.postDocument(
                   this.filesToUpload[index]
-                );
-                this.formInputsModel.data.referencedReports[0].reference = this.uploadFileResponse.data.documentId;
-                this.filesToUpload[index].documentId = this.uploadFileResponse.data.documentId;
+                ); // TODO why is this a vue data field?
+                this.filesToUpload[index]["documentId"] = this.uploadFileResponse.data.documentId;
               } else {
                 this.filesToUpload[index]["documentId"] = hash;
               }
@@ -500,20 +551,19 @@ export default defineComponent({
                 this.message =
                   "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
               }
-              allFilesWasUploadedSuccessful = false;
+              allFileUploadedSuccessful = false;
               break;
             }
           }
         }
-
-        if (allFilesWasUploadedSuccessful) {
+        if (allFileUploadedSuccessful) {
           await this.$nextTick();
           const formInputsModelToSend = modifyObjectKeys(
             JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,
             "send"
           );
-          this.postEuTaxonomyDataForNonFinancialsResponse =
-            await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+          this.postEuTaxonomyDataForFinancialsResponse =
+            await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
               formInputsModelToSend
             );
           this.$emit("datasetCreated");
@@ -523,35 +573,8 @@ export default defineComponent({
         this.message = (error as Error).message;
         console.error(error);
       } finally {
-        this.postEuTaxonomyDataForNonFinancialsProcessed = true;
+        this.postEuTaxonomyDataForFinancialsProcessed = true;
       }
-    },
-
-    /**
-     * Updates the Fiscal Year End value
-     *
-     * @param dateValue new date value
-     */
-    updateFiscalYearEndHandler(dateValue: Date) {
-      this.fiscalYearEnd = getHyphenatedDate(dateValue);
-      this.fiscalYearEndAsDate = dateValue;
-    },
-
-    /**
-     * Updates the date of a single report file
-     *
-     * @param index file to update
-     * @param dateValue new date value
-     * @param whichSetOfFiles which set of files will be edited
-     */
-    updateReportDateHandler(index: number, dateValue: Date, whichSetOfFiles: WhichSetOfFiles) {
-      const updatedSetOfFiles = this.updatePropertyFilesUploaded(
-        index,
-        "reportDateAsDate",
-        dateValue,
-        this[whichSetOfFiles]
-      );
-      this[whichSetOfFiles] = [...updatedSetOfFiles];
     },
 
     /**
@@ -572,7 +595,7 @@ export default defineComponent({
     },
 
     /**
-     * Remove report from files uploaded
+     * Removes a report from the list of files to be uploaded
      *
      * @param fileToRemove File To Remove
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
@@ -583,6 +606,65 @@ export default defineComponent({
       this.filesToUpload = this.filesToUpload.filter((el) => {
         return el.name !== fileToRemove.name;
       });
+    },
+
+    /**
+     * Removes a report from the list of already uploaded reports while the user edits a dataset. That way it is no
+     * longer included as referenced report after the edit it submitted.
+     *
+     * @param indexOfFileToRemove Index of the report that shall no longer be referenced by the dataset
+     */
+    removeReportFromUploadedReports(indexOfFileToRemove: number) {
+      this.listOfUploadedReportsInfo.splice(indexOfFileToRemove, 1);
+    },
+
+    /**
+     * Confirms the list of kpis to be generated
+     *
+     */
+    confirmSelectedKPIs() {
+      this.confirmedSelectedKPIs = this.selectedKPIs;
+      this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedKPIs))];
+    },
+
+    /**
+     * Deletes the specified kpis section
+     *
+     * @param value section name
+     */
+    removeKpisSection(value: string) {
+      this.confirmedSelectedKPIs = this.confirmedSelectedKPIs.filter(
+        (el: { label: string; value: string }) => el.value !== value
+      );
+      this.selectedKPIs = this.confirmedSelectedKPIs;
+      this.onThisPageLinks = this.onThisPageLinks.filter((el: { label: string; value: string }) => el.value !== value);
+    },
+
+    /**
+     * Updates the date of a single report file
+     *
+     * @param index file to update
+     * @param dateValue new date value
+     * @param whichSetOfFiles which set of files will be edited
+     */
+    updateReportDateHandler(index: number, dateValue: Date, whichSetOfFiles: WhichSetOfFiles) {
+      const updatedSetOfFiles = this.updatePropertyFilesUploaded(
+        index,
+        "reportDateAsDate",
+        dateValue,
+        this[whichSetOfFiles]
+      );
+      this[whichSetOfFiles] = [...updatedSetOfFiles];
+    },
+
+    /**
+     * Updates the Fiscal Year End value
+     *
+     * @param dateValue new date value
+     */
+    updateFiscalYearEndHandler(dateValue: Date) {
+      this.fiscalYearEnd = getHyphenatedDate(dateValue);
+      this.fiscalYearEndAsDate = dateValue;
     },
   },
 });
