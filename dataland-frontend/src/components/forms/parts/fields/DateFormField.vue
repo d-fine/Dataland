@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" />
+    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
     <DateFormElement
       :name="name"
       :display-name="displayName"
@@ -57,6 +57,10 @@ export default defineComponent({
       default: "",
     },
     todayAsMax: {
+      type: Boolean,
+      default: false,
+    },
+    required: {
       type: Boolean,
       default: false,
     },

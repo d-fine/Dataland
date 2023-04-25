@@ -33,8 +33,8 @@ export default defineComponent({
       required: true,
     },
     isRequired: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
   },
 });

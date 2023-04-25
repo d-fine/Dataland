@@ -175,12 +175,16 @@
                   <div class="col-9 formFields">
                     <h3 class="mt-0">Basic information</h3>
 
-                    <YesNoFormField
+                    <RadioButtonsFormField
                       :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
                       :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
                       :name="'fiscalYearDeviation'"
-                      :radioButtonsOptions="['Deviation', 'No Deviation']"
+                      :options="[
+                        { label: 'Deviation', value: 'Deviation' },
+                        { label: 'No Deviation', value: 'No Deviation' },
+                      ]"
                       validation="required"
+                      :required="true"
                     />
 
                     <!-- The date the fiscal year ends -->
@@ -496,10 +500,12 @@ import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObject
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
+import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
   components: {
+    RadioButtonsFormField,
     SubmitButton,
     DataPointForm,
     Calendar,

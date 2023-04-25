@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" />
+    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
     <YesNoFormElement
       :name="name"
       :display-name="displayName"
@@ -38,6 +38,10 @@ export default defineComponent({
     radioButtonsOptions: {
       type: Array as () => Array<string>,
       default: () => ["Yes", "No"],
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
   },
 });
