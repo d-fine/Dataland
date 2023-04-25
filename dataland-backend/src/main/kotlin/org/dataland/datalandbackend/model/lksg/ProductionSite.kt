@@ -8,18 +8,23 @@ import org.dataland.datalandbackend.model.enums.lksg.InHouseProductionOrContract
  * Production Sites for Lksg framework
  */
 data class ProductionSite(
-    val name: String? = null,
+    @field:JsonProperty(required = true)
+    val name: String,
 
-    @field:JsonProperty()
-    val isInHouseProductionOrIsContractProcessing: InHouseProductionOrContractProcessing? = null,
+    @field:JsonProperty(required = true)
+    val isInHouseProductionOrIsContractProcessing: InHouseProductionOrContractProcessing,
 
-    val country: String? = null,
+    @field:JsonProperty(required = true)
+    val country: String,
 
-    val city: String? = null,
+    @field:JsonProperty(required = true)
+    val city: String,
 
-    val streetAndHouseNumber: String? = null,
+    @field:JsonProperty(required = true)
+    val streetAndHouseNumber: String,
 
-    val postalCode: String? = null,
+    @field:JsonProperty(required = true)
+    val postalCode: String,
 
     val listOfGoodsOrServices: List<String>? = null,
 )

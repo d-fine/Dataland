@@ -1,5 +1,5 @@
 <template>
-  <Card class="col-12 page-wrapper-card">
+  <Card class="col-12 page-wrapper-card p-3">
     <template #title
       ><span data-test="pageWrapperTitle"
         >{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Financial Company/Service</span
@@ -12,7 +12,7 @@
             v-model="formInputsModel"
             :actions="false"
             type="form"
-            id="createEuTaxonomyForFinancialsForm"
+            :id="formId"
             @submit="postEuTaxonomyDataForFinancials"
             @submit-invalid="checkCustomInputs"
           >
@@ -81,6 +81,7 @@
                         <UploadFormHeader
                           :name="euTaxonomyKpiNameMappings.assurance ?? ''"
                           :explanation="euTaxonomyKpiInfoMappings.assurance ?? ''"
+                          :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12 p-0">
                           <FormKit
@@ -116,6 +117,7 @@
                               <UploadFormHeader
                                 :name="euTaxonomyKpiNameMappings.report ?? ''"
                                 :explanation="euTaxonomyKpiInfoMappings.report ?? ''"
+                                :is-required="true"
                               />
                               <FormKit
                                 type="select"
@@ -160,6 +162,7 @@
                         data-test="selectKPIsLabel"
                         :name="euTaxonomyKpiNameMappings.financialServicesTypes ?? ''"
                         :explanation="euTaxonomyKpiInfoMappings.financialServicesTypes ?? ''"
+                        :is-required="true"
                       />
 
                       <MultiSelect
@@ -276,6 +279,9 @@
               </div>
             </div>
           </FormKit>
+        </div>
+        <SubmitSideBar>
+          <SubmitButton :formId="formId" />
           <template v-if="postEuTaxonomyDataForFinancialsProcessed">
             <SuccessUpload
               v-if="postEuTaxonomyDataForFinancialsResponse?.status === 200"
@@ -284,15 +290,16 @@
             />
             <FailedUpload v-else :message="message" :messageId="messageCount" />
           </template>
-        </div>
         <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
-      </div>
+      </SubmitSideBar>
+    </div>
     </template>
   </Card>
 </template>
 
 <script lang="ts">
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import { FormKit } from "@formkit/vue";
 
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
@@ -335,6 +342,7 @@ import {
 import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
 import { DocumentUploadResponse } from "@clients/documentmanager";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 
 export default defineComponent({
   setup() {
@@ -345,6 +353,8 @@ export default defineComponent({
   name: "CreateEuTaxonomyForFinancials",
   components: {
     JumpLinksSection,
+    SubmitButton,
+    SubmitSideBar,
     FailedUpload,
     FormKit,
     SuccessUpload,
@@ -362,6 +372,7 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
+      formId: "createEuTaxonomyForFinancialsForm",
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       filesToUpload: [] as ExtendedFile[],
       listOfUploadedReportsInfo: [] as ExtendedCompanyReport[],

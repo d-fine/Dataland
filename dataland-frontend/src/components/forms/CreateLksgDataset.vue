@@ -1,5 +1,5 @@
 <template>
-  <Card class="col-12 page-wrapper-card">
+  <Card class="col-12 page-wrapper-card p-3">
     <template #title>New Dataset - LkSG</template>
     <template #content>
       <div v-show="waitingForData" class="d-center-div text-center px-7 py-4">
@@ -9,13 +9,13 @@
       <div v-show="!waitingForData" class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-              v-model="lkSGDataModel"
-              :actions="false"
-              type="form"
-              id="createLkSGForm"
-              name="createLkSGForm"
-              @submit="postLkSGData"
-              @submit-invalid="checkCustomInputs"
+            v-model="lkSGDataModel"
+            :actions="false"
+            type="form"
+            :id="formId"
+            :name="formId"
+            @submit="postLkSGData"
+            @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true"/>
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true"/>
@@ -23,7 +23,9 @@
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="general" class="anchor title">{{ lksgSubAreasNameMappings._general }}</h4>
+                    <h4 id="general" class="anchor title">
+                      {{ lksgSubAreasNameMappings._general }}
+                    </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                     <p>Please input all relevant basic information about the dataset</p>
                   </div>
@@ -32,8 +34,9 @@
                     <FormKit type="group" name="general" :label="lksgSubAreasNameMappings._general">
                       <div class="form-field">
                         <UploadFormHeader
-                            :name="lksgKpisNameMappings.dataDate"
-                            :explanation="lksgKpisInfoMappings.dataDate"
+                          :name="lksgKpisNameMappings.dataDate"
+                          :explanation="lksgKpisInfoMappings.dataDate"
+                          :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12">
                           <Calendar
@@ -58,8 +61,9 @@
 
                       <div class="form-field" data-test="lksgInScope">
                         <UploadFormHeader
-                            :name="lksgKpisNameMappings.lksgInScope"
-                            :explanation="lksgKpisInfoMappings.lksgInScope"
+                          :name="lksgKpisNameMappings.lksgInScope"
+                          :explanation="lksgKpisInfoMappings.lksgInScope"
+                          :is-required="true"
                         />
                         <FormKit
                             type="radio"
@@ -82,8 +86,9 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                            :name="lksgKpisNameMappings.vatIdentificationNumber"
-                            :explanation="lksgKpisInfoMappings.vatIdentificationNumber"
+                          :name="lksgKpisNameMappings.vatIdentificationNumber"
+                          :explanation="lksgKpisInfoMappings.vatIdentificationNumber"
+                          :is-required="true"
                         />
                         <FormKit
                             type="text"
@@ -96,8 +101,9 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                            :name="lksgKpisNameMappings.numberOfEmployees"
-                            :explanation="lksgKpisInfoMappings.numberOfEmployees"
+                          :name="lksgKpisNameMappings.numberOfEmployees"
+                          :explanation="lksgKpisInfoMappings.numberOfEmployees"
+                          :is-required="true"
                         />
                         <FormKit
                             type="number"
@@ -113,8 +119,9 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                            :name="lksgKpisNameMappings.shareOfTemporaryWorkers"
-                            :explanation="lksgKpisInfoMappings.shareOfTemporaryWorkers"
+                          :name="lksgKpisNameMappings.shareOfTemporaryWorkers"
+                          :explanation="lksgKpisInfoMappings.shareOfTemporaryWorkers"
+                          :is-required="true"
                         />
                         <FormKit
                             type="number"
@@ -132,8 +139,9 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                            :name="lksgKpisNameMappings.totalRevenue"
-                            :explanation="lksgKpisInfoMappings.totalRevenue"
+                          :name="lksgKpisNameMappings.totalRevenue"
+                          :explanation="lksgKpisInfoMappings.totalRevenue"
+                          :is-required="true"
                         />
                         <FormKit
                             type="number"
@@ -151,8 +159,9 @@
 
                       <div class="form-field">
                         <UploadFormHeader
-                            :name="lksgKpisNameMappings.totalRevenueCurrency"
-                            :explanation="lksgKpisInfoMappings.totalRevenueCurrency"
+                          :name="lksgKpisNameMappings.totalRevenueCurrency"
+                          :explanation="lksgKpisInfoMappings.totalRevenueCurrency"
+                          :is-required="true"
                         />
                         <FormKit
                             type="text"
@@ -168,8 +177,9 @@
 
                       <div class="form-field" data-test="IsYourCompanyManufacturingCompany">
                         <UploadFormHeader
-                            :name="'Is your company a manufacturing company?'"
-                            :explanation="lksgKpisInfoMappings.listOfProductionSites"
+                          :name="'Is your company a manufacturing company?'"
+                          :explanation="lksgKpisInfoMappings.listOfProductionSites"
+                          :is-required="true"
                         />
                         <FormKit
                             type="radio"
@@ -215,8 +225,9 @@
 
                             <div class="form-field">
                               <UploadFormHeader
-                                  :name="lksgKpisNameMappings.productionSiteName"
-                                  :explanation="lksgKpisInfoMappings.productionSiteName"
+                                :name="lksgKpisNameMappings.productionSiteName"
+                                :explanation="lksgKpisInfoMappings.productionSiteName"
+                                :is-required="true"
                               />
                               <FormKit
                                   type="text"
@@ -230,6 +241,7 @@
                               <UploadFormHeader
                                   :name="lksgKpisNameMappings.inHouseProductionOrContractProcessing"
                                   :explanation="lksgKpisInfoMappings.inHouseProductionOrContractProcessing"
+                                :is-required="true"
                               />
                               <FormKit
                                   type="radio"
@@ -252,8 +264,9 @@
 
                             <div class="form-field">
                               <UploadFormHeader
-                                  :name="lksgKpisNameMappings.addressesOfProductionSites"
-                                  :explanation="lksgKpisInfoMappings.addressesOfProductionSites"
+                                :name="lksgKpisNameMappings.addressesOfProductionSites"
+                                :explanation="lksgKpisInfoMappings.addressesOfProductionSites"
+                                :is-required="true"
                               />
 
                               <FormKit
@@ -356,7 +369,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="childLabour" class="anchor title">{{ lksgSubAreasNameMappings.childLabour }}</h4>
+                    <h4 id="childLabour" class="anchor title">
+                      {{ lksgSubAreasNameMappings.childLabour }}
+                    </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
@@ -779,7 +794,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="humanRights" class="anchor title">{{ lksgSubAreasNameMappings.humanRights }}</h4>
+                    <h4 id="humanRights" class="anchor title">
+                      {{ lksgSubAreasNameMappings.humanRights }}
+                    </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
@@ -849,7 +866,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="environment" class="anchor title">{{ lksgSubAreasNameMappings.environment }}</h4>
+                    <h4 id="environment" class="anchor title">
+                      {{ lksgSubAreasNameMappings.environment }}
+                    </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -881,7 +900,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="riskManagement" class="anchor title">{{ lksgSubAreasNameMappings.riskManagement }}</h4>
+                    <h4 id="riskManagement" class="anchor title">
+                      {{ lksgSubAreasNameMappings.riskManagement }}
+                    </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -897,7 +918,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 p-3 topicLabel">
-                    <h4 id="codeOfConduct" class="anchor title">{{ lksgSubAreasNameMappings.codeOfConduct }}</h4>
+                    <h4 id="codeOfConduct" class="anchor title">
+                      {{ lksgSubAreasNameMappings.codeOfConduct }}
+                    </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -1061,28 +1084,16 @@
                 </div>
               </FormKit>
             </FormKit>
-
-            <!--------- SUBMIT --------->
-
-            <div class="uploadFormSection grid">
-              <div class="col-3"></div>
-
-              <div class="col-9">
-                <PrimeButton
-                    data-test="submitButton"
-                    type="submit"
-                    :label="this.updatingData ? 'UPDATE DATA' : 'ADD DATA'"
-                />
-              </div>
-            </div>
           </FormKit>
-
+        </div>
+        <SubmitSideBar>
+          <SubmitButton :formId="formId" />
           <div v-if="postLkSGDataProcessed">
             <SuccessUpload v-if="uploadSucceded" :messageId="messageCounter"/>
             <FailedUpload v-else :message="message" :messageId="messageCounter"/>
           </div>
-        </div>
         <JumpLinksSection :onThisPageLinks="onThisPageLinks"/>
+        </SubmitSideBar>
       </div>
     </template>
   </Card>
@@ -1092,9 +1103,9 @@
 import {FormKit} from "@formkit/vue";
 import {ApiClientProvider} from "@/services/ApiClients";
 import Card from "primevue/card";
-import {defineComponent, inject} from "vue";
+import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import {assertDefined} from "@/utils/TypeScriptUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
@@ -1115,6 +1126,8 @@ import {useRoute} from "vue-router";
 import {getHyphenatedDate} from "@/utils/DataFormatUtils";
 import {checkCustomInputs} from "@/utils/validationsUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 
 export default defineComponent({
   setup() {
@@ -1124,6 +1137,8 @@ export default defineComponent({
   },
   name: "CreateLksgDataset",
   components: {
+    SubmitButton,
+    SubmitSideBar,
     JumpLinksSection,
     UploadFormHeader,
     SuccessUpload,
@@ -1140,6 +1155,7 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
+      formId: "createLkSGForm",
       isYourCompanyManufacturingCompany: "No",
       listOfProductionSites: [
         {
@@ -1216,6 +1232,7 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
+      required: true,
     },
   },
   mounted() {
@@ -1271,7 +1288,7 @@ export default defineComponent({
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.lkSGDataModel);
         this.$emit("datasetCreated");
-        this.$formkit.reset("createLkSGForm");
+        this.$formkit.reset(this.formId);
         this.isYourCompanyManufacturingCompany = "No";
         this.listOfProductionSites = [
           {

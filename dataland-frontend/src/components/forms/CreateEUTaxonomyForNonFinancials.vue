@@ -1,5 +1,5 @@
 <template>
-  <Card class="col-12 page-wrapper-card">
+  <Card class="col-12 page-wrapper-card p-3">
     <template #title
       ><span data-test="pageWrapperTitle"
         >{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Non-Financial Company/Service</span
@@ -12,7 +12,7 @@
             v-model="formInputsModel"
             :actions="false"
             type="form"
-            id="createEuTaxonomyForNonFinancialsForm"
+            :id="formId"
             @submit="postEuTaxonomyDataForNonFinancials"
             @submit-invalid="checkCustomInputs"
           >
@@ -82,6 +82,7 @@
                         <UploadFormHeader
                           :name="euTaxonomyKpiNameMappings.assurance ?? ''"
                           :explanation="euTaxonomyKpiInfoMappings.assurance ?? ''"
+                          :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12 p-0">
                           <FormKit
@@ -117,6 +118,7 @@
                               <UploadFormHeader
                                 :name="euTaxonomyKpiNameMappings.report ?? ''"
                                 :explanation="euTaxonomyKpiInfoMappings.report ?? ''"
+                                :is-required="true"
                               />
                               <FormKit
                                 type="select"
@@ -252,29 +254,21 @@
                   </div>
                 </div>
               </FormKit>
-
-              <!--------- SUBMIT --------->
-
-              <div class="uploadFormSection grid">
-                <div class="col-3"></div>
-
-                <div class="col-9">
-                  <PrimeButton data-test="submitButton" type="submit" label="SUBMIT FORM" />
-                </div>
-              </div>
             </div>
           </FormKit>
+        </div>
+        <SubmitSideBar>
+          <SubmitButton :formId="formId" />
           <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
             <SuccessUpload
               v-if="postEuTaxonomyDataForNonFinancialsResponse?.status === 200"
               msg="EU Taxonomy Data"
-              :message="`New data has dataId: ${postEuTaxonomyDataForNonFinancialsResponse.data.dataId}`"
               :messageId="messageCount"
             />
             <FailedUpload v-else data-test="failedUploadMessage" :message="message" :messageId="messageCount" />
           </template>
-        </div>
         <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
+        </SubmitSideBar>
       </div>
     </template>
   </Card>
@@ -288,6 +282,7 @@ import Calendar from "primevue/calendar";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import BasicInformationFields from "@/components/forms/parts/BasicInformationFields.vue";
@@ -324,18 +319,20 @@ import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
 import { AxiosError, AxiosResponse } from "axios";
 import { DocumentUploadResponse } from "@clients/documentmanager";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
   components: {
     JumpLinksSection,
+    SubmitButton,
+    DataPointForm,
     Calendar,
     UploadFormHeader,
-    PrimeButton,
     UploadReports,
     BasicInformationFields,
-    DataPointForm,
     FailedUpload,
+    SubmitSideBar,
     Card,
     FormKit,
     SuccessUpload,
@@ -347,6 +344,7 @@ export default defineComponent({
   },
   emits: ["datasetCreated"],
   data: () => ({
+    formId: "createEuTaxonomyForNonFinancialsForm",
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     fiscalYearEndAsDate: null as Date | null,
     fiscalYearEnd: "",
@@ -361,12 +359,11 @@ export default defineComponent({
       { label: "OpEx", value: "opex" },
       { label: "Revenue", value: "revenue" },
     ],
-    elementPosition: 0,
     route: useRoute(),
     editMode: false,
     waitingForData: false,
-    checkCustomInputs,
     formatBytesUserFriendly,
+    checkCustomInputs,
     updatePropertyFilesUploaded,
     euTaxonomyPseudoModelAndMappings,
     euTaxonomyKpiNameMappings,

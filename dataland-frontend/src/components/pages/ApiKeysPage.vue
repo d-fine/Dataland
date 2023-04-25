@@ -126,7 +126,7 @@
         />
       </template>
     </PrimeDialog>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -147,7 +147,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 
 export default defineComponent({
   name: "ApiKeysPage",
@@ -163,7 +163,7 @@ export default defineComponent({
     CreateApiKeyCard,
     MessageComponent,
     PrimeTextarea,
-    DatalandFooter,
+    TheFooter,
   },
   setup() {
     return {
@@ -178,7 +178,7 @@ export default defineComponent({
       waitingForData: true,
       regenerateConfirmationVisible: false,
       newKey: "",
-      expiryDate: null as null | number,
+      expiryDate: undefined as undefined | number,
       userRolesAccordingToApiKey: [] as Array<string>,
       userRolesAccordingToKeycloak: [] as Array<string>,
     };
@@ -224,7 +224,7 @@ export default defineComponent({
           ? resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
           : [];
         this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
-        this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : null;
+        this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : undefined;
       } catch (error) {
         console.error(error);
       }
@@ -264,7 +264,7 @@ export default defineComponent({
         const response = await apiKeyManagerController.generateApiKey(daysValid);
         this.waitingForData = false;
         this.existsApiKey = true;
-        this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : null;
+        this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : undefined;
         this.newKey = response.data.apiKey;
         this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles
           ? response.data.apiKeyMetaInfo.keycloakRoles

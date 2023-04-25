@@ -9,6 +9,7 @@ import {
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 import { uploadReports } from "@sharedUtils/components/UploadReports";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
@@ -22,7 +23,8 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   valueFieldNotFilled = false
 ): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
-
+  submitButton.buttonIsAddDataButton();
+  submitButton.buttonAppearsDisabled();
   const filename = "pdfTest";
   uploadReports.uploadFile(filename);
   uploadReports.validateSingleFileInUploadedList(filename, "KB");
@@ -39,7 +41,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.get("div.p-datepicker").find('span:contains("11")').click();
   cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "11");
   cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').check();
-  cy.get('div[id="jumpLinks"] li:last a').click();
+  cy.get('div[data-test="submitSideBar"] li:last a').click();
   cy.window().then((win) => {
     const scrollPosition = win.scrollY;
     expect(scrollPosition).to.be.greaterThan(0);
@@ -71,10 +73,11 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
       cy.wrap($element).select(3);
     });
   }
+  submitButton.buttonAppearsEnabled();
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
-  cy.get('button[data-test="submitButton"]').click();
+  submitButton.clickButton();
   cy.wait("@postCompanyAssociatedData");
-  return cy.contains("h4", "dataId").then<string>(($dataId): string => {
+  return cy.contains("h4", "Upload successfully executed.").then<string>(($dataId): string => {
     return $dataId.text();
   });
 }
@@ -102,6 +105,7 @@ export function getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures(): Chaina
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
+ * @returns a promise on the created data meta information
  */
 export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
   token: string,

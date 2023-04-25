@@ -14,7 +14,7 @@
   <div v-show="dataPointIsAvailable">
     <div class="form-field" v-if="dataPointIsAvailable">
       <UploadFormHeader
-        :name="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : kpiNameMappings[name]"
+        :name="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]}`"
         :explanation="kpiInfoMappings[name] ?? ''"
       />
       <FormKit
@@ -99,7 +99,7 @@ import { QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 
 export default defineComponent({
-  name: "KPIfieldSet",
+  name: "DataPointForm",
   components: { DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({

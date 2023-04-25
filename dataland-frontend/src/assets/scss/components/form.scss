@@ -536,6 +536,14 @@ input[type="checkbox"], input[type="radio"]{
     h5 {
       margin: .5rem 0;
     }
+    .asterisk {
+      color: #EE1A1A;
+    }
+    .asterisk:before {
+      content: " ";
+      display: inline-block;
+      width: 0.25rem;
+    }
   }
   p {
     margin: .25rem;
@@ -671,4 +679,10 @@ input[type="checkbox"], input[type="radio"]{
   border-color: #cb6b29;
   background: #cb6b29;
   color: #fff
+}
+
+.button-disabled {
+  opacity: 0.4;
+  background: $btn-primary-bg !important;
+  border: 0 !important;
 }
