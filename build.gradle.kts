@@ -38,29 +38,29 @@ tasks.dependencyUpdates.configure {
 }
 
 dependencies {
-    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.23.0-RC2")
-    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.10")
+    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.22.0")
+    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.20")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
     id("com.github.jk1.dependency-license-report") version "2.1"
-    id("io.gitlab.arturbosch.detekt") version "1.23.0-RC2"
-    id("com.github.node-gradle.node") version "3.5.1" apply false
-    id("org.springframework.boot") version "3.0.5" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
-    kotlin("jvm") version "1.8.10"
-    kotlin("plugin.spring") version "1.8.10" apply false
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("com.github.node-gradle.node") version "4.0.0" apply false
+    id("org.springframework.boot") version "3.0.6" apply false
+    id("org.jlleitschuh.gradle.ktlint") version "11.3.2"
+    kotlin("jvm") version "1.8.21"
+    kotlin("plugin.spring") version "1.8.21" apply false
     id("org.sonarqube") version "4.0.0.2929"
     // TODO the "sonarqube" task fails with this version as well as the latest.  do I need SONAR_TOKEN ?
     jacoco
     id("org.springdoc.openapi-gradle-plugin") version "1.6.0" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
-    id("org.openapi.generator") version "6.4.0" apply false
+    id("org.openapi.generator") version "6.5.0" apply false
     id("com.github.ben-manes.versions") version "0.46.0"
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.8.10" apply false
-    kotlin("plugin.serialization") version "1.8.0" apply false
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.8.21" apply false
+    kotlin("plugin.serialization") version "1.8.21" apply false
 }
 
 sonar {

@@ -171,7 +171,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:19.8.1
+    image: node:20.0.0
     networks:
       internal:
         aliases:
