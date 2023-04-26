@@ -70,7 +70,6 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
-      console.log(reference);
     },
 
     /**

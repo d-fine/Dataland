@@ -210,8 +210,6 @@ export default defineComponent({
             );
           this.dataSet = companyAssociatedData.data.data;
           this.waitingForData = false;
-        } else if (this.dataID == "loading") {
-          console.log("Loading Loading Loading");
         }
       } catch (error) {
         console.error(error);
