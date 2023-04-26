@@ -76,7 +76,7 @@
                 <Calendar
                   data-test="reportDate"
                   inputId="icon"
-                  :modelValue="filesToUpload[index].reportDateAsDate"
+                  :modelValue="file.reportDateAsDate"
                   :showIcon="true"
                   dateFormat="D, M dd, yy"
                   @update:modelValue="updateReportDateHandler(index, $event, 'filesToUpload')"
@@ -85,7 +85,7 @@
 
               <FormKit
                 type="text"
-                :modelValue="filesToUpload[index].reportDate"
+                :modelValue="file.reportDate"
                 name="reportDate"
                 :outer-class="{ 'hidden-input': true }"
               />
@@ -93,7 +93,7 @@
 
             <FormKit
               type="text"
-              :modelValue="filesToUpload[index].documentId"
+              :modelValue="file.documentId"
               name="reference"
               :outer-class="{ 'hidden-input': true }"
             />
@@ -149,7 +149,7 @@
               <Calendar
                 data-test="reportDate"
                 inputId="icon"
-                :modelValue="listOfUploadedReportsInfo[index].reportDateAsDate"
+                :modelValue="file.reportDateAsDate"
                 :showIcon="true"
                 dateFormat="D, M dd, yy"
                 @update:modelValue="updateReportDateHandler(index, $event, 'listOfUploadedReportsInfo')"
@@ -157,18 +157,13 @@
             </div>
             <FormKit
               type="text"
-              :modelValue="listOfUploadedReportsInfo[index].reportDate"
+              :modelValue="file.reportDate"
               name="reportDate"
               :outer-class="{ 'hidden-input': true }"
             />
           </div>
 
-          <FormKit
-            type="text"
-            :modelValue="listOfUploadedReportsInfo[index].reference"
-            name="reference"
-            :outer-class="{ 'hidden-input': true }"
-          />
+          <FormKit type="text" :modelValue="file.reference" name="reference" :outer-class="{ 'hidden-input': true }" />
 
           <!-- Currency used in the report -->
           <div class="form-field" data-test="currencyUsedInTheReport">
@@ -206,7 +201,7 @@ import { defineComponent } from "vue";
 import Calendar from "primevue/calendar";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
-import FileUpload, { FileUploadEmits } from "primevue/fileupload";
+import FileUpload, { FileUploadEmits, FileUploadSelectEvent } from "primevue/fileupload";
 import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
@@ -242,7 +237,7 @@ export default defineComponent({
      * @param event.originalEvent event
      * @param event.files files
      */
-    onSelectedFiles(event: { files: Record<string, string>[]; originalEvent: Event }) {
+    onSelectedFiles(event: FileUploadSelectEvent) {
       this.$emit("selectedFiles", event);
     },
     /**

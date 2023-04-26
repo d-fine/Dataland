@@ -20,6 +20,7 @@ export function checkCustomInputs(node: FormKitNode): void {
       }
     }
   }, true);
+  // TODO does this autoscroll work??
   invalidElements.find((el) => el !== null)?.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
@@ -28,19 +29,14 @@ export function checkCustomInputs(node: FormKitNode): void {
  *
  * @param [dataModel] the data model that has a field for referenced reports, named 'report'
  * @param [uploadedReports] the list of reports that were uploaded via form
- * returns nothing but throws an error if not all reports are referenced
+ * @returns a boolean stating if all uploaded reports are referenced in the data model
  */
-export function checkThatAllReportsAreReferenced(dataModel: ObjectType, uploadedReports: string[]): void {
-  const referencedReports = findAllValuesForKey(dataModel, "report");
-  const unusedReports: string[] = [];
-  uploadedReports.forEach((report) => {
-    if (!referencedReports.some((refReport) => refReport === report)) {
-      unusedReports.push(report);
+export function areAllUploadedReportsReferencedInDataModel(dataModel: ObjectType, uploadedReports: string[]): boolean {
+  const referencedReportsInDataModel = findAllValuesForKey(dataModel, "report");
+  uploadedReports.forEach((uploadedReport) => {
+    if (!referencedReportsInDataModel.some((referencedReport) => referencedReport === uploadedReport)) {
+      return false;
     }
   });
-  if (unusedReports.length >= 1) {
-    throw new Error(
-      `Not all uploaded reports are used as a data source. Please remove following reports, or use them as a data source: ${unusedReports.toString()}`
-    );
-  }
+  return true;
 }

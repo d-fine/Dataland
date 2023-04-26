@@ -307,7 +307,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { checkCustomInputs, checkThatAllReportsAreReferenced } from "@/utils/validationsUtils";
+import { checkCustomInputs } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -330,9 +330,9 @@ import {
   updatePropertyFilesUploaded,
 } from "@/utils/EuTaxonomyUtils";
 import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
-import { DocumentUploadResponse } from "@clients/documentmanager";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
+import { FileUploadSelectEvent } from "primevue/fileupload";
 
 export default defineComponent({
   setup() {
@@ -387,7 +387,6 @@ export default defineComponent({
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
       postEuTaxonomyDataForFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
-      uploadFileResponse: null as AxiosResponse<DocumentUploadResponse> | null,
       humanizeString: humanizeString,
       onThisPageLinksStart: [
         { label: "Upload company reports", value: "uploadReports" },
@@ -514,11 +513,20 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
-        checkThatAllReportsAreReferenced(
-          this.formInputsModel.data as ObjectType,
-          this.namesOfAllCompanyReportsForTheDataset
-        ); // TODO dont throw an error but use validation???
-        let allFileUploadedSuccessful = true;
+
+        /*
+          if (
+            !areAllUploadedReportsReferencedInDataModel(
+              this.formInputsModel.data as ObjectType,
+              this.namesOfAllCompanyReportsForTheDataset
+            )
+          ) {
+            throw new Error(
+              `Not all uploaded reports are used as a data source. Please remove following reports, or use them as a data source: ${unusedReports.toString()}`
+            );
+          }*/ // TODO this is kind of broken and leads to errors in my console. we need to fix this
+        // TODO dont throw an error but use validation???
+
         const documentUploadControllerControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getDocumentControllerApi();
@@ -527,52 +535,36 @@ export default defineComponent({
         ).getEuTaxonomyDataForFinancialsControllerApi();
 
         if (this.filesToUpload.length) {
-          for (let index = 0; index < this.filesToUpload.length; index++) {
-            try {
-              const hash = await calculateSha256HashFromFile(this.filesToUpload[index]);
-              const documentExists = await documentUploadControllerControllerApi.checkDocument(hash);
-              if (!documentExists.data.documentExists) {
-                this.uploadFileResponse = await documentUploadControllerControllerApi.postDocument(
-                  this.filesToUpload[index]
-                ); // TODO why is this a vue data field?
-                this.filesToUpload[index]["documentId"] = this.uploadFileResponse.data.documentId;
-              } else {
-                this.filesToUpload[index]["documentId"] = hash;
-              }
-            } catch (error) {
-              this.messageCount++;
-              console.error(error);
-              if (error instanceof AxiosError) {
-                this.message =
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                  (error.response?.data.errors[0]?.summary as string) +
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                  (error.response?.data.errors[0]?.message as string); //TODO: fix types
-              } else {
-                this.message =
-                  "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
-              }
-              allFileUploadedSuccessful = false;
-              break;
+          for (const file of this.filesToUpload) {
+            const fileIsAlreadyInStorage = (await documentUploadControllerControllerApi.checkDocument(file.documentId))
+              .data.documentExists;
+            if (!fileIsAlreadyInStorage) {
+              await documentUploadControllerControllerApi.postDocument(file);
             }
           }
         }
-        if (allFileUploadedSuccessful) {
-          await this.$nextTick();
-          const formInputsModelToSend = modifyObjectKeys(
-            JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,
-            "send"
+        await this.$nextTick();
+        const formInputsModelToSend = modifyObjectKeys(
+          JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,
+          "send"
+        );
+        this.postEuTaxonomyDataForFinancialsResponse =
+          await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
+            formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForFinancials
           );
-          this.postEuTaxonomyDataForFinancialsResponse =
-            await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
-              formInputsModelToSend
-            );
-          this.$emit("datasetCreated");
-        }
-      } catch (error: Error) {
+        this.$emit("datasetCreated");
+      } catch (error) {
         this.messageCount++;
-        this.message = (error as Error).message;
         console.error(error);
+        if (error instanceof AxiosError) {
+          this.message =
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            (error.response?.data.errors[0]?.summary as string) +
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            (error.response?.data.errors[0]?.message as string); //TODO: fix types
+        } else {
+          this.message = (error as Error).message;
+        }
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
       }
@@ -585,14 +577,19 @@ export default defineComponent({
      * @param event.originalEvent event information
      * @param event.files files
      */
-    onSelectedFilesHandler(event: { files: Record<string, string>[]; originalEvent: Event }): void {
-      if (event.files.length) {
-        this.filesToUpload = [
-          ...completeInformationAboutSelectedFileWithAdditionalFields(event.files, this.listOfUploadedReportsInfo),
-        ] as ExtendedFile[];
-      } else {
-        return;
-      }
+    async onSelectedFilesHandler(event: FileUploadSelectEvent): void {
+      this.filesToUpload = [
+        ...completeInformationAboutSelectedFileWithAdditionalFields(
+          event.files as Record<string, string>[],
+          this.listOfUploadedReportsInfo
+        ),
+      ] as ExtendedFile[];
+      this.filesToUpload = await Promise.all(
+        this.filesToUpload.map(async (extendedFile) => {
+          extendedFile.documentId = await calculateSha256HashFromFile(extendedFile);
+          return extendedFile;
+        })
+      );
     },
 
     /**

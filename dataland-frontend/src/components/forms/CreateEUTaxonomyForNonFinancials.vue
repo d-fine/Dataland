@@ -309,16 +309,16 @@ import {
   CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
   DataMetaInformation,
 } from "@clients/backend";
-import { checkCustomInputs, checkThatAllReportsAreReferenced } from "@/utils/validationsUtils";
+import { checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
 import { AxiosError, AxiosResponse } from "axios";
-import { DocumentUploadResponse } from "@clients/documentmanager";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
+import { FileUploadSelectEvent } from "primevue/fileupload";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -376,7 +376,6 @@ export default defineComponent({
     postEuTaxonomyDataForNonFinancialsProcessed: false,
     messageCount: 0,
     postEuTaxonomyDataForNonFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
-    uploadFileResponse: null as AxiosResponse<DocumentUploadResponse> | null,
     humanizeString: humanizeString,
     message: "",
   }),
@@ -456,11 +455,19 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
-        checkThatAllReportsAreReferenced(
-          this.formInputsModel.data as ObjectType,
-          this.namesOfAllCompanyReportsForTheDataset
-        );
-        let allFilesWasUploadedSuccessful = true;
+
+        /*
+        if (
+          !areAllUploadedReportsReferencedInDataModel(
+            this.formInputsModel.data as ObjectType,
+            this.namesOfAllCompanyReportsForTheDataset
+          )
+        ) {
+          throw new Error(
+            `Not all uploaded reports are used as a data source. Please remove following reports, or use them as a data source: ${unusedReports.toString()}`
+          );
+        }*/ // TODO this is kind of broken and leads to errors in my console. we need to fix this
+
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
@@ -470,54 +477,38 @@ export default defineComponent({
         ).getDocumentControllerApi();
 
         if (this.filesToUpload.length) {
-          for (let index = 0; index < this.filesToUpload.length; index++) {
-            try {
-              const hash = await calculateSha256HashFromFile(this.filesToUpload[index]);
-              const documentExists = await documentUploadControllerControllerApi.checkDocument(hash);
-              if (!documentExists.data.documentExists) {
-                this.uploadFileResponse = await documentUploadControllerControllerApi.postDocument(
-                  this.filesToUpload[index]
-                );
-                this.formInputsModel.data.referencedReports[0].reference = this.uploadFileResponse.data.documentId;
-                this.filesToUpload[index].documentId = this.uploadFileResponse.data.documentId;
-              } else {
-                this.filesToUpload[index]["documentId"] = hash;
-              }
-            } catch (error) {
-              this.messageCount++;
-              console.error(error);
-              if (error instanceof AxiosError) {
-                this.message =
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                  (error.response?.data.errors[0]?.summary as string) +
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                  (error.response?.data.errors[0]?.message as string); //TODO: fix types
-              } else {
-                this.message =
-                  "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
-              }
-              allFilesWasUploadedSuccessful = false;
-              break;
+          for (const file of this.filesToUpload) {
+            const fileIsAlreadyInStorage = (await documentUploadControllerControllerApi.checkDocument(file.documentId))
+              .data.documentExists;
+            if (!fileIsAlreadyInStorage) {
+              await documentUploadControllerControllerApi.postDocument(file);
             }
           }
         }
 
-        if (allFilesWasUploadedSuccessful) {
-          await this.$nextTick();
-          const formInputsModelToSend = modifyObjectKeys(
-            JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,
-            "send"
+        await this.$nextTick();
+        const formInputsModelToSend = modifyObjectKeys(
+          JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,
+          "send"
+        ); // TODO is the JSON stuff really needed? I have the feeling no!
+
+        this.postEuTaxonomyDataForNonFinancialsResponse =
+          await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForNonFinancials
           );
-          this.postEuTaxonomyDataForNonFinancialsResponse =
-            await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-              formInputsModelToSend
-            );
-          this.$emit("datasetCreated");
-        }
-      } catch (error: Error) {
+        this.$emit("datasetCreated");
+      } catch (error) {
         this.messageCount++;
-        this.message = (error as Error).message;
         console.error(error);
+        if (error instanceof AxiosError) {
+          this.message =
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            (error.response?.data.errors[0]?.summary as string) +
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            (error.response?.data.errors[0]?.message as string);
+        } else {
+          this.message = (error as Error).message;
+        }
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
       }
@@ -557,14 +548,19 @@ export default defineComponent({
      * @param event.originalEvent event information
      * @param event.files files
      */
-    onSelectedFilesHandler(event: { files: Record<string, string>[]; originalEvent: Event }): void {
-      if (event.files.length) {
-        this.filesToUpload = [
-          ...completeInformationAboutSelectedFileWithAdditionalFields(event.files, this.listOfUploadedReportsInfo),
-        ] as ExtendedFile[];
-      } else {
-        return;
-      }
+    async onSelectedFilesHandler(event: FileUploadSelectEvent): void {
+      this.filesToUpload = [
+        ...completeInformationAboutSelectedFileWithAdditionalFields(
+          event.files as Record<string, string>[],
+          this.listOfUploadedReportsInfo
+        ),
+      ] as ExtendedFile[];
+      this.filesToUpload = await Promise.all(
+        this.filesToUpload.map(async (extendedFile) => {
+          extendedFile.documentId = await calculateSha256HashFromFile(extendedFile);
+          return extendedFile;
+        })
+      );
     },
 
     /**

@@ -56,7 +56,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
 
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(1);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+  cy.get('[data-test="assuranceSection"] select[name="report"]').select(filename);
 
   cy.get('[data-test="dataPointToggleTitle"]').should("exist");
   for (const argument of ["capexSection", "opexSection", "revenueSection"]) {
