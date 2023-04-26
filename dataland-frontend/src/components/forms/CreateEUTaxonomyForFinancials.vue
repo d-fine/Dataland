@@ -47,7 +47,8 @@
 
                 <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
               </div>
-              <FormKit type="group" name="data" label="data">
+              <FormKit type="group" name="data" label="data" validation-label="data"
+                validation="required">
                 <UploadReports
                   ref="UploadReports"
                   :filesToUpload="filesToUpload"
@@ -307,7 +308,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { checkCustomInputs } from "@/utils/validationsUtils";
+import {areAllUploadedReportsReferencedInDataModel, checkCustomInputs} from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -514,17 +515,12 @@ export default defineComponent({
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
 
-        /*
-          if (
-            !areAllUploadedReportsReferencedInDataModel(
+
+
+            areAllUploadedReportsReferencedInDataModel(
               this.formInputsModel.data as ObjectType,
               this.namesOfAllCompanyReportsForTheDataset
             )
-          ) {
-            throw new Error(
-              `Not all uploaded reports are used as a data source. Please remove following reports, or use them as a data source: ${unusedReports.toString()}`
-            );
-          }*/ // TODO this is kind of broken and leads to errors in my console. we need to fix this
         // TODO dont throw an error but use validation???
 
         const documentUploadControllerControllerApi = await new ApiClientProvider(

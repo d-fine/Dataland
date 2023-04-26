@@ -29,14 +29,19 @@ export function checkCustomInputs(node: FormKitNode): void {
  *
  * @param [dataModel] the data model that has a field for referenced reports, named 'report'
  * @param [uploadedReports] the list of reports that were uploaded via form
- * @returns a boolean stating if all uploaded reports are referenced in the data model
+ * returns nothing but throws an error if not all reports are referenced
  */
-export function areAllUploadedReportsReferencedInDataModel(dataModel: ObjectType, uploadedReports: string[]): boolean {
-  const referencedReportsInDataModel = findAllValuesForKey(dataModel, "report");
-  uploadedReports.forEach((uploadedReport) => {
-    if (!referencedReportsInDataModel.some((referencedReport) => referencedReport === uploadedReport)) {
-      return false;
+export function areAllUploadedReportsReferencedInDataModel(dataModel: ObjectType, uploadedReports: string[]): void {
+  const referencedReports = findAllValuesForKey(dataModel, "report");
+  const unusedReports: string[] = [];
+  uploadedReports.forEach((report) => {
+    if (!referencedReports.some((refReport) => refReport === report)) {
+      unusedReports.push(report);
     }
   });
-  return true;
+  if (unusedReports.length >= 1) {
+    throw new Error(
+      `Not all uploaded reports are used as a data source. Please remove following reports, or use them as a data source: ${unusedReports.toString()}`
+    );
+  }
 }

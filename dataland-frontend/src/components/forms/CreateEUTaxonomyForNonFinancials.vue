@@ -309,7 +309,7 @@ import {
   CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
   DataMetaInformation,
 } from "@clients/backend";
-import { checkCustomInputs } from "@/utils/validationsUtils";
+import {areAllUploadedReportsReferencedInDataModel, checkCustomInputs} from "@/utils/validationsUtils";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
@@ -455,18 +455,10 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
-
-        /*
-        if (
-          !areAllUploadedReportsReferencedInDataModel(
-            this.formInputsModel.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset
+          areAllUploadedReportsReferencedInDataModel(
+              this.formInputsModel.data as ObjectType,
+              this.namesOfAllCompanyReportsForTheDataset
           )
-        ) {
-          throw new Error(
-            `Not all uploaded reports are used as a data source. Please remove following reports, or use them as a data source: ${unusedReports.toString()}`
-          );
-        }*/ // TODO this is kind of broken and leads to errors in my console. we need to fix this
 
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
