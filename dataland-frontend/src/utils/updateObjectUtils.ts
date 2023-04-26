@@ -59,7 +59,7 @@ export function findAllValuesForKey(obj: ObjectType, keyToFind: string): Array<s
     (acc: Array<string>, [key, value]) =>
       key === keyToFind
         ? acc.concat(value as string)
-        : typeof value === "object"
+        : typeof value === "object" && value != null
         ? acc.concat(findAllValuesForKey(value as ObjectType, keyToFind))
         : acc,
     []
