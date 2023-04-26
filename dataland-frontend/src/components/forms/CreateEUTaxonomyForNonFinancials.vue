@@ -309,7 +309,7 @@ import {
   CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
   DataMetaInformation,
 } from "@clients/backend";
-import {areAllUploadedReportsReferencedInDataModel, checkCustomInputs} from "@/utils/validationsUtils";
+import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
@@ -417,15 +417,15 @@ export default defineComponent({
 
       const dataResponse =
         await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId);
-      const dataResponseData = dataResponse.data;
-      if (dataResponseData.data?.fiscalYearEnd) {
-        this.fiscalYearEndAsDate = new Date(dataResponseData.data.fiscalYearEnd);
+      const companyAssociatedEuTaxonomyData = dataResponse.data;
+      if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
+        this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
       }
-      if (dataResponseData?.reportingPeriod) {
-        this.reportingPeriod = new Date(dataResponseData.reportingPeriod);
+      if (companyAssociatedEuTaxonomyData?.reportingPeriod) {
+        this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
       }
-      if (dataResponseData.data?.referencedReports) {
-        const referencedReportsForDataId = dataResponseData.data.referencedReports;
+      if (companyAssociatedEuTaxonomyData.data?.referencedReports) {
+        const referencedReportsForDataId = companyAssociatedEuTaxonomyData.data.referencedReports;
         for (const key in referencedReportsForDataId) {
           this.listOfUploadedReportsInfo.push({
             name: key,
@@ -440,7 +440,7 @@ export default defineComponent({
         }
       }
       const receivedFormInputsModel = modifyObjectKeys(
-        JSON.parse(JSON.stringify(dataResponseData)) as ObjectType,
+        JSON.parse(JSON.stringify(companyAssociatedEuTaxonomyData)) as ObjectType,
         "receive"
       );
       this.waitingForData = false;
@@ -455,10 +455,10 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
-          areAllUploadedReportsReferencedInDataModel(
-              this.formInputsModel.data as ObjectType,
-              this.namesOfAllCompanyReportsForTheDataset
-          )
+        checkIfAllUploadedReportsAreReferencedInDataModel(
+          this.formInputsModel.data as ObjectType,
+          this.namesOfAllCompanyReportsForTheDataset
+        );
 
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -473,7 +473,7 @@ export default defineComponent({
             const fileIsAlreadyInStorage = (await documentUploadControllerControllerApi.checkDocument(file.documentId))
               .data.documentExists;
             if (!fileIsAlreadyInStorage) {
-              await documentUploadControllerControllerApi.postDocument(file);
+              await documentUploadControllerControllerApi.postDocument(file); // TODO assure that hash by frontend equals the one from backend
             }
           }
         }

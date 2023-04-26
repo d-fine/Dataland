@@ -31,7 +31,10 @@ export function checkCustomInputs(node: FormKitNode): void {
  * @param [uploadedReports] the list of reports that were uploaded via form
  * returns nothing but throws an error if not all reports are referenced
  */
-export function areAllUploadedReportsReferencedInDataModel(dataModel: ObjectType, uploadedReports: string[]): void {
+export function checkIfAllUploadedReportsAreReferencedInDataModel(
+  dataModel: ObjectType,
+  uploadedReports: string[]
+): void {
   const referencedReports = findAllValuesForKey(dataModel, "report");
   const unusedReports: string[] = [];
   uploadedReports.forEach((report) => {

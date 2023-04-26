@@ -47,8 +47,7 @@
 
                 <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
               </div>
-              <FormKit type="group" name="data" label="data" validation-label="data"
-                validation="required">
+              <FormKit type="group" name="data" label="data" validation-label="data" validation="required">
                 <UploadReports
                   ref="UploadReports"
                   :filesToUpload="filesToUpload"
@@ -308,7 +307,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import {areAllUploadedReportsReferencedInDataModel, checkCustomInputs} from "@/utils/validationsUtils";
+import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -459,15 +458,15 @@ export default defineComponent({
 
       const dataResponse =
         await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(dataId);
-      const dataResponseData = dataResponse.data;
-      if (dataResponseData?.reportingPeriod) {
-        this.reportingPeriod = new Date(dataResponseData.reportingPeriod);
+      const companyAssociatedEuTaxonomyData = dataResponse.data;
+      if (companyAssociatedEuTaxonomyData?.reportingPeriod) {
+        this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
       }
-      if (dataResponseData.data?.fiscalYearEnd) {
-        this.fiscalYearEndAsDate = new Date(dataResponseData.data.fiscalYearEnd);
+      if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
+        this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
       }
-      if (dataResponseData.data?.referencedReports) {
-        const referencedReportsForDataId = dataResponseData.data.referencedReports;
+      if (companyAssociatedEuTaxonomyData.data?.referencedReports) {
+        const referencedReportsForDataId = companyAssociatedEuTaxonomyData.data.referencedReports;
         for (const key in referencedReportsForDataId) {
           this.listOfUploadedReportsInfo.push({
             name: key,
@@ -481,9 +480,9 @@ export default defineComponent({
           });
         }
       }
-      if (dataResponseData.data?.financialServicesTypes) {
+      if (companyAssociatedEuTaxonomyData.data?.financialServicesTypes) {
         // types of company financial services
-        const arrayWithCompanyKpiTypes = dataResponseData.data?.financialServicesTypes;
+        const arrayWithCompanyKpiTypes = companyAssociatedEuTaxonomyData.data?.financialServicesTypes;
         // all types of financial services
         const allTypesOfFinancialServices = euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis;
 
@@ -497,7 +496,7 @@ export default defineComponent({
         this.confirmSelectedKPIs();
       }
       const receivedFormInputsModel = modifyObjectKeys(
-        JSON.parse(JSON.stringify(dataResponseData)) as ObjectType,
+        JSON.parse(JSON.stringify(companyAssociatedEuTaxonomyData)) as ObjectType,
         "receive"
       );
       this.waitingForData = false;
@@ -515,12 +514,10 @@ export default defineComponent({
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
 
-
-
-            areAllUploadedReportsReferencedInDataModel(
-              this.formInputsModel.data as ObjectType,
-              this.namesOfAllCompanyReportsForTheDataset
-            )
+        checkIfAllUploadedReportsAreReferencedInDataModel(
+          this.formInputsModel.data as ObjectType,
+          this.namesOfAllCompanyReportsForTheDataset
+        );
         // TODO dont throw an error but use validation???
 
         const documentUploadControllerControllerApi = await new ApiClientProvider(
