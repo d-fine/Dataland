@@ -30,7 +30,7 @@ dependencyResolutionManagement {
             library("swagger-gradle-plugin", "io.swagger.core.v3:swagger-gradle-plugin:2.2.2")
             library("swagger-annotations", "io.swagger.core.v3:swagger-annotations:2.2.2")
 
-            library("okhttp", "com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+            library("okhttp", "com.squareup.okhttp3:okhttp:4.11")
             library("rs-api", "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
 
             library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.9")
