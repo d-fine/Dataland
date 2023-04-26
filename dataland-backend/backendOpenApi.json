@@ -3515,6 +3515,11 @@
         }
       },
       "EuTaxonomyDataForNonFinancials": {
+        "required": [
+          "fiscalYearDeviation",
+          "fiscalYearEnd",
+          "numberOfEmployees"
+        ],
         "type": "object",
         "properties": {
           "capex": {
@@ -3668,6 +3673,11 @@
         }
       },
       "EuTaxonomyDataForFinancials": {
+        "required": [
+          "fiscalYearDeviation",
+          "fiscalYearEnd",
+          "numberOfEmployees"
+        ],
         "type": "object",
         "properties": {
           "financialServicesTypes": {

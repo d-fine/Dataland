@@ -4,7 +4,7 @@ import { createHash } from "crypto";
 import { CompanyReportReference, DataPointBigDecimal, DataPointYesNo, QualityOptions } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
-import { randomYesNo, randomYesNoNaUndefined } from "./YesNoFixtures";
+import { randomYesNo, randomYesNoNa } from "./YesNoFixtures";
 import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 import { randomPastDateOrUndefined } from "./DateFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
@@ -55,7 +55,7 @@ export function generateReferencedReports(): ReferencedReports {
   for (const reportName of availableReports) {
     referencedReports[reportName] = {
       reference: getReferencedDocumentId(),
-      isGroupLevel: randomYesNoNaUndefined(),
+      isGroupLevel: valueOrUndefined(randomYesNoNa()),
       reportDate: randomPastDateOrUndefined(),
       currency: faker.finance.currencyCode(),
     };

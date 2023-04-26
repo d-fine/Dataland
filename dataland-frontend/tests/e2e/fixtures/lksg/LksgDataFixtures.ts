@@ -15,6 +15,7 @@ import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
+import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 
 /**
  * Generates a set number of LKSG fixtures
@@ -137,7 +138,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
   return {
     general: {
       masterData: {
-        dataDate: getRandomReportingPeriod(),
+        dataDate: randomPastDate(),
         name: valueOrUndefined(faker.company.name(), undefinedProbability),
         address: valueOrUndefined(generateAddress(), undefinedProbability),
         headOffice: valueOrUndefined(randomYesNo(), undefinedProbability),

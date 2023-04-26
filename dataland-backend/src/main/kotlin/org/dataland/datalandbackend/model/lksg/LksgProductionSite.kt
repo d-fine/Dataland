@@ -24,9 +24,9 @@ data class LksgProductionSite(
 
     val listOfGoodsOrServices: List<String>?,
 
-    val capacity: BigDecimal,
+    val capacity: BigDecimal?,
 
-    val market: NationalOrInternationalMarket,
+    val market: NationalOrInternationalMarket?,
 
     val specificProcurement: YesNo?,
 

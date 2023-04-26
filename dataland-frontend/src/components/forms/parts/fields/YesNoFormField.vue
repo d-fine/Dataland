@@ -14,6 +14,7 @@
         value: 'No',
       },
     ]"
+    :required="required"
   ></RadioButtonsFormField>
 </template>
 
@@ -41,6 +42,10 @@ export default defineComponent({
     validation: {
       type: String,
       default: "",
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
   },
 });

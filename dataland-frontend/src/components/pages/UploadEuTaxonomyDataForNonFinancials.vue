@@ -2,49 +2,35 @@
   <AuthenticationWrapper>
     <TheHeader />
     <UploaderRoleWrapper>
-      <TheContent>
-        <MarginWrapper>
-          <div class="grid align-items-end">
-            <div class="col-9">
-              <CompanyInformation :companyID="companyID" />
-            </div>
-          </div>
-        </MarginWrapper>
-        <MarginWrapper bg-class="paper-section" class="text-left">
-          <CreateEUTaxonomyForNonFinancials
-            :companyID="companyID"
-            @datasetCreated="redirectToMyDatasets(this.$router)"
-          />
-        </MarginWrapper>
-      </TheContent>
+      <BackButton id="backButton" class="mt-2 pl-3" />
+      <CompanyInformation :companyID="companyID" />
+      <CreateEUTaxonomyForNonFinancials :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
     </UploaderRoleWrapper>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
 <script lang="ts">
 import TheHeader from "@/components/generics/TheHeader.vue";
-import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import CreateEUTaxonomyForNonFinancials from "@/components/forms/CreateEUTaxonomyForNonFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
+import BackButton from "@/components/general/BackButton.vue";
 import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "UploadEutaxonomyDataForNonFinancials",
   components: {
+    BackButton,
     UploaderRoleWrapper,
     CreateEUTaxonomyForNonFinancials,
-    TheContent,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
-    MarginWrapper,
-    DatalandFooter,
+    TheFooter,
   },
   props: {
     companyID: {

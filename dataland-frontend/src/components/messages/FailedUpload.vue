@@ -2,7 +2,7 @@
   <div>
     <Message severity="error" :sticky="true" :key="messageId">
       <h4>Sorry, but an Error occurred.</h4>
-      <h4>{{ message }}</h4>
+      <p>{{ message }}</p>
     </Message>
   </div>
 </template>

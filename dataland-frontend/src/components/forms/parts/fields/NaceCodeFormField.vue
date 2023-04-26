@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" />
+    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
     <NaceCodeSelector v-model="selectedNaceCodes" />
     <FormKit
       type="list"
@@ -47,6 +47,10 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: "",
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
   },
 });

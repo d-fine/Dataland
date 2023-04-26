@@ -1,13 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { FiscalYearDeviation } from "@clients/backend";
 
-const possibleFiscalYearDeviationUndefinedValues = [undefined, ...Object.values(FiscalYearDeviation)];
-
 /**
- * Generates a random fiscal year deviation or undefined
+ * Generates a random fiscal year deviation value
  *
- * @returns a random fiscal year deviation or undefined
+ * @returns a random fiscal year deviation value
  */
-export function randomFiscalYearDeviationOrUndefined(): FiscalYearDeviation | undefined {
-  return faker.helpers.arrayElement(possibleFiscalYearDeviationUndefinedValues);
+export function randomFiscalYearDeviation(): FiscalYearDeviation {
+  return faker.helpers.arrayElement(Object.values(FiscalYearDeviation));
 }
