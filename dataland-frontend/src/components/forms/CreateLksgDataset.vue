@@ -1,5 +1,5 @@
 <template>
-  <Card class="col-12 page-wrapper-card">
+  <Card class="col-12 page-wrapper-card p-3">
     <template #title>New Dataset - LkSG</template>
     <template #content>
       <div v-show="waitingForData" class="d-center-div text-center px-7 py-4">
@@ -12,8 +12,8 @@
             v-model="companyAssociatedLksgData"
             :actions="false"
             type="form"
-            id="createLkSGForm"
-            name="createLkSGForm"
+            :id="formId"
+            :name="formId"
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
@@ -23,17 +23,14 @@
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="general" class="anchor title">{{ lksgSubAreasNameMappings._general }}</h4>
+                    <h4 id="general" class="anchor title">
+                      {{ lksgSubAreasNameMappings._general }}
+                    </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                     <p>Please input all relevant basic information about the dataset</p>
                   </div>
 
                   <div class="col-9 formFields">
-                    <div>
-                      <!-- TODO: PROTOTYPE -->
-                      <h1>TODO: NACE SELECTOR PROTOTYPE</h1>
-                      <NaceSectorSelector v-model="selectedNaceCodes" />
-                    </div>
                     <FormKit type="group" name="general" :label="lksgSubAreasNameMappings._general">
                       <DateFormField
                         data-test="lksgDataDate"
@@ -48,6 +45,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.lksgInScope"
                           :explanation="lksgKpisInfoMappings.lksgInScope"
+                          :is-required="true"
                         />
                         <FormKit
                           type="radio"
@@ -72,6 +70,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.vatIdentificationNumber"
                           :explanation="lksgKpisInfoMappings.vatIdentificationNumber"
+                          :is-required="true"
                         />
                         <FormKit
                           type="text"
@@ -86,6 +85,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.numberOfEmployees"
                           :explanation="lksgKpisInfoMappings.numberOfEmployees"
+                          :is-required="true"
                         />
                         <FormKit
                           type="number"
@@ -103,6 +103,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.shareOfTemporaryWorkers"
                           :explanation="lksgKpisInfoMappings.shareOfTemporaryWorkers"
+                          :is-required="true"
                         />
                         <FormKit
                           type="number"
@@ -122,6 +123,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.totalRevenue"
                           :explanation="lksgKpisInfoMappings.totalRevenue"
+                          :is-required="true"
                         />
                         <FormKit
                           type="number"
@@ -141,6 +143,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.totalRevenueCurrency"
                           :explanation="lksgKpisInfoMappings.totalRevenueCurrency"
+                          :is-required="true"
                         />
                         <FormKit
                           type="text"
@@ -158,6 +161,7 @@
                         <UploadFormHeader
                           :name="'Is your company a manufacturing company?'"
                           :explanation="lksgKpisInfoMappings.listOfProductionSites"
+                          :is-required="true"
                         />
                         <FormKit
                           type="radio"
@@ -190,15 +194,15 @@
                       >
                         <FormKit type="group" v-for="(item, index) in listOfProductionSites" :key="item.id">
                           <div
-                              data-test="productionSiteSection"
-                              class="productionSiteSection"
-                              :class="isYourCompanyManufacturingCompany === 'No' ? 'p-disabled' : ''"
+                            data-test="productionSiteSection"
+                            class="productionSiteSection"
+                            :class="isYourCompanyManufacturingCompany === 'No' ? 'p-disabled' : ''"
                           >
                             <em
-                                data-test="removeItemFromListOfProductionSites"
-                                @click="removeItemFromListOfProductionSites(item.id)"
-                                class="material-icons close-section"
-                            >close</em
+                              data-test="removeItemFromListOfProductionSites"
+                              @click="removeItemFromListOfProductionSites(item.id)"
+                              class="material-icons close-section"
+                              >close</em
                             >
                           <ProductionSiteField :item="item" />
                           </div>
@@ -224,7 +228,7 @@
                 :label="section.label"
                 :name="section.name"
               >
-                <div class="uploadFormSection grid" v-for="subsection in section.categories" :key="subsection">
+                <div class="uploadFormSection grid" v-for="subsection in section.subcategories" :key="subsection">
                   <div class="col-3 p-3 topicLabel">
                     <h4 class="anchor title">{{ subsection.label }}</h4>
                     <div :class="`p-badge badge-${section.color}`">
@@ -235,14 +239,13 @@
                   <div class="col-9 formFields">
                     <FormKit v-for="field in subsection.fields" :key="field" type="group" :name="subsection.name">
                       <component
-                        v-if="isYes(field.dependency) &&
-                                field.component != 'RadioButtonsFormField' &&
-                                field.component != 'SingleSelectFormField'"
+                        v-if="
+                          field.showIf(companyAssociatedLksgData.data) && field.component != 'SingleSelectFormField'
+                        "
                         :is="field.component"
                         :displayName="field.label"
                         :info="field.description"
                         :name="field.name"
-                        :placeholder="field.placeholder"
                         :options="field.options"
                       />
                     </FormKit>
@@ -250,29 +253,15 @@
                 </div>
               </FormKit>
             </FormKit>
-
-            <!--------- SUBMIT --------->
-
-            <div class="uploadFormSection grid">
-              <div class="col-3"></div>
-
-              <div class="col-9">
-                <PrimeButton
-                  data-test="submitButton"
-                  type="submit"
-                  :label="this.updatingData ? 'UPDATE DATA' : 'ADD DATA'"
-                />
-              </div>
-            </div>
           </FormKit>
-
+        </div>
+        <SubmitSideBar>
+          <SubmitButton :formId="formId" />
           <div v-if="postLkSGDataProcessed">
             <SuccessUpload v-if="uploadSucceded" :messageId="messageCounter" />
             <FailedUpload v-else :message="message" :messageId="messageCounter" />
           </div>
-        </div>
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
-          <h4 id="topicTitles" class="title">On this page</h4>
+          <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
             <li><a @click="smoothScroll('#general')">General</a></li>
             <li><a @click="smoothScroll('#childLabour')">Child labour</a></li>
@@ -294,7 +283,7 @@
             <li><a @click="smoothScroll('#codeOfConduct')">Code of Conduct</a></li>
             <li><a @click="smoothScroll('#waste')">Waste</a></li>
           </ul>
-        </div>
+        </SubmitSideBar>
       </div>
     </template>
   </Card>
@@ -330,7 +319,7 @@ import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
-import NaceSectorSelector from "@/components/forms/parts/NaceSectorSelector.vue";
+import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
@@ -339,6 +328,9 @@ import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectF
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
 import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
 import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
+import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import ProductionSiteField from "@/components/forms/parts/fields/ProductionSiteField.vue";
 
 export default defineComponent({
@@ -364,9 +356,12 @@ export default defineComponent({
     DateFormField,
     SingleSelectFormField,
     MultiSelectFormField,
-    NaceSectorSelector,
+    NaceCodeFormField,
     AddressFormField,
     RadioButtonsFormField,
+    YesNoNaFormField,
+    SubmitButton,
+    SubmitSideBar,
   },
   directives: {
     tooltip: Tooltip,
@@ -374,7 +369,7 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
-      selectedNaceCodes: [], // TODO: PROTOTYPE
+      formId: "createLkSGForm",
       isYourCompanyManufacturingCompany: "No",
       listOfProductionSites: [
         {
@@ -433,56 +428,16 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
+      required: true,
     },
   },
   mounted() {
-    const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-    this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
-    this.scrollListener = (): null => {
-      if (window.scrollY > this.elementPosition) {
-        jumpLinkselement.style.position = "fixed";
-        jumpLinkselement.style.top = "60px";
-      } else {
-        jumpLinkselement.style.position = "relative";
-        jumpLinkselement.style.top = "0";
-      }
-      return null;
-    };
-    window.addEventListener("scroll", this.scrollListener);
-
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
       void this.loadLKSGData(dataId);
     }
   },
-  unmounted() {
-    window.removeEventListener("scroll", this.scrollListener);
-  },
   methods: {
-    /**
-     * Returns the value of a given YesNo variable
-     *
-     * @param variable the string representation of the YesNo variable to be read out
-     * @returns either "Yes" or "No"
-     */
-    getYesNoValue(variable: string | undefined): string {
-      if (variable == undefined || variable == "") {
-        return "Yes";
-      }
-      return eval(variable) as string;
-    },
-    /**
-     * Returns the value of a given YesNo variable is Yes
-     *
-     * @param variable the string representation of the YesNo variable to be read out
-     * @returns the boolean result
-     */
-    isYes(variable: string | undefined): boolean {
-      if (variable == undefined || variable == "") {
-        return true;
-      }
-      return eval(variable) === "Yes";
-    },
     /**
      * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
@@ -529,7 +484,7 @@ export default defineComponent({
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
-        this.$formkit.reset("createLkSGForm");
+        this.$formkit.reset(this.formId);
         this.isYourCompanyManufacturingCompany = "No";
         this.listOfProductionSites = [
           {

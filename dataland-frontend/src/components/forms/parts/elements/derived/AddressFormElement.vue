@@ -28,7 +28,7 @@
         :validation="required"
         validation-label="Postcode"
         name="postalCode"
-        placeholder="postalCode"
+        placeholder="Postal Code"
       />
     </div>
   </FormKit>

@@ -50,7 +50,7 @@
       </div>
     </MarginWrapper>
   </TheContent>
-  <DatalandFooter />
+  <TheFooter />
 </template>
 
 <script lang="ts">
@@ -65,7 +65,7 @@ import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataTypeEnum } from "@clients/backend";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 
 export default defineComponent({
   name: "ViewEuTaxonomyNonFinancialsSample",
@@ -76,7 +76,7 @@ export default defineComponent({
     BackButton,
     MarginWrapper,
     EuTaxonomyPanelNonFinancials,
-    DatalandFooter,
+    TheFooter,
   },
   setup() {
     return {

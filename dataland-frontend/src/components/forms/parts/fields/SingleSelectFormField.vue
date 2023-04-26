@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" />
+    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
     <SingleSelectFormElement
       :name="name"
       :display-name="displayName"
@@ -29,7 +29,7 @@ export default defineComponent({
   props: {
     name: {
       type: String,
-      required: true,
+      default: "",
     },
     info: {
       type: String,
@@ -50,6 +50,10 @@ export default defineComponent({
     options: {
       type: Array as () => Array<Option>,
       required: true,
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
   },
 });

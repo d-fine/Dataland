@@ -1,13 +1,14 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
+    <NaceCodeSelector v-model="selectedNaceCodes" />
     <FormKit
-      type="text"
-      :name="name!"
+      type="list"
       :validation-label="displayName!"
       :validation="validation!"
-      :placeholder="placeholder"
-      inner-class="short"
+      :name="name"
+      v-model="selectedNaceCodes"
+      outer-class="hidden-input"
     />
   </div>
 </template>
@@ -16,10 +17,16 @@
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
+import NaceCodeSelector from "@/components/forms/parts/elements/derived/NaceCodeSelector.vue";
 
 export default defineComponent({
-  name: "InputTextFormField",
-  components: { FormKit, UploadFormHeader },
+  name: "NaceCodeFormField",
+  components: { NaceCodeSelector, FormKit, UploadFormHeader },
+  data() {
+    return {
+      selectedNaceCodes: [] as Array<string>,
+    };
+  },
   props: {
     name: {
       type: String,

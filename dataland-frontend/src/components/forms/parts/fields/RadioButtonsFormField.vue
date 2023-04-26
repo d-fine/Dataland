@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" />
+    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
     <RadioButtonsFormElement :name="name" :display-name="displayName" :validation="validation" :options="options" />
   </div>
 </template>
@@ -34,6 +34,10 @@ export default defineComponent({
     options: {
       type: Array as () => Array<Option>,
       required: true,
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
   },
 });
