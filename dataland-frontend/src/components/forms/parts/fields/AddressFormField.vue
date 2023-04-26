@@ -1,7 +1,7 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" />
-    <AddressFormElement :name="name" :display-name="displayName" :validation="validation" :placeholder="placeholder" />
+    <AddressFormElement :name="name" :display-name="displayName" :validation="validation" />
   </div>
 </template>
 
@@ -27,10 +27,6 @@ export default defineComponent({
       default: "",
     },
     validation: {
-      type: String,
-      default: "",
-    },
-    placeholder: {
       type: String,
       default: "",
     },

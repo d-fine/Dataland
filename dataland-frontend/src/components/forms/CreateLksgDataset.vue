@@ -190,143 +190,17 @@
                       >
                         <FormKit type="group" v-for="(item, index) in listOfProductionSites" :key="item.id">
                           <div
-                            data-test="productionSiteSection"
-                            class="productionSiteSection"
-                            :class="isYourCompanyManufacturingCompany === 'No' ? 'p-disabled' : ''"
+                              data-test="productionSiteSection"
+                              class="productionSiteSection"
+                              :class="isYourCompanyManufacturingCompany === 'No' ? 'p-disabled' : ''"
                           >
                             <em
-                              data-test="removeItemFromlistOfProductionSites"
-                              @click="removeItemFromlistOfProductionSites(item.id)"
-                              class="material-icons close-section"
-                              >close</em
+                                data-test="removeItemFromListOfProductionSites"
+                                @click="removeItemFromListOfProductionSites(item.id)"
+                                class="material-icons close-section"
+                            >close</em
                             >
-
-                            <div class="form-field">
-                              <UploadFormHeader
-                                :name="lksgKpisNameMappings.productionSiteName"
-                                :explanation="lksgKpisInfoMappings.productionSiteName"
-                              />
-                              <FormKit
-                                type="text"
-                                :validation-label="lksgKpisNameMappings.productionSiteName"
-                                name="name"
-                                validation="required"
-                              />
-                            </div>
-
-                            <div class="form-field" data-test="isInHouseProductionOrIsContractProcessing">
-                              <UploadFormHeader
-                                :name="lksgKpisNameMappings.inHouseProductionOrContractProcessing"
-                                :explanation="lksgKpisInfoMappings.inHouseProductionOrContractProcessing"
-                              />
-                              <FormKit
-                                type="radio"
-                                name="isInHouseProductionOrIsContractProcessing"
-                                :validation-label="lksgKpisNameMappings.inHouseProductionOrContractProcessing"
-                                :options="isInHouseProductionOrContractProcessingMap"
-                                validation="required"
-                                :outer-class="{
-                                  'yes-no-radio': true,
-                                }"
-                                :inner-class="{
-                                  'formkit-inner': false,
-                                }"
-                                :input-class="{
-                                  'formkit-input': false,
-                                  'p-radiobutton': true,
-                                }"
-                              />
-                            </div>
-
-                            <div class="form-field">
-                              <UploadFormHeader
-                                :name="lksgKpisNameMappings.addressesOfProductionSites"
-                                :explanation="lksgKpisInfoMappings.addressesOfProductionSites"
-                              />
-
-                              <FormKit
-                                type="text"
-                                name="streetAndHouseNumber"
-                                validation="required"
-                                :validation-label="lksgKpisNameMappings.addressesOfProductionSites"
-                                placeholder="Street, House number"
-                              />
-                              <div class="next-to-each-other">
-                                <FormKit
-                                  type="select"
-                                  name="country"
-                                  validation-label="Country"
-                                  validation="required"
-                                  placeholder="Country"
-                                  :options="allCountry"
-                                />
-                                <FormKit
-                                  type="text"
-                                  name="city"
-                                  validation-label="City"
-                                  validation="required"
-                                  placeholder="City"
-                                />
-                                <FormKit
-                                  type="text"
-                                  validation="required"
-                                  validation-label="Postcode"
-                                  name="postalCode"
-                                  placeholder="postalCode"
-                                />
-                              </div>
-                            </div>
-
-                            <div class="form-field">
-                              <div class="form-field-label">
-                                <h5>List Of Goods Or Services</h5>
-                                <em
-                                  class="material-icons info-icon"
-                                  aria-hidden="true"
-                                  title="listOfGoodsOrServices"
-                                  v-tooltip.top="{
-                                    value: lksgKpisInfoMappings['listOfGoodsOrServices']
-                                      ? lksgKpisInfoMappings['listOfGoodsOrServices']
-                                      : '',
-                                  }"
-                                  >info</em
-                                >
-                                <PrimeButton
-                                  :disabled="listOfProductionSites[index].listOfGoodsOrServicesString === ''"
-                                  @click="addNewItemsTolistOfProductionSites(index)"
-                                  label="Add"
-                                  class="p-button-text"
-                                  icon="pi pi-plus"
-                                ></PrimeButton>
-                              </div>
-                              <FormKit
-                                data-test="listOfGoodsOrServices"
-                                type="text"
-                                :ignore="true"
-                                v-model="listOfProductionSites[index].listOfGoodsOrServicesString"
-                                placeholder="Add comma (,) for more than one value"
-                              />
-                              <FormKit
-                                v-model="listOfProductionSites[index].listOfGoodsOrServices"
-                                type="list"
-                                label="list of goods or services"
-                                name="listOfGoodsOrServices"
-                              />
-                              <div class="">
-                                <span
-                                  class="form-list-item"
-                                  :key="element"
-                                  v-for="element in item.listOfGoodsOrServices"
-                                >
-                                  {{ element }}
-                                  <em
-                                    @click="removeItemFromlistOfGoodsOrServices(index, element)"
-                                    class="material-icons"
-                                    >close</em
-                                  >
-                                </span>
-                              </div>
-                            </div>
+                          <ProductionSiteField :item="item" />
                           </div>
                         </FormKit>
                         <PrimeButton
@@ -361,7 +235,9 @@
                   <div class="col-9 formFields">
                     <FormKit v-for="field in subsection.fields" :key="field" type="group" :name="subsection.name">
                       <component
-                        v-if="isYes(field.dependency)"
+                        v-if="isYes(field.dependency) &&
+                                field.component != 'RadioButtonsFormField' &&
+                                field.component != 'SingleSelectFormField'"
                         :is="field.component"
                         :displayName="field.label"
                         :info="field.description"
@@ -463,6 +339,7 @@ import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectF
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
 import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
 import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
+import ProductionSiteField from "@/components/forms/parts/fields/ProductionSiteField.vue";
 
 export default defineComponent({
   setup() {
@@ -472,6 +349,7 @@ export default defineComponent({
   },
   name: "CreateLksgDataset",
   components: {
+    ProductionSiteField,
     UploadFormHeader,
     SuccessUpload,
     FailedUpload,
@@ -695,34 +573,8 @@ export default defineComponent({
      *
      * @param id - the id of the object in the array
      */
-    removeItemFromlistOfProductionSites(id: number) {
+    removeItemFromListOfProductionSites(id: number) {
       this.listOfProductionSites = this.listOfProductionSites.filter((el) => el.id !== id);
-    },
-
-    /**
-     * Adds a new item to the list of Production Sites Goods Or Services
-     *
-     * @param index - index of the element in the listOfProductionSites array
-     */
-    addNewItemsTolistOfProductionSites(index: number) {
-      const items = this.listOfProductionSites[index].listOfGoodsOrServicesString.split(";").map((item) => item.trim());
-      this.listOfProductionSites[index].listOfGoodsOrServices = [
-        ...this.listOfProductionSites[index].listOfGoodsOrServices,
-        ...items,
-      ];
-      this.listOfProductionSites[index].listOfGoodsOrServicesString = "";
-    },
-
-    /**
-     * Remove item from list of Production Sites Goods Or Services
-     *
-     * @param index - index of the element in the listOfProductionSites array
-     * @param item - which item is to be deleted
-     */
-    removeItemFromlistOfGoodsOrServices(index: number, item: string) {
-      this.listOfProductionSites[index].listOfGoodsOrServices = this.listOfProductionSites[
-        index
-      ].listOfGoodsOrServices.filter((el) => el !== item);
     },
   },
 });
