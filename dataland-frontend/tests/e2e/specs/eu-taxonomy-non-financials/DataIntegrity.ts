@@ -83,7 +83,7 @@ describeIf(
             "contain",
             `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligiblePercentage!.value!)}%`
           );
-        cy.get(".font-medium.text-3xl").should("contain", "€"); // TODO componenet test?
+        cy.get(".font-medium.text-3xl").should("contain", "€");
       });
     });
 
@@ -114,7 +114,11 @@ describeIf(
       () => {
         // TODO description is missing a lot more stuff that is actually happening here
 
-        // TODO this test is pretty long and also contains stuff that fits better to the "UploadReports" test file.  we should consider moving some of the test code here
+        // TODO Emanuel: this test is pretty long and also contains stuff that fits better to the "UploadReports" test file.  we should consider moving some of the test code here
+
+        // TODO Emanuel: furthermore this test could be done in a shorter amount of time =>  e.g. some of the page reloads are actually not needed and could be worked around.
+
+        const dummyPdfFileName = "pdfTest";
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
             (storedCompany) => {
@@ -124,7 +128,7 @@ describeIf(
                 .should("eq", getBaseUrl() + "/datasets");
               cy.wait("@getDataForMyDatasetsPage");
 
-              // TEST IF ALL VALUES THERE ON VIEW PAGE          TODO delete this comment
+              // TEST IF ALL VALUES THERE ON VIEW PAGE          TODO comment supports reading the test while working on it => delete at the very end
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
@@ -136,7 +140,7 @@ describeIf(
               cy.get("body").should("contain", "Eligible OpEx").should("contain", "%");
               cy.get("body").should("contain", "Aligned OpEx").should("contain", "%");
 
-              // TEST IF A CHANGED VALUE WIE THE "EDIT" FUNCTION IS VIEWABLE          TODO delete this comment
+              // TEST IF A CHANGED VALUE WIE THE "EDIT" FUNCTION IS VIEWABLE          TODO comment supports reading the test while working on it => delete at the very end
               const newValueForEligibleRevenueAfterEdit = "30";
               cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("getDataToPrefillForm");
               cy.get('button[data-test="editDatasetButton"]').click();
@@ -154,21 +158,21 @@ describeIf(
                 .should("contain", "Eligible Revenue")
                 .should("contain", newValueForEligibleRevenueAfterEdit + "%");
 
-              // TEST IF A FILE WITH AN ALREADY EXISTING NAME CANNOT BE SUBMITTED          TODO delete this comment
+              // TEST IF A FILE WITH AN ALREADY EXISTING NAME CANNOT BE SUBMITTED          TODO comment supports reading the test while working on it => delete at the very end
               cy.get('button[data-test="editDatasetButton"]').click();
               cy.wait("@getDataToPrefillForm");
-              cy.get('button[data-test="upload-files-button"]').click();
-              cy.get("input[type=file]").selectFile("../testing/data/pdfTest.pdf", { force: true });
+              cy.get(`[data-test="${dummyPdfFileName}AlreadyUploadedContainer`).should("exist");
+              cy.get("input[type=file]").selectFile(`../testing/data/${dummyPdfFileName}.pdf`, { force: true });
               cy.get('[data-test="file-name-already-exists"]').should("exist");
-              cy.get(`[data-test="pdfTestToUploadContainer"]`).should("not.exist");
+              cy.get(`[data-test="${dummyPdfFileName}ToUploadContainer"]`).should("not.exist");
               cy.get('button[data-test="submitButton"]').click();
-              cy.get('[data-test="failedUploadMessage"]').should("contain.text", "pdfTest.pdf");
-              // TEST IF UPLOADING A REPORT IS NOT POSSIBLE IF IT IS NOT REFERENCED BY AT LEAST ONE DATAPOINT         TODO delete this comment
-              cy.get(`button[data-test="remove-pdfTest"]`).wait(3000).click();
+              cy.get('[data-test="failedUploadMessage"]').should("contain.text", `${dummyPdfFileName}.pdf`);
+              // TEST IF UPLOADING A REPORT IS NOT POSSIBLE IF IT IS NOT REFERENCED BY AT LEAST ONE DATAPOINT         TODO comment supports reading the test while working on it => delete at the very end
+              cy.get(`button[data-test="remove-${dummyPdfFileName}"]`).click();
               cy.get('[data-test="file-name-already-exists"]').should("not.exist");
               cy.get("input[type=file]").selectFile(
                 {
-                  contents: `../testing/data/pdfTest.pdf`,
+                  contents: `../testing/data/${dummyPdfFileName}.pdf`,
                   fileName: "someOtherFileName" + ".pdf",
                 },
                 { force: true }
@@ -177,7 +181,7 @@ describeIf(
               cy.get('button[data-test="submitButton"]').click();
               cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
 
-              // TEST IF UPLOADING A REPORT WHICH HAS THE CONTENT OF AN ALREADY EXISTING PDF FILE LEADS TO NO ACTUAL RE-UPLOAD OF IT         TODO delete this comment
+              // TEST IF UPLOADING A REPORT WHICH HAS THE CONTENT OF AN ALREADY EXISTING PDF FILE LEADS TO NO ACTUAL RE-UPLOAD OF IT         TODO comment supports reading the test while working on it => delete at the very end
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
@@ -185,10 +189,10 @@ describeIf(
               cy.get('button[data-test="editDatasetButton"]').click();
               cy.wait("@getDataToPrefillForm");
               cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
-              const differentFileNameForSameFile = "pdfTest" + "FileCopy";
+              const differentFileNameForSameFile = `${dummyPdfFileName}FileCopy`;
               cy.get("input[type=file]").selectFile(
                 {
-                  contents: `../testing/data/pdfTest.pdf`,
+                  contents: `../testing/data/${dummyPdfFileName}.pdf`,
                   fileName: differentFileNameForSameFile + ".pdf",
                 },
                 { force: true }
@@ -212,17 +216,17 @@ describeIf(
               );
               cy.wait("@getDataForMyDatasetsPage");
 
-              // TEST IF THE UPLOADED REPORT CAN BE DOWNLOADED AND ACTUALLY CONTAINS THE UPLOADED PDF         TODO delete this comment
+              // TEST IF THE UPLOADED REPORT CAN BE DOWNLOADED AND ACTUALLY CONTAINS THE UPLOADED PDF         TODO comment supports reading the test while working on it => delete at the very end
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
-              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + "/pdfTest.pdf";
+              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${dummyPdfFileName}.pdf`;
               const downloadLinkSelector = `span[data-test="Report-Download-${differentFileNameForSameFile}"]`;
               cy.readFile(expectedPathToDownloadedReport).should("not.exist");
               cy.get(downloadLinkSelector)
                 .click()
                 .then(() => {
-                  cy.readFile("../testing/data/pdfTest.pdf", "binary", {
+                  cy.readFile(`../testing/data/${dummyPdfFileName}.pdf`, "binary", {
                     timeout: Cypress.env("medium_timeout_in_ms") as number,
                   }).then((expectedPdfBinary) => {
                     cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
