@@ -14,6 +14,7 @@ import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
 import { fillEuTaxonomyForNonFinancialsUploadForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company",
@@ -82,18 +83,12 @@ describeIf(
      * @param expectIncludedFile specifies if the file pdfTest.pdf is expected to be in the server response
      */
     function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
-      const getRequestAlias = "getData";
-      cy.intercept("GET", "**/api/data/**").as(getRequestAlias);
-      cy.visit(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
-      cy.wait(`@${getRequestAlias}`, { timeout: 30000 });
-      cy.get('[data-test="editDatasetButton"]').click();
-      cy.wait(`@${getRequestAlias}`, { timeout: 30000 }).then((interception) => {
-        console.log(interception);
-        const data = assertDefined(
-          (interception.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data
+      gotoEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyNonFinancials).then((interception) => {
+        const referencedReports = assertDefined(
+          (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data?.referencedReports
         );
-        expect("pdfTest" in data.referencedReports!).to.equal(expectIncludedFile);
-        expect("pdfTest2" in data.referencedReports!).to.equal(true);
+        expect("pdfTest" in referencedReports).to.equal(expectIncludedFile);
+        expect("pdfTest2" in referencedReports).to.equal(true);
       });
     }
 
@@ -111,6 +106,9 @@ describeIf(
             uploadReports.validateFileInfo(filename);
             uploadReports.removeSingleUploadedFileFromUploadedList();
             uploadReports.checkNoReportIsListed();
+
+            uploadReports.uploadFile("pdfTest");
+            uploadReports.fillAllReportInfoForms();
           },
           () => undefined,
           () => undefined,
@@ -127,9 +125,9 @@ describeIf(
         () => {
           uploadReports.uploadFile("pdfTest");
           uploadReports.uploadFile("pdfTest2");
+          uploadReports.fillAllReportInfoForms();
         },
         () => {
-          uploadReports.fillAllReportInfoForms();
           cy.get(`[data-test="capexSection"] [data-test="total"] select[name="report"]`).select("pdfTest");
           cy.get(`[data-test="opexSection"] [data-test="total"] select[name="report"]`).select("pdfTest2");
         },

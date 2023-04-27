@@ -66,7 +66,7 @@
 
     <!-- Data quality -->
     <div class="form-field">
-      <UploadFormHeader :is-required="true" name="Data quality" explanation="Data quality"/>
+      <UploadFormHeader :is-required="true" name="Data quality" explanation="Data quality" />
       <div class="md:col-6 col-12 p-0">
         <FormKit
           :disabled="!dataPointIsAvailable"

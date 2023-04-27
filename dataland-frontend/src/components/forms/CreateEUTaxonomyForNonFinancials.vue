@@ -14,7 +14,7 @@
             type="form"
             :id="formId"
             @submit="postEuTaxonomyDataForNonFinancials"
-            @submit-invalid="checkCustomInputs"
+            @submit-invalid="handleInvalidInput"
           >
             <FormKit
               type="hidden"
@@ -324,6 +324,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FileUploadSelectEvent } from "primevue/fileupload";
+import { FormKitNode } from "@formkit/core";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -594,6 +595,16 @@ export default defineComponent({
           this.listOfUploadedReportsInfo
         ),
       ] as ExtendedFile[];
+    },
+    /**
+     * Handles invalid inputs and gives applicable error messages
+     *
+     * @param node from which the input fields will be checked
+     */
+    handleInvalidInput(node: FormKitNode) {
+      checkCustomInputs(node);
+      this.message = `Sorry, not all fields are filled out correctly.`;
+      this.postEuTaxonomyDataForNonFinancialsProcessed = true;
     },
   },
 });

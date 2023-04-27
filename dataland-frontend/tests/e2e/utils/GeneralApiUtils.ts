@@ -1,5 +1,6 @@
 import { CompanyDataControllerApi, Configuration, DataTypeEnum, StoredCompany } from "@clients/backend";
-import { RouteHandler } from "cypress/types/net-stubbing";
+import { Interception, RouteHandler } from "cypress/types/net-stubbing";
+import Chainable = Cypress.Chainable;
 
 export interface UploadIds {
   companyId: string;
@@ -64,4 +65,24 @@ export function interceptAllAndCheckFor500Errors(): void {
   };
   cy.intercept("/api/**", handler);
   cy.intercept("/api-keys/**", handler);
+}
+
+/**
+ * Visits the edit page for a framework via UI navigation.
+ *
+ * @param companyId the id of the company for which to edit a dataset
+ * @param dataType the framework type
+ * @returns a cypress chainable to the interception of the data request on the edit page
+ */
+export function gotoEditFormOfMostRecentDataset(companyId: string, dataType: DataTypeEnum): Chainable<Interception> {
+  const getRequestAlias = "getData";
+  cy.intercept({
+    method: "GET",
+    url: "**/api/data/**",
+    times: 2,
+  }).as(getRequestAlias);
+  cy.visit(`/companies/${companyId}/frameworks/${dataType}`);
+  cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") as number });
+  cy.get('[data-test="editDatasetButton"]').click();
+  return cy.wait(`@${getRequestAlias}`, { timeout: Cypress.env("medium_timeout_in_ms") as number });
 }
