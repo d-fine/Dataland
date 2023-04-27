@@ -347,7 +347,7 @@ export default defineComponent({
     formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     fiscalYearEndAsDate: null as Date | null,
     fiscalYearEnd: "",
-    reportingPeriod: new Date(),
+    reportingPeriod: undefined as undefined | Date,
     filesToUpload: [] as ExtendedFile[],
     listOfUploadedReportsInfo: [] as ExtendedCompanyReport[],
     onThisPageLinks: [
@@ -386,7 +386,10 @@ export default defineComponent({
       return [...new Set([...namesFromFilesToUpload, ...namesFromListOfUploadedReports])];
     },
     reportingPeriodYear(): number {
-      return this.reportingPeriod.getFullYear();
+      if (this.reportingPeriod) {
+        return this.reportingPeriod.getFullYear();
+      }
+      return 0;
     },
   },
   props: {
@@ -399,6 +402,9 @@ export default defineComponent({
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
       void this.loadEuData(dataId);
+    }
+    if (this.reportingPeriod === undefined) {
+      this.reportingPeriod = new Date();
     }
   },
 
