@@ -47,8 +47,7 @@
 
                 <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
               </div>
-              <FormKit type="group" name="data" label="data" validation-label="data"
-                validation="required">
+              <FormKit type="group" name="data" label="data" validation-label="data" validation="required">
                 <UploadReports
                   ref="UploadReports"
                   :filesToUpload="filesToUpload"
@@ -308,7 +307,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import {areAllUploadedReportsReferencedInDataModel, checkCustomInputs} from "@/utils/validationsUtils";
+import { areAllUploadedReportsReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -369,7 +368,7 @@ export default defineComponent({
       listOfUploadedReportsInfo: [] as ExtendedCompanyReport[],
       fiscalYearEndAsDate: null as Date | null,
       fiscalYearEnd: "",
-      reportingPeriod: new Date(),
+      reportingPeriod: undefined as undefined | Date,
       assuranceData: {
         None: humanizeString(AssuranceDataAssuranceEnum.None),
         LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
@@ -415,7 +414,10 @@ export default defineComponent({
       return [...new Set([...namesFromFilesToUpload, ...namesFromListOfUploadedReports])];
     },
     reportingPeriodYear(): number {
-      return this.reportingPeriod.getFullYear();
+      if (this.reportingPeriod) {
+        return this.reportingPeriod.getFullYear();
+      }
+      return 0;
     },
   },
   watch: {
@@ -439,6 +441,9 @@ export default defineComponent({
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
       void this.loadEuData(dataId);
+    }
+    if (this.reportingPeriod === undefined) {
+      this.reportingPeriod = new Date();
     }
 
     this.onThisPageLinks = [...this.onThisPageLinksStart];
@@ -502,7 +507,7 @@ export default defineComponent({
       );
       this.waitingForData = false;
 
-      await this.$nextTick();
+      await this.$nextTick(); // TODO check if this is neccessary
       updateObject(this.formInputsModel, receivedFormInputsModel);
     },
 
@@ -515,12 +520,10 @@ export default defineComponent({
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
 
-
-
-            areAllUploadedReportsReferencedInDataModel(
-              this.formInputsModel.data as ObjectType,
-              this.namesOfAllCompanyReportsForTheDataset
-            )
+        areAllUploadedReportsReferencedInDataModel(
+          this.formInputsModel.data as ObjectType,
+          this.namesOfAllCompanyReportsForTheDataset
+        );
         // TODO dont throw an error but use validation???
 
         const documentUploadControllerControllerApi = await new ApiClientProvider(
