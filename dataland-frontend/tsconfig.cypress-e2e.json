@@ -1,6 +1,6 @@
 // Config file for cypress E2E tests
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
     "tests/sharedUtils/**/*",
     "tests/e2e/**/*",
