@@ -47,8 +47,7 @@
 
                 <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
               </div>
-              <FormKit type="group" name="data" label="data" validation-label="data"
-                validation="required">
+              <FormKit type="group" name="data" label="data" validation-label="data" validation="required">
                 <UploadReports
                   ref="UploadReports"
                   :filesToUpload="filesToUpload"
@@ -308,7 +307,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import {areAllUploadedReportsReferencedInDataModel, checkCustomInputs} from "@/utils/validationsUtils";
+import { areAllUploadedReportsReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -515,12 +514,10 @@ export default defineComponent({
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
 
-
-
-            areAllUploadedReportsReferencedInDataModel(
-              this.formInputsModel.data as ObjectType,
-              this.namesOfAllCompanyReportsForTheDataset
-            )
+        areAllUploadedReportsReferencedInDataModel(
+          this.formInputsModel.data as ObjectType,
+          this.namesOfAllCompanyReportsForTheDataset
+        );
         // TODO dont throw an error but use validation???
 
         const documentUploadControllerControllerApi = await new ApiClientProvider(
