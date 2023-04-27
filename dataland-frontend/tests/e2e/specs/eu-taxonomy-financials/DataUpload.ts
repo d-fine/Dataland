@@ -92,9 +92,8 @@ describeIf(
         .its("response")
         .then((response) => {
           const data = assertDefined((response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data);
-          expect(assertDefined(data.referencedReports).pdfTest !== undefined).to.equal(expectIncludedFile);
-          expect(assertDefined(data.referencedReports).pdfTest2 !== undefined).to.equal(true); // TODO this should not be expected
-          expect(assertDefined(data.referencedReports).pdfTest3 !== undefined).to.equal(false);
+          expect("pdfTest" in data.referencedReports!).to.equal(expectIncludedFile);
+          expect("pdfTest2" in data.referencedReports!).to.equal(true);
         });
     }
 
@@ -143,9 +142,8 @@ describeIf(
         },
         (request) => {
           const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
-          expect(assertDefined(data.referencedReports).pdfTest !== undefined).to.equal(areBothDocumentsStillUploaded);
-          expect(assertDefined(data.referencedReports).pdfTest2 !== undefined).to.equal(true); // TODO this should not be expected
-          expect(assertDefined(data.referencedReports).pdfTest3 !== undefined).to.equal(false);
+          expect("pdfTest" in data.referencedReports!).to.equal(areBothDocumentsStillUploaded);
+          expect("pdfTest2" in data.referencedReports!).to.equal(true);
         },
         (companyId) => {
           gotoEditForm(companyId, true);

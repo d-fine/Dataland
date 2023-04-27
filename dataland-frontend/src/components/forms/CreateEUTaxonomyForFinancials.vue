@@ -368,7 +368,7 @@ export default defineComponent({
       listOfUploadedReportsInfo: [] as ExtendedCompanyReport[],
       fiscalYearEndAsDate: null as Date | null,
       fiscalYearEnd: "",
-      reportingPeriod: new Date(),
+      reportingPeriod: undefined as undefined | Date,
       assuranceData: {
         None: humanizeString(AssuranceDataAssuranceEnum.None),
         LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
@@ -414,7 +414,10 @@ export default defineComponent({
       return [...new Set([...namesFromFilesToUpload, ...namesFromListOfUploadedReports])];
     },
     reportingPeriodYear(): number {
-      return this.reportingPeriod.getFullYear();
+      if (this.reportingPeriod) {
+        return this.reportingPeriod.getFullYear();
+      }
+      return 0;
     },
   },
   watch: {
@@ -438,6 +441,9 @@ export default defineComponent({
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
       void this.loadEuData(dataId);
+    }
+    if (this.reportingPeriod === undefined) {
+      this.reportingPeriod = new Date();
     }
 
     this.onThisPageLinks = [...this.onThisPageLinksStart];
@@ -501,7 +507,7 @@ export default defineComponent({
       );
       this.waitingForData = false;
 
-      await this.$nextTick();
+      await this.$nextTick(); // TODO check if this is neccessary
       updateObject(this.formInputsModel, receivedFormInputsModel);
     },
 
