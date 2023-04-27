@@ -309,7 +309,7 @@ import {
   CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
   DataMetaInformation,
 } from "@clients/backend";
-import {areAllUploadedReportsReferencedInDataModel, checkCustomInputs} from "@/utils/validationsUtils";
+import { areAllUploadedReportsReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
@@ -455,10 +455,10 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
-          areAllUploadedReportsReferencedInDataModel(
-              this.formInputsModel.data as ObjectType,
-              this.namesOfAllCompanyReportsForTheDataset
-          )
+        areAllUploadedReportsReferencedInDataModel(
+          this.formInputsModel.data as ObjectType,
+          this.namesOfAllCompanyReportsForTheDataset
+        );
 
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
