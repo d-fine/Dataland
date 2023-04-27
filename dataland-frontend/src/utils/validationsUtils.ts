@@ -2,7 +2,6 @@ import { FormKitNode } from "@formkit/core";
 
 /**
  * Checks which inputs are not filled correctly
- *
  * @param node - single form field
  */
 export function checkCustomInputs(node: FormKitNode): void {

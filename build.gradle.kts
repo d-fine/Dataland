@@ -39,7 +39,7 @@ tasks.dependencyUpdates.configure {
 
 dependencies {
     detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.22.0")
-    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.20")
+    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.21")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -74,9 +74,9 @@ sonar {
         property(
             "sonar.coverage.exclusions",
             "**/test/**," +
-                    "**/tests/**," +
-                    "**/LocalCorsConfig.kt," +
-                    "./dataland-frontend/src/main.ts",
+                "**/tests/**," +
+                "**/LocalCorsConfig.kt," +
+                "./dataland-frontend/src/main.ts",
         )
         property(
             "sonar.sources",

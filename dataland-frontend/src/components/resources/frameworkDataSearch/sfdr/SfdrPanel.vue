@@ -103,7 +103,6 @@ export default defineComponent({
 
     /**
      * Creates kpi data objects to pass them to the data table.
-     *
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
      * @param subAreaKey The sub area to which the kpi belongs

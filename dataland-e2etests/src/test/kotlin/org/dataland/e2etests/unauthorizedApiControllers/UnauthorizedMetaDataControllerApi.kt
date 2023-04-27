@@ -50,14 +50,14 @@ class UnauthorizedMetaDataControllerApi {
     fun getDataMetaInfo(dataId: String): DataMetaInformation {
         val response = client.newCall(buildGetDataMetaInfoRequest(dataId)).execute()
         if (!response.isSuccessful) throw IllegalArgumentException("Unauthorized access failed, response is: $response")
-        val responseBodyAsString = response.body.string()
+        val responseBodyAsString = response.body!!.string()
         return transferJsonToDataMetaInformation(responseBodyAsString)
     }
 
     fun getListOfDataMetaInfo(companyId: String, dataType: DataTypeEnum): List<DataMetaInformation> {
         val response = client.newCall(buildGetListOfDataMetaInfoRequest(companyId, dataType)).execute()
         if (!response.isSuccessful) throw IllegalArgumentException("Unauthorized access failed, response is: $response")
-        val responseBodyAsString = response.body.string()
+        val responseBodyAsString = response.body!!.string()
         return transferJsonToListOfDataMetaInformation(responseBodyAsString)
     }
 }

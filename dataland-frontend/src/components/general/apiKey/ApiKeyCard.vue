@@ -86,7 +86,6 @@ export default defineComponent({
     },
     /**
      * Calculates whether the current api key is expired based on the expiryDateInMilliseconds
-     *
      * @returns whether the api key is expired
      */
     isKeyExpired() {
