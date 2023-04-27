@@ -11,6 +11,7 @@ import Chainable = Cypress.Chainable;
 import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 
+// TODO can dataId still be retrieved like this?
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
  *
@@ -29,13 +30,27 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   uploadReports.uploadFile(filename);
   uploadReports.validateSingleFileInUploadedList(filename, "KB");
   uploadReports.validateFileInfo(filename);
-  uploadReports.removeSingleUploadedFileFromUploadedList();
-  uploadReports.checkNoReportIsListed();
 
-  uploadReports.uploadFile(filename);
-  uploadReports.validateSingleFileInUploadedList(filename, "KB");
-  uploadReports.validateFileInfo(filename);
+  fillEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, filename);
+  submitButton.buttonAppearsEnabled();
+  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
+  submitButton.clickButton();
+  cy.wait("@postCompanyAssociatedData");
+  return cy.contains("h4", "Upload successfully executed.").then<string>(($dataId): string => {
+    return $dataId.text();
+  });
+}
 
+/**
+ * Fills all the fields of the eu-taxonomy upload form for non-financial companies
+ *
+ * @param valueFieldNotFilled Value which, if true, disables the value field
+ * @param assuranceReportName name of the assurance data source
+ */
+export function fillEuTaxonomyForNonFinancialsUploadForm(
+  valueFieldNotFilled: boolean,
+  assuranceReportName: string
+): void {
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
   cy.get("div.p-datepicker").find('span:contains("11")').click();
@@ -56,7 +71,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
 
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(1);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(filename);
+  cy.get('[data-test="assuranceSection"] select[name="report"]').select(assuranceReportName);
 
   cy.get('[data-test="dataPointToggleTitle"]').should("exist");
   for (const argument of ["capexSection", "opexSection", "revenueSection"]) {
@@ -69,17 +84,16 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
     cy.get(`div[data-test=${argument}] select[name="report"]`).each(($element) => {
       cy.wrap($element).select(1);
     });
+    cy.get(`div[data-test=${argument}] input[name="page"]`).each(($element) => {
+      cy.wrap($element).type("12");
+    });
     cy.get(`div[data-test=${argument}] select[name="quality"]`).each(($element) => {
       cy.wrap($element).select(3);
     });
+    cy.get(`div[data-test=${argument}] textarea[name="comment"]`).each(($element) => {
+      cy.wrap($element).type("test");
+    });
   }
-  submitButton.buttonAppearsEnabled();
-  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
-  submitButton.clickButton();
-  cy.wait("@postCompanyAssociatedData");
-  return cy.contains("h4", "Upload successfully executed.").then<string>(($dataId): string => {
-    return $dataId.text();
-  });
 }
 
 /**
