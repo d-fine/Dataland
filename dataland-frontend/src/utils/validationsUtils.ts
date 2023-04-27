@@ -44,6 +44,11 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
     }
   });
   if (unusedReports.length >= 1) {
+    //TODO Discuss if we want this and if yes if it should be modified. For example hardcoding of the elementId is not nice
+    const uploadReportComponent = document.getElementById("uploadReports");
+    if (uploadReportComponent) {
+      uploadReportComponent.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
     throw new Error(
       `Not all uploaded reports are used as a data source. Please remove following reports, or use them as a data source: ${unusedReports.toString()}`
     );

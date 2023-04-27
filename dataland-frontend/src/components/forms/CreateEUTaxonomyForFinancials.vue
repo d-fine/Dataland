@@ -14,7 +14,7 @@
             type="form"
             :id="formId"
             @submit="postEuTaxonomyDataForFinancials"
-            @submit-invalid="checkCustomInputs"
+            @submit-invalid="handleInvalidInput"
           >
             <FormKit
               type="hidden"
@@ -337,6 +337,7 @@ import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FileUploadSelectEvent } from "primevue/fileupload";
+import { FormKitNode } from "@formkit/core";
 
 export default defineComponent({
   setup() {
@@ -667,6 +668,16 @@ export default defineComponent({
     updateFiscalYearEndHandler(dateValue: Date) {
       this.fiscalYearEnd = getHyphenatedDate(dateValue);
       this.fiscalYearEndAsDate = dateValue;
+    },
+    /**
+     * Handles invalid inputs and gives applicable error messages
+     *
+     * @param node from which the input fields will be checked
+     */
+    handleInvalidInput(node: FormKitNode) {
+      checkCustomInputs(node);
+      this.message = `Sorry, not all fields are filled out correctly.`;
+      this.postEuTaxonomyDataForFinancialsProcessed = true;
     },
   },
 });
