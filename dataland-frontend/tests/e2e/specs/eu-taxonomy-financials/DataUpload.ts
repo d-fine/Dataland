@@ -6,6 +6,7 @@ import {
   EuTaxonomyDataForFinancials,
   DataTypeEnum,
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -13,6 +14,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
+import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a financial company",
@@ -84,18 +86,13 @@ describeIf(
      * @param expectIncludedFile specifies if the file pdfTest.pdf is expected to be in the server response
      */
     function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
-      const getRequestAlias = "getData";
-      cy.intercept("GET", "**/api/data/**").as(getRequestAlias);
-      cy.visit(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
-      cy.wait(`@${getRequestAlias}`, { timeout: 30000 });
-      cy.get('[data-test="editDatasetButton"]').click();
-      cy.wait(`@${getRequestAlias}`, { timeout: 30000 })
-        .its("response")
-        .then((response) => {
-          const data = assertDefined((response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data);
-          expect("pdfTest" in data.referencedReports!).to.equal(expectIncludedFile);
-          expect("pdfTest2" in data.referencedReports!).to.equal(true);
-        });
+      gotoEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyFinancials).then((interception) => {
+        const referencedReports = assertDefined(
+          (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data?.referencedReports
+        );
+        expect("pdfTest" in referencedReports).to.equal(expectIncludedFile);
+        expect("pdfTest2" in referencedReports).to.equal(true);
+      });
     }
 
     it(
