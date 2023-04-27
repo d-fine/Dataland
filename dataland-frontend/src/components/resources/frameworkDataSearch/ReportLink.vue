@@ -2,7 +2,7 @@
   <span
     @click="downloadReport()"
     class="font-semibold underline text-primary cursor-pointer"
-    data-test="Report-Download"
+    :data-test="'Report-Download-' + name"
     >{{ name }}</span
   >
   <span v-if="index < reportsNumber - 1"> | </span>

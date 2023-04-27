@@ -135,7 +135,12 @@
         <div :data-test="file.name.split('.')[0] + 'AlreadyUploadedContainer'" class="form-field-label">
           <div class="flex w-full">
             <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
-            <PrimeButton icon="pi pi-times" @click="removeReportFromUploadedReports(index)" class="p-button-rounded" />
+            <PrimeButton
+              :data-test="'remove-' + file.name.split('.')[0]"
+              @click="removeReportFromUploadedReports(index)"
+              icon="pi pi-times"
+              class="p-button-rounded"
+            />
           </div>
         </div>
         <FormKit :name="file.name.split('.')[0]" type="group">
