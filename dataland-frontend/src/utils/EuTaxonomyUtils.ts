@@ -43,6 +43,7 @@ export function completeInformationAboutSelectedFileWithAdditionalFields(
     if (listOfFilesThatAlreadyExistInReportsInfo.some((it) => it.name === file.name.split(".")[0])) {
       file["nameAlreadyExists"] = "true";
     } else {
+      file["nameAlreadyExists"] = "false";
       file["reportDate"] = file["reportDate"] ?? "";
       file["reportDateAsDate"] = file["reportDateAsDate"] ?? "";
       file["documentId"] = file["documentId"] ?? "";

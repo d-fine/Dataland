@@ -54,7 +54,7 @@
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
       <div v-for="(file, index) of filesToUpload" :key="file.name" class="col-9 formFields" data-test="report-info">
-        <div v-if="file.nameAlreadyExists">
+        <div v-if="file.nameAlreadyExists === 'true'">
           <div>
             File with name:
             <h3 data-test="file-name-already-exists">{{ file.name.split(".")[0] }}</h3>

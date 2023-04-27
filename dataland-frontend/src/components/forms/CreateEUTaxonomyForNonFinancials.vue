@@ -59,6 +59,7 @@
                   :editMode="editMode"
                   @selectedFiles="onSelectedFilesHandler"
                   @removeReportFromFilesToUpload="removeReportFromFilesToUpload"
+                  @removeReportFromUploadedReports="removeReportFromUploadedReports"
                   @updateReportDateHandler="updateReportDateHandler"
                 />
 
@@ -309,7 +310,11 @@ import {
   CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
   DataMetaInformation,
 } from "@clients/backend";
-import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
+import {
+  checkIfAllUploadedReportsAreReferencedInDataModel,
+  checkCustomInputs,
+  checkIfThereAreNoDuplicateReportNames,
+} from "@/utils/validationsUtils";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
@@ -459,7 +464,7 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-
+        checkIfThereAreNoDuplicateReportNames(this.filesToUpload);
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
@@ -567,6 +572,22 @@ export default defineComponent({
       this.filesToUpload = this.filesToUpload.filter((el) => {
         return el.name !== fileToRemove.name;
       });
+    },
+
+    /**
+     * Removes a report from the list of already uploaded reports while the user edits a dataset. That way it is no
+     * longer included as referenced report after the edit it submitted.
+     *
+     * @param indexOfFileToRemove Index of the report that shall no longer be referenced by the dataset
+     */
+    removeReportFromUploadedReports(indexOfFileToRemove: number) {
+      this.listOfUploadedReportsInfo.splice(indexOfFileToRemove, 1);
+      this.filesToUpload = [
+        ...completeInformationAboutSelectedFileWithAdditionalFields(
+          this.filesToUpload as Record<string, string>[],
+          this.listOfUploadedReportsInfo
+        ),
+      ] as ExtendedFile[];
     },
   },
 });
