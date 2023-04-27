@@ -1,10 +1,10 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3">
-    <template #title
-      ><span data-test="pageWrapperTitle"
+    <template #title>
+      <span data-test="pageWrapperTitle"
         >{{ editMode ? "Edit" : "Create" }} EU Taxonomy Dataset for a Financial Company/Service</span
-      ></template
-    >
+      >
+    </template>
     <template #content>
       <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -14,7 +14,7 @@
             type="form"
             :id="formId"
             @submit="postEuTaxonomyDataForFinancials"
-            @submit-invalid="checkCustomInputs"
+            @submit-invalid="handleInvalidInput"
           >
             <FormKit
               type="hidden"
@@ -307,7 +307,11 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { areAllUploadedReportsReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
+import {
+  checkIfAllUploadedReportsAreReferencedInDataModel,
+  checkCustomInputs,
+  checkIfThereAreNoDuplicateReportNames,
+} from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -333,6 +337,7 @@ import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FileUploadSelectEvent } from "primevue/fileupload";
+import { FormKitNode } from "@formkit/core";
 
 export default defineComponent({
   setup() {
@@ -464,15 +469,15 @@ export default defineComponent({
 
       const dataResponse =
         await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(dataId);
-      const dataResponseData = dataResponse.data;
-      if (dataResponseData?.reportingPeriod) {
-        this.reportingPeriod = new Date(dataResponseData.reportingPeriod);
+      const companyAssociatedEuTaxonomyData = dataResponse.data;
+      if (companyAssociatedEuTaxonomyData?.reportingPeriod) {
+        this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
       }
-      if (dataResponseData.data?.fiscalYearEnd) {
-        this.fiscalYearEndAsDate = new Date(dataResponseData.data.fiscalYearEnd);
+      if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
+        this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
       }
-      if (dataResponseData.data?.referencedReports) {
-        const referencedReportsForDataId = dataResponseData.data.referencedReports;
+      if (companyAssociatedEuTaxonomyData.data?.referencedReports) {
+        const referencedReportsForDataId = companyAssociatedEuTaxonomyData.data.referencedReports;
         for (const key in referencedReportsForDataId) {
           this.listOfUploadedReportsInfo.push({
             name: key,
@@ -486,9 +491,9 @@ export default defineComponent({
           });
         }
       }
-      if (dataResponseData.data?.financialServicesTypes) {
+      if (companyAssociatedEuTaxonomyData.data?.financialServicesTypes) {
         // types of company financial services
-        const arrayWithCompanyKpiTypes = dataResponseData.data?.financialServicesTypes;
+        const arrayWithCompanyKpiTypes = companyAssociatedEuTaxonomyData.data?.financialServicesTypes;
         // all types of financial services
         const allTypesOfFinancialServices = euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis;
 
@@ -502,7 +507,7 @@ export default defineComponent({
         this.confirmSelectedKPIs();
       }
       const receivedFormInputsModel = modifyObjectKeys(
-        JSON.parse(JSON.stringify(dataResponseData)) as ObjectType,
+        JSON.parse(JSON.stringify(companyAssociatedEuTaxonomyData)) as ObjectType,
         "receive"
       );
       this.waitingForData = false;
@@ -520,10 +525,11 @@ export default defineComponent({
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
 
-        areAllUploadedReportsReferencedInDataModel(
+        checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
+        checkIfThereAreNoDuplicateReportNames(this.filesToUpload);
         // TODO dont throw an error but use validation???
 
         const documentUploadControllerControllerApi = await new ApiClientProvider(
@@ -662,6 +668,16 @@ export default defineComponent({
     updateFiscalYearEndHandler(dateValue: Date) {
       this.fiscalYearEnd = getHyphenatedDate(dateValue);
       this.fiscalYearEndAsDate = dateValue;
+    },
+    /**
+     * Handles invalid inputs and gives applicable error messages
+     *
+     * @param node from which the input fields will be checked
+     */
+    handleInvalidInput(node: FormKitNode) {
+      checkCustomInputs(node);
+      this.message = `Sorry, not all fields are filled out correctly.`;
+      this.postEuTaxonomyDataForFinancialsProcessed = true;
     },
   },
 });
