@@ -159,15 +159,13 @@
                   <div data-test="capexSection" class="col-9 p-0">
                     <FormKit name="capex" type="group">
                       <div
-                        v-for="detailCashFlowType of euTaxonomyPseudoModelAndMappings.euTaxonomyDetailsPerCashFlowType"
+                        v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
                         class="formFields"
                       >
                         <FormKit
-                          :name="
-                            euTaxonomyPseudoModelAndMappings?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]
-                          "
+                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
                           type="group"
                         >
                           <div class="form-field">
@@ -194,15 +192,13 @@
                   <div data-test="opexSection" class="col-9 p-0">
                     <FormKit name="opex" type="group">
                       <div
-                        v-for="detailCashFlowType of euTaxonomyPseudoModelAndMappings.euTaxonomyDetailsPerCashFlowType"
+                        v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
                         class="formFields"
                       >
                         <FormKit
-                          :name="
-                            euTaxonomyPseudoModelAndMappings?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]
-                          "
+                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
                           type="group"
                         >
                           <div class="form-field">
@@ -229,15 +225,13 @@
                   <div data-test="revenueSection" class="col-9 p-0">
                     <FormKit name="revenue" type="group">
                       <div
-                        v-for="detailCashFlowType of euTaxonomyPseudoModelAndMappings.euTaxonomyDetailsPerCashFlowType"
+                        v-for="detailCashFlowType of euTaxonomyKPIsModel.euTaxonomyDetailsPerCashFlowType"
                         :key="detailCashFlowType"
                         :data-test="detailCashFlowType"
                         class="formFields"
                       >
                         <FormKit
-                          :name="
-                            euTaxonomyPseudoModelAndMappings?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]
-                          "
+                          :name="euTaxonomyKPIsModel?.euTaxonomyDetailsPerCashFlowFilesNames[detailCashFlowType]"
                           type="group"
                         >
                           <div class="form-field">
@@ -303,8 +297,8 @@ import {
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-  euTaxonomyPseudoModelAndMappings,
-} from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
+  euTaxonomyKPIsModel,
+} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
   AssuranceDataAssuranceEnum,
   CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
@@ -370,7 +364,7 @@ export default defineComponent({
     formatBytesUserFriendly,
     checkCustomInputs,
     updatePropertyFilesUploaded,
-    euTaxonomyPseudoModelAndMappings,
+    euTaxonomyKPIsModel: euTaxonomyKPIsModel,
     euTaxonomyKpiNameMappings,
     euTaxonomyKpiInfoMappings,
     assuranceData: {

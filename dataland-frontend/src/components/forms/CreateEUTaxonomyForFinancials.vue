@@ -219,7 +219,7 @@
 
                   <FormKit v-if="companyType.value !== 'assetManagementKpis'" :name="companyType.value" type="group">
                     <div
-                      v-for="kpiType of euTaxonomyPseudoModelAndMappings[companyType.value]"
+                      v-for="kpiType of euTaxonomyKPIsModel[companyType.value]"
                       :key="kpiType"
                       :data-test="kpiType"
                       class="uploadFormSection"
@@ -240,12 +240,9 @@
                   </FormKit>
 
                   <FormKit name="eligibilityKpis" type="group">
-                    <FormKit
-                      :name="euTaxonomyPseudoModelAndMappings?.companyTypeToEligibilityKpis[companyType.value]"
-                      type="group"
-                    >
+                    <FormKit :name="euTaxonomyKPIsModel?.companyTypeToEligibilityKpis[companyType.value]" type="group">
                       <div
-                        v-for="kpiTypeEligibility of euTaxonomyPseudoModelAndMappings.eligibilityKpis"
+                        v-for="kpiTypeEligibility of euTaxonomyKPIsModel.eligibilityKpis"
                         :key="kpiTypeEligibility"
                         :data-test="kpiTypeEligibility"
                         class="uploadFormSection"
@@ -316,8 +313,8 @@ import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-  euTaxonomyPseudoModelAndMappings,
-} from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
+  euTaxonomyKPIsModel,
+} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
   AssuranceDataAssuranceEnum,
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
@@ -379,7 +376,7 @@ export default defineComponent({
         LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
         ReasonableAssurance: humanizeString(AssuranceDataAssuranceEnum.ReasonableAssurance),
       },
-      euTaxonomyPseudoModelAndMappings,
+      euTaxonomyKPIsModel: euTaxonomyKPIsModel,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       formatBytesUserFriendly,
@@ -428,8 +425,8 @@ export default defineComponent({
   watch: {
     confirmedSelectedKPIs: function (newValue: { label: string; value: string }[]) {
       this.computedFinancialServicesTypes = newValue.map((el: { label: string; value: string }): string => {
-        return euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis[
-          el.value as keyof typeof euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis
+        return euTaxonomyKPIsModel.companyTypeToEligibilityKpis[
+          el.value as keyof typeof euTaxonomyKPIsModel.companyTypeToEligibilityKpis
         ];
       });
     },
@@ -495,7 +492,7 @@ export default defineComponent({
         // types of company financial services
         const arrayWithCompanyKpiTypes = companyAssociatedEuTaxonomyData.data?.financialServicesTypes;
         // all types of financial services
-        const allTypesOfFinancialServices = euTaxonomyPseudoModelAndMappings.companyTypeToEligibilityKpis;
+        const allTypesOfFinancialServices = euTaxonomyKPIsModel.companyTypeToEligibilityKpis;
 
         this.selectedKPIs = this.kpisModel.filter((el: { label: string; value: string }) => {
           return arrayWithCompanyKpiTypes?.includes(
