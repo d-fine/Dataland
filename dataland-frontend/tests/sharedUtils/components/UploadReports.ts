@@ -8,7 +8,7 @@ export const uploadReports = {
       cy.wrap(element).find(`[data-test="reportDate"] button`).should("have.class", "p-datepicker-trigger").click();
       cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
       cy.get("div.p-datepicker").find(`span:contains("12")`).click();
-      cy.wrap(element).find(`input[name="currency"]`).type("zzz");
+      cy.wrap(element).find(`input[name="currency"]`).clear().type("zzz");
       cy.wrap(element).find(`input[value="No"]`).click();
     });
   },
