@@ -104,7 +104,10 @@ export default defineComponent({
   emits: ["dataPointAvailableToggle"],
   data: () => ({
     dataPointIsAvailable: true,
-    QualityOptions,
+    QualityOptions: Object.entries(QualityOptions).map((entry: [string, string]) => ({
+      label: entry[1],
+      value: entry[1],
+    })),
     currentMainValue: "",
     currentReportValue: "",
     currentQualityValue: "",
