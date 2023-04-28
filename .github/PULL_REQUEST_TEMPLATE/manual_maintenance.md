@@ -89,7 +89,9 @@ check that all ssh-keys are set and erased from people that have left
 - [ ] Check that account linking via username & password verification works correctly
 
 ## Check e-mails sent by backend
-- [ ] Send an invitation request from one of the dev servers and check if the e-mail response contains the right attachments and is displayed correctly.
+
+- [ ] Send an invitation (data) request from one of the dev servers and check if the e-mail to info@dataland.com
+  contains the right attachments and is displayed correctly.
 
 ## Check RabbitMQ dead letter queue and disk space
 - [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available disk space with `df` command. If the open disk space is close to the minimum requirement, clear up disk space with `docker image prune`.
