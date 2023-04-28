@@ -204,7 +204,7 @@
                               class="material-icons close-section"
                               >close</em
                             >
-                          <ProductionSiteField :item="item" />
+                            <ProductionSiteField :item="item" />
                           </div>
                         </FormKit>
                         <PrimeButton
@@ -452,10 +452,10 @@ export default defineComponent({
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
       const lksgDataset = dataResponse.data;
-      const numberOfProductionSites = lksgDataset.data?.general?.listOfProductionSites?.length || 0;
+      const numberOfProductionSites = lksgDataset.data?.general?.productionSpecific?.listOfProductionSites?.length || 0;
       if (numberOfProductionSites > 0) {
         this.isYourCompanyManufacturingCompany = "Yes";
-        const productionSites = assertDefined(lksgDataset.data?.general?.listOfProductionSites);
+        const productionSites = assertDefined(lksgDataset.data?.general?.productionSpecific?.listOfProductionSites);
         this.listOfProductionSites = [];
         this.idCounter = numberOfProductionSites;
         for (let i = 0; i < numberOfProductionSites; i++) {

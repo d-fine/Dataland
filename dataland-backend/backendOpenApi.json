@@ -2997,17 +2997,11 @@
           "masterData": {
             "$ref": "#/components/schemas/LksgMasterData"
           },
-          "manufacturingCompany": {
-            "$ref": "#/components/schemas/YesNo"
+          "productionSpecific": {
+            "$ref": "#/components/schemas/LksgProductionSpecific"
           },
-          "numberOfProductionSites": {
-            "type": "number"
-          },
-          "listOfProductionSites": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LksgProductionSite"
-            }
+          "productionSpecificOwnOperations": {
+            "$ref": "#/components/schemas/LksgProductionSpecificOwnOperations"
           },
           "riskManagementOwnOperations": {
             "$ref": "#/components/schemas/LksgRiskManagementOwnOperations"
@@ -3220,6 +3214,23 @@
           "addressOfProductionSite": {
             "$ref": "#/components/schemas/LksgAddress"
           },
+          "listOfGoodsOrServices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "LksgProductionSpecific": {
+        "type": "object",
+        "properties": {
+          "manufacturingCompany": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "capacity": {
+            "type": "number"
+          },
           "isInHouseProductionOrIsContractProcessing": {
             "$ref": "#/components/schemas/InHouseProductionOrContractProcessing"
           },
@@ -3229,21 +3240,23 @@
           "subcontractingCompaniesIndustries": {
             "type": "string"
           },
-          "listOfGoodsOrServices": {
+          "listOfProductionSites": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/LksgProductionSite"
             }
-          },
-          "capacity": {
-            "type": "number"
           },
           "market": {
             "$ref": "#/components/schemas/NationalOrInternationalMarket"
           },
           "specificProcurement": {
             "$ref": "#/components/schemas/YesNo"
-          },
+          }
+        }
+      },
+      "LksgProductionSpecificOwnOperations": {
+        "type": "object",
+        "properties": {
           "mostImportantProducts": {
             "type": "string"
           },

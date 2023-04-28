@@ -58,7 +58,7 @@ describeIf(
           );
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
           cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-          const listOfProductionSites = assertDefined(lksgData.general?.listOfProductionSites);
+          const listOfProductionSites = assertDefined(lksgData.general?.productionSpecific?.listOfProductionSites);
           if (listOfProductionSites.length < 2) {
             throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
           }
