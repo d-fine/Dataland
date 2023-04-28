@@ -118,6 +118,6 @@ check that all ssh-keys are set and erased from people that have left
   - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your authorization has worked by assuring that you get a 200 response
 
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
-- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and execute `npm run testpipeline -- --env EXECUTION_ENVIRONMENT=""` in dataland-frontend
+- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and execute `npm run testpipeline -- --env EXECUTION_ENVIRONMENT="developmentLocal"` in dataland-frontend
 - [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`
 - [ ] Locally: Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your authorization has worked by assuring that you get a 200 response
