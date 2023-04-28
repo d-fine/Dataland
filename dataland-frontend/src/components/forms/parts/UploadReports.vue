@@ -139,7 +139,7 @@
               :data-test="'remove-' + file.name.split('.')[0]"
               @click="removeReportFromUploadedReports(index)"
               icon="pi pi-times"
-              class="p-button-rounded"
+              class="p-button-edit-reports"
             />
           </div>
         </div>
@@ -304,3 +304,12 @@ export default defineComponent({
 
 // TODO data-test="uploaded-files" is not a very good named marker, since the list it refers to is actually the list of
 files to upload!
+
+<style scoped>
+.p-button-edit-reports {
+  width: 1rem;
+  border-radius: 50%;
+  height: 1rem;
+  padding: 12px;
+}
+</style>
