@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker";
 import {
-  InHouseProductionOrContractProcessing,
   LksgAddress,
   LksgData,
   LksgProductionSite,
@@ -42,33 +41,6 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
   return {
     nameOfProductionSite: valueOrUndefined(faker.company.name(), undefinedProbability),
     addressOfProductionSite: valueOrUndefined(generateAddress(), undefinedProbability),
-    isInHouseProductionOrIsContractProcessing: valueOrUndefined(
-      faker.helpers.arrayElement([
-        InHouseProductionOrContractProcessing.InHouseProduction,
-        InHouseProductionOrContractProcessing.ContractProcessing,
-      ]),
-      undefinedProbability
-    ),
-    subcontractingCompaniesCountries: valueOrUndefined(generateIso2CountryCode(), undefinedProbability),
-    subcontractingCompaniesIndustries: valueOrUndefined(faker.name.jobArea(), undefinedProbability),
-    capacity: valueOrUndefined(randomEuroValue(), undefinedProbability),
-    market: valueOrUndefined(
-      faker.helpers.arrayElement([
-        NationalOrInternationalMarket.National,
-        NationalOrInternationalMarket.International,
-        NationalOrInternationalMarket.Both,
-      ]),
-      undefinedProbability
-    ),
-    specificProcurement: valueOrUndefined(randomYesNo(), undefinedProbability),
-    mostImportantProducts: valueOrUndefined(faker.commerce.product(), undefinedProbability),
-    productionSteps: valueOrUndefined(faker.commerce.product(), undefinedProbability),
-    relatedCorporateSupplyChain: valueOrUndefined(faker.commerce.product(), undefinedProbability),
-    productCategories: valueOrUndefined(faker.commerce.product(), undefinedProbability),
-    definitionProductTypeService: valueOrUndefined(faker.commerce.product(), undefinedProbability),
-    sourcingCountryPerCategory: valueOrUndefined(generateIso2CountryCode(), undefinedProbability),
-    numberOfDirectSuppliers: valueOrUndefined(randomNumber(100), undefinedProbability),
-    orderVolumePerProcurement: valueOrUndefined(randomNumber(1000), undefinedProbability),
     listOfGoodsOrServices: valueOrUndefined(generateListOfGoodsOrServices(), undefinedProbability),
   };
 }
@@ -153,9 +125,36 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         totalRevenue: valueOrUndefined(randomEuroValue(), undefinedProbability),
         fixedAndWorkingCapital: valueOrUndefined(randomNumber(10000000), undefinedProbability),
       },
-      manufacturingCompany: valueOrUndefined(randomYesNo(), undefinedProbability),
-      numberOfProductionSites: valueOrUndefined(randomNumber(10), undefinedProbability),
-      listOfProductionSites: valueOrUndefined(generateArrayOfProductionSites(), undefinedProbability),
+      productionSpecific: {
+        manufacturingCompany: valueOrUndefined(randomYesNo(), undefinedProbability),
+        capacity: valueOrUndefined(randomNumber(100000), undefinedProbability),
+        isContractProcessing: valueOrUndefined(randomYesNo(), undefinedProbability),
+        subcontractingCompaniesCountries: valueOrUndefined(generateIso2CountryCode(), undefinedProbability),
+        subcontractingCompaniesIndustries: valueOrUndefined(faker.name.jobArea(), undefinedProbability),
+        productionSites: valueOrUndefined(randomYesNo(), undefinedProbability),
+        listOfProductionSites: valueOrUndefined(generateArrayOfProductionSites(), undefinedProbability),
+        market: valueOrUndefined(
+          faker.helpers.arrayElement([
+            NationalOrInternationalMarket.National,
+            NationalOrInternationalMarket.International,
+            NationalOrInternationalMarket.Both,
+          ]),
+          undefinedProbability
+        ),
+        specificProcurement: valueOrUndefined(randomYesNo(), undefinedProbability),
+      },
+      productionSpecificOwnOperations: {
+        mostImportantProducts: valueOrUndefined(faker.commerce.product(), undefinedProbability),
+        productionSteps: valueOrUndefined(faker.commerce.product(), undefinedProbability),
+        relatedCorporateSupplyChain: valueOrUndefined(faker.commerce.product(), undefinedProbability),
+        productCategories: valueOrUndefined(faker.commerce.product(), undefinedProbability),
+        definitionProductTypeService: valueOrUndefined(faker.commerce.product(), undefinedProbability),
+        sourcingCountryPerCategory: valueOrUndefined(generateIso2CountryCode(), undefinedProbability),
+        numberOfDirectSuppliers: valueOrUndefined(randomNumber(100), undefinedProbability),
+        orderVolumePerProcurement: valueOrUndefined(randomNumber(1000), undefinedProbability),
+      },
+    },
+    governance: {
       riskManagementOwnOperations: {
         adequateAndEffectiveRiskManagementSystem: valueOrUndefined(randomYesNo(), undefinedProbability),
         riskManagementSystemFiscalYear: valueOrUndefined(randomYesNo(), undefinedProbability),
@@ -186,9 +185,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         grievanceMechanismProtection: valueOrUndefined(randomYesNo(), undefinedProbability),
         grievanceMechanismDueDiligenceProcess: valueOrUndefined(randomYesNo(), undefinedProbability),
       },
-    },
-    governance: {
-      evidenceCertificatesAndAttestations: {
+      certificationsPoliciesAndResponsibilities: {
         sa8000Certification: valueOrUndefined(randomYesNo(), undefinedProbability),
         smetaSocialAuditConcept: valueOrUndefined(randomYesNo(), undefinedProbability),
         betterWorkProgramCertificate: valueOrUndefined(randomYesNo(), undefinedProbability),
@@ -203,7 +200,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         fairLaborAssociationCertification: valueOrUndefined(randomYesNo(), undefinedProbability),
         additionalAudits: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),
       },
-      humanRights: {
+      generalViolations: {
         codeOfConduct: valueOrUndefined(randomYesNo(), undefinedProbability),
         codeOfConductTraining: valueOrUndefined(randomYesNo(), undefinedProbability),
         supplierCodeOfConduct: valueOrUndefined(randomYesNo(), undefinedProbability),

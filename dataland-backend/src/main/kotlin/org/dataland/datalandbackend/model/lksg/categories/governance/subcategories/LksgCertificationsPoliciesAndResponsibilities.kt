@@ -4,9 +4,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the LKSG questionnaire regarding the impact topic "Evidence, certificates and attestations"
+ * Fields of the LKSG questionnaire regarding the impact topic "Certifications, policies & responsibilities"
  */
-data class LksgEvidenceCertificatesAndAttestations(
+data class LksgCertificationsPoliciesAndResponsibilities(
     val sa8000Certification: YesNo?,
 
     val smetaSocialAuditConcept: YesNo?,

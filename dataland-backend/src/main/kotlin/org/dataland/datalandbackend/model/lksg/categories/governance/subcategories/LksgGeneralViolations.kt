@@ -4,9 +4,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * --- API model ---
- * Fields of the LKSG questionnaire regarding the impact topic "Human rights"
+ * Fields of the LKSG questionnaire regarding the impact topic "General violations"
  */
-data class LksgHumanRights(
+data class LksgGeneralViolations(
     val codeOfConduct: YesNo?,
 
     val codeOfConductTraining: YesNo?,

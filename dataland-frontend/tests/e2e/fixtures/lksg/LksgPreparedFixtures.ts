@@ -51,7 +51,7 @@ function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<
 function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "one-lksg-data-set";
   input.t.social!.childLabor!.employeeUnder18Apprentices = "No";
-  input.t.general!.listOfProductionSites = [generateProductionSite(), generateProductionSite()];
+  input.t.general!.productionSpecific!.listOfProductionSites = [generateProductionSite(), generateProductionSite()];
   return input;
 }
 

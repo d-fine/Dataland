@@ -1,10 +1,8 @@
 package org.dataland.datalandbackend.model.lksg.categories.general
 
-import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgGrievanceMechanismOwnOperations
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgMasterData
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgProductionSpecific
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgProductionSpecificOwnOperations
-import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgRiskManagementOwnOperations
 
 /**
  * --- API model ---
@@ -16,8 +14,4 @@ data class LksgGeneral(
     val productionSpecific: LksgProductionSpecific?,
 
     val productionSpecificOwnOperations: LksgProductionSpecificOwnOperations?,
-
-    val riskManagementOwnOperations: LksgRiskManagementOwnOperations?,
-
-    val grievanceMechanismOwnOperations: LksgGrievanceMechanismOwnOperations?,
 )

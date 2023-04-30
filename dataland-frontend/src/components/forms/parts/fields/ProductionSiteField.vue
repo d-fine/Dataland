@@ -8,16 +8,6 @@
     />
   </div>
 
-  <div class="form-field" data-test="isInHouseProductionOrIsContractProcessing">
-    <RadioButtonsFormField
-      name="isInHouseProductionOrIsContractProcessing"
-      :info="lksgKpisInfoMappings.inHouseProductionOrContractProcessing"
-      :display-name="lksgKpisNameMappings.inHouseProductionOrContractProcessing"
-      validation="required"
-      :options="isInHouseProductionOrContractProcessingOptions"
-    />
-  </div>
-
   <div class="form-field">
     <AddressFormField
       name="addressesOfProductionSites"
@@ -40,7 +30,7 @@
         >info</em
       >
       <PrimeButton
-        :disabled="item.listOfGoodsOrServicesString === ''"
+        :disabled="listOfGoodsOrServicesString === ''"
         @click="addNewItemsToListOfGoodsOrServices()"
         label="Add"
         class="p-button-text"
@@ -51,11 +41,11 @@
       data-test="listOfGoodsOrServices"
       type="text"
       :ignore="true"
-      v-model="item.listOfGoodsOrServicesString"
+      v-model="listOfGoodsOrServicesString"
       placeholder="Add comma (,) for more than one value"
     />
     <FormKit
-      v-model="item.listOfGoodsOrServices"
+      v-model="productionSite.listOfGoodsOrServices"
       type="list"
       label="list of goods or services"
       name="listOfGoodsOrServices"
@@ -74,18 +64,12 @@ import { FormKit } from "@formkit/vue";
 import {
   lksgKpisInfoMappings,
   lksgKpisNameMappings,
-  Option,
 } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
-import { defineComponent, PropType } from "vue";
-import { InHouseProductionOrContractProcessing, LksgProductionSite } from "@clients/backend";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { defineComponent } from "vue";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
-import { TempLksgProductionSite } from "@/components/forms/parts/TempLksgProductionSite";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
 import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
+import { LksgProductionSite } from "@clients/backend";
 
 export default defineComponent({
   name: "ProductionSiteElement",
@@ -100,43 +84,14 @@ export default defineComponent({
   data() {
     return {
       allCountry: getAllCountryNamesWithCodes(),
-      isInHouseProductionOrContractProcessingOptions: [
-        {
-          label: InHouseProductionOrContractProcessing.InHouseProduction,
-          value: humanizeString(InHouseProductionOrContractProcessing.InHouseProduction),
-        },
-        {
-          label: InHouseProductionOrContractProcessing.ContractProcessing,
-          value: humanizeString(InHouseProductionOrContractProcessing.ContractProcessing),
-        },
-      ] as Option[],
-      isInHouseProductionOrContractProcessingMap: Object.fromEntries(
-        new Map<string, string>([
-          [
-            InHouseProductionOrContractProcessing.InHouseProduction,
-            humanizeString(InHouseProductionOrContractProcessing.InHouseProduction),
-          ],
-          [
-            InHouseProductionOrContractProcessing.ContractProcessing,
-            humanizeString(InHouseProductionOrContractProcessing.ContractProcessing),
-          ],
-        ])
-      ),
+      productionSite: Object as LksgProductionSite,
+      listOfGoodsOrServicesString: "",
     };
   },
   components: {
-    FreeTextFormField,
     InputTextFormField,
     AddressFormField,
-    RadioButtonsFormField,
-    UploadFormHeader,
     FormKit,
-  },
-  props: {
-    item: {
-      type: Object as PropType<TempLksgProductionSite>,
-      required: true,
-    },
   },
   methods: {
     /**
@@ -145,16 +100,19 @@ export default defineComponent({
      * @param element - the item to be deleted
      */
     removeItemFromListOfGoodsOrServices(element: string) {
-      this.item.listOfGoodsOrServices = this.item.listOfGoodsOrServices.filter((el) => el !== element);
+      if (this.productionSite.listOfGoodsOrServices) {
+        this.productionSite.listOfGoodsOrServices = this.productionSite.listOfGoodsOrServices.filter(
+          (el) => el !== element
+        );
+      }
     },
 
     /**
      * Adds a new item to the list of Production Sites Goods Or Services
      */
     addNewItemsToListOfGoodsOrServices() {
-      const items = this.item.listOfGoodsOrServicesString.split(";").map((element) => element.trim());
-      this.item.listOfGoodsOrServices = [...this.item.listOfGoodsOrServices, ...items];
-      this.item.listOfGoodsOrServicesString = "";
+      const items = this.listOfGoodsOrServicesString.split(",").map((element) => element.trim());
+      this.productionSite.listOfGoodsOrServices = [...this.productionSite.listOfGoodsOrServices, ...items];
     },
   },
 });

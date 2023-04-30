@@ -4,7 +4,6 @@ import {
   LksgDataControllerApi,
   DataMetaInformation,
   CompanyInformation,
-  InHouseProductionOrContractProcessing,
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
@@ -68,6 +67,7 @@ export function uploadLksgDataViaForm(): void {
   Cypress.Keyboard.defaults({
     keystrokeDelay: 0,
   });
+  //TODO rework test
   const yesNoInputs = [
     "employeeUnder18",
     "employeeUnder15",
@@ -130,10 +130,6 @@ export function uploadLksgDataViaForm(): void {
   cy.get('[data-test="removeItemFromlistOfProductionSites"]').eq(1).click();
   cy.get('div[data-test="productionSiteSection"]').should("have.length", 1);
   cy.get('div[data-test="productionSiteSection"] input[name="name"]').type("CCddEE");
-  cy.get('div[data-test="isInHouseProductionOrIsContractProcessing"]')
-    .find(`input[value="${InHouseProductionOrContractProcessing.InHouseProduction}"]`)
-    .click()
-    .should("be.checked");
   cy.get('div[data-test="productionSiteSection"] input[name="streetAndHouseNumber"]').type("Live-street 28");
   cy.get('div[data-test="productionSiteSection"] select[name="country"]').select("Belgium");
   cy.get('div[data-test="productionSiteSection"] input[name="city"]').type("Capitol City");

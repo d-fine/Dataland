@@ -192,7 +192,7 @@
                         name="listOfProductionSites"
                         label="listOfProductionSites"
                       >
-                        <FormKit type="group" v-for="(item, index) in listOfProductionSites" :key="item.id">
+                        <FormKit type="group" v-for="item in listOfProductionSites" :key="item.id">
                           <div
                             data-test="productionSiteSection"
                             class="productionSiteSection"
@@ -223,16 +223,16 @@
 
               <FormKit
                 type="group"
-                v-for="section in lksgDataModel"
-                :key="section"
-                :label="section.label"
-                :name="section.name"
+                v-for="category in lksgDataModel"
+                :key="category"
+                :label="category.label"
+                :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subsection in section.subcategories" :key="subsection">
+                <div class="uploadFormSection grid" v-for="subsection in category.subcategories" :key="subsection">
                   <div class="col-3 p-3 topicLabel">
                     <h4 class="anchor title">{{ subsection.label }}</h4>
-                    <div :class="`p-badge badge-${section.color}`">
-                      <span>{{ section.label.toUpperCase() }}</span>
+                    <div :class="`p-badge badge-${category.color}`">
+                      <span>{{ category.label.toUpperCase() }}</span>
                     </div>
                   </div>
 
@@ -313,8 +313,7 @@ import {
 } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
-import { humanizeString } from "@/utils/StringHumanizer";
-import { CompanyAssociatedDataLksgData, InHouseProductionOrContractProcessing } from "@clients/backend";
+import { CompanyAssociatedDataLksgData } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
@@ -396,18 +395,6 @@ export default defineComponent({
       lksgDataModel,
       elementPosition: 0,
       scrollListener: (): null => null,
-      isInHouseProductionOrContractProcessingMap: Object.fromEntries(
-        new Map<string, string>([
-          [
-            InHouseProductionOrContractProcessing.InHouseProduction,
-            humanizeString(InHouseProductionOrContractProcessing.InHouseProduction),
-          ],
-          [
-            InHouseProductionOrContractProcessing.ContractProcessing,
-            humanizeString(InHouseProductionOrContractProcessing.ContractProcessing),
-          ],
-        ])
-      ),
       smoothScroll,
       checkCustomInputs,
       updatingData: false,

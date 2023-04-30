@@ -2634,13 +2634,6 @@
           }
         }
       },
-      "InHouseProductionOrContractProcessing": {
-        "type": "string",
-        "enum": [
-          "InHouseProduction",
-          "ContractProcessing"
-        ]
-      },
       "LksgAddress": {
         "type": "object",
         "properties": {
@@ -2657,6 +2650,50 @@
             "type": "string"
           },
           "country": {
+            "type": "string"
+          }
+        }
+      },
+      "LksgCertificationsPoliciesAndResponsibilities": {
+        "type": "object",
+        "properties": {
+          "sa8000Certification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "smetaSocialAuditConcept": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "betterWorkProgramCertificate": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "iso45001Certification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "iso14000Certification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "emasCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "iso37001Certification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "iso37301Certification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "riskManagementSystemCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "amforiBsciAuditReport": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "responsibleBusinessAssociationCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "fairLaborAssociationCertification": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "additionalAudits": {
             "type": "string"
           }
         }
@@ -2886,50 +2923,6 @@
           }
         }
       },
-      "LksgEvidenceCertificatesAndAttestations": {
-        "type": "object",
-        "properties": {
-          "sa8000Certification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "smetaSocialAuditConcept": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "betterWorkProgramCertificate": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "iso45001Certification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "iso14000Certification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "emasCertification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "iso37001Certification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "iso37301Certification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "riskManagementSystemCertification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "amforiBsciAuditReport": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "responsibleBusinessAssociationCertification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "fairLaborAssociationCertification": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "additionalAudits": {
-            "type": "string"
-          }
-        }
-      },
       "LksgExportImportOfHazardousWasteBaselConvention": {
         "type": "object",
         "properties": {
@@ -3002,71 +2995,10 @@
           },
           "productionSpecificOwnOperations": {
             "$ref": "#/components/schemas/LksgProductionSpecificOwnOperations"
-          },
-          "riskManagementOwnOperations": {
-            "$ref": "#/components/schemas/LksgRiskManagementOwnOperations"
-          },
-          "grievanceMechanismOwnOperations": {
-            "$ref": "#/components/schemas/LksgGrievanceMechanismOwnOperations"
           }
         }
       },
-      "LksgGovernance": {
-        "type": "object",
-        "properties": {
-          "evidenceCertificatesAndAttestations": {
-            "$ref": "#/components/schemas/LksgEvidenceCertificatesAndAttestations"
-          },
-          "humanRights": {
-            "$ref": "#/components/schemas/LksgHumanRights"
-          }
-        }
-      },
-      "LksgGrievanceMechanismOwnOperations": {
-        "type": "object",
-        "properties": {
-          "grievanceHandlingMechanism": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceHandlingMechanismUsedForReporting": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismInformationProvided": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismSupportProvided": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismAccessToExpertise": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismComplaints": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismComplaintsNumber": {
-            "type": "number"
-          },
-          "grievanceMechanismComplaintsReason": {
-            "type": "string"
-          },
-          "grievanceMechanismComplaintsAction": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismComplaintsActionUndertaken": {
-            "type": "string"
-          },
-          "grievanceMechanismPublicAccess": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismProtection": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "grievanceMechanismDueDiligenceProcess": {
-            "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "LksgHumanRights": {
+      "LksgGeneralViolations": {
         "type": "object",
         "properties": {
           "codeOfConduct": {
@@ -3131,6 +3063,67 @@
           },
           "highRiskCountriesProcurementName": {
             "type": "string"
+          }
+        }
+      },
+      "LksgGovernance": {
+        "type": "object",
+        "properties": {
+          "certificationsPoliciesAndResponsibilities": {
+            "$ref": "#/components/schemas/LksgCertificationsPoliciesAndResponsibilities"
+          },
+          "generalViolations": {
+            "$ref": "#/components/schemas/LksgGeneralViolations"
+          },
+          "riskManagementOwnOperations": {
+            "$ref": "#/components/schemas/LksgRiskManagementOwnOperations"
+          },
+          "grievanceMechanismOwnOperations": {
+            "$ref": "#/components/schemas/LksgGrievanceMechanismOwnOperations"
+          }
+        }
+      },
+      "LksgGrievanceMechanismOwnOperations": {
+        "type": "object",
+        "properties": {
+          "grievanceHandlingMechanism": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceHandlingMechanismUsedForReporting": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceMechanismInformationProvided": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceMechanismSupportProvided": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceMechanismAccessToExpertise": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceMechanismComplaints": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceMechanismComplaintsNumber": {
+            "type": "number"
+          },
+          "grievanceMechanismComplaintsReason": {
+            "type": "string"
+          },
+          "grievanceMechanismComplaintsAction": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceMechanismComplaintsActionUndertaken": {
+            "type": "string"
+          },
+          "grievanceMechanismPublicAccess": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceMechanismProtection": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "grievanceMechanismDueDiligenceProcess": {
+            "$ref": "#/components/schemas/YesNo"
           }
         }
       },
@@ -3231,14 +3224,17 @@
           "capacity": {
             "type": "number"
           },
-          "isInHouseProductionOrIsContractProcessing": {
-            "$ref": "#/components/schemas/InHouseProductionOrContractProcessing"
+          "isContractProcessing": {
+            "$ref": "#/components/schemas/YesNo"
           },
           "subcontractingCompaniesCountries": {
             "type": "string"
           },
           "subcontractingCompaniesIndustries": {
             "type": "string"
+          },
+          "productionSites": {
+            "$ref": "#/components/schemas/YesNo"
           },
           "listOfProductionSites": {
             "type": "array",

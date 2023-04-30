@@ -1,14 +1,20 @@
 package org.dataland.datalandbackend.model.lksg.categories.governance
 
-import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories.LksgEvidenceCertificatesAndAttestations
-import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories.LksgHumanRights
+import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgGrievanceMechanismOwnOperations
+import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgRiskManagementOwnOperations
+import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories.LksgCertificationsPoliciesAndResponsibilities
+import org.dataland.datalandbackend.model.lksg.categories.governance.subcategories.LksgGeneralViolations
 
 /**
  * --- API model ---
  * Impact topics of the LKSG questionnaire's impact area "Governance"
  */
 data class LksgGovernance(
-    val evidenceCertificatesAndAttestations: LksgEvidenceCertificatesAndAttestations?,
+    val certificationsPoliciesAndResponsibilities: LksgCertificationsPoliciesAndResponsibilities?,
 
-    val humanRights: LksgHumanRights?,
+    val generalViolations: LksgGeneralViolations?,
+
+    val riskManagementOwnOperations: LksgRiskManagementOwnOperations?,
+
+    val grievanceMechanismOwnOperations: LksgGrievanceMechanismOwnOperations?,
 )
