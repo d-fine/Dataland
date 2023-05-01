@@ -2695,6 +2695,27 @@
           },
           "additionalAudits": {
             "type": "string"
+          },
+          "codeOfConduct": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "codeOfConductTraining": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "supplierCodeOfConduct": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "policyStatement": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "humanRightsStrategy": {
+            "type": "string"
+          },
+          "environmentalImpactPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "fairWorkingConditionsPolicy": {
+            "$ref": "#/components/schemas/YesNo"
           }
         }
       },
@@ -3001,27 +3022,6 @@
       "LksgGeneralViolations": {
         "type": "object",
         "properties": {
-          "codeOfConduct": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "codeOfConductTraining": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "supplierCodeOfConduct": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "policyStatement": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "humanRightsStrategy": {
-            "type": "string"
-          },
-          "environmentalImpactPolicy": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "fairWorkingConditionsPolicy": {
-            "$ref": "#/components/schemas/YesNo"
-          },
           "responsibilitiesForFairWorkingConditions": {
             "$ref": "#/components/schemas/YesNo"
           },

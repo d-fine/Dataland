@@ -32,4 +32,18 @@ data class LksgCertificationsPoliciesAndResponsibilities(
     val fairLaborAssociationCertification: YesNo?,
 
     val additionalAudits: String?,
+
+    val codeOfConduct: YesNo?,
+
+    val codeOfConductTraining: YesNo?,
+
+    val supplierCodeOfConduct: YesNo?,
+
+    val policyStatement: YesNo?,
+
+    val humanRightsStrategy: String?,
+
+    val environmentalImpactPolicy: YesNo?,
+
+    val fairWorkingConditionsPolicy: YesNo?,
 )

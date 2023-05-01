@@ -199,8 +199,6 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         responsibleBusinessAssociationCertification: valueOrUndefined(randomYesNo(), undefinedProbability),
         fairLaborAssociationCertification: valueOrUndefined(randomYesNo(), undefinedProbability),
         additionalAudits: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),
-      },
-      generalViolations: {
         codeOfConduct: valueOrUndefined(randomYesNo(), undefinedProbability),
         codeOfConductTraining: valueOrUndefined(randomYesNo(), undefinedProbability),
         supplierCodeOfConduct: valueOrUndefined(randomYesNo(), undefinedProbability),
@@ -208,6 +206,8 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         humanRightsStrategy: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),
         environmentalImpactPolicy: valueOrUndefined(randomYesNo(), undefinedProbability),
         fairWorkingConditionsPolicy: valueOrUndefined(randomYesNo(), undefinedProbability),
+      },
+      generalViolations: {
         responsibilitiesForFairWorkingConditions: valueOrUndefined(randomYesNo(), undefinedProbability),
         responsibilitiesForTheEnvironment: valueOrUndefined(randomYesNo(), undefinedProbability),
         responsibilitiesForOccupationalSafety: valueOrUndefined(randomYesNo(), undefinedProbability),

@@ -7,19 +7,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "General violations"
  */
 data class LksgGeneralViolations(
-    val codeOfConduct: YesNo?,
-
-    val codeOfConductTraining: YesNo?,
-
-    val supplierCodeOfConduct: YesNo?,
-
-    val policyStatement: YesNo?,
-
-    val humanRightsStrategy: String?,
-
-    val environmentalImpactPolicy: YesNo?,
-
-    val fairWorkingConditionsPolicy: YesNo?,
 
     val responsibilitiesForFairWorkingConditions: YesNo?,
 

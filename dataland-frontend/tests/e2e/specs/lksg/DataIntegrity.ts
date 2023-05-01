@@ -102,8 +102,11 @@ describeIf(
         body: storedCompany,
       });
       const lksgData = lksgDataFixture.t;
-      if (lksgData.general?.listOfProductionSites) {
-        lksgData.general.listOfProductionSites = [generateProductionSite(), generateProductionSite()];
+      if (lksgData.general?.productionSpecific?.listOfProductionSites) {
+        lksgData.general.productionSpecific.listOfProductionSites = [
+          generateProductionSite(),
+          generateProductionSite(),
+        ];
       }
       cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/companies/*`, {
         statusCode: 200,
