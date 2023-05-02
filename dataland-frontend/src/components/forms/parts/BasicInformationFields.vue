@@ -11,7 +11,10 @@
         :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
         :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
         :name="'fiscalYearDeviation'"
-        :radioButtonsOptions="['Deviation', 'NoDeviation']"
+        :radioButtonsOptions="[
+          { label: 'Deviation', value: 'Deviation' },
+          { label: 'No Deviation', value: 'NoDeviation' },
+        ]"
         :required="true"
       />
 
@@ -102,7 +105,7 @@ import Calendar from "primevue/calendar";
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
+} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 
 export default defineComponent({
   name: "BasicInformationFields",
