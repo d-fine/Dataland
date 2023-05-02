@@ -67,64 +67,10 @@
           <div class="form-field-label">
             <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
           </div>
-          <FormKit :name="file.name.split('.')[0]" type="group">
-            <!-- Date of the report -->
-            <div class="form-field">
-              <UploadFormHeader
-                :name="euTaxonomyKpiNameMappings?.reportDate ?? 'Report Date'"
-                :explanation="euTaxonomyKpiInfoMappings?.reportDate ?? 'Report Date'"
-              />
-              <div class="md:col-6 col-12 p-0">
-                <Calendar
-                  data-test="reportDate"
-                  inputId="icon"
-                  :modelValue="file.reportDateAsDate"
-                  :showIcon="true"
-                  dateFormat="D, M dd, yy"
-                  @update:modelValue="updateReportDateHandler(index, $event, reportsToUpload)"
-                />
-              </div>
-
-              <FormKit
-                type="text"
-                :modelValue="file.reportDate"
-                name="reportDate"
-                :outer-class="{ 'hidden-input': true }"
-              />
-            </div>
-
-            <FormKit
-              type="text"
-              :modelValue="file.reference"
-              name="reference"
-              :outer-class="{ 'hidden-input': true }"
-            />
-
-            <!-- Currency used in the report -->
-            <div class="form-field" data-test="currencyUsedInTheReport">
-              <UploadFormHeader
-                :name="euTaxonomyKpiNameMappings?.currency ?? 'Currency'"
-                :explanation="euTaxonomyKpiInfoMappings?.currency ?? 'Currency'"
-              />
-              <div class="lg:col-4 md:col-4 col-12 p-0">
-                <FormKit
-                  type="text"
-                  name="currency"
-                  validation="required|length:2,3"
-                  validation-label="Currency used in the report"
-                  placeholder="Currency used in the report"
-                />
-              </div>
-            </div>
-            <!-- Integrated report is on a group level -->
-            <div class="form-field">
-              <RadioButtonsGroup
-                :displayName="euTaxonomyKpiNameMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
-                :info="euTaxonomyKpiInfoMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
-                :name="'isGroupLevel'"
-              />
-            </div>
-          </FormKit>
+          <ReportFormElement
+            :file="file"
+            @reporting-date-changed="(date: Date) => { updateReportDateHandler(index, date, reportsToUpload) }"
+          />
         </div>
       </div>
     </div>
@@ -145,58 +91,10 @@
             />
           </div>
         </div>
-        <FormKit :name="file.name.split('.')[0]" type="group">
-          <!-- Date of the report -->
-          <div class="form-field">
-            <UploadFormHeader
-              :name="euTaxonomyKpiNameMappings?.reportDate ?? 'Report Date'"
-              :explanation="euTaxonomyKpiInfoMappings?.reportDate ?? 'Report Date'"
-            />
-            <div class="md:col-6 col-12 p-0">
-              <Calendar
-                data-test="reportDate"
-                inputId="icon"
-                :modelValue="file.reportDateAsDate"
-                :showIcon="true"
-                dateFormat="D, M dd, yy"
-                @update:modelValue="updateReportDateHandler(index, $event, uploadedReports)"
-              />
-            </div>
-            <FormKit
-              type="text"
-              :modelValue="file.reportDate"
-              name="reportDate"
-              :outer-class="{ 'hidden-input': true }"
-            />
-          </div>
-
-          <FormKit type="text" :modelValue="file.reference" name="reference" :outer-class="{ 'hidden-input': true }" />
-
-          <!-- Currency used in the report -->
-          <div class="form-field" data-test="currencyUsedInTheReport">
-            <UploadFormHeader
-              :name="euTaxonomyKpiNameMappings?.currency ?? 'Currency'"
-              :explanation="euTaxonomyKpiInfoMappings?.currency ?? 'Currency'"
-            />
-            <div class="lg:col-4 md:col-4 col-12 p-0">
-              <FormKit
-                type="text"
-                name="currency"
-                validation="required|length:2,3"
-                validation-label="Currency used in the report"
-                placeholder="!Currency used in the report"
-              />
-            </div>
-          </div>
-          <!-- Integrated report is on a group level -->
-          <div class="form-field">
-            <RadioButtonsGroup
-              :displayName="euTaxonomyKpiNameMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
-              :info="euTaxonomyKpiInfoMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
-              :name="'isGroupLevel'"
-            />
-          </div>
-        </FormKit>
+        <ReportFormElement
+          :file="file"
+          @reporting-date-changed="(date: Date) => { updateReportDateHandler(index, date, uploadedReports) }"
+        />
       </div>
     </div>
   </FormKit>
@@ -204,12 +102,8 @@
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
-
-import Calendar from "primevue/calendar";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
 import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
-import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import {
@@ -221,15 +115,14 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
+import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 
 export default defineComponent({
   name: "UploadReports",
   components: {
-    Calendar,
-    UploadFormHeader,
+    ReportFormElement,
     PrimeButton,
     FileUpload,
-    RadioButtonsGroup,
   },
   emits: ["referenceableFilesChanged"],
   setup() {
@@ -308,7 +201,11 @@ export default defineComponent({
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param index Index number of the report
      */
-    removeReportFromFilesToUpload(fileToRemove: (CompanyReportUploadModel & File), fileRemoveCallback: (x: number) => void, index: number) {
+    removeReportFromFilesToUpload(
+      fileToRemove: File,
+      fileRemoveCallback: (x: number) => void,
+      index: number
+    ) {
       fileRemoveCallback(index);
       this.reportsToUpload = this.reportsToUpload.filter((el) => {
         return el.name !== fileToRemove.name;
@@ -439,13 +336,12 @@ export default defineComponent({
   },
 });
 
-interface CompanyReportUploadModel extends CompanyReport  {
+interface CompanyReportUploadModel extends CompanyReport {
   name: string;
   reportDate: string;
   reportDateAsDate: string | Date;
   [key: string]: unknown;
 }
-
 </script>
 
 // TODO data-test="uploaded-files" is not a very good named marker, since the list it refers to is actually the list of
