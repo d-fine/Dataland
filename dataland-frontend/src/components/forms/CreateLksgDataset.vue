@@ -20,207 +20,6 @@
             <FormKit type="hidden" name="companyId" :model-value="companyID!" disabled="true" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
             <FormKit type="group" name="data" label="data">
-              <FormKit type="group" name="social" label="social">
-                <div class="uploadFormSection grid">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 id="general" class="anchor title">
-                      {{ lksgSubAreasNameMappings._general }}
-                    </h4>
-                    <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
-                    <p>Please input all relevant basic information about the dataset</p>
-                  </div>
-
-                  <div class="col-9 formFields">
-                    <FormKit type="group" name="general" :label="lksgSubAreasNameMappings._general">
-                      <DateFormField
-                        data-test="lksgDataDate"
-                        name="dataDate"
-                        :display-name="lksgKpisNameMappings.dataDate"
-                        :info="lksgKpisInfoMappings.dataDate"
-                        validation="required"
-                        today-as-max
-                      />
-
-                      <div class="form-field" data-test="lksgInScope">
-                        <UploadFormHeader
-                          :name="lksgKpisNameMappings.lksgInScope"
-                          :explanation="lksgKpisInfoMappings.lksgInScope"
-                          :is-required="true"
-                        />
-                        <FormKit
-                          type="radio"
-                          :validation-label="lksgKpisNameMappings.lksgInScope"
-                          name="lksgInScope"
-                          :options="['Yes', 'No']"
-                          :outer-class="{
-                            'yes-no-radio': true,
-                          }"
-                          :inner-class="{
-                            'formkit-inner': false,
-                          }"
-                          :input-class="{
-                            'formkit-input': false,
-                            'p-radiobutton': true,
-                          }"
-                          validation="required"
-                        />
-                      </div>
-
-                      <div class="form-field">
-                        <UploadFormHeader
-                          :name="lksgKpisNameMappings.vatIdentificationNumber"
-                          :explanation="lksgKpisInfoMappings.vatIdentificationNumber"
-                          :is-required="true"
-                        />
-                        <FormKit
-                          type="text"
-                          :validation-label="lksgKpisNameMappings.vatIdentificationNumber"
-                          validation="required|length:3"
-                          name="vatIdentificationNumber"
-                          :inner-class="{ short: true }"
-                        />
-                      </div>
-
-                      <div class="form-field">
-                        <UploadFormHeader
-                          :name="lksgKpisNameMappings.numberOfEmployees"
-                          :explanation="lksgKpisInfoMappings.numberOfEmployees"
-                          :is-required="true"
-                        />
-                        <FormKit
-                          type="number"
-                          name="numberOfEmployees"
-                          :validation-label="lksgKpisNameMappings.numberOfEmployees"
-                          placeholder="Value"
-                          validation="required|number"
-                          step="1"
-                          min="0"
-                          :inner-class="{ short: true }"
-                        />
-                      </div>
-
-                      <div class="form-field">
-                        <UploadFormHeader
-                          :name="lksgKpisNameMappings.shareOfTemporaryWorkers"
-                          :explanation="lksgKpisInfoMappings.shareOfTemporaryWorkers"
-                          :is-required="true"
-                        />
-                        <FormKit
-                          type="number"
-                          name="shareOfTemporaryWorkers"
-                          :validation-label="lksgKpisNameMappings.shareOfTemporaryWorkers"
-                          placeholder="Value %"
-                          step="0.01"
-                          min="0"
-                          validation="required|number|between:0,100"
-                          :inner-class="{
-                            short: true,
-                          }"
-                        />
-                      </div>
-
-                      <div class="form-field">
-                        <UploadFormHeader
-                          :name="lksgKpisNameMappings.totalRevenue"
-                          :explanation="lksgKpisInfoMappings.totalRevenue"
-                          :is-required="true"
-                        />
-                        <FormKit
-                          type="number"
-                          min="0"
-                          :validation-label="lksgKpisNameMappings.totalRevenue"
-                          validation="required|number|min:0"
-                          name="totalRevenue"
-                          placeholder="Value"
-                          step="1"
-                          :inner-class="{
-                            short: true,
-                          }"
-                        />
-                      </div>
-
-                      <div class="form-field">
-                        <UploadFormHeader
-                          :name="lksgKpisNameMappings.totalRevenueCurrency"
-                          :explanation="lksgKpisInfoMappings.totalRevenueCurrency"
-                          :is-required="true"
-                        />
-                        <FormKit
-                          type="text"
-                          name="totalRevenueCurrency"
-                          :validation-label="lksgKpisNameMappings.totalRevenueCurrency"
-                          placeholder="Currency"
-                          validation="required"
-                          :inner-class="{
-                            short: true,
-                          }"
-                        />
-                      </div>
-
-                      <div class="form-field" data-test="IsYourCompanyManufacturingCompany">
-                        <UploadFormHeader
-                          :name="'Is your company a manufacturing company?'"
-                          :explanation="lksgKpisInfoMappings.listOfProductionSites"
-                          :is-required="true"
-                        />
-                        <FormKit
-                          type="radio"
-                          :ignore="true"
-                          id="IsYourCompanyManufacturingCompany"
-                          name="IsYourCompanyManufacturingCompany"
-                          :validation-label="lksgKpisNameMappings.totalRevenueCurrency"
-                          :options="['Yes', 'No']"
-                          v-model="isYourCompanyManufacturingCompany"
-                          validation="required"
-                          :outer-class="{
-                            'yes-no-radio': true,
-                          }"
-                          :inner-class="{
-                            'formkit-inner': false,
-                          }"
-                          :input-class="{
-                            'formkit-input': false,
-                            'p-radiobutton': true,
-                          }"
-                        />
-                      </div>
-
-                      <FormKit
-                        type="list"
-                        v-if="isYourCompanyManufacturingCompany !== 'No'"
-                        :validation-label="lksgKpisNameMappings.totalRevenueCurrency"
-                        name="listOfProductionSites"
-                        label="listOfProductionSites"
-                      >
-                        <FormKit type="group" v-for="item in listOfProductionSites" :key="item.id">
-                          <div
-                            data-test="productionSiteSection"
-                            class="productionSiteSection"
-                            :class="isYourCompanyManufacturingCompany === 'No' ? 'p-disabled' : ''"
-                          >
-                            <em
-                              data-test="removeItemFromListOfProductionSites"
-                              @click="removeItemFromListOfProductionSites(item.id)"
-                              class="material-icons close-section"
-                              >close</em
-                            >
-                            <ProductionSiteField :item="item" />
-                          </div>
-                        </FormKit>
-                        <PrimeButton
-                          data-test="ADD-NEW-Production-Site-button"
-                          label="ADD NEW Production Site"
-                          class="p-button-text"
-                          :disabled="isYourCompanyManufacturingCompany === 'No'"
-                          icon="pi pi-plus"
-                          @click="addNewProductionSite"
-                        />
-                      </FormKit>
-                    </FormKit>
-                  </div>
-                </div>
-              </FormKit>
-
               <FormKit
                 type="group"
                 v-for="category in lksgDataModel"
@@ -228,16 +27,16 @@
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subsection in category.subcategories" :key="subsection">
+                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 class="anchor title">{{ subsection.label }}</h4>
+                    <h4 class="anchor title">{{ subcategory.label }}</h4>
                     <div :class="`p-badge badge-${category.color}`">
                       <span>{{ category.label.toUpperCase() }}</span>
                     </div>
                   </div>
 
                   <div class="col-9 formFields">
-                    <FormKit v-for="field in subsection.fields" :key="field" type="group" :name="subsection.name">
+                    <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                       <component
                         v-if="
                           field.showIf(companyAssociatedLksgData.data) && field.component != 'SingleSelectFormField'
@@ -263,25 +62,13 @@
           </div>
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li><a @click="smoothScroll('#general')">General</a></li>
-            <li><a @click="smoothScroll('#childLabour')">Child labour</a></li>
-            <li>
-              <a @click="smoothScroll('#forcedLabourSlaveryAndDebtBondage')">Forced labour, slavery and debt bondage</a>
+            <li v-for="category in lksgDataModel" :key="category">
+              <ul>
+                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                  <a @click="smoothScroll(`#${subcategory.name}`)">{{ subcategory.label }}</a>
+                </li>
+              </ul>
             </li>
-            <li>
-              <a @click="smoothScroll('#evidenceCertificatesAndAttestations')"
-                >Evidence, certificates and attestations</a
-              >
-            </li>
-            <li><a @click="smoothScroll('#grievanceMechanism')">Grievance mechanism</a></li>
-            <li><a @click="smoothScroll('#osh')">OSH</a></li>
-            <li><a @click="smoothScroll('#freedomOfAssociation')">Freedom of association</a></li>
-            <li><a @click="smoothScroll('#humanRights')">Human rights</a></li>
-            <li><a @click="smoothScroll('#socialAndEmployeeMatters')">Social and employee matters</a></li>
-            <li><a @click="smoothScroll('#environment')">Environment</a></li>
-            <li><a @click="smoothScroll('#riskManagement')">Risk management</a></li>
-            <li><a @click="smoothScroll('#codeOfConduct')">Code of Conduct</a></li>
-            <li><a @click="smoothScroll('#waste')">Waste</a></li>
           </ul>
         </SubmitSideBar>
       </div>
@@ -303,14 +90,7 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
-import {
-  lksgKpisInfoMappings,
-  lksgKpisNameMappings,
-  lksgSubAreasNameMappings,
-  lksgSubAreas,
-  lksgFieldComponentTypes,
-  lksgDataModel,
-} from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
 import { CompanyAssociatedDataLksgData } from "@clients/backend";
@@ -387,11 +167,6 @@ export default defineComponent({
       uploadSucceded: false,
       postLkSGDataProcessed: false,
       messageCounter: 0,
-      lksgKpisInfoMappings,
-      lksgKpisNameMappings,
-      lksgSubAreasNameMappings,
-      lksgSubAreas,
-      lksgFieldComponentTypes,
       lksgDataModel,
       elementPosition: 0,
       scrollListener: (): null => null,
