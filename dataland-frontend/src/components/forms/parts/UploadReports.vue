@@ -216,16 +216,13 @@ import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
+} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import { CompanyReport } from "@clients/backend";
-import {
-  completeInformationAboutSelectedFileWithAdditionalFields,
-  updatePropertyFilesUploaded,
-} from "@/utils/EuTaxonomyUtils";
 import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 export default defineComponent({
   name: "UploadReports",
@@ -285,7 +282,7 @@ export default defineComponent({
      */
     async onSelectedFilesHandler(event: FileUploadSelectEvent): void {
       this.reportsToUpload = [
-        ...completeInformationAboutSelectedFileWithAdditionalFields(
+        ...this.completeInformationAboutSelectedFileWithAdditionalFields(
           event.files as Record<string, string>[],
           this.uploadedReports
         ),
@@ -333,7 +330,7 @@ export default defineComponent({
      * @param whichSetOfFiles which set of files will be edited
      */
     updateReportDateHandler(index: number, dateValue: Date, whichSetOfFiles: string): void {
-      const updatedSetOfFiles = updatePropertyFilesUploaded(
+      const updatedSetOfFiles = this.updatePropertyFilesUploaded(
         index,
         "reportDateAsDate",
         dateValue,
@@ -376,6 +373,55 @@ export default defineComponent({
         }
       }
       this.referenceableFilesChanged();
+    },
+    /**
+     * Update property in uploaded files
+     *
+     * @param indexFileToBeEdited Index number of the report to be edited
+     * @param property Property which is to be edited
+     * @param value Value to which it is to be changed
+     * @param setOfFilesToBeEdited Set of files will be edited
+     * @returns Edited set of files
+     */
+    updatePropertyFilesUploaded(
+      indexFileToBeEdited: number,
+      property: string,
+      value: string | Date,
+      setOfFilesToBeEdited: ExtendedFile[] | ExtendedCompanyReport[]
+    ): ExtendedFile[] | ExtendedCompanyReport[] {
+      if (
+        setOfFilesToBeEdited &&
+        Object.prototype.hasOwnProperty.call(setOfFilesToBeEdited[indexFileToBeEdited], property)
+      ) {
+        if (property === "reportDateAsDate") {
+          setOfFilesToBeEdited[indexFileToBeEdited].reportDate = getHyphenatedDate(value as Date);
+        }
+        setOfFilesToBeEdited[indexFileToBeEdited][property] = value;
+      }
+      return setOfFilesToBeEdited;
+    },
+    /**
+     * Complete information about selected file with additional fields
+     *
+     * @param filesThatShouldBeCompleted Files that should be completed
+     * @param listOfFilesThatAlreadyExistInReportsInfo List Of Files That Already Exist In Reports Info
+     * @returns List of files with additional fields
+     */
+    completeInformationAboutSelectedFileWithAdditionalFields(
+      filesThatShouldBeCompleted: Record<string, string>[],
+      listOfFilesThatAlreadyExistInReportsInfo: ExtendedCompanyReport[]
+    ): ExtendedFile[] {
+      return filesThatShouldBeCompleted.map((file) => {
+        if (listOfFilesThatAlreadyExistInReportsInfo.some((it) => it.name === file.name.split(".")[0])) {
+          file["nameAlreadyExists"] = "true";
+        } else {
+          file["nameAlreadyExists"] = "false";
+          file["reportDate"] = file["reportDate"] ?? "";
+          file["reportDateAsDate"] = file["reportDateAsDate"] ?? "";
+          file["documentId"] = file["documentId"] ?? "";
+        }
+        return file as ExtendedFile;
+      });
     },
   },
 

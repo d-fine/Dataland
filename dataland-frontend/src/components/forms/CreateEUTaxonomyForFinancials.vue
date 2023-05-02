@@ -297,11 +297,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import {
-  checkIfAllUploadedReportsAreReferencedInDataModel,
-  checkCustomInputs,
-  checkIfThereAreNoDuplicateReportNames,
-} from "@/utils/validationsUtils";
+import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -318,16 +314,9 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { ExtendedCompanyReport, ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
-import {
-  completeInformationAboutSelectedFileWithAdditionalFields,
-  updatePropertyFilesUploaded,
-} from "@/utils/EuTaxonomyUtils";
-import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
-import { FileUploadSelectEvent } from "primevue/fileupload";
 import { FormKitNode } from "@formkit/core";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 
@@ -373,7 +362,6 @@ export default defineComponent({
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       formatBytesUserFriendly,
-      updatePropertyFilesUploaded,
       checkCustomInputs,
       route: useRoute(),
       waitingForData: false,
@@ -506,14 +494,11 @@ export default defineComponent({
         // TODO checkIfThereAreNoDuplicateReportNames(this.filesToUpload);
         // TODO dont throw an error but use validation???
 
-        const documentUploadControllerControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getDocumentControllerApi();
+        await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
+
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
-
-        await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
 
         await this.$nextTick();
         const formInputsModelToSend = modifyObjectKeys(

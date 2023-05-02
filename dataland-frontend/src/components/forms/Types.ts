@@ -12,5 +12,3 @@ export interface ExtendedCompanyReport extends CompanyReport {
   reportDateAsDate: string | Date;
   [key: string]: unknown;
 }
-
-export type WhichSetOfFiles = "listOfUploadedReportsInfo" | "filesToUpload";

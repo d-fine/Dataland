@@ -283,7 +283,6 @@ import { useRoute } from "vue-router";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
-import { updatePropertyFilesUploaded } from "@/utils/EuTaxonomyUtils";
 
 import {
   euTaxonomyKpiInfoMappings,
@@ -299,7 +298,6 @@ import {
 import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { ExtendedCompanyReport } from "@/components/forms/Types";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import { AxiosError, AxiosResponse } from "axios";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
@@ -334,7 +332,6 @@ export default defineComponent({
     fiscalYearEndAsDate: null as Date | null,
     fiscalYearEnd: "",
     reportingPeriod: undefined as undefined | Date,
-    listOfUploadedReportsInfo: [] as ExtendedCompanyReport[],
     onThisPageLinks: [
       { label: "Upload company reports", value: "uploadReports" },
       { label: "Basic information", value: "basicInformation" },
@@ -348,7 +345,6 @@ export default defineComponent({
     waitingForData: false,
     formatBytesUserFriendly,
     checkCustomInputs,
-    updatePropertyFilesUploaded,
     euTaxonomyKPIsModel: euTaxonomyKPIsModel,
     euTaxonomyKpiNameMappings,
     euTaxonomyKpiInfoMappings,

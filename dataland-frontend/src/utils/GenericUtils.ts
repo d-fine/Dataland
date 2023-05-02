@@ -1,5 +1,3 @@
-import { ExtendedFile } from "@/components/forms/Types";
-
 /**
  * Returns all keys from the inputMap ordered alphabetically
  *
@@ -19,7 +17,7 @@ export function getKeysFromMapAndReturnAsAlphabeticallySortedArray<T>(inputMap: 
  * @param [file] the file to calculate the hash from
  * @returns a promise of the hash as string
  */
-export async function calculateSha256HashFromFile(file: ExtendedFile): Promise<string> {
+export async function calculateSha256HashFromFile(file: File): Promise<string> {
   const buffer = await file.arrayBuffer();
   const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
   return toHex(hashBuffer);
