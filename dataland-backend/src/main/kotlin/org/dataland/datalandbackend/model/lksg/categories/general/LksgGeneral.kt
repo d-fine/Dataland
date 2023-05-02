@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.model.lksg.categories.general
 
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgMasterData
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgProductionSpecific
-import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgProductionSpecificOwnOperations
 
 /**
  * --- API model ---
@@ -12,6 +11,4 @@ data class LksgGeneral(
     val masterData: LksgMasterData?,
 
     val productionSpecific: LksgProductionSpecific?,
-
-    val productionSpecificOwnOperations: LksgProductionSpecificOwnOperations?,
 )

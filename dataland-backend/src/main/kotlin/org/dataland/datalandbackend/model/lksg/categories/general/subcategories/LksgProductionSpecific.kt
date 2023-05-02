@@ -8,7 +8,7 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the LKSG questionnaire regarding the impact topic "Grievance mechanism - Own operations"
+ * Fields of the LKSG questionnaire regarding the impact topic "Production Specific"
  */
 data class LksgProductionSpecific(
 

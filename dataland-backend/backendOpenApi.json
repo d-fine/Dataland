@@ -3013,9 +3013,6 @@
           },
           "productionSpecific": {
             "$ref": "#/components/schemas/LksgProductionSpecific"
-          },
-          "productionSpecificOwnOperations": {
-            "$ref": "#/components/schemas/LksgProductionSpecificOwnOperations"
           }
         }
       },
@@ -3247,35 +3244,6 @@
           },
           "specificProcurement": {
             "$ref": "#/components/schemas/YesNo"
-          }
-        }
-      },
-      "LksgProductionSpecificOwnOperations": {
-        "type": "object",
-        "properties": {
-          "mostImportantProducts": {
-            "type": "string"
-          },
-          "productionSteps": {
-            "type": "string"
-          },
-          "relatedCorporateSupplyChain": {
-            "type": "string"
-          },
-          "productCategories": {
-            "type": "string"
-          },
-          "definitionProductTypeService": {
-            "type": "string"
-          },
-          "sourcingCountryPerCategory": {
-            "type": "string"
-          },
-          "numberOfDirectSuppliers": {
-            "type": "number"
-          },
-          "orderVolumePerProcurement": {
-            "type": "number"
           }
         }
       },

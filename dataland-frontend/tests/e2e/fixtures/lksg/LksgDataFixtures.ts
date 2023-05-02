@@ -143,16 +143,6 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         ),
         specificProcurement: valueOrUndefined(randomYesNo(), undefinedProbability),
       },
-      productionSpecificOwnOperations: {
-        mostImportantProducts: valueOrUndefined(faker.commerce.product(), undefinedProbability),
-        productionSteps: valueOrUndefined(faker.commerce.product(), undefinedProbability),
-        relatedCorporateSupplyChain: valueOrUndefined(faker.commerce.product(), undefinedProbability),
-        productCategories: valueOrUndefined(faker.commerce.product(), undefinedProbability),
-        definitionProductTypeService: valueOrUndefined(faker.commerce.product(), undefinedProbability),
-        sourcingCountryPerCategory: valueOrUndefined(generateIso2CountryCode(), undefinedProbability),
-        numberOfDirectSuppliers: valueOrUndefined(randomNumber(100), undefinedProbability),
-        orderVolumePerProcurement: valueOrUndefined(randomNumber(1000), undefinedProbability),
-      },
     },
     governance: {
       riskManagementOwnOperations: {
