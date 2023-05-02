@@ -23,11 +23,7 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
-import {
-  lksgSubAreasNameMappings,
-  lksgKpisNameMappings,
-  lksgKpisInfoMappings,
-} from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -39,9 +35,7 @@ export default defineComponent({
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
       listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
       kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
-      lksgKpisNameMappings,
-      lksgKpisInfoMappings,
-      lksgSubAreasNameMappings,
+      lksgDataModel,
     };
   },
   props: {
