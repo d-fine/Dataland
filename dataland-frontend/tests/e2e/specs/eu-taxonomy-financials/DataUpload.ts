@@ -69,6 +69,7 @@ describeIf(
             cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
             cy.get('button[data-test="submitButton"]').click();
             cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
+              // TODO no hardcoded timeouts, instead use our cypress constants for timeouts
               expect(interception.response?.statusCode).to.eq(200);
             });
             afterDatasetSubmission(storedCompany.companyId);
@@ -97,7 +98,7 @@ describeIf(
 
     it(
       "Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
-        "that the upload form works fine with all options",
+        "that the upload form works fine with all options", // TODO test name should clarify why test is in this test-file
       () => {
         testData.companyInformation.companyName = "financials-upload-form";
         uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
