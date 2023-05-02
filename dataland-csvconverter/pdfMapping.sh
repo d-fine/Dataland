@@ -17,16 +17,19 @@ fi
 
 output_folder=$(dirname "$0")/pdfs
 mkdir -p "$output_folder"
-rm "$output_folder"/*.pdf
+rm "$output_folder"/*.pdf || true
 output_file=$output_folder/output.csv
 
-echo "Annual Report,Sustainability Report,Integrated Report" > "$output_file"
+echo "Annual Report File,Sustainability Report File,Integrated Report File,Annual Report,Sustainability Report,Integrated Report" > "$output_file"
 for isin in $(grep -oP ';([A-Z0-9]{12});' $csv_file | cut -d';' -f2); do
-  annual_report=$(find "$pdf_folder" -name "*${isin}_Annual*.pdf" -printf "%f\n")
-  sustainability_report=$(find "$pdf_folder" -name "*${isin}_Sustainability*.pdf" -printf "%f\n")
-  integrated_report=$(find "$pdf_folder" -name "*${isin}_Integrated*.pdf" -printf "%f\n")
-  echo "$annual_report,$sustainability_report,$integrated_report" >> "$output_file"
-  cp -p "$pdf_folder"/{"$annual_report","$sustainability_report","$integrated_report"} "$output_folder" 2>/dev/null || true
+  annual_report_file=$(find "$pdf_folder" -name "*${isin}_Annual*.pdf" -printf "%f\n")
+  sustainability_report_file=$(find "$pdf_folder" -name "*${isin}_Sustainability*.pdf" -printf "%f\n")
+  integrated_report_file=$(find "$pdf_folder" -name "*${isin}_Integrated*.pdf" -printf "%f\n")
+  annual_report_hash=$(sha256sum "$pdf_folder/$annual_report_file" 2>/dev/null | awk '{print $1}') || true
+  sustainability_report_hash=$(sha256sum "$pdf_folder/$sustainability_report_file" 2>/dev/null | awk '{print $1}') || true
+  integrated_report_hash=$(sha256sum "$pdf_folder/$integrated_report_file" 2>/dev/null | awk '{print $1}') || true
+  echo "$annual_report_file,$sustainability_report_file,$integrated_report_file,$annual_report_hash,$sustainability_report_hash,$integrated_report_hash" >> "$output_file"
+  cp -p "$pdf_folder"/{"$annual_report_file","$sustainability_report_file","$integrated_report_file"} "$output_folder" 2>/dev/null || true
 done
 
 echo "Script finished. Output can be found here: $output_folder"
