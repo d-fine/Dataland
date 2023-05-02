@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.model.lksg.categories.general.subcategories
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.lksg.ShareOfTemporaryWorkers
-import org.dataland.datalandbackend.model.lksg.LksgAddress
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -15,13 +14,7 @@ data class LksgMasterData(
     @field:JsonProperty(required = true)
     val dataDate: LocalDate,
 
-    val name: String?,
-
-    val address: LksgAddress?,
-
     val headOffice: YesNo?,
-
-    val commercialRegister: String?,
 
     val groupOfCompanies: YesNo?,
 

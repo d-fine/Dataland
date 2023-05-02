@@ -3134,17 +3134,8 @@
             "type": "string",
             "format": "date"
           },
-          "name": {
-            "type": "string"
-          },
-          "address": {
-            "$ref": "#/components/schemas/LksgAddress"
-          },
           "headOffice": {
             "$ref": "#/components/schemas/YesNo"
-          },
-          "commercialRegister": {
-            "type": "string"
           },
           "groupOfCompanies": {
             "$ref": "#/components/schemas/YesNo"

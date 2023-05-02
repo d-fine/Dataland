@@ -111,10 +111,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
     general: {
       masterData: {
         dataDate: randomPastDate(),
-        name: valueOrUndefined(faker.company.name(), undefinedProbability),
-        address: valueOrUndefined(generateAddress(), undefinedProbability),
         headOffice: valueOrUndefined(randomYesNo(), undefinedProbability),
-        commercialRegister: valueOrUndefined(generateVatIdentificationNumber(), undefinedProbability),
         groupOfCompanies: valueOrUndefined(randomYesNo(), undefinedProbability),
         groupOfCompaniesName: valueOrUndefined(faker.company.name(), undefinedProbability),
         industry: valueOrUndefined(faker.name.jobArea(), undefinedProbability),

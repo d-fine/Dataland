@@ -3,7 +3,6 @@ import { DropdownDatasetIdentifier, DropdownOption, getDataset } from "@/utils/P
 
 export const listOfProductionSitesConvertedNames = {
   name: "Name",
-  isInHouseProductionOrIsContractProcessing: "Is In-house Production Or Is Contract Processing",
   country: "Country",
   city: "City",
   streetAndHouseNumber: "Street and house number",
