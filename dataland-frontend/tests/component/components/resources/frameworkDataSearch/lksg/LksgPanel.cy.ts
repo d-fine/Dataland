@@ -91,9 +91,7 @@ describe("Component test for LksgPanel", () => {
     cy.get(".p-tooltip").should("be.visible").contains("The date until for which");
     cy.get("em.info-icon").eq(0).trigger("mouseleave");
 
-    cy.get("table.p-datatable-table")
-      .find(`span:contains(${lksgData.general!.masterData!.commercialRegister!})`)
-      .should("exist");
+    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
   });
 
   /**
