@@ -430,12 +430,13 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-        // TODO checkIfThereAreNoDuplicateReportNames(this.filesToUpload);
+
+        await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
+
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
-        await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
 
         await this.$nextTick();
         const formInputsModelToSend = modifyObjectKeys(

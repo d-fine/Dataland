@@ -250,6 +250,14 @@ export default defineComponent({
       euTaxonomyKpiInfoMappings,
     };
   },
+  props: {
+    editMode: {
+      type: Boolean,
+    },
+    dataset: {
+      type: Object as () => { referencedReports: { [key: string]: CompanyReport } },
+    },
+  },
   computed: {
     allReferenceableReportsFilenames(): string[] {
       return this.reportsToUpload
@@ -342,6 +350,7 @@ export default defineComponent({
      * Uploads the filed that are to be uploaded if they are not already available to dataland
      */
     async uploadFiles() {
+      this.checkIfThereAreNoDuplicateReportNames();
       const documentUploadControllerControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise())
       ).getDocumentControllerApi();
@@ -423,17 +432,62 @@ export default defineComponent({
         return file as ExtendedFile;
       });
     },
-  },
 
-  props: {
-    editMode: {
-      type: Boolean,
+
+    /**
+     * checks if all reports that shall be uploaded do not have the same name as an already uploaded report
+     *
+     * @param filesToUpload the list of files that shall be checked
+     */
+    checkIfThereAreNoDuplicateReportNames(): void { // TODO deep dive into the function
+      const duplicateFileNames = this.reportsToUpload
+        .filter((extendedFile) => extendedFile["nameAlreadyExists"] === "true")
+        .map((extendedFile) => extendedFile.name);
+      if (duplicateFileNames.length >= 1) {
+        throw new Error(
+          `Some of the reports cannot be uploaded because another report with the same name already exists: ${duplicateFileNames.toString()}`
+        );
+      }
     },
-    dataset: {
-      type: Object as () => { referencedReports: { [key: string]: CompanyReport } },
+
+    /**
+     *  calculates the hash from a file
+     *
+     * @param [file] the file to calculate the hash from
+     * @returns a promise of the hash as string
+     */
+    async calculateSha256HashFromFile(file: File): Promise<string> {
+      const buffer = await file.arrayBuffer();
+      const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+      return this.toHex(hashBuffer);
+    },
+
+    /**
+     *  helper to encode a hash of type buffer in hex
+     *
+     * @param [buffer] the buffer to encode in hex
+     * @returns  the array as string, hex encoded
+     */
+    toHex(buffer: ArrayBuffer): string {
+      const array = Array.from(new Uint8Array(buffer)); // convert buffer to byte array
+      return array.map((b) => b.toString(16).padStart(2, "0")).join(""); // convert bytes to hex string
     },
   },
 });
+
+interface ExtendedFile extends File {
+  reportDate: string;
+  reportDateAsDate: string | Date;
+  documentId: string;
+  [key: string]: unknown;
+}
+
+interface ExtendedCompanyReport extends CompanyReport {
+  name: string;
+  reportDateAsDate: string | Date;
+  [key: string]: unknown;
+}
+
 </script>
 
 // TODO data-test="uploaded-files" is not a very good named marker, since the list it refers to is actually the list of

@@ -491,7 +491,6 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-        // TODO checkIfThereAreNoDuplicateReportNames(this.filesToUpload);
         // TODO dont throw an error but use validation???
 
         await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
