@@ -11,6 +11,7 @@
       responsiveLayout="scroll"
       :expandableRowGroups="true"
       :reorderableColumns="true"
+      @row-click="rowExpand($event.data)"
       v-model:expandedRowGroups="expandedRowGroups"
     >
       <Column
@@ -132,6 +133,14 @@ export default defineComponent({
         },
       });
     },
+    /**
+     * Expands the rows ?
+     */
+    rowExpand(row:string){
+      this.expandedRowGroups = this.expandedRowGroups.includes(row)
+      ? this.expandedRowGroups.filter((x) => x !== row) // Hide row
+      : [...this.expandedRowGroups, row]; // Show ro
+    }
   },
 });
 </script>
