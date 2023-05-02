@@ -9,6 +9,7 @@ import {
   uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { uploadReports } from "@sharedUtils/components/UploadReports";
+import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@e2e/utils/Constants";
 
 describeIf(
   "As a user, I expect Eu Taxonomy Data for non-financials that I upload for a company to be displayed correctly",
@@ -118,7 +119,6 @@ describeIf(
 
         // TODO Emanuel: furthermore this test could be done in a shorter amount of time =>  e.g. some of the page reloads are actually not needed and could be worked around.
 
-        const dummyPdfFileName = "pdfTest";
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
             (storedCompany) => {
@@ -161,18 +161,18 @@ describeIf(
               // TEST IF A FILE WITH AN ALREADY EXISTING NAME CANNOT BE SUBMITTED          TODO comment supports reading the test while working on it => delete at the very end
               cy.get('button[data-test="editDatasetButton"]').click();
               cy.wait("@getDataToPrefillForm");
-              cy.get(`[data-test="${dummyPdfFileName}AlreadyUploadedContainer`).should("exist");
-              cy.get("input[type=file]").selectFile(`../testing/data/${dummyPdfFileName}.pdf`, { force: true });
+              cy.get(`[data-test="${TEST_PDF_FILE_NAME}AlreadyUploadedContainer`).should("exist");
+              cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_PATH}.pdf`, { force: true });
               cy.get('[data-test="file-name-already-exists"]').should("exist");
-              cy.get(`[data-test="${dummyPdfFileName}ToUploadContainer"]`).should("not.exist");
+              cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
               cy.get('button[data-test="submitButton"]').click();
-              cy.get('[data-test="failedUploadMessage"]').should("contain.text", `${dummyPdfFileName}.pdf`);
+              cy.get('[data-test="failedUploadMessage"]').should("contain.text", `${TEST_PDF_FILE_NAME}.pdf`);
               // TEST IF UPLOADING A REPORT IS NOT POSSIBLE IF IT IS NOT REFERENCED BY AT LEAST ONE DATAPOINT         TODO comment supports reading the test while working on it => delete at the very end
-              cy.get(`button[data-test="remove-${dummyPdfFileName}"]`).click();
+              cy.get(`button[data-test="remove-${TEST_PDF_FILE_NAME}"]`).click();
               cy.get('[data-test="file-name-already-exists"]').should("not.exist");
               cy.get("input[type=file]").selectFile(
                 {
-                  contents: `../testing/data/${dummyPdfFileName}.pdf`,
+                  contents: `../${TEST_PDF_FILE_PATH}`,
                   fileName: "someOtherFileName" + ".pdf",
                 },
                 { force: true }
@@ -189,10 +189,10 @@ describeIf(
               cy.get('button[data-test="editDatasetButton"]').click();
               cy.wait("@getDataToPrefillForm");
               cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
-              const differentFileNameForSameFile = `${dummyPdfFileName}FileCopy`;
+              const differentFileNameForSameFile = `${TEST_PDF_FILE_NAME}FileCopy`;
               cy.get("input[type=file]").selectFile(
                 {
-                  contents: `../testing/data/${dummyPdfFileName}.pdf`,
+                  contents: `../${TEST_PDF_FILE_PATH}`,
                   fileName: differentFileNameForSameFile + ".pdf",
                 },
                 { force: true }
@@ -220,13 +220,13 @@ describeIf(
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
-              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${dummyPdfFileName}.pdf`;
+              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}.pdf`;
               const downloadLinkSelector = `span[data-test="Report-Download-${differentFileNameForSameFile}"]`;
               cy.readFile(expectedPathToDownloadedReport).should("not.exist");
               cy.get(downloadLinkSelector)
                 .click()
                 .then(() => {
-                  cy.readFile(`../testing/data/${dummyPdfFileName}.pdf`, "binary", {
+                  cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
                     timeout: Cypress.env("medium_timeout_in_ms") as number,
                   }).then((expectedPdfBinary) => {
                     cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
