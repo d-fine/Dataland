@@ -81,7 +81,7 @@
                   :modelValue="file.reportDateAsDate"
                   :showIcon="true"
                   dateFormat="D, M dd, yy"
-                  @update:modelValue="updateReportDateHandler(index, $event, 'reportsToUpload')"
+                  @update:modelValue="updateReportDateHandler(index, $event, reportsToUpload)"
                 />
               </div>
 
@@ -95,7 +95,7 @@
 
             <FormKit
               type="text"
-              :modelValue="file.documentId"
+              :modelValue="file.reference"
               name="reference"
               :outer-class="{ 'hidden-input': true }"
             />
@@ -159,7 +159,7 @@
                 :modelValue="file.reportDateAsDate"
                 :showIcon="true"
                 dateFormat="D, M dd, yy"
-                @update:modelValue="updateReportDateHandler(index, $event, 'uploadedReports')"
+                @update:modelValue="updateReportDateHandler(index, $event, uploadedReports)"
               />
             </div>
             <FormKit
@@ -242,8 +242,8 @@ export default defineComponent({
       formsDatesFilesToUpload: [] as string[] | undefined,
       formatBytesUserFriendly,
       UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-      reportsToUpload: [] as ExtendedFile[],
-      uploadedReports: [] as ExtendedCompanyReport[],
+      reportsToUpload: [] as (CompanyReportUploadModel & File)[],
+      uploadedReports: [] as CompanyReportUploadModel[],
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
     };
@@ -292,11 +292,10 @@ export default defineComponent({
           event.files as Record<string, string>[],
           this.uploadedReports
         ),
-      ] as ExtendedFile[];
+      ] as (CompanyReportUploadModel & File)[];
       this.reportsToUpload = await Promise.all(
         this.reportsToUpload.map(async (extendedFile) => {
-          extendedFile.documentId = await this.calculateSha256HashFromFile(extendedFile);
-          console.log("id", extendedFile.documentId);
+          extendedFile.reference = await this.calculateSha256HashFromFile(extendedFile);
           return extendedFile;
         })
       );
@@ -309,7 +308,7 @@ export default defineComponent({
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param index Index number of the report
      */
-    removeReportFromFilesToUpload(fileToRemove: ExtendedFile, fileRemoveCallback: (x: number) => void, index: number) {
+    removeReportFromFilesToUpload(fileToRemove: (CompanyReportUploadModel & File), fileRemoveCallback: (x: number) => void, index: number) {
       fileRemoveCallback(index);
       this.reportsToUpload = this.reportsToUpload.filter((el) => {
         return el.name !== fileToRemove.name;
@@ -332,17 +331,12 @@ export default defineComponent({
      * Updates the date of a single report file
      *
      * @param index file to update
-     * @param dateValue new date value
-     * @param whichSetOfFiles which set of files will be edited
+     * @param date new date value
+     * @param setOfFiles which set of files will be edited
      */
-    updateReportDateHandler(index: number, dateValue: Date, whichSetOfFiles: string): void {
-      const updatedSetOfFiles = this.updatePropertyFilesUploaded(
-        index,
-        "reportDateAsDate",
-        dateValue,
-        this[whichSetOfFiles] as ExtendedFile[] | ExtendedCompanyReport[]
-      );
-      this[whichSetOfFiles] = [...updatedSetOfFiles];
+    updateReportDateHandler(index: number, date: Date, setOfFiles: CompanyReportUploadModel[]): void {
+      setOfFiles[index].reportDate = getHyphenatedDate(date);
+      setOfFiles[index].reportDateAsDate = date;
     },
     /**
      * Uploads the filed that are to be uploaded if they are not already available to dataland
@@ -353,7 +347,7 @@ export default defineComponent({
         assertDefined(this.getKeycloakPromise())
       ).getDocumentControllerApi();
       for (const file of this.reportsToUpload) {
-        const fileIsAlreadyInStorage = (await documentUploadControllerControllerApi.checkDocument(file.documentId)).data
+        const fileIsAlreadyInStorage = (await documentUploadControllerControllerApi.checkDocument(file.reference)).data
           .documentExists;
         if (!fileIsAlreadyInStorage) {
           await documentUploadControllerControllerApi.postDocument(file); // TODO assure that hash by frontend equals the one from backend
@@ -382,32 +376,6 @@ export default defineComponent({
       }
     },
     /**
-     * Update property in uploaded files
-     *
-     * @param indexFileToBeEdited Index number of the report to be edited
-     * @param property Property which is to be edited
-     * @param value Value to which it is to be changed
-     * @param setOfFilesToBeEdited Set of files will be edited
-     * @returns Edited set of files
-     */
-    updatePropertyFilesUploaded(
-      indexFileToBeEdited: number,
-      property: string,
-      value: string | Date,
-      setOfFilesToBeEdited: ExtendedFile[] | ExtendedCompanyReport[]
-    ): ExtendedFile[] | ExtendedCompanyReport[] {
-      if (
-        setOfFilesToBeEdited &&
-        Object.prototype.hasOwnProperty.call(setOfFilesToBeEdited[indexFileToBeEdited], property)
-      ) {
-        if (property === "reportDateAsDate") {
-          setOfFilesToBeEdited[indexFileToBeEdited].reportDate = getHyphenatedDate(value as Date);
-        }
-        setOfFilesToBeEdited[indexFileToBeEdited][property] = value;
-      }
-      return setOfFilesToBeEdited;
-    },
-    /**
      * Complete information about selected file with additional fields
      *
      * @param filesThatShouldBeCompleted Files that should be completed
@@ -416,8 +384,8 @@ export default defineComponent({
      */
     completeInformationAboutSelectedFileWithAdditionalFields(
       filesThatShouldBeCompleted: Record<string, string>[],
-      listOfFilesThatAlreadyExistInReportsInfo: ExtendedCompanyReport[]
-    ): ExtendedFile[] {
+      listOfFilesThatAlreadyExistInReportsInfo: CompanyReportUploadModel[]
+    ): (CompanyReportUploadModel & File)[] {
       return filesThatShouldBeCompleted.map((file) => {
         if (listOfFilesThatAlreadyExistInReportsInfo.some((it) => it.name === file.name.split(".")[0])) {
           file["nameAlreadyExists"] = "true";
@@ -425,9 +393,9 @@ export default defineComponent({
           file["nameAlreadyExists"] = "false";
           file["reportDate"] = file["reportDate"] ?? "";
           file["reportDateAsDate"] = file["reportDateAsDate"] ?? "";
-          file["documentId"] = file["documentId"] ?? "";
+          file["reference"] = file["reference"] ?? "";
         }
-        return file as ExtendedFile;
+        return file as CompanyReportUploadModel & File;
       });
     },
 
@@ -471,18 +439,13 @@ export default defineComponent({
   },
 });
 
-interface ExtendedFile extends File {
+interface CompanyReportUploadModel extends CompanyReport  {
+  name: string;
   reportDate: string;
   reportDateAsDate: string | Date;
-  documentId: string;
   [key: string]: unknown;
 }
 
-interface ExtendedCompanyReport extends CompanyReport {
-  name: string;
-  reportDateAsDate: string | Date;
-  [key: string]: unknown;
-}
 </script>
 
 // TODO data-test="uploaded-files" is not a very good named marker, since the list it refers to is actually the list of
