@@ -44,7 +44,7 @@
             <PrimeButton
               data-test="uploaded-files-remove"
               icon="pi pi-times"
-              @click="removeReportFromFilesToUpload(file.name, removeFileCallback, index)"
+              @click="removeReportFromFilesToUpload(removeFileCallback, index)"
               class="p-button-rounded"
             />
           </div>
