@@ -80,7 +80,7 @@
           :validation="dataPointIsAvailable ? 'required' : ''"
           validation-label="Data quality"
           placeholder="Data quality"
-          :options="QualityOptions"
+          :options="qualityOptions"
         />
       </div>
     </div>
@@ -108,9 +108,9 @@ export default defineComponent({
   emits: ["dataPointAvailableToggle"],
   data: () => ({
     dataPointIsAvailable: true,
-    QualityOptions: Object.entries(QualityOptions).map((entry: [string, string]) => ({
-      label: entry[1],
-      value: entry[1],
+    qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
+      label: qualityOption,
+      value: qualityOption,
     })),
     currentMainValue: "",
     currentReportValue: "",

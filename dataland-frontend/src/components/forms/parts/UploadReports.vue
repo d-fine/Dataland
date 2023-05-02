@@ -44,7 +44,7 @@
             <PrimeButton
               data-test="uploaded-files-remove"
               icon="pi pi-times"
-              @click="removeReportFromFilesToUpload(file, removeFileCallback, index)"
+              @click="removeReportFromFilesToUpload(removeFileCallback, index)"
               class="p-button-rounded"
             />
           </div>
@@ -137,7 +137,7 @@ export default defineComponent({
       UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       reportsToUpload: [] as (CompanyReportUploadModel & File)[],
       uploadedReports: [] as CompanyReportUploadModel[],
-      euTaxonomyKpiNameMappings,
+      euTaxonomyKpiNameMappings, // TODO doesn't this make this component eutaxonomy-specific?  Now we cannot use it generically anymore, right?
       euTaxonomyKpiInfoMappings,
     };
   },
@@ -151,10 +151,9 @@ export default defineComponent({
   },
   computed: {
     allReferenceableReportsFilenames(): string[] {
-      return this.reportsToUpload
-        .map<string>((it) => it.name)
-        .concat(this.uploadedReports.map<string>((it) => it.name))
-        .map((it) => it.split(".")[0]);
+      return (this.reportsToUpload as CompanyReportUploadModel[])
+        .concat(this.uploadedReports)
+        .map((it) => it.name.split(".")[0]);
     },
   },
   watch: {
@@ -173,7 +172,7 @@ export default defineComponent({
       this.$emit("referenceableFilesChanged", this.allReferenceableReportsFilenames);
     },
     /**
-     * Add files to object filesToUpload
+     * Add files to object reportsToUpload
      *
      * @param event full event object containing the files
      * @param event.originalEvent event information
@@ -188,6 +187,8 @@ export default defineComponent({
       ] as (CompanyReportUploadModel & File)[];
       this.reportsToUpload = await Promise.all(
         this.reportsToUpload.map(async (extendedFile) => {
+          // TODO this assumes that the hash in the frontend ALWAYS equals the one in the backend!  Can we guarantee that? Should we assume that?
+          // TODO I find that fine as long as we test, which we don't.
           extendedFile.reference = await this.calculateSha256HashFromFile(extendedFile);
           return extendedFile;
         })
@@ -197,19 +198,12 @@ export default defineComponent({
     /**
      * Remove report from files uploaded
      *
-     * @param fileToRemove File To Remove
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
-     * @param index Index number of the report
+     * @param indexOfFileToRemove index number of the file to remove
      */
-    removeReportFromFilesToUpload(
-      fileToRemove: File,
-      fileRemoveCallback: (x: number) => void,
-      index: number
-    ) {
-      fileRemoveCallback(index);
-      this.reportsToUpload = this.reportsToUpload.filter((el) => {
-        return el.name !== fileToRemove.name;
-      });
+    removeReportFromFilesToUpload(fileRemoveCallback: (x: number) => void, indexOfFileToRemove: number) {
+      fileRemoveCallback(indexOfFileToRemove);
+      this.reportsToUpload.splice(indexOfFileToRemove, 1);
       this.referenceableFilesChanged();
     },
 
@@ -339,7 +333,7 @@ export default defineComponent({
 interface CompanyReportUploadModel extends CompanyReport {
   name: string;
   reportDate: string;
-  reportDateAsDate: string | Date;
+  reportDateAsDate: string | Date; // TODO somehow this is weird.  It is named "reportDateAsDate", but can be a string type?
   [key: string]: unknown;
 }
 </script>

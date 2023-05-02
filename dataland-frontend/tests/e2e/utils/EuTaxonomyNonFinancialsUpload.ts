@@ -10,6 +10,7 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 
 // TODO can dataId still be retrieved like this?
 /**
@@ -26,12 +27,11 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
-  const filename = "pdfTest";
-  uploadReports.uploadFile(filename);
-  uploadReports.validateSingleFileInUploadedList(filename, "KB");
-  uploadReports.validateFileInfo(filename);
+  uploadReports.uploadFile(TEST_PDF_FILE_NAME);
+  uploadReports.validateSingleFileInUploadedList(TEST_PDF_FILE_NAME, "KB");
+  uploadReports.validateFileInfo(TEST_PDF_FILE_NAME);
 
-  fillEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, filename);
+  fillEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
   submitButton.buttonAppearsEnabled();
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
   submitButton.clickButton();

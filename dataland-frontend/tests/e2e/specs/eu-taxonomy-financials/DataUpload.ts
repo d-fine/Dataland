@@ -15,6 +15,7 @@ import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
 import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
+import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a financial company",
@@ -69,6 +70,7 @@ describeIf(
             cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
             cy.get('button[data-test="submitButton"]').click();
             cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
+              // TODO no hardcoded timeouts, instead use our cypress constants for timeouts
               expect(interception.response?.statusCode).to.eq(200);
             });
             afterDatasetSubmission(storedCompany.companyId);
@@ -83,31 +85,30 @@ describeIf(
      * Visits the edit page for the eu taxonomy dataset for financial companies via navigation.
      *
      * @param companyId the id of the company for which to edit a dataset
-     * @param expectIncludedFile specifies if the file pdfTest.pdf is expected to be in the server response
+     * @param expectIncludedFile specifies if the test file is expected to be in the server response
      */
     function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
       gotoEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyFinancials).then((interception) => {
         const referencedReports = assertDefined(
           (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data?.referencedReports
         );
-        expect("pdfTest" in referencedReports).to.equal(expectIncludedFile);
-        expect("pdfTest2" in referencedReports).to.equal(true);
+        expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
+        expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
       });
     }
 
     it(
       "Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
-        "that the upload form works fine with all options",
+        "that the upload form works fine with all options", // TODO test name should clarify why test is in this test-file
       () => {
         testData.companyInformation.companyName = "financials-upload-form";
         uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
           testData.companyInformation,
           testData.t,
           () => {
-            const filename = "pdfTest";
-            uploadReports.uploadFile(filename);
-            uploadReports.validateSingleFileInUploadedList(filename, "KB");
-            uploadReports.validateFileInfo(filename);
+            uploadReports.uploadFile(TEST_PDF_FILE_NAME);
+            uploadReports.validateSingleFileInUploadedList(TEST_PDF_FILE_NAME, "KB");
+            uploadReports.validateFileInfo(TEST_PDF_FILE_NAME);
             uploadReports.removeSingleUploadedFileFromUploadedList();
             uploadReports.checkNoReportIsListed();
           },
@@ -126,8 +127,8 @@ describeIf(
         testData.t,
         () => undefined,
         () => {
-          uploadReports.uploadFile("pdfTest");
-          uploadReports.uploadFile("pdfTest2");
+          uploadReports.uploadFile(TEST_PDF_FILE_NAME);
+          uploadReports.uploadFile(`${TEST_PDF_FILE_NAME}2`);
           uploadReports.fillAllReportInfoForms();
           cy.get(`[data-test="assetManagementKpis"]`)
             .find(`[data-test="banksAndIssuers"]`)
@@ -140,12 +141,12 @@ describeIf(
         },
         (request) => {
           const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
-          expect("pdfTest" in data.referencedReports!).to.equal(areBothDocumentsStillUploaded);
-          expect("pdfTest2" in data.referencedReports!).to.equal(true);
+          expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(areBothDocumentsStillUploaded);
+          expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
         },
         (companyId) => {
           gotoEditForm(companyId, true);
-          uploadReports.removeUploadedReportFromReportInfos("pdfTest").then(() => {
+          uploadReports.removeUploadedReportFromReportInfos(TEST_PDF_FILE_NAME).then(() => {
             areBothDocumentsStillUploaded = false;
           });
           cy.get('button[data-test="submitButton"]').click();

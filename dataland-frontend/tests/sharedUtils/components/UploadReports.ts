@@ -1,7 +1,7 @@
 export const uploadReports = {
   uploadFile(filename: string): void {
     cy.get('button[data-test="upload-files-button"]').click();
-    cy.get("input[type=file]").selectFile(`../testing/data/${filename}.pdf`, { force: true });
+    cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
   },
   fillAllReportInfoForms(): void {
     cy.get('[data-test="report-info"]').each((element) => {
