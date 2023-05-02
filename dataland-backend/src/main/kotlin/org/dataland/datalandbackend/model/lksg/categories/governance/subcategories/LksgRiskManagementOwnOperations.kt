@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.lksg.categories.general.subcategories
+package org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
