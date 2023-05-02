@@ -244,7 +244,7 @@ export default defineComponent({
       UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       reportsToUpload: [] as ExtendedFile[],
       uploadedReports: [] as ExtendedCompanyReport[],
-      euTaxonomyKpiNameMappings,
+      euTaxonomyKpiNameMappings, // TODO doesn't this make this component eutaxonomy-specific?  Now we cannot use it generically anymore, right?
       euTaxonomyKpiInfoMappings,
     };
   },
