@@ -437,7 +437,6 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
-
         await this.$nextTick();
         const formInputsModelToSend = modifyObjectKeys(
           JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,

@@ -11,7 +11,7 @@
       name="fileUpload"
       ref="fileUpload"
       accept=".pdf"
-      @select="onSelectedFilesHandler"
+      @select="handleFilesSelected"
       :multiple="true"
       :maxFileSize="UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
@@ -211,14 +211,12 @@ import PrimeButton from "primevue/button";
 import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { ExtendedCompanyReport, ExtendedFile } from "@/components/forms/Types";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import { CompanyReport } from "@clients/backend";
-import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -288,7 +286,7 @@ export default defineComponent({
      * @param event.originalEvent event information
      * @param event.files files
      */
-    async onSelectedFilesHandler(event: FileUploadSelectEvent): void {
+    async handleFilesSelected(event: FileUploadSelectEvent): void {
       this.reportsToUpload = [
         ...this.completeInformationAboutSelectedFileWithAdditionalFields(
           event.files as Record<string, string>[],
@@ -297,7 +295,7 @@ export default defineComponent({
       ] as ExtendedFile[];
       this.reportsToUpload = await Promise.all(
         this.reportsToUpload.map(async (extendedFile) => {
-          extendedFile.documentId = await calculateSha256HashFromFile(extendedFile);
+          extendedFile.documentId = await this.calculateSha256HashFromFile(extendedFile);
           console.log("id", extendedFile.documentId);
           return extendedFile;
         })
@@ -380,8 +378,8 @@ export default defineComponent({
               : "",
           });
         }
+        this.referenceableFilesChanged();
       }
-      this.referenceableFilesChanged();
     },
     /**
      * Update property in uploaded files
@@ -433,13 +431,13 @@ export default defineComponent({
       });
     },
 
-
     /**
      * checks if all reports that shall be uploaded do not have the same name as an already uploaded report
      *
      * @param filesToUpload the list of files that shall be checked
      */
-    checkIfThereAreNoDuplicateReportNames(): void { // TODO deep dive into the function
+    checkIfThereAreNoDuplicateReportNames(): void {
+      // TODO deep dive into the function
       const duplicateFileNames = this.reportsToUpload
         .filter((extendedFile) => extendedFile["nameAlreadyExists"] === "true")
         .map((extendedFile) => extendedFile.name);
@@ -487,7 +485,6 @@ interface ExtendedCompanyReport extends CompanyReport {
   reportDateAsDate: string | Date;
   [key: string]: unknown;
 }
-
 </script>
 
 // TODO data-test="uploaded-files" is not a very good named marker, since the list it refers to is actually the list of
