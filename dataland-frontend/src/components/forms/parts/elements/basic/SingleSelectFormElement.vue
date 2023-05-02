@@ -13,7 +13,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "SingleSelectFormElement",
@@ -36,7 +36,7 @@ export default defineComponent({
       default: "",
     },
     options: {
-      type: Array as () => Array<Option>,
+      type: Array as () => Array<DropdownOption>,
       required: true,
     },
     innerClass: {

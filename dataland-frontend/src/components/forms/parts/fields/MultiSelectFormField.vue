@@ -15,7 +15,7 @@
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import MultiSelectFormElement from "@/components/forms/parts/elements/basic/MultiSelectFormElement.vue";
 
 export default defineComponent({
@@ -48,7 +48,7 @@ export default defineComponent({
       default: "",
     },
     options: {
-      type: Array as () => Array<Option>,
+      type: Array as () => Array<DropdownOption>,
       required: true,
     },
     required: {

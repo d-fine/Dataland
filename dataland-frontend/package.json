@@ -24,6 +24,7 @@
     "@formkit/vue": "^0.16.4",
     "@ibm/plex": "^6.2.0",
     "axios": "^1.3.5",
+    "currency-codes": "^2.1.0",
     "i18n-iso-countries": "^7.6.0",
     "json2csv": "^5.0.7",
     "keycloak-js": "^21.0.2",

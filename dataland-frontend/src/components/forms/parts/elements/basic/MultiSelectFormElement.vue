@@ -22,7 +22,7 @@
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
 import MultiSelect from "primevue/multiselect";
-import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "MultiSelectFormElement",
@@ -50,7 +50,7 @@ export default defineComponent({
       default: "",
     },
     options: {
-      type: Array as () => Array<Option>,
+      type: Array as () => Array<DropdownOption>,
       required: true,
     },
     innerClass: {
