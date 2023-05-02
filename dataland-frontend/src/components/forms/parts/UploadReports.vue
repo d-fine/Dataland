@@ -1,5 +1,6 @@
 <template>
   <div v-if="!editMode" class="col-3 p-3 topicLabel">
+    <!-- TODO Florian does not get why this is only rendered when editing a dataset, todo check figma -->
     <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
     <p>Please upload all relevant reports for this dataset in the PDF format.</p>
   </div>
@@ -10,7 +11,7 @@
       name="fileUpload"
       ref="fileUpload"
       accept=".pdf"
-      @select="onSelectedFiles"
+      @select="onSelectedFilesHandler"
       :multiple="true"
       :maxFileSize="UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
@@ -25,6 +26,7 @@
               icon="pi pi-upload"
               :label="editMode ? 'ADD REPORTS' : 'SELECT REPORTS'"
             />
+            <!-- TODO I don't see why this shouldn't be uniform, todo check figma -->
           </div>
         </div>
       </template>
@@ -53,7 +55,7 @@
   <FormKit name="referencedReports" type="group">
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
-      <div v-for="(file, index) of filesToUpload" :key="file.name" class="col-9 formFields" data-test="report-info">
+      <div v-for="(file, index) of reportsToUpload" :key="file.name" class="col-9 formFields" data-test="report-info">
         <div v-if="file.nameAlreadyExists === 'true'">
           <div>
             File with name:
@@ -79,7 +81,7 @@
                   :modelValue="file.reportDateAsDate"
                   :showIcon="true"
                   dateFormat="D, M dd, yy"
-                  @update:modelValue="updateReportDateHandler(index, $event, 'filesToUpload')"
+                  @update:modelValue="updateReportDateHandler(index, $event, 'reportsToUpload')"
                 />
               </div>
 
@@ -128,10 +130,10 @@
     </div>
     <div v-if="editMode" class="uploadFormSection">
       <!-- List of company reports -->
-      <div v-if="listOfUploadedReportsInfo.length" class="col-3 p-3 topicLabel">
+      <div v-if="uploadedReports.length > 0" class="col-3 p-3 topicLabel">
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
       </div>
-      <div v-for="(file, index) of listOfUploadedReportsInfo" :key="file.name" class="col-9 formFields">
+      <div v-for="(file, index) of uploadedReports" :key="file.name" class="col-9 formFields">
         <div :data-test="file.name.split('.')[0] + 'AlreadyUploadedContainer'" class="form-field-label">
           <div class="flex w-full">
             <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
@@ -157,7 +159,7 @@
                 :modelValue="file.reportDateAsDate"
                 :showIcon="true"
                 dateFormat="D, M dd, yy"
-                @update:modelValue="updateReportDateHandler(index, $event, 'listOfUploadedReportsInfo')"
+                @update:modelValue="updateReportDateHandler(index, $event, 'uploadedReports')"
               />
             </div>
             <FormKit
@@ -201,16 +203,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 
 import Calendar from "primevue/calendar";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import PrimeButton from "primevue/button";
-import FileUpload, { FileUploadEmits, FileUploadSelectEvent } from "primevue/fileupload";
+import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { ExtendedFile, WhichSetOfFiles } from "@/components/forms/Types";
+import { ExtendedCompanyReport, ExtendedFile } from "@/components/forms/Types";
 import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
+import {
+  euTaxonomyKpiInfoMappings,
+  euTaxonomyKpiNameMappings,
+} from "@/components/forms/parts/kpiSelection/EuTaxonomyPseudoModelAndMappings";
+import { CompanyReport } from "@clients/backend";
+import {
+  completeInformationAboutSelectedFileWithAdditionalFields,
+  updatePropertyFilesUploaded,
+} from "@/utils/EuTaxonomyUtils";
+import { calculateSha256HashFromFile } from "@/utils/GenericUtils";
+import { ApiClientProvider } from "@/services/ApiClients";
+import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "UploadReports",
@@ -221,83 +236,156 @@ export default defineComponent({
     FileUpload,
     RadioButtonsGroup,
   },
-  emits: [
-    "selectedFiles",
-    "removeReportFromFilesToUpload",
-    "removeReportFromUploadedReports",
-    "updateReportDateHandler",
-  ],
+  emits: ["referenceableFilesChanged"],
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   data() {
     return {
       formsDatesFilesToUpload: [] as string[] | undefined,
       formatBytesUserFriendly,
       UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+      reportsToUpload: [] as ExtendedFile[],
+      uploadedReports: [] as ExtendedCompanyReport[],
+      euTaxonomyKpiNameMappings,
+      euTaxonomyKpiInfoMappings,
     };
+  },
+  computed: {
+    allReferenceableReportsFilenames(): string[] {
+      return this.reportsToUpload
+        .map<string>((it) => it.name)
+        .concat(this.uploadedReports.map<string>((it) => it.name))
+        .map((it) => it.split(".")[0]);
+    },
+  },
+  watch: {
+    dataset() {
+      this.getExistingReports();
+    },
+  },
+  mounted() {
+    this.getExistingReports();
   },
   methods: {
     /**
-     * Function to emit event when files are selected
-     *
-     * @param event date in date format
-     * @param event.originalEvent event
-     * @param event.files files
+     * Emits event that referenceable files changed
      */
-    onSelectedFiles(event: FileUploadSelectEvent) {
-      this.$emit("selectedFiles", event);
+    referenceableFilesChanged() {
+      this.$emit("referenceableFilesChanged", this.allReferenceableReportsFilenames);
     },
     /**
-     * Function to emit an event when the X besides selected files is clicked, because the user does not want to
-     * upload them
+     * Add files to object filesToUpload
+     *
+     * @param event full event object containing the files
+     * @param event.originalEvent event information
+     * @param event.files files
+     */
+    async onSelectedFilesHandler(event: FileUploadSelectEvent): void {
+      this.reportsToUpload = [
+        ...completeInformationAboutSelectedFileWithAdditionalFields(
+          event.files as Record<string, string>[],
+          this.uploadedReports
+        ),
+      ] as ExtendedFile[];
+      this.reportsToUpload = await Promise.all(
+        this.reportsToUpload.map(async (extendedFile) => {
+          extendedFile.documentId = await calculateSha256HashFromFile(extendedFile);
+          console.log("id", extendedFile.documentId);
+          return extendedFile;
+        })
+      );
+      this.referenceableFilesChanged();
+    },
+    /**
+     * Remove report from files uploaded
      *
      * @param fileToRemove File To Remove
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param index Index number of the report
      */
     removeReportFromFilesToUpload(fileToRemove: ExtendedFile, fileRemoveCallback: (x: number) => void, index: number) {
-      this.$emit("removeReportFromFilesToUpload", fileToRemove, fileRemoveCallback, index);
+      fileRemoveCallback(index);
+      this.reportsToUpload = this.reportsToUpload.filter((el) => {
+        return el.name !== fileToRemove.name;
+      });
+      this.referenceableFilesChanged();
     },
 
     /**
-     * Function to emit an event when the X besides existing reports is clicked, because the user does not want to
-     * include them in the new version of the dataset anymore
+     * When the X besides existing reports is clicked this function should be called and
+     * removes the corresponding report from the list
      *
      * @param indexOfFileToRemove Index of the report that shall no longer be referenced by the dataset
      */
     removeReportFromUploadedReports(indexOfFileToRemove: number) {
-      this.$emit("removeReportFromUploadedReports", indexOfFileToRemove);
+      this.uploadedReports.splice(indexOfFileToRemove, 1);
+      this.referenceableFilesChanged();
     },
 
     /**
-     * Function to emit event to update the date of a single report file
+     * Updates the date of a single report file
      *
      * @param index file to update
-     * @param event new date value
+     * @param dateValue new date value
      * @param whichSetOfFiles which set of files will be edited
      */
-    updateReportDateHandler(index: number, event: Date, whichSetOfFiles: WhichSetOfFiles) {
-      this.$emit("updateReportDateHandler", index, event, whichSetOfFiles);
+    updateReportDateHandler(index: number, dateValue: Date, whichSetOfFiles: string): void {
+      const updatedSetOfFiles = updatePropertyFilesUploaded(
+        index,
+        "reportDateAsDate",
+        dateValue,
+        this[whichSetOfFiles] as ExtendedFile[] | ExtendedCompanyReport[]
+      );
+      this[whichSetOfFiles] = [...updatedSetOfFiles];
     },
     /**
-     * Function to clear all not uploaded files
-     *
+     * Uploads the filed that are to be uploaded if they are not already available to dataland
      */
-    clearAllSelectedFiles(): void {
-      (this.$refs.fileUpload as FileUploadEmits).clear();
+    async uploadFiles() {
+      const documentUploadControllerControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise())
+      ).getDocumentControllerApi();
+      for (const file of this.reportsToUpload) {
+        const fileIsAlreadyInStorage = (await documentUploadControllerControllerApi.checkDocument(file.documentId)).data
+          .documentExists;
+        if (!fileIsAlreadyInStorage) {
+          await documentUploadControllerControllerApi.postDocument(file); // TODO assure that hash by frontend equals the one from backend
+        }
+      }
+    },
+    /**
+     * Initializes the already uploaded reports from a dataset
+     */
+    getExistingReports() {
+      if (this.dataset?.referencedReports) {
+        const referencedReportsForDataId = this.dataset.referencedReports;
+        for (const key in referencedReportsForDataId) {
+          this.uploadedReports.push({
+            name: key,
+            reference: referencedReportsForDataId[key].reference,
+            currency: referencedReportsForDataId[key].currency,
+            reportDate: referencedReportsForDataId[key].reportDate,
+            isGroupLevel: referencedReportsForDataId[key].isGroupLevel,
+            reportDateAsDate: referencedReportsForDataId[key].reportDate
+              ? new Date(referencedReportsForDataId[key].reportDate as string)
+              : "",
+          });
+        }
+      }
+      this.referenceableFilesChanged();
     },
   },
 
   props: {
-    filesToUpload: {
-      type: Array,
-    },
-    listOfUploadedReportsInfo: {
-      type: Array,
-    },
     editMode: {
       type: Boolean,
     },
-    euTaxonomyKpiNameMappings: {},
-    euTaxonomyKpiInfoMappings: {},
+    dataset: {
+      type: Object as () => { referencedReports: { [key: string]: CompanyReport } },
+    },
   },
 });
 </script>
