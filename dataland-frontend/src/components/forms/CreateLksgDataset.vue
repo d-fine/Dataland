@@ -87,7 +87,7 @@
               >
                 <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 :id=subcategory.name class="anchor title">{{ subcategory.label }}</h4>
+                    <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
                     <div :class="`p-badge badge-${category.color}`">
                       <span>{{ category.label.toUpperCase() }}</span>
                     </div>

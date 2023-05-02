@@ -3412,10 +3412,10 @@
       "LksgWithholdingAdequateWages": {
         "type": "object",
         "properties": {
-          "adequatWage": {
+          "adequateWage": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "adequatWageBeingWithheld": {
+          "adequateWageBeingWithheld": {
             "$ref": "#/components/schemas/YesNo"
           },
           "documentedWorkingHoursAndWages": {

@@ -1,5 +1,5 @@
 import { LksgData } from "@clients/backend";
-import { DropdownOption, getDataset } from "@/utils/PremadeDropdownDatasets";
+import { DropdownDatasetIdentifier, DropdownOption, getDataset } from "@/utils/PremadeDropdownDatasets";
 
 export const listOfProductionSitesConvertedNames = {
   name: "Name",
@@ -25,6 +25,7 @@ export interface Subcategory {
 }
 
 interface Field {
+  showIf: () => boolean;
   name: string;
   label: string;
   description: string;
@@ -148,7 +149,7 @@ export const lksgDataModel = [
           },
           {
             showIf: (): boolean => true,
-            options: getDataset("ISO 4217 Codes"),
+            options: getDataset("ISO 4217 Codes" as DropdownDatasetIdentifier),
             placeholder: "Select Currency",
             name: "totalRevenueCurrency",
             description: "The 3-letter code (ISO 4217) representing the currency used for the total revenue",
@@ -164,9 +165,9 @@ export const lksgDataModel = [
           },
           {
             showIf: (): boolean => true,
-            name: "fixedAndWorkigCapital",
+            name: "fixedAndWorkingCapital",
             description: "What is your fixed and working capital? (only for own operations)",
-            label: "Fixed and Workig Capital",
+            label: "Fixed and Working Capital",
             component: "NumberFormField",
           },
         ],
@@ -200,7 +201,7 @@ export const lksgDataModel = [
           {
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.isContractProcessing === "Yes",
-            options: getDataset("ISO 2 Codes"),
+            options: getDataset("ISO 2 Codes" as DropdownDatasetIdentifier),
             placeholder: "Select Country",
             name: "subcontractingCompaniesCountries",
             description: "In which countries do the subcontracting companies operate?",
@@ -257,6 +258,71 @@ export const lksgDataModel = [
               "Does your company have specific procurement models such as: short-lived and changing business relationships, or high price pressure or tightly timed or short-term adjusted delivery deadlines and conditions with suppliers",
             label: "Specific Procurement",
             component: "YesNoFormField",
+          },
+        ],
+      },
+      {
+        name: "productionSpecificOwnOperations",
+        label: "Production-specific - Own Operations",
+        fields: [
+          {
+            showIf: (): boolean => true,
+            name: "mostImportantProducts",
+            description:
+              "Please give an overview of the most important products or services in terms of sales that your company manufactures and/or distributes or offers (own operations)",
+            label: "Most Important Products",
+            component: "InputTextFormField",
+          },
+          {
+            showIf: (): boolean => true,
+            name: "productionSteps",
+            description: "Please give a brief overview of the production steps/activities undertaken",
+            label: "Production Steps",
+            component: "InputTextFormField",
+          },
+          {
+            showIf: (): boolean => true,
+            name: "relatedCorporateSupplyChain",
+            description:
+              "Please give an overview of the related corporate supply chain(s) and key business relationships (by procurement or order volume) (own operations)",
+            label: "Related Corporate Supply Chain",
+            component: "InputTextFormField",
+          },
+          {
+            showIf: (): boolean => true,
+            name: "productCategories",
+            description: "Name their procurement categories (products, raw materials, services) (own operations)",
+            label: "Product Categories",
+            component: "InputTextFormField",
+          },
+          {
+            showIf: (): boolean => true,
+            name: "definitionProductTypeService",
+            description: "Define the procured product types/services per category (own operations)",
+            label: "Definition Product Type/Service",
+            component: "InputTextFormField",
+          },
+          {
+            showIf: (): boolean => true,
+            name: "sourcingCountryPerCategory",
+            description: "Name the sourcing countries per category (own operations)",
+            label: "Sourcing Country per Category",
+            component: "InputTextFormField",
+          },
+          {
+            showIf: (): boolean => true,
+            name: "numberOfDirectSuppliers",
+            description: "State the number of direct suppliers per procurement category and country (own operations)",
+            label: "Number of direct Suppliers",
+            component: "InputTextFormField",
+          },
+          {
+            showIf: (): boolean => true,
+            name: "orderVolumePerProcurement",
+            description:
+              "State your order volume per procurement category in the last fiscal year (percentage of total volume) (own operations)",
+            label: "Order Volume per Procurement",
+            component: "InputTextFormField",
           },
         ],
       },
@@ -710,7 +776,7 @@ export const lksgDataModel = [
           {
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesRawMaterials === "Yes",
-            options: getDataset("ISO 2 Codes"),
+            options: getDataset("ISO 2 Codes" as DropdownDatasetIdentifier),
             placeholder: "Select Country",
             name: "highRiskCountriesRawMaterialsLocation",
             description: "From which conflict/high-risk regions do you source your raw materials?",
@@ -728,7 +794,7 @@ export const lksgDataModel = [
           {
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesActivity === "Yes",
-            options: getDataset("ISO 2 Codes"),
+            options: getDataset("ISO 2 Codes" as DropdownDatasetIdentifier),
             placeholder: "Select Country",
             name: "highRiskCountries",
             description: "In which high risk countries does your company have activities?",
@@ -746,7 +812,7 @@ export const lksgDataModel = [
           {
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesProcurement === "Yes",
-            options: getDataset("ISO 2 Codes"),
+            options: getDataset("ISO 2 Codes" as DropdownDatasetIdentifier),
             placeholder: "Select Country",
             name: "highRiskCountriesProcurementName",
             description: "From which high risk countries does your company procure from?",
@@ -967,21 +1033,21 @@ export const lksgDataModel = [
         fields: [
           {
             showIf: (): boolean => true,
-            name: "adequatWage",
+            name: "adequateWage",
             description: "Is your company currently withholding adequate wages (adequate in the sense of local laws)?",
-            label: "Adequat Wage",
+            label: "Adequate Wage",
             component: "YesNoFormField",
           },
           {
             showIf: (): boolean => true,
-            name: "adequatWageBeingWithheld",
+            name: "adequateWageBeingWithheld",
             description: "Are any measures taken in your company to prevent that adequate wages being withheld?",
-            label: "Adequat Wage being withheld",
+            label: "Adequate Wage being withheld",
             component: "YesNoFormField",
           },
           {
             showIf: (dataModel: LksgData): boolean =>
-              dataModel?.social?.withholdingAdequateWages?.adequatWageBeingWithheld === "Yes",
+              dataModel?.social?.withholdingAdequateWages?.adequateWageBeingWithheld === "Yes",
             name: "documentedWorkingHoursAndWages",
             description: "Does your company document the working hours and wages of its employees?",
             label: "Documented Working Hours And Wages",
@@ -989,7 +1055,7 @@ export const lksgDataModel = [
           },
           {
             showIf: (dataModel: LksgData): boolean =>
-              dataModel?.social?.withholdingAdequateWages?.adequatWageBeingWithheld === "Yes",
+              dataModel?.social?.withholdingAdequateWages?.adequateWageBeingWithheld === "Yes",
             name: "adequateLivingWage",
             description:
               "Does your company pay employees a reasonable wage? (the appropriate wage is at least the minimum wage set by the applicable law and is otherwise measured according to the law of the place of employment).",
@@ -998,7 +1064,7 @@ export const lksgDataModel = [
           },
           {
             showIf: (dataModel: LksgData): boolean =>
-              dataModel?.social?.withholdingAdequateWages?.adequatWageBeingWithheld === "Yes",
+              dataModel?.social?.withholdingAdequateWages?.adequateWageBeingWithheld === "Yes",
             name: "regularWagesProcessFlow",
             description:
               "Has your company implemented the payment of wages through standardised and regular process flows?",
@@ -1007,7 +1073,7 @@ export const lksgDataModel = [
           },
           {
             showIf: (dataModel: LksgData): boolean =>
-              dataModel?.social?.withholdingAdequateWages?.adequatWageBeingWithheld === "Yes",
+              dataModel?.social?.withholdingAdequateWages?.adequateWageBeingWithheld === "Yes",
             name: "fixedHourlyWages",
             description: "Do fixed hourly wages exist in your company?",
             label: "Fixed Hourly Wages",
@@ -1015,7 +1081,7 @@ export const lksgDataModel = [
           },
           {
             showIf: (dataModel: LksgData): boolean =>
-              dataModel?.social?.withholdingAdequateWages?.adequatWageBeingWithheld === "Yes",
+              dataModel?.social?.withholdingAdequateWages?.adequateWageBeingWithheld === "Yes",
             name: "fixedPieceworkWages",
             description: "Does your company have fixed piecework wages?",
             label: "Fixed Piecework Wages",
@@ -1023,7 +1089,7 @@ export const lksgDataModel = [
           },
           {
             showIf: (dataModel: LksgData): boolean =>
-              dataModel?.social?.withholdingAdequateWages?.adequatWageBeingWithheld === "Yes",
+              dataModel?.social?.withholdingAdequateWages?.adequateWageBeingWithheld === "Yes",
             name: "adequateWageMeasures",
             description:
               "Please list other measures (if available) you take to prevent the withholding adequate wages?",
@@ -1259,10 +1325,10 @@ export const lksgDataModel = [
         fields: [
           {
             showIf: (): boolean => true,
-            name: "umequalTreatmentOfEmployment",
+            name: "unequalTreatmentOfEmployment",
             description:
               "Does your company treat employees unequally because of national/ethnic origin, social origin, health status, disability, sexual orientation, age, gender, political opinion, religion or belief?",
-            label: "Umequal Treatment of Employment",
+            label: "Unequal Treatment of Employment",
             component: "YesNoFormField",
           },
           {
@@ -1798,4 +1864,4 @@ export const lksgDataModel = [
       },
     ],
   },
-];
+] as Array<Category>;

@@ -255,8 +255,8 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         forcedLaborPolicy: valueOrUndefined(randomYesNo(), undefinedProbability),
       },
       withholdingAdequateWages: {
-        adequatWage: valueOrUndefined(randomYesNo(), undefinedProbability),
-        adequatWageBeingWithheld: valueOrUndefined(randomYesNo(), undefinedProbability),
+        adequateWage: valueOrUndefined(randomYesNo(), undefinedProbability),
+        adequateWageBeingWithheld: valueOrUndefined(randomYesNo(), undefinedProbability),
         documentedWorkingHoursAndWages: valueOrUndefined(randomYesNo(), undefinedProbability),
         adequateLivingWage: valueOrUndefined(randomYesNo(), undefinedProbability),
         regularWagesProcessFlow: valueOrUndefined(randomYesNo(), undefinedProbability),
