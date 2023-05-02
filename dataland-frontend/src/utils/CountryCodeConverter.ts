@@ -26,6 +26,6 @@ export function getAllCountryCodes(): Array<string> {
  *
  * @returns the english names of the countries and the countryCodes
  */
-export function getAllCountryNamesWithCodes(): object {
+export function getAllCountryNamesWithCodes(): { [alpha2CountryCode: string]: string } {
   return countries.getNames("en");
 }

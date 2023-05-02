@@ -38,11 +38,10 @@
                   <div class="col-9 formFields">
                     <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                       <component
-                        v-if="
-                          field.showIf(companyAssociatedLksgData.data) && field.component != 'SingleSelectFormField'
-                        "
+                        v-if="field.showIf(companyAssociatedLksgData.data)"
                         :is="field.component"
                         :displayName="field.label"
+                        :placeholder="field.placeholder"
                         :info="field.description"
                         :name="field.name"
                         :options="field.options"
