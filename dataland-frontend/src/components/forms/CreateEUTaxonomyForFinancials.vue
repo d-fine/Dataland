@@ -50,15 +50,9 @@
               <FormKit type="group" name="data" label="data" validation-label="data" validation="required">
                 <UploadReports
                   ref="UploadReports"
-                  :filesToUpload="filesToUpload"
-                  :listOfUploadedReportsInfo="listOfUploadedReportsInfo"
-                  :euTaxonomyKpiNameMappings="euTaxonomyKpiNameMappings"
-                  :euTaxonomyKpiInfoMappings="euTaxonomyKpiInfoMappings"
                   :editMode="editMode"
-                  @selectedFiles="onSelectedFilesHandler"
-                  @removeReportFromFilesToUpload="removeReportFromFilesToUpload"
-                  @removeReportFromUploadedReports="removeReportFromUploadedReports"
-                  @updateReportDateHandler="updateReportDateHandler"
+                  :dataset="templateDataset"
+                  @referenceable-files-changed="referenceableFilesChanged"
                 />
 
                 <BasicInformationFields
@@ -292,7 +286,6 @@ import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import { FormKit } from "@formkit/vue";
 
-import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import BasicInformationFields from "@/components/forms/parts/BasicInformationFields.vue";
 
 import PrimeButton from "primevue/button";
@@ -323,6 +316,7 @@ import {
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
   DataMetaInformation,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
+  EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { AxiosError, AxiosResponse } from "axios";
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
@@ -338,6 +332,7 @@ import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.v
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FileUploadSelectEvent } from "primevue/fileupload";
 import { FormKitNode } from "@formkit/core";
+import UploadReports from "@/components/forms/parts/UploadReports.vue";
 
 export default defineComponent({
   setup() {
@@ -369,8 +364,6 @@ export default defineComponent({
     return {
       formId: "createEuTaxonomyForFinancialsForm",
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
-      filesToUpload: [] as ExtendedFile[],
-      listOfUploadedReportsInfo: [] as ExtendedCompanyReport[],
       fiscalYearEndAsDate: null as Date | null,
       fiscalYearEnd: "",
       reportingPeriod: undefined as undefined | Date,
@@ -410,14 +403,11 @@ export default defineComponent({
       confirmedSelectedKPIs: [] as { label: string; value: string }[],
       computedFinancialServicesTypes: [] as string[],
       message: "",
+      namesOfAllCompanyReportsForTheDataset: [] as string[],
+      templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
     };
   },
   computed: {
-    namesOfAllCompanyReportsForTheDataset(): string[] {
-      const namesFromFilesToUpload = this.filesToUpload.map((el) => el.name.split(".")[0]);
-      const namesFromListOfUploadedReports = this.listOfUploadedReportsInfo.map((el) => el.name.split(".")[0]);
-      return [...new Set([...namesFromFilesToUpload, ...namesFromListOfUploadedReports])];
-    },
     reportingPeriodYear(): number {
       if (this.reportingPeriod) {
         return this.reportingPeriod.getFullYear();
@@ -476,21 +466,7 @@ export default defineComponent({
       if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
         this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
       }
-      if (companyAssociatedEuTaxonomyData.data?.referencedReports) {
-        const referencedReportsForDataId = companyAssociatedEuTaxonomyData.data.referencedReports;
-        for (const key in referencedReportsForDataId) {
-          this.listOfUploadedReportsInfo.push({
-            name: key,
-            currency: referencedReportsForDataId[key].currency,
-            isGroupLevel: referencedReportsForDataId[key].isGroupLevel,
-            reference: referencedReportsForDataId[key].reference,
-            reportDate: referencedReportsForDataId[key].reportDate,
-            reportDateAsDate: referencedReportsForDataId[key].reportDate
-              ? new Date(referencedReportsForDataId[key].reportDate as string)
-              : "",
-          });
-        }
-      }
+      this.templateDataset = companyAssociatedEuTaxonomyData.data;
       if (companyAssociatedEuTaxonomyData.data?.financialServicesTypes) {
         // types of company financial services
         const arrayWithCompanyKpiTypes = companyAssociatedEuTaxonomyData.data?.financialServicesTypes;
@@ -506,6 +482,7 @@ export default defineComponent({
         });
         this.confirmSelectedKPIs();
       }
+
       const receivedFormInputsModel = modifyObjectKeys(
         JSON.parse(JSON.stringify(companyAssociatedEuTaxonomyData)) as ObjectType,
         "receive"
@@ -529,7 +506,7 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-        checkIfThereAreNoDuplicateReportNames(this.filesToUpload);
+        // TODO checkIfThereAreNoDuplicateReportNames(this.filesToUpload);
         // TODO dont throw an error but use validation???
 
         const documentUploadControllerControllerApi = await new ApiClientProvider(
@@ -539,15 +516,8 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
 
-        if (this.filesToUpload.length) {
-          for (const file of this.filesToUpload) {
-            const fileIsAlreadyInStorage = (await documentUploadControllerControllerApi.checkDocument(file.documentId))
-              .data.documentExists;
-            if (!fileIsAlreadyInStorage) {
-              await documentUploadControllerControllerApi.postDocument(file);
-            }
-          }
-        }
+        await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
+
         await this.$nextTick();
         const formInputsModelToSend = modifyObjectKeys(
           JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,
@@ -576,52 +546,6 @@ export default defineComponent({
     },
 
     /**
-     * Add files to object filesToUpload
-     *
-     * @param event full event object containing the files
-     * @param event.originalEvent event information
-     * @param event.files files
-     */
-    async onSelectedFilesHandler(event: FileUploadSelectEvent): void {
-      this.filesToUpload = [
-        ...completeInformationAboutSelectedFileWithAdditionalFields(
-          event.files as Record<string, string>[],
-          this.listOfUploadedReportsInfo
-        ),
-      ] as ExtendedFile[];
-      this.filesToUpload = await Promise.all(
-        this.filesToUpload.map(async (extendedFile) => {
-          extendedFile.documentId = await calculateSha256HashFromFile(extendedFile);
-          return extendedFile;
-        })
-      );
-    },
-
-    /**
-     * Removes a report from the list of files to be uploaded
-     *
-     * @param fileToRemove File To Remove
-     * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
-     * @param index Index number of the report
-     */
-    removeReportFromFilesToUpload(fileToRemove: ExtendedFile, fileRemoveCallback: (x: number) => void, index: number) {
-      fileRemoveCallback(index);
-      this.filesToUpload = this.filesToUpload.filter((el) => {
-        return el.name !== fileToRemove.name;
-      });
-    },
-
-    /**
-     * Removes a report from the list of already uploaded reports while the user edits a dataset. That way it is no
-     * longer included as referenced report after the edit it submitted.
-     *
-     * @param indexOfFileToRemove Index of the report that shall no longer be referenced by the dataset
-     */
-    removeReportFromUploadedReports(indexOfFileToRemove: number) {
-      this.listOfUploadedReportsInfo.splice(indexOfFileToRemove, 1);
-    },
-
-    /**
      * Confirms the list of kpis to be generated
      *
      */
@@ -644,23 +568,6 @@ export default defineComponent({
     },
 
     /**
-     * Updates the date of a single report file
-     *
-     * @param index file to update
-     * @param dateValue new date value
-     * @param whichSetOfFiles which set of files will be edited
-     */
-    updateReportDateHandler(index: number, dateValue: Date, whichSetOfFiles: WhichSetOfFiles) {
-      const updatedSetOfFiles = this.updatePropertyFilesUploaded(
-        index,
-        "reportDateAsDate",
-        dateValue,
-        this[whichSetOfFiles]
-      );
-      this[whichSetOfFiles] = [...updatedSetOfFiles];
-    },
-
-    /**
      * Updates the Fiscal Year End value
      *
      * @param dateValue new date value
@@ -678,6 +585,14 @@ export default defineComponent({
       checkCustomInputs(node);
       this.message = `Sorry, not all fields are filled out correctly.`;
       this.postEuTaxonomyDataForFinancialsProcessed = true;
+    },
+    /**
+     * Updates the local list of names of referenceable files
+     *
+     * @param reportsFilenames new list of referenceable files
+     */
+    referenceableFilesChanged(reportsFilenames: string[]) {
+      this.namesOfAllCompanyReportsForTheDataset = reportsFilenames;
     },
   },
 });
