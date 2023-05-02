@@ -258,10 +258,11 @@ export default defineComponent({
   },
   computed: {
     allReferenceableReportsFilenames(): string[] {
-      return this.reportsToUpload
-        .map<string>((it) => it.name)
-        .concat(this.uploadedReports.map<string>((it) => it.name))
-        .map((it) => it.split(".")[0]);
+      const namesOfReportsToUpload = this.reportsToUpload.map((singleReportToUpload) => singleReportToUpload.name);
+      const namesOfAlreadyUploadedReports = this.uploadedReports.map(
+        (singleUploadedReport) => singleUploadedReport.name
+      );
+      return namesOfReportsToUpload.concat(namesOfAlreadyUploadedReports).map((reportName) => reportName.split(".")[0]);
     },
   },
   watch: {
@@ -384,25 +385,25 @@ export default defineComponent({
      * @param indexFileToBeEdited Index number of the report to be edited
      * @param property Property which is to be edited
      * @param value Value to which it is to be changed
-     * @param setOfFilesToBeEdited Set of files will be edited
+     * @param listOfFilesToBeEdited List of files will be edited
      * @returns Edited set of files
      */
     updatePropertyFilesUploaded(
       indexFileToBeEdited: number,
       property: string,
       value: string | Date,
-      setOfFilesToBeEdited: ExtendedFile[] | ExtendedCompanyReport[]
+      listOfFilesToBeEdited: ExtendedFile[] | ExtendedCompanyReport[]
     ): ExtendedFile[] | ExtendedCompanyReport[] {
       if (
-        setOfFilesToBeEdited &&
-        Object.prototype.hasOwnProperty.call(setOfFilesToBeEdited[indexFileToBeEdited], property)
+        listOfFilesToBeEdited &&
+        Object.prototype.hasOwnProperty.call(listOfFilesToBeEdited[indexFileToBeEdited], property)
       ) {
         if (property === "reportDateAsDate") {
-          setOfFilesToBeEdited[indexFileToBeEdited].reportDate = getHyphenatedDate(value as Date);
+          listOfFilesToBeEdited[indexFileToBeEdited].reportDate = getHyphenatedDate(value as Date);
         }
-        setOfFilesToBeEdited[indexFileToBeEdited][property] = value;
+        listOfFilesToBeEdited[indexFileToBeEdited][property] = value;
       }
-      return setOfFilesToBeEdited;
+      return listOfFilesToBeEdited;
     },
     /**
      * Complete information about selected file with additional fields
