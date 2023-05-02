@@ -9,14 +9,11 @@
  */
 function animation(
   currentTime: number,
-  startTime: null | number,
+  startTime: number,
   startPosition: number,
   totalDistanceToScroll: number,
   totalDurationForScrolling: number
 ): void {
-  if (!startTime) {
-    startTime = currentTime;
-  }
   const elapsedTime = currentTime - startTime;
   const positionToScrollTo = totalDistanceToScroll * (elapsedTime / totalDurationForScrolling) + startPosition;
   window.scrollTo(0, positionToScrollTo);
@@ -39,8 +36,7 @@ export function smoothScroll(target: string): void {
   const targetPosition = startPosition + positionOfTargetElementRelativeToViewport - buffer;
   const totalDistanceToScroll = targetPosition - startPosition;
   const totalDurationForScrolling = 300 + Math.abs(totalDistanceToScroll) / 10;
-  const startTime = null as null | number;
   requestAnimationFrame((currentTime) =>
-    animation(currentTime, startTime, startPosition, totalDistanceToScroll, totalDurationForScrolling)
+    animation(currentTime, currentTime, startPosition, totalDistanceToScroll, totalDurationForScrolling)
   );
 }
