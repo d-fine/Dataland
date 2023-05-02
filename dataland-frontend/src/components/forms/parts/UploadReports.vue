@@ -473,14 +473,14 @@ export default defineComponent({
 
 interface ExtendedFile extends File {
   reportDate: string;
-  reportDateAsDate: string | Date;
+  reportDateAsDate: string | Date; // TODO somehow this is weird.  It is named "reportDateAsDate", but can be a string type?
   documentId: string;
   [key: string]: unknown;
 }
 
 interface ExtendedCompanyReport extends CompanyReport {
   name: string;
-  reportDateAsDate: string | Date;
+  reportDateAsDate: string | Date; // TODO somehow this is weird.  It is named "reportDateAsDate", but can be a string type?
   [key: string]: unknown;
 }
 </script>

@@ -36,7 +36,8 @@ export function smoothScroll(target: string): void {
   const targetPosition = startPosition + positionOfTargetElementRelativeToViewport - buffer;
   const totalDistanceToScroll = targetPosition - startPosition;
   const totalDurationForScrolling = 300 + Math.abs(totalDistanceToScroll) / 10;
-  requestAnimationFrame((currentTime) =>
-    animation(currentTime, currentTime, startPosition, totalDistanceToScroll, totalDurationForScrolling)
-  );
+  requestAnimationFrame((currentTime) => {
+    const startTime = currentTime;
+    animation(currentTime, startTime, startPosition, totalDistanceToScroll, totalDurationForScrolling);
+  });
 }
