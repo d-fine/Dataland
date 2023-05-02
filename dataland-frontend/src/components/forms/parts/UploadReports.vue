@@ -433,8 +433,6 @@ export default defineComponent({
 
     /**
      * checks if all reports that shall be uploaded do not have the same name as an already uploaded report
-     *
-     * @param filesToUpload the list of files that shall be checked
      */
     checkIfThereAreNoDuplicateReportNames(): void {
       // TODO deep dive into the function
