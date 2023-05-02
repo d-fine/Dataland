@@ -281,7 +281,7 @@ export default defineComponent({
       this.$emit("referenceableFilesChanged", this.allReferenceableReportsFilenames);
     },
     /**
-     * Add files to object filesToUpload
+     * Add files to object reportsToUpload
      *
      * @param event full event object containing the files
      * @param event.originalEvent event information
@@ -296,7 +296,7 @@ export default defineComponent({
       ] as ExtendedFile[];
       this.reportsToUpload = await Promise.all(
         this.reportsToUpload.map(async (extendedFile) => {
-          extendedFile.documentId = await this.calculateSha256HashFromFile(extendedFile);
+          extendedFile.documentId = await this.calculateSha256HashFromFile(extendedFile); // TODO this assumes that the hash in the frontend ALWAYS equals the one in the backend!  Can we guarantee that? Should we assume that?
           console.log("id", extendedFile.documentId);
           return extendedFile;
         })
