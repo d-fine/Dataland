@@ -29,14 +29,14 @@ interface Field {
   label: string;
   description: string;
   component: string;
-  dependency: string;
-  validation: string;
+  dependency?: string;
+  validation?: string;
 
   // input field specific values
-  placeholder: string;
+  placeholder?: string;
 
   // selection specific values
-  options: DropdownOption[];
+  options?: DropdownOption[];
 }
 
 export const lksgDataModel = [
