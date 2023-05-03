@@ -117,7 +117,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         isContractProcessing: valueOrUndefined(randomYesNo(), undefinedProbability),
         subcontractingCompaniesCountries: valueOrUndefined(generateIso2CountryCode(), undefinedProbability),
         subcontractingCompaniesIndustries: valueOrUndefined(faker.name.jobArea(), undefinedProbability),
-        multipleProductionSites: valueOrUndefined(randomYesNo(), undefinedProbability),
+        productionSites: valueOrUndefined(randomYesNo(), undefinedProbability),
         listOfProductionSites: valueOrUndefined(generateArrayOfProductionSites(), undefinedProbability),
         market: valueOrUndefined(
           faker.helpers.arrayElement([

@@ -3221,7 +3221,7 @@
           "subcontractingCompaniesIndustries": {
             "type": "string"
           },
-          "multipleProductionSites": {
+          "productionSites": {
             "$ref": "#/components/schemas/YesNo"
           },
           "listOfProductionSites": {

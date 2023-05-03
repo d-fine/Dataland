@@ -23,7 +23,7 @@ data class LksgProductionSpecific(
 
     val subcontractingCompaniesIndustries: String?,
 
-    val multipleProductionSites: YesNo?,
+    val productionSites: YesNo?,
 
     val listOfProductionSites: List<LksgProductionSite>?,
 
