@@ -2,33 +2,24 @@
   <div class="form-field">
     <InputTextFormField
       name="productionSiteName"
-      :info="lksgKpisInfoMappings.productionSiteName"
-      :display-name="lksgKpisNameMappings.productionSiteName"
+      info="Please state the name of the production site."
+      display-name="Production Site"
       validation="required"
     />
   </div>
 
   <div class="form-field">
     <AddressFormField
-      name="addressesOfProductionSites"
-      :info="lksgKpisInfoMappings.addressesOfProductionSites"
-      :display-name="lksgKpisNameMappings.addressesOfProductionSites"
+      name="addressOfProductionSite"
+      info="Please state the address of the production site."
+      display-name="Production Site Address"
       validation="required"
     />
   </div>
 
   <div class="form-field">
-    <div class="form-field-label">
-      <h5>List Of Goods Or Services</h5>
-      <em
-        class="material-icons info-icon"
-        aria-hidden="true"
-        title="listOfGoodsOrServices"
-        v-tooltip.top="{
-          value: lksgKpisInfoMappings['listOfGoodsOrServices'] ? lksgKpisInfoMappings['listOfGoodsOrServices'] : '',
-        }"
-        >info</em
-      >
+    <div class="flex justify-content-between">
+      <UploadFormHeader name="Lists of Goods or Services" explanation="Provide List of Goods or Services" />
       <PrimeButton
         :disabled="listOfGoodsOrServicesString === ''"
         @click="addNewItemsToListOfGoodsOrServices()"
@@ -37,6 +28,7 @@
         icon="pi pi-plus"
       ></PrimeButton>
     </div>
+
     <FormKit
       data-test="listOfGoodsOrServices"
       type="text"
@@ -45,13 +37,13 @@
       placeholder="Add comma (,) for more than one value"
     />
     <FormKit
-      v-model="productionSite.listOfGoodsOrServices"
+      v-model="listOfGoodsOrServices"
       type="list"
       label="list of goods or services"
       name="listOfGoodsOrServices"
     />
     <div class="">
-      <span class="form-list-item" :key="element" v-for="element in item.listOfGoodsOrServices">
+      <span class="form-list-item" :key="element" v-for="element in listOfGoodsOrServices">
         {{ element }}
         <em @click="removeItemFromListOfGoodsOrServices(element)" class="material-icons">close</em>
       </span>
@@ -61,37 +53,34 @@
 
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
-import {
-  lksgKpisInfoMappings,
-  lksgKpisNameMappings,
-} from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { defineComponent } from "vue";
+import PrimeButton from "primevue/button";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import { LksgProductionSite } from "@clients/backend";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 
 export default defineComponent({
-  name: "ProductionSiteElement",
+  name: "ProductionSiteFormElement",
   computed: {
-    lksgKpisNameMappings() {
-      return lksgKpisNameMappings;
-    },
-    lksgKpisInfoMappings() {
-      return lksgKpisInfoMappings;
+    lksgDataModel() {
+      return lksgDataModel;
     },
   },
   data() {
     return {
       allCountry: getAllCountryNamesWithCodes(),
-      productionSite: Object as LksgProductionSite,
       listOfGoodsOrServicesString: "",
+      listOfGoodsOrServices: [] as string[],
     };
   },
   components: {
+    UploadFormHeader,
     InputTextFormField,
     AddressFormField,
     FormKit,
+    PrimeButton,
   },
   methods: {
     /**
@@ -100,10 +89,8 @@ export default defineComponent({
      * @param element - the item to be deleted
      */
     removeItemFromListOfGoodsOrServices(element: string) {
-      if (this.productionSite.listOfGoodsOrServices) {
-        this.productionSite.listOfGoodsOrServices = this.productionSite.listOfGoodsOrServices.filter(
-          (el) => el !== element
-        );
+      if (this.listOfGoodsOrServices) {
+        this.listOfGoodsOrServices = this.listOfGoodsOrServices.filter((el) => el !== element);
       }
     },
 
@@ -112,7 +99,7 @@ export default defineComponent({
      */
     addNewItemsToListOfGoodsOrServices() {
       const items = this.listOfGoodsOrServicesString.split(",").map((element) => element.trim());
-      this.productionSite.listOfGoodsOrServices = [...this.productionSite.listOfGoodsOrServices, ...items];
+      this.listOfGoodsOrServices = [...this.listOfGoodsOrServices, ...items];
     },
   },
 });

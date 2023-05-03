@@ -19,63 +19,6 @@
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID!" disabled="true" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
-            <div class="form-field" data-test="IsYourCompanyManufacturingCompany">
-              <UploadFormHeader
-                :name="'Is your company a manufacturing company?'"
-                :explanation="Test"
-                :is-required="true"
-              />
-              <FormKit
-                type="radio"
-                :ignore="true"
-                id="IsYourCompanyManufacturingCompany"
-                name="IsYourCompanyManufacturingCompany"
-                :options="['Yes', 'No']"
-                v-model="isYourCompanyManufacturingCompany"
-                validation="required"
-                :outer-class="{
-                  'yes-no-radio': true,
-                }"
-                :inner-class="{
-                  'formkit-inner': false,
-                }"
-                :input-class="{
-                  'formkit-input': false,
-                  'p-radiobutton': true,
-                }"
-              />
-            </div>
-
-            <FormKit
-              type="list"
-              v-if="isYourCompanyManufacturingCompany !== 'No'"
-              name="listOfProductionSites"
-              label="listOfProductionSites"
-            >
-              <FormKit type="group" v-for="item in listOfProductionSites" :key="item.id">
-                <div
-                  data-test="productionSiteSection"
-                  class="productionSiteSection"
-                  :class="isYourCompanyManufacturingCompany === 'No' ? 'p-disabled' : ''"
-                >
-                  <em
-                    data-test="removeItemFromListOfProductionSites"
-                    @click="removeItemFromListOfProductionSites(item.id)"
-                    class="material-icons close-section"
-                    >close</em
-                  >
-                  <ProductionSiteField :item="item" />
-                </div>
-              </FormKit>
-              <PrimeButton
-                data-test="ADD-NEW-Production-Site-button"
-                label="ADD NEW Production Site"
-                class="p-button-text"
-                :disabled="isYourCompanyManufacturingCompany === 'No'"
-                icon="pi pi-plus"
-                @click="addNewProductionSite"
-              />
-            </FormKit>
 
             <FormKit type="group" name="data" label="data">
               <FormKit
@@ -167,7 +110,7 @@ import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsF
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import ProductionSiteField from "@/components/forms/parts/fields/ProductionSiteField.vue";
+import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -177,7 +120,7 @@ export default defineComponent({
   },
   name: "CreateLksgDataset",
   components: {
-    ProductionSiteField,
+    ProductionSiteFormField,
     UploadFormHeader,
     SuccessUpload,
     FailedUpload,
@@ -328,27 +271,6 @@ export default defineComponent({
       } finally {
         this.postLkSGDataProcessed = true;
       }
-    },
-
-    /**
-     * Adds a new Object to the ProductionSite array
-     */
-    addNewProductionSite() {
-      this.idCounter++;
-      this.listOfProductionSites.push({
-        id: this.idCounter,
-        listOfGoodsOrServices: [],
-        listOfGoodsOrServicesString: "",
-      });
-    },
-
-    /**
-     * Remove Object from ProductionSite array
-     *
-     * @param id - the id of the object in the array
-     */
-    removeItemFromListOfProductionSites(id: number) {
-      this.listOfProductionSites = this.listOfProductionSites.filter((el) => el.id !== id);
     },
   },
 });
