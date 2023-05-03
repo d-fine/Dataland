@@ -57,7 +57,7 @@ export default defineConfig({
 
             console.log(`Execution environment: ${executionEnvironment}; dataEnvironment: ${dataEnvironment}`);
             if (executionEnvironment === "developmentLocal") {
-                console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
+                console.log("Detected local development run. Running all tests per default. In order to run a specific test run npm run cypress run --spec <./.../specific_test.ts>");
                 config.specPattern = ["tests/e2e/specs"];
                 config.defaultCommandTimeout = 22000
             } else {

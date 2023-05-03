@@ -12,8 +12,8 @@ export function logout(): void {
     .get("a[id='profile-picture-dropdown-toggle']")
     .click()
     .url()
-    .should("eq", getBaseUrl() + "/")
-    .get("button[name='login_dataland_button']")
+    .should("eq", getBaseUrl() + "/?externalLogout=true")
+    .get("button[name='login_dataland_button_on_session_modal']")
     .should("exist")
     .should("be.visible");
 }
