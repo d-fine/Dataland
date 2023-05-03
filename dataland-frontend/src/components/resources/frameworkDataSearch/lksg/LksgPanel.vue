@@ -20,7 +20,8 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
-import { lksgDataModel, Subcategory } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
+import { Subcategory } from "@/utils/GenericFrameworkTypes";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -94,6 +95,7 @@ export default defineComponent({
 
     /**
      * Creates kpi data objects to pass them to the data table.
+     *
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
      * @param subcategory The sub category to which the kpi belongs
@@ -157,6 +159,7 @@ export default defineComponent({
 
     /**
      * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
+     *
      * @param inputNumber The number to convert
      * @returns a string with the converted number and "MM" at the end
      */
