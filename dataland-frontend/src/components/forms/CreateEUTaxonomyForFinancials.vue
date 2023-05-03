@@ -468,10 +468,7 @@ export default defineComponent({
         this.confirmSelectedKPIs();
       }
 
-      const receivedFormInputsModel = modifyObjectKeys(
-        JSON.parse(JSON.stringify(companyAssociatedEuTaxonomyData)) as ObjectType,
-        "receive"
-      );
+      const receivedFormInputsModel = modifyObjectKeys(companyAssociatedEuTaxonomyData as ObjectType, "receive");
       this.waitingForData = false;
 
       await this.$nextTick(); // TODO check if this is neccessary
@@ -500,10 +497,7 @@ export default defineComponent({
         ).getEuTaxonomyDataForFinancialsControllerApi();
 
         await this.$nextTick();
-        const formInputsModelToSend = modifyObjectKeys(
-          JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,
-          "send"
-        );
+        const formInputsModelToSend = modifyObjectKeys(this.formInputsModel as ObjectType, "send");
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
             formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForFinancials
