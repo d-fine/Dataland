@@ -20,11 +20,11 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
-import {lksgDataModel, Subcategory} from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { lksgDataModel, Subcategory } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   name: "LksgPanel",
-  components: {LksgCompanyDataTable, LksgCompanyDataTable },
+  components: { LksgCompanyDataTable },
   data() {
     return {
       firstRender: true,
@@ -94,7 +94,6 @@ export default defineComponent({
 
     /**
      * Creates kpi data objects to pass them to the data table.
-     *
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
      * @param subCategory The sub category to which the kpi belongs
@@ -113,10 +112,10 @@ export default defineComponent({
       let indexOfExistingItem = -1;
       const kpiData = {
         subCategoryKey: subCategory.name == "general" ? `_${subCategory.name}` : subCategory.name,
-        subCategoryLabel: subCategory.label,
+        subCategoryLabel: subCategory.label ? subCategory.label : subCategory.name,
         kpiKey: kpiKey,
-        kpiLabel:kpi.label,
-        kpiDescription: kpi.description,
+        kpiLabel: kpi?.label ? kpi.label : kpiKey,
+        kpiDescription: kpi?.description ? kpi.description : "",
         [dataIdOfLksgDataset]: kpiValue,
       } as kpiDataObject;
       indexOfExistingItem = this.kpiDataObjects.findIndex(
@@ -141,11 +140,12 @@ export default defineComponent({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
-          for (const [areaKey,areaObject] of Object.entries(oneLksgDataset.data)) {
+          for (const [areaKey, areaObject] of Object.entries(oneLksgDataset.data)) {
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
               for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
-                const subcategory = lksgDataModel.filter((area) => area.name === areaKey)[0]
-                    .subcategories.filter((category) => category.name === subAreaKey)[0];
+                const subcategory = lksgDataModel
+                  .filter((area) => area.name === areaKey)[0]
+                  .subcategories.filter((category) => category.name === subAreaKey)[0];
                 this.createKpiDataObjects(kpiKey, kpiValue, subcategory, dataIdOfLksgDataset);
               }
             }
@@ -157,7 +157,6 @@ export default defineComponent({
 
     /**
      * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
-     *
      * @param inputNumber The number to convert
      * @returns a string with the converted number and "MM" at the end
      */
@@ -166,12 +165,14 @@ export default defineComponent({
     },
   },
 });
+
 interface kpiDataObject {
-  subCategoryKey: string,
-  subCategoryLabel: string,
-  kpiKey: string,
-  kpiLabel: string,
-  kpiDescription: string,
-  [index:string]: string,
+  subCategoryKey: string;
+  subCategoryLabel: string;
+  kpiKey: string;
+  kpiLabel: string;
+  kpiDescription: string;
+
+  [index: string]: string;
 }
 </script>
