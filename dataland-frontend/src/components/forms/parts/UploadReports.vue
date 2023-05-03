@@ -56,11 +56,11 @@
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
       <div v-for="(file, index) of reportsToUpload" :key="file.name" class="col-9 formFields" data-test="report-info">
-        <div v-if="file.nameAlreadyExists === 'true'">
+        <div v-if="duplicateReportNames.has(file.name.split('.')[0])">
           <div>
-            File with name:
+            File with name
             <h3 data-test="file-name-already-exists">{{ file.name.split(".")[0] }}</h3>
-            Already exists. Please upload file with different name.
+            already exists. Please upload file with different name.
           </div>
         </div>
         <div v-else :data-test="file.name.split('.')[0] + 'ToUploadContainer'">
@@ -68,8 +68,10 @@
             <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
           </div>
           <ReportFormElement
-            :file="file"
-            @reporting-date-changed="(date: Date) => { updateReportDateHandler(index, date, reportsToUpload) }"
+            :name="file.name.split('.')[0]"
+            :report-date="file.reportDate"
+            :reference="file.reference"
+            @reporting-date-changed="(date: Date) => { updateReportDateHandler(date, index, reportsToUpload) }"
           />
         </div>
       </div>
@@ -92,8 +94,10 @@
           </div>
         </div>
         <ReportFormElement
-          :file="file"
-          @reporting-date-changed="(date: Date) => { updateReportDateHandler(index, date, uploadedReports) }"
+          :name="file.name.split('.')[0]"
+          :report-date="file.reportDate"
+          :reference="file.reference"
+          @reporting-date-changed="(date: Date) => { updateReportDateHandler(date, index, uploadedReports) }"
         />
       </div>
     </div>
@@ -155,6 +159,11 @@ export default defineComponent({
         .concat(this.uploadedReports)
         .map((it) => it.name.split(".")[0]);
     },
+    duplicateReportNames(): Set<string> {
+      return new Set(this.allReferenceableReportsFilenames.filter((searchName) =>
+        (this.allReferenceableReportsFilenames.filter((testName) => searchName === testName).length > 1)
+      ));
+    }
   },
   watch: {
     dataset() {
@@ -181,7 +190,7 @@ export default defineComponent({
     async handleFilesSelected(event: FileUploadSelectEvent): void {
       this.reportsToUpload = [
         ...this.completeInformationAboutSelectedFileWithAdditionalFields(
-          event.files as Record<string, string>[],
+          event.files as (CompanyReportUploadModel & File)[],
           this.uploadedReports
         ),
       ] as (CompanyReportUploadModel & File)[];
@@ -221,13 +230,14 @@ export default defineComponent({
     /**
      * Updates the date of a single report file
      *
+     * @param newDate new date value
      * @param index file to update
-     * @param date new date value
-     * @param setOfFiles which set of files will be edited
+     * @param containingReports which set of files will be edited
      */
-    updateReportDateHandler(index: number, date: Date, setOfFiles: CompanyReportUploadModel[]): void {
-      setOfFiles[index].reportDate = getHyphenatedDate(date);
-      setOfFiles[index].reportDateAsDate = date;
+    updateReportDateHandler(newDate: Date, index: number, containingReports: CompanyReportUploadModel[]): void {
+      containingReports[index].reportDate = getHyphenatedDate(newDate);
+      containingReports.push(containingReports[index]);
+      containingReports.pop();
     },
     /**
      * Uploads the filed that are to be uploaded if they are not already available to dataland
@@ -258,9 +268,6 @@ export default defineComponent({
             currency: referencedReportsForDataId[key].currency,
             reportDate: referencedReportsForDataId[key].reportDate,
             isGroupLevel: referencedReportsForDataId[key].isGroupLevel,
-            reportDateAsDate: referencedReportsForDataId[key].reportDate
-              ? new Date(referencedReportsForDataId[key].reportDate as string)
-              : "",
           });
         }
         this.referenceableFilesChanged();
@@ -269,24 +276,20 @@ export default defineComponent({
     /**
      * Complete information about selected file with additional fields
      *
-     * @param filesThatShouldBeCompleted Files that should be completed
-     * @param listOfFilesThatAlreadyExistInReportsInfo List Of Files That Already Exist In Reports Info
+     * @param reportsThatShouldBeCompleted Files that should be completed
+     * @param listOfReportsThatAlreadyExist List Of Files That Already Exist In Reports Info
      * @returns List of files with additional fields
      */
     completeInformationAboutSelectedFileWithAdditionalFields(
-      filesThatShouldBeCompleted: Record<string, string>[],
-      listOfFilesThatAlreadyExistInReportsInfo: CompanyReportUploadModel[]
+      reportsThatShouldBeCompleted: (CompanyReportUploadModel & File)[],
+      listOfReportsThatAlreadyExist: CompanyReportUploadModel[]
     ): (CompanyReportUploadModel & File)[] {
-      return filesThatShouldBeCompleted.map((file) => {
-        if (listOfFilesThatAlreadyExistInReportsInfo.some((it) => it.name === file.name.split(".")[0])) {
-          file["nameAlreadyExists"] = "true";
-        } else {
-          file["nameAlreadyExists"] = "false";
-          file["reportDate"] = file["reportDate"] ?? "";
-          file["reportDateAsDate"] = file["reportDateAsDate"] ?? "";
-          file["reference"] = file["reference"] ?? "";
+      return reportsThatShouldBeCompleted.map((reportToComplete) => {
+        if (!listOfReportsThatAlreadyExist.some((it) => it.name === reportToComplete.name.split(".")[0])) {
+          reportToComplete.reportDate = reportToComplete.reportDate ?? "";
+          reportToComplete.reference = reportToComplete.reference ?? "";
         }
-        return file as CompanyReportUploadModel & File;
+        return reportToComplete;
       });
     },
 
@@ -294,13 +297,9 @@ export default defineComponent({
      * checks if all reports that shall be uploaded do not have the same name as an already uploaded report
      */
     checkIfThereAreNoDuplicateReportNames(): void {
-      // TODO deep dive into the function
-      const duplicateFileNames = this.reportsToUpload
-        .filter((extendedFile) => extendedFile["nameAlreadyExists"] === "true")
-        .map((extendedFile) => extendedFile.name);
-      if (duplicateFileNames.length >= 1) {
+      if (this.duplicateReportNames.size >= 1) {
         throw new Error(
-          `Some of the reports cannot be uploaded because another report with the same name already exists: ${duplicateFileNames.toString()}`
+          `Some of the reports cannot be uploaded because another report with the same name already exists: ${[...this.duplicateReportNames].join(", ")}`
         );
       }
     },
@@ -333,8 +332,6 @@ export default defineComponent({
 interface CompanyReportUploadModel extends CompanyReport {
   name: string;
   reportDate: string;
-  reportDateAsDate: string | Date; // TODO somehow this is weird.  It is named "reportDateAsDate", but can be a string type?
-  [key: string]: unknown;
 }
 </script>
 

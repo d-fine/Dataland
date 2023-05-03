@@ -1,5 +1,5 @@
 <template>
-  <FormKit :name="file.name.split('.')[0]" type="group">
+  <FormKit :name="name" type="group">
     <!-- Date of the report -->
     <div class="form-field">
       <UploadFormHeader
@@ -10,16 +10,16 @@
         <Calendar
           data-test="reportDate"
           inputId="icon"
-          :modelValue="file.reportDateAsDate"
+          :modelValue="reportDateAsDate"
           :showIcon="true"
           dateFormat="D, M dd, yy"
           @update:modelValue="reportingDateChanged($event)"
         />
       </div>
-      <FormKit type="text" :modelValue="file.reportDate" name="reportDate" :outer-class="{ 'hidden-input': true }" />
+      <FormKit type="text" :modelValue="hyphenatedDate" name="reportDate" :outer-class="{ 'hidden-input': true }" />
     </div>
 
-    <FormKit type="text" :modelValue="file.reference" name="reference" :outer-class="{ 'hidden-input': true }" />
+    <FormKit type="text" :modelValue="reference" name="reference" :outer-class="{ 'hidden-input': true }" />
 
     <!-- Currency used in the report -->
     <div class="form-field" data-test="currencyUsedInTheReport">
@@ -34,7 +34,7 @@
           name="currency"
           validation="required|length:2,3"
           validation-label="Currency used in the report"
-          placeholder="!Currency used in the report"
+          placeholder="Currency used in the report"
         />
       </div>
     </div>
@@ -59,6 +59,7 @@ import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
+import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 export default defineComponent({
   name: "ReportFormElement",
@@ -67,22 +68,54 @@ export default defineComponent({
     return {
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
+      reportDateAsDate: undefined as undefined | Date,
     };
   },
+  mounted() {
+    this.getDateFromString();
+  },
   props: {
-    file: {
-      type: Object as () => { name: string, reportDate: string, reportDateAsDate: string | Date, reference: string },
+    name: {
+      type: String,
+      required: true,
+    },
+    reference: {
+      type: String,
+      required: true,
+    },
+    reportDate: {
+      type: String,
       required: true,
     },
   },
+  watch: {
+    reportDate() {
+      this.getDateFromString();
+    }
+  },
+  computed: {
+    hyphenatedDate() {
+      if(this.reportDateAsDate) {
+        return getHyphenatedDate(this.reportDateAsDate);
+      }
+      return "";
+    }
+  },
   emits: ["reportingDateChanged"],
   methods: {
+    /**
+     * computes an actual date object from the date string
+     */
+    getDateFromString() {
+      this.reportDateAsDate = this.reportDate && this.reportDate.length > 1 ? new Date(this.reportDate) : undefined;
+    },
     /**
      * Emits the event that the reporting date was changed
      *
      * @param newDate the new date
      */
     reportingDateChanged(newDate) {
+      this.reportDateAsDate = newDate;
       this.$emit("reportingDateChanged", newDate);
     },
   },
