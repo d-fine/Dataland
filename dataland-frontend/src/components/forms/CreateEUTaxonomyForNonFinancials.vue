@@ -345,7 +345,7 @@ export default defineComponent({
     waitingForData: false,
     formatBytesUserFriendly,
     checkCustomInputs,
-    euTaxonomyKPIsModel: euTaxonomyKPIsModel,
+    euTaxonomyKPIsModel,
     euTaxonomyKpiNameMappings,
     euTaxonomyKpiInfoMappings,
     assuranceData: {
@@ -410,10 +410,7 @@ export default defineComponent({
         this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
       }
       this.templateDataset = companyAssociatedEuTaxonomyData.data;
-      const receivedFormInputsModel = modifyObjectKeys(
-        JSON.parse(JSON.stringify(companyAssociatedEuTaxonomyData)) as ObjectType,
-        "receive"
-      );
+      const receivedFormInputsModel = modifyObjectKeys(companyAssociatedEuTaxonomyData as ObjectType, "receive");
       this.waitingForData = false;
       updateObject(this.formInputsModel, receivedFormInputsModel);
     },
@@ -438,11 +435,7 @@ export default defineComponent({
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
         await this.$nextTick();
-        const formInputsModelToSend = modifyObjectKeys(
-          JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,
-          "send"
-        ); // TODO is the JSON stuff really needed? It feels like not!
-
+        const formInputsModelToSend = modifyObjectKeys(this.formInputsModel as ObjectType, "send"); // TODO is the JSON stuff really needed? It feels like not!
         this.postEuTaxonomyDataForNonFinancialsResponse =
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
             formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForNonFinancials

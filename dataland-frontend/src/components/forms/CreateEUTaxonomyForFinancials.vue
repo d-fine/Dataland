@@ -160,8 +160,8 @@
                       />
 
                       <MultiSelect
-                        v-model="selectedKPIs"
-                        :options="kpisModel"
+                        v-model="selectedFinancialServiceOptions"
+                        :options="financialServiceOptionsInDropdown"
                         data-test="MultiSelectfinancialServicesTypes"
                         name="MultiSelectfinancialServicesTypes"
                         optionLabel="label"
@@ -170,17 +170,19 @@
                         placeholder="Select..."
                         class="mb-3"
                       />
-                      <ul v-if="selectedKPIs.length">
-                        <li :key="index" v-for="(file, index) of selectedKPIs">{{ file.label }}</li>
+                      <ul v-if="selectedFinancialServiceOptions.length">
+                        <li :key="index" v-for="(financialServiceOption, index) of selectedFinancialServiceOptions">
+                          {{ financialServiceOption.label }}
+                        </li>
                       </ul>
 
                       <PrimeButton
                         @click="confirmSelectedKPIs"
                         data-test="addKpisButton"
-                        :label="selectedKPIs.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
+                        :label="selectedFinancialServiceOptions.length ? 'UPDATE KPIS' : 'ADD RELATED KPIS'"
                       />
                       <FormKit
-                        :modelValue="computedFinancialServicesTypes"
+                        :modelValue="confirmedSelectedFinancialServiceTypes"
                         type="text"
                         validationLabel="Choosing a Financials Services Type and adding KPIs for it "
                         validation="required"
@@ -192,18 +194,20 @@
                 </div>
 
                 <div
-                  v-for="companyType of confirmedSelectedKPIs"
-                  :key="companyType"
-                  :data-test="companyType.value"
+                  v-for="financialServiceOption of confirmedSelectedFinancialServiceOptions"
+                  :key="financialServiceOption"
+                  :data-test="financialServiceOption.value"
                   class="uploadFormSection"
                 >
                   <div class="flex w-full">
                     <div class="p-3 topicLabel">
-                      <h3 :id="companyType.value" class="anchor title">{{ companyType.label }}</h3>
+                      <h3 :id="financialServiceOption.value" class="anchor title">
+                        {{ financialServiceOption.label }}
+                      </h3>
                     </div>
 
                     <PrimeButton
-                      @click="removeKpisSection(companyType.value)"
+                      @click="removeKpisSection(financialServiceOption.value)"
                       label="REMOVE THIS SECTION"
                       data-test="removeSectionButton"
                       class="p-button-text ml-auto"
@@ -211,9 +215,13 @@
                     ></PrimeButton>
                   </div>
 
-                  <FormKit v-if="companyType.value !== 'assetManagementKpis'" :name="companyType.value" type="group">
+                  <FormKit
+                    v-if="financialServiceOption.value !== 'assetManagementKpis'"
+                    :name="financialServiceOption.value"
+                    type="group"
+                  >
                     <div
-                      v-for="kpiType of euTaxonomyKPIsModel[companyType.value]"
+                      v-for="kpiType of euTaxonomyKPIsModel[financialServiceOption.value]"
                       :key="kpiType"
                       :data-test="kpiType"
                       class="uploadFormSection"
@@ -234,7 +242,10 @@
                   </FormKit>
 
                   <FormKit name="eligibilityKpis" type="group">
-                    <FormKit :name="euTaxonomyKPIsModel?.companyTypeToEligibilityKpis[companyType.value]" type="group">
+                    <FormKit
+                      :name="euTaxonomyKPIsModel?.kpisFieldNameToFinancialServiceType[financialServiceOption.value]"
+                      type="group"
+                    >
                       <div
                         v-for="kpiTypeEligibility of euTaxonomyKPIsModel.eligibilityKpis"
                         :key="kpiTypeEligibility"
@@ -303,6 +314,7 @@ import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
   euTaxonomyKPIsModel,
+  getKpiFieldNameForOneFinancialServiceType,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import {
   AssuranceDataAssuranceEnum,
@@ -358,7 +370,7 @@ export default defineComponent({
         LimitedAssurance: humanizeString(AssuranceDataAssuranceEnum.LimitedAssurance),
         ReasonableAssurance: humanizeString(AssuranceDataAssuranceEnum.ReasonableAssurance),
       },
-      euTaxonomyKPIsModel: euTaxonomyKPIsModel,
+      euTaxonomyKPIsModel,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       formatBytesUserFriendly,
@@ -378,15 +390,35 @@ export default defineComponent({
         { label: "Add KPIs", value: "addKpis" },
       ],
       onThisPageLinks: [] as { label: string; value: string }[],
-      kpisModel: [
-        { label: "Credit Institution", value: "creditInstitutionKpis" },
-        { label: "Investment Firm", value: "investmentFirmKpis" },
-        { label: "Insurance & Re-insurance", value: "insuranceKpis" },
-        { label: "Asset Management", value: "assetManagementKpis" },
+      financialServiceOptionsInDropdown: [
+        {
+          label: "Credit Institution",
+          value: getKpiFieldNameForOneFinancialServiceType(
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution
+          ),
+        },
+        {
+          label: "Investment Firm",
+          value: getKpiFieldNameForOneFinancialServiceType(
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm
+          ),
+        },
+        {
+          label: "Insurance & Re-insurance",
+          value: getKpiFieldNameForOneFinancialServiceType(
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance
+          ),
+        },
+        {
+          label: "Asset Management",
+          value: getKpiFieldNameForOneFinancialServiceType(
+            EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement
+          ),
+        },
       ],
-      selectedKPIs: [] as { label: string; value: string }[],
-      confirmedSelectedKPIs: [] as { label: string; value: string }[],
-      computedFinancialServicesTypes: [] as string[],
+      selectedFinancialServiceOptions: [] as { label: string; value: string }[],
+      confirmedSelectedFinancialServiceOptions: [] as { label: string; value: string }[],
+      confirmedSelectedFinancialServiceTypes: [] as string[], // TODO we could try to use a list of FinancialServiceTypeEnums here
       message: "",
       namesOfAllCompanyReportsForTheDataset: [] as string[],
       templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
@@ -401,12 +433,12 @@ export default defineComponent({
     },
   },
   watch: {
-    confirmedSelectedKPIs: function (newValue: { label: string; value: string }[]) {
-      this.computedFinancialServicesTypes = newValue.map((el: { label: string; value: string }): string => {
-        return euTaxonomyKPIsModel.companyTypeToEligibilityKpis[
-          el.value as keyof typeof euTaxonomyKPIsModel.companyTypeToEligibilityKpis
-        ];
-      });
+    confirmedSelectedFinancialServiceOptions: function (newValue: { label: string; value: string }[]) {
+      this.confirmedSelectedFinancialServiceTypes = newValue.map(
+        (financialServiceOption: { label: string; value: string }): string => {
+          return euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[financialServiceOption.value] as string;
+        }
+      );
     },
   },
 
@@ -456,22 +488,20 @@ export default defineComponent({
         // types of company financial services
         const arrayWithCompanyKpiTypes = companyAssociatedEuTaxonomyData.data?.financialServicesTypes;
         // all types of financial services
-        const allTypesOfFinancialServices = euTaxonomyKPIsModel.companyTypeToEligibilityKpis;
 
-        this.selectedKPIs = this.kpisModel.filter((el: { label: string; value: string }) => {
-          return arrayWithCompanyKpiTypes?.includes(
-            allTypesOfFinancialServices[
-              el.value as keyof typeof allTypesOfFinancialServices
-            ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
-          );
-        });
+        this.selectedFinancialServiceOptions = this.financialServiceOptionsInDropdown.filter(
+          (financialServiceOption: { label: string; value: string }) => {
+            return arrayWithCompanyKpiTypes?.includes(
+              euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[
+                financialServiceOption.value
+              ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
+            );
+          }
+        );
         this.confirmSelectedKPIs();
       }
 
-      const receivedFormInputsModel = modifyObjectKeys(
-        JSON.parse(JSON.stringify(companyAssociatedEuTaxonomyData)) as ObjectType,
-        "receive"
-      );
+      const receivedFormInputsModel = modifyObjectKeys(companyAssociatedEuTaxonomyData as ObjectType, "receive");
       this.waitingForData = false;
 
       await this.$nextTick(); // TODO check if this is neccessary
@@ -500,10 +530,7 @@ export default defineComponent({
         ).getEuTaxonomyDataForFinancialsControllerApi();
 
         await this.$nextTick();
-        const formInputsModelToSend = modifyObjectKeys(
-          JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType,
-          "send"
-        );
+        const formInputsModelToSend = modifyObjectKeys(this.formInputsModel as ObjectType, "send");
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
             formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForFinancials
@@ -531,8 +558,8 @@ export default defineComponent({
      *
      */
     confirmSelectedKPIs() {
-      this.confirmedSelectedKPIs = this.selectedKPIs;
-      this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedKPIs))];
+      this.confirmedSelectedFinancialServiceOptions = this.selectedFinancialServiceOptions;
+      this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedFinancialServiceOptions))];
     },
 
     /**
@@ -541,10 +568,10 @@ export default defineComponent({
      * @param value section name
      */
     removeKpisSection(value: string) {
-      this.confirmedSelectedKPIs = this.confirmedSelectedKPIs.filter(
-        (el: { label: string; value: string }) => el.value !== value
+      this.confirmedSelectedFinancialServiceOptions = this.confirmedSelectedFinancialServiceOptions.filter(
+        (financialServiceOption: { label: string; value: string }) => financialServiceOption.value !== value
       );
-      this.selectedKPIs = this.confirmedSelectedKPIs;
+      this.selectedFinancialServiceOptions = this.confirmedSelectedFinancialServiceOptions;
       this.onThisPageLinks = this.onThisPageLinks.filter((el: { label: string; value: string }) => el.value !== value);
     },
 

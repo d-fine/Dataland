@@ -113,7 +113,7 @@ describeIf(
       "Upload EU Taxonomy Dataset via form, check that redirect to MyDatasets works and assure that it can be " +
         "viewed and edited, and that ",
       () => {
-        // TODO description is missing a lot more stuff that is actually happening here
+        // TODO Emanuel: description is missing a lot more stuff that is actually happening here
 
         // TODO Emanuel: this test is pretty long and also contains stuff that fits better to the "UploadReports" test file.  we should consider moving some of the test code here
 
@@ -162,7 +162,7 @@ describeIf(
               cy.get('button[data-test="editDatasetButton"]').click();
               cy.wait("@getDataToPrefillForm");
               cy.get(`[data-test="${TEST_PDF_FILE_NAME}AlreadyUploadedContainer`).should("exist");
-              cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_PATH}.pdf`, { force: true });
+              cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_PATH}`, { force: true });
               cy.get('[data-test="file-name-already-exists"]').should("exist");
               cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
               cy.get('button[data-test="submitButton"]').click();
