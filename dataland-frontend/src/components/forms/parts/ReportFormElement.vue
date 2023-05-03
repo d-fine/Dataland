@@ -26,6 +26,7 @@
       <UploadFormHeader
         :name="euTaxonomyKpiNameMappings?.currency ?? 'Currency'"
         :explanation="euTaxonomyKpiInfoMappings?.currency ?? 'Currency'"
+        :is-required="true"
       />
       <div class="lg:col-4 md:col-4 col-12 p-0">
         <FormKit
