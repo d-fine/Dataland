@@ -4,4 +4,4 @@ COPY CompanyInformationWithEuTaxonomyDataForNonFinancials.json /storedData/Compa
 COPY CompanyInformationWithEuTaxonomyDataForFinancials.json /storedData/CompanyInformationWithEuTaxonomyDataForFinancials.json
 COPY pdfs/*.pdf /storedData/documents/
 
-CMD cp -r /storedData /testData
+CMD cp -r /storedData/* /testData
