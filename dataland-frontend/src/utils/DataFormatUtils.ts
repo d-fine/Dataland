@@ -43,13 +43,15 @@ export function calculateExpiryDateAsDateString(expiryTimeDays: number): string 
 }
 
 /**
- * Computes a hyphenated string (yyyy-MM-dd) of a date
+ * Computes a hyphenated string (yyyy-MM-dd) of a date.
+ * Since the toISOString()-method takes the UTC-timeoffset of the user into account, that offset needs to be substracted
+ * in the step before. This makes sure that the resulting Date object has the time 00:00 on the picked day again.
  *
  * @param date the date to hyphenate
  * @returns the hyphenated date string
  */
 export function getHyphenatedDate(date: Date): string {
-  const newDate = new Date(date.toString());
-  const delocalizedTime = newDate.getTime() - newDate.getTimezoneOffset() * 60 * 1000;
-  return new Date(delocalizedTime).toISOString().substring(0, 10);
+  const timeZoneOffsetBetweenLocalAndUtcInMs = date.getTimezoneOffset() * 60 * 1000;
+  const dateInEpochMsMinusTimezoneOffset = date.getTime() - timeZoneOffsetBetweenLocalAndUtcInMs;
+  return new Date(dateInEpochMsMinusTimezoneOffset).toISOString().substring(0, 10);
 }
