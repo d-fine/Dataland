@@ -162,7 +162,7 @@ describeIf(
               cy.get('button[data-test="editDatasetButton"]').click();
               cy.wait("@getDataToPrefillForm");
               cy.get(`[data-test="${TEST_PDF_FILE_NAME}AlreadyUploadedContainer`).should("exist");
-              cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_PATH}.pdf`, { force: true });
+              cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_PATH}`, { force: true });
               cy.get('[data-test="file-name-already-exists"]').should("exist");
               cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
               cy.get('button[data-test="submitButton"]').click();
