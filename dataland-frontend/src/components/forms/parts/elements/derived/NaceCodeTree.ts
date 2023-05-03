@@ -4,7 +4,6 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 /**
  * Recursively filteres the list of TreeNodes to only contain nodes whose label matches the searchTerm.
  * Nodes are included if their own label OR one of their childs labels matches the searchTerm.
- *
  * @param nodes the list of nodes to filter
  * @param searchTerm the searchTerm to filter for
  * @returns the filtered list of TreeNodes
@@ -2939,7 +2938,6 @@ export const naceCodeMap: Map<string, TreeNode> = new Map();
 
 /**
  * Transforms the nace code tree to a nace code map
- *
  * @param input an array of nace code tree nodes
  */
 function populateNaceCodeMap(input: Array<TreeNode>): void {

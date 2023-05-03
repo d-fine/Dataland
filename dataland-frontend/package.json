@@ -14,6 +14,7 @@
     "testgithubenvironment": "cypress run --config \"{\\\"e2e\\\": {\\\"baseUrl\\\": \\\"$npm_config_url\\\"}}\"",
     "fakefixtures": "ts-node -P tsconfig.commonjs.json -r tsconfig-paths/register tests/e2e/fixtures/GenerateFakeFixtures.ts",
     "checkfakefixturecompilation": "tsc --noEmit -P tsconfig.commonjs.json",
+    "prepopulate": "cypress run --spec tests\\e2e\\specs\\prepopulation\\index.ts",
     "updatepackages": "npm-check-updates -u",
     "updatepackagelock": "npm update --save --include=dev && npm audit fix",
     "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*'"

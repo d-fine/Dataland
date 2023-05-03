@@ -3,9 +3,9 @@
     <DataTable
       :value="kpiDataObjectsToDisplay"
       rowGroupMode="subheader"
-      groupRowsBy="subAreaKey"
-      dataKey="subAreaKey"
-      sortField="subAreaKey"
+      groupRowsBy="subcategoryKey"
+      dataKey="subcategoryKey"
+      sortField="subcategoryKey"
       :sortOrder="1"
       sortMode="single"
       responsiveLayout="scroll"
@@ -58,10 +58,10 @@
         </template>
       </Column>
 
-      <Column field="subAreaKey" header="Impact Area"></Column>
+      <Column field="subcategoryKey" header="Impact Area"></Column>
       <template #groupheader="slotProps">
         <span>{{
-          slotProps.data.subCategoryLabel ? slotProps.data.subCategoryLabel : slotProps.data.subCategoryKey
+          slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey
         }}</span>
       </template>
     </DataTable>
@@ -85,7 +85,7 @@ export default defineComponent({
   data() {
     return {
       kpiDataObjectsToDisplay: [],
-      expandedRowGroups: ["_general"],
+      expandedRowGroups: ["_masterData"],
       listOfProductionSitesConvertedNames,
     };
   },
@@ -124,15 +124,6 @@ export default defineComponent({
           listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
         },
       });
-    },
-    /**
-     * Expands the rows ?
-     * @param row
-     */
-    rowExpand(row: string) {
-      this.expandedRowGroups = this.expandedRowGroups.includes(row)
-        ? this.expandedRowGroups.filter((x) => x !== row) // Hide row
-        : [...this.expandedRowGroups, row]; // Show ro
     },
   },
 });

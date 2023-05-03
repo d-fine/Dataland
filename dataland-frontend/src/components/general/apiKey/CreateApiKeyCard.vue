@@ -110,7 +110,6 @@ export default defineComponent({
     /**
      * Called when the user selects a new expiry date from the dropdown.
      * Updates the local expiry date based on the selected value or the value of the date time selector if "custom" was selected
-     *
      * @param event the selection event
      */
     setExpiryTimeDays(event: HTMLSelectElement) {

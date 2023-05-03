@@ -18,7 +18,6 @@ import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 
 /**
  * Generates a set number of LKSG fixtures
- *
  * @param numFixtures the number of lksg fixtures to generate
  * @param undefinedRatio the ratio of fields to be undefined (number between 0 and 1)
  * @returns a set number of LKSG fixtures
@@ -33,7 +32,6 @@ export function generateLksgFixture(numFixtures: number, undefinedRatio = 0.5): 
 
 /**
  * Generates a random production site
- *
  * @param undefinedProbability the percentage of undefined values in the returned production site
  * @returns a random production site
  */
@@ -47,7 +45,6 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
 
 /**
  * Generates an array consisting of 1 to 5 random production sites
- *
  * @returns 1 to 5 random production sites
  */
 export function generateArrayOfProductionSites(): LksgProductionSite[] {
@@ -56,7 +53,6 @@ export function generateArrayOfProductionSites(): LksgProductionSite[] {
 
 /**
  * Generates a random list of goods or services
- *
  * @returns random list of goods or services
  */
 export function generateListOfGoodsOrServices(): string[] {
@@ -67,7 +63,6 @@ export function generateListOfGoodsOrServices(): string[] {
 
 /**
  * Generates a random VAT ID number
- *
  * @returns a random VAT ID number
  */
 export function generateVatIdentificationNumber(): string {
@@ -78,7 +73,6 @@ export function generateVatIdentificationNumber(): string {
 
 /**
  * Generates a random address
- *
  * @returns a random address
  */
 export function generateAddress(): LksgAddress {
@@ -93,7 +87,6 @@ export function generateAddress(): LksgAddress {
 
 /**
  * Randomly returns <10%, 10-25%, 25-50% or >50%
- *
  * @returns one of the four percentage intervals as string
  */
 export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers {
@@ -102,7 +95,6 @@ export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers
 
 /**
  * Generates a random LKSG dataset
- *
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
  * @returns a random LKSG dataset
  */

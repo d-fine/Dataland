@@ -219,7 +219,6 @@ export default defineComponent({
     },
     /**
      * Converts the type of financial company to the section heading
-     *
      * @param type the type of financial company to convert
      * @returns the section heading of the specified fs type
      */

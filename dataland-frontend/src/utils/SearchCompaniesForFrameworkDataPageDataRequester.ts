@@ -26,7 +26,6 @@ export interface FrameworkDataSearchFilterInterface {
 
 /**
  * Retrieve the value of the Perm Id of a company. Throws an exception if no perm id is found
- *
  * @param  {StoredCompany} storedCompany      is the company object for which the Perm Id should be retrieved
  * @returns the perm id retrieved from the company object. Empty string if no perm id is known.
  */
@@ -46,7 +45,6 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
 
 /**
  * map the received stored companies of an API-call to the required scheme for the search page to display
- *
  * @param  {Array<StoredCompany>} responseData      the received data with the company objects
  * @returns a list of companies in the format expected by the search page
  */
@@ -64,7 +62,6 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
 
 /**
  * send out an API-call to get stored companies and map the response to the required scheme for the search page
- *
  * @param  {string} searchString           the string that is used to search companies
  * @param  {boolean} onlyCompanyNames      boolean which decides if the searchString should only be used to query
  *                                         companies by name, or additionally by identifier values
@@ -112,7 +109,6 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 /**
  * Filters an array of companies for companies which have at least one data set which may be displayed
  * i.e. a dataset that has quality status "Accepted"
- *
  * @param companies the companies to filter
  * @returns the filtered companies
  */
@@ -127,7 +123,6 @@ function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCo
  * If no filter is set, or if the number of framework-filters equals the number of all viewable frameworks,
  * it links to the first framework that is included in the data in the company object.
  * Otherwise, it links to the first framework that is included in the currently stored framework filters.
- *
  * @param companyData the company to generate a link for
  * @returns a vue router link to the view page for a specific framework
  */

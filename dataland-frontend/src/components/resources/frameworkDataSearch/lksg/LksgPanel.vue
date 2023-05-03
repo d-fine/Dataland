@@ -96,23 +96,23 @@ export default defineComponent({
      * Creates kpi data objects to pass them to the data table.
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
-     * @param subCategory The sub category to which the kpi belongs
+     * @param subcategory The sub category to which the kpi belongs
      * @param dataIdOfLksgDataset The value of the date kpi of an LkSG dataset
      */
     createKpiDataObjects(
       kpiKey: string,
       kpiValue: object | string | number,
-      subCategory: Subcategory,
+      subcategory: Subcategory,
       dataIdOfLksgDataset: string
     ): void {
-      const kpi = subCategory.fields.filter((field) => field.name === kpiKey)[0];
+      const kpi = subcategory.fields.filter((field) => field.name === kpiKey)[0];
       if (kpiKey === "totalRevenue" && typeof kpiValue === "number") {
         kpiValue = this.convertToMillions(kpiValue);
       }
       let indexOfExistingItem = -1;
       const kpiData = {
-        subCategoryKey: subCategory.name == "general" ? `_${subCategory.name}` : subCategory.name,
-        subCategoryLabel: subCategory.label ? subCategory.label : subCategory.name,
+        subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
+        subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
         kpiKey: kpiKey,
         kpiLabel: kpi?.label ? kpi.label : kpiKey,
         kpiDescription: kpi?.description ? kpi.description : "",
@@ -167,8 +167,8 @@ export default defineComponent({
 });
 
 interface kpiDataObject {
-  subCategoryKey: string;
-  subCategoryLabel: string;
+  subcategoryKey: string;
+  subcategoryLabel: string;
   kpiKey: string;
   kpiLabel: string;
   kpiDescription: string;

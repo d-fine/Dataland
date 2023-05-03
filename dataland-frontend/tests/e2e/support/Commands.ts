@@ -16,7 +16,6 @@ declare global {
 
 /**
  * Visits the provided endpoint and verifies that the Vue #app component exists
- *
  * @param endpoint the endpoint to navigate to
  * @returns the cypress chainable
  */

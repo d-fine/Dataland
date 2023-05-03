@@ -14,7 +14,6 @@ const nullRatio = 0.1;
 
 /**
  * Randomly returns the specified value or null
- *
  * @param value the value to return
  * @returns the value or null
  */
@@ -24,7 +23,6 @@ export function valueOrNull<T>(value: T): T | null {
 
 /**
  * Generates a random link to a pdf document
- *
  * @returns random link to a pdf document
  */
 export function generateLinkToPdf(): string {
@@ -33,7 +31,6 @@ export function generateLinkToPdf(): string {
 
 /**
  * Generates hash to fixture pdf that is used for all fake fixture references
- *
  * @returns documentId ID of a pdf that is stored in internal storage and can be referenced
  */
 export function getReferencedDocumentId(): string {
@@ -44,7 +41,6 @@ export function getReferencedDocumentId(): string {
 
 /**
  * Generates a random non-empty set of reports that can be referenced
- *
  * @returns a random non-empty set of reports
  */
 export function generateReferencedReports(): ReferencedReports {
@@ -66,7 +62,6 @@ export function generateReferencedReports(): ReferencedReports {
 /**
  * Randomly returns a datapoint with the specified value (chosen at random between 0 and 99999 if not specified) or
  * undefined
- *
  * @param reports the reports that can be referenced as data sources
  * @param value the value of the datapoint to generate (chosen at random between 0 and 99999 if not specified)
  * @returns the generated datapoint or undefined
@@ -80,7 +75,6 @@ export function generateNumericOrEmptyDatapoint(
 
 /**
  * Randomly generates a Yes / No / Na / undefined datapoint
- *
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint or undefined
  */
@@ -90,7 +84,6 @@ export function generateYesNoOrEmptyDatapoint(reports: ReferencedReports): DataP
 
 /**
  * Generates a datapoint with the given value or a datapoint with no value reported at random
- *
  * @param value the decimal value of the datapoint to generate (is ignored at random)
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint or undefined
@@ -105,7 +98,6 @@ export function generateDatapointOrNotReportedAtRandom(
 
 /**
  * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
- *
  * @param value the decimal value of the datapoint to generate
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint
@@ -138,7 +130,6 @@ export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedRepo
 
 /**
  * Generates the CSV mapping for a single (decimal) datapoint
- *
  * @param dataPointName the name of the datapoint
  * @param dataPointGetter a function that can be used to access the datapoint given the current fixture element
  * @param valueConverter a conversion function for formatting the number (i.e. that converts the decimal number to a percentage string)

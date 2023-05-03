@@ -11,7 +11,6 @@ const possibleCompanyAgeBracketUndefinedValues = [undefined, ...Object.values(Co
 
 /**
  * Picks a random company age bracket or undefined
- *
  * @returns a random company age bracket or undefined
  */
 export function randomCompanyAgeBracketOrUndefined(): CompanyAgeBracket | undefined {
@@ -21,7 +20,6 @@ export function randomCompanyAgeBracketOrUndefined(): CompanyAgeBracket | undefi
 const possibleIndustryUndefinedValues = [undefined, ...Object.values(Industry)];
 /**
  * Picks a random industry or undefined
- *
  * @returns a random industry or undefined
  */
 export function randomIndustryOrUndefined(): Industry | undefined {
@@ -31,7 +29,6 @@ export function randomIndustryOrUndefined(): Industry | undefined {
 const possibleHeatSourceUndefinedValues = [undefined, ...Object.values(HeatSource)];
 /**
  * Picks a random heat source or undefined
- *
  * @returns a random heat source or undefined
  */
 export function randomHeatSourceOrUndefined(): HeatSource | undefined {
@@ -41,7 +38,6 @@ export function randomHeatSourceOrUndefined(): HeatSource | undefined {
 const possibleEnergyEfficiencyBracketUndefinedValues = [undefined, ...Object.values(EnergyEfficiencyBracket)];
 /**
  * Picks a random energy efficiency bracket or undefined
- *
  * @returns a random energy efficiency bracket or undefined
  */
 export function randomEnergyEfficiencyBracketOrUndefined(): EnergyEfficiencyBracket | undefined {
@@ -51,7 +47,6 @@ export function randomEnergyEfficiencyBracketOrUndefined(): EnergyEfficiencyBrac
 const possibleEnergyProductionBracketUndefinedValues = [undefined, ...Object.values(EnergyProductionBracket)];
 /**
  * Picks a random energy production bracket or undefined
- *
  * @returns a random energy production bracket or undefined
  */
 export function randomEnergyProductionBracketOrUndefined(): EnergyProductionBracket | undefined {

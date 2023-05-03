@@ -74,7 +74,6 @@ export default defineComponent({
   methods: {
     /**
      * Initializes the Keycloak adaptor and configures it according to the requirements of the Dataland application.
-     *
      * @returns a promise which resolves to the Keycloak adaptor object
      */
     initKeycloak(): Promise<Keycloak> {

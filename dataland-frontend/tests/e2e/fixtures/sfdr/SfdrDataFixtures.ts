@@ -14,7 +14,6 @@ import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a random SFDR dataset
- *
  * @param fiscalYearEnd Optional parameter if a specific date should be set instead of a random one
  * @returns a random SFDR dataset
  */
