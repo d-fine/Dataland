@@ -11,7 +11,6 @@
       responsiveLayout="scroll"
       :expandableRowGroups="true"
       :reorderableColumns="true"
-      @row-click="rowExpand($event.data)"
       v-model:expandedRowGroups="expandedRowGroups"
     >
       <Column
@@ -22,9 +21,7 @@
         header="KPIs"
       >
         <template #body="slotProps">
-          <span class="table-left-label">{{
-            slotProps.data.kpiLabel
-          }}</span>
+          <span class="table-left-label">{{ slotProps.data.kpiLabel }}</span>
           <em
             class="material-icons info-icon"
             aria-hidden="true"
@@ -46,9 +43,7 @@
         <template #body="{ data }">
           <a
             v-if="Array.isArray(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId].length"
-            @click="
-              openModalAndDisplayListOfProductionSites(data[reportingPeriod.dataId], data.kpiLabel)
-            "
+            @click="openModalAndDisplayListOfProductionSites(data[reportingPeriod.dataId], data.kpiLabel)"
             class="link"
             >Show "{{ data.kpiLabel }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
@@ -66,9 +61,7 @@
       <Column field="subAreaKey" header="Impact Area"></Column>
       <template #groupheader="slotProps">
         <span>{{
-          slotProps.data.subCategoryLabel
-            ? slotProps.data.subCategoryLabel
-            : slotProps.data.subCategoryKey
+          slotProps.data.subCategoryLabel ? slotProps.data.subCategoryLabel : slotProps.data.subCategoryKey
         }}</span>
       </template>
     </DataTable>
@@ -116,7 +109,6 @@ export default defineComponent({
   methods: {
     /**
      * Opens a modal to display a table with the provided list of production sites
-     *
      * @param listOfProductionSites An array consisting of production sites
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      */
@@ -135,12 +127,13 @@ export default defineComponent({
     },
     /**
      * Expands the rows ?
+     * @param row
      */
-    rowExpand(row:string){
+    rowExpand(row: string) {
       this.expandedRowGroups = this.expandedRowGroups.includes(row)
-      ? this.expandedRowGroups.filter((x) => x !== row) // Hide row
-      : [...this.expandedRowGroups, row]; // Show ro
-    }
+        ? this.expandedRowGroups.filter((x) => x !== row) // Hide row
+        : [...this.expandedRowGroups, row]; // Show ro
+    },
   },
 });
 </script>
@@ -149,10 +142,12 @@ export default defineComponent({
 .p-rowgroup-footer td {
   font-weight: 500;
 }
+
 ::v-deep(.p-rowgroup-header) {
   span {
     font-weight: 500;
   }
+
   .p-row-toggler {
     vertical-align: middle;
     margin-right: 0.25rem;
