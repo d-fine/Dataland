@@ -14,7 +14,7 @@ data class LksgMasterData(
     @field:JsonProperty(required = true)
     val dataDate: LocalDate,
 
-    val headOffice: YesNo?,
+    val headOfficeInGermany: YesNo?,
 
     val groupOfCompanies: YesNo?,
 

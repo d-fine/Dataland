@@ -2731,7 +2731,7 @@
           "employeeUnder18Apprentices": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "worstFormsOfChildLabor": {
+          "worstFormsOfChildLaborProhibition": {
             "$ref": "#/components/schemas/YesNo"
           },
           "worstFormsOfChildLaborForms": {
@@ -2758,7 +2758,7 @@
           "childLaborMeasures": {
             "type": "string"
           },
-          "childLaborPolicy": {
+          "childLaborPreventionPolicy": {
             "$ref": "#/components/schemas/YesNo"
           }
         }
@@ -2997,10 +2997,10 @@
           "forcedLaborAndSlaveryPreventionTraining": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "forcedLaborAndSlaveryMeasures": {
+          "forcedLaborAndSlaveryPreventionMeasuresOther": {
             "type": "string"
           },
-          "forcedLaborPolicy": {
+          "forcedLaborPreventionPolicy": {
             "$ref": "#/components/schemas/YesNo"
           }
         }
@@ -3034,7 +3034,7 @@
           "humanRightsViolation": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "humanRightsViolationLocation": {
+          "humanRightsViolations": {
             "type": "string"
           },
           "humanRightsViolationAction": {
@@ -3134,7 +3134,7 @@
             "type": "string",
             "format": "date"
           },
-          "headOffice": {
+          "headOfficeInGermany": {
             "$ref": "#/components/schemas/YesNo"
           },
           "groupOfCompanies": {
@@ -3221,7 +3221,7 @@
           "subcontractingCompaniesIndustries": {
             "type": "string"
           },
-          "productionSites": {
+          "multipleProductionSites": {
             "$ref": "#/components/schemas/YesNo"
           },
           "listOfProductionSites": {
@@ -3323,7 +3323,7 @@
           "fairAndEthicalRecruitmentPolicy": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "equalOpportunitiesAndNondiscriminationPolicy": {
+          "equalOpportunitiesAndNonDiscriminationPolicy": {
             "$ref": "#/components/schemas/YesNo"
           }
         }

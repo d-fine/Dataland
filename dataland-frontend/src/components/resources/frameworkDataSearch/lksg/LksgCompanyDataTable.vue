@@ -3,15 +3,14 @@
     <DataTable
       :value="kpiDataObjectsToDisplay"
       rowGroupMode="subheader"
-      groupRowsBy="subAreaKey"
-      dataKey="subAreaKey"
-      sortField="subAreaKey"
+      groupRowsBy="subcategoryKey"
+      dataKey="subcategoryKey"
+      sortField="subcategoryKey"
       :sortOrder="1"
       sortMode="single"
       responsiveLayout="scroll"
       :expandableRowGroups="true"
       :reorderableColumns="true"
-      @row-click="rowExpand($event.data)"
       v-model:expandedRowGroups="expandedRowGroups"
     >
       <Column
@@ -22,9 +21,7 @@
         header="KPIs"
       >
         <template #body="slotProps">
-          <span class="table-left-label">{{
-            slotProps.data.kpiLabel
-          }}</span>
+          <span class="table-left-label">{{ slotProps.data.kpiLabel }}</span>
           <em
             class="material-icons info-icon"
             aria-hidden="true"
@@ -46,9 +43,7 @@
         <template #body="{ data }">
           <a
             v-if="Array.isArray(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId].length"
-            @click="
-              openModalAndDisplayListOfProductionSites(data[reportingPeriod.dataId], data.kpiLabel)
-            "
+            @click="openModalAndDisplayListOfProductionSites(data[reportingPeriod.dataId], data.kpiLabel)"
             class="link"
             >Show "{{ data.kpiLabel }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
@@ -63,12 +58,10 @@
         </template>
       </Column>
 
-      <Column field="subAreaKey" header="Impact Area"></Column>
+      <Column field="subcategoryKey" header="Impact Area"></Column>
       <template #groupheader="slotProps">
         <span>{{
-          slotProps.data.subCategoryLabel
-            ? slotProps.data.subCategoryLabel
-            : slotProps.data.subCategoryKey
+          slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey
         }}</span>
       </template>
     </DataTable>
@@ -92,7 +85,7 @@ export default defineComponent({
   data() {
     return {
       kpiDataObjectsToDisplay: [],
-      expandedRowGroups: ["_general"],
+      expandedRowGroups: ["_masterData"],
       listOfProductionSitesConvertedNames,
     };
   },
@@ -133,14 +126,6 @@ export default defineComponent({
         },
       });
     },
-    /**
-     * Expands the rows ?
-     */
-    rowExpand(row:string){
-      this.expandedRowGroups = this.expandedRowGroups.includes(row)
-      ? this.expandedRowGroups.filter((x) => x !== row) // Hide row
-      : [...this.expandedRowGroups, row]; // Show ro
-    }
   },
 });
 </script>
@@ -149,10 +134,12 @@ export default defineComponent({
 .p-rowgroup-footer td {
   font-weight: 500;
 }
+
 ::v-deep(.p-rowgroup-header) {
   span {
     font-weight: 500;
   }
+
   .p-row-toggler {
     vertical-align: middle;
     margin-right: 0.25rem;

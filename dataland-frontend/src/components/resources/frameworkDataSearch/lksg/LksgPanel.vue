@@ -20,11 +20,12 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
-import {lksgDataModel, Subcategory} from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
+import { Subcategory } from "@/utils/GenericFrameworkTypes";
 
 export default defineComponent({
   name: "LksgPanel",
-  components: {LksgCompanyDataTable, LksgCompanyDataTable },
+  components: { LksgCompanyDataTable },
   data() {
     return {
       firstRender: true,
@@ -97,26 +98,26 @@ export default defineComponent({
      *
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
-     * @param subCategory The sub category to which the kpi belongs
+     * @param subcategory The sub category to which the kpi belongs
      * @param dataIdOfLksgDataset The value of the date kpi of an LkSG dataset
      */
     createKpiDataObjects(
       kpiKey: string,
       kpiValue: object | string | number,
-      subCategory: Subcategory,
+      subcategory: Subcategory,
       dataIdOfLksgDataset: string
     ): void {
-      const kpi = subCategory.fields.filter((field) => field.name === kpiKey)[0];
+      const kpi = subcategory.fields.filter((field) => field.name === kpiKey)[0];
       if (kpiKey === "totalRevenue" && typeof kpiValue === "number") {
         kpiValue = this.convertToMillions(kpiValue);
       }
       let indexOfExistingItem = -1;
       const kpiData = {
-        subCategoryKey: subCategory.name == "general" ? `_${subCategory.name}` : subCategory.name,
-        subCategoryLabel: subCategory.label,
+        subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
+        subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
         kpiKey: kpiKey,
-        kpiLabel:kpi.label,
-        kpiDescription: kpi.description,
+        kpiLabel: kpi?.label ? kpi.label : kpiKey,
+        kpiDescription: kpi?.description ? kpi.description : "",
         [dataIdOfLksgDataset]: kpiValue,
       } as kpiDataObject;
       indexOfExistingItem = this.kpiDataObjects.findIndex(
@@ -141,11 +142,12 @@ export default defineComponent({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
-          for (const [areaKey,areaObject] of Object.entries(oneLksgDataset.data)) {
+          for (const [areaKey, areaObject] of Object.entries(oneLksgDataset.data)) {
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
               for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
-                const subcategory = lksgDataModel.filter((area) => area.name === areaKey)[0]
-                    .subcategories.filter((category) => category.name === subAreaKey)[0];
+                const subcategory = lksgDataModel
+                  .filter((area) => area.name === areaKey)[0]
+                  .subcategories.filter((category) => category.name === subAreaKey)[0];
                 this.createKpiDataObjects(kpiKey, kpiValue, subcategory, dataIdOfLksgDataset);
               }
             }
@@ -166,12 +168,14 @@ export default defineComponent({
     },
   },
 });
+
 interface kpiDataObject {
-  subCategoryKey: string,
-  subCategoryLabel: string,
-  kpiKey: string,
-  kpiLabel: string,
-  kpiDescription: string,
-  [index:string]: string,
+  subcategoryKey: string;
+  subcategoryLabel: string;
+  kpiKey: string;
+  kpiLabel: string;
+  kpiDescription: string;
+
+  [index: string]: string;
 }
 </script>

@@ -46,6 +46,7 @@
                         :info="field.description"
                         :name="field.name"
                         :options="field.options"
+                        :required="field.required"
                       />
                     </FormKit>
                   </div>
@@ -90,7 +91,7 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
 import { CompanyAssociatedDataLksgData } from "@clients/backend";
