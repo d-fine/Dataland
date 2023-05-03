@@ -70,7 +70,7 @@ export default defineComponent({
   },
   props: {
     file: {
-      type: Object as () => { name: string, reportDate: string, reportDateAsDate: string | Date, reference: string },
+      type: Object as () => { name: string; reportDate: string; reportDateAsDate: string | Date; reference: string },
       required: true,
     },
   },
