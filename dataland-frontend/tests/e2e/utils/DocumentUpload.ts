@@ -13,6 +13,7 @@ export function uploadAllDocuments(token: string): void {
       cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
         uploadDocumentViaApi(token, bufferObject.data, name).catch((error) => console.log(error));
       });
+      cy.clearLocalStorage();
     });
   });
 }
