@@ -14,13 +14,13 @@ fun main() {
 
 fun KClass<*>.listAllProperties(baseName: String): Sequence<String> = sequence {
     if (isTerminal(this@listAllProperties)) {
-       yield("$baseName: $simpleName")
-    }  else {
-        val prefix = if (baseName.isBlank()) "" else "${baseName}."
+        yield("$baseName: $simpleName")
+    } else {
+        val prefix = if (baseName.isBlank()) "" else "$baseName."
         memberProperties.forEach {
             val childBaseName = "$prefix${it.name}"
-            val propetryKClass = it.returnType.classifier as? KClass<*>
-            yieldAll(propetryKClass!!.listAllProperties(childBaseName))
+            val propertyKClass = it.returnType.classifier as? KClass<*>
+            yieldAll(propertyKClass!!.listAllProperties(childBaseName))
         }
     }
 }
