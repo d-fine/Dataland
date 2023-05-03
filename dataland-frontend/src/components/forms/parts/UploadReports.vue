@@ -284,7 +284,7 @@ export default defineComponent({
           file["nameAlreadyExists"] = "false";
           file["reportDate"] = file["reportDate"] ?? "";
           file["reportDateAsDate"] = file["reportDateAsDate"] ?? "";
-          file["reference"] = file["reference"] ?? "";
+          file["reference"] = file["reference"] ?? ""; // TODO just an idea: Why don't we add "reference" and "nameAlreadyExists" as fields to the CompanyReportUploadModel ?
         }
         return file as CompanyReportUploadModel & File;
       });
