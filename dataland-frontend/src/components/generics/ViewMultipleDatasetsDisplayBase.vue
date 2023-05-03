@@ -181,6 +181,7 @@ export default defineComponent({
 
     /**
      * Method to set a data meta information object as the only one to display
+     *
      * @param dataMetaInfoToDisplay the data meta information to display
      */
     setSingleDataMetaInfoToDisplay(dataMetaInfoToDisplay: DataMetaInformation | null) {
@@ -190,6 +191,7 @@ export default defineComponent({
 
     /**
      * Method to asynchronously retrieve the meta data associated to a given data ID
+     *
      * @param dataId the data id to retrieve meta info for
      */
     async getMetaDataForDataId(dataId: string) {
@@ -238,6 +240,7 @@ export default defineComponent({
      * Stores the received map of distinct reporting periods to active meta info from the
      * "updateActiveDataMetaInfoForChosenFramework" event, then triggers a controller-method which picks the data
      * meta infos for the datasets to display, and finally terminates the loading-state of the component.
+     *
      * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
      * active data meta information objects
      */

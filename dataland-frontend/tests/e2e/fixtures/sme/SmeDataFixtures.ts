@@ -14,6 +14,7 @@ import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a random SME dataset
+ *
  * @returns a random SME dataset
  */
 export function generateSmeData(): SmeData {

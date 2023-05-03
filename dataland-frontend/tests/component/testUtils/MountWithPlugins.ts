@@ -28,6 +28,7 @@ declare global {
     interface Chainable {
       /**
        * Helper mount function for Vue Components
+       *
        * @param component Vue Component or JSX Element to mount
        * @param options Options passed to Vue Test Utils
        */
@@ -46,6 +47,7 @@ declare global {
 /**
  * A slightly modified version of the vue mount function that automatically initiates plugins used in dataland
  * like PrimeVue, Pinia or the Router and also allows for simple authentication injection
+ *
  * @param component the component you want to mount
  * @param options the options for mounting said component
  * @returns a cypress chainable for the mounted wrapper and the Vue component

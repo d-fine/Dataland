@@ -17,5 +17,5 @@ data class LksgUnequalTreatmentOfEmployment(
 
     val fairAndEthicalRecruitmentPolicy: YesNo?,
 
-    val equalOpportunitiesAndNondiscriminationPolicy: YesNo?,
+    val equalOpportunitiesAndNonDiscriminationPolicy: YesNo?,
 )

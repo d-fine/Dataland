@@ -96,6 +96,7 @@ export default defineComponent({
   methods: {
     /**
      * Remove item from list of Production Sites Goods Or Services
+     *
      * @param element - the item to be deleted
      */
     removeItemFromListOfGoodsOrServices(element: string) {

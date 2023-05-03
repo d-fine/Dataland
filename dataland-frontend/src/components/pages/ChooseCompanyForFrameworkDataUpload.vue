@@ -100,6 +100,7 @@ export default defineComponent({
     },
     /**
      * Executes a router push to the upload overview page of a given company
+     *
      * @param companyId the ID of company in question
      */
     handleCompanyCreated(companyId: string) {

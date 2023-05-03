@@ -2,6 +2,7 @@ import { Configuration, DataMetaInformation, SmeData, SmeDataControllerApi } fro
 
 /**
  * Uploads a single SME data entry for a company
+ *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload

@@ -86,6 +86,7 @@ export default defineComponent({
     },
     /**
      * Tries to find a message in an error
+     *
      * @param error the error to extract a message from
      * @returns the extracted message
      */

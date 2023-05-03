@@ -18,6 +18,7 @@ import { parse } from "json2csv";
 
 /**
  * Generates fake data for a single cash-flow type for the eutaxonomy-non-financials framework
+ *
  * @param reports a list of reports that can be referenced
  * @returns the generated data
  */
@@ -35,6 +36,7 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedReports): E
 
 /**
  * Generates a single fixture for the eutaxonomy-non-financials framework
+ *
  * @returns the generated fixture
  */
 export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
@@ -50,6 +52,7 @@ export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFi
 
 /**
  * Exports the eutaxonomy-non-financials data to CSV
+ *
  * @param companyInformationWithEuTaxonomyDataForNonFinancials the data to export
  * @returns the generated CSV as a string
  */

@@ -1,6 +1,7 @@
 /**
  * Format a number using the symbol and the value as break points.
  * adopted from https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
+ *
  * @param  {number} numberToConvert      is the number to be converted such as an amount
  * @param  {number} maxNumberOfDigitsAfterDecimalPoint      maximum number of digits to appear after the decimal point
  * @returns the formatted number

@@ -8,6 +8,7 @@ export interface UploadIds {
 
 /**
  * Gets stored companies that have at least one dataset with the provided data type
+ *
  * @param token The API bearer token to use
  * @param dataType Data type for which the returned companies should have at least one dataset
  * @returns an array of stored companies
@@ -23,6 +24,7 @@ export async function getStoredCompaniesForDataType(token: string, dataType: Dat
 /**
  * Counts the number of stored companies which contain at least one dataset with the provided data type and the
  * total number of datasets for that datatype
+ *
  * @param token The API bearer token to use
  * @param dataType The data type to use while counting companies and number of datasets for that data type
  * @returns an object which contains the resulting number of companies and number of datasets

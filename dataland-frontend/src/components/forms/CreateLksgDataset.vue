@@ -261,6 +261,7 @@ export default defineComponent({
     /**
      * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
+     *
      * @param dataId the id of the dataset to load
      */
     async loadLKSGData(dataId: string): Promise<void> {
@@ -344,6 +345,7 @@ export default defineComponent({
 
     /**
      * Remove Object from ProductionSite array
+     *
      * @param id - the id of the object in the array
      */
     removeItemFromListOfProductionSites(id: number) {

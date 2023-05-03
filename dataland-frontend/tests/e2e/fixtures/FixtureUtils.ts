@@ -8,6 +8,7 @@ export type ReferencedReports = { [key: string]: CompanyReport };
 /**
  * Randomly generates a fixture datasets consisting of a specified number of groups of company information datasets, framework datasets and
  * a reporting period
+ *
  * @param frameworkDataGenerator a generator that generates a random framework dataset of type T
  * @param numElements the number of elements to generate
  * @param reportingPeriodGenerator a generator that generates a reporting period

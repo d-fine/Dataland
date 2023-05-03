@@ -117,6 +117,7 @@ export default defineComponent({
   methods: {
     /**
      * Computes the path a row click should lead to depending on the selected dataset and its status
+     *
      * @param datasetTableInfo relevant dataset information
      * @returns the path depending on the status of the data set
      */
@@ -126,6 +127,7 @@ export default defineComponent({
 
     /**
      * Filter the given datasets for the search string in the company name
+     *
      * @param searchString The search string to look for in the company names
      */
     applySearchFilter(searchString: string): void {
@@ -145,6 +147,7 @@ export default defineComponent({
 
     /**
      * Depending on the dataset status, executes a router push to either the dataset view page or an upload page
+     *
      * @param event an event that stores the DatasetTableInfo of the on clicked row
      * @param event.data the DatasetTableInfo to be pushed to
      */

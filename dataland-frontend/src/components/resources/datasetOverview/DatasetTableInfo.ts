@@ -23,6 +23,7 @@ export class DatasetTableInfo {
 
 /**
  * Computes the reduced DatasetStatus of the provided dataset
+ *
  * @param dataMetaInfo the dataset containing different status indicators (i.e QAStatus, currentlyActive,...)
  * @returns a unified DatasetStatus
  */
@@ -36,6 +37,7 @@ export function getDatasetStatus(dataMetaInfo: DataMetaInformation): DatasetStat
 
 /**
  * Loads the datasets in form of DatasetTableInfos the requesting user is responsible for
+ *
  * @param getKeycloakPromise the authorization for backend interaction
  * @param searchString a filter for the company names / alternative names
  * @returns the filtered DatasetTableInfos

@@ -58,6 +58,7 @@ describe("Component tests for SfdrPanel", () => {
    * This functions imitates an api response of the /data/sfdr/companies/mock-company-id endpoint
    * to include 6 active Sfdr datasets from different years to test the simultaneous display of multiple Sfdr
    * datasets (constructed datasets range from 2023 to 2028)
+   *
    * @param baseDataset the SFDR dataset used as a basis for constructing the 6 mocked ones
    * @returns a mocked api response
    */

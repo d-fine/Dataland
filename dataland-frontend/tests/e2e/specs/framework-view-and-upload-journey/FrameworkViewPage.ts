@@ -58,6 +58,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       /**
        * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
        * in the search results table.
+       *
        * @param frameworkQueryParam The query param set as framework filter
        * @param searchStringQueryParam The query param set as search string
        */
@@ -76,6 +77,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       /**
        * Types a search string into the searchbar and clicks on the first autocomplete suggestion.
+       *
        * @param searchString The search string to type into the search bar
        * @param searchBarSelector The selector to select the correct search bar from the DOM
        */
@@ -97,6 +99,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       /**
        * Validates that the view-page is currently set to the expected framework by checking the url and the
        * chosen option in the frameworks-dropdown.
+       *
        * @param expectedChosenFramework The framework wich is expected to be currently set
        */
       function validateChosenFramework(expectedChosenFramework: string): void {
@@ -120,6 +123,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       /**
        * Validates that the view-page is currently set to the expected reporting period by checking the url and
        * the chosen option in the reporting-periods-dropdown.
+       *
        * @param expectedChosenReportingPeriod The reporting period wich is expected to be currently set
        * @param skipUrlCheck This flag makes it possible to skip the url-check
        */
@@ -135,6 +139,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       /**
        * Validates that a specific dropdown contains some expected options.
+       *
        * @param dropdownSelector The selector to be used to identify the dropdown which needs to be validated
        * @param expectedDropdownOptions The expected options for this dropdown
        */
@@ -170,6 +175,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       /**
        * Gets an HTML element by looking for a specific value for the "data-test" HTML attribute and runs a
        * "should"-operation on that HTML element
+       *
        * @param dataTestValue The value which the HTML element should have for the attribute "data-test"
        * @param shouldTag The value of the cypress "should" operation, e.g. "not.exist"
        */
@@ -179,6 +185,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       /**
        * Opens the framework dropdown and selects the framework passed as input if it is found
+       *
        * @param frameworkToSelect The framework/item that shall be selected
        */
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
@@ -188,6 +195,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       /**
        * Opens the reporting periods dropdown and selects the reporting period passed as input if it is found
+       *
        * @param reportingPeriodToSelect The reporting period/the item that shall be selected
        */
       function selectReportingPeriodInDropdown(reportingPeriodToSelect: string): void {
@@ -206,6 +214,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * Validates if the container which displays a specific status of the current dataset is present and contains
        * the expected text.
        * It also validates if the corresponding button in that container contains the expected text.
+       *
        * @param expectedTextInContainer The expected disclaimer text in the display-status-container
        * @param expectedButtonText The expected text inside the corresponding button of the display-status-container
        * @returns a Cypress Chainable containing the button of the display-status-container
@@ -221,6 +230,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       /**
        * Validates if all the column headers equal the passed values
+       *
        * @param expectedColumnHeaders The expected values in the headers of the LkSG dataset columns
        */
       function validateColumnHeadersOfDisplayedLksgDatasets(expectedColumnHeaders: string[]): void {
@@ -236,6 +246,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       /**
        * Validates if all the values in the Vat ID row on the LkSG panel equal the passed values
+       *
        * @param expectedVatIdNumbers The expected values in the row of the VAT identification number field
        */
       function validateVatIdNumbersOfDisplayedLksgDatasets(expectedVatIdNumbers: string[]): void {
@@ -253,6 +264,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       /**
        * Validates that the EU taxonomy financials table is there and has the expected taxonomy eligible economic activity value in percent
+       *
        * @param expectedTaxonomyEligibleEconomicActivityValueInPercent  the expected taxonomy eligible economic activity value in percent
        */
       function validateEUTaxonomyFinancialsTable(expectedTaxonomyEligibleEconomicActivityValueInPercent: string): void {
@@ -378,6 +390,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       /**
        * Intercepts a given function for a request pattern
+       *
        * @param requestPattern the pattern to intercept
        * @param requestingExpression the function to intercept
        * @param hint a description of the intercept for recognizability of the request
@@ -391,6 +404,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       /**
        * Intercepts a given function for a data request
+       *
        * @param requestingExpression the function to intercept
        */
       function waitForDataRequest(requestingExpression: () => void): void {
@@ -399,6 +413,7 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       /**
        * Intercepts a given function for a company request
+       *
        * @param requestingExpression the function to intercept
        */
       function waitForCompanyRequest(requestingExpression: () => void): void {

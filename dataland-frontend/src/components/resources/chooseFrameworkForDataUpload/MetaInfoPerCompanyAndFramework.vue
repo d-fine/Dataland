@@ -106,6 +106,7 @@ export default defineComponent({
   methods: {
     /**
      * Calculates the link to the view page for the specified dataset
+     *
      * @param dataMetaInfo the dataset to generate the link for
      * @returns the link to the view page for the specified dataset
      */
@@ -116,6 +117,7 @@ export default defineComponent({
     /**
      * Method to construct a title for a data meta information object depending on whether it is currently active and
      * whether a corresponding frontend view page exists
+     *
      * @param dataMetaInfo The data meta information object for which the title is constructed
      * @returns the constrcted dataset title
      */

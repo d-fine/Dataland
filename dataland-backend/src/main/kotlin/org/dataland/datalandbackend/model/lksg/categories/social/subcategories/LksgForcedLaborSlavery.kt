@@ -23,7 +23,7 @@ data class LksgForcedLaborSlavery(
 
     val forcedLaborAndSlaveryPreventionTraining: YesNo?,
 
-    val forcedLaborAndSlaveryMeasures: String?,
+    val forcedLaborAndSlaveryPreventionMeasuresOther: String?,
 
-    val forcedLaborPolicy: YesNo?,
+    val forcedLaborPreventionPolicy: YesNo?,
 )

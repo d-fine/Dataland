@@ -3,6 +3,7 @@ import { YesNo, YesNoNa } from "@clients/backend";
 
 /**
  * Randomly returns Yes or No
+ *
  * @returns Yes or No
  */
 export function randomYesNo(): YesNo {
@@ -11,6 +12,7 @@ export function randomYesNo(): YesNo {
 
 /**
  * Randomly returns Yes, No or Na
+ *
  * @returns Yes, No or Na
  */
 export function randomYesNoNa(): YesNoNa {
@@ -21,6 +23,7 @@ const possibleYesNoNaUndefinedValues = [undefined, ...Object.values(YesNoNa)];
 
 /**
  * Randomly returns Yes, No, N/A or undefined
+ *
  * @returns Yes, No, N/A or undefined
  */
 export function randomYesNoNaUndefined(): YesNoNa | undefined {

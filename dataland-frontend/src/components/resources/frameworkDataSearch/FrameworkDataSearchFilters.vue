@@ -206,6 +206,7 @@ export default defineComponent({
     },
     /**
      * Initializes the availableCountries, availableSectors and avaialbleFrameworks properties for the dropdown filters
+     *
      * @returns a promise as this function needs to request the Dataland api
      */
     async retrieveAvailableFilterOptions() {

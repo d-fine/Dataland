@@ -12,6 +12,7 @@ import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
+ *
  * @param companyId The Id of the company to upload the dataset for
  * @param valueFieldNotFilled Value which, if true, disables the value field
  * @returns the id of the dataset that has been uploaded
@@ -84,6 +85,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
 
 /**
  * Extracts the first eutaxonomy-non-financials dataset from the fake fixtures
+ *
  * @returns the first eutaxonomy-non-financials dataset from the fake fixtures
  */
 export function getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures(): Chainable<
@@ -99,6 +101,7 @@ export function getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures(): Chaina
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland API
+ *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload

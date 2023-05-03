@@ -4,6 +4,7 @@
 
 /**
  * convert camel case string to sentence case string using regex
+ *
  * @param rawText is the string to be converted to a human-readable string
  * @returns the converted string in "sentence-case"
  */
@@ -16,6 +17,7 @@ function convertCamelCaseToSentenceCase(rawText: string): string {
 
 /**
  * get the representable text from the mapping object
+ *
  * @param rawText is the string to be converted to a human-readable string
  * @returns the converted string
  */
@@ -51,6 +53,7 @@ function humanizeViaMapping(rawText: string): string {
 
 /**
  * convert string to a human-readable text
+ *
  * @param rawText is the string to be converted to a human-readable string
  * @returns the converted string
  */

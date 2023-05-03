@@ -18,7 +18,7 @@ data class LksgGeneralViolations(
 
     val humanRightsViolation: YesNo?,
 
-    val humanRightsViolationLocation: String?,
+    val humanRightsViolations: String?,
 
     val humanRightsViolationAction: YesNo?,
 
