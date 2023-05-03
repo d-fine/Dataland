@@ -345,7 +345,7 @@ export default defineComponent({
     waitingForData: false,
     formatBytesUserFriendly,
     checkCustomInputs,
-    euTaxonomyKPIsModel: euTaxonomyKPIsModel,
+    euTaxonomyKPIsModel,
     euTaxonomyKpiNameMappings,
     euTaxonomyKpiInfoMappings,
     assuranceData: {

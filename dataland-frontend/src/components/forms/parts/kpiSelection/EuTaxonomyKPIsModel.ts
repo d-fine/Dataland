@@ -1,3 +1,5 @@
+import { EuTaxonomyDataForFinancialsFinancialServicesTypesEnum } from "@clients/backend";
+
 export const euTaxonomyKPIsModel = {
   creditInstitutionKpis: ["tradingPortfolio", "interbankLoans", "tradingPortfolioAndInterbankLoans", "greenAssetRatio"],
   insuranceKpis: ["taxonomyEligibleNonLifeInsuranceActivities"],
@@ -9,11 +11,11 @@ export const euTaxonomyKPIsModel = {
     "banksAndIssuers",
     "investmentNonNfrd",
   ],
-  companyTypeToEligibilityKpis: {
-    creditInstitutionKpis: "CreditInstitution",
-    insuranceKpis: "InsuranceOrReinsurance",
-    investmentFirmKpis: "InvestmentFirm",
-    assetManagementKpis: "AssetManagement",
+  kpisFieldNameToFinancialServiceType: {
+    creditInstitutionKpis: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
+    insuranceKpis: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
+    investmentFirmKpis: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm,
+    assetManagementKpis: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement,
   },
   euTaxonomyDetailsPerCashFlowType: ["total", "aligned", "eligible"],
   euTaxonomyDetailsPerCashFlowFilesNames: {
@@ -22,6 +24,31 @@ export const euTaxonomyKPIsModel = {
     eligible: "eligiblePercentage",
   },
 };
+
+/**
+ * Returns the kpi field name for a financial services type enum that is passed as param.
+ * E.g. the input "EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution" should return
+ * "creditInstitutionKpis".
+ *
+ * @param financialServiceType The financial service type enum for which the kpi field name shall be returned
+ * @returns the kpi field name
+ */
+export function getKpiFieldNameForOneFinancialServiceType(
+  financialServiceType: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
+): string {
+  const matchingKeys = [];
+  for (const [key, value] of Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType)) {
+    if (value === financialServiceType) {
+      matchingKeys.push(key);
+    }
+  }
+  if (matchingKeys.length === 0) {
+    throw new Error(`No matching key found for financial service type: ${financialServiceType}`);
+  } else if (matchingKeys.length > 1) {
+    throw new Error(`Multiple matching keys found for financial service type: ${financialServiceType}`);
+  }
+  return matchingKeys[0];
+}
 
 export const euTaxonomyKpiNameMappings = {
   investmentNonNfrd: "Exposures To Non-NFRD Entities",
