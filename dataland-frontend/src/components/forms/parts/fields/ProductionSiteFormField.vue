@@ -26,12 +26,10 @@
 
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
-import AddressFormField from "@/components/forms/parts/fields/AddressFormField.vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import { LksgProductionSite } from "@clients/backend";
 import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -83,8 +81,6 @@ export default defineComponent({
   components: {
     UploadFormHeader,
     ProductionSiteFormElement,
-    InputTextFormField,
-    AddressFormField,
     FormKit,
     PrimeButton,
   },

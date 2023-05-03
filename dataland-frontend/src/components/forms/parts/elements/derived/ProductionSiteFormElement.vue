@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
