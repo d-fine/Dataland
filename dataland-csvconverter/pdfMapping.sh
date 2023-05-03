@@ -4,7 +4,7 @@ set -euxo pipefail
 # Expects two inputs: the csv file containing the real data and the folder with the pdfs for mapping
 # The output is a folder "pdfs" containing all relevant pdfs and the mapping file
 # In order to check which pdfs to not comply with the expected format run:
-# ls *.pdf | grep -Pv '_[A-Z0-9]{12}_(Annual|Sustainability|Integrated)'
+# ls *.pdf | grep -Pv '_[A-Z0-9]{12}_(Annual|Sustainability|Integrated).*Report'
 # inside the folder containing the pdfs
 
 csv_file="$1"
@@ -22,9 +22,9 @@ output_file=$output_folder/output.csv
 
 echo "Annual Report File,Sustainability Report File,Integrated Report File,Annual Report,Sustainability Report,Integrated Report" > "$output_file"
 for isin in $(grep -oP ';([A-Z0-9]{12});' $csv_file | cut -d';' -f2); do
-  annual_report_file=$(find "$pdf_folder" -name "*${isin}_Annual*.pdf" -printf "%f\n")
-  sustainability_report_file=$(find "$pdf_folder" -name "*${isin}_Sustainability*.pdf" -printf "%f\n")
-  integrated_report_file=$(find "$pdf_folder" -name "*${isin}_Integrated*.pdf" -printf "%f\n")
+  annual_report_file=$(find "$pdf_folder" -name "*${isin}_Annual*Report*.pdf" -printf "%f\n")
+  sustainability_report_file=$(find "$pdf_folder" -name "*${isin}_Sustainability*Report*.pdf" -printf "%f\n")
+  integrated_report_file=$(find "$pdf_folder" -name "*${isin}_Integrated*Report*.pdf" -printf "%f\n")
   annual_report_hash=$(sha256sum "$pdf_folder/$annual_report_file" 2>/dev/null | awk '{print $1}') || true
   sustainability_report_hash=$(sha256sum "$pdf_folder/$sustainability_report_file" 2>/dev/null | awk '{print $1}') || true
   integrated_report_hash=$(sha256sum "$pdf_folder/$integrated_report_file" 2>/dev/null | awk '{print $1}') || true
