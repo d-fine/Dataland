@@ -160,10 +160,12 @@ export default defineComponent({
         .map((it) => it.name.split(".")[0]);
     },
     duplicateReportNames(): Set<string> {
-      return new Set(this.allReferenceableReportsFilenames.filter((searchName) =>
-        (this.allReferenceableReportsFilenames.filter((testName) => searchName === testName).length > 1)
-      ));
-    }
+      return new Set(
+        this.allReferenceableReportsFilenames.filter(
+          (searchName) => this.allReferenceableReportsFilenames.filter((testName) => searchName === testName).length > 1
+        )
+      );
+    },
   },
   watch: {
     dataset() {
@@ -236,8 +238,6 @@ export default defineComponent({
      */
     updateReportDateHandler(newDate: Date, index: number, containingReports: CompanyReportUploadModel[]): void {
       containingReports[index].reportDate = getHyphenatedDate(newDate);
-      containingReports.push(containingReports[index]);
-      containingReports.pop();
     },
     /**
      * Uploads the filed that are to be uploaded if they are not already available to dataland
@@ -299,7 +299,9 @@ export default defineComponent({
     checkIfThereAreNoDuplicateReportNames(): void {
       if (this.duplicateReportNames.size >= 1) {
         throw new Error(
-          `Some of the reports cannot be uploaded because another report with the same name already exists: ${[...this.duplicateReportNames].join(", ")}`
+          `Some of the reports cannot be uploaded because another report with the same name already exists: ${[
+            ...this.duplicateReportNames,
+          ].join(", ")}`
         );
       }
     },

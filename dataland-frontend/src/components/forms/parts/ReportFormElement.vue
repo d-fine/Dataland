@@ -91,15 +91,15 @@ export default defineComponent({
   watch: {
     reportDate() {
       this.getDateFromString();
-    }
+    },
   },
   computed: {
     hyphenatedDate() {
-      if(this.reportDateAsDate) {
+      if (this.reportDateAsDate) {
         return getHyphenatedDate(this.reportDateAsDate);
       }
       return "";
-    }
+    },
   },
   emits: ["reportingDateChanged"],
   methods: {
@@ -114,7 +114,7 @@ export default defineComponent({
      *
      * @param newDate the new date
      */
-    reportingDateChanged(newDate) {
+    reportingDateChanged(newDate: Date) {
       this.reportDateAsDate = newDate;
       this.$emit("reportingDateChanged", newDate);
     },
