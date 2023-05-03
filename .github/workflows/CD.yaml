@@ -170,9 +170,7 @@ jobs:
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data"
             rm -rf ./testing/data/*
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.18
-            ls -lisa ./testing/data
-            ls -lisa ./testing/data/documents
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.19
           fi
       - name: Download frontend API clients
         uses: actions/download-artifact@v3
