@@ -318,7 +318,7 @@
                                 >
                                 <PrimeButton
                                   :disabled="listOfProductionSites[index].allGoodsOrServicesAsString === ''"
-                                  @click="addNewItemsTolistOfProductionSites(index)"
+                                  @click="addNewGoodsOrServicesToProductionSite(index)"
                                   label="Add"
                                   class="p-button-text"
                                   icon="pi pi-plus"
@@ -329,7 +329,7 @@
                                 type="text"
                                 :ignore="true"
                                 v-model="listOfProductionSites[index].allGoodsOrServicesAsString"
-                                placeholder="Add comma (,) for more than one value"
+                                placeholder="Add semicolon (;) for more than one value"
                               />
                               <FormKit
                                 v-model="listOfProductionSites[index].listOfGoodsOrServices"
@@ -1341,14 +1341,11 @@ export default defineComponent({
      *
      * @param index - index of the element in the listOfProductionSites array
      */
-    addNewItemsTolistOfProductionSites(index: number) {
+    addNewGoodsOrServicesToProductionSite(index: number) {
       const listOfGoodsOrServicesToAdd = this.listOfProductionSites[index].allGoodsOrServicesAsString
         .split(";")
         .map((item) => item.trim());
-      this.listOfProductionSites[index].listOfGoodsOrServices = [
-        ...this.listOfProductionSites[index].listOfGoodsOrServices,
-        ...listOfGoodsOrServicesToAdd,
-      ];
+      this.listOfProductionSites[index].listOfGoodsOrServices.push(...listOfGoodsOrServicesToAdd);
       this.listOfProductionSites[index].allGoodsOrServicesAsString = "";
     },
 
