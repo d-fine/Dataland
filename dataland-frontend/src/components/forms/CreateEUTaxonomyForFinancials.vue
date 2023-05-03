@@ -418,7 +418,7 @@ export default defineComponent({
       ],
       selectedFinancialServiceOptions: [] as { label: string; value: string }[],
       confirmedSelectedFinancialServiceOptions: [] as { label: string; value: string }[],
-      confirmedSelectedFinancialServiceTypes: [] as string[],
+      confirmedSelectedFinancialServiceTypes: [] as string[], // TODO we could try to use a list of FinancialServiceTypeEnums here
       message: "",
       namesOfAllCompanyReportsForTheDataset: [] as string[],
       templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
