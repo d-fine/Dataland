@@ -22,19 +22,22 @@ import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   companyId: string,
   valueFieldNotFilled = false
-) :any {
+): Cypress.Chainable<string> {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
   uploadReports.uploadFile(TEST_PDF_FILE_NAME);
   uploadReports.validateSingleFileInUploadedList(TEST_PDF_FILE_NAME, "KB");
-  uploadReports.validateFileInfo(TEST_PDF_FILE_NAME);
+  uploadReports.fillReportCurrency(TEST_PDF_FILE_NAME);
 
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
   submitButton.buttonAppearsEnabled();
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
   submitButton.clickButton();
   cy.wait("@postCompanyAssociatedData");
+  return cy.contains("h4", "Upload successfully executed.").then<string>(($dataId): string => {
+    return $dataId.text();
+  });
 }
 
 /**
