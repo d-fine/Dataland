@@ -58,12 +58,12 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   wrapper: VueWrapper<InstanceType<T>>;
   component: VueWrapper<InstanceType<T>>["vm"];
 }> {
-  options.global = options.global || {};
-  options.global.plugins = options.global.plugins || [];
+  options.global = options.global ?? {};
+  options.global.plugins = options.global.plugins ?? [];
   options.global.plugins.push(createPinia());
   options.global.plugins.push(PrimeVue);
   options.global.plugins.push(DialogService);
-  options.global.provide = options.global.provide || {};
+  options.global.provide = options.global.provide ?? {};
 
   if (!options.router) {
     options.router = createRouter({

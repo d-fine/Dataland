@@ -69,7 +69,7 @@ export function generateLksgData(dataDate?: string): LksgData {
   return {
     social: {
       general: {
-        dataDate: dataDate === undefined ? randomFutureDate() : dataDate,
+        dataDate: dataDate ?? randomFutureDate(),
         lksgInScope: randomYesNo(),
         vatIdentificationNumber: generateVatIdentificationNumber(),
         numberOfEmployees: faker.datatype.number({ min: 1000, max: 200000 }),

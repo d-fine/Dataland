@@ -172,8 +172,9 @@ export default defineComponent({
       listOfDataMetaInfo: DataMetaInformation[]
     ): Map<string, DataMetaInformation[]> {
       return listOfDataMetaInfo.reduce((groups, dataMetaInfo) => {
-        groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo) ||
-          groups.set(dataMetaInfo.reportingPeriod, [dataMetaInfo]);
+        groups.get(dataMetaInfo.reportingPeriod)
+          ? groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo)
+          : groups.set(dataMetaInfo.reportingPeriod, [dataMetaInfo]);
         return groups;
       }, new Map<string, DataMetaInformation[]>());
     },
@@ -212,7 +213,9 @@ export default defineComponent({
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, false);
         const listOfAllDataMetaInfo = response.data;
         this.mapOfDataTypeToListOfDataMetaInfo = listOfAllDataMetaInfo.reduce((groups, dataMetaInfo) => {
-          groups.get(dataMetaInfo.dataType)?.push(dataMetaInfo) || groups.set(dataMetaInfo.dataType, [dataMetaInfo]);
+          groups.get(dataMetaInfo.dataType)
+            ? groups.get(dataMetaInfo.dataType)?.push(dataMetaInfo)
+            : groups.set(dataMetaInfo.dataType, [dataMetaInfo]);
           return groups;
         }, new Map<DataTypeEnum, Array<DataMetaInformation>>());
         this.mapOfDataTypeToListOfDataMetaInfo.forEach((value, key) => {
@@ -231,7 +234,7 @@ export default defineComponent({
      */
     getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
       if (!this.waitingForData) {
-        return this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) || [];
+        return this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) ?? [];
       } else {
         return [];
       }
