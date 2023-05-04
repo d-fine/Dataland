@@ -50,13 +50,16 @@ export default defineComponent({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  async created() {
+  created() {
     this.keycloakPromise = this.initKeycloak();
-    this.resolvedKeycloakPromise = await this.keycloakPromise;
-    if (this.resolvedKeycloakPromise?.authenticated) {
-      updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
-    }
+    this.keycloakPromise
+      .then((keycloak) => {
+        this.resolvedKeycloakPromise = keycloak;
+        if (this.resolvedKeycloakPromise?.authenticated) {
+          updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
+        }
+      })
+      .catch((e) => console.log(e));
   },
 
   provide() {
