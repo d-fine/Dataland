@@ -142,7 +142,7 @@ export function submitFilledInEuTaxonomyForm(
   const postRequestAlias = "";
   cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
   cy.get('button[data-test="submitButton"]').click();
-  cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
+  cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then((interception) => {
     expect(interception.response?.statusCode).to.eq(200);
   });
 }
