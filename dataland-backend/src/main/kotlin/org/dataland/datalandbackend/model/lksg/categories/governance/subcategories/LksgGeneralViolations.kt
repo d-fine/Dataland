@@ -26,13 +26,13 @@ data class LksgGeneralViolations(
 
     val highRiskCountriesRawMaterials: YesNo?,
 
-    val highRiskCountriesRawMaterialsLocation: String?,
+    val highRiskCountriesRawMaterialsLocation: List<String>?,
 
     val highRiskCountriesActivity: YesNo?,
 
-    val highRiskCountries: String?,
+    val highRiskCountries: List<String>?,
 
     val highRiskCountriesProcurement: YesNo?,
 
-    val highRiskCountriesProcurementName: String?,
+    val highRiskCountriesProcurementName: List<String>?,
 )

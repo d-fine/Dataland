@@ -3047,19 +3047,28 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "highRiskCountriesRawMaterialsLocation": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "highRiskCountriesActivity": {
             "$ref": "#/components/schemas/YesNo"
           },
           "highRiskCountries": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "highRiskCountriesProcurement": {
             "$ref": "#/components/schemas/YesNo"
           },
           "highRiskCountriesProcurementName": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -3144,7 +3153,10 @@
             "type": "string"
           },
           "industry": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "numberOfEmployees": {
             "type": "number"
@@ -3216,10 +3228,16 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "subcontractingCompaniesCountries": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "subcontractingCompaniesIndustries": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "productionSites": {
             "$ref": "#/components/schemas/YesNo"
