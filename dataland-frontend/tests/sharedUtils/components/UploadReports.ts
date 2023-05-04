@@ -22,8 +22,8 @@ export const uploadReports = {
       .should("contain", fileDimension);
     cy.get('input[name="reference"]').should("exist");
   },
-  validateFileInfo(filename: string): void {
-    cy.get(`[data-test="${filename}ToUploadContainer"]`).find('input[name="currency"]').type("www"); // TODO this is typing, not a validation?
+  fillReportCurrency(filename: string): void {
+    cy.get(`[data-test="${filename}ToUploadContainer"]`).find('input[name="currency"]').type("www");
   },
   removeSingleUploadedFileFromUploadedList(): void {
     cy.get('button[data-test="uploaded-files-remove"]').click();

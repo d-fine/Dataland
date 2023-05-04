@@ -1,6 +1,5 @@
 <template>
-  <div v-if="!editMode" class="col-3 p-3 topicLabel">
-    <!-- TODO Florian does not get why this is only rendered when editing a dataset, todo check figma -->
+  <div class="col-3 p-3 topicLabel">
     <h4 id="uploadReports" class="anchor title">Upload company reports</h4>
     <p>Please upload all relevant reports for this dataset in the PDF format.</p>
   </div>
@@ -24,9 +23,8 @@
               data-test="upload-files-button"
               @click="chooseCallback()"
               icon="pi pi-upload"
-              :label="editMode ? 'ADD REPORTS' : 'SELECT REPORTS'"
+              label="SELECT REPORTS"
             />
-            <!-- TODO I don't see why this shouldn't be uniform, todo check figma -->
           </div>
         </div>
       </template>
@@ -110,10 +108,6 @@ import PrimeButton from "primevue/button";
 import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
-import {
-  euTaxonomyKpiInfoMappings,
-  euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import { CompanyReport } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Keycloak from "keycloak-js";
@@ -141,8 +135,6 @@ export default defineComponent({
       DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES: DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       reportsToUpload: [] as (CompanyReportUploadModel & File)[],
       uploadedReports: [] as CompanyReportUploadModel[],
-      euTaxonomyKpiNameMappings, // TODO doesn't this make this component eutaxonomy-specific?  Now we cannot use it generically anymore, right?
-      euTaxonomyKpiInfoMappings,
     };
   },
   props: {
@@ -251,7 +243,10 @@ export default defineComponent({
         const fileIsAlreadyInStorage = (await documentUploadControllerControllerApi.checkDocument(file.reference)).data
           .documentExists;
         if (!fileIsAlreadyInStorage) {
-          await documentUploadControllerControllerApi.postDocument(file); // TODO assure that hash by frontend equals the one from backend
+          const backendComputedHash = (await documentUploadControllerControllerApi.postDocument(file)).data.documentId;
+          if (file.reference !== backendComputedHash) {
+            throw Error("Locally computed document hash does not coincede with the on received by the upload request!");
+          }
         }
       }
     },
