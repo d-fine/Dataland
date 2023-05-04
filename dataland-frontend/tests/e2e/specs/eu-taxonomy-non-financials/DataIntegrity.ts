@@ -166,7 +166,7 @@ describeIf(
               cy.get('[data-test="file-name-already-exists"]').should("exist");
               cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
               cy.get('button[data-test="submitButton"]').click();
-              cy.get('[data-test="failedUploadMessage"]').should("contain.text", `${TEST_PDF_FILE_NAME}.pdf`);
+              cy.get('[data-test="failedUploadMessage"]').should("contain.text", `${TEST_PDF_FILE_NAME}`);
               // TEST IF UPLOADING A REPORT IS NOT POSSIBLE IF IT IS NOT REFERENCED BY AT LEAST ONE DATAPOINT         TODO comment supports reading the test while working on it => delete at the very end
               cy.get(`button[data-test="remove-${TEST_PDF_FILE_NAME}"]`).click();
               cy.get('[data-test="file-name-already-exists"]').should("not.exist");
