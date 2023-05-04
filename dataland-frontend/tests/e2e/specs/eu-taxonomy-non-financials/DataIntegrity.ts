@@ -123,9 +123,8 @@ describeIf(
           return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
             (storedCompany) => {
               cy.intercept(`**/companies**`).as("getDataForMyDatasetsPage");
-              uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId)
-                .url()
-                .should("eq", getBaseUrl() + "/datasets");
+              uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
+              cy.url().should("eq", getBaseUrl() + "/datasets");
               cy.wait("@getDataForMyDatasetsPage");
 
               // TEST IF ALL VALUES THERE ON VIEW PAGE          TODO comment supports reading the test while working on it => delete at the very end

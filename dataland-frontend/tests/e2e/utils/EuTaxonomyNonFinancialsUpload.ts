@@ -17,12 +17,8 @@ import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
  *
  * @param companyId The Id of the company to upload the dataset for
  * @param valueFieldNotFilled Value which, if true, disables the value field
- * @returns the id of the dataset that has been uploaded
  */
-export function uploadEuTaxonomyDataForNonFinancialsViaForm(
-  companyId: string,
-  valueFieldNotFilled = false
-): Cypress.Chainable<string> {
+export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, valueFieldNotFilled = false): void {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
@@ -35,9 +31,6 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
   submitButton.clickButton();
   cy.wait("@postCompanyAssociatedData");
-  return cy.contains("h4", "Upload successfully executed.").then<string>(($dataId): string => {
-    return $dataId.text();
-  });
 }
 
 /**
