@@ -20,7 +20,6 @@ export function checkCustomInputs(node: FormKitNode): void {
       }
     }
   }, true);
-  // TODO does this autoscroll work??
   invalidElements.find((el) => el !== null)?.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
@@ -43,7 +42,6 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
     }
   });
   if (unusedReports.length >= 1) {
-    //TODO Discuss if we want this and if yes if it should be modified. For example hardcoding of the elementId is not nice
     const uploadReportComponent = document.getElementById("uploadReports");
     if (uploadReportComponent) {
       uploadReportComponent.scrollIntoView({ behavior: "smooth", block: "center" });
