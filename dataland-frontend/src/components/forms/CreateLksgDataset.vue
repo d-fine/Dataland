@@ -1217,7 +1217,7 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        return this.dataDate?.getFullYear()?.toString() || "";
+        return this.dataDate?.getFullYear()?.toString() ?? "";
       },
       set() {
         // IGNORED
@@ -1271,7 +1271,7 @@ export default defineComponent({
         for (let i = 0; i < numberOfProductionSites; i++) {
           this.listOfProductionSites.push({
             id: i,
-            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices || [],
+            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices ?? [],
             listOfGoodsOrServicesString: "",
           });
         }

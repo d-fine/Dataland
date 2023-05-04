@@ -54,7 +54,7 @@ export default defineComponent({
   async created() {
     this.keycloakPromise = this.initKeycloak();
     this.resolvedKeycloakPromise = await this.keycloakPromise;
-    if (this.resolvedKeycloakPromise && this.resolvedKeycloakPromise.authenticated) {
+    if (this.resolvedKeycloakPromise?.authenticated) {
       updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
     }
   },
@@ -78,8 +78,7 @@ export default defineComponent({
      */
     initKeycloak(): Promise<Keycloak> {
       const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
-      const handleAuthLogoutBound = this.handleAuthLogout.bind(this);
-      keycloak.onAuthLogout = handleAuthLogoutBound;
+      keycloak.onAuthLogout = this.handleAuthLogout.bind(this);
       return keycloak
         .init({
           onLoad: "check-sso",
