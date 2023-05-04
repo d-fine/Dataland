@@ -14,27 +14,11 @@
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import DateFormElement from "@/components/forms/parts/elements/basic/DateFormElement.vue";
 
 export default defineComponent({
   name: "DateFormField",
   components: { UploadFormHeader, DateFormElement },
-  data() {
-    return {
-      date: undefined as Date | undefined,
-      Date,
-    };
-  },
-  computed: {
-    hyphenatedDate(): string {
-      if (this.date) {
-        return getHyphenatedDate(this.date);
-      } else {
-        return "";
-      }
-    },
-  },
   props: {
     name: {
       type: String,
