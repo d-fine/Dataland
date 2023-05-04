@@ -78,11 +78,12 @@ describe("Component test for LksgPanel", () => {
 
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
 
-    cy.get("button.p-row-toggler").eq(1).click();
+    cy.get("button.p-row-toggler").eq(2).click();
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
 
     cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
 
+    cy.get("button.p-row-toggler").eq(11).click();
     cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
 
     cy.get("div.p-dialog-mask").click({ force: true });
