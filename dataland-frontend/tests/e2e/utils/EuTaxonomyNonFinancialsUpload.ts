@@ -12,7 +12,6 @@ import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 
-// TODO can dataId still be retrieved like this?
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
  *
@@ -23,7 +22,7 @@ import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   companyId: string,
   valueFieldNotFilled = false
-) {
+) :any {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
