@@ -96,7 +96,6 @@ import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
 import { CompanyAssociatedDataLksgData } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -177,15 +176,18 @@ export default defineComponent({
     };
   },
   computed: {
-    yearOfDataDate(): string {
-      return this.dataDate?.getFullYear()?.toString() || "";
-    },
-    convertedDataDate(): string {
-      if (this.dataDate) {
-        return getHyphenatedDate(this.dataDate);
-      } else {
-        return "";
-      }
+    yearOfDataDate: {
+      get(): string {
+        const currentDate = this.companyAssociatedLksgData.data?.general?.masterData?.dataDate;
+        if (currentDate === undefined) {
+          return "";
+        } else {
+          return currentDate.split("-")[0];
+        }
+      },
+      set() {
+        // IGNORED
+      },
     },
   },
   props: {

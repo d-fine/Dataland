@@ -15,9 +15,8 @@
     :validation-label="displayName!"
     :validation="validation!"
     :name="name"
-    v-model="hyphenatedDate"
+    v-model="dateFormatted"
     outer-class="hidden-input"
-    :ignore="!isRequired && hyphenatedDate.length == 0"
   />
 </template>
 
@@ -33,18 +32,24 @@ export default defineComponent({
   components: { FormKit, Calendar },
   data() {
     return {
+      dateFormatted: undefined as string | undefined,
       date: undefined as Date | undefined,
       Date,
     };
   },
-  computed: {
-    hyphenatedDate(): string {
-      if (this.date) {
-        return getHyphenatedDate(this.date);
-      } else {
-        return "";
-      }
+  watch: {
+    date: {
+      handler: function (date: Date | undefined) {
+        if (date) {
+          this.dateFormatted = getHyphenatedDate(date);
+        } else {
+          this.dateFormatted = undefined;
+        }
+      },
+      immediate: true,
     },
+  },
+  computed: {
     isRequired(): boolean {
       return isInputRequired(this.validation);
     },
