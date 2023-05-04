@@ -11,6 +11,7 @@ import Chainable = Cypress.Chainable;
 import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
@@ -24,9 +25,9 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
   submitButton.buttonAppearsDisabled();
   uploadReports.uploadFile(TEST_PDF_FILE_NAME);
   uploadReports.validateSingleFileInUploadedList(TEST_PDF_FILE_NAME, "KB");
-  uploadReports.validateFileInfo(TEST_PDF_FILE_NAME);
+  uploadReports.fillReportCurrency(TEST_PDF_FILE_NAME);
 
-  fillEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
+  fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
   submitButton.buttonAppearsEnabled();
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
   submitButton.clickButton();
@@ -39,7 +40,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
  * @param valueFieldNotFilled Value which, if true, disables the value field
  * @param assuranceReportName name of the assurance data source
  */
-export function fillEuTaxonomyForNonFinancialsUploadForm(
+export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
   valueFieldNotFilled: boolean,
   assuranceReportName: string
 ): void {
@@ -127,4 +128,21 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
     data,
   });
   return dataMetaInformation.data;
+}
+
+/**
+ * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks
+ * if a 200 response is returned by the backend
+ *
+ * @param submissionDataIntercept function that asserts content of an intercepted request
+ */
+export function submitFilledInEuTaxonomyForm(
+  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
+): void {
+  const postRequestAlias = "";
+  cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
+  cy.get('button[data-test="submitButton"]').click();
+  cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
+    expect(interception.response?.statusCode).to.eq(200);
+  });
 }

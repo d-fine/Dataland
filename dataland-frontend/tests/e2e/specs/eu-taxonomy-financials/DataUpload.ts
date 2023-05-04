@@ -6,7 +6,6 @@ import {
   EuTaxonomyDataForFinancials,
   DataTypeEnum,
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
-  CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -16,6 +15,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
 import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { submitFilledInEuTaxonomyForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a financial company",
@@ -67,12 +67,7 @@ describeIf(
             beforeFormFill();
             fillAndValidateEuTaxonomyForFinancialsUploadForm(testData);
             afterFormFill();
-            cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
-            cy.get('button[data-test="submitButton"]').click();
-            cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
-              // TODO no hardcoded timeouts, instead use our cypress constants for timeouts
-              expect(interception.response?.statusCode).to.eq(200);
-            });
+            submitFilledInEuTaxonomyForm(submissionDataIntercept);
             afterDatasetSubmission(storedCompany.companyId);
           }
         );
@@ -90,7 +85,7 @@ describeIf(
     function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
       gotoEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyFinancials).then((interception) => {
         const referencedReports = assertDefined(
-          (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data?.referencedReports
+          (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports
         );
         expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
         expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
@@ -108,7 +103,7 @@ describeIf(
           () => {
             uploadReports.uploadFile(TEST_PDF_FILE_NAME);
             uploadReports.validateSingleFileInUploadedList(TEST_PDF_FILE_NAME, "KB");
-            uploadReports.validateFileInfo(TEST_PDF_FILE_NAME);
+            uploadReports.fillReportCurrency(TEST_PDF_FILE_NAME);
             uploadReports.removeSingleUploadedFileFromUploadedList();
             uploadReports.checkNoReportIsListed();
           },
@@ -150,9 +145,11 @@ describeIf(
             areBothDocumentsStillUploaded = false;
           });
           cy.get('button[data-test="submitButton"]').click();
-          cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
-            expect(interception.response?.statusCode).to.eq(200);
-          });
+          cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("short_timeout_in_ms") as number }).then(
+            (interception) => {
+              expect(interception.response?.statusCode).to.eq(200);
+            }
+          );
           gotoEditForm(companyId, false);
         }
       );

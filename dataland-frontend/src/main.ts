@@ -23,7 +23,6 @@ function instantiateVueApp(): void {
   const pinia = createPinia();
   pinia.use(
     // TODO
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     PiniaSharedState({
       enable: false,
       type: "native",

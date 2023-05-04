@@ -124,8 +124,7 @@ describeIf(
             (storedCompany) => {
               cy.intercept(`**/companies**`).as("getDataForMyDatasetsPage");
               uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
-              cy.url()
-                .should("eq", getBaseUrl() + "/datasets");
+              cy.url().should("eq", getBaseUrl() + "/datasets");
               cy.wait("@getDataForMyDatasetsPage");
 
               // TEST IF ALL VALUES THERE ON VIEW PAGE          TODO comment supports reading the test while working on it => delete at the very end
