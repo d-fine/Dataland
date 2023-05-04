@@ -108,7 +108,7 @@ describeIf(
           () => {
             uploadReports.uploadFile(TEST_PDF_FILE_NAME);
             uploadReports.validateSingleFileInUploadedList(TEST_PDF_FILE_NAME, "KB");
-            uploadReports.validateFileInfo(TEST_PDF_FILE_NAME);
+            uploadReports.fillReportCurrency(TEST_PDF_FILE_NAME);
             uploadReports.removeSingleUploadedFileFromUploadedList();
             uploadReports.checkNoReportIsListed();
           },
