@@ -11,6 +11,7 @@ import Chainable = Cypress.Chainable;
 import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 // TODO can dataId still be retrieved like this?
 /**
@@ -135,4 +136,20 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
     data,
   });
   return dataMetaInformation.data;
+}
+
+/**
+ * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks if a 200 response is returned by the backend
+ *
+ * @param submissionDataIntercept function that asserts content of an intercepted request
+ */
+export function submitFilledInEuTaxonomyForm(
+  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
+): void {
+  const postRequestAlias = "";
+  cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
+  cy.get('button[data-test="submitButton"]').click();
+  cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
+    expect(interception.response?.statusCode).to.eq(200);
+  });
 }

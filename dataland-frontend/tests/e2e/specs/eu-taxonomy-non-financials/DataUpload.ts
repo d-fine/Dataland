@@ -13,7 +13,10 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
-import { fillAndValidateEuTaxonomyForNonFinancialsUploadForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import {
+  fillAndValidateEuTaxonomyForNonFinancialsUploadForm,
+  submitFilledInEuTaxonomyForm,
+} from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 
@@ -64,11 +67,7 @@ describeIf(
             beforeFormFill();
             fillAndValidateEuTaxonomyForNonFinancialsUploadForm(false, TEST_PDF_FILE_NAME);
             afterFormFill();
-            cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
-            cy.get('button[data-test="submitButton"]').click();
-            cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
-              expect(interception.response?.statusCode).to.eq(200);
-            });
+            submitFilledInEuTaxonomyForm(submissionDataIntercept);
             afterDatasetSubmission(storedCompany.companyId);
           }
         );
