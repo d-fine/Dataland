@@ -55,13 +55,13 @@ export function modifyObjectKeys(obj: ObjectType, typeOfModification: "send" | "
  * @returns all the values corresponding to the key
  */
 export function findAllValuesForKey(obj: ObjectType, keyToFind: string): Array<string> {
-  return Object.entries(obj).reduce(
-    (acc: Array<string>, [key, value]) =>
-      key === keyToFind
-        ? acc.concat(value as string)
-        : typeof value === "object" && value != null
-        ? acc.concat(findAllValuesForKey(value as ObjectType, keyToFind))
-        : acc,
-    []
-  );
+  return Object.entries(obj).reduce((acc: Array<string>, [key, value]) => {
+    if (key === keyToFind) {
+      return acc.concat(value as string);
+    } else if (typeof value === "object" && value != null) {
+      return acc.concat(findAllValuesForKey(value as ObjectType, keyToFind));
+    } else {
+      return acc;
+    }
+  }, []);
 }
