@@ -13,9 +13,10 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
-import { fillAndValidateEuTaxonomyForNonFinancialsUploadForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { fillEuTaxonomyForNonFinancialsUploadForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
-import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@e2e/utils/Constants";
+import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company",
@@ -37,6 +38,9 @@ describeIf(
       });
     });
 
+    let keycloakToken = "";
+    let frontendDocumentHash = "";
+
     /**
      * Uploads a company via POST-request, then an EU Taxonomy dataset for non financial companies for the uploaded company
      * via the form in the frontend, and then visits the view page where that dataset is displayed
@@ -55,6 +59,7 @@ describeIf(
       afterDatasetSubmission: (companyId: string) => void
     ): void {
       getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        keycloakToken = token;
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany): void => {
             cy.ensureLoggedIn(uploader_name, uploader_pw);
@@ -62,7 +67,7 @@ describeIf(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`
             );
             beforeFormFill();
-            fillAndValidateEuTaxonomyForNonFinancialsUploadForm(false, TEST_PDF_FILE_NAME);
+            fillEuTaxonomyForNonFinancialsUploadForm(false, TEST_PDF_FILE_NAME);
             afterFormFill();
             cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
             cy.get('button[data-test="submitButton"]').click();
@@ -93,8 +98,7 @@ describeIf(
       });
     }
 
-    it(
-      "Create an Eu Taxonomy Non Financial dataset via upload form with all non financial company types selected to assure " +
+    it("Create an Eu Taxonomy Non Financial dataset via upload form with all non financial company types selected to assure " +
         "that the upload form works fine with all options",
       () => {
         testData.companyInformation.companyName = "non-financials-upload-form";
@@ -135,10 +139,14 @@ describeIf(
         },
         (request) => {
           const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data);
+          if (areBothDocumentsStillUploaded) {
+            frontendDocumentHash = data.referencedReports![TEST_PDF_FILE_NAME].reference;
+          }
           expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(areBothDocumentsStillUploaded);
           expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
         },
         (companyId) => {
+          validateFrontendAndBackendDocumentHashesCoincede();
           gotoEditForm(companyId, true);
           uploadReports.removeUploadedReportFromReportInfos(TEST_PDF_FILE_NAME).then(() => {
             areBothDocumentsStillUploaded = false;
@@ -151,5 +159,13 @@ describeIf(
         }
       );
     });
+
+    function validateFrontendAndBackendDocumentHashesCoincede() {
+      cy.task<{ [type: string]: ArrayBuffer }>("readFile", `../${TEST_PDF_FILE_PATH}`).then(async (bufferObject) => {
+        await uploadDocumentViaApi(keycloakToken, bufferObject.data, TEST_PDF_FILE_PATH).then((response) => {
+          expect(frontendDocumentHash).to.equal(response.documentId);
+        });
+      });
+    }
   }
 );

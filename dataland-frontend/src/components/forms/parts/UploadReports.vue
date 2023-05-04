@@ -190,8 +190,6 @@ export default defineComponent({
       ] as (CompanyReportUploadModel & File)[];
       this.reportsToUpload = await Promise.all(
         this.reportsToUpload.map(async (extendedFile) => {
-          // TODO this assumes that the hash in the frontend ALWAYS equals the one in the backend!  Can we guarantee that? Should we assume that?
-          // TODO I find that fine as long as we test, which we don't.
           extendedFile.reference = await this.calculateSha256HashFromFile(extendedFile);
           return extendedFile;
         })

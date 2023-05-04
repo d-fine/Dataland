@@ -1,5 +1,5 @@
 import { Configuration } from "@clients/backend";
-import { DocumentControllerApi } from "@clients/documentmanager";
+import { DocumentControllerApi, DocumentUploadResponse } from "@clients/documentmanager";
 
 /**
  * Uploads all documents provided in the documentDirectory folder
@@ -24,12 +24,12 @@ export function uploadAllDocuments(token: string): void {
  * @param buffer the pdf document as an arrayBuffer to be uploaded as File
  * @param name the file name
  */
-export async function uploadDocumentViaApi(token: string, buffer: ArrayBuffer, name: string): Promise<void> {
+export async function uploadDocumentViaApi(token: string, buffer: ArrayBuffer, name: string): Promise<DocumentUploadResponse> {
   const arr = new Uint8Array(buffer);
   const file = new File([arr], name, { type: "application/pdf" });
-  await new DocumentControllerApi(
+  return (await new DocumentControllerApi(
     new Configuration({
       accessToken: token,
     })
-  ).postDocument(file);
+  ).postDocument(file)).data;
 }
