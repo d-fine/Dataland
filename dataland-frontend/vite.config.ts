@@ -38,7 +38,6 @@ export default defineConfig({
             "@formkit/vue",
             "axios",
             "i18n-iso-countries",
-            "currency-codes/data"
         ],
     },
     plugins: [
