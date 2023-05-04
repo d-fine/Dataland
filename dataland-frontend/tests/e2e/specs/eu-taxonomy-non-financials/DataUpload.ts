@@ -13,7 +13,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
-import { fillEuTaxonomyForNonFinancialsUploadForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { fillAndValidateEuTaxonomyForNonFinancialsUploadForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 
@@ -62,7 +62,7 @@ describeIf(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`
             );
             beforeFormFill();
-            fillEuTaxonomyForNonFinancialsUploadForm(false, TEST_PDF_FILE_NAME);
+            fillAndValidateEuTaxonomyForNonFinancialsUploadForm(false, TEST_PDF_FILE_NAME);
             afterFormFill();
             cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
             cy.get('button[data-test="submitButton"]').click();

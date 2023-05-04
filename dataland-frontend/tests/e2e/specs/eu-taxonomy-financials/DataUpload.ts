@@ -1,6 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { fillEuTaxonomyForFinancialsUploadForm } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { fillAndValidateEuTaxonomyForFinancialsUploadForm } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import {
   CompanyInformation,
   EuTaxonomyDataForFinancials,
@@ -65,7 +65,7 @@ describeIf(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
             );
             beforeFormFill();
-            fillEuTaxonomyForFinancialsUploadForm(testData);
+            fillAndValidateEuTaxonomyForFinancialsUploadForm(testData);
             afterFormFill();
             cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
             cy.get('button[data-test="submitButton"]').click();

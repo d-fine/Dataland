@@ -34,7 +34,7 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  *
  * @param data the data to fill the form with
  */
-export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
+export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
   dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
   dateFormElement.validateDay("fiscalYearEnd", 12);
 
