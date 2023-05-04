@@ -16,7 +16,7 @@ export function getCountryNameFromCountryCode(countryCode: string): string {
  * @returns the countryCodes
  */
 export function getAllCountryCodes(): Array<string> {
-  return Object.keys(countries.getNames("en")).sort();
+  return Object.keys(countries.getNames("en")).sort((a, b) => a.localeCompare(b));
 }
 
 /**

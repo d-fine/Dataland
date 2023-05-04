@@ -68,7 +68,7 @@ export function generateCompanyInformation(): CompanyInformation {
   const countryCode = faker.address.countryCode();
   const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
     return faker.company.name();
-  }).sort();
+  }).sort((a, b) => a.localeCompare(b));
   const companyLegalForm = valueOrUndefined(getRandomCompanyLegalForm());
   const website = valueOrUndefined(faker.internet.url());
 
