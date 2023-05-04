@@ -126,15 +126,9 @@ export default defineComponent({
     dataPointIsAvailable(newValue: boolean) {
       if (!newValue) {
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
-        this.pageValueWhenDataPointIsDisabled = this.currentPageValue;
-        this.reportValueWhenDataPointIsDisabled = this.currentReportValue;
-        this.mainValueWhenDataPointIsDisabled = this.currentMainValue;
         this.currentQualityValue = "NA";
       } else {
         this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
-        this.currentPageValue = this.pageValueWhenDataPointIsDisabled;
-        this.currentReportValue = this.reportValueWhenDataPointIsDisabled;
-        this.currentMainValue = this.mainValueWhenDataPointIsDisabled;
       }
     },
   },
