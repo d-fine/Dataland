@@ -435,7 +435,7 @@ export default defineComponent({
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
         await this.$nextTick();
-        const formInputsModelToSend = modifyObjectKeys(this.formInputsModel as ObjectType, "send"); // TODO is the JSON stuff really needed? It feels like not!
+        const formInputsModelToSend = modifyObjectKeys(this.formInputsModel as ObjectType, "send");
         this.postEuTaxonomyDataForNonFinancialsResponse =
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
             formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForNonFinancials
