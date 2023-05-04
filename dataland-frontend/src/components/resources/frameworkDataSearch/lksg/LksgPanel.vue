@@ -111,6 +111,7 @@ export default defineComponent({
       if (kpiKey === "totalRevenue" && typeof kpiValue === "number") {
         kpiValue = this.convertToMillions(kpiValue);
       }
+      kpiValue = kpi.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;
       let indexOfExistingItem = -1;
       const kpiData = {
         subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
