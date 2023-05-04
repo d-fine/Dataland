@@ -1262,7 +1262,7 @@ export default defineComponent({
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
       const lksgDataset = dataResponse.data;
-      const numberOfProductionSites = lksgDataset.data?.social?.general?.listOfProductionSites?.length || 0;
+      const numberOfProductionSites = lksgDataset.data?.social?.general?.listOfProductionSites?.length ?? 0;
       if (numberOfProductionSites > 0) {
         this.isYourCompanyManufacturingCompany = "Yes";
         const productionSites = assertDefined(lksgDataset.data?.social?.general?.listOfProductionSites);
