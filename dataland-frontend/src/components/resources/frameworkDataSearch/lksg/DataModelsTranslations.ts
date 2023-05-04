@@ -1,8 +1,5 @@
 export const listOfProductionSitesConvertedNames = {
-  name: "Name",
-  country: "Country",
-  city: "City",
-  streetAndHouseNumber: "Street and house number",
-  postalCode: "Postal Code",
+  nameOfProductionSite: "Name",
+  addressOfProductionSite: "Address",
   listOfGoodsOrServices: "List Of Goods Or Services",
 };

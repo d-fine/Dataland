@@ -86,10 +86,10 @@ describe("Component test for LksgPanel", () => {
     cy.get("button.p-row-toggler").eq(11).click();
     cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
 
-    cy.get("div.p-dialog-mask").click({ force: true });
+    cy.get("a.link").click({ force: true });
 
     cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
-    cy.get(".p-tooltip").should("be.visible").contains("The date until for which");
+    cy.get(".p-tooltip").should("be.visible").contains("The date until when");
     cy.get("em.info-icon").eq(0).trigger("mouseleave");
 
     cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
