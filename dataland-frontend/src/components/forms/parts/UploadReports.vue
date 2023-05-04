@@ -13,7 +13,7 @@
       accept=".pdf"
       @select="handleFilesSelected"
       :multiple="true"
-      :maxFileSize="UPLOAD_MAX_FILE_SIZE_IN_BYTES"
+      :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
       :auto="false"
     >
@@ -109,7 +109,7 @@ import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
 import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
+import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
@@ -138,7 +138,7 @@ export default defineComponent({
     return {
       formsDatesFilesToUpload: [] as string[] | undefined,
       formatBytesUserFriendly,
-      UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+      DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES: DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       reportsToUpload: [] as (CompanyReportUploadModel & File)[],
       uploadedReports: [] as CompanyReportUploadModel[],
       euTaxonomyKpiNameMappings, // TODO doesn't this make this component eutaxonomy-specific?  Now we cannot use it generically anymore, right?
