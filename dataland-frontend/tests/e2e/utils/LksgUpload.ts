@@ -8,6 +8,7 @@ import {
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 
 /**
  * Uploads a single LKSG data entry for a company
@@ -68,46 +69,11 @@ export function uploadLksgDataViaForm(): void {
     keystrokeDelay: 0,
   });
   //TODO rework test
-  const yesNoInputs = [
-    "employeeUnder18",
-    "employeeUnder15",
-    "employeeUnder18Apprentices",
-    "employmentUnderLocalMinimumAgePrevention",
-    "employmentUnderLocalMinimumAgePreventionEmploymentContracts",
-    "employmentUnderLocalMinimumAgePreventionJobDescription",
-    "employmentUnderLocalMinimumAgePreventionIdentityDocuments",
-    "employmentUnderLocalMinimumAgePreventionTraining",
-    "employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge",
-    "forcedLabourAndSlaveryPrevention",
-    "forcedLabourAndSlaveryPreventionEmploymentContracts",
-    "forcedLabourAndSlaveryPreventionIdentityDocuments",
-    "forcedLabourAndSlaveryPreventionFreeMovement",
-    "forcedLabourAndSlaveryPreventionProvisionSocialRoomsAndToilets",
-    "iso26000",
-    "sa8000Certification",
-    "smetaSocialAuditConcept",
-    "betterWorkProgramCertificate",
-    "grievanceHandlingMechanism",
-    "grievanceHandlingMechanismUsedForReporting",
-    "oshMonitoring",
-    "oshPolicy",
-    "oshPolicyPersonalProtectiveEquipment",
-    "oshPolicyMachineSafety",
-    "oshManagementSystem",
-    "freedomOfAssociation",
-    "freedomOfOperationForTradeUnion",
-    "diversityAndInclusionRole",
-    "preventionOfMistreatments",
-    "unlawfulEvictionAndTakingOfLand",
-    "responsibilitiesForFairWorkingConditions",
-    "responsibilitiesForTheEnvironment",
-    "responsibilitiesForOccupationalSafety",
-    "riskManagementSystem",
-    "codeOfConduct",
-    "mercuryAndMercuryWasteHandling",
-    "mercuryAddedProductsHandlingRiskOfDisposal",
-    "hazardousAndOtherWasteImport",
-  ];
+  const yesNoInputs = lksgDataModel.flatMap((category) =>
+    category.subcategories.flatMap((subcategory) =>
+      subcategory.fields.filter((field) => field.component === "YesNoFormField").map((field) => field.name)
+    )
+  );
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
   cy.get('[data-test="lksgDataDate"]').click();
