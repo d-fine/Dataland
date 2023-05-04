@@ -3,8 +3,8 @@
     <!-- Date of the report -->
     <div class="form-field">
       <UploadFormHeader
-        :name="euTaxonomyKpiNameMappings?.reportDate ?? 'Report Date'"
-        :explanation="euTaxonomyKpiInfoMappings?.reportDate ?? 'Report Date'"
+        name="Report Date"
+        explanation="The date until which the information presented in the report is valid."
       />
       <div class="md:col-6 col-12 p-0">
         <Calendar
@@ -24,8 +24,8 @@
     <!-- Currency used in the report -->
     <div class="form-field" data-test="currencyUsedInTheReport">
       <UploadFormHeader
-        :name="euTaxonomyKpiNameMappings?.currency ?? 'Currency'"
-        :explanation="euTaxonomyKpiInfoMappings?.currency ?? 'Currency'"
+        name="Currency"
+        explanation="The 3-letter alpha code that represents the currency used in the report."
         :is-required="true"
       />
       <div class="lg:col-4 md:col-4 col-12 p-0">
@@ -41,9 +41,9 @@
     <!-- Integrated report is on a group level -->
     <div class="form-field">
       <RadioButtonsGroup
-        :displayName="euTaxonomyKpiNameMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
-        :info="euTaxonomyKpiInfoMappings?.groupLevelIntegratedReport ?? 'Group Level Integrated Report'"
-        :name="'isGroupLevel'"
+        displayName="Group Level Integrated Report"
+        info="Is the Integrated Report on a Group level?"
+        name="isGroupLevel"
       />
     </div>
   </FormKit>
@@ -55,10 +55,6 @@ import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import Calendar from "primevue/calendar";
-import {
-  euTaxonomyKpiInfoMappings,
-  euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 export default defineComponent({
@@ -66,8 +62,6 @@ export default defineComponent({
   components: { FormKit, UploadFormHeader, RadioButtonsGroup, Calendar },
   data() {
     return {
-      euTaxonomyKpiNameMappings,
-      euTaxonomyKpiInfoMappings,
       reportDateAsDate: undefined as undefined | Date,
     };
   },

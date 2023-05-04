@@ -99,7 +99,7 @@ describeIf(
 
     it(
       "Create an Eu Taxonomy Financial dataset via upload form with all financial company types selected to assure " +
-        "that the upload form works fine with all options", // TODO test name should clarify why test is in this test-file
+        "that the upload form works fine with all options",
       () => {
         testData.companyInformation.companyName = "financials-upload-form";
         uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
