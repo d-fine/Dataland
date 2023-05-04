@@ -23,13 +23,20 @@ export function uploadAllDocuments(token: string): void {
  * @param token the bearer token used to authorize the API requests
  * @param buffer the pdf document as an arrayBuffer to be uploaded as File
  * @param name the file name
+ * @returns a promise on the upload response
  */
-export async function uploadDocumentViaApi(token: string, buffer: ArrayBuffer, name: string): Promise<DocumentUploadResponse> {
+export async function uploadDocumentViaApi(
+  token: string,
+  buffer: ArrayBuffer,
+  name: string
+): Promise<DocumentUploadResponse> {
   const arr = new Uint8Array(buffer);
   const file = new File([arr], name, { type: "application/pdf" });
-  return (await new DocumentControllerApi(
-    new Configuration({
-      accessToken: token,
-    })
-  ).postDocument(file)).data;
+  return (
+    await new DocumentControllerApi(
+      new Configuration({
+        accessToken: token,
+      })
+    ).postDocument(file)
+  ).data;
 }

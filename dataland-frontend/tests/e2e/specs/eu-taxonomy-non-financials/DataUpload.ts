@@ -98,7 +98,8 @@ describeIf(
       });
     }
 
-    it("Create an Eu Taxonomy Non Financial dataset via upload form with all non financial company types selected to assure " +
+    it(
+      "Create an Eu Taxonomy Non Financial dataset via upload form with all non financial company types selected to assure " +
         "that the upload form works fine with all options",
       () => {
         testData.companyInformation.companyName = "non-financials-upload-form";
@@ -160,7 +161,10 @@ describeIf(
       );
     });
 
-    function validateFrontendAndBackendDocumentHashesCoincede() {
+    /**
+     * Checks that the computed hash in the frontend is the same as the one returned by the documen upload endpoint
+     */
+    function validateFrontendAndBackendDocumentHashesCoincede(): void {
       cy.task<{ [type: string]: ArrayBuffer }>("readFile", `../${TEST_PDF_FILE_PATH}`).then(async (bufferObject) => {
         await uploadDocumentViaApi(keycloakToken, bufferObject.data, TEST_PDF_FILE_PATH).then((response) => {
           expect(frontendDocumentHash).to.equal(response.documentId);

@@ -123,8 +123,8 @@ describeIf(
           return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
             (storedCompany) => {
               cy.intercept(`**/companies**`).as("getDataForMyDatasetsPage");
-              uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId)
-                .url()
+              uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId);
+              cy.url()
                 .should("eq", getBaseUrl() + "/datasets");
               cy.wait("@getDataForMyDatasetsPage");
 
