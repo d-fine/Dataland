@@ -139,7 +139,8 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
 }
 
 /**
- * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks if a 200 response is returned by the backend
+ * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks
+ * if a 200 response is returned by the backend
  *
  * @param submissionDataIntercept function that asserts content of an intercepted request
  */
