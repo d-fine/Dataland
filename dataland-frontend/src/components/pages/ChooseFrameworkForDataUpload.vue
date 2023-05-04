@@ -6,7 +6,7 @@
         <BackButton id="backButton" label="BACK" />
         <CompanyInformation :companyID="companyID" />
         <Card class="col-12 text-left page-wrapper-card">
-          <template #title> New Dataset - Framework </template>
+          <template #title> New Dataset - Framework</template>
           <template #content>
             <div class="uploadFormWrapper grid">
               <div id="euTaxonomyContainer" class="col-9 flex">
@@ -172,7 +172,7 @@ export default defineComponent({
       listOfDataMetaInfo: DataMetaInformation[]
     ): Map<string, DataMetaInformation[]> {
       return listOfDataMetaInfo.reduce((groups, dataMetaInfo) => {
-        groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo) ||
+        groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo) ??
           groups.set(dataMetaInfo.reportingPeriod, [dataMetaInfo]);
         return groups;
       }, new Map<string, DataMetaInformation[]>());
