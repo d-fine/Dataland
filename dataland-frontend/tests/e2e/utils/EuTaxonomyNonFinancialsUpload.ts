@@ -30,7 +30,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   uploadReports.validateSingleFileInUploadedList(TEST_PDF_FILE_NAME, "KB");
   uploadReports.validateFileInfo(TEST_PDF_FILE_NAME);
 
-  fillEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
+  fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
   submitButton.buttonAppearsEnabled();
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
   submitButton.clickButton();
@@ -43,7 +43,7 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
  * @param valueFieldNotFilled Value which, if true, disables the value field
  * @param assuranceReportName name of the assurance data source
  */
-export function fillEuTaxonomyForNonFinancialsUploadForm(
+export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
   valueFieldNotFilled: boolean,
   assuranceReportName: string
 ): void {
