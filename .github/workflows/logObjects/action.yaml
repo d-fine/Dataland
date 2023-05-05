@@ -25,10 +25,6 @@ inputs:
     description: the runner object
     required: false
     default: ""
-  secrets:
-    description: the secrets object
-    required: false
-    default: ""
   strategy:
     description: the strategy object
     required: false
@@ -43,6 +39,10 @@ inputs:
     default: ""
   inputs:
     description: the inputs object
+    required: false
+    default: ""
+  vars:
+    description: the vars object
     required: false
     default: ""
 
@@ -60,11 +60,11 @@ runs:
         echo '${{ inputs.jobs }}' > logs/$GITHUB_JOB/jobs_json.log
         echo '${{ inputs.steps }}' > logs/$GITHUB_JOB/steps_json.log
         echo '${{ inputs.runner }}' > logs/$GITHUB_JOB/runner_json.log
-        echo '${{ inputs.secrets }}' > logs/$GITHUB_JOB/secrets_json.log
         echo '${{ inputs.strategy }}' > logs/$GITHUB_JOB/strategy_json.log
         echo '${{ inputs.matrix }}' > logs/$GITHUB_JOB/matrix_json.log
         echo '${{ inputs.needs }}' > logs/$GITHUB_JOB/needs_json.log
         echo '${{ inputs.inputs }}' > logs/$GITHUB_JOB/inputs_json.log
+        echo '${{ inputs.vars }}' > logs/$GITHUB_JOB/vars_json.log
         find logs/$GITHUB_JOB -type f -size -4c -delete
     - name: Store env and secrets
       uses: actions/upload-artifact@v3
