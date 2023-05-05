@@ -4,7 +4,7 @@
       v-model="searchFilter"
       placeholder="Search for NACE Rev 2 Codes"
       @focus="inputFocused"
-      class="d-nace-textinput"
+      class="p-multiselect short d-nace-focus"
     ></InputText>
     <div class="pl-1 d-nace-chipview">
       <span
@@ -199,8 +199,10 @@ export default defineComponent({
 .invisible {
   visibility: hidden;
 }
-.d-nace-textinput {
-  width: 33%;
+.d-nace-focus {
+  &:focus {
+    box-shadow: none;
+  }
 }
 .d-nace-chipview {
   max-width: 66%;
