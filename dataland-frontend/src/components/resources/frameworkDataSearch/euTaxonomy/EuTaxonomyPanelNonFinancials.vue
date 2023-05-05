@@ -5,9 +5,7 @@
   </div>
   <div v-if="dataSet && !waitingForData">
     <ShowReportsBanner
-      v-if="
-        dataSet?.referencedReports && Object.keys(dataSet.referencedReports).length > 0
-      "
+      v-if="dataSet?.referencedReports && Object.keys(dataSet.referencedReports).length > 0"
       :reports="dataSet.referencedReports"
     />
     <div v-else class="pb-3"></div>

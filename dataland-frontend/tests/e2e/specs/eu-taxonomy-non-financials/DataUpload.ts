@@ -145,15 +145,18 @@ describeIf(
           gotoEditForm(companyId, true);
           uploadReports.removeUploadedReportFromReportInfos(TEST_PDF_FILE_NAME);
           const postRequestAlias = "postData";
-          cy.intercept({
-            method: "POST",
-            url: `**/api/data/**`,
-            times: 1
-          }, (request) => {
-            const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data);
-            expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(false);
-            expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
-          }).as(postRequestAlias);
+          cy.intercept(
+            {
+              method: "POST",
+              url: `**/api/data/**`,
+              times: 1,
+            },
+            (request) => {
+              const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data);
+              expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(false);
+              expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
+            }
+          ).as(postRequestAlias);
           cy.get('button[data-test="submitButton"]').click();
           cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then(
             (interception) => {
