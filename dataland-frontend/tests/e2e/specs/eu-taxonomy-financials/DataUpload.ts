@@ -41,6 +41,7 @@ describeIf(
     /**
      * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
      * via the form in the frontend, and then visits the view page where that dataset is displayed
+     *
      * @param companyInformation Company information to be used for the company upload
      * @param testData EU Taxonomy dataset for financial companies to be uploaded
      * @param beforeFormFill is performed before filling the fields of the upload form
@@ -73,10 +74,9 @@ describeIf(
       });
     }
 
-    const postRequestAlias = "postData";
-
     /**
      * Visits the edit page for the eu taxonomy dataset for financial companies via navigation.
+     *
      * @param companyId the id of the company for which to edit a dataset
      * @param expectIncludedFile specifies if the test file is expected to be in the server response
      */
@@ -112,7 +112,7 @@ describeIf(
       }
     );
 
-    it("Check if the file upload info remove button works as expected", () => {
+    it.only("Check if the file upload info remove button works as expected", () => {
       testData.companyInformation.companyName = "financials-upload-form-remove-document-button";
       let areBothDocumentsStillUploaded = true;
       uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
@@ -142,6 +142,19 @@ describeIf(
           uploadReports.removeUploadedReportFromReportInfos(TEST_PDF_FILE_NAME).then(() => {
             areBothDocumentsStillUploaded = false;
           });
+          const postRequestAlias = "postData";
+          cy.intercept(
+            {
+              method: "POST",
+              url: `**/api/data/**`,
+              times: 1,
+            },
+            (request) => {
+              const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
+              expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(areBothDocumentsStillUploaded);
+              expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
+            }
+          ).as(postRequestAlias);
           cy.get('button[data-test="submitButton"]').click();
           cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("short_timeout_in_ms") as number }).then(
             (interception) => {
