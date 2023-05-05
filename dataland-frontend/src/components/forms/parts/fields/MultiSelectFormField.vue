@@ -5,6 +5,7 @@
       :name="name"
       :display-name="displayName"
       :validation="validation"
+      :validation-label="validationLabel ?? displayName"
       :placeholder="placeholder"
       :options="options"
       inner-class="short"
@@ -42,6 +43,9 @@ export default defineComponent({
     validation: {
       type: String,
       default: "",
+    },
+    validationLabel: {
+      type: String,
     },
     placeholder: {
       type: String,

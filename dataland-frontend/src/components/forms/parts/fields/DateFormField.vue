@@ -5,6 +5,7 @@
       :name="name"
       :display-name="displayName"
       :validation="validation"
+      :validation-label="validationLabel ?? displayName"
       :placeholder="placeholder"
       :today-as-max="todayAsMax"
     />
@@ -35,6 +36,9 @@ export default defineComponent({
     validation: {
       type: String,
       default: "",
+    },
+    validationLabel: {
+      type: String,
     },
     placeholder: {
       type: String,

@@ -12,7 +12,7 @@
 
   <FormKit
     type="text"
-    :validation-label="displayName!"
+    :validation-label="validationLabel"
     :validation="validation!"
     :name="name"
     v-model="dateFormatted"
@@ -64,6 +64,10 @@ export default defineComponent({
       default: "",
     },
     validation: {
+      type: String,
+      default: "",
+    },
+    validationLabel: {
       type: String,
       default: "",
     },

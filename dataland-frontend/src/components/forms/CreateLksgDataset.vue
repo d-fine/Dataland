@@ -47,6 +47,8 @@
                         :name="field.name"
                         :options="field.options"
                         :required="field.required"
+                        :validation="field.validation"
+                        :validation-label="field.validationLabel"
                       />
                     </FormKit>
                   </div>

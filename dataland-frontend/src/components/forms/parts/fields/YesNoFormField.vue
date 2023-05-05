@@ -3,6 +3,7 @@
     :name="name"
     :info="info"
     :validation="validation"
+    :validation-label="validationLabel ?? displayName"
     :display-name="displayName"
     :options="[
       {
@@ -46,6 +47,9 @@ export default defineComponent({
     required: {
       type: Boolean,
       default: false,
+    },
+    validationLabel: {
+      type: String,
     },
   },
 });

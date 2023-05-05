@@ -21,6 +21,7 @@ export interface Field {
   component: string;
   dependency?: string;
   validation?: string;
+  validationLabel?: string;
   required?: boolean;
 
   // input field specific values

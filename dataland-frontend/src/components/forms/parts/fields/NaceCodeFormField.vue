@@ -4,8 +4,8 @@
     <NaceCodeSelector v-model="selectedNaceCodes" />
     <FormKit
       type="list"
-      :validation-label="displayName!"
       :validation="validation!"
+      :validation-label="validationLabel ?? displayName"
       :name="name"
       v-model="selectedNaceCodes"
       outer-class="hidden-input"
@@ -43,6 +43,9 @@ export default defineComponent({
     validation: {
       type: String,
       default: "",
+    },
+    validationLabel: {
+      type: String,
     },
     placeholder: {
       type: String,

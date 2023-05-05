@@ -1,7 +1,7 @@
 <template>
   <FormKit
     type="select"
-    :validation-label="displayName!"
+    :validation-label="validationLabel"
     :validation="validation!"
     :placeholder="placeholder"
     :name="name"
@@ -28,6 +28,10 @@ export default defineComponent({
       default: "",
     },
     validation: {
+      type: String,
+      default: "",
+    },
+    validationLabel: {
       type: String,
       default: "",
     },

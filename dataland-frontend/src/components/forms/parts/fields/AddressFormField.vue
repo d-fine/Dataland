@@ -1,7 +1,12 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
-    <AddressFormElement :name="name" :display-name="displayName" :validation="validation" />
+    <AddressFormElement
+      :name="name"
+      :display-name="displayName"
+      :validation="validation"
+      :validation-label="validationLabel ?? displayName"
+    />
   </div>
 </template>
 
@@ -29,6 +34,9 @@ export default defineComponent({
     validation: {
       type: String,
       default: "",
+    },
+    validationLabel: {
+      type: String,
     },
     required: {
       type: Boolean,

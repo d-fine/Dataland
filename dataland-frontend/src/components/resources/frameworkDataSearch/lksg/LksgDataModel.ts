@@ -18,6 +18,7 @@ export const lksgDataModel = [
             description: "The date until when the information collected is valid",
             component: "DateFormField",
             required: true,
+            validation: "required",
             label: "Data Date",
           },
           {
@@ -27,6 +28,7 @@ export const lksgDataModel = [
               "Is your head office, administrative headquarters, registered office or subsidiary located in Germany?",
             component: "YesNoFormField",
             required: true,
+            validation: "required",
             label: "Head Office in Germany",
           },
           {
@@ -35,6 +37,7 @@ export const lksgDataModel = [
             description: "Do you belong to a group of companies?",
             component: "YesNoFormField",
             required: true,
+            validation: "required",
             label: "Group of Companies",
           },
           {
@@ -43,6 +46,7 @@ export const lksgDataModel = [
             description: "What is the group of companies called?",
             component: "InputTextFormField",
             required: true,
+            validation: "required",
             label: "Group of Companies Name",
           },
           {
@@ -51,6 +55,7 @@ export const lksgDataModel = [
             description: "In which industry is your company primarily active?",
             component: "NaceCodeFormField",
             required: true,
+            validation: "required",
             label: "Industry",
           },
           {
@@ -60,6 +65,7 @@ export const lksgDataModel = [
               "What is the total number of employees (including temporary workers with assignment duration >6 months)?",
             component: "NumberFormField",
             required: true,
+            validation: "required",
             label: "Number of Employees",
           },
           {
@@ -68,6 +74,7 @@ export const lksgDataModel = [
             description: "Do you employ seasonal or migrant workers?",
             component: "YesNoFormField",
             required: true,
+            validation: "required",
             label: "Seasonal or Migrant Workers",
           },
           {
@@ -94,6 +101,7 @@ export const lksgDataModel = [
             description: "What is the share of temporary workers vs total number of employees in the company?",
             component: "RadioButtonsFormField",
             required: true,
+            validation: "required",
             label: "Share of Temporary Workers",
           },
           {
@@ -104,6 +112,7 @@ export const lksgDataModel = [
             description: "The 3-letter code (ISO 4217) representing the currency used for the total revenue",
             component: "SingleSelectFormField",
             required: true,
+            validation: "required",
             label: "Total Revenue Currency",
           },
           {
@@ -112,6 +121,7 @@ export const lksgDataModel = [
             description: "Total revenue p. a.",
             component: "NumberFormField",
             required: true,
+            validation: "required",
             label: "Total Revenue",
           },
           {

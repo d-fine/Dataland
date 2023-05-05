@@ -10,7 +10,7 @@
   />
   <FormKit
     type="list"
-    :validation-label="displayName!"
+    :validation-label="validationLabel"
     :validation="validation!"
     :name="name"
     v-model="selections"
@@ -42,6 +42,10 @@ export default defineComponent({
       default: "",
     },
     validation: {
+      type: String,
+      default: "",
+    },
+    validationLabel: {
       type: String,
       default: "",
     },

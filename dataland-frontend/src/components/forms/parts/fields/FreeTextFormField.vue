@@ -4,8 +4,8 @@
     <FormKit
       type="textarea"
       :name="name"
-      :validation-label="displayName!"
       :validation="validation!"
+      :validation-label="validationLabel ?? displayName"
       :placeholder="placeholder"
       inner-class="short"
     />
@@ -36,6 +36,9 @@ export default defineComponent({
     validation: {
       type: String,
       default: "",
+    },
+    validationLabel: {
+      type: String,
     },
     placeholder: {
       type: String,

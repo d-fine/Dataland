@@ -1,7 +1,13 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
-    <RadioButtonsFormElement :name="name" :display-name="displayName" :validation="validation" :options="options" />
+    <RadioButtonsFormElement
+      :name="name"
+      :display-name="displayName"
+      :validation="validation"
+      :validation-label="validationLabel ?? displayName"
+      :options="options"
+    />
   </div>
 </template>
 
@@ -30,6 +36,9 @@ export default defineComponent({
     validation: {
       type: String,
       default: "",
+    },
+    validationLabel: {
+      type: String,
     },
     options: {
       type: Array as () => Array<Option>,

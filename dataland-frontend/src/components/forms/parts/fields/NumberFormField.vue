@@ -4,7 +4,7 @@
     <FormKit
       type="number"
       :name="name!"
-      :validation-label="displayName!"
+      :validation-label="validationLabel ?? displayName"
       :validation="validation!"
       :placeholder="placeholder"
       inner-class="short"
@@ -36,6 +36,9 @@ export default defineComponent({
     validation: {
       type: String,
       default: "",
+    },
+    validationLabel: {
+      type: String,
     },
     placeholder: {
       type: String,

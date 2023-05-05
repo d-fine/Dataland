@@ -2,7 +2,7 @@
   <FormKit
     type="radio"
     :name="name!"
-    :validation-label="displayName!"
+    :validation-label="validationLabel"
     :options="options"
     :validation="validation!"
     :outer-class="{
@@ -40,6 +40,10 @@ export default defineComponent({
       required: true,
     },
     validation: {
+      type: String,
+      default: "",
+    },
+    validationLabel: {
       type: String,
       default: "",
     },
