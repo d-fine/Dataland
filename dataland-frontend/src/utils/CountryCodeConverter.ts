@@ -4,7 +4,6 @@ countries.registerLocale(countriesEn);
 
 /**
  * Returns the english name of the country identified by its country code
- *
  * @param countryCode the country code of the country to lookup the name for
  * @returns the english name of the country identified by countryCode
  */
@@ -14,16 +13,14 @@ export function getCountryNameFromCountryCode(countryCode: string): string {
 
 /**
  * Returns country identifiers
- *
  * @returns the countryCodes
  */
 export function getAllCountryCodes(): Array<string> {
-  return Object.keys(countries.getNames("en")).sort();
+  return Object.keys(countries.getNames("en")).sort((a, b) => a.localeCompare(b));
 }
 
 /**
  * Returns the english names and country identifiers
- *
  * @returns the english names of the countries and the countryCodes
  */
 export function getAllCountryNamesWithCodes(): { [alpha2CountryCode: string]: string } {

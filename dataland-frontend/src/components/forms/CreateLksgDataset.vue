@@ -208,7 +208,6 @@ export default defineComponent({
     /**
      * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     *
      * @param dataId the id of the dataset to load
      */
     async loadLKSGData(dataId: string): Promise<void> {
@@ -228,7 +227,7 @@ export default defineComponent({
         for (let i = 0; i < numberOfProductionSites; i++) {
           this.listOfProductionSites.push({
             id: i,
-            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices || [],
+            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices ?? [],
             listOfGoodsOrServicesString: "",
           });
         }

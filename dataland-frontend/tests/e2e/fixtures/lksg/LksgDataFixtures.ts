@@ -18,7 +18,6 @@ import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 
 /**
  * Generates a set number of LKSG fixtures
- *
  * @param numFixtures the number of lksg fixtures to generate
  * @param undefinedRatio the ratio of fields to be undefined (number between 0 and 1)
  * @returns a set number of LKSG fixtures
@@ -33,7 +32,6 @@ export function generateLksgFixture(numFixtures: number, undefinedRatio = 0.5): 
 
 /**
  * Generates a random production site
- *
  * @param undefinedProbability the percentage of undefined values in the returned production site
  * @returns a random production site
  */
@@ -82,7 +80,6 @@ export function generateAddress(): LksgAddress {
 
 /**
  * Randomly returns <10%, 10-25%, 25-50% or >50%
- *
  * @returns one of the four percentage intervals as string
  */
 export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers {
@@ -91,7 +88,6 @@ export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers
 
 /**
  * Generates a random list of Nace codes
- *
  * @returns random list of goods or services
  */
 export function generateListOfNaceCodes(): string[] {
@@ -102,7 +98,6 @@ export function generateListOfNaceCodes(): string[] {
 
 /**
  * Generates a random LKSG dataset
- *
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
  * @returns a random LKSG dataset
  */

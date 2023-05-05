@@ -1,6 +1,5 @@
 /**
  * Returns all keys from the inputMap ordered alphabetically
- *
  * @param inputMap the amp to sort the keys from
  * @returns an array of the sorted keys
  */

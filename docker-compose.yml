@@ -160,6 +160,8 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
       REALDATA: ${REALDATA}
       CYPRESS_EXECUTION_ENVIRONMENT: ${CYPRESS_EXECUTION_ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
@@ -173,7 +175,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:19.8.1
+    image: node:20.0.0
     networks:
       internal:
         aliases:

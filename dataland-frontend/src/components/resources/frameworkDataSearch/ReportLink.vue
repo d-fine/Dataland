@@ -75,7 +75,6 @@ export default defineComponent({
 
     /**
      * construct file name from response header, as a fallback the hash is used as file name
-     *
      * @param contentDisposition the part of the header that should contain the file name
      * @param reference the hash as a fallback value
      * @returns filename the name of the downloaded file

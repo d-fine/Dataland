@@ -12,7 +12,6 @@ import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/L
 
 /**
  * Uploads a single LKSG data entry for a company
- *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
@@ -37,7 +36,6 @@ export async function uploadOneLksgDatasetViaApi(
 
 /**
  * Uploads a company and single LkSG data entry for a company
- *
  * @param token The API bearer token to use
  * @param companyInformation The company information to use for the company upload
  * @param testData The Dataset to upload

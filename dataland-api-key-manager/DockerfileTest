@@ -3,9 +3,9 @@ FROM ghcr.io/d-fine/dataland/dataland_api_key_manager_base:${DATALAND_API_KEY_MA
 
 FROM eclipse-temurin:17.0.6_10-jre-alpine
 COPY --from=builder /app/dataland-api-key-manager/build/libs/dataland-api-key-manager-0.0.1-SNAPSHOT.jar /jar/dataland-api-key-manager.jar
-RUN wget https://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.8.8/jacoco-0.8.8.zip && \
-    unzip -j ./jacoco-0.8.8.zip "lib/jacocoagent.jar" -d /jar/ && \
-    rm ./jacoco-0.8.8.zip
+RUN wget https://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.8.10/jacoco-0.8.10.zip && \
+    unzip -j ./jacoco-0.8.10.zip "lib/jacocoagent.jar" -d /jar/ && \
+    rm ./jacoco-0.8.10.zip
 CMD ["java","-javaagent:/jar/jacocoagent.jar=excludes=org.springframework.*,","-jar","/jar/dataland-api-key-manager.jar","--spring.profiles.active=ci"]
 
 HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/api-keys/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false

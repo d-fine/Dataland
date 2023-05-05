@@ -14,7 +14,6 @@ import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a random SFDR dataset
- *
  * @param fiscalYearEnd Optional parameter if a specific date should be set instead of a random one
  * @returns a random SFDR dataset
  */
@@ -24,8 +23,8 @@ export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
     social: {
       general: {
         fiscalYear: valueOrUndefined(randomFiscalYearDeviation()),
-        fiscalYearEnd: fiscalYearEnd === undefined ? randomFutureDate() : fiscalYearEnd,
-        groupLevelAnnualReport: valueOrUndefined(randomYesNoNa()),
+        fiscalYearEnd: fiscalYearEnd ?? randomFutureDate(),
+     groupLevelAnnualReport: valueOrUndefined(randomYesNoNa()),
         annualReport: valueOrUndefined(generateLinkToPdf()),
         annualReportDate: randomFutureDate(),
         annualReportCurrency: generateIso4217CurrencyCode(),

@@ -12,7 +12,6 @@ type generatorFunction = (input: FixtureData<EuTaxonomyDataForFinancials>) => Fi
 
 /**
  * Generates prepared fixtures for the eutaxonomy-financials framework
- *
  * @returns the generated fixtures
  */
 export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<FixtureData<EuTaxonomyDataForFinancials>> {
@@ -40,7 +39,6 @@ export function generateEuTaxonomyForFinancialsPreparedFixtures(): Array<Fixture
 
 /**
  * Creates a fixture of a credit institution that uses dual field submission
- *
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
@@ -59,7 +57,6 @@ function createCreditInstitutionDualFieldSubmission(
 
 /**
  * Creates a fixture of a credit institution that uses single field submission
- *
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
@@ -77,7 +74,6 @@ function createCreditInstitutionSingleFieldSubmission(
 
 /**
  * Creates a fixture of a company that is only an insurance company
- *
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
@@ -91,7 +87,6 @@ function createInsuranceCompany(
 
 /**
  * Creates a fixture of a company that is only an asset management company
- *
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
@@ -105,7 +100,6 @@ function createAssetManagementCompany(
 
 /**
  * Creates a fixture of a company that is an asset management and insurance company
- *
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
@@ -119,7 +113,6 @@ function createAssetManagementAndInsuranceCompany(
 
 /**
  * Creates a fixture of a company that has values for every field (i.e. no undefined/missing datapoints)
- *
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
@@ -181,7 +174,6 @@ function createAllValuesCompany(
 /**
  * Higher order function which returns a function that creates a fixture of a credit institution, but sets the value
  * "taxonomyEligibleActivity" to the value of the input that is passed to the higher order function.
- *
  * @param eligibleActivityValue The value for the field "eligible activity".
  * @returns a generator function that creates a dataset with the "eligbile activity" value set accordingly
  */

@@ -4,7 +4,6 @@ import { getBaseUrl } from "@e2e/utils/Cypress";
 describe("As a developer, I want to ensure that security relevant headers are set.", () => {
   /**
    * Verifies the presence of common security headers in the provided response
-   *
    * @param response the response to check
    */
   function checkCommonHeaders(response: Cypress.Response<unknown>): void {
@@ -15,7 +14,6 @@ describe("As a developer, I want to ensure that security relevant headers are se
 
   /**
    * Verifies that the content-security-policy header of the Dataland webpage matches the provided expected header
-   *
    * @param expectedHeader the expected CSP header
    */
   function checkCommonCspHeaders(expectedHeader: string): void {
@@ -38,8 +36,9 @@ describe("As a developer, I want to ensure that security relevant headers are se
     () => {
       checkCommonCspHeaders(
         "default-src 'self' https://www.youtube-nocookie.com; script-src 'self' 'unsafe-eval' " +
-          "'unsafe-inline'; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; form-action 'self'; " +
-          "font-src 'self' data:; img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/"
+          "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o='; style-src 'self' 'unsafe-inline'; " +
+          "frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; " +
+          "img-src 'self' https://*.googleusercontent.com/ https://*.licdn.com/"
       );
     }
   );
