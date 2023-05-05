@@ -19,7 +19,6 @@ const legalForms = [
 
 /**
  * Randomly picks and returns a legal form from a list of available legal forms.
- *
  * @returns a random legal form from the list as string
  */
 export function getRandomCompanyLegalForm(): string {
@@ -28,7 +27,6 @@ export function getRandomCompanyLegalForm(): string {
 
 /**
  * Generates a company fixture with random information
- *
  * @returns information about a randomly generated company
  */
 export function generateCompanyInformation(): CompanyInformation {
@@ -70,7 +68,7 @@ export function generateCompanyInformation(): CompanyInformation {
   const countryCode = faker.address.countryCode();
   const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
     return faker.company.name();
-  }).sort();
+  }).sort((a, b) => a.localeCompare(b));
   const companyLegalForm = valueOrUndefined(getRandomCompanyLegalForm());
   const website = valueOrUndefined(faker.internet.url());
 
@@ -90,7 +88,6 @@ export function generateCompanyInformation(): CompanyInformation {
 
 /**
  * Returns the CSV mapping for the columns showing basic company information
- *
  * @returns the static CSV mapping
  */
 export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, string>> {

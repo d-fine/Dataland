@@ -6,7 +6,6 @@ const minEuro = 50000;
 
 /**
  * Generates a random decimal value in [min, max]
- *
  * @param min the minimum allowed value (inclusive)
  * @param max the maximum allowed value (inclusive)
  * @returns a random number in [min, max]
@@ -17,7 +16,6 @@ export function randomEuroValue(min: number = minEuro, max: number = maxEuro): n
 
 /**
  * Generates a random number in [0, max]
- *
  * @param max the maximum allowed value (inclusive)
  * @returns a random number in [0, max]
  */
@@ -27,7 +25,6 @@ export function randomNumber(max: number): number {
 
 /**
  * Returns a random number in [0, max] or undefined
- *
  * @param max the maximum allowed value (inclusive)
  * @returns a random number in [0, max] or undefined
  */
@@ -37,7 +34,6 @@ export function randomNumberOrUndefined(max: number): number | undefined {
 
 /**
  * Generates a random decimal value between 0 and 1
- *
  * @returns a random float between 0 and 1
  */
 export function randomPercentageValue(): number {

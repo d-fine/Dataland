@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
@@ -33,11 +32,9 @@ data class EuTaxonomyDataForFinancials(
 
     val insuranceKpis: InsuranceKpis? = null,
 
-    @field:JsonProperty(required = true)
-    override val fiscalYearDeviation: FiscalYearDeviation,
+    override val fiscalYearDeviation: FiscalYearDeviation? = null,
 
-    @field:JsonProperty(required = true)
-    override val fiscalYearEnd: LocalDate,
+    override val fiscalYearEnd: LocalDate? = null,
 
     override val scopeOfEntities: YesNoNa? = null,
 
@@ -47,8 +44,7 @@ data class EuTaxonomyDataForFinancials(
 
     override val assurance: AssuranceData? = null,
 
-    @field:JsonProperty(required = true)
-    override val numberOfEmployees: BigDecimal,
+    override val numberOfEmployees: BigDecimal? = null,
 
     override val referencedReports: Map<String, CompanyReport>? = null,
 ) : EuTaxonomyCommonFields, FrameworkBase

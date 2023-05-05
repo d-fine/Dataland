@@ -1217,7 +1217,7 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        return this.dataDate?.getFullYear()?.toString() || "";
+        return this.dataDate?.getFullYear()?.toString() ?? "";
       },
       set() {
         // IGNORED
@@ -1252,7 +1252,6 @@ export default defineComponent({
     /**
      * Loads the LKGS-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     *
      * @param dataId the id of the dataset to load
      */
     async loadLKSGData(dataId: string): Promise<void> {
@@ -1263,7 +1262,7 @@ export default defineComponent({
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
       const lksgDataset = dataResponse.data;
-      const numberOfProductionSites = lksgDataset.data?.social?.general?.listOfProductionSites?.length || 0;
+      const numberOfProductionSites = lksgDataset.data?.social?.general?.listOfProductionSites?.length ?? 0;
       if (numberOfProductionSites > 0) {
         this.isYourCompanyManufacturingCompany = "Yes";
         const productionSites = assertDefined(lksgDataset.data?.social?.general?.listOfProductionSites);
@@ -1272,7 +1271,7 @@ export default defineComponent({
         for (let i = 0; i < numberOfProductionSites; i++) {
           this.listOfProductionSites.push({
             id: i,
-            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices || [],
+            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices ?? [],
             listOfGoodsOrServicesString: "",
           });
         }
@@ -1336,7 +1335,6 @@ export default defineComponent({
 
     /**
      * Remove Object from ProductionSite array
-     *
      * @param id - the id of the object in the array
      */
     removeItemFromlistOfProductionSites(id: number) {
@@ -1345,7 +1343,6 @@ export default defineComponent({
 
     /**
      * Adds a new item to the list of Production Sites Goods Or Services
-     *
      * @param index - index of the element in the listOfProductionSites array
      */
     addNewItemsTolistOfProductionSites(index: number) {
@@ -1359,7 +1356,6 @@ export default defineComponent({
 
     /**
      * Remove item from list of Production Sites Goods Or Services
-     *
      * @param index - index of the element in the listOfProductionSites array
      * @param item - which item is to be deleted
      */

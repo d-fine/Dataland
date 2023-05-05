@@ -1,6 +1,5 @@
 /**
  * Randomly returns a currency from "USD", "EUR", "CHF", "CAD" and "AUD"
- *
  * @returns the randomly chosen currency code
  */
 export function generateIso4217CurrencyCode(): string {

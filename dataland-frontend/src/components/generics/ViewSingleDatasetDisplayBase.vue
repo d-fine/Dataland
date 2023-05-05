@@ -151,7 +151,6 @@ export default defineComponent({
   methods: {
     /**
      * Method to prepare the display of given data meta information
-     *
      * @param dataMetaInfoForDisplay The data meta information object to be displayed
      */
     processDataMetaInfoForDisplay(dataMetaInfoForDisplay: DataMetaInformation) {
@@ -163,7 +162,6 @@ export default defineComponent({
     /**
      * Handles the change event of the reporting period dropdown to make the page display the active data set for the
      * newly selected reporting period.
-     *
      * @param dropDownChangeEvent The object which is passed by the change event of the reporting period dropdown
      */
     handleChangeReportingPeriodEvent(dropDownChangeEvent: DropdownChangeEvent) {
@@ -172,7 +170,6 @@ export default defineComponent({
 
     /**
      * Switch to the active data set of a new reporting period, including adapting the corresponding route
-     *
      * @param newReportingPeriod The desired new reporting period
      */
     switchToActiveDatasetForNewlyChosenReportingPeriod(newReportingPeriod: string) {
@@ -192,7 +189,6 @@ export default defineComponent({
 
     /**
      * Method to set route to a specific reporting period
-     *
      * @param reportingPeriod Specific reporting period the route should end with
      */
     routerPushToReportingPeriod(reportingPeriod: string) {
@@ -216,7 +212,6 @@ export default defineComponent({
 
     /**
      * Gets the keys from a map and returns them in an alphabeticall sorted array
-     *
      * @param inputMap The map that should be used for this operation
      * @returns an array containing the keys of the map alphabetically sorted
      */
@@ -229,7 +224,6 @@ export default defineComponent({
 
     /**
      * Method to handle the update of the currently active data meta information for the chosen framework
-     *
      * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
      * active data meta information objects
      */
@@ -268,7 +262,6 @@ export default defineComponent({
 
     /**
      * Method to retrieve meta data for a specific data ID and prepare displaying them
-     *
      * @param dataId The desired data ID for which the meta data are wanted
      */
     async getMetaDataForDataId(dataId: string) {
@@ -331,7 +324,6 @@ export default defineComponent({
 
     /**
      * Method to retrieve the active data meta information for the latest reporting period
-     *
      * @returns the active data meta information from the latest reporting period
      */
     getActiveDataMetaInfoFromLatestReportingPeriodIfParsableAsNumber(): DataMetaInformation {

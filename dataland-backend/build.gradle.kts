@@ -23,7 +23,7 @@ plugins {
     id("org.springframework.boot")
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.jpa")
-    kotlin("plugin.serialization") version "1.8.0"
+    kotlin("plugin.serialization") version "1.8.21"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17

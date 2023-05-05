@@ -73,7 +73,6 @@ export default defineComponent({
   methods: {
     /**
      * The input string is stored in the variable latestValidSearchString if it is a string and not empty
-     *
      * @param currentSearchString input to be checked (can be of type string or object)
      */
     saveCurrentSearchStringIfValid(currentSearchString: string | object) {
@@ -83,7 +82,6 @@ export default defineComponent({
     },
     /**
      * Executes a router push to upload overview page of the given company
-     *
      * @param event object containing the stored company
      * @param event.value the stored company object
      */
@@ -92,7 +90,6 @@ export default defineComponent({
     },
     /**
      * Queries the getCompanies endpoint and writes the response to the variable autoCompleteArray
-     *
      * @param companyName object containing the search query for the getCompanies endpoint
      * @param companyName.query the query for the getCompany endpoint
      */

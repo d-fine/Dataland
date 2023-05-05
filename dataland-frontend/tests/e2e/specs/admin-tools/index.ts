@@ -4,4 +4,5 @@
 describe("Admin tool test", () => {
   require("./AdminConsoleSecurity");
   require("./PGAdmin");
+  require("./RabbitMQAdmin");
 });

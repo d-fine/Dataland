@@ -34,7 +34,7 @@
                 dropdownIcon="pi pi-angle-down"
                 @change="handleChangeFrameworkEvent"
               />
-              <slot name="reportingPeriodDropdown"> </slot>
+              <slot name="reportingPeriodDropdown"></slot>
             </div>
             <div v-if="hasUserUploaderRights" class="flex align-content-end align-items-center">
               <PrimeButton
@@ -64,7 +64,7 @@
           </div>
         </MarginWrapper>
         <MarginWrapper style="margin-right: 0">
-          <slot name="content"> </slot>
+          <slot name="content"></slot>
         </MarginWrapper>
       </div>
       <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>
@@ -152,7 +152,7 @@ export default defineComponent({
       );
     },
     addNewDatasetLinkTarget() {
-      return `/companies/${this.companyID || ""}/frameworks/upload`;
+      return `/companies/${this.companyID ?? ""}/frameworks/upload`;
     },
   },
   created() {
@@ -168,7 +168,6 @@ export default defineComponent({
   methods: {
     /**
      * Opens Overlay Panel for selecting a reporting period to edit data for
-     *
      * @param event event
      */
     editDataset(event: Event) {
@@ -191,7 +190,6 @@ export default defineComponent({
     },
     /**
      * Navigates to the data update form
-     *
      * @param companyID company ID
      * @param dataType data type
      * @param dataId data Id
@@ -210,7 +208,6 @@ export default defineComponent({
     },
     /**
      * Visits the framework view page for the framework which was chosen in the dropdown
-     *
      * @param dropDownChangeEvent the change event emitted by the dropdown component
      */
     handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
@@ -221,7 +218,6 @@ export default defineComponent({
     /**
      * Handles the "search-confirmed" event of the search bar by visiting the search page with the query param set to
      * the search term provided by the event.
-     *
      * @param searchTerm The search term provided by the "search-confirmed" event of the search bar
      */
     async handleSearchConfirm(searchTerm: string) {
@@ -235,7 +231,6 @@ export default defineComponent({
      * Uses a list of data meta info to derive all distinct frameworks that occur in that list. Only if those distinct
      * frameworks are also included in the frontend constant which contains all frameworks that have view-pages
      * implemented, the distinct frameworks are set as options for the framework-dropdown element.
-     *
      * @param listOfDataMetaInfo a list of data meta info
      */
     getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(listOfDataMetaInfo: DataMetaInformation[]) {
@@ -249,7 +244,7 @@ export default defineComponent({
           listOfDistinctAvailableAndViewableFrameworksForCompany.push(dataType);
         }
       });
-      listOfDistinctAvailableAndViewableFrameworksForCompany.sort();
+      listOfDistinctAvailableAndViewableFrameworksForCompany.sort((a, b) => a.localeCompare(b));
       listOfDistinctAvailableAndViewableFrameworksForCompany.forEach((dataType) => {
         this.dataTypesInDropdown.push({ label: humanizeString(dataType), value: dataType });
       });
@@ -258,7 +253,6 @@ export default defineComponent({
     /**
      * Uses a list of data meta info and filters out all elements whose data type (framework) do not equal the
      * dataType-prop set for this Vue-component during render.
-     *
      * @param listOfDataMetaInfo a list of data meta info
      * @returns the filtered list of data meta info
      */
@@ -272,7 +266,6 @@ export default defineComponent({
      * Uses a list of data meta info to set a map which has the distinct repoting periods as keys, and the respective
      * active data meta info as value.
      * It only takes into account data meta info whose dataType equals the current dataType prop value.
-     *
      * @param listOfActiveDataMetaInfo The list to be used as input for the map.
      */
     setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(

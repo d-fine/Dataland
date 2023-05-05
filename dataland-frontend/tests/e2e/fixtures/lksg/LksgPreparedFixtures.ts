@@ -12,7 +12,6 @@ type generatorFunction = (input: FixtureData<LksgData>) => FixtureData<LksgData>
 /**
  * Generates LkSG prepared fixtures by generating random LkSG datasets and afterwards manipulating some fields
  * via manipulator-functions to set specific values for those fields.
- *
  * @returns the prepared fixtures
  */
 export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
@@ -34,7 +33,6 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
 
 /**
  * Sets the company name and the date in the fixture data to a specific string
- *
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
@@ -48,7 +46,6 @@ function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<
 /**
  * Sets the company name in the fixture data to a specific string, the field "employeeUnder18Apprentices" to "No", and
  * sets exactly two production sites for the "listOfProductionSites" field.
- *
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
@@ -62,7 +59,6 @@ function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureDat
 /**
  * Sets the company name, vat identification number, data date and reporting period in the fixture data to
  * specific values needed for tests.
- *
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
@@ -77,7 +73,6 @@ function manipulateFixtureForVat20231(input: FixtureData<LksgData>): FixtureData
 /**
  * Sets the company name, vat identification number, data date and reporting period in the fixture data to
  * specific values needed for tests.
- *
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
@@ -92,7 +87,6 @@ function manipulateFixtureForVat20232(input: FixtureData<LksgData>): FixtureData
 /**
  * Sets the company name, vat identification number, data date and reporting period in the fixture data to
  * specific values needed for tests.
- *
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
@@ -106,7 +100,6 @@ function manipulateFixtureForVat2022(input: FixtureData<LksgData>): FixtureData<
 
 /**
  * Generates a new LKSG fixture without any undefined values
- *
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */

@@ -38,6 +38,6 @@ class StreamingStorageControllerApi(
                     "(code ${response.code}).",
             )
         }
-        return response.body.byteStream()
+        return response.body!!.byteStream()
     }
 }
