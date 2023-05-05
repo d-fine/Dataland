@@ -8,14 +8,15 @@ import {
   EuTaxonomyDataForFinancials,
 } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import {getBaseUrl, uploader_name, uploader_pw} from "@e2e/utils/Cypress";
+import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
 import {
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm,
-  submitFilledInEuTaxonomyForm, uploadEuTaxonomyDataForNonFinancialsViaForm,
+  submitFilledInEuTaxonomyForm,
+  uploadEuTaxonomyDataForNonFinancialsViaForm,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
 import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@e2e/utils/Constants";
@@ -176,11 +177,9 @@ describeIf(
       });
     }
 
-
-
     it(
       "Upload EU Taxonomy Dataset via form, check that redirect to MyDatasets works and assure that it can be " +
-      "viewed and edited, and that file selection, upload and download works properly",
+        "viewed and edited, and that file selection, upload and download works properly",
       () => {
         // TODO Emanuel: this test is pretty long and also contains stuff that fits better to the "UploadReports" test file.  we should consider moving some of the test code here
 
@@ -220,8 +219,10 @@ describeIf(
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
-              cy.contains("[data-test='taxocard']", "Eligible Revenue")
-                .should("contain", newValueForEligibleRevenueAfterEdit + "%");
+              cy.contains("[data-test='taxocard']", "Eligible Revenue").should(
+                "contain",
+                newValueForEligibleRevenueAfterEdit + "%"
+              );
 
               // TEST IF A FILE WITH AN ALREADY EXISTING NAME CANNOT BE SUBMITTED          TODO comment supports reading the test while working on it => delete at the very end
               cy.get('button[data-test="editDatasetButton"]').click();
