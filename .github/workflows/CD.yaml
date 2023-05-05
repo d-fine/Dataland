@@ -29,7 +29,6 @@ jobs:
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
           runner: ${{ toJSON(runner) }}
-          secrets: ${{ toJSON(secrets) }}
           strategy: ${{ toJSON(strategy) }}
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
@@ -81,7 +80,6 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
-          secrets: ${{ toJSON(secrets) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin

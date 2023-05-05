@@ -22,7 +22,6 @@ jobs:
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
           runner: ${{ toJSON(runner) }}
-          secrets: ${{ toJSON(secrets) }}
           strategy: ${{ toJSON(strategy) }}
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
