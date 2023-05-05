@@ -122,7 +122,7 @@ jobs:
           INVITATION_REQUEST_RECEIVERS: ${{ secrets.INVITATION_REQUEST_RECEIVERS }}
           INVITATION_REQUEST_CC: ${{ vars.INVITATION_REQUEST_CC }}
           PROXY_LETSENCRYPT_PATH: ${{ vars.PROXY_LETSENCRYPT_PATH }}
-          PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
+          PROXY_PRIMARY_URL: ${{ vars.TARGETSERVER_URL }}
           PROXY_LETSENCRYPT_ARGS: ${{ vars.PROXY_LETSENCRYPT_ARGS }}
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
