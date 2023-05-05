@@ -24,7 +24,6 @@ import { submitFilledInEuTaxonomyForm } from "@e2e/utils/EuTaxonomyNonFinancials
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
- *
  * @returns the resulting cypress chainable
  */
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
@@ -41,7 +40,6 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
 
 /**
  * Fills the eutaxonomy-financials upload form with the given dataset
- *
  * @param data the data to fill the form with
  */
 export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
@@ -136,7 +134,6 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
 
 /**
  * Fills a set with eligibility-kpis for different company types
- *
  * @param divTag value of the parent div data-test attribute to fill in
  * @param data the kpi data to use to fill the form
  */
@@ -150,7 +147,6 @@ function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined):
 
 /**
  * Enters a single decimal inputs field value in the upload eutaxonomy-financials form
- *
  * @param divTag value of the parent div data-test attribute to fill in
  * @param inputsTag value of the parent div data-test attribute to fill in
  * @param value the value to fill in
@@ -187,7 +183,6 @@ function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecima
 
 /**
  * Extracts the first eutaxonomy-financials dataset from the fake fixtures
- *
  * @returns the first eutaxonomy-financials dataset from the fake fixtures
  */
 export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable<
@@ -201,7 +196,6 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable
 
 /**
  * Uploads a single eutaxonomy-financials data entry for a company via the Dataland API
- *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
@@ -226,7 +220,6 @@ export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
 
 /**
  * Visits the edit page for the eu taxonomy dataset for financial companies via navigation.
- *
  * @param companyId the id of the company for which to edit a dataset
  * @param expectIncludedFile specifies if the test file is expected to be in the server response
  */
@@ -243,7 +236,6 @@ export function gotoEditForm(companyId: string, expectIncludedFile: boolean): vo
 /**
  * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
  * via the form in the frontend, and then visits the view page where that dataset is displayed
- *
  * @param companyInformation Company information to be used for the company upload
  * @param testData EU Taxonomy dataset for financial companies to be uploaded
  * @param beforeFormFill is performed before filling the fields of the upload form
