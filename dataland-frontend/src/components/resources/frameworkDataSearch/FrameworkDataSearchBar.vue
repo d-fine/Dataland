@@ -149,7 +149,6 @@ export default defineComponent({
 
     /**
      * Updates the local search string if the new search string is well-defined
-     *
      * @param currentSearchString the potentially new search string
      */
     saveCurrentSearchStringIfValid(currentSearchString: string | object) {
@@ -184,7 +183,6 @@ export default defineComponent({
 
     /**
      * Called when an item is selected from the dropdown. Navigates to the view framework page for the selected company
-     *
      * @param event the click event
      * @param event.value the company that was clicked on
      */
@@ -229,7 +227,6 @@ export default defineComponent({
     /**
      * This function is called to obtain search suggestions for the dropdown. Uses the Dataland API to search
      * companies by the current search bar input (and selected filters).
-     *
      * @param companyName the autocomplete suggestion event
      * @param companyName.query the query text entered into the search bar
      */

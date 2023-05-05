@@ -9,7 +9,6 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 
 /**
  * Generates a set number of LKSG fixtures
- *
  * @param numFixtures the number of lksg fixtures to generate
  * @returns a set number of LKSG fixtures
  */
@@ -23,7 +22,6 @@ export function generateLksgFixture(numFixtures: number): FixtureData<LksgData>[
 
 /**
  * Generates a random production site
- *
  * @returns a random production site
  */
 export function generateProductionSite(): ProductionSite {
@@ -47,7 +45,6 @@ export function generateProductionSite(): ProductionSite {
 
 /**
  * Generates an array consisting of 1 to 5 random production sites
- *
  * @returns 1 to 5 random production sites
  */
 export function generateArrayOfProductionSites(): ProductionSite[] {
@@ -56,7 +53,6 @@ export function generateArrayOfProductionSites(): ProductionSite[] {
 
 /**
  * Generates a random VAT ID number
- *
  * @returns a random VAT ID number
  */
 export function generateVatIdentificationNumber(): string {
@@ -66,7 +62,6 @@ export function generateVatIdentificationNumber(): string {
 }
 /**
  * Generates a random LKSG dataset
- *
  * @param dataDate Optional parameter if a specific date should be set instead of a random one
  * @returns a random LKSG dataset
  */

@@ -1,6 +1,5 @@
 /**
  * Animation function
- *
  * @param currentTime - Current time in milliseconds, automatically passed by requestAnimationFrame
  * @param startTime - Start time of the animation, which is used to calculate the animation duration
  * @param startPosition - Starting position of the animation
@@ -25,7 +24,6 @@ function animation(
 
 /**
  * Smooth scrolling
- *
  * @param target - target element
  */
 export function smoothScroll(target: string): void {

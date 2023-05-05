@@ -18,7 +18,6 @@ import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviat
 
 /**
  * Generates a new Eu Taxonomy instance fitting for either "financials" or "non-financials"
- *
  * @returns Eu Taxonomy instance with mandatory fields already assigned
  */
 export function generateEuTaxonomyWithRequiredFields(): EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials {
@@ -31,7 +30,6 @@ export function generateEuTaxonomyWithRequiredFields(): EuTaxonomyDataForFinanci
 
 /**
  * Fills in random values for fields shared between the eutaxonomy frameworks
- *
  * @param input the framework object to fill in data for
  */
 export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials): void {
@@ -44,7 +42,6 @@ export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxo
 
 /**
  * A helper function that extracts a report by name from an eutaxonomy dataset if it exists
- *
  * @param row the dataset to extract the report form
  * @param reportName the name of the report to look for
  * @returns the company report object if it exists, undefined otherwise.
@@ -58,7 +55,6 @@ function getReportIfExists(
 
 /**
  * Returns the CSV mapping for a type of company report
- *
  * @param reportName the name of the report to generate csv mappings for
  * @returns the generated CSV mapping
  */
@@ -93,7 +89,6 @@ function getCsvReportMapping(
 
 /**
  * Returns the CSV mapping of fields that are shared between the eutaxonomy frameworks
- *
  * @param isfs the value of the IS/FS column
  * @returns the generated CSV mapping
  */

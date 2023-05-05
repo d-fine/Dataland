@@ -126,7 +126,6 @@ export default defineComponent({
   methods: {
     /**
      * Function to emit event to update the Fiscal Year End value
-     *
      * @param event new date value
      */
     updateFiscalYearEndHandler(event: Date) {

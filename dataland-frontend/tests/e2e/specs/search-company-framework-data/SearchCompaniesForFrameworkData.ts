@@ -81,7 +81,6 @@ describe("As a user, I expect the search functionality on the /companies page to
   /**
    * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
    * format and the url includes the search term
-   *
    * @param inputValue the text to enter into the search bar
    */
   function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
@@ -103,7 +102,6 @@ describe("As a user, I expect the search functionality on the /companies page to
     () => {
       /**
        * Verifies that the tooltip of the Perm ID in the search table header contains the expected text
-       *
        * @param permIdTextInt the text expected in the tooltip
        */
       function checkPermIdToolTip(permIdTextInt: string): void {
@@ -214,7 +212,6 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   /**
    * Returns the first company from the fake fixture that has at least one alternative name
-   *
    * @returns the matching company from the fake fixtures
    */
   function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForNonFinancials> {

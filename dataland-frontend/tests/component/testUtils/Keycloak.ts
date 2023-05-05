@@ -7,7 +7,6 @@ export interface KeycloakMockConfiguration {
 
 /**
  * A function returning a minmal keycloak mock sufficient for tricking the dataland frontend.
- *
  * @param config some configuration options that specify the user you want to imitate
  * @returns a mocked keycloak object sufficient to trick the dataland frontend
  */

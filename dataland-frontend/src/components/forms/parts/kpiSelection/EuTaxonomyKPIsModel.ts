@@ -29,7 +29,6 @@ export const euTaxonomyKPIsModel = {
  * Returns the kpi field name for a financial services type enum that is passed as param.
  * E.g. the input "EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution" should return
  * "creditInstitutionKpis".
- *
  * @param financialServiceType The financial service type enum for which the kpi field name shall be returned
  * @returns the kpi field name
  */

@@ -176,7 +176,6 @@ export default defineComponent({
     },
     /**
      * Add files to object reportsToUpload
-     *
      * @param event full event object containing the files
      * @param event.originalEvent event information
      * @param event.files files
@@ -198,7 +197,6 @@ export default defineComponent({
     },
     /**
      * Remove report from files uploaded
-     *
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param indexOfFileToRemove index number of the file to remove
      */
@@ -211,7 +209,6 @@ export default defineComponent({
     /**
      * When the X besides existing reports is clicked this function should be called and
      * removes the corresponding report from the list
-     *
      * @param indexOfFileToRemove Index of the report that shall no longer be referenced by the dataset
      */
     removeReportFromUploadedReports(indexOfFileToRemove: number) {
@@ -221,7 +218,6 @@ export default defineComponent({
 
     /**
      * Updates the date of a single report file
-     *
      * @param newDate new date value
      * @param index file to update
      * @param containingReports which set of files will be edited
@@ -268,7 +264,6 @@ export default defineComponent({
     },
     /**
      * Complete information about selected file with additional fields
-     *
      * @param reportsThatShouldBeCompleted Files that should be completed
      * @param listOfReportsThatAlreadyExist List Of Files That Already Exist In Reports Info
      * @returns List of files with additional fields
@@ -301,7 +296,6 @@ export default defineComponent({
 
     /**
      *  calculates the hash from a file
-     *
      * @param [file] the file to calculate the hash from
      * @returns a promise of the hash as string
      */
@@ -313,7 +307,6 @@ export default defineComponent({
 
     /**
      *  helper to encode a hash of type buffer in hex
-     *
      * @param [buffer] the buffer to encode in hex
      * @returns  the array as string, hex encoded
      */

@@ -8,7 +8,6 @@ type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>
 /**
  * Generates SFDR prepared fixtures by generating random SFDR datasets and afterwards manipulating some fields
  * via manipulator-functions to set specific values for those fields.
- *
  * @returns the prepared fixtures
  */
 export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
@@ -29,7 +28,6 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
 
 /**
  * Sets the company name in the fixture data to a specific string
- *
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
@@ -41,7 +39,6 @@ function manipulateFixtureForOneSfdr(input: FixtureData<SfdrData>): FixtureData<
 
 /**
  * Sets the company name and the date in the fixture data to a specific string
- *
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */

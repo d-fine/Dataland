@@ -3,7 +3,6 @@ import { findAllValuesForKey, ObjectType } from "@/utils/updateObjectUtils";
 
 /**
  * Checks which inputs are not filled correctly
- *
  * @param node - single form field
  */
 export function checkCustomInputs(node: FormKitNode): void {
@@ -25,7 +24,6 @@ export function checkCustomInputs(node: FormKitNode): void {
 
 /**
  * checks if all reports that shall be uploaded are used as a data source at least once
- *
  * @param [dataModel] the data model that has a field for referenced reports, named 'report'
  * @param [uploadedReports] the list of reports that were uploaded via form
  * returns nothing but throws an error if not all reports are referenced

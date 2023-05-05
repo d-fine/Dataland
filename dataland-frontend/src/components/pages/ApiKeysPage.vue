@@ -197,7 +197,6 @@ export default defineComponent({
   methods: {
     /**
      * Updates the page state. Possible options are "view" and "create"
-     *
      * @param state the new page state
      */
     setActivePageState(state: string) {
@@ -250,7 +249,6 @@ export default defineComponent({
     /**
      * Called when the generateApiKey event is emitted form the CreateApiKeyCard. Uses the Dataland API to
      * generate a new API key with the specified validity time. Updates the UI to display the new key
-     *
      * @param daysValid the number of days the api key is valid for
      */
     async generateApiKey(daysValid?: number) {

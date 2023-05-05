@@ -105,7 +105,6 @@ export default defineComponent({
     },
     /**
      * Emits the event that the reporting date was changed
-     *
      * @param newDate the new date
      */
     reportingDateChanged(newDate: Date) {

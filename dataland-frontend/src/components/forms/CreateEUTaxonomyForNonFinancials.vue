@@ -390,7 +390,6 @@ export default defineComponent({
     /**
      * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     *
      * @param dataId the id of the dataset to load
      */
     async fetchTemplateData(dataId: string): Promise<void> {
@@ -464,7 +463,6 @@ export default defineComponent({
 
     /**
      * Updates the Fiscal Year End value
-     *
      * @param dateValue new date value
      */
     updateFiscalYearEndHandler(dateValue: Date) {
@@ -474,7 +472,6 @@ export default defineComponent({
 
     /**
      * Handles invalid inputs and gives applicable error messages
-     *
      * @param node from which the input fields will be checked
      */
     handleInvalidInput(node: FormKitNode) {
@@ -484,7 +481,6 @@ export default defineComponent({
     },
     /**
      * Updates the local list of names of referenceable files
-     *
      * @param reportsFilenames new list of referenceable files
      */
     referenceableFilesChanged(reportsFilenames: string[]) {

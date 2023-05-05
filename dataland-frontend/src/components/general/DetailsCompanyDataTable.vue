@@ -68,7 +68,6 @@ export default defineComponent({
     },
     /**
      * Humanizes a string if the corresponding key is listed as to be humanized
-     *
      * @param key decides if the value is to be humanized
      * @param value string to be possibly humanized
      * @returns a humanized input of the value parameter if the k

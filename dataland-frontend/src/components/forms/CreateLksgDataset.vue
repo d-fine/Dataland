@@ -1245,7 +1245,6 @@ export default defineComponent({
     /**
      * Loads the LKGS-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     *
      * @param dataId the id of the dataset to load
      */
     async loadLKSGData(dataId: string): Promise<void> {
@@ -1329,7 +1328,6 @@ export default defineComponent({
 
     /**
      * Remove Object from ProductionSite array
-     *
      * @param id - the id of the object in the array
      */
     removeItemFromlistOfProductionSites(id: number) {
@@ -1338,7 +1336,6 @@ export default defineComponent({
 
     /**
      * Adds a new item to the list of Production Sites Goods Or Services
-     *
      * @param index - index of the element in the listOfProductionSites array
      */
     addNewGoodsOrServicesToProductionSite(index: number) {
@@ -1351,7 +1348,6 @@ export default defineComponent({
 
     /**
      * Remove item from list of Production Sites Goods Or Services
-     *
      * @param index - index of the element in the listOfProductionSites array
      * @param item - which item is to be deleted
      */

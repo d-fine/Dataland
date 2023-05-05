@@ -15,7 +15,6 @@ import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
- *
  * @param companyId The Id of the company to upload the dataset for
  * @param valueFieldNotFilled Value which, if true, disables the value field
  */
@@ -36,7 +35,6 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
 
 /**
  * Fills all the fields of the eu-taxonomy upload form for non-financial companies
- *
  * @param valueFieldNotFilled Value which, if true, disables the value field
  * @param assuranceReportName name of the assurance data source
  */
@@ -91,7 +89,6 @@ export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
 
 /**
  * Extracts the first eutaxonomy-non-financials dataset from the fake fixtures
- *
  * @returns the first eutaxonomy-non-financials dataset from the fake fixtures
  */
 export function getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures(): Chainable<
@@ -107,7 +104,6 @@ export function getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures(): Chaina
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland API
- *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
@@ -133,7 +129,6 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
 /**
  * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks
  * if a 200 response is returned by the backend
- *
  * @param submissionDataIntercept function that asserts content of an intercepted request
  */
 export function submitFilledInEuTaxonomyForm(
