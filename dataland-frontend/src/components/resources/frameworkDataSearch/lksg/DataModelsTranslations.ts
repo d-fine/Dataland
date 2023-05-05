@@ -4,13 +4,13 @@ export const listOfProductionSitesConvertedNames = {
   listOfGoodsOrServices: "List Of Goods Or Services",
 };
 
-export const detailedCompanyDataTableColumnHeaders = {
-  productionSites: {
+export const detailsCompanyDataTableColumnHeaders = {
+  listOfProductionSites: {
     nameOfProductionSite: "Name",
     addressOfProductionSite: "Address",
     listOfGoodsOrServices: "List Of Goods Or Services",
   },
   industry: {
-    typeO,
+    industry: "NACE Code",
   },
 };

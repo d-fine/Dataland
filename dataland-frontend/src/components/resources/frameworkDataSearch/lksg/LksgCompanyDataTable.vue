@@ -43,7 +43,7 @@
         <template #body="{ data }">
           <a
             v-if="Array.isArray(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId].length"
-            @click="openModalAndDisplayValuesInSubTable(data[reportingPeriod.dataId], data.kpiLabel)"
+            @click="openModalAndDisplayValuesInSubTable(data[reportingPeriod.dataId], data.kpiLabel, data.kpiKey)"
             class="link"
             >Show "{{ data.kpiLabel }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
@@ -111,9 +111,9 @@ export default defineComponent({
      * Opens a modal to display a table with the provided list of production sites
      * @param listOfValues An array consisting of production sites
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
-     * @param columnHeaders
+     * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
      */
-    openModalAndDisplayValuesInSubTable(listOfValues: [], modalTitle: string, columnHeaders: object) {
+    openModalAndDisplayValuesInSubTable(listOfValues: [], modalTitle: string, kpiKey: string) {
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
           header: modalTitle,
@@ -122,7 +122,7 @@ export default defineComponent({
         },
         data: {
           listOfRowContents: listOfValues,
-          columnHeaders: columnHeaders,
+          tableType: kpiKey,
         },
       });
     },

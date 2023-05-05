@@ -3,11 +3,12 @@
     <Column
       v-for="col of columns"
       :field="col.field"
-      :header="columnHeaders[col.header]"
+      :header="columnHeaders[tableType][col.header]"
       :key="col.field"
       headerStyle="width: 15vw;"
     >
       <template #body="{ data }">
+        {{ console.log(data) }}
         <ul v-if="Array.isArray(data[col.field])">
           <li :key="el" v-for="el in data[col.field]">{{ el }}</li>
         </ul>
@@ -22,11 +23,8 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import {
-  TypeOfProductionSitesConvertedNames,
-  TypeOfProductionSitesNames,
-} from "@/components/resources/frameworkDataSearch/DataModelsTypes";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -34,16 +32,21 @@ export default defineComponent({
   components: { DataTable, Column },
   data() {
     return {
-      listOfRowContents: [] as Array<object>,
-      columnHeaders: {} as object,
+      listOfRowContents: [] as Array<object | string>,
+      columnHeaders: detailsCompanyDataTableColumnHeaders,
+      tableType: "" as keyof typeof detailsCompanyDataTableColumnHeaders,
       columns: [] as { field: string; header: string }[],
     };
   },
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
-    const dialogRefData = dialogRefToDisplay.data as { listOfRowContents: Array<object>; columnHeaders: object };
+    const dialogRefData = dialogRefToDisplay.data as {
+      listOfRowContents: Array<object>;
+      tableType: keyof typeof detailsCompanyDataTableColumnHeaders;
+    };
     this.listOfRowContents = dialogRefData.listOfRowContents;
-    this.columnHeaders = dialogRefData.columnHeaders;
+    this.tableType = dialogRefData.tableType;
+    console.log(this.listOfRowContents, this.columnHeaders, this.tableType);
   },
   methods: {
     /**
@@ -52,16 +55,21 @@ export default defineComponent({
      */
     generateColsNames(): void {
       if (this.listOfRowContents.length && Array.isArray(this.listOfRowContents)) {
-        const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], productionSite) {
-          for (const key of Object.keys(productionSite)) {
-            if (keyList.indexOf(key) === -1) keyList.push(key);
+        if (typeof this.listOfRowContents[0] === "object") {
+          const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], rowContent) {
+            for (const key of Object.keys(rowContent)) {
+              if (keyList.indexOf(key) === -1) keyList.push(key);
+            }
+            return keyList;
+          }, []);
+          for (const key of presentKeys) {
+            this.columns.push({ field: `${key}`, header: `${key}` });
           }
-          return keyList;
-        }, []);
-        for (const key of presentKeys) {
-          this.columns.push({ field: `${key}`, header: `${key}` });
+        } else {
+          this.columns.push({ field: `${this.tableType}`, header: `${this.tableType}` });
         }
       }
+      console.log(this.columns);
     },
     /**
      * Humanizes a string if the corresponding key is listed as to be humanized
