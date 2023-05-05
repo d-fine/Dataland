@@ -1,4 +1,6 @@
 import {
+  CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  CompanyInformation,
   Configuration,
   DataMetaInformation,
   DataPointBigDecimal,
@@ -11,6 +13,14 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
+import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { CyHttpMessages } from "cypress/types/net-stubbing";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { submitFilledInEuTaxonomyForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
@@ -206,4 +216,54 @@ export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
     data,
   });
   return response.data;
+}
+
+/**
+ * Visits the edit page for the eu taxonomy dataset for financial companies via navigation.
+ * @param companyId the id of the company for which to edit a dataset
+ * @param expectIncludedFile specifies if the test file is expected to be in the server response
+ */
+export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
+  gotoEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyFinancials).then((interception) => {
+    const referencedReports = assertDefined(
+      (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports
+    );
+    expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
+    expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
+  });
+}
+
+/**
+ * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
+ * via the form in the frontend, and then visits the view page where that dataset is displayed
+ * @param companyInformation Company information to be used for the company upload
+ * @param testData EU Taxonomy dataset for financial companies to be uploaded
+ * @param beforeFormFill is performed before filling the fields of the upload form
+ * @param afterFormFill is performed after filling the fields of the upload form
+ * @param submissionDataIntercept performs checks on the request itself
+ * @param afterDatasetSubmission is performed after the data has been submitted
+ */
+export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
+  companyInformation: CompanyInformation,
+  testData: EuTaxonomyDataForFinancials,
+  beforeFormFill: () => void,
+  afterFormFill: () => void,
+  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
+  afterDatasetSubmission: (companyId: string) => void
+): void {
+  getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+    return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
+      (storedCompany): void => {
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.visitAndCheckAppMount(
+          `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
+        );
+        beforeFormFill();
+        fillAndValidateEuTaxonomyForFinancialsUploadForm(testData);
+        afterFormFill();
+        submitFilledInEuTaxonomyForm(submissionDataIntercept);
+        afterDatasetSubmission(storedCompany.companyId);
+      }
+    );
+  });
 }
