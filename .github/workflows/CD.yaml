@@ -135,7 +135,7 @@ jobs:
       - name: Verify images
         run: ./deployment/verifyImagesRemote.sh
         env:
-          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
+          TARGETSERVER_URL: ${{ vars.TARGETSERVER_URL }}
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
@@ -189,10 +189,10 @@ jobs:
           fi
         env:
           TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
-          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
+          TARGETSERVER_URL: ${{ vars.TARGETSERVER_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
-        run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
+        run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ vars.TARGETSERVER_URL }}"
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com"
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
