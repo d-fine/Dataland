@@ -43,7 +43,7 @@
         <template #body="{ data }">
           <a
             v-if="Array.isArray(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId].length"
-            @click="openModalAndDisplayListOfProductionSites(data[reportingPeriod.dataId], data.kpiLabel)"
+            @click="openModalAndDisplayValuesInSubTable(data[reportingPeriod.dataId], data.kpiLabel)"
             class="link"
             >Show "{{ data.kpiLabel }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
@@ -86,7 +86,7 @@ export default defineComponent({
     return {
       kpiDataObjectsToDisplay: [],
       expandedRowGroups: ["_masterData"],
-      listOfProductionSitesConvertedNames,
+      listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
     };
   },
   props: {
@@ -109,10 +109,11 @@ export default defineComponent({
   methods: {
     /**
      * Opens a modal to display a table with the provided list of production sites
-     * @param listOfProductionSites An array consisting of production sites
+     * @param listOfValues An array consisting of production sites
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
+     * @param columnHeaders
      */
-    openModalAndDisplayListOfProductionSites(listOfProductionSites: [], modalTitle: string) {
+    openModalAndDisplayValuesInSubTable(listOfValues: [], modalTitle: string, columnHeaders: object) {
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
           header: modalTitle,
@@ -120,8 +121,8 @@ export default defineComponent({
           dismissableMask: true,
         },
         data: {
-          listOfProductionSitesNames: listOfProductionSites,
-          listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
+          listOfRowContents: listOfValues,
+          columnHeaders: columnHeaders,
         },
       });
     },

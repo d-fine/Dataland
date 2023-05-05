@@ -92,7 +92,7 @@ export default defineComponent({
     return {
       kpiDataObjectsToDisplay: [],
       expandedRowGroups: ["_general"],
-      listOfProductionSitesConvertedNames,
+      listOfProductionSitesConvertedNames: columnHeaders,
     };
   },
   props: {
@@ -130,7 +130,7 @@ export default defineComponent({
      * @param listOfProductionSites An array consisting of production sites
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      */
-    openModalAndDisplayListOfProductionSites(listOfProductionSites: [], modalTitle: string) {
+    openModalAndDisplayValuesInSubTable(listOfProductionSites: [], modalTitle: string) {
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
           header: modalTitle,
@@ -138,8 +138,8 @@ export default defineComponent({
           dismissableMask: true,
         },
         data: {
-          listOfProductionSitesNames: listOfProductionSites,
-          listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
+          listOfRowContents: listOfProductionSites,
+          columnHeaders: listOfProductionSitesConvertedNames,
         },
       });
     },

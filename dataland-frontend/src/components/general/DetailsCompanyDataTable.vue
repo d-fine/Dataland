@@ -1,9 +1,9 @@
 <template>
-  <DataTable responsiveLayout="scroll" :value="listOfProductionSitesNames">
+  <DataTable responsiveLayout="scroll" :value="listOfRowContents">
     <Column
       v-for="col of columns"
       :field="col.field"
-      :header="listOfProductionSitesConvertedNames[col.header]"
+      :header="columnHeaders[col.header]"
       :key="col.field"
       headerStyle="width: 15vw;"
     >
@@ -34,19 +34,16 @@ export default defineComponent({
   components: { DataTable, Column },
   data() {
     return {
-      listOfProductionSitesNames: [] as TypeOfProductionSitesNames[],
-      listOfProductionSitesConvertedNames: {} as TypeOfProductionSitesConvertedNames,
+      listOfRowContents: [] as Array<object>,
+      columnHeaders: {} as object,
       columns: [] as { field: string; header: string }[],
     };
   },
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
-    const dialogRefData = dialogRefToDisplay.data as {
-      listOfProductionSitesNames: TypeOfProductionSitesNames[];
-      listOfProductionSitesConvertedNames: TypeOfProductionSitesConvertedNames;
-    };
-    this.listOfProductionSitesNames = dialogRefData.listOfProductionSitesNames;
-    this.listOfProductionSitesConvertedNames = dialogRefData.listOfProductionSitesConvertedNames;
+    const dialogRefData = dialogRefToDisplay.data as { listOfRowContents: Array<object>; columnHeaders: object };
+    this.listOfRowContents = dialogRefData.listOfRowContents;
+    this.columnHeaders = dialogRefData.columnHeaders;
   },
   methods: {
     /**
@@ -54,8 +51,8 @@ export default defineComponent({
      * should have.
      */
     generateColsNames(): void {
-      if (this.listOfProductionSitesNames.length && Array.isArray(this.listOfProductionSitesNames)) {
-        const presentKeys = this.listOfProductionSitesNames.reduce(function (keyList: string[], productionSite) {
+      if (this.listOfRowContents.length && Array.isArray(this.listOfRowContents)) {
+        const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], productionSite) {
           for (const key of Object.keys(productionSite)) {
             if (keyList.indexOf(key) === -1) keyList.push(key);
           }
@@ -81,7 +78,7 @@ export default defineComponent({
     },
   },
   watch: {
-    listOfProductionSitesNames() {
+    listOfRowContents() {
       this.generateColsNames();
     },
   },
