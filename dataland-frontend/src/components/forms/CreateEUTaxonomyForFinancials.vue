@@ -452,7 +452,7 @@ export default defineComponent({
     const dataId = this.route.query.templateDataId;
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
-      void this.loadEuData(dataId);
+      void this.fetchTemplateData(dataId);
     }
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
@@ -468,7 +468,7 @@ export default defineComponent({
      *
      * @param dataId the id of the dataset to load
      */
-    async loadEuData(dataId: string): Promise<void> {
+    async fetchTemplateData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
