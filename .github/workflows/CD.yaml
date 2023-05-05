@@ -203,6 +203,9 @@ jobs:
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true
           CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
+          RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
+          RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
+          RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
       - name: Move Cypress Results
         if: always()
         run: |
