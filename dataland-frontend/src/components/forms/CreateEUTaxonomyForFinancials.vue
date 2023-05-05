@@ -504,7 +504,7 @@ export default defineComponent({
       const receivedFormInputsModel = modifyObjectKeys(companyAssociatedEuTaxonomyData as ObjectType, "receive");
       this.waitingForData = false;
 
-      await this.$nextTick(); // TODO check if this is neccessary
+      await this.$nextTick();
       updateObject(this.formInputsModel, receivedFormInputsModel);
     },
 
