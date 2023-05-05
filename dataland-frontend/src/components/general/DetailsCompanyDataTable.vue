@@ -8,7 +8,6 @@
       headerStyle="width: 15vw;"
     >
       <template #body="{ data }">
-        {{ console.log(data) }}
         <ul v-if="Array.isArray(data[col.field])">
           <li :key="el" v-for="el in data[col.field]">{{ el }}</li>
         </ul>
@@ -41,12 +40,15 @@ export default defineComponent({
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {
-      listOfRowContents: Array<object>;
-      tableType: keyof typeof detailsCompanyDataTableColumnHeaders;
+      listOfRowContents: Array<object | string>;
+      tableType: string;
     };
-    this.listOfRowContents = dialogRefData.listOfRowContents;
     this.tableType = dialogRefData.tableType;
-    console.log(this.listOfRowContents, this.columnHeaders, this.tableType);
+    if (typeof dialogRefData.listOfRowContents[0] === "string") {
+      this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.tableType]: o }));
+    } else {
+      this.listOfRowContents = dialogRefData.listOfRowContents;
+    }
   },
   methods: {
     /**
@@ -55,21 +57,16 @@ export default defineComponent({
      */
     generateColsNames(): void {
       if (this.listOfRowContents.length && Array.isArray(this.listOfRowContents)) {
-        if (typeof this.listOfRowContents[0] === "object") {
-          const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], rowContent) {
-            for (const key of Object.keys(rowContent)) {
-              if (keyList.indexOf(key) === -1) keyList.push(key);
-            }
-            return keyList;
-          }, []);
-          for (const key of presentKeys) {
-            this.columns.push({ field: `${key}`, header: `${key}` });
+        const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], rowContent) {
+          for (const key of Object.keys(rowContent)) {
+            if (keyList.indexOf(key) === -1) keyList.push(key);
           }
-        } else {
-          this.columns.push({ field: `${this.tableType}`, header: `${this.tableType}` });
+          return keyList;
+        }, []);
+        for (const key of presentKeys) {
+          this.columns.push({ field: `${key}`, header: `${key}` });
         }
       }
-      console.log(this.columns);
     },
     /**
      * Humanizes a string if the corresponding key is listed as to be humanized
