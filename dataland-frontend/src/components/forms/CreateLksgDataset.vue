@@ -113,6 +113,7 @@ import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
+import { objectDropNull, objectType } from "@/utils/updateObjectUtils";
 
 export default defineComponent({
   setup() {
@@ -218,7 +219,7 @@ export default defineComponent({
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
       const lksgDataset = dataResponse.data;
-      const numberOfProductionSites = lksgDataset.data?.general?.productionSpecific?.listOfProductionSites?.length || 0;
+      const numberOfProductionSites = lksgDataset.data?.general?.productionSpecific?.listOfProductionSites?.length ?? 0;
       if (numberOfProductionSites > 0) {
         this.isYourCompanyManufacturingCompany = "Yes";
         const productionSites = assertDefined(lksgDataset.data?.general?.productionSpecific?.listOfProductionSites);
@@ -236,7 +237,7 @@ export default defineComponent({
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
       }
-      this.companyAssociatedLksgData = lksgDataset;
+      this.companyAssociatedLksgData = objectDropNull(lksgDataset as objectType) as CompanyAssociatedDataLksgData;
       this.waitingForData = false;
     },
     /**

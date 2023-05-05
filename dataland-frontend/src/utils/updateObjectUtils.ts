@@ -1,4 +1,5 @@
 export type objectType = { [key: string]: string | object };
+
 /**
  * Updates keys from one object to another
  * @param baseObject object to be updated
@@ -40,4 +41,18 @@ export function modifyObjectKeys(obj: objectType, typeOfModification: string): o
     }
   }
   return objectModified;
+}
+
+/**
+ * Drops all nulls from arbitrarily nested object by stringifying it and parsing it back to object
+ * It does not work in the case of the value being of type Array<null>!
+ * @param obj the object that needs the nulls dropped
+ * @returns the object without all keys with undefined or null value
+ */
+export function objectDropNull(obj: objectType): objectType {
+  return JSON.parse(
+    JSON.stringify(obj, (key, value: string | number) => {
+      return value ?? undefined;
+    })
+  ) as objectType;
 }
