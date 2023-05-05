@@ -13,7 +13,7 @@ import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFi
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { generateIso2CountryCode } from "@e2e/fixtures/common/CountryFixtures";
+import { generateListOfIso2CountryCodes } from "@e2e/fixtures/common/CountryFixtures";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 
 /**
@@ -90,6 +90,17 @@ export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers
 }
 
 /**
+ * Generates a random list of Nace codes
+ *
+ * @returns random list of goods or services
+ */
+export function generateListOfNaceCodes(): string[] {
+  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
+    return faker.helpers.arrayElement(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]);
+  });
+}
+
+/**
  * Generates a random LKSG dataset
  *
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
@@ -103,7 +114,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         headOfficeInGermany: valueOrUndefined(randomYesNo(), undefinedProbability),
         groupOfCompanies: valueOrUndefined(randomYesNo(), undefinedProbability),
         groupOfCompaniesName: valueOrUndefined(faker.company.name(), undefinedProbability),
-        industry: valueOrUndefined(faker.name.jobArea(), undefinedProbability),
+        industry: valueOrUndefined(generateListOfNaceCodes(), undefinedProbability),
         numberOfEmployees: valueOrUndefined(randomNumber(10000), undefinedProbability),
         seasonalOrMigrantWorkers: valueOrUndefined(randomYesNo(), undefinedProbability),
         shareOfTemporaryWorkers: valueOrUndefined(randomShareOfTemporaryWorkersInterval(), undefinedProbability),
@@ -115,8 +126,8 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         manufacturingCompany: valueOrUndefined(randomYesNo(), undefinedProbability),
         capacity: valueOrUndefined(randomNumber(100000), undefinedProbability),
         isContractProcessing: valueOrUndefined(randomYesNo(), undefinedProbability),
-        subcontractingCompaniesCountries: valueOrUndefined(generateIso2CountryCode(), undefinedProbability),
-        subcontractingCompaniesIndustries: valueOrUndefined(faker.name.jobArea(), undefinedProbability),
+        subcontractingCompaniesCountries: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
+        subcontractingCompaniesIndustries: valueOrUndefined(generateListOfNaceCodes(), undefinedProbability),
         productionSites: valueOrUndefined(randomYesNo(), undefinedProbability),
         listOfProductionSites: valueOrUndefined(generateArrayOfProductionSites(), undefinedProbability),
         market: valueOrUndefined(
@@ -193,11 +204,11 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         humanRightsViolationAction: valueOrUndefined(randomYesNo(), undefinedProbability),
         humanRightsViolationActionMeasures: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),
         highRiskCountriesRawMaterials: valueOrUndefined(randomYesNo(), undefinedProbability),
-        highRiskCountriesRawMaterialsLocation: valueOrUndefined(generateIso2CountryCode(), undefinedProbability),
+        highRiskCountriesRawMaterialsLocation: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
         highRiskCountriesActivity: valueOrUndefined(randomYesNo(), undefinedProbability),
-        highRiskCountries: valueOrUndefined(generateIso2CountryCode(), undefinedProbability),
+        highRiskCountries: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
         highRiskCountriesProcurement: valueOrUndefined(randomYesNo(), undefinedProbability),
-        highRiskCountriesProcurementName: valueOrUndefined(generateIso2CountryCode(), undefinedProbability),
+        highRiskCountriesProcurementName: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
       },
     },
     social: {

@@ -19,9 +19,9 @@ data class LksgProductionSpecific(
     @field:JsonProperty()
     val isContractProcessing: YesNo?,
 
-    val subcontractingCompaniesCountries: String?,
+    val subcontractingCompaniesCountries: List<String>?,
 
-    val subcontractingCompaniesIndustries: String?,
+    val subcontractingCompaniesIndustries: List<String>?,
 
     val productionSites: YesNo?,
 

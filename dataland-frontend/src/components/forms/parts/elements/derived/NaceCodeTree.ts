@@ -2,8 +2,8 @@ import { TreeNode } from "primevue/tree";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
- * Recursively filteres the list of TreeNodes to only contain nodes whose label matches the searchTerm.
- * Nodes are included if their own label OR one of their childs labels matches the searchTerm.
+ * Recursively filters the list of TreeNodes to only contain nodes whose label matches the searchTerm.
+ * Nodes are included if their own label OR one of their child labels matches the searchTerm.
  *
  * @param nodes the list of nodes to filter
  * @param searchTerm the searchTerm to filter for
@@ -2943,9 +2943,9 @@ export const naceCodeMap: Map<string, TreeNode> = new Map();
  * @param input an array of nace code tree nodes
  */
 function populateNaceCodeMap(input: Array<TreeNode>): void {
-  for (let i = 0; i < input.length; i++) {
-    naceCodeMap.set(assertDefined(input[i].key), input[i]);
-    populateNaceCodeMap(input[i].children || []);
+  for (const element of input) {
+    naceCodeMap.set(assertDefined(element.key), element);
+    populateNaceCodeMap(element.children || []);
   }
 }
 

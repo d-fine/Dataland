@@ -20,7 +20,7 @@ data class LksgMasterData(
 
     val groupOfCompaniesName: String?,
 
-    val industry: String?,
+    val industry: List<String>?,
 
     val numberOfEmployees: BigDecimal?,
 
