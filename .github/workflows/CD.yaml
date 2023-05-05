@@ -93,7 +93,7 @@ jobs:
         run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
         env:
           TARGETSERVER_STARTUP_URL: ${{ secrets.TARGETSERVER_STARTUP_URL }}
-          TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
+          TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
           TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           KEYCLOAK_FRONTEND_URL: ${{ vars.KEYCLOAK_FRONTEND_URL }}
@@ -125,7 +125,7 @@ jobs:
           PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
           PROXY_LETSENCRYPT_ARGS: ${{ vars.PROXY_LETSENCRYPT_ARGS }}
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
-          RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
+          RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
       - uses: ./.github/workflows/dockerLogs
@@ -188,7 +188,7 @@ jobs:
             echo "There is no connection to admin ports established."
           fi
         env:
-          TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
+          TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
           TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
@@ -205,7 +205,7 @@ jobs:
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true
           CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
-          RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
+          RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
       - name: Move Cypress Results
