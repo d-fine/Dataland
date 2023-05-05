@@ -53,12 +53,7 @@ function getReportIfExists(
   row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>,
   reportName: string
 ): CompanyReport | undefined {
-  return row.t.referencedReports !== undefined &&
-    row.t.referencedReports !== null &&
-    row.t.referencedReports[reportName] !== undefined &&
-    row.t.referencedReports[reportName] !== null
-    ? row.t.referencedReports[reportName]
-    : undefined;
+  return row.t.referencedReports?.[reportName] ?? undefined;
 }
 
 /**

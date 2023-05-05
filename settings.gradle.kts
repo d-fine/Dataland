@@ -17,11 +17,11 @@ include(
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
+            library("springdoc-openapi-ui", "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
 
-            library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.2")
-            library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.9.2")
-            library("junit-jupiter-api", "org.junit.jupiter:junit-jupiter-api:5.9.2")
+            library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.3")
+            library("junit-jupiter-engine", "org.junit.jupiter:junit-jupiter-engine:5.9.3")
+            library("junit-jupiter-api", "org.junit.jupiter:junit-jupiter-api:5.9.3")
 
             library("moshi-kotlin", "com.squareup.moshi:moshi-kotlin:1.14.0")
             library("moshi-adapters", "com.squareup.moshi:moshi-adapters:1.14.0")
@@ -30,7 +30,7 @@ dependencyResolutionManagement {
             library("swagger-gradle-plugin", "io.swagger.core.v3:swagger-gradle-plugin:2.2.2")
             library("swagger-annotations", "io.swagger.core.v3:swagger-annotations:2.2.2")
 
-            library("okhttp", "com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+            library("okhttp", "com.squareup.okhttp3:okhttp:4.11.0")
             library("rs-api", "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
 
             library("dataland-edc-client", "org.dataland:dataland-edc-client:0.2.9")
@@ -39,8 +39,8 @@ dependencyResolutionManagement {
             library("log4j-api", "org.apache.logging.log4j:log4j-api:2.20.0")
             library("log4j-to-slf4j", "org.apache.logging.log4j:log4j-to-slf4j:2.20.0")
 
-            library("logback-classic", "ch.qos.logback:logback-classic:1.4.6")
-            library("logback-core", "ch.qos.logback:logback-core:1.4.6")
+            library("logback-classic", "ch.qos.logback:logback-classic:1.4.7")
+            library("logback-core", "ch.qos.logback:logback-core:1.4.7")
 
             library("slf4j-api", "org.slf4j:slf4j-api:2.0.7")
 
@@ -58,7 +58,7 @@ dependencyResolutionManagement {
             library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.2")
             library("mailjet-client", "com.mailjet:mailjet-client:5.2.2")
 
-            library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.27")
+            library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.28")
 
             library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:4.1.0")
         }

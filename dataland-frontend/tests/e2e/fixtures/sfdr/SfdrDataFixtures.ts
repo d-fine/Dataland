@@ -24,7 +24,7 @@ export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
     social: {
       general: {
         fiscalYear: randomFiscalYearDeviationOrUndefined(),
-        fiscalYearEnd: fiscalYearEnd === undefined ? randomFutureDate() : fiscalYearEnd,
+        fiscalYearEnd: fiscalYearEnd ?? randomFutureDate(),
         groupLevelAnnualReport: randomYesNoNaUndefined(),
         annualReport: randomStringOrUndefined(generateLinkToPdf()),
         annualReportDate: randomFutureDate(),

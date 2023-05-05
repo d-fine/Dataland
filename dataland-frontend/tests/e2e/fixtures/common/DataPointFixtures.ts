@@ -142,7 +142,7 @@ export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedRepo
   }
 
   return {
-    value: value || undefined,
+    value: value ?? undefined,
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
@@ -160,7 +160,7 @@ export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedRepo
 export function getCsvDataPointMapping<T>(
   dataPointName: string,
   dataPointGetter: (row: T) => DataPointBigDecimal | undefined,
-  valueConverter: (input: number | undefined) => string = (x): string => x?.toString() || ""
+  valueConverter: (input: number | undefined) => string = (x): string => x?.toString() ?? ""
 ): Array<DataPoint<T, string | number>> {
   return [
     {

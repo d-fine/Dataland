@@ -11,6 +11,7 @@ export function logout(): void {
     .wait(1000)
     .get("a[id='profile-picture-dropdown-toggle']")
     .click()
+    .wait(1000)
     .url()
     .should("eq", getBaseUrl() + "/")
     .get("button[name='login_dataland_button']")

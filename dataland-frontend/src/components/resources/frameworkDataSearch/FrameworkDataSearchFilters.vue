@@ -181,14 +181,14 @@ export default defineComponent({
       ).getCompanyDataControllerApi();
 
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
-      this.availableCountries = [...(availableSearchFilters.data.countryCodes || [])].map((countryCode) => {
+      this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])].map((countryCode) => {
         return {
           countryCode: countryCode,
           displayName: getCountryNameFromCountryCode(countryCode),
           disabled: false,
         };
       });
-      this.availableSectors = [...(availableSearchFilters.data.sectors || [])].map((sector) => {
+      this.availableSectors = [...(availableSearchFilters.data.sectors ?? [])].map((sector) => {
         return { displayName: sector, disabled: false };
       });
     },

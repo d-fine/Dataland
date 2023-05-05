@@ -16,10 +16,10 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
     token: "mocked-token",
     authenticated: true,
     idTokenParsed: {
-      sub: config.userId || "mock-user-id",
+      sub: config.userId ?? "mock-user-id",
     },
     realmAccess: {
-      roles: config.roles || ["ROLE_USER"],
+      roles: config.roles ?? ["ROLE_USER"],
     },
     /*
       The updateToken method is invoked several times on the Keycloak object (e.g. implicitly in the ApiClients.ts).

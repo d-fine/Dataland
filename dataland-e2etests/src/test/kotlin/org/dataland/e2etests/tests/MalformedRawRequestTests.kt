@@ -50,7 +50,7 @@ class MalformedRawRequestTests {
             .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body.string()
+        val responseBodyString = response.body!!.string()
         assertTrue(responseBodyString.contains("Parameter specified as non-null is null"))
         assertEquals(400, response.code)
     }
@@ -79,7 +79,7 @@ class MalformedRawRequestTests {
             .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body.string()
+        val responseBodyString = response.body!!.string()
         assertTrue(responseBodyString.contains("Unrecognized field"))
         assertEquals(400, response.code)
     }
@@ -115,7 +115,7 @@ class MalformedRawRequestTests {
             .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body.string()
+        val responseBodyString = response.body!!.string()
         assertTrue(responseBodyString.contains("request-rejected"))
         assertEquals(400, response.code)
     }
@@ -134,7 +134,7 @@ class MalformedRawRequestTests {
             .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body.string()
+        val responseBodyString = response.body!!.string()
         val containsStackTrace = responseBodyString.contains("\"stackTrace\"")
         val shouldContainStackTrace = (System.getenv("EXPECT_STACKTRACE") ?: "false") == "true"
         assertEquals(shouldContainStackTrace, containsStackTrace)
@@ -156,7 +156,7 @@ class MalformedRawRequestTests {
             .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body.string()
+        val responseBodyString = response.body!!.string()
         assertTrue(responseBodyString.contains("invalid-input"))
         assertEquals(400, response.code)
     }

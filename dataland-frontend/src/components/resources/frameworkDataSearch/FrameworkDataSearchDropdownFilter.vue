@@ -12,7 +12,7 @@
     @before-show="this.overlayVisible = true"
     @before-hide="this.overlayVisible = false"
   >
-    <template #indicator>
+    <template #dropdownicon>
       <div :class="selectionButtonClasses">
         <div class="selection-button-content" :id="filterId">
           <template v-if="this.modelValue.length === 1">
@@ -119,6 +119,7 @@ export default defineComponent({
   border: 2px solid #5a4f36;
   border-radius: 8px;
   height: 2.5rem;
+
   .selection-button-content {
     margin: 0.5rem 1rem;
   }

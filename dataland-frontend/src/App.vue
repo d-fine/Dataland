@@ -50,13 +50,16 @@ export default defineComponent({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  async created() {
+  created() {
     this.keycloakPromise = this.initKeycloak();
-    this.resolvedKeycloakPromise = await this.keycloakPromise;
-    if (this.resolvedKeycloakPromise && this.resolvedKeycloakPromise.authenticated) {
-      updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
-    }
+    this.keycloakPromise
+      .then((keycloak) => {
+        this.resolvedKeycloakPromise = keycloak;
+        if (this.resolvedKeycloakPromise?.authenticated) {
+          updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
+        }
+      })
+      .catch((e) => console.log(e));
   },
 
   provide() {
@@ -79,8 +82,7 @@ export default defineComponent({
      */
     initKeycloak(): Promise<Keycloak> {
       const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
-      const handleAuthLogoutBound = this.handleAuthLogout.bind(this);
-      keycloak.onAuthLogout = handleAuthLogoutBound;
+      keycloak.onAuthLogout = this.handleAuthLogout.bind(this);
       return keycloak
         .init({
           onLoad: "check-sso",

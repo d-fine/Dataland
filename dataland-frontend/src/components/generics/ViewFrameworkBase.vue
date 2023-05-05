@@ -34,7 +34,7 @@
                 dropdownIcon="pi pi-angle-down"
                 @change="handleChangeFrameworkEvent"
               />
-              <slot name="reportingPeriodDropdown"> </slot>
+              <slot name="reportingPeriodDropdown"></slot>
             </div>
             <div v-if="hasUserUploaderRights" class="flex align-content-end align-items-center">
               <PrimeButton
@@ -64,7 +64,7 @@
           </div>
         </MarginWrapper>
         <MarginWrapper style="margin-right: 0">
-          <slot name="content"> </slot>
+          <slot name="content"></slot>
         </MarginWrapper>
       </div>
       <h1 v-else data-test="noDataCouldBeLoadedErrorIndicator">No data could be loaded.</h1>
@@ -152,7 +152,7 @@ export default defineComponent({
       );
     },
     addNewDatasetLinkTarget() {
-      return `/companies/${this.companyID || ""}/frameworks/upload`;
+      return `/companies/${this.companyID ?? ""}/frameworks/upload`;
     },
   },
   created() {
@@ -249,7 +249,7 @@ export default defineComponent({
           listOfDistinctAvailableAndViewableFrameworksForCompany.push(dataType);
         }
       });
-      listOfDistinctAvailableAndViewableFrameworksForCompany.sort();
+      listOfDistinctAvailableAndViewableFrameworksForCompany.sort((a, b) => a.localeCompare(b));
       listOfDistinctAvailableAndViewableFrameworksForCompany.forEach((dataType) => {
         this.dataTypesInDropdown.push({ label: humanizeString(dataType), value: dataType });
       });

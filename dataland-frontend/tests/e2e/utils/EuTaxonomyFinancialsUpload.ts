@@ -146,7 +146,7 @@ function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined):
  * @param value the value to fill in
  */
 function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
-  if (value?.value !== undefined) {
+  if (value?.value) {
     const valueAsString = value.value.toString();
     if (divTag === "") {
       cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(valueAsString);
