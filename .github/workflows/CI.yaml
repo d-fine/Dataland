@@ -95,8 +95,8 @@ jobs:
         run: ./gradlew :dataland-backend:test :dataland-csvconverter:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test --no-daemon --stacktrace
         if: always()
         env:
-          MAILJET_API_ID: "irrelevant_for_ci"
-          MAILJET_API_SECRET: "irrelevant_for_ci"
+          MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
+          MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
           INVITATION_REQUEST_CC: "dev.null@dataland.com"
       - name: Frontend linting
@@ -204,8 +204,8 @@ jobs:
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
-          MAILJET_API_ID: "irrelevant_in_ci"
-          MAILJET_API_SECRET: "irrelevant_in_ci"
+          MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
+          MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
           INVITATION_REQUEST_CC: "dev.null@dataland.com"
           RABBITMQ_USER: "admin"
