@@ -22,6 +22,7 @@
         type="number"
         name="value"
         validation-label=""
+        v-model="currentMainValue"
         :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
         step="any"
         min="0"
@@ -42,6 +43,7 @@
               type="select"
               name="report"
               :disabled="!dataPointIsAvailable"
+              v-model="currentReportValue"
               placeholder="Select a report"
               :options="['None...', ...reportsName]"
             />
@@ -51,6 +53,7 @@
             <FormKit
               outer-class="w-100"
               :disabled="!dataPointIsAvailable"
+              v-model="currentPageValue"
               type="number"
               name="page"
               placeholder="Page"
@@ -109,6 +112,9 @@ export default defineComponent({
       label: qualityOption,
       value: qualityOption,
     })),
+    currentMainValue: "",
+    currentReportValue: "",
+    currentPageValue: "",
     currentQualityValue: "",
     qualityValueBeforeDataPointWasDisabled: "",
   }),
