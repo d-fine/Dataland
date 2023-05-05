@@ -123,7 +123,7 @@ jobs:
           INVITATION_REQUEST_CC: ${{ vars.INVITATION_REQUEST_CC }}
           PROXY_LETSENCRYPT_PATH: ${{ vars.PROXY_LETSENCRYPT_PATH }}
           PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
-          PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
+          PROXY_LETSENCRYPT_ARGS: ${{ vars.PROXY_LETSENCRYPT_ARGS }}
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
           RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
@@ -201,7 +201,7 @@ jobs:
           KEYCLOAK_ADMIN: ${{ vars.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
-          CYPRESS_EXECUTION_ENVIRONMENT: ${{ secrets.CYPRESS_EXECUTION_ENVIRONMENT }}
+          CYPRESS_EXECUTION_ENVIRONMENT: ${{ vars.CYPRESS_EXECUTION_ENVIRONMENT }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true
           CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
