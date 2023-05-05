@@ -41,7 +41,6 @@ describeIf(
     /**
      * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
      * via the form in the frontend, and then visits the view page where that dataset is displayed
-     *
      * @param companyInformation Company information to be used for the company upload
      * @param testData EU Taxonomy dataset for financial companies to be uploaded
      * @param beforeFormFill is performed before filling the fields of the upload form
@@ -76,7 +75,6 @@ describeIf(
 
     /**
      * Visits the edit page for the eu taxonomy dataset for financial companies via navigation.
-     *
      * @param companyId the id of the company for which to edit a dataset
      * @param expectIncludedFile specifies if the test file is expected to be in the server response
      */
