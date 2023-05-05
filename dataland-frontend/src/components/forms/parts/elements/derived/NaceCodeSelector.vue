@@ -73,7 +73,6 @@ export default defineComponent({
   methods: {
     /**
      * Executed, whenever the search bar input is focused. Opens the Tree Overlay.
-     *
      * @param event the onclick event
      */
     inputFocused(event: Event) {
@@ -81,7 +80,6 @@ export default defineComponent({
     },
     /**
      * Handles the click event of the selection checkboxes
-     *
      * @param key The key of the node whose checkbox has been clicked
      * @param isChecked the new value of the checkbox
      */
@@ -91,7 +89,6 @@ export default defineComponent({
     },
     /**
      * Recursively expands the given nodes and all its children up to a maximum of max expanded nodes
-     *
      * @param node the node to expand
      * @param dict the dict to store the keys of the expanded nodes to
      */
@@ -106,7 +103,6 @@ export default defineComponent({
     },
     /**
      * Recalculates the selectedChildrenCounters for all elements based on the selectedNodeSet
-     *
      * @param selectedTreeNodeSet the set of selected nodes
      */
     updateSelectedChildrenCounter(selectedTreeNodeSet: Set<string>) {
@@ -128,7 +124,6 @@ export default defineComponent({
     },
     /**
      * Emits an update for the modelValue based on the selectedNodeSet
-     *
      * @param selectedTreeNodeSet the set of selected nodes
      */
     updateModelValue(selectedTreeNodeSet: Set<string>) {
@@ -137,7 +132,6 @@ export default defineComponent({
     },
     /**
      * Returns the label of a node with the provided NACE code
-     *
      * @param key the NACE code to lookup
      * @returns the label of the NACE code
      */

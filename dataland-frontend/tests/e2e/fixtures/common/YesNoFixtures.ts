@@ -11,7 +11,6 @@ export function randomYesNo(): YesNo {
 
 /**
  * Randomly returns Yes, No or Na
- *
  * @returns Yes, No or Na
  */
 export function randomYesNoNa(): YesNoNa {

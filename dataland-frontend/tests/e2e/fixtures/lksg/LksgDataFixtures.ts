@@ -45,7 +45,6 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
 
 /**
  * Generates an array consisting of 1 to 5 random production sites
- *
  * @returns 1 to 5 random production sites
  */
 export function generateArrayOfProductionSites(): LksgProductionSite[] {
@@ -54,7 +53,6 @@ export function generateArrayOfProductionSites(): LksgProductionSite[] {
 
 /**
  * Generates a random list of goods or services
- *
  * @returns random list of goods or services
  */
 export function generateListOfGoodsOrServices(): string[] {
@@ -65,7 +63,6 @@ export function generateListOfGoodsOrServices(): string[] {
 
 /**
  * Generates a random address
- *
  * @returns a random address
  */
 export function generateAddress(): LksgAddress {

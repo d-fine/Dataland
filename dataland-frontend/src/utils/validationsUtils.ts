@@ -23,7 +23,6 @@ export function checkCustomInputs(node: FormKitNode): void {
 
 /**
  * Checks if for a given validation the corresponding formkit field requires some input
- *
  * @param validation the formkit validation string
  * @returns true if the validation string contains required else false
  */

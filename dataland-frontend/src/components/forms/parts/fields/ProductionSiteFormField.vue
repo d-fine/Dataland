@@ -99,7 +99,6 @@ export default defineComponent({
 
     /**
      * Remove Object from ProductionSite array
-     *
      * @param id - the id of the object in the array
      */
     removeItemFromListOfProductionSites(id: number) {

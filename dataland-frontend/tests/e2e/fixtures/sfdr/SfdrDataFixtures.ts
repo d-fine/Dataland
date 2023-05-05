@@ -24,7 +24,7 @@ export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
       general: {
         fiscalYear: valueOrUndefined(randomFiscalYearDeviation()),
         fiscalYearEnd: fiscalYearEnd ?? randomFutureDate(),
-     groupLevelAnnualReport: valueOrUndefined(randomYesNoNa()),
+        groupLevelAnnualReport: valueOrUndefined(randomYesNoNa()),
         annualReport: valueOrUndefined(generateLinkToPdf()),
         annualReportDate: randomFutureDate(),
         annualReportCurrency: generateIso4217CurrencyCode(),

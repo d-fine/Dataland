@@ -14,7 +14,6 @@ export type DropdownDataset = Array<DropdownOption>;
 
 /**
  * Retrieves a pre-defined dataset for the dropdown components by its identifier
- *
  * @param datasetIdentifier the identifier of the common dataset to retrieve
  * @returns the dataset
  */
@@ -30,7 +29,6 @@ export function getDataset(datasetIdentifier: DropdownDatasetIdentifier): Dropdo
 
 /**
  * Retrieves a dropdown dataset of currency codes
- *
  * @returns a dropdown dataset of currency codes
  */
 function getCurrencyCodeDropdownDataset(): DropdownDataset {
@@ -46,7 +44,6 @@ function getCurrencyCodeDropdownDataset(): DropdownDataset {
 
 /**
  * Retrieves a dropdown dataset of country codes
- *
  * @returns a dropdown dataset of country codes
  */
 function getCountryCodeDropdownDataset(): DropdownDataset {
