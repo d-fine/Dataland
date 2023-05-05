@@ -536,12 +536,18 @@ export default defineComponent({
       } catch (error) {
         this.messageCount++;
         console.error(error);
+
         if (error instanceof AxiosError) {
-          this.message =
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            (error.response?.data.errors[0]?.summary as string) +
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            (error.response?.data.errors[0]?.message as string); //TODO: fix types
+          const err = error as AxiosError;
+          const response = err.response as AxiosResponse<{ errors: { summary: string; message: string }[] }>;
+          let errSummary = JSON.stringify(err);
+          let errMessage = "";
+
+          if (response.data.errors[0]) {
+            errSummary = response.data.errors[0].summary;
+            errMessage = response.data.errors[0].message;
+          }
+          this.message = `${errSummary} ${errMessage}`;
         } else {
           this.message = (error as Error).message;
         }
