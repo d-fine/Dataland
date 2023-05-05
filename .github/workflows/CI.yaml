@@ -26,6 +26,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
   frontend-component-tests:
@@ -43,6 +44,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -78,6 +80,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -164,6 +167,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - name: Retrieve SSL certificates for local-dev.dataland.com
         run: ./testing/retrieve_ssl_certs.sh
         env:
@@ -259,6 +263,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin

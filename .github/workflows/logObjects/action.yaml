@@ -41,6 +41,10 @@ inputs:
     description: the inputs object
     required: false
     default: ""
+  vars:
+    description: the vars object
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -60,6 +64,7 @@ runs:
         echo '${{ inputs.matrix }}' > logs/$GITHUB_JOB/matrix_json.log
         echo '${{ inputs.needs }}' > logs/$GITHUB_JOB/needs_json.log
         echo '${{ inputs.inputs }}' > logs/$GITHUB_JOB/inputs_json.log
+        echo '${{ inputs.vars }}' > logs/$GITHUB_JOB/vars_json.log
         find logs/$GITHUB_JOB -type f -size -4c -delete
     - name: Store env and secrets
       uses: actions/upload-artifact@v3
