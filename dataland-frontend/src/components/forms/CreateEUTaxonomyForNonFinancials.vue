@@ -375,8 +375,7 @@ export default defineComponent({
       type: String,
     },
   },
-  mounted() {
-    // TODO move to created
+  created() {
     const dataId = this.route.query.templateDataId;
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
@@ -423,19 +422,18 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForNonFinancialsProcessed = false;
         this.messageCount++;
+
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-
         await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
-
-        const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
         await this.$nextTick();
         const formInputsModelToSend = modifyObjectKeys(this.formInputsModel as ObjectType, "send");
+        const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getEuTaxonomyDataForNonFinancialsControllerApi();
         this.postEuTaxonomyDataForNonFinancialsResponse =
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
             formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForNonFinancials

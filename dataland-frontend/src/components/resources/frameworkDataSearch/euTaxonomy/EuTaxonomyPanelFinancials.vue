@@ -6,7 +6,7 @@
   <div v-if="dataSet && !waitingForData">
     <ShowReportsBanner
       v-if="
-        'referencedReports' in dataSet && dataSet.referencedReports !== undefined && dataSet.referencedReports !== null
+        dataSet?.referencedReports && Object.keys(dataSet.referencedReports).length > 0
       "
       :reports="dataSet.referencedReports"
     />

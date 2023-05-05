@@ -448,7 +448,7 @@ export default defineComponent({
       required: true,
     },
   },
-  mounted() {
+  created() {
     const dataId = this.route.query.templateDataId;
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
@@ -521,15 +521,14 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-
         await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
 
-        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getEuTaxonomyDataForFinancialsControllerApi();
 
         await this.$nextTick();
         const formInputsModelToSend = modifyObjectKeys(this.formInputsModel as ObjectType, "send");
+        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(
             formInputsModelToSend as CompanyAssociatedDataEuTaxonomyDataForFinancials
