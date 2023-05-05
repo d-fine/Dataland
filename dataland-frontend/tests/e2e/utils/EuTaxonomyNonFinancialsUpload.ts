@@ -139,8 +139,12 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
 export function submitFilledInEuTaxonomyForm(
   submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
 ): void {
-  const postRequestAlias = "";
-  cy.intercept("POST", `**/api/data/**`, submissionDataIntercept).as(postRequestAlias);
+  const postRequestAlias = "postDataAlias";
+  cy.intercept({
+    method: "POST",
+    url: `**/api/data/**`,
+    times: 1
+  }, submissionDataIntercept).as(postRequestAlias);
   cy.get('button[data-test="submitButton"]').click();
   cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
     expect(interception.response?.statusCode).to.eq(200);

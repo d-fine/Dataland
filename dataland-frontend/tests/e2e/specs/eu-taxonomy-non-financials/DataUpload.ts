@@ -79,8 +79,6 @@ describeIf(
       });
     }
 
-    const postRequestAlias = "postData";
-
     /**
      * Visits the edit page for the eu taxonomy dataset for non financial companies via navigation.
      *
@@ -123,7 +121,6 @@ describeIf(
 
     it("Check if the file upload info remove button works as expected", () => {
       testData.companyInformation.companyName = "non-financials-upload-form-remove-document-button";
-      let areBothDocumentsStillUploaded = true;
       uploadCompanyViaApiAndEuTaxonomyDataForNonFinancialsViaForm(
         testData.companyInformation,
         () => {
@@ -139,18 +136,24 @@ describeIf(
         },
         (request) => {
           const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data);
-          if (areBothDocumentsStillUploaded) {
-            frontendDocumentHash = data.referencedReports![TEST_PDF_FILE_NAME].reference;
-          }
-          expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(areBothDocumentsStillUploaded);
+          frontendDocumentHash = data.referencedReports![TEST_PDF_FILE_NAME].reference;
+          expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(true);
           expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
         },
         (companyId) => {
           validateFrontendAndBackendDocumentHashesCoincede();
           gotoEditForm(companyId, true);
-          uploadReports.removeUploadedReportFromReportInfos(TEST_PDF_FILE_NAME).then(() => {
-            areBothDocumentsStillUploaded = false;
-          });
+          uploadReports.removeUploadedReportFromReportInfos(TEST_PDF_FILE_NAME);
+          const postRequestAlias = "postData";
+          cy.intercept({
+            method: "POST",
+            url: `**/api/data/**`,
+            times: 1
+          }, (request) => {
+            const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data);
+            expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(false);
+            expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
+          }).as(postRequestAlias);
           cy.get('button[data-test="submitButton"]').click();
           cy.wait(`@${postRequestAlias}`, { timeout: 100000 }).then((interception) => {
             expect(interception.response?.statusCode).to.eq(200);
