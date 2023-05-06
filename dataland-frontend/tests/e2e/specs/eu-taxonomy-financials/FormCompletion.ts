@@ -14,10 +14,6 @@ describeIf(
     dataEnvironments: ["fakeFixtures"],
   },
   function () {
-    beforeEach(() => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
-    });
-
     let testData: FixtureData<EuTaxonomyDataForFinancials>;
 
     before(function () {
@@ -25,6 +21,10 @@ describeIf(
         const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
         testData = getPreparedFixture("company-for-all-types", preparedFixtures);
       });
+    });
+
+    beforeEach(() => {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
     it(
