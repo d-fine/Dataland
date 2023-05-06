@@ -181,10 +181,6 @@ describeIf(
       "Upload EU Taxonomy Dataset via form, check that redirect to MyDatasets works and assure that it can be " +
         "viewed and edited, and that file selection, upload and download works properly",
       () => {
-        // TODO Emanuel: this test is pretty long and also contains stuff that fits better to the "UploadReports" test file.  we should consider moving some of the test code here
-
-        // TODO Emanuel: furthermore this test could be done in a shorter amount of time =>  e.g. some of the page reloads are actually not needed and could be worked around.
-
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
             (storedCompany) => {
@@ -193,7 +189,6 @@ describeIf(
               cy.url().should("eq", getBaseUrl() + "/datasets");
               cy.wait("@getDataForMyDatasetsPage");
 
-              // TEST IF ALL VALUES THERE ON VIEW PAGE          TODO comment supports reading the test while working on it => delete at the very end
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
@@ -205,7 +200,6 @@ describeIf(
               cy.contains("[data-test='taxocard']", "Eligible OpEx").should("contain", "%");
               cy.contains("[data-test='taxocard']", "Aligned OpEx").should("contain", "%");
 
-              // TEST IF A CHANGED VALUE WIE THE "EDIT" FUNCTION IS VIEWABLE          TODO comment supports reading the test while working on it => delete at the very end
               const newValueForEligibleRevenueAfterEdit = "30";
               cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("getDataToPrefillForm");
               cy.get('button[data-test="editDatasetButton"]').click();
@@ -224,7 +218,6 @@ describeIf(
                 newValueForEligibleRevenueAfterEdit + "%"
               );
 
-              // TEST IF A FILE WITH AN ALREADY EXISTING NAME CANNOT BE SUBMITTED          TODO comment supports reading the test while working on it => delete at the very end
               cy.get('button[data-test="editDatasetButton"]').click();
               cy.wait("@getDataToPrefillForm");
               cy.get(`[data-test="${TEST_PDF_FILE_NAME}AlreadyUploadedContainer`).should("exist");
@@ -233,7 +226,7 @@ describeIf(
               cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
               cy.get('button[data-test="submitButton"]').click();
               cy.get('[data-test="failedUploadMessage"]').should("contain.text", `${TEST_PDF_FILE_NAME}`);
-              // TEST IF UPLOADING A REPORT IS NOT POSSIBLE IF IT IS NOT REFERENCED BY AT LEAST ONE DATAPOINT         TODO comment supports reading the test while working on it => delete at the very end
+
               cy.get(`button[data-test="remove-${TEST_PDF_FILE_NAME}"]`).click();
               cy.get('[data-test="file-name-already-exists"]').should("not.exist");
               cy.get("input[type=file]").selectFile(
@@ -247,7 +240,6 @@ describeIf(
               cy.get('button[data-test="submitButton"]').click();
               cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
 
-              // TEST IF UPLOADING A REPORT WHICH HAS THE CONTENT OF AN ALREADY EXISTING PDF FILE LEADS TO NO ACTUAL RE-UPLOAD OF IT         TODO comment supports reading the test while working on it => delete at the very end
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
@@ -282,7 +274,6 @@ describeIf(
               cy.wait("@getDataForMyDatasetsPage");
               cy.get("@postDocument").should("not.have.been.called");
 
-              // TEST IF THE UPLOADED REPORT CAN BE DOWNLOADED AND ACTUALLY CONTAINS THE UPLOADED PDF         TODO comment supports reading the test while working on it => delete at the very end
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
