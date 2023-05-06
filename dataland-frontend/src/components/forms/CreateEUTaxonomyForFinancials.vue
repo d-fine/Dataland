@@ -305,7 +305,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { useRoute } from "vue-router";
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, nextTick } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
@@ -377,6 +377,7 @@ export default defineComponent({
       checkCustomInputs,
       route: useRoute(),
       waitingForData: false,
+      dataResponse: null as AxiosResponse<CompanyAssociatedDataEuTaxonomyDataForFinancials> | null,
       editMode: false,
 
       postEuTaxonomyDataForFinancialsProcessed: false,
@@ -448,12 +449,12 @@ export default defineComponent({
       required: true,
     },
   },
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  async created() {
+
+  mounted() {
     const dataId = this.route.query.templateDataId;
     if (typeof dataId === "string" && dataId !== "") {
       this.editMode = true;
-      await this.fetchTemplateData(dataId);
+      this.fetchTemplateData(dataId);
     }
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
@@ -468,44 +469,51 @@ export default defineComponent({
      * from the dataset
      * @param dataId the id of the dataset to load
      */
-    async fetchTemplateData(dataId: string): Promise<void> {
+    fetchTemplateData(dataId: string): void {
       this.waitingForData = true;
-      const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
-      ).getEuTaxonomyDataForFinancialsControllerApi();
+      new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
+        .getEuTaxonomyDataForFinancialsControllerApi()
+        .then((euTaxonomyDataForFinancialsControllerApiInterface) =>
+          euTaxonomyDataForFinancialsControllerApiInterface
+            .getCompanyAssociatedEuTaxonomyDataForFinancials(dataId)
+            .then((resolvedPromise) => {
+              const companyAssociatedEuTaxonomyData = resolvedPromise.data;
+              if (companyAssociatedEuTaxonomyData?.reportingPeriod) {
+                this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
+              }
+              if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
+                this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
+              }
+              this.templateDataset = companyAssociatedEuTaxonomyData.data;
+              if (companyAssociatedEuTaxonomyData.data?.financialServicesTypes) {
+                // types of company financial services
+                const arrayWithCompanyKpiTypes = companyAssociatedEuTaxonomyData.data?.financialServicesTypes;
+                // all types of financial services
 
-      const dataResponse =
-        await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(dataId);
-      const companyAssociatedEuTaxonomyData = dataResponse.data;
-      if (companyAssociatedEuTaxonomyData?.reportingPeriod) {
-        this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
-      }
-      if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
-        this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
-      }
-      this.templateDataset = companyAssociatedEuTaxonomyData.data;
-      if (companyAssociatedEuTaxonomyData.data?.financialServicesTypes) {
-        // types of company financial services
-        const arrayWithCompanyKpiTypes = companyAssociatedEuTaxonomyData.data?.financialServicesTypes;
-        // all types of financial services
+                this.selectedFinancialServiceOptions = this.financialServiceOptionsInDropdown.filter(
+                  (financialServiceOption: { label: string; value: string }) => {
+                    return arrayWithCompanyKpiTypes?.includes(
+                      euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[
+                        financialServiceOption.value
+                      ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
+                    );
+                  }
+                );
+                this.confirmSelectedKPIs();
+              }
 
-        this.selectedFinancialServiceOptions = this.financialServiceOptionsInDropdown.filter(
-          (financialServiceOption: { label: string; value: string }) => {
-            return arrayWithCompanyKpiTypes?.includes(
-              euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[
-                financialServiceOption.value
-              ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
-            );
-          }
-        );
-        this.confirmSelectedKPIs();
-      }
-
-      const receivedFormInputsModel = modifyObjectKeys(companyAssociatedEuTaxonomyData as ObjectType, "receive");
-      this.waitingForData = false;
-
-      await this.$nextTick();
-      updateObject(this.formInputsModel, receivedFormInputsModel);
+              const receivedFormInputsModel = modifyObjectKeys(
+                companyAssociatedEuTaxonomyData as ObjectType,
+                "receive"
+              );
+              this.waitingForData = false;
+              nextTick()
+                .then(() => updateObject(this.formInputsModel, receivedFormInputsModel))
+                .catch((e) => console.log(e));
+            })
+            .catch((e) => console.log(e))
+        )
+        .catch((e) => console.log(e));
     },
 
     /**
