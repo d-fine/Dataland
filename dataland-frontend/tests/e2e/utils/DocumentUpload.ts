@@ -13,6 +13,9 @@ export function uploadAllDocuments(token: string): void {
         uploadDocumentViaApi(token, bufferObject.data, name).catch((error) => console.log(error));
       });
       cy.clearLocalStorage();
+      cy.clearAllLocalStorage();
+      cy.clearAllSessionStorage();
+      cy.clear();
     });
   });
 }
