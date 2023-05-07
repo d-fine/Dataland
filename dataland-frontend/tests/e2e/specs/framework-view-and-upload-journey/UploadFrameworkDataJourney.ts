@@ -141,7 +141,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       /**
        * Checks if on the "ChoosingFrameworkForDataUpload"-page the expected texts and buttons are displayed based on the
        * uploaded company having two Eu-Taxo-Financials datasets and one LkSG dataset uploaded for it.
-       *
        * @param uploadedTestCompanyName bears the company name of the prior uploaded company so that it can be checked
        * if the company name appears as title
        */
@@ -175,7 +174,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
        * For the Eu-Taxo-Financials datasets it expects the correct data IDs to be attached to the url as query params
        * and for the LkSG dataset it expects no query param to be attached to the url since for LkSG all datasets can
        * be viewed on one single framework-view-page.
-       *
        * @param storedCompanyForTest the prior uploaded stored company which bears the company ID and the company name
        * that should be used in the cypress tests
        * @param dataIdOfFirstUploadedEuTaxoFinancialsDataset the data ID of the Eu-Taxo-Financial dataset that was

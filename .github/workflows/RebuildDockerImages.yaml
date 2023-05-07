@@ -8,23 +8,6 @@ on:
 
 # The idea for dynamically creating the matrix jobs comes from https://thekevinwang.com/2021/09/19/github-actions-dynamic-matrix/
 jobs:
-  log-everything:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/logObjects
-        name: log everything
-        with:
-          github: ${{ toJSON(github) }}
-          env: ${{ toJSON(env) }}
-          job: ${{ toJSON(job) }}
-          steps: ${{ toJSON(steps) }}
-          runner: ${{ toJSON(runner) }}
-          secrets: ${{ toJSON(secrets) }}
-          strategy: ${{ toJSON(strategy) }}
-          matrix: ${{ toJSON(matrix) }}
-          needs: ${{ toJSON(needs) }}
-          inputs: ${{ toJSON(inputs) }}
   gather-buildscripts:
     runs-on: ubuntu-latest
     outputs:
@@ -61,6 +44,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - name: Login to Github Packages
         uses: docker/login-action@v2
         with:

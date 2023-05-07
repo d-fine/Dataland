@@ -5,7 +5,6 @@ import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 
 /**
  * Generates a random data source referencing a random report from the provided referencedReports
- *
  * @param referencedReports a list of reports that can be referenced
  * @returns a random data source referencing a random report from the provided referencedReports
  */
@@ -20,7 +19,6 @@ export function generateDataSource(referencedReports: ReferencedReports): Compan
 
 /**
  * Creates a CSV mapping for the data-source columns of a datapoint
- *
  * @param dataPointName the datapoint to generate the apping for
  * @param companyReportGetter a function that can be used to get a report from the datapoint
  * @returns the generated CSV mapping

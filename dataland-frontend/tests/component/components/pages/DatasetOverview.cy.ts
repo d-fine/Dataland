@@ -29,7 +29,6 @@ describe("Component tests for the DatasetOverview page", () => {
 
   /**
    * Get the selector for a tab given by input number
-   *
    * @param tabIndex number identifying the tab
    * @returns the selector to choose a tab
    */
@@ -39,7 +38,6 @@ describe("Component tests for the DatasetOverview page", () => {
 
   /**
    * Validates the tab bar identified by the input
-   *
    * @param activeTabIndex number identifying the tab bar
    */
   function validateTabBar(activeTabIndex: number): void {

@@ -228,7 +228,6 @@ export default defineComponent({
 
     /**
      * Updates the local variable indicating which row of the datatable is currently displayed at the top
-     *
      * @param value the index of the new row displayed on top
      */
     setFirstShownRow(value: number) {
@@ -267,7 +266,6 @@ export default defineComponent({
     },
     /**
      * Parses the framework filter query parameters.
-     *
      * @param route the current route
      * @returns an array of framework filters from the URL or an array of all frameworks if no filter is defined
      */
@@ -284,7 +282,6 @@ export default defineComponent({
     },
     /**
      * Parses the country-code query parameters.
-     *
      * @param route the current route
      * @returns an array of country codes to filter by or an empty array of no filter is present
      */
@@ -297,7 +294,6 @@ export default defineComponent({
     },
     /**
      * Parses the sector-filter query parameters.
-     *
      * @param route the current route
      * @returns an array of sectors to filter by or an empty array of no filter is present
      */
@@ -310,7 +306,6 @@ export default defineComponent({
     },
     /**
      * Parses the search term query parameter
-     *
      * @param route the current route
      * @returns the parsed search term query parameter or an empty string if non-existent
      */
@@ -345,7 +340,6 @@ export default defineComponent({
     /**
      * Reads the query parameters of the framework-, country-code-, sector- and name- filters and
      * udpates the corresponding local variables accordingly
-     *
      * @param route the current vue route
      */
     scanQueryParams(route: RouteLocationNormalizedLoaded) {
@@ -369,7 +363,6 @@ export default defineComponent({
     /**
      * Called when the new search results are received from the framework search bar. Disables the waiting indicator,
      * resets the pagination and updates the datatable. Also updates the query parameters to reflect the new search parameters
-     *
      * @param companiesReceived the received companies
      * @returns the promise of the router push with the new query parameters
      */
@@ -407,7 +400,6 @@ export default defineComponent({
     /**
      * Called when the user performed a company search. Updates the search bar contents and
      * displays the waiting indicator
-     *
      * @param companyNameFilter the new search filter
      */
     handleSearchConfirmed(companyNameFilter: string) {

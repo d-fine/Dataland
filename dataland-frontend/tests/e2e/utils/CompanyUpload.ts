@@ -9,7 +9,6 @@ import { faker } from "@faker-js/faker";
 
 /**
  * Fills the company for a company with the specified name with dummy values.
- *
  * @param companyName the company name to fill into the form
  */
 export function fillCompanyUploadFields(companyName: string): void {
@@ -36,7 +35,6 @@ export function fillCompanyUploadFields(companyName: string): void {
 
 /**
  * Creates a company with the provided name and dummy values via the frontend and returns the company meta information of the newly created company.
- *
  * @param companyName the name of the company to create
  * @returns a cypress chainable containing the company meta information of the newly created company
  */
@@ -54,7 +52,6 @@ export function uploadCompanyViaForm(companyName: string): Cypress.Chainable<Sto
 
 /**
  * Generates dummy values for a company of the specified name. The dummy value for the sector may be overwritten.
- *
  * @param companyName the name of the company
  * @param sector overrides the dummy sector if specified
  * @returns a CompanyInformation object that can be sent to the API to create a company
@@ -74,7 +71,6 @@ export function generateDummyCompanyInformation(companyName: string, sector = "I
 
 /**
  * Uses the Dataland API to create a new company with the provided CompanyInformation
- *
  * @param token the bearer token used to authorize the API requests
  * @param companyInformation information about the company to create
  * @returns a promise on the requested company

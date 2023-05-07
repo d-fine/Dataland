@@ -29,11 +29,11 @@ jobs:
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
           runner: ${{ toJSON(runner) }}
-          secrets: ${{ toJSON(secrets) }}
           strategy: ${{ toJSON(strategy) }}
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
   upload-dataland-frontend-client:
@@ -52,6 +52,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - name: Extract Frontend Client from E2Etest Image
         run: |
           mkdir -p ./dataland-frontend/ 
@@ -81,7 +82,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
-          secrets: ${{ toJSON(secrets) }}
+          vars: ${{ toJSON(vars) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -92,11 +93,11 @@ jobs:
         run: ./deployment/start_and_deploy_to_server.sh $ENVIRONMENT
         env:
           TARGETSERVER_STARTUP_URL: ${{ secrets.TARGETSERVER_STARTUP_URL }}
-          TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
+          TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
           TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          KEYCLOAK_FRONTEND_URL: ${{ secrets.KEYCLOAK_FRONTEND_URL }}
-          KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
+          KEYCLOAK_FRONTEND_URL: ${{ vars.KEYCLOAK_FRONTEND_URL }}
+          KEYCLOAK_ADMIN: ${{ vars.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           KEYCLOAK_DB_PASSWORD: ${{ secrets.KEYCLOAK_DB_PASSWORD }}
           BACKEND_DB_PASSWORD: ${{ secrets.BACKEND_DB_PASSWORD }}
@@ -119,12 +120,12 @@ jobs:
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           INVITATION_REQUEST_RECEIVERS: ${{ secrets.INVITATION_REQUEST_RECEIVERS }}
-          INVITATION_REQUEST_CC: ${{ secrets.INVITATION_REQUEST_CC }}
-          PROXY_LETSENCRYPT_PATH: ${{ secrets.PROXY_LETSENCRYPT_PATH }}
-          PROXY_PRIMARY_URL: ${{ secrets.PROXY_PRIMARY_URL }}
-          PROXY_LETSENCRYPT_ARGS: ${{ secrets.PROXY_LETSENCRYPT_ARGS }}
+          INVITATION_REQUEST_CC: ${{ vars.INVITATION_REQUEST_CC }}
+          PROXY_LETSENCRYPT_PATH: ${{ vars.PROXY_LETSENCRYPT_PATH }}
+          PROXY_PRIMARY_URL: ${{ vars.TARGETSERVER_URL }}
+          PROXY_LETSENCRYPT_ARGS: ${{ vars.PROXY_LETSENCRYPT_ARGS }}
           RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
-          RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
+          RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
       - uses: ./.github/workflows/dockerLogs
@@ -134,7 +135,7 @@ jobs:
       - name: Verify images
         run: ./deployment/verifyImagesRemote.sh
         env:
-          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
+          TARGETSERVER_URL: ${{ vars.TARGETSERVER_URL }}
   e2e-tests:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.whichEnvironment }}
@@ -159,6 +160,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - name: Login to Github Packages
         uses: docker/login-action@v2
         with:
@@ -187,23 +189,26 @@ jobs:
             echo "There is no connection to admin ports established."
           fi
         env:
-          TARGETSERVER_HOST_KEYS: ${{ secrets.TARGETSERVER_HOST_KEYS }}
-          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
+          TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
+          TARGETSERVER_URL: ${{ vars.TARGETSERVER_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
-        run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ secrets.TARGETSERVER_URL }}"
+        run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ vars.TARGETSERVER_URL }}"
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com"
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_PASSWORD }}
-          KEYCLOAK_ADMIN: ${{ secrets.KEYCLOAK_ADMIN }}
+          KEYCLOAK_ADMIN: ${{ vars.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
-          CYPRESS_EXECUTION_ENVIRONMENT: ${{ secrets.CYPRESS_EXECUTION_ENVIRONMENT }}
+          CYPRESS_EXECUTION_ENVIRONMENT: ${{ vars.CYPRESS_EXECUTION_ENVIRONMENT }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true
           CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
+          RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
+          RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
+          RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
       - name: Move Cypress Results
         if: always()
         run: |

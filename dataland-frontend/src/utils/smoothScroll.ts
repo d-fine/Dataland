@@ -1,6 +1,5 @@
 /**
  * Smooth scroling
- *
  * @param target - target element
  */
 export function smoothScroll(target: string): void {

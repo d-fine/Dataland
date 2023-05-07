@@ -127,7 +127,6 @@ export default defineComponent({
   methods: {
     /**
      * Opens a modal to display a table with the provided list of production sites
-     *
      * @param listOfProductionSites An array consisting of production sites
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      */

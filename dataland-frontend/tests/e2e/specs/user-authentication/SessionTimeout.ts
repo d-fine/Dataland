@@ -24,7 +24,6 @@ describe("The page should behave well-defined when the user logs out in a differ
 
   /**
    * Modifies the given JWT to have the new expiry time. Does NOT update the signature
-   *
    * @param jwt the jwt to modify
    * @param newExpiryTime the new expiry time
    * @returns the modified jwt
