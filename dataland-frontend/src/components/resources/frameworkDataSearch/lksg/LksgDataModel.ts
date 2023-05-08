@@ -190,16 +190,15 @@ export const lksgDataModel = [
           },
           {
             showIf: (): boolean => true,
-            name: "multipleProductionSites",
+            name: "productionSites",
             description: "Do you have production sites in your company?",
-            label: "Multiple Production Sites",
+            label: "Production Sites",
             component: "YesNoFormField",
             required: true,
             validation: "required",
           },
           {
-            showIf: (dataModel: LksgData): boolean =>
-              dataModel?.general?.productionSpecific?.multipleProductionSites === "Yes",
+            showIf: (dataModel: LksgData): boolean => dataModel?.general?.productionSpecific?.productionSites === "Yes",
             name: "listOfProductionSites",
             description: "Please list the production sites in your company.",
             label: "List Of Production Sites",
