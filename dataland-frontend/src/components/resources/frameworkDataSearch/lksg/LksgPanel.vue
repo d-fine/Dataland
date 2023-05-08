@@ -22,6 +22,8 @@ import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { Subcategory } from "@/utils/GenericFrameworkTypes";
+import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -102,13 +104,29 @@ export default defineComponent({
      */
     createKpiDataObjects(
       kpiKey: string,
-      kpiValue: object | string | number,
+      kpiValue: object | string | Array<string> | number | null,
       subcategory: Subcategory,
       dataIdOfLksgDataset: string
     ): void {
       const kpi = subcategory.fields.filter((field) => field.name === kpiKey)[0];
       if (kpiKey === "totalRevenue" && typeof kpiValue === "number") {
         kpiValue = this.convertToMillions(kpiValue);
+      }
+      if (kpiKey === "industry") {
+        if (Array.isArray(kpiValue)) {
+          kpiValue = kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort);
+        } else {
+          kpiValue = naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+        }
+      }
+      if (kpiKey === "subcontractingCompaniesCountries") {
+        if (Array.isArray(kpiValue)) {
+          kpiValue = kpiValue.map(
+            (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
+          );
+        } else {
+          kpiValue = getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+        }
       }
       kpiValue = kpi.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;
       let indexOfExistingItem = -1;
