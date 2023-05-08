@@ -11,7 +11,7 @@
 import Message from "primevue/message";
 
 export default {
-  name: "FailedUpload",
+  name: "FailMessage",
   components: { Message },
   props: {
     message: String,

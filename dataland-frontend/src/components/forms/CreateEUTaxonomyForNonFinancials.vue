@@ -253,12 +253,12 @@
         <SubmitSideBar>
           <SubmitButton :formId="formId" />
           <template v-if="postEuTaxonomyDataForNonFinancialsProcessed">
-            <SuccessUpload
+            <SuccessMessage
               v-if="postEuTaxonomyDataForNonFinancialsResponse?.status === 200"
               msg="EU Taxonomy Data"
               :messageId="messageCount"
             />
-            <FailedUpload v-else data-test="failedUploadMessage" :message="message" :messageId="messageCount" />
+            <FailMessage v-else data-test="failedUploadMessage" :message="message" :messageId="messageCount" />
           </template>
           <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
         </SubmitSideBar>
@@ -268,14 +268,14 @@
 </template>
 
 <script lang="ts">
-import SuccessUpload from "@/components/messages/SuccessUpload.vue";
+import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import { FormKit } from "@formkit/vue";
 
 import Calendar from "primevue/calendar";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
-import FailedUpload from "@/components/messages/FailedUpload.vue";
+import FailMessage from "@/components/messages/FailMessage.vue";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import BasicInformationFields from "@/components/forms/parts/BasicInformationFields.vue";
 
@@ -319,11 +319,11 @@ export default defineComponent({
     UploadFormHeader,
     UploadReports,
     BasicInformationFields,
-    FailedUpload,
+    FailMessage,
     SubmitSideBar,
     Card,
     FormKit,
-    SuccessUpload,
+    SuccessMessage,
   },
   setup() {
     return {

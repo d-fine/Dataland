@@ -199,8 +199,8 @@
           <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
         </FormKit>
         <template v-if="postCompanyProcessed">
-          <SuccessUpload v-if="uploadSucceded" :message="message" :messageId="messageCounter" />
-          <FailedUpload v-else :message="message" :messageId="messageCounter" />
+          <SuccessMessage v-if="uploadSucceded" :message="message" :messageId="messageCounter" />
+          <FailMessage v-else :message="message" :messageId="messageCounter" />
         </template>
       </div>
     </template>
@@ -222,8 +222,8 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import PrimeButton from "primevue/button";
 import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import SuccessUpload from "@/components/messages/SuccessUpload.vue";
-import FailedUpload from "@/components/messages/FailedUpload.vue";
+import SuccessMessage from "@/components/messages/SuccessMessage.vue";
+import FailMessage from "@/components/messages/FailMessage.vue";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import Tooltip from "primevue/tooltip";
 import {
@@ -242,8 +242,8 @@ export default defineComponent({
     Card,
     FormKit,
     PrimeButton,
-    SuccessUpload,
-    FailedUpload,
+    SuccessMessage,
+    FailMessage,
   },
   directives: {
     tooltip: Tooltip,

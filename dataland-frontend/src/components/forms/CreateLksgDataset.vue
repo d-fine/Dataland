@@ -1089,8 +1089,8 @@
         <SubmitSideBar>
           <SubmitButton :formId="formId" />
           <div v-if="postLkSGDataProcessed">
-            <SuccessUpload v-if="uploadSucceded" :messageId="messageCounter" />
-            <FailedUpload v-else :message="message" :messageId="messageCounter" />
+            <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
+            <FailMessage v-else :message="message" :messageId="messageCounter" />
           </div>
           <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
         </SubmitSideBar>
@@ -1111,8 +1111,8 @@ import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import Calendar from "primevue/calendar";
-import SuccessUpload from "@/components/messages/SuccessUpload.vue";
-import FailedUpload from "@/components/messages/FailedUpload.vue";
+import SuccessMessage from "@/components/messages/SuccessMessage.vue";
+import FailMessage from "@/components/messages/FailMessage.vue";
 import {
   lksgKpisInfoMappings,
   lksgKpisNameMappings,
@@ -1141,8 +1141,8 @@ export default defineComponent({
     SubmitSideBar,
     JumpLinksSection,
     UploadFormHeader,
-    SuccessUpload,
-    FailedUpload,
+    SuccessMessage,
+    FailMessage,
     FormKit,
     Card,
     PrimeButton,

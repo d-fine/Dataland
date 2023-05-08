@@ -11,7 +11,7 @@
 import Message from "primevue/message";
 
 export default {
-  name: "SuccessUpload",
+  name: "SuccessMessage",
   components: { Message },
   props: {
     message: {
