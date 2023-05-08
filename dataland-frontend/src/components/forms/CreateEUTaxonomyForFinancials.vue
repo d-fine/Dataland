@@ -526,9 +526,16 @@ export default defineComponent({
             );
           }
         );
-        this.confirmedSelectedFinancialServiceOptions = this.selectedFinancialServiceOptions;
-        this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedFinancialServiceOptions))];
+        this.confirmSelectedKPIs();
       }
+    },
+
+    /**
+     * Confirms the list of kpis to be generated
+     */
+    confirmSelectedKPIs() {
+      this.confirmedSelectedFinancialServiceOptions = this.selectedFinancialServiceOptions;
+      this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedFinancialServiceOptions))];
     },
 
     /**

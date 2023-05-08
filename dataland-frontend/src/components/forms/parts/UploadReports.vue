@@ -38,7 +38,7 @@
             <div v-if="!isFileNameAlreadyExistingInUploadedReports(file.name)">
               <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
               <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
-                {{ formatBytesUserFriendly(file.size, 3) }}
+                {{ formatBytesUserFriendly(file.size, 1) }}
               </div>
               <PrimeButton
                 data-test="uploaded-files-remove"
