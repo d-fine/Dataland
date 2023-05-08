@@ -1,5 +1,5 @@
 export const uploadReports = {
-  uploadFile(filename: string): void {
+  selectFile(filename: string): void {
     cy.get('button[data-test="upload-files-button"]').click();
     cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
   },
@@ -12,27 +12,27 @@ export const uploadReports = {
       cy.wrap(element).find(`input[value="No"]`).click();
     });
   },
-  validateSingleFileInUploadedList(filename: string, fileDimension: string): void {
-    cy.get('div[data-test="uploaded-files"]')
+  validateSingleFileInUploadList(filename: string, fileDimension: string): void {
+    cy.get('div[data-test="files-to-upload"]')
       .should("exist")
-      .find('[data-test="uploaded-files-title"]')
+      .find('[data-test="files-to-upload-title"]')
       .should("contain", filename + ".pdf");
-    cy.get('div[data-test="uploaded-files"]')
-      .find('[data-test="uploaded-files-size"]')
+    cy.get('div[data-test="files-to-upload"]')
+      .find('[data-test="files-to-upload-size"]')
       .should("contain", fileDimension);
     cy.get('input[name="reference"]').should("exist");
   },
   fillReportCurrency(filename: string): void {
     cy.get(`[data-test="${filename}ToUploadContainer"]`).find('input[name="currency"]').type("www");
   },
-  removeSingleUploadedFileFromUploadedList(): void {
-    cy.get('button[data-test="uploaded-files-remove"]').click();
+  removeSingleFileFromUploadList(): void {
+    cy.get('button[data-test="files-to-upload-remove"]').click();
   },
   removeUploadedReportFromReportInfos(filename: string): Cypress.Chainable {
     return cy.get(`[data-test="${filename}AlreadyUploadedContainer"] button`).click();
   },
   checkNoReportIsListed(): void {
-    cy.get('div[data-test="uploaded-files"]').should("not.exist");
+    cy.get('div[data-test="files-to-upload"]').should("not.exist");
     cy.get('[data-test="report-info"]').should("not.exist");
     cy.get('input[name="reference"]').should("not.exist");
     cy.get('input[name="reportDate"]').should("not.exist");

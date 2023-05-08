@@ -29,19 +29,19 @@
         </div>
       </template>
       <template #content="{ files, removeFileCallback }">
-        <div v-if="files.length > 0" data-test="uploaded-files">
+        <div v-if="files.length > 0" data-test="files-to-upload">
           <div
             v-for="(file, index) of files"
             :key="file.name + index"
             class="flex w-full align-items-center file-upload-item"
           >
             <div v-if="!isFileNameAlreadyExistingInUploadedReports(file.name)">
-              <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
-              <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
+              <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ file.name }}</span>
+              <div data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
                 {{ formatBytesUserFriendly(file.size, 1) }}
               </div>
               <PrimeButton
-                data-test="uploaded-files-remove"
+                data-test="files-to-upload-remove"
                 icon="pi pi-times"
                 @click="removeReportFromFilesToUpload(removeFileCallback, index)"
                 class="p-button-rounded"
@@ -338,8 +338,6 @@ export default defineComponent({
     },
   },
 });
-
-// TODO Emanuel: data-test="uploaded-files" is not a very good named marker, since the list it refers to is actually the list of files to upload!
 interface CompanyReportUploadModel extends CompanyReport {
   name: string;
   reportDate: string;

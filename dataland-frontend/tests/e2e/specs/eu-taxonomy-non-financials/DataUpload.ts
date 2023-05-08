@@ -103,13 +103,13 @@ describeIf(
         uploadCompanyViaApiAndEuTaxonomyDataForNonFinancialsViaForm(
           testData.companyInformation,
           () => {
-            uploadReports.uploadFile(TEST_PDF_FILE_NAME);
-            uploadReports.validateSingleFileInUploadedList(TEST_PDF_FILE_NAME, "KB");
+            uploadReports.selectFile(TEST_PDF_FILE_NAME);
+            uploadReports.validateSingleFileInUploadList(TEST_PDF_FILE_NAME, "KB");
             uploadReports.fillReportCurrency(TEST_PDF_FILE_NAME);
-            uploadReports.removeSingleUploadedFileFromUploadedList();
+            uploadReports.removeSingleFileFromUploadList();
             uploadReports.checkNoReportIsListed();
 
-            uploadReports.uploadFile(TEST_PDF_FILE_NAME);
+            uploadReports.selectFile(TEST_PDF_FILE_NAME);
             uploadReports.fillAllReportInfoForms();
           },
           () => undefined,
@@ -124,8 +124,8 @@ describeIf(
       uploadCompanyViaApiAndEuTaxonomyDataForNonFinancialsViaForm(
         testData.companyInformation,
         () => {
-          uploadReports.uploadFile(TEST_PDF_FILE_NAME);
-          uploadReports.uploadFile(`${TEST_PDF_FILE_NAME}2`);
+          uploadReports.selectFile(TEST_PDF_FILE_NAME);
+          uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
           uploadReports.fillAllReportInfoForms();
         },
         () => {

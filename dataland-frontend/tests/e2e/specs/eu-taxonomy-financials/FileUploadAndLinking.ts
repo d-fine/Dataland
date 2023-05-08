@@ -39,8 +39,8 @@ describeIf(
         testData.t,
         () => undefined,
         () => {
-          uploadReports.uploadFile(TEST_PDF_FILE_NAME);
-          uploadReports.uploadFile(`${TEST_PDF_FILE_NAME}2`);
+          uploadReports.selectFile(TEST_PDF_FILE_NAME);
+          uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
           uploadReports.fillAllReportInfoForms();
           cy.get(`[data-test="assetManagementKpis"]`)
             .find(`[data-test="banksAndIssuers"]`)

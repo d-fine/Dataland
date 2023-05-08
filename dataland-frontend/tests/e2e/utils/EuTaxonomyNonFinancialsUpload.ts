@@ -22,8 +22,8 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
-  uploadReports.uploadFile(TEST_PDF_FILE_NAME);
-  uploadReports.validateSingleFileInUploadedList(TEST_PDF_FILE_NAME, "KB");
+  uploadReports.selectFile(TEST_PDF_FILE_NAME);
+  uploadReports.validateSingleFileInUploadList(TEST_PDF_FILE_NAME, "KB");
   uploadReports.fillReportCurrency(TEST_PDF_FILE_NAME);
 
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);

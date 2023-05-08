@@ -36,10 +36,10 @@ describeIf(
           testData.companyInformation,
           testData.t,
           () => {
-            uploadReports.uploadFile(TEST_PDF_FILE_NAME);
-            uploadReports.validateSingleFileInUploadedList(TEST_PDF_FILE_NAME, "KB");
+            uploadReports.selectFile(TEST_PDF_FILE_NAME);
+            uploadReports.validateSingleFileInUploadList(TEST_PDF_FILE_NAME, "KB");
             uploadReports.fillReportCurrency(TEST_PDF_FILE_NAME);
-            uploadReports.removeSingleUploadedFileFromUploadedList();
+            uploadReports.removeSingleFileFromUploadList();
             uploadReports.checkNoReportIsListed();
           },
           () => undefined,
