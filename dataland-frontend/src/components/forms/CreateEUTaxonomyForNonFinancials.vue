@@ -61,7 +61,7 @@
                   @referenceable-files-changed="referenceableFilesChanged"
                 />
 
-                <BasicInformationFields
+                <EuTaxonomyBasicInformation
                   :fiscalYearEndAsDate="fiscalYearEndAsDate"
                   :fiscalYearEnd="fiscalYearEnd"
                   @updateFiscalYearEndHandler="updateFiscalYearEndHandler"
@@ -277,7 +277,7 @@ import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
-import BasicInformationFields from "@/components/forms/parts/BasicInformationFields.vue";
+import EuTaxonomyBasicInformation from "@/components/forms/parts/EuTaxonomyBasicInformation.vue";
 
 import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -318,7 +318,7 @@ export default defineComponent({
     Calendar,
     UploadFormHeader,
     UploadReports,
-    BasicInformationFields,
+    EuTaxonomyBasicInformation,
     FailMessage,
     SubmitSideBar,
     Card,

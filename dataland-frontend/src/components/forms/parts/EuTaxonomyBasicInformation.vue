@@ -108,7 +108,7 @@ import {
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 
 export default defineComponent({
-  name: "BasicInformationFields",
+  name: "EuTaxonomyBasicInformation",
   components: { UploadFormHeader, Calendar, FormKit, RadioButtonsGroup },
   emits: ["updateFiscalYearEndHandler"],
   data: () => ({
