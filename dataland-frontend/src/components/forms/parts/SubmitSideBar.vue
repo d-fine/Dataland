@@ -17,7 +17,6 @@ export default defineComponent({
       if (this.elementPosition == 0) {
         this.elementPosition = submitSideBar.getBoundingClientRect().top;
       }
-      console.log(window.scrollY);
       if (window.scrollY > this.elementPosition) {
         submitSideBar.style.position = "fixed";
         submitSideBar.style.top = "60px";
