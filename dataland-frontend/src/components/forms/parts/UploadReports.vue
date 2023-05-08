@@ -114,7 +114,6 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
-import DynamicDialog from "primevue/dynamicdialog";
 import FilesDialog from "@/components/general/FilesDialog.vue";
 
 export default defineComponent({
