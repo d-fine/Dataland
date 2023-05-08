@@ -181,6 +181,8 @@ describeIf(
       "Upload EU Taxonomy Dataset via form, check that redirect to MyDatasets works and assure that it can be " +
         "viewed and edited, and that file selection, upload and download works properly",
       () => {
+        // TODO Emanuel: furthermore this test could be done in a shorter amount of time =>  e.g. some of the page reloads are actually not needed and could be worked around.
+
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
             (storedCompany) => {
@@ -192,114 +194,149 @@ describeIf(
               cy.visitAndCheckAppMount(
                 `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
               );
+
               cy.get("[data-test='companyNameTitle']").contains("All fields filled");
-              cy.contains("[data-test='taxocard']", "Eligible Revenue").should("contain", "%");
-              cy.contains("[data-test='taxocard']", "Aligned Revenue").should("contain", "%");
-              cy.contains("[data-test='taxocard']", "Eligible CapEx").should("contain", "%");
-              cy.contains("[data-test='taxocard']", "Aligned CapEx").should("contain", "%");
-              cy.contains("[data-test='taxocard']", "Eligible OpEx").should("contain", "%");
-              cy.contains("[data-test='taxocard']", "Aligned OpEx").should("contain", "%");
-
-              const newValueForEligibleRevenueAfterEdit = "30";
-              cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("getDataToPrefillForm");
-              cy.get('button[data-test="editDatasetButton"]').click();
-              cy.wait("@getDataToPrefillForm");
-              cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
-              cy.get(`div[data-test=revenueSection] div[data-test=eligible] input[name="value"]`)
-                .clear()
-                .type(newValueForEligibleRevenueAfterEdit);
-              cy.get('button[data-test="submitButton"]').click();
-              cy.wait("@getDataForMyDatasetsPage");
-              cy.visitAndCheckAppMount(
-                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
-              );
-              cy.contains("[data-test='taxocard']", "Eligible Revenue").should(
-                "contain",
-                newValueForEligibleRevenueAfterEdit + "%"
-              );
-
-              cy.get('button[data-test="editDatasetButton"]').click();
-              cy.wait("@getDataToPrefillForm");
-              cy.get(`[data-test="${TEST_PDF_FILE_NAME}AlreadyUploadedContainer`).should("exist");
-              cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_PATH}`, { force: true });
-              cy.get('[data-test="file-name-already-exists"]').should("exist");
-              cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
-              cy.get('button[data-test="submitButton"]').click();
-              cy.get('[data-test="failedUploadMessage"]').should("contain.text", `${TEST_PDF_FILE_NAME}`);
-
-              cy.get(`button[data-test="remove-${TEST_PDF_FILE_NAME}"]`).click();
-              cy.get('[data-test="file-name-already-exists"]').should("not.exist");
-              cy.get("input[type=file]").selectFile(
-                {
-                  contents: `../${TEST_PDF_FILE_PATH}`,
-                  fileName: "someOtherFileName" + ".pdf",
-                },
-                { force: true }
-              );
-              uploadReports.fillAllReportInfoForms();
-              cy.get('button[data-test="submitButton"]').click();
-              cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
-
-              cy.visitAndCheckAppMount(
-                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
-              );
-              cy.get("[data-test='taxocard']").should("exist");
-              cy.get('button[data-test="editDatasetButton"]').click();
-              cy.wait("@getDataToPrefillForm");
-              cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
-              const differentFileNameForSameFile = `${TEST_PDF_FILE_NAME}FileCopy`;
-              cy.get("input[type=file]").selectFile(
-                {
-                  contents: `../${TEST_PDF_FILE_PATH}`,
-                  fileName: differentFileNameForSameFile + ".pdf",
-                },
-                { force: true }
-              );
-              uploadReports.fillAllReportInfoForms();
-              cy.get(`div[data-test=capexSection] div[data-test=total] select[name="report"]`).select(
-                differentFileNameForSameFile
-              );
-              cy.intercept(`**/documents/*/exists`).as("documentExists");
-              cy.intercept(`**/documents/`, cy.spy().as("postDocument"));
-              cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
-              cy.get('button[data-test="submitButton"]').click();
-              cy.wait("@documentExists", { timeout: Cypress.env("short_timeout_in_ms") as number })
-                .its("response.body")
-                .should("deep.equal", { documentExists: true });
-              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(
-                (req) => {
-                  cy.log(req.response!.body as string);
-                }
-              );
-              cy.wait("@getDataForMyDatasetsPage");
-              cy.get("@postDocument").should("not.have.been.called");
-
-              cy.visitAndCheckAppMount(
-                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
-              );
-              const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}.pdf`;
-              const downloadLinkSelector = `span[data-test="Report-Download-${differentFileNameForSameFile}"]`;
-              cy.readFile(expectedPathToDownloadedReport).should("not.exist");
-              cy.get(downloadLinkSelector)
-                .click()
-                .then(() => {
-                  cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
-                    timeout: Cypress.env("medium_timeout_in_ms") as number,
-                  }).then((expectedPdfBinary) => {
-                    cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
-                      cy.readFile(expectedPathToDownloadedReport, "binary", {
-                        timeout: Cypress.env("medium_timeout_in_ms") as number,
-                      }).then((receivedPdfHash) => {
-                        cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
-                      });
-                      cy.task("deleteFolder", Cypress.config("downloadsFolder"));
-                    });
-                  });
-                });
+              checkAllDataProvided();
+              clickEditButtonAndEditAndValidateChange(storedCompany.companyId);
+              checkFileWithExistingFilenameCanNotBeResubmitted();
+              checkThatFilesMustBeReferenced();
+              checkThatFilesWithSameContentDontGetReuploaded(storedCompany.companyId);
+              checkIfLinkedReportsAreDownloadable(storedCompany.companyId);
             }
           );
         });
       }
     );
+
+    /**
+     * On the eu taxonomy for non-financial services view page, this method verifies that all data was provided
+     */
+    function checkAllDataProvided(): void {
+      cy.contains("[data-test='taxocard']", "Eligible Revenue").should("contain", "%");
+      cy.contains("[data-test='taxocard']", "Aligned Revenue").should("contain", "%");
+      cy.contains("[data-test='taxocard']", "Eligible CapEx").should("contain", "%");
+      cy.contains("[data-test='taxocard']", "Aligned CapEx").should("contain", "%");
+      cy.contains("[data-test='taxocard']", "Eligible OpEx").should("contain", "%");
+      cy.contains("[data-test='taxocard']", "Aligned OpEx").should("contain", "%");
+    }
+
+    /**
+     * On the eu taxonomy for non-financial services view page, this method edits some data and validates the changes
+     * @param companyId the ID of the company on whose view page this method starts on
+     */
+    function clickEditButtonAndEditAndValidateChange(companyId: string): void {
+      const newValueForEligibleRevenueAfterEdit = "30";
+      cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("getDataToPrefillForm");
+      cy.get('button[data-test="editDatasetButton"]').click();
+      cy.wait("@getDataToPrefillForm");
+      cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
+      cy.get(`div[data-test=revenueSection] div[data-test=eligible] input[name="value"]`)
+        .clear()
+        .type(newValueForEligibleRevenueAfterEdit);
+      cy.get('button[data-test="submitButton"]').click();
+      cy.wait("@getDataForMyDatasetsPage");
+      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
+      cy.contains("[data-test='taxocard']", "Eligible Revenue").should(
+        "contain",
+        newValueForEligibleRevenueAfterEdit + "%"
+      );
+    }
+
+    /**
+     * On the eu taxonomy for non-financial services edit page, this method checks that there can not be a file uploaded
+     * whose name equals the one of a file selected before
+     */
+    function checkFileWithExistingFilenameCanNotBeResubmitted(): void {
+      cy.get('button[data-test="editDatasetButton"]').click();
+      cy.wait("@getDataToPrefillForm");
+      cy.get(`[data-test="${TEST_PDF_FILE_NAME}AlreadyUploadedContainer`).should("exist");
+      cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_PATH}`, { force: true });
+      cy.get('[data-test="file-name-already-exists"]').should("exist");
+      cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
+      cy.get('button[data-test="submitButton"]').click();
+      cy.get('[data-test="failedUploadMessage"]').should("contain.text", `${TEST_PDF_FILE_NAME}`);
+    }
+    /**
+     * On the eu taxonomy for non-financial services edit page, this method checks that submission is denied
+     * if a report is not referenced
+     */
+    function checkThatFilesMustBeReferenced(): void {
+      cy.get(`button[data-test="remove-${TEST_PDF_FILE_NAME}"]`).click();
+      cy.get('[data-test="file-name-already-exists"]').should("not.exist");
+      cy.get("input[type=file]").selectFile(
+        {
+          contents: `../${TEST_PDF_FILE_PATH}`,
+          fileName: "someOtherFileName" + ".pdf",
+        },
+        { force: true }
+      );
+      uploadReports.fillAllReportInfoForms();
+      cy.get('button[data-test="submitButton"]').click();
+      cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
+    }
+
+    const differentFileNameForSameFile = `${TEST_PDF_FILE_NAME}FileCopy`;
+
+    /**
+     * This method verifies that there are no files with the same content uploaded twice
+     * @param companyId the ID of the company whose data is to be edited
+     */
+    function checkThatFilesWithSameContentDontGetReuploaded(companyId: string): void {
+      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
+      cy.get("[data-test='taxocard']").should("exist");
+      cy.get('button[data-test="editDatasetButton"]').click();
+      cy.wait("@getDataToPrefillForm");
+      cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
+      cy.get("input[type=file]").selectFile(
+        {
+          contents: `../${TEST_PDF_FILE_PATH}`,
+          fileName: differentFileNameForSameFile + ".pdf",
+        },
+        { force: true }
+      );
+      uploadReports.fillAllReportInfoForms();
+      cy.get(`div[data-test=capexSection] div[data-test=total] select[name="report"]`).select(
+        differentFileNameForSameFile
+      );
+      cy.intercept(`**/documents/*/exists`).as("documentExists");
+      cy.intercept(`**/documents/`, cy.spy().as("postDocument"));
+      cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
+      cy.get('button[data-test="submitButton"]').click();
+      cy.wait("@documentExists", { timeout: Cypress.env("short_timeout_in_ms") as number })
+        .its("response.body")
+        .should("deep.equal", { documentExists: true });
+      cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((req) => {
+        cy.log(req.response!.body as string);
+      });
+      cy.wait("@getDataForMyDatasetsPage");
+      cy.get("@postDocument").should("not.have.been.called");
+    }
+
+    /**
+     * This method verifies that uploaded reports are downloadable
+     * @param companyId the ID of the company whose data to view
+     */
+    function checkIfLinkedReportsAreDownloadable(companyId: string): void {
+      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
+      const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}.pdf`;
+      const downloadLinkSelector = `span[data-test="Report-Download-${differentFileNameForSameFile}"]`;
+      cy.readFile(expectedPathToDownloadedReport).should("not.exist");
+      cy.get(downloadLinkSelector)
+        .click()
+        .then(() => {
+          cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
+            timeout: Cypress.env("medium_timeout_in_ms") as number,
+          }).then((expectedPdfBinary) => {
+            cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
+              cy.readFile(expectedPathToDownloadedReport, "binary", {
+                timeout: Cypress.env("medium_timeout_in_ms") as number,
+              }).then((receivedPdfHash) => {
+                cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
+              });
+              cy.task("deleteFolder", Cypress.config("downloadsFolder"));
+            });
+          });
+        });
+    }
   }
 );
