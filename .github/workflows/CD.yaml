@@ -218,7 +218,3 @@ jobs:
         with:
           name: cypress
           path: ./dataland-frontend/cypressresult/
-      - uses: ./.github/workflows/dockerLogs
-        if: always()
-        with:
-          subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
