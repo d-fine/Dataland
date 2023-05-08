@@ -27,6 +27,14 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
 
+    /**
+     * Toggles the data-table row group with the given key
+     * @param groupKey the key of the row group to expand
+     */
+    function toggleRowGroup(groupKey: string): void {
+      cy.get(`span[data-test=${groupKey}]`).siblings("button").last().click();
+    }
+
     it("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
@@ -49,7 +57,7 @@ describeIf(
         });
     });
 
-    it.only("Check if the list of production sites is displayed as expected", () => {
+    it("Check if the list of production sites is displayed as expected", () => {
       cy.fixture("MetaInfoDataForCompany.json").then((metaInfos) => {
         cy.fixture("CompanyInformationWithLksgData.json").then((lksgDataSets) => {
           const lksgData = prepareLksgViewIntercepts(
@@ -57,22 +65,15 @@ describeIf(
             (metaInfos as DataMetaInformation[])[0]
           );
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
-          cy.get("table.p-datatable-table")
-            .find(`tr:contains(Production-specific)`)
-            .find(`button.p-row-toggler`)
-            .click()
-            .get(`tr:contains(List Of Production Sites)`)
-            .find(`a:contains(Show "List Of Production Sites")`)
-            .click();
+          toggleRowGroup("productionSpecific");
+          cy.get(`a:contains(Show "List Of Production Sites")`).click();
           const listOfProductionSites = assertDefined(lksgData.general?.productionSpecific?.listOfProductionSites);
           if (listOfProductionSites.length < 2) {
             throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
           }
           listOfProductionSites.forEach((productionSite: LksgProductionSite) => {
             if (productionSite.addressOfProductionSite && productionSite.addressOfProductionSite.streetAndHouseNumber) {
-              cy.get("tbody.p-datatable-tbody").find(
-                `p:contains(${productionSite.addressOfProductionSite.streetAndHouseNumber})`
-              );
+              cy.get("tbody.p-datatable-tbody p").contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
             }
           });
           cy.get("div.p-dialog-mask").click({ force: true });
