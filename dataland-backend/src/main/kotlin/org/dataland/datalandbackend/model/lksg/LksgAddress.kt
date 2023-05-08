@@ -7,11 +7,11 @@ package org.dataland.datalandbackend.model.lksg
 data class LksgAddress(
     val streetAndHouseNumber: String?,
 
+    val postalCode: String?,
+
     val city: String?,
 
     val state: String?,
-
-    val postalCode: String?,
 
     val country: String?,
 )
