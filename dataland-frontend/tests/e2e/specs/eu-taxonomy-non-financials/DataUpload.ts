@@ -6,6 +6,7 @@ import {
   EuTaxonomyDataForNonFinancials,
   CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
   EuTaxonomyDataForFinancials,
+  DataMetaInformation,
 } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -21,6 +22,7 @@ import {
 import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
 import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@e2e/utils/Constants";
 import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
+import Chainable = Cypress.Chainable;
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company",
@@ -181,8 +183,6 @@ describeIf(
       "Upload EU Taxonomy Dataset via form, check that redirect to MyDatasets works and assure that it can be " +
         "viewed and edited, and that file selection, upload and download works properly",
       () => {
-        // TODO Emanuel: furthermore this test could be done in a shorter amount of time =>  e.g. some of the page reloads are actually not needed and could be worked around.
-
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
             (storedCompany) => {
@@ -197,11 +197,12 @@ describeIf(
 
               cy.get("[data-test='companyNameTitle']").contains("All fields filled");
               checkAllDataProvided();
-              clickEditButtonAndEditAndValidateChange(storedCompany.companyId);
-              checkFileWithExistingFilenameCanNotBeResubmitted();
-              checkThatFilesMustBeReferenced();
-              checkThatFilesWithSameContentDontGetReuploaded(storedCompany.companyId);
-              checkIfLinkedReportsAreDownloadable(storedCompany.companyId);
+              clickEditButtonAndEditAndValidateChange(storedCompany.companyId).then((templateDataId) => {
+                checkFileWithExistingFilenameCanNotBeResubmitted();
+                checkThatFilesMustBeReferenced();
+                checkThatFilesWithSameContentDontGetReuploaded(storedCompany.companyId, templateDataId);
+                checkIfLinkedReportsAreDownloadable(storedCompany.companyId);
+              });
             }
           );
         });
@@ -223,8 +224,9 @@ describeIf(
     /**
      * On the eu taxonomy for non-financial services view page, this method edits some data and validates the changes
      * @param companyId the ID of the company on whose view page this method starts on
+     * @returns a chainable on the data ID of the created dataset
      */
-    function clickEditButtonAndEditAndValidateChange(companyId: string): void {
+    function clickEditButtonAndEditAndValidateChange(companyId: string): Chainable<string> {
       const newValueForEligibleRevenueAfterEdit = "30";
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("getDataToPrefillForm");
       cy.get('button[data-test="editDatasetButton"]').click();
@@ -235,11 +237,17 @@ describeIf(
         .type(newValueForEligibleRevenueAfterEdit);
       cy.get('button[data-test="submitButton"]').click();
       cy.wait("@getDataForMyDatasetsPage");
+      cy.intercept(`**/api/metadata?companyId=${companyId}`).as("getMetaDataForViewPage");
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
       cy.contains("[data-test='taxocard']", "Eligible Revenue").should(
         "contain",
         newValueForEligibleRevenueAfterEdit + "%"
       );
+      return cy.wait("@getMetaDataForViewPage").then((interception) => {
+        return (interception.response!.body as DataMetaInformation[]).find(
+          (dataMetaInfo) => dataMetaInfo.currentlyActive
+        )!.dataId;
+      });
     }
 
     /**
@@ -280,11 +288,12 @@ describeIf(
     /**
      * This method verifies that there are no files with the same content uploaded twice
      * @param companyId the ID of the company whose data is to be edited
+     * @param templateDataId the ID of the dataset to edit
      */
-    function checkThatFilesWithSameContentDontGetReuploaded(companyId: string): void {
-      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
-      cy.get("[data-test='taxocard']").should("exist");
-      cy.get('button[data-test="editDatasetButton"]').click();
+    function checkThatFilesWithSameContentDontGetReuploaded(companyId: string, templateDataId: string): void {
+      cy.visitAndCheckAppMount(
+        `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload?templateDataId=${templateDataId}`
+      );
       cy.wait("@getDataToPrefillForm");
       cy.get('[data-test="pageWrapperTitle"]').should("contain", "Edit");
       cy.get("input[type=file]").selectFile(
