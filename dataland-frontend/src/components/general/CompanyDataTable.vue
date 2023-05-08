@@ -45,9 +45,7 @@
         <template #body="{ data }">
           <a
             v-if="Array.isArray(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId].length"
-            @click="
-              openModalAndDisplayListOfProductionSites(data[reportingPeriod.dataId], kpiNameMappings[data.kpiKey])
-            "
+            @click="openModalAndDisplayValuesInSubTable(data[reportingPeriod.dataId], kpiNameMappings[data.kpiKey])"
             class="link"
             >Show "{{ kpiNameMappings[data.kpiKey] }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
@@ -92,13 +90,14 @@ export default defineComponent({
     return {
       kpiDataObjectsToDisplay: [],
       expandedRowGroups: ["_general"],
-      listOfProductionSitesConvertedNames: columnHeaders,
+      listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
     };
   },
   props: {
     kpiDataObjects: {
       type: Array,
       default: () => [],
+      required: true,
     },
     reportingPeriodsOfDataSets: {
       type: Array,
