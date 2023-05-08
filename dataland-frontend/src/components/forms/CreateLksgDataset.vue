@@ -49,6 +49,7 @@
                         :required="field.required"
                         :validation="field.validation"
                         :validation-label="field.validationLabel"
+                        :data-test="field.name"
                       />
                     </FormKit>
                   </div>

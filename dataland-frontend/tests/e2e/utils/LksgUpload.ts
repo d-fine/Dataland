@@ -69,45 +69,48 @@ export function uploadLksgDataViaForm(): void {
   //TODO rework test
   const yesNoInputs = lksgDataModel.flatMap((category) =>
     category.subcategories.flatMap((subcategory) =>
-      subcategory.fields.filter((field) => field.component === "YesNoFormField").map((field) => field.name)
+      subcategory.fields
+        .filter((field) => field.component === "YesNoFormField" || field.component === "YesNoNaFormField")
+        .map((field) => field.name)
     )
   );
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
-  cy.get('[data-test="lksgDataDate"]').click();
+  cy.get('[data-test="dataDate"]').find("button.p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
   cy.get("div.p-datepicker").find('span:contains("13")').click();
   cy.get('input[name="dataDate"]').should(($input) => {
     const val = $input.val();
     expect(val).to.include("-13");
   });
-  cy.get('div[data-test="lksgInScope"]').find('input[value="Yes"]').click().should("be.checked");
-  cy.get("input[name=vatIdentificationNumber]").type("BE0999999999");
-  cy.get("input[name=numberOfEmployees]").type("7999");
-  cy.get("input[name=shareOfTemporaryWorkers]").type("29.23");
-  cy.get("input[name=totalRevenue]").type("10043000");
-  cy.get("input[name=totalRevenueCurrency]").type("ISO4217ISO4217");
-  cy.get('div[data-test="IsYourCompanyManufacturingCompany"]').find('input[value="Yes"]').click().should("be.checked");
-  cy.get('div[data-test="productionSiteSection"]').should("be.visible");
-  cy.get('button[data-test="ADD-NEW-Production-Site-button"]').should("be.visible").click();
-  cy.get('div[data-test="productionSiteSection"]').should("have.length", 2);
-  cy.get('[data-test="removeItemFromlistOfProductionSites"]').eq(1).click();
-  cy.get('div[data-test="productionSiteSection"]').should("have.length", 1);
-  cy.get('div[data-test="productionSiteSection"] input[name="name"]').type("CCddEE");
-  cy.get('div[data-test="productionSiteSection"] input[name="streetAndHouseNumber"]').type("Live-street 28");
-  cy.get('div[data-test="productionSiteSection"] select[name="country"]').select("Belgium");
-  cy.get('div[data-test="productionSiteSection"] input[name="city"]').type("Capitol City");
-  cy.get('div[data-test="productionSiteSection"] input[name="postalCode"]').type("WE-3133");
-  cy.get('input[data-test="listOfGoodsOrServices"]').type("1;2;3");
-  cy.get('div[data-test="productionSiteSection"] button[aria-label="Add"]').click();
-  cy.get('div[data-test="productionSiteSection"] span.form-list-item').its("length").should("eq", 3);
+  cy.wrap(
+    yesNoInputs.forEach((name) => {
+      cy.get(`input[name=${name}][value="Yes"]`).click().should("be.checked");
+    })
+  ).then(() => {
+    cy.get("input[name=numberOfEmployees]").type("7999");
+    cy.get('div[data-test="shareOfTemporaryWorkers"]').find('input[value="<10%"]').click().should("be.checked");
+    cy.get('div[data-test="markets"]').find('input[value="International"]').click().should("be.checked");
+    cy.get("input[name=totalRevenue]").type("10043000");
+    cy.get("input[name=totalRevenueCurrency]").type("ISO4217ISO4217");
+    cy.get('div[data-test="productionSiteSection"]').should("be.visible");
+    cy.get('button[data-test="ADD-NEW-Production-Site-button"]').should("be.visible").click();
+    cy.get('div[data-test="productionSiteSection"]').should("have.length", 2);
+    cy.get('[data-test="removeItemFromlistOfProductionSites"]').eq(1).click();
+    cy.get('div[data-test="productionSiteSection"]').should("have.length", 1);
+    cy.get('div[data-test="productionSiteSection"] input[name="name"]').type("CCddEE");
+    cy.get('div[data-test="productionSiteSection"] input[name="streetAndHouseNumber"]').type("Live-street 28");
+    cy.get('div[data-test="productionSiteSection"] select[name="country"]').select("Belgium");
+    cy.get('div[data-test="productionSiteSection"] input[name="city"]').type("Capitol City");
+    cy.get('div[data-test="productionSiteSection"] input[name="postalCode"]').type("WE-3133");
+    cy.get('input[data-test="listOfGoodsOrServices"]').type("1;2;3");
+    cy.get('div[data-test="productionSiteSection"] button[aria-label="Add"]').click();
+    cy.get('div[data-test="productionSiteSection"] span.form-list-item').its("length").should("eq", 3);
 
-  yesNoInputs.forEach((name) => {
-    cy.get(`input[name=${name}][value="Yes"]`).click().should("be.checked");
+    submitButton.buttonAppearsEnabled();
+    submitButton.clickButton();
+    cy.get("div.p-message-success").should("be.visible");
   });
-  submitButton.buttonAppearsEnabled();
-  submitButton.clickButton();
-  cy.get("div.p-message-success").should("be.visible");
 }
 
 /**
