@@ -536,7 +536,6 @@ export default defineComponent({
         );
         await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
 
-        await this.$nextTick();
         const formInputsModelToSend = modifyObjectKeys(this.formInputsModel as ObjectType, "send");
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
