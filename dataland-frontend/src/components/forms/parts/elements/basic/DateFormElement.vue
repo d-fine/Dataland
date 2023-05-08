@@ -25,7 +25,6 @@ import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import Calendar from "primevue/calendar";
-import { isInputRequired } from "@/utils/validationsUtils";
 
 export default defineComponent({
   name: "DateFormElement",
@@ -33,7 +32,6 @@ export default defineComponent({
   data() {
     return {
       dateFormatted: undefined as string | undefined,
-      date: undefined as Date | undefined,
       Date,
     };
   },
@@ -50,8 +48,22 @@ export default defineComponent({
     },
   },
   computed: {
-    isRequired(): boolean {
-      return isInputRequired(this.validation);
+    date: {
+      get(): Date | undefined {
+        if (this.dateFormatted) {
+          // Note: Appending the T00:00:00 ensures that the date is parsed to local-time 00:00:00 and not UTC 00:00:00
+          return new Date(Date.parse(`${this.dateFormatted}T00:00:00`));
+        } else {
+          return undefined;
+        }
+      },
+      set(newValue: Date | undefined): void {
+        if (newValue) {
+          this.dateFormatted = getHyphenatedDate(newValue);
+        } else {
+          this.dateFormatted = undefined;
+        }
+      },
     },
   },
   props: {
