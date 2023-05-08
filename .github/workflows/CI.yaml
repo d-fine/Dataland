@@ -22,11 +22,11 @@ jobs:
           job: ${{ toJSON(job) }}
           steps: ${{ toJSON(steps) }}
           runner: ${{ toJSON(runner) }}
-          secrets: ${{ toJSON(secrets) }}
           strategy: ${{ toJSON(strategy) }}
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
   frontend-component-tests:
@@ -44,6 +44,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -79,6 +80,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -165,10 +167,11 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - name: Retrieve SSL certificates for local-dev.dataland.com
         run: ./testing/retrieve_ssl_certs.sh
         env:
-          DATALAND_LETSENCRYPT_HOST_KEYS: ${{ secrets.DATALAND_LETSENCRYPT_HOST_KEYS }}
+          TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Execute E2E Tests
         run: ./testing/e2e_test_launcher.sh
@@ -191,8 +194,8 @@ jobs:
           KEYCLOAK_UPLOADER_PASSWORD: "password"
           KEYCLOAK_ADMIN: "admin"
           KEYCLOAK_ADMIN_PASSWORD: "password"
-          KEYCLOAK_GOOGLE_ID: ${{ secrets.KEYCLOAK_GOOGLE_ID }}
-          KEYCLOAK_GOOGLE_SECRET: ${{ secrets.KEYCLOAK_GOOGLE_SECRET }}
+          KEYCLOAK_GOOGLE_ID: "irrelevant_in_ci"
+          KEYCLOAK_GOOGLE_SECRET: "irrelevant_in_ci"
           PROXY_PRIMARY_URL: local-dev.dataland.com
           PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/local-dev.dataland.com
           PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy:${{ env.DATALAND_INBOUND_PROXY_VERSION }}
@@ -205,9 +208,9 @@ jobs:
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           INVITATION_REQUEST_RECEIVERS: "dev.null@dataland.com"
           INVITATION_REQUEST_CC: "dev.null@dataland.com"
-          RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
-          RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
-          RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
+          RABBITMQ_USER: "admin"
+          RABBITMQ_PASS: "dataland"
+          RABBITMQ_PASS_HASH: "1s3+3kZqRTAgidTV6NE+adO3ja5NFNQZHa9MBwhJ0Kx7Fw6F"
           FRONTEND_LOCATION_CONFIG: "Test"
       - name: Upload JaCoCo Exec Results
         if: always()
@@ -260,6 +263,7 @@ jobs:
           matrix: ${{ toJSON(matrix) }}
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
