@@ -6,7 +6,11 @@
       >
     </template>
     <template #content>
-      <div class="grid uploadFormWrapper">
+      <div v-if="waitingForData" class="inline-loading text-center">
+        <p class="font-medium text-xl">Loading dataset to edit...</p>
+        <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      </div>
+      <div v-if="!waitingForData" class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="formInputsModel"
@@ -420,7 +424,7 @@ export default defineComponent({
       ],
       selectedFinancialServiceOptions: [] as { label: string; value: string }[],
       confirmedSelectedFinancialServiceOptions: [] as { label: string; value: string }[],
-      confirmedSelectedFinancialServiceTypes: [] as string[], // TODO we could try to use a list of FinancialServiceTypeEnums here
+      confirmedSelectedFinancialServiceTypes: [] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum[],
       message: "",
       namesOfAllCompanyReportsForTheDataset: [] as string[],
       templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
