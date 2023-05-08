@@ -178,8 +178,9 @@ export default defineComponent({
           this.singleDataMetaInfoToDisplay.dataId
         );
       } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access
-        (this.$refs.reportingPeriodsOverlayPanel as any)?.toggle(event);
+        if (this.$refs.reportingPeriodsOverlayPanel instanceof OverlayPanel) {
+          this.$refs.reportingPeriodsOverlayPanel.toggle(event);
+        }
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
         this.gotoUpdateForm(
           assertDefined(this.companyID),
