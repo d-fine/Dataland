@@ -35,16 +35,18 @@
             :key="file.name + index"
             class="flex w-full align-items-center file-upload-item"
           >
-            <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
-            <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
-              {{ formatBytesUserFriendly(file.size, 3) }}
+            <div v-if="!isFileNameAlreadyExistingInUploadedReports(file.name)">
+              <span data-test="uploaded-files-title" class="font-semibold flex-1">{{ file.name }}</span>
+              <div data-test="uploaded-files-size" class="mx-2 text-black-alpha-50">
+                {{ formatBytesUserFriendly(file.size, 3) }}
+              </div>
+              <PrimeButton
+                data-test="uploaded-files-remove"
+                icon="pi pi-times"
+                @click="removeReportFromFilesToUpload(removeFileCallback, index)"
+                class="p-button-rounded"
+              />
             </div>
-            <PrimeButton
-              data-test="uploaded-files-remove"
-              icon="pi pi-times"
-              @click="removeReportFromFilesToUpload(removeFileCallback, index)"
-              class="p-button-rounded"
-            />
           </div>
         </div>
       </template>
@@ -53,24 +55,20 @@
   <FormKit name="referencedReports" type="group">
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
-      <div v-for="(file, index) of reportsToUpload" :key="file.name" class="col-9 formFields" data-test="report-info">
-        <div
-          v-if="duplicateReportNames.has(file.name.split('.')[0])"
-          data-test="file-name-already-exists"
-          class="p-message p-message-error"
-        >
-          <div class="p-2 p-message-text">
-            {{ generateErrorTextForDuplicateFile(file.name.split(".")[0]) }}
-          </div>
-        </div>
-        <div v-else :data-test="file.name.split('.')[0] + 'ToUploadContainer'">
+      <div
+        v-for="(report, index) of reportsToUpload"
+        :key="report.name"
+        class="col-9 formFields"
+        data-test="report-info"
+      >
+        <div :data-test="report.name.split('.')[0] + 'ToUploadContainer'">
           <div class="form-field-label">
-            <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
+            <h3 class="mt-0">{{ report.name.split(".")[0] }}</h3>
           </div>
           <ReportFormElement
-            :name="file.name.split('.')[0]"
-            :report-date="file.reportDate"
-            :reference="file.reference"
+            :name="report.name.split('.')[0]"
+            :report-date="report.reportDate"
+            :reference="report.reference"
             @reporting-date-changed="(date: Date) => { updateReportDateHandler(date, index, reportsToUpload) }"
           />
         </div>
@@ -116,6 +114,8 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
+import DynamicDialog from "primevue/dynamicdialog";
+import FilesDialog from "@/components/general/FilesDialog.vue";
 
 export default defineComponent({
   name: "UploadReports",
@@ -153,13 +153,6 @@ export default defineComponent({
         .concat(this.uploadedReports)
         .map((it) => it.name.split(".")[0]);
     },
-    duplicateReportNames(): Set<string> {
-      return new Set(
-        this.allReferenceableReportsFilenames.filter(
-          (searchName) => this.allReferenceableReportsFilenames.filter((testName) => searchName === testName).length > 1
-        )
-      );
-    },
   },
   watch: {
     dataset() {
@@ -183,11 +176,12 @@ export default defineComponent({
      * @param event.files files
      */
     async handleFilesSelected(event: FileUploadSelectEvent): void {
+      const selectedFilesByUser = event.files as File[];
+      const selectedFilesByUserWithoutDuplicates = this.filterListToKeepOnlyNonDuplicateFiles(
+        selectedFilesByUser
+      ) as (CompanyReportUploadModel & File)[];
       this.reportsToUpload = [
-        ...this.completeInformationAboutSelectedFileWithAdditionalFields(
-          event.files as (CompanyReportUploadModel & File)[],
-          this.uploadedReports
-        ),
+        ...this.completeInformationAboutSelectedFileWithAdditionalFields(selectedFilesByUserWithoutDuplicates),
       ] as (CompanyReportUploadModel & File)[];
       this.reportsToUpload = await Promise.all(
         this.reportsToUpload.map(async (extendedFile) => {
@@ -231,7 +225,6 @@ export default defineComponent({
      * Uploads the filed that are to be uploaded if they are not already available to dataland
      */
     async uploadFiles() {
-      this.checkIfThereAreNoDuplicateReportNames();
       const documentUploadControllerControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise())
       ).getDocumentControllerApi();
@@ -264,36 +257,64 @@ export default defineComponent({
         this.referenceableFilesChanged();
       }
     },
+
+    /**
+     * Filters files out if their names already exist among the already uploaded reports for the current dataset.
+     * @param listOfSelectedFiles is the list to filter
+     * @returns the filtered list.
+     */
+    filterListToKeepOnlyNonDuplicateFiles(listOfSelectedFiles: File[]): File[] {
+      const listOfSelectedFilesWithoutDuplicates: File[] = [];
+      const listOfDuplicates: File[] = [];
+      listOfSelectedFiles.forEach((selectedFile) => {
+        if (this.isFileNameAlreadyExistingInUploadedReports(selectedFile.name)) {
+          listOfDuplicates.push(selectedFile);
+        } else {
+          listOfSelectedFilesWithoutDuplicates.push(selectedFile);
+        }
+      });
+      const strings = listOfDuplicates.map((file) => file.name);
+      if (listOfDuplicates.length > 0) {
+        this.$dialog.open(FilesDialog, {
+          props: {
+            modal: true,
+            closable: true,
+          },
+          data: {
+            message: "The following files cannot be uploaded because reports with their names already exist:",
+            listOfFileNames: strings,
+          },
+        });
+      }
+      return listOfSelectedFilesWithoutDuplicates;
+    },
+
+    /**
+     * Checks for a single file name if it already occurs among the files that shall be uploaded.
+     * @param fullFileName is the full file name with its prefix that should be checked
+     * @returns a boolean stating if the file name is among the files that shall be uploaded or not
+     */
+    isFileNameAlreadyExistingInUploadedReports(fullFileName: string): boolean {
+      const fileNameWithoutSuffix = fullFileName.split(".")[0];
+      return this.uploadedReports.some((uploadedReport) => uploadedReport.name === fileNameWithoutSuffix);
+    },
+
     /**
      * Complete information about selected file with additional fields
      * @param reportsThatShouldBeCompleted Files that should be completed
-     * @param listOfReportsThatAlreadyExist List Of Files That Already Exist In Reports Info
      * @returns List of files with additional fields
      */
     completeInformationAboutSelectedFileWithAdditionalFields(
-      reportsThatShouldBeCompleted: (CompanyReportUploadModel & File)[],
-      listOfReportsThatAlreadyExist: CompanyReportUploadModel[]
+      reportsThatShouldBeCompleted: (CompanyReportUploadModel & File)[]
     ): (CompanyReportUploadModel & File)[] {
       return reportsThatShouldBeCompleted.map((reportToComplete) => {
-        if (!listOfReportsThatAlreadyExist.some((it) => it.name === reportToComplete.name.split(".")[0])) {
+        const fileNameOfReportToComplete = reportToComplete.name.split(".")[0];
+        if (!this.uploadedReports.some((report) => report.name === fileNameOfReportToComplete)) {
           reportToComplete.reportDate = reportToComplete.reportDate ?? "";
           reportToComplete.reference = reportToComplete.reference ?? "";
         }
         return reportToComplete;
       });
-    },
-
-    /**
-     * checks if all reports that shall be uploaded do not have the same name as an already uploaded report
-     */
-    checkIfThereAreNoDuplicateReportNames(): void {
-      if (this.duplicateReportNames.size >= 1) {
-        throw new Error(
-          `Some of the reports cannot be uploaded because another report with the same name already exists: ${[
-            ...this.duplicateReportNames,
-          ].join(", ")}`
-        );
-      }
     },
 
     /**
@@ -316,26 +337,15 @@ export default defineComponent({
       const array = Array.from(new Uint8Array(buffer)); // convert buffer to byte array
       return array.map((b) => b.toString(16).padStart(2, "0")).join(""); // convert bytes to hex string
     },
-
-    /**
-     * Generates an error message stating that a file with the provided name already exists.
-     * @param fileName is the file name which already exists
-     * @returns an error message as string
-     */
-    generateErrorTextForDuplicateFile(fileName: string) {
-      return `File with name "${fileName}" already exists. Please upload file with different name.`;
-    },
   },
 });
 
+// TODO Emanuel: data-test="uploaded-files" is not a very good named marker, since the list it refers to is actually the list of files to upload!
 interface CompanyReportUploadModel extends CompanyReport {
   name: string;
   reportDate: string;
 }
 </script>
-
-// TODO data-test="uploaded-files" is not a very good named marker, since the list it refers to is actually the list of
-files to upload!
 
 <style scoped>
 .p-button-edit-reports {
