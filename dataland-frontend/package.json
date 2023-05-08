@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.4",
+    "@esbuild/linux-x64": "^0.17.18",
     "@faker-js/faker": "^7.6.0",
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/big.js": "^6.1.6",
