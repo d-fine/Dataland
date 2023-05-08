@@ -12,9 +12,12 @@ export default defineComponent({
   data: () => ({ elementPosition: 0, scrollListener: (): null => null }),
   mounted() {
     const submitSideBar = this.$refs.submitSideBar as HTMLElement;
-
     this.elementPosition = submitSideBar.getBoundingClientRect().top;
     this.scrollListener = (): null => {
+      if (this.elementPosition == 0) {
+        this.elementPosition = submitSideBar.getBoundingClientRect().top;
+      }
+      console.log(window.scrollY);
       if (window.scrollY > this.elementPosition) {
         submitSideBar.style.position = "fixed";
         submitSideBar.style.top = "60px";
