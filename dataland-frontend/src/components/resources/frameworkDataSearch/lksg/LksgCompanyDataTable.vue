@@ -68,7 +68,7 @@
 
       <Column field="subcategoryKey" header="Impact Area"></Column>
       <template #groupheader="slotProps">
-        <span>{{
+        <span :data-test="slotProps.data.subcategoryKey">{{
           slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey
         }}</span>
       </template>
