@@ -1,6 +1,6 @@
 <template>
-  <Card class="col-12 page-wrapper-card">
-    <template #title>New Dataset - LkSG </template>
+  <Card class="col-12 page-wrapper-card p-3">
+    <template #title>New Dataset - LkSG</template>
     <template #content>
       <div v-show="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading LkSG data...</p>
@@ -12,8 +12,8 @@
             v-model="lkSGDataModel"
             :actions="false"
             type="form"
-            id="createLkSGForm"
-            name="createLkSGForm"
+            :id="formId"
+            :name="formId"
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
@@ -23,7 +23,9 @@
               <FormKit type="group" name="social" label="social">
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="general" class="anchor title">{{ lksgSubAreasNameMappings._general }}</h4>
+                    <h4 id="general" class="anchor title">
+                      {{ lksgSubAreasNameMappings._general }}
+                    </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                     <p>Please input all relevant basic information about the dataset</p>
                   </div>
@@ -34,6 +36,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.dataDate"
                           :explanation="lksgKpisInfoMappings.dataDate"
+                          :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12">
                           <Calendar
@@ -60,6 +63,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.lksgInScope"
                           :explanation="lksgKpisInfoMappings.lksgInScope"
+                          :is-required="true"
                         />
                         <FormKit
                           type="radio"
@@ -84,6 +88,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.vatIdentificationNumber"
                           :explanation="lksgKpisInfoMappings.vatIdentificationNumber"
+                          :is-required="true"
                         />
                         <FormKit
                           type="text"
@@ -98,6 +103,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.numberOfEmployees"
                           :explanation="lksgKpisInfoMappings.numberOfEmployees"
+                          :is-required="true"
                         />
                         <FormKit
                           type="number"
@@ -115,6 +121,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.shareOfTemporaryWorkers"
                           :explanation="lksgKpisInfoMappings.shareOfTemporaryWorkers"
+                          :is-required="true"
                         />
                         <FormKit
                           type="number"
@@ -134,6 +141,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.totalRevenue"
                           :explanation="lksgKpisInfoMappings.totalRevenue"
+                          :is-required="true"
                         />
                         <FormKit
                           type="number"
@@ -153,6 +161,7 @@
                         <UploadFormHeader
                           :name="lksgKpisNameMappings.totalRevenueCurrency"
                           :explanation="lksgKpisInfoMappings.totalRevenueCurrency"
+                          :is-required="true"
                         />
                         <FormKit
                           type="text"
@@ -170,6 +179,7 @@
                         <UploadFormHeader
                           :name="'Is your company a manufacturing company?'"
                           :explanation="lksgKpisInfoMappings.listOfProductionSites"
+                          :is-required="true"
                         />
                         <FormKit
                           type="radio"
@@ -217,6 +227,7 @@
                               <UploadFormHeader
                                 :name="lksgKpisNameMappings.productionSiteName"
                                 :explanation="lksgKpisInfoMappings.productionSiteName"
+                                :is-required="true"
                               />
                               <FormKit
                                 type="text"
@@ -230,6 +241,7 @@
                               <UploadFormHeader
                                 :name="lksgKpisNameMappings.inHouseProductionOrContractProcessing"
                                 :explanation="lksgKpisInfoMappings.inHouseProductionOrContractProcessing"
+                                :is-required="true"
                               />
                               <FormKit
                                 type="radio"
@@ -254,6 +266,7 @@
                               <UploadFormHeader
                                 :name="lksgKpisNameMappings.addressesOfProductionSites"
                                 :explanation="lksgKpisInfoMappings.addressesOfProductionSites"
+                                :is-required="true"
                               />
 
                               <FormKit
@@ -356,7 +369,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="childLabour" class="anchor title">{{ lksgSubAreasNameMappings.childLabour }}</h4>
+                    <h4 id="childLabour" class="anchor title">
+                      {{ lksgSubAreasNameMappings.childLabour }}
+                    </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
@@ -779,7 +794,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="humanRights" class="anchor title">{{ lksgSubAreasNameMappings.humanRights }}</h4>
+                    <h4 id="humanRights" class="anchor title">
+                      {{ lksgSubAreasNameMappings.humanRights }}
+                    </h4>
                     <div class="p-badge badge-yellow"><span>SOCIAL</span></div>
                   </div>
 
@@ -849,7 +866,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="environment" class="anchor title">{{ lksgSubAreasNameMappings.environment }}</h4>
+                    <h4 id="environment" class="anchor title">
+                      {{ lksgSubAreasNameMappings.environment }}
+                    </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -881,7 +900,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 topicLabel">
-                    <h4 id="riskManagement" class="anchor title">{{ lksgSubAreasNameMappings.riskManagement }}</h4>
+                    <h4 id="riskManagement" class="anchor title">
+                      {{ lksgSubAreasNameMappings.riskManagement }}
+                    </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -897,7 +918,9 @@
 
                 <div class="uploadFormSection grid">
                   <div class="col-3 p-3 p-3 topicLabel">
-                    <h4 id="codeOfConduct" class="anchor title">{{ lksgSubAreasNameMappings.codeOfConduct }}</h4>
+                    <h4 id="codeOfConduct" class="anchor title">
+                      {{ lksgSubAreasNameMappings.codeOfConduct }}
+                    </h4>
                     <div class="p-badge badge-blue"><span>GOVERNANCE</span></div>
                   </div>
                   <div class="col-9 formFields">
@@ -1061,29 +1084,15 @@
                 </div>
               </FormKit>
             </FormKit>
-
-            <!--------- SUBMIT --------->
-
-            <div class="uploadFormSection grid">
-              <div class="col-3"></div>
-
-              <div class="col-9">
-                <PrimeButton
-                  data-test="submitButton"
-                  type="submit"
-                  :label="this.updatingData ? 'UPDATE DATA' : 'ADD DATA'"
-                />
-              </div>
-            </div>
           </FormKit>
-
+        </div>
+        <SubmitSideBar>
+          <SubmitButton :formId="formId" />
           <div v-if="postLkSGDataProcessed">
             <SuccessUpload v-if="uploadSucceded" :messageId="messageCounter" />
             <FailedUpload v-else :message="message" :messageId="messageCounter" />
           </div>
-        </div>
-        <div id="jumpLinks" ref="jumpLinks" class="col-3 p-3 text-left jumpLinks">
-          <h4 id="topicTitles" class="title">On this page</h4>
+          <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
             <li><a @click="smoothScroll('#general')">General</a></li>
             <li><a @click="smoothScroll('#childLabour')">Child labour</a></li>
@@ -1105,7 +1114,7 @@
             <li><a @click="smoothScroll('#codeOfConduct')">Code of Conduct</a></li>
             <li><a @click="smoothScroll('#waste')">Waste</a></li>
           </ul>
-        </div>
+        </SubmitSideBar>
       </div>
     </template>
   </Card>
@@ -1138,6 +1147,8 @@ import { useRoute } from "vue-router";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
+import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
+import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 
 export default defineComponent({
   setup() {
@@ -1146,13 +1157,25 @@ export default defineComponent({
     };
   },
   name: "CreateLksgDataset",
-  components: { UploadFormHeader, SuccessUpload, FailedUpload, FormKit, Card, PrimeButton, YesNoComponent, Calendar },
+  components: {
+    SubmitButton,
+    SubmitSideBar,
+    UploadFormHeader,
+    SuccessUpload,
+    FailedUpload,
+    FormKit,
+    Card,
+    PrimeButton,
+    YesNoComponent,
+    Calendar,
+  },
   directives: {
     tooltip: Tooltip,
   },
-
+  emits: ["datasetCreated"],
   data() {
     return {
+      formId: "createLkSGForm",
       isYourCompanyManufacturingCompany: "No",
       listOfProductionSites: [
         {
@@ -1174,8 +1197,6 @@ export default defineComponent({
       lksgKpisInfoMappings,
       lksgKpisNameMappings,
       lksgSubAreasNameMappings,
-      elementPosition: 0,
-      scrollListener: (): null => null,
       isInHouseProductionOrContractProcessingMap: Object.fromEntries(
         new Map<string, string>([
           [
@@ -1196,7 +1217,7 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        return this.dataDate?.getFullYear()?.toString() || "";
+        return this.dataDate?.getFullYear()?.toString() ?? "";
       },
       set() {
         // IGNORED
@@ -1218,36 +1239,19 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
+      required: true,
     },
   },
   mounted() {
-    const jumpLinkselement = this.$refs.jumpLinks as HTMLElement;
-    this.elementPosition = jumpLinkselement.getBoundingClientRect().top;
-    this.scrollListener = (): null => {
-      if (window.scrollY > this.elementPosition) {
-        jumpLinkselement.style.position = "fixed";
-        jumpLinkselement.style.top = "60px";
-      } else {
-        jumpLinkselement.style.position = "relative";
-        jumpLinkselement.style.top = "0";
-      }
-      return null;
-    };
-    window.addEventListener("scroll", this.scrollListener);
-
     const dataId = this.route.query.templateDataId;
     if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
       void this.loadLKSGData(dataId);
     }
   },
-  unmounted() {
-    window.removeEventListener("scroll", this.scrollListener);
-  },
   methods: {
     /**
      * Loads the LKGS-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     *
      * @param dataId the id of the dataset to load
      */
     async loadLKSGData(dataId: string): Promise<void> {
@@ -1258,7 +1262,7 @@ export default defineComponent({
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
       const lksgDataset = dataResponse.data;
-      const numberOfProductionSites = lksgDataset.data?.social?.general?.listOfProductionSites?.length || 0;
+      const numberOfProductionSites = lksgDataset.data?.social?.general?.listOfProductionSites?.length ?? 0;
       if (numberOfProductionSites > 0) {
         this.isYourCompanyManufacturingCompany = "Yes";
         const productionSites = assertDefined(lksgDataset.data?.social?.general?.listOfProductionSites);
@@ -1267,7 +1271,7 @@ export default defineComponent({
         for (let i = 0; i < numberOfProductionSites; i++) {
           this.listOfProductionSites.push({
             id: i,
-            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices || [],
+            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices ?? [],
             listOfGoodsOrServicesString: "",
           });
         }
@@ -1289,7 +1293,8 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.lkSGDataModel);
-        this.$formkit.reset("createLkSGForm");
+        this.$emit("datasetCreated");
+        this.$formkit.reset(this.formId);
         this.isYourCompanyManufacturingCompany = "No";
         this.listOfProductionSites = [
           {
@@ -1330,7 +1335,6 @@ export default defineComponent({
 
     /**
      * Remove Object from ProductionSite array
-     *
      * @param id - the id of the object in the array
      */
     removeItemFromlistOfProductionSites(id: number) {
@@ -1339,7 +1343,6 @@ export default defineComponent({
 
     /**
      * Adds a new item to the list of Production Sites Goods Or Services
-     *
      * @param index - index of the element in the listOfProductionSites array
      */
     addNewItemsTolistOfProductionSites(index: number) {
@@ -1353,7 +1356,6 @@ export default defineComponent({
 
     /**
      * Remove item from list of Production Sites Goods Or Services
-     *
      * @param index - index of the element in the listOfProductionSites array
      * @param item - which item is to be deleted
      */

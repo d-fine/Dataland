@@ -3,12 +3,11 @@ import { mount } from "cypress/vue";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
-  DataAndMetaInformationLksgData,
-  LksgData,
   CompanyAssociatedDataLksgData,
+  DataAndMetaInformationLksgData,
   DataMetaInformation,
-  ProductionSite,
   DataTypeEnum,
+  LksgData,
   QAStatus,
 } from "@clients/backend";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
@@ -65,15 +64,15 @@ describe("Component test for LksgPanel", () => {
       },
     });
 
-    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate!.substring(0, 4));
+    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate.substring(0, 4));
 
-    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
-
-    cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("not.exist");
+    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate})`).should("exist");
 
     cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.social!.general!.dataDate!})`).should("exist");
+    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate})`).should("not.exist");
+
+    cy.get("button.p-row-toggler").eq(0).click();
+    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.social!.general!.dataDate})`).should("exist");
 
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
 
@@ -82,24 +81,12 @@ describe("Component test for LksgPanel", () => {
 
     cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
 
-    cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-    const listOfProductionSites = lksgData.social!.general!.listOfProductionSites!;
-    if (listOfProductionSites.length < 2) {
-      throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
-    }
-    listOfProductionSites.forEach((productionSite: ProductionSite) => {
-      if (productionSite.streetAndHouseNumber) {
-        cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.streetAndHouseNumber})`);
-      }
-    });
-    cy.get("div.p-dialog-mask").click({ force: true });
-
     cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("The date until for which");
     cy.get("em.info-icon").eq(0).trigger("mouseleave");
 
     cy.get("table.p-datatable-table")
-      .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber!})`)
+      .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber})`)
       .should("exist");
   });
 
@@ -107,7 +94,6 @@ describe("Component test for LksgPanel", () => {
    * This functions imitates an api response of the /data/lksg/companies/mock-company-id endpoint
    * to include 6 active Lksg datasets from different years to test the simultaneous display of multiple Lksg
    * datasets (constructed datasets range from 2023 to 2028)
-   *
    * @param baseDataset the lksg dataset used as a basis for constructing the 6 mocked ones
    * @returns a mocked api response
    */

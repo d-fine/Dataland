@@ -5,12 +5,13 @@ WORKDIR /app
 
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
+COPY ./dataland-document-manager/documentManagerOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
 RUN ./gradlew dataland-frontend:generateClients dataland-frontend:npm_run_build --no-daemon --stacktrace
 
-FROM nginx:1.23.4 as production-stage
+FROM nginx:1.24.0 as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
 COPY ./dataland-frontend/default.conf /etc/nginx/conf.d/default.conf
 COPY ./dataland-inbound-proxy/config/utils/securityHeaderMap.conf /etc/nginx/utils/securityHeaderMap.conf

@@ -1,23 +1,23 @@
 import {
-  EuTaxonomyDataForFinancials,
-  EligibilityKpis,
-  DataPointBigDecimal,
-  EuTaxonomyDataForFinancialsControllerApi,
   Configuration,
   DataMetaInformation,
+  DataPointBigDecimal,
   DataTypeEnum,
+  EligibilityKpis,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForFinancialsControllerApi,
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
- *
  * @returns the resulting cypress chainable
  */
 export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
   cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}`).as("postCompanyAssociatedData");
-  cy.get('button[data-test="submitButton"]').click();
+  submitButton.clickButton();
   cy.on("uncaught:exception", (err) => {
     expect(err.message).to.include("unhandled promise rejection");
     return false;
@@ -29,7 +29,6 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
 
 /**
  * Fills the eutaxonomy-financials upload form with the given dataset
- *
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
@@ -95,7 +94,7 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
     }]`
   ).check();
   cy.get('input[name="scopeOfEntities"][value="No"]').check();
-  cy.get('div[id="jumpLinks"] li:last a').click();
+  cy.get('div[data-test="submitSideBar"] li:last a').click();
   cy.window().then((win) => {
     const scrollPosition = win.scrollY;
     expect(scrollPosition).to.be.greaterThan(0);
@@ -142,7 +141,6 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
 
 /**
  * Fills a set with eligibility-kpis for different company types
- *
  * @param divTag value of the parent div data-test attribute to fill in
  * @param data the kpi data to use to fill the form
  */
@@ -156,13 +154,12 @@ function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined):
 
 /**
  * Enters a single decimal inputs field value in the upload eutaxonomy-financials form
- *
  * @param divTag value of the parent div data-test attribute to fill in
  * @param inputsTag value of the parent div data-test attribute to fill in
  * @param value the value to fill in
  */
 function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
-  if (value !== undefined && value.value !== undefined) {
+  if (value?.value) {
     const eligibleRevenue = value.value.toString();
     if (divTag === "") {
       cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(eligibleRevenue);
@@ -190,9 +187,9 @@ function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecima
     }
   }
 }
+
 /**
  * Extracts the first eutaxonomy-financials dataset from the fake fixtures
- *
  * @returns the first eutaxonomy-financials dataset from the fake fixtures
  */
 export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable<
@@ -206,11 +203,11 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable
 
 /**
  * Uploads a single eutaxonomy-financials data entry for a company via the Dataland API
- *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
+ * @returns a promise on the created data meta information
  */
 export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
   token: string,

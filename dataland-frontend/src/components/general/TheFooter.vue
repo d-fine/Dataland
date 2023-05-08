@@ -43,7 +43,7 @@
 
 <script lang="ts">
 export default {
-  name: "DatalandFooter",
+  name: "TheFooter",
   props: {
     isMobile: {
       type: Boolean,

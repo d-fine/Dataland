@@ -1,5 +1,4 @@
 <template>
-  <DynamicDialog />
   <div class="card">
     <DataTable
       :value="kpiDataObjectsToDisplay"
@@ -82,11 +81,10 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
-import DynamicDialog from "primevue/dynamicdialog";
 
 export default defineComponent({
   name: "CompanyDataTable",
-  components: { DataTable, Column, DynamicDialog },
+  components: { DataTable, Column },
   directives: {
     tooltip: Tooltip,
   },
@@ -129,7 +127,6 @@ export default defineComponent({
   methods: {
     /**
      * Opens a modal to display a table with the provided list of production sites
-     *
      * @param listOfProductionSites An array consisting of production sites
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      */

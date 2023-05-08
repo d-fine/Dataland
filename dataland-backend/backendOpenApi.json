@@ -2847,6 +2847,15 @@
         }
       },
       "LksgGeneral": {
+        "required": [
+          "dataDate",
+          "lksgInScope",
+          "numberOfEmployees",
+          "shareOfTemporaryWorkers",
+          "totalRevenue",
+          "totalRevenueCurrency",
+          "vatIdentificationNumber"
+        ],
         "type": "object",
         "properties": {
           "dataDate": {
@@ -3123,6 +3132,14 @@
         }
       },
       "ProductionSite": {
+        "required": [
+          "city",
+          "country",
+          "isInHouseProductionOrIsContractProcessing",
+          "name",
+          "postalCode",
+          "streetAndHouseNumber"
+        ],
         "type": "object",
         "properties": {
           "name": {

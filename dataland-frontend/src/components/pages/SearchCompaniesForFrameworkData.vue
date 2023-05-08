@@ -3,7 +3,7 @@
     <TheHeader />
     <TabView class="col-12" v-model:activeIndex="activeTabIndex" @tab-change="handleTabChange">
       <TabPanel header="AVAILABLE DATASETS">
-        <TheContent class="pl-0 pt-0 min-h-screen paper-section relative">
+        <TheContent class="min-h-screen paper-section relative">
           <div
             id="searchBarAndFiltersContainer"
             class="w-full bg-white pt-4"
@@ -83,7 +83,7 @@
       </TabPanel>
       <TabPanel header="MY DATASETS"> </TabPanel>
     </TabView>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -105,8 +105,8 @@ import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSear
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
-import { useFiltersStore } from "@/stores/filters";
+import TheFooter from "@/components/general/TheFooter.vue";
+import { useFrameworkFiltersStore } from "@/stores/stores";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import Keycloak from "keycloak-js";
@@ -131,7 +131,7 @@ export default defineComponent({
     FrameworkDataSearchBar,
     PrimeButton,
     FrameworkDataSearchResults,
-    DatalandFooter,
+    TheFooter,
     TabView,
     TabPanel,
   },
@@ -146,7 +146,7 @@ export default defineComponent({
   },
   data() {
     return {
-      frameworksFilters: useFiltersStore(),
+      frameworkFilters: useFrameworkFiltersStore(),
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
@@ -228,7 +228,6 @@ export default defineComponent({
 
     /**
      * Updates the local variable indicating which row of the datatable is currently displayed at the top
-     *
      * @param value the index of the new row displayed on top
      */
     setFirstShownRow(value: number) {
@@ -267,7 +266,6 @@ export default defineComponent({
     },
     /**
      * Parses the framework filter query parameters.
-     *
      * @param route the current route
      * @returns an array of framework filters from the URL or an array of all frameworks if no filter is defined
      */
@@ -284,7 +282,6 @@ export default defineComponent({
     },
     /**
      * Parses the country-code query parameters.
-     *
      * @param route the current route
      * @returns an array of country codes to filter by or an empty array of no filter is present
      */
@@ -297,7 +294,6 @@ export default defineComponent({
     },
     /**
      * Parses the sector-filter query parameters.
-     *
      * @param route the current route
      * @returns an array of sectors to filter by or an empty array of no filter is present
      */
@@ -310,7 +306,6 @@ export default defineComponent({
     },
     /**
      * Parses the search term query parameter
-     *
      * @param route the current route
      * @returns the parsed search term query parameter or an empty string if non-existent
      */
@@ -326,7 +321,7 @@ export default defineComponent({
      * An update of the combined filter object automatically triggers a new search.
      */
     updateCombinedFilterIfRequired() {
-      this.frameworksFilters.setSelectedFiltersForFrameworks(this.currentFilteredFrameworks);
+      this.frameworkFilters.setSelectedFiltersForFrameworks(this.currentFilteredFrameworks);
       if (
         !arraySetEquals(this.currentFilteredFrameworks, this.currentCombinedFilter.frameworkFilter) ||
         !arraySetEquals(this.currentFilteredSectors, this.currentCombinedFilter.sectorFilter) ||
@@ -345,7 +340,6 @@ export default defineComponent({
     /**
      * Reads the query parameters of the framework-, country-code-, sector- and name- filters and
      * udpates the corresponding local variables accordingly
-     *
      * @param route the current vue route
      */
     scanQueryParams(route: RouteLocationNormalizedLoaded) {
@@ -369,7 +363,6 @@ export default defineComponent({
     /**
      * Called when the new search results are received from the framework search bar. Disables the waiting indicator,
      * resets the pagination and updates the datatable. Also updates the query parameters to reflect the new search parameters
-     *
      * @param companiesReceived the received companies
      * @returns the promise of the router push with the new query parameters
      */
@@ -407,7 +400,6 @@ export default defineComponent({
     /**
      * Called when the user performed a company search. Updates the search bar contents and
      * displays the waiting indicator
-     *
      * @param companyNameFilter the new search filter
      */
     handleSearchConfirmed(companyNameFilter: string) {

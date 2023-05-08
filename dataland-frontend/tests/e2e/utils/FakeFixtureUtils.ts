@@ -1,6 +1,5 @@
 /**
  * Returns either the input string or undefined with a 50/50 chance
- *
  * @param input the string to be returned
  * @param undefinedPercentage the probability that this function returns undefined. Defaults to 50%
  * @returns either the input or undefined

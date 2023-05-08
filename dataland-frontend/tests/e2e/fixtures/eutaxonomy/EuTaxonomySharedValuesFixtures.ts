@@ -12,29 +12,36 @@ import { getCsvDataSourceMapping } from "@e2e/fixtures/common/DataSourceFixtures
 import { generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomYesNoNaUndefined, randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";
-import { randomPastDateOrUndefined } from "@e2e/fixtures/common/DateFixtures";
-import { randomNumberOrUndefined } from "@e2e/fixtures/common/NumberFixtures";
-import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
+import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
+import { randomNumber } from "@e2e/fixtures/common/NumberFixtures";
+import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
+
+/**
+ * Generates a new Eu Taxonomy instance fitting for either "financials" or "non-financials"
+ * @returns Eu Taxonomy instance with mandatory fields already assigned
+ */
+export function generateEuTaxonomyWithRequiredFields(): EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials {
+  return {
+    fiscalYearDeviation: randomFiscalYearDeviation(),
+    fiscalYearEnd: randomPastDate(),
+    numberOfEmployees: randomNumber(100000),
+  };
+}
 
 /**
  * Fills in random values for fields shared between the eutaxonomy frameworks
- *
  * @param input the framework object to fill in data for
  */
 export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials): void {
   input.referencedReports = generateReferencedReports();
-  input.fiscalYearDeviation = randomFiscalYearDeviationOrUndefined();
-  input.fiscalYearEnd = randomPastDateOrUndefined();
   input.assurance = generateAssuranceData(input.referencedReports);
   input.scopeOfEntities = randomYesNoNaUndefined();
   input.reportingObligation = randomYesNoUndefined();
-  input.numberOfEmployees = randomNumberOrUndefined(100000);
   input.activityLevelReporting = randomYesNoUndefined();
 }
 
 /**
  * A helper function that extracts a report by name from an eutaxonomy dataset if it exists
- *
  * @param row the dataset to extract the report form
  * @param reportName the name of the report to look for
  * @returns the company report object if it exists, undefined otherwise.
@@ -43,17 +50,11 @@ function getReportIfExists(
   row: FixtureData<EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials>,
   reportName: string
 ): CompanyReport | undefined {
-  return row.t.referencedReports !== undefined &&
-    row.t.referencedReports !== null &&
-    row.t.referencedReports[reportName] !== undefined &&
-    row.t.referencedReports[reportName] !== null
-    ? row.t.referencedReports[reportName]
-    : undefined;
+  return row.t.referencedReports?.[reportName] ?? undefined;
 }
 
 /**
  * Returns the CSV mapping for a type of company report
- *
  * @param reportName the name of the report to generate csv mappings for
  * @returns the generated CSV mapping
  */
@@ -88,7 +89,6 @@ function getCsvReportMapping(
 
 /**
  * Returns the CSV mapping of fields that are shared between the eutaxonomy frameworks
- *
  * @param isfs the value of the IS/FS column
  * @returns the generated CSV mapping
  */

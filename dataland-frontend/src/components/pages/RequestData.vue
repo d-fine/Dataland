@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent class="pl-0 min-h-screen paper-section">
+    <TheContent class="min-h-screen paper-section">
       <ProgressBar
         v-if="submissionInProgress || submissionFinished"
         :processHasStarted="submissionInProgress"
@@ -115,7 +115,7 @@
         </div>
       </div>
     </TheContent>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -136,7 +136,7 @@ import ProgressBar from "@/components/general/ProgressBar.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatBytesUserFriendly, roundNumber } from "@/utils/NumberConversionUtils";
 import { UPLOAD_FILE_SIZE_DISPLAY_DECIMALS, UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 
 export default defineComponent({
   name: "RequestData",
@@ -149,7 +149,7 @@ export default defineComponent({
     ProgressBar,
     FileUpload,
     FileSelectMessage: Message,
-    DatalandFooter,
+    TheFooter,
   },
   setup() {
     return {
@@ -202,7 +202,6 @@ export default defineComponent({
     /**
      * Called when a new file is selected in the file selector. Updates the selected file.
      * Overwrites any currently selected file if present.
-     *
      * @param event the file upload event
      */
     handleSelectFile(event: FileUploadSelectEvent) {
@@ -218,7 +217,6 @@ export default defineComponent({
 
     /**
      * Formats the size of a file in a human-readable format for the UI
-     *
      * @param bytes the size of the selected file
      * @returns a humanized version of the size specified by bytes
      */
@@ -228,7 +226,6 @@ export default defineComponent({
 
     /**
      * Computes the upload progress in whole percents for the progress bar
-     *
      * @param percentage the input percentage
      * @returns the percentage rounded to whole numbers
      */
@@ -246,7 +243,6 @@ export default defineComponent({
 
     /**
      * Retrieves the currently selected file
-     *
      * @returns the currently selected file
      */
     getSelectedFile(): File {
@@ -266,7 +262,6 @@ export default defineComponent({
 
     /**
      * Updates the UI to reflect the result of the file upload
-     *
      * @param response the result of the file upload request
      */
     readInviteStatusFromResponse(response: AxiosResponse<InviteMetaInfoEntity>) {

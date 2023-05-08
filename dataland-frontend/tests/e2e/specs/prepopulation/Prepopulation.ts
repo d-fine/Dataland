@@ -1,12 +1,12 @@
-import { doThingsInChunks, wrapPromiseToCypressPromise, uploader_pw, uploader_name } from "@e2e/utils/Cypress";
+import { doThingsInChunks, uploader_name, uploader_pw, wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
 import {
-  EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
+  DataMetaInformation,
   DataTypeEnum,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForNonFinancials,
   LksgData,
   SfdrData,
   SmeData,
-  DataMetaInformation,
 } from "@clients/backend";
 import { countCompaniesAndDataSetsForDataType } from "@e2e//utils/GeneralApiUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
@@ -17,6 +17,8 @@ import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
 import { describeIf } from "@e2e/support/TestUtility";
+import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
+
 const chunkSize = 15;
 
 describe(
@@ -40,7 +42,6 @@ describe(
     /**
      * A higher-level helper function for bulk data upload. Creates all provided companies and uses
      * the uploaderOneFrameworkDataset function to upload the datasets
-     *
      * @param fixtureDataForFrameworkT a list of framework-T fixture data with datasets to upload
      * @param uploadOneFrameworkDataset a function that uploads a single dataset
      */
@@ -60,7 +61,6 @@ describe(
      * Uses the Dataland API to verify that the number of companies that contain at least one dataset of the
      * provided data type equal the expected number.
      * It also asserts that the total number of datasets of the provided data type equals that number.
-     *
      * @param dataType the datatype to filter by
      * @param expectedNumberOfCompanies is the expected number of companies
      */
@@ -80,6 +80,12 @@ describe(
           );
         });
     }
+
+    before(function uploadDocumentsAndStoreDocumentIds() {
+      cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        uploadAllDocuments(token);
+      });
+    });
 
     describe("Upload and validate EuTaxonomy for financials data", () => {
       let fixtureDataForEuTaxonomyFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;

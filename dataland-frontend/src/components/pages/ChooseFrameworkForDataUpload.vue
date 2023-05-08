@@ -60,7 +60,7 @@
         </Card>
       </TheContent>
     </UploaderRoleWrapper>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -78,13 +78,13 @@ import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 
 export default defineComponent({
   name: "ChooseFramework",
   components: {
-    DatalandFooter,
+    TheFooter,
     UploaderRoleWrapper,
     CompanyInformation,
     AuthenticationWrapper,
@@ -121,13 +121,13 @@ export default defineComponent({
   props: {
     companyID: {
       type: String,
+      required: true,
     },
   },
 
   methods: {
     /**
      * Function building a unified for subtitle for a framework type
-     *
      * @param dataTypeTitle the type of the framework (humanized name)
      * @returns a unified subtitle
      */
@@ -137,7 +137,6 @@ export default defineComponent({
 
     /**
      *  Sorts a list of data meta information alphabetically by their reporting period
-     *
      * @param listOfDataMetaInfo the list of data meta information to be sorted
      * @returns the sorted list of data meta information
      */
@@ -153,7 +152,6 @@ export default defineComponent({
 
     /**
      *  Sorts a list of data meta information descending by their uploading time
-     *
      * @param listOfDataMetaInfo the list of data meta information to be sorted
      * @returns the sorted list of data meta information
      */
@@ -167,7 +165,6 @@ export default defineComponent({
      *  This function assigns the elements of an array of data meta info to buckets/groups based on their reporting periods.
      *  It does so by using a map. It takes the list of data meta info and puts its elements into sub-arrays, which
      *  are the values of that map. The respective reporting period is the key of those sub-arrays.
-     *
      * @param listOfDataMetaInfo the list of data meta information to be grouped
      * @returns a map with the distinct reporting periods as keys and arrays of data meta info for that period as values
      */
@@ -175,8 +172,9 @@ export default defineComponent({
       listOfDataMetaInfo: DataMetaInformation[]
     ): Map<string, DataMetaInformation[]> {
       return listOfDataMetaInfo.reduce((groups, dataMetaInfo) => {
-        groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo) ||
-          groups.set(dataMetaInfo.reportingPeriod, [dataMetaInfo]);
+        groups.get(dataMetaInfo.reportingPeriod)
+          ? groups.get(dataMetaInfo.reportingPeriod)?.push(dataMetaInfo)
+          : groups.set(dataMetaInfo.reportingPeriod, [dataMetaInfo]);
         return groups;
       }, new Map<string, DataMetaInformation[]>());
     },
@@ -184,7 +182,6 @@ export default defineComponent({
     /**
      *  Groups a list of data meta information by their reporting periods, then executes a sorting function on
      *  each group, and then unites and returns all those groups.
-     *
      * @param listOfDataMetaInfo the list of data meta information to be grouped and sorted
      * @returns a list of data meta info as the united sub-lists of the groups
      */
@@ -216,7 +213,9 @@ export default defineComponent({
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, false);
         const listOfAllDataMetaInfo = response.data;
         this.mapOfDataTypeToListOfDataMetaInfo = listOfAllDataMetaInfo.reduce((groups, dataMetaInfo) => {
-          groups.get(dataMetaInfo.dataType)?.push(dataMetaInfo) || groups.set(dataMetaInfo.dataType, [dataMetaInfo]);
+          groups.get(dataMetaInfo.dataType)
+            ? groups.get(dataMetaInfo.dataType)?.push(dataMetaInfo)
+            : groups.set(dataMetaInfo.dataType, [dataMetaInfo]);
           return groups;
         }, new Map<DataTypeEnum, Array<DataMetaInformation>>());
         this.mapOfDataTypeToListOfDataMetaInfo.forEach((value, key) => {
@@ -230,13 +229,12 @@ export default defineComponent({
 
     /**
      * Returns a list of the meta information available for a framework
-     *
      * @param dataType the data type of the data associated to the meta infos returned
      * @returns the meta infos of data with the specified data type
      */
     getFrameworkMetaInfos(dataType: DataTypeEnum): Array<DataMetaInformation> {
       if (!this.waitingForData) {
-        return this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) || [];
+        return this.mapOfDataTypeToListOfDataMetaInfo.get(dataType) ?? [];
       } else {
         return [];
       }

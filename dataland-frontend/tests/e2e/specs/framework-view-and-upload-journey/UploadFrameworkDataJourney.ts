@@ -1,15 +1,20 @@
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi, uploadCompanyViaForm } from "@e2e/utils/CompanyUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { CompanyIdentifierIdentifierTypeEnum, DataTypeEnum, StoredCompany } from "@clients/backend";
+import {
+  CompanyIdentifierIdentifierTypeEnum,
+  DataTypeEnum,
+  EuTaxonomyDataForFinancials,
+  LksgData,
+  StoredCompany,
+} from "@clients/backend";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
-import { generateLksgData } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import { generateEuTaxonomyDataForFinancials } from "@e2e/fixtures/eutaxonomy/financials/EuTaxonomyDataForFinancialsFixtures";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
+import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 describe("As a user, I expect the dataset upload process to behave as I expect", function () {
   describeIf(
@@ -39,40 +44,57 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       let storedCompanyForManyDatasetsCompany: StoredCompany;
 
       before(function uploadOneCompanyWithoutDataAndOneCompanyWithManyDatasets() {
+        let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+        let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
+        cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
+          euTaxoFinancialPreparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+        });
+        cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+          lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+        });
         getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload))
             .then(() => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany));
             })
             .then((storedCompany) => {
+              const preparedFixture = getPreparedFixture(
+                "eligible-activity-Point-0.26",
+                euTaxoFinancialPreparedFixtures
+              );
               storedCompanyForManyDatasetsCompany = storedCompany;
               return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                 token,
                 storedCompanyForManyDatasetsCompany.companyId,
                 "2023",
-                generateEuTaxonomyDataForFinancials()
+                preparedFixture.t
               );
             })
             .then((dataMetaInformationOfFirstUpload) => {
               dataIdOfEuTaxoFinancialsUploadForMostRecentPeriod = dataMetaInformationOfFirstUpload.dataId;
-              const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 2000;
+              const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
               return cy
                 .wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps)
                 .then(() => {
+                  const preparedFixture = getPreparedFixture(
+                    "eligible-activity-Point-0.26",
+                    euTaxoFinancialPreparedFixtures
+                  );
                   return uploadOneEuTaxonomyFinancialsDatasetViaApi(
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     "2022",
-                    generateEuTaxonomyDataForFinancials()
+                    preparedFixture.t
                   );
                 })
                 .then((dataMetaInformationOfSecondUpload) => {
                   dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
+                  const preparedFixture = getPreparedFixture("vat-2022", lksgPreparedFixtures);
                   return uploadOneLksgDatasetViaApi(
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
                     getRandomReportingPeriod(),
-                    generateLksgData()
+                    preparedFixture.t
                   );
                 })
                 .then((dataMetaInformationLksgUpload) => {
@@ -119,7 +141,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
       /**
        * Checks if on the "ChoosingFrameworkForDataUpload"-page the expected texts and buttons are displayed based on the
        * uploaded company having two Eu-Taxo-Financials datasets and one LkSG dataset uploaded for it.
-       *
        * @param uploadedTestCompanyName bears the company name of the prior uploaded company so that it can be checked
        * if the company name appears as title
        */
@@ -153,7 +174,6 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
        * For the Eu-Taxo-Financials datasets it expects the correct data IDs to be attached to the url as query params
        * and for the LkSG dataset it expects no query param to be attached to the url since for LkSG all datasets can
        * be viewed on one single framework-view-page.
-       *
        * @param storedCompanyForTest the prior uploaded stored company which bears the company ID and the company name
        * that should be used in the cypress tests
        * @param dataIdOfFirstUploadedEuTaxoFinancialsDataset the data ID of the Eu-Taxo-Financial dataset that was

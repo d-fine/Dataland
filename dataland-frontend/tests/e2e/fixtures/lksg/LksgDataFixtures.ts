@@ -1,16 +1,14 @@
 import { faker } from "@faker-js/faker";
 import { InHouseProductionOrContractProcessing, LksgData, ProductionSite } from "@clients/backend";
-import { randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
+import { randomYesNo, randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { randomStringOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 
 /**
  * Generates a set number of LKSG fixtures
- *
  * @param numFixtures the number of lksg fixtures to generate
  * @returns a set number of LKSG fixtures
  */
@@ -24,35 +22,29 @@ export function generateLksgFixture(numFixtures: number): FixtureData<LksgData>[
 
 /**
  * Generates a random production site
- *
- * @param undefinedPercentage the percentage of undefined values in the returned production site
  * @returns a random production site
  */
-export function generateProductionSite(undefinedPercentage = 0.5): ProductionSite {
+export function generateProductionSite(): ProductionSite {
   const fakeGoodsOrServices = Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
     return faker.commerce.productName();
   });
 
   return {
-    name: randomStringOrUndefined(faker.company.name(), undefinedPercentage),
+    name: faker.company.name(),
     isInHouseProductionOrIsContractProcessing: faker.helpers.arrayElement([
       InHouseProductionOrContractProcessing.InHouseProduction,
       InHouseProductionOrContractProcessing.ContractProcessing,
     ]),
-    country: randomStringOrUndefined(faker.address.countryCode(), undefinedPercentage),
-    city: randomStringOrUndefined(faker.address.city(), undefinedPercentage),
-    streetAndHouseNumber: randomStringOrUndefined(
-      faker.address.street() + " " + faker.address.buildingNumber(),
-      undefinedPercentage
-    ),
-    postalCode: randomStringOrUndefined(faker.address.zipCode(), undefinedPercentage),
+    country: faker.address.countryCode(),
+    city: faker.address.city(),
+    streetAndHouseNumber: faker.address.street() + " " + faker.address.buildingNumber(),
+    postalCode: faker.address.zipCode(),
     listOfGoodsOrServices: fakeGoodsOrServices,
   };
 }
 
 /**
  * Generates an array consisting of 1 to 5 random production sites
- *
  * @returns 1 to 5 random production sites
  */
 export function generateArrayOfProductionSites(): ProductionSite[] {
@@ -61,7 +53,6 @@ export function generateArrayOfProductionSites(): ProductionSite[] {
 
 /**
  * Generates a random VAT ID number
- *
  * @returns a random VAT ID number
  */
 export function generateVatIdentificationNumber(): string {
@@ -71,7 +62,6 @@ export function generateVatIdentificationNumber(): string {
 }
 /**
  * Generates a random LKSG dataset
- *
  * @param dataDate Optional parameter if a specific date should be set instead of a random one
  * @returns a random LKSG dataset
  */
@@ -79,8 +69,8 @@ export function generateLksgData(dataDate?: string): LksgData {
   return {
     social: {
       general: {
-        dataDate: dataDate === undefined ? randomFutureDate() : dataDate,
-        lksgInScope: randomYesNoUndefined(),
+        dataDate: dataDate ?? randomFutureDate(),
+        lksgInScope: randomYesNo(),
         vatIdentificationNumber: generateVatIdentificationNumber(),
         numberOfEmployees: faker.datatype.number({ min: 1000, max: 200000 }),
         shareOfTemporaryWorkers: faker.datatype.number({ min: 0, max: 30, precision: 0.01 }),

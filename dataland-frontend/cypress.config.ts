@@ -1,5 +1,6 @@
 import {defineConfig} from "cypress";
-import {rmdir} from "fs";
+import {promises, rmdir} from "fs";
+import {createHash} from "crypto";
 
 let returnEmail: string;
 let returnPassword: string;
@@ -56,7 +57,7 @@ export default defineConfig({
 
             console.log(`Execution environment: ${executionEnvironment}; dataEnvironment: ${dataEnvironment}`);
             if (executionEnvironment === "developmentLocal") {
-                console.log("Detected local development run. Loading all spec files to allow the user to pick the tests to run");
+                console.log("Detected local development run. Running all tests per default. In order to run a specific test run npm run cypress run --spec <./.../specific_test.ts>");
                 config.specPattern = ["tests/e2e/specs"];
                 config.defaultCommandTimeout = 22000
             } else {
@@ -102,6 +103,25 @@ export default defineConfig({
                     });
                 },
             });
+
+            on('task', {
+                async readdir(path: string) {
+                    return await promises.readdir(path);
+                },
+            });
+
+            on('task', {
+                async readFile(path: string): Promise<Buffer> {
+                    return await promises.readFile(path);
+                },
+            });
+
+            on('task', {
+                calculateHash(file: Buffer): string {
+                    return createHash("sha256").update(file).digest("hex");
+                },
+            });
+
             return config
         },
         supportFile: "tests/e2e/support/index.ts",

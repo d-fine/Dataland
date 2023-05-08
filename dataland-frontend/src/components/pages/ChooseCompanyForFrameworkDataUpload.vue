@@ -48,7 +48,7 @@
         </Card>
       </TheContent>
     </UploaderRoleWrapper>
-    <DatalandFooter />
+    <TheFooter />
   </AuthenticationWrapper>
 </template>
 
@@ -63,12 +63,12 @@ import CreateCompany from "@/components/forms/CreateCompany.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
 import { TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS } from "@/utils/Constants";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 
 export default defineComponent({
   name: "ChooseCompany",
   components: {
-    DatalandFooter,
+    TheFooter,
     UploaderRoleWrapper,
     AuthenticationWrapper,
     BackButton,
@@ -100,7 +100,6 @@ export default defineComponent({
     },
     /**
      * Executes a router push to the upload overview page of a given company
-     *
      * @param companyId the ID of company in question
      */
     handleCompanyCreated(companyId: string) {

@@ -1,11 +1,21 @@
 <template>
   <Card class="bg-white">
-    <template #title>Create a Company </template>
+    <template #title>Create a Company</template>
     <template #content>
       <div class="uploadFormWrapper">
-        <FormKit :actions="false" type="form" id="createCompanyForm" @submit="postCompanyInformation">
+        <FormKit
+          :actions="false"
+          type="form"
+          id="createCompanyForm"
+          @submit="postCompanyInformation"
+          @submit-invalid="checkCustomInputs"
+        >
           <h4>Name & location</h4>
-          <UploadFormHeader :name="companyDataNames.companyName" :explanation="companyDataExplanations.companyName" />
+          <UploadFormHeader
+            :name="companyDataNames.companyName"
+            :explanation="companyDataExplanations.companyName"
+            :is-required="true"
+          />
           <FormKit
             name="companyName"
             v-model="companyName"
@@ -47,6 +57,7 @@
               <UploadFormHeader
                 :name="companyDataNames.headquarters"
                 :explanation="companyDataExplanations.headquarters"
+                :is-required="true"
               />
               <FormKit
                 name="headquarters"
@@ -61,6 +72,7 @@
               <UploadFormHeader
                 :name="companyDataNames.countryCode"
                 :explanation="companyDataExplanations.countryCode"
+                :is-required="true"
               />
               <FormKit
                 name="countryCode"
@@ -169,7 +181,11 @@
 
           <h4>GICS classification</h4>
 
-          <UploadFormHeader :name="companyDataNames.sector" :explanation="companyDataExplanations.sector" />
+          <UploadFormHeader
+            :name="companyDataNames.sector"
+            :explanation="companyDataExplanations.sector"
+            :is-required="true"
+          />
           <FormKit
             name="sector"
             v-model="sector"
@@ -208,6 +224,7 @@ import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
+import { checkCustomInputs } from "@/utils/validationsUtils";
 import Tooltip from "primevue/tooltip";
 import {
   companyDataNames,
@@ -252,6 +269,7 @@ export default defineComponent({
     companyRegistrationNumber: "",
     sector: "",
     website: "",
+    checkCustomInputs,
     identifiers: [] as Array<CompanyIdentifier>,
     enteredCompanyAlternativeName: "",
     allCountryCodes: getAllCountryCodes(),
@@ -266,7 +284,6 @@ export default defineComponent({
   methods: {
     /**
      * Validates if there is already a company with an identifier of value of a FormKit input field
-     *
      * @param node the node corresponding the FormKit input field
      * @param identifierType the type of the identifier to check
      * @returns true if and only if there is no company with the in the node specified identifier of the specified type
@@ -288,7 +305,6 @@ export default defineComponent({
     },
     /**
      * Adds a CompanyIdentifier to the array of identifiers
-     *
      * @param identifierType the type of the identifier as specified in CompanyIdentifierIdentifierTypeEnum
      * @param identifierValue the value of the identifier
      */
@@ -328,7 +344,6 @@ export default defineComponent({
     },
     /**
      * Removes the n-th company alternative name from the corresponding array
-     *
      * @param index specifies the n-th alternative name to be removed
      */
     removeAlternativeName(index: number): void {
@@ -336,7 +351,6 @@ export default defineComponent({
     },
     /**
      * Builds a CompanyInformation object using the currently entered inputs and returns it
-     *
      * @returns the CompanyInformation object build
      */
     getCompanyInformation(): CompanyInformation {

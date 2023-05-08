@@ -8,14 +8,15 @@ import {
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 /**
  * Uploads a single LKSG data entry for a company
- *
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
+ * @returns a promise on the created data meta information
  */
 export async function uploadOneLksgDatasetViaApi(
   token: string,
@@ -35,7 +36,6 @@ export async function uploadOneLksgDatasetViaApi(
 
 /**
  * Uploads a company and single LkSG data entry for a company
- *
  * @param token The API bearer token to use
  * @param companyInformation The company information to use for the company upload
  * @param testData The Dataset to upload
@@ -106,7 +106,8 @@ export function uploadLksgDataViaForm(): void {
     "mercuryAddedProductsHandlingRiskOfDisposal",
     "hazardousAndOtherWasteImport",
   ];
-
+  submitButton.buttonIsAddDataButton();
+  submitButton.buttonAppearsDisabled();
   cy.get('[data-test="lksgDataDate"]').click();
   cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
   cy.get("div.p-datepicker").find('span:contains("13")').click();
@@ -142,7 +143,19 @@ export function uploadLksgDataViaForm(): void {
   yesNoInputs.forEach((name) => {
     cy.get(`input[name=${name}][value="Yes"]`).click().should("be.checked");
   });
-  cy.get('button[data-test="submitButton"]').click();
+  submitButton.buttonAppearsEnabled();
+  submitButton.clickButton();
   cy.get("div.p-message-success").should("be.visible");
 }
+
+/**
+ * Scrolls to the top and bottom of the LKSG input form and checks if the sidebar correctly switches from sticky to non-sticky while doing so.
+ */
+export function checkStickynessOfSubmitSideBar(): void {
+  cy.scrollTo("bottom");
+  cy.get("[data-test='submitSideBar']").should("have.css", "position", "fixed").and("have.css", "top", "60px");
+  cy.scrollTo("top");
+  cy.get("[data-test='submitSideBar']").should("have.css", "position", "relative").and("have.css", "top", "0px");
+}
+
 ///

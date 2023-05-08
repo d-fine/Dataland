@@ -11,8 +11,6 @@ describe("As a user I expect a data request page where I can download an excel t
       dataEnvironments: ["fakeFixtures"],
     },
     (): void => {
-      const inviteInterceptionAlias = "invite";
-
       const uploadBoxSelector = "div.p-fileupload-content";
       const uploadBoxEmptySelector = "div.p-fileupload-empty";
       const uploadFilenameSelector = "span.font-semibold.mr-2";
@@ -21,7 +19,6 @@ describe("As a user I expect a data request page where I can download an excel t
 
       /**
        * Selects an empty file with the given filename and contentsize
-       *
        * @param filename the name of the dummy file to create
        * @param contentSize the size of the dummy file
        */
@@ -47,14 +44,14 @@ describe("As a user I expect a data request page where I can download an excel t
       /**
        * Submits the upload form and intercepts the api request. Performs validation on the response status.
        * The moreValidation function may be supplied to perform further validation
-       *
        * @param moreValidation a function that can be used to impose further restraints on the intercepted api message
        */
       function submitAndValidateSuccess(
         moreValidation: (interception: Interception) => void = (): void => undefined
       ): void {
+        cy.intercept("**/api/invite").as("invite");
         submit();
-        cy.wait(`@${inviteInterceptionAlias}`).then((interception) => {
+        cy.wait(`@invite`).then((interception) => {
           if (interception.response === undefined) {
             expect(interception.response).not.to.equal(undefined);
             return;
@@ -69,7 +66,6 @@ describe("As a user I expect a data request page where I can download an excel t
 
       /**
        * Verifies that the upload box shows a file with the given filename
-       *
        * @param filename the filename that is expected to be present in the upload box
        */
       function uploadBoxEntryShouldBe(filename: string): void {
@@ -102,7 +98,6 @@ describe("As a user I expect a data request page where I can download an excel t
 
       /**
        * Assets that the error message contains all strings in the provided array
-       *
        * @param substrings an array of strings that are required to be present in the error message
        */
       function validateThatErrorMessageContains(substrings: string[]): void {
@@ -121,7 +116,6 @@ describe("As a user I expect a data request page where I can download an excel t
       beforeEach(() => {
         cy.ensureLoggedIn();
         cy.visitAndCheckAppMount("/requests");
-        cy.intercept("**/api/invite*").as(inviteInterceptionAlias);
       });
 
       it(`Test if Excel template for data request is downloadable and assert that it equals the expected Excel file`, () => {
@@ -157,6 +151,7 @@ describe("As a user I expect a data request page where I can download an excel t
 
         const sufficientlySmallFilename = "sufficiently_small_file.xlsx";
         uploadDummyExcelFile(sufficientlySmallFilename);
+        uploadBoxEntryShouldBe(sufficientlySmallFilename);
 
         submitAndValidateSuccess((interception) => {
           expect(interception.request.body).to.contain(sufficientlySmallFilename);

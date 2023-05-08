@@ -9,6 +9,7 @@ import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtu
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import {
+  generateEuTaxonomyWithRequiredFields,
   getCsvSharedEuTaxonomyValuesMapping,
   populateSharedValues,
 } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
@@ -17,7 +18,6 @@ import { parse } from "json2csv";
 
 /**
  * Generates fake data for a single cash-flow type for the eutaxonomy-non-financials framework
- *
  * @param reports a list of reports that can be referenced
  * @returns the generated data
  */
@@ -35,11 +35,10 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedReports): E
 
 /**
  * Generates a single fixture for the eutaxonomy-non-financials framework
- *
  * @returns the generated fixture
  */
 export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
-  const returnBase: EuTaxonomyDataForNonFinancials = {};
+  const returnBase: EuTaxonomyDataForNonFinancials = generateEuTaxonomyWithRequiredFields();
   populateSharedValues(returnBase);
 
   returnBase.opex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
@@ -51,7 +50,6 @@ export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFi
 
 /**
  * Exports the eutaxonomy-non-financials data to CSV
- *
  * @param companyInformationWithEuTaxonomyDataForNonFinancials the data to export
  * @returns the generated CSV as a string
  */

@@ -7,7 +7,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum, QAStatus } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { useFiltersStore } from "@/stores/filters";
+import { useFrameworkFiltersStore } from "@/stores/stores";
 
 export interface DataSearchStoredCompany {
   companyName: string;
@@ -26,7 +26,6 @@ export interface FrameworkDataSearchFilterInterface {
 
 /**
  * Retrieve the value of the Perm Id of a company. Throws an exception if no perm id is found
- *
  * @param  {StoredCompany} storedCompany      is the company object for which the Perm Id should be retrieved
  * @returns the perm id retrieved from the company object. Empty string if no perm id is known.
  */
@@ -46,7 +45,6 @@ function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
 
 /**
  * map the received stored companies of an API-call to the required scheme for the search page to display
- *
  * @param  {Array<StoredCompany>} responseData      the received data with the company objects
  * @returns a list of companies in the format expected by the search page
  */
@@ -64,7 +62,6 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
 
 /**
  * send out an API-call to get stored companies and map the response to the required scheme for the search page
- *
  * @param  {string} searchString           the string that is used to search companies
  * @param  {boolean} onlyCompanyNames      boolean which decides if the searchString should only be used to query
  *                                         companies by name, or additionally by identifier values
@@ -76,6 +73,7 @@ function mapStoredCompanyToFrameworkDataSearchPage(responseData: Array<StoredCom
  *                                         countries specified by the country codes are returned
  * @param sectorFilter                     If not empty only companies whose sector is in the set is returned
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
+ * @returns the search result companies
  */
 export async function getCompanyDataForFrameworkDataSearchPage(
   searchString: string,
@@ -111,7 +109,6 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 /**
  * Filters an array of companies for companies which have at least one data set which may be displayed
  * i.e. a dataset that has quality status "Accepted"
- *
  * @param companies the companies to filter
  * @returns the filtered companies
  */
@@ -126,14 +123,13 @@ function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCo
  * If no filter is set, or if the number of framework-filters equals the number of all viewable frameworks,
  * it links to the first framework that is included in the data in the company object.
  * Otherwise, it links to the first framework that is included in the currently stored framework filters.
- *
  * @param companyData the company to generate a link for
  * @returns a vue router link to the view page for a specific framework
  */
 export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
   const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
   let routeToVisit = `/companies/${companyData.companyId}/frameworks/${dataRegisteredByDataland[0].dataType}`;
-  const selectedFiltersForFrameworks = useFiltersStore().selectedFiltersForFrameworks;
+  const selectedFiltersForFrameworks = useFrameworkFiltersStore().selectedFiltersForFrameworks;
   if (
     selectedFiltersForFrameworks.length > 0 &&
     selectedFiltersForFrameworks.length < ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.length
