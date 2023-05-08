@@ -59,7 +59,7 @@
                   @referenceable-files-changed="referenceableFilesChanged"
                 />
 
-                <BasicInformationFields
+                <EuTaxonomyBasicInformation
                   :fiscalYearEndAsDate="fiscalYearEndAsDate"
                   :fiscalYearEnd="fiscalYearEnd"
                   @updateFiscalYearEndHandler="updateFiscalYearEndHandler"
@@ -298,7 +298,7 @@ import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import { FormKit } from "@formkit/vue";
 
-import BasicInformationFields from "@/components/forms/parts/BasicInformationFields.vue";
+import EuTaxonomyBasicInformation from "@/components/forms/parts/EuTaxonomyBasicInformation.vue";
 
 import PrimeButton from "primevue/button";
 import MultiSelect from "primevue/multiselect";
@@ -324,6 +324,7 @@ import {
   AssuranceDataAssuranceEnum,
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
   DataMetaInformation,
+  EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
@@ -355,7 +356,7 @@ export default defineComponent({
     Card,
 
     UploadReports,
-    BasicInformationFields,
+    EuTaxonomyBasicInformation,
 
     PrimeButton,
     Calendar,
@@ -490,22 +491,8 @@ export default defineComponent({
                 this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
               }
               this.templateDataset = companyAssociatedEuTaxonomyData.data;
-              if (companyAssociatedEuTaxonomyData.data?.financialServicesTypes) {
-                // types of company financial services
-                const arrayWithCompanyKpiTypes = companyAssociatedEuTaxonomyData.data?.financialServicesTypes;
-                // all types of financial services
 
-                this.selectedFinancialServiceOptions = this.financialServiceOptionsInDropdown.filter(
-                  (financialServiceOption: { label: string; value: string }) => {
-                    return arrayWithCompanyKpiTypes?.includes(
-                      euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[
-                        financialServiceOption.value
-                      ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
-                    );
-                  }
-                );
-                this.confirmSelectedKPIs();
-              }
+              this.extractFinancialServiceTypes(companyAssociatedEuTaxonomyData.data);
 
               const receivedFormInputsModel = modifyObjectKeys(
                 companyAssociatedEuTaxonomyData as ObjectType,
@@ -519,6 +506,29 @@ export default defineComponent({
             .catch((e) => console.log(e))
         )
         .catch((e) => console.log(e));
+    },
+
+    /**
+     * Extracts which Financial Service Types are present in the dataset and adds the associated KPI components to
+     * the form and list of links.
+     * @param data
+     */
+    extractFinancialServiceTypes(data?: EuTaxonomyDataForFinancials) {
+      if (data?.financialServicesTypes) {
+        const arrayWithCompanyKpiTypes = data?.financialServicesTypes;
+
+        this.selectedFinancialServiceOptions = this.financialServiceOptionsInDropdown.filter(
+          (financialServiceOption: { label: string; value: string }) => {
+            return arrayWithCompanyKpiTypes?.includes(
+              euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[
+                financialServiceOption.value
+              ] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum
+            );
+          }
+        );
+        this.confirmedSelectedFinancialServiceOptions = this.selectedFinancialServiceOptions;
+        this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedFinancialServiceOptions))];
+      }
     },
 
     /**
@@ -552,15 +562,6 @@ export default defineComponent({
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
       }
-    },
-
-    /**
-     * Confirms the list of kpis to be generated
-     *
-     */
-    confirmSelectedKPIs() {
-      this.confirmedSelectedFinancialServiceOptions = this.selectedFinancialServiceOptions;
-      this.onThisPageLinks = [...new Set(this.onThisPageLinksStart.concat(this.selectedFinancialServiceOptions))];
     },
 
     /**
