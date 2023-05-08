@@ -5,8 +5,8 @@ import { AxiosError, AxiosResponse } from "axios";
  * @param error AxiosError | unknown
  * @returns a string message using AxiosError values
  */
-export function formatAxiosErrorMessage(error: AxiosError | unknown): string {
-  if (!(error instanceof AxiosError)) return (error as Error).message;
+export function formatAxiosErrorMessage(error: AxiosError | Error): string {
+  if (!(error instanceof AxiosError)) return error.message;
 
   const err = error as AxiosError;
   const response = err.response as AxiosResponse<{ errors: { summary: string; message: string }[] }>;
