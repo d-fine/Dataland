@@ -511,7 +511,7 @@ export default defineComponent({
     /**
      * Extracts which Financial Service Types are present in the dataset and adds the associated KPI components to
      * the form and list of links.
-     * @param data
+     * @param data EuTaxonomyDataForFinancials dataset that may include the different financialServicesTypes
      */
     extractFinancialServiceTypes(data?: EuTaxonomyDataForFinancials) {
       if (data?.financialServicesTypes) {
