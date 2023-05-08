@@ -54,11 +54,13 @@
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
       <div v-for="(file, index) of reportsToUpload" :key="file.name" class="col-9 formFields" data-test="report-info">
-        <div v-if="duplicateReportNames.has(file.name.split('.')[0])">
-          <div>
-            File with name
-            <h3 data-test="file-name-already-exists">{{ file.name.split(".")[0] }}</h3>
-            already exists. Please upload file with different name.
+        <div
+          v-if="duplicateReportNames.has(file.name.split('.')[0])"
+          data-test="file-name-already-exists"
+          class="p-message p-message-error"
+        >
+          <div class="p-2 p-message-text">
+            {{ generateErrorTextForDuplicateFile(file.name.split(".")[0]) }}
           </div>
         </div>
         <div v-else :data-test="file.name.split('.')[0] + 'ToUploadContainer'">
@@ -313,6 +315,15 @@ export default defineComponent({
     toHex(buffer: ArrayBuffer): string {
       const array = Array.from(new Uint8Array(buffer)); // convert buffer to byte array
       return array.map((b) => b.toString(16).padStart(2, "0")).join(""); // convert bytes to hex string
+    },
+
+    /**
+     * Generates an error message stating that a file with the provided name already exists.
+     * @param fileName is the file name which already exists
+     * @returns an error message as string
+     */
+    generateErrorTextForDuplicateFile(fileName: string) {
+      return `File with name "${fileName}" already exists. Please upload file with different name.`;
     },
   },
 });
