@@ -12,7 +12,7 @@
           <li :key="el" v-for="el in data[col.field]">{{ el }}</li>
         </ul>
         <div v-else-if="typeof data[col.field] === 'object'">
-          <p :key="key" v-for="[key, value] in Object.entries(data[col.field])">
+          <p :key="key" v-for="[key, value] in Object.entries(data[col.field])" style="margin: 0; padding: 0">
             {{ value }}
           </p>
         </div>
