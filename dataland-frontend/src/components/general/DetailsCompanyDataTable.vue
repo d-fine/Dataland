@@ -11,6 +11,11 @@
         <ul v-if="Array.isArray(data[col.field])">
           <li :key="el" v-for="el in data[col.field]">{{ el }}</li>
         </ul>
+        <div v-else-if="typeof data[col.field] === 'object'">
+          <p :key="key" v-for="[key, value] in Object.entries(data[col.field])">
+            {{ value }}
+          </p>
+        </div>
         <span v-else>{{ humanizeStringIfNeccessary(col.field, data[col.field]) }}</span>
       </template>
     </Column>
@@ -33,7 +38,7 @@ export default defineComponent({
     return {
       listOfRowContents: [] as Array<object | string>,
       columnHeaders: detailsCompanyDataTableColumnHeaders,
-      tableType: "" as keyof typeof detailsCompanyDataTableColumnHeaders,
+      tableType: "" as string,
       columns: [] as { field: string; header: string }[],
     };
   },
@@ -77,10 +82,11 @@ export default defineComponent({
     humanizeStringIfNeccessary(key: string, value: string): string {
       const keysWithValuesToBeHumanized = ["isInHouseProductionOrIsContractProcessing"];
       if (keysWithValuesToBeHumanized.includes(key)) {
-        return humanizeString(value);
+        return this.humanizeString(value);
       }
       return value;
     },
+    humanizeString,
   },
   watch: {
     listOfRowContents() {
