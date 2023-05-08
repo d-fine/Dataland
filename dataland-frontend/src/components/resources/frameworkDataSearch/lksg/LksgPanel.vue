@@ -112,21 +112,17 @@ export default defineComponent({
       if (kpiKey === "totalRevenue" && typeof kpiValue === "number") {
         kpiValue = this.convertToMillions(kpiValue);
       }
-      if (kpiKey === "industry") {
-        if (Array.isArray(kpiValue)) {
-          kpiValue = kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort);
-        } else {
-          kpiValue = naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
-        }
+      if (kpiKey === "industry" || kpiKey === "subcontractingCompaniesIndustries") {
+        kpiValue = Array.isArray(kpiValue)
+          ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
+          : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
       }
       if (kpiKey === "subcontractingCompaniesCountries") {
-        if (Array.isArray(kpiValue)) {
-          kpiValue = kpiValue.map(
-            (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
-          );
-        } else {
-          kpiValue = getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
-        }
+        kpiValue = Array.isArray(kpiValue)
+          ? kpiValue.map(
+              (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
+            )
+          : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
       }
       kpiValue = kpi.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;
       let indexOfExistingItem = -1;

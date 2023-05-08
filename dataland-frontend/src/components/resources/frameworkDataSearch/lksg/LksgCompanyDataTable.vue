@@ -42,19 +42,27 @@
       >
         <template #body="{ data }">
           <a
-            v-if="Array.isArray(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId].length"
+            v-if="
+              Array.isArray(data[reportingPeriod.dataId]) &&
+              (data[reportingPeriod.dataId].length > 1 ||
+                data[reportingPeriod.dataId].some((el) => typeof el === 'object'))
+            "
             @click="openModalAndDisplayValuesInSubTable(data[reportingPeriod.dataId], data.kpiLabel, data.kpiKey)"
             class="link"
             >Show "{{ data.kpiLabel }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
           </a>
-          <template
-            v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId] !== null"
-          >
-            {{ data[reportingPeriod.dataId].value ?? "" }}
-          </template>
+          <span v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId]?.value">
+            {{ data[reportingPeriod.dataId].value }}
+          </span>
 
-          <span v-else>{{ Array.isArray(data[reportingPeriod.dataId]) ? "" : data[reportingPeriod.dataId] }}</span>
+          <span v-else
+            >{{
+              Array.isArray(data[reportingPeriod.dataId])
+                ? data[reportingPeriod.dataId][0]
+                : data[reportingPeriod.dataId]
+            }}
+          </span>
         </template>
       </Column>
 
