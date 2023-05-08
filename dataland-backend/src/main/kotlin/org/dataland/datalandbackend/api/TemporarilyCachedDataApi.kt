@@ -32,5 +32,5 @@ fun interface TemporarilyCachedDataApi {
         produces = ["application/json"],
     )
     fun getReceivedData(@PathVariable("dataId") dataId: String):
-            ResponseEntity<String>
+        ResponseEntity<String>
 }

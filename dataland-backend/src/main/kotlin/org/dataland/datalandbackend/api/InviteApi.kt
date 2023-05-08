@@ -41,5 +41,5 @@ fun interface InviteApi {
     fun submitInvite(
         @RequestPart("excelFile") excelFile: MultipartFile,
     ):
-            ResponseEntity<InviteMetaInfoEntity>
+        ResponseEntity<InviteMetaInfoEntity>
 }
