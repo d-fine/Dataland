@@ -58,6 +58,10 @@ export function generateCompanyInformation(): CompanyInformation {
           identifierValue: faker.random.alphaNumeric(9),
         },
         {
+          identifierType: CompanyIdentifierIdentifierTypeEnum.VatNumber,
+          identifierValue: faker.random.alphaNumeric(9),
+        },
+        {
           identifierType: CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber,
           identifierValue: faker.random.alphaNumeric(15),
         },

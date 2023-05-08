@@ -177,6 +177,15 @@
               :placeholder="companyDataNames.companyRegistrationNumber"
               :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber}`"
             />
+
+            <UploadFormHeader :name="companyDataNames.vatNumber" :explanation="companyDataExplanations.vatNumber" />
+            <FormKit
+              name="vatNumber"
+              v-model="vatNumber"
+              type="text"
+              :placeholder="companyDataNames.vatNumber"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.VatNumber}`"
+            />
           </FormKit>
 
           <h4>GICS classification</h4>
@@ -267,6 +276,7 @@ export default defineComponent({
     permId: "",
     duns: "",
     companyRegistrationNumber: "",
+    vatNumber: "",
     sector: "",
     website: "",
     checkCustomInputs,
@@ -329,6 +339,7 @@ export default defineComponent({
       this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.PermId, this.permId);
       this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Duns, this.duns);
       this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber, this.companyRegistrationNumber);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.VatNumber, this.vatNumber);
     },
     /**
      * Adds the value from the input field for company alternative names to the corresponding array.

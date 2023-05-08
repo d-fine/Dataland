@@ -2,192 +2,98 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [
-				"Herweg UG",
-				"Hesse-Bohge",
-				"Kirch-Wolfarth"
-			],
-			"headquarters": "Süd Franka",
-			"headquartersPostalCode": "09930",
-			"sector": "eyeballs",
+			"headquarters": "Neu Estelle",
+			"sector": "e-tailers",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "5vtr7v3oatkqla2"
+					"identifierValue": "r8larloeaty3ulr"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "cwg52q39k"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "zpdahlacuz5o"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "fyujlkgj5"
 				}
 			],
-			"countryCode": "TL",
-			"isTeaserCompany": false,
-			"website": "https://unübertroffen-magnetismus.info"
+			"countryCode": "AI",
+			"companyAlternativeNames": [
+				"Ludolf, Koczulla und Wehrsen",
+				"Mallmann, Goldkühle und Kettenis"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://zärtlich-radio.net",
+			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-08-18",
-			"numberOfEmployees": 20734,
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-01-25",
+			"numberOfEmployees": 29946,
 			"referencedReports": {
-				"IntegratedReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-12-20",
-					"currency": "SLL"
+					"isGroupLevel": "No",
+					"reportDate": "2022-10-23",
+					"currency": "NGN"
 				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "No",
-					"currency": "BYN"
+					"reportDate": "2023-01-07",
+					"currency": "SHP"
 				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"currency": "BIF"
-				},
-				"SustainabilityReport": {
+				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "NA",
-					"reportDate": "2023-04-09",
-					"currency": "MOP"
+					"reportDate": "2022-10-13",
+					"currency": "IRR"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance"
 			},
-			"scopeOfEntities": "Yes",
-			"activityLevelReporting": "Yes",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.8536,
+					"value": 0.8412,
 					"dataSource": {
-						"page": 742,
-						"report": "IntegratedReport",
-						"tagName": "platforms"
+						"page": 775,
+						"report": "AnnualReport",
+						"tagName": "systems"
 					},
-					"quality": "Estimated",
-					"comment": "input primary monitor"
+					"quality": "Audited",
+					"comment": "quantify solid state array"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.041,
+					"value": 0.5654,
 					"dataSource": {
-						"page": 1106,
-						"report": "ESEFReport",
-						"tagName": "infrastructures"
-					},
-					"quality": "Reported",
-					"comment": "parse back-end microchip"
-				}
-			},
-			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.5985,
-					"dataSource": {
-						"page": 441,
-						"report": "IntegratedReport",
-						"tagName": "web services"
-					},
-					"quality": "Incomplete",
-					"comment": "synthesize redundant bus"
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Röse-Fenner"
-			],
-			"companyLegalForm": "AG",
-			"headquarters": "Ost Marlene",
-			"headquartersPostalCode": "88777",
-			"sector": "eyeballs",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "lb9te2s8ctca8kq"
-				}
-			],
-			"countryCode": "RE",
-			"isTeaserCompany": false,
-			"website": "https://gewaltig-epistemologie.ch"
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-11-29",
-			"numberOfEmployees": 78040,
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-01-08",
-					"currency": "CRC"
-				}
-			},
-			"assurance": {
-				"assurance": "ReasonableAssurance"
-			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
-			"opex": {
-				"totalAmount": {
-					"value": 340227.59,
-					"dataSource": {
-						"page": 553,
-						"report": "SustainabilityReport",
+						"page": 615,
+						"report": "AnnualReport",
 						"tagName": "markets"
 					},
-					"quality": "Incomplete",
-					"comment": "navigate auxiliary circuit"
-				},
-				"eligiblePercentage": {
-					"value": 0.6808,
-					"dataSource": {
-						"page": 517,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
-					},
 					"quality": "Reported",
-					"comment": "connect neural alarm"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 88300.39,
-					"dataSource": {
-						"page": 508,
-						"report": "SustainabilityReport",
-						"tagName": "interfaces"
-					},
-					"quality": "Estimated",
-					"comment": "reboot virtual hard drive"
-				},
-				"eligiblePercentage": {
-					"value": 0.8424,
-					"dataSource": {
-						"page": 764,
-						"report": "SustainabilityReport",
-						"tagName": "solutions"
-					},
-					"quality": "Estimated",
-					"comment": "index 1080p panel"
+					"comment": "program optical microchip"
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"value": 956246.6,
-					"quality": "Incomplete"
-				},
 				"eligiblePercentage": {
-					"value": 0.7548,
+					"value": 0.5935,
 					"dataSource": {
-						"page": 86,
-						"report": "SustainabilityReport",
-						"tagName": "schemas"
+						"page": 7,
+						"report": "IntegratedReport",
+						"tagName": "interfaces"
 					},
-					"quality": "Incomplete",
-					"comment": "quantify neural capacitor"
+					"quality": "Audited",
+					"comment": "quantify 1080p feed"
 				}
 			}
 		},
@@ -195,113 +101,193 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "company_without_reports",
-			"companyAlternativeNames": [
-				"Birkemeyer, Mordhorst und Pingpank",
-				"Frank-Zschunke",
-				"Moguenara KG",
-				"Walz-Klabuhn"
-			],
-			"headquarters": "Salomestadt",
-			"headquartersPostalCode": "96872",
-			"sector": "synergies",
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Ost Cedric",
+			"sector": "communities",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "67cpxzkznx7r10y"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "b2z060qul"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "4e631517evak"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "mb3p8nwnsfcqcyzo1tpi"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "zqdjkzq2j4"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "66292vf"
+					"identifierType": "VatNumber",
+					"identifierValue": "tq8dqgvjh"
 				}
 			],
-			"countryCode": "PN",
-			"isTeaserCompany": false,
-			"website": "https://konsequent-schwimmen.ch"
+			"countryCode": "FJ",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-01-01",
-			"numberOfEmployees": 98932,
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-05-24",
+			"numberOfEmployees": 19981,
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-07-08",
+					"currency": "MVR"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-07-28",
+					"currency": "LRD"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-12-12",
+					"currency": "SBD"
+				}
+			},
 			"assurance": {
 				"assurance": "ReasonableAssurance",
-				"provider": "Klopsch-Maier"
+				"dataSource": {
+					"page": 1166,
+					"report": "ESEFReport",
+					"tagName": "functionalities"
+				}
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 451587.82,
+					"value": 154796.8,
 					"quality": "Estimated"
 				},
-				"alignedPercentage": {
-					"value": 0.0328,
+				"eligiblePercentage": {
+					"value": 0.4817,
 					"dataSource": {
-						"page": 718,
+						"page": 207,
 						"report": "AnnualReport",
 						"tagName": "supply-chains"
 					},
-					"quality": "Audited",
-					"comment": "index solid state hard drive"
-				},
-				"eligiblePercentage": {
-					"value": 0.8055,
-					"dataSource": {
-						"page": 1148,
-						"report": "IntegratedReport",
-						"tagName": "paradigms"
-					},
-					"quality": "Estimated",
-					"comment": "transmit digital circuit"
+					"quality": "Reported",
+					"comment": "transmit bluetooth system"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 437139.31,
+					"value": 751279.87,
 					"dataSource": {
-						"page": 1192,
-						"report": "SustainabilityReport",
-						"tagName": "markets"
+						"page": 180,
+						"report": "IntegratedReport",
+						"tagName": "systems"
 					},
-					"quality": "Audited",
-					"comment": "override haptic port"
-				},
-				"alignedPercentage": {
-					"value": 0.4561,
-					"dataSource": {
-						"page": 316,
-						"report": "AnnualReport",
-						"tagName": "schemas"
-					},
-					"quality": "Audited",
-					"comment": "hack virtual array"
+					"quality": "Incomplete",
+					"comment": "hack neural program"
 				},
 				"eligiblePercentage": {
-					"value": 0.8878,
+					"value": 0.0866,
 					"dataSource": {
-						"page": 31,
-						"report": "SustainabilityReport",
-						"tagName": "solutions"
+						"page": 896,
+						"report": "IntegratedReport",
+						"tagName": "niches"
 					},
-					"quality": "Audited",
-					"comment": "program auxiliary program"
+					"quality": "Incomplete",
+					"comment": "back up optical array"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 955749.05,
+					"quality": "Estimated"
+				},
+				"eligiblePercentage": {
+					"value": 0.5229,
+					"quality": "Incomplete"
+				}
+			}
+		},
+		"reportingPeriod": "2019-Q3"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Tjarkstadt",
+			"headquartersPostalCode": "58172",
+			"sector": "users",
+			"identifiers": [
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "8y61mjv"
+				}
+			],
+			"countryCode": "IL",
+			"companyAlternativeNames": [
+				"Conrad AG"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-06-28",
+			"numberOfEmployees": 75272,
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Balzer OHG"
+			},
+			"scopeOfEntities": "No",
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 606154.39,
+					"dataSource": {
+						"page": 980,
+						"report": "AnnualReport",
+						"tagName": "metrics"
+					},
+					"quality": "Estimated",
+					"comment": "override bluetooth microchip"
+				},
+				"alignedPercentage": {
+					"value": 0.9067,
+					"dataSource": {
+						"page": 952,
+						"report": "IntegratedReport",
+						"tagName": "architectures"
+					},
+					"quality": "Reported",
+					"comment": "synthesize optical monitor"
+				},
+				"eligiblePercentage": {
+					"value": 0.3457,
+					"dataSource": {
+						"page": 1135,
+						"report": "ESEFReport",
+						"tagName": "networks"
+					},
+					"quality": "Reported",
+					"comment": "transmit redundant system"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 904886.56,
+					"dataSource": {
+						"page": 318,
+						"report": "AnnualReport",
+						"tagName": "web services"
+					},
+					"quality": "Estimated",
+					"comment": "copy online capacitor"
+				},
+				"alignedPercentage": {
+					"value": 0.9559,
+					"dataSource": {
+						"page": 868,
+						"report": "ESEFReport",
+						"tagName": "web services"
+					},
+					"quality": "Reported",
+					"comment": "navigate multi-byte array"
+				},
+				"eligiblePercentage": {
+					"value": 0.9915,
+					"dataSource": {
+						"page": 379,
+						"report": "IntegratedReport",
+						"tagName": "systems"
+					},
+					"quality": "Estimated",
+					"comment": "program wireless interface"
 				}
 			},
 			"revenue": {
@@ -309,24 +295,17 @@
 					"quality": "NA"
 				},
 				"alignedPercentage": {
-					"value": 0.0689,
-					"dataSource": {
-						"page": 1018,
-						"report": "IntegratedReport",
-						"tagName": "eyeballs"
-					},
-					"quality": "Reported",
-					"comment": "transmit virtual bus"
+					"quality": "NA"
 				},
 				"eligiblePercentage": {
-					"value": 0.2293,
+					"value": 0.0635,
 					"dataSource": {
-						"page": 224,
-						"report": "AnnualReport",
-						"tagName": "content"
+						"page": 596,
+						"report": "ESEFReport",
+						"tagName": "web services"
 					},
-					"quality": "Incomplete",
-					"comment": "input neural panel"
+					"quality": "Audited",
+					"comment": "override cross-platform firewall"
 				}
 			}
 		},

@@ -62,7 +62,7 @@ function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureDat
  */
 function manipulateFixtureForVat(input: FixtureData<LksgData>, vat: string, date: string): FixtureData<LksgData> {
   input.companyInformation.companyName = "vat-" + vat;
-  input.companyInformation.identifiers = [{ identifierType: "CompanyRegistrationNumber", identifierValue: vat }];
+  input.companyInformation.identifiers = [{ identifierType: "VatNumber", identifierValue: vat }];
   input.t.general!.masterData!.dataDate = date;
   input.reportingPeriod = date.split("-")[0];
   return input;

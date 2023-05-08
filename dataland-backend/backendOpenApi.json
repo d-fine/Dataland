@@ -2640,13 +2640,13 @@
           "streetAndHouseNumber": {
             "type": "string"
           },
+          "postalCode": {
+            "type": "string"
+          },
           "city": {
             "type": "string"
           },
           "state": {
-            "type": "string"
-          },
-          "postalCode": {
             "type": "string"
           },
           "country": {
@@ -3790,7 +3790,8 @@
               "PermId",
               "Ticker",
               "Duns",
-              "CompanyRegistrationNumber"
+              "CompanyRegistrationNumber",
+              "VatNumber"
             ]
           },
           "identifierValue": {
