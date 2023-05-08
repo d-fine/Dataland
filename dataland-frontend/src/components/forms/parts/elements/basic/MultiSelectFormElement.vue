@@ -8,25 +8,40 @@
     :show-toggle-all="false"
     :class="innerClass"
   />
-  <FormKit
-    type="list"
-    :validation-label="validationLabel"
-    :validation="validation!"
-    :name="name"
-    v-model="selections"
-    outer-class="hidden-input"
-  />
+  <!--
+    Note: It is required to set the id of this div to the FormKit node Id to allow the checkCustomInputs methods
+    in the validationUtils.ts file to scroll to this component when an error is detected. This is because the FormKit
+    List type does not create a wrapper component on its own.
+  -->
+  <div :id="formkitMultiSelectFormElement?.node?.props?.id || undefined">
+    <FormKit
+      type="list"
+      ref="formkitMultiSelectFormElement"
+      :validation-label="validationLabel"
+      :validation="validation!"
+      :name="name"
+      v-model="selections"
+      outer-class="hidden-input"
+    >
+      <FormKitMessages />
+    </FormKit>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { FormKit } from "@formkit/vue";
+import { defineComponent, ref } from "vue";
+import { FormKit, FormKitMessages } from "@formkit/vue";
 import MultiSelect from "primevue/multiselect";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "MultiSelectFormElement",
-  components: { FormKit, MultiSelect },
+  components: { FormKit, MultiSelect, FormKitMessages },
+  setup() {
+    return {
+      formkitMultiSelectFormElement: ref(),
+    };
+  },
   data() {
     return {
       selections: [] as string[],

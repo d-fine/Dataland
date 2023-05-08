@@ -51,12 +51,12 @@ export const lksgDataModel = [
           },
           {
             showIf: (): boolean => true,
+            validation: "required|length:1",
             name: "industry",
             description: "In which industry is your company primarily active?",
             label: "Industry",
             component: "NaceCodeFormField",
             required: true,
-            validation: "required",
           },
           {
             showIf: (): boolean => true,
@@ -107,13 +107,13 @@ export const lksgDataModel = [
           {
             showIf: (): boolean => true,
             options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
+            validation: "required",
             placeholder: "Select Currency",
             name: "totalRevenueCurrency",
             description: "The 3-letter code (ISO 4217) representing the currency used for the total revenue",
             label: "Total Revenue Currency",
             component: "SingleSelectFormField",
             required: true,
-            validation: "required",
           },
           {
             showIf: (): boolean => true,
@@ -170,23 +170,23 @@ export const lksgDataModel = [
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.isContractProcessing === "Yes",
             options: getDataset(DropdownDatasetIdentifier.CountryCodes),
+            validation: "required|length:1",
             placeholder: "Select Country",
             name: "subcontractingCompaniesCountries",
             description: "In which countries do the subcontracting companies operate?",
             label: "Subcontracting Companies Countries",
             component: "MultiSelectFormField",
             required: true,
-            validation: "required",
           },
           {
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.isContractProcessing === "Yes",
+            validation: "required|length:1",
             name: "subcontractingCompaniesIndustries",
             description: "In which industries do the subcontracting companies operate?",
             label: "Subcontracting Companies Industries",
             component: "NaceCodeFormField",
             required: true,
-            validation: "required",
           },
           {
             showIf: (): boolean => true,
@@ -771,13 +771,13 @@ export const lksgDataModel = [
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesRawMaterials === "Yes",
             options: getDataset(DropdownDatasetIdentifier.CountryCodes),
+            validation: "required|length:1",
             placeholder: "Select Country",
             name: "highRiskCountriesRawMaterialsLocation",
             description: "From which conflict/high-risk regions do you source your raw materials?",
             label: "High Risk Countries Raw Materials Location",
             component: "MultiSelectFormField",
             required: true,
-            validation: "required",
           },
           {
             showIf: (): boolean => true,
@@ -793,13 +793,13 @@ export const lksgDataModel = [
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesActivity === "Yes",
             options: getDataset(DropdownDatasetIdentifier.CountryCodes),
+            validation: "required|length:1",
             placeholder: "Select Country",
             name: "highRiskCountries",
             description: "In which high risk countries does your company have activities?",
             label: "High Risk Countries",
             component: "MultiSelectFormField",
             required: true,
-            validation: "required",
           },
           {
             showIf: (): boolean => true,
