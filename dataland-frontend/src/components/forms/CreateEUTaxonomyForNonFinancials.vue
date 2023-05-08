@@ -299,10 +299,11 @@ import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } 
 import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
+import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -441,21 +442,7 @@ export default defineComponent({
       } catch (error) {
         this.messageCount++;
         console.error(error);
-
-        if (error instanceof AxiosError) {
-          const err = error as AxiosError;
-          const response = err.response as AxiosResponse<{ errors: { summary: string; message: string }[] }>;
-          let errSummary = JSON.stringify(err);
-          let errMessage = "";
-
-          if (response.data.errors[0]) {
-            errSummary = response.data.errors[0].summary;
-            errMessage = response.data.errors[0].message;
-          }
-          this.message = `${errSummary} ${errMessage}`;
-        } else {
-          this.message = (error as Error).message;
-        }
+        this.message = formatAxiosErrorMessage(error);
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
       }
