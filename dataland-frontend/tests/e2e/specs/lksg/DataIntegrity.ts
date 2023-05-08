@@ -49,7 +49,7 @@ describeIf(
         });
     });
 
-    it("Check if the list of production sites is displayed as expected", () => {
+    it.only("Check if the list of production sites is displayed as expected", () => {
       cy.fixture("MetaInfoDataForCompany.json").then((metaInfos) => {
         cy.fixture("CompanyInformationWithLksgData.json").then((lksgDataSets) => {
           const lksgData = prepareLksgViewIntercepts(
@@ -57,7 +57,13 @@ describeIf(
             (metaInfos as DataMetaInformation[])[0]
           );
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
-          cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
+          cy.get("table.p-datatable-table")
+            .find(`tr:contains(Production-specific)`)
+            .find(`button.p-row-toggler`)
+            .click()
+            .get(`tr:contains(List Of Production Sites)`)
+            .find(`a:contains(Show "List Of Production Sites")`)
+            .click();
           const listOfProductionSites = assertDefined(lksgData.general?.productionSpecific?.listOfProductionSites);
           if (listOfProductionSites.length < 2) {
             throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
@@ -65,7 +71,7 @@ describeIf(
           listOfProductionSites.forEach((productionSite: LksgProductionSite) => {
             if (productionSite.addressOfProductionSite && productionSite.addressOfProductionSite.streetAndHouseNumber) {
               cy.get("tbody.p-datatable-tbody").find(
-                `span:contains(${productionSite.addressOfProductionSite.streetAndHouseNumber})`
+                `p:contains(${productionSite.addressOfProductionSite.streetAndHouseNumber})`
               );
             }
           });
