@@ -259,10 +259,12 @@ describeIf(
       cy.wait("@getDataToPrefillForm");
       cy.get(`[data-test="${TEST_PDF_FILE_NAME}AlreadyUploadedContainer`).should("exist");
       cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_PATH}`, { force: true });
-      cy.get('[data-test="file-name-already-exists"]').should("exist");
+      cy.get(".p-dialog-content").should(
+        "contain.text",
+        "The following files cannot be uploaded because reports with their names already exist"
+      );
+      cy.get(".p-dialog-header-close").click();
       cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
-      cy.get('button[data-test="submitButton"]').click();
-      cy.get('[data-test="failedUploadMessage"]').should("contain.text", `${TEST_PDF_FILE_NAME}`);
     }
     /**
      * On the eu taxonomy for non-financial services edit page, this method checks that submission is denied
@@ -270,7 +272,7 @@ describeIf(
      */
     function checkThatFilesMustBeReferenced(): void {
       cy.get(`button[data-test="remove-${TEST_PDF_FILE_NAME}"]`).click();
-      cy.get('[data-test="file-name-already-exists"]').should("not.exist");
+      cy.get(".p-dialog-content").should("not.exist");
       cy.get("input[type=file]").selectFile(
         {
           contents: `../${TEST_PDF_FILE_PATH}`,
