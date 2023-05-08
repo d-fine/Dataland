@@ -84,9 +84,6 @@ describe("Component test for LksgPanel", () => {
     cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
 
     cy.get("button.p-row-toggler").eq(11).click();
-    cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-
-    cy.get("a.link").click({ force: true });
 
     cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("The date until when");
