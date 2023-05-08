@@ -21,9 +21,9 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   }
   const morePreparedFixturesBeforeManipulation = generateLksgFixture(3);
   preparedFixtures.push(generateLksgFixture(1, 0)[0]);
-  preparedFixtures.push(manipulateFixtureForVat(morePreparedFixturesBeforeManipulation[0], "2023-1", "2023-04-18"));
-  preparedFixtures.push(manipulateFixtureForVat(morePreparedFixturesBeforeManipulation[1], "2023-2", "2023-06-22"));
-  preparedFixtures.push(manipulateFixtureForVat(morePreparedFixturesBeforeManipulation[2], "2022", "2022-07-30"));
+  preparedFixtures.push(manipulateFixtureForDate(morePreparedFixturesBeforeManipulation[0], "2023-04-18"));
+  preparedFixtures.push(manipulateFixtureForDate(morePreparedFixturesBeforeManipulation[1], "2023-06-22"));
+  preparedFixtures.push(manipulateFixtureForDate(morePreparedFixturesBeforeManipulation[2], "2022-07-30"));
   return preparedFixtures;
 }
 
@@ -53,16 +53,14 @@ function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureDat
 }
 
 /**
- * Sets the company name, vat identification number, data date and reporting period in the fixture data to
+ * Sets the company name, and, data date and reporting period in the fixture data to
  * specific values needed for tests.
  * @param input Fixture data to be manipulated
- * @param vat the VAT number for the data
  * @param date the date in the format "YYYY-MM-DD"
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForVat(input: FixtureData<LksgData>, vat: string, date: string): FixtureData<LksgData> {
-  input.companyInformation.companyName = "vat-" + vat;
-  input.companyInformation.identifiers = [{ identifierType: "VatNumber", identifierValue: vat }];
+function manipulateFixtureForDate(input: FixtureData<LksgData>, date: string): FixtureData<LksgData> {
+  input.companyInformation.companyName = "LkSG-date-" + date;
   input.t.general!.masterData!.dataDate = date;
   input.reportingPeriod = date.split("-")[0];
   return input;

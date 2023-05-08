@@ -21,7 +21,7 @@
         header="KPIs"
       >
         <template #body="slotProps">
-          <span class="table-left-label">{{ slotProps.data.kpiLabel }}</span>
+          <span class="table-left-label" :data-test="slotProps.data.kpiKey">{{ slotProps.data.kpiLabel }}</span>
           <em
             class="material-icons info-icon"
             aria-hidden="true"

@@ -2,98 +2,80 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Neu Estelle",
-			"sector": "e-tailers",
+			"headquarters": "Neu Liam",
+			"headquartersPostalCode": "21309",
+			"sector": "e-services",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "r8larloeaty3ulr"
-				},
-				{
 					"identifierType": "Duns",
-					"identifierValue": "cwg52q39k"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "zpdahlacuz5o"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "fyujlkgj5"
+					"identifierValue": "lxhh8t6q4"
 				}
 			],
-			"countryCode": "AI",
+			"countryCode": "KR",
 			"companyAlternativeNames": [
-				"Ludolf, Koczulla und Wehrsen",
-				"Mallmann, Goldkühle und Kettenis"
+				"Giesche-Hügel",
+				"Poeschl OHG",
+				"Rapp KG",
+				"Spahn-Holzner"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://zärtlich-radio.net",
+			"companyLegalForm": "GmbH & Co. KG",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-01-25",
-			"numberOfEmployees": 29946,
+			"fiscalYearEnd": "2022-08-07",
+			"numberOfEmployees": 52735,
 			"referencedReports": {
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-10-23",
-					"currency": "NGN"
+					"currency": "BOB"
 				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2023-01-07",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-10-24",
 					"currency": "SHP"
 				},
-				"IntegratedReport": {
+				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-10-13",
-					"currency": "IRR"
+					"currency": "XAG"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "ReasonableAssurance",
+				"provider": "Rittweg-Waibel"
 			},
+			"scopeOfEntities": "Yes",
 			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.8412,
-					"dataSource": {
-						"page": 775,
-						"report": "AnnualReport",
-						"tagName": "systems"
-					},
-					"quality": "Audited",
-					"comment": "quantify solid state array"
+					"value": 0.0932,
+					"quality": "Estimated"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.5654,
+					"value": 0.8938,
 					"dataSource": {
-						"page": 615,
+						"page": 629,
 						"report": "AnnualReport",
-						"tagName": "markets"
+						"tagName": "architectures"
 					},
-					"quality": "Reported",
-					"comment": "program optical microchip"
+					"quality": "Incomplete",
+					"comment": "navigate open-source circuit"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.5935,
+					"value": 0.4257,
 					"dataSource": {
-						"page": 7,
-						"report": "IntegratedReport",
-						"tagName": "interfaces"
+						"page": 532,
+						"report": "SustainabilityReport",
+						"tagName": "infrastructures"
 					},
 					"quality": "Audited",
-					"comment": "quantify 1080p feed"
+					"comment": "hack wireless port"
 				}
 			}
 		},
@@ -102,213 +84,258 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Ost Cedric",
-			"sector": "communities",
+			"headquarters": "Nord Kerimdorf",
+			"headquartersPostalCode": "39786",
+			"sector": "e-business",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "9ebbysrp1nsw8fz"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "5tra42fzd"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "9ujy479qcui3"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "kwhhgl2sznirhyrel7m2"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "084h1ttc5b"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "pe915sp"
+				},
+				{
 					"identifierType": "VatNumber",
-					"identifierValue": "tq8dqgvjh"
+					"identifierValue": "wduirej22"
 				}
 			],
-			"countryCode": "FJ",
-			"companyAlternativeNames": [],
+			"countryCode": "BF",
+			"companyAlternativeNames": [
+				"Daudrich GmbH & Co. KG",
+				"Fenner GmbH"
+			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-05-24",
-			"numberOfEmployees": 19981,
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-12-31",
+			"numberOfEmployees": 77943,
 			"referencedReports": {
-				"ESEFReport": {
+				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-07-08",
-					"currency": "MVR"
+					"isGroupLevel": "NA",
+					"reportDate": "2022-11-01",
+					"currency": "MAD"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-07-28",
-					"currency": "LRD"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-12-12",
-					"currency": "SBD"
+					"isGroupLevel": "No",
+					"reportDate": "2023-02-20",
+					"currency": "PEN"
 				}
 			},
 			"assurance": {
 				"assurance": "ReasonableAssurance",
+				"provider": "Tonat KG",
 				"dataSource": {
-					"page": 1166,
-					"report": "ESEFReport",
-					"tagName": "functionalities"
+					"page": 996,
+					"report": "IntegratedReport",
+					"tagName": "communities"
 				}
 			},
+			"scopeOfEntities": "NA",
 			"opex": {
 				"totalAmount": {
-					"value": 154796.8,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.4817,
-					"dataSource": {
-						"page": 207,
-						"report": "AnnualReport",
-						"tagName": "supply-chains"
-					},
-					"quality": "Reported",
-					"comment": "transmit bluetooth system"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 751279.87,
-					"dataSource": {
-						"page": 180,
-						"report": "IntegratedReport",
-						"tagName": "systems"
-					},
-					"quality": "Incomplete",
-					"comment": "hack neural program"
-				},
-				"eligiblePercentage": {
-					"value": 0.0866,
-					"dataSource": {
-						"page": 896,
-						"report": "IntegratedReport",
-						"tagName": "niches"
-					},
-					"quality": "Incomplete",
-					"comment": "back up optical array"
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 955749.05,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.5229,
+					"value": 149002.4,
 					"quality": "Incomplete"
-				}
-			}
-		},
-		"reportingPeriod": "2019-Q3"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Tjarkstadt",
-			"headquartersPostalCode": "58172",
-			"sector": "users",
-			"identifiers": [
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "8y61mjv"
-				}
-			],
-			"countryCode": "IL",
-			"companyAlternativeNames": [
-				"Conrad AG"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-06-28",
-			"numberOfEmployees": 75272,
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Balzer OHG"
-			},
-			"scopeOfEntities": "No",
-			"activityLevelReporting": "Yes",
-			"opex": {
-				"totalAmount": {
-					"value": 606154.39,
-					"dataSource": {
-						"page": 980,
-						"report": "AnnualReport",
-						"tagName": "metrics"
-					},
-					"quality": "Estimated",
-					"comment": "override bluetooth microchip"
 				},
-				"alignedPercentage": {
-					"value": 0.9067,
+				"eligiblePercentage": {
+					"value": 0.0368,
 					"dataSource": {
 						"page": 952,
-						"report": "IntegratedReport",
-						"tagName": "architectures"
+						"report": "AnnualReport",
+						"tagName": "interfaces"
 					},
 					"quality": "Reported",
-					"comment": "synthesize optical monitor"
-				},
-				"eligiblePercentage": {
-					"value": 0.3457,
-					"dataSource": {
-						"page": 1135,
-						"report": "ESEFReport",
-						"tagName": "networks"
-					},
-					"quality": "Reported",
-					"comment": "transmit redundant system"
+					"comment": "generate solid state program"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 904886.56,
+					"value": 888632.27,
 					"dataSource": {
-						"page": 318,
-						"report": "AnnualReport",
-						"tagName": "web services"
-					},
-					"quality": "Estimated",
-					"comment": "copy online capacitor"
-				},
-				"alignedPercentage": {
-					"value": 0.9559,
-					"dataSource": {
-						"page": 868,
-						"report": "ESEFReport",
-						"tagName": "web services"
+						"page": 320,
+						"report": "IntegratedReport",
+						"tagName": "convergence"
 					},
 					"quality": "Reported",
-					"comment": "navigate multi-byte array"
+					"comment": "synthesize multi-byte transmitter"
 				},
 				"eligiblePercentage": {
-					"value": 0.9915,
-					"dataSource": {
-						"page": 379,
-						"report": "IntegratedReport",
-						"tagName": "systems"
-					},
-					"quality": "Estimated",
-					"comment": "program wireless interface"
+					"value": 0.624,
+					"quality": "Incomplete"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"quality": "NA"
-				},
-				"alignedPercentage": {
-					"quality": "NA"
+					"value": 578017.08,
+					"dataSource": {
+						"page": 944,
+						"report": "AnnualReport",
+						"tagName": "technologies"
+					},
+					"quality": "Reported",
+					"comment": "hack back-end monitor"
 				},
 				"eligiblePercentage": {
-					"value": 0.0635,
+					"value": 0.8109,
 					"dataSource": {
-						"page": 596,
-						"report": "ESEFReport",
-						"tagName": "web services"
+						"page": 1186,
+						"report": "AnnualReport",
+						"tagName": "schemas"
 					},
-					"quality": "Audited",
-					"comment": "override cross-platform firewall"
+					"quality": "Estimated",
+					"comment": "quantify open-source application"
 				}
 			}
 		},
 		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Alt Loris",
+			"sector": "infomediaries",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "pjnbtfo822ervi3"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "m2r0ikbvo"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "z0ybhus14uki"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "vv8apa0mmaesz1gulp8j"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "t55aqow"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "g08wun60h"
+				}
+			],
+			"countryCode": "GS",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://pittoresk-biathlon.org",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-03-31",
+			"numberOfEmployees": 93194,
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "No",
+			"activityLevelReporting": "No",
+			"opex": {
+				"totalAmount": {
+					"value": 938228.76,
+					"quality": "Incomplete"
+				},
+				"alignedPercentage": {
+					"value": 0.7263,
+					"dataSource": {
+						"page": 430,
+						"report": "AnnualReport",
+						"tagName": "ROI"
+					},
+					"quality": "Reported",
+					"comment": "synthesize haptic protocol"
+				},
+				"eligiblePercentage": {
+					"value": 0.3957,
+					"dataSource": {
+						"page": 443,
+						"report": "SustainabilityReport",
+						"tagName": "content"
+					},
+					"quality": "Audited",
+					"comment": "index cross-platform alarm"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 853766.38,
+					"dataSource": {
+						"page": 328,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
+					},
+					"quality": "Incomplete",
+					"comment": "connect back-end capacitor"
+				},
+				"alignedPercentage": {
+					"value": 0.0254,
+					"dataSource": {
+						"page": 1134,
+						"report": "IntegratedReport",
+						"tagName": "action-items"
+					},
+					"quality": "Reported",
+					"comment": "hack mobile sensor"
+				},
+				"eligiblePercentage": {
+					"value": 0.2867,
+					"dataSource": {
+						"page": 904,
+						"report": "IntegratedReport",
+						"tagName": "markets"
+					},
+					"quality": "Reported",
+					"comment": "index auxiliary card"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 253691.16,
+					"dataSource": {
+						"page": 1014,
+						"report": "IntegratedReport",
+						"tagName": "technologies"
+					},
+					"quality": "Reported",
+					"comment": "copy back-end panel"
+				},
+				"alignedPercentage": {
+					"value": 0.8048,
+					"quality": "Estimated"
+				},
+				"eligiblePercentage": {
+					"value": 0.5348,
+					"quality": "Incomplete"
+				}
+			}
+		},
+		"reportingPeriod": "2021-Q2"
 	}
 ]
