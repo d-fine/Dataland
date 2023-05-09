@@ -28,6 +28,9 @@ export const uploadReports = {
   removeSingleFileFromUploadList(): void {
     cy.get('button[data-test="files-to-upload-remove"]').click();
   },
+  removeAllFilesFromUploadList(): void {
+    cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).click());
+  },
   removeUploadedReportFromReportInfos(filename: string): Cypress.Chainable {
     return cy.get(`[data-test="${filename}AlreadyUploadedContainer"] button`).click();
   },
@@ -36,5 +39,8 @@ export const uploadReports = {
     cy.get('[data-test="report-info"]').should("not.exist");
     cy.get('input[name="reference"]').should("not.exist");
     cy.get('input[name="reportDate"]').should("not.exist");
+  },
+  specificReportInfoIsNotListed(filename: string): void {
+    cy.get(`[data-test="${filename}ToUploadContainer"]`).should("not.exist");
   },
 };
