@@ -1,5 +1,5 @@
 <template>
-  <FormKit type="group" :name="name!" :label="name!">
+  <FormKit type="group" :name="name" :label="name">
     <FormKit
       type="text"
       name="streetAndHouseNumber"

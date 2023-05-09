@@ -18,7 +18,7 @@
       type="list"
       ref="formkitMultiSelectFormElement"
       :validation-label="validationLabel"
-      :validation="validation!"
+      :validation="validation"
       :name="name"
       v-model="selections"
       outer-class="hidden-input"
