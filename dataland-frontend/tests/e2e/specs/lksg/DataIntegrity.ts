@@ -35,7 +35,7 @@ describeIf(
       cy.get(`span[data-test=${groupKey}]`).siblings("button").last().click();
     }
 
-    it.only("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
+    it("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
       getKeycloakToken(uploader_name, uploader_pw)
