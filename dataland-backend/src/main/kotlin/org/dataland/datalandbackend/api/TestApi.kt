@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  */
 @Hidden
 @RequestMapping("/testing")
-interface TestApi {
+fun interface TestApi {
     /**
      * A dummy function that returns a 500 response to test the internal server error handling behaviour
      */

@@ -66,7 +66,7 @@ export default defineComponent({
 
   computed: {
     currentRefreshTokenInSharedStore(): string | undefined {
-      return useSharedSessionStateStore().refreshToken || undefined;
+      return useSharedSessionStateStore().refreshToken ?? undefined;
     },
     displayedHeader(): string | undefined {
       switch (this.sessionDialogMode) {
