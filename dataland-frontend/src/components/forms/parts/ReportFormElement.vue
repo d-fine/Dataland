@@ -75,11 +75,9 @@ export default defineComponent({
     },
     reference: {
       type: String,
-      required: true,
     },
     reportDate: {
       type: String,
-      required: true,
     },
   },
   watch: {
@@ -92,7 +90,7 @@ export default defineComponent({
       if (this.reportDateAsDate) {
         return getHyphenatedDate(this.reportDateAsDate);
       }
-      return "";
+      return ""; // TODO maybe (only maybe!)  we can even send UNDEFINED here
     },
   },
   emits: ["reportingDateChanged"],

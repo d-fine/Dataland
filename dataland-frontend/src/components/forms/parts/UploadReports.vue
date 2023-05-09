@@ -34,18 +34,16 @@
             :key="file.name + index"
             class="flex w-full align-items-center file-upload-item"
           >
-            <div>
-              <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ file.name }}</span>
-              <div data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
-                {{ formatBytesUserFriendly(file.size, 1) }}
-              </div>
-              <PrimeButton
-                data-test="files-to-upload-remove"
-                icon="pi pi-times"
-                @click="removeReportFromFilesToUpload(removeFileCallback, index)"
-                class="p-button-rounded"
-              />
+            <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ file.name }}</span>
+            <div data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
+              {{ formatBytesUserFriendly(file.size, 1) }}
             </div>
+            <PrimeButton
+              data-test="files-to-upload-remove"
+              icon="pi pi-times"
+              @click="removeReportFromFilesToUpload(removeFileCallback, index)"
+              class="p-button-rounded"
+            />
           </div>
         </div>
       </template>
@@ -114,7 +112,6 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import FilesDialog from "@/components/general/ElementsDialog.vue";
-import OverlayPanel from "primevue/overlaypanel";
 
 export default defineComponent({
   name: "UploadReports",
@@ -180,15 +177,14 @@ export default defineComponent({
       const selectedFilesByUser = event.files as File[];
       const indexOfLastSelectedFile = selectedFilesByUser.length - 1;
       const lastSelectedFile = selectedFilesByUser[indexOfLastSelectedFile];
-      if (this.isFileNameAlreadyExistingInUploadedReports(lastSelectedFile.name)) {
+      if (this.isFileNameAlreadyExistingForAnUploadedOrSelectedReport(lastSelectedFile.name)) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         this.$refs.fileUpload.remove(indexOfLastSelectedFile);
         this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
       } else {
-        this.reportsToUpload = [
-          ...this.completeInformationAboutSelectedFileWithAdditionalFields(selectedFilesByUser), // TODO might be that we dont need the "complete" function at all
-        ] as (CompanyReportUploadModel & File)[];
+        this.reportsToUpload.push(lastSelectedFile as CompanyReportUploadModel & File);
         this.reportsToUpload = await Promise.all(
+          // TODO you don't need to recalculate all hashes,  just for the new one!
           this.reportsToUpload.map(async (extendedFile) => {
             extendedFile.reference = await this.calculateSha256HashFromFile(extendedFile);
             return extendedFile;
@@ -225,7 +221,7 @@ export default defineComponent({
      * @param containingReports which set of files will be edited
      */
     updateReportDateHandler(newDate: Date, index: number, containingReports: CompanyReportUploadModel[]): void {
-      containingReports[index].reportDate = getHyphenatedDate(newDate);
+      containingReports[index].reportDate = getHyphenatedDate(newDate); // TODO probably not even needed
     },
     /**
      * Uploads the filed that are to be uploaded if they are not already available to dataland
@@ -277,7 +273,9 @@ export default defineComponent({
           header: "Invalid File Selection",
         },
         data: {
-          message: "The following file cannot be uploaded because a report with its name already exists:",
+          message:
+            "The following file cannot be selected because a report with its name is already selected " +
+            "for upload or even already uploaded:",
           listOfElementNames: [nameOfFileThatHasDuplicate],
         },
       });
@@ -288,9 +286,12 @@ export default defineComponent({
      * @param fullFileName is the full file name with its prefix that should be checked
      * @returns a boolean stating if the file name is among the files that shall be uploaded or not
      */
-    isFileNameAlreadyExistingInUploadedReports(fullFileName: string): boolean {
+    isFileNameAlreadyExistingForAnUploadedOrSelectedReport(fullFileName: string): boolean {
       const fileNameWithoutSuffix = fullFileName.split(".")[0];
-      return this.uploadedReports.some((uploadedReport) => uploadedReport.name === fileNameWithoutSuffix);
+      return (
+        this.uploadedReports.some((uploadedReport) => uploadedReport.name === fileNameWithoutSuffix) ||
+        this.reportsToUpload.some((reportToUpload) => reportToUpload.name === fullFileName)
+      );
     },
 
     /**
@@ -319,7 +320,6 @@ export default defineComponent({
       const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
       return this.toHex(hashBuffer);
     },
-
     /**
      *  helper to encode a hash of type buffer in hex
      * @param [buffer] the buffer to encode in hex
@@ -329,11 +329,11 @@ export default defineComponent({
       const array = Array.from(new Uint8Array(buffer)); // convert buffer to byte array
       return array.map((b) => b.toString(16).padStart(2, "0")).join(""); // convert bytes to hex string
     },
-  },
+  }, // TODO investigate if multiple "." break our upload
 });
 interface CompanyReportUploadModel extends CompanyReport {
   name: string;
-  reportDate: string;
+  reportDate: string; // TODO probably not even needed
 }
 </script>
 

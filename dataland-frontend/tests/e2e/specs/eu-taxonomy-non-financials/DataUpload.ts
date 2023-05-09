@@ -260,10 +260,7 @@ describeIf(
       cy.wait("@getDataToPrefillForm");
       cy.get(`[data-test="${TEST_PDF_FILE_NAME}AlreadyUploadedContainer`).should("exist");
       cy.get("input[type=file]").selectFile(`../${TEST_PDF_FILE_PATH}`, { force: true });
-      cy.get(".p-dialog-content").should(
-        "contain.text",
-        "The following files cannot be uploaded because reports with their names already exist"
-      );
+      cy.get(".p-dialog-content").should("contain.text", "already uploaded");
       cy.get(".p-dialog-header-close").click();
       cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
     }
