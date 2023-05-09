@@ -24,6 +24,7 @@ import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/L
 import { Subcategory } from "@/utils/GenericFrameworkTypes";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { kpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -181,14 +182,4 @@ export default defineComponent({
     },
   },
 });
-
-interface kpiDataObject {
-  subcategoryKey: string;
-  subcategoryLabel: string;
-  kpiKey: string;
-  kpiLabel: string;
-  kpiDescription: string;
-
-  [index: string]: string;
-}
 </script>

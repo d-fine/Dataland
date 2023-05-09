@@ -83,6 +83,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { kpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
 export default defineComponent({
   name: "LksgCompanyDataTable",
@@ -115,7 +116,7 @@ export default defineComponent({
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;
     document.addEventListener("click", (e) => {
       const id = (e.target as Element).id;
-      if (this.kpiDataObjects.some((dataObject: kpiDataObject) => dataObject.subcategoryKey === id)) {
+      if (this.kpiDataObjects.some((dataObject) => (dataObject as kpiDataObject).subcategoryKey === id)) {
         const index = this.expandedRowGroups.indexOf(id);
         if (index === -1) this.expandedRowGroups.push(id);
         else this.expandedRowGroups.splice(index, 1);
