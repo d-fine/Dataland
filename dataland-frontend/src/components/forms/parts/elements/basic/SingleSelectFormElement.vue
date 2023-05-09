@@ -2,7 +2,7 @@
   <FormKit
     type="select"
     :validation-label="validationLabel"
-    :validation="validation!"
+    :validation="validation"
     :placeholder="placeholder"
     :name="name"
     :options="options"

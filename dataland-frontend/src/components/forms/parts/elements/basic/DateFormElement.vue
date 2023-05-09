@@ -13,7 +13,7 @@
   <FormKit
     type="text"
     :validation-label="validationLabel"
-    :validation="validation!"
+    :validation="validation"
     :name="name"
     v-model="dateFormatted"
     outer-class="hidden-input"

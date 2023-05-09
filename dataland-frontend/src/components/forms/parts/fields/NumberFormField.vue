@@ -1,11 +1,11 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
+    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
     <FormKit
       type="number"
-      :name="name!"
+      :name="name"
       :validation-label="validationLabel ?? displayName"
-      :validation="validation!"
+      :validation="validation"
       :placeholder="placeholder"
       inner-class="short"
     />

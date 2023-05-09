@@ -1,10 +1,10 @@
 <template>
   <FormKit
     type="radio"
-    :name="name!"
+    :name="name"
     :validation-label="validationLabel"
     :options="options"
-    :validation="validation!"
+    :validation="validation"
     :outer-class="{
       'yes-no-radio': true,
     }"
@@ -21,7 +21,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FormKit } from "@formkit/vue";
-import { Option } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   name: "RadioButtonsFormElement",
@@ -36,7 +35,7 @@ export default defineComponent({
       default: "",
     },
     options: {
-      type: Array as () => Array<Option>,
+      type: Array as () => Array<typeof Option>,
       required: true,
     },
     validation: {
