@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
@@ -93,14 +93,14 @@ export default defineComponent({
   },
   data() {
     return {
-      kpiDataObjectsToDisplay: [],
+      kpiDataObjectsToDisplay: [] as kpiDataObject[],
       expandedRowGroups: ["_masterData"],
       listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
     };
   },
   props: {
     kpiDataObjects: {
-      type: Array,
+      type: Array as PropType<Array<kpiDataObject>>,
       default: () => [],
     },
     reportingPeriodsOfDataSets: {
@@ -114,14 +114,7 @@ export default defineComponent({
   },
   mounted() {
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;
-    document.addEventListener("click", (e) => {
-      const id = (e.target as Element).id;
-      if (this.kpiDataObjects.some((dataObject) => (dataObject as kpiDataObject).subcategoryKey === id)) {
-        const index = this.expandedRowGroups.indexOf(id);
-        if (index === -1) this.expandedRowGroups.push(id);
-        else this.expandedRowGroups.splice(index, 1);
-      }
-    });
+    document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
   },
   methods: {
     /**
@@ -142,6 +135,23 @@ export default defineComponent({
           tableType: kpiKey,
         },
       });
+    },
+    /**
+     * Enables groupRowExpansion (and collaps) when clicking on the whole header row
+     * @param event a click event
+     */
+    expandRowGroupOnHeaderClick(event: Event) {
+      const id = (event.target as Element).id;
+
+      const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
+        this.kpiDataObjects.some((dataObject) => dataObject.subcategoryKey === child.id)
+      )[0];
+
+      if (matchingChild || this.kpiDataObjects.some((dataObject) => dataObject.subcategoryKey === id)) {
+        const index = this.expandedRowGroups.indexOf(matchingChild?.id ?? id);
+        if (index === -1) this.expandedRowGroups.push(matchingChild?.id ?? id);
+        else this.expandedRowGroups.splice(index, 1);
+      }
     },
   },
 });
