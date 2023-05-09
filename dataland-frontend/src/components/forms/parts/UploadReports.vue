@@ -182,14 +182,10 @@ export default defineComponent({
         this.$refs.fileUpload.remove(indexOfLastSelectedFile);
         this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
       } else {
-        this.reportsToUpload.push(lastSelectedFile as CompanyReportUploadModel & File);
-        this.reportsToUpload = await Promise.all(
-          // TODO you don't need to recalculate all hashes,  just for the new one!
-          this.reportsToUpload.map(async (extendedFile) => {
-            extendedFile.reference = await this.calculateSha256HashFromFile(extendedFile);
-            return extendedFile;
-          })
-        );
+        const lastSelectedFileHash = await this.calculateSha256HashFromFile(lastSelectedFile);
+        const extendedLastSelectedFile = lastSelectedFile as CompanyReportUploadModel & File;
+        extendedLastSelectedFile.reference = lastSelectedFileHash;
+        this.reportsToUpload.push(extendedLastSelectedFile);
         this.emitRreferenceableFilesChangedEvent();
       }
     },
