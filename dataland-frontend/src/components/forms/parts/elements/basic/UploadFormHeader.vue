@@ -3,6 +3,7 @@
     <h5>{{ name }}</h5>
     <span class="asterisk" v-if="isRequired">*</span>
     <em
+      v-if="name !== ''"
       class="material-icons info-icon"
       aria-hidden="true"
       :title="name"
@@ -38,7 +39,4 @@ export default defineComponent({
     },
   },
 });
-
-// TODO when setting the title of the <em /> to an empty string it is not displayed (at least in chrome)
-// TODO i think this is preferable
 </script>

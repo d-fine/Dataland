@@ -82,7 +82,6 @@ import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 import { kpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
 export default defineComponent({
@@ -95,7 +94,6 @@ export default defineComponent({
     return {
       kpiDataObjectsToDisplay: [] as kpiDataObject[],
       expandedRowGroups: ["_masterData"],
-      listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
     };
   },
   props: {
