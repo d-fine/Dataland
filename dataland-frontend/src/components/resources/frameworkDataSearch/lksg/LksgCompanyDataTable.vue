@@ -68,9 +68,9 @@
 
       <Column field="subcategoryKey" header="Impact Area"></Column>
       <template #groupheader="slotProps">
-        <span :data-test="slotProps.data.subcategoryKey">{{
-          slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey
-        }}</span>
+        <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
+          {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
+        </span>
       </template>
     </DataTable>
   </div>
@@ -113,6 +113,14 @@ export default defineComponent({
   },
   mounted() {
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;
+    document.addEventListener("click", (e) => {
+      const id = (e.target as Element).id;
+      if (this.kpiDataObjects.some((dataObject: kpiDataObject) => dataObject.subcategoryKey === id)) {
+        const index = this.expandedRowGroups.indexOf(id);
+        if (index === -1) this.expandedRowGroups.push(id);
+        else this.expandedRowGroups.splice(index, 1);
+      }
+    });
   },
   methods: {
     /**
