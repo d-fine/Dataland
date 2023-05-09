@@ -199,6 +199,7 @@ describeIf(
               checkAllDataProvided();
               clickEditButtonAndEditAndValidateChange(storedCompany.companyId).then((templateDataId) => {
                 checkFileWithExistingFilenameCanNotBeResubmitted();
+                checkExistingFilenameDialogDidNotBreakSubsequentUploads();
                 checkThatFilesMustBeReferenced();
                 checkThatFilesWithSameContentDontGetReuploaded(storedCompany.companyId, templateDataId);
                 checkIfLinkedReportsAreDownloadable(storedCompany.companyId);
@@ -266,6 +267,18 @@ describeIf(
       cy.get(".p-dialog-header-close").click();
       cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
     }
+
+    /**
+     * Adds a report to upload and removes it again afterwards checking that no dialog is regarding a duplicate file name
+     * is wrongly triggered and that the file is correclty removed.
+     */
+    function checkExistingFilenameDialogDidNotBreakSubsequentUploads(): void {
+      uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
+      cy.get(".p-dialog-content").should("not.exist");
+      uploadReports.removeAllFilesFromUploadList();
+      uploadReports.specificReportInfoIsNotListed(`${TEST_PDF_FILE_NAME}2`);
+    }
+
     /**
      * On the eu taxonomy for non-financial services edit page, this method checks that submission is denied
      * if a report is not referenced
