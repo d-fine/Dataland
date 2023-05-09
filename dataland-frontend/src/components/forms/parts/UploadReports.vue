@@ -11,7 +11,6 @@
       ref="fileUpload"
       accept=".pdf"
       @select="handleFilesSelected"
-      :multiple="true"
       :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
       :auto="false"
@@ -35,7 +34,7 @@
             :key="file.name + index"
             class="flex w-full align-items-center file-upload-item"
           >
-            <div v-if="!isFileNameAlreadyExistingInUploadedReports(file.name)">
+            <div>
               <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ file.name }}</span>
               <div data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
                 {{ formatBytesUserFriendly(file.size, 1) }}
@@ -114,7 +113,8 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
-import FilesDialog from "@/components/general/FilesDialog.vue";
+import FilesDialog from "@/components/general/ElementsDialog.vue";
+import OverlayPanel from "primevue/overlaypanel";
 
 export default defineComponent({
   name: "UploadReports",
@@ -165,30 +165,37 @@ export default defineComponent({
     /**
      * Emits event that referenceable files changed
      */
-    referenceableFilesChanged() {
+    emitRreferenceableFilesChangedEvent() {
       this.$emit("referenceableFilesChanged", this.allReferenceableReportsFilenames);
     },
     /**
-     * Add files to object reportsToUpload
+     * Handles selection of a file by the user. First it checks if the file name is already taken.
+     * If yes, the selected file is removed again and a popup with an error message is shown.
+     * Else the file is added to the reports that shall be uploaded, then the sha256 hashes are calculated and added
+     * to the respective files.
      * @param event full event object containing the files
-     * @param event.originalEvent event information
      * @param event.files files
      */
     async handleFilesSelected(event: FileUploadSelectEvent): void {
       const selectedFilesByUser = event.files as File[];
-      const selectedFilesByUserWithoutDuplicates = this.filterListToKeepOnlyNonDuplicateFiles(
-        selectedFilesByUser
-      ) as (CompanyReportUploadModel & File)[];
-      this.reportsToUpload = [
-        ...this.completeInformationAboutSelectedFileWithAdditionalFields(selectedFilesByUserWithoutDuplicates),
-      ] as (CompanyReportUploadModel & File)[];
-      this.reportsToUpload = await Promise.all(
-        this.reportsToUpload.map(async (extendedFile) => {
-          extendedFile.reference = await this.calculateSha256HashFromFile(extendedFile);
-          return extendedFile;
-        })
-      );
-      this.referenceableFilesChanged();
+      const indexOfLastSelectedFile = selectedFilesByUser.length - 1;
+      const lastSelectedFile = selectedFilesByUser[indexOfLastSelectedFile];
+      if (this.isFileNameAlreadyExistingInUploadedReports(lastSelectedFile.name)) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        this.$refs.fileUpload.remove(indexOfLastSelectedFile);
+        this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
+      } else {
+        this.reportsToUpload = [
+          ...this.completeInformationAboutSelectedFileWithAdditionalFields(selectedFilesByUser), // TODO might be that we dont need the "complete" function at all
+        ] as (CompanyReportUploadModel & File)[];
+        this.reportsToUpload = await Promise.all(
+          this.reportsToUpload.map(async (extendedFile) => {
+            extendedFile.reference = await this.calculateSha256HashFromFile(extendedFile);
+            return extendedFile;
+          })
+        );
+        this.emitRreferenceableFilesChangedEvent();
+      }
     },
     /**
      * Remove report from files uploaded
@@ -198,7 +205,7 @@ export default defineComponent({
     removeReportFromFilesToUpload(fileRemoveCallback: (x: number) => void, indexOfFileToRemove: number) {
       fileRemoveCallback(indexOfFileToRemove);
       this.reportsToUpload.splice(indexOfFileToRemove, 1);
-      this.referenceableFilesChanged();
+      this.emitRreferenceableFilesChangedEvent();
     },
 
     /**
@@ -208,7 +215,7 @@ export default defineComponent({
      */
     removeReportFromUploadedReports(indexOfFileToRemove: number) {
       this.uploadedReports.splice(indexOfFileToRemove, 1);
-      this.referenceableFilesChanged();
+      this.emitRreferenceableFilesChangedEvent();
     },
 
     /**
@@ -233,7 +240,7 @@ export default defineComponent({
         if (!fileIsAlreadyInStorage) {
           const backendComputedHash = (await documentUploadControllerControllerApi.postDocument(file)).data.documentId;
           if (file.reference !== backendComputedHash) {
-            throw Error("Locally computed document hash does not coincede with the on received by the upload request!");
+            throw Error("Locally computed document hash does not concede with the one received by the upload request!");
           }
         }
       }
@@ -253,39 +260,27 @@ export default defineComponent({
             isGroupLevel: referencedReportsForDataId[key].isGroupLevel,
           });
         }
-        this.referenceableFilesChanged();
+        this.emitRreferenceableFilesChangedEvent();
       }
     },
 
     /**
-     * Filters files out if their names already exist among the already uploaded reports for the current dataset.
-     * @param listOfSelectedFiles is the list to filter
-     * @returns the filtered list.
+     * Opens a modal and explains the user that the selected file has a name for which a report already exists.
+     * @param nameOfFileThatHasDuplicate contains the file name which caused the error
      */
-    filterListToKeepOnlyNonDuplicateFiles(listOfSelectedFiles: File[]): File[] {
-      const listOfSelectedFilesWithoutDuplicates: File[] = [];
-      const listOfDuplicates: File[] = [];
-      listOfSelectedFiles.forEach((selectedFile) => {
-        if (this.isFileNameAlreadyExistingInUploadedReports(selectedFile.name)) {
-          listOfDuplicates.push(selectedFile);
-        } else {
-          listOfSelectedFilesWithoutDuplicates.push(selectedFile);
-        }
+    openModalToDisplayDuplicateNameError(nameOfFileThatHasDuplicate: string) {
+      this.$dialog.open(FilesDialog, {
+        props: {
+          modal: true,
+          closable: true,
+          dismissableMask: true,
+          header: "Invalid File Selection",
+        },
+        data: {
+          message: "The following file cannot be uploaded because a report with its name already exists:",
+          listOfElementNames: [nameOfFileThatHasDuplicate],
+        },
       });
-      const strings = listOfDuplicates.map((file) => file.name);
-      if (listOfDuplicates.length > 0) {
-        this.$dialog.open(FilesDialog, {
-          props: {
-            modal: true,
-            closable: true,
-          },
-          data: {
-            message: "The following files cannot be uploaded because reports with their names already exist:",
-            listOfFileNames: strings,
-          },
-        });
-      }
-      return listOfSelectedFilesWithoutDuplicates;
     },
 
     /**
@@ -304,14 +299,12 @@ export default defineComponent({
      * @returns List of files with additional fields
      */
     completeInformationAboutSelectedFileWithAdditionalFields(
+      // TODO make sure if this is still needed
       reportsThatShouldBeCompleted: (CompanyReportUploadModel & File)[]
     ): (CompanyReportUploadModel & File)[] {
       return reportsThatShouldBeCompleted.map((reportToComplete) => {
-        const fileNameOfReportToComplete = reportToComplete.name.split(".")[0];
-        if (!this.uploadedReports.some((report) => report.name === fileNameOfReportToComplete)) {
-          reportToComplete.reportDate = reportToComplete.reportDate ?? "";
-          reportToComplete.reference = reportToComplete.reference ?? "";
-        }
+        reportToComplete.reportDate = reportToComplete.reportDate ?? "";
+        reportToComplete.reference = reportToComplete.reference ?? "";
         return reportToComplete;
       });
     },

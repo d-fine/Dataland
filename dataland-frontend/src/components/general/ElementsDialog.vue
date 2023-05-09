@@ -1,8 +1,8 @@
 <template>
   <div>{{ message }}</div>
-  <div v-for="(fileName, index) of listOfFileNames" :key="fileName + index">
+  <div v-for="(name, index) of listOfElementNames" :key="name + index">
     <br />
-    <div>{{ fileName }}</div>
+    <div>{{ name }}</div>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default defineComponent({
   data() {
     return {
       message: undefined as undefined | string,
-      listOfFileNames: undefined as undefined | string[],
+      listOfElementNames: undefined as undefined | string[],
     };
   },
 
@@ -33,10 +33,10 @@ export default defineComponent({
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       const dialogRefData = dialogRefToDisplay.data as {
         message: string;
-        listOfFileNames: string[];
+        listOfElementNames: string[];
       };
       this.message = dialogRefData.message;
-      this.listOfFileNames = dialogRefData.listOfFileNames;
+      this.listOfElementNames = dialogRefData.listOfElementNames;
     },
   },
 });
