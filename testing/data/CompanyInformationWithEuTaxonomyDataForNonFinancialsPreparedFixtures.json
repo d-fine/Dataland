@@ -2,80 +2,81 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Neu Liam",
-			"headquartersPostalCode": "21309",
-			"sector": "e-services",
+			"headquarters": "Ost Charlotte",
+			"headquartersPostalCode": "98800",
+			"sector": "schemas",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "lxhh8t6q4"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "w337js8lcov8ol4"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "steiovnkvz3qrv6hg40x"
 				}
 			],
-			"countryCode": "KR",
-			"companyAlternativeNames": [
-				"Giesche-Hügel",
-				"Poeschl OHG",
-				"Rapp KG",
-				"Spahn-Holzner"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
+			"countryCode": "GM",
+			"companyAlternativeNames": [],
+			"website": "http://vortrefflich-politik.com",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-08-07",
-			"numberOfEmployees": 52735,
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-12-31",
+			"numberOfEmployees": 29946,
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "BOB"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-10-24",
-					"currency": "SHP"
-				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "XAG"
+					"isGroupLevel": "No",
+					"reportDate": "2022-10-14",
+					"currency": "GTQ"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-12-14",
+					"currency": "XBB"
 				}
 			},
 			"assurance": {
 				"assurance": "ReasonableAssurance",
-				"provider": "Rittweg-Waibel"
+				"provider": "Wessel-Montag",
+				"dataSource": {
+					"page": 209,
+					"report": "SustainabilityReport",
+					"tagName": "portals"
+				}
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "No",
+			"reportingObligation": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.0932,
-					"quality": "Estimated"
+					"value": 0.076,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.8938,
+					"value": 0.3828,
 					"dataSource": {
-						"page": 629,
-						"report": "AnnualReport",
-						"tagName": "architectures"
+						"page": 448,
+						"report": "SustainabilityReport",
+						"tagName": "e-services"
 					},
-					"quality": "Incomplete",
-					"comment": "navigate open-source circuit"
+					"quality": "Reported",
+					"comment": "synthesize back-end capacitor"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.4257,
+					"value": 0.8284,
 					"dataSource": {
-						"page": 532,
+						"page": 1020,
 						"report": "SustainabilityReport",
-						"tagName": "infrastructures"
+						"tagName": "web services"
 					},
-					"quality": "Audited",
-					"comment": "hack wireless port"
+					"quality": "Reported",
+					"comment": "reboot digital microchip"
 				}
 			}
 		},
@@ -84,258 +85,274 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Nord Kerimdorf",
-			"headquartersPostalCode": "39786",
-			"sector": "e-business",
+			"headquarters": "Alt Luciadorf",
+			"headquartersPostalCode": "52100",
+			"sector": "action-items",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "9ebbysrp1nsw8fz"
+					"identifierValue": "2rp5nsv0lczoumb"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "5tra42fzd"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "9ujy479qcui3"
+					"identifierValue": "auwmw8ddn"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "kwhhgl2sznirhyrel7m2"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "084h1ttc5b"
+					"identifierValue": "ll7jt0xdqm6yr5rn2zb6"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "pe915sp"
+					"identifierValue": "5xywytl"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "wduirej22"
+					"identifierValue": "4sxv5d4hq"
 				}
 			],
-			"countryCode": "BF",
+			"countryCode": "NG",
 			"companyAlternativeNames": [
-				"Daudrich GmbH & Co. KG",
-				"Fenner GmbH"
+				"Bauer-Hirt",
+				"Dück, Cleem und Mebold",
+				"Ghirmai, Noack und Spöttel",
+				"Scherbarth OHG"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
+			"companyLegalForm": "Public Limited Company (PLC)",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-12-31",
-			"numberOfEmployees": 77943,
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-05-11",
+			"numberOfEmployees": 4331,
 			"referencedReports": {
-				"AnnualReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-11-01",
-					"currency": "MAD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2023-02-20",
-					"currency": "PEN"
+					"isGroupLevel": "Yes",
+					"currency": "MOP"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Tonat KG",
-				"dataSource": {
-					"page": 996,
-					"report": "IntegratedReport",
-					"tagName": "communities"
-				}
+				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
+			"scopeOfEntities": "No",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 149002.4,
-					"quality": "Incomplete"
-				},
-				"eligiblePercentage": {
-					"value": 0.0368,
+					"value": 116291.71,
 					"dataSource": {
-						"page": 952,
-						"report": "AnnualReport",
-						"tagName": "interfaces"
+						"page": 824,
+						"report": "SustainabilityReport",
+						"tagName": "e-commerce"
 					},
 					"quality": "Reported",
-					"comment": "generate solid state program"
+					"comment": "generate virtual driver"
+				},
+				"eligiblePercentage": {
+					"value": 0.317,
+					"dataSource": {
+						"page": 592,
+						"report": "SustainabilityReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Estimated",
+					"comment": "transmit digital alarm"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 888632.27,
+					"value": 942196.82,
 					"dataSource": {
-						"page": 320,
-						"report": "IntegratedReport",
-						"tagName": "convergence"
+						"page": 240,
+						"report": "SustainabilityReport",
+						"tagName": "niches"
 					},
 					"quality": "Reported",
-					"comment": "synthesize multi-byte transmitter"
+					"comment": "generate haptic pixel"
 				},
 				"eligiblePercentage": {
-					"value": 0.624,
-					"quality": "Incomplete"
+					"value": 0.7277,
+					"dataSource": {
+						"page": 391,
+						"report": "SustainabilityReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Audited",
+					"comment": "generate optical bus"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 578017.08,
+					"value": 679634.73,
 					"dataSource": {
-						"page": 944,
-						"report": "AnnualReport",
-						"tagName": "technologies"
+						"page": 730,
+						"report": "SustainabilityReport",
+						"tagName": "communities"
 					},
-					"quality": "Reported",
-					"comment": "hack back-end monitor"
+					"quality": "Incomplete",
+					"comment": "reboot redundant protocol"
 				},
 				"eligiblePercentage": {
-					"value": 0.8109,
+					"value": 0.2634,
 					"dataSource": {
-						"page": 1186,
-						"report": "AnnualReport",
-						"tagName": "schemas"
+						"page": 426,
+						"report": "SustainabilityReport",
+						"tagName": "metrics"
 					},
-					"quality": "Estimated",
-					"comment": "quantify open-source application"
+					"quality": "Reported",
+					"comment": "navigate cross-platform program"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Alt Loris",
-			"sector": "infomediaries",
+			"headquarters": "Chayenneland",
+			"sector": "solutions",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "pjnbtfo822ervi3"
+					"identifierValue": "0rsx3cg2uzn4uiy"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "m2r0ikbvo"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "z0ybhus14uki"
+					"identifierValue": "bv87gnhiw"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "vv8apa0mmaesz1gulp8j"
+					"identifierValue": "750jvo9nndg6ps2mu8za"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "t55aqow"
+					"identifierValue": "fra9pg3"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "g08wun60h"
+					"identifierValue": "vpj3s5r9l"
 				}
 			],
-			"countryCode": "GS",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://pittoresk-biathlon.org",
+			"countryCode": "LT",
+			"companyAlternativeNames": [
+				"Gruning KG",
+				"Wessel-Kulimann"
+			],
+			"website": "http://hervorhebend-vagina.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-03-31",
-			"numberOfEmployees": 93194,
+			"fiscalYearEnd": "2022-10-10",
+			"numberOfEmployees": 80765,
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"provider": "Hort-Schulte",
+				"dataSource": {
+					"page": 852,
+					"report": "AnnualReport",
+					"tagName": "convergence"
+				}
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
+			"scopeOfEntities": "No",
 			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 938228.76,
-					"quality": "Incomplete"
-				},
-				"alignedPercentage": {
-					"value": 0.7263,
+					"value": 436632.51,
 					"dataSource": {
-						"page": 430,
-						"report": "AnnualReport",
-						"tagName": "ROI"
+						"page": 226,
+						"report": "ESEFReport",
+						"tagName": "e-markets"
 					},
 					"quality": "Reported",
-					"comment": "synthesize haptic protocol"
+					"comment": "parse redundant monitor"
+				},
+				"alignedPercentage": {
+					"value": 0.0871,
+					"dataSource": {
+						"page": 504,
+						"report": "SustainabilityReport",
+						"tagName": "mindshare"
+					},
+					"quality": "Reported",
+					"comment": "index virtual transmitter"
 				},
 				"eligiblePercentage": {
-					"value": 0.3957,
+					"value": 0.4649,
 					"dataSource": {
-						"page": 443,
-						"report": "SustainabilityReport",
-						"tagName": "content"
+						"page": 907,
+						"report": "IntegratedReport",
+						"tagName": "web services"
 					},
-					"quality": "Audited",
-					"comment": "index cross-platform alarm"
+					"quality": "Reported",
+					"comment": "back up back-end pixel"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 853766.38,
+					"value": 425796.5,
 					"dataSource": {
-						"page": 328,
-						"report": "SustainabilityReport",
-						"tagName": "schemas"
+						"page": 1056,
+						"report": "IntegratedReport",
+						"tagName": "applications"
 					},
-					"quality": "Incomplete",
-					"comment": "connect back-end capacitor"
+					"quality": "Reported",
+					"comment": "connect digital program"
 				},
 				"alignedPercentage": {
-					"value": 0.0254,
+					"value": 0.9566,
 					"dataSource": {
-						"page": 1134,
-						"report": "IntegratedReport",
-						"tagName": "action-items"
+						"page": 478,
+						"report": "ESEFReport",
+						"tagName": "niches"
 					},
-					"quality": "Reported",
-					"comment": "hack mobile sensor"
+					"quality": "Audited",
+					"comment": "reboot primary alarm"
 				},
 				"eligiblePercentage": {
-					"value": 0.2867,
+					"value": 0.7738,
 					"dataSource": {
-						"page": 904,
-						"report": "IntegratedReport",
-						"tagName": "markets"
+						"page": 977,
+						"report": "AnnualReport",
+						"tagName": "eyeballs"
 					},
-					"quality": "Reported",
-					"comment": "index auxiliary card"
+					"quality": "Audited",
+					"comment": "connect auxiliary matrix"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 253691.16,
+					"value": 81256.3,
 					"dataSource": {
-						"page": 1014,
-						"report": "IntegratedReport",
-						"tagName": "technologies"
+						"page": 513,
+						"report": "SustainabilityReport",
+						"tagName": "portals"
 					},
-					"quality": "Reported",
-					"comment": "copy back-end panel"
+					"quality": "Incomplete",
+					"comment": "generate solid state port"
 				},
 				"alignedPercentage": {
-					"value": 0.8048,
-					"quality": "Estimated"
+					"value": 0.1583,
+					"dataSource": {
+						"page": 306,
+						"report": "IntegratedReport",
+						"tagName": "e-markets"
+					},
+					"quality": "Audited",
+					"comment": "parse auxiliary sensor"
 				},
 				"eligiblePercentage": {
-					"value": 0.5348,
-					"quality": "Incomplete"
+					"value": 0.2351,
+					"dataSource": {
+						"page": 1003,
+						"report": "ESEFReport",
+						"tagName": "solutions"
+					},
+					"quality": "Reported",
+					"comment": "hack auxiliary protocol"
 				}
 			}
 		},
-		"reportingPeriod": "2021-Q2"
+		"reportingPeriod": "2020"
 	}
 ]
