@@ -30,18 +30,18 @@
       <template #content="{ files, removeFileCallback }">
         <div v-if="files.length > 0" data-test="files-to-upload">
           <div
-            v-for="(file, index) of files"
-            :key="file.name + index"
+            v-for="(selectedFile, index) of files"
+            :key="selectedFile.name + index"
             class="flex w-full align-items-center file-upload-item"
           >
-            <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ file.name }}</span>
+            <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ selectedFile.name }}</span>
             <div data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
-              {{ formatBytesUserFriendly(file.size, 1) }}
+              {{ formatBytesUserFriendly(selectedFile.size, 1) }}
             </div>
             <PrimeButton
               data-test="files-to-upload-remove"
               icon="pi pi-times"
-              @click="removeReportFromFilesToUpload(removeFileCallback, index)"
+              @click="removeReportFromReportsToUpload(removeFileCallback, index)"
               class="p-button-rounded"
             />
           </div>
@@ -53,19 +53,19 @@
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
       <div
-        v-for="(report, index) of reportsToUpload"
-        :key="report.name"
+        v-for="(reportToUpload, index) of reportsToUpload"
+        :key="reportToUpload.fileForReport.name"
         class="col-9 formFields"
         data-test="report-info"
       >
-        <div :data-test="report.name.split('.')[0] + 'ToUploadContainer'">
+        <div :data-test="reportToUpload.fileForReport.name.split('.')[0] + 'ToUploadContainer'">
           <div class="form-field-label">
-            <h3 class="mt-0">{{ report.name.split(".")[0] }}</h3>
+            <h3 class="mt-0">{{ reportToUpload.fileForReport.name.split(".")[0] }}</h3>
           </div>
           <ReportFormElement
-            :name="report.name.split('.')[0]"
-            :report-date="report.reportDate"
-            :reference="report.reference"
+            :name="reportToUpload.fileForReport.name.split('.')[0]"
+            :report-date="reportToUpload.reportDate"
+            :reference="reportToUpload.reference"
             @reporting-date-changed="(date: Date) => { updateReportDateHandler(date, index, reportsToUpload) }"
           />
         </div>
@@ -73,26 +73,26 @@
     </div>
     <div v-if="editMode" class="uploadFormSection">
       <!-- List of company reports -->
-      <div v-if="uploadedReports.length > 0" class="col-3 p-3 topicLabel">
+      <div v-if="storedReports.length > 0" class="col-3 p-3 topicLabel">
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
       </div>
-      <div v-for="(file, index) of uploadedReports" :key="file.name" class="col-9 formFields">
-        <div :data-test="file.name.split('.')[0] + 'AlreadyUploadedContainer'" class="form-field-label">
+      <div v-for="(storedReport, index) of storedReports" :key="storedReport.reportName" class="col-9 formFields">
+        <div :data-test="storedReport.reportName.split('.')[0] + 'AlreadyUploadedContainer'" class="form-field-label">
           <div class="flex w-full">
-            <h3 class="mt-0">{{ file.name.split(".")[0] }}</h3>
+            <h3 class="mt-0">{{ storedReport.reportName.split(".")[0] }}</h3>
             <PrimeButton
-              :data-test="'remove-' + file.name.split('.')[0]"
-              @click="removeReportFromUploadedReports(index)"
+              :data-test="'remove-' + storedReport.reportName.split('.')[0]"
+              @click="removeReportFromStoredReports(index)"
               icon="pi pi-times"
               class="p-button-edit-reports"
             />
           </div>
         </div>
         <ReportFormElement
-          :name="file.name.split('.')[0]"
-          :report-date="file.reportDate"
-          :reference="file.reference"
-          @reporting-date-changed="(date: Date) => { updateReportDateHandler(date, index, uploadedReports) }"
+          :name="storedReport.reportName.split('.')[0]"
+          :report-date="storedReport.reportDate"
+          :reference="storedReport.reference"
+          @reporting-date-changed="(date: Date) => { updateReportDateHandler(date, index, storedReports) }"
         />
       </div>
     </div>
@@ -131,8 +131,8 @@ export default defineComponent({
       formsDatesFilesToUpload: [] as string[] | undefined,
       formatBytesUserFriendly,
       DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES: DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-      reportsToUpload: [] as (CompanyReportUploadModel & File)[],
-      uploadedReports: [] as CompanyReportUploadModel[],
+      reportsToUpload: [] as ReportToUpload[],
+      storedReports: [] as StoredReport[],
     };
   },
   props: {
@@ -145,9 +145,9 @@ export default defineComponent({
   },
   computed: {
     allReferenceableReportsFilenames(): string[] {
-      return (this.reportsToUpload as CompanyReportUploadModel[])
-        .concat(this.uploadedReports)
-        .map((it) => it.name.split(".")[0]);
+      const namesOfFilesToUpload = this.reportsToUpload.map((reportToUpload) => reportToUpload.fileForReport.name);
+      const namesOfStoredReports = this.storedReports.map((storedReport) => storedReport.reportName.split(".")[0]);
+      return namesOfFilesToUpload.concat(namesOfStoredReports);
     },
   },
   watch: {
@@ -182,10 +182,9 @@ export default defineComponent({
         this.$refs.fileUpload.remove(indexOfLastSelectedFile);
         this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
       } else {
-        const lastSelectedFileHash = await this.calculateSha256HashFromFile(lastSelectedFile);
-        const extendedLastSelectedFile = lastSelectedFile as CompanyReportUploadModel & File;
-        extendedLastSelectedFile.reference = lastSelectedFileHash;
-        this.reportsToUpload.push(extendedLastSelectedFile);
+        const reportToUpload = { fileForReport: lastSelectedFile } as ReportToUpload;
+        reportToUpload.reference = await this.calculateSha256HashFromFile(reportToUpload.fileForReport);
+        this.reportsToUpload.push(reportToUpload);
         this.emitRreferenceableFilesChangedEvent();
       }
     },
@@ -194,7 +193,7 @@ export default defineComponent({
      * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
      * @param indexOfFileToRemove index number of the file to remove
      */
-    removeReportFromFilesToUpload(fileRemoveCallback: (x: number) => void, indexOfFileToRemove: number) {
+    removeReportFromReportsToUpload(fileRemoveCallback: (x: number) => void, indexOfFileToRemove: number) {
       fileRemoveCallback(indexOfFileToRemove);
       this.reportsToUpload.splice(indexOfFileToRemove, 1);
       this.emitRreferenceableFilesChangedEvent();
@@ -205,19 +204,23 @@ export default defineComponent({
      * removes the corresponding report from the list
      * @param indexOfFileToRemove Index of the report that shall no longer be referenced by the dataset
      */
-    removeReportFromUploadedReports(indexOfFileToRemove: number) {
-      this.uploadedReports.splice(indexOfFileToRemove, 1);
+    removeReportFromStoredReports(indexOfFileToRemove: number) {
+      this.storedReports.splice(indexOfFileToRemove, 1);
       this.emitRreferenceableFilesChangedEvent();
     },
 
     /**
-     * Updates the date of a single report file
+     * Updates the date of a single report
      * @param newDate new date value
-     * @param index file to update
-     * @param containingReports which set of files will be edited
+     * @param indexOfReport report to update
+     * @param listThatContainsTheAffectedReport which list of reports contains the report to be updated
      */
-    updateReportDateHandler(newDate: Date, index: number, containingReports: CompanyReportUploadModel[]): void {
-      containingReports[index].reportDate = getHyphenatedDate(newDate); // TODO probably not even needed
+    updateReportDateHandler(
+      newDate: Date,
+      indexOfReport: number,
+      listThatContainsTheAffectedReport: CompanyReport[]
+    ): void {
+      listThatContainsTheAffectedReport[indexOfReport].reportDate = getHyphenatedDate(newDate); // TODO probably not even needed
     },
     /**
      * Uploads the filed that are to be uploaded if they are not already available to dataland
@@ -226,12 +229,14 @@ export default defineComponent({
       const documentUploadControllerControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise())
       ).getDocumentControllerApi();
-      for (const file of this.reportsToUpload) {
-        const fileIsAlreadyInStorage = (await documentUploadControllerControllerApi.checkDocument(file.reference)).data
-          .documentExists;
+      for (const reportToUpload of this.reportsToUpload) {
+        const fileIsAlreadyInStorage = (
+          await documentUploadControllerControllerApi.checkDocument(reportToUpload.reference)
+        ).data.documentExists;
         if (!fileIsAlreadyInStorage) {
-          const backendComputedHash = (await documentUploadControllerControllerApi.postDocument(file)).data.documentId;
-          if (file.reference !== backendComputedHash) {
+          const backendComputedHash = (await documentUploadControllerControllerApi.postDocument(reportToUpload as File))
+            .data.documentId;
+          if (reportToUpload.reference !== backendComputedHash) {
             throw Error("Locally computed document hash does not concede with the one received by the upload request!");
           }
         }
@@ -244,8 +249,8 @@ export default defineComponent({
       if (this.dataset?.referencedReports) {
         const referencedReportsForDataId = this.dataset.referencedReports;
         for (const key in referencedReportsForDataId) {
-          this.uploadedReports.push({
-            name: key,
+          this.storedReports.push({
+            reportName: key,
             reference: referencedReportsForDataId[key].reference,
             currency: referencedReportsForDataId[key].currency,
             reportDate: referencedReportsForDataId[key].reportDate,
@@ -285,8 +290,8 @@ export default defineComponent({
     isFileNameAlreadyExistingForAnUploadedOrSelectedReport(fullFileName: string): boolean {
       const fileNameWithoutSuffix = fullFileName.split(".")[0];
       return (
-        this.uploadedReports.some((uploadedReport) => uploadedReport.name === fileNameWithoutSuffix) ||
-        this.reportsToUpload.some((reportToUpload) => reportToUpload.name === fullFileName)
+        this.storedReports.some((uploadedReport) => uploadedReport.reportName === fileNameWithoutSuffix) ||
+        this.reportsToUpload.some((reportToUpload) => reportToUpload.fileForReport.name === fullFileName)
       );
     },
 
@@ -311,9 +316,11 @@ export default defineComponent({
     },
   }, // TODO investigate if multiple "." break our upload
 });
-interface CompanyReportUploadModel extends CompanyReport {
-  name: string;
-  reportDate: string; // TODO probably not even needed
+interface StoredReport extends CompanyReport {
+  reportName: string;
+}
+interface ReportToUpload extends CompanyReport {
+  fileForReport: File;
 }
 </script>
 
