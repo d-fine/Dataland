@@ -295,22 +295,6 @@ export default defineComponent({
     },
 
     /**
-     * Complete information about selected file with additional fields
-     * @param reportsThatShouldBeCompleted Files that should be completed
-     * @returns List of files with additional fields
-     */
-    completeInformationAboutSelectedFileWithAdditionalFields(
-      // TODO make sure if this is still needed
-      reportsThatShouldBeCompleted: (CompanyReportUploadModel & File)[]
-    ): (CompanyReportUploadModel & File)[] {
-      return reportsThatShouldBeCompleted.map((reportToComplete) => {
-        reportToComplete.reportDate = reportToComplete.reportDate ?? "";
-        reportToComplete.reference = reportToComplete.reference ?? "";
-        return reportToComplete;
-      });
-    },
-
-    /**
      *  calculates the hash from a file
      * @param [file] the file to calculate the hash from
      * @returns a promise of the hash as string
