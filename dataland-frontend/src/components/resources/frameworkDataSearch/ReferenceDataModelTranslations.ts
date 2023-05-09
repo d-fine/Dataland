@@ -10,7 +10,6 @@ export const companyDataNames = {
   permId: "PermID",
   lei: "LEI",
   duns: "D-U-N-S Number",
-  vatNumber: "VAT Number",
   ticker: "Ticker",
   companyRegistrationNumber: "Company Registration Number",
   website: "Website",
@@ -30,7 +29,6 @@ export const companyDataExplanations = {
   lei: "The Legal Entity Identifier (LEI) is a 20-character alphanumeric string",
   duns: "A unique nine-digit identifier for businesses",
   ticker: "An abbreviation used to identify financial instruments on stock exchanges",
-  vatNumber: "Every VAT identification number begins with a country-code followed by a block of digits or characters",
   companyRegistrationNumber: "Identification number assigned to a company in the commercial register",
   website: "Company website",
 };
