@@ -235,8 +235,9 @@ export default defineComponent({
           await documentUploadControllerControllerApi.checkDocument(reportToUpload.reference)
         ).data.documentExists;
         if (!fileIsAlreadyInStorage) {
-          const backendComputedHash = (await documentUploadControllerControllerApi.postDocument(reportToUpload as File))
-            .data.documentId;
+          const backendComputedHash = (
+            await documentUploadControllerControllerApi.postDocument(reportToUpload.fileForReport)
+          ).data.documentId;
           if (reportToUpload.reference !== backendComputedHash) {
             throw Error("Locally computed document hash does not concede with the one received by the upload request!");
           }
@@ -292,7 +293,7 @@ export default defineComponent({
       const fileNameWithoutSuffix = fullFileName.split(".")[0];
       return (
         this.storedReports.some((uploadedReport) => uploadedReport.reportName === fileNameWithoutSuffix) ||
-        this.reportsToUpload.some((reportToUpload) => reportToUpload.fileForReport.name === fullFileName)
+        this.reportsToUpload.some((reportToUpload) => reportToUpload.fileNameWithoutSuffix === fileNameWithoutSuffix)
       );
     },
 
