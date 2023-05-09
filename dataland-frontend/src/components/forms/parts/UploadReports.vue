@@ -58,12 +58,12 @@
         class="col-9 formFields"
         data-test="report-info"
       >
-        <div :data-test="reportToUpload.fileForReport.name.split('.')[0] + 'ToUploadContainer'">
+        <div :data-test="reportToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
           <div class="form-field-label">
-            <h3 class="mt-0">{{ reportToUpload.fileForReport.name.split(".")[0] }}</h3>
+            <h3 class="mt-0">{{ reportToUpload.fileNameWithoutSuffix }}</h3>
           </div>
           <ReportFormElement
-            :name="reportToUpload.fileForReport.name.split('.')[0]"
+            :name="reportToUpload.fileNameWithoutSuffix"
             :report-date="reportToUpload.reportDate"
             :reference="reportToUpload.reference"
             @reporting-date-changed="(date: Date) => { updateReportDateHandler(date, index, reportsToUpload) }"
@@ -77,11 +77,11 @@
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
       </div>
       <div v-for="(storedReport, index) of storedReports" :key="storedReport.reportName" class="col-9 formFields">
-        <div :data-test="storedReport.reportName.split('.')[0] + 'AlreadyUploadedContainer'" class="form-field-label">
+        <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
           <div class="flex w-full">
-            <h3 class="mt-0">{{ storedReport.reportName.split(".")[0] }}</h3>
+            <h3 class="mt-0">{{ storedReport.reportName }}</h3>
             <PrimeButton
-              :data-test="'remove-' + storedReport.reportName.split('.')[0]"
+              :data-test="'remove-' + storedReport.reportName"
               @click="removeReportFromStoredReports(index)"
               icon="pi pi-times"
               class="p-button-edit-reports"
@@ -89,7 +89,7 @@
           </div>
         </div>
         <ReportFormElement
-          :name="storedReport.reportName.split('.')[0]"
+          :name="storedReport.reportName"
           :report-date="storedReport.reportDate"
           :reference="storedReport.reference"
           @reporting-date-changed="(date: Date) => { updateReportDateHandler(date, index, storedReports) }"
@@ -145,8 +145,8 @@ export default defineComponent({
   },
   computed: {
     allReferenceableReportsFilenames(): string[] {
-      const namesOfFilesToUpload = this.reportsToUpload.map((reportToUpload) => reportToUpload.fileForReport.name);
-      const namesOfStoredReports = this.storedReports.map((storedReport) => storedReport.reportName.split(".")[0]);
+      const namesOfFilesToUpload = this.reportsToUpload.map((reportToUpload) => reportToUpload.fileNameWithoutSuffix);
+      const namesOfStoredReports = this.storedReports.map((storedReport) => storedReport.reportName);
       return namesOfFilesToUpload.concat(namesOfStoredReports);
     },
   },
@@ -184,6 +184,7 @@ export default defineComponent({
       } else {
         const reportToUpload = { fileForReport: lastSelectedFile } as ReportToUpload;
         reportToUpload.reference = await this.calculateSha256HashFromFile(reportToUpload.fileForReport);
+        reportToUpload.fileNameWithoutSuffix = reportToUpload.fileForReport.name.split(".")[0];
         this.reportsToUpload.push(reportToUpload);
         this.emitRreferenceableFilesChangedEvent();
       }
@@ -321,6 +322,7 @@ interface StoredReport extends CompanyReport {
 }
 interface ReportToUpload extends CompanyReport {
   fileForReport: File;
+  fileNameWithoutSuffix: string;
 }
 </script>
 
