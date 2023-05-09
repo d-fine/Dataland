@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface InviteApi {
+fun interface InviteApi {
     /**
      * A method to initiate an invitation request to Dataland from the infos of the uploaded excel file
      * @param excelFile is the Excel file which contains the invite info
