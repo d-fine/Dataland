@@ -146,7 +146,7 @@ export default defineComponent({
   },
   watch: {
     referencedReportsForPrefill() {
-      this.getExistingReportsForPrefill();
+      this.prefillAlreadyUploadedReports();
     },
   },
   methods: {
@@ -223,9 +223,9 @@ export default defineComponent({
       }
     },
     /**
-     * Initializes the already uploaded reports from a dataset
+     * Initializes the already uploaded reports from provided reports
      */
-    getExistingReportsForPrefill() {
+    prefillAlreadyUploadedReports() {
       if (this.referencedReportsForPrefill) {
         for (const key in this.referencedReportsForPrefill) {
           this.storedReports.push({
