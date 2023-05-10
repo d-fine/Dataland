@@ -71,7 +71,7 @@ export function interceptAllAndCheckFor500Errors(): void {
  * @param dataType the framework type
  * @returns a cypress chainable to the interception of the data request on the edit page
  */
-export function gotoEditFormOfMostRecentDataset(companyId: string, dataType: DataTypeEnum): Chainable<Interception> {
+export function goToEditFormOfMostRecentDataset(companyId: string, dataType: DataTypeEnum): Chainable<Interception> {
   const getRequestAlias = "getData";
   cy.intercept({
     method: "GET",

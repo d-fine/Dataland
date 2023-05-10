@@ -13,7 +13,7 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
-import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
+import { goToEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
@@ -224,7 +224,7 @@ export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
  * @param expectIncludedFile specifies if the test file is expected to be in the server response
  */
 export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
-  gotoEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyFinancials).then((interception) => {
+  goToEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyFinancials).then((interception) => {
     const referencedReports = assertDefined(
       (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports
     );

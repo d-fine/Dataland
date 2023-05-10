@@ -19,7 +19,7 @@ import {
   submitFilledInEuTaxonomyForm,
   uploadEuTaxonomyDataForNonFinancialsViaForm,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import { gotoEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
+import { goToEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
 import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@e2e/utils/Constants";
 import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
 import Chainable = Cypress.Chainable;
@@ -85,8 +85,8 @@ describeIf(
      * @param companyId the id of the company for which to edit a dataset
      * @param expectIncludedFile specifies if the test file is expected to be in the server response
      */
-    function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
-      gotoEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyNonFinancials).then((interception) => {
+    function goToEditForm(companyId: string, expectIncludedFile: boolean): void {
+      goToEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyNonFinancials).then((interception) => {
         const referencedReports = assertDefined(
           (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data?.referencedReports
         );
@@ -142,7 +142,7 @@ describeIf(
         },
         (companyId) => {
           validateFrontendAndBackendDocumentHashesCoincede();
-          gotoEditForm(companyId, true);
+          goToEditForm(companyId, true);
           uploadReports.removeUploadedReportFromReportInfos(TEST_PDF_FILE_NAME);
           const postRequestAlias = "postData";
           cy.intercept(
@@ -163,7 +163,7 @@ describeIf(
               expect(interception.response?.statusCode).to.eq(200);
             }
           );
-          gotoEditForm(companyId, false);
+          goToEditForm(companyId, false);
         }
       );
     });
