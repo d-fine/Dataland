@@ -98,8 +98,8 @@ export default defineComponent({
   },
   props: {
     kpiDataObjects: {
-      type: Array as PropType<Array<kpiDataObject>>,
-      default: () => [],
+      type: new Map() as unknown as PropType<Map<string, kpiDataObject>>,
+      default: () => new Map(),
     },
     reportingPeriodsOfDataSets: {
       type: Array,
@@ -111,7 +111,8 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.kpiDataObjectsToDisplay = this.kpiDataObjects;
+    this.kpiDataObjectsToDisplay = Array.from(this.kpiDataObjects.values());
+
     document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
   },
   methods: {
@@ -142,10 +143,10 @@ export default defineComponent({
       const id = (event.target as Element).id;
 
       const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
-        this.kpiDataObjects.some((dataObject) => dataObject.subcategoryKey === child.id)
+        this.kpiDataObjectsToDisplay.some((dataObject) => dataObject.subcategoryKey === child.id)
       )[0];
 
-      if (matchingChild || this.kpiDataObjects.some((dataObject) => dataObject.subcategoryKey === id)) {
+      if (matchingChild || this.kpiDataObjectsToDisplay.some((dataObject) => dataObject.subcategoryKey === id)) {
         const index = this.expandedRowGroups.indexOf(matchingChild?.id ?? id);
         if (index === -1) this.expandedRowGroups.push(matchingChild?.id ?? id);
         else this.expandedRowGroups.splice(index, 1);
