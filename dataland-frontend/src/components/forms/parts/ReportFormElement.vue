@@ -75,14 +75,10 @@ export default defineComponent({
     },
     reference: {
       type: String,
+      required: true,
     },
     reportDate: {
       type: String,
-    },
-  },
-  watch: {
-    reportDate() {
-      this.getDateFromString();
     },
   },
   computed: {
@@ -90,10 +86,9 @@ export default defineComponent({
       if (this.reportDateAsDate) {
         return getHyphenatedDate(this.reportDateAsDate);
       }
-      return ""; // TODO maybe (only maybe!)  we can even send UNDEFINED here
+      return undefined;
     },
   },
-  emits: ["reportingDateChanged"],
   methods: {
     /**
      * computes an actual date object from the date string
@@ -107,7 +102,6 @@ export default defineComponent({
      */
     reportingDateChanged(newDate: Date) {
       this.reportDateAsDate = newDate;
-      this.$emit("reportingDateChanged", newDate);
     },
   },
 });

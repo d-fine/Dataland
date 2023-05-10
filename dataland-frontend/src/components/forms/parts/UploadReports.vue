@@ -54,7 +54,7 @@
       <!-- List of company reports to upload -->
       <div
         v-for="(reportToUpload, index) of reportsToUpload"
-        :key="reportToUpload.fileForReport.name"
+        :key="reportToUpload.fileForReport.name + index"
         class="col-9 formFields"
         data-test="report-info"
       >
@@ -62,12 +62,7 @@
           <div class="form-field-label">
             <h3 class="mt-0">{{ reportToUpload.fileNameWithoutSuffix }}</h3>
           </div>
-          <ReportFormElement
-            :name="reportToUpload.fileNameWithoutSuffix"
-            :report-date="reportToUpload.reportDate"
-            :reference="reportToUpload.reference"
-            @reporting-date-changed="(date: Date) => { updateReportDateHandler(date, index, reportsToUpload) }"
-          />
+          <ReportFormElement :name="reportToUpload.fileNameWithoutSuffix" :reference="reportToUpload.reference" />
         </div>
       </div>
     </div>
@@ -76,7 +71,11 @@
       <div v-if="storedReports.length > 0" class="col-3 p-3 topicLabel">
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
       </div>
-      <div v-for="(storedReport, index) of storedReports" :key="storedReport.reportName" class="col-9 formFields">
+      <div
+        v-for="(storedReport, index) of storedReports"
+        :key="storedReport.reportName + index"
+        class="col-9 formFields"
+      >
         <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
           <div class="flex w-full">
             <h3 class="mt-0">{{ storedReport.reportName }}</h3>
@@ -92,7 +91,6 @@
           :name="storedReport.reportName"
           :report-date="storedReport.reportDate"
           :reference="storedReport.reference"
-          @reporting-date-changed="(date: Date) => { updateReportDateHandler(date, index, storedReports) }"
         />
       </div>
     </div>
@@ -109,7 +107,6 @@ import { CompanyReport } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import FilesDialog from "@/components/general/ElementsDialog.vue";
 
@@ -152,7 +149,7 @@ export default defineComponent({
   },
   watch: {
     dataset() {
-      this.getExistingReports();
+      this.getExistingReports(); // TODO watcher einstellen dass er beim mount einmal läuft
     },
   },
   mounted() {
@@ -184,7 +181,7 @@ export default defineComponent({
       } else {
         const reportToUpload = { fileForReport: lastSelectedFile } as ReportToUpload;
         reportToUpload.reference = await this.calculateSha256HashFromFile(reportToUpload.fileForReport);
-        reportToUpload.fileNameWithoutSuffix = reportToUpload.fileForReport.name.split(".")[0];
+        reportToUpload.fileNameWithoutSuffix = this.removeFileTypeExtension(reportToUpload.fileForReport.name);
         this.reportsToUpload.push(reportToUpload);
         this.emitRreferenceableFilesChangedEvent();
       }
@@ -210,19 +207,6 @@ export default defineComponent({
       this.emitRreferenceableFilesChangedEvent();
     },
 
-    /**
-     * Updates the date of a single report
-     * @param newDate new date value
-     * @param indexOfReport report to update
-     * @param listThatContainsTheAffectedReport which list of reports contains the report to be updated
-     */
-    updateReportDateHandler(
-      newDate: Date,
-      indexOfReport: number,
-      listThatContainsTheAffectedReport: CompanyReport[]
-    ): void {
-      listThatContainsTheAffectedReport[indexOfReport].reportDate = getHyphenatedDate(newDate); // TODO probably not even needed
-    },
     /**
      * Uploads the filed that are to be uploaded if they are not already available to dataland
      */
@@ -290,7 +274,8 @@ export default defineComponent({
      * @returns a boolean stating if the file name is among the files that shall be uploaded or not
      */
     isFileNameAlreadyExistingForAnUploadedOrSelectedReport(fullFileName: string): boolean {
-      const fileNameWithoutSuffix = fullFileName.split(".")[0];
+      // TODO check if you can just look in the referencable list
+      const fileNameWithoutSuffix = this.removeFileTypeExtension(fullFileName);
       return (
         this.storedReports.some((uploadedReport) => uploadedReport.reportName === fileNameWithoutSuffix) ||
         this.reportsToUpload.some((reportToUpload) => reportToUpload.fileNameWithoutSuffix === fileNameWithoutSuffix)
@@ -316,7 +301,17 @@ export default defineComponent({
       const array = Array.from(new Uint8Array(buffer)); // convert buffer to byte array
       return array.map((b) => b.toString(16).padStart(2, "0")).join(""); // convert bytes to hex string
     },
-  }, // TODO investigate if multiple "." break our upload
+
+    /**
+     * Removes the file extension after the last dot of the filename.
+     * E.g. someFileName.with.dots.pdf will be converted to someFileName.with.dots
+     * @param fileName the file name
+     * @returns the file name without the file extension after the last dot
+     */
+    removeFileTypeExtension(fileName: string): string {
+      return fileName.split(".").slice(0, -1).join(".");
+    },
+  },
 });
 interface StoredReport extends CompanyReport {
   reportName: string;
