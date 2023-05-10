@@ -98,7 +98,7 @@ export default defineComponent({
   },
   props: {
     kpiDataObjects: {
-      type: new Map() as unknown as PropType<Map<string, kpiDataObject>>,
+      type: Map as PropType<Map<string, kpiDataObject>>,
       default: () => new Map(),
     },
     reportingPeriodsOfDataSets: {

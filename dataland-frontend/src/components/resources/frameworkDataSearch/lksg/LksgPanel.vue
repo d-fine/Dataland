@@ -3,7 +3,7 @@
     <p class="font-medium text-xl">Loading LkSG Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="kpiDataObjects.length && !waitingForData">
+  <div v-if="kpiDataObjects.size > 0 && !waitingForData">
     <LksgCompanyDataTable
       :kpiDataObjects="kpiDataObjects"
       :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"

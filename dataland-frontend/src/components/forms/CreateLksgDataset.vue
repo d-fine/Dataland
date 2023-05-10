@@ -17,7 +17,7 @@
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID!" disabled="true" />
+            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
 
             <FormKit type="group" name="data" label="data">
@@ -95,7 +95,6 @@ import Calendar from "primevue/calendar";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { AxiosError } from "axios";
 import { CompanyAssociatedDataLksgData } from "@clients/backend";
 import { useRoute } from "vue-router";
@@ -162,7 +161,6 @@ export default defineComponent({
         },
       ],
       idCounter: 0,
-      allCountry: getAllCountryNamesWithCodes(),
       waitingForData: false,
       dataDate: undefined as Date | undefined,
       companyAssociatedLksgData: {} as CompanyAssociatedDataLksgData,
