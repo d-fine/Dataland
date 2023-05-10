@@ -1,5 +1,6 @@
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
+import { inject } from "vue";
 
 /**
  * Asserts that the provided getter-function to get a Keycloak-promise is defined, then executes that getter-function
@@ -64,3 +65,5 @@ export function loginAndRedirectToSearchPage(keycloak: Keycloak): void {
   const url = keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
   location.assign(url);
 }
+
+export const KeycloakComponentSetup = { getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise") };

@@ -26,17 +26,15 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import { CompanyInformation } from "@clients/backend";
-import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
   data() {
     return {
