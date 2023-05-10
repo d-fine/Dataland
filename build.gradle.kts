@@ -74,9 +74,11 @@ sonar {
         property(
             "sonar.coverage.exclusions",
             "**/test/**," +
-                "**/tests/**," +
-                "**/LocalCorsConfig.kt," +
-                "./dataland-frontend/src/main.ts",
+            "**/tests/**," +
+            "**/LocalCorsConfig.kt," +
+            "./dataland-frontend/src/main.ts," +
+            "./dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
+            "./dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts",
         )
         property(
             "sonar.sources",
