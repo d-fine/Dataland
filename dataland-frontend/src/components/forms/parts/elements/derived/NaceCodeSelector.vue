@@ -176,11 +176,12 @@ export default defineComponent({
         const newlySelectedValues = new Set(newValue);
         const currentlySelectedValues = [...this.selectedTreeNodes];
 
-        for (const element of currentlySelectedValues) {
+        currentlySelectedValues.forEach(element => {
           if (!newlySelectedValues.has(element)) {
             this.selectedTreeNodes.delete(element);
           }
-        }
+        });
+
         newlySelectedValues.forEach((it) => {
           this.selectedTreeNodes.add(it);
         });
