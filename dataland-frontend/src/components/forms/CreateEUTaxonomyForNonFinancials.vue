@@ -56,8 +56,7 @@
               <FormKit type="group" name="data" label="data">
                 <UploadReports
                   ref="UploadReports"
-                  :editMode="editMode"
-                  :dataset="templateDataset"
+                  :referencedReportsForPrefill="templateDataset?.referencedReports"
                   @referenceableReportNamesChanged="handleChangeOfReferenceableReportNames"
                 />
 

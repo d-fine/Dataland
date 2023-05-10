@@ -66,9 +66,9 @@
         </div>
       </div>
     </div>
-    <div v-if="editMode" class="uploadFormSection">
+    <div v-if="storedReports.length > 0" class="uploadFormSection">
       <!-- List of company reports -->
-      <div v-if="storedReports.length > 0" class="col-3 p-3 topicLabel">
+      <div class="col-3 p-3 topicLabel">
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
       </div>
       <div
@@ -133,11 +133,8 @@ export default defineComponent({
     };
   },
   props: {
-    editMode: {
-      type: Boolean,
-    },
-    dataset: {
-      type: Object as () => { referencedReports: { [key: string]: CompanyReport } },
+    referencedReportsForPrefill: {
+      type: Object as () => { [key: string]: CompanyReport },
     },
   },
   computed: {
@@ -148,12 +145,9 @@ export default defineComponent({
     },
   },
   watch: {
-    dataset() {
-      this.getExistingReports(); // TODO watcher einstellen dass er beim mount einmal läuft
+    referencedReportsForPrefill() {
+      this.getExistingReportsForPrefill();
     },
-  },
-  mounted() {
-    this.getExistingReports();
   },
   methods: {
     /**
@@ -174,7 +168,7 @@ export default defineComponent({
       const selectedFilesByUser = event.files as File[];
       const indexOfLastSelectedFile = selectedFilesByUser.length - 1;
       const lastSelectedFile = selectedFilesByUser[indexOfLastSelectedFile];
-      if (this.isFileNameAlreadyExistingForAnUploadedOrSelectedReport(lastSelectedFile.name)) {
+      if (this.isFileNameAlreadyExistingAmongReferenceableReportNames(lastSelectedFile.name)) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         this.$refs.fileUpload.remove(indexOfLastSelectedFile);
         this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
@@ -231,16 +225,15 @@ export default defineComponent({
     /**
      * Initializes the already uploaded reports from a dataset
      */
-    getExistingReports() {
-      if (this.dataset?.referencedReports) {
-        const referencedReportsForDataId = this.dataset.referencedReports;
-        for (const key in referencedReportsForDataId) {
+    getExistingReportsForPrefill() {
+      if (this.referencedReportsForPrefill) {
+        for (const key in this.referencedReportsForPrefill) {
           this.storedReports.push({
             reportName: key,
-            reference: referencedReportsForDataId[key].reference,
-            currency: referencedReportsForDataId[key].currency,
-            reportDate: referencedReportsForDataId[key].reportDate,
-            isGroupLevel: referencedReportsForDataId[key].isGroupLevel,
+            reference: this.referencedReportsForPrefill[key].reference,
+            currency: this.referencedReportsForPrefill[key].currency,
+            reportDate: this.referencedReportsForPrefill[key].reportDate,
+            isGroupLevel: this.referencedReportsForPrefill[key].isGroupLevel,
           });
         }
         this.emitRreferenceableReportNamesChangedEvent();
@@ -273,7 +266,7 @@ export default defineComponent({
      * @param fullFileName is the full file name with its prefix that should be checked
      * @returns a boolean stating if the file name is among the referenceable report names
      */
-    isFileNameAlreadyExistingForAnUploadedOrSelectedReport(fullFileName: string): boolean {
+    isFileNameAlreadyExistingAmongReferenceableReportNames(fullFileName: string): boolean {
       const fileNameWithoutSuffix = this.removeFileTypeExtension(fullFileName);
       return this.allReferenceableReportNames.some((reportName) => reportName === fileNameWithoutSuffix);
     },
