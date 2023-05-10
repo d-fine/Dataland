@@ -15,8 +15,8 @@
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import SingleSelectFormElement from "@/components/forms/parts/elements/basic/SingleSelectFormElement.vue";
+import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "SingleSelectFormField",
@@ -26,38 +26,6 @@ export default defineComponent({
       selection: "",
     };
   },
-  props: {
-    name: {
-      type: String,
-      default: "",
-    },
-    info: {
-      type: String,
-      default: "",
-    },
-    displayName: {
-      type: String,
-      default: "",
-    },
-    validation: {
-      type: String,
-      default: "",
-    },
-    validationLabel: {
-      type: String,
-    },
-    placeholder: {
-      type: String,
-      default: "",
-    },
-    options: {
-      type: Array as () => Array<DropdownOption>,
-      required: true,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: DropdownOptionFormFieldProps,
 });
 </script>

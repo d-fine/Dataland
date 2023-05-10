@@ -47,7 +47,7 @@ import InputText from "primevue/inputtext";
 import OverlayPanel from "primevue/overlaypanel";
 import Checkbox from "primevue/checkbox";
 
-import { naceCodeTree, naceCodeMap, filterNodes } from "@/components/forms/parts/elements/derived/NaceCodeTree";
+import { filterNodes, naceCodeMap, naceCodeTree } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import Tooltip from "primevue/tooltip";
 import { defineComponent, PropType, ref } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -76,7 +76,7 @@ export default defineComponent({
      * @param event the onclick event
      */
     inputFocused(event: Event) {
-      this.overlayPanel.show(event);
+      this.overlayPanel?.show(event);
     },
     /**
      * Handles the click event of the selection checkboxes
@@ -96,8 +96,8 @@ export default defineComponent({
       // Cap expanded nodes to 100 to prevent performance issues that would arise when
       // e.g. someone searches for "a" and everything expands
       if (Object.keys(dict).length >= 100) return;
-      dict[node.key] = true;
-      for (const child of node.children) {
+      dict[assertDefined(node.key)] = true;
+      for (const child of assertDefined(node.children)) {
         this.expandNode(child, dict);
       }
     },
@@ -113,7 +113,7 @@ export default defineComponent({
         children.forEach((child) => {
           if (selectedTreeNodeSet.has(assertDefined(child.key))) localSum++;
           childrenCounterPopulator(child);
-          localSum += newSelectedChildrenCounter.get(assertDefined(child.key));
+          localSum += assertDefined(newSelectedChildrenCounter.get(assertDefined(child.key)));
         });
         newSelectedChildrenCounter.set(assertDefined(node.key), localSum);
       };
@@ -136,7 +136,7 @@ export default defineComponent({
      * @returns the label of the NACE code
      */
     getNodeLabel(key: string): string | undefined {
-      return naceCodeMap.get(key).label;
+      return naceCodeMap.get(key)?.label;
     },
   },
   data() {
@@ -190,22 +190,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.d-nace-treeview-container {
-  height: 400px;
-  min-width: 200px;
-  overflow: auto;
-}
-.invisible {
-  visibility: hidden;
-}
-.d-nace-focus {
-  &:focus {
-    box-shadow: none;
-  }
-}
-.d-nace-chipview {
-  max-width: 66%;
-}
-</style>

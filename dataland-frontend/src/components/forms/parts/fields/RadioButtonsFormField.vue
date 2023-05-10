@@ -14,38 +14,11 @@
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
+import { OptionsFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "RadioButtonsFormField",
   components: { RadioButtonsFormElement, UploadFormHeader },
-  props: {
-    name: {
-      type: String,
-      default: "",
-    },
-    info: {
-      type: String,
-      default: "",
-    },
-    displayName: {
-      type: String,
-      default: "",
-    },
-    validation: {
-      type: String,
-      default: "",
-    },
-    validationLabel: {
-      type: String,
-    },
-    options: {
-      type: Array as () => Array<typeof Option>,
-      required: true,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: OptionsFormFieldProps,
 });
 </script>

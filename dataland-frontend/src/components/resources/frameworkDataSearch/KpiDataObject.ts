@@ -7,3 +7,5 @@ export interface KpiDataObject {
 
   [index: string]: string;
 }
+
+export type KpiValue = number | string | string[] | object | null;

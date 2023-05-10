@@ -15,8 +15,9 @@
 <script lang="ts">
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
-import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+
 import MultiSelectFormElement from "@/components/forms/parts/elements/basic/MultiSelectFormElement.vue";
+import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "MultiSelectFormField",
@@ -26,38 +27,6 @@ export default defineComponent({
       selections: [] as string[],
     };
   },
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    info: {
-      type: String,
-      default: "",
-    },
-    displayName: {
-      type: String,
-      default: "",
-    },
-    validation: {
-      type: String,
-      default: "",
-    },
-    validationLabel: {
-      type: String,
-    },
-    placeholder: {
-      type: String,
-      default: "",
-    },
-    options: {
-      type: Array as () => Array<DropdownOption>,
-      required: true,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: DropdownOptionFormFieldProps,
 });
 </script>

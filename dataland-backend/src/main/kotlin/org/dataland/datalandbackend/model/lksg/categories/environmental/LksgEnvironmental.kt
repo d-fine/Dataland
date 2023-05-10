@@ -1,11 +1,11 @@
 package org.dataland.datalandbackend.model.lksg.categories.environmental
 
 import org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
-.LksgExportImportOfHazardousWasteBaselConvention
+    .LksgExportImportOfHazardousWasteBaselConvention
 import org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
-.LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention
+    .LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention
 import org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
-.LksgUseOfMercuryMercuryWasteMinamataConvention
+    .LksgUseOfMercuryMercuryWasteMinamataConvention
 
 /**
  * --- API model ---

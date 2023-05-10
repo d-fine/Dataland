@@ -1,7 +1,7 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
-    <FormKit type="list" :name="name" :label="displayName">
+    <FormKit type="list" :name="name" :label="displayName" :validation="validation" :validation-label="validationLabel">
       <FormKit type="group" v-for="item in listOfProductionSites" :key="item.id">
         <div data-test="productionSiteSection" class="productionSiteSection">
           <em
@@ -31,31 +31,11 @@ import { defineComponent } from "vue";
 import { LksgProductionSite } from "@clients/backend";
 import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "ProductionSiteFormField",
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    info: {
-      type: String,
-      default: "",
-    },
-    displayName: {
-      type: String,
-      default: "",
-    },
-    validation: {
-      type: String,
-      default: "",
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: FormFieldProps,
   data() {
     return {
       productionSite: Object as LksgProductionSite,
