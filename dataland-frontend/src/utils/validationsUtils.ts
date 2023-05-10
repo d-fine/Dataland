@@ -27,14 +27,5 @@ export function checkCustomInputs(node: FormKitNode): void {
  * @returns true if the validation string contains required else false
  */
 export function isInputRequired(validation?: string): boolean {
-  if (validation === undefined) {
-    return false;
-  }
-  return (
-    validation === "required" ||
-    validation.startsWith("required|") ||
-    validation.endsWith("|required") ||
-    validation.includes("|required|")
-  );
-  // TODO if only predefined validation methods can be set by users, it would be enough to check validation.includes("required")
+  return validation?.includes("required") ?? false;
 }
