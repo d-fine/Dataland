@@ -72,8 +72,9 @@
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
+import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
@@ -81,7 +82,6 @@ import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSe
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
-import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "ViewSingleDatasetDisplayBase",
@@ -122,7 +122,9 @@ export default defineComponent({
   },
 
   setup() {
-    return KeycloakComponentSetup;
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
   },
   watch: {
     dataId(newDataId: string) {

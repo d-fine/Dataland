@@ -12,8 +12,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { checkIfUserHasUploaderRights, KeycloakComponentSetup } from "@/utils/KeycloakUtils";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
+import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
 import TheContent from "@/components/generics/TheContent.vue";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 
@@ -26,7 +27,9 @@ export default defineComponent({
     };
   },
   setup() {
-    return KeycloakComponentSetup;
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
   },
   mounted: function () {
     checkIfUserHasUploaderRights(this.getKeycloakPromise)

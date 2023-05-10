@@ -9,16 +9,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, inject, PropType } from "vue";
+import Keycloak from "keycloak-js";
 import { AxiosResponse, AxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CompanyReport } from "@clients/backend";
-import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   setup() {
-    return KeycloakComponentSetup;
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
   },
   name: "ReportLink",
   props: {

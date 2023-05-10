@@ -492,7 +492,8 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { useRoute } from "vue-router";
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
+import Keycloak from "keycloak-js";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
@@ -513,11 +514,12 @@ import { modifyObjectKeys, objectType, updateObject } from "@/utils/updateObject
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
-import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   setup() {
-    return KeycloakComponentSetup;
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
   },
   name: "CreateEUTaxonomyForFinancials",
   components: {

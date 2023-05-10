@@ -63,16 +63,19 @@
 import Card from "primevue/card";
 import JoinDatalandButton from "@/components/general/JoinDatalandButton.vue";
 import BuildersAndSponsors from "@/components/resources/landing/BuildersAndSponsors.vue";
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { KeycloakComponentSetup, loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import Keycloak from "keycloak-js";
 
 export default defineComponent({
   name: "LandingLogin",
   components: { PrimeButton, JoinDatalandButton, Card, BuildersAndSponsors },
   setup() {
-    return KeycloakComponentSetup;
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
   },
 
   methods: {

@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
@@ -71,8 +71,8 @@ import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
+import Keycloak from "keycloak-js";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
-import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
@@ -105,7 +105,9 @@ export default defineComponent({
     };
   },
   setup() {
-    return KeycloakComponentSetup;
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
   },
   watch: {
     dataId(newDataId: string) {
