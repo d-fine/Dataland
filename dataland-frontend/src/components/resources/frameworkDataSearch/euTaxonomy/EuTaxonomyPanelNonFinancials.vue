@@ -93,10 +93,10 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard.vue";
 import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard.vue";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import { defineComponent } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ShowReportsBanner from "@/components/resources/frameworkDataSearch/ShowReportsBanner.vue";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "EuTaxonomyPanelNonFinancials",
@@ -108,9 +108,7 @@ export default defineComponent({
     };
   },
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
   props: {
     dataID: {

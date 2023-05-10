@@ -219,8 +219,7 @@
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
 import Card from "primevue/card";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import { defineComponent } from "vue";
 import {
   CompanyInformation,
   CompanyIdentifier,
@@ -243,6 +242,7 @@ import {
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { AxiosError } from "axios";
 import { FormKitNode } from "@formkit/core";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "CreateCompany",
@@ -259,9 +259,7 @@ export default defineComponent({
   },
   emits: ["companyCreated"],
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
   data: () => ({
     companyName: "",

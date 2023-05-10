@@ -14,9 +14,9 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData, DataMetaInformation, LksgData } from "@clients/backend";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
+import { defineComponent } from "vue";
+
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
@@ -25,6 +25,8 @@ import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -39,40 +41,31 @@ export default defineComponent({
       lksgDataModel: lksgDataModel,
     };
   },
-  props: {
-    companyId: {
-      type: String,
-    },
-    singleDataMetaInfoToDisplay: {
-      type: Object as () => DataMetaInformation,
-    },
-  },
+  props: PanelProps,
   watch: {
     companyId() {
       this.listOfColumnIdentifierObjects = [];
-      void this.fetchData();
+      void this.fetchLksgData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
         this.listOfColumnIdentifierObjects = [];
-        void this.fetchData();
+        void this.fetchLksgData();
       }
     },
   },
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
   created() {
-    void this.fetchData();
+    void this.fetchLksgData();
     this.firstRender = false;
   },
   methods: {
     /**
      * Fetches all accepted LkSG datasets for the current company and converts them to the required frontend format.
      */
-    async fetchData() {
+    async fetchLksgData() {
       try {
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
@@ -176,14 +169,14 @@ export default defineComponent({
       if (kpiField.name === "industry" || kpiField.name === "subcontractingCompaniesIndustries") {
         kpiValue = Array.isArray(kpiValue)
           ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
-          : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+          : naceCodeMap.get(kpiValue as string)?.label ?? (kpiValue as KpiValue);
       }
       if (kpiField.name === "subcontractingCompaniesCountries") {
         kpiValue = Array.isArray(kpiValue)
           ? kpiValue.map(
               (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
             )
-          : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+          : getCountryNameFromCountryCode(kpiValue as string) ?? (kpiValue as KpiValue);
       }
 
       return kpiField.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;

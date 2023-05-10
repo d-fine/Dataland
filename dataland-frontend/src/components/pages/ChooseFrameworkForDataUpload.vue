@@ -66,8 +66,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import { defineComponent } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -80,6 +79,7 @@ import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFramewo
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "ChooseFramework",
@@ -95,9 +95,7 @@ export default defineComponent({
     MetaInfoPerCompanyAndFramework,
   },
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
 
   created() {

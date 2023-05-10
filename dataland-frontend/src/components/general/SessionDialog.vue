@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
 import {
@@ -30,10 +30,9 @@ import {
   SessionDialogMode,
   tryToRefreshSession,
 } from "@/utils/SessionTimeoutUtils";
-import Keycloak from "keycloak-js";
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/stores";
-import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import { KeycloakComponentSetup, loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
@@ -42,9 +41,7 @@ export default defineComponent({
   components: { PrimeButton },
 
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
 
   data() {

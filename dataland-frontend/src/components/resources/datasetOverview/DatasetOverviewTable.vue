@@ -64,15 +64,15 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { DatasetTableInfo } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import InputText from "primevue/inputtext";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import Keycloak from "keycloak-js";
 import DatasetStatusBadge from "@/components/general/DatasetStatusBadge.vue";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "DatasetOverviewTable",
@@ -96,9 +96,7 @@ export default defineComponent({
     };
   },
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
   props: {
     datasetTableInfos: {

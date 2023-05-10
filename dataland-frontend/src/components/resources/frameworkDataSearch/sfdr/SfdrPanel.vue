@@ -17,9 +17,9 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { SfdrData, DataAndMetaInformationSfdrData, DataMetaInformation } from "@clients/backend";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import { SfdrData, DataAndMetaInformationSfdrData } from "@clients/backend";
+import { defineComponent } from "vue";
+
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
@@ -28,6 +28,8 @@ import {
   sfdrKpisNameMappings,
   sfdrKpisInfoMappings,
 } from "@/components/resources/frameworkDataSearch/sfdr/DataModelsTranslations";
+import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "SfdrPanel",
@@ -44,40 +46,31 @@ export default defineComponent({
       sfdrSubAreasNameMappings,
     };
   },
-  props: {
-    companyId: {
-      type: String,
-    },
-    singleDataMetaInfoToDisplay: {
-      type: Object as () => DataMetaInformation,
-    },
-  },
+  props: PanelProps,
   watch: {
     companyId() {
       this.listOfColumnIdentifierObjects = [];
-      void this.fetchData();
+      void this.fetchSfdrData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
         this.listOfColumnIdentifierObjects = [];
-        void this.fetchData();
+        void this.fetchSfdrData();
       }
     },
   },
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
   created() {
-    void this.fetchData();
+    void this.fetchSfdrData();
     this.firstRender = false;
   },
   methods: {
     /**
      * Fetches all accepted Sfdr datasets for the current company and converts them to the required frontend format.
      */
-    async fetchData() {
+    async fetchSfdrData() {
       try {
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(

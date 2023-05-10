@@ -481,9 +481,8 @@ import FailedUpload from "@/components/messages/FailedUpload.vue";
 import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
-import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 
@@ -501,6 +500,7 @@ import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.v
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "CreateEUTaxonomyForNonFinancials",
@@ -520,9 +520,7 @@ export default defineComponent({
     SuccessUpload,
   },
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
   emits: ["datasetCreated"],
   data: () => ({
