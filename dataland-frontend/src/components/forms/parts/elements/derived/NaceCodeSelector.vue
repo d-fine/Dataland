@@ -110,14 +110,14 @@ export default defineComponent({
       const childrenCounterPopulator = (node: TreeNode): void => {
         const children = node.children || [];
         let localSum = 0;
-        children.forEach(child => {
+        children.forEach((child) => {
           if (selectedTreeNodeSet.has(assertDefined(child.key))) localSum++;
           childrenCounterPopulator(child);
           localSum += newSelectedChildrenCounter.get(assertDefined(child.key));
         });
         newSelectedChildrenCounter.set(assertDefined(node.key), localSum);
       };
-      naceCodeTree.forEach(treeNode => {
+      naceCodeTree.forEach((treeNode) => {
         childrenCounterPopulator(treeNode);
       });
       this.selectedChildrenCounter = newSelectedChildrenCounter;
@@ -176,7 +176,7 @@ export default defineComponent({
         const newlySelectedValues = new Set(newValue);
         const currentlySelectedValues = [...this.selectedTreeNodes];
 
-        currentlySelectedValues.forEach(element => {
+        currentlySelectedValues.forEach((element) => {
           if (!newlySelectedValues.has(element)) {
             this.selectedTreeNodes.delete(element);
           }
