@@ -119,8 +119,7 @@ describeIf(
       }
     );
 
-    it.only("Check if the file upload info remove button works as expected", () => {
-      // TODO delete "only"
+    it("Check if the file upload info remove button works as expected", () => {
       testData.companyInformation.companyName = "non-financials-upload-form-remove-document-button";
       uploadCompanyViaApiAndEuTaxonomyDataForNonFinancialsViaForm(
         testData.companyInformation,
