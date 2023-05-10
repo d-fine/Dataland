@@ -10,7 +10,7 @@ import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { randomEuroValue, randomNumber } from "@e2e/fixtures/common/NumberFixtures";
 import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
-import { randomStringOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a random SFDR dataset
@@ -25,18 +25,18 @@ export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
         fiscalYear: randomFiscalYearDeviationOrUndefined(),
         fiscalYearEnd: fiscalYearEnd ?? randomFutureDate(),
         groupLevelAnnualReport: randomYesNoNaUndefined(),
-        annualReport: randomStringOrUndefined(generateLinkToPdf()),
+        annualReport: valueOrUndefined(generateLinkToPdf()),
         annualReportDate: randomFutureDate(),
         annualReportCurrency: generateIso4217CurrencyCode(),
-        sustainabilityReport: randomStringOrUndefined(generateLinkToPdf()),
+        sustainabilityReport: valueOrUndefined(generateLinkToPdf()),
         groupLevelSustainabilityReport: randomYesNoNaUndefined(),
         sustainabilityReportDate: randomFutureDate(),
         sustainabilityReportCurrency: generateIso4217CurrencyCode(),
-        integratedReport: randomStringOrUndefined(generateLinkToPdf()),
+        integratedReport: valueOrUndefined(generateLinkToPdf()),
         groupLevelIntegratedReport: randomYesNoNaUndefined(),
         integratedReportDate: randomFutureDate(),
         integratedReportCurrency: generateIso4217CurrencyCode(),
-        esefReport: randomStringOrUndefined(generateLinkToPdf()),
+        esefReport: valueOrUndefined(generateLinkToPdf()),
         groupLevelEsefReport: randomYesNoNaUndefined(),
         esefReportDate: randomFutureDate(),
         esefReportCurrency: generateIso4217CurrencyCode(),
