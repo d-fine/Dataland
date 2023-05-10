@@ -104,13 +104,13 @@ describeIf(
           testData.companyInformation,
           () => {
             uploadReports.selectFile(TEST_PDF_FILE_NAME);
-            uploadReports.validateSingleFileInUploadList(TEST_PDF_FILE_NAME, "KB");
-            uploadReports.fillReportCurrency(TEST_PDF_FILE_NAME);
-            uploadReports.removeSingleFileFromUploadList();
+            uploadReports.validateReportInFileUploadList(TEST_PDF_FILE_NAME, "KB");
+            uploadReports.validateReportToUploadHasForm(TEST_PDF_FILE_NAME);
+            uploadReports.removeReportToUpload();
             uploadReports.checkNoReportIsListed();
 
             uploadReports.selectFile(TEST_PDF_FILE_NAME);
-            uploadReports.fillAllReportInfoForms();
+            uploadReports.fillAllReportsToUploadForms(2);
           },
           () => undefined,
           () => undefined,
@@ -126,7 +126,7 @@ describeIf(
         () => {
           uploadReports.selectFile(TEST_PDF_FILE_NAME);
           uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-          uploadReports.fillAllReportInfoForms(); // TODO this is somehow broken.  It does not fill the info for the second pdf file!
+          uploadReports.fillAllReportsToUploadForms(2);
         },
         () => {
           cy.get(`[data-test="capexSection"] [data-test="total"] select[name="report"]`).select(TEST_PDF_FILE_NAME);
@@ -141,7 +141,6 @@ describeIf(
           expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
         },
         (companyId) => {
-          validateFrontendAndBackendDocumentHashesCoincede();
           goToEditForm(companyId, true);
           uploadReports.removeUploadedReportFromReportInfos(TEST_PDF_FILE_NAME);
           const postRequestAlias = "postData";
@@ -164,6 +163,7 @@ describeIf(
             }
           );
           goToEditForm(companyId, false);
+          validateFrontendAndBackendDocumentHashesCoincede();
         }
       );
     });
@@ -290,7 +290,7 @@ describeIf(
         },
         { force: true }
       );
-      uploadReports.fillAllReportInfoForms();
+      uploadReports.fillAllReportsToUploadForms();
       cy.get('button[data-test="submitButton"]').click();
       cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
     }
@@ -315,7 +315,7 @@ describeIf(
         },
         { force: true }
       );
-      uploadReports.fillAllReportInfoForms();
+      uploadReports.fillAllReportsToUploadForms();
       cy.get(`div[data-test=capexSection] div[data-test=total] select[name="report"]`).select(
         differentFileNameForSameFile
       );

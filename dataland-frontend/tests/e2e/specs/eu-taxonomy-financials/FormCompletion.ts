@@ -37,9 +37,9 @@ describeIf(
           testData.t,
           () => {
             uploadReports.selectFile(TEST_PDF_FILE_NAME);
-            uploadReports.validateSingleFileInUploadList(TEST_PDF_FILE_NAME, "KB");
-            uploadReports.fillReportCurrency(TEST_PDF_FILE_NAME);
-            uploadReports.removeSingleFileFromUploadList();
+            uploadReports.validateReportInFileUploadList(TEST_PDF_FILE_NAME, "KB");
+            uploadReports.validateReportToUploadHasForm(TEST_PDF_FILE_NAME);
+            uploadReports.removeReportToUpload();
             uploadReports.checkNoReportIsListed();
           },
           () => undefined,

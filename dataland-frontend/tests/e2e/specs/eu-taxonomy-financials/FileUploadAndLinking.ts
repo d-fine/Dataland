@@ -41,7 +41,7 @@ describeIf(
         () => {
           uploadReports.selectFile(TEST_PDF_FILE_NAME);
           uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-          uploadReports.fillAllReportInfoForms();
+          uploadReports.fillAllReportsToUploadForms(2);
           cy.get(`[data-test="assetManagementKpis"]`)
             .find(`[data-test="banksAndIssuers"]`)
             .find('select[name="report"]')
