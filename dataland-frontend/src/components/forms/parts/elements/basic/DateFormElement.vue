@@ -71,10 +71,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    displayName: {
-      type: String,
-      default: "",
-    },
     validation: {
       type: String,
       default: "",

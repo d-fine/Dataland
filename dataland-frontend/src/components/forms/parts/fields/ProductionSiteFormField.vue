@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
+    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
     <FormKit type="list" :name="name" :label="displayName">
       <FormKit type="group" v-for="item in listOfProductionSites" :key="item.id">
         <div data-test="productionSiteSection" class="productionSiteSection">

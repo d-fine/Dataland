@@ -62,10 +62,6 @@ export default defineComponent({
     validationLabel: {
       type: String,
     },
-    placeholder: {
-      type: String,
-      default: "",
-    },
     required: {
       type: Boolean,
       default: false,
