@@ -1,15 +1,14 @@
 import {
+  CompanyInformation,
   Configuration,
+  DataMetaInformation,
   LksgData,
   LksgDataControllerApi,
-  DataMetaInformation,
-  CompanyInformation,
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
  * Uploads a single LKSG data entry for a company
@@ -119,9 +118,7 @@ function validateAllFieldsHaveYesSelected(): void {
   );
   cy.window().then((win) => {
     yesNoInputs.forEach((name) => {
-      const inputElement = assertDefined(
-        win.document.querySelector<HTMLInputElement>(`input[name="${name}"][value="Yes"]`)
-      );
+      const inputElement = win.document.querySelector<HTMLInputElement>(`input[name="${name}"][value="Yes"]`)!;
 
       if (!inputElement.checked) {
         throw new Error(`Checkbox ${name} should be selected, but is not`);

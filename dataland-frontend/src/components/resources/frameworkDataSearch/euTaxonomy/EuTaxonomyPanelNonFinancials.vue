@@ -94,7 +94,6 @@ import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import TaxoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoCard.vue";
 import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxoInfoCard.vue";
 import { defineComponent } from "vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import ShowReportsBanner from "@/components/resources/frameworkDataSearch/ShowReportsBanner.vue";
 import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
@@ -134,11 +133,11 @@ export default defineComponent({
         this.waitingForData = true;
         if (this.dataID != "loading") {
           const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+            this.getKeycloakPromise!()
           ).getEuTaxonomyDataForNonFinancialsControllerApi();
           const companyAssociatedData =
             await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-              assertDefined(this.dataID)
+              this.dataID
             );
           this.dataSet = companyAssociatedData.data.data;
           this.waitingForData = false;

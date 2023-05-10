@@ -17,16 +17,14 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { SfdrData, DataAndMetaInformationSfdrData } from "@clients/backend";
+import { DataAndMetaInformationSfdrData, SfdrData } from "@clients/backend";
 import { defineComponent } from "vue";
-
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
-  sfdrSubAreasNameMappings,
-  sfdrKpisNameMappings,
   sfdrKpisInfoMappings,
+  sfdrKpisNameMappings,
+  sfdrSubAreasNameMappings,
 } from "@/components/resources/frameworkDataSearch/sfdr/DataModelsTranslations";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
@@ -74,7 +72,7 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getSfdrDataControllerApi();
 
         if (this.singleDataMetaInfoToDisplay) {
@@ -83,9 +81,7 @@ export default defineComponent({
           ).data.data as SfdrData;
           this.sfdrDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSfdrData }];
         } else {
-          this.sfdrDataAndMetaInfo = (
-            await sfdrDataControllerApi.getAllCompanySfdrData(assertDefined(this.companyId))
-          ).data;
+          this.sfdrDataAndMetaInfo = (await sfdrDataControllerApi.getAllCompanySfdrData(this.companyId)).data;
         }
         this.convertSfdrDataToFrontendFormat();
         this.waitingForData = false;

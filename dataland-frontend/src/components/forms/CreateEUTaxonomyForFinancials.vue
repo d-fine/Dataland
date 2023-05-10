@@ -494,7 +494,6 @@ import Card from "primevue/card";
 import { useRoute } from "vue-router";
 import { defineComponent } from "vue";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
@@ -624,7 +623,7 @@ export default defineComponent({
     async loadEuData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        this.getKeycloakPromise!()
       ).getEuTaxonomyDataForFinancialsControllerApi();
 
       const dataResponse =
@@ -671,7 +670,7 @@ export default defineComponent({
           "send"
         );
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(

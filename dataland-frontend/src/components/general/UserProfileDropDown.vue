@@ -26,10 +26,9 @@
 
 <script lang="ts">
 import PrimeMenu from "primevue/menu";
-import { defineComponent, inject, ref } from "vue";
 import type { Ref } from "vue";
+import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import defaultProfilePicture from "@/assets/images/elements/default_user_icon.svg";
 import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 
@@ -50,13 +49,15 @@ export default defineComponent({
         menu.value.toggle(event);
       }
     }
+
     /**
      * Hides the dropdown menu.
      * Used as an event handler through the on scroll event.
      */
     function hideDropdownMenu(): void {
-      assertDefined(menu.value).hide();
+      menu.value!.hide();
     }
+
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
       authenticated: inject<boolean>("authenticated"),
@@ -108,7 +109,7 @@ export default defineComponent({
      * Logs the user out and redirects him to the dataland homepage
      */
     logoutViaDropdown() {
-      assertDefined(this.getKeycloakPromise)()
+      this.getKeycloakPromise!()
         .then((keycloak) => {
           if (keycloak.authenticated) {
             logoutAndRedirectToUri(keycloak, "");
@@ -120,7 +121,7 @@ export default defineComponent({
      * Redirects the user to the keycloak user settings page
      */
     gotoUserSettings() {
-      assertDefined(this.getKeycloakPromise)()
+      this.getKeycloakPromise!()
         .then((keycloak) => {
           if (keycloak.authenticated) {
             return keycloak.accountManagement();
@@ -132,7 +133,7 @@ export default defineComponent({
      * Redirects the user to the data-request/invite screen
      */
     gotoDataRequest() {
-      assertDefined(this.getKeycloakPromise)()
+      this.getKeycloakPromise!()
         .then(() => {
           return this.$router.push("requests");
         })
@@ -156,7 +157,7 @@ export default defineComponent({
     },
   },
   created() {
-    assertDefined(this.getKeycloakPromise)()
+    this.getKeycloakPromise!()
       .then((keycloak) => {
         if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
           const profilePictureUrl = keycloak.idTokenParsed.picture as string;
@@ -173,6 +174,7 @@ export default defineComponent({
 .p-menuitem-link {
   background-color: #0b191f;
 }
+
 .d-drop-down-toggle {
   cursor: pointer;
 }
@@ -191,6 +193,7 @@ export default defineComponent({
 .p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-menuitem-text {
   color: #e67f3fff;
 }
+
 .p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-menuitem-icon,
 .p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content .p-menuitem-link .p-submenu-icon {
   color: #e67f3fff;

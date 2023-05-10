@@ -12,8 +12,8 @@
             <router-link
               to="/"
               class="p-button bg-white border-0 uppercase text-green-500 d-letters flex align-items-center no-underline"
-              >Create a preview account</router-link
-            >
+              >Create a preview account
+            </router-link>
           </p>
         </div>
       </div>
@@ -62,7 +62,6 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { defineComponent } from "vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DataTypeEnum } from "@clients/backend";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
@@ -96,13 +95,13 @@ export default defineComponent({
     async queryCompany() {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise()
         ).getCompanyDataControllerApi();
         const companyResponse = await companyDataControllerApi.getTeaserCompanies();
         this.companyID = companyResponse.data[0];
 
         const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(
           this.companyID,

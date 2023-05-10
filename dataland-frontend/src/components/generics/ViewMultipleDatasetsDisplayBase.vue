@@ -69,7 +69,6 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import LksgPanel from "@/components/resources/frameworkDataSearch/lksg/LksgPanel.vue";
 import SfdrPanel from "@/components/resources/frameworkDataSearch/sfdr/SfdrPanel.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
@@ -193,7 +192,7 @@ export default defineComponent({
     async getMetaDataForDataId(dataId: string) {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;

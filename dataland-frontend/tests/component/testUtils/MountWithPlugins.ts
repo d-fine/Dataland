@@ -2,13 +2,12 @@ import { routes } from "@/router";
 import { createPinia } from "pinia";
 import PrimeVue from "primevue/config";
 import DialogService from "primevue/dialogservice";
-import { plugin, defaultConfig } from "@formkit/vue";
+import { defaultConfig, plugin } from "@formkit/vue";
 import { createMemoryHistory, createRouter, Router } from "vue-router";
 import { mount } from "cypress/vue";
 import { VueWrapper } from "@vue/test-utils";
 import { DefineComponent } from "vue";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /*
   This file defines a alternative mounting function that also includes many creature comforts
@@ -82,7 +81,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
 
   options.global.plugins.push({
     install(app) {
-      app.use(assertDefined(options.router));
+      app.use(options.router!);
     },
   });
 
@@ -93,11 +92,11 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   });
 
   /*
-    The mount() function returns a VueWrapper different from the VueWrapper exported by "@vue/test-utils"
-    but that type is not exported and accessing a non-exported type is non-trivial.
-    The VueWrapper component from "@vue/test-utils" is, however, "close enough" to the actual return value for our
-    purposes. That is the reason for the ts-ignore and eslint-ignores
-   */
+      The mount() function returns a VueWrapper different from the VueWrapper exported by "@vue/test-utils"
+      but that type is not exported and accessing a non-exported type is non-trivial.
+      The VueWrapper component from "@vue/test-utils" is, however, "close enough" to the actual return value for our
+      purposes. That is the reason for the ts-ignore and eslint-ignores
+     */
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return mount(component, options);

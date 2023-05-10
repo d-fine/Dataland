@@ -36,7 +36,6 @@ import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
 
 export default defineComponent({
@@ -96,7 +95,7 @@ export default defineComponent({
     async searchCompanyName(companyName: { query: string }) {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getCompanyDataControllerApi();
         const response = await companyDataControllerApi.getCompanies(companyName.query);
         this.autocompleteArray = response.data;

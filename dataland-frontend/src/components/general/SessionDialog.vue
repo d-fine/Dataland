@@ -33,7 +33,6 @@ import {
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/stores";
 import { KeycloakComponentSetup, loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -110,7 +109,7 @@ export default defineComponent({
      * Sends the user to the keycloak login page
      */
     login() {
-      assertDefined(this.getKeycloakPromise)()
+      this.getKeycloakPromise!()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             loginAndRedirectToSearchPage(keycloak);
@@ -123,7 +122,7 @@ export default defineComponent({
      * Handles a click on the refresh button.
      */
     handleRefreshSession() {
-      assertDefined(this.getKeycloakPromise)()
+      this.getKeycloakPromise!()
         .then((keycloak) => {
           if (keycloak.authenticated) {
             tryToRefreshSession(keycloak);

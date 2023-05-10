@@ -65,7 +65,6 @@ import JoinDatalandButton from "@/components/general/JoinDatalandButton.vue";
 import BuildersAndSponsors from "@/components/resources/landing/BuildersAndSponsors.vue";
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { KeycloakComponentSetup, loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
@@ -80,7 +79,7 @@ export default defineComponent({
      * Sends the user to the keycloak login page (if not authenticated already)
      */
     login() {
-      assertDefined(this.getKeycloakPromise)()
+      this.getKeycloakPromise!()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             loginAndRedirectToSearchPage(keycloak);

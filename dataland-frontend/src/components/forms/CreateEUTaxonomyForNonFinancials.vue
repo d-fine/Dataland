@@ -483,7 +483,6 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 
 import {
@@ -593,7 +592,7 @@ export default defineComponent({
     async loadEuData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        this.getKeycloakPromise!()
       ).getEuTaxonomyDataForNonFinancialsControllerApi();
 
       const dataResponse =
@@ -622,7 +621,7 @@ export default defineComponent({
           "send"
         );
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
         this.postEuTaxonomyDataForNonFinancialsResponse =
           await euTaxonomyDataForNonFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
