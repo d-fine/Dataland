@@ -30,10 +30,6 @@ export default defineComponent({
       type: String,
       default: "",
     },
-    displayName: {
-      type: String,
-      default: "",
-    },
     options: {
       type: Array as () => Array<typeof Option>,
       required: true,
