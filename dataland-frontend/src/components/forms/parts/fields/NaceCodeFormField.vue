@@ -28,6 +28,7 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { defineComponent, ref } from "vue";
 import { FormKit, FormKitMessages } from "@formkit/vue";
 import NaceCodeSelector from "@/components/forms/parts/elements/derived/NaceCodeSelector.vue";
+import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
   name: "NaceCodeFormField",
@@ -42,30 +43,6 @@ export default defineComponent({
       selectedNaceCodes: [] as Array<string>,
     };
   },
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    info: {
-      type: String,
-      default: "",
-    },
-    displayName: {
-      type: String,
-      default: "",
-    },
-    validation: {
-      type: String,
-      default: "",
-    },
-    validationLabel: {
-      type: String,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: FormFieldProps,
 });
 </script>
