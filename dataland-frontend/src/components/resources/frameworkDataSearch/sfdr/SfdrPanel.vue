@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { SfdrData, DataAndMetaInformationSfdrData, DataMetaInformation } from "@clients/backend";
+import { SfdrData, DataAndMetaInformationSfdrData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -28,6 +28,7 @@ import {
   sfdrKpisNameMappings,
   sfdrKpisInfoMappings,
 } from "@/components/resources/frameworkDataSearch/sfdr/DataModelsTranslations";
+import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 
 export default defineComponent({
   name: "SfdrPanel",
@@ -44,14 +45,7 @@ export default defineComponent({
       sfdrSubAreasNameMappings,
     };
   },
-  props: {
-    companyId: {
-      type: String,
-    },
-    singleDataMetaInfoToDisplay: {
-      type: Object as () => DataMetaInformation,
-    },
-  },
+  props: PanelProps,
   watch: {
     companyId() {
       this.listOfColumnIdentifierObjects = [];

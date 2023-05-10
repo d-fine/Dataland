@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData, DataMetaInformation, LksgData } from "@clients/backend";
+import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -25,6 +25,7 @@ import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -39,14 +40,7 @@ export default defineComponent({
       lksgDataModel: lksgDataModel,
     };
   },
-  props: {
-    companyId: {
-      type: String,
-    },
-    singleDataMetaInfoToDisplay: {
-      type: Object as () => DataMetaInformation,
-    },
-  },
+  props: PanelProps,
   watch: {
     companyId() {
       this.listOfColumnIdentifierObjects = [];
