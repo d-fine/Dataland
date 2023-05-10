@@ -601,11 +601,11 @@ export default defineComponent({
       this.postEuTaxonomyDataForFinancialsProcessed = true;
     },
     /**
-     * Updates the local list of names of referenceable files
-     * @param reportsFilenames new list of referenceable files
+     * Updates the local list of names of referenceable reports
+     * @param reportNames new list of the referenceable reports' names
      */
-    handleChangeOfReferenceableReportNames(reportsFilenames: string[]) {
-      this.namesOfAllCompanyReportsForTheDataset = reportsFilenames;
+    handleChangeOfReferenceableReportNames(reportNames: string[]) {
+      this.namesOfAllCompanyReportsForTheDataset = reportNames;
     },
   },
 });

@@ -153,7 +153,7 @@ export default defineComponent({
     /**
      * Emits event that referenceable files changed
      */
-    emitRreferenceableReportNamesChangedEvent() {
+    emitReferenceableReportNamesChangedEvent() {
       this.$emit("referenceableReportNamesChanged", this.allReferenceableReportNames);
     },
     /**
@@ -177,7 +177,7 @@ export default defineComponent({
         reportToUpload.reference = await this.calculateSha256HashFromFile(reportToUpload.fileForReport);
         reportToUpload.fileNameWithoutSuffix = this.removeFileTypeExtension(reportToUpload.fileForReport.name);
         this.reportsToUpload.push(reportToUpload);
-        this.emitRreferenceableReportNamesChangedEvent();
+        this.emitReferenceableReportNamesChangedEvent();
       }
     },
     /**
@@ -188,7 +188,7 @@ export default defineComponent({
     removeReportFromReportsToUpload(fileRemoveCallback: (x: number) => void, indexOfFileToRemove: number) {
       fileRemoveCallback(indexOfFileToRemove);
       this.reportsToUpload.splice(indexOfFileToRemove, 1);
-      this.emitRreferenceableReportNamesChangedEvent();
+      this.emitReferenceableReportNamesChangedEvent();
     },
 
     /**
@@ -198,7 +198,7 @@ export default defineComponent({
      */
     removeReportFromStoredReports(indexOfFileToRemove: number) {
       this.storedReports.splice(indexOfFileToRemove, 1);
-      this.emitRreferenceableReportNamesChangedEvent();
+      this.emitReferenceableReportNamesChangedEvent();
     },
 
     /**
@@ -236,7 +236,7 @@ export default defineComponent({
             isGroupLevel: this.referencedReportsForPrefill[key].isGroupLevel,
           });
         }
-        this.emitRreferenceableReportNamesChangedEvent();
+        this.emitReferenceableReportNamesChangedEvent();
       }
     },
 
