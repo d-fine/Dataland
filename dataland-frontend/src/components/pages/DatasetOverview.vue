@@ -42,15 +42,16 @@
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import PrimeButton from "primevue/button";
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import Keycloak from "keycloak-js";
 import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
-import { checkIfUserHasUploaderRights, KeycloakComponentSetup } from "@/utils/KeycloakUtils";
+import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "DatasetOverview",
@@ -73,7 +74,9 @@ export default defineComponent({
     };
   },
   setup() {
-    return KeycloakComponentSetup;
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
   },
   created() {
     checkIfUserHasUploaderRights(this.getKeycloakPromise)
