@@ -76,7 +76,7 @@ export default defineComponent({
      * @param event the onclick event
      */
     inputFocused(event: Event) {
-      this.overlayPanel.show(event);
+      this.overlayPanel?.show(event);
     },
     /**
      * Handles the click event of the selection checkboxes
@@ -136,7 +136,7 @@ export default defineComponent({
      * @returns the label of the NACE code
      */
     getNodeLabel(key: string): string | undefined {
-      return naceCodeMap.get(key).label;
+      return naceCodeMap.get(key)?.label;
     },
   },
   data() {

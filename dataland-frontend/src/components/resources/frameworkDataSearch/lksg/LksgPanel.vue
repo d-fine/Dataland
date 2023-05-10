@@ -21,10 +21,10 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { Subcategory } from "@/utils/GenericFrameworkTypes";
+import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
-import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -105,34 +105,20 @@ export default defineComponent({
      */
     createKpiDataObjects(
       kpiKey: string,
-      kpiValue: object | string | Array<string> | number | null,
+      kpiValue: KpiValue,
       subcategory: Subcategory,
       dataIdOfLksgDataset: string
     ): void {
-      const kpi = subcategory.fields.filter((field) => field.name === kpiKey)[0];
-      if (kpiKey === "totalRevenue" && typeof kpiValue === "number") {
-        kpiValue = this.convertToMillions(kpiValue);
-      }
-      if (kpiKey === "industry" || kpiKey === "subcontractingCompaniesIndustries") {
-        kpiValue = Array.isArray(kpiValue)
-          ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
-          : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
-      }
-      if (kpiKey === "subcontractingCompaniesCountries") {
-        kpiValue = Array.isArray(kpiValue)
-          ? kpiValue.map(
-              (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
-            )
-          : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
-      }
-      kpiValue = kpi.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;
+      const kpiField = subcategory.fields.filter((field) => field.name === kpiKey)[0];
+
+      kpiValue = this.reformatValueForDisplay(kpiField, kpiValue);
 
       const kpiData = {
         subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
         subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
         kpiKey: kpiKey,
-        kpiLabel: kpi?.label ? kpi.label : kpiKey,
-        kpiDescription: kpi?.description ? kpi.description : "",
+        kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
+        kpiDescription: kpiField?.description ? kpiField.description : "",
         [dataIdOfLksgDataset]: kpiValue,
       } as KpiDataObject;
       let existingKpi = this.kpiDataObjects.get(kpiKey);
@@ -175,6 +161,32 @@ export default defineComponent({
      */
     convertToMillions(inputNumber: number): string {
       return `${(inputNumber / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
+    },
+
+    /**
+     *
+     * @param kpiField the Field to which the value belongs
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformated value ready for display
+     */
+    reformatValueForDisplay(kpiField: Field, kpiValue: KpiValue): KpiValue {
+      if (kpiField.name === "totalRevenue" && typeof kpiValue === "number") {
+        kpiValue = this.convertToMillions(kpiValue);
+      }
+      if (kpiField.name === "industry" || kpiField.name === "subcontractingCompaniesIndustries") {
+        kpiValue = Array.isArray(kpiValue)
+          ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
+          : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+      }
+      if (kpiField.name === "subcontractingCompaniesCountries") {
+        kpiValue = Array.isArray(kpiValue)
+          ? kpiValue.map(
+              (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
+            )
+          : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+      }
+
+      return kpiField.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;
     },
   },
 });
