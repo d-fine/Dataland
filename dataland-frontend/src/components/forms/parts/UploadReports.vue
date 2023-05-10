@@ -53,8 +53,8 @@
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
       <div
-        v-for="(reportToUpload, index) of reportsToUpload"
-        :key="reportToUpload.fileForReport.name + index"
+        v-for="reportToUpload of reportsToUpload"
+        :key="reportToUpload.fileForReport.name"
         class="col-9 formFields"
         data-test="report-info"
       >
@@ -73,7 +73,7 @@
       </div>
       <div
         v-for="(storedReport, index) of storedReports"
-        :key="storedReport.reportName + index"
+        :key="storedReport.reportName"
         class="col-9 formFields"
       >
         <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
