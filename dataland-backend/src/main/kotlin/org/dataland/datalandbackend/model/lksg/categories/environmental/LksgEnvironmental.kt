@@ -12,10 +12,10 @@ import org.dataland.datalandbackend.model.lksg.categories.environmental.subcateg
  * Impact topics of the LKSG questionnaire's impact area "Environmental"
  */
 data class LksgEnvironmental(
-        val useOfMercuryMercuryWasteMinamataConvention: LksgUseOfMercuryMercuryWasteMinamataConvention?,
+    val useOfMercuryMercuryWasteMinamataConvention: LksgUseOfMercuryMercuryWasteMinamataConvention?,
 
-        val productionAndUseOfPersistentOrganicPollutantsPopsConvention:
+    val productionAndUseOfPersistentOrganicPollutantsPopsConvention:
     LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention?,
 
-        val exportImportOfHazardousWasteBaselConvention: LksgExportImportOfHazardousWasteBaselConvention?,
+    val exportImportOfHazardousWasteBaselConvention: LksgExportImportOfHazardousWasteBaselConvention?,
 )
