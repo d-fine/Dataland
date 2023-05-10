@@ -266,7 +266,7 @@ describeIf(
     }
 
     /**
-     * Adds a report to upload and removes it again afterwards checking that no dialog is regarding a duplicate file name
+     * Adds a report to upload and removes it again afterwards checking that no dialog regarding a duplicate file name
      * is wrongly triggered and that the file is correclty removed.
      */
     function checkExistingFilenameDialogDidNotBreakSubsequentUploads(): void {
