@@ -166,6 +166,9 @@ export default defineComponent({
      */
     async handleFilesSelected(event: FileUploadSelectEvent): void {
       const selectedFilesByUser = event.files as File[];
+      if(this.wasThereNoNewFileAdded(selectedFilesByUser)) {
+        return;
+      }
       const indexOfLastSelectedFile = selectedFilesByUser.length - 1;
       const lastSelectedFile = selectedFilesByUser[indexOfLastSelectedFile];
       if (this.isFileNameAlreadyExistingAmongReferenceableReportNames(lastSelectedFile.name)) {
@@ -179,6 +182,16 @@ export default defineComponent({
         this.reportsToUpload.push(reportToUpload);
         this.emitReferenceableReportNamesChangedEvent();
       }
+    },
+    /**
+     * Checks if there was actually a file added by the user that was not filtered
+     * out by the FileUpload component
+     *
+     * @param filesSelectedByUser the files currently selected by the user
+     * @returns false if there was actually a file added by the user
+     */
+    wasThereNoNewFileAdded(filesSelectedByUser: File[]) {
+      return filesSelectedByUser.length == this.reportsToUpload.length
     },
     /**
      * Remove report from files uploaded
