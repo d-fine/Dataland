@@ -35,7 +35,7 @@ export default defineComponent({
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
       listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
-      kpiDataObjects: [] as kpiDataObject[],
+      kpiDataObjects: new Map() as Map<string, kpiDataObject>,
       lksgDataModel: lksgDataModel,
     };
   },
@@ -126,7 +126,7 @@ export default defineComponent({
           : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
       }
       kpiValue = kpi.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;
-      let indexOfExistingItem = -1;
+
       const kpiData = {
         subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
         subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
@@ -135,14 +135,8 @@ export default defineComponent({
         kpiDescription: kpi?.description ? kpi.description : "",
         [dataIdOfLksgDataset]: kpiValue,
       } as kpiDataObject;
-      indexOfExistingItem = this.kpiDataObjects.findIndex(
-        (singleKpiDataObject) => singleKpiDataObject.kpiKey === kpiKey
-      );
-      if (indexOfExistingItem !== -1) {
-        Object.assign(this.kpiDataObjects[indexOfExistingItem], kpiData);
-      } else {
-        this.kpiDataObjects.push(kpiData);
-      }
+
+      this.kpiDataObjects.set(kpiKey, kpiData);
     },
 
     /**

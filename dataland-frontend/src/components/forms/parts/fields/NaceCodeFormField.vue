@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
+    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
     <NaceCodeSelector v-model="selectedNaceCodes" />
     <!--
     Note: It is required to set the id of this div to the FormKit node Id to allow the checkCustomInputs methods
@@ -10,7 +10,7 @@
     <div :id="formKitNaceCodeInput?.node?.props?.id || undefined">
       <FormKit
         type="list"
-        :validation="validation!"
+        :validation="validation"
         :validation-label="validationLabel ?? displayName"
         :name="name"
         ref="formKitNaceCodeInput"
@@ -61,10 +61,6 @@ export default defineComponent({
     },
     validationLabel: {
       type: String,
-    },
-    placeholder: {
-      type: String,
-      default: "",
     },
     required: {
       type: Boolean,

@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
+    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
     <FormKit type="list" :name="name" :label="displayName">
       <FormKit type="group" v-for="item in listOfProductionSites" :key="item.id">
         <div data-test="productionSiteSection" class="productionSiteSection">
@@ -26,10 +26,8 @@
 
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
-import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { LksgProductionSite } from "@clients/backend";
 import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -58,14 +56,8 @@ export default defineComponent({
       default: false,
     },
   },
-  computed: {
-    lksgDataModel() {
-      return lksgDataModel;
-    },
-  },
   data() {
     return {
-      allCountry: getAllCountryNamesWithCodes(),
       productionSite: Object as LksgProductionSite,
       listOfGoodsOrServicesString: "",
       listOfProductionSites: [

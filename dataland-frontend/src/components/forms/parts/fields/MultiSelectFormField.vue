@@ -1,9 +1,8 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
+    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
     <MultiSelectFormElement
       :name="name"
-      :display-name="displayName"
       :validation="validation"
       :validation-label="validationLabel ?? displayName"
       :placeholder="placeholder"

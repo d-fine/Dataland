@@ -168,6 +168,4 @@ export default defineComponent({
     },
   },
 });
-
-// TODO since kpiNameMappings.report is "undefined": Aren't such values framework independent and can be stored in a seperate mapping?
 </script>

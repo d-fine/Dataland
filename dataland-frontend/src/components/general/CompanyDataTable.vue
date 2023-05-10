@@ -78,7 +78,7 @@ import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   name: "CompanyDataTable",
@@ -90,7 +90,7 @@ export default defineComponent({
     return {
       kpiDataObjectsToDisplay: [],
       expandedRowGroups: ["_general"],
-      listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
+      listOfProductionSitesConvertedNames: detailsCompanyDataTableColumnHeaders.listOfProductionSites,
     };
   },
   props: {
@@ -138,7 +138,7 @@ export default defineComponent({
         },
         data: {
           listOfRowContents: listOfProductionSites,
-          columnHeaders: listOfProductionSitesConvertedNames,
+          columnHeaders: this.listOfProductionSitesConvertedNames,
         },
       });
     },
@@ -150,10 +150,12 @@ export default defineComponent({
 .p-rowgroup-footer td {
   font-weight: 500;
 }
+
 ::v-deep(.p-rowgroup-header) {
   span {
     font-weight: 500;
   }
+
   .p-row-toggler {
     vertical-align: middle;
     margin-right: 0.25rem;

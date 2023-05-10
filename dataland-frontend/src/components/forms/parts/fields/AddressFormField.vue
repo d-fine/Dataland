@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName!" :explanation="info!" :is-required="required" />
+    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
     <AddressFormElement
       :name="name"
       :display-name="displayName"

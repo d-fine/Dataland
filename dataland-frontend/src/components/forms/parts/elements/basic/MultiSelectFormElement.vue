@@ -18,7 +18,7 @@
       type="list"
       ref="formkitMultiSelectFormElement"
       :validation-label="validationLabel"
-      :validation="validation!"
+      :validation="validation"
       :name="name"
       v-model="selections"
       outer-class="hidden-input"
@@ -51,10 +51,6 @@ export default defineComponent({
     name: {
       type: String,
       required: true,
-    },
-    displayName: {
-      type: String,
-      default: "",
     },
     validation: {
       type: String,
