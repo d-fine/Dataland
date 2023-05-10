@@ -39,6 +39,14 @@ describe("Component test for LksgPanel", () => {
     cy.get("td:contains('1.23 MM')").should("exist");
   });
 
+  /**
+   * Toggles the data-table row group with the given key
+   * @param groupKey the key of the row group to expand
+   */
+  function toggleRowGroup(groupKey: string): void {
+    cy.get(`span[id=${groupKey}]`).siblings("button").last().click();
+  }
+
   it("Check Lksg view page for company with one Lksg data set", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set", preparedFixtures);
     const lksgData = preparedFixture.t;
@@ -70,24 +78,24 @@ describe("Component test for LksgPanel", () => {
 
     cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
 
-    cy.get("button.p-row-toggler").eq(0).click();
+    toggleRowGroup("_masterData");
     cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("not.exist");
 
-    cy.get("button.p-row-toggler").eq(0).click();
+    toggleRowGroup("_masterData");
     cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
 
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
 
-    cy.get("button.p-row-toggler").eq(2).click();
+    toggleRowGroup("childLabor");
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
-
     cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
 
-    cy.get("button.p-row-toggler").eq(11).click();
+    toggleRowGroup("productionSpecific");
+    cy.get(`a:contains(Show "List Of Production Sites")`).should("be.visible");
 
-    cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
+    cy.get("em[title='Data Date']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("The date until when");
-    cy.get("em.info-icon").eq(0).trigger("mouseleave");
+    cy.get("em[title='Data Date']").trigger("mouseleave");
 
     cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
   });
