@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { CompanyInformation, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
+import { CompanyIdentifierIdentifierTypeEnum, CompanyInformation } from "@clients/backend";
 import { DataPoint } from "./FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { humanizeString } from "@/utils/StringHumanizer";
@@ -72,7 +72,7 @@ export function generateCompanyInformation(): CompanyInformation {
     countryCode: faker.address.countryCode(),
     companyAlternativeNames: Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
       return faker.company.name();
-    }).sort(),
+    }).sort((a, b) => a.localeCompare(b)),
     companyLegalForm: valueOrUndefined(getRandomCompanyLegalForm()),
     website: valueOrUndefined(faker.internet.url()),
     isTeaserCompany: false,

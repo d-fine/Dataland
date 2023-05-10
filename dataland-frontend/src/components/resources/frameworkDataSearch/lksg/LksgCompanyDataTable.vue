@@ -82,7 +82,7 @@ import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { kpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
 export default defineComponent({
   name: "LksgCompanyDataTable",
@@ -92,13 +92,13 @@ export default defineComponent({
   },
   data() {
     return {
-      kpiDataObjectsToDisplay: [] as kpiDataObject[],
+      kpiDataObjectsToDisplay: [] as KpiDataObject[],
       expandedRowGroups: ["_masterData"],
     };
   },
   props: {
     kpiDataObjects: {
-      type: Map as PropType<Map<string, kpiDataObject>>,
+      type: Map as PropType<Map<string, KpiDataObject>>,
       default: () => new Map(),
     },
     reportingPeriodsOfDataSets: {

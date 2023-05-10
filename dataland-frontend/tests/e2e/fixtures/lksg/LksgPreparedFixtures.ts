@@ -35,9 +35,8 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
  */
 function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<LksgData>): FixtureData<LksgData> {
   input.companyInformation.companyName = "six-lksg-data-sets-in-different-years";
-  input.t.general?.masterData?.dataDate
-    ? (input.t.general.masterData.dataDate = "2022-01-01")
-    : console.error("fakeFixture created improperly: dataDate missing");
+  if (input.t.general?.masterData?.dataDate) input.t.general.masterData.dataDate = "2022-01-01";
+  else console.error("fakeFixture created improperly: dataDate missing");
   input.reportingPeriod = "2022";
   return input;
 }
@@ -49,13 +48,14 @@ function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<
  * @returns the manipulated fixture data
  */
 function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureData<LksgData>): FixtureData<LksgData> {
+  const twoProductionSites = [generateProductionSite(), generateProductionSite()];
   input.companyInformation.companyName = "one-lksg-data-set";
-  input.t.social?.childLabor?.employeeUnder18Apprentices
-    ? (input.t.social.childLabor.employeeUnder18Apprentices = "No")
-    : console.error("fakeFixture created improperly: employeeUnder18Apprentices missing");
-  input.t.general?.productionSpecific?.listOfProductionSites
-    ? (input.t.general.productionSpecific.listOfProductionSites = [generateProductionSite(), generateProductionSite()])
-    : console.error("fakeFixture created improperly: listOfProductionSites missing");
+  if (input.t.social?.childLabor?.employeeUnder18Apprentices)
+    input.t.social.childLabor.employeeUnder18Apprentices = "No";
+  else console.error("fakeFixture created improperly: employeeUnder18Apprentices missing");
+  if (input.t.general?.productionSpecific?.listOfProductionSites)
+    input.t.general.productionSpecific.listOfProductionSites = twoProductionSites;
+  else console.error("fakeFixture created improperly: listOfProductionSites missing");
   return input;
 }
 
@@ -68,9 +68,8 @@ function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureDat
  */
 function manipulateFixtureForDate(input: FixtureData<LksgData>, date: string): FixtureData<LksgData> {
   input.companyInformation.companyName = "LkSG-date-" + date;
-  input.t.general?.masterData?.dataDate
-    ? (input.t.general.masterData.dataDate = date)
-    : console.error("fakeFixture created improperly: dataDate missing");
+  if (input.t.general?.masterData?.dataDate) input.t.general.masterData.dataDate = date;
+  else console.error("fakeFixture created improperly: dataDate missing");
   input.reportingPeriod = date.split("-")[0];
   return input;
 }

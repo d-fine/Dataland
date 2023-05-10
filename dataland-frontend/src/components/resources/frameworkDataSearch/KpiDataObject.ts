@@ -1,4 +1,4 @@
-export interface kpiDataObject {
+export interface KpiDataObject {
   subcategoryKey: string;
   subcategoryLabel: string;
   kpiKey: string;

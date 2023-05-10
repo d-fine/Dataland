@@ -24,7 +24,7 @@ import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/L
 import { Subcategory } from "@/utils/GenericFrameworkTypes";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
-import { kpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -35,7 +35,7 @@ export default defineComponent({
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
       listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
-      kpiDataObjects: new Map() as Map<string, kpiDataObject>,
+      kpiDataObjects: new Map() as Map<string, KpiDataObject>,
       lksgDataModel: lksgDataModel,
     };
   },
@@ -134,9 +134,11 @@ export default defineComponent({
         kpiLabel: kpi?.label ? kpi.label : kpiKey,
         kpiDescription: kpi?.description ? kpi.description : "",
         [dataIdOfLksgDataset]: kpiValue,
-      } as kpiDataObject;
-
-      this.kpiDataObjects.set(kpiKey, kpiData);
+      } as KpiDataObject;
+      let existingKpi = this.kpiDataObjects.get(kpiKey);
+      if (existingKpi) Object.assign(existingKpi, kpiData);
+      else existingKpi = kpiData;
+      this.kpiDataObjects.set(kpiKey, existingKpi);
     },
 
     /**

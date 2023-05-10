@@ -72,7 +72,7 @@ describeIf(
             throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
           }
           listOfProductionSites.forEach((productionSite: LksgProductionSite) => {
-            if (productionSite.addressOfProductionSite && productionSite.addressOfProductionSite.streetAndHouseNumber) {
+            if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
               cy.get("tbody.p-datatable-tbody p").contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
             }
           });

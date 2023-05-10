@@ -108,7 +108,7 @@ export default defineComponent({
     updateSelectedChildrenCounter(selectedTreeNodeSet: Set<string>) {
       const newSelectedChildrenCounter = new Map<string, number>();
       const childrenCounterPopulator = (node: TreeNode): void => {
-        const children = node.children || [];
+        const children = node.children ?? [];
         let localSum = 0;
         children.forEach((child) => {
           if (selectedTreeNodeSet.has(assertDefined(child.key))) localSum++;
@@ -127,7 +127,7 @@ export default defineComponent({
      * @param selectedTreeNodeSet the set of selected nodes
      */
     updateModelValue(selectedTreeNodeSet: Set<string>) {
-      const newModelValue = [...selectedTreeNodeSet].sort();
+      const newModelValue = [...selectedTreeNodeSet].sort((a, b) => a.localeCompare(b));
       this.$emit("update:modelValue", newModelValue);
     },
     /**
