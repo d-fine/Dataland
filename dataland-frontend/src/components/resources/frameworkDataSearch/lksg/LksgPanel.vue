@@ -17,7 +17,6 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
@@ -70,7 +69,7 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getLksgDataControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
           const singleLksgData = (
@@ -79,9 +78,7 @@ export default defineComponent({
 
           this.lksgDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleLksgData }];
         } else {
-          this.lksgDataAndMetaInfo = (
-            await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
-          ).data;
+          this.lksgDataAndMetaInfo = (await lksgDataControllerApi.getAllCompanyLksgData(this.companyId!)).data;
         }
         this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
@@ -103,7 +100,7 @@ export default defineComponent({
       subcategory: Subcategory,
       dataIdOfLksgDataset: string
     ): void {
-      const kpiField = subcategory.fields.filter((field) => field.name === kpiKey)[0];
+      const kpiField = subcategory.fields.find((field) => field.name === kpiKey)!;
 
       kpiValue = this.reformatValueForDisplay(kpiField, kpiValue);
 
@@ -137,8 +134,8 @@ export default defineComponent({
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
               for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
                 const subcategory = lksgDataModel
-                  .filter((area) => area.name === areaKey)[0]
-                  .subcategories.filter((category) => category.name === subAreaKey)[0];
+                  .find((area) => area.name === areaKey)!
+                  .subcategories.find((category) => category.name === subAreaKey)!;
                 this.createKpiDataObjects(kpiKey, kpiValue, subcategory, dataIdOfLksgDataset);
               }
             }
@@ -170,14 +167,14 @@ export default defineComponent({
       if (kpiField.name === "industry" || kpiField.name === "subcontractingCompaniesIndustries") {
         kpiValue = Array.isArray(kpiValue)
           ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
-          : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+          : naceCodeMap.get(kpiValue as string)?.label ?? (kpiValue as KpiValue);
       }
       if (kpiField.name === "subcontractingCompaniesCountries") {
         kpiValue = Array.isArray(kpiValue)
           ? kpiValue.map(
               (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
             )
-          : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+          : getCountryNameFromCountryCode(kpiValue as string) ?? (kpiValue as KpiValue);
       }
 
       return kpiField.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;

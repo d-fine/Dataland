@@ -13,7 +13,6 @@ import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { generateProductionSite } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describeIf(
   "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
@@ -67,7 +66,7 @@ describeIf(
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
           toggleRowGroup("productionSpecific");
           cy.get(`a:contains(Show "List Of Production Sites")`).click();
-          const listOfProductionSites = assertDefined(lksgData.general?.productionSpecific?.listOfProductionSites);
+          const listOfProductionSites = lksgData.general!.productionSpecific!.listOfProductionSites!;
           if (listOfProductionSites.length < 2) {
             throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
           }

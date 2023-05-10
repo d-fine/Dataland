@@ -85,7 +85,6 @@ import PrimeButton from "primevue/button";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
@@ -182,7 +181,7 @@ export default defineComponent({
         (this.$refs.reportingPeriodsOverlayPanel as any)?.toggle(event);
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
         this.gotoUpdateForm(
-          assertDefined(this.companyID),
+          this.companyID!,
           this.dataType as DataTypeEnum,
           (this.mapOfReportingPeriodToActiveDataset.entries().next().value as [string, DataMetaInformation])[1].dataId
         );
@@ -195,9 +194,7 @@ export default defineComponent({
      * @param dataId data Id
      */
     gotoUpdateForm(companyID: string, dataType: DataTypeEnum, dataId: string) {
-      void this.$router.push(
-        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
-      );
+      void this.$router.push(`/companies/${companyID}/frameworks/${dataType}/upload?templateDataId=${dataId}`);
     },
     /**
      * Hides the dropdown of the Autocomplete-component
@@ -292,7 +289,7 @@ export default defineComponent({
     async getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;

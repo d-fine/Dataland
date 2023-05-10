@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TabView class="col-12" v-model:activeIndex="activeTabIndex" @tab-change="handleTabChange">
-      <TabPanel header="AVAILABLE DATASETS"> </TabPanel>
+      <TabPanel header="AVAILABLE DATASETS"></TabPanel>
       <TabPanel header="MY DATASETS">
         <TheContent class="p-3 min-h-screen paper-section relative">
           <div class="col-12 flex flex-row justify-content-between align-items-end">
@@ -46,7 +46,6 @@ import { defineComponent, inject } from "vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import PrimeButton from "primevue/button";
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import TabView from "primevue/tabview";
@@ -91,7 +90,7 @@ export default defineComponent({
      * Finds the datasets the logged in user is responsible for and creates corresponding table entries
      */
     requestDataMetaDataForCurrentUser: async function (): Promise<void> {
-      this.datasetTableInfos = await getMyDatasetTableInfos(assertDefined(this.getKeycloakPromise));
+      this.datasetTableInfos = await getMyDatasetTableInfos(this.getKeycloakPromise!);
       this.waitingForData = false;
     },
     /**

@@ -6,7 +6,7 @@
         <BackButton id="backButton" label="BACK" />
         <CompanyInformation :companyID="companyID" />
         <Card class="col-12 text-left page-wrapper-card">
-          <template #title> New Dataset - Framework </template>
+          <template #title> New Dataset - Framework</template>
           <template #content>
             <div class="uploadFormWrapper grid">
               <div id="euTaxonomyContainer" class="col-9 flex">
@@ -68,7 +68,6 @@
 import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
@@ -208,7 +207,7 @@ export default defineComponent({
     async getMetaInfoAboutAllDataSetsForCurrentCompany() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getMetaDataControllerApi();
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, false);
         const listOfAllDataMetaInfo = response.data;

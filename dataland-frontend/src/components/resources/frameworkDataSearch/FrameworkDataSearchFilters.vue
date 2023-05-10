@@ -64,7 +64,6 @@ import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkD
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { useRoute } from "vue-router";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import {
   CountryCodeSelectableItem,
@@ -177,7 +176,7 @@ export default defineComponent({
      */
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
+        this.getKeycloakPromise()
       ).getCompanyDataControllerApi();
 
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();

@@ -29,7 +29,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { defineComponent, inject } from "vue";
 import { CompanyInformation } from "@clients/backend";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -69,7 +69,7 @@ export default defineComponent({
         this.waitingForData = true;
         if (this.companyID != "loading") {
           const companyDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+            this.getKeycloakPromise!()
           ).getCompanyDataControllerApi();
           const response = await companyDataControllerApi.getCompanyById(this.companyID);
           this.companyInformation = response.data.companyInformation;

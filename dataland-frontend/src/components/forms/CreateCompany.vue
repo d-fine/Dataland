@@ -222,22 +222,21 @@ import Card from "primevue/card";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import {
-  CompanyInformation,
   CompanyIdentifier,
   CompanyIdentifierIdentifierTypeEnum,
+  CompanyInformation,
   StoredCompany,
 } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import PrimeButton from "primevue/button";
 import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import SuccessUpload from "@/components/messages/SuccessUpload.vue";
 import FailedUpload from "@/components/messages/FailedUpload.vue";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import Tooltip from "primevue/tooltip";
 import {
-  companyDataNames,
   companyDataExplanations,
+  companyDataNames,
   gicsSectors,
 } from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -305,7 +304,7 @@ export default defineComponent({
     ): Promise<boolean> {
       const fetchedCompanies = (
         await (
-          await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
+          await new ApiClientProvider(this.getKeycloakPromise!()).getCompanyDataControllerApi()
         ).getCompanies(node.value as string)
       ).data;
       return !fetchedCompanies.some((it: StoredCompany) =>
@@ -393,7 +392,7 @@ export default defineComponent({
           this.uploadSucceded = false;
         } else {
           const companyDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
+            this.getKeycloakPromise!()
           ).getCompanyDataControllerApi();
           const response = await companyDataControllerApi.postCompany(company);
           const newCompanyId = response.data.companyId;

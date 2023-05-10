@@ -15,7 +15,6 @@ import TheFooter from "@/components/general/TheFooter.vue";
 import { defineComponent, inject } from "vue";
 import { NavigationFailure, useRoute } from "vue-router";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { useSharedSessionStateStore } from "@/stores/stores";
 import { SessionDialogMode } from "@/utils/SessionTimeoutUtils";
@@ -60,7 +59,7 @@ export default defineComponent({
      * @returns a promise of the redirect operation (or a resolved promise if no redirect needs to occur)
      */
     async checkAuthenticatedAndRedirectIfLoggedIn(): Promise<NavigationFailure | void | undefined> {
-      const keycloak = await assertDefined(this.getKeycloakPromise)();
+      const keycloak = await this.getKeycloakPromise!();
       if (keycloak.authenticated === true) {
         return this.$router.push({ path: "/companies", replace: true });
       }

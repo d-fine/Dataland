@@ -13,7 +13,6 @@ import { defineComponent, inject, PropType } from "vue";
 import Keycloak from "keycloak-js";
 import { AxiosResponse, AxiosResponseHeaders } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
@@ -47,7 +46,7 @@ export default defineComponent({
       try {
         const docUrl = document.createElement("a");
         const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getDocumentControllerApi();
         await documentControllerApi
           .getDocument(reference, {

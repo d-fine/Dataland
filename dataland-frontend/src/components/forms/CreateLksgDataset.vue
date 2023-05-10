@@ -86,7 +86,6 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -212,16 +211,14 @@ export default defineComponent({
      */
     async loadLKSGData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const lkSGDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
-      ).getLksgDataControllerApi();
+      const lkSGDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise!()).getLksgDataControllerApi();
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
       const lksgDataset = dataResponse.data;
       const numberOfProductionSites = lksgDataset.data?.general?.productionSpecific?.listOfProductionSites?.length ?? 0;
       if (numberOfProductionSites > 0) {
         this.isYourCompanyManufacturingCompany = "Yes";
-        const productionSites = assertDefined(lksgDataset.data?.general?.productionSpecific?.listOfProductionSites);
+        const productionSites = lksgDataset.data!.general!.productionSpecific!.listOfProductionSites!;
         this.listOfProductionSites = [];
         this.idCounter = numberOfProductionSites;
         for (let i = 0; i < numberOfProductionSites; i++) {
@@ -246,7 +243,7 @@ export default defineComponent({
       this.messageCounter++;
       try {
         const lkSGDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
+          this.getKeycloakPromise!()
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
