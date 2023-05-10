@@ -119,14 +119,15 @@ describeIf(
       }
     );
 
-    it("Check if the file upload info remove button works as expected", () => {
+    it.only("Check if the file upload info remove button works as expected", () => {
+      // TODO delete "only"
       testData.companyInformation.companyName = "non-financials-upload-form-remove-document-button";
       uploadCompanyViaApiAndEuTaxonomyDataForNonFinancialsViaForm(
         testData.companyInformation,
         () => {
           uploadReports.selectFile(TEST_PDF_FILE_NAME);
           uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-          uploadReports.fillAllReportInfoForms();
+          uploadReports.fillAllReportInfoForms(); // TODO this is somehow broken.  It does not fill the info for the second pdf file!
         },
         () => {
           cy.get(`[data-test="capexSection"] [data-test="total"] select[name="report"]`).select(TEST_PDF_FILE_NAME);
