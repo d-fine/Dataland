@@ -58,7 +58,7 @@
                   ref="UploadReports"
                   :editMode="editMode"
                   :dataset="templateDataset"
-                  @referenceable-files-changed="referenceableFilesChanged"
+                  @referenceableReportNamesChanged="handleChangeOfReferenceableReportNames"
                 />
 
                 <EuTaxonomyBasicInformation
@@ -473,7 +473,7 @@ export default defineComponent({
      * Updates the local list of names of referenceable files
      * @param reportsFilenames new list of referenceable files
      */
-    referenceableFilesChanged(reportsFilenames: string[]) {
+    handleChangeOfReferenceableReportNames(reportsFilenames: string[]) {
       this.namesOfAllCompanyReportsForTheDataset = reportsFilenames;
     },
   },

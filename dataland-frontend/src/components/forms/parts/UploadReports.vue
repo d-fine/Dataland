@@ -117,7 +117,7 @@ export default defineComponent({
     PrimeButton,
     FileUpload,
   },
-  emits: ["referenceableFilesChanged"],
+  emits: ["referenceableReportNamesChanged"],
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -141,7 +141,7 @@ export default defineComponent({
     },
   },
   computed: {
-    allReferenceableReportsFilenames(): string[] {
+    allReferenceableReportNames(): string[] {
       const namesOfFilesToUpload = this.reportsToUpload.map((reportToUpload) => reportToUpload.fileNameWithoutSuffix);
       const namesOfStoredReports = this.storedReports.map((storedReport) => storedReport.reportName);
       return namesOfFilesToUpload.concat(namesOfStoredReports);
@@ -159,8 +159,8 @@ export default defineComponent({
     /**
      * Emits event that referenceable files changed
      */
-    emitRreferenceableFilesChangedEvent() {
-      this.$emit("referenceableFilesChanged", this.allReferenceableReportsFilenames);
+    emitRreferenceableReportNamesChangedEvent() {
+      this.$emit("referenceableReportNamesChanged", this.allReferenceableReportNames);
     },
     /**
      * Handles selection of a file by the user. First it checks if the file name is already taken.
@@ -183,7 +183,7 @@ export default defineComponent({
         reportToUpload.reference = await this.calculateSha256HashFromFile(reportToUpload.fileForReport);
         reportToUpload.fileNameWithoutSuffix = this.removeFileTypeExtension(reportToUpload.fileForReport.name);
         this.reportsToUpload.push(reportToUpload);
-        this.emitRreferenceableFilesChangedEvent();
+        this.emitRreferenceableReportNamesChangedEvent();
       }
     },
     /**
@@ -194,7 +194,7 @@ export default defineComponent({
     removeReportFromReportsToUpload(fileRemoveCallback: (x: number) => void, indexOfFileToRemove: number) {
       fileRemoveCallback(indexOfFileToRemove);
       this.reportsToUpload.splice(indexOfFileToRemove, 1);
-      this.emitRreferenceableFilesChangedEvent();
+      this.emitRreferenceableReportNamesChangedEvent();
     },
 
     /**
@@ -204,7 +204,7 @@ export default defineComponent({
      */
     removeReportFromStoredReports(indexOfFileToRemove: number) {
       this.storedReports.splice(indexOfFileToRemove, 1);
-      this.emitRreferenceableFilesChangedEvent();
+      this.emitRreferenceableReportNamesChangedEvent();
     },
 
     /**
@@ -243,7 +243,7 @@ export default defineComponent({
             isGroupLevel: referencedReportsForDataId[key].isGroupLevel,
           });
         }
-        this.emitRreferenceableFilesChangedEvent();
+        this.emitRreferenceableReportNamesChangedEvent();
       }
     },
 
@@ -269,22 +269,18 @@ export default defineComponent({
     },
 
     /**
-     * Checks for a single file name if it already occurs among the files that shall be uploaded.
+     * Checks for a single file name if it already occurs among the referenceable report names
      * @param fullFileName is the full file name with its prefix that should be checked
-     * @returns a boolean stating if the file name is among the files that shall be uploaded or not
+     * @returns a boolean stating if the file name is among the referenceable report names
      */
     isFileNameAlreadyExistingForAnUploadedOrSelectedReport(fullFileName: string): boolean {
-      // TODO check if you can just look in the referencable list
       const fileNameWithoutSuffix = this.removeFileTypeExtension(fullFileName);
-      return (
-        this.storedReports.some((uploadedReport) => uploadedReport.reportName === fileNameWithoutSuffix) ||
-        this.reportsToUpload.some((reportToUpload) => reportToUpload.fileNameWithoutSuffix === fileNameWithoutSuffix)
-      );
+      return this.allReferenceableReportNames.some((reportName) => reportName === fileNameWithoutSuffix);
     },
 
     /**
      *  calculates the hash from a file
-     * @param [file] the file to calculate the hash from
+     * @param [file] the file to calculate the hash for
      * @returns a promise of the hash as string
      */
     async calculateSha256HashFromFile(file: File): Promise<string> {
