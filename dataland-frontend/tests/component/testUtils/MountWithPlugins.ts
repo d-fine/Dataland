@@ -2,6 +2,7 @@ import { routes } from "@/router";
 import { createPinia } from "pinia";
 import PrimeVue from "primevue/config";
 import DialogService from "primevue/dialogservice";
+import { plugin, defaultConfig } from "@formkit/vue";
 import { createMemoryHistory, createRouter, Router } from "vue-router";
 import { mount } from "cypress/vue";
 import { VueWrapper } from "@vue/test-utils";
@@ -82,6 +83,12 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   options.global.plugins.push({
     install(app) {
       app.use(assertDefined(options.router));
+    },
+  });
+
+  options.global.plugins.push({
+    install(app) {
+      app.use(plugin, defaultConfig);
     },
   });
 
