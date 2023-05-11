@@ -25,7 +25,7 @@ is_infrastructure_up () {
 }
 export -f is_infrastructure_up
 
-timeout 240 bash -c "while ! is_infrastructure_up; do echo 'infrastructure not yet completely there - retrying in 1s'; sleep 1; done; echo 'infrastructure up!'"
+timeout 600 bash -c "while ! is_infrastructure_up; do echo 'infrastructure not yet completely there - retrying in 5s'; sleep 5; done; echo 'infrastructure up!'"
 
 if [[ $CYPRESS_TEST_GROUP -eq 0 ]]; then
   ./gradlew :dataland-e2etests:test --no-daemon --stacktrace
