@@ -14,7 +14,6 @@ export function uploadAllDocuments(token: string): void {
         const arr = new Uint8Array(bufferObject.data);
         const file = new File([arr], name, { type: "application/pdf" });
         api.postDocument(file).catch((error) => console.log(error));
-        delete bufferObject.data;
       });
     });
   });
