@@ -56,7 +56,7 @@
         v-for="reportToUpload of reportsToUpload"
         :key="reportToUpload.fileForReport.name"
         class="col-9 formFields"
-        data-test="report-info"
+        data-test="report-to-upload-form"
       >
         <div :data-test="reportToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
           <div class="form-field-label">

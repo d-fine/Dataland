@@ -4,13 +4,13 @@ export const uploadReports = {
     cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
   },
   numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload: number): void {
-    cy.get('[data-test="report-info"]').should("have.length", expectedNumberOfReportsToUpload);
+    cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);
   },
   fillAllReportsToUploadForms(expectedNumberOfReportsToUpload?: number): void {
     if(expectedNumberOfReportsToUpload) {
       this.numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload);
     }
-    cy.get('[data-test="report-info"]').each((element) => {
+    cy.get('[data-test="report-to-upload-form"]').each((element) => {
       cy.wrap(element).find(`[data-test="reportDate"] button`).should("have.class", "p-datepicker-trigger").click();
       cy.get("div.p-datepicker").find('button[aria-label="Previous Month"]').click();
       cy.get("div.p-datepicker").find(`span:contains("12")`).click();
@@ -32,15 +32,10 @@ export const uploadReports = {
     cy.get('input[name="reference"]').should("exist");
   },
   validateReportToUploadHasForm(filename: string): void {
-    // TODO we have a "fillAllReportInfoForms" method.  Why do we need this one here then?
-    // cy.get(`[data-test="${filename}ToUploadContainer"]`).should("exist");
-    cy.get(`[data-test="${filename}ToUploadContainer"]`).find('input[name="currency"]').type("www");
+    cy.get(`[data-test="${filename}ToUploadContainer"]`).should("exist");
   },
   removeReportToUpload(): void {
-    // TODO it is unsafe to use this since it breaks as soon as multiple files are on the upload list
-    // TODO instead it should accept a file name and explicitly click the remove button for THAT specific file
-    // TODO e.g. compare it to "removeUploadedReportFromReportInfos"
-    cy.get('button[data-test="files-to-upload-remove"]').click();
+    cy.get('button[data-test="files-to-upload-remove"]').last().click();
   },
   removeAllFilesFromUploadList(): void {
     cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).click());
@@ -50,7 +45,7 @@ export const uploadReports = {
   },
   checkNoReportIsListed(): void {
     cy.get('div[data-test="files-to-upload"]').should("not.exist");
-    cy.get('[data-test="report-info"]').should("not.exist");
+    cy.get('[data-test="report-to-upload-form"]').should("not.exist");
     cy.get('input[name="reference"]').should("not.exist");
     cy.get('input[name="reportDate"]').should("not.exist");
     // TODO check other lists

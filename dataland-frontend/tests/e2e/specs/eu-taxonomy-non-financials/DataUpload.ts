@@ -110,7 +110,7 @@ describeIf(
             uploadReports.checkNoReportIsListed();
 
             uploadReports.selectFile(TEST_PDF_FILE_NAME);
-            uploadReports.fillAllReportsToUploadForms(2);
+            uploadReports.fillAllReportsToUploadForms(1);
           },
           () => undefined,
           () => undefined,
