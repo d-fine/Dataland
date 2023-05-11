@@ -23,21 +23,24 @@ export function updateObject(baseObject: ObjectType, objectWithNewData: ObjectTy
 /**
  * Changes the value of a variable to maintain different number formatting between backend and frontend
  * @param obj object in which it is looking for the value to change
- * @param typeOfModification determines how we change object values
+ * @param targetFormat determines how we change object values
  * @returns Object modified
  */
-export function modifyObjectKeys(obj: ObjectType, typeOfModification: "send" | "receive"): ObjectType {
+export function convertValuesToPercentagesOrDecimals(
+  obj: ObjectType,
+  targetFormat: "percentage" | "decimal"
+): ObjectType {
   const objectModified = obj;
   for (const key in objectModified) {
     if (key === "value" && objectModified[key]) {
-      if (typeOfModification === "send") {
+      if (targetFormat === "decimal") {
         objectModified[key] = (Math.round(+objectModified[key] * 100) / 100 / 100).toString();
       }
-      if (typeOfModification === "receive") {
+      if (targetFormat === "percentage") {
         objectModified[key] = (Math.round(+objectModified[key] * 100 * 100) / 100).toString();
       }
     } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
-      modifyObjectKeys(objectModified[key] as unknown as ObjectType, typeOfModification);
+      convertValuesToPercentagesOrDecimals(objectModified[key] as unknown as ObjectType, targetFormat);
     }
   }
   return objectModified;

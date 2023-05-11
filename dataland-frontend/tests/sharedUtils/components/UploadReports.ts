@@ -9,7 +9,9 @@ export const uploadReports = {
         contents: new Cypress.Buffer(contentSize),
         fileName: `${filename}.pdf`,
         mimeType: "application/pdf",
-      }, { force: true });
+      },
+      { force: true }
+    );
   },
   numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload: number): void {
     cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);

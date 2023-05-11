@@ -299,7 +299,7 @@ import {
   EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
-import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
+import { convertValuesToPercentagesOrDecimals, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import { AxiosResponse } from "axios";
@@ -412,7 +412,10 @@ export default defineComponent({
         this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
       }
       this.templateDataset = companyAssociatedEuTaxonomyData.data;
-      const receivedFormInputsModel = modifyObjectKeys(companyAssociatedEuTaxonomyData as ObjectType, "receive");
+      const receivedFormInputsModel = convertValuesToPercentagesOrDecimals(
+        companyAssociatedEuTaxonomyData as ObjectType,
+        "percentage"
+      );
       this.waitingForData = false;
       updateObject(this.formInputsModel, receivedFormInputsModel);
     },
@@ -432,7 +435,10 @@ export default defineComponent({
         );
         await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
 
-        const formInputsModelToSend = modifyObjectKeys(this.formInputsModel as ObjectType, "send");
+        const formInputsModelToSend = convertValuesToPercentagesOrDecimals(
+          this.formInputsModel as ObjectType,
+          "decimal"
+        );
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();
