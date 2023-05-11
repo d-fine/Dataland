@@ -103,7 +103,7 @@ export default defineComponent({
       subcategory: Subcategory,
       dataIdOfLksgDataset: string
     ): void {
-      const kpiField = subcategory.fields.filter((field) => field.name === kpiKey)[0];
+      const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
 
       kpiValue = this.reformatValueForDisplay(kpiField, kpiValue);
 
@@ -136,9 +136,11 @@ export default defineComponent({
           for (const [areaKey, areaObject] of Object.entries(oneLksgDataset.data)) {
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
               for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
-                const subcategory = lksgDataModel
-                  .filter((area) => area.name === areaKey)[0]
-                  .subcategories.filter((category) => category.name === subAreaKey)[0];
+                const subcategory = assertDefined(
+                  lksgDataModel
+                    .find((area) => area.name === areaKey)
+                    ?.subcategories.find((category) => category.name === subAreaKey)
+                );
                 this.createKpiDataObjects(kpiKey, kpiValue, subcategory, dataIdOfLksgDataset);
               }
             }
