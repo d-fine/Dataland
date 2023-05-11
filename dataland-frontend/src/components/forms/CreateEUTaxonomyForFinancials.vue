@@ -329,7 +329,7 @@ import {
   EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
-import { modifyObjectKeys, ObjectType, updateObject } from "@/utils/updateObjectUtils";
+import { convertValuesToPercentagesOrDecimals, ObjectType, updateObject } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
@@ -494,9 +494,9 @@ export default defineComponent({
 
               this.extractFinancialServiceTypes(companyAssociatedEuTaxonomyData.data);
 
-              const receivedFormInputsModel = modifyObjectKeys(
+              const receivedFormInputsModel = convertValuesToPercentagesOrDecimals(
                 companyAssociatedEuTaxonomyData as ObjectType,
-                "receive"
+                "percentage"
               );
               this.waitingForData = false;
               nextTick()
@@ -553,7 +553,10 @@ export default defineComponent({
         );
         await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
 
-        const formInputsModelToSend = modifyObjectKeys(this.formInputsModel as ObjectType, "send");
+        const formInputsModelToSend = convertValuesToPercentagesOrDecimals(
+          this.formInputsModel as ObjectType,
+          "decimal"
+        );
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
