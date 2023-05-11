@@ -51,12 +51,19 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   cy.get('input[name="reference"]').should("not.exist");
   cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
   cy.get('input[name="activityLevelReporting"][value="Yes"]').check();
-  cy.get('input[name="numberOfEmployees"]').type("333");
+  cy.get('input[name="numberOfEmployees"]').type("-13");
+  cy.get('em[title="Number Of Employees"]').click();
+  cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
+  cy.get('input[name="numberOfEmployees"]').clear().type("333");
   cy.get('input[name="reportingObligation"][value="Yes"]').check();
 
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(1);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
   cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+  cy.get('[data-test="assuranceSection"] input[name="page"]').type("-13");
+  cy.get('em[title="Assurance"]').click();
+  cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
+  cy.get('[data-test="assuranceSection"] input[name="page"]').clear().type("1");
 
   cy.get('[data-test="dataPointToggleTitle"]').should("exist");
   for (const argument of ["capexSection", "opexSection", "revenueSection"]) {
