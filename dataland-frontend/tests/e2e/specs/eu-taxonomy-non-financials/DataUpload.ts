@@ -95,31 +95,6 @@ describeIf(
       });
     }
 
-    it(
-      "Create an Eu Taxonomy Non Financial dataset via upload form with all non financial company types selected to assure " + // TODO what are "non financial company types", description makes no sense
-        "that the upload form works fine with all options",
-      () => {
-        testData.companyInformation.companyName = "non-financials-upload-form"; // TODO Emanuel: I have the feeling that this test might be unnecesary. Let's talk about this
-        uploadCompanyViaApiAndEuTaxonomyDataForNonFinancialsViaForm(
-          testData.companyInformation,
-          () => {
-            uploadReports.selectFile(TEST_PDF_FILE_NAME);
-            uploadReports.validateReportInFileUploadList(TEST_PDF_FILE_NAME);
-            uploadReports.validateReportToUploadHasForm(TEST_PDF_FILE_NAME);
-            uploadReports.numberOfReportsToUploadShouldBe(1);
-            uploadReports.removeReportToUpload(TEST_PDF_FILE_NAME);
-            uploadReports.checkNoReportIsListed();
-
-            uploadReports.selectFile(TEST_PDF_FILE_NAME);
-            uploadReports.fillAllReportsToUploadForms(1);
-          },
-          () => undefined,
-          () => undefined,
-          () => undefined
-        );
-      }
-    );
-
     it("Check if the file upload info remove button works as expected", () => {
       testData.companyInformation.companyName = "non-financials-upload-form-remove-document-button";
       uploadCompanyViaApiAndEuTaxonomyDataForNonFinancialsViaForm(
@@ -200,7 +175,7 @@ describeIf(
               checkAllDataProvided();
               clickEditButtonAndEditAndValidateChange(storedCompany.companyId).then((templateDataId) => {
                 checkFileWithExistingFilenameCanNotBeResubmitted();
-                checkExistingFilenameDialogDidNotBreakSubsequentUploads();
+                checkExistingFilenameDialogDidNotBreakSubsequentSelection();
                 checkThatFilesMustBeReferenced();
                 checkThatFilesWithSameContentDontGetReuploaded(storedCompany.companyId, templateDataId);
                 checkIfLinkedReportsAreDownloadable(storedCompany.companyId);
@@ -267,19 +242,6 @@ describeIf(
     }
 
     /**
-     * Adds a report to upload and removes it again afterwards checking that no dialog regarding a duplicate file name
-     * is wrongly triggered and that the file is correclty removed.
-     */
-    function checkExistingFilenameDialogDidNotBreakSubsequentUploads(): void {
-      uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-      cy.get(".p-dialog-content").should("not.exist");
-      cy.get(`[data-test="${TEST_PDF_FILE_NAME}2ToUploadContainer"]`).should("exist");
-      // TODO Emanuel:  After Florian has adjusted validateSingleFileInUploadList to do the above check, we can use that instead.
-      uploadReports.removeAllReportsToUpload();
-      uploadReports.reportIsNotListed(`${TEST_PDF_FILE_NAME}2`);
-    }
-
-    /**
      * On the eu taxonomy for non-financial services edit page, this method checks that submission is denied
      * if a report is not referenced
      */
@@ -296,6 +258,19 @@ describeIf(
       uploadReports.fillAllReportsToUploadForms();
       cy.get('button[data-test="submitButton"]').click();
       cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
+    }
+
+    /**
+     * Adds a report to upload and removes it again afterwards checking that no dialog regarding a duplicate file name
+     * is wrongly triggered and that the file is correctly removed.
+     */
+    function checkExistingFilenameDialogDidNotBreakSubsequentSelection(): void {
+      uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
+      cy.get(".p-dialog-content").should("not.exist");
+      cy.get(`[data-test="${TEST_PDF_FILE_NAME}2ToUploadContainer"]`).should("exist");
+      // TODO Emanuel:  After Florian has adjusted validateSingleFileInUploadList to do the above check, we can use that instead.
+      uploadReports.removeAllReportsToUpload();
+      uploadReports.reportIsNotListed(`${TEST_PDF_FILE_NAME}2`);
     }
 
     const differentFileNameForSameFile = `${TEST_PDF_FILE_NAME}FileCopy`;
