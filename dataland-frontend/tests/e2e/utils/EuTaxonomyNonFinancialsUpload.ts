@@ -147,4 +147,5 @@ export function submitFilledInEuTaxonomyForm(
   cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then((interception) => {
     expect(interception.response?.statusCode).to.eq(200);
   });
+  cy.contains("td", "EU Taxonomy");
 }

@@ -83,14 +83,14 @@ describeIf(
     /**
      * Visits the edit page for the eu taxonomy dataset for non financial companies via navigation.
      * @param companyId the id of the company for which to edit a dataset
-     * @param expectIncludedFile specifies if the test file is expected to be in the server response
+     * @param expectPdfTest specifies if the test file is expected to be in the server response
      */
-    function goToEditForm(companyId: string, expectIncludedFile: boolean): void {
+    function goToEditForm(companyId: string, expectPdfTest: boolean): void {
       goToEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyNonFinancials).then((interception) => {
         const referencedReports = assertDefined(
           (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials)?.data?.referencedReports
         );
-        expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
+        expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectPdfTest);
         expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
       });
     }

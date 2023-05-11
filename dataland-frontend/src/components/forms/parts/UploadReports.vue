@@ -72,7 +72,12 @@
       <div class="col-3 p-3 topicLabel">
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
       </div>
-      <div v-for="(storedReport, index) of storedReports" :key="storedReport.reportName" class="col-9 formFields">
+      <div
+        v-for="(storedReport, index) of storedReports"
+        :key="storedReport.reportName"
+        class="col-9 formFields"
+        data-test="report-uploaded-form"
+      >
         <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
           <div class="flex w-full">
             <h3 class="mt-0">{{ storedReport.reportName }}</h3>

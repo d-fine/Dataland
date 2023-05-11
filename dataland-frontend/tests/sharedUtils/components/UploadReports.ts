@@ -44,11 +44,9 @@ export const uploadReports = {
     return cy.get(`[data-test="${reportName}AlreadyUploadedContainer"] button`).click();
   },
   checkNoReportIsListed(): void {
-    cy.get('div[data-test="files-to-upload"]').should("not.exist");
+    cy.get('[data-test="files-to-upload"]').should("not.exist");
     cy.get('[data-test="report-to-upload-form"]').should("not.exist");
-    cy.get('input[name="reference"]').should("not.exist");
-    cy.get('input[name="reportDate"]').should("not.exist");
-    // TODO check other lists
+    cy.get('[data-test="report-uploaded-form"]').should("not.exist");
   },
   specificReportInfoIsNotListed(reportName: string): void {
     // TODO rename to "specificReportInfoIsNotListedInReportsToUpload" because it only checks there!
