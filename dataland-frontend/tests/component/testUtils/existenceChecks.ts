@@ -1,6 +1,5 @@
 /**
  * Checks if an image is present
- *
  * @param name the "alt" identifier of the image
  * @param file the file the image is expected to display
  */
@@ -10,7 +9,6 @@ export function checkImage(name: string, file: string): void {
 
 /**
  * Checks if a button is present
- *
  * @param name the "name" identifier of the button
  * @param message the string expected to be contained
  */

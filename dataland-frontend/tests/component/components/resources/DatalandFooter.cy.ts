@@ -1,10 +1,10 @@
-import DatalandFooter from "@/components/general/DatalandFooter.vue";
+import TheFooter from "@/components/general/TheFooter.vue";
 import { mount } from "cypress/vue";
 import { checkImage } from "@ct/testUtils/existenceChecks";
 
 describe("Component test for DatalandFooter", () => {
   it("Check if footer is as expected", () => {
-    mount(DatalandFooter);
+    mount(TheFooter);
     checkImage("Dataland Logo", "logo_dataland_long.svg");
     cy.get("body").should("contain.text", "Legal");
     cy.get("body").should("contain.text", "Copyright © 2023 Dataland");
