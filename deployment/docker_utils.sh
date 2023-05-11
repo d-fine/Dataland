@@ -34,10 +34,10 @@ function wait_for_service_name_list_to_be_healthy () {
       echo "All relevant containers are healthy!"
       break
     else
-      echo "Some containers are NOT HEALTHY. Retrying in 1 second."
+      echo "Some containers are NOT HEALTHY. Retrying in 5 second."
       echo "$unhealthy_services"
     fi
-    sleep 1
+    sleep 5
   done
 }
 export -f wait_for_service_name_list_to_be_healthy
