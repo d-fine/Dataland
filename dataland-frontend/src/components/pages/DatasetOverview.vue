@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TabView class="col-12" v-model:activeIndex="activeTabIndex" @tab-change="handleTabChange">
-      <TabPanel header="AVAILABLE DATASETS"></TabPanel>
+      <TabPanel header="AVAILABLE DATASETS"> </TabPanel>
       <TabPanel header="MY DATASETS">
         <TheContent class="p-3 min-h-screen paper-section relative">
           <div class="col-12 flex flex-row justify-content-between align-items-end">
@@ -42,15 +42,15 @@
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import PrimeButton from "primevue/button";
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
-import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
-import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
+import { checkIfUserHasUploaderRights, KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "DatasetOverview",
@@ -73,9 +73,7 @@ export default defineComponent({
     };
   },
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
   created() {
     checkIfUserHasUploaderRights(this.getKeycloakPromise)
@@ -90,7 +88,7 @@ export default defineComponent({
      * Finds the datasets the logged in user is responsible for and creates corresponding table entries
      */
     requestDataMetaDataForCurrentUser: async function (): Promise<void> {
-      this.datasetTableInfos = await getMyDatasetTableInfos(this.getKeycloakPromise!);
+      this.datasetTableInfos = await getMyDatasetTableInfos(assertDefined(this.getKeycloakPromise));
       this.waitingForData = false;
     },
     /**

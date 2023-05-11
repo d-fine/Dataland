@@ -23,7 +23,6 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
-    '@typescript-eslint/no-non-null-assertion': "off",
     'semi-spacing': 'error',
     "@typescript-eslint/explicit-function-return-type": ["error", {
       "allowTypedFunctionExpressions": true,

@@ -133,6 +133,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import InfoCard from "@/components/general/InfoCard.vue";
 import ProgressBar from "@/components/general/ProgressBar.vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import { formatBytesUserFriendly, roundNumber } from "@/utils/NumberConversionUtils";
 import { UPLOAD_FILE_SIZE_DISPLAY_DECIMALS, UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import TheFooter from "@/components/general/TheFooter.vue";
@@ -274,7 +275,9 @@ export default defineComponent({
     async uploadSelectedFile(): Promise<void> {
       const selectedFile = this.getSelectedFile();
       try {
-        const inviteControllerApi = await new ApiClientProvider(this.getKeycloakPromise!()).getInviteControllerApi();
+        const inviteControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getInviteControllerApi();
         const response = await inviteControllerApi.submitInvite(selectedFile, {
           onUploadProgress: (progressEvent) => {
             this.uploadProgressInPercent = (progressEvent.loaded / progressEvent.total) * 100;

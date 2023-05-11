@@ -84,8 +84,8 @@
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import { defineComponent } from "vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -113,12 +113,11 @@ import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
 import { objectDropNull, objectType } from "@/utils/updateObjectUtils";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
   name: "CreateLksgDataset",
   components: {
@@ -211,14 +210,16 @@ export default defineComponent({
      */
     async loadLKSGData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const lkSGDataControllerApi = await new ApiClientProvider(this.getKeycloakPromise!()).getLksgDataControllerApi();
+      const lkSGDataControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getLksgDataControllerApi();
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
       const lksgDataset = dataResponse.data;
       const numberOfProductionSites = lksgDataset.data?.general?.productionSpecific?.listOfProductionSites?.length ?? 0;
       if (numberOfProductionSites > 0) {
         this.isYourCompanyManufacturingCompany = "Yes";
-        const productionSites = lksgDataset.data!.general!.productionSpecific!.listOfProductionSites!;
+        const productionSites = assertDefined(lksgDataset.data?.general?.productionSpecific?.listOfProductionSites);
         this.listOfProductionSites = [];
         this.idCounter = numberOfProductionSites;
         for (let i = 0; i < numberOfProductionSites; i++) {
@@ -243,7 +244,7 @@ export default defineComponent({
       this.messageCounter++;
       try {
         const lkSGDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise!()
+          assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");

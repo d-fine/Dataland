@@ -76,6 +76,7 @@ import { defineComponent, inject } from "vue";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import { AxiosError } from "axios";
 import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
@@ -204,7 +205,9 @@ export default defineComponent({
      * Switches to the active dataset for the currently chosen reporting period.
      */
     handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
-      this.switchToActiveDatasetForNewlyChosenReportingPeriod(this.dataMetaInfoForDisplay!.reportingPeriod);
+      this.switchToActiveDatasetForNewlyChosenReportingPeriod(
+        assertDefined(this.dataMetaInfoForDisplay?.reportingPeriod)
+      );
     },
 
     /**
@@ -264,7 +267,7 @@ export default defineComponent({
     async getMetaDataForDataId(dataId: string) {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise!()
+          assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;

@@ -162,6 +162,7 @@ import TaxoInfoCard from "@/components/resources/frameworkDataSearch/euTaxonomy/
 import ShowReportsBanner from "@/components/resources/frameworkDataSearch/ShowReportsBanner.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "EuTaxonomyPanelFinancials",
@@ -201,10 +202,12 @@ export default defineComponent({
         this.waitingForData = true;
         if (this.dataID != "loading") {
           const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-            this.getKeycloakPromise!()
+            assertDefined(this.getKeycloakPromise)()
           ).getEuTaxonomyDataForFinancialsControllerApi();
           const companyAssociatedData =
-            await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(this.dataID);
+            await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
+              assertDefined(this.dataID)
+            );
           this.dataSet = companyAssociatedData.data.data;
           this.waitingForData = false;
         } else if (this.dataID == "loading") {

@@ -11,6 +11,7 @@ import {
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
@@ -126,9 +127,11 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.get('button[name="addCompany"]').click();
         cy.get('li[id="createCompanyForm-incomplete"]').should("exist");
         cy.get("input[name='permId']").type(
-          storedCompanyForManyDatasetsCompany.companyInformation.identifiers.find(
-            (id) => id.identifierType == CompanyIdentifierIdentifierTypeEnum.PermId
-          )!.identifierValue
+          assertDefined(
+            storedCompanyForManyDatasetsCompany.companyInformation.identifiers.find(
+              (id) => id.identifierType == CompanyIdentifierIdentifierTypeEnum.PermId
+            )
+          ).identifierValue
         );
         cy.contains(identifierDoesExistMessage).should("exist");
         cy.get("input[name='permId']").type("thisshouldnotexist");

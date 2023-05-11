@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
 import {
@@ -30,10 +30,10 @@ import {
   SessionDialogMode,
   tryToRefreshSession,
 } from "@/utils/SessionTimeoutUtils";
-import Keycloak from "keycloak-js";
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/stores";
-import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import { KeycloakComponentSetup, loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -41,9 +41,7 @@ export default defineComponent({
   components: { PrimeButton },
 
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
 
   data() {
@@ -112,7 +110,7 @@ export default defineComponent({
      * Sends the user to the keycloak login page
      */
     login() {
-      this.getKeycloakPromise!()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             loginAndRedirectToSearchPage(keycloak);
@@ -125,7 +123,7 @@ export default defineComponent({
      * Handles a click on the refresh button.
      */
     handleRefreshSession() {
-      this.getKeycloakPromise!()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (keycloak.authenticated) {
             tryToRefreshSession(keycloak);

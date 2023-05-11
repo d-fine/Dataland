@@ -14,6 +14,7 @@
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import { useRoute } from "vue-router";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "SubmitButton",
@@ -33,10 +34,10 @@ export default defineComponent({
   },
   computed: {
     updatingData(): boolean {
-      return !!this.route.query.templateDataId;
+      return this.route.query.templateDataId !== undefined;
     },
     formIsValid(): boolean {
-      return this.$formkit.get(this.formId)!.context!.state.valid;
+      return assertDefined(this.$formkit.get(this.formId)?.context?.state.valid);
     },
   },
   methods: {

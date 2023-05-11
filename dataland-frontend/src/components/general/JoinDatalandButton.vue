@@ -15,6 +15,7 @@
 import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "JoinDatalandButton",
@@ -30,7 +31,7 @@ export default defineComponent({
      * Redirects the user to the dataland registration page
      */
     register() {
-      this.getKeycloakPromise!()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             const baseUrl = window.location.origin;

@@ -495,6 +495,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { useFilesUploadedStore } from "@/stores/filesUploaded";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
@@ -625,7 +626,7 @@ export default defineComponent({
     async loadEuData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-        this.getKeycloakPromise!()
+        assertDefined(this.getKeycloakPromise)()
       ).getEuTaxonomyDataForFinancialsControllerApi();
 
       const dataResponse =
@@ -672,7 +673,7 @@ export default defineComponent({
           "send"
         );
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise!()
+          assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
         this.postEuTaxonomyDataForFinancialsResponse =
           await euTaxonomyDataForFinancialsControllerApi.postCompanyAssociatedEuTaxonomyDataForFinancials(

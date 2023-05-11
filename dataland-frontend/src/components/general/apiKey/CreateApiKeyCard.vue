@@ -79,8 +79,9 @@ import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
-import { calculateDaysFromNow, calculateExpiryDateAsDateString } from "@/utils/DataFormatUtils";
+import { calculateExpiryDateAsDateString, calculateDaysFromNow } from "@/utils/DataFormatUtils";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "CreateApiKeyCard",
@@ -140,7 +141,7 @@ export default defineComponent({
   },
   computed: {
     expiryDateFormated(): string {
-      return calculateExpiryDateAsDateString(this.expiryTimeDays!);
+      return calculateExpiryDateAsDateString(assertDefined(this.expiryTimeDays));
     },
   },
   watch: {
@@ -156,7 +157,6 @@ export default defineComponent({
 .invalidExpiryTime {
   border: 1px solid var(--red-600);
 }
-
 .invalidExpiryTimeText {
   color: var(--red-600);
 }

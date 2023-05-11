@@ -70,7 +70,7 @@
           </MessageComponent>
 
           <MessageComponent data-test="regenerateApiKeyMessage" v-if="!newKey" severity="block" class="border-2">
-            <template #text-info> If you don't have access to your API Key you can generate a new one.</template>
+            <template #text-info> If you don't have access to your API Key you can generate a new one. </template>
             <template #action-button>
               <PrimeButton @click="regenerateConfirmToggle" label="REGENERATE API KEY" />
             </template>
@@ -144,6 +144,7 @@ import MessageComponent from "@/components/messages/MessageComponent.vue";
 import PrimeDialog from "primevue/dialog";
 import PrimeTextarea from "primevue/textarea";
 import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 import TheFooter from "@/components/general/TheFooter.vue";
@@ -208,10 +209,10 @@ export default defineComponent({
      */
     async getApiKeyMetaInfoForUser() {
       try {
-        const keycloakPromiseGetter = this.getKeycloakPromise!;
+        const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
         const resolvedKeycloakPromise = await keycloakPromiseGetter();
         const apiKeyManagerController: ApiKeyControllerApiInterface = await new ApiClientProvider(
-          this.getKeycloakPromise!()
+          assertDefined(this.getKeycloakPromise)()
         ).getApiKeyManagerController();
         const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser();
         this.waitingForData = false;
@@ -234,7 +235,7 @@ export default defineComponent({
      */
     async revokeApiKey() {
       try {
-        const keycloakPromiseGetter = this.getKeycloakPromise!;
+        const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
         const apiKeyManagerController = await new ApiClientProvider(
           keycloakPromiseGetter()
         ).getApiKeyManagerController();
@@ -253,7 +254,7 @@ export default defineComponent({
     async generateApiKey(daysValid?: number) {
       try {
         this.waitingForData = true;
-        const keycloakPromiseGetter = this.getKeycloakPromise!;
+        const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
 
         const apiKeyManagerController = await new ApiClientProvider(
           keycloakPromiseGetter()
@@ -297,11 +298,9 @@ export default defineComponent({
 .copy-button {
   cursor: pointer;
 }
-
 .p-inputText:enabled:focus {
   box-shadow: none;
 }
-
 .apiKeyInfo .p-message-success {
   background-color: var(--green-600);
   border-color: var(--green-600);

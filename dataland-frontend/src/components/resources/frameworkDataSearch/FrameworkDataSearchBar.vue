@@ -54,13 +54,14 @@ import AutoComplete from "primevue/autocomplete";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import {
   DataSearchStoredCompany,
-  FrameworkDataSearchFilterInterface,
   getCompanyDataForFrameworkDataSearchPage,
   getRouterLinkTargetFramework,
+  FrameworkDataSearchFilterInterface,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 export default defineComponent({
@@ -218,7 +219,7 @@ export default defineComponent({
           new Set(this.filter?.frameworkFilter),
           new Set(this.filter?.countryCodeFilter),
           new Set(this.filter?.sectorFilter),
-          this.getKeycloakPromise!()
+          assertDefined(this.getKeycloakPromise)()
         );
         this.$emit("companies-received", resultsArray);
       }
@@ -236,7 +237,7 @@ export default defineComponent({
         new Set(this.filter?.frameworkFilter),
         new Set(this.filter?.countryCodeFilter),
         new Set(this.filter?.sectorFilter),
-        this.getKeycloakPromise!()
+        assertDefined(this.getKeycloakPromise)()
       );
       this.autocompleteArrayDisplayed = this.autocompleteArray.slice(0, this.maxNumOfDisplayedAutocompleteEntries);
     },

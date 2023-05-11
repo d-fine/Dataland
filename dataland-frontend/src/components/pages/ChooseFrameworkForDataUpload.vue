@@ -6,7 +6,7 @@
         <BackButton id="backButton" label="BACK" />
         <CompanyInformation :companyID="companyID" />
         <Card class="col-12 text-left page-wrapper-card">
-          <template #title> New Dataset - Framework</template>
+          <template #title> New Dataset - Framework </template>
           <template #content>
             <div class="uploadFormWrapper grid">
               <div id="euTaxonomyContainer" class="col-9 flex">
@@ -66,8 +66,8 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import { defineComponent } from "vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import TheContent from "@/components/generics/TheContent.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
@@ -79,6 +79,7 @@ import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFramewo
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "ChooseFramework",
@@ -94,9 +95,7 @@ export default defineComponent({
     MetaInfoPerCompanyAndFramework,
   },
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
 
   created() {
@@ -207,7 +206,7 @@ export default defineComponent({
     async getMetaInfoAboutAllDataSetsForCurrentCompany() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise!()
+          assertDefined(this.getKeycloakPromise)()
         ).getMetaDataControllerApi();
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, false);
         const listOfAllDataMetaInfo = response.data;

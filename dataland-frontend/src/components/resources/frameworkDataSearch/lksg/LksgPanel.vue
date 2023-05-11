@@ -15,8 +15,9 @@
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
 import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
+import { defineComponent } from "vue";
+
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
@@ -25,6 +26,7 @@ import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeT
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
+import { KeycloakComponentSetup } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -43,33 +45,31 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfColumnIdentifierObjects = [];
-      void this.fetchData();
+      void this.fetchLksgData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
         this.listOfColumnIdentifierObjects = [];
-        void this.fetchData();
+        void this.fetchLksgData();
       }
     },
   },
   setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
+    return KeycloakComponentSetup;
   },
   created() {
-    void this.fetchData();
+    void this.fetchLksgData();
     this.firstRender = false;
   },
   methods: {
     /**
      * Fetches all accepted LkSG datasets for the current company and converts them to the required frontend format.
      */
-    async fetchData() {
+    async fetchLksgData() {
       try {
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
-          this.getKeycloakPromise!()
+          assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
         if (this.singleDataMetaInfoToDisplay) {
           const singleLksgData = (
@@ -78,7 +78,9 @@ export default defineComponent({
 
           this.lksgDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleLksgData }];
         } else {
-          this.lksgDataAndMetaInfo = (await lksgDataControllerApi.getAllCompanyLksgData(this.companyId!)).data;
+          this.lksgDataAndMetaInfo = (
+            await lksgDataControllerApi.getAllCompanyLksgData(assertDefined(this.companyId))
+          ).data;
         }
         this.convertLksgDataToFrontendFormat();
         this.waitingForData = false;
@@ -100,7 +102,7 @@ export default defineComponent({
       subcategory: Subcategory,
       dataIdOfLksgDataset: string
     ): void {
-      const kpiField = subcategory.fields.find((field) => field.name === kpiKey)!;
+      const kpiField = subcategory.fields.filter((field) => field.name === kpiKey)[0];
 
       kpiValue = this.reformatValueForDisplay(kpiField, kpiValue);
 
@@ -134,8 +136,8 @@ export default defineComponent({
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
               for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
                 const subcategory = lksgDataModel
-                  .find((area) => area.name === areaKey)!
-                  .subcategories.find((category) => category.name === subAreaKey)!;
+                  .filter((area) => area.name === areaKey)[0]
+                  .subcategories.filter((category) => category.name === subAreaKey)[0];
                 this.createKpiDataObjects(kpiKey, kpiValue, subcategory, dataIdOfLksgDataset);
               }
             }

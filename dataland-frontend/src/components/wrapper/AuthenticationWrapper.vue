@@ -11,6 +11,7 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 
 export default defineComponent({
@@ -24,7 +25,7 @@ export default defineComponent({
   },
   mounted: function () {
     if (!this.authenticated) {
-      this.getKeycloakPromise!()
+      assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
             return keycloak.login();
