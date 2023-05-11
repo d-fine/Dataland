@@ -17,5 +17,5 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] The new version is deployed with real data to a dev server using this branch
   - [ ] Run with both settings `Reset backend database & Re-populate` and `Use real data` turned on
-  - [ ] It's verified that the CD run is green h
+  - [ ] It's verified that the CD run is green
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
