@@ -106,7 +106,8 @@ describeIf(
             uploadReports.selectFile(TEST_PDF_FILE_NAME);
             uploadReports.validateReportInFileUploadList(TEST_PDF_FILE_NAME, "KB");
             uploadReports.validateReportToUploadHasForm(TEST_PDF_FILE_NAME);
-            uploadReports.removeReportToUpload();
+            uploadReports.numberOfReportsToUploadShouldBe(1);
+            uploadReports.removeReportToUpload(TEST_PDF_FILE_NAME);
             uploadReports.checkNoReportIsListed();
 
             uploadReports.selectFile(TEST_PDF_FILE_NAME);
@@ -142,7 +143,7 @@ describeIf(
         },
         (companyId) => {
           goToEditForm(companyId, true);
-          uploadReports.removeUploadedReportFromReportInfos(TEST_PDF_FILE_NAME);
+          uploadReports.removeUploadedReport(TEST_PDF_FILE_NAME);
           const postRequestAlias = "postData";
           cy.intercept(
             {
@@ -274,7 +275,7 @@ describeIf(
       cy.get(".p-dialog-content").should("not.exist");
       cy.get(`[data-test="${TEST_PDF_FILE_NAME}2ToUploadContainer"]`).should("exist");
       // TODO Emanuel:  After Florian has adjusted validateSingleFileInUploadList to do the above check, we can use that instead.
-      uploadReports.removeAllFilesFromUploadList();
+      uploadReports.removeAllReportsToUpload();
       uploadReports.specificReportInfoIsNotListed(`${TEST_PDF_FILE_NAME}2`);
     }
 

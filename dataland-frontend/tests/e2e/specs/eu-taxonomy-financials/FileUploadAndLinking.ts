@@ -58,7 +58,7 @@ describeIf(
         },
         (companyId) => {
           gotoEditForm(companyId, true);
-          uploadReports.removeUploadedReportFromReportInfos(TEST_PDF_FILE_NAME).then(() => {
+          uploadReports.removeUploadedReport(TEST_PDF_FILE_NAME).then(() => {
             areBothDocumentsStillUploaded = false;
           });
           const postRequestAlias = "postData";
