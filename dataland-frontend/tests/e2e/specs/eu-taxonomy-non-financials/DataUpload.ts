@@ -96,10 +96,10 @@ describeIf(
     }
 
     it(
-      "Create an Eu Taxonomy Non Financial dataset via upload form with all non financial company types selected to assure " +
+      "Create an Eu Taxonomy Non Financial dataset via upload form with all non financial company types selected to assure " + // TODO what are "non financial company types", description makes no sense
         "that the upload form works fine with all options",
       () => {
-        testData.companyInformation.companyName = "non-financials-upload-form";
+        testData.companyInformation.companyName = "non-financials-upload-form"; // TODO Emanuel: I have the feeling that this test might be unnecesary. Let's talk about this
         uploadCompanyViaApiAndEuTaxonomyDataForNonFinancialsViaForm(
           testData.companyInformation,
           () => {
@@ -110,7 +110,7 @@ describeIf(
             uploadReports.checkNoReportIsListed();
 
             uploadReports.selectFile(TEST_PDF_FILE_NAME);
-            uploadReports.fillAllReportsToUploadForms(2);
+            uploadReports.fillAllReportsToUploadForms(1);
           },
           () => undefined,
           () => undefined,
