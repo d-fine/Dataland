@@ -21,26 +21,36 @@ export function updateObject(baseObject: ObjectType, objectWithNewData: ObjectTy
 }
 
 /**
- * Changes the value of a variable to maintain different number formatting between backend and frontend
- * @param obj object in which it is looking for the value to change
- * @param targetFormat determines how we change object values
- * @returns Object modified
+ * Changes the "value" named properties of an object from decimals to percentages
+ * to maintain different number formatting between backend and frontend
+ * @param obj object in which it is looking for the "value" properties to change
+ * @returns the modified object
  */
-export function convertValuesToPercentagesOrDecimals(
-  obj: ObjectType,
-  targetFormat: "percentage" | "decimal"
-): ObjectType {
+export function convertValuesFromDecimalsToPercentages(obj: ObjectType): ObjectType {
   const objectModified = obj;
   for (const key in objectModified) {
     if (key === "value" && objectModified[key]) {
-      if (targetFormat === "decimal") {
-        objectModified[key] = (Math.round(+objectModified[key] * 100) / 100 / 100).toString();
-      }
-      if (targetFormat === "percentage") {
-        objectModified[key] = (Math.round(+objectModified[key] * 100 * 100) / 100).toString();
-      }
+      objectModified[key] = (Math.round(+objectModified[key] * 100 * 100) / 100).toString();
     } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
-      convertValuesToPercentagesOrDecimals(objectModified[key] as unknown as ObjectType, targetFormat);
+      convertValuesFromDecimalsToPercentages(objectModified[key] as unknown as ObjectType);
+    }
+  }
+  return objectModified;
+}
+
+/**
+ * Changes the "value" named properties of an object from percentages to decimals
+ * to maintain different number formatting between backend and frontend
+ * @param obj object in which it is looking for the "value" properties to change
+ * @returns the modified object
+ */
+export function convertValuesFromPercentagesToDecimals(obj: ObjectType): ObjectType {
+  const objectModified = obj;
+  for (const key in objectModified) {
+    if (key === "value" && objectModified[key]) {
+      objectModified[key] = (Math.round(+objectModified[key] * 100) / 100 / 100).toString();
+    } else if (typeof objectModified[key] === "object" && key !== "totalAmount") {
+      convertValuesFromPercentagesToDecimals(objectModified[key] as unknown as ObjectType);
     }
   }
   return objectModified;

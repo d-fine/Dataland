@@ -299,7 +299,12 @@ import {
   EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
-import { convertValuesToPercentagesOrDecimals, ObjectType, updateObject } from "@/utils/updateObjectUtils";
+import {
+  convertValuesFromDecimalsToPercentages,
+  convertValuesFromPercentagesToDecimals,
+  ObjectType,
+  updateObject,
+} from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import { AxiosResponse } from "axios";
@@ -412,9 +417,8 @@ export default defineComponent({
         this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
       }
       this.templateDataset = companyAssociatedEuTaxonomyData.data;
-      const receivedFormInputsModel = convertValuesToPercentagesOrDecimals(
-        companyAssociatedEuTaxonomyData as ObjectType,
-        "percentage"
+      const receivedFormInputsModel = convertValuesFromDecimalsToPercentages(
+        companyAssociatedEuTaxonomyData as ObjectType
       );
       this.waitingForData = false;
       updateObject(this.formInputsModel, receivedFormInputsModel);
@@ -435,10 +439,7 @@ export default defineComponent({
         );
         await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
 
-        const formInputsModelToSend = convertValuesToPercentagesOrDecimals(
-          this.formInputsModel as ObjectType,
-          "decimal"
-        );
+        const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForNonFinancialsControllerApi();

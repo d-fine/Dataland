@@ -329,7 +329,12 @@ import {
   EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { AxiosResponse } from "axios";
-import { convertValuesToPercentagesOrDecimals, ObjectType, updateObject } from "@/utils/updateObjectUtils";
+import {
+  convertValuesFromDecimalsToPercentages,
+  convertValuesFromPercentagesToDecimals,
+  ObjectType,
+  updateObject,
+} from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
@@ -494,9 +499,8 @@ export default defineComponent({
 
               this.extractFinancialServiceTypes(companyAssociatedEuTaxonomyData.data);
 
-              const receivedFormInputsModel = convertValuesToPercentagesOrDecimals(
-                companyAssociatedEuTaxonomyData as ObjectType,
-                "percentage"
+              const receivedFormInputsModel = convertValuesFromDecimalsToPercentages(
+                companyAssociatedEuTaxonomyData as ObjectType
               );
               this.waitingForData = false;
               nextTick()
@@ -553,10 +557,7 @@ export default defineComponent({
         );
         await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
 
-        const formInputsModelToSend = convertValuesToPercentagesOrDecimals(
-          this.formInputsModel as ObjectType,
-          "decimal"
-        );
+        const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
