@@ -7,7 +7,7 @@ export const uploadReports = {
     cy.get('[data-test="report-info"]').should("have.length", expectedNumberOfReportsToUpload);
   },
   fillAllReportsToUploadForms(expectedNumberOfReportsToUpload?: number): void {
-    if(expectedNumberOfReportsToUpload) {
+    if (expectedNumberOfReportsToUpload) {
       this.numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload);
     }
     cy.get('[data-test="report-info"]').each((element) => {
@@ -38,7 +38,7 @@ export const uploadReports = {
   },
   removeReportToUpload(): void {
     // TODO it is unsafe to use this since it breaks as soon as multiple files are on the upload list
-    // TODO instead it should accept a file name and explicitly click the remove button for THAT specific file
+    // TODO instead it should accept a file name and explicitly click the remove button for THAT specific file.
     // TODO e.g. compare it to "removeUploadedReportFromReportInfos"
     cy.get('button[data-test="files-to-upload-remove"]').click();
   },
