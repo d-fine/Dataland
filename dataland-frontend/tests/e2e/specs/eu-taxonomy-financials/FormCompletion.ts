@@ -39,7 +39,7 @@ describeIf(
             uploadReports.selectFile(TEST_PDF_FILE_NAME);
             uploadReports.validateReportInFileUploadList(TEST_PDF_FILE_NAME, "KB");
             uploadReports.validateReportToUploadHasForm(TEST_PDF_FILE_NAME);
-            uploadReports.removeReportToUpload();
+            uploadReports.removeReportToUpload(TEST_PDF_FILE_NAME);
             uploadReports.checkNoReportIsListed();
           },
           () => undefined,

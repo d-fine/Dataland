@@ -31,16 +31,16 @@ export const uploadReports = {
       .should("contain", fileDimension);
     cy.get('input[name="reference"]').should("exist");
   },
-  validateReportToUploadHasForm(filename: string): void {
-    cy.get(`[data-test="${filename}ToUploadContainer"]`).should("exist");
+  validateReportToUploadHasForm(reportName: string): void {
+    cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
   },
-  removeReportToUpload(): void {
-    cy.get('button[data-test="files-to-upload-remove"]').last().click();
+  removeReportToUpload(reportName: string): void {
+    cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
   },
-  removeAllFilesFromUploadList(): void {
+  removeAllReportsToUpload(): void {
     cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).click());
   },
-  removeUploadedReportFromReportInfos(reportName: string): Cypress.Chainable {
+  removeUploadedReport(reportName: string): Cypress.Chainable {
     return cy.get(`[data-test="${reportName}AlreadyUploadedContainer"] button`).click();
   },
   checkNoReportIsListed(): void {

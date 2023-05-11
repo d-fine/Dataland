@@ -33,6 +33,7 @@
             v-for="(selectedFile, index) of files"
             :key="selectedFile.name + index"
             class="flex w-full align-items-center file-upload-item"
+            :data-test="removeFileTypeExtension(selectedFile.name) + 'FileUploadContainer'"
           >
             <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ selectedFile.name }}</span>
             <div data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
