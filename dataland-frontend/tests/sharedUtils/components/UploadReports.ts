@@ -18,10 +18,8 @@ export const uploadReports = {
       cy.wrap(element).find(`input[value="No"]`).click();
     });
   },
-  validateReportInFileUploadList(reportName: string): void {
-    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
-  },
-  validateReportToUploadHasForm(reportName: string): void {
+  validateReportToUploadIsListed(reportName: string): void {
+    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
   },
   removeReportToUpload(reportName: string): void {
