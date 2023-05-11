@@ -3,11 +3,11 @@ export const uploadReports = {
     cy.get('button[data-test="upload-files-button"]').click();
     cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
   },
-  selectFileAs(nameOfContentFile: string, aliasFilename: string): void {
+  selectDummyFile(filename: string, contentSize: number): void {
     cy.get('button[data-test="upload-files-button"]').click();
     cy.get("input[type=file]").selectFile({
-        contents: `../testing/data/documents/${nameOfContentFile}.pdf`,
-        fileName: aliasFilename,
+        contents: new Cypress.Buffer(contentSize),
+        fileName: `${filename}.pdf`,
         mimeType: "application/pdf",
       }, { force: true });
   },
