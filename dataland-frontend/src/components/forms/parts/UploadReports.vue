@@ -105,7 +105,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
-import FilesDialog from "@/components/general/ElementsDialog.vue";
+import ElementsDialog from "@/components/general/ElementsDialog.vue";
 
 export default defineComponent({
   name: "UploadReports",
@@ -255,7 +255,7 @@ export default defineComponent({
      * @param nameOfFileThatHasDuplicate contains the file name which caused the error
      */
     openModalToDisplayDuplicateNameError(nameOfFileThatHasDuplicate: string) {
-      this.$dialog.open(FilesDialog, {
+      this.$dialog.open(ElementsDialog, {
         props: {
           modal: true,
           closable: true,
