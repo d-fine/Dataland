@@ -44,12 +44,12 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfColumnIdentifierObjects = [];
-      void this.fetchData();
+      void this.fetchLksgData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
         this.listOfColumnIdentifierObjects = [];
-        void this.fetchData();
+        void this.fetchLksgData();
       }
     },
   },
@@ -59,14 +59,14 @@ export default defineComponent({
     };
   },
   created() {
-    void this.fetchData();
+    void this.fetchLksgData();
     this.firstRender = false;
   },
   methods: {
     /**
      * Fetches all accepted LkSG datasets for the current company and converts them to the required frontend format.
      */
-    async fetchData() {
+    async fetchLksgData() {
       try {
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
