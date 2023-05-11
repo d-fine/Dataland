@@ -71,11 +71,7 @@
       <div class="col-3 p-3 topicLabel">
         <h4 id="uploadReports" class="anchor title">Uploaded company reports</h4>
       </div>
-      <div
-        v-for="(storedReport, index) of storedReports"
-        :key="storedReport.reportName"
-        class="col-9 formFields"
-      >
+      <div v-for="(storedReport, index) of storedReports" :key="storedReport.reportName" class="col-9 formFields">
         <div :data-test="storedReport.reportName + 'AlreadyUploadedContainer'" class="form-field-label">
           <div class="flex w-full">
             <h3 class="mt-0">{{ storedReport.reportName }}</h3>
@@ -166,7 +162,7 @@ export default defineComponent({
      */
     async handleFilesSelected(event: FileUploadSelectEvent): void {
       const selectedFilesByUser = event.files as File[];
-      if(this.wasThereNoNewFileAdded(selectedFilesByUser)) {
+      if (this.wasThereNoNewFileAdded(selectedFilesByUser)) {
         return;
       }
       const indexOfLastSelectedFile = selectedFilesByUser.length - 1;
@@ -186,12 +182,12 @@ export default defineComponent({
     /**
      * Checks if there was actually a file added by the user that was not filtered
      * out by the FileUpload component
-     *
      * @param filesSelectedByUser the files currently selected by the user
      * @returns false if there was actually a file added by the user
      */
     wasThereNoNewFileAdded(filesSelectedByUser: File[]) {
-      return filesSelectedByUser.length == this.reportsToUpload.length
+      // TODO I suggest renaming this, since it was a little confusing for me. e.g. "isSelectedFileBeingActuallyAdded" true = yes  false = no
+      return filesSelectedByUser.length == this.reportsToUpload.length;
     },
     /**
      * Remove report from files uploaded
