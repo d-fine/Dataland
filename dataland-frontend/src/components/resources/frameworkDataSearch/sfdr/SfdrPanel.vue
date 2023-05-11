@@ -17,16 +17,16 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { SfdrData, DataAndMetaInformationSfdrData } from "@clients/backend";
+import { DataAndMetaInformationSfdrData, SfdrData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
 import {
-  sfdrSubAreasNameMappings,
-  sfdrKpisNameMappings,
   sfdrKpisInfoMappings,
+  sfdrKpisNameMappings,
+  sfdrSubAreasNameMappings,
 } from "@/components/resources/frameworkDataSearch/sfdr/DataModelsTranslations";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 
@@ -49,12 +49,12 @@ export default defineComponent({
   watch: {
     companyId() {
       this.listOfColumnIdentifierObjects = [];
-      void this.fetchData();
+      void this.fetchSfdrData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
         this.listOfColumnIdentifierObjects = [];
-        void this.fetchData();
+        void this.fetchSfdrData();
       }
     },
   },
@@ -64,14 +64,14 @@ export default defineComponent({
     };
   },
   created() {
-    void this.fetchData();
+    void this.fetchSfdrData();
     this.firstRender = false;
   },
   methods: {
     /**
      * Fetches all accepted Sfdr datasets for the current company and converts them to the required frontend format.
      */
-    async fetchData() {
+    async fetchSfdrData() {
       try {
         this.waitingForData = true;
         const sfdrDataControllerApi = await new ApiClientProvider(
