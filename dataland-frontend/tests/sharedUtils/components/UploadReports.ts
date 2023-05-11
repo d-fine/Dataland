@@ -7,7 +7,7 @@ export const uploadReports = {
     cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);
   },
   fillAllReportsToUploadForms(expectedNumberOfReportsToUpload?: number): void {
-    if(expectedNumberOfReportsToUpload) {
+    if (expectedNumberOfReportsToUpload) {
       this.numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload);
     }
     cy.get('[data-test="report-to-upload-form"]').each((element) => {
