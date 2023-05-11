@@ -30,7 +30,6 @@ import { defineComponent, inject } from "vue";
 import { CompanyInformation } from "@clients/backend";
 import Keycloak from "keycloak-js";
 
-
 export default defineComponent({
   name: "CompanyInformation",
   setup() {
