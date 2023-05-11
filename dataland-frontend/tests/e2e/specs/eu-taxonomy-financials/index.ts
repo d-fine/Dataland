@@ -3,6 +3,5 @@
  */
 describe("EU Taxonomy for financials Company Page tests", () => {
   require("./DataIntegrity");
-  require("./FormCompletion");
   require("./FileUploadAndLinking");
 });

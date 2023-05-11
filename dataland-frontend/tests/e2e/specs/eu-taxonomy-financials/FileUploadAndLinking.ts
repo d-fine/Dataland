@@ -40,6 +40,11 @@ describeIf(
         () => undefined,
         () => {
           uploadReports.selectFile(TEST_PDF_FILE_NAME);
+          uploadReports.validateReportInFileUploadList(TEST_PDF_FILE_NAME);
+          uploadReports.validateReportToUploadHasForm(TEST_PDF_FILE_NAME);
+          uploadReports.removeReportToUpload(TEST_PDF_FILE_NAME);
+          uploadReports.checkNoReportIsListed();
+          uploadReports.selectFile(TEST_PDF_FILE_NAME);
           uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
           uploadReports.fillAllReportsToUploadForms(2);
           cy.get(`[data-test="assetManagementKpis"]`)
