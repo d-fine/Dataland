@@ -74,9 +74,9 @@ sonar {
         property(
             "sonar.coverage.exclusions",
             "**/test/**," +
-            "**/tests/**," +
-            "**/LocalCorsConfig.kt," +
-            "./dataland-frontend/src/main.ts",
+                "**/tests/**," +
+                "**/LocalCorsConfig.kt," +
+                "./dataland-frontend/src/main.ts",
         )
         property(
             "sonar.sources",
@@ -87,7 +87,7 @@ sonar {
         property(
             "sonar.cpd.exclusions",
             "./dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
-            "./dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts",
+                "./dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts",
         )
     }
 }
