@@ -94,7 +94,7 @@ jobs:
         env:
           TARGETSERVER_STARTUP_URL: ${{ secrets.TARGETSERVER_STARTUP_URL }}
           TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
-          TARGETSERVER_URL: ${{ secrets.TARGETSERVER_URL }}
+          TARGETSERVER_URL: ${{ vars.TARGETSERVER_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           KEYCLOAK_FRONTEND_URL: ${{ vars.KEYCLOAK_FRONTEND_URL }}
           KEYCLOAK_ADMIN: ${{ vars.KEYCLOAK_ADMIN }}
@@ -218,7 +218,3 @@ jobs:
         with:
           name: cypress
           path: ./dataland-frontend/cypressresult/
-      - uses: ./.github/workflows/dockerLogs
-        if: always()
-        with:
-          subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'

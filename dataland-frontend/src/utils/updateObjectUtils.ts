@@ -1,4 +1,5 @@
 export type objectType = { [key: string]: string | object };
+
 /**
  * Updates keys from one object to another
  * @param baseObject object to be updated
