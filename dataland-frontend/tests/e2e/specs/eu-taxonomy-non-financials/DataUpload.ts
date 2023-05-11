@@ -104,7 +104,7 @@ describeIf(
           testData.companyInformation,
           () => {
             uploadReports.selectFile(TEST_PDF_FILE_NAME);
-            uploadReports.validateReportInFileUploadList(TEST_PDF_FILE_NAME, "KB");
+            uploadReports.validateReportInFileUploadList(TEST_PDF_FILE_NAME);
             uploadReports.validateReportToUploadHasForm(TEST_PDF_FILE_NAME);
             uploadReports.numberOfReportsToUploadShouldBe(1);
             uploadReports.removeReportToUpload(TEST_PDF_FILE_NAME);
@@ -276,7 +276,7 @@ describeIf(
       cy.get(`[data-test="${TEST_PDF_FILE_NAME}2ToUploadContainer"]`).should("exist");
       // TODO Emanuel:  After Florian has adjusted validateSingleFileInUploadList to do the above check, we can use that instead.
       uploadReports.removeAllReportsToUpload();
-      uploadReports.specificReportInfoIsNotListed(`${TEST_PDF_FILE_NAME}2`);
+      uploadReports.reportIsNotListed(`${TEST_PDF_FILE_NAME}2`);
     }
 
     /**

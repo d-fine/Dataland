@@ -18,18 +18,8 @@ export const uploadReports = {
       cy.wrap(element).find(`input[value="No"]`).click();
     });
   },
-  validateReportInFileUploadList(filename: string, fileDimension: string): void {
-    // TODO very complicated implementation. WHy not just checking for the uploadContainer of that file??
-    //  because there is none for this list, yet...
-    //  also this one checks if all data is displayed
-    cy.get('div[data-test="files-to-upload"]')
-      .should("exist")
-      .find('[data-test="files-to-upload-title"]')
-      .should("contain", filename + ".pdf");
-    cy.get('div[data-test="files-to-upload"]')
-      .find('[data-test="files-to-upload-size"]')
-      .should("contain", fileDimension);
-    cy.get('input[name="reference"]').should("exist");
+  validateReportInFileUploadList(reportName: string): void {
+    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
   },
   validateReportToUploadHasForm(reportName: string): void {
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
@@ -48,9 +38,9 @@ export const uploadReports = {
     cy.get('[data-test="report-to-upload-form"]').should("not.exist");
     cy.get('[data-test="report-uploaded-form"]').should("not.exist");
   },
-  specificReportInfoIsNotListed(reportName: string): void {
-    // TODO rename to "specificReportInfoIsNotListedInReportsToUpload" because it only checks there!
-    // TODO if we want to check it everywhere, we'd have to also check for the containers of already uploaded reports!
+  reportIsNotListed(reportName: string): void {
+    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
+    cy.get(`[data-test="${reportName}AlreadyUploadedContainer"]`).should("not.exist");
   },
 };

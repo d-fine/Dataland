@@ -37,7 +37,7 @@ describeIf(
           testData.t,
           () => {
             uploadReports.selectFile(TEST_PDF_FILE_NAME);
-            uploadReports.validateReportInFileUploadList(TEST_PDF_FILE_NAME, "KB");
+            uploadReports.validateReportInFileUploadList(TEST_PDF_FILE_NAME);
             uploadReports.validateReportToUploadHasForm(TEST_PDF_FILE_NAME);
             uploadReports.removeReportToUpload(TEST_PDF_FILE_NAME);
             uploadReports.checkNoReportIsListed();
