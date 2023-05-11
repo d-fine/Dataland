@@ -15,7 +15,6 @@ export function uploadAllDocuments(token: string): void {
       cy.clearLocalStorage();
       cy.clearAllLocalStorage();
       cy.clearAllSessionStorage();
-      cy.clear();
     });
   });
 }
