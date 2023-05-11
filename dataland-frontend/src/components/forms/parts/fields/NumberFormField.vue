@@ -23,6 +23,4 @@ export default defineComponent({
   components: { FormKit, UploadFormHeader },
   props: FormFieldPropsWithPlaceholder,
 });
-
-// TODO what about props for e.g. min and step size
 </script>
