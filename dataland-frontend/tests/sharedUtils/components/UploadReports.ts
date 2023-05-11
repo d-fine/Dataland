@@ -38,7 +38,7 @@ export const uploadReports = {
     cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
   },
   removeAllReportsToUpload(): void {
-    cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).click());
+    cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));
   },
   removeUploadedReport(reportName: string): Cypress.Chainable {
     return cy.get(`[data-test="${reportName}AlreadyUploadedContainer"] button`).click();
