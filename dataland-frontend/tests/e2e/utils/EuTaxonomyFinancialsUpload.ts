@@ -112,7 +112,7 @@ export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFin
   cy.get('input[name="numberOfEmployees"]').type("-13");
   cy.get('em[title="Number Of Employees"]').click();
   cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
-  cy.get('input[name="title="numberOfEmployees"]')
+  cy.get('input[name="numberOfEmployees"]')
     .clear()
     .type(`${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`);
   cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
