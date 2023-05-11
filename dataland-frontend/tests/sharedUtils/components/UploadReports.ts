@@ -19,7 +19,7 @@ export const uploadReports = {
     });
   },
   validateReportInFileUploadList(reportName: string): void {
-    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
+    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
   },
   validateReportToUploadHasForm(reportName: string): void {
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
