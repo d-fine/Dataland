@@ -3,7 +3,16 @@ export const uploadReports = {
     cy.get('button[data-test="upload-files-button"]').click();
     cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
   },
+  selectFileAs(nameOfContentFile: string, aliasFilename: string): void {
+    cy.get('button[data-test="upload-files-button"]').click();
+    cy.get("input[type=file]").selectFile({
+        contents: `../testing/data/documents/${nameOfContentFile}.pdf`,
+        fileName: aliasFilename,
+        mimeType: "application/pdf",
+      }, { force: true });
+  },
   numberOfReportsToUploadShouldBe(expectedNumberOfReportsToUpload: number): void {
+    cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);
     cy.get('[data-test="report-to-upload-form"]').should("have.length", expectedNumberOfReportsToUpload);
   },
   fillAllReportsToUploadForms(expectedNumberOfReportsToUpload?: number): void {
