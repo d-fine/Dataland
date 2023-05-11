@@ -233,7 +233,7 @@
                           name="numberOfEmployees"
                           validation-label="Number of employees"
                           placeholder="Value"
-                          validation="required|number"
+                          validation="required|number|min:0"
                           step="1"
                           min="0"
                         />
@@ -323,6 +323,9 @@
                                 name="page"
                                 placeholder="Page"
                                 validation-label="Page"
+                                validation="min:0"
+                                step="1"
+                                min="0"
                               />
                             </div>
                           </div>
