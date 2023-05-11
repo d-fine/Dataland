@@ -5,7 +5,8 @@ export const uploadReports = {
   },
   selectDummyFile(filename: string, contentSize: number): void {
     cy.get('button[data-test="upload-files-button"]').click();
-    cy.get("input[type=file]").selectFile({
+    cy.get("input[type=file]").selectFile(
+      {
         contents: new Cypress.Buffer(contentSize),
         fileName: `${filename}.pdf`,
         mimeType: "application/pdf",
