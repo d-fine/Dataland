@@ -1,8 +1,8 @@
 <template>
   <div>{{ message }}</div>
+  <br />
   <div v-for="(name, index) of listOfElementNames" :key="name + index">
-    <br />
-    <div>{{ name }}</div>
+    <strong>{{ name }}</strong>
   </div>
 </template>
 
