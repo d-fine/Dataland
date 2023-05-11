@@ -105,8 +105,7 @@ describeIf(
       });
     });
 
-    it.only(
-      // TODO remove "only"
+    it(
       "Upload EU Taxonomy Dataset via form with no values for revenue and assure that it can be viewed on the framework " +
         "data view page with an appropriate message shown for the missing revenue data",
       () => {
