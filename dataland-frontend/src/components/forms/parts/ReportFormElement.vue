@@ -52,7 +52,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import Calendar from "primevue/calendar";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";

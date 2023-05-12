@@ -97,7 +97,7 @@
 </template>
 
 <script lang="ts">
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import { FormKit } from "@formkit/vue";
