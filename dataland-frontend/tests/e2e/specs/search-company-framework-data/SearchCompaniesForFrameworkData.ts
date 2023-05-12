@@ -1,5 +1,5 @@
 import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
-import { EuTaxonomyDataForNonFinancials, DataTypeEnum, StoredCompany } from "@clients/backend";
+import { DataTypeEnum, EuTaxonomyDataForNonFinancials, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -10,6 +10,7 @@ import {
   getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures,
   uploadOneEuTaxonomyNonFinancialsDatasetViaApi,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -215,17 +216,19 @@ describe("As a user, I expect the search functionality on the /companies page to
    * @returns the matching company from the fake fixtures
    */
   function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForNonFinancials> {
-    return companiesWithEuTaxonomyDataForNonFinancials.filter((it) => {
-      return (
-        it.companyInformation.companyAlternativeNames !== undefined &&
-        it.companyInformation.companyAlternativeNames.length > 0
-      );
-    })[0];
+    return assertDefined(
+      companiesWithEuTaxonomyDataForNonFinancials.find((it) => {
+        return (
+          it.companyInformation.companyAlternativeNames !== undefined &&
+          it.companyInformation.companyAlternativeNames.length > 0
+        );
+      })
+    );
   }
 
   it("Search for company by its alternative name", () => {
     const testCompany = getCompanyWithAlternativeName();
-    const searchValue = testCompany.companyInformation.companyAlternativeNames![0];
+    const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames);
     cy.visitAndCheckAppMount("/companies");
     executeCompanySearchWithStandardSearchBar(searchValue);
   });
