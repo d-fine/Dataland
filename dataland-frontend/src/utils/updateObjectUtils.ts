@@ -82,10 +82,10 @@ export function findAllValuesForKey(obj: ObjectType, keyToFind: string): Array<s
  * @param obj the object that needs the nulls dropped
  * @returns the object without all keys with undefined or null value
  */
-export function objectDropNull(obj: objectType): objectType {
+export function objectDropNull(obj: ObjectType): ObjectType {
   return JSON.parse(
     JSON.stringify(obj, (key, value: string | number) => {
       return value ?? undefined;
     })
-  ) as objectType;
+  ) as ObjectType;
 }
