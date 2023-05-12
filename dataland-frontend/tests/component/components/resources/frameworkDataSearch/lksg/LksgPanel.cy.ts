@@ -22,12 +22,14 @@ describe("Component test for LksgPanel", () => {
   });
 
   it("Should display the total revenue kpi in the correct format", () => {
-    const pseudoLksgData = { social: { general: { dataDate: "2023-01-01", totalRevenue: 1234567.89 } } };
+    const pseudoLksgData = {
+      general: { masterData: { dataDate: "2023-01-01", totalRevenue: 1234567.89 } },
+    } as LksgData;
     mount(LksgPanel, {
       data() {
         return {
           waitingForData: false,
-          lksgDataAndMetaInfo: [{ data: pseudoLksgData as LksgData } as DataAndMetaInformationLksgData],
+          lksgDataAndMetaInfo: [{ data: pseudoLksgData } as DataAndMetaInformationLksgData],
         };
       },
       created() {
@@ -36,6 +38,14 @@ describe("Component test for LksgPanel", () => {
     });
     cy.get("td:contains('1.23 MM')").should("exist");
   });
+
+  /**
+   * Toggles the data-table row group with the given key
+   * @param groupKey the key of the row group to expand
+   */
+  function toggleRowGroup(groupKey: string): void {
+    cy.get(`span[id=${groupKey}]`).siblings("button").last().click();
+  }
 
   it("Check Lksg view page for company with one Lksg data set", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set", preparedFixtures);
@@ -64,30 +74,30 @@ describe("Component test for LksgPanel", () => {
       },
     });
 
-    cy.get(`span.p-column-title`).should("contain.text", lksgData.social!.general!.dataDate.substring(0, 4));
+    cy.get(`span.p-column-title`).should("contain.text", lksgData.general!.masterData!.dataDate.substring(0, 4));
 
-    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate})`).should("exist");
+    cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
 
-    cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("tbody").find(`span:contains(${lksgData.social!.general!.dataDate})`).should("not.exist");
+    toggleRowGroup("_masterData");
+    cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("not.exist");
 
-    cy.get("button.p-row-toggler").eq(0).click();
-    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.social!.general!.dataDate})`).should("exist");
+    toggleRowGroup("_masterData");
+    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
 
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
 
-    cy.get("button.p-row-toggler").eq(1).click();
+    toggleRowGroup("childLabor");
     cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
-
     cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
 
-    cy.get("em.info-icon").eq(0).trigger("mouseenter", "center");
-    cy.get(".p-tooltip").should("be.visible").contains("The date until for which");
-    cy.get("em.info-icon").eq(0).trigger("mouseleave");
+    toggleRowGroup("productionSpecific");
+    cy.get(`a:contains(Show "List Of Production Sites")`).should("be.visible");
 
-    cy.get("table.p-datatable-table")
-      .find(`span:contains(${lksgData.social!.general!.vatIdentificationNumber})`)
-      .should("exist");
+    cy.get("em[title='Data Date']").trigger("mouseenter", "center");
+    cy.get(".p-tooltip").should("be.visible").contains("The date until when");
+    cy.get("em[title='Data Date']").trigger("mouseleave");
+
+    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
   });
 
   /**
@@ -103,7 +113,7 @@ describe("Component test for LksgPanel", () => {
       const reportingYear = 2023 + i;
       const reportingDate = `${reportingYear}-01-01`;
       const lksgData = structuredClone(baseDataset) as LksgData;
-      lksgData.social!.general!.dataDate = reportingDate;
+      lksgData.general!.masterData!.dataDate = reportingDate;
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
         reportingPeriod: reportingYear.toString(),

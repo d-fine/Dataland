@@ -26,6 +26,7 @@ class CompanyInformationCsvParser {
         IdentifierType.Ticker.name to "Ticker",
         IdentifierType.Duns.name to "DUNS",
         IdentifierType.CompanyRegistrationNumber.name to "Company Registration Number",
+        IdentifierType.VatNumber.name to "Vat Number",
         "isTeaserCompany" to "Teaser Company",
         "website" to "Website",
     )
