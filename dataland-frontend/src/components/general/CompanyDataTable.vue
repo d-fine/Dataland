@@ -45,9 +45,7 @@
         <template #body="{ data }">
           <a
             v-if="Array.isArray(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId].length"
-            @click="
-              openModalAndDisplayListOfProductionSites(data[reportingPeriod.dataId], kpiNameMappings[data.kpiKey])
-            "
+            @click="openModalAndDisplayValuesInSubTable(data[reportingPeriod.dataId], kpiNameMappings[data.kpiKey])"
             class="link"
             >Show "{{ kpiNameMappings[data.kpiKey] }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
@@ -80,7 +78,7 @@ import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { listOfProductionSitesConvertedNames } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   name: "CompanyDataTable",
@@ -92,13 +90,14 @@ export default defineComponent({
     return {
       kpiDataObjectsToDisplay: [],
       expandedRowGroups: ["_general"],
-      listOfProductionSitesConvertedNames,
+      listOfProductionSitesConvertedNames: detailsCompanyDataTableColumnHeaders.listOfProductionSites,
     };
   },
   props: {
     kpiDataObjects: {
       type: Array,
       default: () => [],
+      required: true,
     },
     reportingPeriodsOfDataSets: {
       type: Array,
@@ -130,7 +129,7 @@ export default defineComponent({
      * @param listOfProductionSites An array consisting of production sites
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      */
-    openModalAndDisplayListOfProductionSites(listOfProductionSites: [], modalTitle: string) {
+    openModalAndDisplayValuesInSubTable(listOfProductionSites: [], modalTitle: string) {
       this.$dialog.open(DetailsCompanyDataTable, {
         props: {
           header: modalTitle,
@@ -138,8 +137,8 @@ export default defineComponent({
           dismissableMask: true,
         },
         data: {
-          listOfProductionSitesNames: listOfProductionSites,
-          listOfProductionSitesConvertedNames: listOfProductionSitesConvertedNames,
+          listOfRowContents: listOfProductionSites,
+          columnHeaders: this.listOfProductionSitesConvertedNames,
         },
       });
     },
@@ -151,10 +150,12 @@ export default defineComponent({
 .p-rowgroup-footer td {
   font-weight: 500;
 }
+
 ::v-deep(.p-rowgroup-header) {
   span {
     font-weight: 500;
   }
+
   .p-row-toggler {
     vertical-align: middle;
     margin-right: 0.25rem;

@@ -305,7 +305,9 @@ import EuTaxonomyBasicInformation from "@/components/forms/parts/EuTaxonomyBasic
 
 import PrimeButton from "primevue/button";
 import MultiSelect from "primevue/multiselect";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
+import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
@@ -339,8 +341,8 @@ import {
   updateObject,
 } from "@/utils/updateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
+import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
-import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";

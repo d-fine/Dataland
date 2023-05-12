@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
-import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
+import { CompanyIdentifierIdentifierTypeEnum, CompanyInformation } from "@clients/backend";
 import { DataPoint } from "./FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { getIdentifierValueForCsv } from "./CsvUtils";
-import { valueOrUndefined } from "./common/DataPointFixtures";
+import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 const legalForms = [
   "Public Limited Company (PLC)",
@@ -30,59 +30,52 @@ export function getRandomCompanyLegalForm(): string {
  * @returns information about a randomly generated company
  */
 export function generateCompanyInformation(): CompanyInformation {
-  const companyName = faker.company.name();
-  const headquarters = faker.address.city();
-  const headquartersPostalCode = valueOrUndefined(faker.address.zipCode());
-  const sector = faker.company.bsNoun();
-
-  const identifiers: Array<CompanyIdentifier> = faker.helpers
-    .arrayElements([
-      {
-        identifierType: CompanyIdentifierIdentifierTypeEnum.Lei,
-        identifierValue: faker.random.alphaNumeric(20),
-      },
-      {
-        identifierType: CompanyIdentifierIdentifierTypeEnum.Isin,
-        identifierValue: faker.random.alphaNumeric(12),
-      },
-      {
-        identifierType: CompanyIdentifierIdentifierTypeEnum.PermId,
-        identifierValue: faker.random.alphaNumeric(10),
-      },
-      {
-        identifierType: CompanyIdentifierIdentifierTypeEnum.Ticker,
-        identifierValue: faker.random.alphaNumeric(7),
-      },
-      {
-        identifierType: CompanyIdentifierIdentifierTypeEnum.Duns,
-        identifierValue: faker.random.alphaNumeric(9),
-      },
-      {
-        identifierType: CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber,
-        identifierValue: faker.random.alphaNumeric(15),
-      },
-    ])
-    .sort((a, b) => {
-      return a.identifierType.localeCompare(b.identifierType);
-    });
-  const countryCode = faker.address.countryCode();
-  const companyAlternativeNames = Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
-    return faker.company.name();
-  }).sort((a, b) => a.localeCompare(b));
-  const companyLegalForm = valueOrUndefined(getRandomCompanyLegalForm());
-  const website = valueOrUndefined(faker.internet.url());
-
   return {
-    companyName: companyName,
-    companyAlternativeNames: companyAlternativeNames,
-    companyLegalForm: companyLegalForm,
-    headquarters: headquarters,
-    headquartersPostalCode: headquartersPostalCode,
-    sector: sector,
-    identifiers: identifiers,
-    countryCode: countryCode,
+    companyName: faker.company.name(),
+    headquarters: faker.address.city(),
+    headquartersPostalCode: valueOrUndefined(faker.address.zipCode()),
+    sector: faker.company.bsNoun(),
+    identifiers: faker.helpers
+      .arrayElements([
+        {
+          identifierType: CompanyIdentifierIdentifierTypeEnum.Lei,
+          identifierValue: faker.random.alphaNumeric(20),
+        },
+        {
+          identifierType: CompanyIdentifierIdentifierTypeEnum.Isin,
+          identifierValue: faker.random.alphaNumeric(12),
+        },
+        {
+          identifierType: CompanyIdentifierIdentifierTypeEnum.PermId,
+          identifierValue: faker.random.alphaNumeric(10),
+        },
+        {
+          identifierType: CompanyIdentifierIdentifierTypeEnum.Ticker,
+          identifierValue: faker.random.alphaNumeric(7),
+        },
+        {
+          identifierType: CompanyIdentifierIdentifierTypeEnum.Duns,
+          identifierValue: faker.random.alphaNumeric(9),
+        },
+        {
+          identifierType: CompanyIdentifierIdentifierTypeEnum.VatNumber,
+          identifierValue: faker.random.alphaNumeric(9),
+        },
+        {
+          identifierType: CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber,
+          identifierValue: faker.random.alphaNumeric(15),
+        },
+      ])
+      .sort((a, b) => {
+        return a.identifierType.localeCompare(b.identifierType);
+      }),
+    countryCode: faker.address.countryCode(),
+    companyAlternativeNames: Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
+      return faker.company.name();
+    }).sort((a, b) => a.localeCompare(b)),
+    companyLegalForm: valueOrUndefined(getRandomCompanyLegalForm()),
+    website: valueOrUndefined(faker.internet.url()),
     isTeaserCompany: false,
-    website: website,
   };
 }
 

@@ -2,182 +2,205 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [
-				"Briesenick-Kofferschlager",
-				"Reichardt GmbH"
-			],
-			"headquarters": "Neu Miradorf",
-			"sector": "blockchains",
+			"headquarters": "Ost Charlotte",
+			"headquartersPostalCode": "98800",
+			"sector": "schemas",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "lcy790gbo"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "w337js8lcov8ol4"
 				},
 				{
-					"identifierType": "PermId",
-					"identifierValue": "wfzm4oceyu"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "pp2mdtd"
+					"identifierType": "Lei",
+					"identifierValue": "steiovnkvz3qrv6hg40x"
 				}
 			],
-			"countryCode": "JP",
-			"isTeaserCompany": false,
-			"website": "http://unvorstellbar-prähistorie.info"
+			"countryCode": "GM",
+			"companyAlternativeNames": [],
+			"website": "http://vortrefflich-politik.com",
+			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-01-15",
-			"numberOfEmployees": 58107,
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-12-31",
+			"numberOfEmployees": 29946,
 			"referencedReports": {
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "SAR"
+					"isGroupLevel": "No",
+					"reportDate": "2022-10-14",
+					"currency": "GTQ"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "EUR"
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-12-14",
+					"currency": "XBB"
+				}
+			},
+			"assurance": {
+				"assurance": "ReasonableAssurance",
+				"provider": "Wessel-Montag",
+				"dataSource": {
+					"page": 209,
+					"report": "SustainabilityReport",
+					"tagName": "portals"
+				}
+			},
+			"scopeOfEntities": "No",
+			"reportingObligation": "No",
+			"opex": {
+				"eligiblePercentage": {
+					"value": 0.076,
+					"quality": "Incomplete"
+				}
+			},
+			"capex": {
+				"eligiblePercentage": {
+					"value": 0.3828,
+					"dataSource": {
+						"page": 448,
+						"report": "SustainabilityReport",
+						"tagName": "e-services"
+					},
+					"quality": "Reported",
+					"comment": "synthesize back-end capacitor"
+				}
+			},
+			"revenue": {
+				"eligiblePercentage": {
+					"value": 0.8284,
+					"dataSource": {
+						"page": 1020,
+						"report": "SustainabilityReport",
+						"tagName": "web services"
+					},
+					"quality": "Reported",
+					"comment": "reboot digital microchip"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Alt Luciadorf",
+			"headquartersPostalCode": "52100",
+			"sector": "action-items",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "2rp5nsv0lczoumb"
 				},
-				"IntegratedReport": {
+				{
+					"identifierType": "Duns",
+					"identifierValue": "auwmw8ddn"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "ll7jt0xdqm6yr5rn2zb6"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "5xywytl"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "4sxv5d4hq"
+				}
+			],
+			"countryCode": "NG",
+			"companyAlternativeNames": [
+				"Bauer-Hirt",
+				"Dück, Cleem und Mebold",
+				"Ghirmai, Noack und Spöttel",
+				"Scherbarth OHG"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-05-11",
+			"numberOfEmployees": 4331,
+			"referencedReports": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "Yes",
-					"currency": "XDR"
+					"currency": "MOP"
 				}
 			},
 			"assurance": {
 				"assurance": "None"
 			},
 			"scopeOfEntities": "No",
-			"activityLevelReporting": "No",
-			"opex": {
-				"eligiblePercentage": {
-					"value": 0.0834,
-					"dataSource": {
-						"page": 166,
-						"report": "SustainabilityReport",
-						"tagName": "interfaces"
-					},
-					"quality": "Audited",
-					"comment": "hack virtual port"
-				}
-			},
-			"capex": {
-				"eligiblePercentage": {
-					"value": 0.6388,
-					"quality": "Incomplete"
-				}
-			},
-			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.6802,
-					"dataSource": {
-						"page": 377,
-						"report": "ESEFReport",
-						"tagName": "blockchains"
-					},
-					"quality": "Audited",
-					"comment": "transmit 1080p microchip"
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Elss, Steinmetz und Bruns",
-				"Konieczny UG"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"headquarters": "Gruberburg",
-			"headquartersPostalCode": "45091",
-			"sector": "content",
-			"identifiers": [
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "esk4pv9"
-				}
-			],
-			"countryCode": "SN",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-09-29",
-			"numberOfEmployees": 85406,
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-09-27",
-					"currency": "MWK"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance"
-			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 887269.21,
+					"value": 116291.71,
 					"dataSource": {
-						"page": 1164,
+						"page": 824,
 						"report": "SustainabilityReport",
-						"tagName": "supply-chains"
+						"tagName": "e-commerce"
 					},
 					"quality": "Reported",
-					"comment": "reboot redundant port"
+					"comment": "generate virtual driver"
 				},
 				"eligiblePercentage": {
-					"value": 0.2928,
-					"quality": "Incomplete"
+					"value": 0.317,
+					"dataSource": {
+						"page": 592,
+						"report": "SustainabilityReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Estimated",
+					"comment": "transmit digital alarm"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 333952.19,
+					"value": 942196.82,
 					"dataSource": {
-						"page": 983,
+						"page": 240,
 						"report": "SustainabilityReport",
-						"tagName": "content"
+						"tagName": "niches"
 					},
-					"quality": "Incomplete",
-					"comment": "connect solid state port"
+					"quality": "Reported",
+					"comment": "generate haptic pixel"
 				},
 				"eligiblePercentage": {
-					"value": 0.1318,
+					"value": 0.7277,
 					"dataSource": {
-						"page": 310,
+						"page": 391,
 						"report": "SustainabilityReport",
-						"tagName": "infomediaries"
+						"tagName": "eyeballs"
 					},
-					"quality": "Estimated",
-					"comment": "copy bluetooth hard drive"
+					"quality": "Audited",
+					"comment": "generate optical bus"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 340627.49,
+					"value": 679634.73,
 					"dataSource": {
-						"page": 626,
+						"page": 730,
 						"report": "SustainabilityReport",
-						"tagName": "ROI"
+						"tagName": "communities"
 					},
 					"quality": "Incomplete",
-					"comment": "quantify neural application"
+					"comment": "reboot redundant protocol"
 				},
 				"eligiblePercentage": {
-					"value": 0.2212,
+					"value": 0.2634,
 					"dataSource": {
-						"page": 815,
+						"page": 426,
 						"report": "SustainabilityReport",
-						"tagName": "channels"
+						"tagName": "metrics"
 					},
-					"quality": "Audited",
-					"comment": "override bluetooth bus"
+					"quality": "Reported",
+					"comment": "navigate cross-platform program"
 				}
 			}
 		},
@@ -186,134 +209,150 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"headquarters": "Alt Torbenstadt",
-			"headquartersPostalCode": "68872",
-			"sector": "markets",
+			"headquarters": "Chayenneland",
+			"sector": "solutions",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "1v01k4fhfhimnp6"
+					"identifierValue": "0rsx3cg2uzn4uiy"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "mfbu6ouzt"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "eipl5hue94zw"
+					"identifierValue": "bv87gnhiw"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "enly0ol74yr315vfumsp"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "yro8y2v40g"
+					"identifierValue": "750jvo9nndg6ps2mu8za"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "njweqgf"
+					"identifierValue": "fra9pg3"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "vpj3s5r9l"
 				}
 			],
-			"countryCode": "PL",
-			"isTeaserCompany": false,
-			"website": "https://aphrodisierend-kupfer.info"
+			"countryCode": "LT",
+			"companyAlternativeNames": [
+				"Gruning KG",
+				"Wessel-Kulimann"
+			],
+			"website": "http://hervorhebend-vagina.info",
+			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-11-14",
-			"numberOfEmployees": 5934,
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-10-10",
+			"numberOfEmployees": 80765,
 			"assurance": {
-				"assurance": "None"
-			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
-			"opex": {
-				"totalAmount": {
-					"value": 70180.9,
-					"dataSource": {
-						"page": 378,
-						"report": "SustainabilityReport",
-						"tagName": "e-services"
-					},
-					"quality": "Reported",
-					"comment": "back up digital matrix"
-				},
-				"alignedPercentage": {
-					"quality": "NA"
-				},
-				"eligiblePercentage": {
-					"value": 0.3433,
-					"dataSource": {
-						"page": 486,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
-					},
-					"quality": "Incomplete",
-					"comment": "input optical microchip"
+				"assurance": "LimitedAssurance",
+				"provider": "Hort-Schulte",
+				"dataSource": {
+					"page": 852,
+					"report": "AnnualReport",
+					"tagName": "convergence"
 				}
 			},
-			"capex": {
+			"scopeOfEntities": "No",
+			"activityLevelReporting": "No",
+			"opex": {
 				"totalAmount": {
-					"value": 501126.77,
+					"value": 436632.51,
 					"dataSource": {
-						"page": 189,
-						"report": "AnnualReport",
-						"tagName": "action-items"
-					},
-					"quality": "Audited",
-					"comment": "bypass solid state monitor"
-				},
-				"alignedPercentage": {
-					"value": 0.8955,
-					"dataSource": {
-						"page": 329,
-						"report": "AnnualReport",
-						"tagName": "interfaces"
+						"page": 226,
+						"report": "ESEFReport",
+						"tagName": "e-markets"
 					},
 					"quality": "Reported",
-					"comment": "quantify online capacitor"
+					"comment": "parse redundant monitor"
 				},
-				"eligiblePercentage": {
-					"value": 0.5898,
+				"alignedPercentage": {
+					"value": 0.0871,
 					"dataSource": {
-						"page": 70,
+						"page": 504,
 						"report": "SustainabilityReport",
 						"tagName": "mindshare"
 					},
 					"quality": "Reported",
-					"comment": "connect haptic panel"
+					"comment": "index virtual transmitter"
+				},
+				"eligiblePercentage": {
+					"value": 0.4649,
+					"dataSource": {
+						"page": 907,
+						"report": "IntegratedReport",
+						"tagName": "web services"
+					},
+					"quality": "Reported",
+					"comment": "back up back-end pixel"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 425796.5,
+					"dataSource": {
+						"page": 1056,
+						"report": "IntegratedReport",
+						"tagName": "applications"
+					},
+					"quality": "Reported",
+					"comment": "connect digital program"
+				},
+				"alignedPercentage": {
+					"value": 0.9566,
+					"dataSource": {
+						"page": 478,
+						"report": "ESEFReport",
+						"tagName": "niches"
+					},
+					"quality": "Audited",
+					"comment": "reboot primary alarm"
+				},
+				"eligiblePercentage": {
+					"value": 0.7738,
+					"dataSource": {
+						"page": 977,
+						"report": "AnnualReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Audited",
+					"comment": "connect auxiliary matrix"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 676272.51,
+					"value": 81256.3,
 					"dataSource": {
-						"page": 49,
+						"page": 513,
 						"report": "SustainabilityReport",
+						"tagName": "portals"
+					},
+					"quality": "Incomplete",
+					"comment": "generate solid state port"
+				},
+				"alignedPercentage": {
+					"value": 0.1583,
+					"dataSource": {
+						"page": 306,
+						"report": "IntegratedReport",
 						"tagName": "e-markets"
 					},
 					"quality": "Audited",
-					"comment": "index virtual feed"
-				},
-				"alignedPercentage": {
-					"quality": "NA"
+					"comment": "parse auxiliary sensor"
 				},
 				"eligiblePercentage": {
-					"value": 0.7695,
+					"value": 0.2351,
 					"dataSource": {
-						"page": 1061,
-						"report": "SustainabilityReport",
-						"tagName": "systems"
+						"page": 1003,
+						"report": "ESEFReport",
+						"tagName": "solutions"
 					},
-					"quality": "Incomplete",
-					"comment": "synthesize cross-platform protocol"
+					"quality": "Reported",
+					"comment": "hack auxiliary protocol"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2020"
 	}
 ]
