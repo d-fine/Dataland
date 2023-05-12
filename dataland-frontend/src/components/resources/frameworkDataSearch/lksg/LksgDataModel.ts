@@ -28,8 +28,7 @@ export const lksgDataModel = [
               "Is your head office, administrative headquarters, registered office or subsidiary located in Germany?",
             label: "Head Office in Germany",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -37,8 +36,7 @@ export const lksgDataModel = [
             description: "Do you belong to a group of companies?",
             label: "Group of Companies",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean => dataModel?.general?.masterData?.groupOfCompanies === "Yes",
@@ -46,17 +44,15 @@ export const lksgDataModel = [
             description: "What is the group of companies called?",
             label: "Group of Companies Name",
             component: "InputTextFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
-            validation: "required|length:1",
             name: "industry",
             description: "In which industry is your company primarily active?",
             label: "Industry",
             component: "NaceCodeFormField",
-            required: true,
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -65,8 +61,7 @@ export const lksgDataModel = [
               "What is the total number of employees (including temporary workers with assignment duration >6 months)?",
             label: "Number of Employees",
             component: "NumberFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -74,8 +69,7 @@ export const lksgDataModel = [
             description: "Do you employ seasonal or migrant workers?",
             label: "Seasonal or Migrant Workers",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -101,19 +95,17 @@ export const lksgDataModel = [
             description: "What is the share of temporary workers vs total number of employees in the company?",
             label: "Share of Temporary Workers",
             component: "RadioButtonsFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
             options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
-            validation: "required",
             placeholder: "Select Currency",
             name: "totalRevenueCurrency",
             description: "The 3-letter code (ISO 4217) representing the currency used for the total revenue",
             label: "Total Revenue Currency",
             component: "SingleSelectFormField",
-            required: true,
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -121,8 +113,7 @@ export const lksgDataModel = [
             description: "Total revenue p. a.",
             label: "Total Revenue",
             component: "NumberFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -144,8 +135,7 @@ export const lksgDataModel = [
             description: "Is your company a manufacturing company?",
             label: "Manufacturing Company",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
@@ -154,8 +144,7 @@ export const lksgDataModel = [
             description: "If yes, what is your production capacity per year, e.g. units/year?",
             label: "Capacity",
             component: "InputTextFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -163,30 +152,27 @@ export const lksgDataModel = [
             description: "Is production done via subcontracting?",
             label: "Is Contract Processing",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.isContractProcessing === "Yes",
             options: getDataset(DropdownDatasetIdentifier.CountryCodes),
-            validation: "required|length:1",
             placeholder: "Select Country",
             name: "subcontractingCompaniesCountries",
             description: "In which countries do the subcontracting companies operate?",
             label: "Subcontracting Companies Countries",
             component: "MultiSelectFormField",
-            required: true,
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.isContractProcessing === "Yes",
-            validation: "required|length:1",
             name: "subcontractingCompaniesIndustries",
             description: "In which industries do the subcontracting companies operate?",
             label: "Subcontracting Companies Industries",
             component: "NaceCodeFormField",
-            required: true,
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -194,8 +180,7 @@ export const lksgDataModel = [
             description: "Do you have production sites in your company?",
             label: "Production Sites",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean => dataModel?.general?.productionSpecific?.productionSites === "Yes",
@@ -203,8 +188,7 @@ export const lksgDataModel = [
             description: "Please list the production sites in your company.",
             label: "List Of Production Sites",
             component: "ProductionSiteFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -226,8 +210,7 @@ export const lksgDataModel = [
             description: "Does your business focus predominantly on national or international markets?",
             label: "Market",
             component: "RadioButtonsFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -236,8 +219,7 @@ export const lksgDataModel = [
               "Does your company have specific procurement models such as: short-lived and changing business relationships, or high price pressure or tightly timed or short-term adjusted delivery deadlines and conditions with suppliers",
             label: "Specific Procurement",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
         ],
       },
@@ -482,8 +464,7 @@ export const lksgDataModel = [
               "Is your company SA8000 certified? If yes, please share the certificate with us. (Corporate Social Responsibility)",
             label: "SA8000 Certification",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -492,8 +473,7 @@ export const lksgDataModel = [
               "Does your company apply a social audit concept as defined by SMETA (Sedex Members Ethical Trade Audit)? (social audit)",
             label: "SMETA Social Audit Concept",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -502,8 +482,7 @@ export const lksgDataModel = [
               "Do the production sites where the goods are produced participate in the BetterWork program? If yes, please share the certificate with us. (private label only)",
             label: "Better Work Program Certificate",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -512,8 +491,7 @@ export const lksgDataModel = [
               "Is your company ISO45001 certified? If yes, please share the certificate with us. (Management Systems of Occupational Health and Safety)",
             label: "ISO 45001 Certification",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -521,8 +499,7 @@ export const lksgDataModel = [
             description: "Is your company ISO14000 certified? If yes, please share the certificate with us.",
             label: "ISO 14000 Certification",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -531,8 +508,7 @@ export const lksgDataModel = [
               "Is your company certified according to EMAS? If yes, please share the certificate with us. (Voluntary environmental management)",
             label: "EMAS Certification",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -541,8 +517,7 @@ export const lksgDataModel = [
               "Is your company ISO37001 certified? If yes, please share the certificate with us. (Anti-bribery management systems)",
             label: "ISO 37001 Certification",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -551,8 +526,7 @@ export const lksgDataModel = [
               "Is your company ISO37301 certified? If yes, please share the certificate with us. (Compliance Management System)",
             label: "ISO37301 Certification",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -560,8 +534,7 @@ export const lksgDataModel = [
             description: "Is the Risk Management System internationally recognized and certified? (e.g.: ISO 31000)",
             label: "Risk Management System Certification",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -570,8 +543,7 @@ export const lksgDataModel = [
               "Does your company have a current amfori BSCI audit report? If yes, please share the certificate with us.",
             label: "amfori BSCI Audit Report",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -580,8 +552,7 @@ export const lksgDataModel = [
               "Is your company Responsible Business Association (RBA) certified? If yes, please share the certificate with us. (Social Responsibility)",
             label: "Responsible Business Association Certification",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -590,8 +561,7 @@ export const lksgDataModel = [
               "Is your company Fair Labor Association (FLA) certified? If yes, please share the certificate with us. (Adherence to international and national labor laws)",
             label: "Fair Labor Association Certification",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -609,8 +579,7 @@ export const lksgDataModel = [
               "Has your company implemented and enforced (e.g., within the Code Of Conducts) internal behavioural guidelines that address the issues of human rights protection and respect for the environment?",
             label: "Code Of Conduct",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
@@ -620,8 +589,7 @@ export const lksgDataModel = [
               "Are your employees regularly made aware of the internal rules of conduct and trained on them?",
             label: "Code Of Conduct Training",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -630,8 +598,7 @@ export const lksgDataModel = [
               "Does your company have a Supplier Code Of Conduct? (If yes, please share the Supplier Code of Conduct with us)",
             label: "Supplier Code Of Conduct",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -639,8 +606,7 @@ export const lksgDataModel = [
             description: "Does your company have a policy statement on its human rights strategy?",
             label: "Policy Statement",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
@@ -659,8 +625,7 @@ export const lksgDataModel = [
               "Does your company have a Environmental Impact Policy? (If yes, please share the policy with us)",
             label: "Environmental Impact Policy",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -669,8 +634,7 @@ export const lksgDataModel = [
               "Does your company have a Fair Working Conditions Policy? (If yes, please share the policy with us)",
             label: "Fair Working Conditions Policy",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
         ],
       },
@@ -685,8 +649,7 @@ export const lksgDataModel = [
               "Has your company established, according to the nature and extent of the enterprise’s business activities, official responsibilities for the topic of fair working conditions?",
             label: "Responsibilities For Fair Working Conditions",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -695,8 +658,7 @@ export const lksgDataModel = [
               "Has your company established, according to the nature and extent of the enterprise’s business activities, official responsibilities for the topic of the environment?",
             label: "Responsibilities For The Environment",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -705,8 +667,7 @@ export const lksgDataModel = [
               "Has your company established, according to the nature and extent of the enterprise’s business activities, official responsibilities for the topic of occupational safety?",
             label: "Responsibilities For Occupational Safety",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -715,8 +676,7 @@ export const lksgDataModel = [
               "Has your company been involved in the last 5 years, in legal disputes (including currently ongoing disputes) with third parties regarding human rights and environmental violations?",
             label: "Legal Proceedings",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -725,8 +685,7 @@ export const lksgDataModel = [
               "Have there been any violations of human rights or environmental aspects on your part in the last 5 years?",
             label: "Human Rights Violation",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
@@ -735,8 +694,7 @@ export const lksgDataModel = [
             description: "What were the violations?",
             label: "Human Rights Violations",
             component: "InputTextFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
@@ -745,8 +703,7 @@ export const lksgDataModel = [
             description: "Has action been taken to address the violations?",
             label: "Human Rights Violation Action",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
@@ -755,8 +712,7 @@ export const lksgDataModel = [
             description: "What measures have been taken?",
             label: "Human Rights Violation Action Measures",
             component: "InputTextFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -764,20 +720,18 @@ export const lksgDataModel = [
             description: "Do you source your raw materials from verified conflict or high-risk regions?",
             label: "High Risk Countries Raw Materials",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesRawMaterials === "Yes",
             options: getDataset(DropdownDatasetIdentifier.CountryCodes),
-            validation: "required|length:1",
             placeholder: "Select Country",
             name: "highRiskCountriesRawMaterialsLocation",
             description: "From which conflict/high-risk regions do you source your raw materials?",
             label: "High Risk Countries Raw Materials Location",
             component: "MultiSelectFormField",
-            required: true,
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -786,20 +740,18 @@ export const lksgDataModel = [
               "Does your company have activities in countries where there are high risks for human rights and/or the environment?",
             label: "High Risk Countries Activity",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesActivity === "Yes",
             options: getDataset(DropdownDatasetIdentifier.CountryCodes),
-            validation: "required|length:1",
             placeholder: "Select Country",
             name: "highRiskCountries",
             description: "In which high risk countries does your company have activities?",
             label: "High Risk Countries",
             component: "MultiSelectFormField",
-            required: true,
+            required: false,
           },
           {
             showIf: (): boolean => true,
@@ -808,8 +760,7 @@ export const lksgDataModel = [
               "Does your company procure from countries with high risks for human rights and/or the environment?",
             label: "High Risk Countries Procurement",
             component: "YesNoFormField",
-            required: true,
-            validation: "required",
+            required: false,
           },
           {
             showIf: (dataModel: LksgData): boolean =>
