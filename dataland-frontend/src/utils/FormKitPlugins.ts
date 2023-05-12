@@ -9,7 +9,7 @@ export function selectNothingIfNotExistsFormKitPlugin(node: FormKitNode): void {
   if (node.props["type"] !== "select") return;
   node.on("prop:options", ({ payload }) => {
     if (!(payload as Option[]).map((option) => option.value).includes(node.value as string)) {
-      node.input(undefined).catch();
+      node.input(undefined).catch(() => undefined);
     }
   });
 }

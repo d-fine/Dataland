@@ -46,6 +46,7 @@
               v-model="currentReportValue"
               placeholder="Select a report"
               :options="['None...', ...reportsName]"
+              :plugins="[selectNothingIfNotExistsFormKitPlugin]"
             />
           </div>
           <div>
@@ -101,6 +102,7 @@ import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
+import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 
 export default defineComponent({
   name: "DataPointForm",
@@ -154,6 +156,7 @@ export default defineComponent({
     },
   },
   methods: {
+    selectNothingIfNotExistsFormKitPlugin,
     /**
      * Toggle dataPointIsAvailable variable value and emit event
      *
