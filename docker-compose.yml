@@ -29,6 +29,8 @@ services:
       PROXY_LETSENCRYPT_ARGS: ${PROXY_LETSENCRYPT_ARGS}
       FRONTEND_LOCATION_CONFIG: ${FRONTEND_LOCATION_CONFIG}
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   admin-proxy:
     image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
@@ -205,6 +207,8 @@ services:
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
     depends_on:
       - internal-storage-db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   internal-storage-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -287,7 +291,8 @@ services:
     expose:
       - "8080"
     depends_on:
-      - keycloak-db
+      keycloak-db:
+        condition: service_healthy
   pgadmin:
     restart: always
     image: ghcr.io/d-fine/dataland/dataland_pgadmin:${DATALAND_PGADMIN_VERSION}

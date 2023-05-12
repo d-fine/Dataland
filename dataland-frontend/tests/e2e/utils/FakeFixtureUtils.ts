@@ -1,9 +1,9 @@
 /**
- * Returns either the input string or undefined with a 50/50 chance
- * @param input the string to be returned
- * @param undefinedPercentage the probability that this function returns undefined. Defaults to 50%
- * @returns either the input or undefined
+ * Randomly returns the specified value or undefined
+ * @param value the value to return
+ * @param undefinedProbability the probability (as number between 0 and 1) that the returned value is undefined
+ * @returns the value or undefined
  */
-export function randomStringOrUndefined(input: string, undefinedPercentage = 0.5): string | undefined {
-  return Math.random() < undefinedPercentage ? undefined : input;
+export function valueOrUndefined<T>(value: T, undefinedProbability = 0.5): T | undefined {
+  return Math.random() < undefinedProbability ? value : undefined;
 }
