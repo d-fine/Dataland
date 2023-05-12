@@ -274,7 +274,7 @@ import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import { FormKit } from "@formkit/vue";
 
 import Calendar from "primevue/calendar";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
