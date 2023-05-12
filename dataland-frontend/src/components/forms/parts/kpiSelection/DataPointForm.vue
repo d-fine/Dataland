@@ -59,6 +59,9 @@
               name="page"
               placeholder="Page"
               validation-label="Page"
+              step="1"
+              min="0"
+              validation="min:0"
             />
           </div>
         </div>

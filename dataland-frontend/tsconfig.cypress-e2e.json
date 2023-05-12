@@ -1,11 +1,7 @@
 // Config file for cypress E2E tests
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": [
-    "tests/sharedUtils/**/*",
-    "tests/e2e/**/*",
-    "build/clients/**/*"
-  ],
+  "include": ["tests/sharedUtils/**/*","tests/e2e/**/*","build/clients/**/*","src/types/**/*"],
   "compilerOptions": {
     "isolatedModules": false,
     "baseUrl": ".",

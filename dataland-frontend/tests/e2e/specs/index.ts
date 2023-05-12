@@ -33,10 +33,10 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./landing-page");
   require("./swagger-ui");
   require("./user-api-key");
+  require("./framework-view-and-upload-journey");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {
-  require("./framework-view-and-upload-journey");
   require("./eu-taxonomy-non-financials");
   require("./eu-taxonomy-financials");
   require("./lksg");
