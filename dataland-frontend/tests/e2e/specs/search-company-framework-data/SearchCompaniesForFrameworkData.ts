@@ -228,7 +228,7 @@ describe("As a user, I expect the search functionality on the /companies page to
 
   it("Search for company by its alternative name", () => {
     const testCompany = getCompanyWithAlternativeName();
-    const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames);
+    const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0];
     cy.visitAndCheckAppMount("/companies");
     executeCompanySearchWithStandardSearchBar(searchValue);
   });
