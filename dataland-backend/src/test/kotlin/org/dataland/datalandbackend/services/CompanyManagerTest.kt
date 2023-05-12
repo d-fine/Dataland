@@ -110,8 +110,10 @@ class CompanyManagerTest(
         val searchString = testCompanyList.first().identifiers.first().identifierValue.drop(1).dropLast(1)
         var occurencesOfSearchString = 0
         for (companyInformation in testCompanyList) {
-            require(!(companyInformation.companyName.contains(searchString))) { "The company name " +
-                    "${companyInformation.companyName} includes the searchString $searchString." }
+            require(!(companyInformation.companyName.contains(searchString))) {
+                "The company name " +
+                    "${companyInformation.companyName} includes the searchString $searchString."
+            }
             for (identifier in companyInformation.identifiers) {
                 if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
             }

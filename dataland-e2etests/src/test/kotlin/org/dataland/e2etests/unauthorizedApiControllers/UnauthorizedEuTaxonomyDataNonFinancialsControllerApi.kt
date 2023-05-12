@@ -29,7 +29,7 @@ class UnauthorizedEuTaxonomyDataNonFinancialsControllerApi {
         CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
         val response = client.newCall(buildGetCompanyAssociatedDataEuTaxonomyDataForNonFinancialsRequest(dataId))
             .execute()
-        if (!response.isSuccessful) throw IllegalArgumentException("Unauthorized access failed, response is: $response")
+        require(response.isSuccessful) { "Unauthorized access failed, response is: $response" }
         val responseBodyAsString = response.body!!.string()
         return transferJsonToCompanyAssociatedDataEuTaxonomyDataForNonFinancials(responseBodyAsString)
     }
