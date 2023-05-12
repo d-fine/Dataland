@@ -125,6 +125,7 @@
                                 validation-label="Selecting a report"
                                 validation="required"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
+                                :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
                             </div>
                             <div>
@@ -312,6 +313,7 @@ import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.v
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -396,6 +398,7 @@ export default defineComponent({
   },
 
   methods: {
+    selectNothingIfNotExistsFormKitPlugin,
     /**
      * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
      * from the dataset
