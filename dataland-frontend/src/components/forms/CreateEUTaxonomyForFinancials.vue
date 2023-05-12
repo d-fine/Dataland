@@ -124,6 +124,7 @@
                                 validation-label="Selecting a report"
                                 validation="required"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
+                                :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
                             </div>
                             <div>
@@ -345,6 +346,7 @@ import { FormKitNode } from "@formkit/core";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
+import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 
 export default defineComponent({
   setup() {
@@ -476,6 +478,7 @@ export default defineComponent({
   },
 
   methods: {
+    selectNothingIfNotExistsFormKitPlugin,
     /**
      * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
      * from the dataset
