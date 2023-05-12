@@ -33,7 +33,7 @@ class DataControllerTest {
         )
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
+                .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
 
         assertEquals(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
@@ -53,9 +53,9 @@ class DataControllerTest {
             testDataEuTaxonomyNonFinancials,
         )
         val getDataByIdResponse = apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
-            .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
+            .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
         val expectedCompanyAssociatedData = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
-            mapOfIds["companyId"]!!,
+            mapOfIds.getValue("companyId"),
             "",
             testDataEuTaxonomyNonFinancials,
         )
@@ -74,7 +74,7 @@ class DataControllerTest {
         )
         val exception = assertThrows<IllegalArgumentException> {
             apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
-                .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
+                .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
         }
         assertTrue(exception.message!!.contains("Unauthorized access failed"))
     }

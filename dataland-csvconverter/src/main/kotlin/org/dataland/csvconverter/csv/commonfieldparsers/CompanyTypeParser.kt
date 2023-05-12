@@ -24,8 +24,9 @@ class CompanyTypeParser {
     /**
      * This method retrieves the company type from a csv row
      */
+    // TODO Test csv converter
     fun getCompanyType(csvLineData: Map<String, String>): String {
         val companyTypeNumeric = columnMappingCompanyType.getCsvValueAllowingNull("companyType", csvLineData)
-        return companyTypeCsvParser.parse(columnMappingCompanyType["companyType"]!!, companyTypeNumeric)
+        return companyTypeCsvParser.parse(columnMappingCompanyType.getValue("companyType"), companyTypeNumeric)
     }
 }
