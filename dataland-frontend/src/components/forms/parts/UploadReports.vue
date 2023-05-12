@@ -168,7 +168,7 @@ export default defineComponent({
      */
     async handleFilesSelected(event: FileUploadSelectEvent): void {
       const selectedFilesByUser = event.files as File[];
-      if (this.wasThereNoNewFileAdded(selectedFilesByUser)) {
+      if (!this.isThereActuallyANewFileSelected(selectedFilesByUser, this.reportsToUpload)) {
         return;
       }
       const indexOfLastSelectedFile = selectedFilesByUser.length - 1;
@@ -187,13 +187,13 @@ export default defineComponent({
     },
     /**
      * Checks if there was actually a file added by the user that was not filtered
-     * out by the FileUpload component
-     * @param filesSelectedByUser the files currently selected by the user
-     * @returns false if there was actually a file added by the user
+     * out by the FileUpload component.
+     * @param filesCurrentlySelectedByUser the files currently selected by the user
+     * @param previouslySelectedReports the reports that have already been selected before the last change
+     * @returns true if there is actually a file added by the user
      */
-    wasThereNoNewFileAdded(filesSelectedByUser: File[]) {
-      // TODO I suggest renaming this, since it was a little confusing for me. e.g. "isSelectedFileBeingActuallyAdded" true = yes  false = no
-      return filesSelectedByUser.length == this.reportsToUpload.length;
+    isThereActuallyANewFileSelected(filesCurrentlySelectedByUser: File[], previouslySelectedReports: ReportToUpload[]) {
+      return filesCurrentlySelectedByUser.length != previouslySelectedReports.length;
     },
     /**
      * Remove report from files uploaded
