@@ -14,7 +14,7 @@ data class LksgProductionSpecific(
 
     val manufacturingCompany: YesNo?,
 
-    val capacity: BigDecimal?,
+    val capacity: String?,
 
     @field:JsonProperty()
     val isContractProcessing: YesNo?,

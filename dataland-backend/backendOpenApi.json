@@ -3222,7 +3222,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "capacity": {
-            "type": "number"
+            "type": "string"
           },
           "isContractProcessing": {
             "$ref": "#/components/schemas/YesNo"
