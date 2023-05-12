@@ -1,7 +1,14 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { DataMetaInformation, DataTypeEnum, LksgData, ProductionSite, QAStatus, StoredCompany } from "@clients/backend";
+import {
+  DataMetaInformation,
+  DataTypeEnum,
+  LksgData,
+  LksgProductionSite,
+  QAStatus,
+  StoredCompany,
+} from "@clients/backend";
 import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData } from "@sharedUtils/Fixtures";
@@ -19,6 +26,14 @@ describeIf(
     beforeEach(() => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
     });
+
+    /**
+     * Toggles the data-table row group with the given key
+     * @param groupKey the key of the row group to expand
+     */
+    function toggleRowGroup(groupKey: string): void {
+      cy.get(`span[data-test=${groupKey}]`).siblings("button").last().click();
+    }
 
     it("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
       const uniqueCompanyMarker = Date.now().toString();
@@ -50,14 +65,15 @@ describeIf(
             (metaInfos as DataMetaInformation[])[0]
           );
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
-          cy.get("table.p-datatable-table").find(`a:contains(Show "List Of Production Sites")`).click();
-          const listOfProductionSites = assertDefined(lksgData.social?.general?.listOfProductionSites);
+          toggleRowGroup("productionSpecific");
+          cy.get(`a:contains(Show "List Of Production Sites")`).click();
+          const listOfProductionSites = assertDefined(lksgData.general?.productionSpecific?.listOfProductionSites);
           if (listOfProductionSites.length < 2) {
             throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
           }
-          listOfProductionSites.forEach((productionSite: ProductionSite) => {
-            if (productionSite.streetAndHouseNumber) {
-              cy.get("tbody.p-datatable-tbody").find(`span:contains(${productionSite.streetAndHouseNumber})`);
+          listOfProductionSites.forEach((productionSite: LksgProductionSite) => {
+            if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
+              cy.get("tbody.p-datatable-tbody p").contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
             }
           });
           cy.get("div.p-dialog-mask").click({ force: true });
@@ -92,8 +108,11 @@ describeIf(
         body: storedCompany,
       });
       const lksgData = lksgDataFixture.t;
-      if (lksgData.social?.general?.listOfProductionSites) {
-        lksgData.social.general.listOfProductionSites = [generateProductionSite(), generateProductionSite()];
+      if (lksgData.general?.productionSpecific?.listOfProductionSites) {
+        lksgData.general.productionSpecific.listOfProductionSites = [
+          generateProductionSite(),
+          generateProductionSite(),
+        ];
       }
       cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/companies/*`, {
         statusCode: 200,

@@ -20,3 +20,12 @@ export function checkCustomInputs(node: FormKitNode): void {
   }, true);
   invalidElements.find((el) => el !== null)?.scrollIntoView({ behavior: "smooth", block: "center" });
 }
+
+/**
+ * Checks if for a given validation the corresponding formkit field requires some input
+ * @param validation the formkit validation string
+ * @returns true if the validation string contains required else false
+ */
+export function isInputRequired(validation?: string): boolean {
+  return validation?.includes("required") ?? false;
+}

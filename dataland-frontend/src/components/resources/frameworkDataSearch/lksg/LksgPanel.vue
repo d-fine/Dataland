@@ -3,13 +3,10 @@
     <p class="font-medium text-xl">Loading LkSG Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="kpiDataObjects.length && !waitingForData">
-    <CompanyDataTable
+  <div v-if="kpiDataObjects.size > 0 && !waitingForData">
+    <LksgCompanyDataTable
       :kpiDataObjects="kpiDataObjects"
       :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
-      :kpiNameMappings="lksgKpisNameMappings"
-      :kpiInfoMappings="lksgKpisInfoMappings"
-      :subAreaNameMappings="lksgSubAreasNameMappings"
       tableDataTitle="LkSG Data"
     />
   </div>
@@ -17,50 +14,42 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData, DataMetaInformation, LksgData } from "@clients/backend";
+import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import CompanyDataTable from "@/components/general/CompanyDataTable.vue";
-import {
-  lksgSubAreasNameMappings,
-  lksgKpisNameMappings,
-  lksgKpisInfoMappings,
-} from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
+import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
 
 export default defineComponent({
   name: "LksgPanel",
-  components: { CompanyDataTable },
+  components: { LksgCompanyDataTable },
   data() {
     return {
       firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
       listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
-      kpiDataObjects: [] as { [index: string]: string | object; subAreaKey: string; kpiKey: string }[],
-      lksgKpisNameMappings,
-      lksgKpisInfoMappings,
-      lksgSubAreasNameMappings,
+      kpiDataObjects: new Map() as Map<string, KpiDataObject>,
+      lksgDataModel: lksgDataModel,
     };
   },
-  props: {
-    companyId: {
-      type: String,
-    },
-    singleDataMetaInfoToDisplay: {
-      type: Object as () => DataMetaInformation,
-    },
-  },
+  props: PanelProps,
   watch: {
     companyId() {
       this.listOfColumnIdentifierObjects = [];
-      void this.fetchData();
+      void this.fetchLksgData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
         this.listOfColumnIdentifierObjects = [];
-        void this.fetchData();
+        void this.fetchLksgData();
       }
     },
   },
@@ -70,14 +59,14 @@ export default defineComponent({
     };
   },
   created() {
-    void this.fetchData();
+    void this.fetchLksgData();
     this.firstRender = false;
   },
   methods: {
     /**
-     * Fetches all accepted LkSG datasets for the current company and converts them to the requried frontend format.
+     * Fetches all accepted LkSG datasets for the current company and converts them to the required frontend format.
      */
-    async fetchData() {
+    async fetchLksgData() {
       try {
         this.waitingForData = true;
         const lksgDataControllerApi = await new ApiClientProvider(
@@ -105,32 +94,31 @@ export default defineComponent({
      * Creates kpi data objects to pass them to the data table.
      * @param kpiKey The field name of a kpi
      * @param kpiValue The corresponding value to the kpiKey
-     * @param subAreaKey The sub area to which the kpi belongs
+     * @param subcategory The sub category to which the kpi belongs
      * @param dataIdOfLksgDataset The value of the date kpi of an LkSG dataset
      */
     createKpiDataObjects(
       kpiKey: string,
-      kpiValue: object | string | number,
-      subAreaKey: string,
+      kpiValue: KpiValue,
+      subcategory: Subcategory,
       dataIdOfLksgDataset: string
     ): void {
-      if (kpiKey === "totalRevenue" && typeof kpiValue === "number") {
-        kpiValue = this.convertToMillions(kpiValue);
-      }
-      let indexOfExistingItem = -1;
-      const kpiDataObject = {
-        subAreaKey: subAreaKey == "general" ? `_${subAreaKey}` : subAreaKey,
+      const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
+
+      kpiValue = this.reformatValueForDisplay(kpiField, kpiValue);
+
+      const kpiData = {
+        subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
+        subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
         kpiKey: kpiKey,
+        kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
+        kpiDescription: kpiField?.description ? kpiField.description : "",
         [dataIdOfLksgDataset]: kpiValue,
-      };
-      indexOfExistingItem = this.kpiDataObjects.findIndex(
-        (singleKpiDataObject) => singleKpiDataObject.kpiKey === kpiKey
-      );
-      if (indexOfExistingItem !== -1) {
-        Object.assign(this.kpiDataObjects[indexOfExistingItem], kpiDataObject);
-      } else {
-        this.kpiDataObjects.push(kpiDataObject);
-      }
+      } as KpiDataObject;
+      let existingKpi = this.kpiDataObjects.get(kpiKey);
+      if (existingKpi) Object.assign(existingKpi, kpiData);
+      else existingKpi = kpiData;
+      this.kpiDataObjects.set(kpiKey, existingKpi);
     },
 
     /**
@@ -145,10 +133,15 @@ export default defineComponent({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
-          for (const areaObject of Object.values(oneLksgDataset.data)) {
+          for (const [areaKey, areaObject] of Object.entries(oneLksgDataset.data)) {
             for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
               for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
-                this.createKpiDataObjects(kpiKey, kpiValue, subAreaKey, dataIdOfLksgDataset);
+                const subcategory = assertDefined(
+                  lksgDataModel
+                    .find((area) => area.name === areaKey)
+                    ?.subcategories.find((category) => category.name === subAreaKey)
+                );
+                this.createKpiDataObjects(kpiKey, kpiValue, subcategory, dataIdOfLksgDataset);
               }
             }
           }
@@ -159,11 +152,37 @@ export default defineComponent({
 
     /**
      * Converts a number to millions with max two decimal places and adds "MM" at the end of the number.
-     * @param inputNumber The numbert to convert
+     * @param inputNumber The number to convert
      * @returns a string with the converted number and "MM" at the end
      */
     convertToMillions(inputNumber: number): string {
       return `${(inputNumber / 1000000).toLocaleString("en-GB", { maximumFractionDigits: 2 })} MM`;
+    },
+
+    /**
+     *
+     * @param kpiField the Field to which the value belongs
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformated value ready for display
+     */
+    reformatValueForDisplay(kpiField: Field, kpiValue: KpiValue): KpiValue {
+      if (kpiField.name === "totalRevenue" && typeof kpiValue === "number") {
+        kpiValue = this.convertToMillions(kpiValue);
+      }
+      if (kpiField.name === "industry" || kpiField.name === "subcontractingCompaniesIndustries") {
+        kpiValue = Array.isArray(kpiValue)
+          ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
+          : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+      }
+      if (kpiField.name === "subcontractingCompaniesCountries") {
+        kpiValue = Array.isArray(kpiValue)
+          ? kpiValue.map(
+              (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
+            )
+          : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+      }
+
+      return kpiField.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;
     },
   },
 });
