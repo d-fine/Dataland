@@ -27,28 +27,40 @@ export const FormFieldProps = {
   },
 };
 
-export const FormFieldPropsWithPlaceholder = Object.assign(FormFieldProps, {
-  required: {
+export const YesNoFormFieldProps = Object.assign(JSON.parse(JSON.stringify(FormFieldProps)) as object, {
+  certificateRequiredIfYes: {
+    type: Boolean,
+    default: false,
+  },
+});
+export const FormFieldPropsWithPlaceholder = Object.assign(JSON.parse(JSON.stringify(FormFieldProps)) as object, {
+  placeholder: {
     type: String,
     default: "",
   },
 });
-export const DateFormFieldProps = Object.assign(FormFieldPropsWithPlaceholder, {
+export const DateFormFieldProps = Object.assign(JSON.parse(JSON.stringify(FormFieldPropsWithPlaceholder)) as object, {
   todayAsMax: {
     type: Boolean,
     default: false,
   },
 });
 
-export const DropdownOptionFormFieldProps = Object.assign(FormFieldPropsWithPlaceholder, {
-  options: {
-    type: Array as () => Array<DropdownOption>,
-    required: true,
-  },
-});
-export const OptionsFormFieldProps = Object.assign(FormFieldPropsWithPlaceholder, {
-  options: {
-    type: Array as () => Array<typeof Option>,
-    required: true,
-  },
-});
+export const DropdownOptionFormFieldProps = Object.assign(
+  JSON.parse(JSON.stringify(FormFieldPropsWithPlaceholder)) as object,
+  {
+    options: {
+      type: Array as () => Array<DropdownOption> | undefined,
+      required: true,
+    },
+  }
+);
+export const OptionsFormFieldProps = Object.assign(
+  JSON.parse(JSON.stringify(FormFieldPropsWithPlaceholder)) as object,
+  {
+    options: {
+      type: Array as () => Array<typeof Option> | undefined,
+      required: true,
+    },
+  }
+);
