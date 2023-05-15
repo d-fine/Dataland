@@ -4,7 +4,7 @@
     <UploaderRoleWrapper>
       <BackButton id="backButton" class="mt-2 pl-3" />
       <CompanyInformation :companyID="companyID" />
-      <CreateEUTaxonomyForNonFinancials :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
+      <CreateEuTaxonomyForNonFinancials :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
     </UploaderRoleWrapper>
     <TheFooter />
   </AuthenticationWrapper>
@@ -13,7 +13,7 @@
 <script lang="ts">
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import CreateEUTaxonomyForNonFinancials from "@/components/forms/CreateEUTaxonomyForNonFinancials.vue";
+import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEUTaxonomyForNonFinancials.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
@@ -26,7 +26,7 @@ export default defineComponent({
   components: {
     BackButton,
     UploaderRoleWrapper,
-    CreateEUTaxonomyForNonFinancials,
+    CreateEuTaxonomyForNonFinancials,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,

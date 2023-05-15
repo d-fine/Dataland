@@ -1,6 +1,6 @@
 <template>
   <DataPointHeader :name="kpiNameMappings[name]" />
-  <div v-if="toggleDataAvailable" data-test="dataPointToggle" class="form-field vertical-middle">
+  <div data-test="dataPointToggle" class="form-field vertical-middle">
     <InputSwitch
       data-test="dataPointToggleButton"
       inputId="dataPointIsAvailableSwitch"
@@ -21,8 +21,8 @@
         :disabled="!dataPointIsAvailable"
         type="number"
         name="value"
-        v-model="currentMainValue"
         validation-label=""
+        v-model="currentMainValue"
         :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
         step="any"
         min="0"
@@ -42,10 +42,10 @@
             <FormKit
               type="select"
               name="report"
-              v-model="currentReportValue"
               :disabled="!dataPointIsAvailable"
+              v-model="currentReportValue"
               placeholder="Select a report"
-              :options="['None...', ...this.files.filesNames]"
+              :options="['None...', ...reportsName]"
             />
           </div>
           <div>
@@ -70,11 +70,11 @@
     <!-- Data quality -->
     <div class="form-field">
       <UploadFormHeader
-        :name="kpiNameMappings.quality"
-        :explanation="kpiInfoMappings.quality"
-        :is-required="dataPointIsAvailable"
+        :is-required="true"
+        name="Data quality"
+        explanation="The level of confidence associated to the value."
       />
-      <div class="lg:col-6 md:col-6 col-12 p-0">
+      <div class="md:col-6 col-12 p-0">
         <FormKit
           :disabled="!dataPointIsAvailable"
           type="select"
@@ -83,12 +83,11 @@
           :validation="dataPointIsAvailable ? 'required' : ''"
           validation-label="Data quality"
           placeholder="Data quality"
-          :options="dataQualityList"
+          :options="qualityOptions"
         />
       </div>
     </div>
   </div>
-
   <div class="form-field">
     <FormKit
       type="textarea"
@@ -103,7 +102,7 @@ import { defineComponent } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
-import { useFilesUploadedStore } from "@/stores/filesUploaded";
+import { QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 
 export default defineComponent({
@@ -111,32 +110,24 @@ export default defineComponent({
   components: { DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({
-    files: useFilesUploadedStore(),
     dataPointIsAvailable: true,
-    dataQualityList: ["NA", "Audited", "Reported", "Estimated", "Incomplete"],
+    qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
+      label: qualityOption,
+      value: qualityOption,
+    })),
     currentMainValue: "",
     currentReportValue: "",
-    currentQualityValue: "",
     currentPageValue: "",
+    currentQualityValue: "",
     qualityValueBeforeDataPointWasDisabled: "",
-    qualityValueWhenDataPointIsDisabled: "",
-    pageValueWhenDataPointIsDisabled: "",
-    reportValueWhenDataPointIsDisabled: "",
-    mainValueWhenDataPointIsDisabled: "",
   }),
   watch: {
     dataPointIsAvailable(newValue: boolean) {
       if (!newValue) {
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
-        this.pageValueWhenDataPointIsDisabled = this.currentPageValue;
-        this.reportValueWhenDataPointIsDisabled = this.currentReportValue;
-        this.mainValueWhenDataPointIsDisabled = this.currentMainValue;
         this.currentQualityValue = "NA";
       } else {
         this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
-        this.currentPageValue = this.pageValueWhenDataPointIsDisabled;
-        this.currentReportValue = this.reportValueWhenDataPointIsDisabled;
-        this.currentMainValue = this.mainValueWhenDataPointIsDisabled;
       }
     },
   },
@@ -157,8 +148,12 @@ export default defineComponent({
       default: true,
     },
     valueType: {
-      type: String,
+      type: String as () => "percent" | "number",
       default: "percent",
+    },
+    reportsName: {
+      type: Array,
+      default: () => [],
     },
   },
   methods: {

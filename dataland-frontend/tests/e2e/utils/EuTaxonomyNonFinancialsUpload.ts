@@ -8,32 +8,40 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
+import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
  * @param companyId The Id of the company to upload the dataset for
  * @param valueFieldNotFilled Value which, if true, disables the value field
- * @returns the id of the dataset that has been uploaded
  */
-export function uploadEuTaxonomyDataForNonFinancialsViaForm(
-  companyId: string,
-  valueFieldNotFilled = false
-): Cypress.Chainable<string> {
+export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, valueFieldNotFilled = false): void {
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
-  cy.get('button[data-test="upload-files-button"]').click();
-  cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
-  cy.get('div[data-test="uploaded-files"]')
-    .should("exist")
-    .find('[data-test="uploaded-files-title"]')
-    .should("contain", "pdf");
-  cy.get('div[data-test="uploaded-files"]').find('[data-test="uploaded-files-size"]').should("contain", "KB");
-  cy.get('input[name="currency"]').type("www");
-  cy.get('button[data-test="uploaded-files-remove"]').click();
-  cy.get('div[data-test="uploaded-files"]').should("not.exist");
+  uploadReports.selectFile(TEST_PDF_FILE_NAME);
+  uploadReports.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+  uploadReports.fillAllReportsToUploadForms(1);
 
+  fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
+  submitButton.buttonAppearsEnabled();
+  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
+  submitButton.clickButton();
+  cy.wait("@postCompanyAssociatedData");
+}
+
+/**
+ * Fills all the fields of the eu-taxonomy upload form for non-financial companies
+ * @param valueFieldNotFilled Value which, if true, disables the value field
+ * @param assuranceReportName name of the assurance data source
+ */
+export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(
+  valueFieldNotFilled: boolean,
+  assuranceReportName: string
+): void {
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
   cy.get("div.p-datepicker").find('span:contains("11")').click();
@@ -46,10 +54,8 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
   });
   cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").should("exist");
   cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
-  cy.get('input[name="reportDate"]').should("not.exist");
-  cy.get('input[name="reference"]').should("not.exist");
-  cy.get('input[name="reference"]').should("not.exist");
   cy.get('input[name="scopeOfEntities"][value="Yes"]').check();
+
   cy.get('input[name="activityLevelReporting"][value="Yes"]').check();
   cy.get('input[name="numberOfEmployees"]').type("-13");
   cy.get('em[title="Number Of Employees"]').click();
@@ -59,12 +65,11 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
 
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(1);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider");
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+  cy.get('[data-test="assuranceSection"] select[name="report"]').select(assuranceReportName);
   cy.get('[data-test="assuranceSection"] input[name="page"]').type("-13");
   cy.get('em[title="Assurance"]').click();
   cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
   cy.get('[data-test="assuranceSection"] input[name="page"]').clear().type("1");
-
   cy.get('[data-test="dataPointToggleTitle"]').should("exist");
   for (const argument of ["capexSection", "opexSection", "revenueSection"]) {
     if (!valueFieldNotFilled) {
@@ -76,17 +81,16 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(
     cy.get(`div[data-test=${argument}] select[name="report"]`).each(($element) => {
       cy.wrap($element).select(1);
     });
+    cy.get(`div[data-test=${argument}] input[name="page"]`).each(($element) => {
+      cy.wrap($element).type("12");
+    });
     cy.get(`div[data-test=${argument}] select[name="quality"]`).each(($element) => {
       cy.wrap($element).select(3);
     });
+    cy.get(`div[data-test=${argument}] textarea[name="comment"]`).each(($element) => {
+      cy.wrap($element).type("test");
+    });
   }
-  submitButton.buttonAppearsEnabled();
-  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
-  submitButton.clickButton();
-  cy.wait("@postCompanyAssociatedData");
-  return cy.contains("h4", "Upload successfully executed.").then<string>(($dataId): string => {
-    return $dataId.text();
-  });
 }
 
 /**
@@ -126,4 +130,28 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
     data,
   });
   return dataMetaInformation.data;
+}
+
+/**
+ * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks
+ * if a 200 response is returned by the backend
+ * @param submissionDataIntercept function that asserts content of an intercepted request
+ */
+export function submitFilledInEuTaxonomyForm(
+  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
+): void {
+  const postRequestAlias = "postDataAlias";
+  cy.intercept(
+    {
+      method: "POST",
+      url: `**/api/data/**`,
+      times: 1,
+    },
+    submissionDataIntercept
+  ).as(postRequestAlias);
+  cy.get('button[data-test="submitButton"]').click();
+  cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then((interception) => {
+    expect(interception.response?.statusCode).to.eq(200);
+  });
+  cy.contains("td", "EU Taxonomy");
 }
