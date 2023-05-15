@@ -68,6 +68,9 @@ class CsvUtilsTest {
         assertThrows<IllegalArgumentException> {
             testMapping.readCsvPercentage(testColumnName, constructRow("1234,4545,79"))
         }
+        assertThrows<IllegalArgumentException> {
+            testMapping.readCsvDecimal(testColumnName, constructRow("1234g4545,79"))
+        }
     }
 
     @Test
