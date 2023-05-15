@@ -10,6 +10,7 @@ export function uploadAllDocuments(token: string): void {
   const api = new DocumentControllerApi(new Configuration({ accessToken: token }));
   cy.task("readdir", documentDirectory).then((fileNames) => {
     (fileNames as string[]).forEach((name: string) => {
+      cy.task("logMessage", ["Uploading document: " + name]);
       cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
         const arr = new Uint8Array(bufferObject.data);
         const file = new File([arr], name, { type: "application/pdf" });
