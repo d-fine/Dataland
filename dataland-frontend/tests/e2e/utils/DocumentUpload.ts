@@ -14,7 +14,13 @@ export function uploadAllDocuments(token: string): void {
       cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
         const arr = new Uint8Array(bufferObject.data);
         const file = new File([arr], name, { type: "application/pdf" });
-        api.postDocument(file).catch((error) => console.log(error));
+        cy.task("logMessage", ["Done with conversion."]);
+        api.postDocument(file).catch((error) => {
+          console.log(error);
+          cy.task("logMessage", ["Error uploading document: " + name]);
+          cy.task("logMessage", [error]);
+        });
+        cy.task("logMessage", ["Done uploading document: " + name]);
         delete bufferObject.data;
       });
     });
