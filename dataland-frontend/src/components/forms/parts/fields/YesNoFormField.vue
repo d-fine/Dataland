@@ -15,8 +15,9 @@
           value: 'No',
         },
       ]"
+      @input="setCertificateRequired($event)"
     />
-    <span v-if="certificateRequiredIfYes"> Upload Certificate</span>
+    <UploadCertificatesForm v-show="certificateRequiredIfYes && yesSelected" />
   </div>
 </template>
 
@@ -25,10 +26,11 @@ import { defineComponent } from "vue";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import UploadCertificatesForm from "@/components/forms/parts/elements/basic/UploadCertificatesForm.vue";
 
 export default defineComponent({
   name: "YesNoFormField",
-  components: { RadioButtonsFormElement, UploadFormHeader },
+  components: { RadioButtonsFormElement, UploadFormHeader, UploadCertificatesForm },
   inheritAttrs: false,
   props: YesNoFormFieldProps,
   //watch: documentrequiredIfYes(){
@@ -36,5 +38,20 @@ export default defineComponent({
   //    documentRequired = true;
   //  }
   //}
+  data() {
+    return {
+      yesSelected: false,
+    };
+  },
+  methods: {
+    /**
+     * Sets the value yesSelected to true when "Yes" is selected
+     * @param event the "Yes" / "No" selection event
+     */
+    setCertificateRequired(event: Event) {
+      console.log(event);
+      this.yesSelected = (event as InputEvent).data === "Yes";
+    },
+  },
 });
 </script>

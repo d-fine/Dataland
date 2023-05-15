@@ -246,6 +246,7 @@ export default defineComponent({
     async postLkSGData(): Promise<void> {
       this.messageCounter++;
       try {
+        // await (this.$refs.UploadCertificatesForm.uploadFiles as () => Promise<void>)();
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
