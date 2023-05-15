@@ -29,6 +29,7 @@ export const FormFieldProps = {
 
 export const FormFieldPropsWithPlaceholder = Object.assign(FormFieldProps, {
   required: {
+    // TODO this isnt a placeholder per se in FormKit
     type: String,
     default: "",
   },

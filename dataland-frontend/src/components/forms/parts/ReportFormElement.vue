@@ -40,10 +40,10 @@
     </div>
     <!-- Integrated report is on a group level -->
     <div class="form-field">
-      <RadioButtonsGroup
-        displayName="Group Level Integrated Report"
-        info="Is the Integrated Report on a Group level?"
+      <YesNoFormField
         name="isGroupLevel"
+        info="Is the Integrated Report on a Group level?"
+        displayName="Group Level Integrated Report"
       />
     </div>
   </FormKit>
@@ -51,15 +51,15 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import RadioButtonsGroup from "@/components/forms/parts/RadioButtonsGroup.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import Calendar from "primevue/calendar";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
+import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 
 export default defineComponent({
   name: "ReportFormElement",
-  components: { FormKit, UploadFormHeader, RadioButtonsGroup, Calendar },
+  components: { YesNoFormField, FormKit, UploadFormHeader, Calendar },
   data() {
     return {
       reportDateAsDate: undefined as undefined | Date,
