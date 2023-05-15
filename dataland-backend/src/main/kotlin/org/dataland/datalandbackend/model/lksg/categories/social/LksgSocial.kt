@@ -24,23 +24,23 @@ import org.dataland.datalandbackend.model.lksg.categories.social.subcategories
  * Impact topics of the LKSG questionnaire's impact area "Social"
  */
 data class LksgSocial(
-    val childLabor: LksgChildLabor?,
+        val childLabor: LksgChildLabor?,
 
-    val forcedLaborSlavery: LksgForcedLaborSlavery?,
+        val forcedLaborSlavery: LksgForcedLaborSlavery?,
 
-    val withholdingAdequateWages: LksgWithholdingAdequateWages?,
+        val withholdingAdequateWages: LksgWithholdingAdequateWages?,
 
-    val disregardForOccupationalHealthSafety: LksgDisregardForOccupationalHealthSafety?,
+        val disregardForOccupationalHealthSafety: LksgDisregardForOccupationalHealthSafety?,
 
-    val disregardForFreedomOfAssociation: LksgDisregardForFreedomOfAssociation?,
+        val disregardForFreedomOfAssociation: LksgDisregardForFreedomOfAssociation?,
 
-    val unequalTreatmentOfEmployment: LksgUnequalTreatmentOfEmployment?,
+        val unequalTreatmentOfEmployment: LksgUnequalTreatmentOfEmployment?,
 
-    val contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption:
+        val contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption:
     LksgContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption?,
 
-    val unlawfulEvictionDeprivationOfLandForestAndWater: LksgUnlawfulEvictionDeprivationOfLandForestAndWater?,
+        val unlawfulEvictionDeprivationOfLandForestAndWater: LksgUnlawfulEvictionDeprivationOfLandForestAndWater?,
 
-    val useOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
+        val useOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
     LksgUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights?,
 )

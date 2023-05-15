@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -7,15 +8,15 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Unequal treatment of employment"
  */
 data class LksgUnequalTreatmentOfEmployment(
-    val unequalTreatmentOfEmployment: YesNo?,
+        val unequalTreatmentOfEmployment: BaseDataPoint<YesNo>?,
 
-    val diversityAndInclusionRole: YesNo?,
+        val diversityAndInclusionRole: BaseDataPoint<YesNo>?,
 
-    val preventionOfMistreatments: YesNo?,
+        val preventionOfMistreatments: BaseDataPoint<YesNo>?,
 
-    val equalOpportunitiesOfficer: YesNo?,
+        val equalOpportunitiesOfficer: BaseDataPoint<YesNo>?,
 
-    val fairAndEthicalRecruitmentPolicy: YesNo?,
+        val fairAndEthicalRecruitmentPolicy: BaseDataPoint<YesNo>?,
 
-    val equalOpportunitiesAndNonDiscriminationPolicy: YesNo?,
+        val equalOpportunitiesAndNonDiscriminationPolicy: BaseDataPoint<YesNo>?,
 )

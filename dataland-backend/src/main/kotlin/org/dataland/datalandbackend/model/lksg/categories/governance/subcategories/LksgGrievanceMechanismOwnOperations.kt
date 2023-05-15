@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -8,29 +9,29 @@ import java.math.BigDecimal
  * Fields of the LKSG questionnaire regarding the impact topic "Grievance mechanism - Own operations"
  */
 data class LksgGrievanceMechanismOwnOperations(
-    val grievanceHandlingMechanism: YesNo?,
+    val grievanceHandlingMechanism: BaseDataPoint<YesNo>?,
 
-    val grievanceHandlingMechanismUsedForReporting: YesNo?,
+    val grievanceHandlingMechanismUsedForReporting: BaseDataPoint<YesNo>?,
 
-    val grievanceMechanismInformationProvided: YesNo?,
+    val grievanceMechanismInformationProvided: BaseDataPoint<YesNo>?,
 
-    val grievanceMechanismSupportProvided: YesNo?,
+    val grievanceMechanismSupportProvided: BaseDataPoint<YesNo>?,
 
-    val grievanceMechanismAccessToExpertise: YesNo?,
+    val grievanceMechanismAccessToExpertise: BaseDataPoint<YesNo>?,
 
-    val grievanceMechanismComplaints: YesNo?,
+    val grievanceMechanismComplaints: BaseDataPoint<YesNo>?,
 
-    val grievanceMechanismComplaintsNumber: BigDecimal?,
+    val grievanceMechanismComplaintsNumber: BaseDataPoint<BigDecimal>?,
 
-    val grievanceMechanismComplaintsReason: String?,
+    val grievanceMechanismComplaintsReason: BaseDataPoint<String>?,
 
-    val grievanceMechanismComplaintsAction: YesNo?,
+    val grievanceMechanismComplaintsAction: BaseDataPoint<YesNo>?,
 
-    val grievanceMechanismComplaintsActionUndertaken: String?,
+    val grievanceMechanismComplaintsActionUndertaken: BaseDataPoint<String>?,
 
-    val grievanceMechanismPublicAccess: YesNo?,
+    val grievanceMechanismPublicAccess: BaseDataPoint<YesNo>?,
 
-    val grievanceMechanismProtection: YesNo?,
+    val grievanceMechanismProtection: BaseDataPoint<YesNo>?,
 
-    val grievanceMechanismDueDiligenceProcess: YesNo?,
+    val grievanceMechanismDueDiligenceProcess: BaseDataPoint<YesNo>?,
 )

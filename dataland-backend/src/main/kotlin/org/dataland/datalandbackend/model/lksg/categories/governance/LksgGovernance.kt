@@ -14,11 +14,11 @@ import org.dataland.datalandbackend.model.lksg.categories.governance.subcategori
  * Impact topics of the LKSG questionnaire's impact area "Governance"
  */
 data class LksgGovernance(
-    val certificationsPoliciesAndResponsibilities: LksgCertificationsPoliciesAndResponsibilities?,
+        val certificationsPoliciesAndResponsibilities: LksgCertificationsPoliciesAndResponsibilities?,
 
-    val generalViolations: LksgGeneralViolations?,
+        val generalViolations: LksgGeneralViolations?,
 
-    val riskManagementOwnOperations: LksgRiskManagementOwnOperations?,
+        val riskManagementOwnOperations: LksgRiskManagementOwnOperations?,
 
-    val grievanceMechanismOwnOperations: LksgGrievanceMechanismOwnOperations?,
+        val grievanceMechanismOwnOperations: LksgGrievanceMechanismOwnOperations?,
 )
