@@ -1,33 +1,40 @@
 <template>
-  <RadioButtonsFormField
-    :name="name"
-    :info="info"
-    :validation="validation"
-    :validation-label="validationLabel ?? displayName"
-    :display-name="displayName"
-    :options="[
-      {
-        label: 'Yes',
-        value: 'Yes',
-      },
-      {
-        label: 'No',
-        value: 'No',
-      },
-    ]"
-    :required="required"
-  ></RadioButtonsFormField>
+  <div class="form-field">
+    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
+    <RadioButtonsFormElement
+      :name="name"
+      :validation="validation"
+      :validation-label="validationLabel ?? displayName"
+      :options="[
+        {
+          label: 'Yes',
+          value: 'Yes',
+        },
+        {
+          label: 'No',
+          value: 'No',
+        },
+      ]"
+    />
+    <span v-if="certificateRequiredIfYes"> Upload Certificate</span>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsFormField.vue";
-import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 
 export default defineComponent({
   name: "YesNoFormField",
-  components: { RadioButtonsFormField },
+  components: { RadioButtonsFormElement, UploadFormHeader },
   inheritAttrs: false,
-  props: FormFieldProps,
+  props: YesNoFormFieldProps,
+  //watch: documentrequiredIfYes(){
+  //  if yes && certificateRequiredIfYes == true {
+  //    documentRequired = true;
+  //  }
+  //}
 });
 </script>

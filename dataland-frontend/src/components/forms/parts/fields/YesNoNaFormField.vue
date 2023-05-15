@@ -1,26 +1,28 @@
 <template>
-  <RadioButtonsFormField
-    :name="name"
-    :info="info"
-    :validation="validation"
-    :validation-label="validationLabel ?? displayName"
-    :display-name="displayName"
-    :options="[
-      {
-        label: 'Yes',
-        value: 'Yes',
-      },
-      {
-        label: 'No',
-        value: 'No',
-      },
-      {
-        label: 'N/A',
-        value: 'NA',
-      },
-    ]"
-    :required="required"
-  ></RadioButtonsFormField>
+  <div class="form-field">
+    <RadioButtonsFormField
+      :name="name"
+      :info="info"
+      :validation="validation"
+      :validation-label="validationLabel ?? displayName"
+      :display-name="displayName"
+      :options="[
+        {
+          label: 'Yes',
+          value: 'Yes',
+        },
+        {
+          label: 'No',
+          value: 'No',
+        },
+        {
+          label: 'N/A',
+          value: 'NA',
+        },
+      ]"
+      :required="required"
+    ></RadioButtonsFormField>
+  </div>
 </template>
 
 <script lang="ts">
