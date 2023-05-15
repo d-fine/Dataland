@@ -24,7 +24,9 @@ sealed class DatalandAuthentication : Authentication {
          */
         @Suppress
         fun fromContextOrNull(): DatalandAuthentication? {
-            return SecurityContextHolder.getContext().authentication as? DatalandAuthentication
+            val auth = SecurityContextHolder.getContext().authentication as? DatalandAuthentication
+            val returnAuth = auth
+            return returnAuth as? DatalandAuthentication
         }
     }
 
