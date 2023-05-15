@@ -35,9 +35,17 @@
       :ignore="true"
       v-model="listOfGoodsOrServicesString"
       placeholder="Add comma (,) for more than one value"
-      validation="length:0,0"
-      :validation-messages="{ length: 'Please add the entered value via pressing the add button or empty the field.' }"
     />
+    <FormKit
+      v-if="listOfGoodsOrServicesString.length > 0"
+      type="text"
+      v-model="listOfGoodsOrServicesString"
+      validation="length:0,0"
+      validation-visibility="live"
+      :validation-messages="{ length: 'Please add the entered value via pressing the add button or empty the field.' }"
+      outer-class="hidden-input"
+    />
+
     <FormKit
       v-model="listOfGoodsOrServices"
       type="list"
@@ -63,18 +71,18 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 
 export default defineComponent({
   name: "ProductionSiteFormElement",
-  data() {
-    return {
-      listOfGoodsOrServicesString: "",
-      listOfGoodsOrServices: [] as string[],
-    };
-  },
   components: {
     UploadFormHeader,
     InputTextFormField,
     AddressFormField,
     FormKit,
     PrimeButton,
+  },
+  data() {
+    return {
+      listOfGoodsOrServicesString: "",
+      listOfGoodsOrServices: [] as string[],
+    };
   },
   methods: {
     /**
