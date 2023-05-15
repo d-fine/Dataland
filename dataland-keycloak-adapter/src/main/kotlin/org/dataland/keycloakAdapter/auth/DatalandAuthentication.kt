@@ -23,7 +23,7 @@ sealed class DatalandAuthentication : Authentication {
          * linked to the current thread
          */
         /*
-        @Suppress("SafeCast")
+        Test Kommentar
          */
         fun fromContextOrNull(): DatalandAuthentication? {
             val auth = SecurityContextHolder.getContext().authentication
