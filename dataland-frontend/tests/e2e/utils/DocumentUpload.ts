@@ -1,6 +1,5 @@
 import { Configuration } from "@clients/backend";
 import { DocumentControllerApi } from "@clients/documentmanager";
-import { RequiredError } from "@clients/backend/base";
 
 /**
  * Uploads all documents provided in the documentDirectory folder
@@ -16,12 +15,8 @@ export function uploadAllDocuments(token: string): void {
         const arr = new Uint8Array(bufferObject.data);
         const file = new File([arr], name, { type: "application/pdf" });
         cy.task("logMessage", ["Done with conversion."]);
-        api.postDocument(file).catch((error: RequiredError) => {
-          cy.task("logMessage", [
-            `Error uploading document: ${name} Name: ${error.name} Message: ${error.message} Stack: ${String(
-              error.stack
-            )}`,
-          ]);
+        api.postDocument(file).catch((error) => {
+          cy.task("logMessage", [`Error uploading document: ${name} Error: ${String(error)}`]);
         });
         cy.task("logMessage", ["Done uploading document: " + name]);
         delete bufferObject.data;
