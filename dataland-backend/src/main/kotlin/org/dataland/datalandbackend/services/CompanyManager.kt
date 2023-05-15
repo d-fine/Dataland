@@ -129,7 +129,9 @@ class CompanyManager(
             storedCompanyEntity.companyId to index
         }.toMap()
 
-        val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy { sortingMap[it.companyId] }
+        val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
+            sortingMap.getValue(it.companyId)
+        }
 
         return results.map { it.toApiModel(viewingUser) }
     }
