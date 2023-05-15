@@ -83,9 +83,7 @@ describe(
     }
 
     before(function uploadDocumentsAndStoreDocumentIds() {
-      cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        uploadAllDocuments(token);
-      });
+      uploadAllDocuments();
     });
 
     describe("Upload and validate EuTaxonomy for financials data", () => {
