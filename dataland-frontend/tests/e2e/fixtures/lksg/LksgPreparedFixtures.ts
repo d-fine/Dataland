@@ -2,29 +2,19 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 import { LksgData } from "@clients/backend";
 import { generateLksgFixture, generateProductionSite } from "./LksgDataFixtures";
 
-type generatorFunction = (input: FixtureData<LksgData>) => FixtureData<LksgData>;
-
 /**
  * Generates LkSG prepared fixtures by generating random LkSG datasets and afterwards manipulating some fields
  * via manipulator-functions to set specific values for those fields.
  * @returns the prepared fixtures
  */
 export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
-  const manipulatorFunctions: Array<generatorFunction> = [
-    manipulateFixtureForSixLksgDataSetsInDifferentYears,
-    manipulateFixtureForOneLksgDataSetWithProductionSites,
-  ];
-  const preparedFixturesBeforeManipulation = generateLksgFixture(manipulatorFunctions.length);
   const preparedFixtures = [];
-  for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
-  }
-  const morePreparedFixturesBeforeManipulation = generateLksgFixture(3);
+  preparedFixtures.push(manipulateFixtureForSixLksgDataSetsInDifferentYears(generateLksgFixture(1)[0]));
+  preparedFixtures.push(manipulateFixtureForOneLksgDataSetWithProductionSites(generateLksgFixture(1, 0)[0]));
   preparedFixtures.push(manipulateFixtureForName(generateLksgFixture(1, 0)[0], "lksg-all-fields"));
-  preparedFixtures.push(manipulateFixtureForDate(morePreparedFixturesBeforeManipulation[0], "2023-04-18"));
-  preparedFixtures.push(manipulateFixtureForDate(morePreparedFixturesBeforeManipulation[1], "2023-06-22"));
-  preparedFixtures.push(manipulateFixtureForDate(morePreparedFixturesBeforeManipulation[2], "2022-07-30"));
-
+  preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-04-18"));
+  preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-06-22"));
+  preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2022-07-30"));
   return preparedFixtures;
 }
 
@@ -50,12 +40,7 @@ function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<
 function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureData<LksgData>): FixtureData<LksgData> {
   const twoProductionSites = [generateProductionSite(), generateProductionSite()];
   input.companyInformation.companyName = "one-lksg-data-set";
-  if (input.t.social?.childLabor?.employeeUnder18Apprentices)
-    input.t.social.childLabor.employeeUnder18Apprentices = "No";
-  else console.error("fakeFixture created improperly: employeeUnder18Apprentices missing");
-  if (input.t.general?.productionSpecific?.listOfProductionSites)
-    input.t.general.productionSpecific.listOfProductionSites = twoProductionSites;
-  else console.error("fakeFixture created improperly: listOfProductionSites missing");
+  input.t.general!.productionSpecific!.listOfProductionSites = twoProductionSites;
   return input;
 }
 
@@ -68,8 +53,7 @@ function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureDat
  */
 function manipulateFixtureForDate(input: FixtureData<LksgData>, date: string): FixtureData<LksgData> {
   input.companyInformation.companyName = "LkSG-date-" + date;
-  if (input.t.general?.masterData?.dataDate) input.t.general.masterData.dataDate = date;
-  else console.error("fakeFixture created improperly: dataDate missing");
+  input.t.general!.masterData!.dataDate = date;
   input.reportingPeriod = date.split("-")[0];
   return input;
 }

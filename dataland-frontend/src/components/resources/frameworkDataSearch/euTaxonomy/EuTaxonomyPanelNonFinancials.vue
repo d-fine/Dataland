@@ -5,9 +5,7 @@
   </div>
   <div v-if="dataSet && !waitingForData">
     <ShowReportsBanner
-      v-if="
-        'referencedReports' in dataSet && dataSet.referencedReports !== undefined && dataSet.referencedReports !== null
-      "
+      v-if="dataSet?.referencedReports && Object.keys(dataSet.referencedReports).length > 0"
       :reports="dataSet.referencedReports"
     />
     <div v-else class="pb-3"></div>

@@ -5,5 +5,6 @@ describe("EU Taxonomy for non-financials Company Page tests", () => {
   require("./BackButton");
   require("./Tooltips");
   require("./DataIntegrity");
+  require("./DataUpload");
   require("./SamplePage");
 });
