@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -8,31 +9,31 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class LksgGeneralViolations(
 
-    val responsibilitiesForFairWorkingConditions: YesNo?,
+    val responsibilitiesForFairWorkingConditions: BaseDataPoint<YesNo>?,
 
-    val responsibilitiesForTheEnvironment: YesNo?,
+    val responsibilitiesForTheEnvironment: BaseDataPoint<YesNo>?,
 
-    val responsibilitiesForOccupationalSafety: YesNo?,
+    val responsibilitiesForOccupationalSafety: BaseDataPoint<YesNo>?,
 
-    val legalProceedings: YesNo?,
+    val legalProceedings: BaseDataPoint<YesNo>?,
 
-    val humanRightsViolation: YesNo?,
+    val humanRightsViolation: BaseDataPoint<YesNo>?,
 
-    val humanRightsViolations: String?,
+    val humanRightsViolations: BaseDataPoint<String>?,
 
-    val humanRightsViolationAction: YesNo?,
+    val humanRightsViolationAction: BaseDataPoint<YesNo>?,
 
-    val humanRightsViolationActionMeasures: String?,
+    val humanRightsViolationActionMeasures: BaseDataPoint<String>?,
 
-    val highRiskCountriesRawMaterials: YesNo?,
+    val highRiskCountriesRawMaterials: BaseDataPoint<YesNo>?,
 
-    val highRiskCountriesRawMaterialsLocation: List<String>?,
+    val highRiskCountriesRawMaterialsLocation: BaseDataPoint<List<String>>?,
 
-    val highRiskCountriesActivity: YesNo?,
+    val highRiskCountriesActivity: BaseDataPoint<YesNo>?,
 
-    val highRiskCountries: List<String>?,
+    val highRiskCountries: BaseDataPoint<List<String>>?,
 
-    val highRiskCountriesProcurement: YesNo?,
+    val highRiskCountriesProcurement: BaseDataPoint<YesNo>?,
 
-    val highRiskCountriesProcurementName: List<String>?,
+    val highRiskCountriesProcurementName: BaseDataPoint<List<String>>?,
 )

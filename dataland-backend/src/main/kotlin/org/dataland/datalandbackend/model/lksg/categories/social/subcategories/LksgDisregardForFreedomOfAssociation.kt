@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -8,15 +9,15 @@ import java.math.BigDecimal
  * Fields of the LKSG questionnaire regarding the impact topic "Disregard for freedom of association"
  */
 data class LksgDisregardForFreedomOfAssociation(
-    val freedomOfAssociation: YesNo?,
+        val freedomOfAssociation: BaseDataPoint<YesNo>?,
 
-    val representedEmployees: BigDecimal?,
+        val representedEmployees: BaseDataPoint<BigDecimal>?,
 
-    val discriminationForTradeUnionMembers: YesNo?,
+        val discriminationForTradeUnionMembers: BaseDataPoint<YesNo>?,
 
-    val freedomOfOperationForTradeUnion: YesNo?,
+        val freedomOfOperationForTradeUnion: BaseDataPoint<YesNo>?,
 
-    val freedomOfAssociationTraining: YesNo?,
+        val freedomOfAssociationTraining: BaseDataPoint<YesNo>?,
 
-    val worksCouncil: YesNo?,
+        val worksCouncil: BaseDataPoint<YesNo>?,
 )

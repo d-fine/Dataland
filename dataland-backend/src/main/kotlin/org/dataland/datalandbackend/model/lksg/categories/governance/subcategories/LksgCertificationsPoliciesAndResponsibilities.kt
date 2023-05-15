@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -7,43 +8,43 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Certifications, policies & responsibilities"
  */
 data class LksgCertificationsPoliciesAndResponsibilities(
-    val sa8000Certification: YesNo?,
+    val sa8000Certification: BaseDataPoint<YesNo>?,
 
-    val smetaSocialAuditConcept: YesNo?,
+    val smetaSocialAuditConcept: BaseDataPoint<YesNo>?,
 
-    val betterWorkProgramCertificate: YesNo?,
+    val betterWorkProgramCertificate: BaseDataPoint<YesNo>?,
 
-    val iso45001Certification: YesNo?,
+    val iso45001Certification: BaseDataPoint<YesNo>?,
 
-    val iso14000Certification: YesNo?,
+    val iso14000Certification: BaseDataPoint<YesNo>?,
 
-    val emasCertification: YesNo?,
+    val emasCertification: BaseDataPoint<YesNo>?,
 
-    val iso37001Certification: YesNo?,
+    val iso37001Certification: BaseDataPoint<YesNo>?,
 
-    val iso37301Certification: YesNo?,
+    val iso37301Certification: BaseDataPoint<YesNo>?,
 
-    val riskManagementSystemCertification: YesNo?,
+    val riskManagementSystemCertification: BaseDataPoint<YesNo>?,
 
-    val amforiBsciAuditReport: YesNo?,
+    val amforiBsciAuditReport: BaseDataPoint<YesNo>?,
 
-    val responsibleBusinessAssociationCertification: YesNo?,
+    val responsibleBusinessAssociationCertification: BaseDataPoint<YesNo>?,
 
-    val fairLaborAssociationCertification: YesNo?,
+    val fairLaborAssociationCertification: BaseDataPoint<YesNo>?,
 
-    val additionalAudits: String?,
+    val additionalAudits: BaseDataPoint<String>?,
 
-    val codeOfConduct: YesNo?,
+    val codeOfConduct: BaseDataPoint<YesNo>?,
 
-    val codeOfConductTraining: YesNo?,
+    val codeOfConductTraining: BaseDataPoint<YesNo>?,
 
-    val supplierCodeOfConduct: YesNo?,
+    val supplierCodeOfConduct: BaseDataPoint<YesNo>?,
 
-    val policyStatement: YesNo?,
+    val policyStatement: BaseDataPoint<YesNo>?,
 
-    val humanRightsStrategy: String?,
+    val humanRightsStrategy: BaseDataPoint<String>?,
 
-    val environmentalImpactPolicy: YesNo?,
+    val environmentalImpactPolicy: BaseDataPoint<YesNo>?,
 
-    val fairWorkingConditionsPolicy: YesNo?,
+    val fairWorkingConditionsPolicy: BaseDataPoint<YesNo>?,
 )

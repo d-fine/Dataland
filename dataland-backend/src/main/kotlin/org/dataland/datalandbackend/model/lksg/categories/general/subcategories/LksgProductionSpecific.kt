@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.lksg.categories.general.subcategories
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.lksg.NationalOrInternationalMarket
 import org.dataland.datalandbackend.model.lksg.LksgProductionSite
@@ -12,22 +13,22 @@ import java.math.BigDecimal
  */
 data class LksgProductionSpecific(
 
-    val manufacturingCompany: YesNo?,
+    val manufacturingCompany: BaseDataPoint<YesNo>?,
 
-    val capacity: BigDecimal?,
+    val capacity: BaseDataPoint<BigDecimal>?,
 
     @field:JsonProperty()
-    val isContractProcessing: YesNo?,
+    val isContractProcessing: BaseDataPoint<YesNo>?,
 
-    val subcontractingCompaniesCountries: List<String>?,
+    val subcontractingCompaniesCountries: BaseDataPoint<List<String>>?,
 
-    val subcontractingCompaniesIndustries: List<String>?,
+    val subcontractingCompaniesIndustries: BaseDataPoint<List<String>>?,
 
-    val productionSites: YesNo?,
+    val productionSites: BaseDataPoint<YesNo>?,
 
-    val listOfProductionSites: List<LksgProductionSite>?,
+    val listOfProductionSites: BaseDataPoint<List<LksgProductionSite>>?,
 
-    val market: NationalOrInternationalMarket?,
+    val market: BaseDataPoint<NationalOrInternationalMarket>?,
 
-    val specificProcurement: YesNo?,
+    val specificProcurement: BaseDataPoint<YesNo>?,
 )
