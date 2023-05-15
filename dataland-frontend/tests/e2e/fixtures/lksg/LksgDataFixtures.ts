@@ -19,12 +19,12 @@ import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 /**
  * Generates a set number of LKSG fixtures
  * @param numFixtures the number of lksg fixtures to generate
- * @param undefinedRatio the ratio of fields to be undefined (number between 0 and 1)
+ * @param undefinedProbability the probability of fields to be undefined (number between 0 and 1)
  * @returns a set number of LKSG fixtures
  */
-export function generateLksgFixture(numFixtures: number, undefinedRatio = 0.5): FixtureData<LksgData>[] {
+export function generateLksgFixture(numFixtures: number, undefinedProbability = 0.5): FixtureData<LksgData>[] {
   return generateFixtureDataset<LksgData>(
-    () => generateLksgData(undefinedRatio),
+    () => generateLksgData(undefinedProbability),
     numFixtures,
     (dataSet) => dataSet?.general?.masterData?.dataDate?.substring(0, 4) || getRandomReportingPeriod()
   );
