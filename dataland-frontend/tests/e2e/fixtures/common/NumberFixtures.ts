@@ -24,15 +24,6 @@ export function randomNumber(max: number): number {
 }
 
 /**
- * Returns a random number in [0, max] or undefined
- * @param max the maximum allowed value (inclusive)
- * @returns a random number in [0, max] or undefined
- */
-export function randomNumberOrUndefined(max: number): number | undefined {
-  return faker.datatype.boolean() ? randomNumber(max) : undefined;
-}
-
-/**
  * Generates a random decimal value between 0 and 1
  * @returns a random float between 0 and 1
  */

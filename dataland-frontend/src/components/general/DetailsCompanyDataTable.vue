@@ -1,17 +1,24 @@
 <template>
-  <DataTable responsiveLayout="scroll" :value="listOfProductionSitesNames">
+  <DataTable responsiveLayout="scroll" :value="listOfRowContents">
     <Column
       v-for="col of columns"
       :field="col.field"
-      :header="listOfProductionSitesConvertedNames[col.header]"
+      :header="columnHeaders[tableType][col.header]"
       :key="col.field"
       headerStyle="width: 15vw;"
     >
       <template #body="{ data }">
-        <ul v-if="Array.isArray(data[col.field])">
-          <li :key="el" v-for="el in data[col.field]">{{ el }}</li>
-        </ul>
-        <span v-else>{{ humanizeStringIfNeccessary(col.field, data[col.field]) }}</span>
+        <template v-if="data[col.field]">
+          <ul v-if="Array.isArray(data[col.field])">
+            <li :key="el" v-for="el in data[col.field]">{{ el }}</li>
+          </ul>
+          <div v-else-if="typeof data[col.field] === 'object'">
+            <p :key="key" v-for="[key, value] in Object.entries(data[col.field])" style="margin: 0; padding: 0">
+              {{ value }}
+            </p>
+          </div>
+          <span v-else>{{ humanizeStringIfNeccessary(col.field, data[col.field]) }}</span>
+        </template>
       </template>
     </Column>
   </DataTable>
@@ -22,11 +29,8 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import {
-  TypeOfProductionSitesConvertedNames,
-  TypeOfProductionSitesNames,
-} from "@/components/resources/frameworkDataSearch/DataModelsTypes";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
 
 export default defineComponent({
   inject: ["dialogRef"],
@@ -34,19 +38,24 @@ export default defineComponent({
   components: { DataTable, Column },
   data() {
     return {
-      listOfProductionSitesNames: [] as TypeOfProductionSitesNames[],
-      listOfProductionSitesConvertedNames: {} as TypeOfProductionSitesConvertedNames,
+      listOfRowContents: [] as Array<object | string>,
+      columnHeaders: detailsCompanyDataTableColumnHeaders,
+      tableType: "" as string,
       columns: [] as { field: string; header: string }[],
     };
   },
   mounted() {
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {
-      listOfProductionSitesNames: TypeOfProductionSitesNames[];
-      listOfProductionSitesConvertedNames: TypeOfProductionSitesConvertedNames;
+      listOfRowContents: Array<object | string>;
+      tableType: string;
     };
-    this.listOfProductionSitesNames = dialogRefData.listOfProductionSitesNames;
-    this.listOfProductionSitesConvertedNames = dialogRefData.listOfProductionSitesConvertedNames;
+    this.tableType = dialogRefData.tableType;
+    if (typeof dialogRefData.listOfRowContents[0] === "string") {
+      this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.tableType]: o }));
+    } else {
+      this.listOfRowContents = dialogRefData.listOfRowContents;
+    }
   },
   methods: {
     /**
@@ -54,9 +63,9 @@ export default defineComponent({
      * should have.
      */
     generateColsNames(): void {
-      if (this.listOfProductionSitesNames.length && Array.isArray(this.listOfProductionSitesNames)) {
-        const presentKeys = this.listOfProductionSitesNames.reduce(function (keyList: string[], productionSite) {
-          for (const key of Object.keys(productionSite)) {
+      if (this.listOfRowContents.length && Array.isArray(this.listOfRowContents)) {
+        const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], rowContent) {
+          for (const key of Object.keys(rowContent)) {
             if (keyList.indexOf(key) === -1) keyList.push(key);
           }
           return keyList;
@@ -75,13 +84,14 @@ export default defineComponent({
     humanizeStringIfNeccessary(key: string, value: string): string {
       const keysWithValuesToBeHumanized = ["isInHouseProductionOrIsContractProcessing"];
       if (keysWithValuesToBeHumanized.includes(key)) {
-        return humanizeString(value);
+        return this.humanizeString(value);
       }
       return value;
     },
+    humanizeString,
   },
   watch: {
-    listOfProductionSitesNames() {
+    listOfRowContents() {
       this.generateColsNames();
     },
   },

@@ -1,0 +1,40 @@
+.p-tree {
+  background: #fff;
+  color: #1b1b1b;
+
+  .p-tree-container {
+    .p-treenode {
+      padding: .143rem;
+
+      .p-treenode-content {
+        padding: .5rem
+      }
+
+      .p-tree-toggler {
+        margin-right: .5rem;
+        width: 2rem;
+        height: 2rem;
+        color: #6c757d;
+        border: 0 none;
+        background: transparent;
+        border-radius: 50%;
+
+        &:enabled:hover {
+          color: #1b1b1b;
+          border-color: transparent;
+          background: #e9ecef
+        }
+
+        &:focus {
+          outline: 0 none;
+          outline-offset: 0;
+          box-shadow: 0 0 0 .2rem #bfd1f6;
+        }
+      }
+    }
+  }
+
+  .p-treenode-children {
+    padding: 0 0 0 1rem;
+  }
+}

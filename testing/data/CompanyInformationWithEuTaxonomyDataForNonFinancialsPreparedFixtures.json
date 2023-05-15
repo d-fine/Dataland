@@ -2,91 +2,211 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"companyAlternativeNames": [
-				"Herweg UG",
-				"Hesse-Bohge",
-				"Kirch-Wolfarth"
-			],
-			"headquarters": "Süd Franka",
-			"headquartersPostalCode": "09930",
-			"sector": "eyeballs",
+			"headquarters": "Defneburg",
+			"headquartersPostalCode": "78039",
+			"sector": "interfaces",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "5vtr7v3oatkqla2"
+					"identifierValue": "6q3o3q6ykk8xle4"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "ngn5kq7pa"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "dr1t3h1y180i"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "l8t6t8gpsmjmpbiiuim6"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "iuexfaybdk"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "fnz9nck"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "isikb7ay1"
 				}
 			],
-			"countryCode": "TL",
-			"isTeaserCompany": false,
-			"website": "https://unübertroffen-magnetismus.info"
+			"countryCode": "BE",
+			"companyAlternativeNames": [
+				"Anggreny, Engelen und Rach",
+				"Gollnow, Jarets und Zach"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-08-18",
-			"numberOfEmployees": 20734,
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-12-20",
+			"numberOfEmployees": 34481,
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-12-20",
-					"currency": "SLL"
-				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"currency": "BYN"
+					"isGroupLevel": "NA",
+					"reportDate": "2022-08-25",
+					"currency": "PGK"
 				},
-				"ESEFReport": {
+				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"currency": "BIF"
+					"currency": "IRR"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-04-09",
-					"currency": "MOP"
+					"currency": "SZL"
 				}
 			},
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "Yes",
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.8536,
-					"dataSource": {
-						"page": 742,
-						"report": "IntegratedReport",
-						"tagName": "platforms"
-					},
-					"quality": "Estimated",
-					"comment": "input primary monitor"
+					"value": 0.3441,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.041,
+					"value": 0.3098,
 					"dataSource": {
-						"page": 1106,
-						"report": "ESEFReport",
-						"tagName": "infrastructures"
+						"page": 269,
+						"report": "SustainabilityReport",
+						"tagName": "niches"
 					},
 					"quality": "Reported",
-					"comment": "parse back-end microchip"
+					"comment": "reboot multi-byte application"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.5985,
+					"value": 0.4064,
 					"dataSource": {
-						"page": 441,
+						"page": 174,
 						"report": "IntegratedReport",
-						"tagName": "web services"
+						"tagName": "solutions"
 					},
-					"quality": "Incomplete",
-					"comment": "synthesize redundant bus"
+					"quality": "Reported",
+					"comment": "transmit back-end driver"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Bruderland",
+			"headquartersPostalCode": "34272",
+			"sector": "e-commerce",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "kgv5t9h97ie25jx"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "6rf4h4wvh"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "4zfq49joy3mo"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "zu5q3ziw43u7cpzuh2eb"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "7mv3ihxq20"
+				}
+			],
+			"countryCode": "GA",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "http://erregend-länge.com",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-11-30",
+			"numberOfEmployees": 71763,
+			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-06-09",
+					"currency": "XPD"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-12-11",
+					"currency": "CUC"
+				}
+			},
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Schötz UG"
+			},
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 303796.02,
+					"quality": "Estimated"
+				},
+				"eligiblePercentage": {
+					"value": 0.283,
+					"dataSource": {
+						"page": 344,
+						"report": "SustainabilityReport",
+						"tagName": "synergies"
+					},
+					"quality": "Audited",
+					"comment": "input optical feed"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 589351.47,
+					"dataSource": {
+						"page": 83,
+						"report": "SustainabilityReport",
+						"tagName": "users"
+					},
+					"quality": "Audited",
+					"comment": "bypass auxiliary bus"
+				},
+				"eligiblePercentage": {
+					"value": 0.8328,
+					"dataSource": {
+						"page": 266,
+						"report": "IntegratedReport",
+						"tagName": "technologies"
+					},
+					"quality": "Reported",
+					"comment": "hack online bus"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 893993.06,
+					"dataSource": {
+						"page": 965,
+						"report": "IntegratedReport",
+						"tagName": "portals"
+					},
+					"quality": "Estimated",
+					"comment": "parse virtual program"
+				},
+				"eligiblePercentage": {
+					"value": 0.9755,
+					"quality": "Estimated"
 				}
 			}
 		},
@@ -94,242 +214,138 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"companyAlternativeNames": [
-				"Röse-Fenner"
-			],
-			"companyLegalForm": "AG",
-			"headquarters": "Ost Marlene",
-			"headquartersPostalCode": "88777",
-			"sector": "eyeballs",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "lb9te2s8ctca8kq"
-				}
-			],
-			"countryCode": "RE",
-			"isTeaserCompany": false,
-			"website": "https://gewaltig-epistemologie.ch"
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-11-29",
-			"numberOfEmployees": 78040,
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-01-08",
-					"currency": "CRC"
-				}
-			},
-			"assurance": {
-				"assurance": "ReasonableAssurance"
-			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
-			"opex": {
-				"totalAmount": {
-					"value": 340227.59,
-					"dataSource": {
-						"page": 553,
-						"report": "SustainabilityReport",
-						"tagName": "markets"
-					},
-					"quality": "Incomplete",
-					"comment": "navigate auxiliary circuit"
-				},
-				"eligiblePercentage": {
-					"value": 0.6808,
-					"dataSource": {
-						"page": 517,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
-					},
-					"quality": "Reported",
-					"comment": "connect neural alarm"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 88300.39,
-					"dataSource": {
-						"page": 508,
-						"report": "SustainabilityReport",
-						"tagName": "interfaces"
-					},
-					"quality": "Estimated",
-					"comment": "reboot virtual hard drive"
-				},
-				"eligiblePercentage": {
-					"value": 0.8424,
-					"dataSource": {
-						"page": 764,
-						"report": "SustainabilityReport",
-						"tagName": "solutions"
-					},
-					"quality": "Estimated",
-					"comment": "index 1080p panel"
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 956246.6,
-					"quality": "Incomplete"
-				},
-				"eligiblePercentage": {
-					"value": 0.7548,
-					"dataSource": {
-						"page": 86,
-						"report": "SustainabilityReport",
-						"tagName": "schemas"
-					},
-					"quality": "Incomplete",
-					"comment": "quantify neural capacitor"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
 			"companyName": "company_without_reports",
-			"companyAlternativeNames": [
-				"Birkemeyer, Mordhorst und Pingpank",
-				"Frank-Zschunke",
-				"Moguenara KG",
-				"Walz-Klabuhn"
-			],
-			"headquarters": "Salomestadt",
-			"headquartersPostalCode": "96872",
+			"headquarters": "Bad Wilhelmburg",
+			"headquartersPostalCode": "06639",
 			"sector": "synergies",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "67cpxzkznx7r10y"
+					"identifierValue": "ehmt6iig8n233p1"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "b2z060qul"
+					"identifierValue": "03q0hredk"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "4e631517evak"
+					"identifierValue": "6j7altv9jgld"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "mb3p8nwnsfcqcyzo1tpi"
+					"identifierValue": "2i9czms0lyjfl6y4xckh"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "zqdjkzq2j4"
+					"identifierValue": "0dengkx0g6"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "66292vf"
+					"identifierValue": "3r97nzz"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "j778lnhu9"
 				}
 			],
-			"countryCode": "PN",
-			"isTeaserCompany": false,
-			"website": "https://konsequent-schwimmen.ch"
+			"countryCode": "KM",
+			"companyAlternativeNames": [],
+			"website": "https://geehrt-taubheit.info",
+			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-01-01",
-			"numberOfEmployees": 98932,
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2023-04-21",
+			"numberOfEmployees": 29538,
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Klopsch-Maier"
+				"assurance": "ReasonableAssurance"
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "No",
+			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 451587.82,
-					"quality": "Estimated"
-				},
-				"alignedPercentage": {
-					"value": 0.0328,
+					"value": 92039.01,
 					"dataSource": {
-						"page": 718,
-						"report": "AnnualReport",
-						"tagName": "supply-chains"
+						"page": 719,
+						"report": "IntegratedReport",
+						"tagName": "e-services"
 					},
 					"quality": "Audited",
-					"comment": "index solid state hard drive"
+					"comment": "synthesize auxiliary microchip"
+				},
+				"alignedPercentage": {
+					"value": 0.384,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.8055,
+					"value": 0.7363,
 					"dataSource": {
-						"page": 1148,
+						"page": 984,
 						"report": "IntegratedReport",
-						"tagName": "paradigms"
+						"tagName": "methodologies"
 					},
-					"quality": "Estimated",
-					"comment": "transmit digital circuit"
+					"quality": "Audited",
+					"comment": "compress solid state transmitter"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 437139.31,
+					"value": 175218.26,
 					"dataSource": {
-						"page": 1192,
-						"report": "SustainabilityReport",
-						"tagName": "markets"
+						"page": 745,
+						"report": "IntegratedReport",
+						"tagName": "platforms"
 					},
 					"quality": "Audited",
-					"comment": "override haptic port"
+					"comment": "index multi-byte bandwidth"
 				},
 				"alignedPercentage": {
-					"value": 0.4561,
+					"value": 0.6237,
 					"dataSource": {
-						"page": 316,
-						"report": "AnnualReport",
-						"tagName": "schemas"
+						"page": 827,
+						"report": "IntegratedReport",
+						"tagName": "web-readiness"
 					},
-					"quality": "Audited",
-					"comment": "hack virtual array"
+					"quality": "Incomplete",
+					"comment": "bypass optical firewall"
 				},
 				"eligiblePercentage": {
-					"value": 0.8878,
+					"value": 0.0747,
 					"dataSource": {
-						"page": 31,
-						"report": "SustainabilityReport",
-						"tagName": "solutions"
+						"page": 244,
+						"report": "IntegratedReport",
+						"tagName": "web-readiness"
 					},
-					"quality": "Audited",
-					"comment": "program auxiliary program"
+					"quality": "Estimated",
+					"comment": "index online card"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"quality": "NA"
+					"value": 617472.57,
+					"dataSource": {
+						"page": 77,
+						"report": "IntegratedReport",
+						"tagName": "initiatives"
+					},
+					"quality": "Audited",
+					"comment": "copy cross-platform microchip"
 				},
 				"alignedPercentage": {
-					"value": 0.0689,
-					"dataSource": {
-						"page": 1018,
-						"report": "IntegratedReport",
-						"tagName": "eyeballs"
-					},
-					"quality": "Reported",
-					"comment": "transmit virtual bus"
+					"quality": "NA"
 				},
 				"eligiblePercentage": {
-					"value": 0.2293,
+					"value": 0.4704,
 					"dataSource": {
-						"page": 224,
-						"report": "AnnualReport",
-						"tagName": "content"
+						"page": 577,
+						"report": "IntegratedReport",
+						"tagName": "e-markets"
 					},
-					"quality": "Incomplete",
-					"comment": "input neural panel"
+					"quality": "Estimated",
+					"comment": "program bluetooth transmitter"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2020"
 	}
 ]

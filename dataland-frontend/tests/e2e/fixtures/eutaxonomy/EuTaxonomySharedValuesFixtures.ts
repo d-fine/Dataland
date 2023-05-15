@@ -10,11 +10,12 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { getAssurance, getFiscalYearDeviation, humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 import { getCsvDataSourceMapping } from "@e2e/fixtures/common/DataSourceFixtures";
 import { generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
-import { randomYesNoNaUndefined, randomYesNoUndefined } from "@e2e/fixtures/common/YesNoFixtures";
+import { randomYesNoNa, randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceData } from "./AssuranceDataFixture";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { randomNumber } from "@e2e/fixtures/common/NumberFixtures";
 import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
+import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a new Eu Taxonomy instance fitting for either "financials" or "non-financials"
@@ -35,9 +36,9 @@ export function generateEuTaxonomyWithRequiredFields(): EuTaxonomyDataForFinanci
 export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials): void {
   input.referencedReports = generateReferencedReports();
   input.assurance = generateAssuranceData(input.referencedReports);
-  input.scopeOfEntities = randomYesNoNaUndefined();
-  input.reportingObligation = randomYesNoUndefined();
-  input.activityLevelReporting = randomYesNoUndefined();
+  input.scopeOfEntities = valueOrUndefined(randomYesNoNa());
+  input.reportingObligation = valueOrUndefined(randomYesNo());
+  input.activityLevelReporting = valueOrUndefined(randomYesNo());
 }
 
 /**

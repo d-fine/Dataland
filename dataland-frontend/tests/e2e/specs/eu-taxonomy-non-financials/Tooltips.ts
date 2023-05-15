@@ -3,6 +3,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@sharedUtils/Fixtures";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -18,9 +19,11 @@ before(function () {
  * @returns the found dataset
  */
 function getCompanyWithReportingObligationAndAssurance(): FixtureData<EuTaxonomyDataForNonFinancials> {
-  return companiesWithEuTaxonomyDataForNonFinancials.filter((it) => {
-    return it.t.reportingObligation !== undefined && it.t.assurance !== undefined;
-  })[0];
+  return assertDefined(
+    companiesWithEuTaxonomyDataForNonFinancials.find((it) => {
+      return it.t.reportingObligation !== undefined && it.t.assurance !== undefined;
+    })
+  );
 }
 
 describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy result page", () => {
@@ -32,9 +35,11 @@ describe("As a user, I expect informative tooltips to be shown on the EuTaxonomy
       cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials)).then(
         (storedCompanies) => {
           const testCompany = getCompanyWithReportingObligationAndAssurance();
-          const companyId = storedCompanies.filter((storedCompany) => {
-            return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;
-          })[0].companyId;
+          const companyId = assertDefined(
+            storedCompanies.find((storedCompany) => {
+              return storedCompany.companyInformation.companyName === testCompany.companyInformation.companyName;
+            })?.companyId
+          );
           cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveData");
           cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
           cy.wait("@retrieveData", { timeout: Cypress.env("short_timeout_in_ms") as number });

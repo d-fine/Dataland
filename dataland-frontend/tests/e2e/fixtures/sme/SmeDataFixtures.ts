@@ -8,8 +8,9 @@ import {
   randomEnergyProductionBracketOrUndefined,
   randomHeatSourceOrUndefined,
 } from "./SmeEnumFixtures";
-import { randomYesNoNaUndefined } from "@e2e/fixtures/common/YesNoFixtures";
+import { randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
+import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates a random SME dataset
@@ -33,7 +34,7 @@ export function generateSmeData(): SmeData {
   returnBase.totalAreaCompany = faker.datatype.number();
   returnBase.totalPowerConsumption = faker.datatype.number();
   returnBase.totalPowerCosts = randomEuroValue();
-  returnBase.useOfGreenElectricity = randomYesNoNaUndefined();
+  returnBase.useOfGreenElectricity = valueOrUndefined(randomYesNoNa());
   returnBase.heatingEnergyConsumption = faker.datatype.number();
   returnBase.totalHeatingCosts = randomEuroValue();
   returnBase.roomWaterHeating = randomHeatSourceOrUndefined();
@@ -48,9 +49,9 @@ export function generateSmeData(): SmeData {
   returnBase.employeeFluctuation = randomPercentageValue();
   returnBase.shareOfFemaleEmployees = randomPercentageValue();
   returnBase.proportionOfFemaleEmployeesInManagement = randomPercentageValue();
-  returnBase.oshMeasures = randomYesNoNaUndefined();
-  returnBase.healthAndOldAgeOffers = randomYesNoNaUndefined();
+  returnBase.oshMeasures = valueOrUndefined(randomYesNoNa());
+  returnBase.healthAndOldAgeOffers = valueOrUndefined(randomYesNoNa());
   returnBase.numberVacationDays = faker.datatype.number({ min: 1, max: 50 });
-  returnBase.nonProfitProjects = randomYesNoNaUndefined();
+  returnBase.nonProfitProjects = valueOrUndefined(randomYesNoNa());
   return returnBase;
 }
