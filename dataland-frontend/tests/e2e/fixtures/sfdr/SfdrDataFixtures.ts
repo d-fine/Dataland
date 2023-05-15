@@ -5,11 +5,11 @@ import {
   generateReferencedReports,
   generateLinkToPdf,
 } from "@e2e/fixtures/common/DataPointFixtures";
-import { randomYesNoNaUndefined } from "@e2e/fixtures/common/YesNoFixtures";
+import { randomYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateIso4217CurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { randomEuroValue, randomNumber } from "@e2e/fixtures/common/NumberFixtures";
-import { randomFiscalYearDeviationOrUndefined } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
+import { randomFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
@@ -22,25 +22,25 @@ export function generateSfdrData(fiscalYearEnd?: string): SfdrData {
   return {
     social: {
       general: {
-        fiscalYear: randomFiscalYearDeviationOrUndefined(),
+        fiscalYear: valueOrUndefined(randomFiscalYearDeviation()),
         fiscalYearEnd: fiscalYearEnd ?? randomFutureDate(),
-        groupLevelAnnualReport: randomYesNoNaUndefined(),
+        groupLevelAnnualReport: valueOrUndefined(randomYesNoNa()),
         annualReport: valueOrUndefined(generateLinkToPdf()),
         annualReportDate: randomFutureDate(),
         annualReportCurrency: generateIso4217CurrencyCode(),
         sustainabilityReport: valueOrUndefined(generateLinkToPdf()),
-        groupLevelSustainabilityReport: randomYesNoNaUndefined(),
+        groupLevelSustainabilityReport: valueOrUndefined(randomYesNoNa()),
         sustainabilityReportDate: randomFutureDate(),
         sustainabilityReportCurrency: generateIso4217CurrencyCode(),
         integratedReport: valueOrUndefined(generateLinkToPdf()),
-        groupLevelIntegratedReport: randomYesNoNaUndefined(),
+        groupLevelIntegratedReport: valueOrUndefined(randomYesNoNa()),
         integratedReportDate: randomFutureDate(),
         integratedReportCurrency: generateIso4217CurrencyCode(),
         esefReport: valueOrUndefined(generateLinkToPdf()),
-        groupLevelEsefReport: randomYesNoNaUndefined(),
+        groupLevelEsefReport: valueOrUndefined(randomYesNoNa()),
         esefReportDate: randomFutureDate(),
         esefReportCurrency: generateIso4217CurrencyCode(),
-        scopeOfEntities: randomYesNoNaUndefined(),
+        scopeOfEntities: valueOrUndefined(randomYesNoNa()),
       },
       socialAndEmployeeMatters: {
         humanRightsLegalProceedings: generateYesNoOrEmptyDatapoint(reports),

@@ -127,7 +127,7 @@
               v-model="lei"
               type="text"
               :placeholder="companyDataNames.lei"
-              validation="identifierDoesNotExistValidator:Lei"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Lei}`"
             />
 
             <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
@@ -136,7 +136,7 @@
               v-model="isin"
               type="text"
               :placeholder="companyDataNames.isin"
-              validation="identifierDoesNotExistValidator:Isin"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Isin}`"
             />
 
             <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker" />
@@ -145,7 +145,7 @@
               v-model="ticker"
               type="text"
               :placeholder="companyDataNames.ticker"
-              validation="identifierDoesNotExistValidator:Ticker"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Ticker}`"
             />
 
             <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId" />
@@ -154,7 +154,7 @@
               v-model="permId"
               type="text"
               :placeholder="companyDataNames.permId"
-              validation="identifierDoesNotExistValidator:PermId"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.PermId}`"
             />
 
             <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
@@ -163,7 +163,7 @@
               v-model="duns"
               type="text"
               :placeholder="companyDataNames.duns"
-              validation="identifierDoesNotExistValidator:Duns"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Duns}`"
             />
 
             <UploadFormHeader
@@ -175,7 +175,16 @@
               v-model="companyRegistrationNumber"
               type="text"
               :placeholder="companyDataNames.companyRegistrationNumber"
-              validation="identifierDoesNotExistValidator:CompanyRegistrationNumber"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber}`"
+            />
+
+            <UploadFormHeader :name="companyDataNames.vatNumber" :explanation="companyDataExplanations.vatNumber" />
+            <FormKit
+              name="vatNumber"
+              v-model="vatNumber"
+              type="text"
+              :placeholder="companyDataNames.vatNumber"
+              :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.VatNumber}`"
             />
           </FormKit>
 
@@ -199,8 +208,8 @@
           <PrimeButton type="submit" label="ADD COMPANY" name="addCompany" />
         </FormKit>
         <template v-if="postCompanyProcessed">
-          <SuccessUpload v-if="uploadSucceded" :message="message" :messageId="messageCounter" />
-          <FailedUpload v-else :message="message" :messageId="messageCounter" />
+          <SuccessMessage v-if="uploadSucceded" :message="message" :messageId="messageCounter" />
+          <FailMessage v-else :message="message" :messageId="messageCounter" />
         </template>
       </div>
     </template>
@@ -222,8 +231,8 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import PrimeButton from "primevue/button";
 import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import SuccessUpload from "@/components/messages/SuccessUpload.vue";
-import FailedUpload from "@/components/messages/FailedUpload.vue";
+import SuccessMessage from "@/components/messages/SuccessMessage.vue";
+import FailMessage from "@/components/messages/FailMessage.vue";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import Tooltip from "primevue/tooltip";
 import {
@@ -231,7 +240,7 @@ import {
   companyDataExplanations,
   gicsSectors,
 } from "@/components/resources/frameworkDataSearch/ReferenceDataModelTranslations";
-import UploadFormHeader from "@/components/forms/parts/UploadFormHeader.vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { AxiosError } from "axios";
 import { FormKitNode } from "@formkit/core";
 
@@ -242,8 +251,8 @@ export default defineComponent({
     Card,
     FormKit,
     PrimeButton,
-    SuccessUpload,
-    FailedUpload,
+    SuccessMessage,
+    FailMessage,
   },
   directives: {
     tooltip: Tooltip,
@@ -267,6 +276,7 @@ export default defineComponent({
     permId: "",
     duns: "",
     companyRegistrationNumber: "",
+    vatNumber: "",
     sector: "",
     website: "",
     checkCustomInputs,
@@ -280,6 +290,7 @@ export default defineComponent({
     companyDataExplanations,
     companyDataNames,
     gicsSectors,
+    CompanyIdentifierIdentifierTypeEnum,
   }),
   methods: {
     /**
@@ -328,6 +339,7 @@ export default defineComponent({
       this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.PermId, this.permId);
       this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.Duns, this.duns);
       this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber, this.companyRegistrationNumber);
+      this.addIdentifier(CompanyIdentifierIdentifierTypeEnum.VatNumber, this.vatNumber);
     },
     /**
      * Adds the value from the input field for company alternative names to the corresponding array.

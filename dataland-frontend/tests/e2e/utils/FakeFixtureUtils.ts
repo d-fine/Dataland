@@ -5,5 +5,5 @@
  * @returns the value or undefined
  */
 export function valueOrUndefined<T>(value: T, undefinedProbability = 0.5): T | undefined {
-  return Math.random() < undefinedProbability ? value : undefined;
+  return Math.random() > undefinedProbability ? value : undefined;
 }

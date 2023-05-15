@@ -5,9 +5,7 @@
   </div>
   <div v-if="dataSet && !waitingForData">
     <ShowReportsBanner
-      v-if="
-        'referencedReports' in dataSet && dataSet.referencedReports !== undefined && dataSet.referencedReports !== null
-      "
+      v-if="dataSet?.referencedReports && Object.keys(dataSet.referencedReports).length > 0"
       :reports="dataSet.referencedReports"
     />
     <div v-else class="pb-3"></div>
@@ -210,8 +208,6 @@ export default defineComponent({
             );
           this.dataSet = companyAssociatedData.data.data;
           this.waitingForData = false;
-        } else if (this.dataID == "loading") {
-          console.log("Loading Loading Loading");
         }
       } catch (error) {
         console.error(error);

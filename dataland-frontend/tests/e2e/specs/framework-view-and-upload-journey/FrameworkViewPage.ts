@@ -235,18 +235,20 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Validates if all the values in the Vat ID row on the LkSG panel equal the passed values
-       * @param expectedVatIdNumbers The expected values in the row of the VAT identification number field
+       * Validates if all the Data Date rows on the LkSG panel equal the passed values
+       * @param expectedDataDates The expected values in the row of the Data Date field
        */
-      function validateVatIdNumbersOfDisplayedLksgDatasets(expectedVatIdNumbers: string[]): void {
-        cy.get(`tr:contains("VAT Identification Number")`)
+      function validateDataDatesOfDisplayedLksgDatasets(expectedDataDates: string[]): void {
+        cy.get('span[data-test="dataDate"]')
+          .parents("tr")
+          .last()
           .find("td > span")
           .each((element, index, elements) => {
-            expect(elements).to.have.length(expectedVatIdNumbers.length + 1);
+            expect(elements).to.have.length(expectedDataDates.length + 1);
             if (index == 0) {
-              expect(element.text()).to.equal("VAT Identification Number");
+              expect(element.attr("data-test")).to.equal("dataDate");
             } else {
-              expect(element.text()).to.equal(expectedVatIdNumbers[index - 1]);
+              expect(element.text()).to.equal(expectedDataDates[index - 1]);
             }
           });
       }
@@ -275,7 +277,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfAlpha,
                 "2023",
-                getPreparedFixture("vat-2023-1", lksgPreparedFixtures).t
+                getPreparedFixture("LkSG-date-2023-04-18", lksgPreparedFixtures).t
               ).then((dataMetaInformation) => {
                 dataIdOfSupersededLksg2023ForAlpha = dataMetaInformation.dataId;
               });
@@ -286,7 +288,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2023",
-                  getPreparedFixture("vat-2023-2", lksgPreparedFixtures).t
+                  getPreparedFixture("LkSG-date-2023-06-22", lksgPreparedFixtures).t
                 );
               });
             })
@@ -296,7 +298,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                   token,
                   companyIdOfAlpha,
                   "2022",
-                  getPreparedFixture("vat-2022", lksgPreparedFixtures).t
+                  getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t
                 );
               });
             })
@@ -362,7 +364,7 @@ describe("The shared header of the framework pages should act as expected", { sc
                 token,
                 companyIdOfBeta,
                 "2015",
-                getPreparedFixture("vat-2022", lksgPreparedFixtures).t
+                getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t
               );
             })
             .then(async () => {
@@ -640,27 +642,27 @@ describe("The shared header of the framework pages should act as expected", { sc
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`
         );
 
-        cy.contains("2023-1").should("exist");
+        cy.contains("2023-04-18").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
-        validateVatIdNumbersOfDisplayedLksgDatasets(["2023-1"]);
+        validateDataDatesOfDisplayedLksgDatasets(["2023-04-18"]);
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
 
         cy.url().should(
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
         );
-        cy.contains("2023-2").should("exist");
+        cy.contains("2023-06-22").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
-        validateVatIdNumbersOfDisplayedLksgDatasets(["2023-2"]);
+        validateDataDatesOfDisplayedLksgDatasets(["2023-06-22"]);
         validateDisplayStatusContainerAndGetButton(
           "You are only viewing a single available dataset",
           "View All"
         ).click();
 
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
-        cy.contains("2022").should("exist");
+        cy.contains("2022-07-30").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023", "2022"]);
-        validateVatIdNumbersOfDisplayedLksgDatasets(["2023-2", "2022"]);
+        validateDataDatesOfDisplayedLksgDatasets(["2023-06-22", "2022-07-30"]);
         cy.contains("This dataset is superseded").should("not.exist");
         getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
         clickBackButton();
@@ -669,9 +671,9 @@ describe("The shared header of the framework pages should act as expected", { sc
           "eq",
           `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`
         );
-        cy.contains("2022").should("not.exist");
+        cy.contains("2022-07-30").should("not.exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
-        validateVatIdNumbersOfDisplayedLksgDatasets(["2023-2"]);
+        validateDataDatesOfDisplayedLksgDatasets(["2023-06-22"]);
         validateDisplayStatusContainerAndGetButton("You are only viewing a single available dataset", "View All");
         clickBackButton();
 
@@ -681,9 +683,9 @@ describe("The shared header of the framework pages should act as expected", { sc
             DataTypeEnum.Lksg
           }/${dataIdOfSupersededLksg2023ForAlpha}`
         );
-        cy.contains("2023-1").should("exist");
+        cy.contains("2023-04-18").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
-        validateVatIdNumbersOfDisplayedLksgDatasets(["2023-1"]);
+        validateDataDatesOfDisplayedLksgDatasets(["2023-04-18"]);
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active");
 
         cy.visit(

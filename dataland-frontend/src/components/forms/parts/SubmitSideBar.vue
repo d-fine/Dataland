@@ -8,12 +8,15 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  name: "SubmitSideBar",
   data: () => ({ elementPosition: 0, scrollListener: (): null => null }),
   mounted() {
     const submitSideBar = this.$refs.submitSideBar as HTMLElement;
-
     this.elementPosition = submitSideBar.getBoundingClientRect().top;
     this.scrollListener = (): null => {
+      if (this.elementPosition == 0) {
+        this.elementPosition = submitSideBar.getBoundingClientRect().top;
+      }
       if (window.scrollY > this.elementPosition) {
         submitSideBar.style.position = "fixed";
         submitSideBar.style.top = "60px";

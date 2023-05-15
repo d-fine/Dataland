@@ -1,0 +1,19 @@
+.d-nace-treeview-container {
+  height: 400px;
+  min-width: 200px;
+  overflow: auto;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.d-nace-focus {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.d-nace-chipview {
+  max-width: 66%;
+}

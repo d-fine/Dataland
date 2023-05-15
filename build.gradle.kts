@@ -76,7 +76,7 @@ sonar {
             "**/test/**," +
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
-                "./dataland-frontend/src/main.ts",
+                "dataland-frontend/src/main.ts",
         )
         property(
             "sonar.sources",
@@ -84,6 +84,11 @@ sonar {
         )
         property("sonar.verbose", "true")
         property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/report_task.txt")
+        property(
+            "sonar.cpd.exclusions",
+            "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts",
+        )
     }
 }
 

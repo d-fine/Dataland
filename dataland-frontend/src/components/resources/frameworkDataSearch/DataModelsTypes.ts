@@ -6,11 +6,7 @@ export type TypeOfProductionSitesNames = {
 };
 
 export type TypeOfProductionSitesConvertedNames = {
-  name: string;
-  isInHouseProductionOrIsContractProcessing: string;
-  country: string;
-  city: string;
-  streetAndHouseNumber: string;
-  postalCode: string;
+  nameOfProductionSite: string;
+  addressOfProductionSite: string;
   listOfGoodsOrServices: string;
 };

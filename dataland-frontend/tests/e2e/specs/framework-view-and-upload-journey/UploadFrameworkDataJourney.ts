@@ -89,7 +89,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
                 })
                 .then((dataMetaInformationOfSecondUpload) => {
                   dataIdOfSecondEuTaxoFinancialsUpload = dataMetaInformationOfSecondUpload.dataId;
-                  const preparedFixture = getPreparedFixture("vat-2022", lksgPreparedFixtures);
+                  const preparedFixture = getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures);
                   return uploadOneLksgDatasetViaApi(
                     token,
                     storedCompanyForManyDatasetsCompany.companyId,
