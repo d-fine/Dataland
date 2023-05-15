@@ -11,6 +11,7 @@ import org.junit.jupiter.api.assertThrows
 class CsvUtilsTest {
     private val testColumnName = "identity"
     private val testMapping = mapOf(testColumnName to testColumnName)
+    private val invalidInput = "1234g4545,79"
 
     private fun constructRow(identity: String): Map<String, String> {
         return mapOf(testColumnName to identity)
@@ -63,13 +64,13 @@ class CsvUtilsTest {
     @Test
     fun `test that the decimal parsing throws errors when invalid data has been supplied`() {
         assertThrows<IllegalArgumentException> {
-            testMapping.readCsvPercentage(testColumnName, constructRow("1234g4545,79"))
+            testMapping.readCsvPercentage(testColumnName, constructRow(invalidInput))
         }
         assertThrows<IllegalArgumentException> {
-            testMapping.readCsvPercentage(testColumnName, constructRow("1234,4545,79"))
+            testMapping.readCsvPercentage(testColumnName, constructRow(invalidInput))
         }
         assertThrows<IllegalArgumentException> {
-            testMapping.readCsvDecimal(testColumnName, constructRow("1234g4545,79"))
+            testMapping.readCsvDecimal(testColumnName, constructRow(invalidInput))
         }
     }
 
