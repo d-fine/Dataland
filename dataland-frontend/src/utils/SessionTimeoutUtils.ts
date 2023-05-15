@@ -48,7 +48,7 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
 ): number {
   const functionIdOfSetInterval = setInterval(() => {
     const currentTimestampInMs = new Date().getTime();
-    const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs;
+    const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs as number;
     if (!sessionWarningTimestamp) {
       logoutAndRedirectToUri(keycloak, "");
     } else {

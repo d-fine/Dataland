@@ -1,4 +1,6 @@
 import {
+  CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  CompanyInformation,
   Configuration,
   DataMetaInformation,
   DataPointBigDecimal,
@@ -10,6 +12,15 @@ import {
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { dateFormElement } from "@sharedUtils/components/DateFormElement";
+import { goToEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { CyHttpMessages } from "cypress/types/net-stubbing";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { submitFilledInEuTaxonomyForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
@@ -31,27 +42,9 @@ export function submitEuTaxonomyFinancialsUploadForm(): Cypress.Chainable {
  * Fills the eutaxonomy-financials upload form with the given dataset
  * @param data the data to fill the form with
  */
-export function fillEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
-  cy.get('[data-test="reportingPeriodLabel"]').should("contain", "Reporting Period");
-
-  cy.get('button[data-test="upload-files-button"]').click();
-  cy.get("input[type=file]").selectFile("tests/e2e/fixtures/pdfTest.pdf", { force: true });
-  cy.get('div[data-test="uploaded-files"]')
-    .should("exist")
-    .find('[data-test="uploaded-files-title"]')
-    .should("contain", "pdf");
-  cy.get('div[data-test="uploaded-files"]').find('[data-test="uploaded-files-size"]').should("contain", "KB");
-  cy.get('input[name="currency"]').type("www");
-  cy.get('button[data-test="uploaded-files-remove"]').click();
-  cy.get('div[data-test="uploaded-files"]').should("not.exist");
-
-  cy.get('[data-test="fiscalYearEnd"] button').should("have.class", "p-datepicker-trigger").click();
-  cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
-  cy.get("div.p-datepicker").find('span:contains("13")').click();
-  cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "13");
-  cy.get('input[name="reportDate"]').should("not.exist");
-  cy.get('input[name="reference"]').should("not.exist");
-  cy.get('input[name="fiscalYearEnd"]').should("not.be.visible");
+export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
+  dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
+  dateFormElement.validateDay("fiscalYearEnd", 12);
 
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
@@ -166,10 +159,10 @@ function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined):
  */
 function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
   if (value?.value) {
-    const eligibleRevenue = value.value.toString();
+    const valueAsString = value.value.toString();
     if (divTag === "") {
-      cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(eligibleRevenue);
-      cy.get(`[data-test="${inputsTag}"]`).find('input[name="page"]').type(eligibleRevenue);
+      cy.get(`[data-test="${inputsTag}"]`).find('input[name="value"]').type(valueAsString);
+      cy.get(`[data-test="${inputsTag}"]`).find('input[name="page"]').type("13");
       cy.get(`[data-test="${inputsTag}"]`).find('select[name="report"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`).find('select[name="quality"]').select(1);
       cy.get(`[data-test="${inputsTag}"]`)
@@ -179,7 +172,7 @@ function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecima
       cy.get(`[data-test="${divTag}"]`)
         .find(`[data-test="${inputsTag}"]`)
         .find('input[name="value"]')
-        .type(eligibleRevenue);
+        .type(valueAsString);
       cy.get(`[data-test="${divTag}"]`)
         .find(`[data-test="${inputsTag}"]`)
         .find('input[name="page"]')
@@ -229,4 +222,54 @@ export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
     data,
   });
   return response.data;
+}
+
+/**
+ * Visits the edit page for the eu taxonomy dataset for financial companies via navigation.
+ * @param companyId the id of the company for which to edit a dataset
+ * @param expectIncludedFile specifies if the test file is expected to be in the server response
+ */
+export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
+  goToEditFormOfMostRecentDataset(companyId, DataTypeEnum.EutaxonomyFinancials).then((interception) => {
+    const referencedReports = assertDefined(
+      (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports
+    );
+    expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
+    expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
+  });
+}
+
+/**
+ * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
+ * via the form in the frontend, and then visits the view page where that dataset is displayed
+ * @param companyInformation Company information to be used for the company upload
+ * @param testData EU Taxonomy dataset for financial companies to be uploaded
+ * @param beforeFormFill is performed before filling the fields of the upload form
+ * @param afterFormFill is performed after filling the fields of the upload form
+ * @param submissionDataIntercept performs checks on the request itself
+ * @param afterDatasetSubmission is performed after the data has been submitted
+ */
+export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
+  companyInformation: CompanyInformation,
+  testData: EuTaxonomyDataForFinancials,
+  beforeFormFill: () => void,
+  afterFormFill: () => void,
+  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
+  afterDatasetSubmission: (companyId: string) => void
+): void {
+  getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+    return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
+      (storedCompany): void => {
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.visitAndCheckAppMount(
+          `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
+        );
+        beforeFormFill();
+        fillAndValidateEuTaxonomyForFinancialsUploadForm(testData);
+        afterFormFill();
+        submitFilledInEuTaxonomyForm(submissionDataIntercept);
+        afterDatasetSubmission(storedCompany.companyId);
+      }
+    );
+  });
 }
