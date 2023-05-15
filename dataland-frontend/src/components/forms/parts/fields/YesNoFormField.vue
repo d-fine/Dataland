@@ -49,8 +49,7 @@ export default defineComponent({
      * @param event the "Yes" / "No" selection event
      */
     setCertificateRequired(event: Event) {
-      console.log(event);
-      this.yesSelected = (event as InputEvent).data === "Yes";
+      this.yesSelected = (event as unknown as string) === "Yes";
     },
   },
 });
