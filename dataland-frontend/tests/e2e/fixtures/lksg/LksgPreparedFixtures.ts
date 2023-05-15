@@ -2,8 +2,6 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 import { LksgData } from "@clients/backend";
 import { generateLksgFixture, generateProductionSite } from "./LksgDataFixtures";
 
-type generatorFunction = (input: FixtureData<LksgData>) => FixtureData<LksgData>;
-
 /**
  * Generates LkSG prepared fixtures by generating random LkSG datasets and afterwards manipulating some fields
  * via manipulator-functions to set specific values for those fields.
