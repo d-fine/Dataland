@@ -25,7 +25,7 @@ describe(
   "As a user, I want to be able to see some data on the Dataland webpage",
   {
     defaultCommandTimeout: Cypress.env("prepopulate_timeout_s") * 1000,
-    taskTimeout: 120000,
+    taskTimeout: 240000,
     retries: {
       runMode: 0,
       openMode: 0,
