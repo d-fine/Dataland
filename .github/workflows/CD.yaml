@@ -173,10 +173,6 @@ jobs:
             echo "Retrieving real data"
             rm -rf ./testing/data/documents/*
             docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.18
-            echo "Content of testing/data/documents:"
-            ls -lisa ./testing/data/documents
-            echo "Content of testing/data:"
-            ls -lisa ./testing/data
           fi
       - name: Download frontend API clients
         uses: actions/download-artifact@v3

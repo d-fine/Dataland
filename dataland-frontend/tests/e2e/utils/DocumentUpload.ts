@@ -8,7 +8,7 @@ import { DocumentControllerApi } from "@clients/documentmanager";
 export function uploadAllDocuments(token: string): void {
   const documentDirectory = "../testing/data/documents/";
   const api = new DocumentControllerApi(new Configuration({ accessToken: token }));
-  cy.task("readdir", documentDirectory, { timeout: 120000 }).then((fileNames) => {
+  cy.task("readdir", documentDirectory).then((fileNames) => {
     (fileNames as string[]).forEach((name: string) => {
       cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
         const arr = new Uint8Array(bufferObject.data);
