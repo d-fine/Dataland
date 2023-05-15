@@ -22,12 +22,9 @@ sealed class DatalandAuthentication : Authentication {
          * Builds a new DatalandAuthentication object from the Spring Boot Authentication
          * linked to the current thread
          */
-        /*
-        Test Kommentar
-         */
+        @Suppress
         fun fromContextOrNull(): DatalandAuthentication? {
-            val auth = SecurityContextHolder.getContext().authentication
-            return (auth as? DatalandAuthentication)
+            return SecurityContextHolder.getContext().authentication as? DatalandAuthentication
         }
     }
 
