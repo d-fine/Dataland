@@ -187,7 +187,7 @@ export const lksgDataModel = [
             name: "listOfProductionSites",
             description: "Please list the production sites in your company.",
             label: "List Of Production Sites",
-            component: "ProductionSiteFormField",
+            component: "ProductionSitesFormField",
             required: false,
           },
           {

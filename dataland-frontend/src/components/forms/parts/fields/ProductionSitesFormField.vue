@@ -34,7 +34,7 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
-  name: "ProductionSiteFormField",
+  name: "ProductionSitesFormField",
   props: FormFieldProps,
   data() {
     return {

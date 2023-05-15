@@ -112,7 +112,7 @@ import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsF
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
+import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, objectType } from "@/utils/updateObjectUtils";
 
 export default defineComponent({
@@ -123,7 +123,7 @@ export default defineComponent({
   },
   name: "CreateLksgDataset",
   components: {
-    ProductionSiteFormField,
+    ProductionSitesFormField,
     UploadFormHeader,
     SuccessUpload,
     FailedUpload,
