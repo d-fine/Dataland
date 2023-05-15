@@ -64,6 +64,7 @@
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
             <FailMessage v-else :message="message" :messageId="messageCounter" />
           </div>
+
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
             <li v-for="category in lksgDataModel" :key="category">
@@ -74,15 +75,12 @@
               </ul>
             </li>
           </ul>
-          <JumpLinksSection :onThisPageLinks="onThisPageLinks" />
         </SubmitSideBar>
       </div>
     </template>
   </Card>
 </template>
 <script lang="ts">
-// TODO fix JumpLinksSection
-
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
@@ -115,7 +113,6 @@ import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/updateObjectUtils";
-import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import { smoothScroll } from "@/utils/smoothScroll";
 
 export default defineComponent({
@@ -130,7 +127,6 @@ export default defineComponent({
 
     SubmitButton,
     SubmitSideBar,
-    JumpLinksSection,
     UploadFormHeader,
     SuccessMessage,
     FailMessage,
@@ -173,20 +169,6 @@ export default defineComponent({
       route: useRoute(),
       message: "",
       smoothScroll: smoothScroll,
-      onThisPageLinks: [
-        { label: "General", value: "general" },
-        { label: "Child labour", value: "childLabour" },
-        { label: "Forced labour, slavery and debt bondage", value: "forcedLabourSlaveryAndDebtBondage" },
-        { label: "Evidence, certificates and attestations", value: "evidenceCertificatesAndAttestations" },
-        { label: "Grievance mechanism", value: "grievanceMechanism" },
-        { label: "OSH", value: "osh" },
-        { label: "Freedom of association", value: "freedomOfAssociation" },
-        { label: "Human rights", value: "humanRights" },
-        { label: "Social and employee matters", value: "socialAndEmployeeMatters" },
-        { label: "Environment", value: "environment" },
-        { label: "Risk management", value: "riskManagement" },
-        { label: "Waste", value: "waste" },
-      ],
       uploadSucceded: false,
       postLkSGDataProcessed: false,
       messageCounter: 0,
