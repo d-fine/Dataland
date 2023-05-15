@@ -17,6 +17,7 @@ export function uploadAllDocuments(): void {
           const file = new File([arr], name, { type: "application/pdf" });
           api.postDocument(file).catch((error) => console.log(error));
           delete bufferObject.data;
+          cy.wait(2000);
         });
       });
     });
