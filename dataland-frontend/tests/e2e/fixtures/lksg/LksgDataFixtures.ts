@@ -37,8 +37,8 @@ export function generateLksgFixture(numFixtures: number, undefinedProbability = 
  */
 export function generateProductionSite(undefinedProbability = 0.5): LksgProductionSite {
   return {
-    nameOfProductionSite: valueOrUndefined(faker.company.name(), undefinedProbability),
-    addressOfProductionSite: valueOrUndefined(generateAddress(), undefinedProbability),
+    nameOfProductionSite: faker.company.name(),
+    addressOfProductionSite: generateAddress(),
     listOfGoodsOrServices: valueOrUndefined(generateListOfGoodsOrServices(), undefinedProbability),
   };
 }
