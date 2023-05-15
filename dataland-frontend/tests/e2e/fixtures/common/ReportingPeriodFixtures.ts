@@ -1,4 +1,4 @@
-const randomReportingPeriodOptions = ["2019", "2020", "2021", "2022", "2023", "2019-Q3", "2020-Q1", "2021-Q2"];
+const randomReportingPeriodOptions = ["2019", "2020", "2021", "2022", "2023"];
 
 /**
  * Method to randomly pick one element of the above list of options as reporting period
