@@ -101,6 +101,7 @@ export default defineComponent({
     addNewItemsToListOfGoodsOrServices() {
       const items = this.listOfGoodsOrServicesString.split(",").map((element) => element.trim());
       this.listOfGoodsOrServices = [...new Set([...this.listOfGoodsOrServices, ...items])];
+      this.listOfGoodsOrServicesString = "";
     },
   },
 });
