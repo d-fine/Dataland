@@ -5,10 +5,11 @@ function getOpenApiSha1Sum() {
   find * -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1.formatted.json' shell {} \;
   find * -name "*OpenApi.json.formatted.json" -type f | \
   sort -u | \
+  awk '{print "\""$1"\""}' \
   xargs sha1sum | \
-  awk '{print $1}' | \
+  awk '{print "\""$1"\""}' | \
   sha1sum | \
-  awk '{print $1}'
+  awk '{print "\""$1"\""}'
 }
 
 sha1SumBeforeRegenerate=$(getOpenApiSha1Sum)
