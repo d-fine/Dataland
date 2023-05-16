@@ -12,8 +12,9 @@ import { convertToPercentageString, getCompanyTypeCsvValue, getCompanyTypeHeader
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import {
-  generateEuTaxonomyWithBaseFields,
+  generateEuTaxonomyWithRequiredFields,
   getCsvSharedEuTaxonomyValuesMapping,
+  populateSharedValues,
 } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
@@ -85,7 +86,8 @@ export function generateInvestmentFirmKpis(referencedReports: ReferencedReports)
 export function generateEuTaxonomyDataForFinancialsWithTypes(
   financialServicesTypes: Array<EuTaxonomyDataForFinancialsFinancialServicesTypesEnum>
 ): EuTaxonomyDataForFinancials {
-  const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields();
+  const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithRequiredFields();
+  populateSharedValues(returnBase);
   const eligibilityKpis = Object.fromEntries(
     financialServicesTypes.map((it) => [it, generateEligibilityKpis(returnBase.referencedReports!)])
   );

@@ -21,18 +21,24 @@ import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
  * Generates a new Eu Taxonomy instance fitting for either "financials" or "non-financials"
  * @returns Eu Taxonomy instance with mandatory fields already assigned
  */
-export function generateEuTaxonomyWithBaseFields(): EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials {
-  const referencedReports = generateReferencedReports();
+export function generateEuTaxonomyWithRequiredFields(): EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials {
   return {
-    fiscalYearDeviation: valueOrUndefined(randomFiscalYearDeviation()),
-    fiscalYearEnd: valueOrUndefined(randomPastDate()),
-    numberOfEmployees: valueOrUndefined(randomNumber(100000)),
-    referencedReports: referencedReports,
-    assurance: generateAssuranceData(referencedReports),
-    scopeOfEntities: valueOrUndefined(randomYesNoNa()),
-    reportingObligation: valueOrUndefined(randomYesNo()),
-    activityLevelReporting: valueOrUndefined(randomYesNo()),
+    fiscalYearDeviation: randomFiscalYearDeviation(),
+    fiscalYearEnd: randomPastDate(),
+    numberOfEmployees: randomNumber(100000),
   };
+}
+
+/**
+ * Fills in random values for fields shared between the eutaxonomy frameworks
+ * @param input the framework object to fill in data for
+ */
+export function populateSharedValues(input: EuTaxonomyDataForFinancials | EuTaxonomyDataForNonFinancials): void {
+  input.referencedReports = generateReferencedReports();
+  input.assurance = generateAssuranceData(input.referencedReports);
+  input.scopeOfEntities = valueOrUndefined(randomYesNoNa());
+  input.reportingObligation = valueOrUndefined(randomYesNo());
+  input.activityLevelReporting = valueOrUndefined(randomYesNo());
 }
 
 /**
