@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.services
 
+import org.apache.commons.lang3.StringUtils.lowerCase
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
@@ -50,7 +51,7 @@ class PdfVerificationService {
     }
 
     private fun checkThatDocumentNameEndsOnPdf(name: String, correlationId: String) {
-        if (name.takeLast(expectedFileNameIdentifierLength) != ".pdf") {
+        if (lowerCase(name.takeLast(expectedFileNameIdentifierLength)) != ".pdf") {
             logger.info(
                 "PDF document uploaded with correlation ID: $correlationId " +
                     "does not have a name ending on '.pdf', aborting.",
