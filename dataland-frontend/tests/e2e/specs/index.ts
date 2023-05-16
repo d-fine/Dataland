@@ -24,6 +24,8 @@ require("./infrastructure");
 if (runPrepopulation) {
   if (!singlePopulate || cypressTestGroup === 1 || cypressTestGroup === 101) {
     require("./prepopulation");
+  } else if (cypressTestGroup === 3) {
+    console.log("Prepopulation is not required for group 3.");
   } else {
     require("./prepopulation/AwaitPrepopulation");
   }
