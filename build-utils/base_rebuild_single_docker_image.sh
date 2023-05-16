@@ -26,7 +26,7 @@ input_sha1=$( \
   awk '{print "\""$1"\""}' | \
   xargs sha1sum | \
   sha1sum | \
-  awk '{print "\""$1"\""}' \
+  awk '{print $1}'
 )
 
 echo Input sha1 Hash: "$input_sha1"
