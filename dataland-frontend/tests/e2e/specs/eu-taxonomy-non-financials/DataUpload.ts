@@ -289,6 +289,7 @@ describeIf(
       uploadReports.fillAllReportsToUploadForms();
       cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
       cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "None...");
+      cy.wait(100);
       cy.get('button[data-test="submitButton"]').click();
       cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
     }
