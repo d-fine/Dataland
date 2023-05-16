@@ -143,7 +143,7 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
  * @param divTag value of the parent div data-test attribute to fill in
  * @param data the kpi data to use to fill the form
  */
-function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined): void {
+export function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined): void {
   fillField(divTag, "taxonomyEligibleActivity", data?.taxonomyEligibleActivity);
   fillField(divTag, "taxonomyNonEligibleActivity", data?.taxonomyNonEligibleActivity);
   fillField(divTag, "derivatives", data?.derivatives);
@@ -157,7 +157,7 @@ function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined):
  * @param inputsTag value of the parent div data-test attribute to fill in
  * @param value the value to fill in
  */
-function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
+export function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
   if (value?.value) {
     const valueAsString = value.value.toString();
     if (divTag === "") {
@@ -266,6 +266,43 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
         );
         beforeFormFill();
         fillAndValidateEuTaxonomyForFinancialsUploadForm(testData);
+        afterFormFill();
+        submitFilledInEuTaxonomyForm(submissionDataIntercept);
+        afterDatasetSubmission(storedCompany.companyId);
+      }
+    );
+  });
+}
+
+/**
+ * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
+ * via the form in the frontend, and then visits the view page where that dataset is displayed
+ * @param companyInformation Company information to be used for the company upload
+ * @param testData EU Taxonomy dataset for financial companies to be uploaded
+ * @param beforeFormFill is performed before filling the fields of the upload form
+ * @param formFillSteps Steps involved to fill data of the upload form
+ * @param afterFormFill is performed after filling the fields of the upload form
+ * @param submissionDataIntercept performs checks on the request itself
+ * @param afterDatasetSubmission is performed after the data has been submitted
+ */
+export function companyViaApiAndEuTaxonomyDataForFinancialsViaForm(
+  companyInformation: CompanyInformation,
+  testData: EuTaxonomyDataForFinancials,
+  beforeFormFill: () => void,
+  formFillSteps: (data: EuTaxonomyDataForFinancials) => void,
+  afterFormFill: () => void,
+  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
+  afterDatasetSubmission: (companyId: string) => void
+): void {
+  getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+    return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
+      (storedCompany): void => {
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.visitAndCheckAppMount(
+          `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
+        );
+        beforeFormFill();
+        formFillSteps(testData);
         afterFormFill();
         submitFilledInEuTaxonomyForm(submissionDataIntercept);
         afterDatasetSubmission(storedCompany.companyId);

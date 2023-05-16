@@ -327,6 +327,7 @@ import {
   AssuranceDataAssuranceEnum,
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
   DataMetaInformation,
+  EligibilityKpis,
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   EuTaxonomyDataForNonFinancials,
@@ -552,13 +553,39 @@ export default defineComponent({
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
 
+        // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
+        const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
+        const data = clonedFormInputsModel.data as ObjectType;
+
+        if (data.eligibilityKpis) {
+          const selectedKpiKeys = this.confirmedSelectedFinancialServiceOptions.map((option) => {
+            const found = Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType).find(
+              (entry) => entry[0] === option.value
+            );
+            return found ? found[1] : undefined;
+          });
+
+          const mappedAndFiltered = selectedKpiKeys.map((key) => ({
+            [key as keyof EligibilityKpis]: (data.eligibilityKpis as EligibilityKpis)[key as keyof EligibilityKpis],
+          }));
+
+          if (mappedAndFiltered.length > 0) {
+            (clonedFormInputsModel.data as ObjectType).eligibilityKpis = mappedAndFiltered.reduce(
+              (all, next) => ({ ...all, ...next }),
+              {}
+            );
+          } else {
+            delete (clonedFormInputsModel.data as ObjectType).eligibilityKpis;
+          }
+        }
+
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
         await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
 
-        const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
+        const formInputsModelToSend = convertValuesFromPercentagesToDecimals(clonedFormInputsModel as ObjectType);
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
@@ -581,10 +608,28 @@ export default defineComponent({
      * @param value section name
      */
     removeKpisSection(value: string) {
-      this.confirmedSelectedFinancialServiceOptions = this.confirmedSelectedFinancialServiceOptions.filter(
+      const filtered = this.confirmedSelectedFinancialServiceOptions.filter(
         (financialServiceOption: { label: string; value: string }) => financialServiceOption.value !== value
       );
-      this.selectedFinancialServiceOptions = this.confirmedSelectedFinancialServiceOptions;
+
+      this.confirmedSelectedFinancialServiceOptions = filtered;
+      this.selectedFinancialServiceOptions = filtered;
+
+      // const clonedFormInputsModel = Object.assign({}, this.formInputsModel);
+
+      // if (clonedFormInputsModel.data?.eligibilityKpis) {
+      //   const kpiModelType = Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType).find(
+      //     (entry) => entry[0] === value
+      //   );
+      //   if (kpiModelType) {
+      //     delete clonedFormInputsModel.data?.eligibilityKpis[kpiModelType[1]];
+      //     if(Object.keys(clonedFormInputsModel.data?.eligibilityKpis).length === 0){
+      //       delete clonedFormInputsModel.data?.eligibilityKpis;
+      //     }
+      //   }
+      //   updateObject(this.formInputsModel, clonedFormInputsModel);
+      // }
+
       this.onThisPageLinks = this.onThisPageLinks.filter((el: { label: string; value: string }) => el.value !== value);
     },
 
