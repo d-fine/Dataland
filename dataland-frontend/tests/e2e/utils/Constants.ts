@@ -4,4 +4,4 @@
 
 export const TEST_PDF_FILE_NAME = "pdfTest";
 
-export const TEST_PDF_FILE_PATH = `testing/data/documents/${TEST_PDF_FILE_NAME}.pdf`;
+export const TEST_PDF_FILE_PATH = `testing/data/documents/${TEST_PDF_FILE_NAME}.PDF`;
