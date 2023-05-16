@@ -87,11 +87,9 @@ object CsvUtils {
     fun Map<String, String>.readCsvPercentage(property: String, csvData: Map<String, String>): BigDecimal? {
         val rawValue = this.getCsvValueAllowingNull(property, csvData)?.trim() ?: return null
         val expectedFormat = "\\d+(,\\d+)?(\\s*)%".toRegex()
-        if (!rawValue.matches(expectedFormat)) {
-            throw IllegalArgumentException(
-                "The input string \"$rawValue\" for column ${this[property]} does not " +
-                    "match the expected format for a percentage value",
-            )
+        require(rawValue.matches(expectedFormat)) {
+            "The input string \"$rawValue\" for column ${this[property]} " +
+                "does not match the expected format for a percentage value"
         }
 
         return rawValue
@@ -112,11 +110,9 @@ object CsvUtils {
     ): BigDecimal? {
         val rawValue = this.getCsvValueAllowingNull(property, csvData)?.trim() ?: return null
         val expectedFormat = "(\\d+(\\.)?)+(,\\d+)?".toRegex()
-        if (!rawValue.matches(expectedFormat)) {
-            throw IllegalArgumentException(
-                "The input string \"$rawValue\" for column ${this[property]} does not " +
-                    "match the expected format for a decimal value",
-            )
+        require(rawValue.matches(expectedFormat)) {
+            "The input string \"$rawValue\" for column ${this[property]} " +
+                "does not match the expected format for a decimal value"
         }
 
         return rawValue
@@ -137,11 +133,9 @@ object CsvUtils {
     ): Long? {
         val rawValue = this.getCsvValueAllowingNull(property, csvData)?.trim() ?: return null
         val expectedFormat = "(\\d+(\\.)?)+".toRegex()
-        if (!rawValue.matches(expectedFormat)) {
-            throw IllegalArgumentException(
-                "The input string \"$rawValue\" for column ${this[property]} does not " +
-                    "match the expected format for an integer value",
-            )
+        require(rawValue.matches(expectedFormat)) {
+            "The input string \"$rawValue\" for column ${this[property]} " +
+                "does not match the expected format for an integer value"
         }
         return rawValue
             .replace(".", "")
