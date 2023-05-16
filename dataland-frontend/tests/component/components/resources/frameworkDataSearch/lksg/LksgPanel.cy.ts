@@ -75,7 +75,6 @@ describe("Component test for LksgPanel", () => {
     });
 
     cy.get(`span.p-column-title`).should("contain.text", lksgData.general!.masterData!.dataDate.substring(0, 4));
-
     cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
 
     toggleRowGroup("_masterData");
@@ -84,11 +83,9 @@ describe("Component test for LksgPanel", () => {
     toggleRowGroup("_masterData");
     cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
 
-    cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("not.exist");
-
+    cy.get("span[data-test=employeeUnder18]").should("not.exist");
     toggleRowGroup("childLabor");
-    cy.get("table.p-datatable-table").find(`span:contains("Employee Under 18")`).should("exist");
-    cy.get("table").find(`tr:contains("Employee Under 18 Apprentices")`).find(`span:contains("No")`).should("exist");
+    cy.get("span[data-test=employeeUnder18]").should("exist");
 
     toggleRowGroup("productionSpecific");
     cy.get(`a:contains(Show "List Of Production Sites")`).should("be.visible");
@@ -96,8 +93,6 @@ describe("Component test for LksgPanel", () => {
     cy.get("em[title='Data Date']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("The date until when");
     cy.get("em[title='Data Date']").trigger("mouseleave");
-
-    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
   });
 
   /**

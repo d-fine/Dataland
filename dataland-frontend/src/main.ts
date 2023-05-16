@@ -12,7 +12,7 @@ import { plugin, defaultConfig } from "@formkit/vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
 import DialogService from "primevue/dialogservice";
-import { createPinia } from "pinia";
+import { createPinia, PiniaPlugin } from "pinia";
 import { PiniaSharedState } from "pinia-shared-state";
 
 /**
@@ -25,7 +25,7 @@ function instantiateVueApp(): void {
     PiniaSharedState({
       enable: false,
       type: "native",
-    })
+    }) as PiniaPlugin
   );
   app.use(plugin, defaultConfig);
   app.use(DialogService);

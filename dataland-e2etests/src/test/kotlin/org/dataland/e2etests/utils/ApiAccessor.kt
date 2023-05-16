@@ -262,7 +262,7 @@ class ApiAccessor {
             listOfUploadInfo.addAll(
                 uploadForDataType(
                     it,
-                    companyInformationPerFramework[it]!!,
+                    companyInformationPerFramework.getValue(it),
                     numberOfDataSetsPerCompany,
                     uploadingTechnicalUser,
                     reportingPeriod,

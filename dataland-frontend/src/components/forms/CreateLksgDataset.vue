@@ -61,9 +61,10 @@
         <SubmitSideBar>
           <SubmitButton :formId="formId" />
           <div v-if="postLkSGDataProcessed">
-            <SuccessUpload v-if="uploadSucceded" :messageId="messageCounter" />
-            <FailedUpload v-else :message="message" :messageId="messageCounter" />
+            <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
+            <FailMessage v-else :message="message" :messageId="messageCounter" />
           </div>
+
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
             <li v-for="category in lksgDataModel" :key="category">
@@ -79,7 +80,6 @@
     </template>
   </Card>
 </template>
-
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -92,20 +92,17 @@ import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
-import SuccessUpload from "@/components/messages/SuccessUpload.vue";
-import FailedUpload from "@/components/messages/FailedUpload.vue";
+import SuccessMessage from "@/components/messages/SuccessMessage.vue";
+import FailMessage from "@/components/messages/FailMessage.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { AxiosError } from "axios";
 import { CompanyAssociatedDataLksgData } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { smoothScroll } from "@/utils/smoothScroll";
 import { checkCustomInputs } from "@/utils/validationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
-import NonNegativeNumberFormField from "@/components/forms/parts/fields/NonNegativeNumberFormField.vue";
-import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
@@ -114,8 +111,9 @@ import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsF
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull, objectType } from "@/utils/updateObjectUtils";
+import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
+import { objectDropNull, ObjectType } from "@/utils/updateObjectUtils";
+import { smoothScroll } from "@/utils/smoothScroll";
 
 export default defineComponent({
   setup() {
@@ -125,10 +123,13 @@ export default defineComponent({
   },
   name: "CreateLksgDataset",
   components: {
-    ProductionSitesFormField,
+    ProductionSiteFormField,
+
+    SubmitButton,
+    SubmitSideBar,
     UploadFormHeader,
-    SuccessUpload,
-    FailedUpload,
+    SuccessMessage,
+    FailMessage,
     FormKit,
     Card,
     PrimeButton,
@@ -137,8 +138,6 @@ export default defineComponent({
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
-    NonNegativeNumberFormField,
-    PercentageFormField,
     DateFormField,
     SingleSelectFormField,
     MultiSelectFormField,
@@ -146,8 +145,6 @@ export default defineComponent({
     AddressFormField,
     RadioButtonsFormField,
     YesNoNaFormField,
-    SubmitButton,
-    SubmitSideBar,
   },
   directives: {
     tooltip: Tooltip,
@@ -161,22 +158,21 @@ export default defineComponent({
         {
           id: 0,
           listOfGoodsOrServices: [] as string[],
-          listOfGoodsOrServicesString: "",
+          allGoodsOrServicesAsString: "",
         },
       ],
       idCounter: 0,
       waitingForData: false,
       dataDate: undefined as Date | undefined,
       companyAssociatedLksgData: {} as CompanyAssociatedDataLksgData,
+      lksgDataModel,
       route: useRoute(),
       message: "",
+      smoothScroll: smoothScroll,
       uploadSucceded: false,
       postLkSGDataProcessed: false,
       messageCounter: 0,
-      lksgDataModel,
       elementPosition: 0,
-      scrollListener: (): null => null,
-      smoothScroll,
       checkCustomInputs,
       updatingData: false,
     };
@@ -232,7 +228,7 @@ export default defineComponent({
           this.listOfProductionSites.push({
             id: i,
             listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices ?? [],
-            listOfGoodsOrServicesString: "",
+            allGoodsOrServicesAsString: "",
           });
         }
       }
@@ -240,7 +236,7 @@ export default defineComponent({
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
       }
-      this.companyAssociatedLksgData = objectDropNull(lksgDataset as objectType) as CompanyAssociatedDataLksgData;
+      this.companyAssociatedLksgData = objectDropNull(lksgDataset as ObjectType) as CompanyAssociatedDataLksgData;
       this.waitingForData = false;
     },
     /**
@@ -260,7 +256,7 @@ export default defineComponent({
           {
             id: 0,
             listOfGoodsOrServices: [],
-            listOfGoodsOrServicesString: "",
+            allGoodsOrServicesAsString: "",
           },
         ];
         this.idCounter = 0;
@@ -283,8 +279,3 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped lang="scss">
-.anchor {
-  scroll-margin-top: 100px;
-}
-</style>
