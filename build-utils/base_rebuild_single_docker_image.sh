@@ -19,35 +19,6 @@ shift
 dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
 
-echo find
-  find "$0" "$@" -type f -printf "\"%p\"\n"
-echo grep
-  find "$0" "$@" -type f -printf "\"%p\"\n" | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/'
-echo sort
-  find "$0" "$@" -type f -printf "\"%p\"\n" | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/' | \
-  sort -u
-echo xargs
-  find "$0" "$@" -type f -printf "\"%p\"\n" | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/' | \
-  sort -u | \
-  xargs sha1sum
-echo sha1sum
-  find "$0" "$@" -type f -printf "\"%p\"\n" | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/' | \
-  sort -u | \
-  xargs sha1sum | \
-  sha1sum
-echo awk
-  find "$0" "$@" -type f -printf "\"%p\"\n" | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/' | \
-  sort -u | \
-  xargs sha1sum | \
-  sha1sum | \
-  awk '{print $1}'
-
-
 input_sha1=$( \
   find "$0" "$@" -type f -printf "\"%p\"\n" | \
   grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/' | \
