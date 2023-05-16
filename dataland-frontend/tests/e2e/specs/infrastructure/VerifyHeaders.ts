@@ -78,7 +78,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
           expect(response.headers).to.have.property("cache-control", "no-cache, no-store, max-age=0, must-revalidate");
         });
         cy.request("GET", `${getBaseUrl()}/static/site.webmanifest`).then((response): void => {
-          expect(response.headers).to.have.property("cache-control", "public, max-age=31536000");
+          expect(response.headers).to.have.property("cache-control", "max-age=31536000, public");
         });
       });
     }
