@@ -4,6 +4,7 @@ export interface KpiDataObject {
   kpiKey: string;
   kpiLabel: string;
   kpiDescription: string;
+  kpiFormFieldComponent: string;
 
   [index: string]: string;
 }

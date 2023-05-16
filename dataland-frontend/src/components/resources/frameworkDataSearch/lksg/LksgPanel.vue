@@ -113,6 +113,7 @@ export default defineComponent({
         kpiKey: kpiKey,
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
+        kpiFormFieldComponent: kpiField?.component ?? "",
         [dataIdOfLksgDataset]: kpiValue,
       } as KpiDataObject;
       let existingKpi = this.kpiDataObjects.get(kpiKey);
