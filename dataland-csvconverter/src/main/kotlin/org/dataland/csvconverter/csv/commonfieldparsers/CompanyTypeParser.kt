@@ -26,6 +26,6 @@ class CompanyTypeParser {
      */
     fun getCompanyType(csvLineData: Map<String, String>): String {
         val companyTypeNumeric = columnMappingCompanyType.getCsvValueAllowingNull("companyType", csvLineData)
-        return companyTypeCsvParser.parse(columnMappingCompanyType["companyType"]!!, companyTypeNumeric)
+        return companyTypeCsvParser.parse(columnMappingCompanyType.getValue("companyType"), companyTypeNumeric)
     }
 }

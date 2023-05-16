@@ -315,7 +315,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject, nextTick } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/validationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -345,6 +345,7 @@ import { FormKitNode } from "@formkit/core";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
+import { uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -556,7 +557,11 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-        await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
+
+        const documentControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getDocumentControllerApi();
+        await uploadFiles(this.$refs.UploadReports.$data.reportsToUpload, documentControllerApi);
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
@@ -570,7 +575,7 @@ export default defineComponent({
       } catch (error) {
         this.messageCount++;
         console.error(error);
-        this.message = formatAxiosErrorMessage(error);
+        this.message = formatAxiosErrorMessage(error as Error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
       }

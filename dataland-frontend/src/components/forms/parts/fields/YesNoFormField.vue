@@ -19,8 +19,8 @@
     />
     <UploadCertificatesForm
       v-show="certificateRequiredIfYes && yesSelected"
+      @certificatesChanged="emitCertificateUpdatedEvent"
       ref="uploadCertificatesForm"
-      @certificatesChanged="emitCertificatesUpdatedEvent"
     />
   </div>
 </template>
@@ -45,7 +45,7 @@ export default defineComponent({
   emits: ["certificateUpdated"],
   watch: {
     yesSelected() {
-      this.deleteCertificates();
+      this.deleteCertificate();
     },
   },
   methods: {
@@ -57,21 +57,30 @@ export default defineComponent({
       this.yesSelected = (event as unknown as string) === "Yes";
     },
 
-    deleteCertificates() {
+    /**
+     * If "No" is reselected after one has uploaded a file, this handles removing the file(s) and clearing
+     * the certificate list.
+     */
+    deleteCertificate() {
       if (!this.yesSelected) {
         const fileNumber = this.$refs.uploadCertificatesForm.$refs.fileUpload.files.length as number;
         if (fileNumber > 0) {
-          this.$refs.uploadCertificatesForm.$refs.fileUpload.files.splice(0, fileNumber);
+          this.$refs.uploadCertificatesForm.$refs.fileUpload.files = [];
           this.$refs.uploadCertificatesForm.removeAllCertificates();
         }
       }
     },
 
     /**
-     * Emits event that selected files changed
+     * Emits event that selected certificate changed
      */
-    emitCertificatesUpdatedEvent() {
-      this.$emit("certificateUpdated", this.$refs.uploadCertificatesForm.certificatesToUpload);
+    emitCertificateUpdatedEvent() {
+      this.$emit("certificateUpdated", this.name, this.$refs.uploadCertificatesForm.certificatesToUpload[0]);
+    },
+
+    updateCertificateReferenceOnDataPoint() {
+      //TODO: actually implement this
+      console.log(this.$refs.uploadCertificatesForm.certificatesToUpload[0].reference);
     },
   },
 });

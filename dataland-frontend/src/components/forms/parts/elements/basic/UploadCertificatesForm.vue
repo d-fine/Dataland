@@ -10,15 +10,14 @@
       :auto="false"
       @select="handleFilesSelected"
     >
-      <template #header="{ chooseCallback }">
-        <div class="flex flex-wrap justify-content-between align-items-center" style="padding: 0; margin-left: 0">
-          <PrimeButton
-            data-test="upload-files-button"
-            @click="chooseCallback()"
-            icon="pi pi-upload"
-            label="UPLOAD DOCUMENT"
-          />
-        </div>
+      <template #header="{ files, chooseCallback }">
+        <PrimeButton
+          v-show="files.length < 1"
+          data-test="upload-files-button"
+          @click="chooseCallback()"
+          icon="pi pi-upload"
+          label="UPLOAD DOCUMENT"
+        />
       </template>
       <template #content="{ files, removeFileCallback }">
         <div v-if="files.length > 0" data-test="files-to-upload">
@@ -26,6 +25,7 @@
             v-for="(selectedFile, index) of files"
             :key="selectedFile.name + index"
             class="flex w-full align-items-center file-upload-item"
+            style="padding: 0; margin-top: 0; margin-bottom: 0"
             :data-test="removeFileTypeExtension(selectedFile.name) + 'FileUploadContainer'"
           >
             <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ selectedFile.name }}</span>
@@ -52,9 +52,14 @@ import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { CompanyReport } from "@clients/backend";
-import { ApiClientProvider } from "@/services/ApiClients";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import {
+  calculateSha256HashFromFile,
+  CertificateToUpload,
+  isThereActuallyANewFileSelected,
+  removeFileTypeExtension,
+  StoredReport,
+} from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "UploadCertificatesForm",
@@ -97,6 +102,7 @@ export default defineComponent({
     },
   },
   methods: {
+    removeFileTypeExtension,
     /**
      * Handles selection of a file by the user.
      * The file is added to the reports that shall be uploaded, then the sha256 hashes are calculated and added
@@ -106,11 +112,11 @@ export default defineComponent({
      */
     async handleFilesSelected(event: FileUploadSelectEvent): Promise<void> {
       const selectedFilesByUser = event.files as File[];
-      if (this.isThereActuallyANewFileSelected(selectedFilesByUser, this.certificatesToUpload)) {
+      if (isThereActuallyANewFileSelected(selectedFilesByUser, this.certificatesToUpload)) {
         const lastSelectedFile = selectedFilesByUser[selectedFilesByUser.length - 1];
         const certificateToUpload = { file: lastSelectedFile } as CertificateToUpload;
-        certificateToUpload.reference = await this.calculateSha256HashFromFile(certificateToUpload.file);
-        certificateToUpload.fileNameWithoutSuffix = this.removeFileTypeExtension(certificateToUpload.file.name);
+        certificateToUpload.reference = await calculateSha256HashFromFile(certificateToUpload.file);
+        certificateToUpload.fileNameWithoutSuffix = removeFileTypeExtension(certificateToUpload.file.name);
         this.certificatesToUpload.push(certificateToUpload);
         this.emitCertificatesChangedEvent();
       }
@@ -147,27 +153,6 @@ export default defineComponent({
     },
 
     /**
-     * Uploads the filed that are to be uploaded if they are not already available to dataland
-     */
-    async uploadFiles() {
-      const documentUploadControllerControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
-      ).getDocumentControllerApi();
-      for (const certificateToUpload of this.certificatesToUpload) {
-        const fileIsAlreadyInStorage = (
-          await documentUploadControllerControllerApi.checkDocument(certificateToUpload.reference)
-        ).data.documentExists;
-        if (!fileIsAlreadyInStorage) {
-          const backendComputedHash = (
-            await documentUploadControllerControllerApi.postDocument(certificateToUpload.file)
-          ).data.documentId;
-          if (certificateToUpload.reference !== backendComputedHash) {
-            throw Error("Locally computed document hash does not concede with the one received by the upload request!");
-          }
-        }
-      }
-    },
-    /**
      * Initializes the already uploaded reports from provided reports
      */
     prefillAlreadyUploadedReports() {
@@ -184,60 +169,8 @@ export default defineComponent({
         this.emitCertificatesChangedEvent();
       }
     },
-    /**
-     * Checks if there was actually a file added by the user that was not filtered
-     * out by the FileUpload component.
-     * @param filesCurrentlySelectedByUser the files currently selected by the user
-     * @param previouslySelectedCertificates the reports that have already been selected before the last change
-     * @returns true if there is actually a file added by the user
-     */
-    isThereActuallyANewFileSelected(
-      filesCurrentlySelectedByUser: File[],
-      previouslySelectedCertificates: CertificateToUpload[]
-    ) {
-      return filesCurrentlySelectedByUser.length != previouslySelectedCertificates.length;
-    },
-    /**
-     *  calculates the hash from a file
-     * @param [file] the file to calculate the hash for
-     * @returns a promise of the hash as string
-     */
-    async calculateSha256HashFromFile(file: File): Promise<string> {
-      const buffer = await file.arrayBuffer();
-      const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
-      return this.toHex(hashBuffer);
-    },
-    /**
-     *  helper to encode a hash of type buffer in hex
-     * @param [buffer] the buffer to encode in hex
-     * @returns  the array as string, hex encoded
-     */
-    toHex(buffer: ArrayBuffer): string {
-      const array = Array.from(new Uint8Array(buffer)); // convert buffer to byte array
-      return array.map((b) => b.toString(16).padStart(2, "0")).join(""); // convert bytes to hex string
-    },
-    /**
-     * Removes the file extension after the last dot of the filename.
-     * E.g. someFileName.with.dots.pdf will be converted to someFileName.with.dots
-     * @param fileName the file name
-     * @returns the file name without the file extension after the last dot
-     */
-    removeFileTypeExtension(fileName: string): string {
-      return fileName.split(".").slice(0, -1).join(".");
-    },
   },
 });
-
-interface StoredReport extends CompanyReport {
-  reportName: string;
-}
-
-interface CertificateToUpload {
-  file: File;
-  fileNameWithoutSuffix: string;
-
-  reference: string;
-}
 </script>
 
 <style scoped>

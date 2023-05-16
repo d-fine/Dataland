@@ -143,11 +143,9 @@ class EuTaxonomyForFinancialsCsvParser(
         val presentKpis = FinancialServicesType.values()
             .mapNotNull { fsType -> buildSingleEligibilityKpis(row, fsType)?.let { fsType to it } }
             .toMap()
-        if (!types.containsAll(presentKpis.keys)) {
-            throw IllegalArgumentException(
-                "EligibilityKpi values have been specified for ${presentKpis.keys}" +
-                    " but the company is only of types $types",
-            )
+        require(types.containsAll(presentKpis.keys)) {
+            "EligibilityKpi values have been specified for " +
+                "${presentKpis.keys} but the company is only of types $types"
         }
         return presentKpis
     }

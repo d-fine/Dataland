@@ -114,7 +114,7 @@ class DataRetrievalViaApiKeyTest {
         )
         apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(TechnicalUser.Reader, 1)
         val downloadedCompanyAssociatedEuTaxoDataNonFinancials = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds["dataId"]!!)
+            .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
         assertEquals(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
                 companyId = mapOfIds["companyId"], reportingPeriod = "", data = testDataEuTaxonomyNonFinancials,
