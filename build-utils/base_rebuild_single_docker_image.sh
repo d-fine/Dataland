@@ -20,10 +20,9 @@ dockerfile=$1
 echo Rebuilding docker image. Parameters: "$@"
 
 input_sha1=$( \
-  find "$0" "$@" -type f | \
+  find "$0" "$@" -type f -printf "\"%p\" " | \
   grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/' | \
   sort -u | \
-  awk '{print "\""$1"\""}' | \
   xargs sha1sum | \
   sha1sum | \
   awk '{print $1}'
