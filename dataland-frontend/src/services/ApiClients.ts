@@ -2,17 +2,17 @@ import { Configuration } from "@clients/backend/configuration";
 import {
   CompanyDataControllerApi,
   CompanyDataControllerApiInterface,
-  EuTaxonomyDataForFinancialsControllerApi,
-  EuTaxonomyDataForFinancialsControllerApiInterface,
   EuTaxonomyDataForNonFinancialsControllerApi,
   EuTaxonomyDataForNonFinancialsControllerApiInterface,
-  InviteControllerApi,
-  LksgDataControllerApi,
-  LksgDataControllerApiInterface,
+  EuTaxonomyDataForFinancialsControllerApi,
+  EuTaxonomyDataForFinancialsControllerApiInterface,
   MetaDataControllerApi,
   MetaDataControllerApiInterface,
+  LksgDataControllerApi,
+  LksgDataControllerApiInterface,
   SfdrDataControllerApi,
   SfdrDataControllerApiInterface,
+  InviteControllerApi,
 } from "@clients/backend/api";
 import { DocumentControllerApi } from "@clients/documentmanager";
 import Keycloak from "keycloak-js";
@@ -36,17 +36,11 @@ export class ApiClientProvider {
   }
 
   async getConstructedApi<T>(
-    constructor: new (configuration: Configuration | undefined, basePath: string) => T
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T,
+    basePath = "/api"
   ): Promise<T> {
     const configuration = await this.getConfiguration();
-    return new constructor(configuration, "/api");
-  }
-
-  async getConstructedApiKeyManager<T>(
-    constructor: new (configuration: Configuration | undefined, basePath: string) => T
-  ): Promise<T> {
-    const configuration = await this.getConfiguration();
-    return new constructor(configuration, "/api-keys");
+    return new constructor(configuration, basePath);
   }
 
   async getConstructedDocumentManager<T>(
@@ -68,10 +62,6 @@ export class ApiClientProvider {
     return this.getConstructedApi(EuTaxonomyDataForFinancialsControllerApi);
   }
 
-  async getDocumentControllerApi(): Promise<DocumentControllerApi> {
-    return this.getConstructedDocumentManager(DocumentControllerApi);
-  }
-
   async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {
     return this.getConstructedApi(MetaDataControllerApi);
   }
@@ -85,7 +75,11 @@ export class ApiClientProvider {
   }
 
   async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
-    return this.getConstructedApiKeyManager(ApiKeyControllerApi);
+    return this.getConstructedApi(ApiKeyControllerApi, "/api-keys");
+  }
+
+  async getDocumentControllerApi(): Promise<DocumentControllerApi> {
+    return this.getConstructedDocumentManager(DocumentControllerApi);
   }
 
   async getInviteControllerApi(): Promise<InviteControllerApi> {

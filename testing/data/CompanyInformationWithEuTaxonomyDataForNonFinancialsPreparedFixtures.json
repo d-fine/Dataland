@@ -2,354 +2,347 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Ost Charlotte",
-			"headquartersPostalCode": "98800",
-			"sector": "schemas",
+			"headquarters": "Defneburg",
+			"headquartersPostalCode": "78039",
+			"sector": "interfaces",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "w337js8lcov8ol4"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "steiovnkvz3qrv6hg40x"
-				}
-			],
-			"countryCode": "GM",
-			"companyAlternativeNames": [],
-			"website": "http://vortrefflich-politik.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-12-31",
-			"numberOfEmployees": 29946,
-			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-10-14",
-					"currency": "GTQ"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-12-14",
-					"currency": "XBB"
-				}
-			},
-			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Wessel-Montag",
-				"dataSource": {
-					"page": 209,
-					"report": "SustainabilityReport",
-					"tagName": "portals"
-				}
-			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "No",
-			"opex": {
-				"eligiblePercentage": {
-					"value": 0.076,
-					"quality": "Incomplete"
-				}
-			},
-			"capex": {
-				"eligiblePercentage": {
-					"value": 0.3828,
-					"dataSource": {
-						"page": 448,
-						"report": "SustainabilityReport",
-						"tagName": "e-services"
-					},
-					"quality": "Reported",
-					"comment": "synthesize back-end capacitor"
-				}
-			},
-			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.8284,
-					"dataSource": {
-						"page": 1020,
-						"report": "SustainabilityReport",
-						"tagName": "web services"
-					},
-					"quality": "Reported",
-					"comment": "reboot digital microchip"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Alt Luciadorf",
-			"headquartersPostalCode": "52100",
-			"sector": "action-items",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "2rp5nsv0lczoumb"
+					"identifierValue": "6q3o3q6ykk8xle4"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "auwmw8ddn"
+					"identifierValue": "ngn5kq7pa"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "dr1t3h1y180i"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "ll7jt0xdqm6yr5rn2zb6"
+					"identifierValue": "l8t6t8gpsmjmpbiiuim6"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "iuexfaybdk"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "5xywytl"
+					"identifierValue": "fnz9nck"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "4sxv5d4hq"
+					"identifierValue": "isikb7ay1"
 				}
 			],
-			"countryCode": "NG",
+			"countryCode": "BE",
 			"companyAlternativeNames": [
-				"Bauer-Hirt",
-				"Dück, Cleem und Mebold",
-				"Ghirmai, Noack und Spöttel",
-				"Scherbarth OHG"
+				"Anggreny, Engelen und Rach",
+				"Gollnow, Jarets und Zach"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
+			"companyLegalForm": "GmbH & Co. KG",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-05-11",
-			"numberOfEmployees": 4331,
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-12-20",
+			"numberOfEmployees": 34481,
 			"referencedReports": {
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-08-25",
+					"currency": "PGK"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "IRR"
+				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "MOP"
+					"currency": "SZL"
 				}
 			},
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
-				"totalAmount": {
-					"value": 116291.71,
-					"dataSource": {
-						"page": 824,
-						"report": "SustainabilityReport",
-						"tagName": "e-commerce"
-					},
-					"quality": "Reported",
-					"comment": "generate virtual driver"
-				},
 				"eligiblePercentage": {
-					"value": 0.317,
-					"dataSource": {
-						"page": 592,
-						"report": "SustainabilityReport",
-						"tagName": "eyeballs"
-					},
-					"quality": "Estimated",
-					"comment": "transmit digital alarm"
+					"value": 0.3441,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
-				"totalAmount": {
-					"value": 942196.82,
+				"eligiblePercentage": {
+					"value": 0.3098,
 					"dataSource": {
-						"page": 240,
+						"page": 269,
 						"report": "SustainabilityReport",
 						"tagName": "niches"
 					},
 					"quality": "Reported",
-					"comment": "generate haptic pixel"
+					"comment": "reboot multi-byte application"
+				}
+			},
+			"revenue": {
+				"eligiblePercentage": {
+					"value": 0.4064,
+					"dataSource": {
+						"page": 174,
+						"report": "IntegratedReport",
+						"tagName": "solutions"
+					},
+					"quality": "Reported",
+					"comment": "transmit back-end driver"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Bruderland",
+			"headquartersPostalCode": "34272",
+			"sector": "e-commerce",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "kgv5t9h97ie25jx"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "6rf4h4wvh"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "4zfq49joy3mo"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "zu5q3ziw43u7cpzuh2eb"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "7mv3ihxq20"
+				}
+			],
+			"countryCode": "GA",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "http://erregend-länge.com",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-11-30",
+			"numberOfEmployees": 71763,
+			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-06-09",
+					"currency": "XPD"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-12-11",
+					"currency": "CUC"
+				}
+			},
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"provider": "Schötz UG"
+			},
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 303796.02,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.7277,
+					"value": 0.283,
 					"dataSource": {
-						"page": 391,
+						"page": 344,
 						"report": "SustainabilityReport",
-						"tagName": "eyeballs"
+						"tagName": "synergies"
 					},
 					"quality": "Audited",
-					"comment": "generate optical bus"
+					"comment": "input optical feed"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 589351.47,
+					"dataSource": {
+						"page": 83,
+						"report": "SustainabilityReport",
+						"tagName": "users"
+					},
+					"quality": "Audited",
+					"comment": "bypass auxiliary bus"
+				},
+				"eligiblePercentage": {
+					"value": 0.8328,
+					"dataSource": {
+						"page": 266,
+						"report": "IntegratedReport",
+						"tagName": "technologies"
+					},
+					"quality": "Reported",
+					"comment": "hack online bus"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 679634.73,
+					"value": 893993.06,
 					"dataSource": {
-						"page": 730,
-						"report": "SustainabilityReport",
-						"tagName": "communities"
+						"page": 965,
+						"report": "IntegratedReport",
+						"tagName": "portals"
 					},
-					"quality": "Incomplete",
-					"comment": "reboot redundant protocol"
+					"quality": "Estimated",
+					"comment": "parse virtual program"
 				},
 				"eligiblePercentage": {
-					"value": 0.2634,
-					"dataSource": {
-						"page": 426,
-						"report": "SustainabilityReport",
-						"tagName": "metrics"
-					},
-					"quality": "Reported",
-					"comment": "navigate cross-platform program"
+					"value": 0.9755,
+					"quality": "Estimated"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Chayenneland",
-			"sector": "solutions",
+			"headquarters": "Bad Wilhelmburg",
+			"headquartersPostalCode": "06639",
+			"sector": "synergies",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "0rsx3cg2uzn4uiy"
+					"identifierValue": "ehmt6iig8n233p1"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "bv87gnhiw"
+					"identifierValue": "03q0hredk"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "6j7altv9jgld"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "750jvo9nndg6ps2mu8za"
+					"identifierValue": "2i9czms0lyjfl6y4xckh"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "0dengkx0g6"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "fra9pg3"
+					"identifierValue": "3r97nzz"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "vpj3s5r9l"
+					"identifierValue": "j778lnhu9"
 				}
 			],
-			"countryCode": "LT",
-			"companyAlternativeNames": [
-				"Gruning KG",
-				"Wessel-Kulimann"
-			],
-			"website": "http://hervorhebend-vagina.info",
+			"countryCode": "KM",
+			"companyAlternativeNames": [],
+			"website": "https://geehrt-taubheit.info",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-10-10",
-			"numberOfEmployees": 80765,
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2023-04-21",
+			"numberOfEmployees": 29538,
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Hort-Schulte",
-				"dataSource": {
-					"page": 852,
-					"report": "AnnualReport",
-					"tagName": "convergence"
-				}
+				"assurance": "ReasonableAssurance"
 			},
 			"scopeOfEntities": "No",
-			"activityLevelReporting": "No",
+			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 436632.51,
+					"value": 92039.01,
 					"dataSource": {
-						"page": 226,
-						"report": "ESEFReport",
-						"tagName": "e-markets"
+						"page": 719,
+						"report": "IntegratedReport",
+						"tagName": "e-services"
 					},
-					"quality": "Reported",
-					"comment": "parse redundant monitor"
+					"quality": "Audited",
+					"comment": "synthesize auxiliary microchip"
 				},
 				"alignedPercentage": {
-					"value": 0.0871,
-					"dataSource": {
-						"page": 504,
-						"report": "SustainabilityReport",
-						"tagName": "mindshare"
-					},
-					"quality": "Reported",
-					"comment": "index virtual transmitter"
+					"value": 0.384,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.4649,
+					"value": 0.7363,
 					"dataSource": {
-						"page": 907,
+						"page": 984,
 						"report": "IntegratedReport",
-						"tagName": "web services"
+						"tagName": "methodologies"
 					},
-					"quality": "Reported",
-					"comment": "back up back-end pixel"
+					"quality": "Audited",
+					"comment": "compress solid state transmitter"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 425796.5,
+					"value": 175218.26,
 					"dataSource": {
-						"page": 1056,
+						"page": 745,
 						"report": "IntegratedReport",
-						"tagName": "applications"
+						"tagName": "platforms"
 					},
-					"quality": "Reported",
-					"comment": "connect digital program"
+					"quality": "Audited",
+					"comment": "index multi-byte bandwidth"
 				},
 				"alignedPercentage": {
-					"value": 0.9566,
+					"value": 0.6237,
 					"dataSource": {
-						"page": 478,
-						"report": "ESEFReport",
-						"tagName": "niches"
+						"page": 827,
+						"report": "IntegratedReport",
+						"tagName": "web-readiness"
 					},
-					"quality": "Audited",
-					"comment": "reboot primary alarm"
+					"quality": "Incomplete",
+					"comment": "bypass optical firewall"
 				},
 				"eligiblePercentage": {
-					"value": 0.7738,
+					"value": 0.0747,
 					"dataSource": {
-						"page": 977,
-						"report": "AnnualReport",
-						"tagName": "eyeballs"
+						"page": 244,
+						"report": "IntegratedReport",
+						"tagName": "web-readiness"
 					},
-					"quality": "Audited",
-					"comment": "connect auxiliary matrix"
+					"quality": "Estimated",
+					"comment": "index online card"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 81256.3,
+					"value": 617472.57,
 					"dataSource": {
-						"page": 513,
-						"report": "SustainabilityReport",
-						"tagName": "portals"
+						"page": 77,
+						"report": "IntegratedReport",
+						"tagName": "initiatives"
 					},
-					"quality": "Incomplete",
-					"comment": "generate solid state port"
+					"quality": "Audited",
+					"comment": "copy cross-platform microchip"
 				},
 				"alignedPercentage": {
-					"value": 0.1583,
+					"quality": "NA"
+				},
+				"eligiblePercentage": {
+					"value": 0.4704,
 					"dataSource": {
-						"page": 306,
+						"page": 577,
 						"report": "IntegratedReport",
 						"tagName": "e-markets"
 					},
-					"quality": "Audited",
-					"comment": "parse auxiliary sensor"
-				},
-				"eligiblePercentage": {
-					"value": 0.2351,
-					"dataSource": {
-						"page": 1003,
-						"report": "ESEFReport",
-						"tagName": "solutions"
-					},
-					"quality": "Reported",
-					"comment": "hack auxiliary protocol"
+					"quality": "Estimated",
+					"comment": "program bluetooth transmitter"
 				}
 			}
 		},

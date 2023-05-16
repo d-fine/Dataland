@@ -139,7 +139,7 @@ function selectANaceCode(fieldName: string): void {
   cy.get(`div[data-test='${fieldName}'] input`).click();
 
   cy.get(".p-treenode-label")
-    .contains("A - Agriculture, hunting and forestry")
+    .contains("A - AGRICULTURE, FORESTRY AND FISHING")
     .parents(".p-treenode-label")
     .last()
     .find("div.p-checkbox-box")
