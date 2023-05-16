@@ -7,5 +7,5 @@ package org.dataland.datalandbackend.model
 data class BaseDataPoint <T>(
     val value: T? = null,
 
-    val dataSource: CompanyReportReference? = null,
+    val dataSource: CompanyReport? = null,
 )
