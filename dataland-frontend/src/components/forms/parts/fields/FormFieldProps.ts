@@ -1,4 +1,5 @@
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { deepCopyObject } from "@/utils/updateObjectUtils";
 
 export const FormFieldProps = {
   name: {
@@ -27,40 +28,34 @@ export const FormFieldProps = {
   },
 };
 
-export const YesNoFormFieldProps = Object.assign(JSON.parse(JSON.stringify(FormFieldProps)) as object, {
+export const YesNoFormFieldProps = Object.assign(deepCopyObject(FormFieldProps), {
   certificateRequiredIfYes: {
     type: Boolean,
     default: false,
   },
 });
-export const FormFieldPropsWithPlaceholder = Object.assign(JSON.parse(JSON.stringify(FormFieldProps)) as object, {
+export const FormFieldPropsWithPlaceholder = Object.assign(deepCopyObject(FormFieldProps), {
   placeholder: {
     type: String,
     default: "",
   },
 });
-export const DateFormFieldProps = Object.assign(JSON.parse(JSON.stringify(FormFieldPropsWithPlaceholder)) as object, {
+export const DateFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder), {
   todayAsMax: {
     type: Boolean,
     default: false,
   },
 });
 
-export const DropdownOptionFormFieldProps = Object.assign(
-  JSON.parse(JSON.stringify(FormFieldPropsWithPlaceholder)) as object,
-  {
-    options: {
-      type: Array as () => Array<DropdownOption> | undefined,
-      required: true,
-    },
-  }
-);
-export const OptionsFormFieldProps = Object.assign(
-  JSON.parse(JSON.stringify(FormFieldPropsWithPlaceholder)) as object,
-  {
-    options: {
-      type: Array as () => Array<typeof Option> | undefined,
-      required: true,
-    },
-  }
-);
+export const DropdownOptionFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder), {
+  options: {
+    type: Array as () => Array<DropdownOption> | undefined,
+    required: true,
+  },
+});
+export const OptionsFormFieldProps = Object.assign(deepCopyObject(FormFieldPropsWithPlaceholder), {
+  options: {
+    type: Array as () => Array<typeof Option> | undefined,
+    required: true,
+  },
+});
