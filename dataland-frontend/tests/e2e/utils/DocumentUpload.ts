@@ -10,10 +10,12 @@ export function uploadAllDocuments(): void {
   cy.task("readdir", documentDirectory).then((fileNames) => {
     (fileNames as string[]).forEach((name: string) => {
       cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        const api = new DocumentControllerApi(new Configuration({ accessToken: token }));
+        cy.task("logMessage", ["Uploading document: " + name]);
         cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
-          console.log("Uploading document using console log: " + name);
-          cy.task("logMessage", ["Uploading document: " + name]);
-          uploadDocumentViaApi(token, bufferObject.data, name).catch((error) => console.log(error));
+          const arr = new Uint8Array(bufferObject.data);
+          const file = new File([arr], name, { type: "application/pdf" });
+          api.postDocument(file).catch((error) => console.log(error));
           delete bufferObject.data;
           cy.wait(2000);
         });
