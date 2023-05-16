@@ -162,6 +162,8 @@ export default defineComponent({
 }
 
 ::v-deep(.p-rowgroup-header) {
+  cursor: pointer;
+
   span {
     font-weight: 500;
   }

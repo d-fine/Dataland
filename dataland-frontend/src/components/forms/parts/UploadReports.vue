@@ -55,7 +55,7 @@
       <!-- List of company reports to upload -->
       <div
         v-for="reportToUpload of reportsToUpload"
-        :key="reportToUpload.fileForReport.name"
+        :key="reportToUpload.file.name"
         class="col-9 formFields"
         data-test="report-to-upload-form"
       >
@@ -111,6 +111,12 @@ import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import ElementsDialog from "@/components/general/ElementsDialog.vue";
+import {
+  calculateSha256HashFromFile,
+  removeFileTypeExtension,
+  ReportToUpload,
+  StoredReport,
+} from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "UploadReports",
@@ -152,6 +158,7 @@ export default defineComponent({
     },
   },
   methods: {
+    removeFileTypeExtension,
     /**
      * Emits event that referenceable files changed
      */
@@ -166,7 +173,7 @@ export default defineComponent({
      * @param event full event object containing the files
      * @param event.files files
      */
-    async handleFilesSelected(event: FileUploadSelectEvent): void {
+    async handleFilesSelected(event: FileUploadSelectEvent): Promise<void> {
       const selectedFilesByUser = event.files as File[];
       if (!this.isThereActuallyANewFileSelected(selectedFilesByUser, this.reportsToUpload)) {
         return;
@@ -178,9 +185,9 @@ export default defineComponent({
         this.$refs.fileUpload.remove(indexOfLastSelectedFile);
         this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
       } else {
-        const reportToUpload = { fileForReport: lastSelectedFile } as ReportToUpload;
-        reportToUpload.reference = await this.calculateSha256HashFromFile(reportToUpload.fileForReport);
-        reportToUpload.fileNameWithoutSuffix = this.removeFileTypeExtension(reportToUpload.fileForReport.name);
+        const reportToUpload = { file: lastSelectedFile } as ReportToUpload;
+        reportToUpload.reference = await calculateSha256HashFromFile(reportToUpload.file);
+        reportToUpload.fileNameWithoutSuffix = removeFileTypeExtension(reportToUpload.file.name);
         this.reportsToUpload.push(reportToUpload);
         this.emitReferenceableReportNamesChangedEvent();
       }
@@ -221,16 +228,15 @@ export default defineComponent({
      */
     async uploadFiles() {
       const documentUploadControllerControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise())
+        assertDefined(this.getKeycloakPromise)()
       ).getDocumentControllerApi();
       for (const reportToUpload of this.reportsToUpload) {
         const fileIsAlreadyInStorage = (
           await documentUploadControllerControllerApi.checkDocument(reportToUpload.reference)
         ).data.documentExists;
         if (!fileIsAlreadyInStorage) {
-          const backendComputedHash = (
-            await documentUploadControllerControllerApi.postDocument(reportToUpload.fileForReport)
-          ).data.documentId;
+          const backendComputedHash = (await documentUploadControllerControllerApi.postDocument(reportToUpload.file))
+            .data.documentId;
           if (reportToUpload.reference !== backendComputedHash) {
             throw Error("Locally computed document hash does not concede with the one received by the upload request!");
           }
@@ -282,48 +288,11 @@ export default defineComponent({
      * @returns a boolean stating if the file name is among the referenceable report names
      */
     isFileNameAlreadyExistingAmongReferenceableReportNames(fullFileName: string): boolean {
-      const fileNameWithoutSuffix = this.removeFileTypeExtension(fullFileName);
+      const fileNameWithoutSuffix = removeFileTypeExtension(fullFileName);
       return this.allReferenceableReportNames.some((reportName) => reportName === fileNameWithoutSuffix);
-    },
-
-    /**
-     *  calculates the hash from a file
-     * @param [file] the file to calculate the hash for
-     * @returns a promise of the hash as string
-     */
-    async calculateSha256HashFromFile(file: File): Promise<string> {
-      const buffer = await file.arrayBuffer();
-      const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
-      return this.toHex(hashBuffer);
-    },
-    /**
-     *  helper to encode a hash of type buffer in hex
-     * @param [buffer] the buffer to encode in hex
-     * @returns  the array as string, hex encoded
-     */
-    toHex(buffer: ArrayBuffer): string {
-      const array = Array.from(new Uint8Array(buffer)); // convert buffer to byte array
-      return array.map((b) => b.toString(16).padStart(2, "0")).join(""); // convert bytes to hex string
-    },
-
-    /**
-     * Removes the file extension after the last dot of the filename.
-     * E.g. someFileName.with.dots.pdf will be converted to someFileName.with.dots
-     * @param fileName the file name
-     * @returns the file name without the file extension after the last dot
-     */
-    removeFileTypeExtension(fileName: string): string {
-      return fileName.split(".").slice(0, -1).join(".");
     },
   },
 });
-interface StoredReport extends CompanyReport {
-  reportName: string;
-}
-interface ReportToUpload extends CompanyReport {
-  fileForReport: File;
-  fileNameWithoutSuffix: string;
-}
 </script>
 
 <style scoped>

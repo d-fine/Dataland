@@ -52,6 +52,7 @@
                         :validation-label="field.validationLabel"
                         :data-test="field.name"
                         @certificateUpdated="updateCertificateList"
+                        :ref="field.name"
                       />
                     </FormKit>
                   </div>
@@ -116,6 +117,7 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/updateObjectUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
+import { CertificateToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -177,6 +179,7 @@ export default defineComponent({
       elementPosition: 0,
       checkCustomInputs,
       updatingData: false,
+      certificates: new Map() as Map<string, CertificateToUpload>,
     };
   },
   computed: {
@@ -202,7 +205,7 @@ export default defineComponent({
   },
   mounted() {
     const dataId = this.route.query.templateDataId;
-    if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+    if (dataId && typeof dataId === "string") {
       void this.loadLKSGData(dataId);
     }
   },
@@ -247,7 +250,10 @@ export default defineComponent({
     async postLkSGData(): Promise<void> {
       this.messageCounter++;
       try {
-        // await (this.$refs.UploadCertificatesForm.uploadFiles as () => Promise<void>)();
+        const documentControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getDocumentControllerApi();
+        await uploadFiles(Array.from(this.certificates.values()), documentControllerApi);
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
@@ -280,10 +286,14 @@ export default defineComponent({
       }
     },
 
-    updateCertificateList(files: File[]) {
-      this.certificateList;
+    /**
+     * updates the list of certificates that were uploaded in the corresponding formfields on change
+     * @param componentName the name of the component as a key
+     * @param certificate the certificate as combined object of reference id and file content
+     */
+    updateCertificateList(componentName: string, certificate: CertificateToUpload) {
+      this.certificates.set(componentName, certificate);
     },
-    uploadFiles() {},
   },
 });
 </script>
