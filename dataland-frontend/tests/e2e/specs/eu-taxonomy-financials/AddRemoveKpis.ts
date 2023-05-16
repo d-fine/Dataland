@@ -3,7 +3,7 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import {
   companyViaApiAndEuTaxonomyDataForFinancialsViaForm,
-  fillEligibilityKpis
+  fillEligibilityKpis,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
@@ -48,7 +48,6 @@ describeIf(
  * @param data the data to fill the form with
  */
 function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
-
   dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
   dateFormElement.validateDay("fiscalYearEnd", 12);
 
@@ -58,7 +57,8 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
   }
 
   cy.get(
-    `input[name="fiscalYearDeviation"][value=${data.fiscalYearDeviation ? data.fiscalYearDeviation.toString() : "Deviation"
+    `input[name="fiscalYearDeviation"][value=${
+      data.fiscalYearDeviation ? data.fiscalYearDeviation.toString() : "Deviation"
     }]`
   ).check();
 
@@ -69,7 +69,6 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
   cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
-
 
   // Adding and deleting KPIs
   // cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
@@ -86,8 +85,6 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
   //   .first()
   //   .click();
 
-
-
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
     .get("div.p-multiselect-panel")
@@ -98,12 +95,11 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
 
   cy.get('[data-test="addKpisButton"]').click({ force: true });
 
-  cy.get('[data-test="removeSectionButton"]')
-    .each(($el, index) => {
-      if (index > 0) {
-        cy.wrap($el).click({ force: true });
-      }
-    });
+  cy.get('[data-test="removeSectionButton"]').each(($el, index) => {
+    if (index > 0) {
+      cy.wrap($el).click({ force: true });
+    }
+  });
 
   // cy.get('[data-test="addKpisButton"]').click({ force: true });
   // cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
@@ -120,8 +116,6 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
 
   // cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
   // cy.get('[data-test="removeSectionButton"]').click({ force: true });
-
-
 
   // fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
   fillEligibilityKpis("investmentFirmKpis", data.eligibilityKpis?.InvestmentFirm);

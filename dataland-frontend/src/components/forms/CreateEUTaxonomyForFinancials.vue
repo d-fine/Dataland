@@ -585,7 +585,7 @@ export default defineComponent({
         );
         await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
 
-        const formInputsModelToSend = convertValuesFromPercentagesToDecimals(clonedFormInputsModel as ObjectType);
+        const formInputsModelToSend = convertValuesFromPercentagesToDecimals(clonedFormInputsModel);
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getEuTaxonomyDataForFinancialsControllerApi();
@@ -615,20 +615,20 @@ export default defineComponent({
       this.confirmedSelectedFinancialServiceOptions = filtered;
       this.selectedFinancialServiceOptions = filtered;
 
-      // const clonedFormInputsModel = Object.assign({}, this.formInputsModel);
+      const clonedFormInputsModel = Object.assign({}, this.formInputsModel);
 
-      // if (clonedFormInputsModel.data?.eligibilityKpis) {
-      //   const kpiModelType = Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType).find(
-      //     (entry) => entry[0] === value
-      //   );
-      //   if (kpiModelType) {
-      //     delete clonedFormInputsModel.data?.eligibilityKpis[kpiModelType[1]];
-      //     if(Object.keys(clonedFormInputsModel.data?.eligibilityKpis).length === 0){
-      //       delete clonedFormInputsModel.data?.eligibilityKpis;
-      //     }
-      //   }
-      //   updateObject(this.formInputsModel, clonedFormInputsModel);
-      // }
+      if (clonedFormInputsModel.data?.eligibilityKpis) {
+        const kpiModelType = Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType).find(
+          (entry) => entry[0] === value
+        );
+        if (kpiModelType) {
+          delete clonedFormInputsModel.data?.eligibilityKpis[kpiModelType[1]];
+          if (Object.keys(clonedFormInputsModel.data?.eligibilityKpis).length === 0) {
+            delete clonedFormInputsModel.data?.eligibilityKpis;
+          }
+        }
+        updateObject(this.formInputsModel, clonedFormInputsModel);
+      }
 
       this.onThisPageLinks = this.onThisPageLinks.filter((el: { label: string; value: string }) => el.value !== value);
     },
