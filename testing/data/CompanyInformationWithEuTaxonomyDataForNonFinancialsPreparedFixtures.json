@@ -2,350 +2,320 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Defneburg",
-			"headquartersPostalCode": "78039",
-			"sector": "interfaces",
+			"headquarters": "Veradorf",
+			"sector": "metrics",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "6q3o3q6ykk8xle4"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "ngn5kq7pa"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "dr1t3h1y180i"
-				},
-				{
 					"identifierType": "Lei",
-					"identifierValue": "l8t6t8gpsmjmpbiiuim6"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "iuexfaybdk"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "fnz9nck"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "isikb7ay1"
+					"identifierValue": "4w3pgq3xaqvqcsrdko0a"
 				}
 			],
-			"countryCode": "BE",
-			"companyAlternativeNames": [
-				"Anggreny, Engelen und Rach",
-				"Gollnow, Jarets und Zach"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
+			"countryCode": "SE",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://verbrieft-zionismus.de",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-12-20",
-			"numberOfEmployees": 34481,
+			"fiscalYearEnd": "2023-03-09",
+			"numberOfEmployees": 43037,
 			"referencedReports": {
-				"AnnualReport": {
+				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-08-25",
-					"currency": "PGK"
+					"currency": "EUR"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "IRR"
+					"isGroupLevel": "NA",
+					"currency": "JPY"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "SZL"
+					"reportDate": "2023-02-01",
+					"currency": "CVE"
+				}
+			},
+			"assurance": {
+				"assurance": "ReasonableAssurance",
+				"provider": "Dück, Bedewitz und Konow"
+			},
+			"scopeOfEntities": "No",
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"eligiblePercentage": {
+					"value": 0.5836,
+					"dataSource": {
+						"page": 309,
+						"report": "ESEFReport",
+						"tagName": "methodologies"
+					},
+					"quality": "Incomplete",
+					"comment": "hack auxiliary interface"
+				}
+			},
+			"capex": {
+				"eligiblePercentage": {
+					"value": 0.8655,
+					"dataSource": {
+						"page": 927,
+						"report": "SustainabilityReport",
+						"tagName": "infomediaries"
+					},
+					"quality": "Incomplete",
+					"comment": "compress mobile sensor"
+				}
+			},
+			"revenue": {
+				"eligiblePercentage": {
+					"value": 0.4912,
+					"dataSource": {
+						"page": 667,
+						"report": "IntegratedReport",
+						"tagName": "interfaces"
+					},
+					"quality": "Audited",
+					"comment": "compress open-source application"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Ost Kaanburg",
+			"sector": "e-commerce",
+			"identifiers": [
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "j3e3w7p"
+				}
+			],
+			"countryCode": "CH",
+			"companyAlternativeNames": [
+				"Naumann, Venghaus und Grotke",
+				"Rädler, Gombert und Schmitt"
+			],
+			"website": "http://beseelt-stuhl.org",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-09-28",
+			"numberOfEmployees": 43066,
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-02-23",
+					"currency": "XOF"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "WST"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"reportDate": "2023-02-13",
+					"currency": "XFU"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"currency": "XCD"
 				}
 			},
 			"assurance": {
 				"assurance": "None"
 			},
-			"activityLevelReporting": "No",
-			"opex": {
-				"eligiblePercentage": {
-					"value": 0.3441,
-					"quality": "Incomplete"
-				}
-			},
-			"capex": {
-				"eligiblePercentage": {
-					"value": 0.3098,
-					"dataSource": {
-						"page": 269,
-						"report": "SustainabilityReport",
-						"tagName": "niches"
-					},
-					"quality": "Reported",
-					"comment": "reboot multi-byte application"
-				}
-			},
-			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.4064,
-					"dataSource": {
-						"page": 174,
-						"report": "IntegratedReport",
-						"tagName": "solutions"
-					},
-					"quality": "Reported",
-					"comment": "transmit back-end driver"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Bruderland",
-			"headquartersPostalCode": "34272",
-			"sector": "e-commerce",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "kgv5t9h97ie25jx"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "6rf4h4wvh"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "4zfq49joy3mo"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "zu5q3ziw43u7cpzuh2eb"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "7mv3ihxq20"
-				}
-			],
-			"countryCode": "GA",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "http://erregend-länge.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-11-30",
-			"numberOfEmployees": 71763,
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-06-09",
-					"currency": "XPD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-12-11",
-					"currency": "CUC"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Schötz UG"
-			},
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "NA",
 			"opex": {
 				"totalAmount": {
-					"value": 303796.02,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.283,
+					"value": 135899.56,
 					"dataSource": {
-						"page": 344,
-						"report": "SustainabilityReport",
-						"tagName": "synergies"
-					},
-					"quality": "Audited",
-					"comment": "input optical feed"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 589351.47,
-					"dataSource": {
-						"page": 83,
-						"report": "SustainabilityReport",
-						"tagName": "users"
-					},
-					"quality": "Audited",
-					"comment": "bypass auxiliary bus"
-				},
-				"eligiblePercentage": {
-					"value": 0.8328,
-					"dataSource": {
-						"page": 266,
-						"report": "IntegratedReport",
-						"tagName": "technologies"
-					},
-					"quality": "Reported",
-					"comment": "hack online bus"
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 893993.06,
-					"dataSource": {
-						"page": 965,
-						"report": "IntegratedReport",
-						"tagName": "portals"
+						"page": 567,
+						"report": "ESEFReport",
+						"tagName": "channels"
 					},
 					"quality": "Estimated",
-					"comment": "parse virtual program"
+					"comment": "compress solid state application"
 				},
 				"eligiblePercentage": {
-					"value": 0.9755,
+					"value": 0.7591,
 					"quality": "Estimated"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 237217.24,
+					"quality": "Incomplete"
+				},
+				"eligiblePercentage": {
+					"value": 0.798,
+					"dataSource": {
+						"page": 359,
+						"report": "SustainabilityReport",
+						"tagName": "networks"
+					},
+					"quality": "Incomplete",
+					"comment": "index online array"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 710897.34,
+					"dataSource": {
+						"page": 924,
+						"report": "AnnualReport",
+						"tagName": "architectures"
+					},
+					"quality": "Estimated",
+					"comment": "connect online pixel"
+				},
+				"eligiblePercentage": {
+					"value": 0.8419,
+					"dataSource": {
+						"page": 865,
+						"report": "AnnualReport",
+						"tagName": "portals"
+					},
+					"quality": "Reported",
+					"comment": "quantify open-source application"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Bad Wilhelmburg",
-			"headquartersPostalCode": "06639",
-			"sector": "synergies",
+			"headquarters": "Ost Sami",
+			"headquartersPostalCode": "44166",
+			"sector": "content",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "ehmt6iig8n233p1"
+					"identifierValue": "thxwoabp3pt28xr"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "03q0hredk"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "6j7altv9jgld"
+					"identifierValue": "l851nfeff"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "2i9czms0lyjfl6y4xckh"
+					"identifierValue": "cl9mta5ajpmcyhhypnjp"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "0dengkx0g6"
+					"identifierValue": "ogo21ehzs3"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "3r97nzz"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "j778lnhu9"
+					"identifierValue": "qmq5nrr"
 				}
 			],
-			"countryCode": "KM",
-			"companyAlternativeNames": [],
-			"website": "https://geehrt-taubheit.info",
+			"countryCode": "JM",
+			"companyAlternativeNames": [
+				"Bormann, Ehmann und Huke",
+				"Hartlieb, Schindzielorz und Lohse"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://seriös-haus.name",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-04-21",
-			"numberOfEmployees": 29538,
+			"fiscalYearDeviation": "Deviation",
+			"numberOfEmployees": 41806,
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "LimitedAssurance"
 			},
-			"scopeOfEntities": "No",
 			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 92039.01,
+					"value": 418925.46,
 					"dataSource": {
-						"page": 719,
-						"report": "IntegratedReport",
-						"tagName": "e-services"
-					},
-					"quality": "Audited",
-					"comment": "synthesize auxiliary microchip"
-				},
-				"alignedPercentage": {
-					"value": 0.384,
-					"quality": "Incomplete"
-				},
-				"eligiblePercentage": {
-					"value": 0.7363,
-					"dataSource": {
-						"page": 984,
-						"report": "IntegratedReport",
-						"tagName": "methodologies"
-					},
-					"quality": "Audited",
-					"comment": "compress solid state transmitter"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 175218.26,
-					"dataSource": {
-						"page": 745,
-						"report": "IntegratedReport",
-						"tagName": "platforms"
-					},
-					"quality": "Audited",
-					"comment": "index multi-byte bandwidth"
-				},
-				"alignedPercentage": {
-					"value": 0.6237,
-					"dataSource": {
-						"page": 827,
-						"report": "IntegratedReport",
-						"tagName": "web-readiness"
+						"page": 239,
+						"report": "SustainabilityReport",
+						"tagName": "solutions"
 					},
 					"quality": "Incomplete",
-					"comment": "bypass optical firewall"
-				},
-				"eligiblePercentage": {
-					"value": 0.0747,
-					"dataSource": {
-						"page": 244,
-						"report": "IntegratedReport",
-						"tagName": "web-readiness"
-					},
-					"quality": "Estimated",
-					"comment": "index online card"
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 617472.57,
-					"dataSource": {
-						"page": 77,
-						"report": "IntegratedReport",
-						"tagName": "initiatives"
-					},
-					"quality": "Audited",
-					"comment": "copy cross-platform microchip"
+					"comment": "reboot open-source driver"
 				},
 				"alignedPercentage": {
 					"quality": "NA"
 				},
 				"eligiblePercentage": {
-					"value": 0.4704,
+					"value": 0.9471,
 					"dataSource": {
-						"page": 577,
+						"page": 1197,
+						"report": "SustainabilityReport",
+						"tagName": "action-items"
+					},
+					"quality": "Incomplete",
+					"comment": "quantify back-end hard drive"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 159674.64,
+					"dataSource": {
+						"page": 588,
+						"report": "SustainabilityReport",
+						"tagName": "architectures"
+					},
+					"quality": "Audited",
+					"comment": "program solid state feed"
+				},
+				"alignedPercentage": {
+					"value": 0.4586,
+					"dataSource": {
+						"page": 161,
+						"report": "IntegratedReport",
+						"tagName": "synergies"
+					},
+					"quality": "Audited",
+					"comment": "back up virtual pixel"
+				},
+				"eligiblePercentage": {
+					"quality": "NA"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 619916.54,
+					"dataSource": {
+						"page": 728,
+						"report": "IntegratedReport",
+						"tagName": "ROI"
+					},
+					"quality": "Audited",
+					"comment": "quantify digital capacitor"
+				},
+				"alignedPercentage": {
+					"value": 0.5424,
+					"dataSource": {
+						"page": 734,
+						"report": "IntegratedReport",
+						"tagName": "relationships"
+					},
+					"quality": "Audited",
+					"comment": "program wireless firewall"
+				},
+				"eligiblePercentage": {
+					"value": 0.7073,
+					"dataSource": {
+						"page": 1170,
 						"report": "IntegratedReport",
 						"tagName": "e-markets"
 					},
-					"quality": "Estimated",
-					"comment": "program bluetooth transmitter"
+					"quality": "Reported",
+					"comment": "connect mobile bus"
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	}
 ]
