@@ -31,4 +31,5 @@ if [[ $CYPRESS_TEST_GROUP -eq 0 ]]; then
   ./gradlew :dataland-e2etests:test --no-daemon --stacktrace
 else
   npm --prefix ./dataland-frontend run testpipeline
+  ls -R /app/dataland-frontend/tests/e2e/cypress_downloads/
 fi
