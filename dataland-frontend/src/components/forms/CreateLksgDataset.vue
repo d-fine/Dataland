@@ -111,7 +111,9 @@ import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsF
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
+import NonNegativeNumberFormField from "@/components/forms/parts/fields/NonNegativeNumberFormField.vue";
+import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
+import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/updateObjectUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
 
@@ -123,8 +125,6 @@ export default defineComponent({
   },
   name: "CreateLksgDataset",
   components: {
-    ProductionSiteFormField,
-
     SubmitButton,
     SubmitSideBar,
     UploadFormHeader,
@@ -145,6 +145,9 @@ export default defineComponent({
     AddressFormField,
     RadioButtonsFormField,
     YesNoNaFormField,
+    NonNegativeNumberFormField,
+    PercentageFormField,
+    ProductionSitesFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -153,15 +156,6 @@ export default defineComponent({
   data() {
     return {
       formId: "createLkSGForm",
-      isYourCompanyManufacturingCompany: "No",
-      listOfProductionSites: [
-        {
-          id: 0,
-          listOfGoodsOrServices: [] as string[],
-          allGoodsOrServicesAsString: "",
-        },
-      ],
-      idCounter: 0,
       waitingForData: false,
       dataDate: undefined as Date | undefined,
       companyAssociatedLksgData: {} as CompanyAssociatedDataLksgData,
@@ -218,20 +212,6 @@ export default defineComponent({
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
       const lksgDataset = dataResponse.data;
-      const numberOfProductionSites = lksgDataset.data?.general?.productionSpecific?.listOfProductionSites?.length ?? 0;
-      if (numberOfProductionSites > 0) {
-        this.isYourCompanyManufacturingCompany = "Yes";
-        const productionSites = assertDefined(lksgDataset.data?.general?.productionSpecific?.listOfProductionSites);
-        this.listOfProductionSites = [];
-        this.idCounter = numberOfProductionSites;
-        for (let i = 0; i < numberOfProductionSites; i++) {
-          this.listOfProductionSites.push({
-            id: i,
-            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices ?? [],
-            allGoodsOrServicesAsString: "",
-          });
-        }
-      }
       const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
@@ -251,15 +231,6 @@ export default defineComponent({
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
         this.$formkit.reset(this.formId);
-        this.isYourCompanyManufacturingCompany = "No";
-        this.listOfProductionSites = [
-          {
-            id: 0,
-            listOfGoodsOrServices: [],
-            allGoodsOrServicesAsString: "",
-          },
-        ];
-        this.idCounter = 0;
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
