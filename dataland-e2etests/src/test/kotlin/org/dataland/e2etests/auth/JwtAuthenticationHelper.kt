@@ -40,7 +40,7 @@ class JwtAuthenticationHelper {
 
     private fun requestToken(username: String, password: String): String {
         val response = client.newCall(buildTokenRequest(username, password)).execute()
-        if (!response.isSuccessful) throw IllegalArgumentException("Token request failed, response is: $response")
+        require(response.isSuccessful) { "Token request failed, response is: $response" }
         val responseBodyAsJsonString = response.body!!.string()
         return getSingleValueFromJsonStringForKey("access_token", responseBodyAsJsonString)!!
     }
