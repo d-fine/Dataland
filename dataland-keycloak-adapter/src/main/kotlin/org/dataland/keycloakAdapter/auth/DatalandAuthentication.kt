@@ -23,7 +23,7 @@ sealed class DatalandAuthentication : Authentication {
          * linked to the current thread
          */
         fun fromContextOrNull(): DatalandAuthentication? {
-           return SecurityContextHolder.getContext().authentication as? DatalandAuthentication
+            return SecurityContextHolder.getContext().authentication as? DatalandAuthentication
         }
     }
 
