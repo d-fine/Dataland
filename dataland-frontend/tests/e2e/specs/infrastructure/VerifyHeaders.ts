@@ -67,22 +67,22 @@ describe("As a developer, I want to ensure that security relevant headers are se
   });
 
   describeIf(
-      "Check Cache headers in the CD environment",
-      {
-        executionEnvironments: ["developmentCd", "previewCd"],
-        dataEnvironments: ["realData", "fakeFixtures"],
-      },
-      () => {
-          it("test for frontend response", () => {
-              cy.request("GET", `${getBaseUrl()}/`).then((response): void => {
-                  expect(response.headers).to.have.property("cache-control", "no-cache, no-store, max-age=0, must-revalidate");
-              });
-              cy.request("GET", `${getBaseUrl()}/static/site.webmanifest`).then((response): void => {
-                  expect(response.headers).to.have.property("cache-control", "public, max-age=31536000");
-              });
-          });
-      }
-   );
+    "Check Cache headers in the CD environment",
+    {
+      executionEnvironments: ["developmentCd", "previewCd"],
+      dataEnvironments: ["realData", "fakeFixtures"],
+    },
+    () => {
+      it("test for frontend response", () => {
+        cy.request("GET", `${getBaseUrl()}/`).then((response): void => {
+          expect(response.headers).to.have.property("cache-control", "no-cache, no-store, max-age=0, must-revalidate");
+        });
+        cy.request("GET", `${getBaseUrl()}/static/site.webmanifest`).then((response): void => {
+          expect(response.headers).to.have.property("cache-control", "public, max-age=31536000");
+        });
+      });
+    }
+  );
 
   it("test for backend response", () => {
     cy.request("GET", `${getBaseUrl()}/api/actuator/health`).then((response): void => {
