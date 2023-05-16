@@ -104,6 +104,8 @@ import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
+import NonNegativeNumberFormField from "@/components/forms/parts/fields/NonNegativeNumberFormField.vue";
+import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
@@ -135,6 +137,8 @@ export default defineComponent({
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
+    NonNegativeNumberFormField,
+    PercentageFormField,
     DateFormField,
     SingleSelectFormField,
     MultiSelectFormField,

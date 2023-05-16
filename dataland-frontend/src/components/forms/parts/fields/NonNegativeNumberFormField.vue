@@ -5,7 +5,7 @@
       type="text"
       :name="name"
       :validation-label="validationLabel ?? displayName"
-      :validation="`number|${validation}`"
+      :validation="`number|min:0|${validation}`"
       :placeholder="placeholder"
       inner-class="short"
     />
@@ -19,7 +19,7 @@ import { FormKit } from "@formkit/vue";
 import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
-  name: "NumberFormField",
+  name: "NonNegativeNumberFormField",
   components: { FormKit, UploadFormHeader },
   props: FormFieldPropsWithPlaceholder,
 });

@@ -60,7 +60,7 @@ export const lksgDataModel = [
             description:
               "What is the total number of employees (including temporary workers with assignment duration >6 months)?",
             label: "Number of Employees",
-            component: "NumberFormField",
+            component: "NonNegativeNumberFormField",
             required: false,
           },
           {
@@ -392,7 +392,7 @@ export const lksgDataModel = [
             name: "grievanceMechanismComplaintsNumber",
             description: "How many complaints have been received?",
             label: "Grievance Mechanism Complaints Number",
-            component: "NumberFormField",
+            component: "NonNegativeNumberFormField",
             required: false,
           },
           {
@@ -1290,7 +1290,7 @@ export const lksgDataModel = [
             name: "representedEmployees",
             description: "What is your percentage of employees who are represented by trade unions?",
             label: "Represented Employees",
-            component: "NumberFormField",
+            component: "PercentageFormField",
             required: false,
           },
           {

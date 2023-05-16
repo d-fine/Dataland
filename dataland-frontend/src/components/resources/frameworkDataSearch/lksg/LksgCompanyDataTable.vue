@@ -41,28 +41,28 @@
         :key="reportingPeriod.dataId"
       >
         <template #body="{ data }">
-          <a
-            v-if="
-              Array.isArray(data[reportingPeriod.dataId]) &&
-              (data[reportingPeriod.dataId].length > 1 ||
-                data[reportingPeriod.dataId].some((el) => typeof el === 'object'))
-            "
-            @click="openModalAndDisplayValuesInSubTable(data[reportingPeriod.dataId], data.kpiLabel, data.kpiKey)"
-            class="link"
-            >Show "{{ data.kpiLabel }}"
-            <em class="material-icons" aria-hidden="true" title=""> dataset </em>
-          </a>
-          <span v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId]?.value">
-            {{ data[reportingPeriod.dataId].value }}
-          </span>
-
-          <span v-else
-            >{{
-              Array.isArray(data[reportingPeriod.dataId])
-                ? data[reportingPeriod.dataId][0]
-                : data[reportingPeriod.dataId]
-            }}
-          </span>
+          <template v-if="data[reportingPeriod.dataId] !== undefined && data[reportingPeriod.dataId] !== null">
+            <template v-if="Array.isArray(data[reportingPeriod.dataId])">
+              <a
+                v-if="
+                  data[reportingPeriod.dataId].length > 1 ||
+                  data[reportingPeriod.dataId].some((el) => typeof el === 'object')
+                "
+                @click="openModalAndDisplayValuesInSubTable(data[reportingPeriod.dataId], data.kpiLabel, data.kpiKey)"
+                class="link"
+                >Show "{{ data.kpiLabel }}"
+                <em class="material-icons" aria-hidden="true" title=""> dataset </em>
+              </a>
+              <span v-else> data[reportingPeriod.dataId][0] </span>
+            </template>
+            <span v-else-if="data.kpiFormFieldComponent == 'PercentageFormField'">
+              {{ data[reportingPeriod.dataId] }} %</span
+            >
+            <span v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId]?.value">
+              {{ data[reportingPeriod.dataId].value }}
+            </span>
+            <span v-else>{{ data[reportingPeriod.dataId] }} </span>
+          </template>
         </template>
       </Column>
 
