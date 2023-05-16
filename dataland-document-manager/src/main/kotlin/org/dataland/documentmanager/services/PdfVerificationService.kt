@@ -67,7 +67,7 @@ class PdfVerificationService {
      * We allow alphanumeric characters, hyphens, spaces, brackets, underscores and periods
      * up to a maximum length of 254 characters in our filenames
      */
-    private val allowedFilenameRegex = Regex("^[\\w\\-. ()_]{1,254}\$")
+    private val allowedFilenameRegex = Regex("^[\\w\\-. ()]{1,254}\$")
 
     private fun checkThatDocumentNameIsValid(name: String, correlationId: String) {
         if (!allowedFilenameRegex.matches(name)) {
