@@ -62,8 +62,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
   it("test for frontend response", () => {
     cy.request("GET", `${getBaseUrl()}/`).then((response): void => {
       checkCommonHeaders(response);
-      //TODO: check no-cache header
-      expect(response.headers).to.have.property("x-frame-options", "sameorigin");
+      expect(response.headers).to.have.property("cache-control", "no-cache, no-store, max-age=0, must-revalidate");
       expect(response.headers).to.have.property("x-frame-options", "sameorigin");
     });
   });
@@ -71,8 +70,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
   it("test for frontend response", () => {
     cy.request("GET", `${getBaseUrl()}/static/site.webmanifest`).then((response): void => {
       checkCommonHeaders(response);
-      //TODO: check cache header
-      expect(response.headers).to.have.property("x-frame-options", "sameorigin");
+      expect(response.headers).to.have.property("cache-control", "public");
       expect(response.headers).to.have.property("x-frame-options", "sameorigin");
     });
   });
