@@ -17,7 +17,11 @@
       ]"
       @input="setCertificateRequired($event)"
     />
-    <UploadCertificatesForm v-show="certificateRequiredIfYes && yesSelected" />
+    <UploadCertificatesForm
+      v-show="certificateRequiredIfYes && yesSelected"
+      ref="uploadCertificatesForm"
+      @certificatesChanged="emitCertificatesUpdatedEvent"
+    />
   </div>
 </template>
 
@@ -33,15 +37,16 @@ export default defineComponent({
   components: { RadioButtonsFormElement, UploadFormHeader, UploadCertificatesForm },
   inheritAttrs: false,
   props: YesNoFormFieldProps,
-  //watch: documentrequiredIfYes(){
-  //  if yes && certificateRequiredIfYes == true {
-  //    documentRequired = true;
-  //  }
-  //}
   data() {
     return {
       yesSelected: false,
     };
+  },
+  emits: ["certificateUpdated"],
+  watch: {
+    yesSelected() {
+      this.deleteCertificates();
+    },
   },
   methods: {
     /**
@@ -50,6 +55,23 @@ export default defineComponent({
      */
     setCertificateRequired(event: Event) {
       this.yesSelected = (event as unknown as string) === "Yes";
+    },
+
+    deleteCertificates() {
+      if (!this.yesSelected) {
+        const fileNumber = this.$refs.uploadCertificatesForm.$refs.fileUpload.files.length as number;
+        if (fileNumber > 0) {
+          this.$refs.uploadCertificatesForm.$refs.fileUpload.files.splice(0, fileNumber);
+          this.$refs.uploadCertificatesForm.removeAllCertificates();
+        }
+      }
+    },
+
+    /**
+     * Emits event that selected files changed
+     */
+    emitCertificatesUpdatedEvent() {
+      this.$emit("certificateUpdated", this.$refs.uploadCertificatesForm.certificatesToUpload);
     },
   },
 });

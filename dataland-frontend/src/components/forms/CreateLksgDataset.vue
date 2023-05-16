@@ -51,6 +51,7 @@
                         :validation="field.validation"
                         :validation-label="field.validationLabel"
                         :data-test="field.name"
+                        @certificateUpdated="updateCertificateList"
                       />
                     </FormKit>
                   </div>
@@ -278,6 +279,11 @@ export default defineComponent({
         this.postLkSGDataProcessed = true;
       }
     },
+
+    updateCertificateList(files: File[]) {
+      this.certificateList;
+    },
+    uploadFiles() {},
   },
 });
 </script>

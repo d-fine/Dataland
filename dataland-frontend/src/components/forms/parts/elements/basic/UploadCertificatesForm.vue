@@ -8,6 +8,7 @@
       :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
       :auto="false"
+      @select="handleFilesSelected"
     >
       <template #header="{ chooseCallback }">
         <div class="flex flex-wrap justify-content-between align-items-center" style="padding: 0; margin-left: 0">
@@ -34,7 +35,7 @@
             <PrimeButton
               data-test="files-to-upload-remove"
               icon="pi pi-times"
-              @click="removeReportFromReportsToUpload(removeFileCallback, index)"
+              @click="removeCertificateFromCertificatesToUpload(removeFileCallback, index)"
               class="p-button-rounded"
             />
           </div>
@@ -54,7 +55,6 @@ import { CompanyReport } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import ElementsDialog from "@/components/general/ElementsDialog.vue";
 
 export default defineComponent({
   name: "UploadCertificatesForm",
@@ -62,7 +62,7 @@ export default defineComponent({
     PrimeButton,
     FileUpload,
   },
-  emits: ["referenceableReportNamesChanged"],
+  emits: ["certificatesChanged"],
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -73,7 +73,7 @@ export default defineComponent({
       formsDatesFilesToUpload: [] as string[] | undefined,
       formatBytesUserFriendly,
       DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES: DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-      reportsToUpload: [] as ReportToUpload[],
+      certificatesToUpload: [] as CertificateToUpload[],
       storedReports: [] as StoredReport[],
     };
   },
@@ -84,7 +84,9 @@ export default defineComponent({
   },
   computed: {
     allReferenceableReportNames(): string[] {
-      const namesOfFilesToUpload = this.reportsToUpload.map((reportToUpload) => reportToUpload.fileNameWithoutSuffix);
+      const namesOfFilesToUpload = this.certificatesToUpload.map(
+        (certificateToUpload) => certificateToUpload.fileNameWithoutSuffix
+      );
       const namesOfStoredReports = this.storedReports.map((storedReport) => storedReport.reportName);
       return namesOfFilesToUpload.concat(namesOfStoredReports);
     },
@@ -96,67 +98,54 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Emits event that referenceable files changed
-     */
-    emitReferenceableReportNamesChangedEvent() {
-      this.$emit("referenceableReportNamesChanged", this.allReferenceableReportNames);
-    },
-    /**
-     * Handles selection of a file by the user. First it checks if the file name is already taken.
-     * If yes, the selected file is removed again and a popup with an error message is shown.
-     * Else the file is added to the reports that shall be uploaded, then the sha256 hashes are calculated and added
+     * Handles selection of a file by the user.
+     * The file is added to the reports that shall be uploaded, then the sha256 hashes are calculated and added
      * to the respective files.
      * @param event full event object containing the files
      * @param event.files files
      */
     async handleFilesSelected(event: FileUploadSelectEvent): Promise<void> {
       const selectedFilesByUser = event.files as File[];
-      if (!this.isThereActuallyANewFileSelected(selectedFilesByUser, this.reportsToUpload)) {
-        return;
-      }
-      const indexOfLastSelectedFile = selectedFilesByUser.length - 1;
-      const lastSelectedFile = selectedFilesByUser[indexOfLastSelectedFile];
-      if (this.isFileNameAlreadyExistingAmongReferenceableReportNames(lastSelectedFile.name)) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        this.$refs.fileUpload.remove(indexOfLastSelectedFile);
-        this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
-      } else {
-        const reportToUpload = { fileForReport: lastSelectedFile } as ReportToUpload;
-        reportToUpload.reference = await this.calculateSha256HashFromFile(reportToUpload.fileForReport);
-        reportToUpload.fileNameWithoutSuffix = this.removeFileTypeExtension(reportToUpload.fileForReport.name);
-        this.reportsToUpload.push(reportToUpload);
-        this.emitReferenceableReportNamesChangedEvent();
+      if (this.isThereActuallyANewFileSelected(selectedFilesByUser, this.certificatesToUpload)) {
+        const lastSelectedFile = selectedFilesByUser[selectedFilesByUser.length - 1];
+        const certificateToUpload = { file: lastSelectedFile } as CertificateToUpload;
+        certificateToUpload.reference = await this.calculateSha256HashFromFile(certificateToUpload.file);
+        certificateToUpload.fileNameWithoutSuffix = this.removeFileTypeExtension(certificateToUpload.file.name);
+        this.certificatesToUpload.push(certificateToUpload);
+        this.emitCertificatesChangedEvent();
       }
     },
     /**
-     * Checks if there was actually a file added by the user that was not filtered
-     * out by the FileUpload component.
-     * @param filesCurrentlySelectedByUser the files currently selected by the user
-     * @param previouslySelectedReports the reports that have already been selected before the last change
-     * @returns true if there is actually a file added by the user
+     * Emits event that selected certificates changed
      */
-    isThereActuallyANewFileSelected(filesCurrentlySelectedByUser: File[], previouslySelectedReports: ReportToUpload[]) {
-      return filesCurrentlySelectedByUser.length != previouslySelectedReports.length;
+    emitCertificatesChangedEvent() {
+      this.$emit("certificatesChanged", this.certificatesToUpload);
     },
+
     /**
-     * Remove report from files uploaded
-     * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
+     * Remove certificate from files uploaded
+     * @param fileRemoveCallback Callback function removes certificate from the ones selected in formKit
      * @param indexOfFileToRemove index number of the file to remove
+     * @param deleteCount the number of files to delete
      */
-    removeReportFromReportsToUpload(fileRemoveCallback: (x: number) => void, indexOfFileToRemove: number) {
+    removeCertificateFromCertificatesToUpload(
+      fileRemoveCallback: (x: number) => void,
+      indexOfFileToRemove: number,
+      deleteCount = 1
+    ) {
       fileRemoveCallback(indexOfFileToRemove);
-      this.reportsToUpload.splice(indexOfFileToRemove, 1);
-      this.emitReferenceableReportNamesChangedEvent();
+      this.certificatesToUpload.splice(indexOfFileToRemove, deleteCount);
+      this.emitCertificatesChangedEvent();
     },
+
     /**
-     * When the X besides existing reports is clicked this function should be called and
-     * removes the corresponding report from the list
-     * @param indexOfFileToRemove Index of the report that shall no longer be referenced by the dataset
+     * removes all certificates at once, is invoked by a yes no field if it is resetted to "No"
      */
-    removeReportFromStoredReports(indexOfFileToRemove: number) {
-      this.storedReports.splice(indexOfFileToRemove, 1);
-      this.emitReferenceableReportNamesChangedEvent();
+    removeAllCertificates() {
+      this.certificatesToUpload = [];
+      this.emitCertificatesChangedEvent();
     },
+
     /**
      * Uploads the filed that are to be uploaded if they are not already available to dataland
      */
@@ -164,15 +153,15 @@ export default defineComponent({
       const documentUploadControllerControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
       ).getDocumentControllerApi();
-      for (const reportToUpload of this.reportsToUpload) {
+      for (const certificateToUpload of this.certificatesToUpload) {
         const fileIsAlreadyInStorage = (
-          await documentUploadControllerControllerApi.checkDocument(reportToUpload.reference)
+          await documentUploadControllerControllerApi.checkDocument(certificateToUpload.reference)
         ).data.documentExists;
         if (!fileIsAlreadyInStorage) {
           const backendComputedHash = (
-            await documentUploadControllerControllerApi.postDocument(reportToUpload.fileForReport)
+            await documentUploadControllerControllerApi.postDocument(certificateToUpload.file)
           ).data.documentId;
-          if (reportToUpload.reference !== backendComputedHash) {
+          if (certificateToUpload.reference !== backendComputedHash) {
             throw Error("Locally computed document hash does not concede with the one received by the upload request!");
           }
         }
@@ -192,37 +181,21 @@ export default defineComponent({
             isGroupLevel: this.referencedReportsForPrefill[key].isGroupLevel,
           });
         }
-        this.emitReferenceableReportNamesChangedEvent();
+        this.emitCertificatesChangedEvent();
       }
     },
     /**
-     * Opens a modal and explains the user that the selected file has a name for which a report already exists.
-     * @param nameOfFileThatHasDuplicate contains the file name which caused the error
+     * Checks if there was actually a file added by the user that was not filtered
+     * out by the FileUpload component.
+     * @param filesCurrentlySelectedByUser the files currently selected by the user
+     * @param previouslySelectedCertificates the reports that have already been selected before the last change
+     * @returns true if there is actually a file added by the user
      */
-    openModalToDisplayDuplicateNameError(nameOfFileThatHasDuplicate: string) {
-      this.$dialog.open(ElementsDialog, {
-        props: {
-          modal: true,
-          closable: true,
-          dismissableMask: true,
-          header: "Invalid File Selection",
-        },
-        data: {
-          message:
-            "The following file cannot be selected because a report with its name is already selected " +
-            "for upload or even already uploaded:",
-          listOfElementNames: [nameOfFileThatHasDuplicate],
-        },
-      });
-    },
-    /**
-     * Checks for a single file name if it already occurs among the referenceable report names
-     * @param fullFileName is the full file name with its prefix that should be checked
-     * @returns a boolean stating if the file name is among the referenceable report names
-     */
-    isFileNameAlreadyExistingAmongReferenceableReportNames(fullFileName: string): boolean {
-      const fileNameWithoutSuffix = this.removeFileTypeExtension(fullFileName);
-      return this.allReferenceableReportNames.some((reportName) => reportName === fileNameWithoutSuffix);
+    isThereActuallyANewFileSelected(
+      filesCurrentlySelectedByUser: File[],
+      previouslySelectedCertificates: CertificateToUpload[]
+    ) {
+      return filesCurrentlySelectedByUser.length != previouslySelectedCertificates.length;
     },
     /**
      *  calculates the hash from a file
@@ -259,9 +232,11 @@ interface StoredReport extends CompanyReport {
   reportName: string;
 }
 
-interface ReportToUpload extends CompanyReport {
-  fileForReport: File;
+interface CertificateToUpload {
+  file: File;
   fileNameWithoutSuffix: string;
+
+  reference: string;
 }
 </script>
 
