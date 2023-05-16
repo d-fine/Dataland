@@ -9,9 +9,8 @@ import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtu
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import {
-  generateEuTaxonomyWithRequiredFields,
+  generateEuTaxonomyWithBaseFields,
   getCsvSharedEuTaxonomyValuesMapping,
-  populateSharedValues,
 } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { parse } from "json2csv";
@@ -38,8 +37,7 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedReports): E
  * @returns the generated fixture
  */
 export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
-  const returnBase: EuTaxonomyDataForNonFinancials = generateEuTaxonomyWithRequiredFields();
-  populateSharedValues(returnBase);
+  const returnBase: EuTaxonomyDataForNonFinancials = generateEuTaxonomyWithBaseFields();
 
   returnBase.opex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
   returnBase.capex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
