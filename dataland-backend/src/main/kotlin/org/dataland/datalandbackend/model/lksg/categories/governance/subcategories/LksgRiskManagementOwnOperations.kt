@@ -8,21 +8,21 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Risk management - Own operations"
  */
 data class LksgRiskManagementOwnOperations(
-    val adequateAndEffectiveRiskManagementSystem: BaseDataPoint<YesNo>?,
+    val adequateAndEffectiveRiskManagementSystem: YesNo?,
 
-    val riskManagementSystemFiscalYear: BaseDataPoint<YesNo>?,
+    val riskManagementSystemFiscalYear: YesNo?,
 
-    val riskManagementSystemRisks: BaseDataPoint<YesNo>?,
+    val riskManagementSystemRisks: YesNo?,
 
-    val riskManagementSystemIdentifiedRisks: BaseDataPoint<String>?,
+    val riskManagementSystemIdentifiedRisks: String?,
 
-    val riskManagementSystemCounteract: BaseDataPoint<YesNo>?,
+    val riskManagementSystemCounteract: YesNo?,
 
-    val riskManagementSystemMeasures: BaseDataPoint<String>?,
+    val riskManagementSystemMeasures: String?,
 
-    val riskManagementSystemResponsibility: BaseDataPoint<YesNo>?,
+    val riskManagementSystemResponsibility: YesNo?,
 
-    val environmentalManagementSystem: BaseDataPoint<YesNo>?,
+    val environmentalManagementSystem: YesNo?,
 
     val environmentalManagementSystemInternationalCertification: BaseDataPoint<YesNo>?,
 

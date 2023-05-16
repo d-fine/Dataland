@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
 
-import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -8,17 +7,17 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Export / Import of hazardous waste (Basel Convention)"
  */
 data class LksgExportImportOfHazardousWasteBaselConvention(
-        val persistentOrganicPollutantsProductionAndUseTransboundaryMovements: BaseDataPoint<YesNo>?,
+        val persistentOrganicPollutantsProductionAndUseTransboundaryMovements: YesNo?,
 
-        val persistentOrganicPollutantsProductionAndUseRiskForImportingState: BaseDataPoint<YesNo>?,
+        val persistentOrganicPollutantsProductionAndUseRiskForImportingState: YesNo?,
 
-        val hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein: BaseDataPoint<YesNo>?,
+        val hazardousWasteTransboundaryMovementsLocatedOecdEuLiechtenstein: YesNo?,
 
-        val hazardousWasteTransboundaryMovementsOutsideOecdEuLiechtenstein: BaseDataPoint<YesNo>?,
+        val hazardousWasteTransboundaryMovementsOutsideOecdEuLiechtenstein: YesNo?,
 
-        val hazardousWasteDisposal: BaseDataPoint<YesNo>?,
+        val hazardousWasteDisposal: YesNo?,
 
-        val hazardousWasteDisposalRiskOfImport: BaseDataPoint<YesNo>?,
+        val hazardousWasteDisposalRiskOfImport: YesNo?,
 
-        val hazardousAndOtherWasteImport: BaseDataPoint<YesNo>?,
+        val hazardousAndOtherWasteImport: YesNo?,
 )

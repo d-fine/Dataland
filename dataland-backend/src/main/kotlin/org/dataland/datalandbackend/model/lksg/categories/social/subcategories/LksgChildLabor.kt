@@ -8,29 +8,29 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Child labor"
  */
 data class LksgChildLabor(
-    val employeeUnder18: BaseDataPoint<YesNo>?,
+    val employeeUnder18: YesNo?,
 
-    val employeeUnder18Under15: BaseDataPoint<YesNo>?,
+    val employeeUnder18Under15: YesNo?,
 
-    val employeeUnder18Apprentices: BaseDataPoint<YesNo>?,
+    val employeeUnder18Apprentices: YesNo?,
 
-    val worstFormsOfChildLaborProhibition: BaseDataPoint<YesNo>?,
+    val worstFormsOfChildLaborProhibition: YesNo?,
 
-    val worstFormsOfChildLaborForms: BaseDataPoint<YesNo>?,
+    val worstFormsOfChildLaborForms: YesNo?,
 
-    val employmentUnderLocalMinimumAgePrevention: BaseDataPoint<YesNo>?,
+    val employmentUnderLocalMinimumAgePrevention: YesNo?,
 
-    val employmentUnderLocalMinimumAgePreventionEmploymentContracts: BaseDataPoint<YesNo>?,
+    val employmentUnderLocalMinimumAgePreventionEmploymentContracts: YesNo?,
 
-    val employmentUnderLocalMinimumAgePreventionJobDescription: BaseDataPoint<YesNo>?,
+    val employmentUnderLocalMinimumAgePreventionJobDescription: YesNo?,
 
-    val employmentUnderLocalMinimumAgePreventionIdentityDocuments: BaseDataPoint<YesNo>?,
+    val employmentUnderLocalMinimumAgePreventionIdentityDocuments: YesNo?,
 
-    val employmentUnderLocalMinimumAgePreventionTraining: BaseDataPoint<YesNo>?,
+    val employmentUnderLocalMinimumAgePreventionTraining: YesNo?,
 
-    val employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: BaseDataPoint<YesNo>?,
+    val employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: YesNo?,
 
-    val childLaborMeasures: BaseDataPoint<String>?,
+    val childLaborMeasures: String?,
 
     val childLaborPreventionPolicy: BaseDataPoint<YesNo>?,
 )

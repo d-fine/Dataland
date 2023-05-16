@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
-import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -9,41 +8,41 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * excessive water consumption"
  */
 data class LksgContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption(
-        val harmfulSoilChange: BaseDataPoint<YesNo>?,
+        val harmfulSoilChange: YesNo?,
 
-        val soilDegradation: BaseDataPoint<YesNo>?,
+        val soilDegradation: YesNo?,
 
-        val soilErosion: BaseDataPoint<YesNo>?,
+        val soilErosion: YesNo?,
 
-        val soilBornDiseases: BaseDataPoint<YesNo>?,
+        val soilBornDiseases: YesNo?,
 
-        val soilContamination: BaseDataPoint<YesNo>?,
+        val soilContamination: YesNo?,
 
-        val soilSalinisation: BaseDataPoint<YesNo>?,
+        val soilSalinisation: YesNo?,
 
-        val harmfulWaterPollution: BaseDataPoint<YesNo>?,
+        val harmfulWaterPollution: YesNo?,
 
-        val fertilisersOrPollutants: BaseDataPoint<YesNo>?,
+        val fertilisersOrPollutants: YesNo?,
 
-        val wasteWaterFiltration: BaseDataPoint<YesNo>?,
+        val wasteWaterFiltration: YesNo?,
 
-        val harmfulAirPollution: BaseDataPoint<YesNo>?,
+        val harmfulAirPollution: YesNo?,
 
-        val airFiltration: BaseDataPoint<YesNo>?,
+        val airFiltration: YesNo?,
 
-        val harmfulNoiseEmission: BaseDataPoint<YesNo>?,
+        val harmfulNoiseEmission: YesNo?,
 
-        val reduceNoiseEmissions: BaseDataPoint<YesNo>?,
+        val reduceNoiseEmissions: YesNo?,
 
-        val excessiveWaterConsumption: BaseDataPoint<YesNo>?,
+        val excessiveWaterConsumption: YesNo?,
 
-        val waterSavingMeasures: BaseDataPoint<YesNo>?,
+        val waterSavingMeasures: YesNo?,
 
-        val waterSavingMeasuresName: BaseDataPoint<String>?,
+        val waterSavingMeasuresName: String?,
 
-        val pipeMaintaining: BaseDataPoint<YesNo>?,
+        val pipeMaintaining: YesNo?,
 
-        val waterSources: BaseDataPoint<YesNo>?,
+        val waterSources: YesNo?,
 
-        val contaminationMeasures: BaseDataPoint<String>?,
+        val contaminationMeasures: String?,
 )

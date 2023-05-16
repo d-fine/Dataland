@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.general.subcategories
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.lksg.ShareOfTemporaryWorkers
 import java.math.BigDecimal
@@ -13,25 +12,25 @@ import java.time.LocalDate
  */
 data class LksgMasterData(
     @field:JsonProperty(required = true)
-    val dataDate: BaseDataPoint<LocalDate>,
+    val dataDate: LocalDate,
 
-    val headOfficeInGermany: BaseDataPoint<YesNo>?,
+    val headOfficeInGermany: YesNo?,
 
-    val groupOfCompanies: BaseDataPoint<YesNo>?,
+    val groupOfCompanies: YesNo?,
 
-    val groupOfCompaniesName: BaseDataPoint<String>?,
+    val groupOfCompaniesName: String?,
 
-    val industry: BaseDataPoint<List<String>>?,
+    val industry: List<String>?,
 
-    val numberOfEmployees: BaseDataPoint<BigDecimal>?,
+    val numberOfEmployees: BigDecimal?,
 
-    val seasonalOrMigrantWorkers: BaseDataPoint<YesNo>?,
+    val seasonalOrMigrantWorkers: YesNo?,
 
-    val shareOfTemporaryWorkers: BaseDataPoint<ShareOfTemporaryWorkers>?,
+    val shareOfTemporaryWorkers: ShareOfTemporaryWorkers?,
 
-    val totalRevenueCurrency: BaseDataPoint<String>?,
+    val totalRevenueCurrency: String?,
 
-    val totalRevenue: BaseDataPoint<BigDecimal>?,
+    val totalRevenue: BigDecimal?,
 
-    val fixedAndWorkingCapital: BaseDataPoint<BigDecimal>?,
+    val fixedAndWorkingCapital: BigDecimal?,
 )

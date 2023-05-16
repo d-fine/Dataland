@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
-import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -9,13 +8,13 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * water"
  */
 data class LksgUnlawfulEvictionDeprivationOfLandForestAndWater(
-        val unlawfulEvictionAndTakingOfLand: BaseDataPoint<YesNo>?,
+        val unlawfulEvictionAndTakingOfLand: YesNo?,
 
-        val unlawfulEvictionAndTakingOfLandRisk: BaseDataPoint<String>?,
+        val unlawfulEvictionAndTakingOfLandRisk: YesNo?,
 
-        val unlawfulEvictionAndTakingOfLandStrategies: BaseDataPoint<YesNo>?,
+        val unlawfulEvictionAndTakingOfLandStrategies: YesNo?,
 
-        val unlawfulEvictionAndTakingOfLandStrategiesName: BaseDataPoint<String>?,
+        val unlawfulEvictionAndTakingOfLandStrategiesName: String?,
 
-        val voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: BaseDataPoint<YesNo>?,
+        val voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: YesNo?,
 )

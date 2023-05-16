@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
-import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 
@@ -9,19 +8,19 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
  * Fields of the LKSG questionnaire regarding the impact topic "Withholding adequate wages"
  */
 data class LksgWithholdingAdequateWages(
-        val adequateWage: BaseDataPoint<YesNo>?,
+        val adequateWage: YesNo?,
 
-        val adequateWageBeingWithheld: BaseDataPoint<YesNo>?,
+        val adequateWageBeingWithheld: YesNo?,
 
-        val documentedWorkingHoursAndWages: BaseDataPoint<YesNo>?,
+        val documentedWorkingHoursAndWages: YesNo?,
 
-        val adequateLivingWage: BaseDataPoint<YesNo>?,
+        val adequateLivingWage: YesNo?,
 
-        val regularWagesProcessFlow: BaseDataPoint<YesNo>?,
+        val regularWagesProcessFlow: YesNo?,
 
-        val fixedHourlyWages: BaseDataPoint<YesNoNa>?,
+        val fixedHourlyWages: YesNoNa?,
 
-        val fixedPieceworkWages: BaseDataPoint<YesNoNa>?,
+        val fixedPieceworkWages: YesNoNa?,
 
-        val adequateWageMeasures: BaseDataPoint<String>?,
+        val adequateWageMeasures: String?,
 )

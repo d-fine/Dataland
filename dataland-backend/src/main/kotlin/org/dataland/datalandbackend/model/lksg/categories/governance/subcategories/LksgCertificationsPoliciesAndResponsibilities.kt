@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class LksgCertificationsPoliciesAndResponsibilities(
     val sa8000Certification: BaseDataPoint<YesNo>?,
 
-    val smetaSocialAuditConcept: BaseDataPoint<YesNo>?,
+    val smetaSocialAuditConcept: YesNo?,
 
     val betterWorkProgramCertificate: BaseDataPoint<YesNo>?,
 
@@ -32,17 +32,17 @@ data class LksgCertificationsPoliciesAndResponsibilities(
 
     val fairLaborAssociationCertification: BaseDataPoint<YesNo>?,
 
-    val additionalAudits: BaseDataPoint<String>?,
+    val additionalAudits: String?,
 
-    val codeOfConduct: BaseDataPoint<YesNo>?,
+    val codeOfConduct: YesNo?,
 
-    val codeOfConductTraining: BaseDataPoint<YesNo>?,
+    val codeOfConductTraining: YesNo?,
 
     val supplierCodeOfConduct: BaseDataPoint<YesNo>?,
 
-    val policyStatement: BaseDataPoint<YesNo>?,
+    val policyStatement: YesNo?,
 
-    val humanRightsStrategy: BaseDataPoint<String>?,
+    val humanRightsStrategy: String?,
 
     val environmentalImpactPolicy: BaseDataPoint<YesNo>?,
 

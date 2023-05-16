@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
-import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 
@@ -10,17 +9,17 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
  * for human rights"
  */
 data class LksgUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights(
-        val useOfPrivatePublicSecurityForces: BaseDataPoint<YesNo>?,
+        val useOfPrivatePublicSecurityForces: YesNo?,
 
-        val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: BaseDataPoint<YesNo>?,
+        val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo?,
 
-        val instructionOfSecurityForces: BaseDataPoint<YesNo>?,
+        val instructionOfSecurityForces: YesNo?,
 
-        val humanRightsTraining: BaseDataPoint<YesNo>?,
+        val humanRightsTraining: YesNo?,
 
-        val stateSecurityForces: BaseDataPoint<YesNoNa>?,
+        val stateSecurityForces: YesNoNa?,
 
-        val privateSecurityForces: BaseDataPoint<YesNoNa>?,
+        val privateSecurityForces: YesNoNa?,
 
-        val useOfPrivatePublicSecurityForcesMeasures: BaseDataPoint<String>?,
+        val useOfPrivatePublicSecurityForcesMeasures: String?,
 )

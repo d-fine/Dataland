@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
 
-import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
 
@@ -9,29 +8,29 @@ import java.math.BigDecimal
  * Fields of the LKSG questionnaire regarding the impact topic "Grievance mechanism - Own operations"
  */
 data class LksgGrievanceMechanismOwnOperations(
-    val grievanceHandlingMechanism: BaseDataPoint<YesNo>?,
+    val grievanceHandlingMechanism: YesNo?,
 
-    val grievanceHandlingMechanismUsedForReporting: BaseDataPoint<YesNo>?,
+    val grievanceHandlingMechanismUsedForReporting: YesNo?,
 
-    val grievanceMechanismInformationProvided: BaseDataPoint<YesNo>?,
+    val grievanceMechanismInformationProvided: YesNo?,
 
-    val grievanceMechanismSupportProvided: BaseDataPoint<YesNo>?,
+    val grievanceMechanismSupportProvided: YesNo?,
 
-    val grievanceMechanismAccessToExpertise: BaseDataPoint<YesNo>?,
+    val grievanceMechanismAccessToExpertise: YesNo?,
 
-    val grievanceMechanismComplaints: BaseDataPoint<YesNo>?,
+    val grievanceMechanismComplaints: YesNo?,
 
-    val grievanceMechanismComplaintsNumber: BaseDataPoint<BigDecimal>?,
+    val grievanceMechanismComplaintsNumber: BigDecimal?,
 
-    val grievanceMechanismComplaintsReason: BaseDataPoint<String>?,
+    val grievanceMechanismComplaintsReason: String?,
 
-    val grievanceMechanismComplaintsAction: BaseDataPoint<YesNo>?,
+    val grievanceMechanismComplaintsAction: YesNo?,
 
-    val grievanceMechanismComplaintsActionUndertaken: BaseDataPoint<String>?,
+    val grievanceMechanismComplaintsActionUndertaken: String?,
 
-    val grievanceMechanismPublicAccess: BaseDataPoint<YesNo>?,
+    val grievanceMechanismPublicAccess: YesNo?,
 
-    val grievanceMechanismProtection: BaseDataPoint<YesNo>?,
+    val grievanceMechanismProtection: YesNo?,
 
-    val grievanceMechanismDueDiligenceProcess: BaseDataPoint<YesNo>?,
+    val grievanceMechanismDueDiligenceProcess: YesNo?,
 )

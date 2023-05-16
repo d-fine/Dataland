@@ -8,17 +8,17 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Use of mercury, mercury waste (Minimata Convention)"
  */
 data class LksgUseOfMercuryMercuryWasteMinamataConvention(
-        val mercuryAndMercuryWasteHandling: BaseDataPoint<YesNo>?,
+        val mercuryAndMercuryWasteHandling: YesNo?,
 
         val mercuryAndMercuryWasteHandlingPolicy: BaseDataPoint<YesNo>?,
 
-        val mercuryAddedProductsHandling: BaseDataPoint<YesNo>?,
+        val mercuryAddedProductsHandling: YesNo?,
 
-        val mercuryAddedProductsHandlingRiskOfExposure: BaseDataPoint<YesNo>?,
+        val mercuryAddedProductsHandlingRiskOfExposure: YesNo?,
 
-        val mercuryAddedProductsHandlingRiskOfDisposal: BaseDataPoint<YesNo>?,
+        val mercuryAddedProductsHandlingRiskOfDisposal: YesNo?,
 
-        val mercuryAndMercuryCompoundsProductionAndUse: BaseDataPoint<YesNo>?,
+        val mercuryAndMercuryCompoundsProductionAndUse: YesNo?,
 
-        val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: BaseDataPoint<YesNo>?,
+        val mercuryAndMercuryCompoundsProductionAndUseRiskOfExposure: YesNo?,
 )

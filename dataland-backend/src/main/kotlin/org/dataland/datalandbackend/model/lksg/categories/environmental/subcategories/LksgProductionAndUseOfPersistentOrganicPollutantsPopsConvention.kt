@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
 
-import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -9,13 +8,13 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * (POPs Convention)"
  */
 data class LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention(
-        val persistentOrganicPollutantsProductionAndUse: BaseDataPoint<YesNo>?,
+        val persistentOrganicPollutantsProductionAndUse: YesNo?,
 
-        val persistentOrganicPollutantsUsed: BaseDataPoint<String>?,
+        val persistentOrganicPollutantsUsed: String?,
 
-        val persistentOrganicPollutantsProductionAndUseRiskOfExposure: BaseDataPoint<YesNo>?,
+        val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo?,
 
-        val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: BaseDataPoint<YesNo>?,
+        val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo?,
 
-        val legalRestrictedWasteProcesses: BaseDataPoint<YesNo>?,
+        val legalRestrictedWasteProcesses: YesNo?,
 )

@@ -9,43 +9,43 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
  * Fields of the LKSG questionnaire regarding the impact topic "Disregard for occupational health / safety"
  */
 data class LksgDisregardForOccupationalHealthSafety(
-        val lowSkillWork: BaseDataPoint<YesNo>?,
+        val lowSkillWork: YesNo?,
 
-        val hazardousMachines: BaseDataPoint<YesNo>?,
+        val hazardousMachines: YesNo?,
 
-        val oshPolicy: BaseDataPoint<YesNo>?,
+        val oshPolicy: YesNo?,
 
-        val oshPolicyPersonalProtectiveEquipment: BaseDataPoint<YesNoNa>?,
+        val oshPolicyPersonalProtectiveEquipment: YesNoNa?,
 
-        val oshPolicyMachineSafety: BaseDataPoint<YesNoNa>?,
+        val oshPolicyMachineSafety: YesNoNa?,
 
-        val oshPolicyDisasterBehaviouralResponse: BaseDataPoint<YesNo>?,
+        val oshPolicyDisasterBehaviouralResponse: YesNo?,
 
-        val oshPolicyAccidentsBehaviouralResponse: BaseDataPoint<YesNo>?,
+        val oshPolicyAccidentsBehaviouralResponse: YesNo?,
 
-        val oshPolicyWorkplaceErgonomics: BaseDataPoint<YesNo>?,
+        val oshPolicyWorkplaceErgonomics: YesNo?,
 
-        val oshPolicyAccessToWork: BaseDataPoint<YesNo>?,
+        val oshPolicyAccessToWork: YesNo?,
 
-        val oshPolicyHandlingChemicalsAndOtherHazardousSubstances: BaseDataPoint<YesNoNa>?,
+        val oshPolicyHandlingChemicalsAndOtherHazardousSubstances: YesNoNa?,
 
-        val oshPolicyFireProtection: BaseDataPoint<YesNo>?,
+        val oshPolicyFireProtection: YesNo?,
 
-        val oshPolicyWorkingHours: BaseDataPoint<YesNo>?,
+        val oshPolicyWorkingHours: YesNo?,
 
-        val oshPolicyTrainingAddressed: BaseDataPoint<YesNo>?,
+        val oshPolicyTrainingAddressed: YesNo?,
 
-        val oshPolicyTraining: BaseDataPoint<YesNo>?,
+        val oshPolicyTraining: YesNo?,
 
-        val oshManagementSystem: BaseDataPoint<YesNo>?,
+        val oshManagementSystem: YesNo?,
 
         val oshManagementSystemInternationalCertification: BaseDataPoint<YesNo>?,
 
         val oshManagementSystemNationalCertification: BaseDataPoint<YesNo>?,
 
-        val workplaceAccidentsUnder10: BaseDataPoint<YesNo>?,
+        val workplaceAccidentsUnder10: YesNo?,
 
-        val oshTraining: BaseDataPoint<YesNo>?,
+        val oshTraining: YesNo?,
 
         val healthAndSafetyPolicy: BaseDataPoint<YesNo>?,
 )
