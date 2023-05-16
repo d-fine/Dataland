@@ -150,17 +150,21 @@ check that all ssh-keys are set and erased from people that have left
 
 - [x] The Github Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by Github.
 - [ ] A peer-review has been executed
-    - [ ] The code has been manually inspected by someone who did not implement the feature
+  - [ ] The code has been manually inspected by someone who did not implement the feature
 - [ ] The PR actually implements what is described above
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
-- [ ] The new version is deployed to a dev server using this branch
-    - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
-    - [ ] It's verified that everything seems to be working fine by manually using the website
-    - [ ] All implemented Social Logins have been tested manually in the UI
-    - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
-      authorization has worked by assuring that you get a 200 response
-
+- [ ] The new version is deployed with fake data to the dev server "dev1" using this branch
+  - [ ] Run with setting `Use real data` turned off and `Reset backend database & Re-populate` turned on
+  - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
+  - [ ] It's verified that the CD run is green
+  - [ ] It's verified that everything seems to be working fine by manually using the website
+  - [ ] All implemented Social Logins have been tested manually in the UI
+  - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
+    authorization has worked by assuring that you get a 200 response
+- [ ] The new version is deployed with real data to a dev server using this branch
+  - [ ] Run with both settings `Reset backend database & Re-populate` and `Use real data` turned on
+  - [ ] It's verified that the CD run is green
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
 - [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and execute `npm run testpipeline`
   and `npm run testcomponent` in dataland-frontend
