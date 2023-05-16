@@ -43,7 +43,7 @@ class InviteManagerTest {
         )
 
         Mockito.`when`(mockInviteMetaInfoRepository.save(any(InviteMetaInfoEntity::class.java)))
-            .thenAnswer { invocation -> invocation.arguments[0] as InviteMetaInfoEntity }
+            .thenAnswer { invocation -> invocation.arguments[0] }
 
         val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
             "mocked_uploader",
