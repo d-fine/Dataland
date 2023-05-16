@@ -23,9 +23,10 @@ input_sha1=$( \
   find "$0" "$@" -type f | \
   grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/' | \
   sort -u | \
+  awk '{print "\""$1"\""}' \
   xargs sha1sum | \
   sha1sum | \
-  awk '{print $1}'
+  awk '{print "\""$1"\""}' \
 )
 
 echo Input sha1 Hash: "$input_sha1"
