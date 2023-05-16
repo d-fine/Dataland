@@ -15,7 +15,7 @@ import {
 } from "@/utils/SessionTimeoutUtils";
 import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
-import { useSharedSessionStateStore } from "@/stores/stores";
+import { useSharedSessionStateStore } from "@/stores/Stores";
 
 export default defineComponent({
   name: "app",

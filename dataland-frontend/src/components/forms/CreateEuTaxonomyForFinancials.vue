@@ -316,7 +316,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject, nextTick } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
+import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/ValidationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -338,7 +338,7 @@ import {
   convertValuesFromPercentagesToDecimals,
   ObjectType,
   updateObject,
-} from "@/utils/updateObjectUtils";
+} from "@/utils/UpdateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";

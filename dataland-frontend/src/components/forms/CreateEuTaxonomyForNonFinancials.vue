@@ -302,13 +302,13 @@ import {
   DataMetaInformation,
   EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
-import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/validationsUtils";
+import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/ValidationsUtils";
 import {
   convertValuesFromDecimalsToPercentages,
   convertValuesFromPercentagesToDecimals,
   ObjectType,
   updateObject,
-} from "@/utils/updateObjectUtils";
+} from "@/utils/UpdateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import { AxiosResponse } from "axios";
