@@ -8,7 +8,13 @@
     <span class="underline">
       {{ label ?? downloadName }}
     </span>
-    <i v-if="showIcon" class="pi pi-download pl-1" aria-hidden="true" style="font-size: 12px" />
+    <i
+      v-if="showIcon"
+      class="pi pi-download pl-1"
+      data-test="download-icon"
+      aria-hidden="true"
+      style="font-size: 12px"
+    />
   </span>
 </template>
 

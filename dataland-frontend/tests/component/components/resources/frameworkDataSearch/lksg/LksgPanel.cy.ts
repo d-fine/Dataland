@@ -93,6 +93,9 @@ describe("Component test for LksgPanel", () => {
     cy.get("em[title='Data Date']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("The date until when");
     cy.get("em[title='Data Date']").trigger("mouseleave");
+
+    toggleRowGroup("certificationsPoliciesAndResponsibilities");
+    cy.get("span[data-test=Report-Download-Certification]").find("i[data-test=download-icon]").should("be.visible");
   });
 
   /**
