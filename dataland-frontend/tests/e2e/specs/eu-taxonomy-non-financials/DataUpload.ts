@@ -348,7 +348,7 @@ describeIf(
      */
     function checkIfLinkedReportsAreDownloadable(companyId: string): void {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
-      const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}.pdf`;
+      const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${differentFileNameForSameFile}.pdf`;
       const downloadLinkSelector = `span[data-test="Report-Download-${differentFileNameForSameFile}"]`;
       cy.readFile(expectedPathToDownloadedReport).should("not.exist");
       cy.get(downloadLinkSelector)
