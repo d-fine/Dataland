@@ -15,12 +15,13 @@
           value: 'No',
         },
       ]"
-      @input="setCertificateRequired($event)"
+      @input="setDocumentRequired($event)"
     />
-    <UploadCertificatesForm
+    <UploadDocumentsForm
       v-show="certificateRequiredIfYes && yesSelected"
-      @certificatesChanged="emitCertificateUpdatedEvent"
-      ref="uploadCertificatesForm"
+      @documentsChanged="emitDocumentUpdatedEvent"
+      ref="uploadDocumentsForm"
+      :more-than-one-document-allowed="false"
     />
   </div>
 </template>
@@ -30,11 +31,11 @@ import { defineComponent } from "vue";
 import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import UploadCertificatesForm from "@/components/forms/parts/elements/basic/UploadCertificatesForm.vue";
+import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 
 export default defineComponent({
   name: "YesNoFormField",
-  components: { RadioButtonsFormElement, UploadFormHeader, UploadCertificatesForm },
+  components: { RadioButtonsFormElement, UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
   props: YesNoFormFieldProps,
   data() {
@@ -42,10 +43,10 @@ export default defineComponent({
       yesSelected: false,
     };
   },
-  emits: ["certificateUpdated"],
+  emits: ["documentUpdated"],
   watch: {
     yesSelected() {
-      this.deleteCertificate();
+      this.deleteDocument();
     },
   },
   methods: {
@@ -53,7 +54,7 @@ export default defineComponent({
      * Sets the value yesSelected to true when "Yes" is selected
      * @param event the "Yes" / "No" selection event
      */
-    setCertificateRequired(event: Event) {
+    setDocumentRequired(event: Event) {
       this.yesSelected = (event as unknown as string) === "Yes";
     },
 
@@ -61,26 +62,26 @@ export default defineComponent({
      * If "No" is reselected after one has uploaded a file, this handles removing the file(s) and clearing
      * the certificate list.
      */
-    deleteCertificate() {
+    deleteDocument() {
       if (!this.yesSelected) {
-        const fileNumber = this.$refs.uploadCertificatesForm.$refs.fileUpload.files.length as number;
+        const fileNumber = this.$refs.uploadDocumentsForm.$refs.fileUpload.files.length as number;
         if (fileNumber > 0) {
-          this.$refs.uploadCertificatesForm.$refs.fileUpload.files = [];
-          this.$refs.uploadCertificatesForm.removeAllCertificates();
+          this.$refs.uploadDocumentsForm.$refs.fileUpload.files = [];
+          this.$refs.uploadDocumentsForm.removeAllDocuments();
         }
       }
     },
 
     /**
-     * Emits event that selected certificate changed
+     * Emits event that selected document changed
      */
-    emitCertificateUpdatedEvent() {
-      this.$emit("certificateUpdated", this.name, this.$refs.uploadCertificatesForm.certificatesToUpload[0]);
+    emitDocumentUpdatedEvent() {
+      this.$emit("documentUpdated", this.name, this.$refs.uploadDocumentsForm.documentsToUpload[0]);
     },
 
     updateCertificateReferenceOnDataPoint() {
       //TODO: actually implement this
-      console.log(this.$refs.uploadCertificatesForm.certificatesToUpload[0].reference);
+      console.log(this.$refs.uploadDocumentsForm.documentsToUpload[0].reference);
     },
   },
 });

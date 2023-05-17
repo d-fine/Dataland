@@ -1,6 +1,6 @@
 <template>
   <!-- Select company reports -->
-  <div class="col-9 uploaded-files" style="padding: 0; margin-left: 0">
+  <div class="uploaded-files" style="padding: 0; margin-left: 0">
     <FileUpload
       name="fileUpload"
       ref="fileUpload"
@@ -11,21 +11,22 @@
       @select="handleFilesSelected"
     >
       <template #header="{ files, chooseCallback }">
-        <PrimeButton
-          v-show="files.length < 1"
-          data-test="upload-files-button"
-          @click="chooseCallback()"
-          icon="pi pi-upload"
-          label="UPLOAD DOCUMENT"
-        />
+        <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
+          <PrimeButton
+            v-show="files.length < 1 || moreThanOneDocumentAllowed"
+            data-test="upload-files-button"
+            @click="chooseCallback()"
+            icon="pi pi-upload"
+            label="UPLOAD DOCUMENT"
+          />
+        </div>
       </template>
-      <template #content="{ files, removeFileCallback }">
+      <template #content="{ files }">
         <div v-if="files.length > 0" data-test="files-to-upload">
           <div
             v-for="(selectedFile, index) of files"
             :key="selectedFile.name + index"
             class="flex w-full align-items-center file-upload-item"
-            style="padding: 0; margin-top: 0; margin-bottom: 0"
             :data-test="removeFileTypeExtension(selectedFile.name) + 'FileUploadContainer'"
           >
             <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ selectedFile.name }}</span>
@@ -35,7 +36,7 @@
             <PrimeButton
               data-test="files-to-upload-remove"
               icon="pi pi-times"
-              @click="removeCertificateFromCertificatesToUpload(removeFileCallback, index)"
+              @click="removeDocumentFromDocumentsToUpload(index)"
               class="p-button-rounded"
             />
           </div>
@@ -55,19 +56,18 @@ import { CompanyReport } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import {
   calculateSha256HashFromFile,
-  CertificateToUpload,
+  DocumentToUpload,
   isThereActuallyANewFileSelected,
   removeFileTypeExtension,
-  StoredReport,
 } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
-  name: "UploadCertificatesForm",
+  name: "UploadDocumentsForm",
   components: {
     PrimeButton,
     FileUpload,
   },
-  emits: ["certificatesChanged"],
+  emits: ["documentsChanged"],
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -78,29 +78,19 @@ export default defineComponent({
       formsDatesFilesToUpload: [] as string[] | undefined,
       formatBytesUserFriendly,
       DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES: DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-      certificatesToUpload: [] as CertificateToUpload[],
-      storedReports: [] as StoredReport[],
+      documentsToUpload: [] as DocumentToUpload[],
     };
   },
   props: {
-    referencedReportsForPrefill: {
+    referencedDocumentsForPrefill: {
       type: Object as () => { [key: string]: CompanyReport },
     },
-  },
-  computed: {
-    allReferenceableReportNames(): string[] {
-      const namesOfFilesToUpload = this.certificatesToUpload.map(
-        (certificateToUpload) => certificateToUpload.fileNameWithoutSuffix
-      );
-      const namesOfStoredReports = this.storedReports.map((storedReport) => storedReport.reportName);
-      return namesOfFilesToUpload.concat(namesOfStoredReports);
+    moreThanOneDocumentAllowed: {
+      type: Boolean,
+      default: true,
     },
   },
-  watch: {
-    referencedReportsForPrefill() {
-      this.prefillAlreadyUploadedReports();
-    },
-  },
+
   methods: {
     removeFileTypeExtension,
     /**
@@ -112,62 +102,39 @@ export default defineComponent({
      */
     async handleFilesSelected(event: FileUploadSelectEvent): Promise<void> {
       const selectedFilesByUser = event.files as File[];
-      if (isThereActuallyANewFileSelected(selectedFilesByUser, this.certificatesToUpload)) {
+      if (isThereActuallyANewFileSelected(selectedFilesByUser, this.documentsToUpload)) {
         const lastSelectedFile = selectedFilesByUser[selectedFilesByUser.length - 1];
-        const certificateToUpload = { file: lastSelectedFile } as CertificateToUpload;
-        certificateToUpload.reference = await calculateSha256HashFromFile(certificateToUpload.file);
-        certificateToUpload.fileNameWithoutSuffix = removeFileTypeExtension(certificateToUpload.file.name);
-        this.certificatesToUpload.push(certificateToUpload);
-        this.emitCertificatesChangedEvent();
+        const documentToUpload = { file: lastSelectedFile } as DocumentToUpload;
+        documentToUpload.reference = await calculateSha256HashFromFile(documentToUpload.file);
+        documentToUpload.fileNameWithoutSuffix = removeFileTypeExtension(documentToUpload.file.name);
+        this.documentsToUpload.push(documentToUpload);
+        this.emitDocumentsChangedEvent();
       }
     },
     /**
-     * Emits event that selected certificates changed
+     * Emits event that selected documents changed
      */
-    emitCertificatesChangedEvent() {
-      this.$emit("certificatesChanged", this.certificatesToUpload);
+    emitDocumentsChangedEvent() {
+      this.$emit("documentsChanged", this.documentsToUpload);
     },
 
     /**
-     * Remove certificate from files uploaded
-     * @param fileRemoveCallback Callback function removes certificate from the ones selected in formKit
+     * Remove document from files uploaded
      * @param indexOfFileToRemove index number of the file to remove
      * @param deleteCount the number of files to delete
      */
-    removeCertificateFromCertificatesToUpload(
-      fileRemoveCallback: (x: number) => void,
-      indexOfFileToRemove: number,
-      deleteCount = 1
-    ) {
-      fileRemoveCallback(indexOfFileToRemove);
-      this.certificatesToUpload.splice(indexOfFileToRemove, deleteCount);
-      this.emitCertificatesChangedEvent();
+    removeDocumentFromDocumentsToUpload(indexOfFileToRemove: number, deleteCount = 1) {
+      this.$refs.fileUpload.remove(indexOfFileToRemove);
+      this.documentsToUpload.splice(indexOfFileToRemove, deleteCount);
+      this.emitDocumentsChangedEvent();
     },
 
     /**
-     * removes all certificates at once, is invoked by a yes no field if it is resetted to "No"
+     * removes all documents at once, is invoked by a yes no field if it is resetted to "No"
      */
-    removeAllCertificates() {
-      this.certificatesToUpload = [];
-      this.emitCertificatesChangedEvent();
-    },
-
-    /**
-     * Initializes the already uploaded reports from provided reports
-     */
-    prefillAlreadyUploadedReports() {
-      if (this.referencedReportsForPrefill) {
-        for (const key in this.referencedReportsForPrefill) {
-          this.storedReports.push({
-            reportName: key,
-            reference: this.referencedReportsForPrefill[key].reference,
-            currency: this.referencedReportsForPrefill[key].currency,
-            reportDate: this.referencedReportsForPrefill[key].reportDate,
-            isGroupLevel: this.referencedReportsForPrefill[key].isGroupLevel,
-          });
-        }
-        this.emitCertificatesChangedEvent();
-      }
+    removeAllDocuments() {
+      this.documentsToUpload = [];
+      this.emitDocumentsChangedEvent();
     },
   },
 });

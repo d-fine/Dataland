@@ -1,7 +1,7 @@
 import { CompanyReport } from "@clients/backend";
 import { DocumentControllerApi } from "@clients/documentmanager";
 
-export interface CertificateToUpload {
+export interface DocumentToUpload {
   file: File;
   fileNameWithoutSuffix: string;
 
@@ -23,7 +23,7 @@ export interface ReportToUpload extends CompanyReport {
  * @param documentControllerApi the api with uploader permissions that was created in the component using this function
  */
 export async function uploadFiles(
-  files: ReportToUpload[] | CertificateToUpload[],
+  files: ReportToUpload[] | DocumentToUpload[],
   documentControllerApi: DocumentControllerApi
 ): Promise<void> {
   for (const fileToUpload of files) {
@@ -47,7 +47,7 @@ export async function uploadFiles(
  */
 export function isThereActuallyANewFileSelected(
   filesCurrentlySelectedByUser: File[],
-  previouslySelectedCertificates: CertificateToUpload[]
+  previouslySelectedCertificates: DocumentToUpload[]
 ): boolean {
   return filesCurrentlySelectedByUser.length != previouslySelectedCertificates.length;
 }
