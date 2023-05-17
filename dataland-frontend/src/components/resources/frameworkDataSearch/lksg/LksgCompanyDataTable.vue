@@ -147,6 +147,7 @@ export default defineComponent({
     /**
      * Checks if the BaseDataPoint holds a document reference
      * @param dataPoint the object to check for a reference
+     * @return boolean which identifies if the datapoint has a referenced document or not
      */
     hasDocument(dataPoint: BaseDataPointYesNo): boolean {
       return dataPoint?.dataSource?.reference !== undefined;
@@ -154,6 +155,7 @@ export default defineComponent({
     /**
      * Checks if an object could be a BaseDataPoint
      * @param kpiObject the kpi object to check
+     * @return boolean which identifies if the object is a BaseDataPoint or not
      */
     isBaseDataPoint(kpiObject: object): boolean {
       try {
@@ -165,6 +167,7 @@ export default defineComponent({
     /**
      * Checks if an kpi entry is an object
      * @param kpi the kpi object to check
+     * @return boolean which identifies if the kpi entry is an object or not
      */
     isObject(kpi: object): boolean {
       return typeof kpi === "object";
@@ -172,6 +175,7 @@ export default defineComponent({
     /**
      * Checks if a label belongs to a certificate
      * @param label the label to check
+     * @return boolen which identifies if a label is of the type certificate or not
      */
     isCertificate(label: string): boolean {
       const lowerCaseLabel = label.toLowerCase();
