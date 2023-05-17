@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { smoothScroll } from "@/utils/smoothScroll";
+import { smoothScroll } from "@/utils/SmoothScroll";
 
 export default defineComponent({
   name: "JumpLinksSection",
