@@ -1,5 +1,6 @@
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
-import { generateReferencedReports } from "@e2e/utils/CompanyReport";
+import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
+import { faker } from "@faker-js/faker";
 
 /**
  * Generates a base data point with the given value, choosing a random (possibly undefined) report, or undefined
@@ -8,10 +9,8 @@ import { generateReferencedReports } from "@e2e/utils/CompanyReport";
  * @returns the generated base data point
  */
 export function generateBaseDataPointOrUndefined<T, Y>(value: T | null, undefinedProbability: number): Y | undefined {
-  const reports = generateReferencedReports();
-  const chosenReport = valueOrUndefined(
-    Object.values(reports)[Math.floor(Math.random() * Object.keys(reports).length)]
-  );
+  const documents = generateReferencedDocuments();
+  const chosenReport = valueOrUndefined(faker.helpers.arrayElement(Object.values(documents)));
 
   const baseDataPoint = {
     value: value ?? undefined,
