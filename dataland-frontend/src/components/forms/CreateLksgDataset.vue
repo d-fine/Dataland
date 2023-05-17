@@ -261,7 +261,6 @@ export default defineComponent({
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
-        this.$formkit.reset(this.formId);
         this.isYourCompanyManufacturingCompany = "No";
         this.listOfProductionSites = [
           {

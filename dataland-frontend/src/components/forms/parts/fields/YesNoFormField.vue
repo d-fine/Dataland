@@ -1,7 +1,37 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
+    <FormKit v-if="certificateRequiredIfYes" type="group" :name="name">
+      <RadioButtonsFormElement
+        name="value"
+        :validation="validation"
+        :validation-label="validationLabel ?? displayName"
+        :options="[
+          {
+            label: 'Yes',
+            value: 'Yes',
+          },
+          {
+            label: 'No',
+            value: 'No',
+          },
+        ]"
+        @input="setDocumentRequired($event)"
+      />
+      <UploadDocumentsForm
+        v-show="yesSelected"
+        @documentsChanged="handleDocumentUpdatedEvent"
+        ref="uploadDocumentsForm"
+        :more-than-one-document-allowed="false"
+      />
+      <FormKit type="group" name="dataSource">
+        <FormKit type="hidden" name="name" :modelValue="documentName" />
+        <FormKit type="hidden" name="reference" :modelValue="documentReference" />
+      </FormKit>
+    </FormKit>
+
     <RadioButtonsFormElement
+      v-else
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? displayName"
@@ -15,18 +45,7 @@
           value: 'No',
         },
       ]"
-      @input="setDocumentRequired($event)"
     />
-    <UploadDocumentsForm
-      v-show="certificateRequiredIfYes && yesSelected"
-      @documentsChanged="emitDocumentUpdatedEvent"
-      ref="uploadDocumentsForm"
-      :more-than-one-document-allowed="false"
-    />
-    <FormKit type="group" name="dataSource">
-      <FormKit type="hidden" name="name" :model-value="documentName" />
-      <FormKit type="hidden" name="reference" :model-value="documentReference" />
-    </FormKit>
   </div>
 </template>
 
@@ -36,6 +55,7 @@ import { YesNoFormFieldProps } from "@/components/forms/parts/fields/FormFieldPr
 import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
+import { DocumentToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "YesNoFormField",
@@ -45,6 +65,8 @@ export default defineComponent({
   data() {
     return {
       yesSelected: false,
+      documentName: "",
+      documentReference: "",
     };
   },
 
@@ -52,22 +74,6 @@ export default defineComponent({
   watch: {
     yesSelected() {
       this.deleteDocument();
-    },
-  },
-  computed: {
-    documentName(): string {
-      if (this.$refs.uploadDocumentsForm) {
-        return (this.$refs.uploadDocumentsForm.documentsToUpload[0]?.fileNameWithoutSuffix as string) ?? "";
-      } else {
-        return "";
-      }
-    },
-    documentReference(): string {
-      if (this.$refs.uploadDocumentsForm) {
-        return (this.$refs.uploadDocumentsForm.documentsToUpload[0]?.reference as string) ?? "";
-      } else {
-        return "";
-      }
     },
   },
   methods: {
@@ -95,9 +101,13 @@ export default defineComponent({
 
     /**
      * Emits event that selected document changed
+     * @param updatedDocuments the updated documents that are currently selected (only one in this case)
      */
-    emitDocumentUpdatedEvent() {
-      this.$emit("documentUpdated", this.name, this.$refs.uploadDocumentsForm.documentsToUpload[0]);
+    handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
+      this.documentName = updatedDocuments[0]?.fileNameWithoutSuffix ?? "";
+      this.documentReference = updatedDocuments[0]?.reference ?? "";
+      console.log(this.documentName, this.documentReference);
+      this.$emit("documentUpdated", this.name, updatedDocuments[0]);
     },
   },
 });
