@@ -94,7 +94,6 @@ class DocumentManagerTest(
                 Optional.of(
                     DocumentMetaInfoEntity(
                         documentId = uploadResponse.documentId,
-                        displayTitle = mockMultipartFile.originalFilename,
                         uploaderId = "",
                         uploadTime = 0,
                         qaStatus = QAStatus.Pending,
@@ -122,7 +121,6 @@ class DocumentManagerTest(
                 Optional.of(
                     DocumentMetaInfoEntity(
                         documentId = uploadResponse.documentId,
-                        displayTitle = mockMultipartFile.originalFilename,
                         uploaderId = "",
                         uploadTime = 0,
                         qaStatus = QAStatus.Accepted,
@@ -165,7 +163,6 @@ class DocumentManagerTest(
                 Optional.of(
                     DocumentMetaInfoEntity(
                         documentId = uploadResponse.documentId,
-                        displayTitle = mockMultipartFile.originalFilename,
                         uploaderId = "",
                         uploadTime = 0,
                         qaStatus = QAStatus.Pending,
