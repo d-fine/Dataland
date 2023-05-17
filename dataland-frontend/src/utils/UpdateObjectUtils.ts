@@ -89,3 +89,12 @@ export function objectDropNull(obj: ObjectType): ObjectType {
     })
   ) as ObjectType;
 }
+
+/**
+ * Utility function to create a deep copy by parsing it to Json and parsing it back.
+ * @param obj the object to be deep copied
+ * @returns the deep copied object
+ */
+export function deepCopyObject(obj: ObjectType): ObjectType {
+  return JSON.parse(JSON.stringify(obj)) as ObjectType;
+}
