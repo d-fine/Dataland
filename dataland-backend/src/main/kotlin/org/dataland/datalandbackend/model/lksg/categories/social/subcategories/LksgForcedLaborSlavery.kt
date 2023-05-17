@@ -8,23 +8,23 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the LKSG questionnaire regarding the impact topic "Forced labor, slavery"
  */
 data class LksgForcedLaborSlavery(
-        val forcedLaborAndSlaveryPrevention: YesNo?,
+    val forcedLaborAndSlaveryPrevention: YesNo?,
 
-        val forcedLaborAndSlaveryPreventionPractices: String?,
+    val forcedLaborAndSlaveryPreventionPractices: String?,
 
-        val forcedLaborAndSlaveryPreventionMeasures: YesNo?,
+    val forcedLaborAndSlaveryPreventionMeasures: YesNo?,
 
-        val forcedLaborAndSlaveryPreventionEmploymentContracts: YesNo?,
+    val forcedLaborAndSlaveryPreventionEmploymentContracts: YesNo?,
 
-        val forcedLaborAndSlaveryPreventionIdentityDocuments: YesNo?,
+    val forcedLaborAndSlaveryPreventionIdentityDocuments: YesNo?,
 
-        val forcedLaborAndSlaveryPreventionFreeMovement: YesNo?,
+    val forcedLaborAndSlaveryPreventionFreeMovement: YesNo?,
 
-        val forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets: YesNo?,
+    val forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets: YesNo?,
 
-        val forcedLaborAndSlaveryPreventionTraining: YesNo?,
+    val forcedLaborAndSlaveryPreventionTraining: YesNo?,
 
-        val forcedLaborAndSlaveryPreventionMeasuresOther: String?,
+    val forcedLaborAndSlaveryPreventionMeasuresOther: String?,
 
-        val forcedLaborPreventionPolicy: BaseDataPoint<YesNo>?,
+    val forcedLaborPreventionPolicy: BaseDataPoint<YesNo>?,
 )

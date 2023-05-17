@@ -117,7 +117,7 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/updateObjectUtils";
 import { smoothScroll } from "@/utils/smoothScroll";
-import { CertificateToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -179,7 +179,7 @@ export default defineComponent({
       elementPosition: 0,
       checkCustomInputs,
       updatingData: false,
-      certificates: new Map() as Map<string, CertificateToUpload>,
+      certificates: new Map() as Map<string, DocumentToUpload>,
     };
   },
   computed: {
@@ -248,6 +248,8 @@ export default defineComponent({
      * Sends data to add LkSG data
      */
     async postLkSGData(): Promise<void> {
+      console.log("funktion wird aufgerufen mit:");
+      console.log(this.companyAssociatedLksgData);
       this.messageCounter++;
       try {
         const documentControllerApi = await new ApiClientProvider(
@@ -291,7 +293,7 @@ export default defineComponent({
      * @param componentName the name of the component as a key
      * @param certificate the certificate as combined object of reference id and file content
      */
-    updateCertificateList(componentName: string, certificate: CertificateToUpload) {
+    updateCertificateList(componentName: string, certificate: DocumentToUpload) {
       this.certificates.set(componentName, certificate);
     },
   },

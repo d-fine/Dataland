@@ -8,19 +8,19 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
  * Fields of the LKSG questionnaire regarding the impact topic "Withholding adequate wages"
  */
 data class LksgWithholdingAdequateWages(
-        val adequateWage: YesNo?,
+    val adequateWage: YesNo?,
 
-        val adequateWageBeingWithheld: YesNo?,
+    val adequateWageBeingWithheld: YesNo?,
 
-        val documentedWorkingHoursAndWages: YesNo?,
+    val documentedWorkingHoursAndWages: YesNo?,
 
-        val adequateLivingWage: YesNo?,
+    val adequateLivingWage: YesNo?,
 
-        val regularWagesProcessFlow: YesNo?,
+    val regularWagesProcessFlow: YesNo?,
 
-        val fixedHourlyWages: YesNoNa?,
+    val fixedHourlyWages: YesNoNa?,
 
-        val fixedPieceworkWages: YesNoNa?,
+    val fixedPieceworkWages: YesNoNa?,
 
-        val adequateWageMeasures: String?,
+    val adequateWageMeasures: String?,
 )

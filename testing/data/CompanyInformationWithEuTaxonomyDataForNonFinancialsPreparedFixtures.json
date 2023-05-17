@@ -2,211 +2,215 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Defneburg",
-			"headquartersPostalCode": "78039",
-			"sector": "interfaces",
+			"headquarters": "West Juna",
+			"sector": "action-items",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "6q3o3q6ykk8xle4"
+					"identifierValue": "0e389vd0alf1iob"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "ngn5kq7pa"
+					"identifierValue": "onc8b7hwl"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "dr1t3h1y180i"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "l8t6t8gpsmjmpbiiuim6"
+					"identifierValue": "pmdlas7tiizf"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "iuexfaybdk"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "fnz9nck"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "isikb7ay1"
+					"identifierValue": "saqsnrgqdf"
 				}
 			],
-			"countryCode": "BE",
-			"companyAlternativeNames": [
-				"Anggreny, Engelen und Rach",
-				"Gollnow, Jarets und Zach"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
+			"countryCode": "YE",
+			"companyAlternativeNames": [],
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-12-20",
-			"numberOfEmployees": 34481,
+			"fiscalYearEnd": "2023-04-04",
+			"numberOfEmployees": 98323,
 			"referencedReports": {
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-08-25",
-					"currency": "PGK"
+					"currency": "SGD"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "IRR"
+					"isGroupLevel": "No",
+					"currency": "LYD"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "SZL"
-				}
-			},
-			"assurance": {
-				"assurance": "None"
-			},
-			"activityLevelReporting": "No",
-			"opex": {
-				"eligiblePercentage": {
-					"value": 0.3441,
-					"quality": "Incomplete"
-				}
-			},
-			"capex": {
-				"eligiblePercentage": {
-					"value": 0.3098,
-					"dataSource": {
-						"page": 269,
-						"report": "SustainabilityReport",
-						"tagName": "niches"
-					},
-					"quality": "Reported",
-					"comment": "reboot multi-byte application"
-				}
-			},
-			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.4064,
-					"dataSource": {
-						"page": 174,
-						"report": "IntegratedReport",
-						"tagName": "solutions"
-					},
-					"quality": "Reported",
-					"comment": "transmit back-end driver"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Bruderland",
-			"headquartersPostalCode": "34272",
-			"sector": "e-commerce",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "kgv5t9h97ie25jx"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "6rf4h4wvh"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "4zfq49joy3mo"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "zu5q3ziw43u7cpzuh2eb"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "7mv3ihxq20"
-				}
-			],
-			"countryCode": "GA",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "http://erregend-länge.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-11-30",
-			"numberOfEmployees": 71763,
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-06-09",
-					"currency": "XPD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-12-11",
-					"currency": "CUC"
+					"isGroupLevel": "No",
+					"currency": "BBD"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"provider": "Schötz UG"
+				"dataSource": {
+					"page": 508,
+					"report": "IntegratedReport",
+					"tagName": "infrastructures"
+				}
 			},
-			"activityLevelReporting": "Yes",
+			"reportingObligation": "Yes",
 			"opex": {
-				"totalAmount": {
-					"value": 303796.02,
-					"quality": "Estimated"
-				},
 				"eligiblePercentage": {
-					"value": 0.283,
+					"value": 0.8448,
 					"dataSource": {
-						"page": 344,
+						"page": 126,
 						"report": "SustainabilityReport",
-						"tagName": "synergies"
+						"tagName": "convergence"
 					},
 					"quality": "Audited",
-					"comment": "input optical feed"
+					"comment": "transmit solid state sensor"
+				}
+			},
+			"capex": {
+				"eligiblePercentage": {
+					"value": 0.8965,
+					"dataSource": {
+						"page": 1148,
+						"report": "AnnualReport",
+						"tagName": "ROI"
+					},
+					"quality": "Reported",
+					"comment": "input online sensor"
+				}
+			},
+			"revenue": {
+				"eligiblePercentage": {
+					"value": 0.0234,
+					"dataSource": {
+						"page": 308,
+						"report": "AnnualReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Audited",
+					"comment": "reboot open-source sensor"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Hönigdorf",
+			"sector": "models",
+			"identifiers": [
+				{
+					"identifierType": "PermId",
+					"identifierValue": "8yzn1itias"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "9lk6x5k"
+				}
+			],
+			"countryCode": "BJ",
+			"companyAlternativeNames": [
+				"Benninger-Schmitt",
+				"Goebel, Köseoglu und Raukuc",
+				"Moede-Bohge",
+				"Schwarzkopf AG"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-08-01",
+			"numberOfEmployees": 99772,
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "MZN"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-05-18",
+					"currency": "VUV"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"currency": "AWG"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "INR"
+				}
+			},
+			"assurance": {
+				"assurance": "ReasonableAssurance",
+				"dataSource": {
+					"page": 676,
+					"report": "SustainabilityReport",
+					"tagName": "paradigms"
+				}
+			},
+			"scopeOfEntities": "NA",
+			"reportingObligation": "No",
+			"activityLevelReporting": "No",
+			"opex": {
+				"totalAmount": {
+					"value": 810965.34,
+					"quality": "Incomplete"
+				},
+				"eligiblePercentage": {
+					"value": 0.1835,
+					"dataSource": {
+						"page": 674,
+						"report": "IntegratedReport",
+						"tagName": "vortals"
+					},
+					"quality": "Incomplete",
+					"comment": "input 1080p bandwidth"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 589351.47,
+					"value": 443961.45,
 					"dataSource": {
-						"page": 83,
-						"report": "SustainabilityReport",
-						"tagName": "users"
+						"page": 616,
+						"report": "AnnualReport",
+						"tagName": "metrics"
 					},
 					"quality": "Audited",
-					"comment": "bypass auxiliary bus"
+					"comment": "override solid state pixel"
 				},
 				"eligiblePercentage": {
-					"value": 0.8328,
+					"value": 0.2813,
 					"dataSource": {
-						"page": 266,
+						"page": 318,
 						"report": "IntegratedReport",
-						"tagName": "technologies"
+						"tagName": "systems"
 					},
 					"quality": "Reported",
-					"comment": "hack online bus"
+					"comment": "connect multi-byte sensor"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 893993.06,
+					"value": 314850.5,
 					"dataSource": {
-						"page": 965,
-						"report": "IntegratedReport",
-						"tagName": "portals"
+						"page": 1130,
+						"report": "ESEFReport",
+						"tagName": "markets"
 					},
-					"quality": "Estimated",
-					"comment": "parse virtual program"
+					"quality": "Incomplete",
+					"comment": "generate 1080p bandwidth"
 				},
 				"eligiblePercentage": {
-					"value": 0.9755,
-					"quality": "Estimated"
+					"value": 0.6165,
+					"dataSource": {
+						"page": 729,
+						"report": "AnnualReport",
+						"tagName": "metrics"
+					},
+					"quality": "Audited",
+					"comment": "program online program"
 				}
 			}
 		},
@@ -215,137 +219,139 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Bad Wilhelmburg",
-			"headquartersPostalCode": "06639",
-			"sector": "synergies",
+			"headquarters": "Frahmekeland",
+			"headquartersPostalCode": "32409",
+			"sector": "architectures",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "ehmt6iig8n233p1"
+					"identifierValue": "9r3188lz899x1ll"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "03q0hredk"
+					"identifierValue": "778xix9zl"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "6j7altv9jgld"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "2i9czms0lyjfl6y4xckh"
+					"identifierValue": "alekfya6bq8q"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "0dengkx0g6"
+					"identifierValue": "wrzryvbw4v"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "3r97nzz"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "j778lnhu9"
+					"identifierValue": "9gpwzyt"
 				}
 			],
-			"countryCode": "KM",
-			"companyAlternativeNames": [],
-			"website": "https://geehrt-taubheit.info",
+			"countryCode": "HT",
+			"companyAlternativeNames": [
+				"Kruger, Fischer und Kern",
+				"Schütze KG"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://gediegen-fisch.ch",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-04-21",
-			"numberOfEmployees": 29538,
+			"fiscalYearEnd": "2022-05-29",
+			"numberOfEmployees": 18454,
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "None"
 			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "No",
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 92039.01,
+					"value": 745619.71,
 					"dataSource": {
-						"page": 719,
-						"report": "IntegratedReport",
-						"tagName": "e-services"
+						"page": 187,
+						"report": "ESEFReport",
+						"tagName": "experiences"
 					},
-					"quality": "Audited",
-					"comment": "synthesize auxiliary microchip"
+					"quality": "Estimated",
+					"comment": "program digital microchip"
 				},
 				"alignedPercentage": {
-					"value": 0.384,
-					"quality": "Incomplete"
-				},
-				"eligiblePercentage": {
-					"value": 0.7363,
+					"value": 0.1015,
 					"dataSource": {
-						"page": 984,
-						"report": "IntegratedReport",
+						"page": 666,
+						"report": "AnnualReport",
 						"tagName": "methodologies"
 					},
-					"quality": "Audited",
-					"comment": "compress solid state transmitter"
+					"quality": "Reported",
+					"comment": "index primary feed"
+				},
+				"eligiblePercentage": {
+					"value": 0.2978,
+					"dataSource": {
+						"page": 549,
+						"report": "ESEFReport",
+						"tagName": "blockchains"
+					},
+					"quality": "Reported",
+					"comment": "calculate digital transmitter"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 175218.26,
+					"value": 741181.25,
 					"dataSource": {
-						"page": 745,
-						"report": "IntegratedReport",
-						"tagName": "platforms"
+						"page": 8,
+						"report": "AnnualReport",
+						"tagName": "eyeballs"
 					},
 					"quality": "Audited",
-					"comment": "index multi-byte bandwidth"
+					"comment": "input 1080p hard drive"
 				},
 				"alignedPercentage": {
-					"value": 0.6237,
-					"dataSource": {
-						"page": 827,
-						"report": "IntegratedReport",
-						"tagName": "web-readiness"
-					},
-					"quality": "Incomplete",
-					"comment": "bypass optical firewall"
+					"value": 0.8508,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.0747,
+					"value": 0.9636,
 					"dataSource": {
-						"page": 244,
-						"report": "IntegratedReport",
-						"tagName": "web-readiness"
+						"page": 1023,
+						"report": "ESEFReport",
+						"tagName": "platforms"
 					},
 					"quality": "Estimated",
-					"comment": "index online card"
+					"comment": "parse solid state alarm"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 617472.57,
+					"value": 400641.68,
 					"dataSource": {
-						"page": 77,
-						"report": "IntegratedReport",
+						"page": 453,
+						"report": "ESEFReport",
 						"tagName": "initiatives"
 					},
-					"quality": "Audited",
-					"comment": "copy cross-platform microchip"
+					"quality": "Reported",
+					"comment": "quantify online system"
 				},
 				"alignedPercentage": {
-					"quality": "NA"
+					"value": 0.125,
+					"dataSource": {
+						"page": 823,
+						"report": "AnnualReport",
+						"tagName": "mindshare"
+					},
+					"quality": "Audited",
+					"comment": "reboot online program"
 				},
 				"eligiblePercentage": {
-					"value": 0.4704,
+					"value": 0.141,
 					"dataSource": {
-						"page": 577,
-						"report": "IntegratedReport",
-						"tagName": "e-markets"
+						"page": 71,
+						"report": "AnnualReport",
+						"tagName": "channels"
 					},
-					"quality": "Estimated",
-					"comment": "program bluetooth transmitter"
+					"quality": "Reported",
+					"comment": "navigate multi-byte alarm"
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2023"
 	}
 ]
