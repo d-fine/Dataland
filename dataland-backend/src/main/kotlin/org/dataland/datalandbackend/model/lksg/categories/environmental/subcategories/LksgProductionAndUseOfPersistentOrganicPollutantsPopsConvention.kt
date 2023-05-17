@@ -8,13 +8,13 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * (POPs Convention)"
  */
 data class LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention(
-        val persistentOrganicPollutantsProductionAndUse: YesNo?,
+    val persistentOrganicPollutantsProductionAndUse: YesNo?,
 
-        val persistentOrganicPollutantsUsed: String?,
+    val persistentOrganicPollutantsUsed: String?,
 
-        val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo?,
+    val persistentOrganicPollutantsProductionAndUseRiskOfExposure: YesNo?,
 
-        val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo?,
+    val persistentOrganicPollutantsProductionAndUseRiskOfDisposal: YesNo?,
 
-        val legalRestrictedWasteProcesses: YesNo?,
+    val legalRestrictedWasteProcesses: YesNo?,
 )

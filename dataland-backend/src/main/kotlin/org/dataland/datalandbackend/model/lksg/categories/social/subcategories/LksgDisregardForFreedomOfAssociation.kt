@@ -8,15 +8,15 @@ import java.math.BigDecimal
  * Fields of the LKSG questionnaire regarding the impact topic "Disregard for freedom of association"
  */
 data class LksgDisregardForFreedomOfAssociation(
-        val freedomOfAssociation: YesNo?,
+    val freedomOfAssociation: YesNo?,
 
-        val representedEmployees: BigDecimal?,
+    val representedEmployees: BigDecimal?,
 
-        val discriminationForTradeUnionMembers: YesNo?,
+    val discriminationForTradeUnionMembers: YesNo?,
 
-        val freedomOfOperationForTradeUnion: YesNo?,
+    val freedomOfOperationForTradeUnion: YesNo?,
 
-        val freedomOfAssociationTraining: YesNo?,
+    val freedomOfAssociationTraining: YesNo?,
 
-        val worksCouncil: YesNo?,
+    val worksCouncil: YesNo?,
 )

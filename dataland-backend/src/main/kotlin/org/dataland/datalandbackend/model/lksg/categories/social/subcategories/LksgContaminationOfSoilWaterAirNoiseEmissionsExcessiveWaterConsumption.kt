@@ -8,41 +8,41 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * excessive water consumption"
  */
 data class LksgContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption(
-        val harmfulSoilChange: YesNo?,
+    val harmfulSoilChange: YesNo?,
 
-        val soilDegradation: YesNo?,
+    val soilDegradation: YesNo?,
 
-        val soilErosion: YesNo?,
+    val soilErosion: YesNo?,
 
-        val soilBornDiseases: YesNo?,
+    val soilBornDiseases: YesNo?,
 
-        val soilContamination: YesNo?,
+    val soilContamination: YesNo?,
 
-        val soilSalinisation: YesNo?,
+    val soilSalinisation: YesNo?,
 
-        val harmfulWaterPollution: YesNo?,
+    val harmfulWaterPollution: YesNo?,
 
-        val fertilisersOrPollutants: YesNo?,
+    val fertilisersOrPollutants: YesNo?,
 
-        val wasteWaterFiltration: YesNo?,
+    val wasteWaterFiltration: YesNo?,
 
-        val harmfulAirPollution: YesNo?,
+    val harmfulAirPollution: YesNo?,
 
-        val airFiltration: YesNo?,
+    val airFiltration: YesNo?,
 
-        val harmfulNoiseEmission: YesNo?,
+    val harmfulNoiseEmission: YesNo?,
 
-        val reduceNoiseEmissions: YesNo?,
+    val reduceNoiseEmissions: YesNo?,
 
-        val excessiveWaterConsumption: YesNo?,
+    val excessiveWaterConsumption: YesNo?,
 
-        val waterSavingMeasures: YesNo?,
+    val waterSavingMeasures: YesNo?,
 
-        val waterSavingMeasuresName: String?,
+    val waterSavingMeasuresName: String?,
 
-        val pipeMaintaining: YesNo?,
+    val pipeMaintaining: YesNo?,
 
-        val waterSources: YesNo?,
+    val waterSources: YesNo?,
 
-        val contaminationMeasures: String?,
+    val contaminationMeasures: String?,
 )
