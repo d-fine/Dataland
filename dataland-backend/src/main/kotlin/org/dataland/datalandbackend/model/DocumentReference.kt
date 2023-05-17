@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * --- API model ---
  * Fields of a generic document reference
  */
-data class DocumentReference (
+data class DocumentReference(
     @field:JsonProperty(required = true)
     val name: String,
 

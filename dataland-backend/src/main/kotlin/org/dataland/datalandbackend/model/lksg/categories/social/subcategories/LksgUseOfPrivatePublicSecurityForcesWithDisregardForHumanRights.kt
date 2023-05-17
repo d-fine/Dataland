@@ -9,17 +9,17 @@ import org.dataland.datalandbackend.model.enums.commons.YesNoNa
  * for human rights"
  */
 data class LksgUseOfPrivatePublicSecurityForcesWithDisregardForHumanRights(
-        val useOfPrivatePublicSecurityForces: YesNo?,
+    val useOfPrivatePublicSecurityForces: YesNo?,
 
-        val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo?,
+    val useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights: YesNo?,
 
-        val instructionOfSecurityForces: YesNo?,
+    val instructionOfSecurityForces: YesNo?,
 
-        val humanRightsTraining: YesNo?,
+    val humanRightsTraining: YesNo?,
 
-        val stateSecurityForces: YesNoNa?,
+    val stateSecurityForces: YesNoNa?,
 
-        val privateSecurityForces: YesNoNa?,
+    val privateSecurityForces: YesNoNa?,
 
-        val useOfPrivatePublicSecurityForcesMeasures: String?,
+    val useOfPrivatePublicSecurityForcesMeasures: String?,
 )
