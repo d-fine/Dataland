@@ -2746,7 +2746,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "worstFormsOfChildLaborForms": {
-            "$ref": "#/components/schemas/YesNo"
+            "type": "string"
           },
           "employmentUnderLocalMinimumAgePrevention": {
             "$ref": "#/components/schemas/YesNo"
@@ -2988,7 +2988,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "forcedLaborAndSlaveryPreventionPractices": {
-            "$ref": "#/components/schemas/YesNo"
+            "type": "string"
           },
           "forcedLaborAndSlaveryPreventionMeasures": {
             "$ref": "#/components/schemas/YesNo"
@@ -3364,7 +3364,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "unlawfulEvictionAndTakingOfLandRisk": {
-            "$ref": "#/components/schemas/YesNo"
+            "type": "string"
           },
           "unlawfulEvictionAndTakingOfLandStrategies": {
             "$ref": "#/components/schemas/YesNo"

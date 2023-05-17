@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class LksgForcedLaborSlavery(
         val forcedLaborAndSlaveryPrevention: YesNo?,
 
-        val forcedLaborAndSlaveryPreventionPractices: YesNo?,
+        val forcedLaborAndSlaveryPreventionPractices: String?,
 
         val forcedLaborAndSlaveryPreventionMeasures: YesNo?,
 
