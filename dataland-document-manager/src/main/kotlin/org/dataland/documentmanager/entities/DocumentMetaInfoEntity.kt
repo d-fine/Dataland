@@ -14,7 +14,6 @@ import org.dataland.documentmanager.model.DocumentMetaInfo
 data class DocumentMetaInfoEntity(
     @Id
     val documentId: String,
-    val displayTitle: String,
     val uploaderId: String,
     val uploadTime: Long,
     var qaStatus: QAStatus,
@@ -22,7 +21,6 @@ data class DocumentMetaInfoEntity(
     constructor(documentMetaInfo: DocumentMetaInfo) :
         this(
             documentId = documentMetaInfo.documentId,
-            displayTitle = documentMetaInfo.displayTitle,
             uploaderId = documentMetaInfo.uploaderId,
             uploadTime = documentMetaInfo.uploadTime,
             qaStatus = documentMetaInfo.qaStatus,
