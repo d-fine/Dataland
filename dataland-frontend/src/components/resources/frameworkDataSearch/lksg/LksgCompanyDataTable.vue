@@ -52,13 +52,20 @@
             >Show "{{ data.kpiLabel }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
           </a>
-          <span v-else-if="data[reportingPeriod.dataId] instanceof BaseDataPoint">
-            <DocumentLink
-              label="CERTIFIED"
-              download-name="something"
-              :reference="data[reportingPeriod.dataId].reference" />
+          <span v-else-if="isObject(data[reportingPeriod.dataId]) && isBaseDataPoint(data[reportingPeriod.dataId])">
+            <span v-if="hasDocument(data[reportingPeriod.dataId])">
+              <DocumentLink
+                :label="yesLabelMap.get(isCertificate(data.kpiLabel))"
+                :download-name="data[reportingPeriod.dataId].dataSource.name"
+                :reference="data[reportingPeriod.dataId].dataSource.reference"
+                show-icon
+              />
+            </span>
+            <span v-else>
+              {{ decisionMap.get(data[reportingPeriod.dataId].value === YesNo.Yes).get(isCertificate(data.kpiLabel)) }}
+            </span>
           </span>
-          <span v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId]?.value">
+          <span v-else-if="isObject(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId]?.value">
             {{ data[reportingPeriod.dataId].value }}
           </span>
 
@@ -89,10 +96,12 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+import { BaseDataPointYesNo, YesNo } from "@clients/backend";
 
 export default defineComponent({
   name: "LksgCompanyDataTable",
-  components: { DataTable, Column },
+  components: { DataTable, Column, DocumentLink },
   directives: {
     tooltip: Tooltip,
   },
@@ -100,6 +109,19 @@ export default defineComponent({
     return {
       kpiDataObjectsToDisplay: [] as KpiDataObject[],
       expandedRowGroups: ["_masterData"],
+      yesLabelMap: new Map<boolean, string>([
+        [true, "Certified"],
+        [false, "Yes"],
+      ]),
+      noLabelMap: new Map<boolean, string>([
+        [true, "Uncertified"],
+        [false, "No"],
+      ]),
+      decisionMap: new Map<boolean, Map<boolean, string>>([
+        [true, this.yesLabelMap],
+        [false, this.noLabelMap],
+      ]),
+      YesNo,
     };
   },
   props: {
@@ -122,6 +144,39 @@ export default defineComponent({
     document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
   },
   methods: {
+    /**
+     * Checks if the BaseDataPoint holds a document reference
+     * @param dataPoint the object to check for a reference
+     */
+    hasDocument(dataPoint: BaseDataPointYesNo): boolean {
+      return dataPoint?.dataSource?.reference !== undefined;
+    },
+    /**
+     * Checks if an object could be a BaseDataPoint
+     * @param kpiObject the kpi object to check
+     */
+    isBaseDataPoint(kpiObject: object): boolean {
+      try {
+        return "value" in kpiObject && "dataSource" in kpiObject;
+      } catch {
+        return false;
+      }
+    },
+    /**
+     * Checks if an kpi entry is an object
+     * @param kpi the kpi object to check
+     */
+    isObject(kpi: object): boolean {
+      return typeof kpi === "object";
+    },
+    /**
+     * Checks if a label belongs to a certificate
+     * @param label the label to check
+     */
+    isCertificate(label: string): boolean {
+      const lowerCaseLabel = label.toLowerCase();
+      return lowerCaseLabel.includes("certificate") || lowerCaseLabel.includes("certification");
+    },
     /**
      * Opens a modal to display a table with the provided list of production sites
      * @param listOfValues An array consisting of production sites

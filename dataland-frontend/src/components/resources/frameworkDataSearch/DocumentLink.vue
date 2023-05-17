@@ -1,16 +1,21 @@
 <template>
   <span
     @click="downloadDocument()"
-    class="font-semibold underline text-primary cursor-pointer"
+    class="text-primary cursor-pointer"
+    :class="fontStyle"
     :data-test="'Report-Download-' + downloadName"
-    >{{ label ?? downloadName }}</span
   >
+    <span class="underline">
+      {{ label ?? downloadName }}
+    </span>
+    <i v-if="showIcon" class="pi pi-download pl-1" aria-hidden="true" style="font-size: 12px" />
+  </span>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType } from "vue";
+import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { AxiosResponse, AxiosResponseHeaders } from "axios";
+import { AxiosResponse } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -22,9 +27,11 @@ export default defineComponent({
   },
   name: "DocumentLink",
   props: {
-    label: { type: String },
+    label: String,
     downloadName: { type: String, required: true },
     reference: { type: String, required: true },
+    showIcon: Boolean,
+    fontStyle: String,
   },
   data() {
     return {
@@ -34,7 +41,6 @@ export default defineComponent({
       messageCount: 0,
     };
   },
-  computed: {},
   methods: {
     /**
      * Method to download available reports
