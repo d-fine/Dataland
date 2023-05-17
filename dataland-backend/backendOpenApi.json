@@ -2627,7 +2627,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "dataSource": {
-            "$ref": "#/components/schemas/CompanyReport"
+            "$ref": "#/components/schemas/DocumentReference"
           }
         }
       },
@@ -2642,6 +2642,21 @@
           },
           "data": {
             "$ref": "#/components/schemas/LksgData"
+          }
+        }
+      },
+      "DocumentReference": {
+        "required": [
+          "name",
+          "reference"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "reference": {
+            "type": "string"
           }
         }
       },

@@ -2,10 +2,10 @@ package org.dataland.datalandbackend.model
 
 /**
  * --- API model ---
- * Fields of a generic data point and its source
+ * Fields of a generic base data point and its source
  */
 data class BaseDataPoint <T>(
     val value: T? = null,
 
-    val dataSource: CompanyReport? = null,
+    val dataSource: DocumentReference? = null,
 )
