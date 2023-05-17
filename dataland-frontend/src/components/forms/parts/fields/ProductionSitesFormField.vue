@@ -1,7 +1,14 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
-    <FormKit type="list" :name="name" :label="displayName" :validation="validation" :validation-label="validationLabel">
+    <FormKit
+      type="list"
+      :name="name"
+      :label="displayName"
+      :validation="validation"
+      :validation-label="validationLabel"
+      v-model="existingProductionSites"
+    >
       <FormKit type="group" v-for="item in listOfProductionSites" :key="item.id">
         <div data-test="productionSiteSection" class="productionSiteSection">
           <em
@@ -38,7 +45,7 @@ export default defineComponent({
   props: FormFieldProps,
   data() {
     return {
-      productionSite: Object as LksgProductionSite,
+      existingProductionSites: [] as LksgProductionSite[],
       listOfGoodsOrServicesString: "",
       listOfProductionSites: [
         {
@@ -55,6 +62,11 @@ export default defineComponent({
     ProductionSiteFormElement,
     FormKit,
     PrimeButton,
+  },
+  mounted() {
+    for (let i = 1; i < this.existingProductionSites.length; i++) {
+      this.addNewProductionSite();
+    }
   },
   methods: {
     /**
