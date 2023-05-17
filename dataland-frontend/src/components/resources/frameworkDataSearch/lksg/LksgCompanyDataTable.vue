@@ -52,6 +52,12 @@
             >Show "{{ data.kpiLabel }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
           </a>
+          <span v-else-if="data[reportingPeriod.dataId] instanceof BaseDataPoint">
+            <DocumentLink
+              label="CERTIFIED"
+              download-name="something"
+              :reference="data[reportingPeriod.dataId].reference" />
+          </span>
           <span v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId]?.value">
             {{ data[reportingPeriod.dataId].value }}
           </span>

@@ -6,7 +6,7 @@
       </span>
       <span id="reportList">
         <span v-for="(report, name, index) in reports" :key="index">
-          <DocumentLink :name="name" :document="report" />
+          <DocumentLink :download-name="name" :reference="report.reference" />
           <span v-if="index < numberOfReports - 1"> | </span>
         </span>
       </span>

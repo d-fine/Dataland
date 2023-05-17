@@ -2,8 +2,8 @@
   <span
     @click="downloadDocument()"
     class="font-semibold underline text-primary cursor-pointer"
-    :data-test="'Report-Download-' + name"
-    >{{ name }}</span
+    :data-test="'Report-Download-' + downloadName"
+    >{{ label ?? downloadName }}</span
   >
 </template>
 
@@ -22,8 +22,9 @@ export default defineComponent({
   },
   name: "DocumentLink",
   props: {
-    name: { type: String, required: true },
-    document: { type: Object as PropType<{ reference: string }>, required: true },
+    label: { type: String },
+    downloadName: { type: String, required: true },
+    reference: { type: String, required: true },
   },
   data() {
     return {
@@ -39,7 +40,7 @@ export default defineComponent({
      * Method to download available reports
      */
     async downloadDocument() {
-      const reference: string = this.document.reference;
+      const reference: string = this.reference;
       try {
         const docUrl = document.createElement("a");
         const documentControllerApi = await new ApiClientProvider(
@@ -53,7 +54,7 @@ export default defineComponent({
           .then((getDocumentsFromStorageResponse) => {
             const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
             docUrl.href = URL.createObjectURL(newBlob);
-            docUrl.setAttribute("download", `${this.name}.pdf`);
+            docUrl.setAttribute("download", `${this.downloadName}.pdf`);
             document.body.appendChild(docUrl);
             docUrl.click();
           });
