@@ -1,11 +1,10 @@
 <template>
   <span
-    @click="downloadReport()"
+    @click="downloadDocument()"
     class="font-semibold underline text-primary cursor-pointer"
     :data-test="'Report-Download-' + name"
     >{{ name }}</span
   >
-  <span v-if="index < reportsNumber - 1"> | </span>
 </template>
 
 <script lang="ts">
@@ -22,12 +21,10 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  name: "ReportLink",
+  name: "DocumentLink",
   props: {
     name: { type: String, required: true },
-    report: { type: Object as PropType<CompanyReport>, required: true },
-    index: Number,
-    reportsNumber: Number,
+    document: { type: Object as PropType<{ reference: string }>, required: true },
   },
   data() {
     return {
@@ -42,8 +39,8 @@ export default defineComponent({
     /**
      * Method to download available reports
      */
-    async downloadReport() {
-      const reference: string = this.report.reference;
+    async downloadDocument() {
+      const reference: string = this.document.reference;
       try {
         const docUrl = document.createElement("a");
         const documentControllerApi = await new ApiClientProvider(
@@ -61,7 +58,7 @@ export default defineComponent({
               ((getDocumentsFromStorageResponse.headers as AxiosResponseHeaders).get(
                 "content-disposition"
               ) as string) ?? "";
-            const filename = this.constructFileName(contentDisposition, reference);
+            const filename = this.constructFilename(contentDisposition, reference);
 
             docUrl.setAttribute("download", filename);
             document.body.appendChild(docUrl);
@@ -78,7 +75,7 @@ export default defineComponent({
      * @param reference the hash as a fallback value
      * @returns filename the name of the downloaded file
      */
-    constructFileName(contentDisposition: string, reference: string): string {
+    constructFilename(contentDisposition: string, reference: string): string {
       const regex = /(?<=filename=)[^;]+/;
       const filename = regex.exec(contentDisposition);
       if (filename !== null) {
