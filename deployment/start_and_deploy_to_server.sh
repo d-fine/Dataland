@@ -48,7 +48,7 @@ ssh ubuntu@"$target_server_url" "set -o allexport; source \"$location\"/.env; se
 echo "Cleaning up exported user files."
 ssh ubuntu@"$target_server_url" "(cp $keycloak_user_dir/*-users-*.json $persistent_keycloak_backup_dir; rm $keycloak_user_dir/*.json) || true"
 
-if [[ $RESET_BACKEND_DATABASE_AND_REPOPULATE == true ]]; then
+if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   echo "Deleting relevant Volumes"
   delete_docker_volume_if_existent_remotely "backend_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "document_manager_data" "$target_server_url" "$location"
