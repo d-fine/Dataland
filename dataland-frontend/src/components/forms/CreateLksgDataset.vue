@@ -98,7 +98,7 @@ import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/L
 import { AxiosError } from "axios";
 import { CompanyAssociatedDataLksgData } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { checkCustomInputs } from "@/utils/validationsUtils";
+import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
@@ -114,8 +114,8 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import NonNegativeNumberFormField from "@/components/forms/parts/fields/NonNegativeNumberFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull, ObjectType } from "@/utils/updateObjectUtils";
-import { smoothScroll } from "@/utils/smoothScroll";
+import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
+import { smoothScroll } from "@/utils/SmoothScroll";
 
 export default defineComponent({
   setup() {

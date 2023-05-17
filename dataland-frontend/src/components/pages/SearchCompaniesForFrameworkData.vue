@@ -106,7 +106,7 @@ import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheFooter from "@/components/general/TheFooter.vue";
-import { useFrameworkFiltersStore } from "@/stores/stores";
+import { useFrameworkFiltersStore } from "@/stores/Stores";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import Keycloak from "keycloak-js";
