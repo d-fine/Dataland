@@ -144,7 +144,8 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         riskManagementSystemMeasures: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),
         riskManagementSystemResponsibility: valueOrUndefined(randomYesNo(), undefinedProbability),
         environmentalManagementSystem: valueOrUndefined(randomYesNo(), undefinedProbability),
-        environmentalManagementSystemInternationalCertification: generateBaseDataPointYesNoOrUndefined(undefinedProbability),
+        environmentalManagementSystemInternationalCertification:
+          generateBaseDataPointYesNoOrUndefined(undefinedProbability),
         environmentalManagementSystemNationalCertification: generateBaseDataPointYesNoOrUndefined(undefinedProbability),
       },
       grievanceMechanismOwnOperations: {
@@ -210,7 +211,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         employeeUnder18Under15: valueOrUndefined(randomYesNo(), undefinedProbability),
         employeeUnder18Apprentices: valueOrUndefined(randomYesNo(), undefinedProbability),
         worstFormsOfChildLaborProhibition: valueOrUndefined(randomYesNo(), undefinedProbability),
-        worstFormsOfChildLaborForms: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),
+        worstFormsOfChildLaborForms: valueOrUndefined(randomYesNo(), undefinedProbability),
         employmentUnderLocalMinimumAgePrevention: valueOrUndefined(randomYesNo(), undefinedProbability),
         employmentUnderLocalMinimumAgePreventionEmploymentContracts: valueOrUndefined(
           randomYesNo(),
@@ -231,7 +232,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
       },
       forcedLaborSlavery: {
         forcedLaborAndSlaveryPrevention: valueOrUndefined(randomYesNo(), undefinedProbability),
-        forcedLaborAndSlaveryPreventionPractices: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),
+        forcedLaborAndSlaveryPreventionPractices: valueOrUndefined(randomYesNo(), undefinedProbability),
         forcedLaborAndSlaveryPreventionMeasures: valueOrUndefined(randomYesNo(), undefinedProbability),
         forcedLaborAndSlaveryPreventionEmploymentContracts: valueOrUndefined(randomYesNo(), undefinedProbability),
         forcedLaborAndSlaveryPreventionIdentityDocuments: valueOrUndefined(randomYesNo(), undefinedProbability),
@@ -315,7 +316,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
       },
       unlawfulEvictionDeprivationOfLandForestAndWater: {
         unlawfulEvictionAndTakingOfLand: valueOrUndefined(randomYesNo(), undefinedProbability),
-        unlawfulEvictionAndTakingOfLandRisk: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),
+        unlawfulEvictionAndTakingOfLandRisk: valueOrUndefined(randomYesNo(), undefinedProbability),
         unlawfulEvictionAndTakingOfLandStrategies: valueOrUndefined(randomYesNo(), undefinedProbability),
         unlawfulEvictionAndTakingOfLandStrategiesName: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),
         voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure: valueOrUndefined(randomYesNo(), undefinedProbability),
