@@ -24,7 +24,7 @@
         ref="uploadDocumentsForm"
         :more-than-one-document-allowed="false"
       />
-      <FormKit type="group" name="dataSource">
+      <FormKit v-if="yesSelected" type="group" name="dataSource" validation="required|notEmpty">
         <FormKit type="hidden" name="name" :modelValue="documentName" />
         <FormKit type="hidden" name="reference" :modelValue="documentReference" />
       </FormKit>
@@ -91,11 +91,8 @@ export default defineComponent({
      */
     deleteDocument() {
       if (!this.yesSelected) {
-        const fileNumber = this.$refs.uploadDocumentsForm.$refs.fileUpload.files.length as number;
-        if (fileNumber > 0) {
-          this.$refs.uploadDocumentsForm.$refs.fileUpload.files = [];
-          this.$refs.uploadDocumentsForm.removeAllDocuments();
-        }
+        console.log("Now remove all documents");
+        this.$refs.uploadDocumentsForm.removeAllDocuments();
       }
     },
 
@@ -108,6 +105,10 @@ export default defineComponent({
       this.documentReference = updatedDocuments[0]?.reference ?? "";
       console.log(this.documentName, this.documentReference);
       this.$emit("documentUpdated", this.name, updatedDocuments[0]);
+    },
+
+    notEmpty(): boolean {
+      return this.documentName !== "";
     },
   },
 });
