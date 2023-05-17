@@ -248,6 +248,8 @@ export default defineComponent({
      * Sends data to add LkSG data
      */
     async postLkSGData(): Promise<void> {
+      console.log("funktion wird aufgerufen mit:");
+      console.log(this.companyAssociatedLksgData);
       this.messageCounter++;
       try {
         const documentControllerApi = await new ApiClientProvider(

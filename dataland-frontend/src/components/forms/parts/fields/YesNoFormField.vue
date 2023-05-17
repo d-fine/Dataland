@@ -23,6 +23,10 @@
       ref="uploadDocumentsForm"
       :more-than-one-document-allowed="false"
     />
+    <FormKit type="group" name="dataSource">
+      <FormKit type="hidden" name="name" :model-value="documentName" />
+      <FormKit type="hidden" name="reference" :model-value="documentReference" />
+    </FormKit>
   </div>
 </template>
 
@@ -43,10 +47,27 @@ export default defineComponent({
       yesSelected: false,
     };
   },
+
   emits: ["documentUpdated"],
   watch: {
     yesSelected() {
       this.deleteDocument();
+    },
+  },
+  computed: {
+    documentName(): string {
+      if (this.$refs.uploadDocumentsForm) {
+        return (this.$refs.uploadDocumentsForm.documentsToUpload[0]?.fileNameWithoutSuffix as string) ?? "";
+      } else {
+        return "";
+      }
+    },
+    documentReference(): string {
+      if (this.$refs.uploadDocumentsForm) {
+        return (this.$refs.uploadDocumentsForm.documentsToUpload[0]?.reference as string) ?? "";
+      } else {
+        return "";
+      }
     },
   },
   methods: {
@@ -77,11 +98,6 @@ export default defineComponent({
      */
     emitDocumentUpdatedEvent() {
       this.$emit("documentUpdated", this.name, this.$refs.uploadDocumentsForm.documentsToUpload[0]);
-    },
-
-    updateCertificateReferenceOnDataPoint() {
-      //TODO: actually implement this
-      console.log(this.$refs.uploadDocumentsForm.documentsToUpload[0].reference);
     },
   },
 });
