@@ -57,7 +57,7 @@ export default defineComponent({
           .then((getDocumentsFromStorageResponse) => {
             const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
             docUrl.href = URL.createObjectURL(newBlob);
-            docUrl.setAttribute("download", this.name);
+            docUrl.setAttribute("download", this.name + ".pdf");
             document.body.appendChild(docUrl);
             docUrl.click();
           });
