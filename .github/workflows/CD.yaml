@@ -208,13 +208,3 @@ jobs:
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
-      - name: Move Cypress Results
-        if: always()
-        run: |
-          mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypress && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
-      - name: Upload FE E2E Cypress Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress
-          path: ./dataland-frontend/cypressresult/
