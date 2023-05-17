@@ -20,11 +20,6 @@ delete_docker_volume_if_existent () {
   fi
 }
 
-delet_all_volumes_remotely () {
-  target_server_url="$1"
-  ssh ubuntu@"$target_server_url" "docker volume prune --all --force"
-}
-
 delete_docker_volume_if_existent_remotely () {
   volume_name_fragment="$1"
   target_server_url="$2"
