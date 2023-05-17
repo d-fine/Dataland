@@ -6,14 +6,14 @@
       :name="name"
       :label="displayName"
       :validation="validation"
-      :validation-label="validationLabel"
+      :validation-label="validationLabel!"
       v-model="existingProductionSites"
     >
-      <FormKit type="group" v-for="item in listOfProductionSites" :key="item.id">
+      <FormKit type="group" v-for="id in listOfProductionSiteIds" :key="id">
         <div data-test="productionSiteSection" class="productionSiteSection">
           <em
             data-test="removeItemFromListOfProductionSites"
-            @click="removeItemFromListOfProductionSites(item.id)"
+            @click="removeItemFromListOfProductionSites(id)"
             class="material-icons close-section"
             >close</em
           >
@@ -46,14 +46,7 @@ export default defineComponent({
   data() {
     return {
       existingProductionSites: [] as LksgProductionSite[],
-      listOfGoodsOrServicesString: "",
-      listOfProductionSites: [
-        {
-          id: 0,
-          listOfGoodsOrServices: [] as string[],
-          listOfGoodsOrServicesString: "",
-        },
-      ],
+      listOfProductionSiteIds: [0] as number[],
       idCounter: 0,
     };
   },
@@ -74,11 +67,7 @@ export default defineComponent({
      */
     addNewProductionSite() {
       this.idCounter++;
-      this.listOfProductionSites.push({
-        id: this.idCounter,
-        listOfGoodsOrServices: [],
-        listOfGoodsOrServicesString: "",
-      });
+      this.listOfProductionSiteIds.push(this.idCounter);
     },
 
     /**
@@ -86,7 +75,7 @@ export default defineComponent({
      * @param id - the id of the object in the array
      */
     removeItemFromListOfProductionSites(id: number) {
-      this.listOfProductionSites = this.listOfProductionSites.filter((el) => el.id !== id);
+      this.listOfProductionSiteIds = this.listOfProductionSiteIds.filter((el) => el !== id);
     },
   },
 });
