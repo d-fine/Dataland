@@ -125,6 +125,7 @@
                                 validation-label="Selecting a report"
                                 validation="required"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
+                                :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
                             </div>
                             <div>
@@ -284,7 +285,7 @@ import EuTaxonomyBasicInformation from "@/components/forms/parts/EuTaxonomyBasic
 import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { defineComponent, inject } from "vue";
+import { Component, defineComponent, inject } from "vue";
 import { useRoute } from "vue-router";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -301,13 +302,13 @@ import {
   DataMetaInformation,
   EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/validationsUtils";
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import {
   convertValuesFromDecimalsToPercentages,
   convertValuesFromPercentagesToDecimals,
   ObjectType,
   updateObject,
-} from "@/utils/updateObjectUtils";
+} from "@/utils/UpdateObjectUtils";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import { AxiosResponse } from "axios";
@@ -315,6 +316,7 @@ import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.v
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
@@ -400,6 +402,7 @@ export default defineComponent({
   },
 
   methods: {
+    selectNothingIfNotExistsFormKitPlugin,
     /**
      * Loads the Dataset by the provided dataId and pre-configures the form to contain the data
      * from the dataset

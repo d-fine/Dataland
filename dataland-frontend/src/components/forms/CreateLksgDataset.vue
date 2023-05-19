@@ -101,7 +101,7 @@ import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/L
 import { AxiosError } from "axios";
 import { CompanyAssociatedDataLksgData } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { checkCustomInputs } from "@/utils/validationsUtils";
+import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
@@ -115,9 +115,9 @@ import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
-import { objectDropNull, ObjectType } from "@/utils/updateObjectUtils";
-import { smoothScroll } from "@/utils/smoothScroll";
-import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
+import { smoothScroll } from "@/utils/SmoothScroll";
+import { uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
