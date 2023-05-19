@@ -1,4 +1,4 @@
-export const uploadReports = {
+export const uploadDocuments = {
   selectFile(filename: string): void {
     cy.get('button[data-test="upload-files-button"]').click();
     cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
@@ -52,5 +52,8 @@ export const uploadReports = {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}AlreadyUploadedContainer"]`).should("not.exist");
+  },
+  assertUploadButtonDisappeared(): void {
+    cy.get('button[data-test="upload-files-button"]').should("not.exist");
   },
 };

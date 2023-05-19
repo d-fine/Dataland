@@ -10,6 +10,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyU
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 
 /**
  * Uploads a single LKSG data entry for a company
@@ -210,6 +211,15 @@ function fillRequiredLksgFieldsWithDummyData(): void {
   cy.get("select[name=totalRevenueCurrency]").select("EUR");
 }
 
+function uploadRequiredDocuments(): void {
+  cy.get("input[name=sa8000Certification]").then(() => {
+    uploadDocuments.selectDummyFile("dummyFile", 1);
+    uploadDocuments.assertUploadButtonDisappeared();
+    uploadDocuments.validateReportToUploadIsListed("dummyFile");
+    uploadDocuments.removeReportToUpload("dummyFile");
+  });
+}
+
 /**
  * Uploads a single LKSG data entry for a company via form
  */
@@ -226,6 +236,7 @@ export function uploadLksgDataViaForm(): void {
   validateAllFieldsHaveYesSelected();
 
   fillRequiredLksgFieldsWithDummyData();
+  uploadRequiredDocuments();
   testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
 
   submitButton.buttonAppearsEnabled();
