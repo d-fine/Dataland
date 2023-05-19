@@ -25,11 +25,11 @@
         :more-than-one-document-allowed="false"
       />
       <FormKit v-if="yesSelected" type="group" name="dataSource">
-        <FormKit type="hidden" name="name" :modelValue="referencedDocument?.fileNameWithoutSuffix ?? ''" />
+        <FormKit type="hidden" name="name" v-model="documentName" />
         <FormKit
           type="text"
           name="reference"
-          :modelValue="referencedDocument?.reference"
+          v-model="documentReference"
           validation="required"
           validation-label="If 'Yes' is selected an uploaded document"
           :outer-class="{ 'hidden-input': true }"
@@ -72,16 +72,21 @@ export default defineComponent({
   data() {
     return {
       yesSelected: false,
+      referencedDocument: {} as DocumentToUpload,
       documentName: "",
       documentReference: "",
-      referencedDocument: {} as DocumentToUpload,
     };
   },
 
   emits: ["documentUpdated"],
   watch: {
     yesSelected() {
+      console.log(this.referencedDocument);
       this.deleteDocument();
+    },
+    documentName() {
+      console.log(this.documentName);
+      this.updateFileUploadFiles();
     },
   },
   methods: {
@@ -110,7 +115,19 @@ export default defineComponent({
      */
     handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
       this.referencedDocument = updatedDocuments[0];
+      this.documentName = updatedDocuments[0]?.fileNameWithoutSuffix ?? "";
+      this.documentReference = updatedDocuments[0]?.reference ?? "";
       this.$emit("documentUpdated", this.name, updatedDocuments[0]);
+    },
+
+    /**
+     * updates the files in the fileUpload file list to represent that a file was already uploaded in a previous upload
+     * of the given dataset (in the case of editing a dataset)
+     */
+    updateFileUploadFiles() {
+      if (this.documentName !== "" && !this.referencedDocument) {
+        this.$refs.uploadDocumentsForm.prefillFileUpload([this.documentName]);
+      }
     },
   },
 });

@@ -51,7 +51,7 @@
                         :validation="field.validation"
                         :validation-label="field.validationLabel"
                         :data-test="field.name"
-                        @certificateUpdated="updateCertificateList"
+                        @documentUpdated="updateDocumentList"
                         :ref="field.name"
                       />
                     </FormKit>
@@ -179,7 +179,7 @@ export default defineComponent({
       elementPosition: 0,
       checkCustomInputs,
       updatingData: false,
-      certificates: new Map() as Map<string, DocumentToUpload>,
+      documents: new Map() as Map<string, DocumentToUpload>,
     };
   },
   computed: {
@@ -252,7 +252,12 @@ export default defineComponent({
       console.log(this.companyAssociatedLksgData);
       this.messageCounter++;
       try {
-        await uploadFiles(Array.from(this.certificates.values()), assertDefined(this.getKeycloakPromise));
+        if (this.documents) {
+          const documentControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getDocumentControllerApi();
+          await uploadFiles(Array.from(this.documents.values()), documentControllerApi);
+        }
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
@@ -287,10 +292,10 @@ export default defineComponent({
     /**
      * updates the list of certificates that were uploaded in the corresponding formfields on change
      * @param componentName the name of the component as a key
-     * @param certificate the certificate as combined object of reference id and file content
+     * @param document the certificate as combined object of reference id and file content
      */
-    updateCertificateList(componentName: string, certificate: DocumentToUpload) {
-      this.certificates.set(componentName, certificate);
+    updateDocumentList(componentName: string, document: DocumentToUpload) {
+      this.documents.set(componentName, document);
     },
   },
 });
