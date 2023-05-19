@@ -1,12 +1,12 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import {
-  CompanyInformation,
-  DataTypeEnum,
-  EuTaxonomyDataForNonFinancials,
   CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
+  CompanyInformation,
   DataMetaInformation,
+  DataTypeEnum,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -142,9 +142,9 @@ describeIf(
           },
           (request) => {
             const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data);
-            frontendDocumentHash = data.referencedReports![TEST_PDF_FILE_NAME].reference;
-            expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(true);
-            expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
+            frontendDocumentHash = assertDefined(data.referencedReports)[TEST_PDF_FILE_NAME].reference;
+            expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(true);
+            expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
           },
           (companyId) => {
             goToEditForm(companyId, true);
@@ -158,8 +158,8 @@ describeIf(
               },
               (request) => {
                 const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data);
-                expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(false);
-                expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
+                expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(false);
+                expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
               }
             ).as(postRequestAlias);
             cy.get('button[data-test="submitButton"]').click();
@@ -252,9 +252,11 @@ describeIf(
         newValueForEligibleRevenueAfterEdit + "%"
       );
       return cy.wait("@getMetaDataForViewPage").then((interception) => {
-        return (interception.response!.body as DataMetaInformation[]).find(
-          (dataMetaInfo) => dataMetaInfo.currentlyActive
-        )!.dataId;
+        return assertDefined(
+          (assertDefined(interception.response).body as DataMetaInformation[]).find(
+            (dataMetaInfo) => dataMetaInfo.currentlyActive
+          )
+        ).dataId;
       });
     }
 
@@ -287,6 +289,9 @@ describeIf(
         { force: true }
       );
       uploadReports.fillAllReportsToUploadForms();
+      cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+      cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "None...");
+      cy.wait(100);
       cy.get('button[data-test="submitButton"]').click();
       cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
     }
@@ -336,7 +341,7 @@ describeIf(
         .its("response.body")
         .should("deep.equal", { documentExists: true });
       cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((req) => {
-        cy.log(req.response!.body as string);
+        cy.log(assertDefined(req.response).body as string);
       });
       cy.wait("@getDataForMyDatasetsPage");
       cy.get("@postDocument").should("not.have.been.called");

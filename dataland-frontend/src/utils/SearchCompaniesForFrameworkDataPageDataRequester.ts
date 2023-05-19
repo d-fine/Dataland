@@ -7,7 +7,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { StoredCompany, CompanyInformation, DataMetaInformation, DataTypeEnum, QAStatus } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { useFrameworkFiltersStore } from "@/stores/stores";
+import { useFrameworkFiltersStore } from "@/stores/Stores";
 
 export interface DataSearchStoredCompany {
   companyName: string;

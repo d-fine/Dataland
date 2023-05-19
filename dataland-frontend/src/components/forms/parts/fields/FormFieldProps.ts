@@ -1,5 +1,5 @@
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
-import { deepCopyObject, ObjectType } from "@/utils/updateObjectUtils";
+import { deepCopyObject, ObjectType } from "@/utils/UpdateObjectUtils";
 import { ComponentPropsOptions } from "vue";
 
 export const FormFieldProps = {

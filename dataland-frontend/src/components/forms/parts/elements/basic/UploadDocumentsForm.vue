@@ -115,6 +115,7 @@ export default defineComponent({
      * Emits event that selected documents changed
      */
     emitDocumentsChangedEvent() {
+      console.log("Emits document change event");
       this.$emit("documentsChanged", this.documentsToUpload);
     },
 
@@ -133,7 +134,9 @@ export default defineComponent({
      * removes all documents at once, is invoked by a yes no field if it is resetted to "No"
      */
     removeAllDocuments() {
+      this.$refs.fileUpload.files = [];
       this.documentsToUpload = [];
+      console.log("Should have removed all documents", this.documentsToUpload);
       this.emitDocumentsChangedEvent();
     },
   },
