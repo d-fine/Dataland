@@ -36,7 +36,7 @@ class CsvToJsonConverterTest {
                 actualCompanyInformationWithEuTaxonomyDataForNonFinancials[index].companyInformation,
                 "The company information at index $index did not match.",
             )
-            //referenced reports are excluded since there is a expected deviation due to the ISIN being added for real data
+            // referenced reports are excluded since there is a expected deviation due to the ISIN being added for real data
             assertEquals(
                 companyAssociatedData.t.copy(referencedReports = emptyMap()),
                 actualCompanyInformationWithEuTaxonomyDataForNonFinancials[index].t.copy(referencedReports = emptyMap()),
@@ -66,7 +66,7 @@ class CsvToJsonConverterTest {
                 expectedCompanyInformationWithEuTaxonomyDataForFinancials[index].companyInformation,
                 "The company information at index $index did not match.",
             )
-            //referenced reports are excluded since there is a expected deviation due to the ISIN being added for real data
+            // referenced reports are excluded since there is a expected deviation due to the ISIN being added for real data
             assertEquals(
                 companyAssociatedData.t.copy(referencedReports = emptyMap()),
                 expectedCompanyInformationWithEuTaxonomyDataForFinancials[index].t.copy(referencedReports = emptyMap()),
