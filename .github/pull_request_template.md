@@ -10,12 +10,12 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
 - [ ] The new version is deployed with fake data to the dev server "dev1" using this branch
-  - [ ] Run with setting `Use real data` turned off and `Reset all Docker non-user data Volumes & Re-populate` turned on 
+  - [ ] Run with setting `Use real data` turned off and `Reset non-user Docker Volumes & Re-populate` turned on 
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that the CD run is green
   - [ ] The new feature is manually used/tested/observed on dev server
   - [ ] All implemented Social Logins have been tested manually in the UI
 - [ ] The new version is deployed with real data to a dev server using this branch
-  - [ ] Run with both settings `Reset all Docker non-user data Volumes & Re-populate` and `Use real data` turned on
+  - [ ] Run with both settings `Reset non-user Docker Volumes & Re-populate` and `Use real data` turned on
   - [ ] It's verified that the CD run is green
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
