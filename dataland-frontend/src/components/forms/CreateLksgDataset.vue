@@ -248,11 +248,9 @@ export default defineComponent({
      * Sends data to add LkSG data
      */
     async postLkSGData(): Promise<void> {
-      console.log("funktion wird aufgerufen mit:");
-      console.log(this.companyAssociatedLksgData);
       this.messageCounter++;
       try {
-        if (this.documents) {
+        if (this.documents.size > 0) {
           const documentControllerApi = await new ApiClientProvider(
             assertDefined(this.getKeycloakPromise)()
           ).getDocumentControllerApi();
@@ -295,7 +293,11 @@ export default defineComponent({
      * @param document the certificate as combined object of reference id and file content
      */
     updateDocumentList(componentName: string, document: DocumentToUpload) {
-      this.documents.set(componentName, document);
+      if (document) {
+        this.documents.set(componentName, document);
+      } else {
+        this.documents.delete(componentName);
+      }
     },
   },
 });

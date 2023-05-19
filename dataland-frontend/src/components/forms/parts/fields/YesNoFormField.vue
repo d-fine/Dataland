@@ -81,11 +81,9 @@ export default defineComponent({
   emits: ["documentUpdated"],
   watch: {
     yesSelected() {
-      console.log(this.referencedDocument);
       this.deleteDocument();
     },
     documentName() {
-      console.log(this.documentName);
       this.updateFileUploadFiles();
     },
   },
@@ -104,7 +102,6 @@ export default defineComponent({
      */
     deleteDocument() {
       if (!this.yesSelected) {
-        console.log("Now remove all documents");
         (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
       }
     },
@@ -125,7 +122,7 @@ export default defineComponent({
      * of the given dataset (in the case of editing a dataset)
      */
     updateFileUploadFiles() {
-      if (this.documentName !== "" && !this.referencedDocument) {
+      if (this.documentName !== "" && Object.keys(this.referencedDocument).length == 0) {
         this.$refs.uploadDocumentsForm.prefillFileUpload([this.documentName]);
       }
     },

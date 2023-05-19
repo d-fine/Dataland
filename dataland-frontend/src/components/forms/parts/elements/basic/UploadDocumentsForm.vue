@@ -33,6 +33,8 @@
             <div v-if="selectedFile.size > 0" data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
               {{ formatBytesUserFriendly(selectedFile.size, 1) }}
             </div>
+            <div v-else data-test="currently-uploaded-text" class="mx-2 text-black-alpha-50">Currently uploaded</div>
+
             <PrimeButton
               data-test="files-to-upload-remove"
               icon="pi pi-times"
@@ -115,7 +117,6 @@ export default defineComponent({
      * Emits event that selected documents changed
      */
     emitDocumentsChangedEvent() {
-      console.log("Emits document change event");
       this.$emit("documentsChanged", this.documentsToUpload);
     },
 
@@ -136,8 +137,6 @@ export default defineComponent({
     removeAllDocuments() {
       this.$refs.fileUpload.files = [];
       this.documentsToUpload = [];
-      console.log("Should have removed all documents", this.documentsToUpload);
-      console.log(this.$refs.fileUpload.files);
       this.emitDocumentsChangedEvent();
     },
 
