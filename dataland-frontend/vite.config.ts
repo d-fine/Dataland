@@ -35,9 +35,12 @@ export default defineConfig({
             "primevue/multiselect",
             "primevue/overlaypanel",
             "primevue/fileupload",
+            "primevue/tree",
+            "primevue/checkbox",
             "@formkit/vue",
             "axios",
             "i18n-iso-countries",
+            "currency-codes/data",
         ],
     },
     plugins: [
