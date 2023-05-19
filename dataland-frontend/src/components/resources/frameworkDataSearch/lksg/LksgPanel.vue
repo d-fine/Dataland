@@ -7,7 +7,6 @@
     <LksgCompanyDataTable
       :kpiDataObjects="kpiDataObjects"
       :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
-      tableDataTitle="LkSG Data"
     />
   </div>
 </template>

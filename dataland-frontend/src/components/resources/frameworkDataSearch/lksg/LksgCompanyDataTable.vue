@@ -52,8 +52,8 @@
             >Show "{{ data.kpiLabel }}"
             <em class="material-icons" aria-hidden="true" title=""> dataset </em>
           </a>
-          <span v-else-if="isObject(data[reportingPeriod.dataId]) && isBaseDataPoint(data[reportingPeriod.dataId])">
-            <span v-if="hasDocument(data[reportingPeriod.dataId])">
+          <span v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId]?.value">
+            <span v-if="isYesNo(data[reportingPeriod.dataId].value) && hasDocument(data[reportingPeriod.dataId])">
               <DocumentLink
                 :label="yesLabelMap.get(isCertificate(data.kpiLabel))"
                 :download-name="data[reportingPeriod.dataId].dataSource.name"
@@ -61,12 +61,12 @@
                 show-icon
               />
             </span>
-            <span v-else>
-              {{ decisionMap.get(data[reportingPeriod.dataId].value === YesNo.Yes).get(isCertificate(data.kpiLabel)) }}
+            <span v-else-if="isYesNo(data[reportingPeriod.dataId].value) && isCertificate(data.kpiLabel)">
+              {{ data[reportingPeriod.dataId].value === YesNo.Yes ? "Certified" : "Uncertified" }}
             </span>
-          </span>
-          <span v-else-if="isObject(data[reportingPeriod.dataId]) && data[reportingPeriod.dataId]?.value">
-            {{ data[reportingPeriod.dataId].value }}
+            <span v-else>
+              {{ data[reportingPeriod.dataId].value }}
+            </span>
           </span>
 
           <span v-else
@@ -117,10 +117,6 @@ export default defineComponent({
         [true, "Uncertified"],
         [false, "No"],
       ]),
-      decisionMap: new Map<boolean, Map<boolean, string>>([
-        [true, this.yesLabelMap],
-        [false, this.noLabelMap],
-      ]),
       YesNo,
     };
   },
@@ -133,10 +129,6 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    tableDataTitle: {
-      type: String,
-      default: "",
-    },
   },
   mounted() {
     this.kpiDataObjectsToDisplay = Array.from(this.kpiDataObjects.values());
@@ -147,35 +139,27 @@ export default defineComponent({
     /**
      * Checks if the BaseDataPoint holds a document reference
      * @param dataPoint the object to check for a reference
+     * @returns true if the data point contains a document reference and has the appropriate value
      */
     hasDocument(dataPoint: BaseDataPointYesNo): boolean {
-      return dataPoint?.dataSource?.reference !== undefined;
-    },
-    /**
-     * Checks if an object could be a BaseDataPoint
-     * @param kpiObject the kpi object to check
-     */
-    isBaseDataPoint(kpiObject: object): boolean {
-      try {
-        return "value" in kpiObject && "dataSource" in kpiObject;
-      } catch {
-        return false;
-      }
-    },
-    /**
-     * Checks if an kpi entry is an object
-     * @param kpi the kpi object to check
-     */
-    isObject(kpi: object): boolean {
-      return typeof kpi === "object";
+      return dataPoint?.value === YesNo.Yes && dataPoint?.dataSource?.reference !== undefined;
     },
     /**
      * Checks if a label belongs to a certificate
      * @param label the label to check
+     * @returns true if the label belongs to a certificate
      */
     isCertificate(label: string): boolean {
       const lowerCaseLabel = label.toLowerCase();
       return lowerCaseLabel.includes("certificate") || lowerCaseLabel.includes("certification");
+    },
+    /**
+     * Checks if a string is 'Yes' or 'No'
+     * @param value the string to check
+     * @returns true if the string is 'Yes' or 'No'
+     */
+    isYesNo(value: string) {
+      return (Object.values(YesNo) as string[]).includes(value);
     },
     /**
      * Opens a modal to display a table with the provided list of production sites
