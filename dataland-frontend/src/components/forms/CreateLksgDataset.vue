@@ -166,9 +166,7 @@ export default defineComponent({
       uploadSucceded: false,
       postLkSGDataProcessed: false,
       messageCounter: 0,
-      elementPosition: 0,
       checkCustomInputs,
-      updatingData: false,
     };
   },
   computed: {
