@@ -561,47 +561,28 @@ export default defineComponent({
         const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
         const kpiSectionsModel = (clonedFormInputsModel.data as ObjectType).kpiSectionsModel;
 
-        // const eligibilityKpis = {...Object.keys(kpiSectionsModel).map( key => {
-        //   const kpiKey = this.confirmedSelectedFinancialServiceOptions.find( option => option.value === key );
-        //   return kpiSectionsModel[kpiKey];
-        // })};
-
         const eligibilityKpis = Object.keys(kpiSectionsModel)
           .map( key => ({ key, fieldName: euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[key] as string }) )
           .map( kpi => ({ [kpi.fieldName]: kpiSectionsModel[kpi.key][kpi.fieldName] }) )
-          .reduce( (all, next) => ({ ...all, ...next }));
+          .reduce( (all, one) => ({ ...all, ...one }));
 
+        const kpis = Object.keys(kpiSectionsModel)
+          .filter(key => key !== 'assetManagementKpis')
+          .map( key => ({ [key]: kpiSectionsModel[key] }))
+          .map(kpi => {
+            const kpiKey = Object.keys(kpi)[0];
+            const fieldName = euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[kpiKey];
+            if(kpiKey){ delete kpi[kpiKey][fieldName] };
+            return kpi;
+          })
+          .reduce( (all, one) => ({ ...all, ...one }));
 
-        // if (data.eligibilityKpis) {
-        //   const selectedKpiKeys = this.confirmedSelectedFinancialServiceOptions.map((option) => {
-        //     const found = Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType).find(
-        //       (entry) => entry[0] === option.value
-        //     );
-        //     return found ? found[1] : undefined;
-        //   });
+        delete (clonedFormInputsModel.data as ObjectType).kpiSectionsModel;
+        clonedFormInputsModel.data = {...clonedFormInputsModel.data as ObjectType, eligibilityKpis, ...kpis};
 
-        //   const mappedAndFiltered = selectedKpiKeys.map((key) => ({
-        //     [key as keyof EligibilityKpis]: (data.eligibilityKpis as EligibilityKpis)[key as keyof EligibilityKpis],
-        //   }));
-
-        //   if (mappedAndFiltered.length > 0) {
-        //     (clonedFormInputsModel.data as ObjectType).eligibilityKpis = mappedAndFiltered.reduce(
-        //       (all, next) => ({ ...all, ...next }),
-        //       {}
-        //     );
-        //   } else {
-        //     delete (clonedFormInputsModel.data as ObjectType).eligibilityKpis;
-        //   }
-        // }
-
-        console.log({
-          eligibilityKpis,
-          confirmedSelectedFinancialServiceOptions:this.confirmedSelectedFinancialServiceOptions,
-          clonedFormInputsModel,
-          // kpiSections: this.kpiSections
-        });
-
+        console.log(clonedFormInputsModel);
         debugger;
+
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
@@ -631,21 +612,6 @@ export default defineComponent({
      * @param value section name
      */
     removeKpisSection(value: string) {
-      // const clonedFormInputsModel = Object.assign({}, this.formInputsModel);
-
-      // if (clonedFormInputsModel.data?.eligibilityKpis) {
-      //   const kpiModelType = Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType).find(
-      //     (entry) => entry[0] === value
-      //   );
-      //   if (kpiModelType) {
-      //     delete clonedFormInputsModel.data?.eligibilityKpis[kpiModelType[1]];
-      //     if (Object.keys(clonedFormInputsModel.data?.eligibilityKpis).length === 0) {
-      //       delete clonedFormInputsModel.data?.eligibilityKpis;
-      //     }
-      //   }
-      //   updateObject(this.formInputsModel, clonedFormInputsModel);
-      // }
-
       const filtered = this.confirmedSelectedFinancialServiceOptions.filter(
         (financialServiceOption: { label: string; value: string }) => financialServiceOption.value !== value
       );
