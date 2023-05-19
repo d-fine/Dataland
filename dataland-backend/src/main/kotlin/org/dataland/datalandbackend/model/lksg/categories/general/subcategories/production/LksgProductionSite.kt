@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.lksg
+package org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production
 
 /**
  * --- API model ---
