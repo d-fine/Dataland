@@ -39,6 +39,7 @@
                   <div class="col-9 formFields">
                     <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                       <component
+                        :data="companyAssociatedLksgData.data[category.name][subcategory.name][field.name]"
                         v-if="field.showIf(companyAssociatedLksgData.data)"
                         :is="field.component"
                         :displayName="field.label"
@@ -51,7 +52,7 @@
                         :validation="field.validation"
                         :validation-label="field.validationLabel"
                         :data-test="field.name"
-                        @certificateUpdated="updateCertificateList"
+                        @documentUpdated="updateDocumentList"
                         :ref="field.name"
                       />
                     </FormKit>
@@ -117,7 +118,7 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { uploadFiles } from "@/utils/FileUploadUtils";
+import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -179,7 +180,7 @@ export default defineComponent({
       elementPosition: 0,
       checkCustomInputs,
       updatingData: false,
-      certificates: new Map() as Map<string, DocumentToUpload>,
+      documents: new Map() as Map<string, DocumentToUpload>,
     };
   },
   computed: {
@@ -252,10 +253,12 @@ export default defineComponent({
       console.log(this.companyAssociatedLksgData);
       this.messageCounter++;
       try {
-        const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getDocumentControllerApi();
-        await uploadFiles(Array.from(this.certificates.values()), documentControllerApi);
+        if (this.documents) {
+          const documentControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getDocumentControllerApi();
+          await uploadFiles(Array.from(this.documents.values()), documentControllerApi);
+        }
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
@@ -290,10 +293,10 @@ export default defineComponent({
     /**
      * updates the list of certificates that were uploaded in the corresponding formfields on change
      * @param componentName the name of the component as a key
-     * @param certificate the certificate as combined object of reference id and file content
+     * @param document the certificate as combined object of reference id and file content
      */
-    updateCertificateList(componentName: string, certificate: DocumentToUpload) {
-      this.certificates.set(componentName, certificate);
+    updateDocumentList(componentName: string, document: DocumentToUpload) {
+      this.documents.set(componentName, document);
     },
   },
 });
