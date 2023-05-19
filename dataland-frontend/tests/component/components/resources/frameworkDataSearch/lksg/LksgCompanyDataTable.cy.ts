@@ -29,6 +29,7 @@ describe("Component test for LksgCompanyDataTable", () => {
       },
     });
 
+    cy.contains("tr", "Certification 1").find("td").last().find("i[data-test=download-icon]").should("be.visible");
     cy.contains("tr", "Certification 1").find("td").last().find(".underline").should("contain.text", "Certified");
     cy.contains("tr", "2 Certificate").find("td").last().find(".underline").should("not.exist");
     cy.contains("tr", "2 Certificate").find("td").last().should("contain.text", "Uncertified");
