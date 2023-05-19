@@ -1,5 +1,6 @@
 import { CompanyReport } from "@clients/backend";
-import { DocumentControllerApi } from "@clients/documentmanager";
+import { ApiClientProvider } from "@/services/ApiClients";
+import Keycloak from "keycloak-js";
 
 export interface DocumentToUpload {
   file: File;
@@ -20,12 +21,13 @@ export interface ReportToUpload extends CompanyReport {
 /**
  * uploads Files through the frontend
  * @param files the list of files to upload
- * @param documentControllerApi the api with uploader permissions that was created in the component using this function
+ * @param getKeycloakPromise the getter for the keycloak promise used to get API access
  */
 export async function uploadFiles(
   files: ReportToUpload[] | DocumentToUpload[],
-  documentControllerApi: DocumentControllerApi
+  getKeycloakPromise: () => Promise<Keycloak>
 ): Promise<void> {
+  const documentControllerApi = await new ApiClientProvider(getKeycloakPromise()).getDocumentControllerApi();
   for (const fileToUpload of files) {
     const fileIsAlreadyInStorage = (await documentControllerApi.checkDocument(fileToUpload.reference)).data
       .documentExists;

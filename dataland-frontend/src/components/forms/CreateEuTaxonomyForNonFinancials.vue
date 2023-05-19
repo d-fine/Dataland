@@ -285,7 +285,7 @@ import EuTaxonomyBasicInformation from "@/components/forms/parts/EuTaxonomyBasic
 import Card from "primevue/card";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { Component, defineComponent, inject } from "vue";
+import { defineComponent, inject } from "vue";
 import { useRoute } from "vue-router";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -317,7 +317,7 @@ import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
-import { uploadFiles } from "@/utils/FileUploadUtils";
+import { ReportToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -428,7 +428,7 @@ export default defineComponent({
         companyAssociatedEuTaxonomyData as ObjectType
       );
       this.waitingForData = false;
-      updateObject(this.formInputsModel, receivedFormInputsModel);
+      updateObject(this.formInputsModel as ObjectType, receivedFormInputsModel);
     },
 
     /**
@@ -444,10 +444,11 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-        const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getDocumentControllerApi();
-        await uploadFiles((this.$refs.UploadReports as Component).$data.reportsToUpload, documentControllerApi);
+
+        await uploadFiles(
+          (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
+          assertDefined(this.getKeycloakPromise)
+        );
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(

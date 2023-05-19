@@ -117,7 +117,7 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { uploadFiles } from "@/utils/FileUploadUtils";
+import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -252,10 +252,7 @@ export default defineComponent({
       console.log(this.companyAssociatedLksgData);
       this.messageCounter++;
       try {
-        const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getDocumentControllerApi();
-        await uploadFiles(Array.from(this.certificates.values()), documentControllerApi);
+        await uploadFiles(Array.from(this.certificates.values()), assertDefined(this.getKeycloakPromise));
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
