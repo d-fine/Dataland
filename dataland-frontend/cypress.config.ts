@@ -121,12 +121,6 @@ export default defineConfig({
                     return createHash("sha256").update(file).digest("hex");
                 },
             });
-            on("task", {
-                logMessage(args) {
-                    console.log(...args);
-                    return null;
-                }
-            });
 
             return config
         },

@@ -1,24 +1,16 @@
 import { Configuration } from "@clients/backend";
 import { DocumentControllerApi, DocumentUploadResponse } from "@clients/documentmanager";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 
 /**
  * Uploads all documents provided in the documentDirectory folder
+ * @param token the keycloak token for authentication
  */
-export function uploadAllDocuments(): void {
+export function uploadAllDocuments(token: string): void {
   const documentDirectory = "../testing/data/documents/";
   cy.task("readdir", documentDirectory).then((fileNames) => {
     (fileNames as string[]).forEach((name: string) => {
-      cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        const api = new DocumentControllerApi(new Configuration({ accessToken: token }));
-        cy.task("logMessage", ["Uploading document: " + name]);
-        cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
-          const arr = new Uint8Array(bufferObject.data);
-          const file = new File([arr], name, { type: "application/pdf" });
-          api.postDocument(file).catch((error) => console.log(error));
-          delete bufferObject.data;
-          cy.wait(2000);
-        });
+      cy.task<{ [type: string]: ArrayBuffer }>("readFile", documentDirectory + name).then((bufferObject) => {
+        uploadDocumentViaApi(token, bufferObject.data, name).catch((error) => console.log(error));
       });
     });
   });

@@ -25,7 +25,6 @@ describe(
   "As a user, I want to be able to see some data on the Dataland webpage",
   {
     defaultCommandTimeout: Cypress.env("prepopulate_timeout_s") * 1000,
-    taskTimeout: 120000,
     retries: {
       runMode: 0,
       openMode: 0,
@@ -83,7 +82,9 @@ describe(
     }
 
     before(function uploadDocumentsAndStoreDocumentIds() {
-      uploadAllDocuments();
+      cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        uploadAllDocuments(token);
+      });
     });
 
     describe("Upload and validate EuTaxonomy for financials data", () => {
