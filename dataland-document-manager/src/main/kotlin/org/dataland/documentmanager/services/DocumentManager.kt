@@ -1,7 +1,6 @@
 package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandbackendutils.utils.sha256
@@ -93,18 +92,12 @@ class DocumentManager(
 
     private fun generateDocumentMetaInfo(document: MultipartFile, correlationId: String): DocumentMetaInfo {
         logger.info("Generate document meta info for document with correlation ID: $correlationId")
-        val filename = document.originalFilename
-            ?: throw InvalidInputApiException(
-                "Document without filename received",
-                "Document without filename received: $correlationId",
-            )
         val documentId = document.bytes.sha256()
         logger.info(
             "Generated hash/document ID: $documentId for document with correlation ID: $correlationId. ",
         )
         return DocumentMetaInfo(
             documentId = documentId,
-            displayTitle = filename,
             uploaderId = DatalandAuthentication.fromContext().userId,
             uploadTime = Instant.now().toEpochMilli(),
             qaStatus = QAStatus.Pending,
@@ -147,7 +140,7 @@ class DocumentManager(
         }
 
         val documentDataStream = retrieveDocumentDataStream(documentId, correlationId)
-        return DocumentStream(metaDataInfoEntity.displayTitle, documentDataStream)
+        return DocumentStream("$documentId.pdf", documentDataStream)
     }
 
     private fun retrieveDocumentDataStream(
