@@ -128,7 +128,7 @@ describe("As a user I expect a data request page where I can download an excel t
         cy.intercept("**/Dataland_Request_Template.xlsx").as(downloadAlias);
         cy.get(downloadLinkSelector).click();
         cy.wait(`@${downloadAlias}`);
-        cy.readFile("./public/Dataland_Request_Template.xlsx", "binary", {
+        cy.readFile("./public/static/Dataland_Request_Template.xlsx", "binary", {
           timeout: Cypress.env("medium_timeout_in_ms") as number,
         }).then((expectedExcelTemplateBinary) => {
           cy.readFile(expectedPathToDownloadedExcelTemplate, "binary", {
