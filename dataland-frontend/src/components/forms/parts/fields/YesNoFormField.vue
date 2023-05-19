@@ -105,7 +105,7 @@ export default defineComponent({
     deleteDocument() {
       if (!this.yesSelected) {
         console.log("Now remove all documents");
-        this.$refs.uploadDocumentsForm.removeAllDocuments();
+        (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
       }
     },
 

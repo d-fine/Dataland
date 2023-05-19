@@ -348,6 +348,7 @@ import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { uploadFiles } from "@/utils/FileUploadUtils";
+import { ReportToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -561,10 +562,10 @@ export default defineComponent({
           this.namesOfAllCompanyReportsForTheDataset
         );
 
-        const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getDocumentControllerApi();
-        await uploadFiles(this.$refs.UploadReports.$data.reportsToUpload, documentControllerApi);
+        await uploadFiles(
+          (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
+          assertDefined(this.getKeycloakPromise)
+        );
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(

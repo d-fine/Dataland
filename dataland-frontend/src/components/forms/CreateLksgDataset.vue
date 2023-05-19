@@ -39,7 +39,6 @@
                   <div class="col-9 formFields">
                     <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                       <component
-                        :data="companyAssociatedLksgData.data[category.name][subcategory.name][field.name]"
                         v-if="field.showIf(companyAssociatedLksgData.data)"
                         :is="field.component"
                         :displayName="field.label"

@@ -125,7 +125,7 @@ export default defineComponent({
      * @param deleteCount the number of files to delete
      */
     removeDocumentFromDocumentsToUpload(indexOfFileToRemove: number, deleteCount = 1) {
-      this.$refs.fileUpload.remove(indexOfFileToRemove);
+      (this.$refs.fileUpload.remove as (index: number) => void)(indexOfFileToRemove);
       this.documentsToUpload.splice(indexOfFileToRemove, deleteCount);
       this.emitDocumentsChangedEvent();
     },
