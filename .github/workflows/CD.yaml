@@ -8,7 +8,7 @@ on:
         required: false
         type: boolean
       resetStackAndRepopulate:
-        description: 'Reset non-user Docker Volumes & Re-populate'
+        description: 'Reset non-user related Docker Volumes & Re-populate'
         required: false
         type: boolean
       whichEnvironment:
