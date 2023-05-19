@@ -357,7 +357,6 @@ describeIf(
       cy.intercept("**/documents/*").as("documentDownload");
       cy.get(downloadLinkSelector).click();
       cy.wait("@documentDownload");
-      cy.task("readdir", Cypress.config("downloadsFolder")).then((dirs) => cy.task("logMessage", dirs));
       cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
         timeout: Cypress.env("medium_timeout_in_ms") as number,
       }).then((expectedPdfBinary) => {
