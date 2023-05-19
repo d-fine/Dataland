@@ -24,9 +24,16 @@
         ref="uploadDocumentsForm"
         :more-than-one-document-allowed="false"
       />
-      <FormKit v-if="yesSelected" type="group" name="dataSource" validation="required|notEmpty">
-        <FormKit type="hidden" name="name" :modelValue="documentName" />
-        <FormKit type="hidden" name="reference" :modelValue="documentReference" />
+      <FormKit v-if="yesSelected" type="group" name="dataSource">
+        <FormKit type="hidden" name="name" :modelValue="referencedDocument?.fileNameWithoutSuffix ?? ''" />
+        <FormKit
+          type="text"
+          name="reference"
+          :modelValue="referencedDocument?.reference"
+          validation="required"
+          validation-label="If 'Yes' is selected an uploaded document"
+          :outer-class="{ 'hidden-input': true }"
+        />
       </FormKit>
     </FormKit>
 
@@ -67,6 +74,7 @@ export default defineComponent({
       yesSelected: false,
       documentName: "",
       documentReference: "",
+      referencedDocument: {} as DocumentToUpload,
     };
   },
 
@@ -101,14 +109,8 @@ export default defineComponent({
      * @param updatedDocuments the updated documents that are currently selected (only one in this case)
      */
     handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
-      this.documentName = updatedDocuments[0]?.fileNameWithoutSuffix ?? "";
-      this.documentReference = updatedDocuments[0]?.reference ?? "";
-      console.log(this.documentName, this.documentReference);
+      this.referencedDocument = updatedDocuments[0];
       this.$emit("documentUpdated", this.name, updatedDocuments[0]);
-    },
-
-    notEmpty(): boolean {
-      return this.documentName !== "";
     },
   },
 });
