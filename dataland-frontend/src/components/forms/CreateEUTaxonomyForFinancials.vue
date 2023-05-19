@@ -200,70 +200,45 @@
                   </div>
                 </div>
 
-                <div
-                  v-for="financialServiceOption of confirmedSelectedFinancialServiceOptions"
-                  :key="financialServiceOption"
-                  :data-test="financialServiceOption.value"
-                  class="uploadFormSection"
-                >
-                  <div class="flex w-full">
-                    <div class="p-3 topicLabel">
-                      <h3 :id="financialServiceOption.value" class="anchor title">
-                        {{ financialServiceOption.label }}
-                      </h3>
-                    </div>
-
-                    <PrimeButton
-                      @click="removeKpisSection(financialServiceOption.value)"
-                      label="REMOVE THIS SECTION"
-                      data-test="removeSectionButton"
-                      class="p-button-text ml-auto"
-                      icon="pi pi-trash"
-                    ></PrimeButton>
-                  </div>
-
-                  <FormKit
-                    v-if="financialServiceOption.value !== 'assetManagementKpis'"
-                    :name="financialServiceOption.value"
-                    type="group"
+                <FormKit v-model="kpiSections" name="kpiSectionsModel" type="group">
+                  <div
+                    v-for="financialServiceOption of confirmedSelectedFinancialServiceOptions"
+                    :key="financialServiceOption"
+                    :data-test="financialServiceOption.value"
+                    class="uploadFormSection"
                   >
-                    <div
-                      v-for="kpiType of euTaxonomyKPIsModel[financialServiceOption.value]"
-                      :key="kpiType"
-                      :data-test="kpiType"
-                      class="uploadFormSection"
-                    >
-                      <div class="col-9 formFields">
-                        <FormKit :name="kpiType" type="group">
-                          <div class="form-field">
-                            <DataPointForm
-                              :name="kpiType ?? ''"
-                              :kpiInfoMappings="euTaxonomyKpiInfoMappings"
-                              :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :reportsName="namesOfAllCompanyReportsForTheDataset"
-                            />
-                          </div>
-                        </FormKit>
+                    <div class="flex w-full">
+                      <div class="p-3 topicLabel">
+                        <h3 :id="financialServiceOption.value" class="anchor title">
+                          {{ financialServiceOption.label }}
+                        </h3>
                       </div>
-                    </div>
-                  </FormKit>
 
-                  <FormKit name="eligibilityKpis" type="group">
+                      <PrimeButton
+                        @click="removeKpisSection(financialServiceOption.value)"
+                        label="REMOVE THIS SECTION"
+                        data-test="removeSectionButton"
+                        class="p-button-text ml-auto"
+                        icon="pi pi-trash"
+                      ></PrimeButton>
+                    </div>
+
                     <FormKit
-                      :name="euTaxonomyKPIsModel?.kpisFieldNameToFinancialServiceType[financialServiceOption.value]"
+                      v-if="financialServiceOption.value !== 'assetManagementKpis'"
+                      :name="financialServiceOption.value"
                       type="group"
                     >
                       <div
-                        v-for="kpiTypeEligibility of euTaxonomyKPIsModel.eligibilityKpis"
-                        :key="kpiTypeEligibility"
-                        :data-test="kpiTypeEligibility"
+                        v-for="kpiType of euTaxonomyKPIsModel[financialServiceOption.value]"
+                        :key="kpiType"
+                        :data-test="kpiType"
                         class="uploadFormSection"
                       >
                         <div class="col-9 formFields">
-                          <FormKit :name="kpiTypeEligibility" type="group">
+                          <FormKit :name="kpiType" type="group">
                             <div class="form-field">
                               <DataPointForm
-                                :name="kpiTypeEligibility ?? ''"
+                                :name="kpiType ?? ''"
                                 :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                                 :kpiNameMappings="euTaxonomyKpiNameMappings"
                                 :reportsName="namesOfAllCompanyReportsForTheDataset"
@@ -273,8 +248,36 @@
                         </div>
                       </div>
                     </FormKit>
-                  </FormKit>
-                </div>
+
+                    <FormKit :name="financialServiceOption.value" type="group">
+                      <FormKit
+                        :name="euTaxonomyKPIsModel?.kpisFieldNameToFinancialServiceType[financialServiceOption.value]"
+                        type="group"
+                      >
+                        <div
+                          v-for="kpiTypeEligibility of euTaxonomyKPIsModel.eligibilityKpis"
+                          :key="kpiTypeEligibility"
+                          :data-test="kpiTypeEligibility"
+                          class="uploadFormSection"
+                        >
+                          <div class="col-9 formFields">
+                            <FormKit :name="kpiTypeEligibility" type="group">
+                              <div class="form-field">
+                                <DataPointForm
+                                  :name="kpiTypeEligibility ?? ''"
+                                  :kpiInfoMappings="euTaxonomyKpiInfoMappings"
+                                  :kpiNameMappings="euTaxonomyKpiNameMappings"
+                                  :reportsName="namesOfAllCompanyReportsForTheDataset"
+                                />
+                              </div>
+                            </FormKit>
+                          </div>
+                        </div>
+                      </FormKit>
+                    </FormKit>
+                  </div>
+                </FormKit>
+
               </FormKit>
             </div>
           </FormKit>
@@ -436,6 +439,7 @@ export default defineComponent({
       message: "",
       namesOfAllCompanyReportsForTheDataset: [] as string[],
       templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
+      kpiSections: []
     };
   },
   computed: {
@@ -555,30 +559,49 @@ export default defineComponent({
 
         // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
         const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
-        const data = clonedFormInputsModel.data as ObjectType;
+        const kpiSectionsModel = (clonedFormInputsModel.data as ObjectType).kpiSectionsModel;
 
-        if (data.eligibilityKpis) {
-          const selectedKpiKeys = this.confirmedSelectedFinancialServiceOptions.map((option) => {
-            const found = Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType).find(
-              (entry) => entry[0] === option.value
-            );
-            return found ? found[1] : undefined;
-          });
+        // const eligibilityKpis = {...Object.keys(kpiSectionsModel).map( key => {
+        //   const kpiKey = this.confirmedSelectedFinancialServiceOptions.find( option => option.value === key );
+        //   return kpiSectionsModel[kpiKey];
+        // })};
 
-          const mappedAndFiltered = selectedKpiKeys.map((key) => ({
-            [key as keyof EligibilityKpis]: (data.eligibilityKpis as EligibilityKpis)[key as keyof EligibilityKpis],
-          }));
+        const eligibilityKpis = Object.keys(kpiSectionsModel)
+          .map( key => ({ key, fieldName: euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[key] as string }) )
+          .map( kpi => ({ [kpi.fieldName]: kpiSectionsModel[kpi.key][kpi.fieldName] }) )
+          .reduce( (all, next) => ({ ...all, ...next }));
 
-          if (mappedAndFiltered.length > 0) {
-            (clonedFormInputsModel.data as ObjectType).eligibilityKpis = mappedAndFiltered.reduce(
-              (all, next) => ({ ...all, ...next }),
-              {}
-            );
-          } else {
-            delete (clonedFormInputsModel.data as ObjectType).eligibilityKpis;
-          }
-        }
 
+        // if (data.eligibilityKpis) {
+        //   const selectedKpiKeys = this.confirmedSelectedFinancialServiceOptions.map((option) => {
+        //     const found = Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType).find(
+        //       (entry) => entry[0] === option.value
+        //     );
+        //     return found ? found[1] : undefined;
+        //   });
+
+        //   const mappedAndFiltered = selectedKpiKeys.map((key) => ({
+        //     [key as keyof EligibilityKpis]: (data.eligibilityKpis as EligibilityKpis)[key as keyof EligibilityKpis],
+        //   }));
+
+        //   if (mappedAndFiltered.length > 0) {
+        //     (clonedFormInputsModel.data as ObjectType).eligibilityKpis = mappedAndFiltered.reduce(
+        //       (all, next) => ({ ...all, ...next }),
+        //       {}
+        //     );
+        //   } else {
+        //     delete (clonedFormInputsModel.data as ObjectType).eligibilityKpis;
+        //   }
+        // }
+
+        console.log({
+          eligibilityKpis,
+          confirmedSelectedFinancialServiceOptions:this.confirmedSelectedFinancialServiceOptions,
+          clonedFormInputsModel,
+          // kpiSections: this.kpiSections
+        });
+
+        debugger;
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
@@ -608,28 +631,28 @@ export default defineComponent({
      * @param value section name
      */
     removeKpisSection(value: string) {
+      // const clonedFormInputsModel = Object.assign({}, this.formInputsModel);
+
+      // if (clonedFormInputsModel.data?.eligibilityKpis) {
+      //   const kpiModelType = Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType).find(
+      //     (entry) => entry[0] === value
+      //   );
+      //   if (kpiModelType) {
+      //     delete clonedFormInputsModel.data?.eligibilityKpis[kpiModelType[1]];
+      //     if (Object.keys(clonedFormInputsModel.data?.eligibilityKpis).length === 0) {
+      //       delete clonedFormInputsModel.data?.eligibilityKpis;
+      //     }
+      //   }
+      //   updateObject(this.formInputsModel, clonedFormInputsModel);
+      // }
+
       const filtered = this.confirmedSelectedFinancialServiceOptions.filter(
         (financialServiceOption: { label: string; value: string }) => financialServiceOption.value !== value
       );
 
       this.confirmedSelectedFinancialServiceOptions = filtered;
       this.selectedFinancialServiceOptions = filtered;
-
-      const clonedFormInputsModel = Object.assign({}, this.formInputsModel);
-
-      if (clonedFormInputsModel.data?.eligibilityKpis) {
-        const kpiModelType = Object.entries(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType).find(
-          (entry) => entry[0] === value
-        );
-        if (kpiModelType) {
-          delete clonedFormInputsModel.data?.eligibilityKpis[kpiModelType[1]];
-          if (Object.keys(clonedFormInputsModel.data?.eligibilityKpis).length === 0) {
-            delete clonedFormInputsModel.data?.eligibilityKpis;
-          }
-        }
-        updateObject(this.formInputsModel, clonedFormInputsModel);
-      }
-
+      
       this.onThisPageLinks = this.onThisPageLinks.filter((el: { label: string; value: string }) => el.value !== value);
     },
 
