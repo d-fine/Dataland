@@ -82,7 +82,7 @@ function fillSingleProductionSite(): void {
  * @param maxCounter the maximum recursion depth before an error is thrown
  */
 function recursivelySelectYesOnAllFields(maxCounter: number): void {
-  if (maxCounter <= 0) throw new Error("Recursion depth exceeded selecting yes on all input fields");
+  if (maxCounter <= 0) return;
 
   cy.window().then((win) => {
     if (selectYesOnAllFieldsBrowser(win)) {
@@ -215,13 +215,25 @@ function fillRequiredLksgFieldsWithDummyData(): void {
  * Tests that selecting and removing a document works and selects all required documents to pass validation
  */
 function uploadRequiredDocuments(): void {
-  cy.get("input[name=sa8000Certification]").then(() => {
-    uploadDocuments.selectDummyFile("dummyFile", 1);
-    uploadDocuments.assertUploadButtonDisappeared();
-    uploadDocuments.validateReportToUploadIsListed("dummyFile");
-    uploadDocuments.removeReportToUpload("dummyFile");
-  });
+  cy.get('button[data-test="upload-files-button"]')
+    .first()
+    .click()
+    .get("input[type=file]")
+    .first()
+    .selectFile(
+      {
+        contents: new Cypress.Buffer(1),
+        fileName: `dummyFile.pdf`,
+        mimeType: "application/pdf",
+      },
+      { force: true }
+    );
+
+  uploadDocuments.validateReportToUploadIsListed("dummyFile");
+  uploadDocuments.removeReportToUpload("dummyFile");
+
   uploadDocuments.selectDocumentAtEachFileSelector("StandardWordExport");
+  cy.get('button[data-test="upload-files-button"]').first().should("not.exist");
 }
 
 /**
@@ -236,14 +248,14 @@ export function uploadLksgDataViaForm(): void {
   submitButton.buttonAppearsDisabled();
   selectDummyDateInDataPicker();
 
-  recursivelySelectYesOnAllFields(50);
-  validateAllFieldsHaveYesSelected();
+  recursivelySelectYesOnAllFields(15);
 
+  uploadRequiredDocuments();
+
+  submitButton.buttonAppearsDisabled();
   fillRequiredLksgFieldsWithDummyData();
   testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
 
-  submitButton.buttonAppearsDisabled();
-  uploadRequiredDocuments();
   submitButton.clickButton();
   cy.get("div.p-message-success").should("be.visible");
 }

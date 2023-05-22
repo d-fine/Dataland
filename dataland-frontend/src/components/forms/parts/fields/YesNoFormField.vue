@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field">
+  <div class="form-field" :data-test="name">
     <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
     <FormKit v-if="certificateRequiredIfYes" type="group" :name="name">
       <RadioButtonsFormElement
@@ -19,7 +19,7 @@
         @input="setDocumentRequired($event)"
       />
       <UploadDocumentsForm
-        v-show="yesSelected"
+        v-if="yesSelected"
         @documentsChanged="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
         :more-than-one-document-allowed="false"
