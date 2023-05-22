@@ -444,10 +444,12 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-
+        const documentControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getDocumentControllerApi();
         await uploadFiles(
           (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
-          assertDefined(this.getKeycloakPromise)
+          documentControllerApi
         );
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
