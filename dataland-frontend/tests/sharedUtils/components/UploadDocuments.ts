@@ -56,4 +56,11 @@ export const uploadDocuments = {
   assertUploadButtonDisappeared(): void {
     cy.get('button[data-test="upload-files-button"]').should("not.exist");
   },
+
+  selectDocumentAtEachFileSelector(filename: string): void {
+    cy.get('button[data-test="upload-files-button"]').each((uploadButton) => {
+      uploadButton.click();
+      cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
+    });
+  },
 };

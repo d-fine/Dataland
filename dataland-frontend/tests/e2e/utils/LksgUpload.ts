@@ -211,6 +211,9 @@ function fillRequiredLksgFieldsWithDummyData(): void {
   cy.get("select[name=totalRevenueCurrency]").select("EUR");
 }
 
+/**
+ * Tests that selecting and removing a document works and selects all required documents to pass validation
+ */
 function uploadRequiredDocuments(): void {
   cy.get("input[name=sa8000Certification]").then(() => {
     uploadDocuments.selectDummyFile("dummyFile", 1);
@@ -218,7 +221,7 @@ function uploadRequiredDocuments(): void {
     uploadDocuments.validateReportToUploadIsListed("dummyFile");
     uploadDocuments.removeReportToUpload("dummyFile");
   });
-  // uploadDocuments.uploadAllRequiredDocuments();
+  uploadDocuments.selectDocumentAtEachFileSelector("StandardWordExport");
 }
 
 /**
@@ -233,14 +236,14 @@ export function uploadLksgDataViaForm(): void {
   submitButton.buttonAppearsDisabled();
   selectDummyDateInDataPicker();
 
-  recursivelySelectYesOnAllFields(15);
+  recursivelySelectYesOnAllFields(50);
   validateAllFieldsHaveYesSelected();
 
   fillRequiredLksgFieldsWithDummyData();
-  uploadRequiredDocuments();
   testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
 
-  submitButton.buttonAppearsEnabled();
+  submitButton.buttonAppearsDisabled();
+  uploadRequiredDocuments();
   submitButton.clickButton();
   cy.get("div.p-message-success").should("be.visible");
 }
