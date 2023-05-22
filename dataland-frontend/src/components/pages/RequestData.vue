@@ -39,7 +39,7 @@
               <div class="mt-3">
                 <a
                   class="text-primary"
-                  href="/Dataland_Request_Template.xlsx"
+                  href="/static/Dataland_Request_Template.xlsx"
                   id="download-data-request-excel-template"
                   download
                 >

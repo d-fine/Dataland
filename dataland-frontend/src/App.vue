@@ -85,7 +85,7 @@ export default defineComponent({
       return keycloak
         .init({
           onLoad: "check-sso",
-          silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
+          silentCheckSsoRedirectUri: window.location.origin + "/static/silent-check-sso.html",
           pkceMethod: "S256",
         })
         .then((authenticated) => {
