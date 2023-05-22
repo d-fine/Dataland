@@ -330,7 +330,6 @@ import {
   AssuranceDataAssuranceEnum,
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
   DataMetaInformation,
-  EligibilityKpis,
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   EuTaxonomyDataForNonFinancials,
@@ -508,7 +507,29 @@ export default defineComponent({
               const receivedFormInputsModel = convertValuesFromDecimalsToPercentages(
                 companyAssociatedEuTaxonomyData as ObjectType
               );
+
+              const kpiSectionsModel = Object.keys(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType)
+                .map( key => {
+                  const fieldName = euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[key];
+                  const kpi = (receivedFormInputsModel.data as ObjectType).eligibilityKpis[fieldName];
+                  const eligibilityKpi = kpi ? {[fieldName]: kpi } : null;
+                  return { [key]: eligibilityKpi };
+                })
+                .map( item => {
+                  const key = Object.keys(item)[0];
+                  const kpi = receivedFormInputsModel.data[key];
+                  if(kpi){
+                    item[key] = {...item[key], ...receivedFormInputsModel.data[key]};
+                  }
+                  return item;
+                })
+                .filter(item => item[Object.keys(item)[0]])
+                .reduce((all,one) => ({ ...all,...one }));
+              
+              (receivedFormInputsModel.data as ObjectType).kpiSectionsModel = kpiSectionsModel;
+
               this.waitingForData = false;
+
               nextTick()
                 .then(() => updateObject(this.formInputsModel as ObjectType, receivedFormInputsModel))
                 .catch((e) => console.log(e));
@@ -556,7 +577,7 @@ export default defineComponent({
       try {
         this.postEuTaxonomyDataForFinancialsProcessed = false;
         this.messageCount++;
-
+        
         // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
         const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
         const kpiSectionsModel = (clonedFormInputsModel.data as ObjectType).kpiSectionsModel;
@@ -576,12 +597,9 @@ export default defineComponent({
             return kpi;
           })
           .reduce( (all, one) => ({ ...all, ...one }));
-
+        
         delete (clonedFormInputsModel.data as ObjectType).kpiSectionsModel;
         clonedFormInputsModel.data = {...clonedFormInputsModel.data as ObjectType, eligibilityKpis, ...kpis};
-
-        console.log(clonedFormInputsModel);
-        debugger;
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
