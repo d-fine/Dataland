@@ -4,6 +4,7 @@ import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import {
   companyViaApiAndEuTaxonomyDataForFinancialsViaForm,
   fillEligibilityKpis,
+  fillField,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
@@ -28,7 +29,7 @@ describeIf(
       });
     });
 
-    it.only("Check", () => {
+    it("Check", () => {
       testData.companyInformation.companyName = "company-for-all-types";
       companyViaApiAndEuTaxonomyDataForFinancialsViaForm(
         testData.companyInformation,
@@ -70,21 +71,6 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
   cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
 
-  // Adding and deleting KPIs
-  // cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
-  //   .click()
-  //   .get("div.p-multiselect-panel")
-  //   .find("li.p-multiselect-item")
-  //   .first()
-  //   .click();
-
-  // cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
-  //   .click()
-  //   .get("div.p-multiselect-panel")
-  //   .find("li.p-multiselect-item").not('li.p-highlight')
-  //   .first()
-  //   .click();
-
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
     .get("div.p-multiselect-panel")
@@ -101,23 +87,27 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
     }
   });
 
-  // cy.get('[data-test="addKpisButton"]').click({ force: true });
-  // cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
-  // cy.get('[data-test="removeSectionButton"]').click({ force: true });
+  cy.get('[data-test="addKpisButton"]').click({ force: true });
+  cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
-  // cy.get('[data-test="dataPointToggle"]')
-  //   .eq(1)
-  //   .should("exist")
-  //   .should("contain.text", "Data point is available")
-  //   .find('[data-test="dataPointToggleButton"]')
-  //   .click();
+  cy.get('[data-test="dataPointToggle"]')
+    .eq(1)
+    .should("exist")
+    .should("contain.text", "Data point is available")
+    .find('[data-test="dataPointToggleButton"]')
+    .click();
 
-  // cy.get('[data-test="dataPointToggle"]').eq(1).find('[data-test="dataPointToggleButton"]').click();
+  cy.get('[data-test="dataPointToggle"]').eq(1).find('[data-test="dataPointToggleButton"]').click();
 
-  // cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
-  // cy.get('[data-test="removeSectionButton"]').click({ force: true });
+  cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
-  // fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
-  fillEligibilityKpis("investmentFirmKpis", data.eligibilityKpis?.InvestmentFirm);
-  // fillField("investmentFirmKpis", "greenAssetRatio", data.investmentFirmKpis?.greenAssetRatio);
+  fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
+  fillField(
+    "creditInstitutionKpis",
+    "tradingPortfolioAndInterbankLoans",
+    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans
+  );
+  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
+  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
+  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
 }
