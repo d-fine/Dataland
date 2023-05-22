@@ -30,11 +30,20 @@ class CsvToJsonConverterTest {
                 "and the read list contains " +
                 "${expectedCompanyInformationWithEuTaxonomyDataForNonFinancials.size} elements.",
         )
-        assertEquals(
-            expectedCompanyInformationWithEuTaxonomyDataForNonFinancials,
-            actualCompanyInformationWithEuTaxonomyDataForNonFinancials,
-            "The list of read and parsed company information did not match.",
-        )
+        expectedCompanyInformationWithEuTaxonomyDataForNonFinancials.forEachIndexed { index, companyAssociatedData ->
+            assertEquals(
+                companyAssociatedData.companyInformation,
+                actualCompanyInformationWithEuTaxonomyDataForNonFinancials[index].companyInformation,
+                "The company information at index $index did not match.",
+            )
+            // referenced reports are excluded (expected deviation due to the ISIN being added for real data)
+            assertEquals(
+                companyAssociatedData.t.copy(referencedReports = emptyMap()),
+                actualCompanyInformationWithEuTaxonomyDataForNonFinancials[index].t
+                    .copy(referencedReports = emptyMap()),
+                "The EU Taxonomy data at index $index did not match.",
+            )
+        }
     }
 
     @Test
@@ -52,10 +61,18 @@ class CsvToJsonConverterTest {
                 "and the read list contains " +
                 "${expectedCompanyInformationWithEuTaxonomyDataForFinancials.size} elements.",
         )
-        assertEquals(
-            expectedCompanyInformationWithEuTaxonomyDataForFinancials,
-            actualCompanyInformationWithEuTaxonomyDataForFinancials,
-            "The list of read and parsed company information did not match.",
-        )
+        actualCompanyInformationWithEuTaxonomyDataForFinancials.forEachIndexed { index, companyAssociatedData ->
+            assertEquals(
+                companyAssociatedData.companyInformation,
+                expectedCompanyInformationWithEuTaxonomyDataForFinancials[index].companyInformation,
+                "The company information at index $index did not match.",
+            )
+            // referenced reports are excluded (expected deviation due to the ISIN being added for real data)
+            assertEquals(
+                companyAssociatedData.t.copy(referencedReports = emptyMap()),
+                expectedCompanyInformationWithEuTaxonomyDataForFinancials[index].t.copy(referencedReports = emptyMap()),
+                "The EU Taxonomy data at index $index did not match.",
+            )
+        }
     }
 }

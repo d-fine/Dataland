@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.services
 
+import org.apache.commons.lang3.StringUtils.lowerCase
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
@@ -50,7 +51,7 @@ class PdfVerificationService {
     }
 
     private fun checkThatDocumentNameEndsOnPdf(name: String, correlationId: String) {
-        if (name.takeLast(expectedFileNameIdentifierLength) != ".pdf") {
+        if (lowerCase(name.takeLast(expectedFileNameIdentifierLength)) != ".pdf") {
             logger.info(
                 "PDF document uploaded with correlation ID: $correlationId " +
                     "does not have a name ending on '.pdf', aborting.",
@@ -63,10 +64,10 @@ class PdfVerificationService {
     }
 
     /**
-     * We allow alphanumeric characters, hyphens, spaces, and periods up to a maximum length of 254 characters
-     * in our filenames
+     * We allow alphanumeric characters, hyphens, spaces, brackets, underscores and periods
+     * up to a maximum length of 254 characters in our filenames
      */
-    private val allowedFilenameRegex = Regex("^[\\w\\-. ]{1,254}\$")
+    private val allowedFilenameRegex = Regex("^[\\w\\-. ()]{1,254}\$")
 
     private fun checkThatDocumentNameIsValid(name: String, correlationId: String) {
         if (!allowedFilenameRegex.matches(name)) {
@@ -76,7 +77,7 @@ class PdfVerificationService {
             throw InvalidInputApiException(
                 "You seem to have uploaded an file that has an invalid name",
                 "Please ensure that your filename only contains alphanumeric characters, hyphens, spaces," +
-                    " and periods up to maximum length of 254 characters.",
+                    "brackets, underscores and periods up to maximum length of 254 characters.",
             )
         }
     }

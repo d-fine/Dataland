@@ -1,6 +1,6 @@
 <#macro registrationLayout formContainerStyle="width: 364px;" outerContainerStyle="max-width: 500px;" displayInfo=false displayMessage=true displayRequiredFields=false>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -8,9 +8,9 @@
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
         <title>Dataland Login</title>
-        <link rel="apple-touch-icon" sizes="180x180" href="${url.resourcesPath}/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="${url.resourcesPath}/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="${url.resourcesPath}/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="${url.resourcesPath}/static/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="${url.resourcesPath}/static/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="${url.resourcesPath}/static/favicon-16x16.png">
 
         <link rel="stylesheet" href="${url.resourcesPath}/index.css"/>
     </head>

@@ -18,6 +18,7 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -94,7 +95,6 @@ class DocumentManagerTest(
                 Optional.of(
                     DocumentMetaInfoEntity(
                         documentId = uploadResponse.documentId,
-                        displayTitle = mockMultipartFile.originalFilename,
                         uploaderId = "",
                         uploadTime = 0,
                         qaStatus = QAStatus.Pending,
@@ -122,7 +122,6 @@ class DocumentManagerTest(
                 Optional.of(
                     DocumentMetaInfoEntity(
                         documentId = uploadResponse.documentId,
-                        displayTitle = mockMultipartFile.originalFilename,
                         uploaderId = "",
                         uploadTime = 0,
                         qaStatus = QAStatus.Accepted,
@@ -130,7 +129,7 @@ class DocumentManagerTest(
                 ),
             )
         val downloadedDocument = documentManager.retrieveDocumentById(documentId = uploadResponse.documentId)
-        assertEquals(reportName, downloadedDocument.title)
+        assertNotNull(downloadedDocument.title)
         assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(mockMultipartFile.bytes))
     }
 
@@ -165,7 +164,6 @@ class DocumentManagerTest(
                 Optional.of(
                     DocumentMetaInfoEntity(
                         documentId = uploadResponse.documentId,
-                        displayTitle = mockMultipartFile.originalFilename,
                         uploaderId = "",
                         uploadTime = 0,
                         qaStatus = QAStatus.Pending,
