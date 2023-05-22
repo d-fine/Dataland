@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent, inject, PropType } from "vue";
 import Keycloak from "keycloak-js";
-import { AxiosResponse, AxiosResponseHeaders } from "axios";
+import { AxiosResponse } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CompanyReport } from "@clients/backend";
@@ -57,34 +57,12 @@ export default defineComponent({
           .then((getDocumentsFromStorageResponse) => {
             const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
             docUrl.href = URL.createObjectURL(newBlob);
-            const contentDisposition: string =
-              ((getDocumentsFromStorageResponse.headers as AxiosResponseHeaders).get(
-                "content-disposition"
-              ) as string) ?? "";
-            const filename = this.constructFileName(contentDisposition, reference);
-
-            docUrl.setAttribute("download", filename);
+            docUrl.setAttribute("download", this.name + ".pdf");
             document.body.appendChild(docUrl);
             docUrl.click();
           });
       } catch (error) {
         console.error(error);
-      }
-    },
-
-    /**
-     * construct file name from response header, as a fallback the hash is used as file name
-     * @param contentDisposition the part of the header that should contain the file name
-     * @param reference the hash as a fallback value
-     * @returns filename the name of the downloaded file
-     */
-    constructFileName(contentDisposition: string, reference: string): string {
-      const regex = /(?<=filename=)[^;]+/;
-      const filename = regex.exec(contentDisposition);
-      if (filename !== null) {
-        return filename[0];
-      } else {
-        return reference + ".pdf";
       }
     },
   },

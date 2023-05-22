@@ -287,6 +287,9 @@ describeIf(
         { force: true }
       );
       uploadReports.fillAllReportsToUploadForms();
+      cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+      cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "None...");
+      cy.wait(100);
       cy.get('button[data-test="submitButton"]').click();
       cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
     }
@@ -348,25 +351,24 @@ describeIf(
      */
     function checkIfLinkedReportsAreDownloadable(companyId: string): void {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
-      const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}.pdf`;
+      const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${differentFileNameForSameFile}.pdf`;
       const downloadLinkSelector = `span[data-test="Report-Download-${differentFileNameForSameFile}"]`;
       cy.readFile(expectedPathToDownloadedReport).should("not.exist");
-      cy.get(downloadLinkSelector)
-        .click()
-        .then(() => {
-          cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
+      cy.intercept("**/documents/*").as("documentDownload");
+      cy.get(downloadLinkSelector).click();
+      cy.wait("@documentDownload");
+      cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
+        timeout: Cypress.env("medium_timeout_in_ms") as number,
+      }).then((expectedPdfBinary) => {
+        cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
+          cy.readFile(expectedPathToDownloadedReport, "binary", {
             timeout: Cypress.env("medium_timeout_in_ms") as number,
-          }).then((expectedPdfBinary) => {
-            cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
-              cy.readFile(expectedPathToDownloadedReport, "binary", {
-                timeout: Cypress.env("medium_timeout_in_ms") as number,
-              }).then((receivedPdfHash) => {
-                cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
-              });
-              cy.task("deleteFolder", Cypress.config("downloadsFolder"));
-            });
+          }).then((receivedPdfHash) => {
+            cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
           });
+          cy.task("deleteFolder", Cypress.config("downloadsFolder"));
         });
+      });
     }
   }
 );

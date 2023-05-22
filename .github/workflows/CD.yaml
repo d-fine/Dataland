@@ -7,8 +7,8 @@ on:
         description: 'Use real data'
         required: false
         type: boolean
-      resetBackendAndRepopulate:
-        description: 'Reset backend database & Re-populate'
+      resetStackAndRepopulate:
+        description: 'Reset non-user related Docker Volumes & Re-populate'
         required: false
         type: boolean
       whichEnvironment:
@@ -124,7 +124,7 @@ jobs:
           PROXY_LETSENCRYPT_PATH: ${{ vars.PROXY_LETSENCRYPT_PATH }}
           PROXY_PRIMARY_URL: ${{ vars.TARGETSERVER_URL }}
           PROXY_LETSENCRYPT_ARGS: ${{ vars.PROXY_LETSENCRYPT_ARGS }}
-          RESET_BACKEND_DATABASE_AND_REPOPULATE: ${{ github.event.inputs.resetBackendAndRepopulate }}
+          RESET_STACK_AND_REPOPULATE: ${{ github.event.inputs.resetStackAndRepopulate }}
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
@@ -171,7 +171,8 @@ jobs:
         run: |
           if [[ $REALDATA == true ]]; then
             echo "Retrieving real data"
-            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.17
+            rm -rf ./testing/data/documents/*
+            docker run -v $(pwd)/testing/data:/testData:rw ghcr.io/d-fine/dataland/datacontainer:0.0.18
           fi
       - name: Download frontend API clients
         uses: actions/download-artifact@v3
@@ -204,17 +205,7 @@ jobs:
           CYPRESS_EXECUTION_ENVIRONMENT: ${{ vars.CYPRESS_EXECUTION_ENVIRONMENT }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true
-          CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetBackendAndRepopulate }}
+          CYPRESS_RUN_PREPOPULATION: ${{ github.event.inputs.resetStackAndRepopulate }}
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
-      - name: Move Cypress Results
-        if: always()
-        run: |
-          mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypress && mv ./dataland-frontend/cypress/ ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/
-      - name: Upload FE E2E Cypress Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress
-          path: ./dataland-frontend/cypressresult/

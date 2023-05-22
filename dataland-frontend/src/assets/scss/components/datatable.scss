@@ -51,7 +51,10 @@
   .auto-headers-size {
     width: auto;
   }
-  .p-rowgroup-header { background-color: $table-background-hover-color-light }
+  .p-rowgroup-header {
+    background-color: $table-background-hover-color-light;
+    cursor: pointer;
+  }
   .p-datatable-thead {
     tr {
       &:hover {

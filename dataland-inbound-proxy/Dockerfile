@@ -14,7 +14,7 @@ COPY dataland-frontend/src/assets/images /var/www/images
 COPY ./gitinfo /var/www/html/gitinfo
 
 RUN chmod -R +x /docker-entrypoint.d && chmod -R +x /scripts
-RUN mkdir -p /certs  \
+RUN mkdir -p /certs /data/nginx/cache \
     && chown -R root:root /certs  \
     && chmod -R 600 /certs  \
     && mkdir -p /certs/dummy  \
