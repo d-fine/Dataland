@@ -116,7 +116,10 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
       },
       productionSpecific: {
         manufacturingCompany: valueOrUndefined(randomYesNo(), undefinedProbability),
-        capacity: valueOrUndefined(randomNumber(100000).toString(), undefinedProbability),
+        capacity: valueOrUndefined(
+          randomNumber(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
+          undefinedProbability
+        ),
         isContractProcessing: valueOrUndefined(randomYesNo(), undefinedProbability),
         subcontractingCompaniesCountries: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
         subcontractingCompaniesIndustries: valueOrUndefined(generateListOfNaceCodes(), undefinedProbability),
