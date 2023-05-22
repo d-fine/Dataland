@@ -1,6 +1,6 @@
 import WelcomeDataland from "@/components/pages/WelcomeDataland.vue";
-import { checkButton, checkImage } from "@ct/testUtils/existenceChecks";
-import { checkFooter } from "@sharedUtils/elementChecks";
+import { checkButton, checkImage } from "@ct/testUtils/ExistenceChecks";
+import { checkFooter } from "@sharedUtils/ElementChecks";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
 describe("Component test for WelcomeDataland", () => {
