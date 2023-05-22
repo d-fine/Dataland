@@ -13,7 +13,7 @@
       <template #header="{ files, chooseCallback }">
         <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
           <PrimeButton
-            v-show="files.length < 1 || moreThanOneDocumentAllowed"
+            v-if="files.length < 1 || moreThanOneDocumentAllowed"
             data-test="upload-files-button"
             @click="chooseCallback()"
             icon="pi pi-upload"
