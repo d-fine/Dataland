@@ -35,7 +35,11 @@ class CompanyReportParser(
      */
     fun buildMapOfAllCompanyReports(csvLineData: Map<String, String>): Map<String, CompanyReport> {
         return columnMapReportTitles
-            .mapNotNull { (key, _) -> buildSingleCompanyReport(csvLineData, key)?.let { key to it } }
+            .mapNotNull { (key, _) ->
+                buildSingleCompanyReport(csvLineData, key)?.let {
+                    "${csvLineData["isin"]}_$key" to it
+                }
+            }
             .toMap()
     }
 
