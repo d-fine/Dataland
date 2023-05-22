@@ -4,7 +4,10 @@
  * @param fileName the file the image is expected to display
  */
 export function checkImage(name: string, fileName: string): void {
-  cy.get(`img[alt="${name}"]`).should("be.visible").should("have.attr", "src", fileName);
+  cy.get(`img[alt="${name}"]`)
+    .should("be.visible")
+    .should("have.attr", "src")
+    .should("match", new RegExp(`.*/${fileName}$`));
 }
 
 /**
