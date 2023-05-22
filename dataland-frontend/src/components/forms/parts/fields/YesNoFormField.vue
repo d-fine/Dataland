@@ -22,6 +22,7 @@
         v-if="yesSelected"
         @documentsChanged="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
+        :name="name"
         :more-than-one-document-allowed="false"
       />
       <FormKit v-if="yesSelected" type="group" name="dataSource">
