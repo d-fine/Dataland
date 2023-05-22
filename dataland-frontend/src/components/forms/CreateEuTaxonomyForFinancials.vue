@@ -316,7 +316,7 @@ import { useRoute } from "vue-router";
 import { defineComponent, inject, nextTick } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
+import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/ValidationsUtils";
 import { getHyphenatedDate } from "@/utils/DataFormatUtils";
 import {
   euTaxonomyKpiInfoMappings,
@@ -347,7 +347,8 @@ import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
-import { ReportToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { uploadFiles } from "@/utils/FileUploadUtils";
+import { ReportToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -561,12 +562,9 @@ export default defineComponent({
           this.namesOfAllCompanyReportsForTheDataset
         );
 
-        const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getDocumentControllerApi();
         await uploadFiles(
           (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
-          documentControllerApi
+          assertDefined(this.getKeycloakPromise)
         );
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
