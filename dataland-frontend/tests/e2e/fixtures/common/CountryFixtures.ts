@@ -16,5 +16,5 @@ export function generateIso2CountryCode(): string {
 export function generateListOfIso2CountryCodes(): string[] {
   return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
     return generateIso2CountryCode();
-  });
+  }).sort((a, b) => a.localeCompare(b));
 }

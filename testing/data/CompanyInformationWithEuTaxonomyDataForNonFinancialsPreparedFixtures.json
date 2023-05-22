@@ -2,207 +2,204 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Ost Malte",
-			"sector": "ROI",
+			"headquarters": "Süd Sydneyburg",
+			"sector": "e-commerce",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "lfmtsyt70v0tc3h"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "ei2i2mtzz"
-				},
-				{
 					"identifierType": "Isin",
-					"identifierValue": "wkzl2v7tcd53"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "gpk3aku9ua"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "v1rlzar"
+					"identifierValue": "nxege36tqusg"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "2r9g7ohxx"
+					"identifierValue": "1c6lr6gu5"
 				}
 			],
-			"countryCode": "ZW",
+			"countryCode": "DZ",
 			"companyAlternativeNames": [
-				"Hache, Krabbe und Herwig",
-				"Petzold-Hassfeld"
+				"Neuschwander-Karst"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-09-08",
-			"numberOfEmployees": 14728,
+			"fiscalYearEnd": "2022-07-06",
+			"numberOfEmployees": 71864,
 			"referencedReports": {
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "FJD"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "MZN"
+					"reportDate": "2023-03-22",
+					"currency": "HTG"
 				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-09-11",
-					"currency": "XPD"
+					"reportDate": "2023-04-04",
+					"currency": "GMD"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-12-22",
-					"currency": "GBP"
+					"isGroupLevel": "No",
+					"currency": "NGN"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "FJD"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Apitz, Linnenbaum und Drechsler",
-				"dataSource": {
-					"page": 880,
-					"report": "SustainabilityReport",
-					"tagName": "infomediaries"
-				}
+				"assurance": "ReasonableAssurance"
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.7134,
-					"quality": "Estimated"
+					"value": 0.9298,
+					"dataSource": {
+						"page": 962,
+						"report": "ESEFReport",
+						"tagName": "action-items"
+					},
+					"quality": "Audited",
+					"comment": "copy open-source transmitter"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.5054,
-					"dataSource": {
-						"page": 76,
-						"report": "AnnualReport",
-						"tagName": "content"
-					},
-					"quality": "Audited",
-					"comment": "synthesize mobile microchip"
+					"value": 0.1901,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.8715,
-					"dataSource": {
-						"page": 29,
-						"report": "AnnualReport",
-						"tagName": "synergies"
-					},
-					"quality": "Reported",
-					"comment": "input solid state protocol"
+					"value": 0.8866,
+					"quality": "Incomplete"
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Süd Laurenzscheid",
-			"sector": "technologies",
+			"headquarters": "Nord Leonhard",
+			"headquartersPostalCode": "61262",
+			"sector": "infrastructures",
 			"identifiers": [
 				{
 					"identifierType": "Duns",
-					"identifierValue": "hicwb2236"
+					"identifierValue": "4wc0kkxj9"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "su2u2jm54bzuabt52xf0"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "x0pg6tpgda"
+					"identifierValue": "141fqk0ifx"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "8u9rux65y"
 				}
 			],
-			"countryCode": "SJ",
+			"countryCode": "AW",
 			"companyAlternativeNames": [
-				"Scherz-Markowski"
+				"Jerschabek-Köseoglu",
+				"Möhsner, Hütter und Beushausen",
+				"Reinelt-Krebs",
+				"Salzer, Kausemann und Schüppel"
 			],
-			"website": "https://effizient-fußball.info",
+			"companyLegalForm": "AG",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-02-25",
-			"numberOfEmployees": 30281,
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-11-25",
+			"numberOfEmployees": 47463,
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-05-09",
-					"currency": "KRW"
-				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "NA",
-					"reportDate": "2022-11-23",
-					"currency": "SHP"
+					"currency": "HKD"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-08-22",
+					"currency": "KRW"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-03-13",
+					"currency": "EUR"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"reportDate": "2022-10-22",
+					"currency": "LRD"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "ReasonableAssurance",
+				"dataSource": {
+					"page": 338,
+					"report": "SustainabilityReport",
+					"tagName": "communities"
+				}
 			},
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 140366.82,
+					"value": 666225.95,
 					"dataSource": {
-						"page": 882,
+						"page": 76,
 						"report": "IntegratedReport",
-						"tagName": "portals"
+						"tagName": "deliverables"
 					},
 					"quality": "Reported",
-					"comment": "connect haptic panel"
+					"comment": "transmit multi-byte interface"
 				},
 				"eligiblePercentage": {
-					"value": 0.7987,
-					"quality": "Estimated"
+					"value": 0.2812,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 140477.71,
-					"quality": "Estimated"
+					"value": 950136.55,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.4026,
+					"value": 0.0872,
 					"dataSource": {
-						"page": 1120,
-						"report": "AnnualReport",
-						"tagName": "web-readiness"
+						"page": 335,
+						"report": "SustainabilityReport",
+						"tagName": "e-business"
 					},
 					"quality": "Estimated",
-					"comment": "synthesize wireless firewall"
+					"comment": "override mobile capacitor"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 287638.11,
+					"value": 231819.58,
 					"dataSource": {
-						"page": 631,
+						"page": 447,
 						"report": "AnnualReport",
 						"tagName": "convergence"
 					},
-					"quality": "Incomplete",
-					"comment": "back up haptic sensor"
+					"quality": "Reported",
+					"comment": "quantify auxiliary feed"
 				},
 				"eligiblePercentage": {
-					"value": 0.0803,
+					"value": 0.9284,
 					"dataSource": {
-						"page": 974,
-						"report": "IntegratedReport",
-						"tagName": "initiatives"
+						"page": 732,
+						"report": "AnnualReport",
+						"tagName": "supply-chains"
 					},
-					"quality": "Estimated",
-					"comment": "navigate redundant application"
+					"quality": "Incomplete",
+					"comment": "generate cross-platform driver"
 				}
 			}
 		},
@@ -211,116 +208,138 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Bad Carinascheid",
-			"headquartersPostalCode": "40807",
-			"sector": "markets",
+			"headquarters": "Jannadorf",
+			"sector": "e-commerce",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "dqe9zucu2fuf6f4"
+					"identifierValue": "1tbet5pa2tz9yis"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "kmuf9nce3"
+					"identifierValue": "kh6kxooqs"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "7nk1kee4xkjb"
+					"identifierValue": "bvhh0b3xlce0"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "v3o5kkl10xjwbxsdwa4z"
+					"identifierValue": "4zd05wnam2oku8o2zluo"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "x18ykkwatd"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "kgauvi4"
+					"identifierValue": "orm7iji"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "pwelmj1sb"
+					"identifierValue": "umj6p9uud"
 				}
 			],
-			"countryCode": "PW",
+			"countryCode": "KW",
 			"companyAlternativeNames": [
-				"Dix, Schwuchow und Ehmann"
+				"Danner, Helm und Lenk"
 			],
 			"companyLegalForm": "Partnership without Limited Liability",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-07-02",
-			"numberOfEmployees": 58227,
+			"fiscalYearEnd": "2022-12-22",
+			"numberOfEmployees": 20612,
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Rheder GmbH & Co. KG"
+				"assurance": "None"
 			},
+			"reportingObligation": "No",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 551711.91,
-					"quality": "Incomplete"
+					"quality": "NA"
 				},
 				"alignedPercentage": {
-					"value": 0.4585,
+					"value": 0.7181,
 					"dataSource": {
-						"page": 301,
-						"report": "AnnualReport",
-						"tagName": "e-services"
+						"page": 999,
+						"report": "ESEFReport",
+						"tagName": "e-commerce"
 					},
-					"quality": "Incomplete",
-					"comment": "connect solid state feed"
+					"quality": "Estimated",
+					"comment": "reboot online program"
 				},
 				"eligiblePercentage": {
-					"quality": "NA"
+					"value": 0.2269,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"quality": "NA"
-				},
-				"alignedPercentage": {
-					"value": 0.2675,
+					"value": 486369.04,
 					"dataSource": {
-						"page": 448,
+						"page": 875,
 						"report": "SustainabilityReport",
-						"tagName": "ROI"
+						"tagName": "web services"
 					},
 					"quality": "Reported",
-					"comment": "synthesize neural matrix"
+					"comment": "transmit digital feed"
+				},
+				"alignedPercentage": {
+					"value": 0.6133,
+					"dataSource": {
+						"page": 304,
+						"report": "SustainabilityReport",
+						"tagName": "users"
+					},
+					"quality": "Reported",
+					"comment": "back up haptic interface"
 				},
 				"eligiblePercentage": {
-					"value": 0.0014,
+					"value": 0.949,
 					"dataSource": {
-						"page": 780,
-						"report": "IntegratedReport",
-						"tagName": "convergence"
+						"page": 264,
+						"report": "SustainabilityReport",
+						"tagName": "web-readiness"
 					},
-					"quality": "Audited",
-					"comment": "bypass auxiliary protocol"
+					"quality": "Reported",
+					"comment": "parse bluetooth hard drive"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 123496.33,
+					"value": 930044.06,
 					"dataSource": {
-						"page": 1097,
-						"report": "SustainabilityReport",
-						"tagName": "infrastructures"
+						"page": 935,
+						"report": "ESEFReport",
+						"tagName": "e-business"
 					},
-					"quality": "Incomplete",
-					"comment": "navigate bluetooth microchip"
+					"quality": "Reported",
+					"comment": "synthesize solid state firewall"
 				},
 				"alignedPercentage": {
-					"value": 0.5271,
-					"quality": "Estimated"
+					"value": 0.6093,
+					"dataSource": {
+						"page": 79,
+						"report": "AnnualReport",
+						"tagName": "solutions"
+					},
+					"quality": "Audited",
+					"comment": "generate mobile panel"
 				},
 				"eligiblePercentage": {
-					"value": 0.41,
-					"quality": "Incomplete"
+					"value": 0.9372,
+					"dataSource": {
+						"page": 1003,
+						"report": "ESEFReport",
+						"tagName": "convergence"
+					},
+					"quality": "Estimated",
+					"comment": "index redundant bus"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
 	}
 ]

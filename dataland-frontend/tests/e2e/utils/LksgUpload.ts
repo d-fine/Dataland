@@ -1,9 +1,9 @@
 import {
+  CompanyInformation,
   Configuration,
+  DataMetaInformation,
   LksgData,
   LksgDataControllerApi,
-  DataMetaInformation,
-  CompanyInformation,
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
@@ -218,6 +218,7 @@ function uploadRequiredDocuments(): void {
     uploadDocuments.validateReportToUploadIsListed("dummyFile");
     uploadDocuments.removeReportToUpload("dummyFile");
   });
+  // uploadDocuments.uploadAllRequiredDocuments();
 }
 
 /**
