@@ -251,10 +251,7 @@ export default defineComponent({
       this.messageCounter++;
       try {
         if (this.documents.size > 0) {
-          const documentControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
-          ).getDocumentControllerApi();
-          await uploadFiles(Array.from(this.documents.values()), documentControllerApi);
+          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
