@@ -505,29 +505,7 @@ export default defineComponent({
                 companyAssociatedEuTaxonomyData as ObjectType
               );
 
-              const fieldNames = Object.values(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
-              const kpiKeys = Object.keys(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
-              const kpiSectionsModel = kpiKeys
-                .map((key: string) => {
-                  const fieldName = fieldNames[kpiKeys.indexOf(key)];
-                  const eligibilityKpis = (receivedFormInputsModel.data as ObjectType).eligibilityKpis as ObjectType;
-                  const kpi = eligibilityKpis[fieldName];
-                  const eligibilityKpi = kpi ? { [fieldName]: kpi } : null;
-                  return { [key]: eligibilityKpi };
-                })
-                .map((item) => {
-                  const key = Object.keys(item)[0];
-                  const kpi = (receivedFormInputsModel.data as ObjectType)[key];
-                  if (kpi) {
-                    const data = receivedFormInputsModel.data as ObjectType;
-                    item[key] = { ...item[key], ...(data[key] as ObjectType) };
-                  }
-                  return item;
-                })
-                .filter((item) => item[Object.keys(item)[0]])
-                .reduce((all, one) => ({ ...all, ...one }));
-
-              (receivedFormInputsModel.data as ObjectType).kpiSectionsModel = kpiSectionsModel;
+              (receivedFormInputsModel.data as ObjectType).kpiSectionsModel = this.extractEligibilityKpis(receivedFormInputsModel.data as ObjectType);
 
               this.waitingForData = false;
 
@@ -538,6 +516,34 @@ export default defineComponent({
             .catch((e) => console.log(e))
         )
         .catch((e) => console.log(e));
+    },
+
+    /**
+     * Parses received eligibility KPIs data
+     * @param receivedFormInputsModelData Received data
+     * @returns ObjectType
+     */
+    extractEligibilityKpis(receivedFormInputsModelData: ObjectType){
+      const fieldNames = Object.values(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
+      const kpiKeys = Object.keys(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
+      return kpiKeys
+        .map((key: string) => {
+          const fieldName = fieldNames[kpiKeys.indexOf(key)];
+          const eligibilityKpis = receivedFormInputsModelData.eligibilityKpis as ObjectType;
+          const kpi = eligibilityKpis[fieldName];
+          const eligibilityKpi = kpi ? { [fieldName]: kpi } : null;
+          return { [key]: eligibilityKpi };
+        })
+        .map((item) => {
+          const key = Object.keys(item)[0];
+          const kpi = receivedFormInputsModelData[key];
+          if (kpi) {
+            item[key] = { ...item[key], ...(receivedFormInputsModelData[key] as ObjectType) };
+          }
+          return item;
+        })
+        .filter((item) => item[Object.keys(item)[0]])
+        .reduce((all, one) => ({ ...all, ...one }));
     },
 
     /**
@@ -571,6 +577,37 @@ export default defineComponent({
     },
 
     /**
+     * Converts the kpisSection data to a request-friendly object
+     * @param kpiSectionsModel Kpi Section data
+     * @returns ObjectType
+     */
+    makeEligibilityKpis(kpiSectionsModel: ObjectType) {
+      const eligibilityKpis = Object.keys(kpiSectionsModel)
+        .map((key) => ({ key, fieldName: euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[key] as string }))
+        .map((kpi) => {
+          const section = kpiSectionsModel[kpi.key] as ObjectType;
+          const field = section[kpi.fieldName];
+          return { [kpi.fieldName]: field };
+        })
+        .reduce((all, one) => ({ ...all, ...one }));
+
+      const kpis = Object.keys(kpiSectionsModel)
+        .filter((key) => key !== "assetManagementKpis")
+        .map((key) => ({ [key]: kpiSectionsModel[key] }))
+        .map((kpi) => {
+          const kpiKey = Object.keys(kpi)[0];
+          const fieldName = (euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType as ObjectType)[kpiKey];
+          if (kpiKey) {
+            delete (kpi[kpiKey] as ObjectType)[fieldName as string];
+          }
+          return kpi;
+        })
+        .reduce((all, one) => ({ ...all, ...one }));
+
+      return { eligibilityKpis, ...kpis };
+    },
+
+    /**
      * Creates a new EuTaxonomy-Financials framework entry for the current company
      * with the data entered in the form by using the Dataland API
      */
@@ -581,33 +618,13 @@ export default defineComponent({
 
         // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
         const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
-        const kpiSectionsModel = (clonedFormInputsModel.data as ObjectType).kpiSectionsModel as ObjectType;
-
-        const eligibilityKpis = Object.keys(kpiSectionsModel)
-          .map((key) => ({ key, fieldName: euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[key] as string }))
-          .map((kpi) => {
-            const section = kpiSectionsModel[kpi.key] as ObjectType;
-            const field = section[kpi.fieldName];
-            return { [kpi.fieldName]: field };
-          })
-          .reduce((all, one) => ({ ...all, ...one }));
-
-        const kpis = Object.keys(kpiSectionsModel)
-          .filter((key) => key !== "assetManagementKpis")
-          .map((key) => ({ [key]: kpiSectionsModel[key] }))
-          .map((kpi) => {
-            const kpiKey = Object.keys(kpi)[0];
-            const fieldName = (euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType as ObjectType)[kpiKey];
-            if (kpiKey) {
-              delete (kpi[kpiKey] as ObjectType)[fieldName as string];
-            }
-            return kpi;
-          })
-          .reduce((all, one) => ({ ...all, ...one }));
-
+        const kpiSectionsModel = (clonedFormInputsModel.data as ObjectType).kpiSectionsModel;
         delete (clonedFormInputsModel.data as ObjectType).kpiSectionsModel;
-        clonedFormInputsModel.data = { ...(clonedFormInputsModel.data as ObjectType), eligibilityKpis, ...kpis };
-
+        clonedFormInputsModel.data = {
+          ...(clonedFormInputsModel.data as ObjectType),
+          ...this.makeEligibilityKpis(kpiSectionsModel as ObjectType),
+        };
+        
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
