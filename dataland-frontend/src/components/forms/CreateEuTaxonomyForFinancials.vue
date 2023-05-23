@@ -224,33 +224,28 @@
                       ></PrimeButton>
                     </div>
 
-                    <FormKit
-                      v-if="financialServiceOption.value !== 'assetManagementKpis'"
-                      :name="financialServiceOption.value"
-                      type="group"
-                    >
-                      <div
-                        v-for="kpiType of euTaxonomyKPIsModel[financialServiceOption.value]"
-                        :key="kpiType"
-                        :data-test="kpiType"
-                        class="uploadFormSection"
-                      >
-                        <div class="col-9 formFields">
-                          <FormKit :name="kpiType" type="group">
-                            <div class="form-field">
-                              <DataPointForm
-                                :name="kpiType ?? ''"
-                                :kpiInfoMappings="euTaxonomyKpiInfoMappings"
-                                :kpiNameMappings="euTaxonomyKpiNameMappings"
-                                :reportsName="namesOfAllCompanyReportsForTheDataset"
-                              />
-                            </div>
-                          </FormKit>
+                    <FormKit :name="financialServiceOption.value" type="group">
+                      <div v-if="financialServiceOption.value !== 'assetManagementKpis'" class="uploadFormSection">
+                        <div
+                          v-for="kpiType of euTaxonomyKPIsModel[financialServiceOption.value]"
+                          :key="kpiType"
+                          :data-test="kpiType"
+                          class="uploadFormSection"
+                        >
+                          <div class="col-9 formFields">
+                            <FormKit :name="kpiType" type="group">
+                              <div class="form-field">
+                                <DataPointForm
+                                  :name="kpiType ?? ''"
+                                  :kpiInfoMappings="euTaxonomyKpiInfoMappings"
+                                  :kpiNameMappings="euTaxonomyKpiNameMappings"
+                                  :reportsName="namesOfAllCompanyReportsForTheDataset"
+                                />
+                              </div>
+                            </FormKit>
+                          </div>
                         </div>
                       </div>
-                    </FormKit>
-
-                    <FormKit :name="financialServiceOption.value" type="group">
                       <FormKit
                         :name="euTaxonomyKPIsModel?.kpisFieldNameToFinancialServiceType[financialServiceOption.value]"
                         type="group"
