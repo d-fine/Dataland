@@ -8,9 +8,7 @@
       sortField="subAreaKey"
       :sortOrder="1"
       sortMode="single"
-      responsiveLayout="scroll"
       :expandableRowGroups="true"
-      :reorderableColumns="true"
       v-model:expandedRowGroups="expandedRowGroups"
     >
       <Column
@@ -38,6 +36,7 @@
       <Column
         v-for="reportingPeriod of reportingPeriodsOfDataSets"
         headerClass="horizontal-headers-size"
+        headerStyle="width: 30vw;"
         :field="reportingPeriod.dataId"
         :header="reportingPeriod.reportingPeriod"
         :key="reportingPeriod.dataId"
@@ -73,12 +72,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import Tooltip from "primevue/tooltip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
+import { DataSetReportingPeriod } from "@/utils/DataTableDisplay";
 
 export default defineComponent({
   name: "CompanyDataTable",
@@ -100,7 +100,7 @@ export default defineComponent({
       required: true,
     },
     reportingPeriodsOfDataSets: {
-      type: Array,
+      type: Array as PropType<Array<DataSetReportingPeriod>>,
       default: () => [],
     },
     kpiNameMappings: {

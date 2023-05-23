@@ -1,5 +1,5 @@
 <template>
-  <DataTable responsiveLayout="scroll" :value="listOfRowContents">
+  <DataTable :value="listOfRowContents">
     <Column
       v-for="col of columns"
       :field="col.field"

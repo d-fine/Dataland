@@ -8,9 +8,7 @@
       sortField="subcategoryKey"
       :sortOrder="1"
       sortMode="single"
-      responsiveLayout="scroll"
       :expandableRowGroups="true"
-      :reorderableColumns="true"
       v-model:expandedRowGroups="expandedRowGroups"
     >
       <Column
@@ -36,6 +34,7 @@
       <Column
         v-for="reportingPeriod of reportingPeriodsOfDataSets"
         headerClass="horizontal-headers-size"
+        headerStyle="width: 30vw;"
         :field="reportingPeriod.dataId"
         :header="reportingPeriod.reportingPeriod"
         :key="reportingPeriod.dataId"
@@ -98,6 +97,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { DataSetReportingPeriod } from "@/utils/DataTableDisplay";
 
 export default defineComponent({
   name: "LksgCompanyDataTable",
@@ -117,7 +117,7 @@ export default defineComponent({
       default: () => new Map(),
     },
     reportingPeriodsOfDataSets: {
-      type: Array,
+      type: Array as PropType<Array<DataSetReportingPeriod>>,
       default: () => [],
     },
     tableDataTitle: {

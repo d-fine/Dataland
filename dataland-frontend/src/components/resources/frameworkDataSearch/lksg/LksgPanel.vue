@@ -6,7 +6,7 @@
   <div v-if="kpiDataObjects.size > 0 && !waitingForData">
     <LksgCompanyDataTable
       :kpiDataObjects="kpiDataObjects"
-      :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
+      :reportingPeriodsOfDataSets="listOfDataSetReportingPeriods"
       tableDataTitle="LkSG Data"
     />
   </div>
@@ -18,7 +18,7 @@ import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { DataSetReportingPeriod, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { Category, Field, Subcategory } from "@/utils/GenericFrameworkTypes";
@@ -35,7 +35,7 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
-      listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
+      listOfDataSetReportingPeriods: [] as Array<DataSetReportingPeriod>,
       kpiDataObjects: new Map() as Map<string, KpiDataObject>,
       lksgDataModel: lksgDataModel,
     };
@@ -43,12 +43,12 @@ export default defineComponent({
   props: PanelProps,
   watch: {
     companyId() {
-      this.listOfColumnIdentifierObjects = [];
+      this.listOfDataSetReportingPeriods = [];
       void this.fetchLksgData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
-        this.listOfColumnIdentifierObjects = [];
+        this.listOfDataSetReportingPeriods = [];
         void this.fetchLksgData();
       }
     },
@@ -130,7 +130,7 @@ export default defineComponent({
         this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
           const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
           const reportingPeriodOfLksgDataset = oneLksgDataset.metaInfo?.reportingPeriod ?? "";
-          this.listOfColumnIdentifierObjects.push({
+          this.listOfDataSetReportingPeriods.push({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
@@ -151,7 +151,7 @@ export default defineComponent({
           }
         });
       }
-      this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(this.listOfColumnIdentifierObjects);
+      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(this.listOfDataSetReportingPeriods);
     },
 
     /**
