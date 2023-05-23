@@ -178,7 +178,7 @@ export default defineComponent({
           ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
           : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
       }
-      if (kpiField.name === "subcontractingCompaniesCountries") {
+      if (kpiField.name.includes("Countries")) {
         kpiValue = Array.isArray(kpiValue)
           ? kpiValue.map(
               (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort

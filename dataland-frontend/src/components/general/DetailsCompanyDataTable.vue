@@ -3,8 +3,8 @@
     <Column
       v-for="col of columns"
       :field="col.field"
-      :header="columnHeaders[tableType][col.header]"
       :key="col.field"
+      :header="columnHeaders[tableType] ? columnHeaders[tableType][col.header] : undefined"
       headerStyle="width: 15vw;"
     >
       <template #body="{ data }">

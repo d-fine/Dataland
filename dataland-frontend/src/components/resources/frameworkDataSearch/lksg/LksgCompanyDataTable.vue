@@ -53,9 +53,9 @@
                 >Show "{{ data.kpiLabel }}"
                 <em class="material-icons" aria-hidden="true" title=""> dataset </em>
               </a>
-              <span v-else> data[reportingPeriod.dataId][0] </span>
+              <span v-else> {{ data[reportingPeriod.dataId][0] }} </span>
             </template>
-            <span v-else-if="data.kpiFormFieldComponent == 'PercentageFormField'">
+            <span v-else-if="data.kpiFormFieldComponent === 'PercentageFormField'">
               {{ data[reportingPeriod.dataId] }} %</span
             >
             <span v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId]?.value">
