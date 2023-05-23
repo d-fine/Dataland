@@ -201,7 +201,7 @@
                   </div>
                 </div>
 
-                <FormKit v-model="kpiSections" name="kpiSectionsModel" type="group">
+                <FormKit name="kpiSectionsModel" type="group">
                   <div
                     v-for="financialServiceOption of confirmedSelectedFinancialServiceOptions"
                     :key="financialServiceOption"
@@ -434,7 +434,6 @@ export default defineComponent({
       message: "",
       namesOfAllCompanyReportsForTheDataset: [] as string[],
       templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
-      kpiSections: [],
     };
   },
   computed: {
