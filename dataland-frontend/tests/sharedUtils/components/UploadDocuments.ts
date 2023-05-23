@@ -1,7 +1,9 @@
-export const uploadReports = {
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
+
+export const uploadDocuments = {
   selectFile(filename: string): void {
     cy.get('button[data-test="upload-files-button"]').click();
-    cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
+    cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
   },
   selectDummyFile(filename: string, contentSize: number): void {
     cy.get('button[data-test="upload-files-button"]').click();
@@ -32,7 +34,6 @@ export const uploadReports = {
   },
   validateReportToUploadIsListed(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
-    cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
   },
   removeReportToUpload(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
@@ -52,5 +53,26 @@ export const uploadReports = {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}AlreadyUploadedContainer"]`).should("not.exist");
+  },
+
+  selectDocumentAtEachFileSelector(filename: string): void {
+    const fieldsWithRequiredDocuments = lksgDataModel.flatMap((category) =>
+      category.subcategories.flatMap((subcategory) =>
+        subcategory.fields
+          .filter(
+            (field) =>
+              (field.component === "YesNoFormField" || field.component === "YesNoNaFormField") &&
+              field.certificateRequiredIfYes
+          )
+          .map((field) => field.name)
+      )
+    );
+    fieldsWithRequiredDocuments.forEach((field) => {
+      cy.get(`button[data-test="upload-files-button-${field}"]`)
+        .click()
+        .get("input[type=file]")
+        .first()
+        .selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
+    });
   },
 };

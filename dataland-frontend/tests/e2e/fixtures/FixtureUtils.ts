@@ -3,9 +3,7 @@ import { generateCompanyInformation } from "./CompanyFixtures";
 import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { FixtureData } from "@sharedUtils/Fixtures";
 
-export type ReferencedReports = { [key: string]: CompanyReport };
-
-export type ReferencedDocuments = { [key: string]: DocumentReference };
+export type ReferencedDocuments = { [key: string]: CompanyReport | DocumentReference };
 
 /**
  * Randomly generates a fixture datasets consisting of a specified number of groups of company information datasets, framework datasets and

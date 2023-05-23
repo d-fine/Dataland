@@ -51,7 +51,7 @@
                         :validation="field.validation"
                         :validation-label="field.validationLabel"
                         :data-test="field.name"
-                        @certificateUpdated="updateCertificateList"
+                        @documentUpdated="updateDocumentList"
                         :ref="field.name"
                       />
                     </FormKit>
@@ -117,7 +117,7 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { uploadFiles } from "@/utils/FileUploadUtils";
+import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -179,7 +179,7 @@ export default defineComponent({
       elementPosition: 0,
       checkCustomInputs,
       updatingData: false,
-      certificates: new Map() as Map<string, DocumentToUpload>,
+      documents: new Map() as Map<string, DocumentToUpload>,
     };
   },
   computed: {
@@ -248,14 +248,11 @@ export default defineComponent({
      * Sends data to add LkSG data
      */
     async postLkSGData(): Promise<void> {
-      console.log("funktion wird aufgerufen mit:");
-      console.log(this.companyAssociatedLksgData);
       this.messageCounter++;
       try {
-        const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getDocumentControllerApi();
-        await uploadFiles(Array.from(this.certificates.values()), documentControllerApi);
+        if (this.documents.size > 0) {
+          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
+        }
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
@@ -289,11 +286,15 @@ export default defineComponent({
 
     /**
      * updates the list of certificates that were uploaded in the corresponding formfields on change
-     * @param componentName the name of the component as a key
-     * @param certificate the certificate as combined object of reference id and file content
+     * @param fieldName the name of the formfield as a key
+     * @param document the certificate as combined object of reference id and file content
      */
-    updateCertificateList(componentName: string, certificate: DocumentToUpload) {
-      this.certificates.set(componentName, certificate);
+    updateDocumentList(fieldName: string, document: DocumentToUpload) {
+      if (document) {
+        this.documents.set(fieldName, document);
+      } else {
+        this.documents.delete(fieldName);
+      }
     },
   },
 });

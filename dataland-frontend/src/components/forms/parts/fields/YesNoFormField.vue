@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field">
+  <div class="form-field" :data-test="name">
     <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
     <FormKit v-if="certificateRequiredIfYes" type="group" :name="name">
       <RadioButtonsFormElement
@@ -19,17 +19,18 @@
         @input="setDocumentRequired($event)"
       />
       <UploadDocumentsForm
-        v-show="yesSelected"
+        v-if="yesSelected"
         @documentsChanged="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
+        :name="name"
         :more-than-one-document-allowed="false"
       />
       <FormKit v-if="yesSelected" type="group" name="dataSource">
-        <FormKit type="hidden" name="name" :modelValue="referencedDocument?.fileNameWithoutSuffix ?? ''" />
+        <FormKit type="hidden" name="name" v-model="documentName" />
         <FormKit
           type="text"
           name="reference"
-          :modelValue="referencedDocument?.reference"
+          v-model="documentReference"
           validation="required"
           validation-label="If 'Yes' is selected an uploaded document"
           :outer-class="{ 'hidden-input': true }"
@@ -72,9 +73,9 @@ export default defineComponent({
   data() {
     return {
       yesSelected: false,
+      referencedDocument: {} as DocumentToUpload,
       documentName: "",
       documentReference: "",
-      referencedDocument: {} as DocumentToUpload,
     };
   },
 
@@ -82,6 +83,9 @@ export default defineComponent({
   watch: {
     yesSelected() {
       this.deleteDocument();
+    },
+    documentName() {
+      this.updateFileUploadFiles();
     },
   },
   methods: {
@@ -99,8 +103,7 @@ export default defineComponent({
      */
     deleteDocument() {
       if (!this.yesSelected) {
-        console.log("Now remove all documents");
-        this.$refs.uploadDocumentsForm.removeAllDocuments();
+        (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
       }
     },
 
@@ -110,7 +113,19 @@ export default defineComponent({
      */
     handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
       this.referencedDocument = updatedDocuments[0];
+      this.documentName = updatedDocuments[0]?.fileNameWithoutSuffix ?? "";
+      this.documentReference = updatedDocuments[0]?.reference ?? "";
       this.$emit("documentUpdated", this.name, updatedDocuments[0]);
+    },
+
+    /**
+     * updates the files in the fileUpload file list to represent that a file was already uploaded in a previous upload
+     * of the given dataset (in the case of editing a dataset)
+     */
+    updateFileUploadFiles() {
+      if (this.documentName !== "" && Object.keys(this.referencedDocument).length == 0) {
+        this.$refs.uploadDocumentsForm.prefillFileUpload([this.documentName]);
+      }
     },
   },
 });

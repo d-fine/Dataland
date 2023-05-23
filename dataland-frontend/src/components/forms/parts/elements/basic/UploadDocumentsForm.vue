@@ -13,8 +13,8 @@
       <template #header="{ files, chooseCallback }">
         <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
           <PrimeButton
-            v-show="files.length < 1 || moreThanOneDocumentAllowed"
-            data-test="upload-files-button"
+            v-if="files.length < 1 || moreThanOneDocumentAllowed"
+            :data-test="'upload-files-button-' + name"
             @click="chooseCallback()"
             icon="pi pi-upload"
             label="UPLOAD DOCUMENT"
@@ -30,9 +30,11 @@
             :data-test="removeFileTypeExtension(selectedFile.name) + 'FileUploadContainer'"
           >
             <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ selectedFile.name }}</span>
-            <div data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
+            <div v-if="selectedFile.size > 0" data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
               {{ formatBytesUserFriendly(selectedFile.size, 1) }}
             </div>
+            <div v-else data-test="currently-uploaded-text" class="mx-2 text-black-alpha-50">Currently uploaded</div>
+
             <PrimeButton
               data-test="files-to-upload-remove"
               icon="pi pi-times"
@@ -82,6 +84,10 @@ export default defineComponent({
     };
   },
   props: {
+    name: {
+      type: String,
+      required: true,
+    },
     referencedDocumentsForPrefill: {
       type: Object as () => { [key: string]: CompanyReport },
     },
@@ -94,8 +100,8 @@ export default defineComponent({
   methods: {
     removeFileTypeExtension,
     /**
-     * Handles selection of a file by the user.
-     * The file is added to the reports that shall be uploaded, then the sha256 hashes are calculated and added
+     * Handles selection of a file by the user. Only considers the file that was added last.
+     * The file is added to the documents that shall be uploaded, then the sha256 hashes are calculated and added
      * to the respective files.
      * @param event full event object containing the files
      * @param event.files files
@@ -115,7 +121,6 @@ export default defineComponent({
      * Emits event that selected documents changed
      */
     emitDocumentsChangedEvent() {
-      console.log("Emits document change event");
       this.$emit("documentsChanged", this.documentsToUpload);
     },
 
@@ -125,7 +130,7 @@ export default defineComponent({
      * @param deleteCount the number of files to delete
      */
     removeDocumentFromDocumentsToUpload(indexOfFileToRemove: number, deleteCount = 1) {
-      this.$refs.fileUpload.remove(indexOfFileToRemove);
+      (this.$refs.fileUpload.remove as (index: number) => void)(indexOfFileToRemove);
       this.documentsToUpload.splice(indexOfFileToRemove, deleteCount);
       this.emitDocumentsChangedEvent();
     },
@@ -136,8 +141,20 @@ export default defineComponent({
     removeAllDocuments() {
       this.$refs.fileUpload.files = [];
       this.documentsToUpload = [];
-      console.log("Should have removed all documents", this.documentsToUpload);
       this.emitDocumentsChangedEvent();
+    },
+
+    /**
+     * Prefills the File upload with dummy files to get the file upload to display filenames of files that are already
+     * referenced in a dataset (in the case of editing a dataset). These dummy files do not get picked up in the upload
+     * process because they do not trigger a FileUploadSelectEvent.
+     * @param fileNames the names that should be display by the fileUpload
+     */
+    prefillFileUpload(fileNames: string[]) {
+      fileNames.forEach((name) => {
+        const dummyFile = new File([] as BlobPart[], name);
+        this.$refs.fileUpload.files.push(dummyFile);
+      });
     },
   },
 });

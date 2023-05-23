@@ -10,7 +10,7 @@ import { faker } from "@faker-js/faker";
  */
 export function generateBaseDataPointOrUndefined<T, Y>(value: T | null, undefinedProbability: number): Y | undefined {
   const documents = generateReferencedDocuments();
-  const chosenReport = valueOrUndefined(faker.helpers.arrayElement(Object.values(documents)));
+  const chosenReport = valueOrUndefined(faker.helpers.arrayElement(Object.values(documents)), undefinedProbability);
 
   const baseDataPoint = {
     value: value ?? undefined,

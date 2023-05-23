@@ -6,7 +6,7 @@ import {
 import { EuTaxonomyDataForFinancials, CompanyAssociatedDataEuTaxonomyDataForFinancials } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { uploadReports } from "@sharedUtils/components/UploadReports";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 
@@ -39,13 +39,13 @@ describeIf(
         testData.t,
         () => undefined,
         () => {
-          uploadReports.selectFile(TEST_PDF_FILE_NAME);
-          uploadReports.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
-          uploadReports.removeReportToUpload(TEST_PDF_FILE_NAME);
-          uploadReports.checkNoReportIsListed();
-          uploadReports.selectFile(TEST_PDF_FILE_NAME);
-          uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-          uploadReports.fillAllReportsToUploadForms(2);
+          uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+          uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+          uploadDocuments.removeReportToUpload(TEST_PDF_FILE_NAME);
+          uploadDocuments.checkNoReportIsListed();
+          uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+          uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
+          uploadDocuments.fillAllReportsToUploadForms(2);
           cy.get(`[data-test="assetManagementKpis"]`)
             .find(`[data-test="banksAndIssuers"]`)
             .find('select[name="report"]')
@@ -62,7 +62,7 @@ describeIf(
         },
         (companyId) => {
           gotoEditForm(companyId, true);
-          uploadReports.removeUploadedReport(TEST_PDF_FILE_NAME).then(() => {
+          uploadDocuments.removeUploadedReport(TEST_PDF_FILE_NAME).then(() => {
             areBothDocumentsStillUploaded = false;
           });
           const postRequestAlias = "postData";

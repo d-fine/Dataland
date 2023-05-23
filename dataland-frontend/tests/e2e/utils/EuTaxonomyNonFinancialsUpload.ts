@@ -8,7 +8,7 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
-import { uploadReports } from "@sharedUtils/components/UploadReports";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
@@ -22,9 +22,9 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
-  uploadReports.selectFile(TEST_PDF_FILE_NAME);
-  uploadReports.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
-  uploadReports.fillAllReportsToUploadForms(1);
+  uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+  uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+  uploadDocuments.fillAllReportsToUploadForms(1);
 
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
   submitButton.buttonAppearsEnabled();

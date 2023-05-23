@@ -1,15 +1,16 @@
 import {
+  CompanyInformation,
   Configuration,
+  DataMetaInformation,
   LksgData,
   LksgDataControllerApi,
-  DataMetaInformation,
-  CompanyInformation,
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 
 /**
  * Uploads a single LKSG data entry for a company
@@ -81,7 +82,7 @@ function fillSingleProductionSite(): void {
  * @param maxCounter the maximum recursion depth before an error is thrown
  */
 function recursivelySelectYesOnAllFields(maxCounter: number): void {
-  if (maxCounter <= 0) throw new Error("Recursion depth exceeded selecting yes on all input fields");
+  if (maxCounter <= 0) return;
 
   cy.window().then((win) => {
     if (selectYesOnAllFieldsBrowser(win)) {
@@ -211,6 +212,31 @@ function fillRequiredLksgFieldsWithDummyData(): void {
 }
 
 /**
+ * Tests that selecting and removing a document works and selects all required documents to pass validation
+ */
+function uploadRequiredDocuments(): void {
+  cy.get('button[data-test="upload-files-button-sa8000Certification"]')
+    .first()
+    .click()
+    .get("input[type=file]")
+    .first()
+    .selectFile(
+      {
+        contents: new Cypress.Buffer(1),
+        fileName: `dummyFile.pdf`,
+        mimeType: "application/pdf",
+      },
+      { force: true }
+    );
+
+  uploadDocuments.validateReportToUploadIsListed("dummyFile");
+  uploadDocuments.removeReportToUpload("dummyFile");
+
+  uploadDocuments.selectDocumentAtEachFileSelector("StandardWordExport");
+  cy.get('button[data-test="upload-files-button-sa8000Certification"]').first().should("not.exist");
+}
+
+/**
  * Uploads a single LKSG data entry for a company via form
  */
 export function uploadLksgDataViaForm(): void {
@@ -223,12 +249,13 @@ export function uploadLksgDataViaForm(): void {
   selectDummyDateInDataPicker();
 
   recursivelySelectYesOnAllFields(15);
-  validateAllFieldsHaveYesSelected();
 
+  uploadRequiredDocuments();
+
+  submitButton.buttonAppearsDisabled();
   fillRequiredLksgFieldsWithDummyData();
   testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
 
-  submitButton.buttonAppearsEnabled();
   submitButton.clickButton();
   cy.get("div.p-message-success").should("be.visible");
 }

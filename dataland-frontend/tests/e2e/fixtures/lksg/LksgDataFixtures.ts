@@ -49,7 +49,7 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
  * @returns 1 to 5 random production sites
  */
 export function generateArrayOfProductionSites(): LksgProductionSite[] {
-  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, generateProductionSite);
+  return Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, generateProductionSite);
 }
 
 /**
@@ -57,7 +57,7 @@ export function generateArrayOfProductionSites(): LksgProductionSite[] {
  * @returns random list of goods or services
  */
 export function generateListOfGoodsOrServices(): string[] {
-  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
+  return Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
     return faker.commerce.productName();
   });
 }
@@ -89,7 +89,7 @@ export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers
  * @returns random list of goods or services
  */
 export function generateListOfNaceCodes(): string[] {
-  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
+  return Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
     return faker.helpers.arrayElement(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]);
   }).sort((a, b) => a.localeCompare(b));
 }

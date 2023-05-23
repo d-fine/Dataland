@@ -11,7 +11,7 @@ import {
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { uploadReports } from "@sharedUtils/components/UploadReports";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
 import {
@@ -118,21 +118,21 @@ describeIf(
         uploadCompanyViaApiAndEuTaxonomyDataForNonFinancialsViaForm(
           testData.companyInformation,
           () => {
-            uploadReports.selectDummyFile("dummy_1", 1);
-            uploadReports.numberOfReportsToUploadShouldBe(1);
+            uploadDocuments.selectDummyFile("dummy_1", 1);
+            uploadDocuments.numberOfReportsToUploadShouldBe(1);
             validateFileCanNotBeUploadedDialogIsClosed();
-            uploadReports.selectDummyFile("dummy_1", 1);
-            uploadReports.numberOfReportsToUploadShouldBe(1);
+            uploadDocuments.selectDummyFile("dummy_1", 1);
+            uploadDocuments.numberOfReportsToUploadShouldBe(1);
             validateFileCanNotBeUploadedDialogIsClosed();
-            uploadReports.selectDummyFile("dummy_1", 2);
+            uploadDocuments.selectDummyFile("dummy_1", 2);
             validateFileCanNotBeUploadedDialogIsOpenAndClose();
-            uploadReports.numberOfReportsToUploadShouldBe(1);
-            uploadReports.removeAllReportsToUpload();
+            uploadDocuments.numberOfReportsToUploadShouldBe(1);
+            uploadDocuments.removeAllReportsToUpload();
 
-            uploadReports.numberOfReportsToUploadShouldBe(0);
-            uploadReports.selectFile(TEST_PDF_FILE_NAME);
-            uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-            uploadReports.fillAllReportsToUploadForms(2);
+            uploadDocuments.numberOfReportsToUploadShouldBe(0);
+            uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+            uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
+            uploadDocuments.fillAllReportsToUploadForms(2);
           },
           () => {
             cy.get(`[data-test="capexSection"] [data-test="total"] select[name="report"]`).select(TEST_PDF_FILE_NAME);
@@ -148,7 +148,7 @@ describeIf(
           },
           (companyId) => {
             goToEditForm(companyId, true);
-            uploadReports.removeUploadedReport(TEST_PDF_FILE_NAME);
+            uploadDocuments.removeUploadedReport(TEST_PDF_FILE_NAME);
             const postRequestAlias = "postData";
             cy.intercept(
               {
@@ -288,7 +288,7 @@ describeIf(
         },
         { force: true }
       );
-      uploadReports.fillAllReportsToUploadForms();
+      uploadDocuments.fillAllReportsToUploadForms();
       cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
       cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "None...");
       cy.wait(100);
@@ -302,11 +302,11 @@ describeIf(
      */
     function checkExistingFilenameDialogDidNotBreakSubsequentSelection(): void {
       const reportName = `${TEST_PDF_FILE_NAME}2`;
-      uploadReports.selectFile(reportName);
+      uploadDocuments.selectFile(reportName);
       cy.get(".p-dialog-content").should("not.exist");
-      uploadReports.validateReportToUploadIsListed(reportName);
-      uploadReports.removeAllReportsToUpload();
-      uploadReports.reportIsNotListed(reportName);
+      uploadDocuments.validateReportToUploadIsListed(reportName);
+      uploadDocuments.removeAllReportsToUpload();
+      uploadDocuments.reportIsNotListed(reportName);
     }
 
     const differentFileNameForSameFile = `${TEST_PDF_FILE_NAME}FileCopy`;
@@ -329,7 +329,7 @@ describeIf(
         },
         { force: true }
       );
-      uploadReports.fillAllReportsToUploadForms();
+      uploadDocuments.fillAllReportsToUploadForms();
       cy.get(`div[data-test=capexSection] div[data-test=total] select[name="report"]`).select(
         differentFileNameForSameFile
       );
@@ -353,25 +353,24 @@ describeIf(
      */
     function checkIfLinkedReportsAreDownloadable(companyId: string): void {
       cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`);
-      const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${TEST_PDF_FILE_NAME}.pdf`;
+      const expectedPathToDownloadedReport = Cypress.config("downloadsFolder") + `/${differentFileNameForSameFile}.pdf`;
       const downloadLinkSelector = `span[data-test="Report-Download-${differentFileNameForSameFile}"]`;
       cy.readFile(expectedPathToDownloadedReport).should("not.exist");
-      cy.get(downloadLinkSelector)
-        .click()
-        .then(() => {
-          cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
+      cy.intercept("**/documents/*").as("documentDownload");
+      cy.get(downloadLinkSelector).click();
+      cy.wait("@documentDownload");
+      cy.readFile(`../${TEST_PDF_FILE_PATH}`, "binary", {
+        timeout: Cypress.env("medium_timeout_in_ms") as number,
+      }).then((expectedPdfBinary) => {
+        cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
+          cy.readFile(expectedPathToDownloadedReport, "binary", {
             timeout: Cypress.env("medium_timeout_in_ms") as number,
-          }).then((expectedPdfBinary) => {
-            cy.task("calculateHash", expectedPdfBinary).then((expectedPdfHash) => {
-              cy.readFile(expectedPathToDownloadedReport, "binary", {
-                timeout: Cypress.env("medium_timeout_in_ms") as number,
-              }).then((receivedPdfHash) => {
-                cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
-              });
-              cy.task("deleteFolder", Cypress.config("downloadsFolder"));
-            });
+          }).then((receivedPdfHash) => {
+            cy.task("calculateHash", receivedPdfHash).should("eq", expectedPdfHash);
           });
+          cy.task("deleteFolder", Cypress.config("downloadsFolder"));
         });
+      });
     }
   }
 );

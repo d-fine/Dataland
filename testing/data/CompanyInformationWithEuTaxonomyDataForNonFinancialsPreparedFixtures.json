@@ -2,93 +2,75 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "West Juna",
-			"sector": "action-items",
+			"headquarters": "Süd Sydneyburg",
+			"sector": "e-commerce",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "0e389vd0alf1iob"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "onc8b7hwl"
-				},
-				{
 					"identifierType": "Isin",
-					"identifierValue": "pmdlas7tiizf"
+					"identifierValue": "nxege36tqusg"
 				},
 				{
-					"identifierType": "PermId",
-					"identifierValue": "saqsnrgqdf"
+					"identifierType": "VatNumber",
+					"identifierValue": "1c6lr6gu5"
 				}
 			],
-			"countryCode": "YE",
-			"companyAlternativeNames": [],
+			"countryCode": "DZ",
+			"companyAlternativeNames": [
+				"Neuschwander-Karst"
+			],
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-04-04",
-			"numberOfEmployees": 98323,
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-07-06",
+			"numberOfEmployees": 71864,
 			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-03-22",
+					"currency": "HTG"
+				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "SGD"
+					"reportDate": "2023-04-04",
+					"currency": "GMD"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "No",
-					"currency": "LYD"
+					"currency": "NGN"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"currency": "BBD"
+					"isGroupLevel": "Yes",
+					"currency": "FJD"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 508,
-					"report": "IntegratedReport",
-					"tagName": "infrastructures"
-				}
+				"assurance": "ReasonableAssurance"
 			},
-			"reportingObligation": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.8448,
+					"value": 0.9298,
 					"dataSource": {
-						"page": 126,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
+						"page": 962,
+						"report": "ESEFReport",
+						"tagName": "action-items"
 					},
 					"quality": "Audited",
-					"comment": "transmit solid state sensor"
+					"comment": "copy open-source transmitter"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.8965,
-					"dataSource": {
-						"page": 1148,
-						"report": "AnnualReport",
-						"tagName": "ROI"
-					},
-					"quality": "Reported",
-					"comment": "input online sensor"
+					"value": 0.1901,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.0234,
-					"dataSource": {
-						"page": 308,
-						"report": "AnnualReport",
-						"tagName": "eyeballs"
-					},
-					"quality": "Audited",
-					"comment": "reboot open-source sensor"
+					"value": 0.8866,
+					"quality": "Incomplete"
 				}
 			}
 		},
@@ -97,261 +79,267 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Hönigdorf",
-			"sector": "models",
+			"headquarters": "Nord Leonhard",
+			"headquartersPostalCode": "61262",
+			"sector": "infrastructures",
 			"identifiers": [
 				{
-					"identifierType": "PermId",
-					"identifierValue": "8yzn1itias"
+					"identifierType": "Duns",
+					"identifierValue": "4wc0kkxj9"
 				},
 				{
-					"identifierType": "Ticker",
-					"identifierValue": "9lk6x5k"
+					"identifierType": "Lei",
+					"identifierValue": "su2u2jm54bzuabt52xf0"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "141fqk0ifx"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "8u9rux65y"
 				}
 			],
-			"countryCode": "BJ",
+			"countryCode": "AW",
 			"companyAlternativeNames": [
-				"Benninger-Schmitt",
-				"Goebel, Köseoglu und Raukuc",
-				"Moede-Bohge",
-				"Schwarzkopf AG"
+				"Jerschabek-Köseoglu",
+				"Möhsner, Hütter und Beushausen",
+				"Reinelt-Krebs",
+				"Salzer, Kausemann und Schüppel"
 			],
+			"companyLegalForm": "AG",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-08-01",
-			"numberOfEmployees": 99772,
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-11-25",
+			"numberOfEmployees": 47463,
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "MZN"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-05-18",
-					"currency": "VUV"
-				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"currency": "AWG"
+					"isGroupLevel": "NA",
+					"currency": "HKD"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "INR"
+					"reportDate": "2022-08-22",
+					"currency": "KRW"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-03-13",
+					"currency": "EUR"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"reportDate": "2022-10-22",
+					"currency": "LRD"
 				}
 			},
 			"assurance": {
 				"assurance": "ReasonableAssurance",
 				"dataSource": {
-					"page": 676,
+					"page": 338,
 					"report": "SustainabilityReport",
-					"tagName": "paradigms"
+					"tagName": "communities"
 				}
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "No",
-			"activityLevelReporting": "No",
+			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 810965.34,
-					"quality": "Incomplete"
+					"value": 666225.95,
+					"dataSource": {
+						"page": 76,
+						"report": "IntegratedReport",
+						"tagName": "deliverables"
+					},
+					"quality": "Reported",
+					"comment": "transmit multi-byte interface"
 				},
 				"eligiblePercentage": {
-					"value": 0.1835,
-					"dataSource": {
-						"page": 674,
-						"report": "IntegratedReport",
-						"tagName": "vortals"
-					},
-					"quality": "Incomplete",
-					"comment": "input 1080p bandwidth"
+					"value": 0.2812,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 443961.45,
-					"dataSource": {
-						"page": 616,
-						"report": "AnnualReport",
-						"tagName": "metrics"
-					},
-					"quality": "Audited",
-					"comment": "override solid state pixel"
+					"value": 950136.55,
+					"quality": "Incomplete"
 				},
 				"eligiblePercentage": {
-					"value": 0.2813,
+					"value": 0.0872,
 					"dataSource": {
-						"page": 318,
-						"report": "IntegratedReport",
-						"tagName": "systems"
+						"page": 335,
+						"report": "SustainabilityReport",
+						"tagName": "e-business"
 					},
-					"quality": "Reported",
-					"comment": "connect multi-byte sensor"
+					"quality": "Estimated",
+					"comment": "override mobile capacitor"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 314850.5,
+					"value": 231819.58,
 					"dataSource": {
-						"page": 1130,
-						"report": "ESEFReport",
-						"tagName": "markets"
+						"page": 447,
+						"report": "AnnualReport",
+						"tagName": "convergence"
 					},
-					"quality": "Incomplete",
-					"comment": "generate 1080p bandwidth"
+					"quality": "Reported",
+					"comment": "quantify auxiliary feed"
 				},
 				"eligiblePercentage": {
-					"value": 0.6165,
+					"value": 0.9284,
 					"dataSource": {
-						"page": 729,
+						"page": 732,
 						"report": "AnnualReport",
-						"tagName": "metrics"
+						"tagName": "supply-chains"
 					},
-					"quality": "Audited",
-					"comment": "program online program"
+					"quality": "Incomplete",
+					"comment": "generate cross-platform driver"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Frahmekeland",
-			"headquartersPostalCode": "32409",
-			"sector": "architectures",
+			"headquarters": "Jannadorf",
+			"sector": "e-commerce",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "9r3188lz899x1ll"
+					"identifierValue": "1tbet5pa2tz9yis"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "778xix9zl"
+					"identifierValue": "kh6kxooqs"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "alekfya6bq8q"
+					"identifierValue": "bvhh0b3xlce0"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "4zd05wnam2oku8o2zluo"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "wrzryvbw4v"
+					"identifierValue": "x18ykkwatd"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "9gpwzyt"
+					"identifierValue": "orm7iji"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "umj6p9uud"
 				}
 			],
-			"countryCode": "HT",
+			"countryCode": "KW",
 			"companyAlternativeNames": [
-				"Kruger, Fischer und Kern",
-				"Schütze KG"
+				"Danner, Helm und Lenk"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://gediegen-fisch.ch",
+			"companyLegalForm": "Partnership without Limited Liability",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-05-29",
-			"numberOfEmployees": 18454,
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-12-22",
+			"numberOfEmployees": 20612,
 			"assurance": {
 				"assurance": "None"
 			},
-			"activityLevelReporting": "No",
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 745619.71,
-					"dataSource": {
-						"page": 187,
-						"report": "ESEFReport",
-						"tagName": "experiences"
-					},
-					"quality": "Estimated",
-					"comment": "program digital microchip"
+					"quality": "NA"
 				},
 				"alignedPercentage": {
-					"value": 0.1015,
+					"value": 0.7181,
 					"dataSource": {
-						"page": 666,
-						"report": "AnnualReport",
-						"tagName": "methodologies"
+						"page": 999,
+						"report": "ESEFReport",
+						"tagName": "e-commerce"
 					},
-					"quality": "Reported",
-					"comment": "index primary feed"
+					"quality": "Estimated",
+					"comment": "reboot online program"
 				},
 				"eligiblePercentage": {
-					"value": 0.2978,
-					"dataSource": {
-						"page": 549,
-						"report": "ESEFReport",
-						"tagName": "blockchains"
-					},
-					"quality": "Reported",
-					"comment": "calculate digital transmitter"
+					"value": 0.2269,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 741181.25,
+					"value": 486369.04,
 					"dataSource": {
-						"page": 8,
-						"report": "AnnualReport",
-						"tagName": "eyeballs"
+						"page": 875,
+						"report": "SustainabilityReport",
+						"tagName": "web services"
 					},
-					"quality": "Audited",
-					"comment": "input 1080p hard drive"
+					"quality": "Reported",
+					"comment": "transmit digital feed"
 				},
 				"alignedPercentage": {
-					"value": 0.8508,
-					"quality": "Incomplete"
+					"value": 0.6133,
+					"dataSource": {
+						"page": 304,
+						"report": "SustainabilityReport",
+						"tagName": "users"
+					},
+					"quality": "Reported",
+					"comment": "back up haptic interface"
 				},
 				"eligiblePercentage": {
-					"value": 0.9636,
+					"value": 0.949,
 					"dataSource": {
-						"page": 1023,
-						"report": "ESEFReport",
-						"tagName": "platforms"
+						"page": 264,
+						"report": "SustainabilityReport",
+						"tagName": "web-readiness"
 					},
-					"quality": "Estimated",
-					"comment": "parse solid state alarm"
+					"quality": "Reported",
+					"comment": "parse bluetooth hard drive"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 400641.68,
+					"value": 930044.06,
 					"dataSource": {
-						"page": 453,
+						"page": 935,
 						"report": "ESEFReport",
-						"tagName": "initiatives"
+						"tagName": "e-business"
 					},
 					"quality": "Reported",
-					"comment": "quantify online system"
+					"comment": "synthesize solid state firewall"
 				},
 				"alignedPercentage": {
-					"value": 0.125,
+					"value": 0.6093,
 					"dataSource": {
-						"page": 823,
+						"page": 79,
 						"report": "AnnualReport",
-						"tagName": "mindshare"
+						"tagName": "solutions"
 					},
 					"quality": "Audited",
-					"comment": "reboot online program"
+					"comment": "generate mobile panel"
 				},
 				"eligiblePercentage": {
-					"value": 0.141,
+					"value": 0.9372,
 					"dataSource": {
-						"page": 71,
-						"report": "AnnualReport",
-						"tagName": "channels"
+						"page": 1003,
+						"report": "ESEFReport",
+						"tagName": "convergence"
 					},
-					"quality": "Reported",
-					"comment": "navigate multi-byte alarm"
+					"quality": "Estimated",
+					"comment": "index redundant bus"
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2022"
 	}
 ]
