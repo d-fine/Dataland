@@ -1,5 +1,3 @@
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-
 export const uploadDocuments = {
   selectFile(filename: string): void {
     cy.get('button[data-test="upload-files-button"]').click();
@@ -56,23 +54,10 @@ export const uploadDocuments = {
   },
 
   selectDocumentAtEachFileSelector(filename: string): void {
-    const fieldsWithRequiredDocuments = lksgDataModel.flatMap((category) =>
-      category.subcategories.flatMap((subcategory) =>
-        subcategory.fields
-          .filter(
-            (field) =>
-              (field.component === "YesNoFormField" || field.component === "YesNoNaFormField") &&
-              field.certificateRequiredIfYes
-          )
-          .map((field) => field.name)
-      )
-    );
-    fieldsWithRequiredDocuments.forEach((field) => {
-      cy.get(`button[data-test="upload-files-button-${field}"]`)
-        .click()
-        .get("input[type=file]")
-        .first()
-        .selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
+    cy.window().then((win) => {
+      win.document.querySelectorAll<HTMLInputElement>('input[type="file"]').forEach((element) => {
+        cy.wrap(element).selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
+      });
     });
   },
 };
