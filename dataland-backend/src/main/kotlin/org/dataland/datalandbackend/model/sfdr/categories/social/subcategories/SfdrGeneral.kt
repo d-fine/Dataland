@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.sfdr.submodels
+package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
