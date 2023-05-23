@@ -40,33 +40,48 @@
         :header="reportingPeriod.reportingPeriod"
         :key="reportingPeriod.dataId"
       >
-        <template #body="{ data }">
-          <template v-if="data[reportingPeriod.dataId] !== undefined && data[reportingPeriod.dataId] !== null">
-            <template v-if="Array.isArray(data[reportingPeriod.dataId])">
+        <template #body="slotProps">
+          <template
+            v-if="
+              slotProps.data[reportingPeriod.dataId] !== undefined && slotProps.data[reportingPeriod.dataId] !== null
+            "
+          >
+            <template v-if="Array.isArray(slotProps.data[reportingPeriod.dataId])">
               <a
                 v-if="
-                  data[reportingPeriod.dataId].length > 1 ||
-                  data[reportingPeriod.dataId].some((el) => typeof el === 'object')
+                  slotProps.data[reportingPeriod.dataId].length > 1 ||
+                  slotProps.data[reportingPeriod.dataId].some((el) => typeof el === 'object')
                 "
-                @click="openModalAndDisplayValuesInSubTable(data[reportingPeriod.dataId], data.kpiLabel, data.kpiKey)"
+                @click="
+                  openModalAndDisplayValuesInSubTable(
+                    slotProps.data[reportingPeriod.dataId],
+                    slotProps.data.kpiLabel,
+                    slotProps.data.kpiKey
+                  )
+                "
                 class="link"
-                >Show "{{ data.kpiLabel }}"
+                >Show "{{ slotProps.data.kpiLabel }}"
                 <em class="material-icons" aria-hidden="true" title=""> dataset </em>
               </a>
-              <span v-else> {{ data[reportingPeriod.dataId][0] }} </span>
+              <span v-else> {{ slotProps.data[reportingPeriod.dataId][0] }} </span>
             </template>
-            <span v-else-if="data.kpiFormFieldComponent === 'PercentageFormField'">
-              {{ data[reportingPeriod.dataId] }} %</span
+            <span v-else-if="slotProps.data.kpiFormFieldComponent === 'PercentageFormField'">
+              {{ slotProps.data[reportingPeriod.dataId] }} %</span
             >
-            <span v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId]?.value">
-              {{ data[reportingPeriod.dataId].value }}
+            <span
+              v-else-if="
+                typeof slotProps.data[reportingPeriod.dataId] === 'object' &&
+                slotProps.data[reportingPeriod.dataId]?.value
+              "
+            >
+              {{ slotProps.data[reportingPeriod.dataId].value }}
             </span>
-            <span v-else>{{ data[reportingPeriod.dataId] }} </span>
+            <span v-else>{{ slotProps.data[reportingPeriod.dataId] }} </span>
           </template>
         </template>
       </Column>
 
-      <Column field="subcategoryKey" header="Impact Area"></Column>
+      <Column field="subcategoryKey"></Column>
       <template #groupheader="slotProps">
         <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
           {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
