@@ -10,6 +10,8 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 data class DataPoint<T>(
     val value: T? = null,
 
+    // TODO this feels unneccessary. Just don't provide the datapoint if it is not there
+    //  if the quality is not NA also a value must be specified
     @field:JsonProperty(required = true)
     val quality: QualityOptions,
 

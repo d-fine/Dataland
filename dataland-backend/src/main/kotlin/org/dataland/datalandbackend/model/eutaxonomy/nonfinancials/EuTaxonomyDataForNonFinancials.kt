@@ -16,7 +16,7 @@ import java.time.LocalDate
  * Fields of the questionnaire for the EuTaxonomyForNonFinancials framework
  */
 @DataType("eutaxonomy-non-financials")
-data class EuTaxonomyDataForNonFinancials(
+data class EuTaxonomyDataForNonFinancials( // TODO nothing required here, yet
     val capex: EuTaxonomyDetailsPerCashFlowType? = null,
 
     val opex: EuTaxonomyDetailsPerCashFlowType? = null,

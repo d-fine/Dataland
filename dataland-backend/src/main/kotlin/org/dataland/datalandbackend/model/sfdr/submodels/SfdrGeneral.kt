@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.submodels
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import java.time.LocalDate
@@ -11,7 +12,8 @@ import java.time.LocalDate
 data class SfdrGeneral(
     val fiscalYear: FiscalYearDeviation?,
 
-    val fiscalYearEnd: LocalDate?,
+    @field:JsonProperty(required = true) // TODO picked that at random, but it seems reasonable
+    val fiscalYearEnd: LocalDate,
 
     val annualReport: String?,
 

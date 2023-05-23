@@ -9,13 +9,12 @@ import java.time.LocalDate
  * Fields describing a company report like an anual report
  */
 data class CompanyReport(
-    @field:JsonProperty(required = true)
+    @field:JsonProperty(required = true) // TODO seems reasonable, is automatically set in the frontend (at least UploadReports component)
     val reference: String,
 
-    @field:JsonProperty()
     val isGroupLevel: YesNoNa? = null,
 
     val reportDate: LocalDate? = null,
 
-    val currency: String? = null,
+    val currency: String? = null, // TODO is required in frontend, why though?
 )
