@@ -41,9 +41,9 @@
                       <component
                         v-if="field.showIf(companyAssociatedLksgData.data)"
                         :is="field.component"
-                        :displayName="field.label"
+                        :label="field.label"
                         :placeholder="field.placeholder"
-                        :info="field.description"
+                        :description="field.description"
                         :name="field.name"
                         :options="field.options"
                         :required="field.required"

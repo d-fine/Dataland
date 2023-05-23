@@ -1,11 +1,11 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <AddressFormElement
       :name="name"
-      :display-name="displayName"
+      :label="label"
       :validation="validation"
-      :validation-label="validationLabel ?? displayName"
+      :validation-label="validationLabel ?? label"
     />
   </div>
 </template>

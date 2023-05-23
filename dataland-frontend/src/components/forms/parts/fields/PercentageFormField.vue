@@ -1,10 +1,10 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="`${displayName} (%)`" :explanation="info" :is-required="required" />
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit
       type="text"
       :name="name"
-      :validation-label="validationLabel ?? displayName"
+      :validation-label="validationLabel ?? label"
       :validation="`number|between:0,100|${validation}`"
       :placeholder="placeholder ?? 'Value in %'"
       inner-class="short"

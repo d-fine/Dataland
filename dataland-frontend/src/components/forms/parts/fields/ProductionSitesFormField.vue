@@ -1,10 +1,10 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit
       type="list"
       :name="name"
-      :label="displayName"
+      :label="label"
       :validation="validation"
       :validation-label="validationLabel!"
       v-model="existingProductionSites"

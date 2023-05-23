@@ -2,8 +2,8 @@
   <div class="form-field">
     <InputTextFormField
       name="nameOfProductionSite"
-      info="Please state the name of the production site."
-      display-name="Production Site"
+      description="Please state the name of the production site."
+      label="Production Site"
       validation="required"
     />
   </div>
@@ -11,15 +11,15 @@
   <div class="form-field">
     <AddressFormField
       name="addressOfProductionSite"
-      info="Please state the address of the production site."
-      display-name="Production Site Address"
+      description="Please state the address of the production site."
+      label="Production Site Address"
       validation="required"
     />
   </div>
 
   <div class="form-field">
     <div class="flex justify-content-between">
-      <UploadFormHeader name="Lists of Goods or Services" explanation="Provide List of Goods or Services" />
+      <UploadFormHeader label="Lists of Goods or Services" description="Provide List of Goods or Services" />
       <PrimeButton
         :disabled="listOfGoodsOrServicesString === ''"
         @click="addNewItemsToListOfGoodsOrServices()"

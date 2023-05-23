@@ -1,10 +1,10 @@
 <template>
   <RadioButtonsFormField
     :name="name"
-    :info="info"
+    :description="description"
     :validation="validation"
-    :validation-label="validationLabel ?? displayName"
-    :display-name="displayName"
+    :validation-label="validationLabel ?? label"
+    :label="label"
     :options="[
       {
         label: 'Yes',

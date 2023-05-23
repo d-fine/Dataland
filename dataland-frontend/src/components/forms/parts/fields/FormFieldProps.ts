@@ -6,11 +6,11 @@ export const FormFieldProps = {
     type: String,
     required: true,
   },
-  info: {
+  description: {
     type: String,
     default: "",
   },
-  displayName: {
+  label: {
     type: String,
     default: "",
   },
@@ -21,7 +21,6 @@ export const FormFieldProps = {
   validationLabel: {
     type: String,
   },
-
   required: {
     type: Boolean,
     default: false,
