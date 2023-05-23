@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :label="label" :description="description" :is-required="required" />
+    <UploadFormHeader :label="`${label} (%)`" :description="description" :is-required="required" />
     <FormKit
       type="text"
       :name="name"
