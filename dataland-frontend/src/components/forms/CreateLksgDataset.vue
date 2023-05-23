@@ -111,7 +111,6 @@ import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsF
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import NonNegativeNumberFormField from "@/components/forms/parts/fields/NonNegativeNumberFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
@@ -145,7 +144,6 @@ export default defineComponent({
     AddressFormField,
     RadioButtonsFormField,
     YesNoNaFormField,
-    NonNegativeNumberFormField,
     PercentageFormField,
     ProductionSitesFormField,
   },

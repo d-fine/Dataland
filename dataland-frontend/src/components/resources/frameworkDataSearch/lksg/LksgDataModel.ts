@@ -56,11 +56,12 @@ export const lksgDataModel = [
           },
           {
             showIf: (): boolean => true,
+            validation: "min:0",
             name: "numberOfEmployees",
             description:
               "What is the total number of employees (including temporary workers with assignment duration >6 months)?",
             label: "Number of Employees",
-            component: "NonNegativeNumberFormField",
+            component: "NumberFormField",
             required: false,
           },
           {
@@ -389,10 +390,11 @@ export const lksgDataModel = [
           {
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.grievanceMechanismOwnOperations?.grievanceMechanismComplaints === "Yes",
+            validation: "min:0",
             name: "grievanceMechanismComplaintsNumber",
             description: "How many complaints have been received?",
             label: "Grievance Mechanism Complaints Number",
-            component: "NonNegativeNumberFormField",
+            component: "NumberFormField",
             required: false,
           },
           {
