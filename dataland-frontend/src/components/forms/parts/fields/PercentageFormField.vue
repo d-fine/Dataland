@@ -8,7 +8,6 @@
       :validation="`number|between:0,100|${validation}`"
       :placeholder="placeholder ?? 'Value in %'"
       inner-class="short"
-      v-model="percentageString"
     />
   </div>
 </template>
