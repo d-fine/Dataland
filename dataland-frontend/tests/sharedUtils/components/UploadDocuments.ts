@@ -56,7 +56,7 @@ export const uploadDocuments = {
   selectDocumentAtEachFileSelector(filename: string): void {
     cy.window().then((win) => {
       win.document.querySelectorAll<HTMLInputElement>('input[type="file"]').forEach((element) => {
-        cy.wrap(element).selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
+        cy.wrap(element).selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
       });
     });
   },

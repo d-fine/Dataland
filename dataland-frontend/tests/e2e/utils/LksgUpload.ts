@@ -232,8 +232,8 @@ function uploadRequiredDocuments(): void {
   uploadDocuments.validateReportToUploadIsListed("dummyFile");
   uploadDocuments.removeReportToUpload("dummyFile");
 
-  uploadDocuments.selectDocumentAtEachFileSelector("StandardWordExport");
-  cy.get('button[data-test="upload-files-button-sa8000Certification"]').first().should("not.exist");
+  uploadDocuments.selectDocumentAtEachFileSelector("test-report");
+  cy.get('button[data-test="upload-files-button-sa8000Certification"]').should("not.exist");
 }
 
 /**
@@ -254,9 +254,10 @@ export function uploadLksgDataViaForm(): void {
 
   submitButton.buttonAppearsDisabled();
   fillRequiredLksgFieldsWithDummyData();
-  testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
 
+  testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
   submitButton.clickButton();
+
   cy.get("div.p-message-success").should("be.visible");
 }
 
