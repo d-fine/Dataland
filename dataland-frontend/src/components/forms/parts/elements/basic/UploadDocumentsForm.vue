@@ -37,11 +37,9 @@
 
             <PrimeButton
               data-test="files-to-upload-remove"
-              label="REMOVE"
-              icon="pi pi-trash"
+              icon="pi pi-times"
               @click="removeDocumentFromDocumentsToUpload(index)"
-              class="p-button-text"
-              iconPos="right"
+              class="p-button-rounded"
             />
           </div>
         </div>
