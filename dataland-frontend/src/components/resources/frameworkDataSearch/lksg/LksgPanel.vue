@@ -3,9 +3,9 @@
     <p class="font-medium text-xl">Loading LkSG Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="kpiDataObjects.size > 0 && !waitingForData">
+  <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
     <LksgCompanyDataTable
-      :kpiDataObjects="kpiDataObjects"
+      :kpiDataObjects="mapOfKpiKeysToDataObjects"
       :reportingPeriodsOfDataSets="listOfDataSetReportingPeriods"
       tableDataTitle="LkSG Data"
     />
@@ -18,7 +18,7 @@ import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataSetReportingPeriod, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { Category, Field, Subcategory } from "@/utils/GenericFrameworkTypes";
@@ -35,8 +35,8 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
-      listOfDataSetReportingPeriods: [] as Array<DataSetReportingPeriod>,
-      kpiDataObjects: new Map() as Map<string, KpiDataObject>,
+      listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
+      mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
       lksgDataModel: lksgDataModel,
     };
   },
@@ -116,10 +116,10 @@ export default defineComponent({
         kpiFormFieldComponent: kpiField?.component ?? "",
         [dataIdOfLksgDataset]: kpiValue,
       } as KpiDataObject;
-      let existingKpi = this.kpiDataObjects.get(kpiKey);
+      let existingKpi = this.mapOfKpiKeysToDataObjects.get(kpiKey);
       if (existingKpi) Object.assign(existingKpi, kpiData);
       else existingKpi = kpiData;
-      this.kpiDataObjects.set(kpiKey, existingKpi);
+      this.mapOfKpiKeysToDataObjects.set(kpiKey, existingKpi);
     },
 
     /**

@@ -32,28 +32,29 @@
         </template>
       </Column>
       <Column
-        v-for="reportingPeriod of reportingPeriodsOfDataSets"
+        v-for="reportingPeriodWithDataId of reportingPeriodsOfDataSets"
         headerClass="horizontal-headers-size"
         headerStyle="width: 30vw;"
-        :field="reportingPeriod.dataId"
-        :header="reportingPeriod.reportingPeriod"
-        :key="reportingPeriod.dataId"
+        :field="reportingPeriodWithDataId.dataId"
+        :header="reportingPeriodWithDataId.reportingPeriod"
+        :key="reportingPeriodWithDataId.dataId"
       >
         <template #body="slotProps">
           <template
             v-if="
-              slotProps.data[reportingPeriod.dataId] !== undefined && slotProps.data[reportingPeriod.dataId] !== null
+              slotProps.data[reportingPeriodWithDataId.dataId] !== undefined &&
+              slotProps.data[reportingPeriodWithDataId.dataId] !== null
             "
           >
-            <template v-if="Array.isArray(slotProps.data[reportingPeriod.dataId])">
+            <template v-if="Array.isArray(slotProps.data[reportingPeriodWithDataId.dataId])">
               <a
                 v-if="
-                  slotProps.data[reportingPeriod.dataId].length > 1 ||
-                  slotProps.data[reportingPeriod.dataId].some((el) => typeof el === 'object')
+                  slotProps.data[reportingPeriodWithDataId.dataId].length > 1 ||
+                  slotProps.data[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
                 "
                 @click="
                   openModalAndDisplayValuesInSubTable(
-                    slotProps.data[reportingPeriod.dataId],
+                    slotProps.data[reportingPeriodWithDataId.dataId],
                     slotProps.data.kpiLabel,
                     slotProps.data.kpiKey
                   )
@@ -62,20 +63,20 @@
                 >Show "{{ slotProps.data.kpiLabel }}"
                 <em class="material-icons" aria-hidden="true" title=""> dataset </em>
               </a>
-              <span v-else> {{ slotProps.data[reportingPeriod.dataId][0] }} </span>
+              <span v-else> {{ slotProps.data[reportingPeriodWithDataId.dataId][0] }} </span>
             </template>
             <span v-else-if="slotProps.data.kpiFormFieldComponent === 'PercentageFormField'">
-              {{ slotProps.data[reportingPeriod.dataId] }} %</span
+              {{ slotProps.data[reportingPeriodWithDataId.dataId] }} %</span
             >
             <span
               v-else-if="
-                typeof slotProps.data[reportingPeriod.dataId] === 'object' &&
-                slotProps.data[reportingPeriod.dataId]?.value
+                typeof slotProps.data[reportingPeriodWithDataId.dataId] === 'object' &&
+                slotProps.data[reportingPeriodWithDataId.dataId]?.value
               "
             >
-              {{ slotProps.data[reportingPeriod.dataId].value }}
+              {{ slotProps.data[reportingPeriodWithDataId.dataId].value }}
             </span>
-            <span v-else>{{ slotProps.data[reportingPeriod.dataId] }} </span>
+            <span v-else>{{ slotProps.data[reportingPeriodWithDataId.dataId] }} </span>
           </template>
         </template>
       </Column>
@@ -97,7 +98,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
-import { DataSetReportingPeriod } from "@/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 
 export default defineComponent({
   name: "LksgCompanyDataTable",
@@ -112,12 +113,12 @@ export default defineComponent({
     };
   },
   props: {
-    kpiDataObjects: {
+    mapOfKpiKeysToDataObjects: {
       type: Map as PropType<Map<string, KpiDataObject>>,
       default: () => new Map(),
     },
     reportingPeriodsOfDataSets: {
-      type: Array as PropType<Array<DataSetReportingPeriod>>,
+      type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
       default: () => [],
     },
     tableDataTitle: {
@@ -126,7 +127,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.kpiDataObjectsToDisplay = Array.from(this.kpiDataObjects.values());
+    this.kpiDataObjectsToDisplay = Array.from(this.mapOfKpiKeysToDataObjects.values());
 
     document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
   },

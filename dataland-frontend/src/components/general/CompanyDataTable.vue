@@ -78,7 +78,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { detailsCompanyDataTableColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/DataModelsTranslations";
-import { DataSetReportingPeriod } from "@/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 
 export default defineComponent({
   name: "CompanyDataTable",
@@ -100,7 +100,7 @@ export default defineComponent({
       required: true,
     },
     reportingPeriodsOfDataSets: {
-      type: Array as PropType<Array<DataSetReportingPeriod>>,
+      type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
       default: () => [],
     },
     kpiNameMappings: {

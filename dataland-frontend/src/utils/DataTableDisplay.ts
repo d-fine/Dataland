@@ -5,8 +5,8 @@
  * @returns []
  */
 export function sortReportingPeriodsToDisplayAsColumns(
-  listOfDataDateToDisplayAsColumns: DataSetReportingPeriod[]
-): { dataId: string; reportingPeriod: string }[] {
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[]
+): ReportingPeriodOfDataSetWithId[] {
   return listOfDataDateToDisplayAsColumns.sort((dataSetA, dataSetB) => {
     if (!isNaN(Number(dataSetA.reportingPeriod[0])) && !isNaN(Number(dataSetB.reportingPeriod[0]))) {
       if (dataSetA.reportingPeriod < dataSetB.reportingPeriod) {
@@ -24,7 +24,7 @@ export function sortReportingPeriodsToDisplayAsColumns(
   });
 }
 
-export type DataSetReportingPeriod = {
-  dataId: string;
+export type ReportingPeriodOfDataSetWithId = {
+  [dataId: string]: string;
   reportingPeriod: string;
 };
