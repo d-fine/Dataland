@@ -7,6 +7,7 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { UploadIds } from "@e2e/utils/GeneralApiUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -71,19 +72,29 @@ describeIf(
         .parents(".form-field:first")
         .invoke("attr", "data-test")
         .then((dataTest) => {
-          cy.get(`div[data-test=${dataTest}]`).find(`input[id=value-option-no]`).click();
-          cy.get(`div[data-test=${dataTest}]`).find(`button[data-test=files-to-upload-remove]`).should("not.exist");
+          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
+            .find(`input[id=value-option-no]`)
+            .click();
+          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
+            .find(`button[data-test=files-to-upload-remove]`)
+            .should("not.exist");
         });
       cy.get("button[data-test=files-to-upload-remove]")
         .eq(0)
         .parents(".form-field:first")
         .invoke("attr", "data-test")
         .then((dataTest) => {
-          cy.get(`div[data-test=${dataTest}]`).find(`div[class=upload-files-button]`).should("not.exist");
-          cy.get(`div[data-test=${dataTest}] button[data-test=files-to-upload-remove]`).should("be.visible").click();
+          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
+            .find(`div[class=upload-files-button]`)
+            .should("not.exist");
+          cy.get(`div[data-test=${assertDefined(dataTest)}] button[data-test=files-to-upload-remove]`)
+            .should("be.visible")
+            .click();
           submitButton.buttonAppearsDisabled();
-          cy.get(`div[data-test=${dataTest}] button[data-test=upload-files-button-${dataTest}]`).should("be.visible");
-          cy.get(`div[data-test=${dataTest}]`)
+          cy.get(
+            `div[data-test=${assertDefined(dataTest)}] button[data-test=upload-files-button-${assertDefined(dataTest)}]`
+          ).should("be.visible");
+          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
             .find("input[type=file]")
             .selectFile(`../testing/data/documents/test-report.pdf`, { force: true, log: true });
         });
