@@ -2,9 +2,9 @@ import { EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import {
-  companyViaApiAndEuTaxonomyDataForFinancialsViaForm,
   fillEligibilityKpis,
   fillField,
+  uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
@@ -31,7 +31,7 @@ describeIf(
 
     it("Check", () => {
       testData.companyInformation.companyName = "company-for-all-types";
-      companyViaApiAndEuTaxonomyDataForFinancialsViaForm(
+      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
         testData.companyInformation,
         testData.t,
         () => undefined,

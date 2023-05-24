@@ -523,21 +523,24 @@ export default defineComponent({
      * @returns ObjectType
      */
     extractEligibilityKpis(receivedFormInputsModelData: ObjectType){
-      const fieldNames = Object.values(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
+      const financialServiceTypes = Object.values(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
       const kpiKeys = Object.keys(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
       return kpiKeys
         .map((key: string) => {
-          const fieldName = fieldNames[kpiKeys.indexOf(key)];
+          const financialServiceType = financialServiceTypes[kpiKeys.indexOf(key)];
           const eligibilityKpis = receivedFormInputsModelData.eligibilityKpis as ObjectType;
-          const kpi = eligibilityKpis[fieldName];
-          const eligibilityKpi = kpi ? { [fieldName]: kpi } : null;
+          const kpi = eligibilityKpis[financialServiceType];
+          const eligibilityKpi = kpi ? { [financialServiceType]: kpi } : undefined;
           return { [key]: eligibilityKpi };
         })
         .map((item) => {
-          const key = Object.keys(item)[0];
-          const kpi = receivedFormInputsModelData[key];
-          if (kpi) {
-            item[key] = { ...item[key], ...(receivedFormInputsModelData[key] as ObjectType) };
+          const financialServiceType = Object.keys(item)[0];
+          const kpis = receivedFormInputsModelData[financialServiceType] as ObjectType;
+          if (kpis) {
+            item[financialServiceType] = {
+              ...item[financialServiceType],
+              ...kpis,
+            };
           }
           return item;
         })
@@ -582,22 +585,25 @@ export default defineComponent({
      */
     makeEligibilityKpis(kpiSectionsModel: ObjectType) {
       const eligibilityKpis = Object.keys(kpiSectionsModel)
-        .map((key) => ({ key, fieldName: euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[key] as string }))
-        .map((kpi) => {
-          const section = kpiSectionsModel[kpi.key] as ObjectType;
-          const field = section[kpi.fieldName];
-          return { [kpi.fieldName]: field };
+        .map((key) => {
+          const eligibilityKpi = {
+            key,
+            financialServiceType: euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[key] as string,
+          };
+          const section = kpiSectionsModel[eligibilityKpi.key] as ObjectType;
+          const field = section[eligibilityKpi.financialServiceType];
+          return { [eligibilityKpi.financialServiceType]: field };
         })
         .reduce((all, one) => ({ ...all, ...one }));
 
       const kpis = Object.keys(kpiSectionsModel)
         .filter((key) => key !== "assetManagementKpis")
-        .map((key) => ({ [key]: kpiSectionsModel[key] }))
-        .map((kpi) => {
+        .map((key) => {
+          const kpi = { [key]: kpiSectionsModel[key] };
           const kpiKey = Object.keys(kpi)[0];
-          const fieldName = (euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType as ObjectType)[kpiKey];
           if (kpiKey) {
-            delete (kpi[kpiKey] as ObjectType)[fieldName as string];
+            const financialServiceType = (euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType as ObjectType)[kpiKey];
+            delete (kpi[kpiKey] as ObjectType)[financialServiceType as string];
           }
           return kpi;
         })

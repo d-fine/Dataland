@@ -55,6 +55,7 @@ describeIf(
             .find('select[name="report"]')
             .select(3);
         },
+        () => undefined,
         (request) => {
           const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
           expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(areBothDocumentsStillUploaded);
