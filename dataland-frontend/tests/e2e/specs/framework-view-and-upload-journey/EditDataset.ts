@@ -82,7 +82,7 @@ describeIf(
           cy.get(`div[data-test=${dataTest}]`).find(`div[class=upload-files-button]`).should("not.exist");
           cy.get(`div[data-test=${dataTest}] button[data-test=files-to-upload-remove]`).should("be.visible").click();
           submitButton.buttonAppearsDisabled();
-          cy.get(`div[data-test=${dataTest}] button[data-test=upload-files-button]`).should("be.visible");
+          cy.get(`div[data-test=${dataTest}] button[data-test=upload-files-button-${dataTest}]`).should("be.visible");
           cy.get(`div[data-test=${dataTest}]`)
             .find("input[type=file]")
             .selectFile(`../testing/data/documents/test-report.pdf`, { force: true, log: true });
