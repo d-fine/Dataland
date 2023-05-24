@@ -39,6 +39,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.amqp:spring-rabbit-test")
 
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation(libs.springdoc.openapi.ui)
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("org.postgresql:postgresql")
