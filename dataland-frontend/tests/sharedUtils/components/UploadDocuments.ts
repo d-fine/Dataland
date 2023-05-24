@@ -1,10 +1,10 @@
 export const uploadDocuments = {
-  selectFile(filename: string): void {
-    cy.get('button[data-test="upload-files-button"]').click();
+  selectFile(filename: string, fieldName = "undefined"): void {
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
   },
-  selectDummyFile(filename: string, contentSize: number): void {
-    cy.get('button[data-test="upload-files-button"]').click();
+  selectDummyFile(filename: string, contentSize: number, fieldName = "undefined"): void {
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get("input[type=file]").selectFile(
       {
         contents: new Cypress.Buffer(contentSize),
