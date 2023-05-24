@@ -42,19 +42,19 @@
         <template #body="slotProps">
           <template
             v-if="
-              slotProps.data[reportingPeriodWithDataId.dataId] !== undefined &&
-              slotProps.data[reportingPeriodWithDataId.dataId] !== null
+              slotProps.data.content[reportingPeriodWithDataId.dataId] !== undefined &&
+              slotProps.data.content[reportingPeriodWithDataId.dataId] !== null
             "
           >
-            <template v-if="Array.isArray(slotProps.data[reportingPeriodWithDataId.dataId])">
+            <template v-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
               <a
                 v-if="
-                  slotProps.data[reportingPeriodWithDataId.dataId].length > 1 ||
-                  slotProps.data[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
+                  slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
+                  slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
                 "
                 @click="
                   openModalAndDisplayValuesInSubTable(
-                    slotProps.data[reportingPeriodWithDataId.dataId],
+                    slotProps.data.content[reportingPeriodWithDataId.dataId],
                     slotProps.data.kpiLabel,
                     slotProps.data.kpiKey
                   )
@@ -63,20 +63,20 @@
                 >Show "{{ slotProps.data.kpiLabel }}"
                 <em class="material-icons" aria-hidden="true" title=""> dataset </em>
               </a>
-              <span v-else> {{ slotProps.data[reportingPeriodWithDataId.dataId][0] }} </span>
+              <span v-else> {{ slotProps.data.content[reportingPeriodWithDataId.dataId][0] }} </span>
             </template>
             <span v-else-if="slotProps.data.kpiFormFieldComponent === 'PercentageFormField'">
-              {{ slotProps.data[reportingPeriodWithDataId.dataId] }} %</span
+              {{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} %</span
             >
             <span
               v-else-if="
-                typeof slotProps.data[reportingPeriodWithDataId.dataId] === 'object' &&
-                slotProps.data[reportingPeriodWithDataId.dataId]?.value
+                typeof slotProps.data.content[reportingPeriodWithDataId.dataId] === 'object' &&
+                slotProps.data.content[reportingPeriodWithDataId.dataId]?.value
               "
             >
-              {{ slotProps.data[reportingPeriodWithDataId.dataId].value }}
+              {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}
             </span>
-            <span v-else>{{ slotProps.data[reportingPeriodWithDataId.dataId] }} </span>
+            <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} </span>
           </template>
         </template>
       </Column>

@@ -114,10 +114,10 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        [dataIdOfLksgDataset]: kpiValue,
+        content: { [dataIdOfLksgDataset]: kpiValue },
       } as KpiDataObject;
       let existingKpi = this.mapOfKpiKeysToDataObjects.get(kpiKey);
-      if (existingKpi) Object.assign(existingKpi, kpiData);
+      if (existingKpi) Object.assign(existingKpi.content, kpiData.content);
       else existingKpi = kpiData;
       this.mapOfKpiKeysToDataObjects.set(kpiKey, existingKpi);
     },
