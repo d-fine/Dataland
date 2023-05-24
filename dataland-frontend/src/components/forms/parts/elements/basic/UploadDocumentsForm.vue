@@ -13,7 +13,7 @@
       <template #header="{ files, chooseCallback }">
         <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
           <PrimeButton
-            v-if="files.length < 1 || moreThanOneDocumentAllowed"
+            v-show="files.length < 1 || moreThanOneDocumentAllowed"
             :data-test="'upload-files-button-' + name"
             @click="chooseCallback()"
             icon="pi pi-upload"
@@ -22,7 +22,7 @@
         </div>
       </template>
       <template #content="{ files }">
-        <div v-if="files.length > 0" data-test="files-to-upload">
+        <div v-show="files.length > 0" data-test="files-to-upload">
           <div
             v-for="(selectedFile, index) of files"
             :key="selectedFile.name + index"
