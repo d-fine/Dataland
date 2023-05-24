@@ -215,11 +215,15 @@ function fillRequiredLksgFieldsWithDummyData(): void {
  * Tests that selecting and removing a document works and selects all required documents to pass validation
  */
 function uploadRequiredDocuments(): void {
-  cy.get('button[data-test="upload-files-button-sa8000Certification"]')
-    .first()
-    .click()
-    .get("input[type=file]")
-    .first()
+  //todo
+  /*cy.get("button[data-test=files-to-upload-remove]").first().parents(".form-field:first").invoke("attr","data-test").then(
+      (dataTest) => {
+        cy.get('div[data-test=${dataTest}]')
+      }
+      )
+   */
+  cy.get('div[data-test="sa8000Certification"]')
+    .find("input[type=file]")
     .selectFile(
       {
         contents: new Cypress.Buffer(1),
@@ -230,7 +234,9 @@ function uploadRequiredDocuments(): void {
     );
 
   uploadDocuments.validateReportToUploadIsListed("dummyFile");
+  //uploadDocuments.removeAllReportsToUpload();
   uploadDocuments.removeReportToUpload("dummyFile");
+  cy.get('button[data-test="upload-files-button-sa8000Certification"]').should("exist");
 
   uploadDocuments.selectDocumentAtEachFileSelector("test-report");
   cy.get('button[data-test="upload-files-button-sa8000Certification"]').should("not.exist");
