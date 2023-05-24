@@ -347,8 +347,7 @@ import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
-import { uploadFiles } from "@/utils/FileUploadUtils";
-import { ReportToUpload } from "@/utils/FileUploadUtils";
+import { uploadFiles, ReportToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
