@@ -211,8 +211,8 @@ function fillRequiredLksgFieldsWithDummyData(): void {
   cy.get("select[name=totalRevenueCurrency]").select("EUR");
 }
 
-function checkDocumentSelectionAndRemoval(): void {
-  cy.get('div[data-test="sa8000Certification"]')
+function checkDocumentSelectionAndRemoval(fieldName: string): void {
+  cy.get(`div[data-test='${fieldName}']`)
     .find("input[type=file]")
     .selectFile(
       {
@@ -254,7 +254,7 @@ export function uploadLksgDataViaForm(): void {
   selectDummyDateInDataPicker();
 
   recursivelySelectYesOnAllFields(15);
-  checkDocumentSelectionAndRemoval();
+  checkDocumentSelectionAndRemoval("sa8000Certification");
   //uploadRequiredDocuments();
   uploadDocuments.selectDocumentAtEachFileSelector("test-report");
 
