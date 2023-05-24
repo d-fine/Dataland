@@ -32,7 +32,7 @@
         </template>
       </Column>
       <Column
-        v-for="reportingPeriodWithDataId of reportingPeriodsOfDataSets"
+        v-for="reportingPeriodWithDataId of listOfReportingPeriodsWithDataId"
         headerClass="horizontal-headers-size"
         headerStyle="width: 30vw;"
         :field="reportingPeriodWithDataId.dataId"
@@ -117,7 +117,7 @@ export default defineComponent({
       type: Array as PropType<Array<KpiDataObject>>,
       default: () => [],
     },
-    reportingPeriodsOfDataSets: {
+    listOfReportingPeriodsWithDataId: {
       type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
       default: () => [],
     },

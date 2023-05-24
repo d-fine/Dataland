@@ -6,7 +6,7 @@
   <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
     <LksgCompanyDataTable
       :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
-      :reportingPeriodsOfDataSets="listOfDataSetReportingPeriods"
+      :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
       tableDataTitle="LkSG Data"
     />
   </div>

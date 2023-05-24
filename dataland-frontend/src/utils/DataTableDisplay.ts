@@ -25,6 +25,6 @@ export function sortReportingPeriodsToDisplayAsColumns(
 }
 
 export type ReportingPeriodOfDataSetWithId = {
-  [dataId: string]: string;
+  dataId: string;
   reportingPeriod: string;
 };
