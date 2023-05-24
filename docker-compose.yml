@@ -92,6 +92,8 @@ services:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS: ${RABBITMQ_PASS}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
+    depends_on:
+      - document-manager-db
   document-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -306,6 +308,7 @@ services:
       - internal
       - internal-storage-db
       - document-manager-db
+      - qa-service-db
     profiles: ["production", "testing", "development"]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
@@ -317,6 +320,7 @@ services:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
+      QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
   rabbitmq:
@@ -345,12 +349,33 @@ services:
     image: ${QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_qa_service_test:${DATALAND_QA_SERVICE_TEST_VERSION}}
     networks:
       - internal
+      - qa-service-db
     expose:
       - "8080"
     environment:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS: ${RABBITMQ_PASS}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
+    depends_on:
+      - qa-service-db
+  qa-service-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - qa-service-db
+    image: postgres:15.2
+    volumes:
+      - qa_service_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: qa_service
+      POSTGRES_USER: qa_service
+      POSTGRES_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
+      PGUSER: qa_service
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
 networks:
   internal:
   external:
@@ -359,6 +384,7 @@ networks:
   api-key-manager-db:
   internal-storage-db:
   document-manager-db:
+  qa-service-db:
 volumes:
   keycloak_data:
     driver: local
@@ -377,4 +403,6 @@ volumes:
   frontend-dev-node-modules:
     driver: local
   document_manager_data:
+    driver: local
+  qa_service_data:
     driver: local

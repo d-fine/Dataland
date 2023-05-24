@@ -18,6 +18,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
+    id("org.springdoc.openapi-gradle-plugin")
     id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
     kotlin("kapt")
@@ -37,6 +38,25 @@ dependencies {
     implementation(libs.log4j.to.slf4j)
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.amqp:spring-rabbit-test")
+
+    implementation(libs.springdoc.openapi.ui)
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("com.h2database:h2")
+    implementation(project(":dataland-keycloak-adapter"))
+
+    // TODO added swaggerui for testing purposes only, first
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+}
+
+openApi {
+    apiDocsUrl.set("http://localhost:8486/qa/v3/api-docs")
+    customBootRun {
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8486"))
+    }
+    outputFileName.set("$projectDir/qaServiceOpenApi.json")
+    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
 tasks.test {
