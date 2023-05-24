@@ -504,7 +504,9 @@ export default defineComponent({
                 companyAssociatedEuTaxonomyData as ObjectType
               );
 
-              (receivedFormInputsModel.data as ObjectType).kpiSectionsModel = this.extractEligibilityKpis(receivedFormInputsModel.data as ObjectType);
+              (receivedFormInputsModel.data as ObjectType).kpiSectionsModel = this.extractEligibilityKpis(
+                receivedFormInputsModel.data as ObjectType
+              );
 
               this.waitingForData = false;
 
@@ -522,7 +524,7 @@ export default defineComponent({
      * @param receivedFormInputsModelData Received data
      * @returns ObjectType
      */
-    extractEligibilityKpis(receivedFormInputsModelData: ObjectType){
+    extractEligibilityKpis(receivedFormInputsModelData: ObjectType) {
       const financialServiceTypes = Object.values(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
       const kpiKeys = Object.keys(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
       return kpiKeys
@@ -602,7 +604,9 @@ export default defineComponent({
           const kpi = { [key]: kpiSectionsModel[key] };
           const kpiKey = Object.keys(kpi)[0];
           if (kpiKey) {
-            const financialServiceType = (euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType as ObjectType)[kpiKey];
+            const financialServiceType = (euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType as ObjectType)[
+              kpiKey
+            ];
             delete (kpi[kpiKey] as ObjectType)[financialServiceType as string];
           }
           return kpi;
@@ -629,7 +633,7 @@ export default defineComponent({
           ...(clonedFormInputsModel.data as ObjectType),
           ...this.makeEligibilityKpis(kpiSectionsModel as ObjectType),
         };
-        
+
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
