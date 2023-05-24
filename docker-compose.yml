@@ -43,9 +43,10 @@ services:
       - api-key-manager-db
       - internal-storage-db
       - document-manager-db
+      - qa-service-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5437:5433-5437"
+      - "127.0.0.1:5433-5438:5433-5438"
       - "127.0.0.1:5672:5672"
   api-key-manager:
     restart: always
