@@ -211,36 +211,6 @@ function fillRequiredLksgFieldsWithDummyData(): void {
   cy.get("select[name=totalRevenueCurrency]").select("EUR");
 }
 
-function checkDocumentSelectionAndRemoval(fieldName: string): void {
-  cy.get(`div[data-test='${fieldName}']`)
-    .find("input[type=file]")
-    .selectFile(
-      {
-        contents: new Cypress.Buffer(1),
-        fileName: `dummyFile.pdf`,
-        mimeType: "application/pdf",
-      },
-      { force: true }
-    );
-
-  uploadDocuments.validateReportToUploadIsListed("dummyFile");
-  //uploadDocuments.removeAllReportsToUpload();
-  uploadDocuments.removeReportToUpload("dummyFile");
-  cy.get('button[data-test="upload-files-button-sa8000Certification"]').should("exist");
-}
-/**
- * Tests that selecting and removing a document works and selects all required documents to pass validation
- */
-function uploadRequiredDocuments(): void {
-  //todo
-  /*cy.get("button[data-test=files-to-upload-remove]").first().parents(".form-field:first").invoke("attr","data-test").then(
-      (dataTest) => {
-        cy.get('div[data-test=${dataTest}]')
-      }
-      )
-   */
-}
-
 /**
  * Uploads a single LKSG data entry for a company via form
  */
@@ -254,8 +224,7 @@ export function uploadLksgDataViaForm(): void {
   selectDummyDateInDataPicker();
 
   recursivelySelectYesOnAllFields(15);
-  checkDocumentSelectionAndRemoval("sa8000Certification");
-  //uploadRequiredDocuments();
+
   uploadDocuments.selectDocumentAtEachFileSelector("test-report");
 
   submitButton.buttonAppearsDisabled();
