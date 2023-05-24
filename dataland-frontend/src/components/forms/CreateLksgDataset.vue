@@ -286,14 +286,14 @@ export default defineComponent({
 
     /**
      * updates the list of certificates that were uploaded in the corresponding formfields on change
-     * @param componentName the name of the component as a key
+     * @param fieldName the name of the formfield as a key
      * @param document the certificate as combined object of reference id and file content
      */
-    updateDocumentList(componentName: string, document: DocumentToUpload) {
+    updateDocumentList(fieldName: string, document: DocumentToUpload) {
       if (document) {
-        this.documents.set(componentName, document);
+        this.documents.set(fieldName, document);
       } else {
-        this.documents.delete(componentName);
+        this.documents.delete(fieldName);
       }
     },
   },

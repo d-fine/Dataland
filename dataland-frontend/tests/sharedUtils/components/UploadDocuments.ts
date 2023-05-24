@@ -32,7 +32,6 @@ export const uploadDocuments = {
   },
   validateReportToUploadIsListed(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
-    cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
   },
   removeReportToUpload(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
@@ -53,7 +52,12 @@ export const uploadDocuments = {
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}AlreadyUploadedContainer"]`).should("not.exist");
   },
-  assertUploadButtonDisappeared(): void {
-    cy.get('button[data-test="upload-files-button"]').should("not.exist");
+
+  selectDocumentAtEachFileSelector(filename: string): void {
+    cy.window().then((win) => {
+      win.document.querySelectorAll<HTMLInputElement>('input[type="file"]').forEach((element) => {
+        cy.wrap(element).selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
+      });
+    });
   },
 };

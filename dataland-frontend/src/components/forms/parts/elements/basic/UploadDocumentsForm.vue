@@ -14,7 +14,7 @@
         <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
           <PrimeButton
             v-if="files.length < 1 || moreThanOneDocumentAllowed"
-            data-test="upload-files-button"
+            :data-test="'upload-files-button-' + name"
             @click="chooseCallback()"
             icon="pi pi-upload"
             label="UPLOAD DOCUMENT"
@@ -37,9 +37,11 @@
 
             <PrimeButton
               data-test="files-to-upload-remove"
-              icon="pi pi-times"
+              label="REMOVE"
+              icon="pi pi-trash"
               @click="removeDocumentFromDocumentsToUpload(index)"
-              class="p-button-rounded"
+              class="p-button-text"
+              iconPos="right"
             />
           </div>
         </div>
@@ -84,6 +86,10 @@ export default defineComponent({
     };
   },
   props: {
+    name: {
+      type: String,
+      required: true,
+    },
     referencedDocumentsForPrefill: {
       type: Object as () => { [key: string]: CompanyReport },
     },
