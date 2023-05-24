@@ -8,8 +8,6 @@ import {
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 
 /**
@@ -108,30 +106,6 @@ function selectYesOnAllFieldsBrowser(win: Window): boolean {
 }
 
 /**
- * Uses the native browser context to check if CheckBoxes from the Lksg data model have yes selected.
- */
-function validateAllFieldsHaveYesSelected(): void {
-  const yesNoInputs = lksgDataModel.flatMap((category) =>
-    category.subcategories.flatMap((subcategory) =>
-      subcategory.fields
-        .filter((field) => field.component === "YesNoFormField" || field.component === "YesNoNaFormField")
-        .map((field) => field.name)
-    )
-  );
-  cy.window().then((win) => {
-    yesNoInputs.forEach((name) => {
-      const inputElement = assertDefined(
-        win.document.querySelector<HTMLInputElement>(`input[name="${name}"][value="Yes"]`)
-      );
-
-      if (!inputElement.checked) {
-        throw new Error(`Checkbox ${name} should be selected, but is not`);
-      }
-    });
-  });
-}
-
-/**
  * Given the data-test selector for a NACE form field,
  * this function will select the "A" code in that field
  * @param fieldName the identifier of the form field
@@ -211,36 +185,6 @@ function fillRequiredLksgFieldsWithDummyData(): void {
   cy.get("select[name=totalRevenueCurrency]").select("EUR");
 }
 
-function checkDocumentSelectionAndRemoval(fieldName: string): void {
-  cy.get(`div[data-test='${fieldName}']`)
-    .find("input[type=file]")
-    .selectFile(
-      {
-        contents: new Cypress.Buffer(1),
-        fileName: `dummyFile.pdf`,
-        mimeType: "application/pdf",
-      },
-      { force: true }
-    );
-
-  uploadDocuments.validateReportToUploadIsListed("dummyFile");
-  //uploadDocuments.removeAllReportsToUpload();
-  uploadDocuments.removeReportToUpload("dummyFile");
-  cy.get('button[data-test="upload-files-button-sa8000Certification"]').should("exist");
-}
-/**
- * Tests that selecting and removing a document works and selects all required documents to pass validation
- */
-function uploadRequiredDocuments(): void {
-  //todo
-  /*cy.get("button[data-test=files-to-upload-remove]").first().parents(".form-field:first").invoke("attr","data-test").then(
-      (dataTest) => {
-        cy.get('div[data-test=${dataTest}]')
-      }
-      )
-   */
-}
-
 /**
  * Uploads a single LKSG data entry for a company via form
  */
@@ -254,8 +198,7 @@ export function uploadLksgDataViaForm(): void {
   selectDummyDateInDataPicker();
 
   recursivelySelectYesOnAllFields(15);
-  checkDocumentSelectionAndRemoval("sa8000Certification");
-  //uploadRequiredDocuments();
+
   uploadDocuments.selectDocumentAtEachFileSelector("test-report");
 
   submitButton.buttonAppearsDisabled();
