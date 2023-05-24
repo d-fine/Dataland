@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <DataTable
-      :value="kpiDataObjectsToDisplay"
+      :value="arrayOfKpiDataObjects"
       rowGroupMode="subheader"
       groupRowsBy="subcategoryKey"
       dataKey="subcategoryKey"
@@ -108,7 +108,6 @@ export default defineComponent({
   },
   data() {
     return {
-      kpiDataObjectsToDisplay: [] as KpiDataObject[],
       expandedRowGroups: ["_masterData"],
     };
   },
@@ -127,8 +126,6 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.kpiDataObjectsToDisplay = this.arrayOfKpiDataObjects;
-
     document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
   },
   methods: {
@@ -159,10 +156,10 @@ export default defineComponent({
       const id = (event.target as Element).id;
 
       const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
-        this.kpiDataObjectsToDisplay.some((dataObject) => dataObject.subcategoryKey === child.id)
+        this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === child.id)
       )[0];
 
-      if (matchingChild || this.kpiDataObjectsToDisplay.some((dataObject) => dataObject.subcategoryKey === id)) {
+      if (matchingChild || this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === id)) {
         const index = this.expandedRowGroups.indexOf(matchingChild?.id ?? id);
         if (index === -1) this.expandedRowGroups.push(matchingChild?.id ?? id);
         else this.expandedRowGroups.splice(index, 1);
