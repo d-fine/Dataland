@@ -113,9 +113,9 @@ export default defineComponent({
     };
   },
   props: {
-    mapOfKpiKeysToDataObjects: {
-      type: Map as PropType<Map<string, KpiDataObject>>,
-      default: () => new Map(),
+    arrayOfKpiDataObjects: {
+      type: Array as PropType<Array<KpiDataObject>>,
+      default: () => [],
     },
     reportingPeriodsOfDataSets: {
       type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
@@ -127,7 +127,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.kpiDataObjectsToDisplay = Array.from(this.mapOfKpiKeysToDataObjects.values());
+    this.kpiDataObjectsToDisplay = this.arrayOfKpiDataObjects;
 
     document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
   },
