@@ -34,7 +34,7 @@ export const uploadDocuments = {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
   },
   removeReportToUpload(reportName: string): void {
-    cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
+    cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click({ force: true });
   },
   removeAllReportsToUpload(): void {
     cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));
