@@ -21,7 +21,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { Category, Field, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
@@ -116,10 +116,10 @@ export default defineComponent({
         kpiFormFieldComponent: kpiField?.component ?? "",
         content: { [dataIdOfLksgDataset]: kpiValue },
       } as KpiDataObject;
-      let existingKpi = this.mapOfKpiKeysToDataObjects.get(kpiKey);
-      if (existingKpi) Object.assign(existingKpi.content, kpiData.content);
-      else existingKpi = kpiData;
-      this.mapOfKpiKeysToDataObjects.set(kpiKey, existingKpi);
+      if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
+        Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey).content);
+      }
+      this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
     },
 
     /**
@@ -135,15 +135,15 @@ export default defineComponent({
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
           for (const [categoryKey, categoryObject] of Object.entries(oneLksgDataset.data)) {
-            for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as Category) as [
+            for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
               string,
-              Subcategory
+              object
             ][]) {
               for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object][]) {
                 const subcategory = assertDefined(
                   lksgDataModel
                     .find((category) => category.name === categoryKey)
-                    ?.subcategories.find((category) => category.name === subCategoryKey)
+                    ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
                 );
                 this.createKpiDataObjects(kpiKey, kpiValue, subcategory, dataIdOfLksgDataset);
               }
