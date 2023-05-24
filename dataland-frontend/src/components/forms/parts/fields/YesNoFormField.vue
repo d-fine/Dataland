@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field">
+  <div class="form-field" :data-test="name">
     <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
     <FormKit v-if="certificateRequiredIfYes" type="group" :name="name">
       <RadioButtonsFormElement
