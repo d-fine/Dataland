@@ -40,7 +40,8 @@
               label="REMOVE"
               icon="pi pi-trash"
               @click="removeDocumentFromDocumentsToUpload(index)"
-              class="p-button-text ml-auto"
+              class="p-button-text"
+              iconPos="right"
             />
           </div>
         </div>
