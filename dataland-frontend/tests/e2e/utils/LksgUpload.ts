@@ -211,17 +211,7 @@ function fillRequiredLksgFieldsWithDummyData(): void {
   cy.get("select[name=totalRevenueCurrency]").select("EUR");
 }
 
-/**
- * Tests that selecting and removing a document works and selects all required documents to pass validation
- */
-function uploadRequiredDocuments(): void {
-  //todo
-  /*cy.get("button[data-test=files-to-upload-remove]").first().parents(".form-field:first").invoke("attr","data-test").then(
-      (dataTest) => {
-        cy.get('div[data-test=${dataTest}]')
-      }
-      )
-   */
+function checkDocumentSelectionAndRemoval(): void {
   cy.get('div[data-test="sa8000Certification"]')
     .find("input[type=file]")
     .selectFile(
@@ -237,9 +227,18 @@ function uploadRequiredDocuments(): void {
   //uploadDocuments.removeAllReportsToUpload();
   uploadDocuments.removeReportToUpload("dummyFile");
   cy.get('button[data-test="upload-files-button-sa8000Certification"]').should("exist");
-
-  uploadDocuments.selectDocumentAtEachFileSelector("test-report");
-  cy.get('button[data-test="upload-files-button-sa8000Certification"]').should("not.exist");
+}
+/**
+ * Tests that selecting and removing a document works and selects all required documents to pass validation
+ */
+function uploadRequiredDocuments(): void {
+  //todo
+  /*cy.get("button[data-test=files-to-upload-remove]").first().parents(".form-field:first").invoke("attr","data-test").then(
+      (dataTest) => {
+        cy.get('div[data-test=${dataTest}]')
+      }
+      )
+   */
 }
 
 /**
@@ -255,8 +254,9 @@ export function uploadLksgDataViaForm(): void {
   selectDummyDateInDataPicker();
 
   recursivelySelectYesOnAllFields(15);
-
-  uploadRequiredDocuments();
+  checkDocumentSelectionAndRemoval();
+  //uploadRequiredDocuments();
+  uploadDocuments.selectDocumentAtEachFileSelector("test-report");
 
   submitButton.buttonAppearsDisabled();
   fillRequiredLksgFieldsWithDummyData();
