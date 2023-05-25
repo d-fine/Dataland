@@ -25,12 +25,12 @@ describeIf(
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
-        testData = getPreparedFixture("company-for-all-types", preparedFixtures);
+        testData = getPreparedFixture("company-for-testing-kpi-sections", preparedFixtures);
       });
     });
 
-    it("Check", () => {
-      testData.companyInformation.companyName = "company-for-all-types";
+    it("Check wether it is possible to add and delete KPIs and send the form successfully", () => {
+      testData.companyInformation.companyName = "company-for-testing-kpi-sections";
       uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
         testData.companyInformation,
         testData.t,

@@ -201,7 +201,7 @@
                   </div>
                 </div>
 
-                <FormKit name="kpiSectionsModel" type="group">
+                <FormKit name="kpiSections" type="group">
                   <div
                     v-for="financialServiceOption of confirmedSelectedFinancialServiceOptions"
                     :key="financialServiceOption"
@@ -504,7 +504,7 @@ export default defineComponent({
                 companyAssociatedEuTaxonomyData as ObjectType
               );
 
-              (receivedFormInputsModel.data as ObjectType).kpiSectionsModel = this.extractEligibilityKpis(
+              (receivedFormInputsModel.data as ObjectType).kpiSections = this.extractEligibilityKpis(
                 receivedFormInputsModel.data as ObjectType
               );
 
@@ -520,20 +520,20 @@ export default defineComponent({
     },
 
     /**
-     * Parses received eligibility KPIs data
+     * Parses received financial service types and eligibility KPIs data
      * @param receivedFormInputsModelData Received data
-     * @returns ObjectType
+     * @returns An object with financial service types and eligibility KPIs which can be directly merged into the formInputsModel, which will then populate expected KPI section fields
      */
     extractEligibilityKpis(receivedFormInputsModelData: ObjectType) {
-      const financialServiceTypes = Object.values(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
       const kpiKeys = Object.keys(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
       return kpiKeys
         .map((key: string) => {
-          const financialServiceType = financialServiceTypes[kpiKeys.indexOf(key)];
-          const eligibilityKpis = receivedFormInputsModelData.eligibilityKpis as ObjectType;
-          const kpi = eligibilityKpis[financialServiceType];
-          const eligibilityKpi = kpi ? { [financialServiceType]: kpi } : undefined;
-          return { [key]: eligibilityKpi };
+          const financialServiceType = Object.values(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType)[
+            kpiKeys.indexOf(key)
+          ];
+          const kpis = (receivedFormInputsModelData.eligibilityKpis as ObjectType)[financialServiceType];
+          const eligibilityKpis = kpis ? { [financialServiceType]: kpis } : undefined;
+          return { [key]: eligibilityKpis };
         })
         .map((item) => {
           const financialServiceType = Object.keys(item)[0];
@@ -582,26 +582,26 @@ export default defineComponent({
 
     /**
      * Converts the kpisSection data to a request-friendly object
-     * @param kpiSectionsModel Kpi Section data
+     * @param kpiSections Kpi Section data
      * @returns ObjectType
      */
-    makeEligibilityKpis(kpiSectionsModel: ObjectType) {
-      const eligibilityKpis = Object.keys(kpiSectionsModel)
+    makeEligibilityKpis(kpiSections: ObjectType) {
+      const eligibilityKpis = Object.keys(kpiSections)
         .map((key) => {
           const eligibilityKpi = {
             key,
             financialServiceType: euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[key] as string,
           };
-          const section = kpiSectionsModel[eligibilityKpi.key] as ObjectType;
+          const section = kpiSections[eligibilityKpi.key] as ObjectType;
           const field = section[eligibilityKpi.financialServiceType];
           return { [eligibilityKpi.financialServiceType]: field };
         })
         .reduce((all, one) => ({ ...all, ...one }));
 
-      const kpis = Object.keys(kpiSectionsModel)
+      const kpis = Object.keys(kpiSections)
         .filter((key) => key !== "assetManagementKpis")
         .map((key) => {
-          const kpi = { [key]: kpiSectionsModel[key] };
+          const kpi = { [key]: kpiSections[key] };
           const kpiKey = Object.keys(kpi)[0];
           if (kpiKey) {
             const financialServiceType = (euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType as ObjectType)[
@@ -627,11 +627,11 @@ export default defineComponent({
 
         // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
         const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
-        const kpiSectionsModel = (clonedFormInputsModel.data as ObjectType).kpiSectionsModel;
-        delete (clonedFormInputsModel.data as ObjectType).kpiSectionsModel;
+        const kpiSections = (clonedFormInputsModel.data as ObjectType).kpiSections;
+        delete (clonedFormInputsModel.data as ObjectType).kpiSections;
         clonedFormInputsModel.data = {
           ...(clonedFormInputsModel.data as ObjectType),
-          ...this.makeEligibilityKpis(kpiSectionsModel as ObjectType),
+          ...this.makeEligibilityKpis(kpiSections as ObjectType),
         };
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
