@@ -30,15 +30,15 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { FormKit } from "@formkit/vue";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "AddressFormElement",
   components: { FormKit },
   data() {
     return {
-      allCountry: getAllCountryNamesWithCodes(),
+      allCountry: getDataset(DropdownDatasetIdentifier.CountryCodes),
     };
   },
   computed: {

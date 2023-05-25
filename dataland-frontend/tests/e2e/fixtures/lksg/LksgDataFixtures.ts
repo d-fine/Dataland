@@ -13,7 +13,7 @@ import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFi
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { generateListOfIso2CountryCodes } from "@e2e/fixtures/common/CountryFixtures";
+import { generateIso2CountryCode, generateListOfIso2CountryCodes } from "@e2e/fixtures/common/CountryFixtures";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 
 /**
@@ -71,7 +71,7 @@ export function generateAddress(): LksgAddress {
     city: faker.address.city(),
     state: faker.address.state(),
     postalCode: faker.address.zipCode(),
-    country: faker.address.country(),
+    country: generateIso2CountryCode(),
   };
 }
 
