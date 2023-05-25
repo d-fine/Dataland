@@ -115,10 +115,6 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
-    tableDataTitle: {
-      type: String,
-      default: "",
-    },
   },
   mounted() {
     this.kpiDataObjectsToDisplay = this.kpiDataObjects;

@@ -120,10 +120,6 @@ export default defineComponent({
       type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
       default: () => [],
     },
-    tableDataTitle: {
-      type: String,
-      default: "",
-    },
   },
   mounted() {
     document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
