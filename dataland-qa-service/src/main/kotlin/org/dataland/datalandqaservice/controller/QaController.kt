@@ -65,7 +65,6 @@ class QaController(
                 qaStatus = qualityStatus,
                 receptionTime = dataReviewStatusToUpdate.receptionTime,
                 reviewerKeycloakId = DatalandAuthentication.fromContext().userId,
-                reviewComment = comment,
             ),
         )
 
