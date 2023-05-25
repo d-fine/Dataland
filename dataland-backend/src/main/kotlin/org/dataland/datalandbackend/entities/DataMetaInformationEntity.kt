@@ -64,7 +64,11 @@ data class DataMetaInformationEntity(
     fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean {
         return this.qaStatus == QAStatus.Accepted ||
             this.uploaderUserId == viewingUser?.userId ||
-            viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
+            viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false ||
+            (
+                viewingUser?.roles?.contains(DatalandRealmRole.ROLE_REVIEWER) ?: false &&
+                    this.qaStatus == QAStatus.Pending
+                )
     }
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {

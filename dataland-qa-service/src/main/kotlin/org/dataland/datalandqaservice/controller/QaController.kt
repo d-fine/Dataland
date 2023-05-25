@@ -37,7 +37,8 @@ class QaController(
     }
 
     @Transactional
-    override fun assignQualityStatus(dataId: String, qualityStatus: QAStatus, comment: String?): ResponseEntity<Nothing> {
+    override fun assignQualityStatus(dataId: String, qualityStatus: QAStatus, comment: String?):
+        ResponseEntity<Nothing> {
         logger.info("Assigning quality status ${qualityStatus.name} to dataset with ID $dataId")
         if (qualityStatus == QAStatus.Pending) {
             throw InvalidInputApiException(
@@ -65,7 +66,7 @@ class QaController(
      * @param dataId the ID of the data to validate
      * @returns the DatasetReviewQuality corresponding
      */
-    fun validateDataIdAndGetDataReviewStatus(dataId: String) : DatasetReviewStatusEntity {
+    fun validateDataIdAndGetDataReviewStatus(dataId: String): DatasetReviewStatusEntity {
         return datasetReviewStatusRepository.findById(dataId).getOrElse {
             throw InvalidInputApiException(
                 "There is no dataset with ID $dataId.",
@@ -76,7 +77,7 @@ class QaController(
                 throw InvalidInputApiException(
                     "The dataset has already been reviewed.",
                     "The dataset with ID $dataId already has the " +
-                            "quality status ${it.qaStatus.name}.",
+                        "quality status ${it.qaStatus.name}.",
                 )
             }
         }

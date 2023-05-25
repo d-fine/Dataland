@@ -13,8 +13,8 @@ interface DatasetReviewStatusRepository : JpaRepository<DatasetReviewStatusEntit
      */
     @Query(
         "SELECT status.dataId FROM DatasetReviewStatusEntity status " +
-                "WHERE status.qaStatus = org.dataland.datalandbackendutils.model.QAStatus.Pending " +
-                "ORDER BY status.receptionTime ASC"
+            "WHERE status.qaStatus = org.dataland.datalandbackendutils.model.QAStatus.Pending " +
+            "ORDER BY status.receptionTime ASC",
     )
     fun getSortedPendingDataIds(): List<String>
 }
