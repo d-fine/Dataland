@@ -1,7 +1,7 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <UploaderRoleWrapper>
+    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <TheContent>
         <BackButton id="backButton" label="BACK" />
         <CompanyInformation :companyID="companyID" />
@@ -59,7 +59,7 @@
           </template>
         </Card>
       </TheContent>
-    </UploaderRoleWrapper>
+    </AuthorizationWrapper>
     <TheFooter />
   </AuthenticationWrapper>
 </template>
@@ -77,15 +77,16 @@ import Card from "primevue/card";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
-import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
+import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { humanizeString } from "@/utils/StringHumanizer";
+import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "ChooseFramework",
   components: {
     TheFooter,
-    UploaderRoleWrapper,
+    AuthorizationWrapper,
     CompanyInformation,
     AuthenticationWrapper,
     TheHeader,
@@ -116,6 +117,7 @@ export default defineComponent({
       DataTypeEnum,
       humanizeString: humanizeString,
       mapOfDataTypeToListOfDataMetaInfo: new Map<DataTypeEnum, DataMetaInformation[]>(),
+      KEYCLOAK_ROLE_UPLOADER,
     };
   },
   props: {

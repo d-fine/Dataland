@@ -26,17 +26,21 @@ export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promi
   } else return [];
 }
 
+export const KEYCLOAK_ROLE_UPLOADER = "ROLE_UPLOADER";
+export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
+
 /**
- * Derives the roles from the resolved Keycloak-promise of a logged in user and checks if the role for uploading data
- * is included.
+ * Derives the roles from the resolved Keycloak-promise of a logged in user
+ * and checks if the provided role is included.
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-promise
+ * @param keycloakRole the keycloak user role to test for
  * @returns a promise, which resolves to a boolean
  */
-export async function checkIfUserHasUploaderRights(keycloakPromiseGetter?: () => Promise<Keycloak>): Promise<boolean> {
+export async function checkIfUserHasRole(keycloakRole: string, keycloakPromiseGetter?: () => Promise<Keycloak>): Promise<boolean> {
   if (keycloakPromiseGetter) {
     const roles = await getKeycloakRolesForUser(keycloakPromiseGetter);
     if (roles) {
-      return roles.includes("ROLE_UPLOADER");
+      return roles.includes(keycloakRole);
     } else {
       return false;
     }

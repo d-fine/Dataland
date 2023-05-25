@@ -51,7 +51,7 @@ import Keycloak from "keycloak-js";
 import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
-import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "DatasetOverview",
@@ -79,7 +79,7 @@ export default defineComponent({
     };
   },
   created() {
-    checkIfUserHasUploaderRights(this.getKeycloakPromise)
+    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })

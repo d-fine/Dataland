@@ -14,17 +14,23 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import TheContent from "@/components/generics/TheContent.vue";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 
 export default defineComponent({
-  name: "UploaderRoleWrapper",
+  name: "AuthorizationWrapper",
   components: { TheContent, MiddleCenterDiv },
   data() {
     return {
       hasUserUploaderRights: null as boolean | null,
     };
+  },
+  props: {
+    requiredRole: {
+      type: String,
+      required: true,
+    },
   },
   setup() {
     return {
@@ -32,7 +38,7 @@ export default defineComponent({
     };
   },
   mounted: function () {
-    checkIfUserHasUploaderRights(this.getKeycloakPromise)
+    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })

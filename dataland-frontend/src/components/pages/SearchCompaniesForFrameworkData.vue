@@ -110,7 +110,7 @@ import { useFrameworkFiltersStore } from "@/stores/Stores";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import Keycloak from "keycloak-js";
-import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   setup() {
@@ -137,7 +137,7 @@ export default defineComponent({
   },
   created() {
     window.addEventListener("scroll", this.windowScrollHandler);
-    checkIfUserHasUploaderRights(this.getKeycloakPromise)
+    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })

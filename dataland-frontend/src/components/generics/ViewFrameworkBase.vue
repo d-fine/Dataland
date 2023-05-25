@@ -91,7 +91,7 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 import OverlayPanel from "primevue/overlaypanel";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
@@ -158,7 +158,7 @@ export default defineComponent({
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
-    checkIfUserHasUploaderRights(this.getKeycloakPromise)
+    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })

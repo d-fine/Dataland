@@ -1,11 +1,11 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <UploaderRoleWrapper>
+    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <BackButton id="backButton" class="mt-2 pl-3" />
       <CompanyInformation :companyID="companyID" />
       <CreateLksgDataset :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
-    </UploaderRoleWrapper>
+    </AuthorizationWrapper>
     <TheFooter />
   </AuthenticationWrapper>
 </template>
@@ -17,19 +17,25 @@ import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
-import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
+import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
+import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 export default {
   name: "UploadLkSG",
   components: {
-    UploaderRoleWrapper,
+    AuthorizationWrapper,
     CreateLksgDataset,
     TheHeader,
     AuthenticationWrapper,
     CompanyInformation,
     TheFooter,
     BackButton,
+  },
+  data() {
+    return {
+      KEYCLOAK_ROLE_UPLOADER,
+    };
   },
   props: {
     companyID: {
