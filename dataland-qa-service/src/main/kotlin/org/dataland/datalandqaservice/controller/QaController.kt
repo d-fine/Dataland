@@ -33,18 +33,11 @@ class QaController(
     @Transactional
     override fun getUnreviewedDatasets(): ResponseEntity<List<String>> {
         logger.info("Received request to respond with IDs of unreviewed datasets")
-        val allDatasetReviewStati = datasetReviewStatusRepository.findAll()
-        val pendingDatasetReviewStati = allDatasetReviewStati.filter { it.qaStatus == QAStatus.Pending }
-        return ResponseEntity.ok(
-            pendingDatasetReviewStati
-                .sortedBy { it.receptionTime }
-                .map { it.dataId },
-        )
-        // TODO move this stuff into a database query
+        return ResponseEntity.ok(datasetReviewStatusRepository.getSortedPendingDataIds())
     }
 
     @Transactional
-    override fun assignQualityStatus(dataId: String, qualityStatus: QAStatus): ResponseEntity<Nothing> {
+    override fun assignQualityStatus(dataId: String, qualityStatus: QAStatus, comment: String?): ResponseEntity<Nothing> {
         logger.info("Assigning quality status ${qualityStatus.name} to dataset with ID $dataId")
         if (qualityStatus == QAStatus.Pending) {
             throw InvalidInputApiException(
@@ -54,8 +47,8 @@ class QaController(
         }
         val dataReviewStatusToUpdate = datasetReviewStatusRepository.findById(dataId).getOrElse {
             throw InvalidInputApiException(
-                "There is no dataset is no dataset with ID $dataId.",
-                "There is no dataset is no dataset with ID $dataId to be reviewed.",
+                "There is no dataset with ID $dataId.",
+                "There is no dataset with ID $dataId.",
             )
         }
         if (dataReviewStatusToUpdate.qaStatus != QAStatus.Pending) {
@@ -65,7 +58,6 @@ class QaController(
                     "quality status ${dataReviewStatusToUpdate.qaStatus.name}.",
             )
         }
-        // TODO move all of the above into a database query
         datasetReviewStatusRepository.save(
             DatasetReviewStatusEntity(
                 dataId = dataId,
@@ -73,6 +65,7 @@ class QaController(
                 qaStatus = qualityStatus,
                 receptionTime = dataReviewStatusToUpdate.receptionTime,
                 reviewerKeycloakId = DatalandAuthentication.fromContext().userId,
+                reviewComment = comment,
             ),
         )
 

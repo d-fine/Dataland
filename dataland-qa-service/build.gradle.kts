@@ -45,6 +45,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("com.h2database:h2")
     implementation(project(":dataland-keycloak-adapter"))
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     // TODO added swaggerui for testing purposes only, first
     kapt("org.springframework.boot:spring-boot-configuration-processor")
