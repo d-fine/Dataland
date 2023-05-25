@@ -11,4 +11,7 @@ export const detailsCompanyDataTableColumnHeaders = {
   subcontractingCompaniesIndustries: {
     subcontractingCompaniesIndustries: "NACE Code",
   },
+  highRiskCountriesRawMaterialsLocation: {
+    highRiskCountriesRawMaterialsLocation: "High Risk Countries",
+  },
 };

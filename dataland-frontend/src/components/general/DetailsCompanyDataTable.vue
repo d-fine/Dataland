@@ -2,22 +2,22 @@
   <DataTable :value="listOfRowContents">
     <Column
       v-for="col of columns"
-      :field="col.field"
-      :key="col.field"
-      :header="columnHeaders[kpiKeyOfTable] ? columnHeaders[kpiKeyOfTable][col.header] : undefined"
+      :field="col"
+      :key="col"
+      :header="columnHeaders[kpiKeyOfTable] ? columnHeaders[kpiKeyOfTable][col] : undefined"
       headerStyle="width: 15vw;"
     >
       <template #body="{ data }">
-        <template v-if="data[col.field]">
-          <ul v-if="Array.isArray(data[col.field])">
-            <li :key="el" v-for="el in data[col.field]">{{ el }}</li>
+        <template v-if="data[col]">
+          <ul v-if="Array.isArray(data[col])">
+            <li :key="el" v-for="el in data[col]">{{ el }}</li>
           </ul>
-          <div v-else-if="typeof data[col.field] === 'object'">
-            <p :key="key" v-for="[key, value] in Object.entries(data[col.field])" style="margin: 0; padding: 0">
+          <div v-else-if="typeof data[col] === 'object'">
+            <p :key="key" v-for="[key, value] in Object.entries(data[col])" style="margin: 0; padding: 0">
               {{ value }}
             </p>
           </div>
-          <span v-else>{{ humanizeStringIfNecessary(col.field, data[col.field]) }}</span>
+          <span v-else>{{ humanizeStringIfNecessary(col, data[col]) }}</span>
         </template>
       </template>
     </Column>
@@ -41,7 +41,7 @@ export default defineComponent({
       listOfRowContents: [] as Array<object | string>,
       columnHeaders: detailsCompanyDataTableColumnHeaders,
       kpiKeyOfTable: "" as string,
-      columns: [] as { field: string; header: string }[],
+      columns: [] as string[],
     };
   },
   mounted() {
@@ -70,7 +70,7 @@ export default defineComponent({
         return keyList;
       }, []);
       for (const key of presentKeys) {
-        this.columns.push({ field: `${key}`, header: `${key}` });
+        this.columns.push(key);
       }
     },
     /**
