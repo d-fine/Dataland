@@ -37,9 +37,12 @@ class EuTaxonomyDataForFinancialsController(
     }
 
     @Operation(operationId = "postCompanyAssociatedEuTaxonomyDataForFinancials")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForFinancials>):
+    override fun postCompanyAssociatedData(
+        companyAssociatedData: CompanyAssociatedData<EuTaxonomyDataForFinancials>,
+        bypassQa: Boolean,
+    ):
         ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData)
+        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
 
     @Operation(operationId = "getAllCompanyEuTaxonomyDataForFinancials")

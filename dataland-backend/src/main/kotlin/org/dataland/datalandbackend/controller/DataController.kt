@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.utils.canUserBypassQa
 import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -35,8 +36,11 @@ abstract class DataController<T>(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val logMessageBuilder = LogMessageBuilder()
 
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
+        if (bypassQa && !canUserBypassQa(DatalandAuthentication.fromContextOrNull())) {
+            throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
+        }
         val companyId = companyAssociatedData.companyId
         val reportingPeriod = companyAssociatedData.reportingPeriod
         val userId = DatalandAuthentication.fromContext().userId
@@ -44,7 +48,10 @@ abstract class DataController<T>(
         logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))
         val correlationId = generateCorrelationId(companyAssociatedData.companyId)
         val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
-        val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(datasetToStore, correlationId)
+        val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(
+            datasetToStore,
+            bypassQa, correlationId,
+        )
         logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
         return ResponseEntity.ok(
             DataMetaInformation(

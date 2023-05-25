@@ -33,4 +33,9 @@ class MessageQueueUtils {
             )
         }
     }
+
+    fun extractValueFromMessagePayload(message: String, key: String): String {
+        val content = JSONObject(message).toMap()
+        return content[key]
+    }
 }

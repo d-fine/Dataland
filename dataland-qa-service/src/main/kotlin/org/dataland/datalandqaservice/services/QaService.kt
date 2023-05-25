@@ -62,10 +62,12 @@ class QaService(
     )
     @Transactional
     fun addDataToQueue(
-        @Payload dataId: String,
+        @Payload content: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
+        val dataId = messageUtils.extractValueFromMessagePayload(content, "dataId")
+        val bypassQa = messageUtils.extractValueFromMessagePayload(content, "bypassQa")?.toBoolean() ?: false
         messageUtils.validateMessageType(type, MessageType.DataStored)
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
@@ -74,14 +76,27 @@ class QaService(
             logger.info(
                 "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
             )
-            datasetReviewStatusRepository.save(
-                DatasetReviewStatusEntity(
-                    dataId = dataId,
-                    correlationId = correlationId,
-                    qaStatus = QAStatus.Pending,
-                    receptionTime = Instant.now().toEpochMilli(),
-                ),
-            )
+            if (bypassQa) {
+                logger.info(
+                    "Bypassing data with DataId: $dataId with Correlation Id: $correlationId",
+                )
+                val message = objectMapper.writeValueAsString(
+                    QaCompletedMessage(dataId, QAStatus.Accepted),
+                )
+                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+                    RoutingKeyNames.data,
+                )
+            } else {
+                datasetReviewStatusRepository.save(
+                    DatasetReviewStatusEntity(
+                        dataId = dataId,
+                        correlationId = correlationId,
+                        qaStatus = QAStatus.Pending,
+                        receptionTime = Instant.now().toEpochMilli(),
+                    ),
+                )
+            }
         }
     }
 

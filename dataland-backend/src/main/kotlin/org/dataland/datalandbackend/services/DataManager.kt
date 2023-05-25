@@ -18,6 +18,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -77,13 +78,18 @@ class DataManager(
      * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
      * relevant message queues
      * @param storableDataSet contains all the inputs needed by Dataland
+     * @param bypassQa whether the data should be sent to QA or not
      * @return ID of the newly stored data in the data store
      */
-    fun addDataSetToTemporaryStorageAndSendMessage(storableDataSet: StorableDataSet, correlationId: String):
+    fun addDataSetToTemporaryStorageAndSendMessage(
+        storableDataSet: StorableDataSet,
+        bypassQa: Boolean,
+        correlationId: String,
+    ):
         String {
         val dataId = generateRandomDataId()
         addDatasetToDatabase(dataId, storableDataSet, correlationId)
-        storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, correlationId)
+        storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
         return dataId
     }
 
@@ -180,17 +186,20 @@ class DataManager(
      * Method to temporarily store a data set in a hash map and send a message to the storage_queue
      * @param dataId The id of the inserted data set
      * @param storableDataSet The data set to store
+     * @param bypassQa Whether the data set should be sent to QA or not
      * @param correlationId The correlation id of the request initiating the storing of data
      * @return ID of the stored data set
      */
     fun storeDataSetInTemporaryStoreAndSendMessage(
         dataId: String,
         storableDataSet: StorableDataSet,
+        bypassQa: Boolean,
         correlationId: String,
     ) {
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
+        val payload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to bypassQa)).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, MessageType.DataReceived, correlationId,
+            payload, MessageType.DataReceived, correlationId,
             ExchangeNames.dataReceived,
         )
         logger.info(

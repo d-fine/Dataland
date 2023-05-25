@@ -1,6 +1,8 @@
 package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.util.JSONPObject
+import netscape.javascript.JSObject
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
@@ -24,6 +26,7 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import org.json.JSONObject
 
 /**
  * Simple implementation of a data store using a postgres database
@@ -66,11 +69,13 @@ class DatabaseStringDataStore(
         ],
     )
     fun persistentlyStoreDataAndSendMessage(
-        @Payload dataId: String,
+        @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DataReceived)
+        val content = JSONObject(payload).toMap()
+        val dataId = content["dataId"] as String
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
@@ -80,7 +85,7 @@ class DatabaseStringDataStore(
             logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
             storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, MessageType.DataStored, correlationId, ExchangeNames.itemStored, RoutingKeyNames.data,
+                payload, MessageType.DataStored, correlationId, ExchangeNames.itemStored, RoutingKeyNames.data,
             )
         }
     }

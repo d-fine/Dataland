@@ -82,7 +82,7 @@ class DataManagerTest(
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
-            storableEuTaxonomyDataSetForNonFinancials, correlationId,
+            storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
         )
         val thrown = assertThrows<InvalidInputApiException> {
             dataManager.getDataSet(dataId, DataType("eutaxonomy-financials"), correlationId)
@@ -99,7 +99,7 @@ class DataManagerTest(
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
-            storableEuTaxonomyDataSetForNonFinancials, correlationId,
+            storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
         )
         `when`(mockStorageClient.selectDataById(dataId, correlationId))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
@@ -115,7 +115,7 @@ class DataManagerTest(
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
-            storableEuTaxonomyDataSetForNonFinancials, correlationId,
+            storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
         )
         val expectedDataTypeName = getExpectedDataTypeName(
             storableEuTaxonomyDataSetForNonFinancials, dataId, "eutaxonomy-financials",
@@ -146,6 +146,7 @@ class DataManagerTest(
         val storableDataSetForNonFinancials = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
             storableDataSetForNonFinancials,
+            false,
             correlationId,
         )
 
@@ -207,7 +208,7 @@ class DataManagerTest(
         )
         assertThrows<AmqpException> {
             spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
-                dataUUId, storableEuTaxonomyDataSetForNonFinancials, correlationId,
+                dataUUId, storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
             )
         }
     }

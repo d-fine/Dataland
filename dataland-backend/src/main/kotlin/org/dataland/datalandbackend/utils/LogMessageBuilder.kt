@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component
 
 @Component("LogMessageBuilder")
 class LogMessageBuilder {
-    val accessDeniedExceptionMessage = "You are trying to access a unreviewed dataset"
+    val accessDeniedExceptionMessage = "You are trying to access a unreviewed dataset."
+    val bypassQaDeniedExceptionMessage = "You do not have the required permissions to bypass QA checks."
 
     /**
      * Generates a message to inform that a correlation ID was generated for a request in association with a company ID

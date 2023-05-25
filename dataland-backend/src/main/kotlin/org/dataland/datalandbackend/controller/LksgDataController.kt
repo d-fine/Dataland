@@ -36,9 +36,9 @@ class LksgDataController(
     }
 
     @Operation(operationId = "postCompanyAssociatedLksgData")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<LksgData>):
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<LksgData>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData)
+        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
 
     @Operation(operationId = "getAllCompanyLksgData")
