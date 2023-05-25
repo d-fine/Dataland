@@ -58,11 +58,12 @@ export default defineComponent({
     };
     this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     if (typeof dialogRefData.listOfRowContents[0] === "string") {
+      this.keysOfValuesForColumnDisplay.push(this.kpiKeyOfTable);
       this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
     } else {
       this.listOfRowContents = dialogRefData.listOfRowContents;
+      this.generateColsNames();
     }
-    this.generateColsNames();
   },
   methods: {
     /**
