@@ -216,11 +216,14 @@ export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
 ): Promise<DataMetaInformation> {
   const response = await new EuTaxonomyDataForFinancialsControllerApi(
     new Configuration({ accessToken: token })
-  ).postCompanyAssociatedEuTaxonomyDataForFinancials({
-    companyId,
-    reportingPeriod,
-    data,
-  });
+  ).postCompanyAssociatedEuTaxonomyDataForFinancials(
+    {
+      companyId,
+      reportingPeriod,
+      data,
+    },
+    true
+  );
   return response.data;
 }
 
