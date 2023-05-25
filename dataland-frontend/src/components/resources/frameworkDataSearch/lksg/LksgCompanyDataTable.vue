@@ -136,7 +136,7 @@ export default defineComponent({
       });
     },
     /**
-     * Enables groupRowExpansion (and collaps) when clicking on the whole header row
+     * Enables groupRowExpansion (and collapse) when clicking on the whole header row
      * @param event a click event
      */
     expandRowGroupOnHeaderClick(event: Event) {
