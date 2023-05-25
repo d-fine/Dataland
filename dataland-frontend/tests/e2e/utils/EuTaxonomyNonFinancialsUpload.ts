@@ -124,11 +124,14 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
 ): Promise<DataMetaInformation> {
   const dataMetaInformation = await new EuTaxonomyDataForNonFinancialsControllerApi(
     new Configuration({ accessToken: token })
-  ).postCompanyAssociatedEuTaxonomyDataForNonFinancials({
-    companyId,
-    reportingPeriod,
-    data,
-  });
+  ).postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+    {
+      companyId,
+      reportingPeriod,
+      data,
+    },
+    true
+  );
   return dataMetaInformation.data;
 }
 

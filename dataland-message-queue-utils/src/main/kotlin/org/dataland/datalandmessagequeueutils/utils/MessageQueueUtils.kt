@@ -1,8 +1,8 @@
 package org.dataland.datalandmessagequeueutils.utils
 
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.springframework.stereotype.Component
 import org.json.JSONObject
+import org.springframework.stereotype.Component
 
 /**
  * MessageQueueUtils provides utility functions to be used with the processing of messages

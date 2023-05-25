@@ -58,7 +58,7 @@ class ApiAccessor {
                     euTaxonomyNonFinancialsData,
                 )
             dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                companyAssociatedEuTaxonomyNonFinancialsData,
+                companyAssociatedEuTaxonomyNonFinancialsData, true,
             )
         }
 
@@ -71,7 +71,7 @@ class ApiAccessor {
             val companyAssociatedEuTaxonomyFinancialsData =
                 CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, reportingPeriod, euTaxonomyFinancialsData)
             dataControllerApiForEuTaxonomyFinancials.postCompanyAssociatedEuTaxonomyDataForFinancials(
-                companyAssociatedEuTaxonomyFinancialsData,
+                companyAssociatedEuTaxonomyFinancialsData, true,
             )
         }
 
@@ -82,7 +82,7 @@ class ApiAccessor {
     val lksgUploaderFunction = { companyId: String, lksgData: LksgData, reportingPeriod: String ->
         val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, reportingPeriod, lksgData)
         dataControllerApiForLksgData.postCompanyAssociatedLksgData(
-            companyAssociatedLksgData,
+            companyAssociatedLksgData, true,
         )
     }
 
@@ -93,7 +93,7 @@ class ApiAccessor {
     val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData, reportingPeriod: String ->
         val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, reportingPeriod, sfdrData)
         dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
-            companyAssociatedSfdrData,
+            companyAssociatedSfdrData, true,
         )
     }
 
@@ -104,7 +104,7 @@ class ApiAccessor {
     val smeUploaderFunction = { companyId: String, smeData: SmeData, reportingPeriod: String ->
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, reportingPeriod, smeData)
         dataControllerApiForSmeData.postCompanyAssociatedSmeData(
-            companyAssociatedSmeData,
+            companyAssociatedSmeData, true,
         )
     }
 

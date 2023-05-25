@@ -1,13 +1,12 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
+    "title": "Dataland QA Service API documentation",
+    "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://localhost:8486/qa",
-      "description": "Generated server url"
+      "url": "/qa"
     }
   ],
   "tags": [
@@ -21,7 +20,7 @@
     }
   ],
   "paths": {
-    "/{dataId}": {
+    "/datasets/{dataId}": {
       "post": {
         "tags": [
           "qa-controller"
@@ -44,6 +43,14 @@
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/QAStatus"
+            }
+          },
+          {
+            "name": "comment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -371,7 +378,8 @@
         "type": "string",
         "enum": [
           "Pending",
-          "Accepted"
+          "Accepted",
+          "Rejected"
         ]
       },
       "Link": {
@@ -410,6 +418,23 @@
             "items": {
               "$ref": "#/components/schemas/ErrorDetails"
             }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "default-bearer-auth": {
+        "type": "http",
+        "in": "header",
+        "scheme": "bearer"
+      },
+      "default-oauth": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth",
+            "tokenUrl": "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
+            "scopes": {}
           }
         }
       }

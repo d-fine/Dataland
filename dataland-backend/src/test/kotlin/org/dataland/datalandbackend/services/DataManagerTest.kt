@@ -15,7 +15,6 @@ import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
@@ -201,7 +200,7 @@ class DataManagerTest(
 
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataUUId, MessageType.DataReceived, correlationId, ExchangeNames.dataReceived,
+                anyString(), anyString(), anyString(), anyString(), anyString(),
             ),
         ).thenThrow(
             AmqpException::class.java,
