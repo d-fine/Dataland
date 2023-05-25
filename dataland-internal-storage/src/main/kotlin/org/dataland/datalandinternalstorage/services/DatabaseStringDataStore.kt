@@ -45,7 +45,7 @@ class DatabaseStringDataStore(
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
      * storage_queue
-     * @param dataId the ID of the dataset to store
+     * @param payload the content of the message
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -66,13 +66,14 @@ class DatabaseStringDataStore(
         ],
     )
     fun persistentlyStoreDataAndSendMessage(
-        @Payload dataId: String,
+        @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DataReceived)
+        val dataId = messageUtils.extractValueFromMessagePayload(payload, "dataId")
         if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided document ID is empty")
+            throw MessageQueueRejectException("Provided document ID is empty.")
         }
         messageUtils.rejectMessageOnException {
             logger.info("Received DataID $dataId and CorrelationId: $correlationId")
@@ -80,7 +81,7 @@ class DatabaseStringDataStore(
             logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
             storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, MessageType.DataStored, correlationId, ExchangeNames.itemStored, RoutingKeyNames.data,
+                payload, MessageType.DataStored, correlationId, ExchangeNames.itemStored, RoutingKeyNames.data,
             )
         }
     }

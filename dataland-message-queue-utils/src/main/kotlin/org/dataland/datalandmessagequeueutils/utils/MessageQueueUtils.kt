@@ -2,6 +2,7 @@ package org.dataland.datalandmessagequeueutils.utils
 
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.springframework.stereotype.Component
+import org.json.JSONObject
 
 /**
  * MessageQueueUtils provides utility functions to be used with the processing of messages
@@ -32,5 +33,10 @@ class MessageQueueUtils {
                 "Message has type \"$messageType\" but type \"$expectedType\" was expected",
             )
         }
+    }
+
+    fun extractValueFromMessagePayload(message: String, key: String): String {
+        val content = JSONObject(message).toMap()
+        return content[key] as String
     }
 }
