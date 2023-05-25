@@ -5,7 +5,7 @@
     <TheContent class="paper-section flex">
       <div class="col-12 text-left pb-0">
         <BackButton />
-        <h1>"TEST"</h1>
+        <h1>"Quality Assurance"</h1>
       </div>
       <MiddleCenterDiv class="col-12">
         <div>
@@ -34,6 +34,7 @@ import Keycloak from "keycloak-js";
 import { DataTypeEnum, LksgData, SfdrData } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { QaControllerApi } from "@clients/qaservice";
 export default defineComponent({
   name: "QualityAssurance",
   components: { TheFooter, MiddleCenterDiv, BackButton, TheContent, TheHeader, AuthenticationWrapper, PrimeButton },
@@ -50,10 +51,28 @@ export default defineComponent({
     };
   },
   mounted() {
-    // void this.getDataID();
+    void this.getDataID();
   },
 
   methods: {
+    async getDataID() {
+      try {
+        this.waitingForData = true;
+        if (this.dataId != "loading") {
+          const qaServiceControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+          ).getQaControllerApi();
+          const response = await qaServiceControllerApi.getUnreviewedDatasets;
+          console.log(response);
+          // this.listToReview = response;
+          this.waitingForData = false;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      this.waitingForData = false;
+    },
+
     /**
      * Uses the dataland API to retrieve the companyId of the first teaser company and the dataId
      * of the eutaxonomy-non-financials framework of that company.
