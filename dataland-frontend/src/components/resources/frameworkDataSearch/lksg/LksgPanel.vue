@@ -7,7 +7,6 @@
     <LksgCompanyDataTable
       :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
       :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
-      tableDataTitle="LkSG Data"
     />
   </div>
 </template>
