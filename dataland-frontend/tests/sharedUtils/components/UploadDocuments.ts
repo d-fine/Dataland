@@ -1,12 +1,10 @@
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-
 export const uploadDocuments = {
-  selectFile(filename: string): void {
-    cy.get('button[data-test="upload-files-button"]').click();
+  selectFile(filename: string, fieldName = "undefined"): void {
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
   },
-  selectDummyFile(filename: string, contentSize: number): void {
-    cy.get('button[data-test="upload-files-button"]').click();
+  selectDummyFile(filename: string, contentSize: number, fieldName = "undefined"): void {
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get("input[type=file]").selectFile(
       {
         contents: new Cypress.Buffer(contentSize),
@@ -36,7 +34,7 @@ export const uploadDocuments = {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
   },
   removeReportToUpload(reportName: string): void {
-    cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
+    cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click({ force: true });
   },
   removeAllReportsToUpload(): void {
     cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));
@@ -56,23 +54,10 @@ export const uploadDocuments = {
   },
 
   selectDocumentAtEachFileSelector(filename: string): void {
-    const fieldsWithRequiredDocuments = lksgDataModel.flatMap((category) =>
-      category.subcategories.flatMap((subcategory) =>
-        subcategory.fields
-          .filter(
-            (field) =>
-              (field.component === "YesNoFormField" || field.component === "YesNoNaFormField") &&
-              field.certificateRequiredIfYes
-          )
-          .map((field) => field.name)
-      )
-    );
-    fieldsWithRequiredDocuments.forEach((field) => {
-      cy.get(`button[data-test="upload-files-button-${field}"]`)
-        .click()
-        .get("input[type=file]")
-        .first()
-        .selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
+    cy.window().then((win) => {
+      win.document.querySelectorAll<HTMLInputElement>('input[type="file"]').forEach((element) => {
+        cy.wrap(element).selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
+      });
     });
   },
 };

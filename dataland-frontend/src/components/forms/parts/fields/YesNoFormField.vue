@@ -19,7 +19,7 @@
         @input="setDocumentRequired($event)"
       />
       <UploadDocumentsForm
-        v-if="yesSelected"
+        v-show="yesSelected"
         @documentsChanged="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
         :name="name"
