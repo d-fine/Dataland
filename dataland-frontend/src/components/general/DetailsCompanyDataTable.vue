@@ -4,7 +4,7 @@
       v-for="col of columns"
       :field="col.field"
       :key="col.field"
-      :header="columnHeaders[tableType] ? columnHeaders[tableType][col.header] : undefined"
+      :header="columnHeaders[kpiKeyOfTable] ? columnHeaders[kpiKeyOfTable][col.header] : undefined"
       headerStyle="width: 15vw;"
     >
       <template #body="{ data }">
@@ -17,7 +17,7 @@
               {{ value }}
             </p>
           </div>
-          <span v-else>{{ humanizeStringIfNeccessary(col.field, data[col.field]) }}</span>
+          <span v-else>{{ humanizeStringIfNecessary(col.field, data[col.field]) }}</span>
         </template>
       </template>
     </Column>
@@ -40,7 +40,7 @@ export default defineComponent({
     return {
       listOfRowContents: [] as Array<object | string>,
       columnHeaders: detailsCompanyDataTableColumnHeaders,
-      tableType: "" as string,
+      kpiKeyOfTable: "" as string,
       columns: [] as { field: string; header: string }[],
     };
   },
@@ -48,11 +48,11 @@ export default defineComponent({
     const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
     const dialogRefData = dialogRefToDisplay.data as {
       listOfRowContents: Array<object | string>;
-      tableType: string;
+      kpiKeyOfTable: string;
     };
-    this.tableType = dialogRefData.tableType;
+    this.kpiKeyOfTable = dialogRefData.kpiKeyOfTable;
     if (typeof dialogRefData.listOfRowContents[0] === "string") {
-      this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.tableType]: o }));
+      this.listOfRowContents = dialogRefData.listOfRowContents.map((o) => ({ [this.kpiKeyOfTable]: o }));
     } else {
       this.listOfRowContents = dialogRefData.listOfRowContents;
     }
@@ -63,16 +63,14 @@ export default defineComponent({
      * should have.
      */
     generateColsNames(): void {
-      if (this.listOfRowContents.length && Array.isArray(this.listOfRowContents)) {
-        const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], rowContent) {
-          for (const key of Object.keys(rowContent)) {
-            if (keyList.indexOf(key) === -1) keyList.push(key);
-          }
-          return keyList;
-        }, []);
-        for (const key of presentKeys) {
-          this.columns.push({ field: `${key}`, header: `${key}` });
+      const presentKeys = this.listOfRowContents.reduce(function (keyList: string[], rowContent) {
+        for (const key of Object.keys(rowContent)) {
+          if (keyList.indexOf(key) === -1) keyList.push(key);
         }
+        return keyList;
+      }, []);
+      for (const key of presentKeys) {
+        this.columns.push({ field: `${key}`, header: `${key}` });
       }
     },
     /**
@@ -81,7 +79,7 @@ export default defineComponent({
      * @param value string to be possibly humanized
      * @returns a humanized input of the value parameter if the k
      */
-    humanizeStringIfNeccessary(key: string, value: string): string {
+    humanizeStringIfNecessary(key: string, value: string): string {
       const keysWithValuesToBeHumanized = ["isInHouseProductionOrIsContractProcessing"];
       if (keysWithValuesToBeHumanized.includes(key)) {
         return this.humanizeString(value);

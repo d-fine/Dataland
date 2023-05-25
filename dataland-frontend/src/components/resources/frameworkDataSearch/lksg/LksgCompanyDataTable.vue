@@ -144,7 +144,7 @@ export default defineComponent({
         },
         data: {
           listOfRowContents: listOfValues,
-          tableType: kpiKey,
+          kpiKeyOfTable: kpiKey,
         },
       });
     },
