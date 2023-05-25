@@ -299,7 +299,10 @@ describeIf(
       uploadDocuments.selectFile(reportName);
       cy.get(".p-dialog-content").should("not.exist");
       uploadDocuments.validateReportToUploadIsListed(reportName);
+      cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
       uploadDocuments.removeAllReportsToUpload();
+      cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
+
       uploadDocuments.reportIsNotListed(reportName);
     }
 
