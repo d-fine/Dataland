@@ -38,17 +38,17 @@ tasks.dependencyUpdates.configure {
 }
 
 dependencies {
-    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.22.0")
-    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.21")
+    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.23.0")
+    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.21")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 plugins {
-    id("com.github.jk1.dependency-license-report") version "2.1"
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
-    id("com.github.node-gradle.node") version "4.0.0" apply false
-    id("org.springframework.boot") version "3.0.6" apply false
+    id("com.github.jk1.dependency-license-report") version "2.3"
+    id("io.gitlab.arturbosch.detekt") version "1.23.0"
+    id("com.github.node-gradle.node") version "5.0.0" apply false
+    id("org.springframework.boot") version "3.1.0" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.3.2"
     kotlin("jvm") version "1.8.21"
     kotlin("plugin.spring") version "1.8.21" apply false
@@ -56,7 +56,7 @@ plugins {
     jacoco
     id("org.springdoc.openapi-gradle-plugin") version "1.6.0" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
-    id("org.openapi.generator") version "6.5.0" apply false
+    id("org.openapi.generator") version "6.6.0" apply false
     id("com.github.ben-manes.versions") version "0.46.0"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.8.21" apply false
     kotlin("plugin.serialization") version "1.8.21" apply false
