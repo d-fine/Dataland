@@ -1,27 +1,27 @@
 <template>
   <DataTable :value="listOfRowContents">
     <Column
-      v-for="col of columns"
-      :field="col"
-      :key="col"
+      v-for="keyOfColumn of keysOfValuesForColumnDisplay"
+      :field="keyOfColumn"
+      :key="keyOfColumn"
       :header="
         detailsCompanyDataTableColumnHeaders[kpiKeyOfTable]
-          ? detailsCompanyDataTableColumnHeaders[kpiKeyOfTable][col]
+          ? detailsCompanyDataTableColumnHeaders[kpiKeyOfTable][keyOfColumn]
           : humanizeString(kpiKeyOfTable)
       "
       headerStyle="width: 15vw;"
     >
       <template #body="{ data }">
-        <template v-if="data[col]">
-          <ul v-if="Array.isArray(data[col])">
-            <li :key="el" v-for="el in data[col]">{{ el }}</li>
+        <template v-if="data[keyOfColumn]">
+          <ul v-if="Array.isArray(data[keyOfColumn])">
+            <li :key="el" v-for="el in data[keyOfColumn]">{{ el }}</li>
           </ul>
-          <div v-else-if="typeof data[col] === 'object'">
-            <p :key="key" v-for="[key, value] in Object.entries(data[col])" style="margin: 0; padding: 0">
+          <div v-else-if="typeof data[keyOfColumn] === 'object'">
+            <p :key="key" v-for="[key, value] in Object.entries(data[keyOfColumn])" style="margin: 0; padding: 0">
               {{ value }}
             </p>
           </div>
-          <span v-else>{{ humanizeStringIfNecessary(col, data[col]) }}</span>
+          <span v-else>{{ humanizeStringIfNecessary(keyOfColumn, data[keyOfColumn]) }}</span>
         </template>
       </template>
     </Column>
@@ -45,7 +45,7 @@ export default defineComponent({
       listOfRowContents: [] as Array<object | string>,
       detailsCompanyDataTableColumnHeaders,
       kpiKeyOfTable: "" as string,
-      columns: [] as string[],
+      keysOfValuesForColumnDisplay: [] as string[],
       keysWithValuesToBeHumanized = ["isInHouseProductionOrIsContractProcessing"],
     };
   },
@@ -76,7 +76,7 @@ export default defineComponent({
         return keyList;
       }, []);
       for (const key of presentKeys) {
-        this.columns.push(key);
+        this.keysOfValuesForColumnDisplay.push(key);
       }
     },
     /**
