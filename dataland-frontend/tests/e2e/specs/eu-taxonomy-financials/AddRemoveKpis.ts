@@ -1,5 +1,6 @@
 import { EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
+import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import {
   fillEligibilityKpis,
@@ -21,18 +22,18 @@ describeIf(
     });
 
     let testData: FixtureData<EuTaxonomyDataForFinancials>;
+    const testCompany = generateDummyCompanyInformation("company-for-testing-kpi-sections");
 
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
-        testData = getPreparedFixture("company-for-testing-kpi-sections", preparedFixtures);
+        testData = getPreparedFixture("company-for-all-types", preparedFixtures);
       });
     });
 
     it("Check wether it is possible to add and delete KPIs and send the form successfully", () => {
-      testData.companyInformation.companyName = "company-for-testing-kpi-sections";
       uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
-        testData.companyInformation,
+        testCompany,
         testData.t,
         () => undefined,
         fillAndValidateEuTaxonomyForFinancialsUploadForm,
