@@ -281,19 +281,13 @@ describeIf(
     function checkThatFilesMustBeReferenced(): void {
       cy.get(`button[data-test="remove-${TEST_PDF_FILE_NAME}"]`).click();
       cy.get(".p-dialog-content").should("not.exist");
-      cy.get("input[type=file]").selectFile(
-        {
-          contents: `../${TEST_PDF_FILE_PATH}`,
-          fileName: "someOtherFileName" + ".pdf",
-        },
-        { force: true }
-      );
+      cy.get("input[type=file]").selectFile(`../testing/data/documents/test-report.pdf`, { force: true });
       uploadDocuments.fillAllReportsToUploadForms();
       cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
       cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "None...");
       cy.wait(100);
       cy.get('button[data-test="submitButton"]').click();
-      cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
+      cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "test-report");
     }
 
     /**
