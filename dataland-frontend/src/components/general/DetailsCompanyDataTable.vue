@@ -7,7 +7,7 @@
       :header="
         detailsCompanyDataTableColumnHeaders[kpiKeyOfTable]
           ? detailsCompanyDataTableColumnHeaders[kpiKeyOfTable][col]
-          : undefined
+          : humanizeString(kpiKeyOfTable)
       "
       headerStyle="width: 15vw;"
     >
@@ -46,6 +46,7 @@ export default defineComponent({
       detailsCompanyDataTableColumnHeaders,
       kpiKeyOfTable: "" as string,
       columns: [] as string[],
+      keysWithValuesToBeHumanized = ["isInHouseProductionOrIsContractProcessing"],
     };
   },
   mounted() {
@@ -85,13 +86,11 @@ export default defineComponent({
      * @returns a humanized input of the value parameter if the k
      */
     humanizeStringIfNecessary(key: string, value: string): string {
-      const keysWithValuesToBeHumanized = ["isInHouseProductionOrIsContractProcessing"];
-      if (keysWithValuesToBeHumanized.includes(key)) {
-        return this.humanizeString(value);
+      if (this.keysWithValuesToBeHumanized.includes(key)) {
+        return humanizeString(value);
       }
       return value;
     },
-    humanizeString,
   },
 });
 </script>
