@@ -7,6 +7,7 @@
         <BackButton />
         <h1>"Quality Assurance"</h1>
          <span>{{this.dataId}}</span>
+          <span>{{this.metaInformation}}</span>
       </div>
       <MiddleCenterDiv class="col-12">
         <div>
@@ -48,17 +49,18 @@ export default defineComponent({
         dataId: [] as Array<String>,
       waitingForData: true,
       dataSet: null | undefined,
+        metaInformation: String
     };
   },
     mounted() {
         void this.getDataId();
+        void this.getDataMetaInformation()
     },
 
   methods: {
     async getDataId() {
         try {
             this.waitingForData = true;
-           // if (this.companyId != "loading") {
                 const qaServiceControllerApi = await new ApiClientProvider(
                     assertDefined(this.getKeycloakPromise)()
                 ).getQaControllerApi();
@@ -66,7 +68,6 @@ export default defineComponent({
                 this.dataId = response.data
             console.log(this.dataId)
                 this.waitingForData = false;
-            //     }
         }
         catch(error)
             {
@@ -74,6 +75,20 @@ export default defineComponent({
             }
             this.waitingForData = false
     },
+      async getDataMetaInformation(){
+        try{
+            const metaDataInformationControllerApi = await new ApiClientProvider(
+                assertDefined(this.getKeycloakPromise)()
+            ).getMetaDataControllerApi();
+            this.dataId.forEach(async (dataId) => {
+            const response = await metaDataInformationControllerApi.getDataMetaInfo(dataId);
+            this.metaInformation = response.data
+            console.log(this.metaInformation)})
+        }
+        catch(error){
+            console.error(error);
+        }
+      },
     /**
      * Uses the dataland API to retrieve the companyId of the first teaser company and the dataId
      * of the eutaxonomy-non-financials framework of that company.
