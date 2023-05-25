@@ -8,6 +8,9 @@
           <h1>"Quality Assurance"</h1>
            <span>{{this.dataId}}</span>
             <span>{{this.metaInformation}}</span>
+          <div>
+            <pre id="dataset-container">{{ datasetAsJson }}</pre>
+          </div>
         </div>
         <MiddleCenterDiv class="col-12">
           <div>
@@ -55,11 +58,15 @@ export default defineComponent({
       KEYCLOAK_ROLE_REVIEWER,
     };
   },
-    mounted() {
-        void this.getDataId();
-        void this.getDataMetaInformation()
-    },
-
+  mounted() {
+      void this.getDataId();
+      void this.getDataMetaInformation()
+  },
+  computed: {
+    datasetAsJson(): string {
+      return JSON.stringify(this.dataSet, null, 2);
+    }
+  },
   methods: {
     async getDataId() {
         try {
@@ -171,3 +178,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+pre#dataset-container {
+    background: white;
+    padding: 20px;
+    border: 1px solid black;
+}
+</style>
