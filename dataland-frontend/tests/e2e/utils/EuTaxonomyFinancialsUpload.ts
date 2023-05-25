@@ -267,7 +267,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
           `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
         );
         beforeFormFill();
-        fillAndValidateEuTaxonomyForFinancialsUploadForm(testData);
+        formFillSteps(testData);
         afterFormFill();
         submitFilledInEuTaxonomyForm(submissionDataIntercept);
         afterDatasetSubmission(storedCompany.companyId);

@@ -88,7 +88,6 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
     }
   });
 
-  cy.get('[data-test="addKpisButton"]').click({ force: true });
   cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
   cy.get('[data-test="dataPointToggle"]')
@@ -99,8 +98,6 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
     .click();
 
   cy.get('[data-test="dataPointToggle"]').eq(1).find('[data-test="dataPointToggleButton"]').click();
-
-  cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
   fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
   fillField(
