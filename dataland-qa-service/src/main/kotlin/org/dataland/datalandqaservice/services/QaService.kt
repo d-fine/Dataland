@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -9,6 +10,8 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewStatusEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewStatusRepository
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -19,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 
 /**
  * Implementation of a QA Service reacting on the upload_queue and forwarding message to qa_queue
@@ -29,6 +34,7 @@ class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
+    @Autowired val datasetReviewStatusRepository: DatasetReviewStatusRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -54,7 +60,8 @@ class QaService(
             ),
         ],
     )
-    fun assureQualityOfData(
+    @Transactional
+    fun addDataToQueue(
         @Payload dataId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
@@ -67,12 +74,13 @@ class QaService(
             logger.info(
                 "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
             )
-            val message = objectMapper.writeValueAsString(
-                QaCompletedMessage(dataId, "By default, QA is passed"),
-            )
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
-                RoutingKeyNames.data,
+            datasetReviewStatusRepository.save(
+                DatasetReviewStatusEntity(
+                    dataId = dataId,
+                    correlationId = correlationId,
+                    qaStatus = QAStatus.Pending,
+                    receptionTime = Instant.now().toEpochMilli(),
+                ),
             )
         }
     }
@@ -113,7 +121,7 @@ class QaService(
                 "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
             )
             val message = objectMapper.writeValueAsString(
-                QaCompletedMessage(documentId, "By default, QA is passed"),
+                QaCompletedMessage(documentId, QAStatus.Accepted),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,

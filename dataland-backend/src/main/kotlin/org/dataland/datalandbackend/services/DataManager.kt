@@ -145,16 +145,17 @@ class DataManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QACompleted)
-        val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
+        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
+        val dataId = qaCompletedMessage.identifier
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         messageUtils.rejectMessageOnException {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            metaInformation.qaStatus = QAStatus.Accepted
+            metaInformation.qaStatus = qaCompletedMessage.validationResult
             metaDataManager.setActiveDataset(metaInformation)
             logger.info(
-                "Received quality assurance for data upload with DataId: " +
+                "Received quality assurance: ${qaCompletedMessage.validationResult} for data upload with DataId: " +
                     "$dataId with Correlation Id: $correlationId",
             )
         }

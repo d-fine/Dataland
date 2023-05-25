@@ -174,7 +174,7 @@ class DataManagerTest(
         val messageWithEmptyDataID = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 identifier = "",
-                validationResult = "By default, QA is passed",
+                validationResult = QAStatus.Accepted,
             ),
         )
         val thrown = assertThrows<MessageQueueRejectException> {

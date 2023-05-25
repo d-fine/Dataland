@@ -40,7 +40,7 @@ class QaServiceTest(
     fun `check an exception is thrown in reading out message from data stored queue when dataId is empty`() {
         val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            qaService.assureQualityOfData("", correlationId, MessageType.DataStored)
+            qaService.addDataToQueue("", correlationId, MessageType.DataStored)
         }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
@@ -62,7 +62,7 @@ class QaServiceTest(
             AmqpException::class.java,
         )
         assertThrows<AmqpException> {
-            qaService.assureQualityOfData(dataId, correlationId, MessageType.DataStored)
+            qaService.addDataToQueue(dataId, correlationId, MessageType.DataStored)
         }
     }
 

@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.servers.Server
         title = "Dataland QA Service API documentation",
         version = "1.0.0",
     ),
-    servers = [Server(url = "/documents")],
+    servers = [Server(url = "/qa")],
 )
 @SecurityScheme(
     name = "default-bearer-auth",
