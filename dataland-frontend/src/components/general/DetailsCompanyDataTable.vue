@@ -4,7 +4,11 @@
       v-for="col of columns"
       :field="col"
       :key="col"
-      :header="columnHeaders[kpiKeyOfTable] ? columnHeaders[kpiKeyOfTable][col] : undefined"
+      :header="
+        detailsCompanyDataTableColumnHeaders[kpiKeyOfTable]
+          ? detailsCompanyDataTableColumnHeaders[kpiKeyOfTable][col]
+          : undefined
+      "
       headerStyle="width: 15vw;"
     >
       <template #body="{ data }">
@@ -39,7 +43,7 @@ export default defineComponent({
   data() {
     return {
       listOfRowContents: [] as Array<object | string>,
-      columnHeaders: detailsCompanyDataTableColumnHeaders,
+      detailsCompanyDataTableColumnHeaders,
       kpiKeyOfTable: "" as string,
       columns: [] as string[],
     };
@@ -56,6 +60,7 @@ export default defineComponent({
     } else {
       this.listOfRowContents = dialogRefData.listOfRowContents;
     }
+    this.generateColsNames();
   },
   methods: {
     /**
@@ -87,11 +92,6 @@ export default defineComponent({
       return value;
     },
     humanizeString,
-  },
-  watch: {
-    listOfRowContents() {
-      this.generateColsNames();
-    },
   },
 });
 </script>
