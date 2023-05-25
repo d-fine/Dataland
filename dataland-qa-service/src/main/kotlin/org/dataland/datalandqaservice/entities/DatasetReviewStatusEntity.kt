@@ -17,5 +17,4 @@ data class DatasetReviewStatusEntity(
     var qaStatus: QAStatus,
     val receptionTime: Long,
     val reviewerKeycloakId: String? = null,
-) {
-}
+)
