@@ -46,7 +46,8 @@ export default defineComponent({
       detailsCompanyDataTableColumnHeaders,
       kpiKeyOfTable: "" as string,
       keysOfValuesForColumnDisplay: [] as string[],
-      keysWithValuesToBeHumanized = ["isInHouseProductionOrIsContractProcessing"],
+      keysWithValuesToBeHumanized: ["isInHouseProductionOrIsContractProcessing"] as string[],
+      humanizeString,
     };
   },
   mounted() {
