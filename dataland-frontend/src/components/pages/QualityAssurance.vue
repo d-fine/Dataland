@@ -6,10 +6,11 @@
       <div class="col-12 text-left pb-0">
         <BackButton />
         <h1>"Quality Assurance"</h1>
+         <span>{{this.dataId}}</span>
       </div>
       <MiddleCenterDiv class="col-12">
         <div>
-          <PrimeButton label="Accept Dataset" />
+          <PrimeButton @click="getDataId" label="Accept Dataset" />
         </div>
         <div>
           <PrimeButton label="Reject Dataset" />
@@ -31,10 +32,9 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { DataTypeEnum, LksgData, SfdrData } from "@clients/backend";
+import {DataAndMetaInformationLksgData, DataTypeEnum, LksgData, SfdrData} from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { QaControllerApi } from "@clients/qaservice";
 export default defineComponent({
   name: "QualityAssurance",
   components: { TheFooter, MiddleCenterDiv, BackButton, TheContent, TheHeader, AuthenticationWrapper, PrimeButton },
@@ -45,34 +45,35 @@ export default defineComponent({
   },
   data() {
     return {
-      dataId: "loading",
+        dataId: [] as Array<String>,
       waitingForData: true,
       dataSet: null | undefined,
     };
   },
-  mounted() {
-    void this.getDataID();
-  },
-
-  methods: {
-    async getDataID() {
-      try {
-        this.waitingForData = true;
-        if (this.dataId != "loading") {
-          const qaServiceControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
-          ).getQaControllerApi();
-          const response = await qaServiceControllerApi.getUnreviewedDatasets;
-          console.log(response);
-          // this.listToReview = response;
-          this.waitingForData = false;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      this.waitingForData = false;
+    mounted() {
+        void this.getDataId();
     },
 
+  methods: {
+    async getDataId() {
+        try {
+            this.waitingForData = true;
+           // if (this.companyId != "loading") {
+                const qaServiceControllerApi = await new ApiClientProvider(
+                    assertDefined(this.getKeycloakPromise)()
+                ).getQaControllerApi();
+                const response = await qaServiceControllerApi.getUnreviewedDatasets();
+                this.dataId = response.data
+            console.log(this.dataId)
+                this.waitingForData = false;
+            //     }
+        }
+        catch(error)
+            {
+                console.error(error);
+            }
+            this.waitingForData = false
+    },
     /**
      * Uses the dataland API to retrieve the companyId of the first teaser company and the dataId
      * of the eutaxonomy-non-financials framework of that company.
