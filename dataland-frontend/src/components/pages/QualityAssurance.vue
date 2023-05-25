@@ -1,24 +1,24 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-
-    <TheContent class="paper-section flex">
-      <div class="col-12 text-left pb-0">
-        <BackButton />
-        <h1>"Quality Assurance"</h1>
-         <span>{{this.dataId}}</span>
-          <span>{{this.metaInformation}}</span>
-      </div>
-      <MiddleCenterDiv class="col-12">
-        <div>
-          <PrimeButton @click="getDataId" label="Accept Dataset" />
+    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
+      <TheContent class="paper-section flex">
+        <div class="col-12 text-left pb-0">
+          <BackButton />
+          <h1>"Quality Assurance"</h1>
+           <span>{{this.dataId}}</span>
+            <span>{{this.metaInformation}}</span>
         </div>
-        <div>
-          <PrimeButton label="Reject Dataset" />
-        </div>
-      </MiddleCenterDiv>
-    </TheContent>
-
+        <MiddleCenterDiv class="col-12">
+          <div>
+            <PrimeButton @click="getDataId" label="Accept Dataset" />
+          </div>
+          <div>
+            <PrimeButton label="Reject Dataset" />
+          </div>
+        </MiddleCenterDiv>
+      </TheContent>
+    </AuthorizationWrapper>
     <TheFooter />
   </AuthenticationWrapper>
 </template>
@@ -36,9 +36,11 @@ import Keycloak from "keycloak-js";
 import {DataAndMetaInformationLksgData, DataTypeEnum, LksgData, SfdrData} from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
+import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 export default defineComponent({
   name: "QualityAssurance",
-  components: { TheFooter, MiddleCenterDiv, BackButton, TheContent, TheHeader, AuthenticationWrapper, PrimeButton },
+  components: { AuthorizationWrapper, TheFooter, MiddleCenterDiv, BackButton, TheContent, TheHeader, AuthenticationWrapper, PrimeButton },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -46,10 +48,11 @@ export default defineComponent({
   },
   data() {
     return {
-        dataId: [] as Array<String>,
+      dataId: [] as Array<String>,
       waitingForData: true,
       dataSet: null | undefined,
-        metaInformation: String
+      metaInformation: String,
+      KEYCLOAK_ROLE_REVIEWER,
     };
   },
     mounted() {
