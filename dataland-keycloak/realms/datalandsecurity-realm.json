@@ -569,6 +569,7 @@
     "requiredActions" : [ ],
     "realmRoles" : [
       "ROLE_UPLOADER",
+      "ROLE_REVIEWER",
       "default-roles-datalandsecurity"
     ],
     "notBefore" : 0,
