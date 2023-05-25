@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.spring.cloud.function.context)
     implementation("org.springframework.amqp:spring-amqp")
     implementation(project(":dataland-backend-utils"))
+    implementation("org.json:json:20230227")
 }
 
 tasks.bootJar {

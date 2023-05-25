@@ -48,7 +48,6 @@ dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-message-queue-utils"))
     implementation("com.squareup.okhttp3:okhttp")
-    implementation("org.json:json:20230227")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

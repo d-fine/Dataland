@@ -40,7 +40,7 @@ class QaService(
 
     /**
      * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
-     * @param dataId the ID of the dataset to be QAed
+     * @param payload the content of the message
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -62,12 +62,12 @@ class QaService(
     )
     @Transactional
     fun addDataToQueue(
-        @Payload content: String,
+        @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        val dataId = messageUtils.extractValueFromMessagePayload(content, "dataId")
-        val bypassQa = messageUtils.extractValueFromMessagePayload(content, "bypassQa")?.toBoolean() ?: false
+        val dataId = messageUtils.extractValueFromMessagePayload(payload, "dataId")
+        val bypassQa = messageUtils.extractValueFromMessagePayload(payload, "bypassQa").toBoolean()
         messageUtils.validateMessageType(type, MessageType.DataStored)
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")

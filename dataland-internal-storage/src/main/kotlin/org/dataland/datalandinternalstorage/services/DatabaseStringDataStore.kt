@@ -1,8 +1,6 @@
 package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.util.JSONPObject
-import netscape.javascript.JSObject
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
@@ -26,7 +24,6 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import org.json.JSONObject
 
 /**
  * Simple implementation of a data store using a postgres database
@@ -48,7 +45,7 @@ class DatabaseStringDataStore(
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
      * storage_queue
-     * @param dataId the ID of the dataset to store
+     * @param payload the content of the message
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -74,10 +71,9 @@ class DatabaseStringDataStore(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DataReceived)
-        val content = JSONObject(payload).toMap()
-        val dataId = content["dataId"] as String
+        val dataId = messageUtils.extractValueFromMessagePayload(payload, "dataId")
         if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided document ID is empty")
+            throw MessageQueueRejectException("Provided document ID is empty.")
         }
         messageUtils.rejectMessageOnException {
             logger.info("Received DataID $dataId and CorrelationId: $correlationId")
