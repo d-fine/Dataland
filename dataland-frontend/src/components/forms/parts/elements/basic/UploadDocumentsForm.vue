@@ -9,6 +9,7 @@
       invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
       :auto="false"
       @select="handleFilesSelected"
+      :file-names-for-prefill="fileNamesForPrefill"
     >
       <template #header="{ files, chooseCallback }">
         <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
@@ -95,6 +96,19 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    fileNamesForPrefill: {
+      type: Array,
+      default: undefined,
+    },
+  },
+  watch: {
+    fileNamesForPrefill: {
+      handler() {
+        console.log(this.fileNamesForPrefill);
+        this.prefillFileUpload();
+      },
+      deep: true,
+    },
   },
 
   methods: {
@@ -130,7 +144,7 @@ export default defineComponent({
      * @param deleteCount the number of files to delete
      */
     removeDocumentFromDocumentsToUpload(indexOfFileToRemove: number, deleteCount = 1) {
-      (this.$refs.fileUpload.remove as (index: number) => void)(indexOfFileToRemove);
+      ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
       this.documentsToUpload.splice(indexOfFileToRemove, deleteCount);
       this.emitDocumentsChangedEvent();
     },
@@ -139,7 +153,7 @@ export default defineComponent({
      * removes all documents at once, is invoked by a yes no field if it is resetted to "No"
      */
     removeAllDocuments() {
-      this.$refs.fileUpload.files = [];
+      (this.$refs.fileUpload as FileUpload).files = [];
       this.documentsToUpload = [];
       this.emitDocumentsChangedEvent();
     },
@@ -148,23 +162,16 @@ export default defineComponent({
      * Prefills the File upload with dummy files to get the file upload to display filenames of files that are already
      * referenced in a dataset (in the case of editing a dataset). These dummy files do not get picked up in the upload
      * process because they do not trigger a FileUploadSelectEvent.
-     * @param fileNames the names that should be display by the fileUpload
      */
-    prefillFileUpload(fileNames: string[]) {
-      fileNames.forEach((name) => {
-        const dummyFile = new File([] as BlobPart[], name);
-        this.$refs.fileUpload.files.push(dummyFile);
-      });
+    prefillFileUpload() {
+      if (this.fileNamesForPrefill) {
+        this.fileNamesForPrefill.forEach((name) => {
+          const dummyFile = new File([] as BlobPart[], name);
+
+          ((this.$refs.fileUpload as FileUpload).files as File[]).push(dummyFile);
+        });
+      }
     },
   },
 });
 </script>
-
-<style scoped>
-.p-button-edit-reports {
-  width: 1rem;
-  border-radius: 50%;
-  height: 1rem;
-  padding: 12px;
-}
-</style>

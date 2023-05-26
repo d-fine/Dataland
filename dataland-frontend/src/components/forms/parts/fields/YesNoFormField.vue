@@ -24,6 +24,7 @@
         ref="uploadDocumentsForm"
         :name="name"
         :more-than-one-document-allowed="false"
+        :file-names-for-prefill="fileNamesForPrefill"
       />
       <FormKit v-if="yesSelected" type="group" name="dataSource">
         <FormKit type="hidden" name="name" v-model="documentName" />
@@ -76,10 +77,14 @@ export default defineComponent({
       referencedDocument: {} as DocumentToUpload,
       documentName: "",
       documentReference: "",
+      fileNamesForPrefill: [] as string[],
     };
   },
 
   emits: ["documentUpdated"],
+  mounted() {
+    this.updateFileUploadFiles();
+  },
   watch: {
     yesSelected() {
       this.deleteDocument();
@@ -124,7 +129,7 @@ export default defineComponent({
      */
     updateFileUploadFiles() {
       if (this.documentName !== "" && Object.keys(this.referencedDocument).length == 0) {
-        this.$refs.uploadDocumentsForm.prefillFileUpload([this.documentName]);
+        this.fileNamesForPrefill.push(this.documentName);
       }
     },
   },
