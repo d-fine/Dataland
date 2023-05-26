@@ -17,7 +17,7 @@
             class="material-icons close-section"
             >close</em
           >
-          <ProductionSiteFormElement />
+          <ProductionSiteFormElement :id="id.toString()" />
         </div>
       </FormKit>
       <PrimeButton

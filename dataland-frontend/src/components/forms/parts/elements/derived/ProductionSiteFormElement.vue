@@ -10,6 +10,7 @@
 
   <div class="form-field">
     <AddressFormField
+      :data-test="`AddressFormField${id}`"
       name="addressOfProductionSite"
       description="Please state the address of the production site."
       label="Production Site Address"
@@ -83,6 +84,12 @@ export default defineComponent({
       listOfGoodsOrServicesString: "",
       listOfGoodsOrServices: [] as string[],
     };
+  },
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
   },
   methods: {
     /**

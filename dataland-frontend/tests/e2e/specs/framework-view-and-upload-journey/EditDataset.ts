@@ -39,6 +39,13 @@ describeIf(
           cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
           cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
           cy.get("div").contains("New Dataset - LkSG").should("be.visible");
+          cy.get('[data-test="productionSites"]').check("Yes");
+          cy.get('[data-test="listOfProductionSites"]').should("be.visible");
+          const productionSites = preparedFixture.t.general?.productionSpecific?.listOfProductionSites;
+          if (productionSites && productionSites.length > 0) {
+            const expectedCountry = productionSites[0].addressOfProductionSite?.country;
+            cy.get('[data-test="AddressFormField0"][data-test="country"] select').should("contain", expectedCountry);
+          }
           submitButton.buttonIsUpdateDataButton();
           submitButton.buttonAppearsEnabled();
           checkStickynessOfSubmitSideBar();

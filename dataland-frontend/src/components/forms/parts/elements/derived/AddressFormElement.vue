@@ -15,6 +15,7 @@
         :validation="required"
         placeholder="Country"
         :options="allCountry"
+        data-test="country"
       />
       <FormKit type="text" name="city" validation-label="City" :validation="required" placeholder="City" />
       <FormKit

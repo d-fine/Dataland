@@ -91,7 +91,7 @@ function recursivelySelectYesOnAllFields(maxCounter: number): void {
 }
 
 /**
- * Uses the native browser window to sleect yes on all checkbox fields
+ * Uses the native browser window to select yes on all checkbox fields
  * @param win the native browser window to use
  * @returns whether a new checkbox has been checked
  */
