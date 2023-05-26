@@ -15,7 +15,7 @@ services:
       - external
       - internal
     ports:
-      - "80:80"
+      # - "80:80"
       - "443:443"
     volumes:
       - letsencrypt:/etc/letsencrypt
@@ -55,7 +55,7 @@ services:
       - api-key-manager-db
     image: ${API_KEY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_api_key_manager_test:${DATALAND_API_KEY_MANAGER_TEST_VERSION}}
     expose:
-      - "8080"
+      - "443443"
     depends_on:
       - api-key-manager-db
     environment:
@@ -86,7 +86,7 @@ services:
       - document-manager-db
     image: ${DOCUMENT_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_document_manager_test:${DATALAND_DOCUMENT_MANAGER_TEST_VERSION}}
     expose:
-      - "8080"
+      - "443443"
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       RABBITMQ_USER: ${RABBITMQ_USER}
@@ -117,7 +117,7 @@ services:
       - backend-db
     image: ${BACKEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_backend_test:${DATALAND_BACKEND_TEST_VERSION}}
     expose:
-      - "8080"
+      - "443443"
     depends_on:
       - backend-db
     environment:
@@ -252,7 +252,7 @@ services:
     image: ghcr.io/d-fine/dataland/dataland_keycloak:${DATALAND_KEYCLOAK_VERSION}
     command: ${KEYCLOAK_START_COMMAND:-start}
     expose:
-      - "8080"
+      - "443443"
     environment:
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
@@ -289,7 +289,7 @@ services:
       MAILJET_API_SECRET: ${MAILJET_API_SECRET}
       MAILJET_API_ID: ${MAILJET_API_ID}
     expose:
-      - "8080"
+      - "443443"
     depends_on:
       keycloak-db:
         condition: service_healthy
@@ -343,7 +343,7 @@ services:
     networks:
       - internal
     expose:
-      - "8080"
+      - "443443"
     environment:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS: ${RABBITMQ_PASS}
