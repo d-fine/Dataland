@@ -42,10 +42,7 @@ describeIf(
           cy.get('[data-test="productionSites"] input[type="radio"][value="Yes"]').click();
           const expectedCountry = preparedFixture.t.general?.productionSpecific?.listOfProductionSites?.[0]
             ?.addressOfProductionSite?.country as string;
-          cy.get('[data-test="AddressFormField0"] [data-test="country"] select').should(
-            "contain",
-            `(${expectedCountry})`
-          );
+          cy.get('[data-test="AddressFormField0"] [data-test="country"]').should("contain", `(${expectedCountry})`);
           submitButton.buttonIsUpdateDataButton();
           submitButton.buttonAppearsEnabled();
           checkStickynessOfSubmitSideBar();
