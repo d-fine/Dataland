@@ -1,4 +1,4 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
+package org.dataland.datalandqaservice.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -8,9 +8,9 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.QaApi
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewStatusEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewStatusRepository
+import org.dataland.datalandqaservice.api.QaApi
+import org.dataland.datalandqaservice.entities.DatasetReviewStatusEntity
+import org.dataland.datalandqaservice.repositories.DatasetReviewStatusRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

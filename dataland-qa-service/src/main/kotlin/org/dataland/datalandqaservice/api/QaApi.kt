@@ -1,4 +1,4 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.api
+package org.dataland.datalandqaservice.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse

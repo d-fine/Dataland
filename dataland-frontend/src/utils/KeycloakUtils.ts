@@ -32,8 +32,8 @@ export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
 /**
  * Derives the roles from the resolved Keycloak-promise of a logged in user
  * and checks if the provided role is included.
- * @param keycloakPromiseGetter the getter-function which returns a Keycloak-promise
  * @param keycloakRole the keycloak user role to test for
+ * @param keycloakPromiseGetter the getter-function which returns a Keycloak-promise
  * @returns a promise, which resolves to a boolean
  */
 export async function checkIfUserHasRole(

@@ -1,4 +1,4 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
+package org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id

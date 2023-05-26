@@ -1,6 +1,6 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories
+package org.dataland.datalandqaservice.repositories
 
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewStatusEntity
+import org.dataland.datalandqaservice.entities.DatasetReviewStatusEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
