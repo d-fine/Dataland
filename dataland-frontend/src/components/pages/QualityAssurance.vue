@@ -46,10 +46,10 @@
         </div>
         <MiddleCenterDiv class="col-12">
           <div>
-            <PrimeButton label="Accept Dataset" />
+            <PrimeButton @click="setQualityStatusToApproved" label="Accept Dataset" />
           </div>
           <div>
-            <PrimeButton label="Reject Dataset" />
+            <PrimeButton @click="setQualityStatusToRejected" label="Reject Dataset" />
           </div>
         </MiddleCenterDiv>
       </TheContent>
@@ -120,12 +120,13 @@ export default defineComponent({
     },
   },
   methods: {
-      //TODO Make table not sortable
-      //TODO Maybe only the first entry of the table should be clickable
-      //TODO Buttons need to get functions
-      /**
-       * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
-       */
+    //TODO Make table not sortable
+    //TODO Maybe only the first entry of the table should be clickable
+    //TODO Buttons need to get functions, also should be disabled before a dataset is selected
+    //TODO List of data Ids should be refreshed once a decision was made
+    /**
+     * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
+     */
     async getQaData() {
       try {
         const qaServiceControllerApi = await new ApiClientProvider(
@@ -150,9 +151,6 @@ export default defineComponent({
             companyInformation: this.companyInformation,
           });
         }
-
-        console.log(this.resultData);
-        console.log(this.resultData[0]);
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -218,6 +216,28 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
+    },
+      /**
+       * Sets dataset to accepted
+       * @param event
+       * @param event.data
+       */
+    async setQualityStatusToApproved(event: { data: QaDataObject }) {
+      const qaServiceControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getQaControllerApi();
+      await qaServiceControllerApi.assignQualityStatus(event.data.dataId, "Accepted");
+    },
+      /**
+       * Sets dataset to rejected
+       * @param event
+       * @param event.data
+       */
+    async setQualityStatusToRejected(event: { data: QaDataObject }) {
+      const qaServiceControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getQaControllerApi();
+      await qaServiceControllerApi.assignQualityStatus(event.data.dataId, "Rejected");
     },
   },
 });
