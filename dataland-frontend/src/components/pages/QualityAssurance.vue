@@ -9,23 +9,22 @@
           <div v-if="!waitingForData">
             <div class="card">
               <DataTable :value="resultData" class="table-cursor" id="qa-data-result" @row-click="getDataSet">
-                <Column field="companyInformation.sector" header="DATA ID" class="d-bg-white w-2">
+                <Column header="DATA ID" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.dataId }}
                   </template>
                 </Column>
-                <Column field="companyInformation.sector" header="COMPANY NAME" class="d-bg-white w-2">
+                <Column header="COMPANY NAME" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.companyInformation.companyName }}
                   </template>
                 </Column>
-                <Column field="companyInformation.sector" header="FRAMEWORK" class="d-bg-white w-2">
+                <Column header="FRAMEWORK" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.metaInformation.dataType }}
                   </template>
                 </Column>
                 <Column
-                  field="companyInformation.headquarters"
                   header="REPORTING PERIOD"
                   class="d-bg-white w-2"
                 >
@@ -33,6 +32,7 @@
                     {{ data.metaInformation.reportingPeriod }}
                   </template>
                 </Column>
+
               </DataTable>
             </div>
           </div>
@@ -122,6 +122,7 @@ export default defineComponent({
     //TODO Maybe only the first entry of the table should be clickable
     //TODO Buttons need to get functions, also should be disabled before a dataset is selected
     //TODO List of data Ids should be refreshed once a decision was made
+      //TODO Clean up code
     /**
      * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
      */
@@ -235,6 +236,7 @@ export default defineComponent({
       const qaServiceControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
       ).getQaControllerApi();
+      console.log("hierhierheirhier")
       console.log(event.data.dataId);
       await qaServiceControllerApi.assignQualityStatus(event.data.dataId, "Rejected");
     },
