@@ -66,7 +66,7 @@ export function uploadCompanyAndLksgDataViaApi(
 function fillSingleProductionSite(): void {
   cy.get('input[name="nameOfProductionSite"]').type("CCddEE");
   cy.get('input[name="streetAndHouseNumber"]').type("Live-street 28");
-  cy.get('select[name="country"]').select("Belgium");
+  cy.get('select[name="country"]').select("Belgium (BE)");
   cy.get('input[name="city"]').type("Capitol City");
   cy.get('input[name="postalCode"]').type("WE-3133");
   cy.get('input[data-test="listOfGoodsOrServices"]').type("1,2,3");
