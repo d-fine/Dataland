@@ -68,7 +68,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { CompanyInformation, DataMetaInformation, DataTypeEnum, LksgData, SfdrData } from "@clients/backend";
+import { CompanyInformation, DataMetaInformation, DataTypeEnum,} from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
@@ -196,8 +196,8 @@ export default defineComponent({
             const lksgDataControllerApi = await new ApiClientProvider(
               assertDefined(this.getKeycloakPromise)()
             ).getLksgDataControllerApi();
-            const singleLksgData = (await lksgDataControllerApi.getCompanyAssociatedLksgData(dataId).data
-              .data) as LksgData;
+            const singleLksgData = await lksgDataControllerApi.getCompanyAssociatedLksgData(assertDefined(dataId));
+            this.dataSet = singleLksgData.data.data;
           } catch (error) {
             console.error(error);
           }
@@ -207,8 +207,8 @@ export default defineComponent({
               assertDefined(this.getKeycloakPromise)()
             ).getSfdrDataControllerApi();
 
-            const singleSfdrData = (await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId)).data
-              .data as SfdrData;
+            const singleSfdrData = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
+            this.dataSet = singleSfdrData.data.data;
           } catch (error) {
             console.error(error);
           }
@@ -217,26 +217,27 @@ export default defineComponent({
         console.error(error);
       }
     },
-      /**
-       * Sets dataset to accepted
-       * @param event
-       * @param event.data
-       */
+    /**
+     * Sets dataset to accepted
+     * @param event
+     * @param event.data
+     */
     async setQualityStatusToApproved(event: { data: QaDataObject }) {
       const qaServiceControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
       ).getQaControllerApi();
       await qaServiceControllerApi.assignQualityStatus(event.data.dataId, "Accepted");
     },
-      /**
-       * Sets dataset to rejected
-       * @param event
-       * @param event.data
-       */
+    /**
+     * Sets dataset to rejected
+     * @param event
+     * @param event.data
+     */
     async setQualityStatusToRejected(event: { data: QaDataObject }) {
       const qaServiceControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
       ).getQaControllerApi();
+      console.log(event.data.dataId);
       await qaServiceControllerApi.assignQualityStatus(event.data.dataId, "Rejected");
     },
   },
