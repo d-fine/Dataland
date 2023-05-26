@@ -1,6 +1,8 @@
 package org.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.transaction.Transactional
+import org.dataland.datalandbackendutils.model.QAStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -8,7 +10,9 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.DatalandQaService
+import org.dataland.datalandqaservice.repositories.DatasetReviewStatusRepository
 import org.dataland.datalandqaservice.services.QaService
+import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -18,12 +22,19 @@ import org.mockito.Mockito.`when`
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.ComponentScan
 
+@ComponentScan(basePackages = ["org.dataland"])
+@Transactional
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest(classes = [DatalandQaService::class])
 class QaServiceTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
+    @Autowired val testDatasetReviewStatusRepository: DatasetReviewStatusRepository,
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var qaService: QaService
@@ -33,14 +44,15 @@ class QaServiceTest(
     @BeforeEach
     fun resetMocks() {
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-        qaService = QaService(mockCloudEventMessageHandler, objectMapper, messageUtils)
+        qaService = QaService(mockCloudEventMessageHandler, objectMapper, messageUtils, testDatasetReviewStatusRepository)
     }
 
     @Test
     fun `check an exception is thrown in reading out message from data stored queue when dataId is empty`() {
         val correlationId = "correlationId"
+        val dummyPayload = JSONObject(mapOf("dataId" to "", "bypassQa" to true.toString())).toString()
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            qaService.addDataToQueue("", correlationId, MessageType.DataStored)
+            qaService.addDataToQueue(dummyPayload, correlationId, MessageType.DataStored)
         }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
@@ -51,7 +63,7 @@ class QaServiceTest(
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 identifier = dataId,
-                validationResult = "By default, QA is passed",
+                validationResult = QAStatus.Accepted,
             ),
         )
         `when`(
@@ -61,8 +73,9 @@ class QaServiceTest(
         ).thenThrow(
             AmqpException::class.java,
         )
+        val dummyPayload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to true.toString())).toString()
         assertThrows<AmqpException> {
-            qaService.addDataToQueue(dataId, correlationId, MessageType.DataStored)
+            qaService.addDataToQueue(dummyPayload, correlationId, MessageType.DataStored)
         }
     }
 

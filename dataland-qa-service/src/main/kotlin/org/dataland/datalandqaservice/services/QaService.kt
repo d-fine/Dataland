@@ -10,8 +10,8 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetReviewStatusEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetReviewStatusRepository
+import org.dataland.datalandqaservice.entities.DatasetReviewStatusEntity
+import org.dataland.datalandqaservice.repositories.DatasetReviewStatusRepository
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
