@@ -9,17 +9,17 @@
           <div v-if="!waitingForData">
             <div class="card">
               <DataTable :value="resultData" class="table-cursor" id="qa-data-result" @row-click="getDataSet">
-                <Column field="companyInformation.sector" header="DATA ID" :sortable="true" class="d-bg-white w-2">
+                <Column field="companyInformation.sector" header="DATA ID" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.dataId }}
                   </template>
                 </Column>
-                <Column field="companyInformation.sector" header="COMPANY NAME" :sortable="true" class="d-bg-white w-2">
+                <Column field="companyInformation.sector" header="COMPANY NAME" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.companyInformation.companyName }}
                   </template>
                 </Column>
-                <Column field="companyInformation.sector" header="FRAMEWORK" :sortable="true" class="d-bg-white w-2">
+                <Column field="companyInformation.sector" header="FRAMEWORK" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.metaInformation.dataType }}
                   </template>
@@ -27,7 +27,6 @@
                 <Column
                   field="companyInformation.headquarters"
                   header="REPORTING PERIOD"
-                  :sortable="true"
                   class="d-bg-white w-2"
                 >
                   <template #body="{ data }">
@@ -120,7 +119,6 @@ export default defineComponent({
     },
   },
   methods: {
-    //TODO Make table not sortable
     //TODO Maybe only the first entry of the table should be clickable
     //TODO Buttons need to get functions, also should be disabled before a dataset is selected
     //TODO List of data Ids should be refreshed once a decision was made
