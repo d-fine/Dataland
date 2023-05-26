@@ -6,15 +6,23 @@
         <div class="col-12 text-left pb-0">
           <BackButton />
           <h1>"Quality Assurance"</h1>
-           <span>{{this.dataId}}</span>
-            <span>{{this.metaInformation}}</span>
+           <div v-if ="!waitingForData" >
+            <span>{{this.dataId}}</span>
+            <span>{{this.metaInformation.dataType}}</span>
+            <span>{{this.metaInformation.reportingPeriod}}</span>
+            <span>{{this.metaInformation.uploadTime}}</span>
+               <span>{{this.companyInformation.companyName}}</span>
+           </div>
+            <div v-else-if ="waitingForData">
+                <span>loading</span>
+            </div>
           <div>
             <pre id="dataset-container">{{ datasetAsJson }}</pre>
           </div>
         </div>
         <MiddleCenterDiv class="col-12">
           <div>
-            <PrimeButton @click="getDataId" label="Accept Dataset" />
+            <PrimeButton @click="getCompanyInformation" label="Accept Dataset" />
           </div>
           <div>
             <PrimeButton label="Reject Dataset" />
@@ -36,7 +44,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import {DataAndMetaInformationLksgData, DataTypeEnum, LksgData, SfdrData} from "@clients/backend";
+import {CompanyInformation, DataMetaInformation, DataTypeEnum, LksgData, SfdrData} from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
@@ -54,13 +62,15 @@ export default defineComponent({
       dataId: [] as Array<String>,
       waitingForData: true,
       dataSet: null | undefined,
-      metaInformation: String,
       KEYCLOAK_ROLE_REVIEWER,
+        metaInformation: null as DataMetaInformation,
+        companyInformation: null as CompanyInformation | null,
     };
   },
-  mounted() {
-      void this.getDataId();
-      void this.getDataMetaInformation()
+  async mounted() {
+      await this.getDataId();
+      await this.getDataMetaInformation()
+      await this.getCompanyInformation();
   },
   computed: {
     datasetAsJson(): string {
@@ -68,42 +78,54 @@ export default defineComponent({
     }
   },
   methods: {
-    async getDataId() {
-        try {
-            this.waitingForData = true;
-                const qaServiceControllerApi = await new ApiClientProvider(
-                    assertDefined(this.getKeycloakPromise)()
-                ).getQaControllerApi();
-                const response = await qaServiceControllerApi.getUnreviewedDatasets();
-                this.dataId = response.data
-            console.log(this.dataId)
-                this.waitingForData = false;
-        }
-        catch(error)
-            {
-                console.error(error);
-            }
-            this.waitingForData = false
-    },
-      async getDataMetaInformation(){
-        try{
-            const metaDataInformationControllerApi = await new ApiClientProvider(
-                assertDefined(this.getKeycloakPromise)()
-            ).getMetaDataControllerApi();
-            this.dataId.forEach(async (dataId) => {
-            const response = await metaDataInformationControllerApi.getDataMetaInfo(dataId);
-            this.metaInformation = response.data
-            console.log(this.metaInformation)})
-        }
-        catch(error){
-            console.error(error);
-        }
+      async getDataId() {
+          try {
+
+              const qaServiceControllerApi = await new ApiClientProvider(
+                  assertDefined(this.getKeycloakPromise)()
+              ).getQaControllerApi();
+              const response = await qaServiceControllerApi.getUnreviewedDatasets();
+              this.dataId = response.data
+          } catch (error) {
+              console.error(error);
+          }
+
       },
-    /**
-     * Uses the dataland API to retrieve the companyId of the first teaser company and the dataId
-     * of the eutaxonomy-non-financials framework of that company.
-     */
-    async getDataSet() {
+      async getDataMetaInformation() {
+          try {
+              const metaDataInformationControllerApi = await new ApiClientProvider(
+                  assertDefined(this.getKeycloakPromise)()
+              ).getMetaDataControllerApi();
+              console.log(this.dataId)
+              for (const id of this.dataId) {
+                  const response = await metaDataInformationControllerApi.getDataMetaInfo(id);
+                  this.metaInformation = response.data
+              }
+          } catch (error) {
+              console.error(error);
+          }
+      },
+      async getCompanyInformation() {
+          try {
+
+              console.log(this.metaInformation.companyId)
+              const companyDataControllerApi = await new ApiClientProvider(
+                  assertDefined(this.getKeycloakPromise)()
+              ).getCompanyDataControllerApi();
+              const response = await companyDataControllerApi.getCompanyById(this.metaInformation.companyId);
+              this.companyInformation = response.data.companyInformation;
+              this.waitingForData = false
+          } catch (error) {
+              console.log(error)
+              this.waitingForData = true;
+          }
+      },
+
+      /**
+       * Uses the dataland API to retrieve the companyId of the first teaser company and the dataId
+       * of the eutaxonomy-non-financials framework of that company.
+       */
+      /*async getDataSet() {
       try {
         const metaDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -176,7 +198,9 @@ export default defineComponent({
       }
     },
   },
-});
+  */
+
+}});
 </script>
 
 <style scoped>
