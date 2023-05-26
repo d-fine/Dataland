@@ -30,22 +30,22 @@ export class ApiClientProvider {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
       updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
-      return new Configuration({accessToken: keycloak.token});
+      return new Configuration({ accessToken: keycloak.token });
     } else {
       return undefined;
     }
   }
 
   async getConstructedApi<T>(
-      constructor: new (configuration: Configuration | undefined, basePath: string) => T,
-      basePath = "/api"
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T,
+    basePath = "/api"
   ): Promise<T> {
     const configuration = await this.getConfiguration();
     return new constructor(configuration, basePath);
   }
 
   async getConstructedDocumentManager<T>(
-      constructor: new (configuration: Configuration | undefined, basePath: string) => T
+    constructor: new (configuration: Configuration | undefined, basePath: string) => T
   ): Promise<T> {
     const configuration = await this.getConfiguration();
     return new constructor(configuration, "/documents");
@@ -88,6 +88,6 @@ export class ApiClientProvider {
   }
 
   async getQaControllerApi(): Promise<QaControllerApi> {
-    return this.getConstructedApi(QaControllerApi, "/qa")
+    return this.getConstructedApi(QaControllerApi, "/qa");
   }
 }

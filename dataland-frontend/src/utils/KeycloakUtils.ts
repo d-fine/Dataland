@@ -36,7 +36,10 @@ export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
  * @param keycloakRole the keycloak user role to test for
  * @returns a promise, which resolves to a boolean
  */
-export async function checkIfUserHasRole(keycloakRole: string, keycloakPromiseGetter?: () => Promise<Keycloak>): Promise<boolean> {
+export async function checkIfUserHasRole(
+  keycloakRole: string,
+  keycloakPromiseGetter?: () => Promise<Keycloak>
+): Promise<boolean> {
   if (keycloakPromiseGetter) {
     const roles = await getKeycloakRolesForUser(keycloakPromiseGetter);
     if (roles) {
