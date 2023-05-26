@@ -2,11 +2,8 @@ import { EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import {
-  fillEligibilityKpis,
-  fillField,
-  uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm,
-} from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { fillEligibilityKpis, fillField } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
 
@@ -32,7 +29,7 @@ describeIf(
     });
 
     it("Check wether it is possible to add and delete KPIs and send the form successfully", () => {
-      uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
+      uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
         testCompany,
         testData.t,
         () => undefined,
@@ -72,6 +69,7 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
   cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
 
+  // Add KPIs
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
     .get("div.p-multiselect-panel")
@@ -82,14 +80,17 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
 
   cy.get('[data-test="addKpisButton"]').click({ force: true });
 
+  // Remove all KPIs excpet first item (Credit Institution)
   cy.get('[data-test="removeSectionButton"]').each(($el, index) => {
     if (index > 0) {
       cy.wrap($el).click({ force: true });
     }
   });
 
+  // Check if at least one "Remove Section" button exists
   cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
+  // Prepare Credit Institution inputs
   cy.get('[data-test="dataPointToggle"]')
     .eq(1)
     .should("exist")
