@@ -16,6 +16,7 @@
       },
     ]"
     :required="required"
+    :data-test="dataTest"
   ></RadioButtonsFormField>
 </template>
 
@@ -28,6 +29,6 @@ export default defineComponent({
   name: "YesNoFormField",
   components: { RadioButtonsFormField },
   inheritAttrs: false,
-  props: FormFieldProps,
+  props: { ...FormFieldProps, dataTest: String },
 });
 </script>
