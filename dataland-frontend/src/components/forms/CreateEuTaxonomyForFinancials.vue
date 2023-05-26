@@ -504,7 +504,7 @@ export default defineComponent({
                 companyAssociatedEuTaxonomyData as ObjectType
               );
 
-              (receivedFormInputsModel.data as ObjectType).kpiSections = this.extractEligibilityKpis(
+              (receivedFormInputsModel.data as ObjectType).kpiSections = this.extractKpis(
                 receivedFormInputsModel.data as ObjectType
               );
 
@@ -522,14 +522,14 @@ export default defineComponent({
     /**
      * Parses received financial service types and eligibility KPIs data
      * @param receivedFormInputsModelData Received data
-     * @returns An object with financial service types and eligibility KPIs which can be directly merged into the formInputsModel, which will then populate expected KPI section fields
+     * @returns An object with financial service types and eligibility KPIs which can be directly merged into the formInputsModel
      */
-    extractEligibilityKpis(receivedFormInputsModelData: ObjectType) {
-      const kpiKeys = Object.keys(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
-      return kpiKeys
+    extractKpis(receivedFormInputsModelData: ObjectType) {
+      const financialServiceTypeKeys = Object.keys(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType);
+      return financialServiceTypeKeys
         .map((key: string) => {
           const financialServiceType = Object.values(euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType)[
-            kpiKeys.indexOf(key)
+            financialServiceTypeKeys.indexOf(key)
           ];
           const kpis = (receivedFormInputsModelData.eligibilityKpis as ObjectType)[financialServiceType];
           const eligibilityKpis = kpis ? { [financialServiceType]: kpis } : undefined;
@@ -546,7 +546,7 @@ export default defineComponent({
           }
           return item;
         })
-        .filter((item) => item[Object.keys(item)[0]])
+        .filter((item) => Object.values(item)[0])
         .reduce((all, one) => ({ ...all, ...one }));
     },
 
@@ -583,31 +583,29 @@ export default defineComponent({
     /**
      * Converts the kpisSection data to a request-friendly object
      * @param kpiSections Kpi Section data
-     * @returns ObjectType
+     * @returns An object with KPIs comprised of financial service types and and object for eligibility KPIs
      */
-    makeEligibilityKpis(kpiSections: ObjectType) {
+    convertEligibilityKpis(kpiSections: ObjectType) {
       const eligibilityKpis = Object.keys(kpiSections)
-        .map((key) => {
-          const eligibilityKpi = {
-            key,
-            financialServiceType: euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[key] as string,
-          };
-          const section = kpiSections[eligibilityKpi.key] as ObjectType;
-          const field = section[eligibilityKpi.financialServiceType];
-          return { [eligibilityKpi.financialServiceType]: field };
+        .map((financialServiceTypeKey) => {
+          const financialServiceType = euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[
+            financialServiceTypeKey
+          ] as string;
+          const section = kpiSections[financialServiceTypeKey] as ObjectType;
+          const field = section[financialServiceType];
+          return { [financialServiceType]: field };
         })
         .reduce((all, one) => ({ ...all, ...one }));
 
       const kpis = Object.keys(kpiSections)
-        .filter((key) => key !== "assetManagementKpis")
-        .map((key) => {
-          const kpi = { [key]: kpiSections[key] };
-          const kpiKey = Object.keys(kpi)[0];
-          if (kpiKey) {
+        .filter((financialServiceTypeKey) => financialServiceTypeKey !== "assetManagementKpis")
+        .map((financialServiceTypeKey) => {
+          const kpi = { [financialServiceTypeKey]: kpiSections[financialServiceTypeKey] };
+          if (kpiSections[financialServiceTypeKey]) {
             const financialServiceType = (euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType as ObjectType)[
-              kpiKey
+              financialServiceTypeKey
             ];
-            delete (kpi[kpiKey] as ObjectType)[financialServiceType as string];
+            delete (kpi[financialServiceTypeKey] as ObjectType)[financialServiceType as string];
           }
           return kpi;
         })
@@ -631,7 +629,7 @@ export default defineComponent({
         delete (clonedFormInputsModel.data as ObjectType).kpiSections;
         clonedFormInputsModel.data = {
           ...(clonedFormInputsModel.data as ObjectType),
-          ...this.makeEligibilityKpis(kpiSections as ObjectType),
+          ...this.convertEligibilityKpis(kpiSections as ObjectType),
         };
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
