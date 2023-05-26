@@ -39,7 +39,6 @@ describeIf(
           cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
           cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
           cy.get("div").contains("New Dataset - LkSG").should("be.visible");
-          cy.get('[data-test="productionSites"] input[type="radio"][value="Yes"]').click();
           const expectedCountry = preparedFixture.t.general?.productionSpecific?.listOfProductionSites?.[0]
             ?.addressOfProductionSite?.country as string;
           cy.get('[data-test="AddressFormField0"] [data-test="country"]').should("contain", `(${expectedCountry})`);
