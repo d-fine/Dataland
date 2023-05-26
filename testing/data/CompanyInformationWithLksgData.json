@@ -54,6 +54,34 @@
 						"ES",
 						"LU"
 					],
+                  "productionSites": "Yes",
+                  "listOfProductionSites": [
+                    {
+                      "nameOfProductionSite": "Huhn GmbH",
+                      "addressOfProductionSite": {
+                        "streetAndHouseNumber": "Im Winkel 53b",
+                        "city": "Jamesdorf",
+                        "state": "Berlin",
+                        "postalCode": "95468",
+                        "country": "Australien"
+                      }
+                    },
+                    {
+                      "nameOfProductionSite": "Leberer, Küsters und Beele",
+                      "addressOfProductionSite": {
+                        "streetAndHouseNumber": "Maurinusstr. 6",
+                        "city": "Omarscheid",
+                        "state": "Berlin",
+                        "postalCode": "39952",
+                        "country": "Bahrain"
+                      },
+                      "listOfGoodsOrServices": [
+                        "Bespoke Soft Ball",
+                        "Ergonomic Cotton Shoes",
+                        "Unbranded Bronze Bike"
+                      ]
+                    }
+                  ]
 					"market": "International"
 				}
 			},
