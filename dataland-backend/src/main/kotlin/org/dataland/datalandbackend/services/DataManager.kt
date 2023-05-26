@@ -197,7 +197,7 @@ class DataManager(
         correlationId: String,
     ) {
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
-        val payload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to bypassQa)).toString()
+        val payload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to bypassQa.toString())).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DataReceived, correlationId,
             ExchangeNames.dataReceived,
