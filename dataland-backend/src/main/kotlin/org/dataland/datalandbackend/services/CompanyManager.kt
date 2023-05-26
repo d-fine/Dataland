@@ -1,10 +1,13 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.clients.GleifClients
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -202,5 +205,29 @@ class CompanyManager(
      */
     fun isCompanyPublic(companyId: String): Boolean {
         return getCompanyById(companyId).isTeaserCompany
+    }
+
+    fun getCompanyInformationFromGleifByName(companyName: String): List<CompanyInformation> {
+        val identifiers = CompanyIdentifier(
+            identifierValue = "Dummy",
+            identifierType = IdentifierType.CompanyRegistrationNumber
+        )
+        val dummy = CompanyInformation(
+            companyName = "Dummy",
+            sector = "Dummy",
+            headquarters = "Dummy",
+            isTeaserCompany = false,
+            identifiers = listOf(identifiers),
+            companyAlternativeNames = listOf("Dummy"),
+            companyLegalForm = "Dummy",
+            countryCode = "Dummy",
+            website = "Dummy",
+            headquartersPostalCode = "Dummy",
+        )
+        return listOf(dummy)
+    }
+
+    fun getCompanyInformationFromGleifByLei(lei: String): CompanyInformation {
+        return GleifClients().getCompanyInformationByLei(lei)
     }
 }

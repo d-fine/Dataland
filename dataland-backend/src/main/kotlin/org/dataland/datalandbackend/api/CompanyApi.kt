@@ -149,4 +149,50 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getTeaserCompanies(): List<String>
+
+    /**
+     * A method to search for company information in the GLEIF database by the name of the company.
+     * @param companyName the name of the company
+     * @return a list of all company information matching the name
+     */
+    @Operation(
+        summary = "Get the company information provided by GLEIF.",
+        description = "A list of company information as returned by the GLEIF database using the company name as search parameter.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully returned company information."),
+        ],
+    )
+    @GetMapping(
+        value = ["/gleif"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun getCompanyInformationFromGleifByName(
+        @RequestParam companyName: String,
+    ): List<CompanyInformation>
+
+    /**
+     * A method to search for company information in the GLEIF database by the LEI of the company.
+     * @param lei the legal entity identifier of the company
+     * @return the company information matching the LEI
+     */
+    @Operation(
+        summary = "Get the company information provided by GLEIF.",
+        description = "A list of company information as returned by the GLEIF database using the LEI as input.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully returned company information."),
+        ],
+    )
+    @GetMapping(
+        value = ["/gleif/{lei}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun getCompanyInformationFromGleifByLei(
+        @PathVariable lei: String,
+    ): CompanyInformation
 }

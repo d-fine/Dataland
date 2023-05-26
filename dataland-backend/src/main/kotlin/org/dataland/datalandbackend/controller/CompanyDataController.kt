@@ -79,4 +79,12 @@ class CompanyDataController(
     override fun getTeaserCompanies(): List<String> {
         return companyManager.getTeaserCompanyIds()
     }
+
+    override fun getCompanyInformationFromGleifByLei(lei: String): CompanyInformation {
+        return companyManager.getCompanyInformationFromGleifByLei(lei)
+    }
+
+    override fun getCompanyInformationFromGleifByName(companyName: String): List<CompanyInformation> {
+        return companyManager.getCompanyInformationFromGleifByName(companyName)
+    }
 }
