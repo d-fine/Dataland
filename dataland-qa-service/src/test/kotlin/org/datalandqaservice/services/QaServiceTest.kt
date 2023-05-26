@@ -44,7 +44,12 @@ class QaServiceTest(
     @BeforeEach
     fun resetMocks() {
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-        qaService = QaService(mockCloudEventMessageHandler, objectMapper, messageUtils, testDatasetReviewStatusRepository)
+        qaService = QaService(
+            mockCloudEventMessageHandler,
+            objectMapper,
+            messageUtils,
+            testDatasetReviewStatusRepository,
+        )
     }
 
     @Test

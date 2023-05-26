@@ -35,6 +35,12 @@ class MessageQueueUtils {
         }
     }
 
+    /**
+     * Extracts a json property from a message in json format
+     * @param message the message as a json string
+     * @param key the key of the property of interest
+     * @returns the value corresponding to the key
+     */
     fun extractValueFromMessagePayload(message: String, key: String): String {
         val content = JSONObject(message).toMap()
         return content[key] as String
