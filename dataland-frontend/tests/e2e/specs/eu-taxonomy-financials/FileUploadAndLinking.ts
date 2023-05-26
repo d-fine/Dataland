@@ -41,11 +41,15 @@ describeIf(
         () => {
           uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
           uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
           uploadDocuments.removeReportToUpload(TEST_PDF_FILE_NAME);
+          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
           uploadDocuments.checkNoReportIsListed();
           uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
           uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
           uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
+          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
           uploadDocuments.validateReportToUploadIsListed(`${TEST_PDF_FILE_NAME}2`);
           uploadDocuments.fillAllReportsToUploadForms(2);
           cy.get(`[data-test="assetManagementKpis"]`)
