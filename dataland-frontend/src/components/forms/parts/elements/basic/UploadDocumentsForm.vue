@@ -10,6 +10,7 @@
       :auto="false"
       @select="handleFilesSelected"
       :file-names-for-prefill="fileNamesForPrefill"
+      :index-of-report-to-remove="indexOfReportToRemove"
     >
       <template #header="{ files, chooseCallback }">
         <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
@@ -63,6 +64,7 @@ import {
   isThereActuallyANewFileSelected,
   removeFileTypeExtension,
 } from "@/utils/FileUploadUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "UploadDocumentsForm",
@@ -100,17 +102,27 @@ export default defineComponent({
       type: Array,
       default: undefined,
     },
+    indexOfReportToRemove: {
+      type: Array,
+      default: undefined,
+    },
   },
   watch: {
     fileNamesForPrefill: {
       handler() {
-        console.log(this.fileNamesForPrefill);
         this.prefillFileUpload();
       },
       deep: true,
     },
+    indexOfReportToRemove: {
+      handler() {
+        if (this.indexOfReportToRemove) {
+          this.removeDocumentFromDocumentsToUpload(assertDefined(this.indexOfReportToRemove)[0] as number);
+        }
+      },
+      deep: true,
+    },
   },
-
   methods: {
     removeFileTypeExtension,
     /**
