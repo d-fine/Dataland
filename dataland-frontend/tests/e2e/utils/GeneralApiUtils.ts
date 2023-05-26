@@ -1,4 +1,10 @@
-import { CompanyDataControllerApi, CompanyInformation, Configuration, DataTypeEnum, StoredCompany } from "@clients/backend";
+import {
+  CompanyDataControllerApi,
+  CompanyInformation,
+  Configuration,
+  DataTypeEnum,
+  StoredCompany,
+} from "@clients/backend";
 import { CyHttpMessages, Interception, RouteHandler } from "cypress/types/net-stubbing";
 import Chainable = Cypress.Chainable;
 import { getKeycloakToken } from "./Auth";

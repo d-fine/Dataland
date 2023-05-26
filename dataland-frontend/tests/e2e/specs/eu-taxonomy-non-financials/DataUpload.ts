@@ -1,32 +1,25 @@
-import { describeIf } from "@e2e/support/TestUtility";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import {
-  CompanyInformation,
-  DataTypeEnum,
-  EuTaxonomyDataForNonFinancials,
-  CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForFinancials,
-  DataMetaInformation,
-} from "@clients/backend";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { getKeycloakToken } from "@e2e/utils/Auth";
-import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { CyHttpMessages } from "cypress/types/net-stubbing";
 import {
-  fillAndValidateEuTaxonomyForNonFinancialsUploadForm,
-  submitFilledInEuTaxonomyForm,
-  uploadEuTaxonomyDataForNonFinancialsViaForm,
-} from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
+  CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  DataMetaInformation,
+  DataTypeEnum,
+  EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForNonFinancials,
+} from "@clients/backend";
+import { describeIf } from "@e2e/support/TestUtility";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@e2e/utils/Constants";
+import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
+import { uploadEuTaxonomyDataForNonFinancialsViaForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import {
   goToEditFormOfMostRecentDataset,
   uploadCompanyViaApiAndEuTaxonomyDataViaForm,
 } from "@e2e/utils/GeneralApiUtils";
-import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@e2e/utils/Constants";
-import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
+import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { uploadReports } from "@sharedUtils/components/UploadReports";
 import Chainable = Cypress.Chainable;
-import { uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company",
