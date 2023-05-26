@@ -120,6 +120,9 @@ export default defineComponent({
     },
   },
   methods: {
+      //TODO Make table not sortable
+      //TODO Maybe only the first entry of the table should be clickable
+      //TODO Buttons need to get functions
       /**
        * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
        */
