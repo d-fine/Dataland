@@ -84,6 +84,7 @@ describeIf(
           keycloakToken = token;
 
           uploadCompanyViaApiAndEuTaxonomyDataViaForm(
+            DataTypeEnum.EutaxonomyNonFinancials,
             testData.companyInformation,
             undefined,
             () => {
@@ -102,9 +103,7 @@ describeIf(
               uploadReports.selectFile(TEST_PDF_FILE_NAME);
               uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
               uploadReports.fillAllReportsToUploadForms(2);
-            },
-            () => undefined,
-            () => {
+            
               cy.get(`[data-test="capexSection"] [data-test="total"] select[name="report"]`).select(TEST_PDF_FILE_NAME);
               cy.get(`[data-test="opexSection"] [data-test="total"] select[name="report"]`).select(
                 `${TEST_PDF_FILE_NAME}2`

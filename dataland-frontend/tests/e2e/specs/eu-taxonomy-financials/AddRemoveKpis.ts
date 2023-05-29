@@ -1,4 +1,4 @@
-import { EuTaxonomyDataForFinancials } from "@clients/backend";
+import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -30,11 +30,10 @@ describeIf(
 
     it("Check wether it is possible to add and delete KPIs and send the form successfully", () => {
       uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
+        DataTypeEnum.EutaxonomyFinancials,
         testCompany,
         testData.t,
-        () => undefined,
         fillAndValidateEuTaxonomyForFinancialsUploadForm,
-        () => undefined,
         () => undefined,
         () => undefined
       );
@@ -91,15 +90,6 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
   cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
   // Prepare Credit Institution inputs
-  cy.get('[data-test="dataPointToggle"]')
-    .eq(1)
-    .should("exist")
-    .should("contain.text", "Data point is available")
-    .find('[data-test="dataPointToggleButton"]')
-    .click();
-
-  cy.get('[data-test="dataPointToggle"]').eq(1).find('[data-test="dataPointToggleButton"]').click();
-
   fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
   fillField(
     "creditInstitutionKpis",

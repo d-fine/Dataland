@@ -96,20 +96,18 @@ export function goToEditFormOfMostRecentDataset(companyId: string, dataType: Dat
 /**
  * Uploads a company via POST-request, then an EU Taxonomy dataset for financial companies for the uploaded company
  * via the form in the frontend, and then visits the view page where that dataset is displayed
+ * @param frameworkDataType The EU Taxanomy framework being tested
  * @param companyInformation Company information to be used for the company upload
  * @param testData EU Taxonomy dataset for financial companies to be uploaded
- * @param beforeFormFill is performed before filling the fields of the upload form
- * @param formFillSteps Steps involved to fill data of the upload form
- * @param afterFormFill is performed after filling the fields of the upload form
+ * @param formFill Steps involved to fill data of the upload form
  * @param submissionDataIntercept performs checks on the request itself
  * @param afterDatasetSubmission is performed after the data has been submitted
  */
 export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
+  frameworkDataType: DataTypeEnum,
   companyInformation: CompanyInformation,
   testData: T,
-  beforeFormFill: () => void,
-  formFillSteps: (data: T) => void,
-  afterFormFill: () => void,
+  formFill: (data: T) => void,
   submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
   afterDatasetSubmission: (companyId: string) => void
 ): void {
@@ -117,12 +115,8 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
     return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
       (storedCompany): void => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        cy.visitAndCheckAppMount(
-          `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
-        );
-        beforeFormFill();
-        formFillSteps(testData);
-        afterFormFill();
+        cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${frameworkDataType}/upload`);
+        formFill(testData);
         submitFilledInEuTaxonomyForm(submissionDataIntercept);
         afterDatasetSubmission(storedCompany.companyId);
       }
