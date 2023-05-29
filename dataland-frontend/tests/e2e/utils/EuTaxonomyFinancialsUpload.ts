@@ -13,14 +13,13 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
-import { goToEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
+import { goToEditFormOfMostRecentDataset, submitFilledInEuTaxonomyForm } from "@e2e/utils/GeneralApiUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { submitFilledInEuTaxonomyForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully

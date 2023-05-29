@@ -131,27 +131,3 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
   });
   return dataMetaInformation.data;
 }
-
-/**
- * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks
- * if a 200 response is returned by the backend
- * @param submissionDataIntercept function that asserts content of an intercepted request
- */
-export function submitFilledInEuTaxonomyForm(
-  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
-): void {
-  const postRequestAlias = "postDataAlias";
-  cy.intercept(
-    {
-      method: "POST",
-      url: `**/api/data/**`,
-      times: 1,
-    },
-    submissionDataIntercept
-  ).as(postRequestAlias);
-  cy.get('button[data-test="submitButton"]').click();
-  cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then((interception) => {
-    expect(interception.response?.statusCode).to.eq(200);
-  });
-  cy.contains("td", "EU Taxonomy");
-}
