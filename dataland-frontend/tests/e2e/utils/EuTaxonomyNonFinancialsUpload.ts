@@ -11,7 +11,6 @@ import Chainable = Cypress.Chainable;
 import { uploadReports } from "@sharedUtils/components/UploadReports";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
-import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
