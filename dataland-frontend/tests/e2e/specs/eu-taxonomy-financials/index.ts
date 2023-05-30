@@ -4,4 +4,5 @@
 describe("EU Taxonomy for financials Company Page tests", () => {
   require("./DataIntegrity");
   require("./FileUploadAndLinking");
+  require("./AddRemoveKpis");
 });
