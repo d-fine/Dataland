@@ -80,11 +80,11 @@ function fillSingleProductionSite(): void {
  * @param maxCounter the maximum recursion depth before an error is thrown
  */
 function recursivelySelectYesOnAllFields(maxCounter: number): void {
-  if (maxCounter <= 0) return;
+  if (maxCounter <= 0) throw new Error("Recursion depth exceeded selecting yes on all input fields.");
 
   cy.window().then((win) => {
     if (selectYesOnAllFieldsBrowser(win)) {
-      cy.wait(250).then(() => recursivelySelectYesOnAllFields(maxCounter - 1));
+      cy.wait(5000).then(() => recursivelySelectYesOnAllFields(maxCounter - 1));
     }
   });
 }
@@ -100,6 +100,8 @@ function selectYesOnAllFieldsBrowser(win: Window): boolean {
     if (!element.checked) {
       element.click();
       changedAnything = true;
+    } else {
+      console.log(element);
     }
   });
   return changedAnything;
