@@ -121,7 +121,10 @@ export default defineComponent({
   methods: {
     //TODO Maybe only the first entry of the table should be clickable
     //TODO Buttons need to get functions, also should be disabled before a dataset is selected
+      //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
     //TODO List of data Ids should be refreshed once a decision was made
+      //TODO Include the qa service link as a button in the hamburger menu
+      //TODO Include a button next to the My DataSet Button, only visible to a user with role Reviewer_Role
       //TODO Clean up code
     /**
      * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
