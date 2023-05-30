@@ -49,7 +49,7 @@
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.3",
     "@vue/test-utils": "^2.3.2",
-    "@vue/tsconfig": "^0.4.0",
+    "@vue/tsconfig": "^0.2.0",
     "big.js": "^6.2.1",
     "cypress": "^12.13.0",
     "depcheck": "^1.4.3",
