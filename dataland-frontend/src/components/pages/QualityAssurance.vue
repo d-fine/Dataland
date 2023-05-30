@@ -119,9 +119,13 @@ export default defineComponent({
     },
   },
   methods: {
-    //TODO Maybe only the first entry of the table should be clickable
+    //TODO Discussion: Maybe only the first entry of the table should be clickable
     //TODO Buttons need to get functions, also should be disabled before a dataset is selected
+      //TODO Add loading text / spinner to the page. Similiar to the company result page
+      //TODO Add Show Dataset column to the table, similiar to the company search page
+      //TODO Styling of the page ( for example cursor while hovering above the table should change, if row is clickable)
       //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
+      //TODO Dicussion What about reverting a decision?
     //TODO List of data Ids should be refreshed once a decision was made
       //TODO Include the qa service link as a button in the hamburger menu
       //TODO Include a button next to the My DataSet Button, only visible to a user with role Reviewer_Role
