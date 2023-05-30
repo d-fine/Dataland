@@ -45,10 +45,13 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
 
 /**
  * Generates an array consisting of 1 to 5 random production sites
+ * @param undefinedProbability the percentage of undefined values in the returned production site
  * @returns 1 to 5 random production sites
  */
-export function generateArrayOfProductionSites(): LksgProductionSite[] {
-  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, generateProductionSite);
+export function generateArrayOfProductionSites(undefinedProbability = 0.5): LksgProductionSite[] {
+  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () =>
+    generateProductionSite(undefinedProbability)
+  );
 }
 
 /**
