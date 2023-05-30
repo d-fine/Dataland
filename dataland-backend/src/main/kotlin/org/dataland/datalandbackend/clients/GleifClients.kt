@@ -3,8 +3,6 @@ package org.dataland.datalandbackend.clients
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.util.concurrent.TimeUnit
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -16,11 +14,19 @@ class GleifClients {
     private fun mapGleifResponseToCompanyInformation(responseBody: String): CompanyInformation {
         println("responseBody: $responseBody")
         val attributes = JSONObject(responseBody).getJSONObject("data").getJSONObject("attributes")
+        println("attributes: $attributes")
         val lei = attributes.getString("lei")
-        val companyName = attributes.getString("entity.legalname.name")
-        val countryCode = attributes.getString("entity.legaladdress.country")
-        val headquarters = attributes.getString("entity.legaladdress.city")
-        val headquartersPostalCode = attributes.getString("entity.legaladdress.postalcode")
+        println("lei: $lei")
+        val entity = attributes.getJSONObject("entity")
+        println("entity: $entity")
+        val address = entity.getJSONObject("headquartersAddress")
+        println("address: $address")
+        val name = entity.getJSONObject("legalName")
+        println("name: $name")
+        val companyName = name.getString("name")
+        val countryCode = address.getString("country")
+        val headquarters = address.getString("city")
+        val headquartersPostalCode = address.getString("postalCode")
 
         return CompanyInformation(
             companyName = companyName,
@@ -37,11 +43,9 @@ class GleifClients {
     }
 
     fun getCompanyInformationByLei(lei: String): CompanyInformation {
-        val mediaType = "text/plain".toMediaTypeOrNull()
-        val requestBody = "".toRequestBody(mediaType)
         val request = Request.Builder()
             .url("https://api.gleif.org/api/v1/lei-records/$lei")
-            .method("GET", requestBody)
+            .method("GET", null)
             .addHeader("Accept", "application/vnd.api+json")
             .build()
         val response = client.newCall(request).execute()
