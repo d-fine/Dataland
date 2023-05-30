@@ -585,7 +585,7 @@ export default defineComponent({
      * @param kpiSections Kpi Section data
      * @returns An object with KPIs comprised of financial service types and and object for eligibility KPIs
      */
-    convertEligibilityKpis(kpiSections: ObjectType) {
+    convertKpis(kpiSections: ObjectType) {
       const eligibilityKpis = Object.keys(kpiSections)
         .map((financialServiceTypeKey) => {
           const financialServiceType = euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType[
@@ -629,7 +629,7 @@ export default defineComponent({
         delete (clonedFormInputsModel.data as ObjectType).kpiSections;
         clonedFormInputsModel.data = {
           ...(clonedFormInputsModel.data as ObjectType),
-          ...this.convertEligibilityKpis(kpiSections as ObjectType),
+          ...this.convertKpis(kpiSections as ObjectType),
         };
 
         checkIfAllUploadedReportsAreReferencedInDataModel(

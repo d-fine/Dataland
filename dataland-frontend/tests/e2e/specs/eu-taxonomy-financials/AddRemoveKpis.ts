@@ -49,7 +49,6 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
   dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
   dateFormElement.validateDay("fiscalYearEnd", 12);
 
-  // Required data entry
   if (data.reportingObligation !== undefined) {
     cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
   }
@@ -68,7 +67,6 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
   cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
 
-  // Add KPIs
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
     .get("div.p-multiselect-panel")
@@ -79,17 +77,14 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
 
   cy.get('[data-test="addKpisButton"]').click({ force: true });
 
-  // Remove all KPIs excpet first item (Credit Institution)
   cy.get('[data-test="removeSectionButton"]').each(($el, index) => {
     if (index > 0) {
       cy.wrap($el).click({ force: true });
     }
   });
 
-  // Check if at least one "Remove Section" button exists
   cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
-  // Prepare Credit Institution inputs
   fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
   fillField(
     "creditInstitutionKpis",
