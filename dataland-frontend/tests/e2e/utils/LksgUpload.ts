@@ -80,7 +80,11 @@ function fillSingleProductionSite(): void {
  * @param maxCounter the maximum recursion depth before an error is thrown
  */
 function recursivelySelectYesOnAllFields(maxCounter: number): void {
-  if (maxCounter <= 0) throw new Error("Recursion depth exceeded selecting yes on all input fields.");
+  if (maxCounter <= 0) {
+    cy.get('input[type="radio" value="Yes"]').each((radioButton) => {
+      cy.wrap(radioButton).should("be.checked");
+    });
+  }
 
   cy.window().then((win) => {
     if (selectYesOnAllFieldsBrowser(win)) {
