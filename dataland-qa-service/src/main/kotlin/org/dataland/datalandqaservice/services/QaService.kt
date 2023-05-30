@@ -73,31 +73,35 @@ class QaService(
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         messageUtils.rejectMessageOnException {
-            logger.info(
-                "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
-            )
+            logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
             if (bypassQa) {
-                logger.info(
-                    "Bypassing data with DataId: $dataId with Correlation Id: $correlationId",
-                )
-                val message = objectMapper.writeValueAsString(
-                    QaCompletedMessage(dataId, QAStatus.Accepted),
-                )
-                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
-                    RoutingKeyNames.data,
-                )
+                sendAcceptDatasetMessage(dataId, correlationId)
             } else {
-                datasetReviewStatusRepository.save(
-                    DatasetReviewStatusEntity(
-                        dataId = dataId,
-                        correlationId = correlationId,
-                        qaStatus = QAStatus.Pending,
-                        receptionTime = Instant.now().toEpochMilli(),
-                    ),
-                )
+                storeDatasetAsToBeReviewed(dataId, correlationId)
             }
         }
+    }
+
+    private fun sendAcceptDatasetMessage(dataId: String, correlationId: String) {
+        logger.info("Bypassing data with DataId: $dataId with Correlation Id: $correlationId")
+        val message = objectMapper.writeValueAsString(
+            QaCompletedMessage(dataId, QAStatus.Accepted),
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+            RoutingKeyNames.data,
+        )
+    }
+
+    private fun storeDatasetAsToBeReviewed(dataId: String, correlationId: String) {
+        datasetReviewStatusRepository.save(
+            DatasetReviewStatusEntity(
+                dataId = dataId,
+                correlationId = correlationId,
+                qaStatus = QAStatus.Pending,
+                receptionTime = Instant.now().toEpochMilli(),
+            ),
+        )
     }
 
     /**
