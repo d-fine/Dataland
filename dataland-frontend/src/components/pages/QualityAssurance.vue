@@ -8,7 +8,13 @@
           <h1>"Quality Assurance"</h1>
           <div v-if="!waitingForData">
             <div class="card">
-              <DataTable :value="resultData" class="table-cursor" id="qa-data-result" @row-click="getDataSet">
+              <DataTable
+                :value="resultData"
+                class="table-cursor"
+                id="qa-data-result"
+                @row-click="getDataSet"
+                :rowHover="true"
+              >
                 <Column header="DATA ID" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.dataId }}
@@ -27,6 +33,14 @@
                 <Column header="REPORTING PERIOD" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.metaInformation.reportingPeriod }}
+                  </template>
+                </Column>
+                <Column class="d-bg-white w-2">
+                  <template>
+                    <div class="text-right text-primary no-underline font-bold">
+                      <span>CLICK TO REVIEW</span>
+                      <span class="ml-3">></span>
+                    </div>
                   </template>
                 </Column>
               </DataTable>
@@ -124,11 +138,11 @@ export default defineComponent({
   methods: {
     //TODO Discussion: Maybe only the first entry of the table should be clickable
     //TODO Buttons need to get functions, also should be disabled before a dataset is selected
-    //TODO Add loading text / spinner to the page. Similiar to the company result page
-    //TODO Add Show Dataset column to the table, similiar to the company search page
-    //TODO Styling of the page ( for example cursor while hovering above the table should change, if row is clickable)
+    //TODO Add comment function to qa process so that the user can add a comment about the decision
+    //TODO Add loading text / spinner to the page. Similar to the company result page
+    //TODO Check that using non scoped style is fine
     //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
-    //TODO Dicussion What about reverting a decision?
+    //TODO Discussion What about reverting a decision?
     //TODO List of data Ids should be refreshed once a decision was made
     //TODO Include a button next to the My DataSet Button, only visible to a user with role Reviewer_Role
     //TODO Clean up code
@@ -252,10 +266,14 @@ interface QaDataObject {
 }
 </script>
 
-<style scoped>
+<style>
 pre#dataset-container {
   background: white;
   padding: 20px;
   border: 1px solid black;
+}
+
+#qa-data-result tr:hover {
+  cursor: pointer;
 }
 </style>
