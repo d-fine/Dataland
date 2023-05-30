@@ -76,7 +76,7 @@ export default defineComponent({
           clickAction: this.gotoUserSettings,
         },
         {
-          label: "API",
+          label: "API KEYS",
           icon: "key",
           id: "profile-api-generate-key-button",
           clickAction: this.gotoApiKeysPage,
@@ -86,6 +86,12 @@ export default defineComponent({
           icon: "mail",
           id: "profile-picture-dropdown-data-request-button",
           clickAction: this.gotoDataRequest,
+        },
+        {
+          label: "QUALITY ASSURANCE",
+          icon: "add_moderator",
+          id: "profile-picture-dropdown-qa-services-button",
+          clickAction: this.gotoQualityAssurance,
         },
         {
           label: "LOG OUT",
@@ -143,6 +149,18 @@ export default defineComponent({
      */
     gotoApiKeysPage() {
       void this.$router.push("/api-key");
+    },
+    /**
+     * Redirects the user to the QA Services page
+     */
+    gotoQualityAssurance() {
+      assertDefined(this.getKeycloakPromise)()
+        .then((keycloak) => {
+          if (keycloak.authenticated) {
+            return this.$router.push("qualityassurance");
+          }
+        })
+        .catch((error) => console.log(error));
     },
     /**
      * Called when the profile picture could not load. Propagates the event and sets the profile picture

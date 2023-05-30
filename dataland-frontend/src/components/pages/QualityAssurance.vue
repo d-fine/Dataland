@@ -130,7 +130,6 @@ export default defineComponent({
     //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
     //TODO Dicussion What about reverting a decision?
     //TODO List of data Ids should be refreshed once a decision was made
-    //TODO Include the qa service link as a button in the hamburger menu
     //TODO Include a button next to the My DataSet Button, only visible to a user with role Reviewer_Role
     //TODO Clean up code
     /**
