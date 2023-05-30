@@ -28,9 +28,12 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
 
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
   submitButton.buttonAppearsEnabled();
-  cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
+  cy.intercept({
+    url: `**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`,
+    times: 1,
+  }).as("postCompanyAssociatedData");
   submitButton.clickButton();
-  cy.wait("@postCompanyAssociatedData");
+  cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number });
 }
 
 /**

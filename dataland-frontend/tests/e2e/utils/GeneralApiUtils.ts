@@ -66,6 +66,16 @@ export function interceptAllAndCheckFor500Errors(): void {
 }
 
 /**
+ * Intercepts all data upload requests to the backend and sets the bypassQa flag
+ */
+export function interceptAllDataPostsAndBypassQa(): void {
+  const handler: RouteHandler = (incomingRequest) => {
+    incomingRequest.query["bypassQa"] = "true";
+  };
+  cy.intercept("/api/data/*", handler);
+}
+
+/**
  * Visits the edit page for a framework via UI navigation.
  * @param companyId the id of the company for which to edit a dataset
  * @param dataType the framework type
