@@ -66,5 +66,6 @@ function manipulateFixtureForDate(input: FixtureData<LksgData>, date: string): F
 function manipulateFixtureForAllFields(fixture: FixtureData<LksgData>): FixtureData<LksgData> {
   fixture.companyInformation.companyName = "lksg-all-fields";
   fixture.t.general!.productionSpecific!.productionSites = "Yes";
+  fixture.t.general!.productionSpecific!.listOfProductionSites = [generateProductionSite(0), generateProductionSite(0)];
   return fixture;
 }
