@@ -49,7 +49,7 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
  * @returns 1 to 5 random production sites
  */
 export function generateArrayOfProductionSites(undefinedProbability = 0.5): LksgProductionSite[] {
-  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () =>
+  return Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () =>
     generateProductionSite(undefinedProbability)
   );
 }
