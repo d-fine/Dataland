@@ -8,21 +8,33 @@
           <h1>"Quality Assurance"</h1>
           <div v-if="!waitingForData">
             <div class="card">
-              <DataTable :value="resultData">
-                <Column
-                  bodyClass="headers-bg"
-                  headerStyle="width: 30vw;"
-                  headerClass="horizontal-headers-size"
-                  field="kpiKey"
-                  header="KPIs"
-                >
+              <DataTable :value="resultData" class="table-cursor" id="qa-data-result" @row-click="getDataSet">
+                <Column header="DATA ID" class="d-bg-white w-2">
+                  <template #body="{ data }">
+                    {{ data.dataId }}
+                  </template>
                 </Column>
+                <Column header="COMPANY NAME" class="d-bg-white w-2">
+                  <template #body="{ data }">
+                    {{ data.companyInformation.companyName }}
+                  </template>
+                </Column>
+                <Column header="FRAMEWORK" class="d-bg-white w-2">
+                  <template #body="{ data }">
+                    {{ data.metaInformation.dataType }}
+                  </template>
+                </Column>
+                <Column
+                  header="REPORTING PERIOD"
+                  class="d-bg-white w-2"
+                >
+                  <template #body="{ data }">
+                    {{ data.metaInformation.reportingPeriod }}
+                  </template>
+                </Column>
+
               </DataTable>
             </div>
-            <span>{{ this.metaInformation.dataType }}</span>
-            <span>{{ this.metaInformation.reportingPeriod }}</span>
-            <span>{{ this.metaInformation.uploadTime }}</span>
-            <span>{{ this.companyInformation.companyName }}</span>
           </div>
           <div v-else-if="waitingForData">
             <span>loading</span>
@@ -33,10 +45,10 @@
         </div>
         <MiddleCenterDiv class="col-12">
           <div>
-            <PrimeButton label="Accept Dataset" />
+            <PrimeButton @click="setQualityStatusToApproved" label="Accept Dataset" />
           </div>
           <div>
-            <PrimeButton label="Reject Dataset" />
+            <PrimeButton @click="setQualityStatusToRejected" label="Reject Dataset" />
           </div>
         </MiddleCenterDiv>
       </TheContent>
@@ -55,11 +67,13 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { CompanyInformation, DataMetaInformation, DataTypeEnum, LksgData, SfdrData } from "@clients/backend";
+import { CompanyInformation, DataMetaInformation, DataTypeEnum,} from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
 export default defineComponent({
   name: "QualityAssurance",
   components: {
@@ -71,6 +85,8 @@ export default defineComponent({
     TheHeader,
     AuthenticationWrapper,
     PrimeButton,
+    DataTable,
+    Column,
   },
   setup() {
     return {
@@ -96,7 +112,27 @@ export default defineComponent({
       return JSON.stringify(this.dataSet, null, 2);
     },
   },
+  props: {
+    data: {
+      type: Object,
+      default: null,
+    },
+  },
   methods: {
+    //TODO Discussion: Maybe only the first entry of the table should be clickable
+    //TODO Buttons need to get functions, also should be disabled before a dataset is selected
+      //TODO Add loading text / spinner to the page. Similiar to the company result page
+      //TODO Add Show Dataset column to the table, similiar to the company search page
+      //TODO Styling of the page ( for example cursor while hovering above the table should change, if row is clickable)
+      //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
+      //TODO Dicussion What about reverting a decision?
+    //TODO List of data Ids should be refreshed once a decision was made
+      //TODO Include the qa service link as a button in the hamburger menu
+      //TODO Include a button next to the My DataSet Button, only visible to a user with role Reviewer_Role
+      //TODO Clean up code
+    /**
+     * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
+     */
     async getQaData() {
       try {
         const qaServiceControllerApi = await new ApiClientProvider(
@@ -121,81 +157,64 @@ export default defineComponent({
             companyInformation: this.companyInformation,
           });
         }
-
-        console.log(this.resultData);
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
       }
     },
     /**
-     * Uses the dataland API to retrieve the companyId of the first teaser company and the dataId
-     * of the eutaxonomy-non-financials framework of that company.
+     * Retrieves the dataset corresponding to the given dataId
+     * @param event
+     * @param event.data
      */
-    /*async getDataSet() {
+    async getDataSet(event: { data: QaDataObject }) {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getMetaDataControllerApi();
-        const apiResponse = await metaDataControllerApi.getDataMetaInfo(this.dataId);
-        const filteredData = apiResponse.data.dataType;
+        const filteredData = event.data.metaInformation.dataType;
+        const dataId = event.data.dataId;
         if (filteredData === DataTypeEnum.EutaxonomyNonFinancials) {
           try {
-            this.waitingForData = true;
-            if (this.dataId != "loading") {
-              const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
-                assertDefined(this.getKeycloakPromise)()
-              ).getEuTaxonomyDataForNonFinancialsControllerApi();
-              const companyAssociatedData =
-                await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                  assertDefined(this.dataId)
-                );
-              this.dataSet = companyAssociatedData.data.data;
-              this.waitingForData = false;
-            }
+            const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
+              assertDefined(this.getKeycloakPromise)()
+            ).getEuTaxonomyDataForNonFinancialsControllerApi();
+            const companyAssociatedData =
+              await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
+                assertDefined(dataId)
+              );
+            this.dataSet = companyAssociatedData.data.data;
           } catch (error) {
             console.error(error);
           }
         } else if (filteredData === DataTypeEnum.EutaxonomyFinancials) {
           try {
-            this.waitingForData = true;
-            if (this.dataId != "loading") {
-              const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
-                assertDefined(this.getKeycloakPromise)()
-              ).getEuTaxonomyDataForFinancialsControllerApi();
-              const companyAssociatedData =
-                await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
-                  assertDefined(this.dataId)
-                );
-              this.dataSet = companyAssociatedData.data.data;
-              this.waitingForData = false;
-            }
+            const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+              assertDefined(this.getKeycloakPromise)()
+            ).getEuTaxonomyDataForFinancialsControllerApi();
+            const companyAssociatedData =
+              await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
+                assertDefined(dataId)
+              );
+            this.dataSet = companyAssociatedData.data.data;
           } catch (error) {
             console.error(error);
           }
         } else if (filteredData === DataTypeEnum.Lksg) {
           try {
-            this.waitingForData = true;
             const lksgDataControllerApi = await new ApiClientProvider(
               assertDefined(this.getKeycloakPromise)()
             ).getLksgDataControllerApi();
-            const singleLksgData = (await lksgDataControllerApi.getCompanyAssociatedLksgData(this.dataId)).data
-              .data as LksgData;
-
-            this.waitingForData = false;
+            const singleLksgData = await lksgDataControllerApi.getCompanyAssociatedLksgData(assertDefined(dataId));
+            this.dataSet = singleLksgData.data.data;
           } catch (error) {
             console.error(error);
           }
         } else if (filteredData === DataTypeEnum.Sfdr) {
           try {
-            this.waitingForData = true;
             const sfdrDataControllerApi = await new ApiClientProvider(
               assertDefined(this.getKeycloakPromise)()
             ).getSfdrDataControllerApi();
 
-            const singleSfdrData = (await sfdrDataControllerApi.getCompanyAssociatedSfdrData(this.dataId)).data
-              .data as SfdrData;
-            this.waitingForData = false;
+            const singleSfdrData = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
+            this.dataSet = singleSfdrData.data.data;
           } catch (error) {
             console.error(error);
           }
@@ -204,8 +223,30 @@ export default defineComponent({
         console.error(error);
       }
     },
-  },
-  */
+    /**
+     * Sets dataset to accepted
+     * @param event
+     * @param event.data
+     */
+    async setQualityStatusToApproved(event: { data: QaDataObject }) {
+      const qaServiceControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getQaControllerApi();
+      await qaServiceControllerApi.assignQualityStatus(event.data.dataId, "Accepted");
+    },
+    /**
+     * Sets dataset to rejected
+     * @param event
+     * @param event.data
+     */
+    async setQualityStatusToRejected(event: { data: QaDataObject }) {
+      const qaServiceControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getQaControllerApi();
+      console.log("hierhierheirhier")
+      console.log(event.data.dataId);
+      await qaServiceControllerApi.assignQualityStatus(event.data.dataId, "Rejected");
+    },
   },
 });
 interface QaDataObject {
