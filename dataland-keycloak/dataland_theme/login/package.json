@@ -10,10 +10,10 @@
     "updatepackagelock": "npm update --save --include=dev && npm audit fix"
   },
   "dependencies": {
-    "@ibm/plex": "^6.3.0",
-    "@zxcvbn-ts/core": "^3.0.1",
-    "@zxcvbn-ts/language-common": "^3.0.2",
-    "@zxcvbn-ts/language-en": "^3.0.1",
+    "@ibm/plex": "^6.2.0",
+    "@zxcvbn-ts/core": "^2.2.1",
+    "@zxcvbn-ts/language-common": "^2.0.1",
+    "@zxcvbn-ts/language-en": "^2.1.0",
     "material-icons": "^1.13.7",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1"
