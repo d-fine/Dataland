@@ -8,7 +8,13 @@
           <h1>"Quality Assurance"</h1>
           <div v-if="!waitingForData">
             <div class="card">
-              <DataTable :value="resultData" class="table-cursor" id="qa-data-result" @row-click="getDataSet" :rowHover="true">
+              <DataTable
+                :value="resultData"
+                class="table-cursor"
+                id="qa-data-result"
+                @row-click="getDataSet"
+                :rowHover="true"
+              >
                 <Column header="DATA ID" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.dataId }}
@@ -27,6 +33,14 @@
                 <Column header="REPORTING PERIOD" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.metaInformation.reportingPeriod }}
+                  </template>
+                </Column>
+                <Column class="d-bg-white w-2">
+                  <template>
+                    <div class="text-right text-primary no-underline font-bold">
+                      <span>CLICK TO REVIEW</span>
+                      <span class="ml-3">></span>
+                    </div>
                   </template>
                 </Column>
               </DataTable>
@@ -124,9 +138,8 @@ export default defineComponent({
   methods: {
     //TODO Discussion: Maybe only the first entry of the table should be clickable
     //TODO Buttons need to get functions, also should be disabled before a dataset is selected
-      //TODO Add comment function to qa process so that the user can add a comment about the decision
+    //TODO Add comment function to qa process so that the user can add a comment about the decision
     //TODO Add loading text / spinner to the page. Similar to the company result page
-    //TODO Add Show Dataset column to the table, similar to the company search page
     //TODO Check that using non scoped style is fine
     //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
     //TODO Discussion What about reverting a decision?
@@ -262,6 +275,6 @@ pre#dataset-container {
 }
 
 #qa-data-result tr:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 </style>
