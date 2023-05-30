@@ -15,7 +15,7 @@ describeIf(
     let readerAndUploaderPages = [] as string[];
     let uploaderOnlyPages = [] as string[];
     let companyId: string;
-    const noUploaderRightsMessageSelector = "h1:contains('no uploader status')";
+    const noUploaderRightsMessageSelector = "h1:contains('You do not have permission')";
 
     before(() => {
       getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
