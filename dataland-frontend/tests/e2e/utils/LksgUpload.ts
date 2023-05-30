@@ -81,14 +81,14 @@ function fillSingleProductionSite(): void {
  */
 function recursivelySelectYesOnAllFields(maxCounter: number): void {
   if (maxCounter <= 0) {
-    cy.get('input[type="radio" value="Yes"]').each((radioButton) => {
+    cy.get('input[value="Yes"][type="radio"]').each((radioButton) => {
       cy.wrap(radioButton).should("be.checked");
     });
   }
 
   cy.window().then((win) => {
     if (selectYesOnAllFieldsBrowser(win)) {
-      cy.wait(5000).then(() => recursivelySelectYesOnAllFields(maxCounter - 1));
+      cy.wait(250).then(() => recursivelySelectYesOnAllFields(maxCounter - 1));
     }
   });
 }
