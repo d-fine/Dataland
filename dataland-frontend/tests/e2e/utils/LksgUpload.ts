@@ -100,8 +100,6 @@ function selectYesOnAllFieldsBrowser(win: Window): boolean {
     if (!element.checked) {
       element.click();
       changedAnything = true;
-    } else {
-      console.log(element);
     }
   });
   return changedAnything;
