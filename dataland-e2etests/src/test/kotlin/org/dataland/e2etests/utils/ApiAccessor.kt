@@ -23,7 +23,9 @@ import org.dataland.datalandbackend.openApiClient.model.QAStatus
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
+import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedCompanyDataControllerApi
@@ -39,6 +41,8 @@ class ApiAccessor {
 
     val metaDataControllerApi = MetaDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedMetaDataControllerApi = UnauthorizedMetaDataControllerApi()
+
+    val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
 
     val jwtHelper = JwtAuthenticationHelper()
 

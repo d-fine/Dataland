@@ -20,6 +20,7 @@ export interface Field {
   description: string;
   component: string;
   dependency?: string;
+  certificateRequiredIfYes?: boolean;
   validation?: string;
   validationLabel?: string;
   required?: boolean;

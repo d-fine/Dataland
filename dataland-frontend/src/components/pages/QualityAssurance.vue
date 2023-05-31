@@ -5,7 +5,7 @@
       <TheContent class="paper-section flex">
         <div class="col-12 text-left pb-0">
           <BackButton />
-          <h1>"Quality Assurance"</h1>
+          <h1>Quality Assurance</h1>
           <div v-if="!waitingForData">
             <div class="card">
               <DataTable :value="resultData" class="table-cursor" id="qa-data-result" :rowHover="true" @row-click="loadDatasetAndOpenModal" >
@@ -43,9 +43,10 @@
               </DataTable>
             </div>
           </div>
-          <div v-else-if="waitingForData">
-            <span>loading</span>
-          </div>
+              <div v-else-if="waitingForData" class="inline-loading text-center">
+                  <p class="font-medium text-xl">Loading data to be reviewed...</p>
+                  <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+              </div>
         </div>
       </TheContent>
     </AuthorizationWrapper>
@@ -71,6 +72,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import {humanizeString} from "@/utils/StringHumanizer";
 import QADatasetModal from "@/components/general/QADatasetModal.vue";
+import { AxiosError } from "axios";
 export default defineComponent({
   name: "QualityAssurance",
   components: {
@@ -114,7 +116,6 @@ export default defineComponent({
     humanizeString,
     //TODO Discussion: Maybe only the first entry of the table should be clickable
     //TODO Buttons need to get functions, also should be disabled before a dataset is selected
-    //TODO Add comment function to qa process so that the user can add a comment about the decision
     //TODO Add loading text / spinner to the page. Similar to the company result page
     //TODO Check that using non scoped style is fine
     //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
@@ -133,25 +134,39 @@ export default defineComponent({
         const response = await qaServiceControllerApi.getUnreviewedDatasets();
         this.dataIdList = response.data;
         for (const dataId of this.dataIdList) {
-          const metaDataInformationControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
-          ).getMetaDataControllerApi();
-          const metaDataResponse = await metaDataInformationControllerApi.getDataMetaInfo(dataId);
-          this.metaInformation = metaDataResponse.data;
-          const companyDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
-          ).getCompanyDataControllerApi();
-          const companyResponse = await companyDataControllerApi.getCompanyById(this.metaInformation.companyId);
-          this.companyInformation = companyResponse.data.companyInformation;
-          this.resultData.push({
-            dataId: dataId,
-            metaInformation: this.metaInformation,
-            companyInformation: this.companyInformation,
-          });
+          await this.addDatasetAssociatedInformationToDisplayList(dataId);
         }
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
+      }
+    },
+    /**
+     * Gathers meta and company information associated with a dataset and adds it to the list of displayed
+     * datasets if the information can be retrieved
+     * @param dataId the ID of the corresponding dataset
+     */
+    async addDatasetAssociatedInformationToDisplayList(dataId: string) {
+      try {
+        const metaDataInformationControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getMetaDataControllerApi();
+        const metaDataResponse = await metaDataInformationControllerApi.getDataMetaInfo(dataId);
+        this.metaInformation = metaDataResponse.data;
+        const companyDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getCompanyDataControllerApi();
+        const companyResponse = await companyDataControllerApi.getCompanyById(this.metaInformation.companyId);
+        this.companyInformation = companyResponse.data.companyInformation;
+        this.resultData.push({
+          dataId: dataId,
+          metaInformation: this.metaInformation,
+          companyInformation: this.companyInformation,
+        });
+      } catch(error: AxiosError) {
+        if(error.response.status !== 404) {
+          throw error;
+        }
       }
     },
     /**

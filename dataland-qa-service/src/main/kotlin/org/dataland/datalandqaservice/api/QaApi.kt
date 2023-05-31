@@ -41,7 +41,6 @@ interface QaApi {
      * Assigns a quality status to a unreviewed dataset
      * @param dataId the ID of the dataset of which to change the quality status
      * @param qualityStatus the quality status to be assigned to a dataset
-     * @param comment a comment on the dataset, e.g. what is wrong
      */
     @Operation(
         summary = "Assign a quality status to a unreviewed dataset",
@@ -54,12 +53,10 @@ interface QaApi {
     )
     @PostMapping(
         value = ["/datasets/{dataId}"],
-        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun assignQualityStatus(
         @PathVariable("dataId") dataId: String,
         @RequestParam qualityStatus: QAStatus,
-        @RequestParam comment: String? = null,
-    ): ResponseEntity<Nothing>
+    ): ResponseEntity<Void>
 }
