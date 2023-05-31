@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasUserUploaderRights">
+  <div v-if="hasUserRequiredRole">
     <slot></slot>
   </div>
   <TheContent v-else class="paper-section flex">
@@ -23,7 +23,7 @@ export default defineComponent({
   components: { TheContent, MiddleCenterDiv },
   data() {
     return {
-      hasUserUploaderRights: null as boolean | null,
+      hasUserRequiredRole: null as boolean | null,
     };
   },
   props: {

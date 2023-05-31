@@ -172,7 +172,7 @@ export default defineComponent({
         this.handleScroll();
       },
       activeTabIndex: 0,
-      hasUserUploaderRights: null as null | boolean,
+      hasUserRequiredRole: null as null | boolean,
     };
   },
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
