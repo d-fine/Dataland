@@ -29,14 +29,7 @@
       />
       <FormKit v-if="yesSelected" type="group" name="dataSource">
         <FormKit type="hidden" name="name" v-model="documentName" />
-        <FormKit
-          type="text"
-          name="reference"
-          v-model="documentReference"
-          validation="required"
-          validation-label="If 'Yes' is selected an uploaded document"
-          :outer-class="{ 'hidden-input': true }"
-        />
+        <FormKit type="text" name="reference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
       </FormKit>
     </FormKit>
 
