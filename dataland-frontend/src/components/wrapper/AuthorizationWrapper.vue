@@ -39,8 +39,8 @@ export default defineComponent({
   },
   mounted: function () {
     checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise)
-      .then((hasUserUploaderRights) => {
-        this.hasUserUploaderRights = hasUserUploaderRights;
+      .then((hasUserRequiredRole) => {
+        this.hasUserRequiredRole = hasUserRequiredRole;
       })
       .catch((error) => console.log(error));
   },
