@@ -3,7 +3,7 @@ import {
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDetailsPerCashFlowType,
 } from "@clients/backend";
-import { ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
@@ -14,13 +14,14 @@ import {
 } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { parse } from "json2csv";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
  * Generates fake data for a single cash-flow type for the eutaxonomy-non-financials framework
  * @param reports a list of reports that can be referenced
  * @returns the generated data
  */
-export function generateEuTaxonomyPerCashflowType(reports: ReferencedReports): EuTaxonomyDetailsPerCashFlowType {
+export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
   const total = randomEuroValue();
   const eligiblePercentage = randomPercentageValue();
   const alignedPercentage = randomPercentageValue();
@@ -39,9 +40,9 @@ export function generateEuTaxonomyPerCashflowType(reports: ReferencedReports): E
 export function generateEuTaxonomyDataForNonFinancials(): EuTaxonomyDataForNonFinancials {
   const returnBase: EuTaxonomyDataForNonFinancials = generateEuTaxonomyWithBaseFields();
 
-  returnBase.opex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
-  returnBase.capex = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
-  returnBase.revenue = generateEuTaxonomyPerCashflowType(returnBase.referencedReports!);
+  returnBase.opex = generateEuTaxonomyPerCashflowType(assertDefined(returnBase.referencedReports));
+  returnBase.capex = generateEuTaxonomyPerCashflowType(assertDefined(returnBase.referencedReports));
+  returnBase.revenue = generateEuTaxonomyPerCashflowType(assertDefined(returnBase.referencedReports));
 
   return returnBase;
 }

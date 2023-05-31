@@ -6,6 +6,8 @@ import { checkStickynessOfSubmitSideBar, uploadCompanyAndLksgDataViaApi } from "
 import { describeIf } from "@e2e/support/TestUtility";
 import { humanizeString } from "@/utils/StringHumanizer";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { UploadIds } from "@e2e/utils/GeneralApiUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -14,48 +16,91 @@ describeIf(
     dataEnvironments: ["fakeFixtures", "realData"],
   },
   () => {
-    let preparedFixtures: Array<FixtureData<LksgData>>;
+    let uploadIds: UploadIds;
 
-    before(function () {
+    before(() => {
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
-        preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+        const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+        const preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
+        getKeycloakToken(uploader_name, uploader_pw)
+          .then(async (token: string) =>
+            uploadCompanyAndLksgDataViaApi(
+              token,
+              preparedFixture.companyInformation,
+              preparedFixture.t,
+              preparedFixture.reportingPeriod
+            )
+          )
+          .then((idsUploaded) => {
+            uploadIds = idsUploaded;
+          });
       });
     });
 
-    it("Should display a working edit button to data uploaders on the LKSG page", () => {
-      const preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
-      getKeycloakToken(uploader_name, uploader_pw)
-        .then(async (token: string) =>
-          uploadCompanyAndLksgDataViaApi(
-            token,
-            preparedFixture.companyInformation,
-            preparedFixture.t,
-            preparedFixture.reportingPeriod
-          )
-        )
-        .then((uploadIds) => {
-          cy.ensureLoggedIn(uploader_name, uploader_pw);
-          cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-          cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
-          cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
-          cy.get("div").contains("New Dataset - LkSG").should("be.visible");
-          submitButton.buttonIsUpdateDataButton();
-          submitButton.buttonAppearsEnabled();
-          checkStickynessOfSubmitSideBar();
-          submitButton.clickButton();
-          cy.get("h4")
-            .contains("Upload successfully executed.")
-            .should("exist")
-            .then(() => {
-              return getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
-                const data = await new LksgDataControllerApi(
-                  new Configuration({ accessToken: token })
-                ).getAllCompanyLksgData(uploadIds.companyId, false);
-                expect(data.data).to.have.length(2);
-                expect(data.data[0].data).to.deep.equal(data.data[1].data);
-              });
-            });
+    it("Editing Lksg data without changes should create a copy when uploaded", function () {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
+      cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
+      cy.get("div").contains("New Dataset - LkSG").should("be.visible");
+      submitButton.buttonIsUpdateDataButton();
+      submitButton.buttonAppearsEnabled();
+      checkStickynessOfSubmitSideBar();
+      submitButton.clickButton();
+      cy.get("h4")
+        .contains("Upload successfully executed.")
+        .should("exist")
+        .then(() => {
+          return getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
+            const data = await new LksgDataControllerApi(
+              new Configuration({ accessToken: token })
+            ).getAllCompanyLksgData(uploadIds.companyId, false);
+            expect(data.data).to.have.length(2);
+            expect(data.data[0].data).to.deep.equal(data.data[1].data);
+          });
         });
+    });
+
+    it("Edit and subsequent upload should work properly when removing or changing referenced documents", () => {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
+      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
+      cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
+      submitButton.buttonAppearsEnabled();
+      cy.get("button[data-test=files-to-upload-remove]")
+        .first()
+        .parents(".form-field:first")
+        .invoke("attr", "data-test")
+        .then((dataTest) => {
+          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
+            .find(`input[id=value-option-no]`)
+            .click();
+          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
+            .find(`button[data-test=files-to-upload-remove]`)
+            .should("not.exist");
+        });
+      cy.get("button[data-test=files-to-upload-remove]")
+        .eq(0)
+        .parents(".form-field:first")
+        .invoke("attr", "data-test")
+        .then((dataTest) => {
+          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
+            .find(`div[class=upload-files-button]`)
+            .should("not.exist");
+          cy.get(`div[data-test=${assertDefined(dataTest)}] button[data-test=files-to-upload-remove]`)
+            .should("be.visible")
+            .click();
+          submitButton.buttonAppearsDisabled();
+          cy.get(
+            `div[data-test=${assertDefined(dataTest)}] button[data-test=upload-files-button-${assertDefined(dataTest)}]`
+          ).should("be.visible");
+          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
+            .find("input[type=file]")
+            .selectFile(`../testing/data/documents/test-report.pdf`, { force: true, log: true });
+        });
+      submitButton.buttonAppearsEnabled();
+      submitButton.clickButton();
+      cy.get("h4").contains("Upload successfully executed.").should("exist");
     });
   }
 );

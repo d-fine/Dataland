@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -15,7 +16,7 @@ data class LksgUnequalTreatmentOfEmployment(
 
     val equalOpportunitiesOfficer: YesNo?,
 
-    val fairAndEthicalRecruitmentPolicy: YesNo?,
+    val fairAndEthicalRecruitmentPolicy: BaseDataPoint<YesNo>?,
 
-    val equalOpportunitiesAndNonDiscriminationPolicy: YesNo?,
+    val equalOpportunitiesAndNonDiscriminationPolicy: BaseDataPoint<YesNo>?,
 )

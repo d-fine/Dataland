@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.environmental.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -9,7 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class LksgUseOfMercuryMercuryWasteMinamataConvention(
     val mercuryAndMercuryWasteHandling: YesNo?,
 
-    val mercuryAndMercuryWasteHandlingPolicy: YesNo?,
+    val mercuryAndMercuryWasteHandlingPolicy: BaseDataPoint<YesNo>?,
 
     val mercuryAddedProductsHandling: YesNo?,
 
