@@ -39,7 +39,7 @@ function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<
  */
 function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureData<LksgData>): FixtureData<LksgData> {
   const twoProductionSites = [generateProductionSite(), generateProductionSite()];
-  input.companyInformation.companyName = "one-lksg-data-set";
+  input.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
   input.t.general!.productionSpecific!.listOfProductionSites = twoProductionSites;
   return input;
 }

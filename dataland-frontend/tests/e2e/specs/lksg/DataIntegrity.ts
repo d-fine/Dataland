@@ -13,7 +13,6 @@ import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { generateProductionSite } from "@e2e/fixtures/lksg/LksgDataFixtures";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describeIf(
   "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
@@ -60,16 +59,14 @@ describeIf(
     it("Check if the list of production sites is displayed as expected", () => {
       cy.fixture("MetaInfoDataForCompany.json").then((metaInfos) => {
         cy.fixture("CompanyInformationWithLksgPreparedFixtures").then((lksgDataSets) => {
-          const preparedFixture = getPreparedFixture("one-lksg-data-set", lksgDataSets as FixtureData<LksgData>[]);
-          const lksgData = prepareLksgViewIntercepts(preparedFixture, (metaInfos as DataMetaInformation[])[0]);
-          const listOfProductionSites = assertDefined(lksgData.general?.productionSpecific?.listOfProductionSites);
-          if (listOfProductionSites.length < 2) {
-            throw Error("This test only accepts an Lksg-dataset which has at least two production sites.");
-          }
+          const lksgData = prepareLksgViewIntercepts(
+            getPreparedFixture("one-lksg-data-set-with-two-production-sites", lksgDataSets as FixtureData<LksgData>[]),
+            (metaInfos as DataMetaInformation[])[0]
+          );
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
           toggleRowGroup("productionSpecific");
           cy.get(`a:contains(Show "List Of Production Sites")`).click();
-          listOfProductionSites.forEach((productionSite: LksgProductionSite) => {
+          lksgData.general!.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
             if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
               cy.get("tbody.p-datatable-tbody p").contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
             }
