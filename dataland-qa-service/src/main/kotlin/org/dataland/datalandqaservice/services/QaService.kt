@@ -12,6 +12,7 @@ import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.entities.DatasetReviewStatusEntity
 import org.dataland.datalandqaservice.repositories.DatasetReviewStatusRepository
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -66,8 +67,8 @@ class QaService(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        val dataId = messageUtils.extractValueFromMessagePayload(payload, "dataId")
-        val bypassQa = messageUtils.extractValueFromMessagePayload(payload, "bypassQa").toBoolean()
+        val dataId = JSONObject(payload).getString("dataId")
+        val bypassQa = JSONObject(payload).getBoolean("bypassQa")
         messageUtils.validateMessageType(type, MessageType.DataStored)
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
