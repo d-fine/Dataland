@@ -80,6 +80,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import {humanizeString} from "@/utils/StringHumanizer";
 import QADatasetModal from "@/components/general/QADatasetModal.vue";
+import { AxiosError } from "axios";
 export default defineComponent({
   name: "QualityAssurance",
   components: {
@@ -149,25 +150,39 @@ export default defineComponent({
         const response = await qaServiceControllerApi.getUnreviewedDatasets();
         this.dataIdList = response.data;
         for (const dataId of this.dataIdList) {
-          const metaDataInformationControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
-          ).getMetaDataControllerApi();
-          const metaDataResponse = await metaDataInformationControllerApi.getDataMetaInfo(dataId);
-          this.metaInformation = metaDataResponse.data;
-          const companyDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)()
-          ).getCompanyDataControllerApi();
-          const companyResponse = await companyDataControllerApi.getCompanyById(this.metaInformation.companyId);
-          this.companyInformation = companyResponse.data.companyInformation;
-          this.resultData.push({
-            dataId: dataId,
-            metaInformation: this.metaInformation,
-            companyInformation: this.companyInformation,
-          });
+          await this.addDatasetAssociatedInformationToDisplayList(dataId);
         }
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
+      }
+    },
+    /**
+     * Gathers meta and company information associated with a dataset and adds it to the list of displayed
+     * datasets if the information can be retrieved
+     * @param dataId the ID of the corresponding dataset
+     */
+    async addDatasetAssociatedInformationToDisplayList(dataId: string) {
+      try {
+        const metaDataInformationControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getMetaDataControllerApi();
+        const metaDataResponse = await metaDataInformationControllerApi.getDataMetaInfo(dataId);
+        this.metaInformation = metaDataResponse.data;
+        const companyDataControllerApi = await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)()
+        ).getCompanyDataControllerApi();
+        const companyResponse = await companyDataControllerApi.getCompanyById(this.metaInformation.companyId);
+        this.companyInformation = companyResponse.data.companyInformation;
+        this.resultData.push({
+          dataId: dataId,
+          metaInformation: this.metaInformation,
+          companyInformation: this.companyInformation,
+        });
+      } catch(error: AxiosError) {
+        if(error.response.status !== 404) {
+          throw error;
+        }
       }
     },
     /**
