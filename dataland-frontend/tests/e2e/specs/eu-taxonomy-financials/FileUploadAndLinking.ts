@@ -7,7 +7,7 @@ import {
 import { EuTaxonomyDataForFinancials, CompanyAssociatedDataEuTaxonomyDataForFinancials } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { uploadReports } from "@sharedUtils/components/UploadReports";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 
@@ -41,13 +41,19 @@ describeIf(
         () => undefined,
         fillAndValidateEuTaxonomyForFinancialsUploadForm,
         () => {
-          uploadReports.selectFile(TEST_PDF_FILE_NAME);
-          uploadReports.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
-          uploadReports.removeReportToUpload(TEST_PDF_FILE_NAME);
-          uploadReports.checkNoReportIsListed();
-          uploadReports.selectFile(TEST_PDF_FILE_NAME);
-          uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-          uploadReports.fillAllReportsToUploadForms(2);
+          uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+          uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
+          uploadDocuments.removeReportToUpload(TEST_PDF_FILE_NAME);
+          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("not.exist");
+          uploadDocuments.checkNoReportIsListed();
+          uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
+          uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+          uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
+          cy.get(`[data-test="${TEST_PDF_FILE_NAME}ToUploadContainer"]`).should("exist");
+          uploadDocuments.validateReportToUploadIsListed(`${TEST_PDF_FILE_NAME}2`);
+          uploadDocuments.fillAllReportsToUploadForms(2);
           cy.get(`[data-test="assetManagementKpis"]`)
             .find(`[data-test="banksAndIssuers"]`)
             .find('select[name="report"]')
@@ -59,12 +65,12 @@ describeIf(
         },
         (request) => {
           const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
-          expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(areBothDocumentsStillUploaded);
-          expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
+          expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(areBothDocumentsStillUploaded);
+          expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
         },
         (companyId) => {
           gotoEditForm(companyId, true);
-          uploadReports.removeUploadedReport(TEST_PDF_FILE_NAME).then(() => {
+          uploadDocuments.removeUploadedReport(TEST_PDF_FILE_NAME).then(() => {
             areBothDocumentsStillUploaded = false;
           });
           const postRequestAlias = "postData";
@@ -76,8 +82,10 @@ describeIf(
             },
             (request) => {
               const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials).data);
-              expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(areBothDocumentsStillUploaded);
-              expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
+              expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(
+                areBothDocumentsStillUploaded
+              );
+              expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
             }
           ).as(postRequestAlias);
           cy.get('button[data-test="submitButton"]').click();

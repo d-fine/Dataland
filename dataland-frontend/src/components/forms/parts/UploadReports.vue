@@ -4,58 +4,20 @@
     <p>Please upload all relevant reports for this dataset in the PDF format.</p>
   </div>
   <!-- Select company reports -->
-  <div class="col-9 formFields uploaded-files">
+  <div class="col-9 formFields">
     <h3 class="mt-0">Select company reports</h3>
-    <FileUpload
-      name="fileUpload"
-      ref="fileUpload"
-      accept=".pdf"
-      @select="handleFilesSelected"
-      :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
-      invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
-      :auto="false"
-    >
-      <template #header="{ chooseCallback }">
-        <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
-          <div class="flex gap-2">
-            <PrimeButton
-              data-test="upload-files-button"
-              @click="chooseCallback()"
-              icon="pi pi-upload"
-              label="SELECT REPORTS"
-            />
-          </div>
-        </div>
-      </template>
-      <template #content="{ files, removeFileCallback }">
-        <div v-if="files.length > 0" data-test="files-to-upload">
-          <div
-            v-for="(selectedFile, index) of files"
-            :key="selectedFile.name + index"
-            class="flex w-full align-items-center file-upload-item"
-            :data-test="removeFileTypeExtension(selectedFile.name) + 'FileUploadContainer'"
-          >
-            <span data-test="files-to-upload-title" class="font-semibold flex-1">{{ selectedFile.name }}</span>
-            <div data-test="files-to-upload-size" class="mx-2 text-black-alpha-50">
-              {{ formatBytesUserFriendly(selectedFile.size, 1) }}
-            </div>
-            <PrimeButton
-              data-test="files-to-upload-remove"
-              icon="pi pi-times"
-              @click="removeReportFromReportsToUpload(removeFileCallback, index)"
-              class="p-button-rounded"
-            />
-          </div>
-        </div>
-      </template>
-    </FileUpload>
+    <UploadDocumentsForm
+      @documentsChanged="updateSelectedReports"
+      :index-of-report-to-remove="indexOfReportToRemove"
+      :name="fileUpload"
+    />
   </div>
   <FormKit name="referencedReports" type="group">
     <div class="uploadFormSection">
       <!-- List of company reports to upload -->
       <div
         v-for="reportToUpload of reportsToUpload"
-        :key="reportToUpload.fileForReport.name"
+        :key="reportToUpload.file.name"
         class="col-9 formFields"
         data-test="report-to-upload-form"
       >
@@ -102,22 +64,22 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
-import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
+
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { CompanyReport } from "@clients/backend";
-import { ApiClientProvider } from "@/services/ApiClients";
 import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import ElementsDialog from "@/components/general/ElementsDialog.vue";
+import { removeFileTypeExtension, ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
+import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 
 export default defineComponent({
   name: "UploadReports",
   components: {
+    UploadDocumentsForm,
     ReportFormElement,
     PrimeButton,
-    FileUpload,
   },
   emits: ["referenceableReportNamesChanged"],
   setup() {
@@ -130,8 +92,9 @@ export default defineComponent({
       formsDatesFilesToUpload: [] as string[] | undefined,
       formatBytesUserFriendly,
       DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES: DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-      reportsToUpload: [] as ReportToUpload[],
+      reportsToUpload: [] as ReportToUpload[] | undefined,
       storedReports: [] as StoredReport[],
+      indexOfReportToRemove: [] as number[],
     };
   },
   props: {
@@ -152,6 +115,7 @@ export default defineComponent({
     },
   },
   methods: {
+    removeFileTypeExtension,
     /**
      * Emits event that referenceable files changed
      */
@@ -161,51 +125,21 @@ export default defineComponent({
     /**
      * Handles selection of a file by the user. First it checks if the file name is already taken.
      * If yes, the selected file is removed again and a popup with an error message is shown.
-     * Else the file is added to the reports that shall be uploaded, then the sha256 hashes are calculated and added
-     * to the respective files.
-     * @param event full event object containing the files
-     * @param event.files files
+     * Else the file is added to the reports that shall be uploaded, then the sha256 hashes are calculated
+     * and added to the respective files.
+     * @param reports the list of all reports currently selected in the file upload
      */
-    async handleFilesSelected(event: FileUploadSelectEvent): void {
-      const selectedFilesByUser = event.files as File[];
-      if (!this.isThereActuallyANewFileSelected(selectedFilesByUser, this.reportsToUpload)) {
-        return;
-      }
-      const indexOfLastSelectedFile = selectedFilesByUser.length - 1;
-      const lastSelectedFile = selectedFilesByUser[indexOfLastSelectedFile];
-      if (this.isFileNameAlreadyExistingAmongReferenceableReportNames(lastSelectedFile.name)) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        this.$refs.fileUpload.remove(indexOfLastSelectedFile);
+    updateSelectedReports(reports: ReportToUpload[]) {
+      this.reportsToUpload = reports;
+      if (this.duplicatesAmongReferenceableReportNames()) {
+        const indexOfLastSelectedFile = reports.length - 1;
+        const lastSelectedFile = reports[indexOfLastSelectedFile].file;
         this.openModalToDisplayDuplicateNameError(lastSelectedFile.name);
+        this.indexOfReportToRemove = [indexOfLastSelectedFile];
       } else {
-        const reportToUpload = { fileForReport: lastSelectedFile } as ReportToUpload;
-        reportToUpload.reference = await this.calculateSha256HashFromFile(reportToUpload.fileForReport);
-        reportToUpload.fileNameWithoutSuffix = this.removeFileTypeExtension(reportToUpload.fileForReport.name);
-        this.reportsToUpload.push(reportToUpload);
         this.emitReferenceableReportNamesChangedEvent();
       }
     },
-    /**
-     * Checks if there was actually a file added by the user that was not filtered
-     * out by the FileUpload component.
-     * @param filesCurrentlySelectedByUser the files currently selected by the user
-     * @param previouslySelectedReports the reports that have already been selected before the last change
-     * @returns true if there is actually a file added by the user
-     */
-    isThereActuallyANewFileSelected(filesCurrentlySelectedByUser: File[], previouslySelectedReports: ReportToUpload[]) {
-      return filesCurrentlySelectedByUser.length != previouslySelectedReports.length;
-    },
-    /**
-     * Remove report from files uploaded
-     * @param fileRemoveCallback Callback function removes report from the ones selected in formKit
-     * @param indexOfFileToRemove index number of the file to remove
-     */
-    removeReportFromReportsToUpload(fileRemoveCallback: (x: number) => void, indexOfFileToRemove: number) {
-      fileRemoveCallback(indexOfFileToRemove);
-      this.reportsToUpload.splice(indexOfFileToRemove, 1);
-      this.emitReferenceableReportNamesChangedEvent();
-    },
-
     /**
      * When the X besides existing reports is clicked this function should be called and
      * removes the corresponding report from the list
@@ -216,27 +150,6 @@ export default defineComponent({
       this.emitReferenceableReportNamesChangedEvent();
     },
 
-    /**
-     * Uploads the filed that are to be uploaded if they are not already available to dataland
-     */
-    async uploadFiles() {
-      const documentUploadControllerControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise())
-      ).getDocumentControllerApi();
-      for (const reportToUpload of this.reportsToUpload) {
-        const fileIsAlreadyInStorage = (
-          await documentUploadControllerControllerApi.checkDocument(reportToUpload.reference)
-        ).data.documentExists;
-        if (!fileIsAlreadyInStorage) {
-          const backendComputedHash = (
-            await documentUploadControllerControllerApi.postDocument(reportToUpload.fileForReport)
-          ).data.documentId;
-          if (reportToUpload.reference !== backendComputedHash) {
-            throw Error("Locally computed document hash does not concede with the one received by the upload request!");
-          }
-        }
-      }
-    },
     /**
      * Initializes the already uploaded reports from provided reports
      */
@@ -277,53 +190,14 @@ export default defineComponent({
     },
 
     /**
-     * Checks for a single file name if it already occurs among the referenceable report names
-     * @param fullFileName is the full file name with its prefix that should be checked
-     * @returns a boolean stating if the file name is among the referenceable report names
+     * Checks if there is a report name twice in the list of referencable report names
+     * @returns a boolean stating if any file name is duplicated among the reference report names
      */
-    isFileNameAlreadyExistingAmongReferenceableReportNames(fullFileName: string): boolean {
-      const fileNameWithoutSuffix = this.removeFileTypeExtension(fullFileName);
-      return this.allReferenceableReportNames.some((reportName) => reportName === fileNameWithoutSuffix);
-    },
-
-    /**
-     *  calculates the hash from a file
-     * @param [file] the file to calculate the hash for
-     * @returns a promise of the hash as string
-     */
-    async calculateSha256HashFromFile(file: File): Promise<string> {
-      const buffer = await file.arrayBuffer();
-      const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
-      return this.toHex(hashBuffer);
-    },
-    /**
-     *  helper to encode a hash of type buffer in hex
-     * @param [buffer] the buffer to encode in hex
-     * @returns  the array as string, hex encoded
-     */
-    toHex(buffer: ArrayBuffer): string {
-      const array = Array.from(new Uint8Array(buffer)); // convert buffer to byte array
-      return array.map((b) => b.toString(16).padStart(2, "0")).join(""); // convert bytes to hex string
-    },
-
-    /**
-     * Removes the file extension after the last dot of the filename.
-     * E.g. someFileName.with.dots.pdf will be converted to someFileName.with.dots
-     * @param fileName the file name
-     * @returns the file name without the file extension after the last dot
-     */
-    removeFileTypeExtension(fileName: string): string {
-      return fileName.split(".").slice(0, -1).join(".");
+    duplicatesAmongReferenceableReportNames(): boolean {
+      return this.allReferenceableReportNames.length !== new Set(this.allReferenceableReportNames).size;
     },
   },
 });
-interface StoredReport extends CompanyReport {
-  reportName: string;
-}
-interface ReportToUpload extends CompanyReport {
-  fileForReport: File;
-  fileNameWithoutSuffix: string;
-}
 </script>
 
 <style scoped>

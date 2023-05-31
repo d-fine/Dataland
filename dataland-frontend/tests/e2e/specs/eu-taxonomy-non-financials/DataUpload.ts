@@ -21,7 +21,7 @@ import {
   uploadCompanyViaApiAndEuTaxonomyDataViaForm,
 } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { uploadReports } from "@sharedUtils/components/UploadReports";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import Chainable = Cypress.Chainable;
 
 describeIf(
@@ -91,21 +91,21 @@ describeIf(
             testData.companyInformation,
             undefined,
             () => {
-              uploadReports.selectDummyFile("dummy_1", 1);
-              uploadReports.numberOfReportsToUploadShouldBe(1);
+              uploadDocuments.selectDummyFile("dummy_1", 1);
+              uploadDocuments.numberOfReportsToUploadShouldBe(1);
               validateFileCanNotBeUploadedDialogIsClosed();
-              uploadReports.selectDummyFile("dummy_1", 1);
-              uploadReports.numberOfReportsToUploadShouldBe(1);
+              uploadDocuments.selectDummyFile("dummy_1", 1);
+              uploadDocuments.numberOfReportsToUploadShouldBe(1);
               validateFileCanNotBeUploadedDialogIsClosed();
-              uploadReports.selectDummyFile("dummy_1", 2);
+              uploadDocuments.selectDummyFile("dummy_1", 2);
               validateFileCanNotBeUploadedDialogIsOpenAndClose();
-              uploadReports.numberOfReportsToUploadShouldBe(1);
-              uploadReports.removeAllReportsToUpload();
+              uploadDocuments.numberOfReportsToUploadShouldBe(1);
+              uploadDocuments.removeAllReportsToUpload();
 
-              uploadReports.numberOfReportsToUploadShouldBe(0);
-              uploadReports.selectFile(TEST_PDF_FILE_NAME);
-              uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-              uploadReports.fillAllReportsToUploadForms(2);
+              uploadDocuments.numberOfReportsToUploadShouldBe(0);
+              uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+              uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
+              uploadDocuments.fillAllReportsToUploadForms(2);
 
               fillAndValidateEuTaxonomyForNonFinancialsUploadForm(false, TEST_PDF_FILE_NAME);
 
@@ -116,13 +116,13 @@ describeIf(
             },
             (request) => {
               const data = assertDefined((request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data);
-              frontendDocumentHash = data.referencedReports![TEST_PDF_FILE_NAME].reference;
-              expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(true);
-              expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
+              frontendDocumentHash = assertDefined(data.referencedReports)[TEST_PDF_FILE_NAME].reference;
+              expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(true);
+              expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
             },
             (companyId) => {
               goToEditForm(companyId, true);
-              uploadReports.removeUploadedReport(TEST_PDF_FILE_NAME);
+              uploadDocuments.removeUploadedReport(TEST_PDF_FILE_NAME);
               const postRequestAlias = "postData";
               cy.intercept(
                 {
@@ -134,8 +134,8 @@ describeIf(
                   const data = assertDefined(
                     (request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data
                   );
-                  expect(TEST_PDF_FILE_NAME in data.referencedReports!).to.equal(false);
-                  expect(`${TEST_PDF_FILE_NAME}2` in data.referencedReports!).to.equal(true);
+                  expect(TEST_PDF_FILE_NAME in assertDefined(data.referencedReports)).to.equal(false);
+                  expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.referencedReports)).to.equal(true);
                 }
               ).as(postRequestAlias);
               cy.get('button[data-test="submitButton"]').click();
@@ -229,9 +229,11 @@ describeIf(
         newValueForEligibleRevenueAfterEdit + "%"
       );
       return cy.wait("@getMetaDataForViewPage").then((interception) => {
-        return (interception.response!.body as DataMetaInformation[]).find(
-          (dataMetaInfo) => dataMetaInfo.currentlyActive
-        )!.dataId;
+        return assertDefined(
+          (assertDefined(interception.response).body as DataMetaInformation[]).find(
+            (dataMetaInfo) => dataMetaInfo.currentlyActive
+          )
+        ).dataId;
       });
     }
 
@@ -256,19 +258,13 @@ describeIf(
     function checkThatFilesMustBeReferenced(): void {
       cy.get(`button[data-test="remove-${TEST_PDF_FILE_NAME}"]`).click();
       cy.get(".p-dialog-content").should("not.exist");
-      cy.get("input[type=file]").selectFile(
-        {
-          contents: `../${TEST_PDF_FILE_PATH}`,
-          fileName: "someOtherFileName" + ".pdf",
-        },
-        { force: true }
-      );
-      uploadReports.fillAllReportsToUploadForms();
+      cy.get("input[type=file]").selectFile(`../testing/data/documents/test-report.pdf`, { force: true });
+      uploadDocuments.fillAllReportsToUploadForms();
       cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
       cy.get('[data-test="assuranceSection"] select[name="report"]').should("contain.text", "None...");
       cy.wait(100);
       cy.get('button[data-test="submitButton"]').click();
-      cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "someOtherFileName");
+      cy.get('[data-test="failedUploadMessage"]').should("exist").should("contain.text", "test-report");
     }
 
     /**
@@ -277,11 +273,14 @@ describeIf(
      */
     function checkExistingFilenameDialogDidNotBreakSubsequentSelection(): void {
       const reportName = `${TEST_PDF_FILE_NAME}2`;
-      uploadReports.selectFile(reportName);
+      uploadDocuments.selectFile(reportName);
       cy.get(".p-dialog-content").should("not.exist");
-      uploadReports.validateReportToUploadIsListed(reportName);
-      uploadReports.removeAllReportsToUpload();
-      uploadReports.reportIsNotListed(reportName);
+      uploadDocuments.validateReportToUploadIsListed(reportName);
+      cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
+      uploadDocuments.removeAllReportsToUpload();
+      cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
+
+      uploadDocuments.reportIsNotListed(reportName);
     }
 
     const differentFileNameForSameFile = `${TEST_PDF_FILE_NAME}FileCopy`;
@@ -304,7 +303,7 @@ describeIf(
         },
         { force: true }
       );
-      uploadReports.fillAllReportsToUploadForms();
+      uploadDocuments.fillAllReportsToUploadForms();
       cy.get(`div[data-test=capexSection] div[data-test=total] select[name="report"]`).select(
         differentFileNameForSameFile
       );
@@ -316,7 +315,7 @@ describeIf(
         .its("response.body")
         .should("deep.equal", { documentExists: true });
       cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((req) => {
-        cy.log(req.response!.body as string);
+        cy.log(assertDefined(req.response).body as string);
       });
       cy.wait("@getDataForMyDatasetsPage");
       cy.get("@postDocument").should("not.have.been.called");
