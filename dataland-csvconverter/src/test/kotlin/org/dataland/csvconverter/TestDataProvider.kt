@@ -16,7 +16,7 @@ class TestDataProvider(private val objectMapper: ObjectMapper) {
 
     fun getAllCompanyInformationWithEuTaxonomyDataForFinancials():
         List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> {
-        val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyDataForFinancials.json")
+        val jsonFile = File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancials.json")
         return objectMapper.readValue(jsonFile)
     }
 }
