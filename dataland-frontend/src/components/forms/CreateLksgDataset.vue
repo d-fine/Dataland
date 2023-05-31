@@ -47,9 +47,12 @@
                         :name="field.name"
                         :options="field.options"
                         :required="field.required"
+                        :certificateRequiredIfYes="field.certificateRequiredIfYes"
                         :validation="field.validation"
                         :validation-label="field.validationLabel"
                         :data-test="field.name"
+                        @documentUpdated="updateDocumentList"
+                        :ref="field.name"
                       />
                     </FormKit>
                   </div>
@@ -114,6 +117,7 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
+import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -175,6 +179,7 @@ export default defineComponent({
       elementPosition: 0,
       checkCustomInputs,
       updatingData: false,
+      documents: new Map() as Map<string, DocumentToUpload>,
     };
   },
   computed: {
@@ -200,7 +205,7 @@ export default defineComponent({
   },
   mounted() {
     const dataId = this.route.query.templateDataId;
-    if (dataId !== undefined && typeof dataId === "string" && dataId !== "") {
+    if (dataId && typeof dataId === "string") {
       void this.loadLKSGData(dataId);
     }
   },
@@ -245,12 +250,14 @@ export default defineComponent({
     async postLkSGData(): Promise<void> {
       this.messageCounter++;
       try {
+        if (this.documents.size > 0) {
+          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
+        }
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
-        this.$formkit.reset(this.formId);
         this.isYourCompanyManufacturingCompany = "No";
         this.listOfProductionSites = [
           {
@@ -274,6 +281,19 @@ export default defineComponent({
         this.uploadSucceded = false;
       } finally {
         this.postLkSGDataProcessed = true;
+      }
+    },
+
+    /**
+     * updates the list of certificates that were uploaded in the corresponding formfields on change
+     * @param fieldName the name of the formfield as a key
+     * @param document the certificate as combined object of reference id and file content
+     */
+    updateDocumentList(fieldName: string, document: DocumentToUpload) {
+      if (document) {
+        this.documents.set(fieldName, document);
+      } else {
+        this.documents.delete(fieldName);
       }
     },
   },

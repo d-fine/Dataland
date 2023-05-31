@@ -8,13 +8,7 @@
           <h1>"Quality Assurance"</h1>
           <div v-if="!waitingForData">
             <div class="card">
-              <DataTable
-                :value="resultData"
-                class="table-cursor"
-                id="qa-data-result"
-                @row-click="getDataSet"
-                :rowHover="true"
-              >
+              <DataTable :value="resultData" class="table-cursor" id="qa-data-result" :rowHover="true" @row-click="loadDatasetAndOpenModal" >
                 <Column header="DATA ID" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.dataId }}
@@ -27,7 +21,7 @@
                 </Column>
                 <Column header="FRAMEWORK" class="d-bg-white w-2">
                   <template #body="{ data }">
-                    {{ data.metaInformation.dataType }}
+                    {{ humanizeString(data.metaInformation.dataType) }}
                   </template>
                 </Column>
                 <Column header="REPORTING PERIOD" class="d-bg-white w-2">
@@ -35,22 +29,22 @@
                     {{ data.metaInformation.reportingPeriod }}
                   </template>
                 </Column>
-                <Column class="d-bg-white w-2">
-                  <template>
-                    <div class="text-right text-primary no-underline font-bold">
-                      <span>CLICK TO REVIEW</span>
-                      <span class="ml-3">></span>
-                    </div>
+                <Column field="reviewDataset" header="" class="w-2 d-bg-white ">
+                  <template #body="{ data }">
+                    <router-link :to="loadDatasetAndOpenModal" class="text-primary no-underline font-bold">
+                      <div class="text-right">
+                        <span>REVIEW</span>
+                        <span class="ml-3">></span>
+                      </div>
+                    </router-link>
                   </template>
                 </Column>
+
               </DataTable>
             </div>
           </div>
           <div v-else-if="waitingForData">
             <span>loading</span>
-          </div>
-          <div>
-            <pre id="dataset-container">{{ datasetAsJson }}</pre>
           </div>
         </div>
         <MiddleCenterDiv class="col-12">
@@ -84,6 +78,8 @@ import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue"
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import {humanizeString} from "@/utils/StringHumanizer";
+import QADatasetModal from "@/components/general/QADatasetModal.vue";
 export default defineComponent({
   name: "QualityAssurance",
   components: {
@@ -118,11 +114,6 @@ export default defineComponent({
   async mounted() {
     await this.getQaData();
   },
-  computed: {
-    datasetAsJson(): string {
-      return JSON.stringify(this.dataSet, null, 2);
-    },
-  },
   props: {
     data: {
       type: Object,
@@ -136,6 +127,7 @@ export default defineComponent({
     },
   },
   methods: {
+    humanizeString,
     //TODO Discussion: Maybe only the first entry of the table should be clickable
     //TODO Buttons need to get functions, also should be disabled before a dataset is selected
     //TODO Add comment function to qa process so that the user can add a comment about the decision
@@ -180,13 +172,12 @@ export default defineComponent({
     },
     /**
      * Retrieves the dataset corresponding to the given dataId
-     * @param event the click event which initiates data retrieval
-     * @param event.data the data object belonging to the click event
+     * @param data
      */
-    async getDataSet(event: { data: QaDataObject }) {
+    async getDataSet(data: QaDataObject) {
       try {
-        const filteredData = event.data.metaInformation.dataType;
-        const dataId = event.data.dataId;
+        const filteredData = data.metaInformation.dataType;
+        const dataId = data.dataId;
         if (filteredData === DataTypeEnum.EutaxonomyNonFinancials) {
           try {
             const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
@@ -256,6 +247,24 @@ export default defineComponent({
         assertDefined(this.getKeycloakPromise)()
       ).getQaControllerApi();
       await qaServiceControllerApi.assignQualityStatus(this.dataId, "Rejected");
+    },
+    /**
+     * Opens a modal to display a table with the provided list of production sites
+     * @param event
+     * @param event.data
+     */
+    loadDatasetAndOpenModal(event: { data: QaDataObject }) {
+      this.getDataSet(event.data);
+      this.$dialog.open(QADatasetModal, {
+        props: {
+          header: "Dataset to review",
+          modal: true,
+          dismissableMask: true,
+        },
+        data: {
+          dataSetToReview: this.dataSet,
+        },
+      });
     },
   },
 });
