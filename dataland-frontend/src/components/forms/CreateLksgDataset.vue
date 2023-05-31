@@ -234,7 +234,6 @@ export default defineComponent({
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
-        this.$formkit.reset(this.formId);
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
