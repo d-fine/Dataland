@@ -236,9 +236,7 @@ export default defineComponent({
      * @param event.data
      */
     async loadDatasetAndOpenModal(event: { data: QaDataObject }) {
-      console.log("data set before = ", this.dataSet);
       await this.getDataSet(event.data);
-      console.log("data set after = ", this.dataSet);
       this.$dialog.open(QADatasetModal, {
         props: {
           header: "Dataset to review",
@@ -250,6 +248,7 @@ export default defineComponent({
           dataId: this.dataId,
         },
       });
+      this.closeDi
     },
   },
 });

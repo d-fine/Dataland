@@ -3,11 +3,13 @@
     <pre id="dataset-container">{{ datasetAsJson }}</pre>
   </div>
   <MiddleCenterDiv class="col-12">
-    <div>
+    <div v-if="reviewSubmitted !== true">
       <PrimeButton @click="setQualityStatusToApproved" label="Accept Dataset" />
-    </div>
-    <div>
       <PrimeButton @click="setQualityStatusToRejected" label="Reject Dataset" />
+    </div>
+    <div v-if="reviewSubmitted" >
+      <SuccessMessage v-if="reviewSuccessful" success-message="Review successfully submitted." />
+      <FailMessage v-else />
     </div>
   </MiddleCenterDiv>
 </template>
@@ -20,9 +22,13 @@ import {ApiClientProvider} from "@/services/ApiClients";
 import {assertDefined} from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
+import SuccessMessage from "@/components/messages/SuccessMessage.vue";
+import FailMessage from "@/components/messages/FailMessage.vue";
+import {Router} from "vue-router";
+import {TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS} from "@/utils/Constants";
 
 export default defineComponent( {
-  components: {MiddleCenterDiv, PrimeButton},
+  components: {FailMessage, SuccessMessage, MiddleCenterDiv, PrimeButton},
   inject: ["dialogRef"],
   name: "QADatasetModal",
   setup() {
@@ -34,6 +40,8 @@ export default defineComponent( {
     return {
       dataSetToReview: null as unknown as object,
       dataId: "",
+      reviewSubmitted: false,
+      reviewSuccessful: false,
     };
   },
   mounted() {
@@ -55,20 +63,39 @@ export default defineComponent( {
      * Sets dataset to accepted
      */
     async setQualityStatusToApproved() {
-      const qaServiceControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-      ).getQaControllerApi();
-      await qaServiceControllerApi.assignQualityStatus(this.dataId, "Accepted");
+      try {
+        this.reviewSubmitted = true;
+        const qaServiceControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+        ).getQaControllerApi();
+        await qaServiceControllerApi.assignQualityStatus(this.dataId, "Accepted");
+        this.reviewSuccessful = true;
+      } catch (error) {
+        console.error(error);
+      }
     },
     /**
      * Sets dataset to rejected
      */
     async setQualityStatusToRejected() {
-      const qaServiceControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-      ).getQaControllerApi();
-      await qaServiceControllerApi.assignQualityStatus(this.dataId, "Rejected");
+      try {
+        this.reviewSubmitted = true;
+        const qaServiceControllerApi = await new ApiClientProvider(
+            assertDefined(this.getKeycloakPromise)()
+        ).getQaControllerApi();
+        await qaServiceControllerApi.assignQualityStatus(this.dataId, "Rejected");
+        this.reviewSuccessful = true;
+        this.redirectToAllPendingDatasets(this.$router);
+      } catch (error) {
+        console.error(error);
+      }
     },
+    // This was my try to close modal inside this component, inspired by DatasetCreationRedirect.ts
+    redirectToAllPendingDatasets(router: Router): void {
+      setTimeout(() => {
+        void router.push(`/datasets`);
+      }, TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS);
+    }
   }
 });
 </script>
