@@ -12,6 +12,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -71,7 +72,7 @@ class DatabaseStringDataStore(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DataReceived)
-        val dataId = messageUtils.extractValueFromMessagePayload(payload, "dataId")
+        val dataId = JSONObject(payload).getString("dataId")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty.")
         }
