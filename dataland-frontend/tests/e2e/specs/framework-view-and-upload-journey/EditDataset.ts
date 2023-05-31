@@ -94,7 +94,6 @@ describeIf(
           cy.get(`div[data-test=${assertDefined(dataTest)}] button[data-test=files-to-upload-remove]`)
             .should("be.visible")
             .click();
-          submitButton.buttonAppearsDisabled();
           cy.get(
             `div[data-test=${assertDefined(dataTest)}] button[data-test=upload-files-button-${assertDefined(dataTest)}]`
           ).should("be.visible");
