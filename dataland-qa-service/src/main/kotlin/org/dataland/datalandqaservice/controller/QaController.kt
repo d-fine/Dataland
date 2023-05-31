@@ -37,8 +37,8 @@ class QaController(
     }
 
     @Transactional
-    override fun assignQualityStatus(dataId: String, qualityStatus: QAStatus, comment: String?):
-        ResponseEntity<Nothing> {
+    override fun assignQualityStatus(dataId: String, qualityStatus: QAStatus):
+        ResponseEntity<Void> {
         logger.info("Assigning quality status ${qualityStatus.name} to dataset with ID $dataId")
         if (qualityStatus == QAStatus.Pending) {
             throw InvalidInputApiException(
