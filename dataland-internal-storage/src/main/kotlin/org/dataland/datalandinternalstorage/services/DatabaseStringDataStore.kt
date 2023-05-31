@@ -74,7 +74,7 @@ class DatabaseStringDataStore(
         messageUtils.validateMessageType(type, MessageType.DataReceived)
         val dataId = JSONObject(payload).getString("dataId")
         if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided document ID is empty.")
+            throw MessageQueueRejectException("Provided data ID is empty.")
         }
         messageUtils.rejectMessageOnException {
             logger.info("Received DataID $dataId and CorrelationId: $correlationId")
