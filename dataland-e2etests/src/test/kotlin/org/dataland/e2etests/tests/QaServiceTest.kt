@@ -2,13 +2,13 @@ package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility.await
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.openApiClient.model.QAStatus as BackendQaStatus
-import org.dataland.datalandqaservice.openApiClient.model.QAStatus as QaServiceQaStatus
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.util.concurrent.TimeUnit
+import org.dataland.datalandbackend.openApiClient.model.QAStatus as BackendQaStatus
+import org.dataland.datalandqaservice.openApiClient.model.QAStatus as QaServiceQaStatus
 
 class QaServiceTest {
     private val apiAccessor = ApiAccessor()

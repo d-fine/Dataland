@@ -93,7 +93,6 @@ const routes = [
   },
   {
     path: `/qualityassurance`,
-    props: true,
     name: "UI for quality assurance",
     component: QualityAssurance,
   },

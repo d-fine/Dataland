@@ -70,7 +70,7 @@ export default defineComponent({
       datasetTableInfos: [] as DatasetTableInfo[],
       waitingForData: true,
       activeTabIndex: 1,
-      hasUserUploaderRights: null as boolean | null,
+      hasUserRequiredRole: null as boolean | null,
     };
   },
   setup() {

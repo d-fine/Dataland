@@ -51,7 +51,6 @@ dependencies {
     // TODO added swaggerui for testing purposes only, first
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-
 }
 
 openApi {

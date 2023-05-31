@@ -116,7 +116,6 @@ export default defineComponent({
     humanizeString,
     //TODO Discussion: Maybe only the first entry of the table should be clickable
     //TODO Buttons need to get functions, also should be disabled before a dataset is selected
-    //TODO Add loading text / spinner to the page. Similar to the company result page
     //TODO Check that using non scoped style is fine
     //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
     //TODO Discussion What about reverting a decision?
