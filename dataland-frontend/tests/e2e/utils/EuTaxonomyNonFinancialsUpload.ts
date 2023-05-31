@@ -8,10 +8,9 @@ import {
 } from "@clients/backend";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
-import { uploadReports } from "@sharedUtils/components/UploadReports";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
-import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
@@ -22,9 +21,9 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string, v
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
-  uploadReports.selectFile(TEST_PDF_FILE_NAME);
-  uploadReports.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
-  uploadReports.fillAllReportsToUploadForms(1);
+  uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+  uploadDocuments.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);
+  uploadDocuments.fillAllReportsToUploadForms(1);
 
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm(valueFieldNotFilled, TEST_PDF_FILE_NAME);
   submitButton.buttonAppearsEnabled();
@@ -130,28 +129,4 @@ export async function uploadOneEuTaxonomyNonFinancialsDatasetViaApi(
     data,
   });
   return dataMetaInformation.data;
-}
-
-/**
- * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks
- * if a 200 response is returned by the backend
- * @param submissionDataIntercept function that asserts content of an intercepted request
- */
-export function submitFilledInEuTaxonomyForm(
-  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
-): void {
-  const postRequestAlias = "postDataAlias";
-  cy.intercept(
-    {
-      method: "POST",
-      url: `**/api/data/**`,
-      times: 1,
-    },
-    submissionDataIntercept
-  ).as(postRequestAlias);
-  cy.get('button[data-test="submitButton"]').click();
-  cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then((interception) => {
-    expect(interception.response?.statusCode).to.eq(200);
-  });
-  cy.contains("td", "EU Taxonomy");
 }

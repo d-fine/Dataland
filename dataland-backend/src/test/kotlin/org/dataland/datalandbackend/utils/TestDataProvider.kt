@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import java.io.File
 
 class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
-    private val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
+    private val jsonFile = File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
     private val testCompanyInformationWithEuTaxonomyData =
         objectMapper.readValue(
             jsonFile,

@@ -14,7 +14,7 @@ export function generateIso2CountryCode(): string {
  * @returns the randomly generated list of country codes
  */
 export function generateListOfIso2CountryCodes(): string[] {
-  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
+  return Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
     return generateIso2CountryCode();
-  });
+  }).sort((a, b) => a.localeCompare(b));
 }
