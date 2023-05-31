@@ -15,17 +15,18 @@ import {
   generateEuTaxonomyWithBaseFields,
   getCsvSharedEuTaxonomyValuesMapping,
 } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { DataPoint, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { parse } from "json2csv";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
  * Generates random insurance company KPIs
  * @param referencedReports he reports that can be referenced as data sources
  * @returns random insurance company KPIs
  */
-export function generateInsuranceKpis(referencedReports: ReferencedReports): InsuranceKpis {
+export function generateInsuranceKpis(referencedReports: ReferencedDocuments): InsuranceKpis {
   const taxonomyEligibleNonLifeInsuranceActivities = randomPercentageValue();
   return {
     taxonomyEligibleNonLifeInsuranceActivities: generateDatapointOrNotReportedAtRandom(
@@ -40,7 +41,7 @@ export function generateInsuranceKpis(referencedReports: ReferencedReports): Ins
  * @param referencedReports he reports that can be referenced as data sources
  * @returns random credit institution KPIs
  */
-export function generateCreditInstitutionKpis(referencedReports: ReferencedReports): CreditInstitutionKpis {
+export function generateCreditInstitutionKpis(referencedReports: ReferencedDocuments): CreditInstitutionKpis {
   let tradingPortfolioAndInterbankLoans = undefined;
   let interbankLoans = undefined;
   let tradingPortfolio = undefined;
@@ -70,7 +71,7 @@ export function generateCreditInstitutionKpis(referencedReports: ReferencedRepor
  * @param referencedReports he reports that can be referenced as data sources
  * @returns random investment firm KPIs
  */
-export function generateInvestmentFirmKpis(referencedReports: ReferencedReports): InvestmentFirmKpis {
+export function generateInvestmentFirmKpis(referencedReports: ReferencedDocuments): InvestmentFirmKpis {
   const greenAssetRatioInvestmentFirm = randomPercentageValue();
   return {
     greenAssetRatio: generateDatapointOrNotReportedAtRandom(greenAssetRatioInvestmentFirm, referencedReports),
@@ -87,21 +88,21 @@ export function generateEuTaxonomyDataForFinancialsWithTypes(
 ): EuTaxonomyDataForFinancials {
   const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields();
   const eligibilityKpis = Object.fromEntries(
-    financialServicesTypes.map((it) => [it, generateEligibilityKpis(returnBase.referencedReports!)])
+    financialServicesTypes.map((it) => [it, generateEligibilityKpis(assertDefined(returnBase.referencedReports))])
   );
   returnBase.financialServicesTypes = financialServicesTypes;
   returnBase.eligibilityKpis = eligibilityKpis;
   returnBase.creditInstitutionKpis =
     financialServicesTypes.indexOf("CreditInstitution") >= 0
-      ? generateCreditInstitutionKpis(returnBase.referencedReports!)
+      ? generateCreditInstitutionKpis(assertDefined(returnBase.referencedReports))
       : undefined;
   returnBase.insuranceKpis =
     financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0
-      ? generateInsuranceKpis(returnBase.referencedReports!)
+      ? generateInsuranceKpis(assertDefined(returnBase.referencedReports))
       : undefined;
   returnBase.investmentFirmKpis =
     financialServicesTypes.indexOf("InvestmentFirm") >= 0
-      ? generateInvestmentFirmKpis(returnBase.referencedReports!)
+      ? generateInvestmentFirmKpis(assertDefined(returnBase.referencedReports))
       : undefined;
   return returnBase;
 }
@@ -122,7 +123,7 @@ export function generateEuTaxonomyDataForFinancials(): EuTaxonomyDataForFinancia
  * @param reports the reports that can be referenced as data sources
  * @returns a random set of eligibility KPI´s
  */
-export function generateEligibilityKpis(reports: ReferencedReports): EligibilityKpis {
+export function generateEligibilityKpis(reports: ReferencedDocuments): EligibilityKpis {
   const taxonomyEligibleEconomicActivity = randomPercentageValue();
   const taxonomyNonEligibleEconomicActivity = randomPercentageValue();
   const eligibleDerivatives = randomPercentageValue();
@@ -149,27 +150,27 @@ export function getCsvEligibilityKpiMapping(
   return [
     ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
       `Exposures to taxonomy-eligible economic activities ${getCompanyTypeHeader(type)}`,
-      (row) => row.t.eligibilityKpis![type]?.taxonomyEligibleActivity,
+      (row) => assertDefined(row.t.eligibilityKpis)[type]?.taxonomyEligibleActivity,
       convertToPercentageString
     ),
     ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
       `Exposures to taxonomy non-eligible economic activities ${getCompanyTypeHeader(type)}`,
-      (row) => row.t.eligibilityKpis![type]?.taxonomyNonEligibleActivity,
+      (row) => assertDefined(row.t.eligibilityKpis)[type]?.taxonomyNonEligibleActivity,
       convertToPercentageString
     ),
     ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
       `Exposures to central governments, central banks, supranational issuers ${getCompanyTypeHeader(type)}`,
-      (row) => row.t.eligibilityKpis![type]?.banksAndIssuers,
+      (row) => assertDefined(row.t.eligibilityKpis)[type]?.banksAndIssuers,
       convertToPercentageString
     ),
     ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
       `Exposures to derivatives ${getCompanyTypeHeader(type)}`,
-      (row) => row.t.eligibilityKpis![type]?.derivatives,
+      (row) => assertDefined(row.t.eligibilityKpis)[type]?.derivatives,
       convertToPercentageString
     ),
     ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForFinancials>>(
       `Exposures to non-NFRD entities ${getCompanyTypeHeader(type)}`,
-      (row) => row.t.eligibilityKpis![type]?.investmentNonNfrd,
+      (row) => assertDefined(row.t.eligibilityKpis)[type]?.investmentNonNfrd,
       convertToPercentageString
     ),
   ];
