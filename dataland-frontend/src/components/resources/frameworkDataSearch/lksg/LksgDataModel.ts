@@ -798,10 +798,10 @@ export const lksgDataModel = [
           },
           {
             showIf: (dataModel: LksgData): boolean => dataModel?.social?.childLabor?.employeeUnder18 === "Yes",
-            name: "employeeUnder18Under15",
+            name: "employeeUnder15",
             description:
               "With regard to the place of employment and the applicable laws: do you employ school-age children or children under the age of 15 on a full-time basis?",
-            label: "Employee Under 18 Under 15",
+            label: "Employee Under 15",
             component: "YesNoFormField",
             required: false,
           },
