@@ -5,7 +5,7 @@
       <TheContent class="paper-section flex">
         <div class="col-12 text-left pb-0">
           <BackButton />
-          <h1>"Quality Assurance"</h1>
+          <h1>Quality Assurance</h1>
           <div v-if="!waitingForData">
             <div class="card">
               <DataTable :value="resultData" class="table-cursor" id="qa-data-result" :rowHover="true" @row-click="loadDatasetAndOpenModal" >
@@ -43,9 +43,10 @@
               </DataTable>
             </div>
           </div>
-          <div v-else-if="waitingForData">
-            <span>loading</span>
-          </div>
+              <div v-else-if="waitingForData" class="inline-loading text-center">
+                  <p class="font-medium text-xl">Loading data to be reviewed...</p>
+                  <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+              </div>
         </div>
         <MiddleCenterDiv class="col-12">
           <div>
@@ -130,7 +131,6 @@ export default defineComponent({
     humanizeString,
     //TODO Discussion: Maybe only the first entry of the table should be clickable
     //TODO Buttons need to get functions, also should be disabled before a dataset is selected
-    //TODO Add comment function to qa process so that the user can add a comment about the decision
     //TODO Add loading text / spinner to the page. Similar to the company result page
     //TODO Check that using non scoped style is fine
     //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
