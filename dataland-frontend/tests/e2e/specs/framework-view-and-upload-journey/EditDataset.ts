@@ -17,11 +17,12 @@ describeIf(
   },
   () => {
     let uploadIds: UploadIds;
+    let preparedFixture: FixtureData<LksgData>;
 
     before(() => {
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-        const preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
+        preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
         getKeycloakToken(uploader_name, uploader_pw)
           .then(async (token: string) =>
             uploadCompanyAndLksgDataViaApi(
@@ -44,24 +45,25 @@ describeIf(
       cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
       cy.get("div").contains("New Dataset - LkSG").should("be.visible");
       const expectedCountry = preparedFixture.t.general?.productionSpecific?.listOfProductionSites?.[0]
-            ?.addressOfProductionSite?.country as string;
-          cy.get('[data-test="AddressFormField0"] [data-test="country"]').should("contain", `(${expectedCountry})`);
-          submitButton.buttonIsUpdateDataButton();
-          submitButton.buttonAppearsEnabled();
-          checkStickynessOfSubmitSideBar();
-          submitButton.clickButton();
-          cy.get("h4")
-            .contains("Upload successfully executed.")
-            .should("exist")
-            .then(() => {
-              return getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
-                const data = await new LksgDataControllerApi(
-                  new Configuration({ accessToken: token })
-                ).getAllCompanyLksgData(uploadIds.companyId, false);
-                expect(data.data).to.have.length(2);
-                expect(data.data[0].data).to.deep.equal(data.data[1].data);
-              });
-            });});
+        ?.addressOfProductionSite?.country as string;
+      cy.get('[data-test="AddressFormField0"] [data-test="country"]').should("contain", `(${expectedCountry})`);
+      submitButton.buttonIsUpdateDataButton();
+      submitButton.buttonAppearsEnabled();
+      checkStickynessOfSubmitSideBar();
+      submitButton.clickButton();
+      cy.get("h4")
+        .contains("Upload successfully executed.")
+        .should("exist")
+        .then(() => {
+          return getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
+            const data = await new LksgDataControllerApi(
+              new Configuration({ accessToken: token })
+            ).getAllCompanyLksgData(uploadIds.companyId, false);
+            expect(data.data).to.have.length(2);
+            expect(data.data[0].data).to.deep.equal(data.data[1].data);
+          });
+        });
+    });
 
     it("Edit and subsequent upload should work properly when removing or changing referenced documents", () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);

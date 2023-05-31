@@ -1,11 +1,11 @@
 <template>
   <div class="form-field" :data-test="name">
-    <UploadFormHeader :name="label" :explanation="description" :is-required="required" />
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit v-if="certificateRequiredIfYes" type="group" :name="name">
       <RadioButtonsFormElement
         name="value"
         :validation="validation"
-        :validation-label="validationLabel ?? displayName"
+        :validation-label="validationLabel ?? label"
         :options="[
           {
             label: 'Yes',
@@ -44,7 +44,7 @@
       v-else
       :name="name"
       :validation="validation"
-      :validation-label="validationLabel ?? displayName"
+      :validation-label="validationLabel ?? label"
       :options="[
         {
           label: 'Yes',
