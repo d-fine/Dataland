@@ -47,14 +47,6 @@
             <span>loading</span>
           </div>
         </div>
-        <MiddleCenterDiv class="col-12">
-          <div>
-            <PrimeButton @click="setQualityStatusToApproved" label="Accept Dataset" />
-          </div>
-          <div>
-            <PrimeButton @click="setQualityStatusToRejected" label="Reject Dataset" />
-          </div>
-        </MiddleCenterDiv>
       </TheContent>
     </AuthorizationWrapper>
     <TheFooter />
@@ -65,7 +57,6 @@
 import BackButton from "@/components/general/BackButton.vue";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
-import PrimeButton from "primevue/button";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -90,7 +81,6 @@ export default defineComponent({
     TheContent,
     TheHeader,
     AuthenticationWrapper,
-    PrimeButton,
     DataTable,
     Column,
   },
@@ -105,7 +95,7 @@ export default defineComponent({
       dataId: "",
       resultData: [] as QaDataObject[],
       waitingForData: true,
-      dataSet: null | undefined,
+      dataSet: null as unknown as object,
       KEYCLOAK_ROLE_REVIEWER,
       metaInformation: null as DataMetaInformation,
       companyInformation: null as CompanyInformation | null,
@@ -118,12 +108,6 @@ export default defineComponent({
     data: {
       type: Object,
       default: null,
-    },
-  },
-  watch: {
-    companyId() {
-      this.dataId = "";
-      void this.getDataSet;
     },
   },
   methods: {
@@ -178,6 +162,7 @@ export default defineComponent({
       try {
         const filteredData = data.metaInformation.dataType;
         const dataId = data.dataId;
+        this.dataId = dataId;
         if (filteredData === DataTypeEnum.EutaxonomyNonFinancials) {
           try {
             const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
@@ -187,7 +172,7 @@ export default defineComponent({
               await euTaxonomyDataForNonFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
                 assertDefined(dataId)
               );
-            this.dataSet = companyAssociatedData.data.data;
+            this.dataSet = assertDefined(companyAssociatedData.data.data);
           } catch (error) {
             console.error(error);
           }
@@ -200,7 +185,7 @@ export default defineComponent({
               await euTaxonomyDataForFinancialsControllerApi.getCompanyAssociatedEuTaxonomyDataForFinancials(
                 assertDefined(dataId)
               );
-            this.dataSet = companyAssociatedData.data.data;
+            this.dataSet = assertDefined(companyAssociatedData.data.data);
           } catch (error) {
             console.error(error);
           }
@@ -210,7 +195,7 @@ export default defineComponent({
               assertDefined(this.getKeycloakPromise)()
             ).getLksgDataControllerApi();
             const singleLksgData = await lksgDataControllerApi.getCompanyAssociatedLksgData(assertDefined(dataId));
-            this.dataSet = singleLksgData.data.data;
+            this.dataSet = assertDefined(singleLksgData.data.data);
           } catch (error) {
             console.error(error);
           }
@@ -221,7 +206,7 @@ export default defineComponent({
             ).getSfdrDataControllerApi();
 
             const singleSfdrData = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
-            this.dataSet = singleSfdrData.data.data;
+            this.dataSet = assertDefined(singleSfdrData.data.data);
           } catch (error) {
             console.error(error);
           }
@@ -231,30 +216,14 @@ export default defineComponent({
       }
     },
     /**
-     * Sets dataset to accepted
-     */
-    async setQualityStatusToApproved() {
-      const qaServiceControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
-      ).getQaControllerApi();
-      await qaServiceControllerApi.assignQualityStatus(this.dataId, "Accepted");
-    },
-    /**
-     * Sets dataset to rejected
-     */
-    async setQualityStatusToRejected() {
-      const qaServiceControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
-      ).getQaControllerApi();
-      await qaServiceControllerApi.assignQualityStatus(this.dataId, "Rejected");
-    },
-    /**
      * Opens a modal to display a table with the provided list of production sites
      * @param event
      * @param event.data
      */
-    loadDatasetAndOpenModal(event: { data: QaDataObject }) {
-      this.getDataSet(event.data);
+    async loadDatasetAndOpenModal(event: { data: QaDataObject }) {
+      console.log("data set before = ", this.dataSet);
+      await this.getDataSet(event.data);
+      console.log("data set after = ", this.dataSet);
       this.$dialog.open(QADatasetModal, {
         props: {
           header: "Dataset to review",
@@ -263,6 +232,7 @@ export default defineComponent({
         },
         data: {
           dataSetToReview: this.dataSet,
+          dataId: this.dataId,
         },
       });
     },
@@ -276,12 +246,6 @@ interface QaDataObject {
 </script>
 
 <style>
-pre#dataset-container {
-  background: white;
-  padding: 20px;
-  border: 1px solid black;
-}
-
 #qa-data-result tr:hover {
   cursor: pointer;
 }
