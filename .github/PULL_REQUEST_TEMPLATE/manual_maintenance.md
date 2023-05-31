@@ -12,7 +12,6 @@ creation URL (or simply copy this md file into the description)
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
-- [ ] Update to gradle 8.0.2 is skipped due to task dependency issues in the building process. Backlog: DALA-1295
 - [ ] Update keycloak 21.0.1 is skipped due to issues in the realm.json, the new docker image, account console
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
   project and unresolved imports that are hard to fix), skipped.
