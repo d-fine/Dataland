@@ -105,7 +105,6 @@ export const lksgDataModel = [
             showIf: (): boolean => true,
             options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
             placeholder: "Select Currency",
-            validation: "required",
             name: "totalRevenueCurrency",
             description: "The 3-letter code (ISO 4217) representing the currency used for the total revenue",
             label: "Total Revenue Currency",

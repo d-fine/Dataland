@@ -102,6 +102,12 @@ export default defineComponent({
       subcategory: Subcategory,
       dataIdOfLksgDataset: string
     ): void {
+      console.log("KpiKey:");
+      console.log(kpiKey);
+      console.log("Subcategory:");
+      console.log(subcategory);
+      console.log("Value:");
+      console.log(kpiValue);
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
 
       kpiValue = this.reformatValueForDisplay(kpiField, kpiValue);

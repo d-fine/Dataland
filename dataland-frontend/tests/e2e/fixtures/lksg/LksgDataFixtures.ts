@@ -223,7 +223,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
     social: {
       childLabor: {
         employeeUnder18: valueOrUndefined(randomYesNo(), undefinedProbability),
-        employeeUnder18Under15: valueOrUndefined(randomYesNo(), undefinedProbability),
+        employeeUnder15: valueOrUndefined(randomYesNo(), undefinedProbability),
         employeeUnder18Apprentices: valueOrUndefined(randomYesNo(), undefinedProbability),
         worstFormsOfChildLaborProhibition: valueOrUndefined(randomYesNo(), undefinedProbability),
         worstFormsOfChildLaborForms: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),
