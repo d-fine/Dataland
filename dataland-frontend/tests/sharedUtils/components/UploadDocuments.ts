@@ -34,16 +34,18 @@ export const uploadDocuments = {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
   },
   removeReportToUpload(reportName: string): void {
-    cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click({ force: true });
+    cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
+    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
   },
   removeAllReportsToUpload(): void {
     cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));
+    cy.get('button[data-test="files-to-upload-remove"]').should("not.exist");
   },
   removeUploadedReport(reportName: string): Cypress.Chainable {
     return cy.get(`[data-test="${reportName}AlreadyUploadedContainer"] button`).click();
   },
   checkNoReportIsListed(): void {
-    cy.get('[data-test="files-to-upload"]').should("not.exist");
+    cy.get('[data-test="files-to-upload"]').should("not.be.visible");
     cy.get('[data-test="report-to-upload-form"]').should("not.exist");
     cy.get('[data-test="report-uploaded-form"]').should("not.exist");
   },

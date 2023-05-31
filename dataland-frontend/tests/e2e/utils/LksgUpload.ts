@@ -80,7 +80,9 @@ function fillSingleProductionSite(): void {
  * @param maxCounter the maximum recursion depth before an error is thrown
  */
 function recursivelySelectYesOnAllFields(maxCounter: number): void {
-  if (maxCounter <= 0) return;
+  if (maxCounter <= 0) {
+    return;
+  }
 
   cy.window().then((win) => {
     if (selectYesOnAllFieldsBrowser(win)) {
