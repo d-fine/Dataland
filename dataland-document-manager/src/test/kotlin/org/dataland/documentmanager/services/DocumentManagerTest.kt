@@ -138,7 +138,7 @@ class DocumentManagerTest(
         val messageWithEmptyDocumentID = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 identifier = "",
-                validationResult = "By default, QA is passed",
+                validationResult = QAStatus.Accepted,
             ),
         )
         val thrown = assertThrows<MessageQueueRejectException> {
@@ -155,7 +155,7 @@ class DocumentManagerTest(
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 identifier = uploadResponse.documentId,
-                validationResult = "By default, QA is passed",
+                validationResult = QAStatus.Accepted,
             ),
         )
 

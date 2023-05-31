@@ -1,5 +1,6 @@
 import { describeIf } from "@e2e/support/TestUtility";
 import {
+  fillAndValidateEuTaxonomyForFinancialsUploadForm,
   gotoEditForm,
   uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm,
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
@@ -38,6 +39,7 @@ describeIf(
         testData.companyInformation,
         testData.t,
         () => undefined,
+        fillAndValidateEuTaxonomyForFinancialsUploadForm,
         () => {
           uploadReports.selectFile(TEST_PDF_FILE_NAME);
           uploadReports.validateReportToUploadIsListed(TEST_PDF_FILE_NAME);

@@ -13,14 +13,13 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 import Chainable = Cypress.Chainable;
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
-import { goToEditFormOfMostRecentDataset } from "@e2e/utils/GeneralApiUtils";
+import { goToEditFormOfMostRecentDataset, submitFilledInEuTaxonomyForm } from "@e2e/utils/GeneralApiUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { submitFilledInEuTaxonomyForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
@@ -143,7 +142,7 @@ export function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonom
  * @param divTag value of the parent div data-test attribute to fill in
  * @param data the kpi data to use to fill the form
  */
-function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined): void {
+export function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined): void {
   fillField(divTag, "taxonomyEligibleActivity", data?.taxonomyEligibleActivity);
   fillField(divTag, "taxonomyNonEligibleActivity", data?.taxonomyNonEligibleActivity);
   fillField(divTag, "derivatives", data?.derivatives);
@@ -157,7 +156,7 @@ function fillEligibilityKpis(divTag: string, data: EligibilityKpis | undefined):
  * @param inputsTag value of the parent div data-test attribute to fill in
  * @param value the value to fill in
  */
-function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
+export function fillField(divTag: string, inputsTag: string, value?: DataPointBigDecimal): void {
   if (value?.value) {
     const valueAsString = value.value.toString();
     if (divTag === "") {
@@ -248,6 +247,7 @@ export function gotoEditForm(companyId: string, expectIncludedFile: boolean): vo
  * @param companyInformation Company information to be used for the company upload
  * @param testData EU Taxonomy dataset for financial companies to be uploaded
  * @param beforeFormFill is performed before filling the fields of the upload form
+ * @param formFillSteps Steps involved to fill data of the upload form
  * @param afterFormFill is performed after filling the fields of the upload form
  * @param submissionDataIntercept performs checks on the request itself
  * @param afterDatasetSubmission is performed after the data has been submitted
@@ -256,6 +256,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
   companyInformation: CompanyInformation,
   testData: EuTaxonomyDataForFinancials,
   beforeFormFill: () => void,
+  formFillSteps: (data: EuTaxonomyDataForFinancials) => void,
   afterFormFill: () => void,
   submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
   afterDatasetSubmission: (companyId: string) => void
@@ -268,7 +269,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
           `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
         );
         beforeFormFill();
-        fillAndValidateEuTaxonomyForFinancialsUploadForm(testData);
+        formFillSteps(testData);
         afterFormFill();
         submitFilledInEuTaxonomyForm(submissionDataIntercept);
         afterDatasetSubmission(storedCompany.companyId);
