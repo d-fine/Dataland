@@ -61,6 +61,7 @@ dependencyResolutionManagement {
             library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.28")
 
             library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:4.1.0")
+            library("mockito-inline", "org.mockito:mockito-inline:5.2.0")
         }
     }
 }
