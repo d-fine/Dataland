@@ -20,7 +20,7 @@ import java.util.EnumSet
  * Fields of the questionnaire for the EuTaxonomyForFinancials framework
  */
 @DataType("eutaxonomy-financials")
-data class EuTaxonomyDataForFinancials( // TODO nothing required here, yet
+data class EuTaxonomyDataForFinancials(
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 
     @field:Schema(example = JsonExampleFormattingConstants.ELIGIBILITY_KPIS_DEFAULT_VALUE)

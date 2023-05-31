@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * @param data to be uploaded of general type T
  */
 data class CompanyAssociatedData<T> (
-    // TODO these three are anyways not user controlled in the frontend but should be there in a backend request
     @field:JsonProperty(required = true)
     val companyId: String,
 

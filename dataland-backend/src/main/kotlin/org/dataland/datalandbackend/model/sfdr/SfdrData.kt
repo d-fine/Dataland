@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.sfdr
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
 
@@ -10,8 +9,7 @@ import org.dataland.datalandbackend.model.CompanyReport
  */
 @DataType("sfdr")
 data class SfdrData(
-    @field:JsonProperty(required = true)
-    val social: SfdrSocial,
+    val social: SfdrSocial?,
 
     val environmental: SfdrEnvironmental?,
 

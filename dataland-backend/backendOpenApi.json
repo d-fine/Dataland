@@ -1853,6 +1853,11 @@
         ]
       },
       "CompanyAssociatedDataSmeData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -2066,6 +2071,11 @@
         ]
       },
       "CompanyAssociatedDataSfdrData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -2087,9 +2097,6 @@
         "properties": {
           "reference": {
             "type": "string"
-          },
-          "isGroupLevel": {
-            "$ref": "#/components/schemas/YesNoNa"
           },
           "reportDate": {
             "type": "string",
@@ -2621,6 +2628,11 @@
         ]
       },
       "CompanyAssociatedDataLksgData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -2826,6 +2838,9 @@
         }
       },
       "LksgData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
@@ -3006,6 +3021,9 @@
         }
       },
       "LksgGeneral": {
+        "required": [
+          "masterData"
+        ],
         "type": "object",
         "properties": {
           "masterData": {
@@ -3465,9 +3483,6 @@
         ]
       },
       "AssuranceData": {
-        "required": [
-          "assurance"
-        ],
         "type": "object",
         "properties": {
           "assurance": {
@@ -3487,6 +3502,11 @@
         }
       },
       "CompanyAssociatedDataEuTaxonomyDataForNonFinancials": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -3557,6 +3577,11 @@
         }
       },
       "CompanyAssociatedDataEuTaxonomyDataForFinancials": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {

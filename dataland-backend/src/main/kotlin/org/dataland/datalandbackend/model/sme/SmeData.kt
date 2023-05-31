@@ -14,7 +14,7 @@ import java.math.BigDecimal
  * Fields of the questionnaire for the SME framework
  */
 @DataType("sme")
-data class SmeData( // TODO is changing this needed? No frontend, no problems, empty request answers should be handled by the frontend IMO
+data class SmeData(
     val industry: Industry?,
 
     val financialYear: BigDecimal?,

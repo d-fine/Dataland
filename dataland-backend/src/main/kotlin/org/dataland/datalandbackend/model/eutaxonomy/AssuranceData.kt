@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.model.eutaxonomy
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.CompanyReportReference
 import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 
@@ -9,8 +8,7 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
  * Level of assurance for the reported data and information about the assurance provider
  */
 data class AssuranceData(
-    @field:JsonProperty(required = true)
-    val assurance: AssuranceOptions,
+    val assurance: AssuranceOptions? = null,
 
     val provider: String? = null,
 
