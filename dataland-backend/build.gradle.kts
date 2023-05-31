@@ -81,7 +81,7 @@ jacoco {
 
 tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
-    into("$buildDir/resources")
+    into("$buildDir/resources/test")
 }
 
 tasks.getByName("processTestResources") {
