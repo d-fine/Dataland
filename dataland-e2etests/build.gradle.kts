@@ -35,18 +35,8 @@ dependencies {
     testImplementation("org.awaitility:awaitility")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("generateClients", "getTestData")
-}
-
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-tasks.register("generateClients") {
-    dependsOn("generateBackendClient")
-    dependsOn("generateApiKeyManagerClient")
-    dependsOn("generateDocumentManagerClient")
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
@@ -103,6 +93,20 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
             "useTags" to "true",
         ),
     )
+}
+
+tasks.register("generateClients") {
+    dependsOn("generateBackendClient")
+    dependsOn("generateApiKeyManagerClient")
+    dependsOn("generateDocumentManagerClient")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateClients", "getTestData")
+}
+
+tasks.getByName("runKtlintCheckOverMainSourceSet") {
+    dependsOn("generateClients")
 }
 
 sourceSets {
