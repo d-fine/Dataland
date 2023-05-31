@@ -8,7 +8,13 @@
           <h1>Quality Assurance</h1>
           <div v-if="!waitingForData">
             <div class="card">
-              <DataTable :value="resultData" class="table-cursor" id="qa-data-result" :rowHover="true" @row-click="loadDatasetAndOpenModal" >
+              <DataTable
+                :value="resultData"
+                class="table-cursor"
+                id="qa-data-result"
+                :rowHover="true"
+                @row-click="loadDatasetAndOpenModal"
+              >
                 <Column header="DATA ID" class="d-bg-white w-2">
                   <template #body="{ data }">
                     {{ data.dataId }}
@@ -29,8 +35,8 @@
                     {{ data.metaInformation.reportingPeriod }}
                   </template>
                 </Column>
-                <Column field="reviewDataset" header="" class="w-2 d-bg-white ">
-                  <template #body="{ data }">
+                <Column field="reviewDataset" header="" class="w-2 d-bg-white">
+                  <template>
                     <router-link :to="loadDatasetAndOpenModal" class="text-primary no-underline font-bold">
                       <div class="text-right">
                         <span>REVIEW</span>
@@ -39,14 +45,13 @@
                     </router-link>
                   </template>
                 </Column>
-
               </DataTable>
             </div>
           </div>
-              <div v-else-if="waitingForData" class="inline-loading text-center">
-                  <p class="font-medium text-xl">Loading data to be reviewed...</p>
-                  <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-              </div>
+          <div v-else-if="waitingForData" class="inline-loading text-center">
+            <p class="font-medium text-xl">Loading data to be reviewed...</p>
+            <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+          </div>
         </div>
       </TheContent>
     </AuthorizationWrapper>
@@ -56,7 +61,6 @@
 
 <script lang="ts">
 import BackButton from "@/components/general/BackButton.vue";
-import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
@@ -70,15 +74,13 @@ import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue"
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import {humanizeString} from "@/utils/StringHumanizer";
+import { humanizeString } from "@/utils/StringHumanizer";
 import QADatasetModal from "@/components/general/QADatasetModal.vue";
-import { AxiosError } from "axios";
 export default defineComponent({
   name: "QualityAssurance",
   components: {
     AuthorizationWrapper,
     TheFooter,
-    MiddleCenterDiv,
     BackButton,
     TheContent,
     TheHeader,
@@ -115,12 +117,12 @@ export default defineComponent({
   methods: {
     humanizeString,
     //TODO Discussion: Maybe only the first entry of the table should be clickable
-    //TODO Buttons need to get functions, also should be disabled before a dataset is selected
     //TODO Check that using non scoped style is fine
     //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
     //TODO Discussion What about reverting a decision?
     //TODO List of data Ids should be refreshed once a decision was made
     //TODO Include a button next to the My DataSet Button, only visible to a user with role Reviewer_Role
+    //TODO Customize the success/error message
     //TODO Clean up code
     /**
      * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
@@ -136,9 +138,14 @@ export default defineComponent({
           await this.addDatasetAssociatedInformationToDisplayList(dataId);
         }
         this.waitingForData = false;
+        console.log("eddjhgfgjz");
       } catch (error) {
         console.error(error);
       }
+    },
+    async testMethod() {
+      console.log("fdfffffffffffffffffffff");
+      await this.getQaData();
     },
     /**
      * Gathers meta and company information associated with a dataset and adds it to the list of displayed
@@ -162,8 +169,8 @@ export default defineComponent({
           metaInformation: this.metaInformation,
           companyInformation: this.companyInformation,
         });
-      } catch(error: AxiosError) {
-        if(error.response.status !== 404) {
+      } catch (error: AxiosError) {
+        if (error.response.status !== 404) {
           throw error;
         }
       }
@@ -247,7 +254,6 @@ export default defineComponent({
           dataId: this.dataId,
         },
       });
-      this.closeDi
     },
   },
 });
