@@ -7,24 +7,24 @@ describe("Component test for LksgCompanyDataTable", () => {
   const dataId = "dummyId";
   const dummyDataSource = { name: "document", reference: "123" } as DocumentReference;
   it("Check that certificate/policy download links are displayed as expected", () => {
-    const kpiDataObjects = new Map<string, KpiDataObject>([
-      ["1", generateBaseDataPointKpi(YesNo.Yes, "Certification 1", dummyDataSource)],
-      ["2", generateBaseDataPointKpi(YesNo.No, "2 Certificate", dummyDataSource)],
-      ["3", generateBaseDataPointKpi(YesNo.Yes, "Certification 3", {} as DocumentReference)],
-      ["4", generateBaseDataPointKpi(YesNo.No, "Certification 4", {} as DocumentReference)],
-      ["4.1", generateBaseDataPointKpi(YesNo.Yes, "Certification 5")],
-      ["5", generateBaseDataPointKpi(YesNo.Yes, "Policy 1", dummyDataSource)],
-      ["6", generateBaseDataPointKpi(YesNo.Yes, "Policy 2", {} as DocumentReference)],
-      ["7", generateBaseDataPointKpi(YesNo.No, "Policy 3", {} as DocumentReference)],
-    ]);
+    const kpiDataObjects =  [
+      generateBaseDataPointKpi(YesNo.Yes, "Certification 1", dummyDataSource),
+      generateBaseDataPointKpi(YesNo.No, "2 Certificate", dummyDataSource),
+      generateBaseDataPointKpi(YesNo.Yes, "Certification 3", {} as DocumentReference),
+      generateBaseDataPointKpi(YesNo.No, "Certification 4", {} as DocumentReference),
+      generateBaseDataPointKpi(YesNo.Yes, "Certification 5"),
+      generateBaseDataPointKpi(YesNo.Yes, "Policy 1", dummyDataSource),
+      generateBaseDataPointKpi(YesNo.Yes, "Policy 2", {} as DocumentReference),
+      generateBaseDataPointKpi(YesNo.No, "Policy 3", {} as DocumentReference),
+    ];
 
-    const reportingPeriod = { dataId: dataId, reportingPeriod: "2023" };
+    const reportingPeriodWithDataId = { dataId: dataId, reportingPeriod: "2023" };
     cy.mountWithPlugins(LksgCompanyDataTable, {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          kpiDataObjects: kpiDataObjects,
-          reportingPeriodsOfDataSets: [reportingPeriod],
+          arrayOfKpiDataObjects: kpiDataObjects,
+          listOfReportingPeriodsWithDataId: [reportingPeriodWithDataId],
         };
       },
     });
