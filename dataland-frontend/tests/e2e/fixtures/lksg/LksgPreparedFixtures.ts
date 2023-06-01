@@ -40,7 +40,7 @@ function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<
 function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureData<LksgData>): FixtureData<LksgData> {
   const twoProductionSites = [generateProductionSite(), generateProductionSite()];
   input.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
-  input.t.general.productionSpecific!.listOfProductionSites = twoProductionSites;
+  input.t.general!.productionSpecific!.listOfProductionSites = twoProductionSites;
   return input;
 }
 
@@ -53,7 +53,7 @@ function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureDat
  */
 function manipulateFixtureForDate(input: FixtureData<LksgData>, date: string): FixtureData<LksgData> {
   input.companyInformation.companyName = "LkSG-date-" + date;
-  input.t.general.masterData.dataDate = date;
+  input.t.general!.masterData!.dataDate = date;
   input.reportingPeriod = date.split("-")[0];
   return input;
 }
@@ -65,7 +65,7 @@ function manipulateFixtureForDate(input: FixtureData<LksgData>, date: string): F
  */
 function manipulateFixtureForAllFields(fixture: FixtureData<LksgData>): FixtureData<LksgData> {
   fixture.companyInformation.companyName = "lksg-all-fields";
-  fixture.t.general.productionSpecific!.productionSites = "Yes";
-  fixture.t.general.productionSpecific!.listOfProductionSites = [generateProductionSite(0), generateProductionSite(0)];
+  fixture.t.general!.productionSpecific!.productionSites = "Yes";
+  fixture.t.general!.productionSpecific!.listOfProductionSites = [generateProductionSite(0), generateProductionSite(0)];
   return fixture;
 }

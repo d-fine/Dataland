@@ -65,7 +65,7 @@ describeIf(
           cy.visit(`/companies/company-id/frameworks/${DataTypeEnum.Lksg}`);
           toggleRowGroup("productionSpecific");
           cy.get(`a:contains(Show "List Of Production Sites")`).click();
-          lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
+          lksgData.general!.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
             if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
               cy.get("tbody.p-datatable-tbody p").contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
             }
