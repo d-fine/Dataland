@@ -73,7 +73,7 @@ describeIf(
       });
     });
 
-    it.only("Check if an uploader user can access the corresponding pages", () => {
+    it"Check if an uploader user can access the corresponding pages", () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       readerAndUploaderPages.forEach((page) => {
         cy.visit(page);
