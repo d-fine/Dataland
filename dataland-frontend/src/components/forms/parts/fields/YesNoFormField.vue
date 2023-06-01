@@ -1,11 +1,11 @@
 <template>
   <div class="form-field" :data-test="name">
-    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit v-if="certificateRequiredIfYes" type="group" :name="name">
       <RadioButtonsFormElement
         name="value"
         :validation="validation"
-        :validation-label="validationLabel ?? displayName"
+        :validation-label="validationLabel ?? label"
         :options="[
           {
             label: 'Yes',
@@ -16,6 +16,7 @@
             value: 'No',
           },
         ]"
+        :data-test="dataTest"
         @input="setDocumentRequired($event)"
       />
       <UploadDocumentsForm
@@ -28,14 +29,7 @@
       />
       <FormKit v-if="yesSelected" type="group" name="dataSource">
         <FormKit type="hidden" name="name" v-model="documentName" />
-        <FormKit
-          type="text"
-          name="reference"
-          v-model="documentReference"
-          validation="required"
-          validation-label="If 'Yes' is selected an uploaded document"
-          :outer-class="{ 'hidden-input': true }"
-        />
+        <FormKit type="text" name="reference" v-model="documentReference" :outer-class="{ 'hidden-input': true }" />
       </FormKit>
     </FormKit>
 
@@ -43,7 +37,7 @@
       v-else
       :name="name"
       :validation="validation"
-      :validation-label="validationLabel ?? displayName"
+      :validation-label="validationLabel ?? label"
       :options="[
         {
           label: 'Yes',
@@ -70,7 +64,7 @@ export default defineComponent({
   name: "YesNoFormField",
   components: { RadioButtonsFormElement, UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
-  props: YesNoFormFieldProps,
+  props: { ...YesNoFormFieldProps, dataTest: String },
   data() {
     return {
       yesSelected: false,

@@ -11,7 +11,7 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   const preparedFixtures = [];
   preparedFixtures.push(manipulateFixtureForSixLksgDataSetsInDifferentYears(generateLksgFixture(1)[0]));
   preparedFixtures.push(manipulateFixtureForOneLksgDataSetWithProductionSites(generateLksgFixture(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForName(generateLksgFixture(1, 0)[0], "lksg-all-fields"));
+  preparedFixtures.push(manipulateFixtureForAllFields(generateLksgFixture(1, 0)[0]));
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-04-18"));
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2023-06-22"));
   preparedFixtures.push(manipulateFixtureForDate(generateLksgFixture(1)[0], "2022-07-30"));
@@ -39,7 +39,7 @@ function manipulateFixtureForSixLksgDataSetsInDifferentYears(input: FixtureData<
  */
 function manipulateFixtureForOneLksgDataSetWithProductionSites(input: FixtureData<LksgData>): FixtureData<LksgData> {
   const twoProductionSites = [generateProductionSite(), generateProductionSite()];
-  input.companyInformation.companyName = "one-lksg-data-set";
+  input.companyInformation.companyName = "one-lksg-data-set-with-two-production-sites";
   input.t.general!.productionSpecific!.listOfProductionSites = twoProductionSites;
   return input;
 }
@@ -60,11 +60,12 @@ function manipulateFixtureForDate(input: FixtureData<LksgData>, date: string): F
 
 /**
  * Sets the company name of a Lksg fixture dataset to a specific given name
- * @param input Fixture data to be manipulated
- * @param name the name of the company
+ * @param fixture Fixture data to be manipulated
  * @returns the manipulated input
  */
-function manipulateFixtureForName(input: FixtureData<LksgData>, name: string): FixtureData<LksgData> {
-  input.companyInformation.companyName = name;
-  return input;
+function manipulateFixtureForAllFields(fixture: FixtureData<LksgData>): FixtureData<LksgData> {
+  fixture.companyInformation.companyName = "lksg-all-fields";
+  fixture.t.general!.productionSpecific!.productionSites = "Yes";
+  fixture.t.general!.productionSpecific!.listOfProductionSites = [generateProductionSite(0), generateProductionSite(0)];
+  return fixture;
 }
