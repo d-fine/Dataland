@@ -22,6 +22,8 @@ export const TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS = 2000;
 
 export const TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS = 5000;
 
+export const TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS = 500;
+
 // This always has to be shorter than the ssoSessionIdleTimeout value in the realm settings.
 export const TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS = 2 * 60 * 1000;
 
