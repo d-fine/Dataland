@@ -7,6 +7,7 @@
   >
     <TabPanel
       v-for="tab in tabs"
+      :key="tab"
       :disabled="!(tabs.indexOf(tab) == initialTabIndex || (tab.isVisible ?? true))"
       :header="tab.label"
     >
