@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/de";
 import { YesNo, YesNoNa } from "@clients/backend";
 
 /**
