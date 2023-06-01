@@ -5,6 +5,7 @@
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
         <TheContent class="paper-section flex">
           <div class="col-12 text-left pb-0">
+            <BackButton />
             <h1>Quality Assurance</h1>
             <div v-if="!waitingForData">
               <div class="card">
@@ -141,14 +142,9 @@ export default defineComponent({
           await this.addDatasetAssociatedInformationToDisplayList(dataId);
         }
         this.waitingForData = false;
-        console.log("eddjhgfgjz");
       } catch (error) {
         console.error(error);
       }
-    },
-    async testMethod() {
-      console.log("fdfffffffffffffffffffff");
-      await this.getQaData();
     },
     /**
      * Gathers meta and company information associated with a dataset and adds it to the list of displayed
@@ -180,7 +176,7 @@ export default defineComponent({
     },
     /**
      * Retrieves the dataset corresponding to the given dataId
-     * @param data
+     * @param data is the quality assurance data object used to retrieve the actual dataset to be reviewed
      */
     async getDataSet(data: QaDataObject) {
       try {
@@ -241,8 +237,8 @@ export default defineComponent({
     },
     /**
      * Opens a modal to display a table with the provided list of production sites
-     * @param event
-     * @param event.data
+     * @param event the event which triggers the method
+     * @param event.data the data object which is used to retrieve the dataset to be reviewed
      */
     async loadDatasetAndOpenModal(event: { data: QaDataObject }) {
       await this.getDataSet(event.data);
