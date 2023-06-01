@@ -159,7 +159,9 @@ class DataManager(
         messageUtils.rejectMessageOnException {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaInformation.qaStatus = qaCompletedMessage.validationResult
-            metaDataManager.setActiveDataset(metaInformation)
+            if(qaCompletedMessage.validationResult == QAStatus.Accepted) {
+                metaDataManager.setActiveDataset(metaInformation)
+            }
             logger.info(
                 "Received quality assurance: ${qaCompletedMessage.validationResult} for data upload with DataId: " +
                     "$dataId with Correlation Id: $correlationId",
