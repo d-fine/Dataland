@@ -16,7 +16,14 @@
   </div>
   <PrimeMenu data-test="profileMenu" ref="menu" :model="dropdownMenuItems" :popup="true">
     <template #item="{ item }">
-      <a class="p-menuitem-link" role="menuitem" tabindex="0" @click="item.clickAction()" :id="item.id">
+      <a
+        v-if="hasRole(item.role)"
+        class="p-menuitem-link"
+        role="menuitem"
+        tabindex="0"
+        @click="item.clickAction()"
+        :id="item.id"
+      >
         <span class="p-menuitem-icon material-icons">{{ item.icon }}</span>
         <span class="p-menuitem-text">{{ item.label }}</span>
       </a>
@@ -31,7 +38,7 @@ import type { Ref } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import defaultProfilePicture from "@/assets/images/elements/default_user_icon.svg";
-import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
+import { KEYCLOAK_ROLE_REVIEWER, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "UserProfileDropDown",
@@ -65,7 +72,6 @@ export default defineComponent({
       hideDropdownMenu,
     };
   },
-
   data() {
     return {
       dropdownMenuItems: [
@@ -92,6 +98,7 @@ export default defineComponent({
           icon: "add_moderator",
           id: "profile-picture-dropdown-qa-services-button",
           clickAction: this.gotoQualityAssurance,
+          role: KEYCLOAK_ROLE_REVIEWER,
         },
         {
           label: "LOG OUT",
@@ -101,6 +108,7 @@ export default defineComponent({
         },
       ],
       profilePictureSource: defaultProfilePicture,
+      hasRole: ((role: string) => !!String(role)) as (role: string) => boolean,
     };
   },
   mounted() {
@@ -176,10 +184,14 @@ export default defineComponent({
   created() {
     assertDefined(this.getKeycloakPromise)()
       .then((keycloak) => {
-        if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
-          const profilePictureUrl = keycloak.idTokenParsed.picture as string;
-          this.$emit("profilePictureObtained", profilePictureUrl);
-          this.profilePictureSource = profilePictureUrl;
+        if (keycloak.authenticated) {
+          this.hasRole = (role: string | undefined): boolean => (!role ? true : keycloak.hasRealmRole(role));
+
+          if (keycloak.idTokenParsed?.picture) {
+            const profilePictureUrl = keycloak.idTokenParsed.picture as string;
+            this.$emit("profilePictureObtained", profilePictureUrl);
+            this.profilePictureSource = profilePictureUrl;
+          }
         }
       })
       .catch((error) => console.log(error));

@@ -24,9 +24,7 @@ import Keycloak from "keycloak-js";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import {
-  TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS,
-} from "@/utils/Constants";
+import { TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS } from "@/utils/Constants";
 
 export default defineComponent({
   components: { FailMessage, SuccessMessage, MiddleCenterDiv, PrimeButton },
@@ -76,7 +74,6 @@ export default defineComponent({
         setTimeout(() => {
           this.closeTheDialogAndReloadPage();
         }, TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS);
-        this.$emit("reviewDone");
       } catch (error) {
         console.error(error);
       }
@@ -95,7 +92,6 @@ export default defineComponent({
         setTimeout(() => {
           this.closeTheDialogAndReloadPage();
         }, TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS);
-        this.$emit("reviewDone");
       } catch (error) {
         console.error(error);
       }
@@ -107,7 +103,6 @@ export default defineComponent({
     closeTheDialogAndReloadPage() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       dialogRefToDisplay.close();
-      this.reloadPage();
     },
     /**
      * Refreshes the page.
