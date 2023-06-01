@@ -48,7 +48,6 @@ describe("Component test for LksgCompanyDataTable", () => {
 
   /**
    * Constructs a KpiDataObject object
-   *
    * @param value the value of the kpi
    * @param label the display name to describe the kpi
    * @param dataSource the dataSource to reference
