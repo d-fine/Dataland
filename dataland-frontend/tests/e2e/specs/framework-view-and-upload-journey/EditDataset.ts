@@ -17,11 +17,12 @@ describeIf(
   },
   () => {
     let uploadIds: UploadIds;
+    let preparedFixture: FixtureData<LksgData>;
 
     before(() => {
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-        const preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
+        preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
         getKeycloakToken(uploader_name, uploader_pw)
           .then(async (token: string) =>
             uploadCompanyAndLksgDataViaApi(
@@ -43,6 +44,9 @@ describeIf(
       cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
       cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
       cy.get("div").contains("New Dataset - LkSG").should("be.visible");
+      const expectedCountry = preparedFixture.t.general?.productionSpecific?.listOfProductionSites?.[0]
+        ?.addressOfProductionSite?.country as string;
+      cy.get('[data-test="AddressFormField0"] [data-test="country"]').should("contain", `(${expectedCountry})`);
       submitButton.buttonIsUpdateDataButton();
       submitButton.buttonAppearsEnabled();
       checkStickynessOfSubmitSideBar();
@@ -90,7 +94,6 @@ describeIf(
           cy.get(`div[data-test=${assertDefined(dataTest)}] button[data-test=files-to-upload-remove]`)
             .should("be.visible")
             .click();
-          submitButton.buttonAppearsDisabled();
           cy.get(
             `div[data-test=${assertDefined(dataTest)}] button[data-test=upload-files-button-${assertDefined(dataTest)}]`
           ).should("be.visible");

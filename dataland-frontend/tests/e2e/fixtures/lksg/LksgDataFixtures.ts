@@ -13,7 +13,7 @@ import { getRandomReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFi
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { generateListOfIso2CountryCodes } from "@e2e/fixtures/common/CountryFixtures";
+import { generateIso2CountryCode, generateListOfIso2CountryCodes } from "@e2e/fixtures/common/CountryFixtures";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataPointFixtures";
 
@@ -45,11 +45,14 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
 }
 
 /**
- * Generates an array consisting of 1 to 5 random production sites
- * @returns 1 to 5 random production sites
+ * Generates an array consisting of 0 to 5 random production sites
+ * @param undefinedProbability the percentage of undefined values in the returned production site
+ * @returns 0 to 5 random production sites
  */
-export function generateArrayOfProductionSites(): LksgProductionSite[] {
-  return Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, generateProductionSite);
+export function generateArrayOfProductionSites(undefinedProbability = 0.5): LksgProductionSite[] {
+  return Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () =>
+    generateProductionSite(undefinedProbability)
+  );
 }
 
 /**
@@ -72,7 +75,7 @@ export function generateAddress(): LksgAddress {
     city: faker.address.city(),
     state: faker.address.state(),
     postalCode: faker.address.zipCode(),
-    country: faker.address.country(),
+    country: generateIso2CountryCode(),
   };
 }
 
@@ -85,13 +88,14 @@ export function randomShareOfTemporaryWorkersInterval(): ShareOfTemporaryWorkers
 }
 
 /**
- * Generates a random list of Nace codes but sorted
- * @returns random list of goods or services
+ * Generates a random list of Nace codes (unique and sorted)
+ * @returns random list of Nace codes
  */
 export function generateListOfNaceCodes(): string[] {
-  return Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => {
+  const values = Array.from({ length: faker.datatype.number({ min: 0, max: 5 }) }, () => {
     return faker.helpers.arrayElement(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]);
   }).sort((a, b) => a.localeCompare(b));
+  return [...new Set(values)];
 }
 
 /**
@@ -117,7 +121,10 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
       },
       productionSpecific: {
         manufacturingCompany: valueOrUndefined(randomYesNo(), undefinedProbability),
-        capacity: valueOrUndefined(randomNumber(100000), undefinedProbability),
+        capacity: valueOrUndefined(
+          randomNumber(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
+          undefinedProbability
+        ),
         isContractProcessing: valueOrUndefined(randomYesNo(), undefinedProbability),
         subcontractingCompaniesCountries: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
         subcontractingCompaniesIndustries: valueOrUndefined(generateListOfNaceCodes(), undefinedProbability),
@@ -216,7 +223,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
     social: {
       childLabor: {
         employeeUnder18: valueOrUndefined(randomYesNo(), undefinedProbability),
-        employeeUnder18Under15: valueOrUndefined(randomYesNo(), undefinedProbability),
+        employeeUnder15: valueOrUndefined(randomYesNo(), undefinedProbability),
         employeeUnder18Apprentices: valueOrUndefined(randomYesNo(), undefinedProbability),
         worstFormsOfChildLaborProhibition: valueOrUndefined(randomYesNo(), undefinedProbability),
         worstFormsOfChildLaborForms: valueOrUndefined(faker.company.bsNoun(), undefinedProbability),

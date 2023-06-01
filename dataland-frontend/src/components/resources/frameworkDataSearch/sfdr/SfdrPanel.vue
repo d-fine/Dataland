@@ -10,7 +10,6 @@
       :kpiNameMappings="sfdrKpisNameMappings"
       :kpiInfoMappings="sfdrKpisInfoMappings"
       :subAreaNameMappings="sfdrSubAreasNameMappings"
-      tableDataTitle="SFDR data"
     />
   </div>
 </template>

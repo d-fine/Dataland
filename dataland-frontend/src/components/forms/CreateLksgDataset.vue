@@ -41,9 +41,9 @@
                       <component
                         v-if="field.showIf(companyAssociatedLksgData.data)"
                         :is="field.component"
-                        :displayName="field.label"
+                        :label="field.label"
                         :placeholder="field.placeholder"
-                        :info="field.description"
+                        :description="field.description"
                         :name="field.name"
                         :options="field.options"
                         :required="field.required"
@@ -114,7 +114,8 @@ import RadioButtonsFormField from "@/components/forms/parts/fields/RadioButtonsF
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
-import ProductionSiteFormField from "@/components/forms/parts/fields/ProductionSiteFormField.vue";
+import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
+import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
@@ -127,8 +128,6 @@ export default defineComponent({
   },
   name: "CreateLksgDataset",
   components: {
-    ProductionSiteFormField,
-
     SubmitButton,
     SubmitSideBar,
     UploadFormHeader,
@@ -149,6 +148,8 @@ export default defineComponent({
     AddressFormField,
     RadioButtonsFormField,
     YesNoNaFormField,
+    PercentageFormField,
+    ProductionSitesFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -157,15 +158,6 @@ export default defineComponent({
   data() {
     return {
       formId: "createLkSGForm",
-      isYourCompanyManufacturingCompany: "No",
-      listOfProductionSites: [
-        {
-          id: 0,
-          listOfGoodsOrServices: [] as string[],
-          allGoodsOrServicesAsString: "",
-        },
-      ],
-      idCounter: 0,
       waitingForData: false,
       dataDate: undefined as Date | undefined,
       companyAssociatedLksgData: {} as CompanyAssociatedDataLksgData,
@@ -176,9 +168,7 @@ export default defineComponent({
       uploadSucceded: false,
       postLkSGDataProcessed: false,
       messageCounter: 0,
-      elementPosition: 0,
       checkCustomInputs,
-      updatingData: false,
       documents: new Map() as Map<string, DocumentToUpload>,
     };
   },
@@ -223,20 +213,6 @@ export default defineComponent({
 
       const dataResponse = await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId);
       const lksgDataset = dataResponse.data;
-      const numberOfProductionSites = lksgDataset.data?.general?.productionSpecific?.listOfProductionSites?.length ?? 0;
-      if (numberOfProductionSites > 0) {
-        this.isYourCompanyManufacturingCompany = "Yes";
-        const productionSites = assertDefined(lksgDataset.data?.general?.productionSpecific?.listOfProductionSites);
-        this.listOfProductionSites = [];
-        this.idCounter = numberOfProductionSites;
-        for (let i = 0; i < numberOfProductionSites; i++) {
-          this.listOfProductionSites.push({
-            id: i,
-            listOfGoodsOrServices: productionSites[i].listOfGoodsOrServices ?? [],
-            allGoodsOrServicesAsString: "",
-          });
-        }
-      }
       const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
@@ -258,15 +234,6 @@ export default defineComponent({
         ).getLksgDataControllerApi();
         await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
-        this.isYourCompanyManufacturingCompany = "No";
-        this.listOfProductionSites = [
-          {
-            id: 0,
-            listOfGoodsOrServices: [],
-            allGoodsOrServicesAsString: "",
-          },
-        ];
-        this.idCounter = 0;
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;

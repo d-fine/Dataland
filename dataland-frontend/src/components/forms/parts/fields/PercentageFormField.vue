@@ -1,12 +1,12 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :label="label" :description="description" :is-required="required" />
+    <UploadFormHeader :label="`${label} (%)`" :description="description" :is-required="required" />
     <FormKit
       type="text"
       :name="name"
       :validation-label="validationLabel ?? label"
-      :validation="validation"
-      :placeholder="placeholder"
+      :validation="`number|between:0,100|${validation}`"
+      :placeholder="placeholder ?? 'Value in %'"
       inner-class="short"
     />
   </div>
@@ -19,7 +19,7 @@ import { FormKit } from "@formkit/vue";
 import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
-  name: "InputTextFormField",
+  name: "PercentageFormField",
   components: { FormKit, UploadFormHeader },
   props: FormFieldPropsWithPlaceholder,
 });
