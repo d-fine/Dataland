@@ -80,7 +80,7 @@ class DataManagerTest(
     fun `check that an exception is thrown when non matching dataId to dataType pair is requested from data storage`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
+        val dataId = dataManager.storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
             storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
         )
         val thrown = assertThrows<InvalidInputApiException> {
@@ -97,7 +97,7 @@ class DataManagerTest(
     fun `check that an exception is thrown if the received data from the data storage is empty`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
+        val dataId = dataManager.storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
             storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
         )
         `when`(mockStorageClient.selectDataById(dataId, correlationId))
@@ -113,7 +113,7 @@ class DataManagerTest(
     fun `check that an exception is thrown if the received data from the data storage has an unexpected type`() {
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
+        val dataId = dataManager.storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
             storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
         )
         val expectedDataTypeName = getExpectedDataTypeName(
@@ -143,7 +143,7 @@ class DataManagerTest(
     @Test
     fun `check that an exception is thrown if the received data from the storage has an unexpected uploading user`() {
         val storableDataSetForNonFinancials = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId = dataManager.addDataSetToTemporaryStorageAndSendMessage(
+        val dataId = dataManager.storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
             storableDataSetForNonFinancials,
             false,
             correlationId,

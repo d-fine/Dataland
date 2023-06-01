@@ -81,14 +81,14 @@ class DataManager(
      * @param bypassQa whether the data should be sent to QA or not
      * @return ID of the newly stored data in the data store
      */
-    fun addDataSetToTemporaryStorageAndSendMessage(
+    fun storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
         storableDataSet: StorableDataSet,
         bypassQa: Boolean,
         correlationId: String,
     ):
         String {
         val dataId = generateRandomDataId()
-        addDatasetToDatabase(dataId, storableDataSet, correlationId)
+        storeMetaDataFrom(dataId, storableDataSet, correlationId)
         storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
         return dataId
     }
@@ -101,7 +101,7 @@ class DataManager(
      * @param correlationId the correlation id of the insertion process
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun addDatasetToDatabase(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
+    fun storeMetaDataFrom(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +

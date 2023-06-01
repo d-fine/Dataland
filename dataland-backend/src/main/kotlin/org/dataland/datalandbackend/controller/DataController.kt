@@ -48,7 +48,7 @@ abstract class DataController<T>(
         logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))
         val correlationId = generateCorrelationId(companyAssociatedData.companyId)
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
-        val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(
+        val dataIdOfPostedData = dataManager.storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
             datasetToStore,
             bypassQa, correlationId,
         )
