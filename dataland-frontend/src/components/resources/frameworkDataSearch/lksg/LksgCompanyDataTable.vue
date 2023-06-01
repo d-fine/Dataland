@@ -71,7 +71,7 @@
             <span
               v-else-if="
                 typeof slotProps.data.content[reportingPeriodWithDataId.dataId] === 'object' &&
-                slotProps.data.content[reportingPeriodWithDataId.dataId]?.value
+                slotProps.data.content[reportingPeriodWithDataId.dataId]?.value !== undefined
               "
             >
               {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}
