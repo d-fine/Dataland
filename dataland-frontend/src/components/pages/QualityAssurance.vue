@@ -168,8 +168,8 @@ export default defineComponent({
           metaInformation: this.metaInformation,
           companyInformation: this.companyInformation,
         });
-      } catch (error: AxiosError) {
-        if (error.response.status !== 404) {
+      } catch (error) {
+        if (error instanceof AxiosError && error.response.status !== 404) {
           throw error;
         }
       }
