@@ -48,7 +48,7 @@ describe("Component test for LksgPanel", () => {
   }
 
   it("Check Lksg view page for company with one Lksg data set", () => {
-    const preparedFixture = getPreparedFixture("one-lksg-data-set", preparedFixtures);
+    const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     const lksgData = preparedFixture.t;
 
     cy.intercept("/api/data/lksg/mock-data-id", {

@@ -29,8 +29,7 @@ class UnprotectedSecurityConfig {
      */
     @Bean
     fun unprotectedFilterChain(http: HttpSecurity): DefaultSecurityFilterChain? {
-        http
-            .authorizeRequests().anyRequest().permitAll()
+        http.authorizeHttpRequests().anyRequest().permitAll()
         http.csrf().disable()
         return http.build()
     }

@@ -1,16 +1,14 @@
 <template>
   <div class="card">
     <DataTable
-      :value="kpiDataObjectsToDisplay"
+      :value="arrayOfKpiDataObjects"
       rowGroupMode="subheader"
       groupRowsBy="subcategoryKey"
       dataKey="subcategoryKey"
       sortField="subcategoryKey"
       :sortOrder="1"
       sortMode="single"
-      responsiveLayout="scroll"
       :expandableRowGroups="true"
-      :reorderableColumns="true"
       v-model:expandedRowGroups="expandedRowGroups"
     >
       <Column
@@ -34,52 +32,69 @@
         </template>
       </Column>
       <Column
-        v-for="reportingPeriod of reportingPeriodsOfDataSets"
+        v-for="reportingPeriodWithDataId of listOfReportingPeriodsWithDataId"
         headerClass="horizontal-headers-size"
-        :field="reportingPeriod.dataId"
-        :header="reportingPeriod.reportingPeriod"
-        :key="reportingPeriod.dataId"
+        headerStyle="width: 30vw;"
+        :field="reportingPeriodWithDataId.dataId"
+        :header="reportingPeriodWithDataId.reportingPeriod"
+        :key="reportingPeriodWithDataId.dataId"
       >
-        <template #body="{ data }">
-          <a
+        <template #body="slotProps">
+          <template
             v-if="
-              Array.isArray(data[reportingPeriod.dataId]) &&
-              (data[reportingPeriod.dataId].length > 1 ||
-                data[reportingPeriod.dataId].some((el) => typeof el === 'object'))
+              slotProps.data.content[reportingPeriodWithDataId.dataId] !== undefined &&
+              slotProps.data.content[reportingPeriodWithDataId.dataId] !== null
             "
-            @click="openModalAndDisplayValuesInSubTable(data[reportingPeriod.dataId], data.kpiLabel, data.kpiKey)"
-            class="link"
-            >Show "{{ data.kpiLabel }}"
-            <em class="material-icons" aria-hidden="true" title=""> dataset </em>
-          </a>
-          <span v-else-if="typeof data[reportingPeriod.dataId] === 'object' && data[reportingPeriod.dataId]?.value">
-            <span v-if="isYesNo(data[reportingPeriod.dataId].value) && hasDocument(data[reportingPeriod.dataId])">
+          >
+            <template v-if="Array.isArray(slotProps.data.content[reportingPeriodWithDataId.dataId])">
+              <a
+                v-if="
+                  slotProps.data.content[reportingPeriodWithDataId.dataId].length > 1 ||
+                  slotProps.data.content[reportingPeriodWithDataId.dataId].some((el) => typeof el === 'object')
+                "
+                @click="
+                  openModalAndDisplayValuesInSubTable(
+                    slotProps.data.content[reportingPeriodWithDataId.dataId],
+                    slotProps.data.kpiLabel,
+                    slotProps.data.kpiKey
+                  )
+                "
+                class="link"
+                >Show "{{ slotProps.data.kpiLabel }}"
+                <em class="material-icons" aria-hidden="true" title=""> dataset </em>
+              </a>
+              <span v-else> {{ slotProps.data.content[reportingPeriodWithDataId.dataId][0] }} </span>
+            </template>
+            <span v-else-if="slotProps.data.kpiFormFieldComponent === 'PercentageFormField'">
+              {{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} %</span
+            >
+            <span
+              v-else-if="
+                typeof slotProps.data.content[reportingPeriodWithDataId.dataId] === 'object' &&
+                slotProps.data.content[reportingPeriodWithDataId.dataId]?.value !== undefined
+              "
+            >
+              <span v-if="isYesNo(slotProps.data[reportingPeriodWithDataId.dataId].value) && hasDocument(data[reportingPeriodWithDataId.dataId])">
               <DocumentLink
-                :label="yesLabelMap.get(isCertificate(data.kpiLabel))"
-                :download-name="data[reportingPeriod.dataId].dataSource.name"
-                :reference="data[reportingPeriod.dataId].dataSource.reference"
-                show-icon
+                      :label="yesLabelMap.get(isCertificate(slotProps.data.kpiLabel))"
+                      :download-name="slotProps.data[reportingPeriodWithDataId.dataId].dataSource.name"
+                      :reference="slotProps.data[reportingPeriodWithDataId.dataId].dataSource.reference"
+                      show-icon
               />
             </span>
-            <span v-else-if="isYesNo(data[reportingPeriod.dataId].value) && isCertificate(data.kpiLabel)">
-              {{ data[reportingPeriod.dataId].value === YesNo.Yes ? "Certified" : "Uncertified" }}
+            <span v-else-if="isYesNo(slotProps.data[reportingPeriodWithDataId.dataId].value) && isCertificate(slotProps.data.kpiLabel)">
+              {{ slotProps.data[reportingPeriodWithDataId.dataId].value === YesNo.Yes ? "Certified" : "Uncertified" }}
             </span>
             <span v-else>
-              {{ data[reportingPeriod.dataId].value }}
+              {{ slotProps.data[reportingPeriodWithDataId.dataId].value }}
             </span>
-          </span>
-
-          <span v-else
-            >{{
-              Array.isArray(data[reportingPeriod.dataId])
-                ? data[reportingPeriod.dataId][0]
-                : data[reportingPeriod.dataId]
-            }}
-          </span>
+            </span>
+            <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} </span>
+          </template>
         </template>
       </Column>
 
-      <Column field="subcategoryKey" header="Impact Area"></Column>
+      <Column field="subcategoryKey"></Column>
       <template #groupheader="slotProps">
         <span :data-test="slotProps.data.subcategoryKey" :id="slotProps.data.subcategoryKey" style="cursor: pointer">
           {{ slotProps.data.subcategoryLabel ? slotProps.data.subcategoryLabel : slotProps.data.subcategoryKey }}
@@ -98,6 +113,7 @@ import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTabl
 import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { BaseDataPointYesNo, YesNo } from "@clients/backend";
+import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 
 export default defineComponent({
   name: "LksgCompanyDataTable",
@@ -107,7 +123,6 @@ export default defineComponent({
   },
   data() {
     return {
-      kpiDataObjectsToDisplay: [] as KpiDataObject[],
       expandedRowGroups: ["_masterData"],
       yesLabelMap: new Map<boolean, string>([
         [true, "Certified"],
@@ -121,18 +136,16 @@ export default defineComponent({
     };
   },
   props: {
-    kpiDataObjects: {
-      type: Map as PropType<Map<string, KpiDataObject>>,
-      default: () => new Map(),
+    arrayOfKpiDataObjects: {
+      type: Array as PropType<Array<KpiDataObject>>,
+      default: () => [],
     },
-    reportingPeriodsOfDataSets: {
-      type: Array,
+    listOfReportingPeriodsWithDataId: {
+      type: Array as PropType<Array<ReportingPeriodOfDataSetWithId>>,
       default: () => [],
     },
   },
   mounted() {
-    this.kpiDataObjectsToDisplay = Array.from(this.kpiDataObjects.values());
-
     document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
   },
   methods: {
@@ -176,7 +189,7 @@ export default defineComponent({
         },
         data: {
           listOfRowContents: listOfValues,
-          tableType: kpiKey,
+          kpiKeyOfTable: kpiKey,
         },
       });
     },
@@ -188,10 +201,10 @@ export default defineComponent({
       const id = (event.target as Element).id;
 
       const matchingChild = Array.from((event.target as Element).children).filter((child: Element) =>
-        this.kpiDataObjectsToDisplay.some((dataObject) => dataObject.subcategoryKey === child.id)
+        this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === child.id)
       )[0];
 
-      if (matchingChild || this.kpiDataObjectsToDisplay.some((dataObject) => dataObject.subcategoryKey === id)) {
+      if (matchingChild || this.arrayOfKpiDataObjects.some((dataObject) => dataObject.subcategoryKey === id)) {
         const index = this.expandedRowGroups.indexOf(matchingChild?.id ?? id);
         if (index === -1) this.expandedRowGroups.push(matchingChild?.id ?? id);
         else this.expandedRowGroups.splice(index, 1);

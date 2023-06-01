@@ -1,10 +1,10 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :name="displayName" :explanation="info" :is-required="required" />
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <MultiSelectFormElement
       :name="name"
       :validation="validation"
-      :validation-label="validationLabel ?? displayName"
+      :validation-label="validationLabel ?? label"
       :placeholder="placeholder"
       :options="options"
       inner-class="short"
