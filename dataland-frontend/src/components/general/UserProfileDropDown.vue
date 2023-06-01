@@ -108,7 +108,7 @@ export default defineComponent({
         },
       ],
       profilePictureSource: defaultProfilePicture,
-      hasRole: ((role: string) => !String(role)) as (role: string) => boolean,
+      hasRole: ((role: string) => !!String(role)) as (role: string) => boolean,
     };
   },
   mounted() {
