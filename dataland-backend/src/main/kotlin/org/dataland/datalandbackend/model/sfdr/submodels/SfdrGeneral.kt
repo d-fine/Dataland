@@ -11,7 +11,7 @@ import java.time.LocalDate
 data class SfdrGeneral(
     val fiscalYear: FiscalYearDeviation?,
 
-    val fiscalYearEnd: LocalDate,
+    val fiscalYearEnd: LocalDate?,
 
     val annualReport: String?,
 
