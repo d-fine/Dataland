@@ -39,7 +39,7 @@ class QaController(
     @Transactional
     override fun assignQualityStatus(dataId: String, qualityStatus: QAStatus):
         ResponseEntity<Void> {
-        logger.info("Assigning quality status ${qualityStatus.name} to dataset with ID $dataId")
+        logger.info("Received request to change the quality status of dataset with ID $dataId")
         if (qualityStatus == QAStatus.Pending) {
             throw InvalidInputApiException(
                 "Quality \"Pending\" cannot be assigned to a reviewed dataset",
@@ -47,6 +47,7 @@ class QaController(
             )
         }
         val dataReviewStatusToUpdate = validateDataIdAndGetDataReviewStatus(dataId)
+        logger.info("Assigning quality status ${qualityStatus.name} to dataset with ID $dataId")
         datasetReviewStatusRepository.save(
             DatasetReviewStatusEntity(
                 dataId = dataId,

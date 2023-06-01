@@ -6,7 +6,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.model.QAStatus
 
 /**
- * The entity storing the document meta info
+ * The entity storing the review status of a dataset
  */
 @Entity
 @Table(name = "dataset_review_status")
