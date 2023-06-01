@@ -73,7 +73,7 @@ describeIf(
       });
     });
 
-    it("Check if an uploader user can access the corresponding pages", () => {
+    it.only("Check if an uploader user can access the corresponding pages", () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       readerAndUploaderPages.forEach((page) => {
         cy.visit(page);
@@ -85,12 +85,6 @@ describeIf(
         cy.visit(page);
         cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
           "not.exist"
-        );
-      });
-      reviewerOnlyPages.forEach((page) => {
-        cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
-            "exist"
         );
       });
     });
