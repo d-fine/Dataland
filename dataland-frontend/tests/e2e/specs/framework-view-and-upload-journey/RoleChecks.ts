@@ -44,9 +44,7 @@ describeIf(
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}/upload`,
         ];
-        reviewerOnlyPages = [
-          "/qualityassurance",
-        ];
+        reviewerOnlyPages = ["/qualityassurance"];
       });
     });
 
@@ -54,22 +52,16 @@ describeIf(
       cy.ensureLoggedIn(reader_name, reader_pw);
       readerAndUploaderPages.forEach((page) => {
         it(`Non uploader should be able to access ${page}`, () => {
-          cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
-            "not.exist"
-          );
+          cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should("not.exist");
         });
       });
       uploaderOnlyPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
-          "exist"
-        );
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should("exist");
       });
       reviewerOnlyPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
-            "exist"
-        );
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should("exist");
       });
     });
 
@@ -77,24 +69,18 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       readerAndUploaderPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
-          "not.exist"
-        );
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should("not.exist");
       });
       uploaderOnlyPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
-          "not.exist"
-        );
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should("not.exist");
       });
     });
     it("Check if an reviewer user can access the corresponding page", () => {
       cy.ensureLoggedIn(reviewer_name, reviewer_pw);
       reviewerOnlyPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
-            "not.exist"
-        );
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should("not.exist");
       });
     });
   }

@@ -59,8 +59,8 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  async created() {
-    await checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise).then((hasUserReviewerRights) => {
+  created() {
+    void checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise).then((hasUserReviewerRights) => {
       this.tabs[2].isVisible = hasUserReviewerRights;
     });
   },
@@ -68,7 +68,7 @@ export default defineComponent({
     /**
      * Routes to companies page when AVAILABLE DATASET tab is clicked
      * @param event the event containing the index of the newly selected tab
-     * @param event.index
+     * @param event.index the index of the tab element
      */
     handleTabChange(event: { index: number }): void {
       if (this.initialTabIndex != event.index) {
