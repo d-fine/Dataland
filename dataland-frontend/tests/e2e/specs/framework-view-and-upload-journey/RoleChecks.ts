@@ -87,7 +87,7 @@ describeIf(
           "not.exist"
         );
       });
-      uploaderOnlyPages.forEach((page) => {
+      reviewerOnlyPages.forEach((page) => {
         cy.visit(page);
         cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
             "exist"
@@ -96,7 +96,7 @@ describeIf(
     });
     it("Check if an reviewer user can access the corresponding page", () => {
       cy.ensureLoggedIn(reviewer_name, reviewer_pw);
-      uploaderOnlyPages.forEach((page) => {
+      reviewerOnlyPages.forEach((page) => {
         cy.visit(page);
         cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
             "not.exist"
