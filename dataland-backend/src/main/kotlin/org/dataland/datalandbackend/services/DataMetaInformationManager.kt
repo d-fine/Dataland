@@ -31,20 +31,20 @@ class DataMetaInformationManager(
      * Marks the given dataset as the latest dataset for the combination of dataType, company and reporting period
      * Ensures that only one dataset per group has the active status
      */
-    fun setActiveDataset(dataset: DataMetaInformationEntity) {
-        if (dataset.currentlyActive == true) {
+    fun setActiveDataset(dataMetaInfo: DataMetaInformationEntity) {
+        if (dataMetaInfo.currentlyActive == true) {
             return
         }
-        val currentlyActive = dataMetaInformationRepository.getActiveDataset(
-            dataset.company,
-            dataset.dataType,
-            dataset.reportingPeriod,
+        val metaInfoOfCurrentlyActiveDataset = dataMetaInformationRepository.getActiveDataset(
+            dataMetaInfo.company,
+            dataMetaInfo.dataType,
+            dataMetaInfo.reportingPeriod,
         )
-        if (currentlyActive != null) {
-            currentlyActive.currentlyActive = null
-            dataMetaInformationRepository.saveAndFlush(currentlyActive)
+        if (metaInfoOfCurrentlyActiveDataset != null) {
+            metaInfoOfCurrentlyActiveDataset.currentlyActive = null
+            dataMetaInformationRepository.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
         }
-        dataset.currentlyActive = true
+        dataMetaInfo.currentlyActive = true
     }
 
     /**
