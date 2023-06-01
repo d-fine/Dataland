@@ -77,7 +77,7 @@ import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
-import QADatasetModal from "@/components/general/QADatasetModal.vue";
+import QADatasetModal from "@/components/general/QaDatasetModal.vue";
 import { AxiosError } from "axios";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 export default defineComponent({
@@ -110,8 +110,8 @@ export default defineComponent({
       companyInformation: null as CompanyInformation | null,
     };
   },
-  async mounted() {
-    await this.getQaData();
+  mounted() {
+    void this.getQaData();
   },
   props: {
     data: {
