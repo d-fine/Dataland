@@ -2098,6 +2098,9 @@
           "reference": {
             "type": "string"
           },
+          "isGroupLevel": {
+            "$ref": "#/components/schemas/YesNoNa"
+          },
           "reportDate": {
             "type": "string",
             "format": "date"
@@ -3996,6 +3999,10 @@
         }
       },
       "CompanyAvailableDistinctValues": {
+        "required": [
+          "countryCodes",
+          "sectors"
+        ],
         "type": "object",
         "properties": {
           "countryCodes": {
