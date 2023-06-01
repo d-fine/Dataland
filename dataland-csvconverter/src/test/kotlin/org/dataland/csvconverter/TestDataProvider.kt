@@ -10,13 +10,13 @@ import java.io.File
 class TestDataProvider(private val objectMapper: ObjectMapper) {
     fun getAllCompanyInformationWithEuTaxonomyDataForNonFinancials():
         List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> {
-        val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
+        val jsonFile = File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
         return objectMapper.readValue(jsonFile)
     }
 
     fun getAllCompanyInformationWithEuTaxonomyDataForFinancials():
         List<CompanyInformationWithData<EuTaxonomyDataForFinancials>> {
-        val jsonFile = File("./build/resources/CompanyInformationWithEuTaxonomyDataForFinancials.json")
+        val jsonFile = File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancials.json")
         return objectMapper.readValue(jsonFile)
     }
 }

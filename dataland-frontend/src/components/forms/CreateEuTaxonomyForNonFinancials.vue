@@ -301,7 +301,7 @@ import {
   DataMetaInformation,
   EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
-import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/ValidationsUtils";
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import {
   convertValuesFromDecimalsToPercentages,
   convertValuesFromPercentagesToDecimals,
@@ -316,6 +316,7 @@ import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
+import { ReportToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -426,7 +427,7 @@ export default defineComponent({
         companyAssociatedEuTaxonomyData as ObjectType
       );
       this.waitingForData = false;
-      updateObject(this.formInputsModel, receivedFormInputsModel);
+      updateObject(this.formInputsModel as ObjectType, receivedFormInputsModel);
     },
 
     /**
@@ -442,7 +443,11 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-        await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
+
+        await uploadFiles(
+          (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
+          assertDefined(this.getKeycloakPromise)
+        );
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
@@ -456,7 +461,7 @@ export default defineComponent({
       } catch (error) {
         this.messageCount++;
         console.error(error);
-        this.message = formatAxiosErrorMessage(error);
+        this.message = formatAxiosErrorMessage(error as Error);
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
       }

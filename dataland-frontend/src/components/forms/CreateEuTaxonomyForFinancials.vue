@@ -343,6 +343,7 @@ import UploadReports from "@/components/forms/parts/UploadReports.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
+import { uploadFiles, ReportToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -635,7 +636,11 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-        await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
+
+        await uploadFiles(
+          (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
+          assertDefined(this.getKeycloakPromise)
+        );
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(clonedFormInputsModel);
         const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
@@ -649,7 +654,7 @@ export default defineComponent({
       } catch (error) {
         this.messageCount++;
         console.error(error);
-        this.message = formatAxiosErrorMessage(error);
+        this.message = formatAxiosErrorMessage(error as Error);
       } finally {
         this.postEuTaxonomyDataForFinancialsProcessed = true;
       }
