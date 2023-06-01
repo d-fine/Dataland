@@ -45,7 +45,7 @@ class JwtAuthenticationHelper {
         return getSingleValueFromJsonStringForKey("access_token", responseBodyAsJsonString)!!
     }
 
-    fun obtainJwtForTechnicalUser(technicalUser: TechnicalUser): String {
+    private fun obtainJwtForTechnicalUser(technicalUser: TechnicalUser): String {
         val token = when (technicalUser) {
             TechnicalUser.Admin -> requestToken(ADMIN_USER_NAME, ADMIN_USER_PASSWORD)
             TechnicalUser.Reader -> requestToken(READER_USER_NAME, READER_USER_PASSWORD)
