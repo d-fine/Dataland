@@ -12,8 +12,8 @@
         >
           <h4>Name & location</h4>
           <UploadFormHeader
-            :name="companyDataNames.companyName"
-            :explanation="companyDataExplanations.companyName"
+            :label="companyDataNames.companyName"
+            :description="companyDataExplanations.companyName"
             :is-required="true"
           />
           <FormKit
@@ -26,8 +26,8 @@
           />
           <div class="flex align-items-center form-field-label">
             <UploadFormHeader
-              :name="companyDataNames.companyAlternativeNames"
-              :explanation="companyDataExplanations.companyAlternativeNames"
+              :label="companyDataNames.companyAlternativeNames"
+              :description="companyDataExplanations.companyAlternativeNames"
             />
             <PrimeButton
               :disabled="this.enteredCompanyAlternativeName === ''"
@@ -55,8 +55,8 @@
           <div class="next-to-each-other">
             <div>
               <UploadFormHeader
-                :name="companyDataNames.headquarters"
-                :explanation="companyDataExplanations.headquarters"
+                :label="companyDataNames.headquarters"
+                :description="companyDataExplanations.headquarters"
                 :is-required="true"
               />
               <FormKit
@@ -70,8 +70,8 @@
             </div>
             <div>
               <UploadFormHeader
-                :name="companyDataNames.countryCode"
-                :explanation="companyDataExplanations.countryCode"
+                :label="companyDataNames.countryCode"
+                :description="companyDataExplanations.countryCode"
                 :is-required="true"
               />
               <FormKit
@@ -87,8 +87,8 @@
           </div>
 
           <UploadFormHeader
-            :name="companyDataNames.headquartersPostalCode"
-            :explanation="companyDataExplanations.headquartersPostalCode"
+            :label="companyDataNames.headquartersPostalCode"
+            :description="companyDataExplanations.headquartersPostalCode"
           />
           <FormKit
             name="headquartersPostalCode"
@@ -98,8 +98,8 @@
           />
 
           <UploadFormHeader
-            :name="companyDataNames.companyLegalForm"
-            :explanation="companyDataExplanations.companyLegalForm"
+            :label="companyDataNames.companyLegalForm"
+            :description="companyDataExplanations.companyLegalForm"
           />
           <FormKit
             name="companyLegalForm"
@@ -108,7 +108,7 @@
             :placeholder="companyDataNames.companyLegalForm"
           />
 
-          <UploadFormHeader :name="companyDataNames.website" :explanation="companyDataExplanations.website" />
+          <UploadFormHeader :label="companyDataNames.website" :description="companyDataExplanations.website" />
           <FormKit name="website" v-model="website" type="text" :placeholder="companyDataNames.website" />
 
           <h4>Identifier</h4>
@@ -121,7 +121,7 @@
               validationVisibility: 'live',
             }"
           >
-            <UploadFormHeader :name="companyDataNames.lei" :explanation="companyDataExplanations.lei" />
+            <UploadFormHeader :label="companyDataNames.lei" :description="companyDataExplanations.lei" />
             <FormKit
               name="lei"
               v-model="lei"
@@ -130,7 +130,7 @@
               :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Lei}`"
             />
 
-            <UploadFormHeader :name="companyDataNames.isin" :explanation="companyDataExplanations.isin" />
+            <UploadFormHeader :label="companyDataNames.isin" :description="companyDataExplanations.isin" />
             <FormKit
               name="isin"
               v-model="isin"
@@ -139,7 +139,7 @@
               :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Isin}`"
             />
 
-            <UploadFormHeader :name="companyDataNames.ticker" :explanation="companyDataExplanations.ticker" />
+            <UploadFormHeader :label="companyDataNames.ticker" :description="companyDataExplanations.ticker" />
             <FormKit
               name="ticker"
               v-model="ticker"
@@ -148,7 +148,7 @@
               :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.Ticker}`"
             />
 
-            <UploadFormHeader :name="companyDataNames.permId" :explanation="companyDataExplanations.permId" />
+            <UploadFormHeader :label="companyDataNames.permId" :description="companyDataExplanations.permId" />
             <FormKit
               name="permId"
               v-model="permId"
@@ -157,7 +157,7 @@
               :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.PermId}`"
             />
 
-            <UploadFormHeader :name="companyDataNames.duns" :explanation="companyDataExplanations.duns" />
+            <UploadFormHeader :label="companyDataNames.duns" :description="companyDataExplanations.duns" />
             <FormKit
               name="duns"
               v-model="duns"
@@ -167,8 +167,8 @@
             />
 
             <UploadFormHeader
-              :name="companyDataNames.companyRegistrationNumber"
-              :explanation="companyDataExplanations.companyRegistrationNumber"
+              :label="companyDataNames.companyRegistrationNumber"
+              :description="companyDataExplanations.companyRegistrationNumber"
             />
             <FormKit
               name="companyRegistrationNumber"
@@ -178,7 +178,7 @@
               :validation="`identifierDoesNotExistValidator:${CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber}`"
             />
 
-            <UploadFormHeader :name="companyDataNames.vatNumber" :explanation="companyDataExplanations.vatNumber" />
+            <UploadFormHeader :label="companyDataNames.vatNumber" :description="companyDataExplanations.vatNumber" />
             <FormKit
               name="vatNumber"
               v-model="vatNumber"
@@ -191,8 +191,8 @@
           <h4>GICS classification</h4>
 
           <UploadFormHeader
-            :name="companyDataNames.sector"
-            :explanation="companyDataExplanations.sector"
+            :label="companyDataNames.sector"
+            :description="companyDataExplanations.sector"
             :is-required="true"
           />
           <FormKit

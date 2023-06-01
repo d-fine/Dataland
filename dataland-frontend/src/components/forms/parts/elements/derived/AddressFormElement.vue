@@ -15,6 +15,7 @@
         :validation="required"
         placeholder="Country"
         :options="allCountry"
+        data-test="country"
       />
       <FormKit type="text" name="city" validation-label="City" :validation="required" placeholder="City" />
       <FormKit
@@ -30,15 +31,15 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { getAllCountryNamesWithCodes } from "@/utils/CountryCodeConverter";
 import { FormKit } from "@formkit/vue";
+import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "AddressFormElement",
   components: { FormKit },
   data() {
     return {
-      allCountry: getAllCountryNamesWithCodes(),
+      allCountry: getDataset(DropdownDatasetIdentifier.CountryCodes),
     };
   },
   computed: {

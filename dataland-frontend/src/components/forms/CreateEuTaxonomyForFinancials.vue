@@ -35,8 +35,8 @@
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
                   data-test="reportingPeriodLabel"
-                  :name="euTaxonomyKpiNameMappings.reportingPeriod"
-                  :explanation="euTaxonomyKpiInfoMappings.reportingPeriod"
+                  :label="euTaxonomyKpiNameMappings.reportingPeriod"
+                  :description="euTaxonomyKpiInfoMappings.reportingPeriod"
                   :is-required="true"
                 />
                 <div class="lg:col-6 md:col-6 col-12 p-0">
@@ -78,8 +78,8 @@
                       <!-- Level of assurance -->
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="euTaxonomyKpiNameMappings.assurance ?? ''"
-                          :explanation="euTaxonomyKpiInfoMappings.assurance ?? ''"
+                          :label="euTaxonomyKpiNameMappings.assurance ?? ''"
+                          :description="euTaxonomyKpiInfoMappings.assurance ?? ''"
                         />
                         <div class="lg:col-4 md:col-6 col-12 p-0">
                           <FormKit
@@ -95,8 +95,8 @@
                       <!-- Assurance provider -->
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="euTaxonomyKpiNameMappings.provider ?? ''"
-                          :explanation="euTaxonomyKpiInfoMappings.provider ?? ''"
+                          :label="euTaxonomyKpiNameMappings.provider ?? ''"
+                          :description="euTaxonomyKpiInfoMappings.provider ?? ''"
                         />
                         <FormKit
                           type="text"
@@ -113,8 +113,8 @@
                           <div class="next-to-each-other">
                             <div class="flex-1">
                               <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings.report ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings.report ?? ''"
+                                :label="euTaxonomyKpiNameMappings.report ?? ''"
+                                :description="euTaxonomyKpiInfoMappings.report ?? ''"
                               />
                               <FormKit
                                 type="select"
@@ -128,8 +128,8 @@
                             </div>
                             <div>
                               <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings.page ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings.page ?? ''"
+                                :label="euTaxonomyKpiNameMappings.page ?? ''"
+                                :description="euTaxonomyKpiInfoMappings.page ?? ''"
                               />
                               <FormKit
                                 outer-class="w-100"
@@ -161,8 +161,8 @@
                     <div class="form-field">
                       <UploadFormHeader
                         data-test="selectKPIsLabel"
-                        :name="euTaxonomyKpiNameMappings.financialServicesTypes ?? ''"
-                        :explanation="euTaxonomyKpiInfoMappings.financialServicesTypes ?? ''"
+                        :label="euTaxonomyKpiNameMappings.financialServicesTypes ?? ''"
+                        :description="euTaxonomyKpiInfoMappings.financialServicesTypes ?? ''"
                         :is-required="true"
                       />
 

@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class LksgChildLabor(
     val employeeUnder18: YesNo?,
 
-    val employeeUnder18Under15: YesNo?,
+    val employeeUnder15: YesNo?,
 
     val employeeUnder18Apprentices: YesNo?,
 

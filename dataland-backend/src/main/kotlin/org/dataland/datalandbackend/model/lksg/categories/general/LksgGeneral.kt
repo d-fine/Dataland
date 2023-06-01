@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.model.lksg.categories.general
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgMasterData
-import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgProductionSpecific
+import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production.LksgProductionSpecific
 
 /**
  * --- API model ---
