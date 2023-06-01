@@ -93,7 +93,11 @@
                   isCertificate(slotProps.data.kpiLabel)
                 "
               >
-                {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value === YesNo.Yes ? "Certified" : "Uncertified" }}
+                {{
+                  slotProps.data.content[reportingPeriodWithDataId.dataId].value === YesNo.Yes
+                    ? "Certified"
+                    : "Uncertified"
+                }}
               </span>
               <span v-else>
                 {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}
@@ -161,6 +165,7 @@ export default defineComponent({
   methods: {
     /**
      * Checks if the BaseDataPoint holds a document reference
+     *
      * @param dataPoint the object to check for a reference
      * @returns true if the data point contains a document reference and has the appropriate value
      */
@@ -169,6 +174,7 @@ export default defineComponent({
     },
     /**
      * Checks if a label belongs to a certificate
+     *
      * @param label the label to check
      * @returns true if the label belongs to a certificate
      */
@@ -178,6 +184,7 @@ export default defineComponent({
     },
     /**
      * Checks if a string is 'Yes' or 'No'
+     *
      * @param value the string to check
      * @returns true if the string is 'Yes' or 'No'
      */
@@ -186,6 +193,7 @@ export default defineComponent({
     },
     /**
      * Opens a modal to display a table with the provided list of production sites
+     *
      * @param listOfValues An array consisting of production sites
      * @param modalTitle The title for the modal, which is derived from the key of the KPI
      * @param kpiKey the key of the KPI used to determine the type of Subtable that needs to be displayed
@@ -205,6 +213,7 @@ export default defineComponent({
     },
     /**
      * Enables groupRowExpansion (and collaps) when clicking on the whole header row
+     *
      * @param event a click event
      */
     expandRowGroupOnHeaderClick(event: Event) {

@@ -7,7 +7,7 @@ describe("Component test for LksgCompanyDataTable", () => {
   const dataId = "dummyId";
   const dummyDataSource = { name: "document", reference: "123" } as DocumentReference;
   it("Check that certificate/policy download links are displayed as expected", () => {
-    const kpiDataObjects =  [
+    const kpiDataObjects = [
       generateBaseDataPointKpi(YesNo.Yes, "Certification 1", dummyDataSource),
       generateBaseDataPointKpi(YesNo.No, "2 Certificate", dummyDataSource),
       generateBaseDataPointKpi(YesNo.Yes, "Certification 3", {} as DocumentReference),
@@ -48,6 +48,7 @@ describe("Component test for LksgCompanyDataTable", () => {
 
   /**
    * Constructs a KpiDataObject object
+   *
    * @param value the value of the kpi
    * @param label the display name to describe the kpi
    * @param dataSource the dataSource to reference
