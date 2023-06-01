@@ -1,7 +1,5 @@
 package org.dataland.e2etests.auth
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ObjectNode
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -14,9 +12,9 @@ import org.dataland.e2etests.TOKENREQUEST_CLIENT_ID
 import org.dataland.e2etests.TOKENREQUEST_GRANT_TYPE
 import org.dataland.e2etests.UPLOADER_USER_NAME
 import org.dataland.e2etests.UPLOADER_USER_PASSWORD
+import org.json.JSONObject
 
 class JwtAuthenticationHelper {
-    private val objectMapper = ObjectMapper()
     private val client = OkHttpClient()
 
     private fun buildTokenRequest(username: String, password: String): Request {
@@ -34,8 +32,7 @@ class JwtAuthenticationHelper {
     }
 
     private fun getSingleValueFromJsonStringForKey(key: String, jsonAsString: String): String? {
-        val node: ObjectNode = objectMapper.readValue(jsonAsString, ObjectNode::class.java)
-        return node.get(key)?.toString()?.trim('"')
+        return JSONObject(jsonAsString).get(key)?.toString()?.trim('"')
     }
 
     private fun requestToken(username: String, password: String): String {
@@ -45,7 +42,7 @@ class JwtAuthenticationHelper {
         return getSingleValueFromJsonStringForKey("access_token", responseBodyAsJsonString)!!
     }
 
-    fun obtainJwtForTechnicalUser(technicalUser: TechnicalUser): String {
+    private fun obtainJwtForTechnicalUser(technicalUser: TechnicalUser): String {
         val token = when (technicalUser) {
             TechnicalUser.Admin -> requestToken(ADMIN_USER_NAME, ADMIN_USER_PASSWORD)
             TechnicalUser.Reader -> requestToken(READER_USER_NAME, READER_USER_PASSWORD)
