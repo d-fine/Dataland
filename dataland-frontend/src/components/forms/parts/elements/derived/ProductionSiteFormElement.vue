@@ -4,7 +4,6 @@
       name="nameOfProductionSite"
       info="Please state the name of the production site."
       display-name="Production Site"
-      validation="required"
     />
   </div>
 

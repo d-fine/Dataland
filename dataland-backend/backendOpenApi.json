@@ -3240,6 +3240,9 @@
         }
       },
       "LksgProductionSite": {
+        "required": [
+          "addressOfProductionSite"
+        ],
         "type": "object",
         "properties": {
           "nameOfProductionSite": {
