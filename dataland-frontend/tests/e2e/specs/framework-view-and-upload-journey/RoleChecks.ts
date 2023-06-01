@@ -16,7 +16,7 @@ describeIf(
     let uploaderOnlyPages = [] as string[];
     let reviewerOnlyPages = [] as string[];
     let companyId: string;
-    const noUploaderRightsMessageSelector = "h1:contains('You do not have permission')";
+    const noPermissionMessage = "h1:contains('You do not have permission')";
 
     before(() => {
       getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
@@ -54,20 +54,20 @@ describeIf(
       cy.ensureLoggedIn(reader_name, reader_pw);
       readerAndUploaderPages.forEach((page) => {
         it(`Non uploader should be able to access ${page}`, () => {
-          cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+          cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
             "not.exist"
           );
         });
       });
       uploaderOnlyPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
           "exist"
         );
       });
       reviewerOnlyPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
             "exist"
         );
       });
@@ -77,19 +77,19 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       readerAndUploaderPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
           "not.exist"
         );
       });
       uploaderOnlyPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
           "not.exist"
         );
       });
       uploaderOnlyPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
             "exist"
         );
       });
@@ -98,7 +98,7 @@ describeIf(
       cy.ensureLoggedIn(reviewer_name, reviewer_pw);
       uploaderOnlyPages.forEach((page) => {
         cy.visit(page);
-        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+        cy.get(noPermissionMessage, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
             "not.exist"
         );
       });
