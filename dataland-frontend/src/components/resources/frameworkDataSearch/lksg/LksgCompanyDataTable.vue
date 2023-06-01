@@ -74,20 +74,30 @@
                 slotProps.data.content[reportingPeriodWithDataId.dataId]?.value !== undefined
               "
             >
-              <span v-if="isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) && hasDocument(slotProps.data.content[reportingPeriodWithDataId.dataId])">
-              <DocumentLink
-                      :label="yesLabelMap.get(isCertificate(slotProps.data.kpiLabel))"
-                      :download-name="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.name"
-                      :reference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.reference"
-                      show-icon
-              />
-            </span>
-            <span v-else-if="isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) && isCertificate(slotProps.data.kpiLabel)">
-              {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value === YesNo.Yes ? "Certified" : "Uncertified" }}
-            </span>
-            <span v-else>
-              {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}
-            </span>
+              <span
+                v-if="
+                  isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
+                  hasDocument(slotProps.data.content[reportingPeriodWithDataId.dataId])
+                "
+              >
+                <DocumentLink
+                  :label="yesLabelMap.get(isCertificate(slotProps.data.kpiLabel))"
+                  :download-name="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.name"
+                  :reference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.reference"
+                  show-icon
+                />
+              </span>
+              <span
+                v-else-if="
+                  isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
+                  isCertificate(slotProps.data.kpiLabel)
+                "
+              >
+                {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value === YesNo.Yes ? "Certified" : "Uncertified" }}
+              </span>
+              <span v-else>
+                {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}
+              </span>
             </span>
             <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} </span>
           </template>
