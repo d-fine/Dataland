@@ -1,4 +1,4 @@
-import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { reader_name, reader_pw, uploader_name, uploader_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
 import { DataTypeEnum } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -14,6 +14,7 @@ describeIf(
   () => {
     let readerAndUploaderPages = [] as string[];
     let uploaderOnlyPages = [] as string[];
+    let reviewerOnlyPages = [] as string[];
     let companyId: string;
     const noUploaderRightsMessageSelector = "h1:contains('You do not have permission')";
 
@@ -43,6 +44,9 @@ describeIf(
           `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
           `/companies/${companyId}/frameworks/${DataTypeEnum.Lksg}/upload`,
         ];
+        reviewerOnlyPages = [
+          "/qualityassurance",
+        ];
       });
     });
 
@@ -61,6 +65,12 @@ describeIf(
           "exist"
         );
       });
+      reviewerOnlyPages.forEach((page) => {
+        cy.visit(page);
+        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+            "exist"
+        );
+      });
     });
 
     it("Check if an uploader user can access the corresponding pages", () => {
@@ -75,6 +85,21 @@ describeIf(
         cy.visit(page);
         cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
           "not.exist"
+        );
+      });
+      uploaderOnlyPages.forEach((page) => {
+        cy.visit(page);
+        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+            "exist"
+        );
+      });
+    });
+    it("Check if an reviewer user can access the corresponding page", () => {
+      cy.ensureLoggedIn(reviewer_name, reviewer_pw);
+      uploaderOnlyPages.forEach((page) => {
+        cy.visit(page);
+        cy.get(noUploaderRightsMessageSelector, { timeout: Cypress.env("long_timeout_in_ms") as number }).should(
+            "not.exist"
         );
       });
     });
