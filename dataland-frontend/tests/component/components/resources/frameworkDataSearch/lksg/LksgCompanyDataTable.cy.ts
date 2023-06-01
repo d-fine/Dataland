@@ -60,7 +60,8 @@ describe("Component test for LksgCompanyDataTable", () => {
       kpiKey: "dummy",
       kpiLabel: label,
       kpiDescription: "",
-      [dataId]: { value: value, dataSource: dataSource } as KpiValue,
+      kpiFormFieldComponent: "",
+      content: { [dataId]: { value: value, dataSource: dataSource } as KpiValue },
     } as KpiDataObject;
   }
 });
