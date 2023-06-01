@@ -1,55 +1,56 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
-      <TheContent class="paper-section flex">
-        <div class="col-12 text-left pb-0">
-          <BackButton />
-          <h1>Quality Assurance</h1>
-          <div v-if="!waitingForData">
-            <div class="card">
-              <DataTable :value="resultData" class="table-cursor" id="qa-data-result" :rowHover="true" @row-click="loadDatasetAndOpenModal" >
-                <Column header="DATA ID" class="d-bg-white w-2">
-                  <template #body="{ data }">
-                    {{ data.dataId }}
-                  </template>
-                </Column>
-                <Column header="COMPANY NAME" class="d-bg-white w-2">
-                  <template #body="{ data }">
-                    {{ data.companyInformation.companyName }}
-                  </template>
-                </Column>
-                <Column header="FRAMEWORK" class="d-bg-white w-2">
-                  <template #body="{ data }">
-                    {{ humanizeString(data.metaInformation.dataType) }}
-                  </template>
-                </Column>
-                <Column header="REPORTING PERIOD" class="d-bg-white w-2">
-                  <template #body="{ data }">
-                    {{ data.metaInformation.reportingPeriod }}
-                  </template>
-                </Column>
-                <Column field="reviewDataset" header="" class="w-2 d-bg-white ">
-                  <template #body="{ data }">
-                    <router-link :to="loadDatasetAndOpenModal" class="text-primary no-underline font-bold">
-                      <div class="text-right">
-                        <span>REVIEW</span>
-                        <span class="ml-3">></span>
-                      </div>
-                    </router-link>
-                  </template>
-                </Column>
+    <DatasetsTabMenu :initial-tab-index="2">
+      <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
+        <TheContent class="paper-section flex">
+          <div class="col-12 text-left pb-0">
+            <h1>Quality Assurance</h1>
+            <div v-if="!waitingForData">
+              <div class="card">
+                <DataTable :value="resultData" class="table-cursor" id="qa-data-result" :rowHover="true" @row-click="loadDatasetAndOpenModal" >
+                  <Column header="DATA ID" class="d-bg-white w-2">
+                    <template #body="{ data }">
+                      {{ data.dataId }}
+                    </template>
+                  </Column>
+                  <Column header="COMPANY NAME" class="d-bg-white w-2">
+                    <template #body="{ data }">
+                      {{ data.companyInformation.companyName }}
+                    </template>
+                  </Column>
+                  <Column header="FRAMEWORK" class="d-bg-white w-2">
+                    <template #body="{ data }">
+                      {{ humanizeString(data.metaInformation.dataType) }}
+                    </template>
+                  </Column>
+                  <Column header="REPORTING PERIOD" class="d-bg-white w-2">
+                    <template #body="{ data }">
+                      {{ data.metaInformation.reportingPeriod }}
+                    </template>
+                  </Column>
+                  <Column field="reviewDataset" header="" class="w-2 d-bg-white ">
+                    <template #body="{ data }">
+                      <router-link :to="loadDatasetAndOpenModal" class="text-primary no-underline font-bold">
+                        <div class="text-right">
+                          <span>REVIEW</span>
+                          <span class="ml-3">></span>
+                        </div>
+                      </router-link>
+                    </template>
+                  </Column>
 
-              </DataTable>
-            </div>
-          </div>
-              <div v-else-if="waitingForData" class="inline-loading text-center">
-                  <p class="font-medium text-xl">Loading data to be reviewed...</p>
-                  <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+                </DataTable>
               </div>
-        </div>
-      </TheContent>
-    </AuthorizationWrapper>
+            </div>
+                <div v-else-if="waitingForData" class="inline-loading text-center">
+                    <p class="font-medium text-xl">Loading data to be reviewed...</p>
+                    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+                </div>
+          </div>
+        </TheContent>
+      </AuthorizationWrapper>
+    </DatasetsTabMenu>
     <TheFooter />
   </AuthenticationWrapper>
 </template>
@@ -73,9 +74,11 @@ import Column from "primevue/column";
 import {humanizeString} from "@/utils/StringHumanizer";
 import QADatasetModal from "@/components/general/QADatasetModal.vue";
 import { AxiosError } from "axios";
+import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 export default defineComponent({
   name: "QualityAssurance",
   components: {
+    DatasetsTabMenu,
     AuthorizationWrapper,
     TheFooter,
     MiddleCenterDiv,
@@ -120,7 +123,6 @@ export default defineComponent({
     //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
     //TODO Discussion What about reverting a decision?
     //TODO List of data Ids should be refreshed once a decision was made
-    //TODO Include a button next to the My DataSet Button, only visible to a user with role Reviewer_Role
     //TODO Clean up code
     /**
      * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page

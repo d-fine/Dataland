@@ -1,0 +1,91 @@
+<template>
+  <TabView
+    v-if="initialTabIndex != undefined"
+    :activeIndex="initialTabIndex"
+    @tab-change="handleTabChange"
+    class="col-12"
+  >
+    <TabPanel
+      v-for="tab in tabs"
+      :disabled="!(tabs.indexOf(tab) == initialTabIndex || (tab.isVisible ?? true))"
+      :header="tab.label"
+    >
+      <slot v-if="tabs.indexOf(tab) == initialTabIndex"></slot>
+    </TabPanel>
+  </TabView>
+</template>
+
+<script lang="ts">
+import { defineComponent, inject } from "vue";
+import TabView from "primevue/tabview";
+import TabPanel from "primevue/tabpanel";
+import { checkIfUserHasRole, KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
+import Keycloak from "keycloak-js";
+
+export default defineComponent({
+  name: "DatasetsTabMenu",
+  components: {
+    TabView,
+    TabPanel,
+  },
+  props: {
+    initialTabIndex: {
+      type: Number,
+      required: true,
+    },
+  },
+  data: () => ({
+    tabs: [
+      {
+        label: "AVAILABLE DATASETS",
+        route: "/companies",
+        isVisible: true,
+      },
+      {
+        label: "MY DATASETS",
+        route: "/datasets",
+        isVisible: true,
+      },
+      {
+        label: "QA",
+        route: "/qualityassurance",
+        isVisible: true,
+      },
+    ] as Tab[],
+    isCreated: false,
+  }),
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
+  async created() {
+    await checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise).then((hasUserReviewerRights) => {
+      this.tabs[2].isVisible = hasUserReviewerRights;
+    });
+  },
+  methods: {
+    /**
+     * Routes to companies page when AVAILABLE DATASET tab is clicked
+     * @param event the event containing the index of the newly selected tab
+     */
+    handleTabChange(event: { index: number }): void {
+      if (this.initialTabIndex != event.index) {
+        void this.$router.push(this.tabs[event.index].route);
+      }
+    },
+  },
+});
+
+interface Tab {
+  label: string;
+  route: string;
+  isVisible: boolean;
+}
+</script>
+
+<style>
+.p-tabview .p-tabview-nav li.p-disabled .p-tabview-nav-link {
+  display: none;
+}
+</style>
