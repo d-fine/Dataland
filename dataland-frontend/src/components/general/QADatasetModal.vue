@@ -74,7 +74,6 @@ export default defineComponent({
         setTimeout(() => {
           this.closeTheDialogAndReloadPage();
         }, TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS);
-        this.$emit("reviewDone");
       } catch (error) {
         console.error(error);
       }
@@ -93,7 +92,6 @@ export default defineComponent({
         setTimeout(() => {
           this.closeTheDialogAndReloadPage();
         }, TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS);
-        this.$emit("reviewDone");
       } catch (error) {
         console.error(error);
       }
@@ -105,7 +103,6 @@ export default defineComponent({
     closeTheDialogAndReloadPage() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       dialogRefToDisplay.close();
-      this.reloadPage();
     },
     /**
      * Refreshes the page.

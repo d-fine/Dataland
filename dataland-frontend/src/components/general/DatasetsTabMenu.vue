@@ -68,6 +68,7 @@ export default defineComponent({
     /**
      * Routes to companies page when AVAILABLE DATASET tab is clicked
      * @param event the event containing the index of the newly selected tab
+     * @param event.index
      */
     handleTabChange(event: { index: number }): void {
       if (this.initialTabIndex != event.index) {

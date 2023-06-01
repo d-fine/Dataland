@@ -124,7 +124,6 @@ export default defineComponent({
     //TODO Check that using non scoped style is fine
     //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
     //TODO Discussion What about reverting a decision?
-    //TODO List of data Ids should be refreshed once a decision was made
     //TODO Customize the success/error message
     //TODO Clean up code
     /**
@@ -132,6 +131,7 @@ export default defineComponent({
      */
     async getQaData() {
       try {
+        this.resultData = [];
         const qaServiceControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getQaControllerApi();
@@ -255,6 +255,9 @@ export default defineComponent({
         data: {
           dataSetToReview: this.dataSet,
           dataId: this.dataId,
+        },
+        onClose: () => {
+          void this.getQaData();
         },
       });
     },
