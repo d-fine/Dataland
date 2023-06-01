@@ -47,7 +47,7 @@ abstract class DataController<T>(
         val uploadTime = Instant.now().toEpochMilli()
         logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))
         val correlationId = generateCorrelationId(companyAssociatedData.companyId)
-        val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
+        val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
         val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(
             datasetToStore,
             bypassQa, correlationId,
@@ -62,7 +62,7 @@ abstract class DataController<T>(
         )
     }
 
-    private fun buildDatasetToStore(
+    private fun buildStorableDataset(
         companyAssociatedData: CompanyAssociatedData<T>,
         userId: String,
         uploadTime: Long,
@@ -86,7 +86,7 @@ abstract class DataController<T>(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-            throw AccessDeniedException(logMessageBuilder.accessDeniedExceptionMessage)
+            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         val companyId = metaInfo.company.companyId
         val correlationId = generateCorrelationId(companyId)
