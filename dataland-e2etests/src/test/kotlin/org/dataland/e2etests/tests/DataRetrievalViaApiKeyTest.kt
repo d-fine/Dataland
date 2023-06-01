@@ -117,7 +117,7 @@ class DataRetrievalViaApiKeyTest {
             .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
         assertEquals(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
-                companyId = mapOfIds["companyId"], reportingPeriod = "", data = testDataEuTaxonomyNonFinancials,
+                companyId = mapOfIds["companyId"]!!, reportingPeriod = "", data = testDataEuTaxonomyNonFinancials,
             ),
             downloadedCompanyAssociatedEuTaxoDataNonFinancials,
             "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
