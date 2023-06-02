@@ -39,7 +39,7 @@ class QaServiceTest {
 
         val qaServiceController = apiAccessor.qaServiceControllerApi
         await().atMost(2, TimeUnit.SECONDS)
-            .until { qaServiceController.getUnreviewedDatasets().contains(dataId) }
+            .until { qaServiceController.getUnreviewedDatasetsIds().contains(dataId) }
         qaServiceController.assignQualityStatus(dataId, QaServiceQaStatus.rejected)
 
         assertEquals(BackendQaStatus.rejected, apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus)
