@@ -62,7 +62,7 @@ class ApiAccessor {
                     euTaxonomyNonFinancialsData,
                 )
             dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                companyAssociatedEuTaxonomyNonFinancialsData, true,
+                companyAssociatedEuTaxonomyNonFinancialsData, false,
             )
         }
 
@@ -75,7 +75,7 @@ class ApiAccessor {
             val companyAssociatedEuTaxonomyFinancialsData =
                 CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, reportingPeriod, euTaxonomyFinancialsData)
             dataControllerApiForEuTaxonomyFinancials.postCompanyAssociatedEuTaxonomyDataForFinancials(
-                companyAssociatedEuTaxonomyFinancialsData, true,
+                companyAssociatedEuTaxonomyFinancialsData, false,
             )
         }
 
@@ -86,7 +86,7 @@ class ApiAccessor {
     val lksgUploaderFunction = { companyId: String, lksgData: LksgData, reportingPeriod: String ->
         val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, reportingPeriod, lksgData)
         dataControllerApiForLksgData.postCompanyAssociatedLksgData(
-            companyAssociatedLksgData, true,
+            companyAssociatedLksgData, false,
         )
     }
 
@@ -97,7 +97,7 @@ class ApiAccessor {
     val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData, reportingPeriod: String ->
         val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, reportingPeriod, sfdrData)
         dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
-            companyAssociatedSfdrData, true,
+            companyAssociatedSfdrData, false,
         )
     }
 
@@ -108,7 +108,7 @@ class ApiAccessor {
     val smeUploaderFunction = { companyId: String, smeData: SmeData, reportingPeriod: String ->
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, reportingPeriod, smeData)
         dataControllerApiForSmeData.postCompanyAssociatedSmeData(
-            companyAssociatedSmeData, true,
+            companyAssociatedSmeData, false,
         )
     }
 
@@ -127,7 +127,7 @@ class ApiAccessor {
         ) -> DataMetaInformation,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
         reportingPeriod: String = "",
-        ensureQaPassed: Boolean = true,
+        ensureQaPassed: Boolean = false,
     ): List<UploadInfo> {
         val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 1L else 0L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
