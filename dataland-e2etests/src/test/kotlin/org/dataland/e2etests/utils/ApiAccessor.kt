@@ -62,7 +62,7 @@ class ApiAccessor {
                     euTaxonomyNonFinancialsData,
                 )
             dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                companyAssociatedEuTaxonomyNonFinancialsData, false,
+                companyAssociatedEuTaxonomyNonFinancialsData, true,
             )
         }
 
@@ -75,7 +75,7 @@ class ApiAccessor {
             val companyAssociatedEuTaxonomyFinancialsData =
                 CompanyAssociatedDataEuTaxonomyDataForFinancials(companyId, reportingPeriod, euTaxonomyFinancialsData)
             dataControllerApiForEuTaxonomyFinancials.postCompanyAssociatedEuTaxonomyDataForFinancials(
-                companyAssociatedEuTaxonomyFinancialsData, false,
+                companyAssociatedEuTaxonomyFinancialsData, true,
             )
         }
 
@@ -86,7 +86,7 @@ class ApiAccessor {
     val lksgUploaderFunction = { companyId: String, lksgData: LksgData, reportingPeriod: String ->
         val companyAssociatedLksgData = CompanyAssociatedDataLksgData(companyId, reportingPeriod, lksgData)
         dataControllerApiForLksgData.postCompanyAssociatedLksgData(
-            companyAssociatedLksgData, false,
+            companyAssociatedLksgData, true,
         )
     }
 
@@ -97,7 +97,7 @@ class ApiAccessor {
     val sfdrUploaderFunction = { companyId: String, sfdrData: SfdrData, reportingPeriod: String ->
         val companyAssociatedSfdrData = CompanyAssociatedDataSfdrData(companyId, reportingPeriod, sfdrData)
         dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
-            companyAssociatedSfdrData, false,
+            companyAssociatedSfdrData, true,
         )
     }
 
@@ -108,7 +108,7 @@ class ApiAccessor {
     val smeUploaderFunction = { companyId: String, smeData: SmeData, reportingPeriod: String ->
         val companyAssociatedSmeData = CompanyAssociatedDataSmeData(companyId, reportingPeriod, smeData)
         dataControllerApiForSmeData.postCompanyAssociatedSmeData(
-            companyAssociatedSmeData, false,
+            companyAssociatedSmeData, true,
         )
     }
 
@@ -125,9 +125,9 @@ class ApiAccessor {
             frameworkData: T,
             reportingPeriod: String,
         ) -> DataMetaInformation,
-        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
+        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Admin,
         reportingPeriod: String = "",
-        ensureQaPassed: Boolean = false,
+        ensureQaPassed: Boolean = true,
     ): List<UploadInfo> {
         val waitTimeBeforeNextUpload = if (listOfFrameworkData.size > 1) 1L else 0L
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
@@ -156,7 +156,7 @@ class ApiAccessor {
             reportingPeriod: String,
         ) -> DataMetaInformation,
     ): DataMetaInformation {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val dataMetaInformation = frameworkDataUploadFunction(companyId, frameworkData, reportingPeriod)
         return ensureQaIsPassed(listOf(dataMetaInformation))[0]
     }
@@ -209,7 +209,7 @@ class ApiAccessor {
         dataType: DataTypeEnum,
         listOfCompanyInformation: List<CompanyInformation>,
         numberOfDataSetsPerCompany: Int,
-        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
+        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Admin,
         reportingPeriod: String,
     ): List<UploadInfo> {
         return when (dataType) {
@@ -258,7 +258,7 @@ class ApiAccessor {
     fun uploadCompanyAndFrameworkDataForMultipleFrameworks(
         companyInformationPerFramework: Map<DataTypeEnum, List<CompanyInformation>>,
         numberOfDataSetsPerCompany: Int,
-        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Uploader,
+        uploadingTechnicalUser: TechnicalUser = TechnicalUser.Admin,
         reportingPeriod: String = "",
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
@@ -292,7 +292,7 @@ class ApiAccessor {
     }
 
     fun uploadNCompaniesWithoutIdentifiers(numCompanies: Int): List<UploadInfo> {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val listOfCompanyInformation = testDataProviderEuTaxonomyForFinancials
             .getCompanyInformationWithoutIdentifiers(numCompanies)
         val listOfUploadInfos = mutableListOf<UploadInfo>()
@@ -308,14 +308,14 @@ class ApiAccessor {
     }
 
     fun uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(setAsTeaserCompany: Boolean): UploadInfo {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testCompanyInformation = testDataProviderEuTaxonomyForFinancials
             .getCompanyInformationWithoutIdentifiers(1).first().copy(isTeaserCompany = setAsTeaserCompany)
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
     fun uploadOneCompanyWithRandomIdentifier(): UploadInfo {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testCompanyInformation = generalTestDataProvider
             .generateCompanyInformation("NameDoesNotMatter", "SectorDoesNotMatter")
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))

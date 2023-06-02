@@ -3,7 +3,7 @@
     <pre id="dataset-container">{{ datasetAsJson }}</pre>
   </div>
   <MiddleCenterDiv class="col-12">
-    <div v-if="reviewSubmitted !== true">
+    <div autofocus="autofocus" v-if="reviewSubmitted !== true">
       <PrimeButton @click="setQualityStatusToApproved" label="Accept Dataset" />
       <PrimeButton @click="setQualityStatusToRejected" label="Reject Dataset" />
     </div>
