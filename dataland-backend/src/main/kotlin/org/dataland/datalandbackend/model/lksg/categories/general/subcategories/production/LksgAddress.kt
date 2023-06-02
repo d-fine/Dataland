@@ -1,5 +1,7 @@
 package org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 /**
  * --- API model ---
  * Addresses for LkSG framework
@@ -9,9 +11,11 @@ data class LksgAddress(
 
     val postalCode: String?,
 
-    val city: String?,
+    @field:JsonProperty(required = true)
+    val city: String,
 
     val state: String?,
 
-    val country: String?,
+    @field:JsonProperty(required = true)
+    val country: String,
 )

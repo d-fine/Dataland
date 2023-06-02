@@ -2129,6 +2129,9 @@
         }
       },
       "DataPointBigDecimal": {
+        "required": [
+          "quality"
+        ],
         "type": "object",
         "properties": {
           "value": {
@@ -2146,6 +2149,9 @@
         }
       },
       "DataPointYesNo": {
+        "required": [
+          "quality"
+        ],
         "type": "object",
         "properties": {
           "value": {
@@ -2625,6 +2631,9 @@
         ]
       },
       "BaseDataPointYesNo": {
+        "required": [
+          "value"
+        ],
         "type": "object",
         "properties": {
           "value": {
@@ -2670,6 +2679,10 @@
         }
       },
       "LksgAddress": {
+        "required": [
+          "city",
+          "country"
+        ],
         "type": "object",
         "properties": {
           "streetAndHouseNumber": {
@@ -3509,6 +3522,9 @@
         ]
       },
       "AssuranceData": {
+        "required": [
+          "assurance"
+        ],
         "type": "object",
         "properties": {
           "assurance": {
@@ -3890,10 +3906,13 @@
           "countryCode": {
             "type": "string"
           },
+          "isTeaserCompany": {
+            "type": "boolean"
+          },
           "website": {
             "type": "string"
           },
-          "isTeaserCompany": {
+          "teaserCompany": {
             "type": "boolean"
           }
         }

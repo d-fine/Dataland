@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 
 /**
@@ -9,7 +10,8 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 data class DataPoint<T>(
     val value: T? = null,
 
-    val quality: QualityOptions? = null,
+    @field:JsonProperty(required = true)
+    val quality: QualityOptions,
 
     val dataSource: CompanyReportReference? = null,
 
