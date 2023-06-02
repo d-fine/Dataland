@@ -95,8 +95,8 @@
               >
                 {{
                   slotProps.data.content[reportingPeriodWithDataId.dataId].value === YesNo.Yes
-                    ? "Certified"
-                    : "Uncertified"
+                    ? yesLabelMap.get(true)
+                    : noLabelMap.get(true)
                 }}
               </span>
               <span v-else>
