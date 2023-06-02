@@ -159,7 +159,7 @@ class DataManager(
         messageUtils.rejectMessageOnException {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaInformation.qaStatus = qaCompletedMessage.validationResult
-            if(qaCompletedMessage.validationResult == QaStatus.Accepted) {
+            if (qaCompletedMessage.validationResult == QaStatus.Accepted) {
                 metaDataManager.setActiveDataset(metaInformation)
             }
             logger.info(

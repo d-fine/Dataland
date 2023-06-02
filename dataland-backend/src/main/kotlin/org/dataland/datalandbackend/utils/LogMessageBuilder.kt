@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component
 
 @Component("LogMessageBuilder")
 class LogMessageBuilder {
-    fun generateAccessDeniedExceptionMessage(qaStatus: QaStatus)
-        = "You are trying to access a ${qaStatus.toString().lowercase()} dataset."
+    fun generateAccessDeniedExceptionMessage(qaStatus: QaStatus) =
+        "You are trying to access a ${qaStatus.toString().lowercase()} dataset."
     val bypassQaDeniedExceptionMessage = "You do not have the required permissions to bypass QA checks."
 
     /**
