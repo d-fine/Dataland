@@ -38,7 +38,7 @@ data class CompanyInformation(
     @field:JsonProperty(required = true)
     val countryCode: String,
 
-    //The following annotation is required due to a known issue with the openApi generator for fields starting with "is"
+    // The following annotation is required (including the value field) due to a known issue with the openApi generator for boolean fields starting with "is"
     @get:JsonProperty(value = "isTeaserCompany")
     val isTeaserCompany: Boolean = false,
 
