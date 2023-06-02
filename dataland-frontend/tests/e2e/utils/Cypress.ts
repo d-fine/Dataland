@@ -6,7 +6,7 @@ export const reader_pw = getStringCypressEnv("KEYCLOAK_READER_PASSWORD");
 export const uploader_name = "data_uploader";
 export const uploader_pw = getStringCypressEnv("KEYCLOAK_UPLOADER_PASSWORD");
 export const reviewer_name = "data_reviewer";
-export const reviewer_pw = getStringCypressEnv("KEYCLOAK_UPLOADER_PASSWORD");
+export const reviewer_pw = getStringCypressEnv("KEYCLOAK_REVIEWER_PASSWORD");
 export const admin_name = "data_admin";
 export const admin_pw = getStringCypressEnv("KEYCLOAK_DATALAND_ADMIN_PASSWORD");
 

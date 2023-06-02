@@ -1,4 +1,4 @@
-import { doThingsInChunks, uploader_name, uploader_pw, wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
+import { doThingsInChunks, admin_name, admin_pw, wrapPromiseToCypressPromise } from "@e2e/utils/Cypress";
 import {
   DataMetaInformation,
   DataTypeEnum,
@@ -49,7 +49,7 @@ describe(
       fixtureDataForFrameworkT: Array<FixtureData<T>>,
       uploadOneFrameworkDataset: UploadFunction<T>
     ): void {
-      cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+      cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
         doThingsInChunks(fixtureDataForFrameworkT, chunkSize, async (fixtureData) => {
           const storedCompany = await uploadCompanyViaApi(token, fixtureData.companyInformation);
           await uploadOneFrameworkDataset(token, storedCompany.companyId, fixtureData.reportingPeriod, fixtureData.t);
@@ -68,7 +68,7 @@ describe(
       dataType: DataTypeEnum,
       expectedNumberOfCompanies: number
     ): void {
-      cy.getKeycloakToken(uploader_name, uploader_pw)
+      cy.getKeycloakToken(admin_name, admin_pw)
         .then((token) => wrapPromiseToCypressPromise(countCompaniesAndDataSetsForDataType(token, dataType)))
         .then((response) => {
           assert(
@@ -82,7 +82,7 @@ describe(
     }
 
     before(function uploadDocumentsAndStoreDocumentIds() {
-      cy.getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+      cy.getKeycloakToken(admin_name, admin_pw).then((token) => {
         uploadAllDocuments(token);
       });
     });
