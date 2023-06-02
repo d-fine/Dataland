@@ -31,15 +31,11 @@ class JwtAuthenticationHelper {
             .build()
     }
 
-    private fun getSingleValueFromJsonStringForKey(key: String, jsonAsString: String): String? {
-        return JSONObject(jsonAsString).get(key)?.toString()?.trim('"')
-    }
-
     private fun requestToken(username: String, password: String): String {
         val response = client.newCall(buildTokenRequest(username, password)).execute()
         require(response.isSuccessful) { "Token request failed, response is: $response" }
         val responseBodyAsJsonString = response.body!!.string()
-        return getSingleValueFromJsonStringForKey("access_token", responseBodyAsJsonString)!!
+        return JSONObject(responseBodyAsJsonString).getString("access_token")!!.trim('"')
     }
 
     private fun obtainJwtForTechnicalUser(technicalUser: TechnicalUser): String {

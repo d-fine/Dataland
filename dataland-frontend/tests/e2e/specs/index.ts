@@ -1,7 +1,9 @@
+import { getStringCypressEnv } from "@e2e/utils/Cypress";
+
 const testGroupingDisabled = isNaN(Cypress.env("TEST_GROUP") as number);
 let cypressTestGroup = undefined;
 if (!testGroupingDisabled) {
-  cypressTestGroup = parseInt(Cypress.env("TEST_GROUP") as string);
+  cypressTestGroup = parseInt(getStringCypressEnv("TEST_GROUP"));
 }
 
 const singlePopulate = !testGroupingDisabled && Cypress.env("SINGLE_POPULATE") === true;
