@@ -10,8 +10,8 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.datalandqaservice.entities.DatasetReviewStatusEntity
-import org.dataland.datalandqaservice.repositories.DatasetReviewStatusRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -35,7 +35,7 @@ class QaService(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
-    @Autowired val datasetReviewStatusRepository: DatasetReviewStatusRepository,
+    @Autowired val reviewQueueRepository: ReviewQueueRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -78,7 +78,7 @@ class QaService(
             if (bypassQa) {
                 sendAcceptDatasetMessage(dataId, correlationId)
             } else {
-                storeDatasetAsToBeReviewed(dataId, correlationId)
+                storeDatasetAsToBeReviewed(dataId)
             }
         }
     }
@@ -94,12 +94,10 @@ class QaService(
         )
     }
 
-    private fun storeDatasetAsToBeReviewed(dataId: String, correlationId: String) {
-        datasetReviewStatusRepository.save(
-            DatasetReviewStatusEntity(
+    private fun storeDatasetAsToBeReviewed(dataId: String) {
+        reviewQueueRepository.save(
+            ReviewQueueEntity(
                 dataId = dataId,
-                correlationId = correlationId,
-                qaStatus = QAStatus.Pending,
                 receptionTime = Instant.now().toEpochMilli(),
             ),
         )

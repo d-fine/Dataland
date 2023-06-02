@@ -9,14 +9,17 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandqaservice.api.QaApi
-import org.dataland.datalandqaservice.entities.DatasetReviewStatusEntity
-import org.dataland.datalandqaservice.repositories.DatasetReviewStatusRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID.randomUUID
 import kotlin.jvm.optionals.getOrElse
 
 /**
@@ -24,7 +27,8 @@ import kotlin.jvm.optionals.getOrElse
  */
 @RestController
 class QaController(
-    @Autowired val datasetReviewStatusRepository: DatasetReviewStatusRepository,
+    @Autowired val reviewQueueRepository: ReviewQueueRepository,
+    @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
 ) : QaApi {
@@ -33,13 +37,14 @@ class QaController(
     @Transactional
     override fun getUnreviewedDatasets(): ResponseEntity<List<String>> {
         logger.info("Received request to respond with IDs of unreviewed datasets")
-        return ResponseEntity.ok(datasetReviewStatusRepository.getSortedPendingDataIds())
+        return ResponseEntity.ok(reviewQueueRepository.getSortedPendingDataIds())
     }
 
     @Transactional
     override fun assignQualityStatus(dataId: String, qualityStatus: QAStatus):
         ResponseEntity<Void> {
-        logger.info("Received request to change the quality status of dataset with ID $dataId")
+        val correlationId = randomUUID().toString()
+        logger.info("Received request to change the quality status of dataset with ID $dataId (correlationId: $correlationId)")
         if (qualityStatus == QAStatus.Pending) {
             throw InvalidInputApiException(
                 "Quality \"Pending\" cannot be assigned to a reviewed dataset",
@@ -48,16 +53,16 @@ class QaController(
         }
         val dataReviewStatusToUpdate = validateDataIdAndGetDataReviewStatus(dataId)
         logger.info("Assigning quality status ${qualityStatus.name} to dataset with ID $dataId")
-        datasetReviewStatusRepository.save(
-            DatasetReviewStatusEntity(
+        reviewHistoryRepository.save(
+            ReviewInformationEntity(
                 dataId = dataId,
-                correlationId = dataReviewStatusToUpdate.correlationId,
-                qaStatus = qualityStatus,
                 receptionTime = dataReviewStatusToUpdate.receptionTime,
+                qaStatus = qualityStatus,
                 reviewerKeycloakId = DatalandAuthentication.fromContext().userId,
             ),
         )
-        sendQaCompletedMessage(dataId, qualityStatus, dataReviewStatusToUpdate.correlationId)
+        reviewQueueRepository.deleteById(dataId)
+        sendQaCompletedMessage(dataId, qualityStatus, correlationId)
 
         return ResponseEntity.ok(null)
     }
@@ -65,22 +70,14 @@ class QaController(
     /**
      * Validates that a dataset corresponding to a data ID needs to be reviewed
      * @param dataId the ID of the data to validate
-     * @returns the DatasetReviewQuality corresponding
+     * @returns the ReviewQueueEntity corresponding the dataId
      */
-    fun validateDataIdAndGetDataReviewStatus(dataId: String): DatasetReviewStatusEntity {
-        return datasetReviewStatusRepository.findById(dataId).getOrElse {
+    fun validateDataIdAndGetDataReviewStatus(dataId: String): ReviewQueueEntity {
+        return reviewQueueRepository.findById(dataId).getOrElse {
             throw InvalidInputApiException(
-                "There is no dataset with ID $dataId.",
-                "There is no dataset with ID $dataId.",
+                "There is no reviewable dataset with ID $dataId.",
+                "There is no reviewable dataset with ID $dataId.",
             )
-        }.also {
-            if (it.qaStatus != QAStatus.Pending) {
-                throw InvalidInputApiException(
-                    "The dataset has already been reviewed.",
-                    "The dataset with ID $dataId already has the " +
-                        "quality status ${it.qaStatus.name}.",
-                )
-            }
         }
     }
 
