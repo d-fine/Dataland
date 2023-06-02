@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/de";
 import { CompanyReportReference, DataPointBigDecimal, DataPointYesNo, QualityOptions } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { DataPoint, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
@@ -57,7 +57,7 @@ export function generateReferencedReports(): ReferencedDocuments {
  */
 export function generateNumericOrEmptyDatapoint(
   reports: ReferencedDocuments,
-  value: number | null = valueOrNull(faker.datatype.number())
+  value: number | null = valueOrNull(faker.number.int())
 ): DataPointBigDecimal | undefined {
   return valueOrUndefined(generateDatapoint(value, reports));
 }

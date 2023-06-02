@@ -1,6 +1,6 @@
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/de";
 
 /**
  * Generates a base data point with the given value, choosing a random (possibly undefined) report, or undefined

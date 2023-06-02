@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/de";
 
 const percentagePrecision = 0.0001;
 const maxEuro = 1000000;
@@ -11,7 +11,7 @@ const minEuro = 50000;
  * @returns a random number in [min, max]
  */
 export function randomEuroValue(min: number = minEuro, max: number = maxEuro): number {
-  return faker.datatype.float({ min: min, max: max });
+  return faker.number.float({ min: min, max: max });
 }
 
 /**
@@ -20,7 +20,7 @@ export function randomEuroValue(min: number = minEuro, max: number = maxEuro): n
  * @returns a random number in [0, max]
  */
 export function randomNumber(max: number): number {
-  return faker.datatype.number(max);
+  return faker.number.int(max);
 }
 
 /**
@@ -28,7 +28,7 @@ export function randomNumber(max: number): number {
  * @returns a random float between 0 and 1
  */
 export function randomPercentageValue(): number {
-  return faker.datatype.float({
+  return faker.number.float({
     min: 0,
     max: 1,
     precision: percentagePrecision,
