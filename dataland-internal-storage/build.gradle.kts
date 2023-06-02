@@ -108,6 +108,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
 }
 
+tasks.getByName("runKtlintCheckOverMainSourceSet") {
+    dependsOn("generateClients")
+}
+
 sourceSets {
     val main by getting
     main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")

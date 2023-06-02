@@ -4,7 +4,6 @@
       v-if="data && data.length > 0"
       ref="dataTable"
       :value="data"
-      responsive-layout="scroll"
       :paginator="true"
       :rows="rowsPerPage"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
@@ -130,6 +129,7 @@ export default defineComponent({
 #search-result-framework-data tr:hover {
   cursor: pointer;
 }
+
 #search-result-framework-data th {
   background: white;
 }

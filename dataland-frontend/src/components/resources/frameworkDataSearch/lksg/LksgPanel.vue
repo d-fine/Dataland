@@ -3,11 +3,10 @@
     <p class="font-medium text-xl">Loading LkSG Data...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
-  <div v-if="kpiDataObjects.size > 0 && !waitingForData">
+  <div v-if="mapOfKpiKeysToDataObjects.size > 0 && !waitingForData">
     <LksgCompanyDataTable
-      :kpiDataObjects="kpiDataObjects"
-      :reportingPeriodsOfDataSets="listOfColumnIdentifierObjects"
-      tableDataTitle="LkSG Data"
+      :arrayOfKpiDataObjects="Array.from(mapOfKpiKeysToDataObjects.values())"
+      :list-of-reporting-periods-with-data-id="listOfDataSetReportingPeriods"
     />
   </div>
 </template>
@@ -18,7 +17,7 @@ import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
@@ -35,20 +34,20 @@ export default defineComponent({
       firstRender: true,
       waitingForData: true,
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
-      listOfColumnIdentifierObjects: [] as Array<{ dataId: string; reportingPeriod: string }>,
-      kpiDataObjects: new Map() as Map<string, KpiDataObject>,
+      listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
+      mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
       lksgDataModel: lksgDataModel,
     };
   },
   props: PanelProps,
   watch: {
     companyId() {
-      this.listOfColumnIdentifierObjects = [];
+      this.listOfDataSetReportingPeriods = [];
       void this.fetchLksgData();
     },
     singleDataMetaInfoToDisplay() {
       if (!this.firstRender) {
-        this.listOfColumnIdentifierObjects = [];
+        this.listOfDataSetReportingPeriods = [];
         void this.fetchLksgData();
       }
     },
@@ -113,12 +112,13 @@ export default defineComponent({
         kpiKey: kpiKey,
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
-        [dataIdOfLksgDataset]: kpiValue,
+        kpiFormFieldComponent: kpiField?.component ?? "",
+        content: { [dataIdOfLksgDataset]: kpiValue },
       } as KpiDataObject;
-      let existingKpi = this.kpiDataObjects.get(kpiKey);
-      if (existingKpi) Object.assign(existingKpi, kpiData);
-      else existingKpi = kpiData;
-      this.kpiDataObjects.set(kpiKey, existingKpi);
+      if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
+        Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey).content);
+      }
+      this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
     },
 
     /**
@@ -129,17 +129,20 @@ export default defineComponent({
         this.lksgDataAndMetaInfo.forEach((oneLksgDataset: DataAndMetaInformationLksgData) => {
           const dataIdOfLksgDataset = oneLksgDataset.metaInfo?.dataId ?? "";
           const reportingPeriodOfLksgDataset = oneLksgDataset.metaInfo?.reportingPeriod ?? "";
-          this.listOfColumnIdentifierObjects.push({
+          this.listOfDataSetReportingPeriods.push({
             dataId: dataIdOfLksgDataset,
             reportingPeriod: reportingPeriodOfLksgDataset,
           });
-          for (const [areaKey, areaObject] of Object.entries(oneLksgDataset.data)) {
-            for (const [subAreaKey, subAreaObject] of Object.entries(areaObject as object) as [string, object][]) {
-              for (const [kpiKey, kpiValue] of Object.entries(subAreaObject) as [string, object][]) {
+          for (const [categoryKey, categoryObject] of Object.entries(oneLksgDataset.data)) {
+            for (const [subCategoryKey, subCategoryObject] of Object.entries(categoryObject as object) as [
+              string,
+              object
+            ][]) {
+              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object][]) {
                 const subcategory = assertDefined(
                   lksgDataModel
-                    .find((area) => area.name === areaKey)
-                    ?.subcategories.find((category) => category.name === subAreaKey)
+                    .find((category) => category.name === categoryKey)
+                    ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
                 );
                 this.createKpiDataObjects(kpiKey, kpiValue, subcategory, dataIdOfLksgDataset);
               }
@@ -147,7 +150,7 @@ export default defineComponent({
           }
         });
       }
-      this.listOfColumnIdentifierObjects = sortReportingPeriodsToDisplayAsColumns(this.listOfColumnIdentifierObjects);
+      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(this.listOfDataSetReportingPeriods);
     },
 
     /**
@@ -174,7 +177,7 @@ export default defineComponent({
           ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
           : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
       }
-      if (kpiField.name === "subcontractingCompaniesCountries") {
+      if (kpiField.name.includes("Countries")) {
         kpiValue = Array.isArray(kpiValue)
           ? kpiValue.map(
               (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort

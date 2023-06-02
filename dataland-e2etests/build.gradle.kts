@@ -35,19 +35,8 @@ dependencies {
     testImplementation("org.awaitility:awaitility")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    dependsOn("generateClients", "getTestData")
-}
-
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-tasks.register("generateClients") {
-    dependsOn("generateBackendClient")
-    dependsOn("generateQaServiceClient")
-    dependsOn("generateApiKeyManagerClient")
-    dependsOn("generateDocumentManagerClient")
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
@@ -128,6 +117,21 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     )
 }
 
+tasks.register("generateClients") {
+    dependsOn("generateBackendClient")
+    dependsOn("generateQaServiceClient")
+    dependsOn("generateApiKeyManagerClient")
+    dependsOn("generateDocumentManagerClient")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateClients", "getTestData")
+}
+
+tasks.getByName("runKtlintCheckOverMainSourceSet") {
+    dependsOn("generateClients")
+}
+
 sourceSets {
     val main by getting
     main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
@@ -148,7 +152,7 @@ tasks.bootJar {
 
 tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data")
-    into("$buildDir/resources")
+    into("$buildDir/resources/test")
 }
 
 tasks.getByName("processTestResources") {

@@ -48,7 +48,7 @@ describe("Component test for LksgPanel", () => {
   }
 
   it("Check Lksg view page for company with one Lksg data set", () => {
-    const preparedFixture = getPreparedFixture("one-lksg-data-set", preparedFixtures);
+    const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     const lksgData = preparedFixture.t;
 
     cy.intercept("/api/data/lksg/mock-data-id", {
@@ -93,6 +93,9 @@ describe("Component test for LksgPanel", () => {
     cy.get("em[title='Data Date']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("The date until when");
     cy.get("em[title='Data Date']").trigger("mouseleave");
+
+    toggleRowGroup("certificationsPoliciesAndResponsibilities");
+    cy.get("span[data-test=Report-Download-Certification]").find("i[data-test=download-icon]").should("be.visible");
   });
 
   /**

@@ -5,17 +5,17 @@
  * @returns []
  */
 export function sortReportingPeriodsToDisplayAsColumns(
-  listOfDataDateToDisplayAsColumns: { dataId: string; reportingPeriod: string }[]
-): { dataId: string; reportingPeriod: string }[] {
-  return listOfDataDateToDisplayAsColumns.sort((pairA, pairB) => {
-    if (!isNaN(Number(pairA.reportingPeriod[0])) && !isNaN(Number(pairB.reportingPeriod[0]))) {
-      if (pairA.reportingPeriod < pairB.reportingPeriod) {
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[]
+): ReportingPeriodOfDataSetWithId[] {
+  return listOfDataDateToDisplayAsColumns.sort((dataSetA, dataSetB) => {
+    if (!isNaN(Number(dataSetA.reportingPeriod[0])) && !isNaN(Number(dataSetB.reportingPeriod[0]))) {
+      if (dataSetA.reportingPeriod < dataSetB.reportingPeriod) {
         return 1;
       } else {
         return -1;
       }
     } else {
-      if (pairA.reportingPeriod > pairB.reportingPeriod) {
+      if (dataSetA.reportingPeriod > dataSetB.reportingPeriod) {
         return 1;
       } else {
         return -1;
@@ -23,3 +23,8 @@ export function sortReportingPeriodsToDisplayAsColumns(
     }
   });
 }
+
+export type ReportingPeriodOfDataSetWithId = {
+  dataId: string;
+  reportingPeriod: string;
+};

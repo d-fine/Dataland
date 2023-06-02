@@ -1,20 +1,29 @@
 <template>
   <span
-    @click="downloadReport()"
-    class="font-semibold underline text-primary cursor-pointer"
-    :data-test="'Report-Download-' + name"
-    >{{ name }}</span
+    @click="downloadDocument()"
+    class="text-primary cursor-pointer"
+    :class="fontStyle"
+    :data-test="'Report-Download-' + downloadName"
   >
-  <span v-if="index < reportsNumber - 1"> | </span>
+    <span class="underline">
+      {{ label ?? downloadName }}
+    </span>
+    <i
+      v-if="showIcon"
+      class="pi pi-download pl-1"
+      data-test="download-icon"
+      aria-hidden="true"
+      style="font-size: 12px"
+    />
+  </span>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType } from "vue";
+import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { AxiosResponse } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
   setup() {
@@ -22,12 +31,13 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  name: "ReportLink",
+  name: "DocumentLink",
   props: {
-    name: { type: String, required: true },
-    report: { type: Object as PropType<CompanyReport>, required: true },
-    index: Number,
-    reportsNumber: Number,
+    label: String,
+    downloadName: { type: String, required: true },
+    reference: { type: String, required: true },
+    showIcon: Boolean,
+    fontStyle: String,
   },
   data() {
     return {
@@ -37,13 +47,12 @@ export default defineComponent({
       messageCount: 0,
     };
   },
-  computed: {},
   methods: {
     /**
      * Method to download available reports
      */
-    async downloadReport() {
-      const reference: string = this.report.reference;
+    async downloadDocument() {
+      const reference: string = this.reference;
       try {
         const docUrl = document.createElement("a");
         const documentControllerApi = await new ApiClientProvider(
@@ -57,7 +66,7 @@ export default defineComponent({
           .then((getDocumentsFromStorageResponse) => {
             const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
             docUrl.href = URL.createObjectURL(newBlob);
-            docUrl.setAttribute("download", this.name + ".pdf");
+            docUrl.setAttribute("download", `${this.downloadName}.pdf`);
             document.body.appendChild(docUrl);
             docUrl.click();
           });

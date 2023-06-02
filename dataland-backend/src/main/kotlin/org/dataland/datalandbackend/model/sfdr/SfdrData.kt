@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.model.sfdr
 
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.CompanyReport
+import org.dataland.datalandbackend.model.sfdr.categories.environmental.SfdrEnvironmental
+import org.dataland.datalandbackend.model.sfdr.categories.social.SfdrSocial
 
 /**
  * --- API model ---

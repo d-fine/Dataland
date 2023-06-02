@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.sfdr.submodels
+package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcategories
 
 import org.dataland.datalandbackend.model.DataPoint
 import java.math.BigDecimal
