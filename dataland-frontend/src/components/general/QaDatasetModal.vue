@@ -3,7 +3,7 @@
     <pre id="dataset-container">{{ datasetAsJson }}</pre>
   </div>
   <MiddleCenterDiv class="col-12">
-    <div v-if="reviewSubmitted !== true">
+    <div autofocus="autofocus" v-if="reviewSubmitted !== true">
       <PrimeButton @click="setQualityStatusToApproved" label="Accept Dataset" />
       <PrimeButton @click="setQualityStatusToRejected" label="Reject Dataset" />
     </div>
@@ -35,7 +35,6 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  emits: ["reviewDone"],
   data() {
     return {
       dataSetToReview: null as unknown as object,
@@ -103,12 +102,6 @@ export default defineComponent({
     closeTheDialogAndReloadPage() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       dialogRefToDisplay.close();
-    },
-    /**
-     * Refreshes the page.
-     */
-    reloadPage() {
-      window.location.reload();
     },
   },
 });
