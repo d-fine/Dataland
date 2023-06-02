@@ -121,7 +121,6 @@ export default defineComponent({
     humanizeString,
     //TODO Customize the success/error message
     //TODO Clean up code
-    //TODO "View" is no longer shown in the datatable
     /**
      * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
      */
