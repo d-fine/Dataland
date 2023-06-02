@@ -9,7 +9,7 @@
     </div>
     <div v-if="reviewSubmitted">
       <SuccessMessage v-if="reviewSuccessful" success-message="Review successfully submitted." />
-      <FailMessage v-else />
+      <FailMessage v-else message="The resource you tried to access is no longer available. Please reload the page" />
     </div>
   </MiddleCenterDiv>
 </template>
