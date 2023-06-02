@@ -117,7 +117,8 @@ class MetaDataControllerAuthorizationTest {
 
         val uploaderUserIdFromMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataMetaInformation.dataId)
             .uploaderUserId
-        val msg = "Technical user $requestingTechnicalUser saw user ID $uploaderUserIdFromMetaInfo but expected was $expectedUploaderId"
+        val msg = "Technical user $requestingTechnicalUser saw user ID $uploaderUserIdFromMetaInfo but expected was " +
+            "$expectedUploaderId"
         Assertions.assertEquals(expectedUploaderId, uploaderUserIdFromMetaInfo, msg)
 
         val uploaderUserIdFromCompanyInfo = apiAccessor.companyDataControllerApi

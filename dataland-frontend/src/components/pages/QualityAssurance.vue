@@ -119,7 +119,6 @@ export default defineComponent({
   },
   methods: {
     humanizeString,
-    //TODO Customize the success/error message
     //TODO Clean up code
     /**
      * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
