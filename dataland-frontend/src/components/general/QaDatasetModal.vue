@@ -35,7 +35,6 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  emits: ["reviewDone"],
   data() {
     return {
       dataSetToReview: null as unknown as object,
@@ -103,12 +102,6 @@ export default defineComponent({
     closeTheDialogAndReloadPage() {
       const dialogRefToDisplay = this.dialogRef as DynamicDialogInstance;
       dialogRefToDisplay.close();
-    },
-    /**
-     * Refreshes the page.
-     */
-    reloadPage() {
-      window.location.reload();
     },
   },
 });
