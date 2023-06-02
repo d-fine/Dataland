@@ -59,6 +59,8 @@ dependencyResolutionManagement {
             library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.28")
 
             library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:4.1.0")
+
+            library("json", "org.json:json:20230227")
         }
     }
 }
