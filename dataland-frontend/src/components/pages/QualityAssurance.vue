@@ -37,13 +37,11 @@
                     </template>
                   </Column>
                   <Column field="reviewDataset" header="" class="w-2 d-bg-white">
-                    <template>
-                      <router-link :to="loadDatasetAndOpenModal" class="text-primary no-underline font-bold">
-                        <div class="text-right">
+                    <template #body>
+                        <div class="text-right text-primary no-underline font-bold">
                           <span>REVIEW</span>
                           <span class="ml-3">></span>
                         </div>
-                      </router-link>
                     </template>
                   </Column>
                 </DataTable>
@@ -121,10 +119,6 @@ export default defineComponent({
   },
   methods: {
     humanizeString,
-    //TODO Discussion: Maybe only the first entry of the table should be clickable
-    //TODO Check that using non scoped style is fine
-    //TODO Discussion: Should the Accept/Decline Button open a confirmation window asking if the user is sure to do the corresponding action
-    //TODO Discussion What about reverting a decision?
     //TODO Customize the success/error message
     //TODO Clean up code
     /**
