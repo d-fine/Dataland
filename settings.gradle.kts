@@ -45,7 +45,7 @@ dependencyResolutionManagement {
             library("slf4j-api", "org.slf4j:slf4j-api:2.0.7")
 
             library("jackson-dataformat-csv", "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.15.1")
-            library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.15.1")
+            library("jackson-databind", "com.fasterxml.jackson.core:jackson-databind:2.15.2")
             library("jackson-datatype-jsr310", "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.1")
             library("jackson-kotlin", "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.1")
 
@@ -55,12 +55,12 @@ dependencyResolutionManagement {
             library("cloudevents-api", "io.cloudevents:cloudevents-api:2.5.0")
             library("cloudevents-json-jackson", "io.cloudevents:cloudevents-json-jackson:2.5.0")
             library("cloudevents-core", "io.cloudevents:cloudevents-core:2.5.0")
-            library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.2")
+            library("spring-cloud-function-context", "org.springframework.cloud:spring-cloud-function-context:4.0.3")
             library("mailjet-client", "com.mailjet:mailjet-client:5.2.3")
 
             library("pdfbox", "org.apache.pdfbox:pdfbox:2.0.28")
 
-            library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:4.1.0")
+            library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:5.0.0")
             library("mockito-inline", "org.mockito:mockito-inline:5.2.0")
         }
     }

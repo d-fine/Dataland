@@ -12,6 +12,7 @@ creation URL (or simply copy this md file into the description)
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
+- [ ] Update keycloak 21.0.1 is skipped due to issues in the realm.json, the new docker image, account console
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
   project and unresolved imports that are hard to fix), skipped.
 - [ ] Update Cypress to >= 12.12.0 introduces an issue with the usage of `$route` in component test`DatasetOverview.cy.ts`. Issue with Cypress has been created to hopefully resolve this from the side of Cypress: https://github.com/cypress-io/cypress/issues/26902
