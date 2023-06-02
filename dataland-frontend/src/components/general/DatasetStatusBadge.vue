@@ -16,6 +16,7 @@ export default defineComponent({
       statusMap: new Map<DatasetStatus, BadgeProperties>([
         [DatasetStatus.QAApproved, BadgeProperties.Approved],
         [DatasetStatus.QAPending, BadgeProperties.Pending],
+        [DatasetStatus.QARejected, BadgeProperties.Rejected],
         [DatasetStatus.Superseded, BadgeProperties.Superseded],
       ]),
     };
@@ -31,6 +32,7 @@ export default defineComponent({
 class BadgeProperties {
   static readonly Approved = new BadgeProperties("green", "APPROVED");
   static readonly Pending = new BadgeProperties("yellow", "PENDING");
+  static readonly Rejected = new BadgeProperties("red", "REJECTED");
   static readonly Superseded = new BadgeProperties("brown", "SUPERSEDED");
 
   readonly color: string;
