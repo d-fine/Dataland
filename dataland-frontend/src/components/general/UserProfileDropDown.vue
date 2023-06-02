@@ -96,7 +96,7 @@ export default defineComponent({
         {
           label: "QUALITY ASSURANCE",
           icon: "add_moderator",
-          id: "profile-picture-dropdown-qa-services-button",
+          id: "profile-picture-dropdown-qa-services-anchor",
           clickAction: this.goToQualityAssurance,
           role: KEYCLOAK_ROLE_REVIEWER,
         },
