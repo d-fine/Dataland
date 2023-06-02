@@ -38,10 +38,10 @@
                   </Column>
                   <Column field="reviewDataset" header="" class="w-2 d-bg-white">
                     <template #body>
-                        <div class="text-right text-primary no-underline font-bold">
-                          <span>REVIEW</span>
-                          <span class="ml-3">></span>
-                        </div>
+                      <div class="text-right text-primary no-underline font-bold">
+                        <span>REVIEW</span>
+                        <span class="ml-3">></span>
+                      </div>
                     </template>
                   </Column>
                 </DataTable>
@@ -121,6 +121,7 @@ export default defineComponent({
     humanizeString,
     //TODO Customize the success/error message
     //TODO Clean up code
+    //TODO "View" is no longer shown in the datatable
     /**
      * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
      */

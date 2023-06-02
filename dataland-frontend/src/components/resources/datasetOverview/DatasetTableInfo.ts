@@ -6,6 +6,7 @@ import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 export enum DatasetStatus {
   QAPending,
   QAApproved,
+  QARejected,
   Superseded,
 }
 
@@ -29,6 +30,8 @@ export class DatasetTableInfo {
 export function getDatasetStatus(dataMetaInfo: DataMetaInformation): DatasetStatus {
   if (dataMetaInfo.qaStatus == QAStatus.Accepted) {
     return dataMetaInfo.currentlyActive ? DatasetStatus.QAApproved : DatasetStatus.Superseded;
+  } else if (dataMetaInfo.qaStatus == QAStatus.Rejected) {
+    return DatasetStatus.QARejected;
   } else {
     return DatasetStatus.QAPending;
   }
