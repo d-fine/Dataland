@@ -20,8 +20,9 @@ import BackButton from "@/components/general/BackButton.vue";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "UploadLkSG",
   components: {
     AuthorizationWrapper,
@@ -43,5 +44,5 @@ export default {
     },
   },
   methods: { redirectToMyDatasets },
-};
+});
 </script>
