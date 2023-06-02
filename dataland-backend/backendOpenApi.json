@@ -2807,7 +2807,7 @@
           "employeeUnder18": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "employeeUnder18Under15": {
+          "employeeUnder15": {
             "$ref": "#/components/schemas/YesNo"
           },
           "employeeUnder18Apprentices": {
@@ -3304,7 +3304,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "capacity": {
-            "type": "number"
+            "type": "string"
           },
           "isContractProcessing": {
             "$ref": "#/components/schemas/YesNo"

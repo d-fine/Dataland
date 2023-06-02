@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.lksg.categories.general
 
 import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgMasterData
-import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.LksgProductionSpecific
+import org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production.LksgProductionSpecific
 
 /**
  * --- API model ---

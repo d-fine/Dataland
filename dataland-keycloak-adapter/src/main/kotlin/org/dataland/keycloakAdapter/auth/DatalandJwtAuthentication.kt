@@ -15,8 +15,8 @@ class DatalandJwtAuthentication(private val jwt: Jwt) : DatalandAuthentication()
         get() = jwt.getClaimAsString("preferred_username")
 
     override fun getAuthorities(): List<GrantedAuthority> {
-        val realmRoles = jwt.getClaimAsMap("realm_access")["roles"] as Collection<String>?
-        return realmRoles?.map { SimpleGrantedAuthority(it) } ?: listOf()
+        val realmRoles = jwt.getClaimAsMap("realm_access")["roles"] as Collection<*>?
+        return realmRoles?.map { SimpleGrantedAuthority(it as String) } ?: listOf()
     }
 
     override fun getCredentials(): Jwt {

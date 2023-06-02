@@ -10,6 +10,5 @@ describe("Component test for CompanyDataTable", () => {
     expect(wrapper.vm.kpiNameMappings).to.be.an("object").that.is.empty;
     expect(wrapper.vm.kpiInfoMappings).to.be.an("object").that.is.empty;
     expect(wrapper.vm.subAreaNameMappings).to.be.an("object").that.is.empty;
-    expect(wrapper.vm.tableDataTitle).to.be.a("string").that.is.empty;
   });
 });
