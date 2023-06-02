@@ -131,7 +131,7 @@ export default defineComponent({
         const qaServiceControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getQaControllerApi();
-        const response = await qaServiceControllerApi.getUnreviewedDatasets();
+        const response = await qaServiceControllerApi.getUnreviewedDatasetsIds();
         this.dataIdList = response.data;
         for (const dataId of this.dataIdList) {
           await this.addDatasetAssociatedInformationToDisplayList(dataId);
