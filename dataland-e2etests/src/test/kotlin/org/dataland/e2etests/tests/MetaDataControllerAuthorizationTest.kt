@@ -101,71 +101,28 @@ class MetaDataControllerAuthorizationTest {
             mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, TechnicalUser.Admin,
         )[0].actualStoredDataMetaInfo!!
 
-        validateReaderAccessToUserId(metaInfoOfUploaderUpload, metaInfoOfAdminUpload)
-        validateUploaderAccessToUserId(metaInfoOfUploaderUpload, metaInfoOfAdminUpload)
-        validateAdminAccessToUserId(
-            metaInfoOfUploaderUpload,
-            metaInfoOfAdminUpload,
-        )
+        expectUserIdToBe(metaInfoOfAdminUpload, TechnicalUser.Reader, null)
+        expectUserIdToBe(metaInfoOfUploaderUpload, TechnicalUser.Uploader, TechnicalUser.Uploader.technicalUserId)
+        expectUserIdToBe(metaInfoOfAdminUpload, TechnicalUser.Uploader, null)
+        expectUserIdToBe(metaInfoOfUploaderUpload, TechnicalUser.Admin, TechnicalUser.Uploader.technicalUserId)
+        expectUserIdToBe(metaInfoOfAdminUpload, TechnicalUser.Admin, TechnicalUser.Admin.technicalUserId)
     }
 
     private fun expectUserIdToBe(
         dataMetaInformation: DataMetaInformation,
         requestingTechnicalUser: TechnicalUser,
         expectedUploaderId: String?,
-        msg: String,
     ) {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(requestingTechnicalUser)
 
         val uploaderUserIdFromMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataMetaInformation.dataId)
             .uploaderUserId
+        val msg = "Technical user $requestingTechnicalUser saw user ID $uploaderUserIdFromMetaInfo but expected was $expectedUploaderId"
         Assertions.assertEquals(expectedUploaderId, uploaderUserIdFromMetaInfo, msg)
 
         val uploaderUserIdFromCompanyInfo = apiAccessor.companyDataControllerApi
             .getCompanyById(dataMetaInformation.companyId)
             .dataRegisteredByDataland.firstOrNull()?.uploaderUserId
         Assertions.assertEquals(uploaderUserIdFromCompanyInfo, uploaderUserIdFromMetaInfo, msg)
-    }
-
-    private fun validateAdminAccessToUserId(
-        testUploadDataUploaderMetaInfo: DataMetaInformation,
-        testUploadDataAdminMetaInfo: DataMetaInformation,
-    ) {
-        expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, TechnicalUser.Admin, TechnicalUser.Uploader.technicalUserId,
-            "Admins should be able to view uploaderUserids for all users",
-        )
-        expectUserIdToBe(
-            testUploadDataAdminMetaInfo, TechnicalUser.Admin, TechnicalUser.Admin.technicalUserId,
-            "Admins should be able to view uploaderUserids for all users",
-        )
-    }
-
-    private fun validateUploaderAccessToUserId(
-        testUploadDataUploaderMetaInfo: DataMetaInformation,
-        testUploadDataAdminMetaInfo: DataMetaInformation,
-    ) {
-        expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, TechnicalUser.Uploader, TechnicalUser.Uploader.technicalUserId,
-            "Expected user id to be present if the user requests data about an upload he performed himself",
-        )
-        expectUserIdToBe(
-            testUploadDataAdminMetaInfo, TechnicalUser.Uploader, null,
-            "Data Uploaders should not be able to view the user id of uploads of other users",
-        )
-    }
-
-    private fun validateReaderAccessToUserId(
-        testUploadDataUploaderMetaInfo: DataMetaInformation,
-        testUploadDataAdminMetaInfo: DataMetaInformation,
-    ) {
-        expectUserIdToBe(
-            testUploadDataUploaderMetaInfo, TechnicalUser.Reader, null,
-            "A reader should not see any uploader ids",
-        )
-        expectUserIdToBe(
-            testUploadDataAdminMetaInfo, TechnicalUser.Reader, null,
-            "A reader should not see any uploader ids",
-        )
     }
 }

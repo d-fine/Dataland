@@ -37,6 +37,7 @@ class QaServiceTest {
 
         assertEquals(BackendQaStatus.pending, apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus)
 
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val qaServiceController = apiAccessor.qaServiceControllerApi
         await().atMost(2, TimeUnit.SECONDS)
             .until { qaServiceController.getUnreviewedDatasetsIds().contains(dataId) }
