@@ -3906,13 +3906,10 @@
           "countryCode": {
             "type": "string"
           },
-          "isTeaserCompany": {
-            "type": "boolean"
-          },
           "website": {
             "type": "string"
           },
-          "teaserCompany": {
+          "isTeaserCompany": {
             "type": "boolean"
           }
         }
