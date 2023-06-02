@@ -35,7 +35,7 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun getUnreviewedDatasets(): ResponseEntity<List<String>>
+    fun getUnreviewedDatasetsIds(): ResponseEntity<List<String>>
 
     /**
      * Assigns a quality status to a unreviewed dataset

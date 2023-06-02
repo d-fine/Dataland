@@ -35,7 +35,7 @@ class QaController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
-    override fun getUnreviewedDatasets(): ResponseEntity<List<String>> {
+    override fun getUnreviewedDatasetsIds(): ResponseEntity<List<String>> {
         logger.info("Received request to respond with IDs of unreviewed datasets")
         return ResponseEntity.ok(reviewQueueRepository.getSortedPendingDataIds())
     }

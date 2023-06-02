@@ -88,7 +88,7 @@
         ],
         "summary": "Get unreviewed datasets IDs.",
         "description": "Gets a ordered list of dataset IDs which need to be reviewed",
-        "operationId": "getUnreviewedDatasets",
+        "operationId": "getUnreviewedDatasetsIds",
         "responses": {
           "200": {
             "description": "Successfully retrieved dataset IDs.",
