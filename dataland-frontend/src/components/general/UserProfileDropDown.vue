@@ -79,36 +79,36 @@ export default defineComponent({
           label: "USER SETTINGS",
           icon: "settings",
           id: "profile-picture-dropdown-settings-button",
-          clickAction: this.gotoUserSettings,
+          clickAction: this.goToUserSettings,
         },
         {
           label: "API KEYS",
           icon: "key",
           id: "profile-api-generate-key-button",
-          clickAction: this.gotoApiKeysPage,
+          clickAction: this.goToApiKeysPage,
         },
         {
           label: "DATA REQUEST",
           icon: "mail",
           id: "profile-picture-dropdown-data-request-button",
-          clickAction: this.gotoDataRequest,
+          clickAction: this.goToDataRequest,
         },
         {
           label: "QUALITY ASSURANCE",
           icon: "add_moderator",
           id: "profile-picture-dropdown-qa-services-button",
-          clickAction: this.gotoQualityAssurance,
+          clickAction: this.goToQualityAssurance,
           role: KEYCLOAK_ROLE_REVIEWER,
         },
         {
           label: "LOG OUT",
           icon: "logout",
-          id: "profile-picture-dropdown-toggle",
+          id: "profile-picture-dropdown-logout-anchor",
           clickAction: this.logoutViaDropdown,
         },
       ],
       profilePictureSource: defaultProfilePicture,
-      hasRole: ((role: string) => !!String(role)) as (role: string) => boolean,
+      hasRole: ((role: string) => !role) as (role: string) => boolean,
     };
   },
   mounted() {
@@ -133,7 +133,7 @@ export default defineComponent({
     /**
      * Redirects the user to the keycloak user settings page
      */
-    gotoUserSettings() {
+    goToUserSettings() {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (keycloak.authenticated) {
@@ -145,7 +145,7 @@ export default defineComponent({
     /**
      * Redirects the user to the data-request/invite screen
      */
-    gotoDataRequest() {
+    goToDataRequest() {
       assertDefined(this.getKeycloakPromise)()
         .then(() => {
           return this.$router.push("requests");
@@ -155,13 +155,13 @@ export default defineComponent({
     /**
      * Redirects the user to the api-key management interface
      */
-    gotoApiKeysPage() {
+    goToApiKeysPage() {
       void this.$router.push("/api-key");
     },
     /**
      * Redirects the user to the QA Services page
      */
-    gotoQualityAssurance() {
+    goToQualityAssurance() {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (keycloak.authenticated) {
