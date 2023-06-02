@@ -15,6 +15,12 @@ appear.
 - [ ] Update keycloak 21.0.1 is skipped due to issues in the realm.json, the new docker image, account console
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
   project and unresolved imports that are hard to fix), skipped.
+- [ ] Update Cypress to >= 12.12.0 introduces an issue with the usage of `$route` in component test 
+  `DatasetOverview.cy.ts`. Issue with Cypress has been created to hopefully resolve this from the side of Cypress:
+  https://github.com/cypress-io/cypress/issues/26902
+- [ ] Update Ktlint to >= 49.0 breaks the ktlint tasks (issue described here: 
+  https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
+  https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
 
 ### Gradle update
 
@@ -65,13 +71,12 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-qa-service/DockerfileTest`
 - [ ] `./dataland-rabbitmq/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
-- [ ] `./dataland-inbound-proxy/DockerfileBase`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
-  document-manager-db and frontend-dev
+  document-manager-db and frontend-dev in `./docker-compose.yml`
 - [ ] Check if there are any services in the `docker-compose.yml` file that have not gotten an update yet (e.g. a new
   service that is not covered by the tasks above)
 
@@ -86,7 +91,6 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev1.dataland.com
 - [ ] dev2.dataland.com
 - [ ] test.dataland.com
-- [ ] tunnel.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] monitoring.dataland.com
 - [ ] (OPT) dataland.com
@@ -98,7 +102,6 @@ check that all ssh-keys are set and erased from people that have left
 - [ ] dev1.dataland.com
 - [ ] dev2.dataland.com
 - [ ] test.dataland.com
-- [ ] tunnel.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] monitoring.dataland.com
 - [ ] (OPT) dataland.com
@@ -170,3 +173,6 @@ check that all ssh-keys are set and erased from people that have left
 - [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`
 - [ ] Locally: Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
   authorization has worked by assuring that you get a 200 response
+- [ ] Merge using Squash Commit. The Merge Commit Message needs to contain "Manual Maintenance"
+- [ ] After merge check SonarQube state of main branch at https://sonarcloud.io/summary/new_code?id=d-fine_Dataland. 
+  The full scan might reveal new issues (e.g. deprecation) on old code which is generally not detected on the branch.
