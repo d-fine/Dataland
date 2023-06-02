@@ -91,7 +91,6 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 - [ ] dev1.dataland.com
 - [ ] dev2.dataland.com
 - [ ] test.dataland.com
-- [ ] tunnel.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] monitoring.dataland.com
 - [ ] (OPT) dataland.com
@@ -176,4 +175,4 @@ check that all ssh-keys are set and erased from people that have left
   authorization has worked by assuring that you get a 200 response
 - [ ] Merge using Squash Commit. The Merge Commit Message needs to contain "Manual Maintenance"
 - [ ] After merge check SonarQube state of main branch at https://sonarcloud.io/summary/new_code?id=d-fine_Dataland. 
-  The full scan might reveal new issues (e.g. deprication) on old code which is generally not detected on the branch.
+  The full scan might reveal new issues (e.g. deprecation) on old code which is generally not detected on the branch.
