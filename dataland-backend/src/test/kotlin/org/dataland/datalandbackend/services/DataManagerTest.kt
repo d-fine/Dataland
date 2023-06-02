@@ -15,10 +15,12 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -198,9 +200,10 @@ class DataManagerTest(
 
         `when`(spyDataManager.generateRandomDataId()).thenReturn(dataUUId)
 
+        val payload = JSONObject(mapOf("dataId" to dataUUId, "bypassQa" to false)).toString()
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                anyString(), anyString(), anyString(), anyString(), anyString(),
+                payload, MessageType.DataReceived, correlationId, ExchangeName.DataReceived,
             ),
         ).thenThrow(
             AmqpException::class.java,
