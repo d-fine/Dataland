@@ -1,5 +1,5 @@
 import { ActuatorApi } from "@clients/backend";
-import { getBaseUrl } from "@e2e/utils/Cypress";
+import { getBaseUrl, getStringCypressEnv } from "@e2e/utils/Cypress";
 
 interface HealthResponse {
   status: string;
@@ -17,6 +17,6 @@ describe("As a developer, I want to ensure that the deployment is okay", () => {
     cy.request(`${getBaseUrl()}/gitinfo`)
       .should("have.a.property", "body")
       .should("have.a.property", "commit")
-      .should("eq", Cypress.env("commit_id") as string);
+      .should("eq", getStringCypressEnv("commit_id"));
   });
 });
