@@ -42,7 +42,7 @@
             "in": "query",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/QAStatus"
+              "$ref": "#/components/schemas/QaStatus"
             }
           }
         ],
@@ -359,7 +359,7 @@
   },
   "components": {
     "schemas": {
-      "QAStatus": {
+      "QaStatus": {
         "type": "string",
         "enum": [
           "Pending",

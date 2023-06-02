@@ -2109,11 +2109,11 @@
             "type": "boolean"
           },
           "qaStatus": {
-            "$ref": "#/components/schemas/QAStatus"
+            "$ref": "#/components/schemas/QaStatus"
           }
         }
       },
-      "QAStatus": {
+      "QaStatus": {
         "type": "string",
         "enum": [
           "Pending",

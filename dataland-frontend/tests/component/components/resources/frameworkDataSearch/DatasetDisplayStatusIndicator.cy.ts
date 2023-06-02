@@ -1,11 +1,11 @@
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
-import { DataTypeEnum, QAStatus, DataMetaInformation } from "@clients/backend";
+import { DataTypeEnum, QaStatus, DataMetaInformation } from "@clients/backend";
 describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   const acceptedAndActiveDataset: DataMetaInformation = {
     dataId: "mock-data-id",
     companyId: "mock-company-id",
     dataType: DataTypeEnum.Lksg,
-    qaStatus: QAStatus.Accepted,
+    qaStatus: QaStatus.Accepted,
     currentlyActive: true,
     reportingPeriod: "mock-reporting-period",
     uploaderUserId: "mock-uploader-user-id",
@@ -15,7 +15,7 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   it("Should display a superseded warning message when the dataset is superseded", () => {
     const supersededDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
     supersededDataset.currentlyActive = false;
-    supersededDataset.qaStatus = QAStatus.Accepted;
+    supersededDataset.qaStatus = QaStatus.Accepted;
 
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
       void mounted.wrapper.setProps({
@@ -35,7 +35,7 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   it("Should display a QA-Pending warning message when the dataset is pending QA", () => {
     const datasetPendingReview = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
     datasetPendingReview.currentlyActive = false;
-    datasetPendingReview.qaStatus = QAStatus.Pending;
+    datasetPendingReview.qaStatus = QaStatus.Pending;
 
     cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
       void mounted.wrapper.setProps({

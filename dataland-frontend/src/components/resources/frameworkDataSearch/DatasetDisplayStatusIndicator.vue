@@ -7,7 +7,7 @@
   >
     <span class="flex-1">{{ warningMessage }}</span>
     <router-link
-      v-if="displayedDataset.qaStatus !== QAStatus.Pending"
+      v-if="displayedDataset.qaStatus !== QaStatus.Pending"
       :to="link"
       class="no-underline"
       data-test="datasetDisplayStatusLink"
@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { DataMetaInformation, QAStatus } from "@clients/backend";
+import { DataMetaInformation, QaStatus } from "@clients/backend";
 import PrimeButton from "primevue/button";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 export default defineComponent({
@@ -27,7 +27,7 @@ export default defineComponent({
   components: { PrimeButton },
   data() {
     return {
-      QAStatus,
+      QaStatus,
     };
   },
   props: {
@@ -47,18 +47,18 @@ export default defineComponent({
     displayWarning(): boolean {
       return (
         this.displayedDataset?.currentlyActive === false ||
-        this.displayedDataset?.qaStatus === QAStatus.Pending ||
+        this.displayedDataset?.qaStatus === QaStatus.Pending ||
         this.areMoreDatasetsViewableSimultaneously
       );
     },
     warningMessage(): string {
-      if (this.displayedDataset?.qaStatus === QAStatus.Pending) return "This dataset is currently pending review";
+      if (this.displayedDataset?.qaStatus === QaStatus.Pending) return "This dataset is currently pending review";
       else if (this.displayedDataset?.currentlyActive === false) return "This dataset is superseded";
       else if (this.areMoreDatasetsViewableSimultaneously) return "You are only viewing a single available dataset";
       else return "ERROR";
     },
     buttonLabel(): string {
-      if (this.displayedDataset?.qaStatus === QAStatus.Pending || this.displayedDataset?.currentlyActive === false) {
+      if (this.displayedDataset?.qaStatus === QaStatus.Pending || this.displayedDataset?.currentlyActive === false) {
         return "View Active";
       } else if (this.areMoreDatasetsViewableSimultaneously) {
         return "View All";
@@ -67,7 +67,7 @@ export default defineComponent({
       }
     },
     link(): string | undefined {
-      if (this.displayedDataset?.qaStatus === QAStatus.Pending || this.displayedDataset?.currentlyActive === false) {
+      if (this.displayedDataset?.qaStatus === QaStatus.Pending || this.displayedDataset?.currentlyActive === false) {
         return (
           `/companies/${this.displayedDataset.companyId}` +
           `/frameworks/${this.displayedDataset.dataType}/reportingPeriods/${this.displayedDataset.reportingPeriod}`

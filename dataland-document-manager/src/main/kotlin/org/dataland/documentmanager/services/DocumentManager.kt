@@ -2,7 +2,7 @@ package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
@@ -100,7 +100,7 @@ class DocumentManager(
             documentId = documentId,
             uploaderId = DatalandAuthentication.fromContext().userId,
             uploadTime = Instant.now().toEpochMilli(),
-            qaStatus = QAStatus.Pending,
+            qaStatus = QaStatus.Pending,
         )
     }
 
@@ -131,7 +131,7 @@ class DocumentManager(
                 "No document with ID: $documentId could be found. Correlation ID: $correlationId",
             )
         }
-        if (metaDataInfoEntity.qaStatus != QAStatus.Accepted) {
+        if (metaDataInfoEntity.qaStatus != QaStatus.Accepted) {
             throw ResourceNotFoundApiException(
                 "No accepted document found",
                 "A non-quality-assured document with ID: $documentId was found. " +
@@ -229,14 +229,14 @@ class DocumentManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils = MessageQueueUtils()
-        messageUtils.validateMessageType(type, MessageType.QACompleted)
+        messageUtils.validateMessageType(type, MessageType.QaCompleted)
         val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
         messageUtils.rejectMessageOnException {
             val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
-            metaInformation.qaStatus = QAStatus.Accepted
+            metaInformation.qaStatus = QaStatus.Accepted
             logger.info(
                 "Received quality assurance for document upload with document ID: " +
                     "$documentId with Correlation ID: $correlationId",

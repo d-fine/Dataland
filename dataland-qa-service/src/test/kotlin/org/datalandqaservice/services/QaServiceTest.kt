@@ -2,7 +2,7 @@ package org.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -10,7 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.DatalandQaService
-import org.dataland.datalandqaservice.repositories.DatasetReviewStatusRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.dataland.datalandqaservice.services.QaService
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
@@ -34,7 +34,7 @@ import org.springframework.context.annotation.ComponentScan
 class QaServiceTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
-    @Autowired val testDatasetReviewStatusRepository: DatasetReviewStatusRepository,
+    @Autowired val testReviewQueueRepository: ReviewQueueRepository,
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var qaService: QaService
@@ -48,7 +48,7 @@ class QaServiceTest(
             mockCloudEventMessageHandler,
             objectMapper,
             messageUtils,
-            testDatasetReviewStatusRepository,
+            testReviewQueueRepository,
         )
     }
 
@@ -68,12 +68,12 @@ class QaServiceTest(
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 identifier = dataId,
-                validationResult = QAStatus.Accepted,
+                validationResult = QaStatus.Accepted,
             ),
         )
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.data,
+                message, MessageType.QaCompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.data,
             ),
         ).thenThrow(
             AmqpException::class.java,

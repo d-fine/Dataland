@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -174,11 +174,11 @@ class DataManagerTest(
         val messageWithEmptyDataID = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 identifier = "",
-                validationResult = QAStatus.Accepted,
+                validationResult = QaStatus.Accepted,
             ),
         )
         val thrown = assertThrows<MessageQueueRejectException> {
-            dataManager.updateMetaData(messageWithEmptyDataID, "", MessageType.QACompleted)
+            dataManager.updateMetaData(messageWithEmptyDataID, "", MessageType.QaCompleted)
         }
         assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
@@ -216,7 +216,7 @@ class DataManagerTest(
     fun `check a ResourceNotFoundApiException if the dataset could not be found`() {
         val mockMetaInfo = DataMetaInformationEntity(
             dataId = "i-only-have-meta-info-stored", dataType = "lksg", uploaderUserId = "", uploadTime = 0,
-            qaStatus = QAStatus.Pending, company = testDataProvider.getEmptyStoredCompanyEntity(),
+            qaStatus = QaStatus.Pending, company = testDataProvider.getEmptyStoredCompanyEntity(),
             reportingPeriod = "2023", currentlyActive = true,
         )
         val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)

@@ -6,7 +6,7 @@ import {
   DataTypeEnum,
   LksgData,
   LksgProductionSite,
-  QAStatus,
+  QaStatus,
   StoredCompany,
 } from "@clients/backend";
 import { uploadLksgDataViaForm } from "@e2e/utils/LksgUpload";
@@ -86,7 +86,7 @@ describeIf(
       dataMetaInfo: DataMetaInformation
     ): LksgData {
       dataMetaInfo.dataType = DataTypeEnum.Lksg;
-      dataMetaInfo.qaStatus = QAStatus.Accepted;
+      dataMetaInfo.qaStatus = QaStatus.Accepted;
       dataMetaInfo.currentlyActive = true;
       const storedCompany = {
         companyId: "company-id",

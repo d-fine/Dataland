@@ -3,7 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.QAStatus
+import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -34,7 +34,7 @@ class MetaDataControllerTest {
         uploadTime: Long,
     ) = DataMetaInformation(
         dataId = dataId, companyId = companyId, dataType = testDataType, uploadTime = uploadTime,
-        reportingPeriod = "", currentlyActive = true, qaStatus = QAStatus.accepted, uploaderUserId = null,
+        reportingPeriod = "", currentlyActive = true, qaStatus = QaStatus.accepted, uploaderUserId = null,
     )
 
     @Test

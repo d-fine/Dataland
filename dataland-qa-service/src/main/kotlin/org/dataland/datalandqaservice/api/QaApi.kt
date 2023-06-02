@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -57,6 +57,6 @@ interface QaApi {
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun assignQualityStatus(
         @PathVariable("dataId") dataId: String,
-        @RequestParam qualityStatus: QAStatus,
+        @RequestParam qualityStatus: QaStatus,
     ): ResponseEntity<Void>
 }

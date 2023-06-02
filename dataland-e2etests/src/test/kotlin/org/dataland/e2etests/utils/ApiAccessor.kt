@@ -19,7 +19,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
-import org.dataland.datalandbackend.openApiClient.model.QAStatus
+import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -165,7 +165,7 @@ class ApiAccessor {
      * Wait until QaStatus is accepted for all Upload Infos or throw error. The metadata of the provided uploadInfos
      * are updated in the process.
      *
-     * @param uploadInfos List of UploadInfo for which an update of the QAStatus should be checked and awaited
+     * @param uploadInfos List of UploadInfo for which an update of the QaStatus should be checked and awaited
      * @return Input list of UplaodInfo but with updated metadata
      */
     fun ensureQaCompletedAndUpdateUploadInfo(uploadInfos: List<UploadInfo>) {
@@ -178,10 +178,10 @@ class ApiAccessor {
                 ?: throw NullPointerException(
                     "To check QA Status, metadata is required but was null for $uploadInfo",
                 )
-            if (metaData.qaStatus != QAStatus.accepted) {
+            if (metaData.qaStatus != QaStatus.accepted) {
                 uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
             }
-            return uploadInfo.actualStoredDataMetaInfo!!.qaStatus == QAStatus.accepted
+            return uploadInfo.actualStoredDataMetaInfo!!.qaStatus == QaStatus.accepted
         }
     }
 
@@ -200,7 +200,7 @@ class ApiAccessor {
 
     private fun checkIfQaPassedForMetaDataList(metaDatas: List<DataMetaInformation>): Boolean {
         return metaDatas.all { metaData ->
-            return (metaDataControllerApi.getDataMetaInfo(metaData.dataId).qaStatus == QAStatus.accepted)
+            return (metaDataControllerApi.getDataMetaInfo(metaData.dataId).qaStatus == QaStatus.accepted)
         }
     }
 

@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.canUserBypassQa
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
@@ -57,7 +57,7 @@ abstract class DataController<T>(
             DataMetaInformation(
                 dataId = dataIdOfPostedData, companyId = companyId, dataType = dataType,
                 uploaderUserId = userId, uploadTime = uploadTime, reportingPeriod = reportingPeriod,
-                currentlyActive = false, qaStatus = QAStatus.Pending,
+                currentlyActive = false, qaStatus = QaStatus.Pending,
             ),
         )
     }

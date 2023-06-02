@@ -1,6 +1,6 @@
 package org.dataland.datalandmessagequeueutils.messages
 
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 
 /**
  * Message that is sent to the data quality assured exchange after
@@ -8,5 +8,5 @@ import org.dataland.datalandbackendutils.model.QAStatus
  */
 data class QaCompletedMessage(
     val identifier: String,
-    val validationResult: QAStatus,
+    val validationResult: QaStatus,
 )

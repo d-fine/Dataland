@@ -14,9 +14,9 @@ export default defineComponent({
     return {
       assertDefined,
       statusMap: new Map<DatasetStatus, BadgeProperties>([
-        [DatasetStatus.QAApproved, BadgeProperties.Approved],
-        [DatasetStatus.QAPending, BadgeProperties.Pending],
-        [DatasetStatus.QARejected, BadgeProperties.Rejected],
+        [DatasetStatus.QaApproved, BadgeProperties.Approved],
+        [DatasetStatus.QaPending, BadgeProperties.Pending],
+        [DatasetStatus.QaRejected, BadgeProperties.Rejected],
         [DatasetStatus.Superseded, BadgeProperties.Superseded],
       ]),
     };

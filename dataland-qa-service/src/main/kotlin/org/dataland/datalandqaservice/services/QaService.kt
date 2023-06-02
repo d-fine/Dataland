@@ -1,7 +1,7 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -86,10 +86,10 @@ class QaService(
     private fun sendAcceptDatasetMessage(dataId: String, correlationId: String) {
         logger.info("Bypassing data with DataId: $dataId with Correlation Id: $correlationId")
         val message = objectMapper.writeValueAsString(
-            QaCompletedMessage(dataId, QAStatus.Accepted),
+            QaCompletedMessage(dataId, QaStatus.Accepted),
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+            message, MessageType.QaCompleted, correlationId, ExchangeNames.dataQualityAssured,
             RoutingKeyNames.data,
         )
     }
@@ -139,10 +139,10 @@ class QaService(
                 "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
             )
             val message = objectMapper.writeValueAsString(
-                QaCompletedMessage(documentId, QAStatus.Accepted),
+                QaCompletedMessage(documentId, QaStatus.Accepted),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+                message, MessageType.QaCompleted, correlationId, ExchangeNames.dataQualityAssured,
                 RoutingKeyNames.document,
             )
         }

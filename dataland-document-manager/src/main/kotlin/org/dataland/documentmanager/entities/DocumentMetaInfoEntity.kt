@@ -3,7 +3,7 @@ package org.dataland.documentmanager.entities
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.documentmanager.model.DocumentMetaInfo
 
 /**
@@ -16,7 +16,7 @@ data class DocumentMetaInfoEntity(
     val documentId: String,
     val uploaderId: String,
     val uploadTime: Long,
-    var qaStatus: QAStatus,
+    var qaStatus: QaStatus,
 ) {
     constructor(documentMetaInfo: DocumentMetaInfo) :
         this(

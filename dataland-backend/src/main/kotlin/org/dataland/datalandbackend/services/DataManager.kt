@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
@@ -117,7 +117,7 @@ class DataManager(
             storableDataSet.uploadTime,
             storableDataSet.reportingPeriod,
             null,
-            QAStatus.Pending,
+            QaStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(metaData)
     }
@@ -150,7 +150,7 @@ class DataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QACompleted)
+        messageUtils.validateMessageType(type, MessageType.QaCompleted)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
         val dataId = qaCompletedMessage.identifier
         if (dataId.isEmpty()) {
@@ -159,7 +159,7 @@ class DataManager(
         messageUtils.rejectMessageOnException {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaInformation.qaStatus = qaCompletedMessage.validationResult
-            if(qaCompletedMessage.validationResult == QAStatus.Accepted) {
+            if(qaCompletedMessage.validationResult == QaStatus.Accepted) {
                 metaDataManager.setActiveDataset(metaInformation)
             }
             logger.info(

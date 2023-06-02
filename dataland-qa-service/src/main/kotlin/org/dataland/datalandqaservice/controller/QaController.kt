@@ -2,7 +2,7 @@ package org.dataland.datalandqaservice.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -41,11 +41,11 @@ class QaController(
     }
 
     @Transactional
-    override fun assignQualityStatus(dataId: String, qualityStatus: QAStatus):
+    override fun assignQualityStatus(dataId: String, qualityStatus: QaStatus):
         ResponseEntity<Void> {
         val correlationId = randomUUID().toString()
         logger.info("Received request to change the quality status of dataset with ID $dataId (correlationId: $correlationId)")
-        if (qualityStatus == QAStatus.Pending) {
+        if (qualityStatus == QaStatus.Pending) {
             throw InvalidInputApiException(
                 "Quality \"Pending\" cannot be assigned to a reviewed dataset",
                 "Quality \"Pending\" cannot be assigned to a reviewed dataset",
@@ -87,12 +87,12 @@ class QaController(
      * @param qualityStatus the assigned quality status
      * @param correlationId the ID of the process
      */
-    fun sendQaCompletedMessage(dataId: String, qualityStatus: QAStatus, correlationId: String) {
+    fun sendQaCompletedMessage(dataId: String, qualityStatus: QaStatus, correlationId: String) {
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(dataId, qualityStatus),
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            message, MessageType.QACompleted, correlationId, ExchangeNames.dataQualityAssured,
+            message, MessageType.QaCompleted, correlationId, ExchangeNames.dataQualityAssured,
             RoutingKeyNames.data,
         )
     }

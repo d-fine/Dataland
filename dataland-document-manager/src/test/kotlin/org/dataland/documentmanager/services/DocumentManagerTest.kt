@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.apache.pdfbox.io.IOUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -97,7 +97,7 @@ class DocumentManagerTest(
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
-                        qaStatus = QAStatus.Pending,
+                        qaStatus = QaStatus.Pending,
                     ),
                 ),
             )
@@ -124,7 +124,7 @@ class DocumentManagerTest(
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
-                        qaStatus = QAStatus.Accepted,
+                        qaStatus = QaStatus.Accepted,
                     ),
                 ),
             )
@@ -138,11 +138,11 @@ class DocumentManagerTest(
         val messageWithEmptyDocumentID = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 identifier = "",
-                validationResult = QAStatus.Accepted,
+                validationResult = QaStatus.Accepted,
             ),
         )
         val thrown = assertThrows<MessageQueueRejectException> {
-            documentManager.updateDocumentMetaData(messageWithEmptyDocumentID, "", MessageType.QACompleted)
+            documentManager.updateDocumentMetaData(messageWithEmptyDocumentID, "", MessageType.QaCompleted)
         }
         assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
@@ -155,7 +155,7 @@ class DocumentManagerTest(
         val message = objectMapper.writeValueAsString(
             QaCompletedMessage(
                 identifier = uploadResponse.documentId,
-                validationResult = QAStatus.Accepted,
+                validationResult = QaStatus.Accepted,
             ),
         )
 
@@ -166,12 +166,12 @@ class DocumentManagerTest(
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
-                        qaStatus = QAStatus.Pending,
+                        qaStatus = QaStatus.Pending,
                     ),
                 ),
             )
 
-        assertDoesNotThrow { documentManager.updateDocumentMetaData(message, "", MessageType.QACompleted) }
+        assertDoesNotThrow { documentManager.updateDocumentMetaData(message, "", MessageType.QaCompleted) }
     }
 
     @Test

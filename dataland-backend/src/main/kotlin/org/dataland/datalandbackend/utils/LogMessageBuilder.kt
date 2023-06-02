@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend
 
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.stereotype.Component
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 
 @Component("LogMessageBuilder")
 class LogMessageBuilder {
-    fun generateAccessDeniedExceptionMessage(qaStatus: QAStatus)
+    fun generateAccessDeniedExceptionMessage(qaStatus: QaStatus)
         = "You are trying to access a ${qaStatus.toString().lowercase()} dataset."
     val bypassQaDeniedExceptionMessage = "You do not have the required permissions to bypass QA checks."
 
