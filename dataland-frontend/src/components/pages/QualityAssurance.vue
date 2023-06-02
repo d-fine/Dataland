@@ -239,7 +239,9 @@ export default defineComponent({
       await this.getDataSet(event.data);
       this.$dialog.open(QADatasetModal, {
         props: {
-          header: "Dataset to review",
+          header: "Reviewing " + event.data.metaInformation.dataType + " data for: " +
+              event.data.companyInformation.companyName + " for the reporting period " +
+              event.data.metaInformation.reportingPeriod,
           modal: true,
           dismissableMask: true,
         },
