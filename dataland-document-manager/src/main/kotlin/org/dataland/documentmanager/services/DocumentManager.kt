@@ -5,7 +5,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
@@ -74,7 +74,7 @@ class DocumentManager(
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeNames.documentReceived,
+            documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeName.DocumentReceived,
         )
         return DocumentUploadResponse(documentMetaInfo.documentId)
     }
@@ -171,12 +171,12 @@ class DocumentManager(
                 value = Queue(
                     "dataStoredDocumentManager",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
                 key = [RoutingKeyNames.document],
             ),
         ],
@@ -212,12 +212,12 @@ class DocumentManager(
                 value = Queue(
                     "documentQualityAssuredDocumentManager",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
+                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
                 key = [RoutingKeyNames.document],
             ),
         ],

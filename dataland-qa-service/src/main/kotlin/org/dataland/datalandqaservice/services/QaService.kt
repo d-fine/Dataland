@@ -3,7 +3,7 @@ package org.dataland.datalandqaservice.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
@@ -51,12 +51,12 @@ class QaService(
                 value = Queue(
                     "dataStoredQaService",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
                 key = [RoutingKeyNames.data],
             ),
         ],
@@ -89,7 +89,7 @@ class QaService(
             QaCompletedMessage(dataId, QaStatus.Accepted),
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            message, MessageType.QaCompleted, correlationId, ExchangeNames.dataQualityAssured,
+            message, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
             RoutingKeyNames.data,
         )
     }
@@ -115,12 +115,12 @@ class QaService(
                 value = Queue(
                     "documentStoredQaService",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
                 key = [RoutingKeyNames.document],
             ),
         ],
@@ -142,7 +142,7 @@ class QaService(
                 QaCompletedMessage(documentId, QaStatus.Accepted),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QaCompleted, correlationId, ExchangeNames.dataQualityAssured,
+                message, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
                 RoutingKeyNames.document,
             )
         }

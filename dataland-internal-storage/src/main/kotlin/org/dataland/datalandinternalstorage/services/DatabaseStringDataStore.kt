@@ -6,7 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
@@ -56,12 +56,12 @@ class DatabaseStringDataStore(
                 value = Queue(
                     "dataReceivedInternalStorageDatabaseDataStore",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataReceived, declare = "false"),
+                exchange = Exchange(ExchangeName.DataReceived, declare = "false"),
                 key = [""],
             ),
         ],
@@ -82,7 +82,7 @@ class DatabaseStringDataStore(
             logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
             storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.DataStored, correlationId, ExchangeNames.itemStored, RoutingKeyNames.data,
+                payload, MessageType.DataStored, correlationId, ExchangeName.ItemStored, RoutingKeyNames.data,
             )
         }
     }

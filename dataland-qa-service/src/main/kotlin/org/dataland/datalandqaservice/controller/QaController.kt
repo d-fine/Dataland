@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
@@ -92,7 +92,7 @@ class QaController(
             QaCompletedMessage(dataId, qualityStatus),
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            message, MessageType.QaCompleted, correlationId, ExchangeNames.dataQualityAssured,
+            message, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
             RoutingKeyNames.data,
         )
     }

@@ -11,7 +11,7 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
@@ -134,12 +134,12 @@ class DataManager(
                 value = Queue(
                     "dataQualityAssuredBackendDataManager",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
+                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
                 key = [RoutingKeyNames.data],
             ),
         ],
@@ -202,7 +202,7 @@ class DataManager(
         val payload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to bypassQa)).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DataReceived, correlationId,
-            ExchangeNames.dataReceived,
+            ExchangeName.DataReceived,
         )
         logger.info(
             "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
@@ -233,12 +233,12 @@ class DataManager(
                 value = Queue(
                     "dataStoredBackendDataManager",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
                 key = [RoutingKeyNames.data],
             ),
         ],

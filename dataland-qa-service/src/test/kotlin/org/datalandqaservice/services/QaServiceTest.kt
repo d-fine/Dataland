@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
@@ -73,7 +73,7 @@ class QaServiceTest(
         )
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QaCompleted, correlationId, ExchangeNames.dataQualityAssured, RoutingKeyNames.data,
+                message, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured, RoutingKeyNames.data,
             ),
         ).thenThrow(
             AmqpException::class.java,

@@ -6,7 +6,7 @@ import org.apache.pdfbox.io.IOUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
@@ -191,7 +191,7 @@ class DocumentManagerTest(
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 anyString(), eq(MessageType.DocumentReceived), anyString(),
-                eq(ExchangeNames.documentReceived), eq(""),
+                eq(ExchangeName.DocumentReceived), eq(""),
             ),
         ).thenThrow(
             AmqpException::class.java,
