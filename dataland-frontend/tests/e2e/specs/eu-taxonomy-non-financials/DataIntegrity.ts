@@ -111,7 +111,7 @@ describeIf(
       () => {
         const companyName = "Missing field company";
         const missingDataMessage = "No data has been reported";
-        getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        getKeycloakToken(admin_name, admin_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
             uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId, true);
             cy.intercept(`/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");

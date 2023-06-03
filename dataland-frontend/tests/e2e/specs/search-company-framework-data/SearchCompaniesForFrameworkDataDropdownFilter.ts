@@ -285,7 +285,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           const companyNameFinancialPrefix = "CompanyWithFinancial";
           const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
 
-          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+          getKeycloakToken(admin_name, admin_pw).then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
                 (storedCompany) => {

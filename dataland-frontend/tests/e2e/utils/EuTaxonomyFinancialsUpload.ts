@@ -18,7 +18,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 
 /**
@@ -261,10 +261,10 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
   submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
   afterDatasetSubmission: (companyId: string) => void
 ): void {
-  getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+  getKeycloakToken(admin_name, admin_pw).then((token: string) => {
     return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
       (storedCompany): void => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount(
           `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
         );
