@@ -74,7 +74,34 @@
                 slotProps.data.content[reportingPeriodWithDataId.dataId]?.value !== undefined
               "
             >
-              {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}
+              <span
+                v-if="
+                  isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
+                  hasDocument(slotProps.data.content[reportingPeriodWithDataId.dataId])
+                "
+              >
+                <DocumentLink
+                  :label="yesLabelMap.get(isCertificate(slotProps.data.kpiLabel))"
+                  :download-name="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.name"
+                  :reference="slotProps.data.content[reportingPeriodWithDataId.dataId].dataSource.reference"
+                  show-icon
+                />
+              </span>
+              <span
+                v-else-if="
+                  isYesNo(slotProps.data.content[reportingPeriodWithDataId.dataId].value) &&
+                  isCertificate(slotProps.data.kpiLabel)
+                "
+              >
+                {{
+                  slotProps.data.content[reportingPeriodWithDataId.dataId].value === YesNo.Yes
+                    ? yesLabelMap.get(true)
+                    : noLabelMap.get(true)
+                }}
+              </span>
+              <span v-else>
+                {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}
+              </span>
             </span>
             <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} </span>
           </template>
@@ -98,17 +125,28 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+import { BaseDataPointYesNo, YesNo } from "@clients/backend";
 import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
 
 export default defineComponent({
   name: "LksgCompanyDataTable",
-  components: { DataTable, Column },
+  components: { DataTable, Column, DocumentLink },
   directives: {
     tooltip: Tooltip,
   },
   data() {
     return {
       expandedRowGroups: ["_masterData"],
+      yesLabelMap: new Map<boolean, string>([
+        [true, "Certified"],
+        [false, "Yes"],
+      ]),
+      noLabelMap: new Map<boolean, string>([
+        [true, "Uncertified"],
+        [false, "No"],
+      ]),
+      YesNo,
     };
   },
   props: {
@@ -125,6 +163,31 @@ export default defineComponent({
     document.addEventListener("click", (e) => this.expandRowGroupOnHeaderClick(e));
   },
   methods: {
+    /**
+     * Checks if the BaseDataPoint holds a document reference
+     * @param dataPoint the object to check for a reference
+     * @returns true if the data point contains a document reference and has the appropriate value
+     */
+    hasDocument(dataPoint: BaseDataPointYesNo): boolean {
+      return dataPoint?.value === YesNo.Yes && dataPoint?.dataSource?.reference !== undefined;
+    },
+    /**
+     * Checks if a label belongs to a certificate
+     * @param label the label to check
+     * @returns true if the label belongs to a certificate
+     */
+    isCertificate(label: string): boolean {
+      const lowerCaseLabel = label.toLowerCase();
+      return lowerCaseLabel.includes("certificate") || lowerCaseLabel.includes("certification");
+    },
+    /**
+     * Checks if a string is 'Yes' or 'No'
+     * @param value the string to check
+     * @returns true if the string is 'Yes' or 'No'
+     */
+    isYesNo(value: string) {
+      return (Object.values(YesNo) as string[]).includes(value);
+    },
     /**
      * Opens a modal to display a table with the provided list of production sites
      * @param listOfValues An array consisting of production sites
