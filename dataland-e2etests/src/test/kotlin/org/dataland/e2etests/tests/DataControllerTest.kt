@@ -37,7 +37,7 @@ class DataControllerTest {
 
         assertEquals(
             CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
-                mapOfIds["companyId"],
+                mapOfIds.getValue("companyId"),
                 "",
                 testDataEuTaxonomyNonFinancials,
             ),

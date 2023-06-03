@@ -10,9 +10,9 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  * @param identifierValue value of the identifier
  */
 data class CompanyIdentifier(
-    @field:JsonProperty("identifierType", required = true)
+    @field:JsonProperty(required = true)
     val identifierType: IdentifierType,
 
-    @field:JsonProperty("identifierValue", required = true)
+    @field:JsonProperty(required = true)
     val identifierValue: String,
 )

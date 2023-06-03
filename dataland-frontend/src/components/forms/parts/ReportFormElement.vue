@@ -26,13 +26,12 @@
       <UploadFormHeader
         label="Currency"
         description="The 3-letter alpha code that represents the currency used in the report."
-        :is-required="true"
       />
       <div class="lg:col-4 md:col-4 col-12 p-0">
         <FormKit
           type="text"
           name="currency"
-          validation="required|length:2,3"
+          validation="length:2,3"
           validation-label="Currency used in the report"
           placeholder="Currency used in the report"
         />
