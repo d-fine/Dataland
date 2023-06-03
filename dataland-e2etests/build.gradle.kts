@@ -42,6 +42,8 @@ tasks.withType<Test> {
 tasks.withType<AbstractTestTask> {
     testLogging {
         showStandardStreams = true
+        showExceptions = true
+        showStackTraces = true
     }
 }
 
