@@ -31,6 +31,13 @@ subprojects {
     ktlint {
         version.set(ktlintVersion)
     }
+    tasks.withType<AbstractTestTask> {
+        testLogging {
+            showStandardStreams = true
+            showExceptions = true
+            showStackTraces = true
+        }
+    }
 }
 
 tasks.dependencyUpdates.configure {
@@ -136,4 +143,12 @@ tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configure
 
 ktlint {
     version.set(ktlintVersion)
+}
+
+tasks.withType<AbstractTestTask> {
+    testLogging {
+        showStandardStreams = true
+        showExceptions = true
+        showStackTraces = true
+    }
 }
