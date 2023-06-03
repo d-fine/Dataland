@@ -145,10 +145,6 @@ export default defineComponent({
       type: Object,
       default: null,
     },
-    toggleDataAvailable: {
-      type: Boolean,
-      default: true,
-    },
     valueType: {
       type: String as () => "percent" | "number",
       default: "percent",
