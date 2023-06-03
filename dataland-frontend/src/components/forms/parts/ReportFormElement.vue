@@ -3,8 +3,8 @@
     <!-- Date of the report -->
     <div class="form-field">
       <UploadFormHeader
-        name="Report Date"
-        explanation="The date until which the information presented in the report is valid."
+        label="Report Date"
+        description="The date until which the information presented in the report is valid."
       />
       <div class="md:col-6 col-12 p-0">
         <Calendar
@@ -24,8 +24,8 @@
     <!-- Currency used in the report -->
     <div class="form-field" data-test="currencyUsedInTheReport">
       <UploadFormHeader
-        name="Currency"
-        explanation="The 3-letter alpha code that represents the currency used in the report."
+        label="Currency"
+        description="The 3-letter alpha code that represents the currency used in the report."
         :is-required="true"
       />
       <div class="lg:col-4 md:col-4 col-12 p-0">
@@ -42,8 +42,8 @@
     <div class="form-field">
       <YesNoFormField
         name="isGroupLevel"
-        info="Is the Integrated Report on a Group level?"
-        displayName="Group Level Integrated Report"
+        description="Is the Integrated Report on a Group level?"
+        label="Group Level Integrated Report"
       />
     </div>
   </FormKit>

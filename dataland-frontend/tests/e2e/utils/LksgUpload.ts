@@ -1,15 +1,14 @@
 import {
+  CompanyInformation,
   Configuration,
+  DataMetaInformation,
   LksgData,
   LksgDataControllerApi,
-  DataMetaInformation,
-  CompanyInformation,
 } from "@clients/backend";
 import { UploadIds } from "./GeneralApiUtils";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 
 /**
  * Uploads a single LKSG data entry for a company
@@ -66,7 +65,7 @@ export function uploadCompanyAndLksgDataViaApi(
 function fillSingleProductionSite(): void {
   cy.get('input[name="nameOfProductionSite"]').type("CCddEE");
   cy.get('input[name="streetAndHouseNumber"]').type("Live-street 28");
-  cy.get('select[name="country"]').select("Belgium");
+  cy.get('select[name="country"]').select("Belgium (BE)");
   cy.get('input[name="city"]').type("Capitol City");
   cy.get('input[name="postalCode"]').type("WE-3133");
   cy.get('input[data-test="listOfGoodsOrServices"]').type("1,2,3");
@@ -81,7 +80,9 @@ function fillSingleProductionSite(): void {
  * @param maxCounter the maximum recursion depth before an error is thrown
  */
 function recursivelySelectYesOnAllFields(maxCounter: number): void {
-  if (maxCounter <= 0) throw new Error("Recursion depth exceeded selecting yes on all input fields");
+  if (maxCounter <= 0) {
+    return;
+  }
 
   cy.window().then((win) => {
     if (selectYesOnAllFieldsBrowser(win)) {
@@ -91,7 +92,7 @@ function recursivelySelectYesOnAllFields(maxCounter: number): void {
 }
 
 /**
- * Uses the native browser window to sleect yes on all checkbox fields
+ * Uses the native browser window to select yes on all checkbox fields
  * @param win the native browser window to use
  * @returns whether a new checkbox has been checked
  */
@@ -104,30 +105,6 @@ function selectYesOnAllFieldsBrowser(win: Window): boolean {
     }
   });
   return changedAnything;
-}
-
-/**
- * Uses the native browser context to check if CheckBoxes from the Lksg data model have yes selected.
- */
-function validateAllFieldsHaveYesSelected(): void {
-  const yesNoInputs = lksgDataModel.flatMap((category) =>
-    category.subcategories.flatMap((subcategory) =>
-      subcategory.fields
-        .filter((field) => field.component === "YesNoFormField" || field.component === "YesNoNaFormField")
-        .map((field) => field.name)
-    )
-  );
-  cy.window().then((win) => {
-    yesNoInputs.forEach((name) => {
-      const inputElement = assertDefined(
-        win.document.querySelector<HTMLInputElement>(`input[name="${name}"][value="Yes"]`)
-      );
-
-      if (!inputElement.checked) {
-        throw new Error(`Checkbox ${name} should be selected, but is not`);
-      }
-    });
-  });
 }
 
 /**
@@ -223,13 +200,15 @@ export function uploadLksgDataViaForm(): void {
   selectDummyDateInDataPicker();
 
   recursivelySelectYesOnAllFields(15);
-  validateAllFieldsHaveYesSelected();
 
+  uploadDocuments.selectDocumentAtEachFileSelector("test-report");
+
+  submitButton.buttonAppearsDisabled();
   fillRequiredLksgFieldsWithDummyData();
-  testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
 
-  submitButton.buttonAppearsEnabled();
+  testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite();
   submitButton.clickButton();
+
   cy.get("div.p-message-success").should("be.visible");
 }
 

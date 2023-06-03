@@ -1,4 +1,5 @@
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { LksgData } from "@clients/backend";
 
 export interface Category {
   name: string;
@@ -14,12 +15,13 @@ export interface Subcategory {
 }
 
 export interface Field {
-  showIf: () => boolean;
+  showIf: (dataModel?: LksgData) => boolean;
   name: string;
   label: string;
   description: string;
   component: string;
   dependency?: string;
+  certificateRequiredIfYes?: boolean;
   validation?: string;
   validationLabel?: string;
   required?: boolean;

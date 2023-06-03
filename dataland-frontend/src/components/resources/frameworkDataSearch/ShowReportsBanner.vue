@@ -6,7 +6,8 @@
       </span>
       <span id="reportList">
         <span v-for="(report, name, index) in reports" :key="index">
-          <ReportLink :name="name" :report="report" :index="Number(index)" :reportsNumber="reportsNumber()" />
+          <DocumentLink :download-name="name" :reference="report.reference" font-style="font-semibold" />
+          <span v-if="index < numberOfReports - 1"> | </span>
         </span>
       </span>
     </div>
@@ -15,19 +16,16 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import ReportLink from "@/components/resources/frameworkDataSearch/ReportLink.vue";
+import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 
 export default defineComponent({
   name: "ShowReportsBanner",
-  components: { ReportLink },
+  components: { DocumentLink },
   props: {
     reports: { type: Object, required: true },
   },
-  methods: {
-    /**
-     * @returns the number of reports
-     */
-    reportsNumber(): number {
+  computed: {
+    numberOfReports(): number {
       return Object.keys(this.reports).length;
     },
   },

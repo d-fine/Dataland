@@ -1,6 +1,6 @@
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/de";
 import { CompanyReportReference } from "@clients/backend";
-import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { DataPoint, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 
 /**
@@ -8,12 +8,12 @@ import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
  * @param referencedReports a list of reports that can be referenced
  * @returns a random data source referencing a random report from the provided referencedReports
  */
-export function generateDataSource(referencedReports: ReferencedReports): CompanyReportReference {
+export function generateDataSource(referencedReports: ReferencedDocuments): CompanyReportReference {
   const chosenReport = faker.helpers.arrayElement(Object.keys(referencedReports));
   return {
-    page: faker.datatype.number({ min: 1, max: 1200 }),
+    page: faker.number.int({ min: 1, max: 1200 }),
     report: chosenReport,
-    tagName: faker.company.bsNoun(),
+    tagName: faker.company.buzzNoun(),
   };
 }
 

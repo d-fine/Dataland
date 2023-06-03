@@ -1,13 +1,12 @@
-import { faker } from "@faker-js/faker";
-import { readFileSync } from "fs";
-import { createHash } from "crypto";
+import { faker } from "@faker-js/faker/locale/de";
 import { CompanyReportReference, DataPointBigDecimal, DataPointYesNo, QualityOptions } from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
-import { DataPoint, ReferencedReports } from "@e2e/fixtures/FixtureUtils";
+import { DataPoint, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNo, randomYesNoNa } from "./YesNoFixtures";
 import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
-import { randomPastDateOrUndefined } from "./DateFixtures";
 import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
+import { randomPastDateOrUndefined } from "@e2e/fixtures/common/DateFixtures";
+import { getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 
 const possibleReports = ["AnnualReport", "SustainabilityReport", "IntegratedReport", "ESEFReport"];
 const nullRatio = 0.1;
@@ -30,24 +29,14 @@ export function generateLinkToPdf(): string {
 }
 
 /**
- * Generates hash to fixture pdf that is used for all fake fixture references
- * @returns documentId ID of a pdf that is stored in internal storage and can be referenced
- */
-export function getReferencedDocumentId(): string {
-  const testDocumentPath = "../testing/data/documents/StandardWordExport.pdf";
-  const fileContent: Buffer = readFileSync(testDocumentPath);
-  return createHash("sha256").update(fileContent).digest("hex");
-}
-
-/**
  * Generates a random non-empty set of reports that can be referenced
  * @returns a random non-empty set of reports
  */
-export function generateReferencedReports(): ReferencedReports {
+export function generateReferencedReports(): ReferencedDocuments {
   const availableReports = faker.helpers.arrayElements(possibleReports);
   if (availableReports.length == 0) availableReports.push(possibleReports[0]);
 
-  const referencedReports: ReferencedReports = {};
+  const referencedReports: ReferencedDocuments = {};
   for (const reportName of availableReports) {
     referencedReports[reportName] = {
       reference: getReferencedDocumentId(),
@@ -67,8 +56,8 @@ export function generateReferencedReports(): ReferencedReports {
  * @returns the generated datapoint or undefined
  */
 export function generateNumericOrEmptyDatapoint(
-  reports: ReferencedReports,
-  value: number | null = valueOrNull(faker.datatype.number())
+  reports: ReferencedDocuments,
+  value: number | null = valueOrNull(faker.number.int())
 ): DataPointBigDecimal | undefined {
   return valueOrUndefined(generateDatapoint(value, reports));
 }
@@ -78,7 +67,7 @@ export function generateNumericOrEmptyDatapoint(
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint or undefined
  */
-export function generateYesNoOrEmptyDatapoint(reports: ReferencedReports): DataPointYesNo | undefined {
+export function generateYesNoOrEmptyDatapoint(reports: ReferencedDocuments): DataPointYesNo | undefined {
   return valueOrUndefined(generateDatapoint(randomYesNo(), reports));
 }
 
@@ -90,7 +79,7 @@ export function generateYesNoOrEmptyDatapoint(reports: ReferencedReports): DataP
  */
 export function generateDatapointOrNotReportedAtRandom(
   value: number | undefined,
-  reports: ReferencedReports
+  reports: ReferencedDocuments
 ): DataPointBigDecimal | undefined {
   if (value === undefined) return undefined;
   return generateDatapoint(valueOrNull(value), reports);
@@ -102,7 +91,7 @@ export function generateDatapointOrNotReportedAtRandom(
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint
  */
-export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedReports): Y {
+export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedDocuments): Y {
   const qualityBucket =
     value === null
       ? QualityOptions.Na

@@ -39,15 +39,15 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
 
     private val jsonFilesForTesting = mapOf(
         EuTaxonomyDataForNonFinancials::class.java to
-            File("./build/resources/CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
+            File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
         EuTaxonomyDataForFinancials::class.java to
-            File("./build/resources/CompanyInformationWithEuTaxonomyDataForFinancials.json"),
+            File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancials.json"),
         LksgData::class.java to
-            File("./build/resources/CompanyInformationWithLksgData.json"),
+            File("./build/resources/test/CompanyInformationWithLksgData.json"),
         SfdrData::class.java to
-            File("./build/resources/CompanyInformationWithSfdrData.json"),
+            File("./build/resources/test/CompanyInformationWithSfdrData.json"),
         SmeData::class.java to
-            File("./build/resources/CompanyInformationWithSmeData.json"),
+            File("./build/resources/test/CompanyInformationWithSmeData.json"),
     )
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())

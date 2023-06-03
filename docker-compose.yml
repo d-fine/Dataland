@@ -66,7 +66,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:15.2
+    image: postgres:15.3
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -97,7 +97,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: postgres:15.2
+    image: postgres:15.3
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -134,7 +134,7 @@ services:
     profiles: ["production", "testing", "development"]
     networks:
       - backend-db
-    image: postgres:15.2
+    image: postgres:15.3
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -175,7 +175,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:20.0.0
+    image: node:20.2.0
     networks:
       internal:
         aliases:
@@ -214,7 +214,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:15.2
+    image: postgres:15.3
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -231,7 +231,7 @@ services:
     profiles: ["production", "testing", "development", "init"]
     networks:
       - keycloak-db
-    image: postgres:15.2
+    image: postgres:15.3
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:

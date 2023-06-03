@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/de";
 import { CompanyIdentifierIdentifierTypeEnum, CompanyInformation } from "@clients/backend";
 import { DataPoint } from "./FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
@@ -22,7 +22,7 @@ const legalForms = [
  * @returns a random legal form from the list as string
  */
 export function getRandomCompanyLegalForm(): string {
-  return legalForms[faker.datatype.number(legalForms.length - 1)];
+  return legalForms[faker.number.int(legalForms.length - 1)];
 }
 
 /**
@@ -32,45 +32,45 @@ export function getRandomCompanyLegalForm(): string {
 export function generateCompanyInformation(): CompanyInformation {
   return {
     companyName: faker.company.name(),
-    headquarters: faker.address.city(),
-    headquartersPostalCode: valueOrUndefined(faker.address.zipCode()),
-    sector: faker.company.bsNoun(),
+    headquarters: faker.location.city(),
+    headquartersPostalCode: valueOrUndefined(faker.location.zipCode()),
+    sector: faker.company.buzzNoun(),
     identifiers: faker.helpers
       .arrayElements([
         {
           identifierType: CompanyIdentifierIdentifierTypeEnum.Lei,
-          identifierValue: faker.random.alphaNumeric(20),
+          identifierValue: faker.string.alphanumeric(20),
         },
         {
           identifierType: CompanyIdentifierIdentifierTypeEnum.Isin,
-          identifierValue: faker.random.alphaNumeric(12),
+          identifierValue: faker.string.alphanumeric(12),
         },
         {
           identifierType: CompanyIdentifierIdentifierTypeEnum.PermId,
-          identifierValue: faker.random.alphaNumeric(10),
+          identifierValue: faker.string.alphanumeric(10),
         },
         {
           identifierType: CompanyIdentifierIdentifierTypeEnum.Ticker,
-          identifierValue: faker.random.alphaNumeric(7),
+          identifierValue: faker.string.alphanumeric(7),
         },
         {
           identifierType: CompanyIdentifierIdentifierTypeEnum.Duns,
-          identifierValue: faker.random.alphaNumeric(9),
+          identifierValue: faker.string.alphanumeric(9),
         },
         {
           identifierType: CompanyIdentifierIdentifierTypeEnum.VatNumber,
-          identifierValue: faker.random.alphaNumeric(9),
+          identifierValue: faker.string.alphanumeric(9),
         },
         {
           identifierType: CompanyIdentifierIdentifierTypeEnum.CompanyRegistrationNumber,
-          identifierValue: faker.random.alphaNumeric(15),
+          identifierValue: faker.string.alphanumeric(15),
         },
       ])
       .sort((a, b) => {
         return a.identifierType.localeCompare(b.identifierType);
       }),
-    countryCode: faker.address.countryCode(),
-    companyAlternativeNames: Array.from({ length: faker.datatype.number({ min: 0, max: 4 }) }, () => {
+    countryCode: faker.location.countryCode(),
+    companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
       return faker.company.name();
     }).sort((a, b) => a.localeCompare(b)),
     companyLegalForm: valueOrUndefined(getRandomCompanyLegalForm()),

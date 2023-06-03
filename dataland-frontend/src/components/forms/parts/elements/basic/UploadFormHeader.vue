@@ -1,14 +1,14 @@
 <template>
   <div class="form-field-label">
-    <h5>{{ name }}</h5>
+    <h5>{{ label }}</h5>
     <span class="asterisk" v-if="isRequired">*</span>
     <em
-      v-if="name !== ''"
+      v-if="label !== ''"
       class="material-icons info-icon"
       aria-hidden="true"
-      :title="name"
+      :title="label"
       v-tooltip.top="{
-        value: explanation,
+        value: description,
       }"
       >info</em
     >
@@ -25,11 +25,11 @@ export default defineComponent({
     tooltip: Tooltip,
   },
   props: {
-    name: {
+    label: {
       type: String,
       required: true,
     },
-    explanation: {
+    description: {
       type: String,
       required: true,
     },

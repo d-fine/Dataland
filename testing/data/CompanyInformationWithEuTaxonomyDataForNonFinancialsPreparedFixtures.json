@@ -2,105 +2,91 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Ost Cedrik",
-			"sector": "systems",
+			"headquarters": "Süd Jarnostadt",
+			"headquartersPostalCode": "23360",
+			"sector": "niches",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "19r4lflo4b8i60h"
-				},
-				{
 					"identifierType": "Duns",
-					"identifierValue": "oyorkb8zb"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "d11nvoxpyhfv"
+					"identifierValue": "QKMZn4gXR"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "cmae7khfafcxcp78uzbk"
+					"identifierValue": "GYJjlhr4WcNVtEt5xunk"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "07h7bauagt"
+					"identifierValue": "V7wRIWWBmg"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "iy7wimx"
+					"identifierValue": "p4uLuMZ"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "owp94eees"
+					"identifierValue": "f1LYTaJA3"
 				}
 			],
-			"countryCode": "IM",
+			"countryCode": "MS",
 			"companyAlternativeNames": [
-				"Kempter-Ahrenberg",
-				"Madetzky-Rokossa",
-				"Obermaier KG"
+				"Heinrich GmbH",
+				"Nwachukwu OHG"
 			],
-			"companyLegalForm": "AG",
+			"website": "https://gemutvoll-mensch.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"numberOfEmployees": 60466,
 			"referencedReports": {
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "BTN"
+				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-10-29",
-					"currency": "XTS"
+					"isGroupLevel": "No",
+					"currency": "KPW"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "LAK"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-07-27",
-					"currency": "LAK"
+					"isGroupLevel": "NA",
+					"currency": "CAD"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
-				"provider": "Daudrich AG",
-				"dataSource": {
-					"page": 386,
-					"report": "SustainabilityReport",
-					"tagName": "niches"
-				}
+				"provider": "Bichler, Klaus und Möhsner"
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "Yes",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.8898,
+					"value": 0.2253,
 					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.9779,
+					"value": 0.4968,
 					"dataSource": {
-						"page": 801,
+						"page": 760,
 						"report": "AnnualReport",
-						"tagName": "synergies"
+						"tagName": "e-commerce"
 					},
 					"quality": "Estimated",
-					"comment": "navigate neural feed"
+					"comment": "copy multi-byte feed"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.2314,
+					"value": 0.2282,
 					"dataSource": {
-						"page": 129,
+						"page": 1123,
 						"report": "IntegratedReport",
-						"tagName": "web services"
+						"tagName": "mindshare"
 					},
 					"quality": "Reported",
-					"comment": "back up cross-platform card"
+					"comment": "compress online interface"
 				}
 			}
 		},
@@ -109,102 +95,110 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Bad Carolinaburg",
-			"sector": "platforms",
+			"headquarters": "Alt Herminescheid",
+			"sector": "web services",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "8spgd9b55tltbyv99z8h"
+					"identifierType": "Duns",
+					"identifierValue": "rJA7hDnul"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "d4m5sjkKLT"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "u9yssTM"
 				}
 			],
-			"countryCode": "AX",
+			"countryCode": "TK",
 			"companyAlternativeNames": [
-				"Ender, Lohse und Schlawitz",
-				"Plass-Herbrand"
+				"Da UG",
+				"Erlei, Nitzsche und Schellenbeck",
+				"Schramm, Glatting und Figura"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://sanft-mond.net",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://aktuell-humanismus.de",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
+			"numberOfEmployees": 32244,
 			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"currency": "SCR"
+				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "No",
-					"reportDate": "2022-10-26",
-					"currency": "EEK"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-08-05",
-					"currency": "AOA"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "MOP"
+					"currency": "IRR"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "KPW"
+					"isGroupLevel": "No",
+					"reportDate": "2022-10-07",
+					"currency": "CHF"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"provider": "Thieke-Abel"
 			},
+			"scopeOfEntities": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 371695.32,
-					"quality": "Estimated"
+					"value": 801443.987165112,
+					"dataSource": {
+						"page": 391,
+						"report": "SustainabilityReport",
+						"tagName": "web services"
+					},
+					"quality": "Audited",
+					"comment": "copy neural monitor"
 				},
 				"eligiblePercentage": {
-					"value": 0.6088,
-					"quality": "Incomplete"
+					"value": 0.9628,
+					"quality": "Estimated"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 940052.04,
+					"value": 940101.6922201961,
 					"dataSource": {
-						"page": 481,
+						"page": 839,
 						"report": "AnnualReport",
-						"tagName": "platforms"
+						"tagName": "applications"
 					},
-					"quality": "Audited",
-					"comment": "generate digital array"
+					"quality": "Reported",
+					"comment": "connect mobile monitor"
 				},
 				"eligiblePercentage": {
-					"value": 0.8814,
+					"value": 0.407,
 					"dataSource": {
-						"page": 280,
-						"report": "IntegratedReport",
-						"tagName": "web-readiness"
+						"page": 451,
+						"report": "ESEFReport",
+						"tagName": "platforms"
 					},
-					"quality": "Audited",
-					"comment": "parse auxiliary capacitor"
+					"quality": "Estimated",
+					"comment": "copy bluetooth card"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 132527.32,
+					"value": 392407.6867988333,
 					"dataSource": {
-						"page": 943,
-						"report": "SustainabilityReport",
-						"tagName": "experiences"
+						"page": 446,
+						"report": "ESEFReport",
+						"tagName": "convergence"
 					},
-					"quality": "Reported",
-					"comment": "override wireless feed"
+					"quality": "Audited",
+					"comment": "override primary program"
 				},
 				"eligiblePercentage": {
-					"value": 0.3424,
-					"dataSource": {
-						"page": 28,
-						"report": "IntegratedReport",
-						"tagName": "architectures"
-					},
-					"quality": "Reported",
-					"comment": "hack auxiliary system"
+					"value": 0.3907,
+					"quality": "Estimated"
 				}
 			}
 		},
@@ -213,114 +207,116 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Bad Emily",
-			"headquartersPostalCode": "62916",
-			"sector": "e-business",
+			"headquarters": "Bad Janoscheid",
+			"sector": "experiences",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "sfjtuotty"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "aEZaTmEBa0wSodh"
 				},
 				{
-					"identifierType": "Isin",
-					"identifierValue": "j0rqqpr6doum"
+					"identifierType": "Duns",
+					"identifierValue": "MvwGStCMt"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "2IOTo1A9qy"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "k7w7ghq"
+					"identifierValue": "o9C1Lpc"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "Izj4xyB9G"
 				}
 			],
-			"countryCode": "DJ",
+			"countryCode": "PR",
 			"companyAlternativeNames": [],
-			"website": "https://genüsslich-pop.net",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"numberOfEmployees": 39935,
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Rockmeier KG",
-				"dataSource": {
-					"page": 197,
-					"report": "IntegratedReport",
-					"tagName": "infomediaries"
-				}
+				"assurance": "None"
 			},
 			"reportingObligation": "No",
-			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 362337,
+					"value": 701628.2778698951,
 					"dataSource": {
-						"page": 583,
-						"report": "SustainabilityReport",
-						"tagName": "technologies"
+						"page": 186,
+						"report": "ESEFReport",
+						"tagName": "blockchains"
 					},
-					"quality": "Reported",
-					"comment": "copy cross-platform system"
+					"quality": "Audited",
+					"comment": "calculate optical alarm"
 				},
 				"alignedPercentage": {
-					"value": 0.7681,
-					"dataSource": {
-						"page": 318,
-						"report": "SustainabilityReport",
-						"tagName": "metrics"
-					},
-					"quality": "Reported",
-					"comment": "input solid state driver"
+					"quality": "NA"
 				},
 				"eligiblePercentage": {
-					"value": 0.4358,
-					"quality": "Estimated"
+					"value": 0.9232,
+					"dataSource": {
+						"page": 682,
+						"report": "SustainabilityReport",
+						"tagName": "e-commerce"
+					},
+					"quality": "Incomplete",
+					"comment": "synthesize solid state interface"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"quality": "NA"
+					"value": 867868.3876642026,
+					"dataSource": {
+						"page": 135,
+						"report": "ESEFReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Estimated",
+					"comment": "quantify solid state panel"
 				},
 				"alignedPercentage": {
-					"value": 0.334,
+					"value": 0.2676,
 					"dataSource": {
-						"page": 931,
-						"report": "ESEFReport",
-						"tagName": "paradigms"
+						"page": 1012,
+						"report": "AnnualReport",
+						"tagName": "mindshare"
 					},
 					"quality": "Incomplete",
-					"comment": "override virtual application"
+					"comment": "connect mobile driver"
 				},
 				"eligiblePercentage": {
-					"value": 0.0287,
-					"dataSource": {
-						"page": 299,
-						"report": "SustainabilityReport",
-						"tagName": "networks"
-					},
-					"quality": "Reported",
-					"comment": "back up back-end port"
+					"value": 0.3998,
+					"quality": "Incomplete"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 304049.83,
+					"value": 467597.4116544239,
 					"dataSource": {
-						"page": 561,
+						"page": 1154,
 						"report": "SustainabilityReport",
-						"tagName": "mindshare"
+						"tagName": "experiences"
 					},
-					"quality": "Incomplete",
-					"comment": "input redundant pixel"
+					"quality": "Audited",
+					"comment": "connect optical feed"
 				},
 				"alignedPercentage": {
-					"value": 0.0938,
-					"dataSource": {
-						"page": 381,
-						"report": "SustainabilityReport",
-						"tagName": "niches"
-					},
-					"quality": "Incomplete",
-					"comment": "index solid state matrix"
+					"value": 0.4209,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"quality": "NA"
+					"value": 0.9586,
+					"dataSource": {
+						"page": 787,
+						"report": "IntegratedReport",
+						"tagName": "e-markets"
+					},
+					"quality": "Incomplete",
+					"comment": "bypass bluetooth card"
 				}
 			}
 		},

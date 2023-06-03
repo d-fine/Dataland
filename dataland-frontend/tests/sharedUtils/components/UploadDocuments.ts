@@ -1,10 +1,10 @@
-export const uploadReports = {
-  selectFile(filename: string): void {
-    cy.get('button[data-test="upload-files-button"]').click();
+export const uploadDocuments = {
+  selectFile(filename: string, fieldName = "undefined"): void {
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get("input[type=file]").selectFile(`../testing/data/documents/${filename}.PDF`, { force: true });
   },
-  selectDummyFile(filename: string, contentSize: number): void {
-    cy.get('button[data-test="upload-files-button"]').click();
+  selectDummyFile(filename: string, contentSize: number, fieldName = "undefined"): void {
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get("input[type=file]").selectFile(
       {
         contents: new Cypress.Buffer(contentSize),
@@ -32,19 +32,20 @@ export const uploadReports = {
   },
   validateReportToUploadIsListed(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
-    cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("exist");
   },
   removeReportToUpload(reportName: string): void {
     cy.get(`[data-test="${reportName}FileUploadContainer"] button`).click();
+    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
   },
   removeAllReportsToUpload(): void {
     cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));
+    cy.get('button[data-test="files-to-upload-remove"]').should("not.exist");
   },
   removeUploadedReport(reportName: string): Cypress.Chainable {
     return cy.get(`[data-test="${reportName}AlreadyUploadedContainer"] button`).click();
   },
   checkNoReportIsListed(): void {
-    cy.get('[data-test="files-to-upload"]').should("not.exist");
+    cy.get('[data-test="files-to-upload"]').should("not.be.visible");
     cy.get('[data-test="report-to-upload-form"]').should("not.exist");
     cy.get('[data-test="report-uploaded-form"]').should("not.exist");
   },
@@ -52,5 +53,13 @@ export const uploadReports = {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}AlreadyUploadedContainer"]`).should("not.exist");
+  },
+
+  selectDocumentAtEachFileSelector(filename: string): void {
+    cy.window().then((win) => {
+      win.document.querySelectorAll<HTMLInputElement>('input[type="file"]').forEach((element) => {
+        cy.wrap(element).selectFile(`../testing/data/documents/${filename}.pdf`, { force: true });
+      });
+    });
   },
 };
