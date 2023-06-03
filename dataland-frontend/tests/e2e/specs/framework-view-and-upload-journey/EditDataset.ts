@@ -1,5 +1,5 @@
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { checkStickynessOfSubmitSideBar, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
@@ -39,7 +39,7 @@ describeIf(
     });
 
     it("Editing Lksg data without changes should create a copy when uploaded", function () {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedIn(admin_name, admin_pw);
       cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
       cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
       cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
@@ -55,7 +55,7 @@ describeIf(
         .contains("Upload successfully executed.")
         .should("exist")
         .then(() => {
-          return getKeycloakToken(uploader_name, uploader_pw).then(async (token) => {
+          return getKeycloakToken(admin_name, admin_pw).then(async (token) => {
             const data = await new LksgDataControllerApi(
               new Configuration({ accessToken: token })
             ).getAllCompanyLksgData(uploadIds.companyId, false);
