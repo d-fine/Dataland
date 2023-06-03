@@ -107,7 +107,7 @@ describeIf(
               uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
               uploadDocuments.fillAllReportsToUploadForms(2);
 
-              fillAndValidateEuTaxonomyForNonFinancialsUploadForm(false, TEST_PDF_FILE_NAME);
+              fillAndValidateEuTaxonomyForNonFinancialsUploadForm(false, `${TEST_PDF_FILE_NAME}2`);
 
               cy.get(`[data-test="capexSection"] [data-test="total"] select[name="report"]`).select(TEST_PDF_FILE_NAME);
               cy.get(`[data-test="opexSection"] [data-test="total"] select[name="report"]`).select(

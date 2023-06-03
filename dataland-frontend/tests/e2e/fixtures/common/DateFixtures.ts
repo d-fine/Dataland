@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/de";
 
 /**
  * Generates a random date in the past of the format YYYY-MM-DD
