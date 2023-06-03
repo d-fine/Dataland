@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
@@ -47,7 +47,7 @@ describeIf(
       fixtureData: FixtureData<EuTaxonomyDataForNonFinancials>,
       euTaxonomyPageVerifier: () => void
     ): void {
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(
           token,
           generateDummyCompanyInformation(fixtureData.companyInformation.companyName)
