@@ -1,10 +1,6 @@
 <template>
   <FormKit type="group" :name="name" :label="name">
-    <FormKit
-      type="text"
-      name="streetAndHouseNumber"
-      placeholder="Street, House number"
-    />
+    <FormKit type="text" name="streetAndHouseNumber" placeholder="Street, House number" />
     <div class="next-to-each-other">
       <FormKit
         type="select"
