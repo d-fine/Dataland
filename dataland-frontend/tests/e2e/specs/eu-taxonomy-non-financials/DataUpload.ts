@@ -83,7 +83,7 @@ describeIf(
       () => {
         testData.companyInformation.companyName = "non-financials-upload-form-remove-document-button";
 
-        getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           keycloakToken = token;
 
           uploadCompanyViaApiAndEuTaxonomyDataViaForm(
