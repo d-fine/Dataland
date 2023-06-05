@@ -39,13 +39,27 @@ describe("Component tests for the DatasetOverview page", () => {
   /**
    * Validates the tab bar identified by the input
    * @param activeTabIndex number identifying the tab bar
+   * @param reviewerRole boolean indicating whether the user has reviewer rights
    */
-  function validateTabBar(activeTabIndex: number): void {
+  function validateTabBar(activeTabIndex: number, reviewerRole: boolean = false): void {
     cy.get(getTabSelector(0)).should("have.text", "AVAILABLE DATASETS");
     cy.get(getTabSelector(1)).should("have.text", "MY DATASETS");
-    const inactiveTabIndex = (activeTabIndex + 1) % 2;
+    if(reviewerRole) {
+      cy.get(getTabSelector(2)).should("have.text", "QA");
+    } else {
+      cy.get(getTabSelector(2)).should("not.be.visible");
+    }
+    const inactiveTabIndices = [];
+    for (let i = 0; i < 3; i++) {
+      if (i != activeTabIndex) {
+        inactiveTabIndices.push(i);
+      }
+    }
     cy.get(getTabSelector(activeTabIndex)).should("have.class", "p-highlight");
-    cy.get(getTabSelector(inactiveTabIndex)).should("not.have.class", "p-highlight");
+    for (let i of inactiveTabIndices) {
+      cy.get(getTabSelector(i)).should("not.have.class", "p-highlight");
+    }
+
   }
 
   it("Checks that the tab-bar is rendered correctly and that clicking on 'AVAILABLE DATASETS' performs a router push", () => {
@@ -74,6 +88,25 @@ describe("Component tests for the DatasetOverview page", () => {
       validateTabBar(0);
       cy.get(getTabSelector(1)).click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/datasets");
+    });
+  });
+
+  it("Checks that the tab-bar and clicking on 'QA' works as expected for data reviewer", () => {
+    const keycloakMock = minimalKeycloakMock({
+      roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
+    });
+    cy.intercept("**/api/companies?**", []);
+    const mockDistinctValues = {
+      countryCodes: [],
+      sectors: [],
+    };
+    cy.intercept("**/api/companies/meta-information", mockDistinctValues);
+    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+      keycloak: keycloakMock,
+    }).then((mounted) => {
+      validateTabBar(0, true);
+      cy.get(getTabSelector(2)).click();
+      cy.wrap(mounted.component).its("$route.path").should("eq", "/qualityassurance");
     });
   });
 });
