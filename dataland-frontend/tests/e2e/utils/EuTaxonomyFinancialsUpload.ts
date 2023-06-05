@@ -1,3 +1,4 @@
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
   CompanyAssociatedDataEuTaxonomyDataForFinancials,
   CompanyInformation,
@@ -9,17 +10,16 @@ import {
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsControllerApi,
 } from "@clients/backend";
-import { FixtureData } from "@sharedUtils/Fixtures";
-import Chainable = Cypress.Chainable;
-import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { dateFormElement } from "@sharedUtils/components/DateFormElement";
-import { goToEditFormOfMostRecentDataset, submitFilledInEuTaxonomyForm } from "@e2e/utils/GeneralApiUtils";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
-import { CyHttpMessages } from "cypress/types/net-stubbing";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
+import { admin_name, admin_pw } from "@e2e/utils/Cypress";
+import { goToEditFormOfMostRecentDataset, submitFilledInEuTaxonomyForm } from "@e2e/utils/GeneralApiUtils";
+import { FixtureData } from "@sharedUtils/Fixtures";
+import { dateFormElement } from "@sharedUtils/components/DateFormElement";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { CyHttpMessages } from "cypress/types/net-stubbing";
+import Chainable = Cypress.Chainable;
 
 /**
  * Submits the eutaxonomy-financials upload form and checks that the upload completes successfully
@@ -276,4 +276,31 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
       }
     );
   });
+}
+
+/**
+ *
+ * @param data the data to fill the form with
+ */
+export function fillEuTaxonomyForFinancialsRequiredFields(data: EuTaxonomyDataForFinancials): void {
+  dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
+  dateFormElement.validateDay("fiscalYearEnd", 12);
+
+  if (data.reportingObligation !== undefined) {
+    cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
+  }
+
+  cy.get(
+    `input[name="fiscalYearDeviation"][value=${
+      data.fiscalYearDeviation ? data.fiscalYearDeviation.toString() : "Deviation"
+    }]`
+  ).check();
+
+  cy.get('input[name="numberOfEmployees"]').type(
+    `${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`
+  );
+
+  cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
+  cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
+  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
 }

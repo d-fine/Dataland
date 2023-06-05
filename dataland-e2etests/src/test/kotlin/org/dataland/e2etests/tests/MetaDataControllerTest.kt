@@ -188,7 +188,7 @@ class MetaDataControllerTest {
             companyId = companyId,
             frameworkData = frameworkDataAlpha,
             reportingPeriod = reportingPeriod,
-            uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            uploadFunction = apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
         )
         val newNumberOfEmployees = (frameworkDataAlpha.numberOfEmployees ?: BigDecimal.ZERO) + BigDecimal.ONE
         val frameworkDataBeta = frameworkDataAlpha.copy(numberOfEmployees = newNumberOfEmployees)
@@ -196,7 +196,7 @@ class MetaDataControllerTest {
             companyId = companyId,
             frameworkData = frameworkDataBeta,
             reportingPeriod = reportingPeriod,
-            frameworkDataUploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            frameworkDataUploadFunction = apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
         )
         return Triple(companyId, reportingPeriod, newNumberOfEmployees)
     }
@@ -244,7 +244,7 @@ class MetaDataControllerTest {
                 companyId = companyId,
                 frameworkData = pair.first,
                 reportingPeriod = pair.second,
-                uploadFunction = apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+                uploadFunction = apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
             )
         }
         return companyId
