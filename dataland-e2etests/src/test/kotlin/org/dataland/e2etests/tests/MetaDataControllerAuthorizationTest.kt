@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.UploadConfiguration
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -97,12 +98,13 @@ class MetaDataControllerAuthorizationTest {
         val metaInfoOfUploaderUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             companyInformationPerFramework = mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
             numberOfDataSetsPerCompany = 1,
-            uploadingTechnicalUser = TechnicalUser.Uploader,
+            uploadConfig = UploadConfiguration(TechnicalUser.Uploader, false),
             ensureQaPassed = false,
-            bypassQa = false,
         )[0].actualStoredDataMetaInfo!!
         val metaInfoOfAdminUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, TechnicalUser.Admin,
+            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
+            1,
+            UploadConfiguration(TechnicalUser.Admin),
         )[0].actualStoredDataMetaInfo!!
 
         expectUserIdToBe(metaInfoOfAdminUpload, TechnicalUser.Reader, null)
