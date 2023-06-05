@@ -304,7 +304,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
           const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
 
-          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+          getKeycloakToken(admin_name, admin_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameNonFinancial)).then(
               (storedCompany) => {
                 const firstFixtureDataForEuTaxonomyNonFinancials = companiesWithEuTaxonomyDataForNonFinancials[0];
