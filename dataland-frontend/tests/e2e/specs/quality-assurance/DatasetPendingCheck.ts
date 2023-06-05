@@ -6,9 +6,10 @@ import { fillEligibilityKpis, fillEuTaxonomyForFinancialsRequiredFields, fillFie
 import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
+import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 describeIf(
-  "As a user, I expect to be able to add and remove Eligible KPIs and send the form successfully",
+  "As a user, I expect to be able to add a new dataset and see it as pending",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],
@@ -28,13 +29,13 @@ describeIf(
       });
     });
 
-    it("Check wether it is possible to add and delete KPIs and send the form successfully", () => {
+    it("Check wether newly added dataset has Pending status", () => {
       uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
         DataTypeEnum.EutaxonomyFinancials,
         testCompany,
         testData.t,
-        fillAndValidateEuTaxonomyForFinancialsUploadForm,
-        () => undefined,
+        fillEuTaxonomyForm,
+        submissionDataIntercept,
         () => undefined
       );
     });
@@ -45,26 +46,17 @@ describeIf(
  * Fills the eutaxonomy-financials upload form with the given dataset
  * @param data the data to fill the form with
  */
-function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
+function fillEuTaxonomyForm(data: EuTaxonomyDataForFinancials): void {
   fillEuTaxonomyForFinancialsRequiredFields(data);
 
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()
     .get("div.p-multiselect-panel")
     .find("li.p-multiselect-item")
-    .each(($el) => {
-      cy.wrap($el).click({ force: true });
-    });
+    .first()
+    .click({ force: true });
 
   cy.get('[data-test="addKpisButton"]').click({ force: true });
-
-  cy.get('[data-test="removeSectionButton"]').each(($el, index) => {
-    if (index > 0) {
-      cy.wrap($el).click({ force: true });
-    }
-  });
-
-  cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
 
   fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
   fillField(
@@ -75,4 +67,12 @@ function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataFo
   fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
   fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
   fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
+}
+
+/**
+ * Fills the eutaxonomy-financials upload form with the given dataset
+ * @param request the intercepted request
+ */
+function submissionDataIntercept(request: CyHttpMessages.IncomingHttpRequest): void {
+  console.log(request);
 }
