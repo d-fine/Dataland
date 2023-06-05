@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
@@ -17,7 +17,7 @@ describeIf(
   },
   function (): void {
     beforeEach(() => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
     let preparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
