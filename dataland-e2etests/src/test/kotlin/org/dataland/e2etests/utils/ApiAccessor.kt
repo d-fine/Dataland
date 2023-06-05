@@ -211,6 +211,7 @@ class ApiAccessor {
         numberOfDataSetsPerCompany: Int,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Admin,
         reportingPeriod: String,
+        ensureQaPassed: Boolean = true,
         bypassQa: Boolean = true,
     ): List<UploadInfo> {
         return when (dataType) {
@@ -220,6 +221,7 @@ class ApiAccessor {
                 frameworkDataUploadFunction = this::lksgUploaderFunction,
                 uploadingTechnicalUser = uploadingTechnicalUser,
                 reportingPeriod = reportingPeriod,
+                ensureQaPassed = ensureQaPassed,
                 bypassQa = bypassQa,
             )
 
@@ -229,6 +231,7 @@ class ApiAccessor {
                 frameworkDataUploadFunction = this::sfdrUploaderFunction,
                 uploadingTechnicalUser = uploadingTechnicalUser,
                 reportingPeriod = reportingPeriod,
+                ensureQaPassed = ensureQaPassed,
                 bypassQa = bypassQa,
             )
 
@@ -238,6 +241,7 @@ class ApiAccessor {
                 frameworkDataUploadFunction = this::smeUploaderFunction,
                 uploadingTechnicalUser = uploadingTechnicalUser,
                 reportingPeriod = reportingPeriod,
+                ensureQaPassed = ensureQaPassed,
                 bypassQa = bypassQa,
             )
 
@@ -247,6 +251,7 @@ class ApiAccessor {
                 frameworkDataUploadFunction = this::euTaxonomyNonFinancialsUploaderFunction,
                 uploadingTechnicalUser = uploadingTechnicalUser,
                 reportingPeriod = reportingPeriod,
+                ensureQaPassed = ensureQaPassed,
                 bypassQa = bypassQa,
             )
 
@@ -256,6 +261,7 @@ class ApiAccessor {
                 frameworkDataUploadFunction = this::euTaxonomyFinancialsUploaderFunction,
                 uploadingTechnicalUser = uploadingTechnicalUser,
                 reportingPeriod = reportingPeriod,
+                ensureQaPassed = ensureQaPassed,
                 bypassQa = bypassQa,
             )
         }
@@ -266,6 +272,7 @@ class ApiAccessor {
         numberOfDataSetsPerCompany: Int,
         uploadingTechnicalUser: TechnicalUser = TechnicalUser.Admin,
         reportingPeriod: String = "",
+        ensureQaPassed: Boolean = true,
         bypassQa: Boolean = true,
     ): List<UploadInfo> {
         val listOfUploadInfo: MutableList<UploadInfo> = mutableListOf()
@@ -277,6 +284,7 @@ class ApiAccessor {
                     numberOfDataSetsPerCompany = numberOfDataSetsPerCompany,
                     uploadingTechnicalUser = uploadingTechnicalUser,
                     reportingPeriod = reportingPeriod,
+                    ensureQaPassed = ensureQaPassed,
                     bypassQa = bypassQa,
                 ),
             )

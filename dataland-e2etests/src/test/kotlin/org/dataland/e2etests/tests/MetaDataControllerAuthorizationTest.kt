@@ -98,6 +98,7 @@ class MetaDataControllerAuthorizationTest {
             companyInformationPerFramework = mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
             numberOfDataSetsPerCompany = 1,
             uploadingTechnicalUser = TechnicalUser.Uploader,
+            ensureQaPassed = false,
             bypassQa = false,
         )[0].actualStoredDataMetaInfo!!
         val metaInfoOfAdminUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
