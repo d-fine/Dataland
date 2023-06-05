@@ -1,7 +1,7 @@
 import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { fillEligibilityKpis, fillField } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
@@ -15,7 +15,7 @@ describeIf(
   },
   function () {
     beforeEach(() => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
     let testData: FixtureData<EuTaxonomyDataForFinancials>;
