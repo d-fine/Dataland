@@ -95,7 +95,10 @@ class MetaDataControllerAuthorizationTest {
     fun `post two companies with data and check that the access to the uploaderUserId field is restricted`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val metaInfoOfUploaderUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, TechnicalUser.Uploader,
+            companyInformationPerFramework = mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
+            numberOfDataSetsPerCompany = 1,
+            uploadingTechnicalUser = TechnicalUser.Uploader,
+            bypassQa = false,
         )[0].actualStoredDataMetaInfo!!
         val metaInfoOfAdminUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, TechnicalUser.Admin,
