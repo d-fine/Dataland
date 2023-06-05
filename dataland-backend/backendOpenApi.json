@@ -1908,6 +1908,11 @@
         ]
       },
       "CompanyAssociatedDataSmeData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -2122,6 +2127,11 @@
         ]
       },
       "CompanyAssociatedDataSfdrData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -2677,6 +2687,9 @@
         ]
       },
       "BaseDataPointYesNo": {
+        "required": [
+          "value"
+        ],
         "type": "object",
         "properties": {
           "value": {
@@ -2688,6 +2701,11 @@
         }
       },
       "CompanyAssociatedDataLksgData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -2717,6 +2735,10 @@
         }
       },
       "LksgAddress": {
+        "required": [
+          "city",
+          "country"
+        ],
         "type": "object",
         "properties": {
           "streetAndHouseNumber": {
@@ -2908,6 +2930,9 @@
         }
       },
       "LksgData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
@@ -3088,6 +3113,9 @@
         }
       },
       "LksgGeneral": {
+        "required": [
+          "masterData"
+        ],
         "type": "object",
         "properties": {
           "masterData": {
@@ -3281,6 +3309,9 @@
         }
       },
       "LksgProductionSite": {
+        "required": [
+          "addressOfProductionSite"
+        ],
         "type": "object",
         "properties": {
           "nameOfProductionSite": {
@@ -3569,6 +3600,11 @@
         }
       },
       "CompanyAssociatedDataEuTaxonomyDataForNonFinancials": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -3639,6 +3675,11 @@
         }
       },
       "CompanyAssociatedDataEuTaxonomyDataForFinancials": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -4027,6 +4068,10 @@
         }
       },
       "CompanyAvailableDistinctValues": {
+        "required": [
+          "countryCodes",
+          "sectors"
+        ],
         "type": "object",
         "properties": {
           "countryCodes": {

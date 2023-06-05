@@ -150,7 +150,9 @@ export default defineComponent({
           }
         });
       }
-      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(this.listOfDataSetReportingPeriods);
+      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
+        this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
+      );
     },
 
     /**
