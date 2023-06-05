@@ -6,12 +6,14 @@ import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientExcepti
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
-import java.util.*
 import java.util.concurrent.TimeUnit
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as BackendQaStatus
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaServiceQaStatus
