@@ -3,8 +3,6 @@
     <FormKit
       type="text"
       name="streetAndHouseNumber"
-      :validation="required"
-      validation-label="Street and house number"
       placeholder="Street, House number"
     />
     <div class="next-to-each-other">
@@ -18,13 +16,7 @@
         data-test="country"
       />
       <FormKit type="text" name="city" validation-label="City" :validation="required" placeholder="City" />
-      <FormKit
-        type="text"
-        :validation="required"
-        validation-label="Postcode"
-        name="postalCode"
-        placeholder="Postal Code"
-      />
+      <FormKit type="text" name="postalCode" placeholder="Postal Code" />
     </div>
   </FormKit>
 </template>
