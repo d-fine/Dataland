@@ -32,7 +32,6 @@ function instantiateVueApp(): void {
   app.use(router);
   app.use(PrimeVue);
   app.use(pinia);
-  app.config.unwrapInjectedRef = true;
   app.mount("#app");
 }
 

@@ -2,199 +2,89 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Ost Anthony",
-			"headquartersPostalCode": "84297",
-			"sector": "deliverables",
+			"headquarters": "Constantindorf",
+			"sector": "solutions",
 			"identifiers": [
-				{
-					"identifierType": "Duns",
-					"identifierValue": "ayn92s2f9"
-				}
-			],
-			"countryCode": "AL",
-			"companyAlternativeNames": [
-				"Freisen KG",
-				"Nitzsche, Poser und Koehl",
-				"Schlangen, Goldfuss und Spielvogel",
-				"Zintl-Neupert"
-			],
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2023-04-03",
-			"numberOfEmployees": 73752,
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "BTN"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-01-21",
-					"currency": "MVR"
-				}
-			},
-			"assurance": {
-				"assurance": "None"
-			},
-			"opex": {
-				"eligiblePercentage": {
-					"value": 0.1463,
-					"dataSource": {
-						"page": 338,
-						"report": "SustainabilityReport",
-						"tagName": "eyeballs"
-					},
-					"quality": "Reported",
-					"comment": "program wireless array"
-				}
-			},
-			"capex": {
-				"eligiblePercentage": {
-					"value": 0.8118,
-					"quality": "Estimated"
-				}
-			},
-			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.0273,
-					"dataSource": {
-						"page": 901,
-						"report": "IntegratedReport",
-						"tagName": "e-services"
-					},
-					"quality": "Incomplete",
-					"comment": "synthesize solid state capacitor"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Neu Nelly",
-			"sector": "blockchains",
-			"identifiers": [
-				{
-					"identifierType": "Isin",
-					"identifierValue": "3diz49pcyeel"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "c0dz1a52buzx7r79qjk1"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "sof4il05ek"
-				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "9kg1bt26l"
+					"identifierValue": "JhqMxxUrh"
 				}
 			],
-			"countryCode": "TJ",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH",
-			"website": "https://durchschlagend-klinge.com",
+			"countryCode": "FO",
+			"companyAlternativeNames": [
+				"Hirsch, Franz und Jacob",
+				"Kappler-Baarck",
+				"Nitzsche-Schreck"
+			],
+			"website": "https://offentlich-anderes.de/",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearEnd": "2022-06-07",
+			"numberOfEmployees": 80971,
 			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "LAK"
-				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-07-16",
-					"currency": "IQD"
+					"reportDate": "2022-07-01",
+					"currency": "XAF"
 				},
-				"AnnualReport": {
+				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-08-21",
-					"currency": "CHF"
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-08-31",
+					"currency": "NOK"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-05-27",
-					"currency": "SEK"
+					"isGroupLevel": "NA",
+					"reportDate": "2022-10-03",
+					"currency": "CZK"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-05-14",
+					"currency": "PLN"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "LimitedAssurance",
+				"provider": "Blockhaus, Lobinger und Sutschet",
+				"dataSource": {
+					"page": 937,
+					"report": "AnnualReport",
+					"tagName": "users"
+				}
 			},
-			"scopeOfEntities": "No",
 			"reportingObligation": "Yes",
 			"activityLevelReporting": "No",
 			"opex": {
-				"totalAmount": {
-					"value": 406909.21,
-					"dataSource": {
-						"page": 745,
-						"report": "ESEFReport",
-						"tagName": "models"
-					},
-					"quality": "Audited",
-					"comment": "copy primary circuit"
-				},
 				"eligiblePercentage": {
-					"value": 0.2046,
-					"dataSource": {
-						"page": 1198,
-						"report": "IntegratedReport",
-						"tagName": "e-business"
-					},
-					"quality": "Incomplete",
-					"comment": "input wireless circuit"
+					"value": 0.524,
+					"quality": "Incomplete"
 				}
 			},
 			"capex": {
-				"totalAmount": {
-					"value": 315329.59,
-					"dataSource": {
-						"page": 81,
-						"report": "AnnualReport",
-						"tagName": "experiences"
-					},
-					"quality": "Audited",
-					"comment": "index bluetooth matrix"
-				},
 				"eligiblePercentage": {
-					"value": 0.7987,
+					"value": 0.0734,
 					"dataSource": {
-						"page": 1005,
-						"report": "ESEFReport",
-						"tagName": "schemas"
+						"page": 370,
+						"report": "AnnualReport",
+						"tagName": "convergence"
 					},
-					"quality": "Audited",
-					"comment": "back up haptic feed"
+					"quality": "Incomplete",
+					"comment": "back up wireless matrix"
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"value": 882810.98,
-					"dataSource": {
-						"page": 453,
-						"report": "IntegratedReport",
-						"tagName": "supply-chains"
-					},
-					"quality": "Reported",
-					"comment": "connect optical driver"
-				},
 				"eligiblePercentage": {
-					"value": 0.0439,
+					"value": 0.7692,
 					"dataSource": {
-						"page": 507,
-						"report": "SustainabilityReport",
-						"tagName": "platforms"
+						"page": 997,
+						"report": "AnnualReport",
+						"tagName": "metrics"
 					},
 					"quality": "Audited",
-					"comment": "bypass bluetooth hard drive"
+					"comment": "hack auxiliary bus"
 				}
 			}
 		},
@@ -202,112 +92,248 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Alt Calvin",
-			"headquartersPostalCode": "39442",
-			"sector": "metrics",
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Lassestadt",
+			"headquartersPostalCode": "25139",
+			"sector": "solutions",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "5og6mf2o4e5c3v6"
+					"identifierValue": "d0EOU6LH3y6xzKs"
 				},
 				{
 					"identifierType": "Duns",
-					"identifierValue": "dvhnx4t5g"
+					"identifierValue": "7srdatngs"
 				},
 				{
-					"identifierType": "Lei",
-					"identifierValue": "zarelruymp6264j5671a"
+					"identifierType": "Isin",
+					"identifierValue": "3rMhNEDfw9H8"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "xen250hc5z"
+					"identifierValue": "Sjrsa4ZYiv"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "dctp46g"
+					"identifierValue": "fF2dz0U"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "cimBhqGfZ"
 				}
 			],
-			"countryCode": "BM",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Partnership without Limited Liability",
+			"countryCode": "PA",
+			"companyAlternativeNames": [
+				"Jungbluth GmbH & Co. KG"
+			],
+			"website": "https://stilvoll-mond.name",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 97962,
-			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"dataSource": {
-					"page": 770,
-					"report": "ESEFReport",
-					"tagName": "channels"
+			"fiscalYearDeviation": "NoDeviation",
+			"numberOfEmployees": 42479,
+			"referencedReports": {
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"reportDate": "2023-01-07",
+					"currency": "BDT"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "BIF"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "TRY"
 				}
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "Yes",
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 920,
+					"report": "IntegratedReport",
+					"tagName": "schemas"
+				}
+			},
+			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 999258.64,
-					"quality": "Estimated"
-				},
-				"alignedPercentage": {
-					"value": 0.3888,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.5714,
+					"value": 530731.8614562973,
 					"dataSource": {
-						"page": 689,
+						"page": 1195,
 						"report": "ESEFReport",
-						"tagName": "users"
+						"tagName": "applications"
 					},
 					"quality": "Incomplete",
-					"comment": "index auxiliary array"
+					"comment": "calculate cross-platform array"
+				},
+				"eligiblePercentage": {
+					"value": 0.608,
+					"dataSource": {
+						"page": 1195,
+						"report": "AnnualReport",
+						"tagName": "interfaces"
+					},
+					"quality": "Estimated",
+					"comment": "bypass 1080p transmitter"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 808438.01,
+					"value": 109498.88956965879,
 					"dataSource": {
-						"page": 404,
-						"report": "ESEFReport",
-						"tagName": "partnerships"
+						"page": 999,
+						"report": "IntegratedReport",
+						"tagName": "e-markets"
 					},
 					"quality": "Audited",
-					"comment": "copy redundant card"
-				},
-				"alignedPercentage": {
-					"quality": "NA"
+					"comment": "compress open-source transmitter"
 				},
 				"eligiblePercentage": {
-					"value": 0.1679,
+					"value": 0.1742,
 					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 937687.87,
-					"dataSource": {
-						"page": 959,
-						"report": "IntegratedReport",
-						"tagName": "channels"
-					},
-					"quality": "Audited",
-					"comment": "compress neural feed"
-				},
-				"alignedPercentage": {
-					"value": 0.5279,
-					"quality": "Incomplete"
+					"value": 301906.21913643554,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.3355,
+					"value": 0.9811,
+					"quality": "Incomplete"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Esslingen am Neckar",
+			"sector": "e-markets",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "3JAcxFe8dZ6gFR4iufqh"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "0WX49Pt"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "n2g3OCoIh"
+				}
+			],
+			"countryCode": "TL",
+			"companyAlternativeNames": [
+				"Jakobs, Spitzmüller und Philipp",
+				"Keller, Loogen und Daum",
+				"Schenk-Brosch"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-06-01",
+			"numberOfEmployees": 59727,
+			"assurance": {
+				"assurance": "ReasonableAssurance",
+				"provider": "Tilgner, Marquart und Jander"
+			},
+			"scopeOfEntities": "No",
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 226455.11378068477,
 					"dataSource": {
-						"page": 677,
-						"report": "ESEFReport",
-						"tagName": "channels"
+						"page": 430,
+						"report": "SustainabilityReport",
+						"tagName": "supply-chains"
+					},
+					"quality": "Reported",
+					"comment": "copy multi-byte monitor"
+				},
+				"alignedPercentage": {
+					"value": 0.5925,
+					"dataSource": {
+						"page": 643,
+						"report": "SustainabilityReport",
+						"tagName": "relationships"
+					},
+					"quality": "Audited",
+					"comment": "input online bus"
+				},
+				"eligiblePercentage": {
+					"value": 0.2799,
+					"dataSource": {
+						"page": 783,
+						"report": "SustainabilityReport",
+						"tagName": "action-items"
+					},
+					"quality": "Reported",
+					"comment": "copy primary matrix"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 198333.0752933398,
+					"dataSource": {
+						"page": 851,
+						"report": "SustainabilityReport",
+						"tagName": "partnerships"
+					},
+					"quality": "Estimated",
+					"comment": "index bluetooth port"
+				},
+				"alignedPercentage": {
+					"value": 0.0214,
+					"quality": "Estimated"
+				},
+				"eligiblePercentage": {
+					"value": 0.5795,
+					"dataSource": {
+						"page": 1014,
+						"report": "SustainabilityReport",
+						"tagName": "models"
 					},
 					"quality": "Incomplete",
-					"comment": "input mobile transmitter"
+					"comment": "navigate mobile program"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 389080.30714374036,
+					"dataSource": {
+						"page": 1043,
+						"report": "SustainabilityReport",
+						"tagName": "markets"
+					},
+					"quality": "Incomplete",
+					"comment": "override multi-byte program"
+				},
+				"alignedPercentage": {
+					"value": 0.9505,
+					"dataSource": {
+						"page": 493,
+						"report": "SustainabilityReport",
+						"tagName": "ROI"
+					},
+					"quality": "Incomplete",
+					"comment": "bypass digital sensor"
+				},
+				"eligiblePercentage": {
+					"value": 0.3396,
+					"dataSource": {
+						"page": 932,
+						"report": "SustainabilityReport",
+						"tagName": "deliverables"
+					},
+					"quality": "Reported",
+					"comment": "program optical sensor"
 				}
 			}
 		},

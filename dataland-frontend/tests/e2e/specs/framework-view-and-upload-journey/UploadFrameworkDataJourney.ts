@@ -1,4 +1,4 @@
-import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi, uploadCompanyViaForm } from "@e2e/utils/CompanyUpload";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import {
@@ -52,7 +52,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
           lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
         });
-        getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForApiUpload))
             .then(() => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameForManyDatasetsCompany));

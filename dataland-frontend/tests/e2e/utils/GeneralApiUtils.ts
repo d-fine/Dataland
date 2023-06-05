@@ -8,7 +8,7 @@ import {
 import { CyHttpMessages, Interception, RouteHandler } from "cypress/types/net-stubbing";
 import Chainable = Cypress.Chainable;
 import { getKeycloakToken } from "./Auth";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 
 export interface UploadIds {
@@ -121,7 +121,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
   submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
   afterDatasetSubmission: (companyId: string) => void
 ): void {
-  getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+  getKeycloakToken(admin_name, admin_pw).then((token: string) => {
     return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
       (storedCompany): void => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);

@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/de";
 import { CompanyReportReference } from "@clients/backend";
 import { DataPoint, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
@@ -11,9 +11,9 @@ import { humanizeOrUndefined } from "@e2e/fixtures/CsvUtils";
 export function generateDataSource(referencedReports: ReferencedDocuments): CompanyReportReference {
   const chosenReport = faker.helpers.arrayElement(Object.keys(referencedReports));
   return {
-    page: faker.datatype.number({ min: 1, max: 1200 }),
+    page: faker.number.int({ min: 1, max: 1200 }),
     report: chosenReport,
-    tagName: faker.company.bsNoun(),
+    tagName: faker.company.buzzNoun(),
   };
 }
 

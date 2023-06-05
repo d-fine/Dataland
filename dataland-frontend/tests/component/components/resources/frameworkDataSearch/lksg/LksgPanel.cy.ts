@@ -74,14 +74,14 @@ describe("Component test for LksgPanel", () => {
       },
     });
 
-    cy.get(`span.p-column-title`).should("contain.text", lksgData.general!.masterData!.dataDate.substring(0, 4));
-    cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
+    cy.get(`span.p-column-title`).should("contain.text", lksgData.general.masterData.dataDate.substring(0, 4));
+    cy.get("tbody").find(`span:contains(${lksgData.general.masterData.dataDate})`).should("exist");
 
     toggleRowGroup("_masterData");
-    cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("not.exist");
+    cy.get("tbody").find(`span:contains(${lksgData.general.masterData.dataDate})`).should("not.exist");
 
     toggleRowGroup("_masterData");
-    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
+    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general.masterData.dataDate})`).should("exist");
 
     cy.get("span[data-test=employeeUnder18]").should("not.exist");
     toggleRowGroup("childLabor");
@@ -111,7 +111,7 @@ describe("Component test for LksgPanel", () => {
       const reportingYear = 2023 + i;
       const reportingDate = `${reportingYear}-01-01`;
       const lksgData = structuredClone(baseDataset) as LksgData;
-      lksgData.general!.masterData!.dataDate = reportingDate;
+      lksgData.general.masterData.dataDate = reportingDate;
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
         reportingPeriod: reportingYear.toString(),

@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData, LksgData } from "@clients/backend";
+import { DataAndMetaInformationLksgData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -74,7 +74,7 @@ export default defineComponent({
         if (this.singleDataMetaInfoToDisplay) {
           const singleLksgData = (
             await lksgDataControllerApi.getCompanyAssociatedLksgData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data as LksgData;
+          ).data.data;
 
           this.lksgDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleLksgData }];
         } else {
@@ -150,7 +150,9 @@ export default defineComponent({
           }
         });
       }
-      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(this.listOfDataSetReportingPeriods);
+      this.listOfDataSetReportingPeriods = sortReportingPeriodsToDisplayAsColumns(
+        this.listOfDataSetReportingPeriods as ReportingPeriodOfDataSetWithId[]
+      );
     },
 
     /**

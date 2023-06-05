@@ -10,7 +10,7 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from "@e2e/utils/Constants";
-import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
 import {
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm,
@@ -83,7 +83,7 @@ describeIf(
       () => {
         testData.companyInformation.companyName = "non-financials-upload-form-remove-document-button";
 
-        getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           keycloakToken = token;
 
           uploadCompanyViaApiAndEuTaxonomyDataViaForm(
@@ -107,7 +107,7 @@ describeIf(
               uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
               uploadDocuments.fillAllReportsToUploadForms(2);
 
-              fillAndValidateEuTaxonomyForNonFinancialsUploadForm(false, TEST_PDF_FILE_NAME);
+              fillAndValidateEuTaxonomyForNonFinancialsUploadForm(false, `${TEST_PDF_FILE_NAME}2`);
 
               cy.get(`[data-test="capexSection"] [data-test="total"] select[name="report"]`).select(TEST_PDF_FILE_NAME);
               cy.get(`[data-test="opexSection"] [data-test="total"] select[name="report"]`).select(
@@ -167,7 +167,7 @@ describeIf(
       "Upload EU Taxonomy Dataset via form, check that redirect to MyDatasets works and assure that it can be " +
         "viewed and edited, and that file selection, upload and download works properly",
       () => {
-        getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        getKeycloakToken(admin_name, admin_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation("All fields filled")).then(
             (storedCompany) => {
               cy.intercept(`**/companies**`).as("getDataForMyDatasetsPage");
