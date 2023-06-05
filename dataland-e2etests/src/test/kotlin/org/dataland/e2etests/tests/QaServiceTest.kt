@@ -1,7 +1,8 @@
 package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility.await
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
+import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException as QaServiceClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -39,34 +40,34 @@ class QaServiceTest {
 
     @Test
     fun `post dummy data, accept it, check the qa status changes and check different users access permissions`() {
-        val acceptedDataId = uploadDatasetAndValidatePendingState()
-        reviewDatasetAndValidateItIsNotReviewable(acceptedDataId, QaServiceQaStatus.accepted)
-        awaitQaStatusChange(acceptedDataId, BackendQaStatus.accepted)
-        canUserSeeUploaderData(acceptedDataId, TechnicalUser.Reader, true, false)
-        canUserSeeUploaderData(acceptedDataId, TechnicalUser.Uploader, true, true)
-        canUserSeeUploaderData(acceptedDataId, TechnicalUser.Reviewer, true, false)
-        canUserSeeUploaderData(acceptedDataId, TechnicalUser.Admin, true, true)
+        val dataId = uploadDatasetAndValidatePendingState()
+        reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.accepted)
+        awaitQaStatusChange(dataId, BackendQaStatus.accepted)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reader, true, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
     }
 
     @Test
     fun `post dummy data, reject it, check the qa status changes and check different users access permissions`() {
-        val rejectedDataId = uploadDatasetAndValidatePendingState()
-        reviewDatasetAndValidateItIsNotReviewable(rejectedDataId, QaServiceQaStatus.rejected)
+        val dataId = uploadDatasetAndValidatePendingState()
+        reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.rejected)
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        awaitQaStatusChange(rejectedDataId, BackendQaStatus.rejected)
-        canUserSeeUploaderData(rejectedDataId, TechnicalUser.Reader, false)
-        canUserSeeUploaderData(rejectedDataId, TechnicalUser.Uploader, true, true)
-        canUserSeeUploaderData(rejectedDataId, TechnicalUser.Reviewer, false)
-        canUserSeeUploaderData(rejectedDataId, TechnicalUser.Admin, true, true)
+        awaitQaStatusChange(dataId, BackendQaStatus.rejected)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
     }
 
     @Test
     fun `post dummy data and check different users access permissions`() {
-        val pendingDataId = uploadDatasetAndValidatePendingState()
-        canUserSeeUploaderData(pendingDataId, TechnicalUser.Reader, false)
-        canUserSeeUploaderData(pendingDataId, TechnicalUser.Uploader, true, true)
-        canUserSeeUploaderData(pendingDataId, TechnicalUser.Reviewer, true, false)
-        canUserSeeUploaderData(pendingDataId, TechnicalUser.Admin, true, true)
+        val dataId = uploadDatasetAndValidatePendingState()
+        canUserSeeUploaderData(dataId, TechnicalUser.Reader, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Uploader, true, true)
+        canUserSeeUploaderData(dataId, TechnicalUser.Reviewer, true, false)
+        canUserSeeUploaderData(dataId, TechnicalUser.Admin, true, true)
     }
 
     private fun uploadDatasetAndValidatePendingState(): String {
@@ -105,11 +106,11 @@ class QaServiceTest {
             )
             dataController.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId)
         } else {
-            val metaInfoException = assertThrows<ClientException> {
+            val metaInfoException = assertThrows<BackendClientException> {
                 apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
             }
             assertEquals("Client error : 403 ", metaInfoException.message)
-            val dataException = assertThrows<ClientException> {
+            val dataException = assertThrows<BackendClientException> {
                 dataController.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId)
             }
             assertEquals("Client error : 403 ", dataException.message)
@@ -133,8 +134,6 @@ class QaServiceTest {
         }
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         val reviewQueue = apiAccessor.qaServiceControllerApi.getUnreviewedDatasetsIds()
-        println(reviewQueue)
-        println(listOfDataIdsAsExpectedFromReviewQueue)
         assertTrue(listOfDataIdsAsExpectedFromReviewQueue.toTypedArray().contentDeepEquals(reviewQueue.toTypedArray()))
     }
 
@@ -143,5 +142,20 @@ class QaServiceTest {
         apiAccessor.qaServiceControllerApi.getUnreviewedDatasetsIds().forEach {
             apiAccessor.qaServiceControllerApi.assignQualityStatus(it, QaServiceQaStatus.rejected)
         }
+    }
+
+    @Test
+    fun `check that an already reviewed dataset can not be assigned a different qa status`() {
+        val dataId = uploadDatasetAndValidatePendingState()
+        reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.accepted)
+        awaitQaStatusChange(dataId, BackendQaStatus.accepted)
+        val exception = assertThrows<QaServiceClientException> {
+            apiAccessor.qaServiceControllerApi.assignQualityStatus(dataId, QaServiceQaStatus.rejected)
+        }
+        assertEquals("Client error : 400 ", exception.message)
+        assertNotEquals(
+            BackendQaStatus.rejected,
+            apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus
+        )
     }
 }
