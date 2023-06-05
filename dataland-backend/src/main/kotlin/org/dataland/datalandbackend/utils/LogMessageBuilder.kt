@@ -10,6 +10,10 @@ import org.springframework.stereotype.Component
 
 @Component("LogMessageBuilder")
 class LogMessageBuilder {
+    /**
+     * Generates an access denied message if a user without the necessary role tries to bypass the QA process
+     * @param qaStatus the qa status of the respective dataset
+     */
     fun generateAccessDeniedExceptionMessage(qaStatus: QaStatus) =
         "You are trying to access a ${qaStatus.toString().lowercase()} dataset."
     val bypassQaDeniedExceptionMessage = "You do not have the required permissions to bypass QA checks."

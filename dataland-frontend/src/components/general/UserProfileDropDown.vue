@@ -124,9 +124,7 @@ export default defineComponent({
     logoutViaDropdown() {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
-          if (keycloak.authenticated) {
-            logoutAndRedirectToUri(keycloak, "");
-          }
+          logoutAndRedirectToUri(keycloak, "");
         })
         .catch((error) => console.log(error));
     },
@@ -136,9 +134,7 @@ export default defineComponent({
     goToUserSettings() {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
-          if (keycloak.authenticated) {
-            return keycloak.accountManagement();
-          }
+          return keycloak.accountManagement();
         })
         .catch((error) => console.log(error));
     },
@@ -146,11 +142,7 @@ export default defineComponent({
      * Redirects the user to the data-request/invite screen
      */
     goToDataRequest() {
-      assertDefined(this.getKeycloakPromise)()
-        .then(() => {
-          return this.$router.push("requests");
-        })
-        .catch((error) => console.log(error));
+      void this.$router.push("/requests");
     },
     /**
      * Redirects the user to the api-key management interface
@@ -162,13 +154,7 @@ export default defineComponent({
      * Redirects the user to the QA Services page
      */
     goToQualityAssurance() {
-      assertDefined(this.getKeycloakPromise)()
-        .then((keycloak) => {
-          if (keycloak.authenticated) {
-            return this.$router.push("qualityassurance");
-          }
-        })
-        .catch((error) => console.log(error));
+      void this.$router.push("/qualityassurance");
     },
     /**
      * Called when the profile picture could not load. Propagates the event and sets the profile picture

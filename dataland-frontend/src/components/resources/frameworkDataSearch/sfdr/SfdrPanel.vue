@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationSfdrData, SfdrData } from "@clients/backend";
+import { DataAndMetaInformationSfdrData } from "@clients/backend";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -80,7 +80,7 @@ export default defineComponent({
         if (this.singleDataMetaInfoToDisplay) {
           const singleSfdrData = (
             await sfdrDataControllerApi.getCompanyAssociatedSfdrData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data as SfdrData;
+          ).data.data;
           this.sfdrDataAndMetaInfo = [{ metaInfo: this.singleDataMetaInfoToDisplay, data: singleSfdrData }];
         } else {
           this.sfdrDataAndMetaInfo = (

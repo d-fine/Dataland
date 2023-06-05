@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.UploadConfiguration
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -95,10 +96,15 @@ class MetaDataControllerAuthorizationTest {
     fun `post two companies with data and check that the access to the uploaderUserId field is restricted`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusFinancials
         val metaInfoOfUploaderUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, TechnicalUser.Uploader,
+            companyInformationPerFramework = mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
+            numberOfDataSetsPerCompany = 1,
+            uploadConfig = UploadConfiguration(TechnicalUser.Uploader, false),
+            ensureQaPassed = false,
         )[0].actualStoredDataMetaInfo!!
         val metaInfoOfAdminUpload = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation), 1, TechnicalUser.Admin,
+            mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
+            1,
+            UploadConfiguration(TechnicalUser.Admin),
         )[0].actualStoredDataMetaInfo!!
 
         expectUserIdToBe(metaInfoOfAdminUpload, TechnicalUser.Reader, null)
@@ -117,7 +123,8 @@ class MetaDataControllerAuthorizationTest {
 
         val uploaderUserIdFromMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataMetaInformation.dataId)
             .uploaderUserId
-        val msg = "Technical user $requestingTechnicalUser saw user ID $uploaderUserIdFromMetaInfo but expected was $expectedUploaderId"
+        val msg = "Technical user $requestingTechnicalUser saw user ID $uploaderUserIdFromMetaInfo but expected was " +
+            "$expectedUploaderId"
         Assertions.assertEquals(expectedUploaderId, uploaderUserIdFromMetaInfo, msg)
 
         val uploaderUserIdFromCompanyInfo = apiAccessor.companyDataControllerApi

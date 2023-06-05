@@ -44,7 +44,10 @@ class QaController(
     override fun assignQualityStatus(dataId: String, qualityStatus: QaStatus):
         ResponseEntity<Void> {
         val correlationId = randomUUID().toString()
-        logger.info("Received request to change the quality status of dataset with ID $dataId (correlationId: $correlationId)")
+        logger.info(
+            "Received request to change the quality status of dataset with ID $dataId " +
+                "(correlationId: $correlationId)",
+        )
         if (qualityStatus == QaStatus.Pending) {
             throw InvalidInputApiException(
                 "Quality \"Pending\" cannot be assigned to a reviewed dataset",
