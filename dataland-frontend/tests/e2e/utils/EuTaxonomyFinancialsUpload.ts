@@ -13,15 +13,12 @@ import {
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { goToEditFormOfMostRecentDataset, submitFilledInEuTaxonomyForm } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
-import { getKeycloakToken } from "@e2e/utils/Auth";
-import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import Chainable = Cypress.Chainable;
 
 /**
