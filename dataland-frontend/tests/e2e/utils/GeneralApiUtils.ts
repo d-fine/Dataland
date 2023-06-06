@@ -77,9 +77,12 @@ export function interceptAllAndCheckFor500Errors(): void {
 /**
  * Intercepts all data upload requests to the backend and sets the bypassQa flag
  */
-export function interceptAllDataPostsAndBypassQa(): void {
+export function interceptAllDataPostsAndBypassQaIfPossible(): void {
   const handler: RouteHandler = (incomingRequest) => {
     const authorizationHeader = incomingRequest.headers["Authorization"] as string;
+    if (authorizationHeader === undefined) {
+      return;
+    }
     const base64EncodedAuthorizationPayload = authorizationHeader.split(".")[1];
     const authorization = JSON.parse(atob(base64EncodedAuthorizationPayload)) as { realm_access: { roles: string[] } };
     if(authorization.realm_access.roles.includes("ROLE_REVIEWER")) {
