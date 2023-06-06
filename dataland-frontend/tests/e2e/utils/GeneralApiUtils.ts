@@ -84,7 +84,7 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
     if (isQaRequired) {
       return;
     }
-    const authorizationHeader = incomingRequest.headers["Authorization"] as string;
+    const authorizationHeader = incomingRequest.headers["authorization"] as string;
     if (authorizationHeader === undefined) {
       return;
     }
