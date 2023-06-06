@@ -1,7 +1,7 @@
 import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { admin_name, admin_pw  } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import {
   fillEligibilityKpis,
   fillEuTaxonomyForFinancialsRequiredFields,

@@ -41,10 +41,10 @@ describe("Component tests for the DatasetOverview page", () => {
    * @param activeTabIndex number identifying the tab bar
    * @param reviewerRole boolean indicating whether the user has reviewer rights
    */
-  function validateTabBar(activeTabIndex: number, reviewerRole: boolean = false): void {
+  function validateTabBar(activeTabIndex: number, reviewerRole = false): void {
     cy.get(getTabSelector(0)).should("have.text", "AVAILABLE DATASETS");
     cy.get(getTabSelector(1)).should("have.text", "MY DATASETS");
-    if(reviewerRole) {
+    if (reviewerRole) {
       cy.get(getTabSelector(2)).should("have.text", "QA");
     } else {
       cy.get(getTabSelector(2)).should("not.be.visible");
@@ -59,7 +59,6 @@ describe("Component tests for the DatasetOverview page", () => {
     for (let i of inactiveTabIndices) {
       cy.get(getTabSelector(i)).should("not.have.class", "p-highlight");
     }
-
   }
 
   it("Checks that the tab-bar is rendered correctly and that clicking on 'AVAILABLE DATASETS' performs a router push", () => {
