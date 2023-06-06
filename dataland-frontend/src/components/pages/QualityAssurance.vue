@@ -14,29 +14,30 @@
                   class="table-cursor"
                   id="qa-data-result"
                   :rowHover="true"
+                  data-test="qa-review-section"
                   @row-click="loadDatasetAndOpenModal"
                 >
-                  <Column header="DATA ID" class="d-bg-white w-2">
+                  <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
                     <template #body="{ data }">
                       {{ data.dataId }}
                     </template>
                   </Column>
-                  <Column header="COMPANY NAME" class="d-bg-white w-2">
+                  <Column header="COMPANY NAME" class="d-bg-white w-2 qa-review-company-name">
                     <template #body="{ data }">
                       {{ data.companyInformation.companyName }}
                     </template>
                   </Column>
-                  <Column header="FRAMEWORK" class="d-bg-white w-2">
+                  <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework">
                     <template #body="{ data }">
                       {{ humanizeString(data.metaInformation.dataType) }}
                     </template>
                   </Column>
-                  <Column header="REPORTING PERIOD" class="d-bg-white w-2">
+                  <Column header="REPORTING PERIOD" class="d-bg-white w-2 qa-review-reporting-period">
                     <template #body="{ data }">
                       {{ data.metaInformation.reportingPeriod }}
                     </template>
                   </Column>
-                  <Column field="reviewDataset" header="" class="w-2 d-bg-white">
+                  <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
                     <template #body>
                       <div class="text-right text-primary no-underline font-bold">
                         <span>REVIEW</span>

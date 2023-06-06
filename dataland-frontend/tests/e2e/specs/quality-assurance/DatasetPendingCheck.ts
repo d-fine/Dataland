@@ -1,4 +1,4 @@
-import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
+import { CompanyIdentifierIdentifierTypeEnum, DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
@@ -33,13 +33,14 @@ describeIf(
     });
 
     it("Check wether newly added dataset has Pending status", () => {
+      cy.visit("/qualityassurance");
       uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
         DataTypeEnum.EutaxonomyFinancials,
         testCompany,
         testData.t,
         fillEuTaxonomyForm,
-        submissionDataIntercept,
-        () => undefined
+        () => undefined,
+        testSubmittedDatasetIsInreviewList
       );
     });
   }
@@ -73,9 +74,13 @@ function fillEuTaxonomyForm(data: EuTaxonomyDataForFinancials): void {
 }
 
 /**
- * Fills the eutaxonomy-financials upload form with the given dataset
- * @param request the intercepted request
+ * Tests that the item was added and is visible on the QA list
+ * @param companyName
  */
-function submissionDataIntercept(request: CyHttpMessages.IncomingHttpRequest): void {
-  console.log(request);
+function testSubmittedDatasetIsInreviewList(companyName: string): void {
+  cy.visit("/qualityassurance");
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody').first().should("exist");
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
+    .get(".qa-review-company-name")
+    .should("contain", companyName);
 }
