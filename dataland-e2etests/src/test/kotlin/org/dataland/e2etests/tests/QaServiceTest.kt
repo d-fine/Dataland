@@ -1,8 +1,6 @@
 package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility.await
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
-import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException as QaServiceClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -15,7 +13,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.util.concurrent.TimeUnit
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as BackendQaStatus
+import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException as QaServiceClientException
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaServiceQaStatus
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -41,7 +41,7 @@ class QaServiceTest {
     }
 
     @Test
-    fun `post dummy data, accept it, check the qa status changes and check different users access permissions`() {
+    fun `post dummy data and accept it and check the qa status changes and check different users access permissions`() {
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.accepted)
@@ -52,7 +52,7 @@ class QaServiceTest {
     }
 
     @Test
-    fun `post dummy data, reject it, check the qa status changes and check different users access permissions`() {
+    fun `post dummy data and reject it and check the qa status changes and check different users access permissions`() {
         val dataId = uploadDatasetAndValidatePendingState()
         reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.rejected)
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -79,7 +79,7 @@ class QaServiceTest {
         ).dataId
         assertEquals(
             BackendQaStatus.pending,
-            apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus
+            apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus,
         )
         return dataId
     }
@@ -98,10 +98,10 @@ class QaServiceTest {
         viewingUser: TechnicalUser,
         shouldDataBeVisible: Boolean,
         shouldUploaderBeVisible: Boolean? = null,
-        ) {
+    ) {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(viewingUser)
-        if(shouldDataBeVisible) {
-            require(shouldUploaderBeVisible != null)
+        if (shouldDataBeVisible) {
+            requireNotNull(shouldUploaderBeVisible)
             assertEquals(
                 if (shouldUploaderBeVisible) TechnicalUser.Uploader.technicalUserId else null,
                 apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId,
@@ -157,7 +157,7 @@ class QaServiceTest {
         assertEquals("Client error : 400 ", exception.message)
         assertNotEquals(
             BackendQaStatus.rejected,
-            apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus
+            apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus,
         )
     }
 }

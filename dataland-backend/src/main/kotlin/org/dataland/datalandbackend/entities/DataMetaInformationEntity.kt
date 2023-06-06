@@ -64,7 +64,11 @@ data class DataMetaInformationEntity(
     fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean {
         return this.qaStatus == QaStatus.Accepted ||
             this.uploaderUserId == viewingUser?.userId ||
-            viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false ||
+            isDatasetViewableByUserViaRole(viewingUser)
+    }
+
+    private fun isDatasetViewableByUserViaRole(viewingUser: DatalandAuthentication?): Boolean {
+        return viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false ||
             (
                 viewingUser?.roles?.contains(DatalandRealmRole.ROLE_REVIEWER) ?: false &&
                     this.qaStatus == QaStatus.Pending
