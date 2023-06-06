@@ -1,5 +1,5 @@
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { admin_name, admin_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { checkStickynessOfSubmitSideBar, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
@@ -66,7 +66,7 @@ describeIf(
     });
 
     it("Edit and subsequent upload should work properly when removing or changing referenced documents", () => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
       cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
       cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
