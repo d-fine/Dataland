@@ -84,7 +84,8 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
     if (isQaRequired) {
       return;
     }
-    const authorizationHeader = incomingRequest.headers["authorization"] as string;
+    const authorizationHeader = (incomingRequest.headers["authorization"] ??
+      incomingRequest.headers["Authorization"]) as string;
     if (authorizationHeader === undefined) {
       return;
     }
@@ -134,10 +135,10 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
   submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
   afterDatasetSubmission: (companyId: string) => void
 ): void {
-  getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+  getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
     return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
       (storedCompany): void => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${frameworkDataType}/upload`);
         formFill(testData);
         submitFilledInEuTaxonomyForm(submissionDataIntercept);
