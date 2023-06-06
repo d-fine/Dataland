@@ -48,7 +48,9 @@ class WebSecurityConfig(
      */
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http.sessionManagement {
+            it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        }
         authorizePublicLinksAndAddJwtConverter(http)
         updatePolicies(http)
         return http.build()
@@ -77,14 +79,17 @@ class WebSecurityConfig(
     private fun authorizePublicLinksAndAddJwtConverter(http: HttpSecurity) {
         val linksList = listStringToList(publicLinks) + listStringToList(internalLinks)
         val linkMatchers = linksList.map { antMatcher(it) }.toTypedArray()
-        http
-            .authorizeHttpRequests()
-            .requestMatchers(*linkMatchers).permitAll()
-            .anyRequest().fullyAuthenticated()
-            .and()
-            .logout().disable()
-            .csrf().disable()
-            .oauth2ResourceServer().authenticationManagerResolver(tokenAuthenticationManagerResolver())
+
+        http.authorizeHttpRequests {
+            it.requestMatchers(*linkMatchers).permitAll()
+                .anyRequest().fullyAuthenticated()
+        }.logout {
+            it.disable()
+        }.csrf {
+            it.disable()
+        }.oauth2ResourceServer {
+            it.authenticationManagerResolver(tokenAuthenticationManagerResolver())
+        }
     }
 
     private fun listStringToList(listString: String) = if (listString.isNotEmpty()) {
@@ -94,8 +99,13 @@ class WebSecurityConfig(
     }
 
     private fun updatePolicies(http: HttpSecurity) {
-        http
-            .headers().contentSecurityPolicy("frame-ancestors 'none'; default-src 'none'")
-            .and().referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)
+        http.headers { contentSecurityPolicy ->
+            contentSecurityPolicy.contentSecurityPolicy {
+                it.policyDirectives("frame-ancestors 'none'; default-src 'none'")
+            }
+            contentSecurityPolicy.referrerPolicy {
+                it.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)
+            }
+        }
     }
 }
