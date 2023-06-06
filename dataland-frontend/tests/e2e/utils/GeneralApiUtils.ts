@@ -79,6 +79,11 @@ export function interceptAllAndCheckFor500Errors(): void {
  */
 export function interceptAllDataPostsAndBypassQaIfPossible(): void {
   const handler: RouteHandler = (incomingRequest) => {
+    const isQaRequired = incomingRequest.headers["REQUIRE-QA"] === "true";
+    delete incomingRequest.headers["REQUIRE-QA"];
+    if(isQaRequired) {
+      return;
+    }
     const authorizationHeader = incomingRequest.headers["Authorization"] as string;
     if (authorizationHeader === undefined) {
       return;
