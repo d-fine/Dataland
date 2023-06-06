@@ -79,7 +79,12 @@ export function interceptAllAndCheckFor500Errors(): void {
  */
 export function interceptAllDataPostsAndBypassQa(): void {
   const handler: RouteHandler = (incomingRequest) => {
-    incomingRequest.query["bypassQa"] = "true";
+    const authorizationHeader = incomingRequest.headers["Authorization"] as string;
+    const base64EncodedAuthorizationPayload = authorizationHeader.split(".")[1];
+    const authorization = JSON.parse(atob(base64EncodedAuthorizationPayload)) as { realm_access: { roles: string[] } };
+    if(authorization.realm_access.roles.includes("ROLE_REVIEWER")) {
+      incomingRequest.query["bypassQa"] = "true";
+    }
   };
   cy.intercept("/api/data/*", handler);
 }
