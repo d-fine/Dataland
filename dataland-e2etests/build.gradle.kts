@@ -39,14 +39,6 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.withType<AbstractTestTask> {
-    testLogging {
-        showStandardStreams = true
-        showExceptions = true
-        showStackTraces = true
-    }
-}
-
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
     input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
