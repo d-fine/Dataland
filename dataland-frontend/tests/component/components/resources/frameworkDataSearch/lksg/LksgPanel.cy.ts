@@ -25,15 +25,23 @@ describe("Component test for LksgPanel", () => {
     const pseudoLksgData = {
       general: { masterData: { dataDate: "2023-01-01", totalRevenue: 1234567.89 } },
     } as LksgData;
-    mount(LksgPanel, {
+
+    cy.mountWithPlugins(LksgPanel, {
       data() {
         return {
           waitingForData: false,
           lksgDataAndMetaInfo: [{ data: pseudoLksgData } as DataAndMetaInformationLksgData],
         };
       },
+      // The code below is required to complete the component mock yet interferes with the type resolution of the
+      // mountWithPlugins function.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       created() {
-        (this.convertLksgDataToFrontendFormat as () => void)();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,
+        this.convertLksgDataToFrontendFormat();
       },
     });
     cy.get("td:contains('1.23 MM')").should("exist");
