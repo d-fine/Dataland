@@ -81,7 +81,7 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
   const handler: RouteHandler = (incomingRequest) => {
     const isQaRequired = incomingRequest.headers["REQUIRE-QA"] === "true";
     delete incomingRequest.headers["REQUIRE-QA"];
-    if(isQaRequired) {
+    if (isQaRequired) {
       return;
     }
     const authorizationHeader = incomingRequest.headers["Authorization"] as string;
@@ -90,7 +90,7 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
     }
     const base64EncodedAuthorizationPayload = authorizationHeader.split(".")[1];
     const authorization = JSON.parse(atob(base64EncodedAuthorizationPayload)) as { realm_access: { roles: string[] } };
-    if(authorization.realm_access.roles.includes("ROLE_REVIEWER")) {
+    if (authorization.realm_access.roles.includes("ROLE_REVIEWER")) {
       incomingRequest.query["bypassQa"] = "true";
     }
   };
