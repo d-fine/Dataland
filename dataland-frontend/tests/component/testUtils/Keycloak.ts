@@ -31,7 +31,7 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
     },
     hasRealmRole(role: string): boolean {
       return this.realmAccess.roles.includes(role);
-    }
+    },
   };
   return mock as Keycloak;
 }

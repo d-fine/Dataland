@@ -56,7 +56,7 @@ describe("Component tests for the DatasetOverview page", () => {
       }
     }
     cy.get(getTabSelector(activeTabIndex)).should("have.class", "p-highlight");
-    for (let i of inactiveTabIndices) {
+    for (const i of inactiveTabIndices) {
       cy.get(getTabSelector(i)).should("not.have.class", "p-highlight");
     }
   }
