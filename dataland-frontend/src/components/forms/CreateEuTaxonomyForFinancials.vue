@@ -47,6 +47,7 @@
                     :showIcon="true"
                     view="year"
                     dateFormat="yy"
+                    validation="required"
                   />
                 </div>
 
@@ -80,6 +81,7 @@
                         <UploadFormHeader
                           :label="euTaxonomyKpiNameMappings.assurance ?? ''"
                           :description="euTaxonomyKpiInfoMappings.assurance ?? ''"
+                          :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12 p-0">
                           <FormKit
@@ -121,7 +123,6 @@
                                 name="report"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
-                                validation="required"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
