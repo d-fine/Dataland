@@ -2,7 +2,7 @@ import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
 import {
   fillEligibilityKpis,
   fillEuTaxonomyForFinancialsRequiredFields,
@@ -31,7 +31,7 @@ describeIf(
     });
 
     it("Check wether newly added dataset has Pending status", () => {
-      login(uploader_name, uploader_pw);
+      login(admin_name, admin_pw);
 
       uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
         DataTypeEnum.EutaxonomyFinancials,
@@ -85,9 +85,8 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
 
   login(reviewer_name, reviewer_pw);
 
-  cy.visitAndCheckAppMount("/qualityassurance");
+  cy.visit("/qualityassurance").wait(1000);
 
-  cy.pause();
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody').first().should("exist");
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .get(".qa-review-company-name")
