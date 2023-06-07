@@ -160,4 +160,19 @@ class QaServiceTest {
             apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus,
         )
     }
+
+    @Test
+    fun `check that an already reviewed dataset can not be assigned a different qa status even if the dataset is deleted`() {
+        val dataId = uploadDatasetAndValidatePendingState()
+        reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.accepted)
+        awaitQaStatusChange(dataId, BackendQaStatus.accepted)
+        val exception = assertThrows<QaServiceClientException> {
+            apiAccessor.qaServiceControllerApi.assignQualityStatus(dataId, QaServiceQaStatus.rejected)
+        }
+        assertEquals("Client error : 400 ", exception.message)
+        assertNotEquals(
+            BackendQaStatus.rejected,
+            apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus,
+        )
+    }
 }
