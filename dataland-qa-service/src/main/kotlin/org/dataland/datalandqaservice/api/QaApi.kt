@@ -58,5 +58,5 @@ interface QaApi {
     fun assignQualityStatus(
         @PathVariable("dataId") dataId: String,
         @RequestParam qualityStatus: QaStatus,
-    ): ResponseEntity<Unit>
+    ): ResponseEntity<Void>
 }
