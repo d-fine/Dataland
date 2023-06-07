@@ -198,6 +198,9 @@ jobs:
         env:
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com"
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
+          KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
+          KEYCLOAK_REVIEWER_PASSWORD: ${{ secrets.KEYCLOAK_REVIEWER_PASSWORD }}
+          KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_PASSWORD }}
           KEYCLOAK_ADMIN: ${{ vars.KEYCLOAK_ADMIN }}
           KEYCLOAK_ADMIN_PASSWORD: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
