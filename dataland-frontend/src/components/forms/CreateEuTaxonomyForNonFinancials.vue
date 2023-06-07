@@ -34,8 +34,9 @@
               </div>
               <div class="col-9 formFields uploaded-files">
                 <UploadFormHeader
-                  :name="euTaxonomyKpiNameMappings.reportingPeriod"
-                  :explanation="euTaxonomyKpiInfoMappings.reportingPeriod"
+                  :label="euTaxonomyKpiNameMappings.reportingPeriod"
+                  :description="euTaxonomyKpiInfoMappings.reportingPeriod"
+                  :is-required="true"
                 />
                 <div class="lg:col-6 md:col-6 col-12 p-0">
                   <Calendar
@@ -45,6 +46,7 @@
                     :showIcon="true"
                     view="year"
                     dateFormat="yy"
+                    validation="required"
                   />
                 </div>
 
@@ -78,8 +80,8 @@
                       <!-- Level of assurance -->
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="euTaxonomyKpiNameMappings.assurance ?? ''"
-                          :explanation="euTaxonomyKpiInfoMappings.assurance ?? ''"
+                          :label="euTaxonomyKpiNameMappings.assurance ?? ''"
+                          :description="euTaxonomyKpiInfoMappings.assurance ?? ''"
                           :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12 p-0">
@@ -96,8 +98,8 @@
                       <!-- Assurance provider -->
                       <div class="form-field">
                         <UploadFormHeader
-                          :name="euTaxonomyKpiNameMappings.provider ?? ''"
-                          :explanation="euTaxonomyKpiInfoMappings.provider ?? ''"
+                          :label="euTaxonomyKpiNameMappings.provider ?? ''"
+                          :description="euTaxonomyKpiInfoMappings.provider ?? ''"
                         />
                         <FormKit
                           type="text"
@@ -114,24 +116,21 @@
                           <div class="next-to-each-other">
                             <div class="flex-1">
                               <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings.report ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings.report ?? ''"
-                                :is-required="true"
+                                :label="euTaxonomyKpiNameMappings.report ?? ''"
+                                :description="euTaxonomyKpiInfoMappings.report ?? ''"
                               />
                               <FormKit
                                 type="select"
                                 name="report"
                                 placeholder="Select a report"
-                                validation-label="Selecting a report"
-                                validation="required"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
                             </div>
                             <div>
                               <UploadFormHeader
-                                :name="euTaxonomyKpiNameMappings.page ?? ''"
-                                :explanation="euTaxonomyKpiInfoMappings.page ?? ''"
+                                :label="euTaxonomyKpiNameMappings.page ?? ''"
+                                :description="euTaxonomyKpiInfoMappings.page ?? ''"
                               />
                               <FormKit
                                 outer-class="w-100"
@@ -302,7 +301,7 @@ import {
   DataMetaInformation,
   EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
-import { checkIfAllUploadedReportsAreReferencedInDataModel, checkCustomInputs } from "@/utils/ValidationsUtils";
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import {
   convertValuesFromDecimalsToPercentages,
   convertValuesFromPercentagesToDecimals,
@@ -317,6 +316,7 @@ import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
+import { ReportToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "CreateEuTaxonomyForNonFinancials",
@@ -427,7 +427,7 @@ export default defineComponent({
         companyAssociatedEuTaxonomyData as ObjectType
       );
       this.waitingForData = false;
-      updateObject(this.formInputsModel, receivedFormInputsModel);
+      updateObject(this.formInputsModel as ObjectType, receivedFormInputsModel);
     },
 
     /**
@@ -443,7 +443,11 @@ export default defineComponent({
           this.formInputsModel.data as ObjectType,
           this.namesOfAllCompanyReportsForTheDataset
         );
-        await (this.$refs.UploadReports.uploadFiles as () => Promise<void>)();
+
+        await uploadFiles(
+          (this.$refs.UploadReports.$data as { reportsToUpload: ReportToUpload[] }).reportsToUpload,
+          assertDefined(this.getKeycloakPromise)
+        );
 
         const formInputsModelToSend = convertValuesFromPercentagesToDecimals(this.formInputsModel as ObjectType);
         const euTaxonomyDataForNonFinancialsControllerApi = await new ApiClientProvider(
@@ -457,7 +461,7 @@ export default defineComponent({
       } catch (error) {
         this.messageCount++;
         console.error(error);
-        this.message = formatAxiosErrorMessage(error);
+        this.message = formatAxiosErrorMessage(error as Error);
       } finally {
         this.postEuTaxonomyDataForNonFinancialsProcessed = true;
       }

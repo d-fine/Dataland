@@ -48,7 +48,7 @@ describe("Component test for LksgPanel", () => {
   }
 
   it("Check Lksg view page for company with one Lksg data set", () => {
-    const preparedFixture = getPreparedFixture("one-lksg-data-set", preparedFixtures);
+    const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     const lksgData = preparedFixture.t;
 
     cy.intercept("/api/data/lksg/mock-data-id", {
@@ -74,14 +74,14 @@ describe("Component test for LksgPanel", () => {
       },
     });
 
-    cy.get(`span.p-column-title`).should("contain.text", lksgData.general!.masterData!.dataDate.substring(0, 4));
-    cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
+    cy.get(`span.p-column-title`).should("contain.text", lksgData.general.masterData.dataDate.substring(0, 4));
+    cy.get("tbody").find(`span:contains(${lksgData.general.masterData.dataDate})`).should("exist");
 
     toggleRowGroup("_masterData");
-    cy.get("tbody").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("not.exist");
+    cy.get("tbody").find(`span:contains(${lksgData.general.masterData.dataDate})`).should("not.exist");
 
     toggleRowGroup("_masterData");
-    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general!.masterData!.dataDate})`).should("exist");
+    cy.get("table.p-datatable-table").find(`span:contains(${lksgData.general.masterData.dataDate})`).should("exist");
 
     cy.get("span[data-test=employeeUnder18]").should("not.exist");
     toggleRowGroup("childLabor");
@@ -93,6 +93,9 @@ describe("Component test for LksgPanel", () => {
     cy.get("em[title='Data Date']").trigger("mouseenter", "center");
     cy.get(".p-tooltip").should("be.visible").contains("The date until when");
     cy.get("em[title='Data Date']").trigger("mouseleave");
+
+    toggleRowGroup("certificationsPoliciesAndResponsibilities");
+    cy.get("span[data-test=Report-Download-Certification]").find("i[data-test=download-icon]").should("be.visible");
   });
 
   /**
@@ -108,7 +111,7 @@ describe("Component test for LksgPanel", () => {
       const reportingYear = 2023 + i;
       const reportingDate = `${reportingYear}-01-01`;
       const lksgData = structuredClone(baseDataset) as LksgData;
-      lksgData.general!.masterData!.dataDate = reportingDate;
+      lksgData.general.masterData.dataDate = reportingDate;
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
         reportingPeriod: reportingYear.toString(),

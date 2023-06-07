@@ -14,8 +14,8 @@
   <div v-show="dataPointIsAvailable">
     <div class="form-field" v-if="dataPointIsAvailable">
       <UploadFormHeader
-        :name="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]}`"
-        :explanation="kpiInfoMappings[name] ?? ''"
+        :label="valueType === 'percent' ? `${kpiNameMappings[name]} (%)` : `${kpiNameMappings[name]}`"
+        :description="kpiInfoMappings[name] ?? ''"
       />
       <FormKit
         :disabled="!dataPointIsAvailable"
@@ -38,7 +38,7 @@
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
-            <UploadFormHeader :name="kpiNameMappings.report ?? ''" :explanation="kpiInfoMappings.report ?? ''" />
+            <UploadFormHeader :label="kpiNameMappings.report ?? ''" :description="kpiInfoMappings.report ?? ''" />
             <FormKit
               type="select"
               name="report"
@@ -50,7 +50,7 @@
             />
           </div>
           <div>
-            <UploadFormHeader :name="kpiNameMappings.page ?? ''" :explanation="kpiInfoMappings.page ?? ''" />
+            <UploadFormHeader :label="kpiNameMappings.page ?? ''" :description="kpiInfoMappings.page ?? ''" />
             <FormKit
               outer-class="w-100"
               :disabled="!dataPointIsAvailable"
@@ -71,9 +71,9 @@
     <!-- Data quality -->
     <div class="form-field">
       <UploadFormHeader
+        label="Data quality"
+        description="The level of confidence associated to the value."
         :is-required="true"
-        name="Data quality"
-        explanation="The level of confidence associated to the value."
       />
       <div class="md:col-6 col-12 p-0">
         <FormKit

@@ -8,9 +8,8 @@
       <h3 class="mt-0">Basic information</h3>
       <RadioButtonsFormField
         :name="'fiscalYearDeviation'"
-        :info="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
-        :displayName="euTaxonomyKpiNameMappings.fiscalYearDeviation"
-        :required="true"
+        :description="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
+        :label="euTaxonomyKpiNameMappings.fiscalYearDeviation"
         :options="[
           { label: 'Deviation', value: 'Deviation' },
           { label: 'No Deviation', value: 'NoDeviation' },
@@ -20,9 +19,8 @@
       <!-- The date the fiscal year ends -->
       <div class="form-field">
         <UploadFormHeader
-          :name="euTaxonomyKpiNameMappings.fiscalYearEnd"
-          :explanation="euTaxonomyKpiInfoMappings.fiscalYearEnd"
-          :is-required="true"
+          :label="euTaxonomyKpiNameMappings.fiscalYearEnd"
+          :description="euTaxonomyKpiInfoMappings.fiscalYearEnd"
         />
         <div class="md:col-6 col-12 p-0">
           <Calendar
@@ -37,7 +35,6 @@
 
         <FormKit
           type="text"
-          validation="required"
           validation-label="Fiscal year"
           :modelValue="fiscalYearEnd"
           name="fiscalYearEnd"
@@ -49,8 +46,8 @@
       <div class="form-field">
         <YesNoFormField
           :name="'scopeOfEntities'"
-          :info="euTaxonomyKpiInfoMappings.scopeOfEntities"
-          :displayName="euTaxonomyKpiNameMappings.scopeOfEntities"
+          :description="euTaxonomyKpiInfoMappings.scopeOfEntities"
+          :label="euTaxonomyKpiNameMappings.scopeOfEntities"
         />
       </div>
 
@@ -58,17 +55,16 @@
       <div class="form-field">
         <YesNoFormField
           :name="'activityLevelReporting'"
-          :info="euTaxonomyKpiInfoMappings.activityLevelReporting"
-          :displayName="euTaxonomyKpiNameMappings.activityLevelReporting"
+          :description="euTaxonomyKpiInfoMappings.activityLevelReporting"
+          :label="euTaxonomyKpiNameMappings.activityLevelReporting"
         />
       </div>
 
       <!-- Number of employees -->
       <div class="form-field">
         <UploadFormHeader
-          :name="euTaxonomyKpiNameMappings.numberOfEmployees"
-          :explanation="euTaxonomyKpiInfoMappings.numberOfEmployees"
-          :is-required="true"
+          :label="euTaxonomyKpiNameMappings.numberOfEmployees"
+          :description="euTaxonomyKpiInfoMappings.numberOfEmployees"
         />
         <div class="lg:col-4 md:col-4 col-6 p-0">
           <FormKit
@@ -76,7 +72,7 @@
             name="numberOfEmployees"
             validation-label="Number of employees"
             placeholder="Value"
-            validation="required|number|min:0"
+            validation="number|min:0"
             step="1"
             min="0"
           />
@@ -87,8 +83,8 @@
       <div class="form-field">
         <YesNoFormField
           :name="'reportingObligation'"
-          :info="euTaxonomyKpiInfoMappings.reportingObligation"
-          :displayName="euTaxonomyKpiNameMappings.reportingObligation"
+          :description="euTaxonomyKpiInfoMappings.reportingObligation"
+          :label="euTaxonomyKpiNameMappings.reportingObligation"
         />
       </div>
     </div>

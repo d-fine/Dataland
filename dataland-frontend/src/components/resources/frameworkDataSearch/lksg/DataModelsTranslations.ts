@@ -7,10 +7,16 @@ export const detailsCompanyDataTableColumnHeaders = {
   industry: {
     industry: "NACE Code",
   },
-  subcontractingCompaniesCountries: {
-    subcontractingCompaniesCountries: "Country",
-  },
   subcontractingCompaniesIndustries: {
     subcontractingCompaniesIndustries: "NACE Code",
+  },
+  highRiskCountriesRawMaterialsLocation: {
+    highRiskCountriesRawMaterialsLocation: "Countries",
+  },
+  highRiskCountries: {
+    highRiskCountries: "Countries",
+  },
+  subcontractingCompaniesCountries: {
+    subcontractingCompaniesCountries: "Countries",
   },
 };

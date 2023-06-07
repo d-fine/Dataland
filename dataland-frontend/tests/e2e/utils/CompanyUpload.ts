@@ -5,7 +5,7 @@ import {
   Configuration,
   StoredCompany,
 } from "@clients/backend";
-import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker/locale/de";
 
 /**
  * Fills the company for a company with the specified name with dummy values.
@@ -63,7 +63,7 @@ export function generateDummyCompanyInformation(companyName: string, sector = "I
     headquarters: "Imaginary-City",
     sector: sector,
     identifiers: [
-      { identifierType: CompanyIdentifierIdentifierTypeEnum.PermId, identifierValue: faker.random.alphaNumeric(10) },
+      { identifierType: CompanyIdentifierIdentifierTypeEnum.PermId, identifierValue: faker.string.alphanumeric(10) },
     ],
     countryCode: "DE",
     isTeaserCompany: false,

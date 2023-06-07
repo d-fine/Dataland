@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -9,7 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class LksgChildLabor(
     val employeeUnder18: YesNo?,
 
-    val employeeUnder18Under15: YesNo?,
+    val employeeUnder15: YesNo?,
 
     val employeeUnder18Apprentices: YesNo?,
 
@@ -31,5 +32,5 @@ data class LksgChildLabor(
 
     val childLaborMeasures: String?,
 
-    val childLaborPreventionPolicy: YesNo?,
+    val childLaborPreventionPolicy: BaseDataPoint<YesNo>?,
 )

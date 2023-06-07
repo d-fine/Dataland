@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.governance.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -23,7 +24,7 @@ data class LksgRiskManagementOwnOperations(
 
     val environmentalManagementSystem: YesNo?,
 
-    val environmentalManagementSystemInternationalCertification: YesNo?,
+    val environmentalManagementSystemInternationalCertification: BaseDataPoint<YesNo>?,
 
-    val environmentalManagementSystemNationalCertification: YesNo?,
+    val environmentalManagementSystemNationalCertification: BaseDataPoint<YesNo>?,
 )

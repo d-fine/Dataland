@@ -2,24 +2,24 @@
   <div class="form-field">
     <InputTextFormField
       name="nameOfProductionSite"
-      info="Please state the name of the production site."
-      display-name="Production Site"
-      validation="required"
+      description="Please state the name of the production site."
+      label="Production Site"
     />
   </div>
 
   <div class="form-field">
     <AddressFormField
+      :data-test="`AddressFormField${id}`"
       name="addressOfProductionSite"
-      info="Please state the address of the production site."
-      display-name="Production Site Address"
+      description="Please state the address of the production site."
+      label="Production Site Address"
       validation="required"
     />
   </div>
 
   <div class="form-field">
     <div class="flex justify-content-between">
-      <UploadFormHeader name="Lists of Goods or Services" explanation="Provide List of Goods or Services" />
+      <UploadFormHeader label="Lists of Goods or Services" description="Provide List of Goods or Services" />
       <PrimeButton
         :disabled="listOfGoodsOrServicesString === ''"
         @click="addNewItemsToListOfGoodsOrServices()"
@@ -36,6 +36,16 @@
       v-model="listOfGoodsOrServicesString"
       placeholder="Add comma (,) for more than one value"
     />
+    <FormKit
+      v-if="listOfGoodsOrServicesString.length > 0"
+      type="text"
+      v-model="listOfGoodsOrServicesString"
+      validation="length:0,0"
+      validation-visibility="live"
+      :validation-messages="{ length: 'Please add the entered value via pressing the add button or empty the field.' }"
+      outer-class="hidden-input"
+    />
+
     <FormKit
       v-model="listOfGoodsOrServices"
       type="list"
@@ -61,18 +71,24 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 
 export default defineComponent({
   name: "ProductionSiteFormElement",
-  data() {
-    return {
-      listOfGoodsOrServicesString: "",
-      listOfGoodsOrServices: [] as string[],
-    };
-  },
   components: {
     UploadFormHeader,
     InputTextFormField,
     AddressFormField,
     FormKit,
     PrimeButton,
+  },
+  data() {
+    return {
+      listOfGoodsOrServicesString: "",
+      listOfGoodsOrServices: [] as string[],
+    };
+  },
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
   },
   methods: {
     /**
@@ -90,7 +106,8 @@ export default defineComponent({
      */
     addNewItemsToListOfGoodsOrServices() {
       const items = this.listOfGoodsOrServicesString.split(",").map((element) => element.trim());
-      this.listOfGoodsOrServices = [...this.listOfGoodsOrServices, ...items];
+      this.listOfGoodsOrServices = [...new Set([...this.listOfGoodsOrServices, ...items])];
+      this.listOfGoodsOrServicesString = "";
     },
   },
 });

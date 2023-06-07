@@ -1853,6 +1853,11 @@
         ]
       },
       "CompanyAssociatedDataSmeData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -2066,6 +2071,11 @@
         ]
       },
       "CompanyAssociatedDataSfdrData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -2620,7 +2630,26 @@
           "No"
         ]
       },
+      "BaseDataPointYesNo": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/DocumentReference"
+          }
+        }
+      },
       "CompanyAssociatedDataLksgData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -2634,7 +2663,26 @@
           }
         }
       },
+      "DocumentReference": {
+        "required": [
+          "name",
+          "reference"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "reference": {
+            "type": "string"
+          }
+        }
+      },
       "LksgAddress": {
+        "required": [
+          "city",
+          "country"
+        ],
         "type": "object",
         "properties": {
           "streetAndHouseNumber": {
@@ -2658,40 +2706,40 @@
         "type": "object",
         "properties": {
           "sa8000Certification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "smetaSocialAuditConcept": {
             "$ref": "#/components/schemas/YesNo"
           },
           "betterWorkProgramCertificate": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "iso45001Certification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "iso14000Certification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "emasCertification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "iso37001Certification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "iso37301Certification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "riskManagementSystemCertification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "amforiBsciAuditReport": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "responsibleBusinessAssociationCertification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "fairLaborAssociationCertification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "additionalAudits": {
             "type": "string"
@@ -2703,7 +2751,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "supplierCodeOfConduct": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "policyStatement": {
             "$ref": "#/components/schemas/YesNo"
@@ -2712,10 +2760,10 @@
             "type": "string"
           },
           "environmentalImpactPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "fairWorkingConditionsPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           }
         }
       },
@@ -2725,7 +2773,7 @@
           "employeeUnder18": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "employeeUnder18Under15": {
+          "employeeUnder15": {
             "$ref": "#/components/schemas/YesNo"
           },
           "employeeUnder18Apprentices": {
@@ -2759,7 +2807,7 @@
             "type": "string"
           },
           "childLaborPreventionPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           }
         }
       },
@@ -2826,6 +2874,9 @@
         }
       },
       "LksgData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
@@ -2914,10 +2965,10 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "oshManagementSystemInternationalCertification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "oshManagementSystemNationalCertification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "workplaceAccidentsUnder10": {
             "$ref": "#/components/schemas/YesNo"
@@ -2926,7 +2977,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "healthAndSafetyPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           }
         }
       },
@@ -3001,11 +3052,14 @@
             "type": "string"
           },
           "forcedLaborPreventionPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           }
         }
       },
       "LksgGeneral": {
+        "required": [
+          "masterData"
+        ],
         "type": "object",
         "properties": {
           "masterData": {
@@ -3199,6 +3253,9 @@
         }
       },
       "LksgProductionSite": {
+        "required": [
+          "addressOfProductionSite"
+        ],
         "type": "object",
         "properties": {
           "nameOfProductionSite": {
@@ -3222,7 +3279,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "capacity": {
-            "type": "number"
+            "type": "string"
           },
           "isContractProcessing": {
             "$ref": "#/components/schemas/YesNo"
@@ -3284,10 +3341,10 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "environmentalManagementSystemInternationalCertification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "environmentalManagementSystemNationalCertification": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           }
         }
       },
@@ -3339,10 +3396,10 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "fairAndEthicalRecruitmentPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "equalOpportunitiesAndNonDiscriminationPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           }
         }
       },
@@ -3373,7 +3430,7 @@
             "$ref": "#/components/schemas/YesNo"
           },
           "mercuryAndMercuryWasteHandlingPolicy": {
-            "$ref": "#/components/schemas/YesNo"
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
           },
           "mercuryAddedProductsHandling": {
             "$ref": "#/components/schemas/YesNo"
@@ -3487,6 +3544,11 @@
         }
       },
       "CompanyAssociatedDataEuTaxonomyDataForNonFinancials": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -3557,6 +3619,11 @@
         }
       },
       "CompanyAssociatedDataEuTaxonomyDataForFinancials": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
         "type": "object",
         "properties": {
           "companyId": {
@@ -3945,6 +4012,10 @@
         }
       },
       "CompanyAvailableDistinctValues": {
+        "required": [
+          "countryCodes",
+          "sectors"
+        ],
         "type": "object",
         "properties": {
           "countryCodes": {

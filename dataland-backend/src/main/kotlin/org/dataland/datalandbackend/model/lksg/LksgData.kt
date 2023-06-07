@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.lksg.categories.environmental.LksgEnvironmental
 import org.dataland.datalandbackend.model.lksg.categories.general.LksgGeneral
@@ -12,7 +13,8 @@ import org.dataland.datalandbackend.model.lksg.categories.social.LksgSocial
  */
 @DataType("lksg")
 data class LksgData(
-    val general: LksgGeneral?,
+    @field:JsonProperty(required = true)
+    val general: LksgGeneral,
     val governance: LksgGovernance?,
     val social: LksgSocial?,
     val environmental: LksgEnvironmental?,

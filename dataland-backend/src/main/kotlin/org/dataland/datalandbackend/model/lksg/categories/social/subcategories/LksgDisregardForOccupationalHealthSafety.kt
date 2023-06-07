@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.social.subcategories
 
+import org.dataland.datalandbackend.model.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 
@@ -38,13 +39,13 @@ data class LksgDisregardForOccupationalHealthSafety(
 
     val oshManagementSystem: YesNo?,
 
-    val oshManagementSystemInternationalCertification: YesNo?,
+    val oshManagementSystemInternationalCertification: BaseDataPoint<YesNo>?,
 
-    val oshManagementSystemNationalCertification: YesNo?,
+    val oshManagementSystemNationalCertification: BaseDataPoint<YesNo>?,
 
     val workplaceAccidentsUnder10: YesNo?,
 
     val oshTraining: YesNo?,
 
-    val healthAndSafetyPolicy: YesNo?,
+    val healthAndSafetyPolicy: BaseDataPoint<YesNo>?,
 )
