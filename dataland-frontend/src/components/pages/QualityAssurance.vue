@@ -5,12 +5,11 @@
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_REVIEWER">
         <TheContent class="paper-section flex">
           <div class="col-12 text-left pb-0">
-            <BackButton />
             <h1>Quality Assurance</h1>
             <div v-if="!waitingForData">
               <div class="card">
                 <DataTable
-                  :value="resultData"
+                  :value="displayData"
                   class="table-cursor"
                   id="qa-data-result"
                   :rowHover="true"
@@ -37,6 +36,11 @@
                       {{ data.metaInformation.reportingPeriod }}
                     </template>
                   </Column>
+                  <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
+                    <template #body="{ data }">
+                      {{ convertUnixTimeInMsToDateString(data.metaInformation.uploadTime) }}
+                    </template>
+                  </Column>
                   <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
                     <template #body>
                       <div class="text-right text-primary no-underline font-bold">
@@ -48,7 +52,7 @@
                 </DataTable>
               </div>
             </div>
-            <div v-else-if="waitingForData" class="inline-loading text-center">
+            <div v-else class="inline-loading text-center">
               <p class="font-medium text-xl">Loading data to be reviewed...</p>
               <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
             </div>
@@ -68,7 +72,13 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { CompanyInformation, DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import {
+  CompanyDataControllerApiInterface,
+  CompanyInformation,
+  DataMetaInformation,
+  DataTypeEnum,
+  MetaDataControllerApiInterface
+} from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
@@ -79,6 +89,9 @@ import { humanizeString } from "@/utils/StringHumanizer";
 import QADatasetModal from "@/components/general/QaDatasetModal.vue";
 import { AxiosError } from "axios";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
+import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
+import {QaControllerApi} from "@clients/qaservice";
+
 export default defineComponent({
   name: "QualityAssurance",
   components: {
@@ -101,12 +114,15 @@ export default defineComponent({
     return {
       dataIdList: [] as Array<string>,
       dataId: "",
-      resultData: [] as QaDataObject[],
+      displayData: [] as QaDataObject[],
       waitingForData: true,
       dataSet: null as unknown as object,
       KEYCLOAK_ROLE_REVIEWER,
       metaInformation: null as DataMetaInformation,
       companyInformation: null as CompanyInformation | null,
+      qaServiceControllerApi: undefined as undefined | QaControllerApi,
+      metaDataInformationControllerApi: undefined as undefined | MetaDataControllerApiInterface,
+      companyDataControllerApi: undefined as undefined | CompanyDataControllerApiInterface,
     };
   },
   mounted() {
@@ -119,6 +135,7 @@ export default defineComponent({
     },
   },
   methods: {
+    convertUnixTimeInMsToDateString,
     humanizeString,
     //TODO Clean up code
     /**
@@ -126,11 +143,10 @@ export default defineComponent({
      */
     async getQaData() {
       try {
-        this.resultData = [];
-        const qaServiceControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getQaControllerApi();
-        const response = await qaServiceControllerApi.getUnreviewedDatasetsIds();
+        this.waitingForData = true;
+        this.displayData = [];
+        await this.gatherControllerApis();
+        const response = await this.qaServiceControllerApi!.getUnreviewedDatasetsIds();
         this.dataIdList = response.data;
         for (const dataId of this.dataIdList) {
           await this.addDatasetAssociatedInformationToDisplayList(dataId);
@@ -141,23 +157,31 @@ export default defineComponent({
       }
     },
     /**
+     * Gathers the controller APIs
+     */
+    async gatherControllerApis() {
+      this.qaServiceControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getQaControllerApi();
+      this.metaDataInformationControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getMetaDataControllerApi();
+      this.companyDataControllerApi = await new ApiClientProvider(
+        assertDefined(this.getKeycloakPromise)()
+      ).getCompanyDataControllerApi();
+    },
+    /**
      * Gathers meta and company information associated with a dataset and adds it to the list of displayed
      * datasets if the information can be retrieved
      * @param dataId the ID of the corresponding dataset
      */
     async addDatasetAssociatedInformationToDisplayList(dataId: string) {
       try {
-        const metaDataInformationControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getMetaDataControllerApi();
-        const metaDataResponse = await metaDataInformationControllerApi.getDataMetaInfo(dataId);
+        const metaDataResponse = await this.metaDataInformationControllerApi!.getDataMetaInfo(dataId);
         this.metaInformation = metaDataResponse.data;
-        const companyDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getCompanyDataControllerApi();
-        const companyResponse = await companyDataControllerApi.getCompanyById(this.metaInformation.companyId);
+        const companyResponse = await this.companyDataControllerApi!.getCompanyById(this.metaInformation.companyId);
         this.companyInformation = companyResponse.data.companyInformation;
-        this.resultData.push({
+        this.displayData.push({
           dataId: dataId,
           metaInformation: this.metaInformation,
           companyInformation: this.companyInformation,

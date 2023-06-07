@@ -4,8 +4,8 @@
   </div>
   <MiddleCenterDiv class="col-12">
     <div autofocus="autofocus" v-if="reviewSubmitted !== true">
-      <PrimeButton @click="setQualityStatusToApproved" label="Accept Dataset" />
-      <PrimeButton @click="setQualityStatusToRejected" label="Reject Dataset" />
+      <PrimeButton @click="setQualityStatusTo(QaStatus.Accepted)" label="Accept Dataset" id="accept-button" />
+      <PrimeButton @click="setQualityStatusTo(QaStatus.Rejected)" label="Reject Dataset" id="reject-button" />
     </div>
     <div v-if="reviewSubmitted">
       <SuccessMessage v-if="reviewSuccessful" success-message="Review successfully submitted." />
@@ -25,6 +25,7 @@ import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS } from "@/utils/Constants";
+import { QaStatus } from "@clients/qaservice";
 
 export default defineComponent({
   components: { FailMessage, SuccessMessage, MiddleCenterDiv, PrimeButton },
@@ -41,6 +42,7 @@ export default defineComponent({
       dataId: "",
       reviewSubmitted: false,
       reviewSuccessful: false,
+      QaStatus,
     };
   },
   mounted() {
@@ -60,33 +62,15 @@ export default defineComponent({
 
   methods: {
     /**
-     * Sets dataset to accepted
+     * Sets dataset quality status to the given status
      */
-    async setQualityStatusToApproved() {
+    async setQualityStatusTo(qaStatus: QaStatus) {
       try {
         this.reviewSubmitted = true;
         const qaServiceControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getQaControllerApi();
-        await qaServiceControllerApi.assignQualityStatus(this.dataId, "Accepted");
-        this.reviewSuccessful = true;
-        setTimeout(() => {
-          this.closeTheDialogAndReloadPage();
-        }, TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
-     * Sets dataset to rejected
-     */
-    async setQualityStatusToRejected() {
-      try {
-        this.reviewSubmitted = true;
-        const qaServiceControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)()
-        ).getQaControllerApi();
-        await qaServiceControllerApi.assignQualityStatus(this.dataId, "Rejected");
+        await qaServiceControllerApi.assignQualityStatus(this.dataId, qaStatus);
         this.reviewSuccessful = true;
         setTimeout(() => {
           this.closeTheDialogAndReloadPage();
@@ -112,5 +96,17 @@ pre#dataset-container {
   background: white;
   padding: 20px;
   border: 1px solid black;
+}
+
+#accept-button {
+    color: var(--green-700);
+    background: var(--green-100);
+    border: 1px solid var(--green-700);
+}
+
+#reject-button {
+    color: var(--red-700);
+    background: var(--red-100);
+    border: 1px solid var(--red-700);
 }
 </style>

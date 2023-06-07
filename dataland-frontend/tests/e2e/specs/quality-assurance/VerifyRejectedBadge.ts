@@ -6,7 +6,7 @@ import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
 
 describeIf(
-  "Validation for correct display of 'Rejected' bade",
+  "Validation for correct display of 'Rejected' badge",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     dataEnvironments: ["fakeFixtures"],
