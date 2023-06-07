@@ -163,6 +163,8 @@ export default defineComponent({
     /**
      * A helper function that closes all the dropdown filters
      */
+    // The following method is used, the linter reports a false positive here
+    // eslint-disable-next-line vue/no-unused-properties
     closeAllOpenDropDowns() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.countryFilter?.$refs.multiselect.hide();
