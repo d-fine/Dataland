@@ -12,6 +12,7 @@ include(
     "dataland-qa-service",
     "dataland-message-queue-utils",
     "dataland-document-manager",
+    "dataland-batch-manager",
 )
 
 dependencyResolutionManagement {
