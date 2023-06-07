@@ -82,6 +82,7 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
     const isQaRequired = incomingRequest.headers["REQUIRE-QA"] === "true";
     delete incomingRequest.headers["REQUIRE-QA"];
     if (isQaRequired) {
+      incomingRequest.query["bypassQa"] = "false";
       return;
     }
     const authorizationHeader = (incomingRequest.headers["authorization"] ??
@@ -95,7 +96,7 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
       incomingRequest.query["bypassQa"] = "true";
     }
   };
-  cy.intercept("**/api/data/*", handler);
+  cy.intercept("/api/data/*", handler);
 }
 
 /**
