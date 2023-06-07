@@ -7,7 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackend.annotations.DataType as DataTypeAnnotation
 
 /**
- * This is a utility class that encapsultes the name of DataTypes.
+ * This is a utility class that encapsulates the name of DataTypes.
  * During construction, it is verified that the name actually represents a datatype.
  * But this class is Serialised and Deserialized as a simple string
  * The DataTypeSchemaCustomizer ensures that this property gets displayed as an Enum in the OpenApi spec

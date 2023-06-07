@@ -37,6 +37,7 @@
                   data-test="reportingPeriodLabel"
                   :label="euTaxonomyKpiNameMappings.reportingPeriod"
                   :description="euTaxonomyKpiInfoMappings.reportingPeriod"
+                  :is-required="true"
                 />
                 <div class="lg:col-6 md:col-6 col-12 p-0">
                   <Calendar
@@ -46,6 +47,7 @@
                     :showIcon="true"
                     view="year"
                     dateFormat="yy"
+                    validation="required"
                   />
                 </div>
 
@@ -115,14 +117,12 @@
                               <UploadFormHeader
                                 :label="euTaxonomyKpiNameMappings.report ?? ''"
                                 :description="euTaxonomyKpiInfoMappings.report ?? ''"
-                                :is-required="true"
                               />
                               <FormKit
                                 type="select"
                                 name="report"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
-                                validation="required"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />

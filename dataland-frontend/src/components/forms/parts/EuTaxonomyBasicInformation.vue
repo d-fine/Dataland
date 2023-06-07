@@ -10,7 +10,6 @@
         :name="'fiscalYearDeviation'"
         :description="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
         :label="euTaxonomyKpiNameMappings.fiscalYearDeviation"
-        :required="true"
         :options="[
           { label: 'Deviation', value: 'Deviation' },
           { label: 'No Deviation', value: 'NoDeviation' },
@@ -22,7 +21,6 @@
         <UploadFormHeader
           :label="euTaxonomyKpiNameMappings.fiscalYearEnd"
           :description="euTaxonomyKpiInfoMappings.fiscalYearEnd"
-          :is-required="true"
         />
         <div class="md:col-6 col-12 p-0">
           <Calendar
@@ -37,7 +35,6 @@
 
         <FormKit
           type="text"
-          validation="required"
           validation-label="Fiscal year"
           :modelValue="fiscalYearEnd"
           name="fiscalYearEnd"
@@ -68,7 +65,6 @@
         <UploadFormHeader
           :label="euTaxonomyKpiNameMappings.numberOfEmployees"
           :description="euTaxonomyKpiInfoMappings.numberOfEmployees"
-          :is-required="true"
         />
         <div class="lg:col-4 md:col-4 col-6 p-0">
           <FormKit
@@ -76,7 +72,7 @@
             name="numberOfEmployees"
             validation-label="Number of employees"
             placeholder="Value"
-            validation="required|number|min:0"
+            validation="number|min:0"
             step="1"
             min="0"
           />
