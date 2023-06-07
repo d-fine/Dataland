@@ -16,13 +16,15 @@ import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
+ * @param bypassQa A boolean indicating whether QA shall be bypassed
  * @returns a promise on the created data meta information
  */
 export async function uploadOneLksgDatasetViaApi(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: LksgData
+  data: LksgData,
+  bypassQa: boolean = true
 ): Promise<DataMetaInformation> {
   const response = await new LksgDataControllerApi(
     new Configuration({ accessToken: token })
@@ -32,7 +34,7 @@ export async function uploadOneLksgDatasetViaApi(
       reportingPeriod,
       data,
     },
-    true
+    false
   );
   return response.data;
 }
@@ -43,17 +45,19 @@ export async function uploadOneLksgDatasetViaApi(
  * @param companyInformation The company information to use for the company upload
  * @param testData The Dataset to upload
  * @param reportingPeriod The reporting period to use for the upload
+ * @param bypassQa A boolean indicating whether QA shall be bypassed
  * @returns an object which contains the companyId from the company upload and the dataId from the data upload
  */
 export function uploadCompanyAndLksgDataViaApi(
   token: string,
   companyInformation: CompanyInformation,
   testData: LksgData,
-  reportingPeriod: string
+  reportingPeriod: string,
+  bypassQa: boolean = true,
 ): Promise<UploadIds> {
   return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
     (storedCompany) => {
-      return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, reportingPeriod, testData).then(
+      return uploadOneLksgDatasetViaApi(token, storedCompany.companyId, reportingPeriod, testData, bypassQa).then(
         (dataMetaInformation) => {
           return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
         }
