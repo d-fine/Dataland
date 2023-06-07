@@ -24,12 +24,10 @@ class GleifCsvParser {
     }
 
     fun readGleifDataFromBufferedReader(bufferedReader: BufferedReader): MappingIterator<GleifCompanyInformation> {
-        val schema = CsvSchema.emptySchema().withHeader()
-
         return CsvMapper()
             .registerModule(kotlinModule())
             .readerFor(GleifCompanyInformation::class.java)
-            .with(schema)
+            .with(CsvSchema.emptySchema().withHeader())
             .readValues(bufferedReader)
     }
 }
