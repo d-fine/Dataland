@@ -95,7 +95,7 @@ export function interceptAllDataPostsAndBypassQaIfPossible(): void {
       incomingRequest.query["bypassQa"] = "true";
     }
   };
-  cy.intercept("/api/data/*", handler);
+  cy.intercept("**/api/data/*", handler);
 }
 
 /**
