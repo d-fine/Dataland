@@ -1,7 +1,8 @@
-import { CompanyIdentifierIdentifierTypeEnum, DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
+import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
+import { login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { admin_name, admin_pw } from "@e2e/utils/Cypress";
+import { reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import {
   fillEligibilityKpis,
   fillEuTaxonomyForFinancialsRequiredFields,
@@ -9,7 +10,6 @@ import {
 } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 describeIf(
   "As a user, I expect to be able to add a new dataset and see it as pending",
@@ -18,12 +18,10 @@ describeIf(
     dataEnvironments: ["fakeFixtures"],
   },
   function () {
-    beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-    });
-
     let testData: FixtureData<EuTaxonomyDataForFinancials>;
-    const testCompany = generateDummyCompanyInformation("company-for-testing-kpi-sections");
+    const uuid = new Date().getTime();
+    const companyName = `company-for-testing-qa-${uuid}`;
+    const testCompany = generateDummyCompanyInformation(companyName);
 
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
@@ -33,14 +31,15 @@ describeIf(
     });
 
     it("Check wether newly added dataset has Pending status", () => {
-      cy.visit("/qualityassurance");
+      login(uploader_name, uploader_pw);
+
       uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
         DataTypeEnum.EutaxonomyFinancials,
         testCompany,
         testData.t,
         fillEuTaxonomyForm,
         () => undefined,
-        testSubmittedDatasetIsInreviewList
+        testSubmittedDatasetIsInReviewList
       );
     });
   }
@@ -77,8 +76,18 @@ function fillEuTaxonomyForm(data: EuTaxonomyDataForFinancials): void {
  * Tests that the item was added and is visible on the QA list
  * @param companyName
  */
-function testSubmittedDatasetIsInreviewList(companyName: string): void {
-  cy.visit("/qualityassurance");
+function testSubmittedDatasetIsInReviewList(companyName: string): void {
+  cy.get("div[id='profile-picture-dropdown-toggle']")
+    .click()
+    .wait(1000)
+    .get("a[id='profile-picture-dropdown-logout-anchor']")
+    .click();
+
+  login(reviewer_name, reviewer_pw);
+
+  cy.visitAndCheckAppMount("/qualityassurance");
+
+  cy.pause();
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody').first().should("exist");
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .get(".qa-review-company-name")
