@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
+    implementation(libs.commons.io)
     implementation("org.springframework.boot:spring-boot-starter:3.1.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
