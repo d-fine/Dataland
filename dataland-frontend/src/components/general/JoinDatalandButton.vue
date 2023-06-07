@@ -23,7 +23,6 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-      authenticated: inject<boolean>("authenticated"),
     };
   },
   methods: {
