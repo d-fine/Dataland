@@ -26,6 +26,7 @@
 [Environment]::SetEnvironmentVariable("KEYCLOAK_DATALAND_ADMIN_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_DATALAND_ADMIN_SALT", "K9nzg086pCNjq8dxl84GZg==", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("KEYCLOAK_DATALAND_ADMIN_VALUE", "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA==", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("DATALAND_BATCH_MANAGER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("EXPECT_STACKTRACE", "true", [System.EnvironmentVariableTarget]::User)
 # If needed set REALDATA to an appropriate value. Beware: If set, not all tests might be visible if E2E tests are started locally [Environment]::SetEnvironmentVariable("REALDATA", "false", [System.EnvironmentVariableTarget]::User)
 # If needed, set to your sonar token [Environment]::SetEnvironmentVariable("SONAR_TOKEN", "", [System.EnvironmentVariableTarget]::User)
