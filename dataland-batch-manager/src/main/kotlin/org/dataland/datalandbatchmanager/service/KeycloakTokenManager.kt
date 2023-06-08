@@ -36,7 +36,7 @@ class KeycloakTokenManager(
     }
 
     private fun updateAccessToken() {
-        logger.info("Updating Keycloak Access Token")
+        logger.info("Updating Keycloak Access Token.")
         val authorizationHeader = "Basic ${Base64.getEncoder().encodeToString(("$clientId:$clientSecret").toByteArray())}"
 
         val client = OkHttpClient()
