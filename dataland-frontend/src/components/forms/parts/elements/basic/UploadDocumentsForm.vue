@@ -51,13 +51,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
-import { CompanyReport } from "@clients/backend";
-import Keycloak from "keycloak-js";
 import {
   calculateSha256HashFromFile,
   DocumentToUpload,
@@ -73,14 +71,8 @@ export default defineComponent({
     FileUpload,
   },
   emits: ["documentsChanged"],
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
   data() {
     return {
-      formsDatesFilesToUpload: [] as string[] | undefined,
       formatBytesUserFriendly,
       DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES: DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       documentsToUpload: [] as DocumentToUpload[],
@@ -90,9 +82,6 @@ export default defineComponent({
     name: {
       type: String,
       required: true,
-    },
-    referencedDocumentsForPrefill: {
-      type: Object as () => { [key: string]: CompanyReport },
     },
     moreThanOneDocumentAllowed: {
       type: Boolean,
@@ -164,6 +153,8 @@ export default defineComponent({
     /**
      * removes all documents at once, is invoked by a yes no field if it is resetted to "No"
      */
+    // Called from YesNoFormField
+    // eslint-disable-next-line vue/no-unused-properties
     removeAllDocuments() {
       (this.$refs.fileUpload as FileUpload).files = [];
       this.documentsToUpload = [];

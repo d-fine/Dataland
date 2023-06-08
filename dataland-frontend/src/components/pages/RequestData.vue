@@ -166,7 +166,6 @@ export default defineComponent({
       submissionInProgress: false,
       maxFileSize: DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       selectedFile: null as null | File,
-      hideName: false,
     };
   },
 

@@ -62,16 +62,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
-
-import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import { CompanyReport } from "@clients/backend";
-import Keycloak from "keycloak-js";
 import ReportFormElement from "@/components/forms/parts/ReportFormElement.vue";
 import ElementsDialog from "@/components/general/ElementsDialog.vue";
-import { removeFileTypeExtension, ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
+import { ReportToUpload, StoredReport } from "@/utils/FileUploadUtils";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 
 export default defineComponent({
@@ -82,16 +78,8 @@ export default defineComponent({
     PrimeButton,
   },
   emits: ["referenceableReportNamesChanged"],
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
-    };
-  },
   data() {
     return {
-      formsDatesFilesToUpload: [] as string[] | undefined,
-      formatBytesUserFriendly,
-      DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES: DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
       reportsToUpload: [] as ReportToUpload[] | undefined,
       storedReports: [] as StoredReport[],
       indexOfReportToRemove: [] as number[],
@@ -115,7 +103,6 @@ export default defineComponent({
     },
   },
   methods: {
-    removeFileTypeExtension,
     /**
      * Emits event that referenceable files changed
      */

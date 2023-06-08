@@ -6,10 +6,6 @@
             font-weight: 500;
             font-size: 16px;
         }
-
-        a {
-            color: #e67f3f;
-        }
     </style>
     <head>
         <link rel="Shortcut Icon" type="image/x-icon"
