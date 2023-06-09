@@ -61,7 +61,7 @@ import BackButton from "@/components/general/BackButton.vue";
 import Card from "primevue/card";
 import CreateCompany from "@/components/forms/CreateCompany.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import { TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS } from "@/utils/Constants";
+import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from "@/utils/Constants";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
@@ -111,7 +111,7 @@ export default defineComponent({
     handleCompanyCreated(companyId: string) {
       setTimeout(() => {
         void this.$router.push(`/companies/${companyId}/frameworks/upload`);
-      }, TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS);
+      }, TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS);
     },
   },
 });

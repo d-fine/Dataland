@@ -7,7 +7,7 @@
   >
     <span class="flex-1">{{ warningMessage }}</span>
     <router-link
-      v-if="displayedDataset.qaStatus !== QaStatus.Pending"
+      v-if="existsAcceptedVersion"
       :to="link"
       class="no-underline"
       data-test="datasetDisplayStatusLink"
@@ -47,12 +47,13 @@ export default defineComponent({
     displayWarning(): boolean {
       return (
         this.displayedDataset?.currentlyActive === false ||
-        this.displayedDataset?.qaStatus === QaStatus.Pending ||
+        this.displayedDataset?.qaStatus !== QaStatus.Accepted ||
         this.areMoreDatasetsViewableSimultaneously
       );
     },
     warningMessage(): string {
       if (this.displayedDataset?.qaStatus === QaStatus.Pending) return "This dataset is currently pending review";
+      else if (this.displayedDataset?.qaStatus === QaStatus.Rejected) return "This dataset has been rejected";
       else if (this.displayedDataset?.currentlyActive === false) return "This dataset is superseded";
       else if (this.areMoreDatasetsViewableSimultaneously) return "You are only viewing a single available dataset";
       else return "ERROR";
@@ -67,7 +68,7 @@ export default defineComponent({
       }
     },
     link(): string | undefined {
-      if (this.displayedDataset?.qaStatus === QaStatus.Pending || this.displayedDataset?.currentlyActive === false) {
+      if (this.displayedDataset?.qaStatus !== QaStatus.Accepted || this.displayedDataset?.currentlyActive === false) {
         return (
           `/companies/${this.displayedDataset.companyId}` +
           `/frameworks/${this.displayedDataset.dataType}/reportingPeriods/${this.displayedDataset.reportingPeriod}`
@@ -80,6 +81,10 @@ export default defineComponent({
       } else {
         return undefined;
       }
+    },
+    existsAcceptedVersion(): boolean {
+      return (this.receivedMapOfReportingPeriodsToActiveDataMetaInfo as Map<string, DataMetaInformation>)
+        .has(this.displayedDataset?.reportingPeriod ?? "");
     },
     areMoreDatasetsViewableSimultaneously(): boolean {
       return (

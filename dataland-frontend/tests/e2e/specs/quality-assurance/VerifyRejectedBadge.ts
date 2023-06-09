@@ -33,7 +33,8 @@ describeIf(
             cy.ensureLoggedIn(admin_name, admin_pw);
             cy.visit(`/qualityassurance`);
             cy.get("td", { timeout: Cypress.env("long_timeout_in_ms") as number })
-              .contains(`${uploadIds.dataId}`).click();
+              .contains(`${uploadIds.dataId}`)
+              .click();
             cy.get("button[aria-label='Reject Dataset']").click();
             cy.visit(`/datasets`);
             cy.get(`a[href="/companies/${uploadIds.companyId}/frameworks/lksg/${uploadIds.dataId}"]`)

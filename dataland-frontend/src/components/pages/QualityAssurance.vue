@@ -9,36 +9,42 @@
             <div v-if="!waitingForData">
               <div class="card">
                 <DataTable
-                  :value="displayData"
+                  :value="displayDataOfPage"
                   class="table-cursor"
                   id="qa-data-result"
                   :rowHover="true"
                   data-test="qa-review-section"
-                  @row-click="loadDatasetAndOpenModal"
+                  @row-click="loadDatasetAndOpenModal($event)"
+                  paginator
+                  paginator-position="top"
+                  :rows="datasetsPerPage"
+                  lazy
+                  :total-records="dataIdList.length"
+                  @page="onPage($event)"
                 >
                   <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
-                    <template #body="{ data }">
-                      {{ data.dataId }}
+                    <template #body="slotProps">
+                      {{ slotProps.data.dataId }}
                     </template>
                   </Column>
                   <Column header="COMPANY NAME" class="d-bg-white w-2 qa-review-company-name">
-                    <template #body="{ data }">
-                      {{ data.companyInformation.companyName }}
+                    <template #body="slotProps">
+                      {{ slotProps.data.companyInformation.companyName }}
                     </template>
                   </Column>
                   <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework">
-                    <template #body="{ data }">
-                      {{ humanizeString(data.metaInformation.dataType) }}
+                    <template #body="slotProps">
+                      {{ humanizeString(slotProps.data.metaInformation.dataType) }}
                     </template>
                   </Column>
                   <Column header="REPORTING PERIOD" class="d-bg-white w-2 qa-review-reporting-period">
-                    <template #body="{ data }">
-                      {{ data.metaInformation.reportingPeriod }}
+                    <template #body="slotProps">
+                      {{ slotProps.data.metaInformation.reportingPeriod }}
                     </template>
                   </Column>
                   <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
-                    <template #body="{ data }">
-                      {{ convertUnixTimeInMsToDateString(data.metaInformation.uploadTime) }}
+                    <template #body="slotProps">
+                      {{ convertUnixTimeInMsToDateString(slotProps.data.metaInformation.uploadTime) }}
                     </template>
                   </Column>
                   <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
@@ -83,7 +89,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
-import DataTable from "primevue/datatable";
+import DataTable, { DataTablePageEvent, DataTableRowClickEvent } from "primevue/datatable";
 import Column from "primevue/column";
 import { humanizeString } from "@/utils/StringHumanizer";
 import QADatasetModal from "@/components/general/QaDatasetModal.vue";
@@ -107,6 +113,7 @@ export default defineComponent({
   },
   setup() {
     return {
+      datasetsPerPage: 10,
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
@@ -114,7 +121,7 @@ export default defineComponent({
     return {
       dataIdList: [] as Array<string>,
       dataId: "",
-      displayData: [] as QaDataObject[],
+      displayDataOfPage: [] as QaDataObject[],
       waitingForData: true,
       dataSet: null as unknown as object,
       KEYCLOAK_ROLE_REVIEWER,
@@ -123,10 +130,11 @@ export default defineComponent({
       qaServiceControllerApi: undefined as undefined | QaControllerApi,
       metaDataInformationControllerApi: undefined as undefined | MetaDataControllerApiInterface,
       companyDataControllerApi: undefined as undefined | CompanyDataControllerApiInterface,
+      currentPage: 0,
     };
   },
   mounted() {
-    void this.getQaData();
+    void this.getQaDataForCurrentPage();
   },
   props: {
     data: {
@@ -141,14 +149,19 @@ export default defineComponent({
     /**
      * Uses the dataland API to build the QaDataObject which is displayed on the quality assurance page
      */
-    async getQaData() {
+    async getQaDataForCurrentPage() {
       try {
         this.waitingForData = true;
-        this.displayData = [];
+        this.displayDataOfPage = [];
         await this.gatherControllerApis();
         const response = await this.qaServiceControllerApi!.getUnreviewedDatasetsIds();
         this.dataIdList = response.data;
-        for (const dataId of this.dataIdList) {
+        const firstDatasetOnPageIndex = this.currentPage * this.datasetsPerPage;
+        const dataIdsOnPage = this.dataIdList.slice(
+          firstDatasetOnPageIndex,
+          firstDatasetOnPageIndex + this.datasetsPerPage
+        );
+        for (const dataId of dataIdsOnPage) {
           await this.addDatasetAssociatedInformationToDisplayList(dataId);
         }
         this.waitingForData = false;
@@ -181,7 +194,7 @@ export default defineComponent({
         this.metaInformation = metaDataResponse.data;
         const companyResponse = await this.companyDataControllerApi!.getCompanyById(this.metaInformation.companyId);
         this.companyInformation = companyResponse.data.companyInformation;
-        this.displayData.push({
+        this.displayDataOfPage.push({
           dataId: dataId,
           metaInformation: this.metaInformation,
           companyInformation: this.companyInformation,
@@ -256,19 +269,19 @@ export default defineComponent({
     /**
      * Opens a modal to display a table with the provided list of production sites
      * @param event the event which triggers the method
-     * @param event.data the data object which is used to retrieve the dataset to be reviewed
      */
-    async loadDatasetAndOpenModal(event: { data: QaDataObject }) {
-      await this.getDataSet(event.data);
+    async loadDatasetAndOpenModal(event: DataTableRowClickEvent) {
+      const qaDataObject = event.data as QaDataObject;
+      await this.getDataSet(qaDataObject);
       this.$dialog.open(QADatasetModal, {
         props: {
           header:
             "Reviewing " +
-            event.data.metaInformation.dataType +
-            " data for: " +
-            event.data.companyInformation.companyName +
+            qaDataObject.metaInformation.dataType +
+            " data for " +
+            qaDataObject.companyInformation.companyName +
             " for the reporting period " +
-            event.data.metaInformation.reportingPeriod,
+            qaDataObject.metaInformation.reportingPeriod,
           modal: true,
           dismissableMask: true,
         },
@@ -277,9 +290,13 @@ export default defineComponent({
           dataId: this.dataId,
         },
         onClose: () => {
-          void this.getQaData();
+          void this.getQaDataForCurrentPage();
         },
       });
+    },
+    onPage(event: DataTablePageEvent) {
+      this.currentPage = event.page;
+      void this.getQaDataForCurrentPage();
     },
   },
 });

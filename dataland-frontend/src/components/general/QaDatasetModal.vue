@@ -3,13 +3,13 @@
     <pre id="dataset-container">{{ datasetAsJson }}</pre>
   </div>
   <MiddleCenterDiv class="col-12">
-    <div autofocus="autofocus" v-if="reviewSubmitted !== true">
-      <PrimeButton @click="setQualityStatusTo(QaStatus.Accepted)" label="Accept Dataset" id="accept-button" />
-      <PrimeButton @click="setQualityStatusTo(QaStatus.Rejected)" label="Reject Dataset" id="reject-button" />
-    </div>
     <div v-if="reviewSubmitted">
       <SuccessMessage v-if="reviewSuccessful" success-message="Review successfully submitted." />
       <FailMessage v-else message="The resource you tried to access is not available. Please close the data pop-up." />
+    </div>
+    <div autofocus="autofocus" v-else>
+      <PrimeButton @click="setQualityStatusTo(QaStatus.Accepted)" label="Accept Dataset" id="accept-button" />
+      <PrimeButton @click="setQualityStatusTo(QaStatus.Rejected)" label="Reject Dataset" id="reject-button" />
     </div>
   </MiddleCenterDiv>
 </template>
@@ -24,7 +24,7 @@ import Keycloak from "keycloak-js";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS } from "@/utils/Constants";
+import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from "@/utils/Constants";
 import { QaStatus } from "@clients/qaservice";
 
 export default defineComponent({
@@ -63,6 +63,7 @@ export default defineComponent({
   methods: {
     /**
      * Sets dataset quality status to the given status
+     * @param qaStatus the QA status to be assigned
      */
     async setQualityStatusTo(qaStatus: QaStatus) {
       try {
@@ -74,7 +75,7 @@ export default defineComponent({
         this.reviewSuccessful = true;
         setTimeout(() => {
           this.closeTheDialogAndReloadPage();
-        }, TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS);
+        }, TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS);
       } catch (error) {
         console.error(error);
       }
@@ -99,14 +100,14 @@ pre#dataset-container {
 }
 
 #accept-button {
-    color: var(--green-700);
-    background: var(--green-100);
-    border: 1px solid var(--green-700);
+  color: var(--green-700);
+  background: var(--green-100);
+  border: 1px solid var(--green-700);
 }
 
 #reject-button {
-    color: var(--red-700);
-    background: var(--red-100);
-    border: 1px solid var(--red-700);
+  color: var(--red-700);
+  background: var(--red-100);
+  border: 1px solid var(--red-700);
 }
 </style>
