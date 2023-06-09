@@ -2,7 +2,7 @@ import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { admin_name, admin_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
+import { reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import {
   fillEligibilityKpis,
   fillEuTaxonomyForFinancialsRequiredFields,
@@ -31,15 +31,15 @@ describeIf(
     });
 
     it("Check wether newly added dataset has Pending status", () => {
-      login(admin_name, admin_pw);
+      login(uploader_name, uploader_pw);
 
       uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
         DataTypeEnum.EutaxonomyFinancials,
         testCompany,
         testData.t,
         fillEuTaxonomyForm,
-        () => undefined,
-        testSubmittedDatasetIsInReviewList
+        (req) => (req.headers["REQUIRE-QA"] = "true"),
+        () => testSubmittedDatasetIsInReviewList(companyName)
       );
     });
   }
@@ -74,21 +74,60 @@ function fillEuTaxonomyForm(data: EuTaxonomyDataForFinancials): void {
 
 /**
  * Tests that the item was added and is visible on the QA list
- * @param companyName
+ * @param companyId The ID of the new company
+ * @param companyName The name of the company
  */
 function testSubmittedDatasetIsInReviewList(companyName: string): void {
-  cy.get("div[id='profile-picture-dropdown-toggle']")
-    .click()
-    .wait(1000)
-    .get("a[id='profile-picture-dropdown-logout-anchor']")
-    .click();
+  testDatasetPresent(companyName, "PENDING");
+
+  safeLogout();
 
   login(reviewer_name, reviewer_pw);
 
   cy.visit("/qualityassurance").wait(1000);
 
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody').first().should("exist");
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr')
+    .last()
+    .should("exist")
     .get(".qa-review-company-name")
     .should("contain", companyName);
+
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
+
+  cy.get(".p-dialog").should("exist").get(".p-dialog-header").should("contain", companyName);
+  cy.get(".p-dialog").get('.p-dialog-content pre[id="dataset-container"]').should("not.be.empty");
+  cy.get(".p-dialog").get('button[id="accept-button"]').should("exist").click();
+
+  safeLogout();
+  login(uploader_name, uploader_pw);
+
+  testDatasetPresent(companyName, "APPROVED");
+}
+
+/**
+ * Visitst the datasets page and verifies that the last dataset matches the company name and expected status
+ * @param companyName The name of the company that just uploaded
+ * @param status The current expected status of the dataset
+ */
+function testDatasetPresent(companyName: string, status: string): void {
+  cy.visit("/datasets").wait(1000);
+
+  cy.get('[data-test="datasets-table"] .p-datatable-tbody tr')
+    .first()
+    .should("exist")
+    .get(".data-test-company-name")
+    .should("contain", companyName);
+
+  cy.get('[data-test="datasets-table"]').first().get('span[data-test="data-test-status"]').should("contain", status);
+}
+
+/**
+ * Logs the user out without testing the url
+ */
+function safeLogout(): void {
+  cy.get("div[id='profile-picture-dropdown-toggle']")
+    .click()
+    .wait(1000)
+    .get("a[id='profile-picture-dropdown-logout-anchor']")
+    .click();
 }
