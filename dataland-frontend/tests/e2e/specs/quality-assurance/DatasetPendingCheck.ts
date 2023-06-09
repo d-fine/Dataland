@@ -90,12 +90,13 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
     .last()
     .should("exist")
     .get(".qa-review-company-name")
-    .should("contain", companyName)
-    .click({ force: true });
+    .should("contain", companyName);
+
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
 
   cy.get(".p-dialog").should("exist").get(".p-dialog-header").should("contain", companyName);
   cy.get(".p-dialog").get('.p-dialog-content pre[id="dataset-container"]').should("not.be.empty");
-  cy.get(".p-dialog").get('button[id="accept-button"]').should("exist").click({ force: true });
+  cy.get(".p-dialog").get('button[id="accept-button"]').should("exist").click();
 
   cy.visit("/qualityassurance").wait(1000);
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').get(".qa-review-company-name").should(".not.exist");
