@@ -77,7 +77,7 @@ import {
   CompanyInformation,
   DataMetaInformation,
   DataTypeEnum,
-  MetaDataControllerApiInterface
+  MetaDataControllerApiInterface,
 } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -90,7 +90,7 @@ import QADatasetModal from "@/components/general/QaDatasetModal.vue";
 import { AxiosError } from "axios";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";
-import {QaControllerApi} from "@clients/qaservice";
+import { QaControllerApi } from "@clients/qaservice";
 
 export default defineComponent({
   name: "QualityAssurance",
