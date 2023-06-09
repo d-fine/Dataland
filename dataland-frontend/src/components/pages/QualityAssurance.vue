@@ -6,61 +6,63 @@
         <TheContent class="paper-section flex">
           <div class="col-12 text-left pb-0">
             <h1>Quality Assurance</h1>
-            <div v-if="!waitingForData">
-              <div class="card">
-                <DataTable
-                  :value="displayDataOfPage"
-                  class="table-cursor"
-                  id="qa-data-result"
-                  :rowHover="true"
-                  data-test="qa-review-section"
-                  @row-click="loadDatasetAndOpenModal($event)"
-                  paginator
-                  paginator-position="top"
-                  :rows="datasetsPerPage"
-                  lazy
-                  :total-records="dataIdList.length"
-                  @page="onPage($event)"
-                >
-                  <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
-                    <template #body="slotProps">
-                      {{ slotProps.data.dataId }}
-                    </template>
-                  </Column>
-                  <Column header="COMPANY NAME" class="d-bg-white w-2 qa-review-company-name">
-                    <template #body="slotProps">
-                      {{ slotProps.data.companyInformation.companyName }}
-                    </template>
-                  </Column>
-                  <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework">
-                    <template #body="slotProps">
-                      {{ humanizeString(slotProps.data.metaInformation.dataType) }}
-                    </template>
-                  </Column>
-                  <Column header="REPORTING PERIOD" class="d-bg-white w-2 qa-review-reporting-period">
-                    <template #body="slotProps">
-                      {{ slotProps.data.metaInformation.reportingPeriod }}
-                    </template>
-                  </Column>
-                  <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
-                    <template #body="slotProps">
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.metaInformation.uploadTime) }}
-                    </template>
-                  </Column>
-                  <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
-                    <template #body>
-                      <div class="text-right text-primary no-underline font-bold">
-                        <span>REVIEW</span>
-                        <span class="ml-3">></span>
-                      </div>
-                    </template>
-                  </Column>
-                </DataTable>
-              </div>
-            </div>
-            <div v-else class="inline-loading text-center">
-              <p class="font-medium text-xl">Loading data to be reviewed...</p>
-              <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+            <div class="card">
+              <DataTable
+                :value="displayDataOfPage"
+                class="table-cursor"
+                id="qa-data-result"
+                :rowHover="true"
+                data-test="qa-review-section"
+                @row-click="loadDatasetAndOpenModal($event)"
+                paginator
+                paginator-position="top"
+                :rows="datasetsPerPage"
+                lazy
+                :total-records="dataIdList.length"
+                @page="onPage($event)"
+                :loading="waitingForData"
+              >
+                <template #empty> There is no data to be reviewed </template>
+                <template #loading>
+                  <div class="inline-loading text-center">
+                    <p class="font-medium text-xl">Loading data to be reviewed...</p>
+                    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+                  </div>
+                </template>
+                <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
+                  <template #body="slotProps">
+                    {{ slotProps.data.dataId }}
+                  </template>
+                </Column>
+                <Column header="COMPANY NAME" class="d-bg-white w-2 qa-review-company-name">
+                  <template #body="slotProps">
+                    {{ slotProps.data.companyInformation.companyName }}
+                  </template>
+                </Column>
+                <Column header="FRAMEWORK" class="d-bg-white w-2 qa-review-framework">
+                  <template #body="slotProps">
+                    {{ humanizeString(slotProps.data.metaInformation.dataType) }}
+                  </template>
+                </Column>
+                <Column header="REPORTING PERIOD" class="d-bg-white w-2 qa-review-reporting-period">
+                  <template #body="slotProps">
+                    {{ slotProps.data.metaInformation.reportingPeriod }}
+                  </template>
+                </Column>
+                <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
+                  <template #body="slotProps">
+                    {{ convertUnixTimeInMsToDateString(slotProps.data.metaInformation.uploadTime) }}
+                  </template>
+                </Column>
+                <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
+                  <template #body>
+                    <div class="text-right text-primary no-underline font-bold">
+                      <span>REVIEW</span>
+                      <span class="ml-3">></span>
+                    </div>
+                  </template>
+                </Column>
+              </DataTable>
             </div>
           </div>
         </TheContent>
@@ -134,7 +136,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    void this.getQaDataForCurrentPage();
+    this.getQaDataForCurrentPage();
   },
   props: {
     data: {
@@ -294,9 +296,13 @@ export default defineComponent({
         },
       });
     },
+    /**
+     * Updates the data for the current page
+     * @param event event containing the new page
+     */
     onPage(event: DataTablePageEvent) {
       this.currentPage = event.page;
-      void this.getQaDataForCurrentPage();
+      this.getQaDataForCurrentPage();
     },
   },
 });
