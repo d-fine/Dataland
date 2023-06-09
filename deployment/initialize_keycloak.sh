@@ -2,6 +2,11 @@
 set -eux
 source "$(dirname "$0")"/deployment_utils.sh
 
+function write_log_and_exit () {
+  docker logs "$keycloak_initializer_container_name"
+  exit 1
+}
+
 location=$1
 keycloak_user_dir=$2
 
@@ -18,7 +23,7 @@ timeout 300 bash -c "while ! docker logs $keycloak_initializer_container_name 2>
                      do
                        echo Startup of Keycloak incomplete. Waiting for it to finish.;
                        sleep 5;
-                     done"
+                     done" || write_log_and_exit
 
 docker logs $keycloak_initializer_container_name
 
