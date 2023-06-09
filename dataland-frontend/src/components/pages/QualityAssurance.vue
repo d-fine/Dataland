@@ -16,6 +16,7 @@
                   data-test="qa-review-section"
                   @row-click="loadDatasetAndOpenModal($event)"
                   paginator
+                  paginator-position="top"
                   :rows="datasetsPerPage"
                   lazy
                   :total-records="dataIdList.length"
@@ -277,7 +278,7 @@ export default defineComponent({
           header:
             "Reviewing " +
             qaDataObject.metaInformation.dataType +
-            " data for: " +
+            " data for " +
             qaDataObject.companyInformation.companyName +
             " for the reporting period " +
             qaDataObject.metaInformation.reportingPeriod,
