@@ -1,7 +1,7 @@
 package org.dataland.datalandbatchmanager.gleif
 
-import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbatchmanager.service.KeycloakTokenManager
@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.net.SocketTimeoutException
 
-class Upload (
-    @Autowired private val keycloakTokenManager: KeycloakTokenManager
-){
+class Upload(
+    @Autowired private val keycloakTokenManager: KeycloakTokenManager,
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    fun uploadCompanies(companyInformation: List<CompanyInformation> ) {
+    fun uploadCompanies(companyInformation: List<CompanyInformation>) {
         val companyDataControllerApi = CompanyDataControllerApi(System.getenv("INTERNAL_BACKEND_URL"))
         companyInformation.forEach { uploadSingleCompany(it, companyDataControllerApi) }
     }
@@ -35,7 +35,9 @@ class Upload (
                         if (exception.statusCode == 401 || exception.statusCode == 403) {
                             ApiClient.accessToken = keycloakTokenManager.getAccessToken()
                             counter++
-                        } else break
+                        } else {
+                            break
+                        }
                     }
                     else -> break
                 }

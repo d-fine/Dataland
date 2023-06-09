@@ -9,5 +9,5 @@ data class KeycloakAccessTokenResponse(
     val accessToken: String,
 
     @JsonProperty("expires_in")
-    val expiresIn: Int
+    val expiresIn: Int,
 )

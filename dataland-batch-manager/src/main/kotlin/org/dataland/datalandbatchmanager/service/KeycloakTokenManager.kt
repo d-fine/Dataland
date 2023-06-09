@@ -19,7 +19,7 @@ import java.util.*
 @Service
 class KeycloakTokenManager(
     @Autowired private val objectMapper: ObjectMapper,
-    @Value("\${dataland.dataland-batch-manager.client-id}")  private val clientId: String,
+    @Value("\${dataland.dataland-batch-manager.client-id}") private val clientId: String,
     @Value("\${dataland.dataland-batch-manager.client-secret}") private val clientSecret: String,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -27,7 +27,7 @@ class KeycloakTokenManager(
     private var currentAccessToken: String? = null
     private var currentAccessTokenExpireTime: Instant? = null
 
-    fun getAccessToken(): String  {
+    fun getAccessToken(): String {
         if (currentAccessToken == null || Instant.now().until(currentAccessTokenExpireTime, ChronoUnit.SECONDS) < 30) {
             updateAccessToken()
         }

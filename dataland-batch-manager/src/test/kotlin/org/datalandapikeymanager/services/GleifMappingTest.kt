@@ -14,7 +14,7 @@ import java.io.FileReader
 
 @ComponentScan(basePackages = ["org.dataland"])
 @SpringBootTest(classes = [DatalandBatchManager::class])
-class GleifMappingTest() {
+class GleifMappingTest {
     private final val expectedGleifCompanyInformation = GleifCompanyInformation(
         companyName = "CompanyName",
         countryCode = "CompanyCountry",

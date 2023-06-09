@@ -7,7 +7,7 @@ import java.io.File
 import java.net.URL
 
 @Component
-class GleifApiAccessor() {
+class GleifApiAccessor {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     fun getLastMonthGoldenCopyDelta(targetFile: File) {

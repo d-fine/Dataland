@@ -16,8 +16,7 @@ class GleifCsvParser {
     fun getCsvStreamFromZip(zipFile: File): BufferedReader {
         val zipInputStream = ZipInputStream(zipFile.inputStream())
         val zipEntry = zipInputStream.nextEntry
-        require(zipEntry?.name?.endsWith(".csv") ?: false)
-        { "The downloaded ZIP file does not contain the CSV file in the first position" }
+        require(zipEntry?.name?.endsWith(".csv") ?: false) { "The downloaded ZIP file does not contain the CSV file in the first position" }
 
         val inputStreamReader = InputStreamReader(zipInputStream)
         return BufferedReader(inputStreamReader)

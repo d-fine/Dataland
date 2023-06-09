@@ -13,11 +13,11 @@ import kotlin.time.toDuration
 class Scheduler(
     @Autowired private val apiAccessor: GleifApiAccessor,
     @Autowired private val gleifParser: GleifCsvParser,
-    @Autowired private val keycloakTokenManager: KeycloakTokenManager
+    @Autowired private val keycloakTokenManager: KeycloakTokenManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    init{
+    init {
         if (System.getenv("GET_ALL_GLEIF_COMPANIES") == "true") {
             getAllGleifCompanies()
         }
@@ -35,7 +35,6 @@ class Scheduler(
         }
         logger.info("Finished processing of all companies in ${getExecutionTime(start)}.")
     }
-
 
     @Scheduled(fixedDelay = 1000000000000, initialDelay = 120000)
     private fun processDeltaFile() {
@@ -60,6 +59,6 @@ class Scheduler(
     private fun getExecutionTime(startTime: Long): String {
         return (System.nanoTime() - startTime)
             .toDuration(DurationUnit.NANOSECONDS)
-            .toComponents { hours, minutes, seconds, _ ->  String.format("%02dh %02dm %02ds", hours, minutes, seconds ) }
+            .toComponents { hours, minutes, seconds, _ -> String.format("%02dh %02dm %02ds", hours, minutes, seconds) }
     }
 }
