@@ -358,6 +358,7 @@ services:
     environment:
       GET_ALL_GLEIF_COMPANIES: "false"
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
 networks:
   internal:
   external:
