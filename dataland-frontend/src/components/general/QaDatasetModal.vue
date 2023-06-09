@@ -24,7 +24,7 @@ import Keycloak from "keycloak-js";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS } from "@/utils/Constants";
+import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from "@/utils/Constants";
 import { QaStatus } from "@clients/qaservice";
 
 export default defineComponent({
@@ -75,7 +75,7 @@ export default defineComponent({
         this.reviewSuccessful = true;
         setTimeout(() => {
           this.closeTheDialogAndReloadPage();
-        }, TIME_DELAY_BETWEEN_SUBMIT_AND_RELOAD_IN_MS);
+        }, TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS);
       } catch (error) {
         console.error(error);
       }
