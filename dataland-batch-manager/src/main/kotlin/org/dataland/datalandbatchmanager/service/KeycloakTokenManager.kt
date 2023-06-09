@@ -15,7 +15,6 @@ import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
-import kotlin.math.log
 
 @Service
 class KeycloakTokenManager(
@@ -43,7 +42,7 @@ class KeycloakTokenManager(
         val mediaType = "application/x-www-form-urlencoded".toMediaType()
         val body = "grant_type=client_credentials".toRequestBody(mediaType)
         val request = Request.Builder()
-            .url("https://local-dev.dataland.com/keycloak/realms/datalandsecurity/protocol/openid-connect/token")
+            .url("http://keycloak:8080/keycloak/realms/datalandsecurity/protocol/openid-connect/token")
             .post(body)
             .addHeader("Content-Type", "application/x-www-form-urlencoded")
             .addHeader("Authorization", authorizationHeader)
@@ -55,6 +54,5 @@ class KeycloakTokenManager(
         currentAccessToken = parsedResponseBody.accessToken
         currentAccessTokenExpireTime = Instant.now() + Duration.ofSeconds(parsedResponseBody.expiresIn.toLong())
         logger.info("Acquired new access token!")
-
     }
 }

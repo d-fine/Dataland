@@ -349,6 +349,15 @@ services:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS: ${RABBITMQ_PASS}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+  batch-manager:
+    restart: always
+    profiles: ["production", "testing", "development"]
+    networks:
+      - internal
+    image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
+    environment:
+      GET_ALL_GLEIF_COMPANIES: "false"
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
 networks:
   internal:
   external:
