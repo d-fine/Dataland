@@ -22,7 +22,7 @@ export async function uploadOneLksgDatasetViaApi(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: LksgData,
+  data: LksgData
 ): Promise<DataMetaInformation> {
   const response = await new LksgDataControllerApi(
     new Configuration({ accessToken: token })
