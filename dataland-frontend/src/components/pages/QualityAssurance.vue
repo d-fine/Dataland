@@ -73,7 +73,6 @@
 </template>
 
 <script lang="ts">
-import BackButton from "@/components/general/BackButton.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
@@ -106,7 +105,6 @@ export default defineComponent({
     DatasetsTabMenu,
     AuthorizationWrapper,
     TheFooter,
-    BackButton,
     TheContent,
     TheHeader,
     AuthenticationWrapper,
@@ -156,7 +154,7 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
         await this.gatherControllerApis();
-        const response = await this.qaServiceControllerApi!.getUnreviewedDatasetsIds();
+        const response = await (this.qaServiceControllerApi as QaControllerApi).getUnreviewedDatasetsIds();
         this.dataIdList = response.data;
         const firstDatasetOnPageIndex = this.currentPage * this.datasetsPerPage;
         const dataIdsOnPage = this.dataIdList.slice(
@@ -192,9 +190,13 @@ export default defineComponent({
      */
     async addDatasetAssociatedInformationToDisplayList(dataId: string) {
       try {
-        const metaDataResponse = await this.metaDataInformationControllerApi!.getDataMetaInfo(dataId);
+        const metaDataResponse = await (
+          this.metaDataInformationControllerApi as MetaDataControllerApiInterface
+        ).getDataMetaInfo(dataId);
         this.metaInformation = metaDataResponse.data;
-        const companyResponse = await this.companyDataControllerApi!.getCompanyById(this.metaInformation.companyId);
+        const companyResponse = await (
+          this.companyDataControllerApi as CompanyDataControllerApiInterface
+        ).getCompanyById(this.metaInformation.companyId);
         this.companyInformation = companyResponse.data.companyInformation;
         this.displayDataOfPage.push({
           dataId: dataId,

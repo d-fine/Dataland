@@ -6,12 +6,7 @@
     style="min-height: 2rem"
   >
     <span class="flex-1">{{ warningMessage }}</span>
-    <router-link
-      v-if="existsAcceptedVersion"
-      :to="link"
-      class="no-underline"
-      data-test="datasetDisplayStatusLink"
-    >
+    <router-link v-if="existsAcceptedVersion" :to="link" class="no-underline" data-test="datasetDisplayStatusLink">
       <PrimeButton :label="buttonLabel" icon="pi pi-stopwatch" />
     </router-link>
   </div>
@@ -83,8 +78,9 @@ export default defineComponent({
       }
     },
     existsAcceptedVersion(): boolean {
-      return (this.receivedMapOfReportingPeriodsToActiveDataMetaInfo as Map<string, DataMetaInformation>)
-        .has(this.displayedDataset?.reportingPeriod ?? "");
+      return (this.receivedMapOfReportingPeriodsToActiveDataMetaInfo as Map<string, DataMetaInformation>).has(
+        this.displayedDataset?.reportingPeriod ?? ""
+      );
     },
     areMoreDatasetsViewableSimultaneously(): boolean {
       return (
