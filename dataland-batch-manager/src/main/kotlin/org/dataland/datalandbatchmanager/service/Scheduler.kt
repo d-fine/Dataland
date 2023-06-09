@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.io.File
+import java.util.*
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -36,6 +37,7 @@ class Scheduler(
         logger.info("Finished processing of all companies in ${getExecutionTime(start)}.")
     }
 
+    @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
     @Scheduled(fixedDelay = 1000000000000, initialDelay = 120000)
     private fun processDeltaFile() {
         logger.info("Starting update cycle for latest delta file.")
@@ -59,6 +61,10 @@ class Scheduler(
     private fun getExecutionTime(startTime: Long): String {
         return (System.nanoTime() - startTime)
             .toDuration(DurationUnit.NANOSECONDS)
-            .toComponents { hours, minutes, seconds, _ -> String.format("%02dh %02dm %02ds", hours, minutes, seconds) }
+            .toComponents { hours, minutes, seconds, _ ->
+                String.format(
+                    Locale.getDefault(), "%02dh %02dm %02ds", hours, minutes, seconds,
+                )
+            }
     }
 }

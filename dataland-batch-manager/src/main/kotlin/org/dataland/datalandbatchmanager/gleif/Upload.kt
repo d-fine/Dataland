@@ -19,12 +19,18 @@ class Upload(
         companyInformation.forEach { uploadSingleCompany(it, companyDataControllerApi) }
     }
 
-    private fun uploadSingleCompany(companyInformation: CompanyInformation, companyDataControllerApi: CompanyDataControllerApi) {
+    private fun uploadSingleCompany(
+        companyInformation: CompanyInformation,
+        companyDataControllerApi: CompanyDataControllerApi,
+    ) {
         var counter = 0
         val maxTries = 3
         while (counter < maxTries) {
             try {
-                logger.info("Uploading company data for ${companyInformation.companyName} (LEI: ${companyInformation.identifiers[0].identifierValue})")
+                logger.info(
+                    "Uploading company data for ${companyInformation.companyName} " +
+                        "(LEI: ${companyInformation.identifiers[0].identifierValue})",
+                )
                 companyDataControllerApi.postCompany(companyInformation)
                 break
             } catch (exception: Exception) {

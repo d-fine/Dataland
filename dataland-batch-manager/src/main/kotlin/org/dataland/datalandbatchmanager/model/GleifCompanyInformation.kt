@@ -32,7 +32,9 @@ data class GleifCompanyInformation(
             headquartersPostalCode = headquartersPostalCode,
             sector = "dummy",
             website = null,
-            identifiers = listOf(CompanyIdentifier(identifierType = CompanyIdentifier.IdentifierType.lei, identifierValue = lei)),
+            identifiers = listOf(
+                CompanyIdentifier(identifierType = CompanyIdentifier.IdentifierType.lei, identifierValue = lei),
+            ),
         )
     }
 }

@@ -36,7 +36,7 @@ class KeycloakTokenManager(
 
     private fun updateAccessToken() {
         logger.info("Updating Keycloak Access Token.")
-        val authorizationHeader = "Basic ${Base64.getEncoder().encodeToString(("$clientId:$clientSecret").toByteArray())}"
+        val authorizationHeader = Base64.getEncoder().encodeToString(("$clientId:$clientSecret").toByteArray())
 
         val client = OkHttpClient()
         val mediaType = "application/x-www-form-urlencoded".toMediaType()
@@ -45,7 +45,7 @@ class KeycloakTokenManager(
             .url("http://keycloak:8080/keycloak/realms/datalandsecurity/protocol/openid-connect/token")
             .post(body)
             .addHeader("Content-Type", "application/x-www-form-urlencoded")
-            .addHeader("Authorization", authorizationHeader)
+            .addHeader("Authorization", "Basic $authorizationHeader")
             .build()
         val response = client.newCall(request).execute()
 
