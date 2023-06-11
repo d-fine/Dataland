@@ -34,7 +34,7 @@ class GleifApiAccessor {
      */
     fun getFullGoldenCopy(targetFile: File) {
         logger.info("Starting download of full Golden Copy File.")
-        val downloadUrl = URL("$gleifBaseUrl/lei2/latest.csv")
+        val downloadUrl = URL("$gleifBaseUrl/latest.csv")
         downloadFile(downloadUrl, targetFile)
         logger.info("Download of full Golden Copy File completed.")
     }
