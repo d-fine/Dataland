@@ -44,6 +44,7 @@ class GleifApiAccessor {
         while (counter < MAX_RETRIES) {
             try {
                 FileUtils.copyURLToFile(url, targetFile)
+                logger.info("Successfully saved local copy of the required file.")
                 break
             } catch (exception: SocketException) {
                 logger.warn("Download attempt failed. Exception was: ${exception.message}.")
