@@ -31,8 +31,8 @@ class Scheduler(
     }
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-    @Scheduled(fixedDelay = 1000000000000, initialDelay = BOOT_WAIT)
-    // @Scheduled(cron = "0 3 * * 0")
+    // @Scheduled(fixedDelay = 1000000000000, initialDelay = BOOT_WAIT)
+    @Scheduled(cron = "0 3 * * 1")
     private fun processDeltaFile() {
         logger.info("Starting update cycle for latest delta file.")
         val tempFile = File.createTempFile("gleif_update_delta", ".csv")
