@@ -11,8 +11,16 @@ import java.io.File
 import java.io.InputStreamReader
 import java.util.zip.ZipInputStream
 
+/**
+ * Class to read in the zipped CSV file and return buffered GleifCompanyInformation objects
+ */
 @Component
 class GleifCsvParser {
+    /**
+     * Reads the zipped CSV file and returns the content as buffered reader
+     * @param zipFile The file containing the CSV file to be parsed
+     * @return the content of the CSV file as buffered reader
+     */
     fun getCsvStreamFromZip(zipFile: File): BufferedReader {
         val zipInputStream = ZipInputStream(zipFile.inputStream())
         val zipEntry = zipInputStream.nextEntry
@@ -24,6 +32,11 @@ class GleifCsvParser {
         return BufferedReader(inputStreamReader)
     }
 
+    /**
+     * Transforms the streamed CSV content into an iterable of GleifCompanyInformation objects
+     * @param bufferedReader the input stream read from the GLEIF csv file
+     * @return An iterable of the corresponding GleifCompanyInformation objects
+     */
     fun readGleifDataFromBufferedReader(bufferedReader: BufferedReader): MappingIterator<GleifCompanyInformation> {
         return CsvMapper()
             .registerModule(kotlinModule())

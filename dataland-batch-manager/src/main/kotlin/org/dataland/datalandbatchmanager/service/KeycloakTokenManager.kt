@@ -18,6 +18,9 @@ import java.util.*
 
 const val LIFETIME_THRESHOLD = 30
 
+/**
+ * Class to manage the token retrieval from keycloak via service account
+ */
 @Service
 class KeycloakTokenManager(
     @Autowired private val objectMapper: ObjectMapper,
@@ -29,6 +32,10 @@ class KeycloakTokenManager(
     private var currentAccessToken: String? = null
     private var currentAccessTokenExpireTime: Instant? = null
 
+    /**
+     * Triggers the update of the access token if required
+     * @return the value of the currently used access token
+     */
     fun getAccessToken(): String {
         if (currentAccessToken == null ||
             Instant.now().until(currentAccessTokenExpireTime, ChronoUnit.SECONDS) < LIFETIME_THRESHOLD

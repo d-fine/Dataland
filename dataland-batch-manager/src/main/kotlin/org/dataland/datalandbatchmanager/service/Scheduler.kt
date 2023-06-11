@@ -12,9 +12,15 @@ import kotlin.time.toDuration
 
 const val BOOT_WAIT: Long = 180000
 
+/**
+ * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
+ * @param gleifApiAccessor downloads the golden copy files from GLEIF
+ * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
+ * @param keycloakTokenManager manages the access tokens for authenticating against the backend API
+ */
 @Component
 class Scheduler(
-    @Autowired private val apiAccessor: GleifApiAccessor,
+    @Autowired private val gleifApiAccessor: GleifApiAccessor,
     @Autowired private val gleifParser: GleifCsvParser,
     @Autowired private val keycloakTokenManager: KeycloakTokenManager,
 ) {
@@ -26,7 +32,7 @@ class Scheduler(
             logger.info("Waiting ${BOOT_WAIT}ms to let the backend finish booting before continuing.")
             Thread.sleep(BOOT_WAIT)
             val tempFile = File.createTempFile("gleif_golden_copy", ".csv")
-            processFile(tempFile, apiAccessor::getFullGoldenCopy)
+            processFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
         }
     }
 
@@ -36,7 +42,7 @@ class Scheduler(
     private fun processDeltaFile() {
         logger.info("Starting update cycle for latest delta file.")
         val tempFile = File.createTempFile("gleif_update_delta", ".csv")
-        processFile(tempFile, apiAccessor::getLastMonthGoldenCopyDelta)
+        processFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
     }
 
     private fun processFile(csvFile: File, downloadFile: (file: File) -> Unit) {

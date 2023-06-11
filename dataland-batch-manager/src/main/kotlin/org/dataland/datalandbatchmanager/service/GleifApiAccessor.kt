@@ -9,11 +9,18 @@ import java.io.FileNotFoundException
 import java.net.SocketException
 import java.net.URL
 
+/**
+ * The class to download the zipped GLEIF golden copy CSV files
+ */
 @Component
 class GleifApiAccessor {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val gleifBaseUrl = "https://goldencopy.gleif.org/api/v2/golden-copies/publishes/lei2"
 
+    /**
+     * Downloads the golden copy delta file of last month
+     * @param targetFile the local target file to be written
+     */
     fun getLastMonthGoldenCopyDelta(targetFile: File) {
         logger.info("Starting download of Golden Copy Delta File.")
         val deltaUrl = URL("$gleifBaseUrl/latest.csv?delta=LastMonth")
@@ -21,6 +28,10 @@ class GleifApiAccessor {
         logger.info("Download of Golden Copy Delta File completed.")
     }
 
+    /**
+     * Downloads the complete golden copy file
+     * @param targetFile the local target file to be written
+     */
     fun getFullGoldenCopy(targetFile: File) {
         logger.info("Starting download of full Golden Copy File.")
         val downloadUrl = URL("$gleifBaseUrl/lei2/latest.csv")
