@@ -1,9 +1,12 @@
 package org.dataland.datalandbatchmanager.service
 
 import org.apache.commons.io.FileUtils
+import org.dataland.datalandbatchmanager.gleif.MAX_RETRIES
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.io.File
+import java.io.FileNotFoundException
+import java.net.SocketException
 import java.net.URL
 
 @Component
@@ -14,14 +17,30 @@ class GleifApiAccessor {
     fun getLastMonthGoldenCopyDelta(targetFile: File) {
         logger.info("Starting download of Golden Copy Delta File.")
         val deltaUrl = URL("$gleifBaseUrl/latest.csv?delta=LastMonth")
-        FileUtils.copyURLToFile(deltaUrl, targetFile)
+        downloadFile(deltaUrl, targetFile)
         logger.info("Download of Golden Copy Delta File completed.")
     }
 
     fun getFullGoldenCopy(targetFile: File) {
         logger.info("Starting download of full Golden Copy File.")
         val downloadUrl = URL("$gleifBaseUrl/lei2/latest.csv")
-        FileUtils.copyURLToFile(downloadUrl, targetFile)
+        downloadFile(downloadUrl, targetFile)
         logger.info("Download of full Golden Copy File completed.")
+    }
+
+    private fun downloadFile(url: URL, targetFile: File) {
+        var counter = 0
+        while (counter < MAX_RETRIES) {
+            try {
+                FileUtils.copyURLToFile(url, targetFile)
+                break
+            } catch (exception: SocketException) {
+                logger.warn("Download attempt failed. Exception was: ${exception.message}.")
+                counter++
+            }
+        }
+        if (counter >= MAX_RETRIES) {
+            throw FileNotFoundException("Unable to download file behind $url after $MAX_RETRIES attempts.")
+        }
     }
 }

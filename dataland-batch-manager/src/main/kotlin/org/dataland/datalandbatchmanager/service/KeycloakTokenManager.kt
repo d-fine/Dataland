@@ -16,6 +16,8 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 
+const val LIFETIME_THRESHOLD = 30
+
 @Service
 class KeycloakTokenManager(
     @Autowired private val objectMapper: ObjectMapper,
@@ -28,7 +30,9 @@ class KeycloakTokenManager(
     private var currentAccessTokenExpireTime: Instant? = null
 
     fun getAccessToken(): String {
-        if (currentAccessToken == null || Instant.now().until(currentAccessTokenExpireTime, ChronoUnit.SECONDS) < 30) {
+        if (currentAccessToken == null ||
+            Instant.now().until(currentAccessTokenExpireTime, ChronoUnit.SECONDS) < LIFETIME_THRESHOLD
+        ) {
             updateAccessToken()
         }
         return currentAccessToken!!

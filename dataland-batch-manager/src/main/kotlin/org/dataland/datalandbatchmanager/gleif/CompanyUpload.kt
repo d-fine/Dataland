@@ -9,7 +9,11 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.net.SocketTimeoutException
 
-class Upload(
+const val MAX_RETRIES = 3
+const val UNAUTHORIZED_CODE = 401
+const val FORBIDDEN_CODE = 403
+
+class CompanyUpload(
     @Autowired private val keycloakTokenManager: KeycloakTokenManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -24,8 +28,7 @@ class Upload(
         companyDataControllerApi: CompanyDataControllerApi,
     ) {
         var counter = 0
-        val maxTries = 3
-        while (counter < maxTries) {
+        while (counter < MAX_RETRIES) {
             try {
                 logger.info(
                     "Uploading company data for ${companyInformation.companyName} " +
@@ -33,19 +36,17 @@ class Upload(
                 )
                 companyDataControllerApi.postCompany(companyInformation)
                 break
-            } catch (exception: Exception) {
+            } catch (exception: SocketTimeoutException) {
+                logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
+                counter++
+            } catch (exception: ClientException) {
                 logger.error("Unable to upload company data. Response was: ${exception.message}.")
-                when (exception) {
-                    is SocketTimeoutException -> counter++
-                    is ClientException -> {
-                        if (exception.statusCode == 401 || exception.statusCode == 403) {
-                            ApiClient.accessToken = keycloakTokenManager.getAccessToken()
-                            counter++
-                        } else {
-                            break
-                        }
-                    }
-                    else -> break
+                if (exception.statusCode == UNAUTHORIZED_CODE || exception.statusCode == FORBIDDEN_CODE) {
+                    logger.error("Authorization failed, attempting to regenerate access token.")
+                    ApiClient.accessToken = keycloakTokenManager.getAccessToken()
+                    counter++
+                } else {
+                    counter = MAX_RETRIES
                 }
             }
         }
