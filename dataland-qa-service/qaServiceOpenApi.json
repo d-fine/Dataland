@@ -48,14 +48,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully assigned quality status to dataset.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Unit"
-                }
-              }
-            }
+            "description": "Successfully assigned quality status to dataset."
           },
           "default": {
             "description": "An error occurred",
@@ -373,9 +366,6 @@
           "Accepted",
           "Rejected"
         ]
-      },
-      "Unit": {
-        "type": "object"
       },
       "Link": {
         "type": "object",
