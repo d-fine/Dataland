@@ -114,4 +114,42 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
     cy.get("div[data-test=datasetDisplayStatusContainer]").should("not.exist");
     cy.get("a[data-test=datasetDisplayStatusLink]").should("not.exist");
   });
+
+  it("Should display button if rejected dataset is displayed and accepted one exists", () => {
+    const rejectedDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
+    rejectedDataset.currentlyActive = false;
+    rejectedDataset.qaStatus = QaStatus.Rejected;
+
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
+      data() {
+        return {
+          displayedDataset: rejectedDataset,
+          receivedMapOfReportingPeriodsToActiveDataMetaInfo: new Map<string, DataMetaInformation>([
+            [acceptedAndActiveDataset.reportingPeriod, acceptedAndActiveDataset],
+          ]),
+        };
+      },
+    });
+
+    cy.get("div[data-test=datasetDisplayStatusContainer]").should("contain.text", "rejected");
+    cy.get("a[data-test=datasetDisplayStatusLink]").should("exist");
+  });
+
+  it("Should not display button if only a rejected dataset exists", () => {
+    const rejectedDataset = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
+    rejectedDataset.currentlyActive = false;
+    rejectedDataset.qaStatus = QaStatus.Rejected;
+
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
+      data() {
+        return {
+          displayedDataset: rejectedDataset,
+          receivedMapOfReportingPeriodsToActiveDataMetaInfo: new Map<string, DataMetaInformation>([]),
+        };
+      },
+    });
+
+    cy.get("div[data-test=datasetDisplayStatusContainer]").should("contain.text", "rejected");
+    cy.get("a[data-test=datasetDisplayStatusLink]").should("not.exist");
+  });
 });
