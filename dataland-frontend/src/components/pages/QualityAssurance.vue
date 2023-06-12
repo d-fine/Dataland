@@ -22,7 +22,6 @@
                 @page="onPage($event)"
                 :loading="waitingForData"
               >
-                <template #empty> There is no data to be reviewed </template>
                 <template #loading>
                   <div class="inline-loading text-center">
                     <p class="font-medium text-xl">Loading data to be reviewed...</p>
@@ -152,6 +151,7 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         this.displayDataOfPage = [];
+        const dataOfPage = [] as QaDataObject[];
         await this.gatherControllerApis();
         const response = await (this.qaServiceControllerApi as QaControllerApi).getUnreviewedDatasetsIds();
         this.dataIdList = response.data;
@@ -161,8 +161,9 @@ export default defineComponent({
           firstDatasetOnPageIndex + this.datasetsPerPage
         );
         for (const dataId of dataIdsOnPage) {
-          await this.addDatasetAssociatedInformationToDisplayList(dataId);
+          dataOfPage.push(await this.addDatasetAssociatedInformationToDisplayList(dataId));
         }
+        this.displayDataOfPage = dataOfPage;
         this.waitingForData = false;
       } catch (error) {
         console.error(error);
@@ -187,7 +188,7 @@ export default defineComponent({
      * datasets if the information can be retrieved
      * @param dataId the ID of the corresponding dataset
      */
-    async addDatasetAssociatedInformationToDisplayList(dataId: string) {
+    async addDatasetAssociatedInformationToDisplayList(dataId: string): QaDataObject {
       try {
         const metaDataResponse = await (
           this.metaDataInformationControllerApi as MetaDataControllerApiInterface
@@ -197,11 +198,11 @@ export default defineComponent({
           this.companyDataControllerApi as CompanyDataControllerApiInterface
         ).getCompanyById(this.metaInformation.companyId);
         this.companyInformation = companyResponse.data.companyInformation;
-        this.displayDataOfPage.push({
+        return {
           dataId: dataId,
           metaInformation: this.metaInformation,
           companyInformation: this.companyInformation,
-        });
+        } as QaDataObject;
       } catch (error) {
         if (error instanceof AxiosError && error.response.status !== 404) {
           throw error;
