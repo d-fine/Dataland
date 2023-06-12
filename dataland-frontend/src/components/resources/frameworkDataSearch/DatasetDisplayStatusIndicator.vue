@@ -42,7 +42,7 @@ export default defineComponent({
     displayWarning(): boolean {
       return (
         this.displayedDataset?.currentlyActive === false ||
-        this.displayedDataset?.qaStatus !== QaStatus.Accepted ||
+        (this.displayedDataset?.qaStatus && this.displayedDataset.qaStatus !== QaStatus.Accepted) ||
         this.areMoreDatasetsViewableSimultaneously
       );
     },
@@ -63,7 +63,10 @@ export default defineComponent({
       }
     },
     link(): string | undefined {
-      if (this.displayedDataset?.qaStatus !== QaStatus.Accepted || this.displayedDataset?.currentlyActive === false) {
+      if (
+        (this.displayedDataset?.qaStatus && this.displayedDataset.qaStatus !== QaStatus.Accepted) ||
+        this.displayedDataset?.currentlyActive === false
+      ) {
         return (
           `/companies/${this.displayedDataset.companyId}` +
           `/frameworks/${this.displayedDataset.dataType}/reportingPeriods/${this.displayedDataset.reportingPeriod}`
