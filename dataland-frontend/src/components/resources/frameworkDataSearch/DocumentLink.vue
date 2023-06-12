@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { AxiosResponse } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -39,14 +39,6 @@ export default defineComponent({
     showIcon: Boolean,
     fontStyle: String,
   },
-  data() {
-    return {
-      reportCounter: 0,
-      getDocumentsFromStorageProcessed: false,
-      getDocumentsFromStorageResponse: null as AxiosResponse<File> | null,
-      messageCount: 0,
-    };
-  },
   methods: {
     /**
      * Method to download available reports
@@ -62,7 +54,7 @@ export default defineComponent({
           .getDocument(reference, {
             headers: { accept: "application/pdf" },
             responseType: "arraybuffer",
-          })
+          } as AxiosRequestConfig)
           .then((getDocumentsFromStorageResponse) => {
             const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: "application/pdf" });
             docUrl.href = URL.createObjectURL(newBlob);

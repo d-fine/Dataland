@@ -22,11 +22,6 @@ import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/Fo
 export default defineComponent({
   name: "MultiSelectFormField",
   components: { MultiSelectFormElement, UploadFormHeader },
-  data() {
-    return {
-      selections: [] as string[],
-    };
-  },
   props: DropdownOptionFormFieldProps,
 });
 </script>
