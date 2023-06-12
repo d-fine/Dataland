@@ -1,16 +1,16 @@
 package org.dataland.datalandbatchmanager.service
 
+import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
 import org.dataland.datalandbatchmanager.gleif.CompanyUpload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.io.File
+import java.net.ConnectException
 import java.util.*
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
-
-const val BOOT_WAIT: Long = 180000
 
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
@@ -27,17 +27,27 @@ class Scheduler(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     init {
+        waitForBackend()
         if (System.getenv("GET_ALL_GLEIF_COMPANIES") == "true") {
             logger.info("Retrieving all company data available via GLEIF.")
-            logger.info("Waiting ${BOOT_WAIT}ms to let the backend finish booting before continuing.")
-            Thread.sleep(BOOT_WAIT)
             val tempFile = File.createTempFile("gleif_golden_copy", ".csv")
             processFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
         }
     }
 
+    private fun waitForBackend() {
+        val actuatorApi = ActuatorApi(System.getenv("INTERNAL_BACKEND_URL"))
+        while (true) {
+            try {
+                actuatorApi.health()
+                break
+            } catch (exception: ConnectException) {
+                logger.info("Waiting for backend to be available. Exception was: ${exception.message}.")
+            }
+        }
+    }
+
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-    // @Scheduled(fixedDelay = 1000000000000, initialDelay = BOOT_WAIT)
     @Scheduled(cron = "0 3 * * 0")
     private fun processDeltaFile() {
         logger.info("Starting update cycle for latest delta file.")
