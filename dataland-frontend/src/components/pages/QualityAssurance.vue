@@ -6,6 +6,10 @@
         <TheContent class="paper-section flex">
           <div class="col-12 text-left pb-0">
             <h1>Quality Assurance</h1>
+            <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
+              <p class="font-medium text-xl">Loading data to be reviewed...</p>
+              <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+            </div>
             <div class="card">
               <DataTable
                 :value="displayDataOfPage"
@@ -20,14 +24,7 @@
                 lazy
                 :total-records="dataIdList.length"
                 @page="onPage($event)"
-                :loading="waitingForData"
               >
-                <template #loading>
-                  <div class="inline-loading text-center">
-                    <p class="font-medium text-xl">Loading data to be reviewed...</p>
-                    <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-                  </div>
-                </template>
                 <Column header="DATA ID" class="d-bg-white w-2 qa-review-id">
                   <template #body="slotProps">
                     {{ slotProps.data.dataId }}
