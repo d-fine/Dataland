@@ -74,7 +74,6 @@ function fillEuTaxonomyForm(data: EuTaxonomyDataForFinancials): void {
 
 /**
  * Tests that the item was added and is visible on the QA list
- * @param companyId The ID of the new company
  * @param companyName The name of the company
  */
 function testSubmittedDatasetIsInReviewList(companyName: string): void {
