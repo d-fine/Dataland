@@ -136,7 +136,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.getQaDataForCurrentPage();
+    void this.getQaDataForCurrentPage();
   },
   props: {
     data: {
@@ -302,7 +302,7 @@ export default defineComponent({
      */
     onPage(event: DataTablePageEvent) {
       this.currentPage = event.page;
-      this.getQaDataForCurrentPage();
+      void this.getQaDataForCurrentPage();
     },
   },
 });
