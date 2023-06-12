@@ -181,11 +181,11 @@ export default defineComponent({
       ).getCompanyDataControllerApi();
     },
     /**
-     * Gathers meta and company information associated with a dataset and adds it to the list of displayed
-     * datasets if the information can be retrieved
+     * Gathers meta and company information associated with a dataset if the information can be retrieved
      * @param dataId the ID of the corresponding dataset
+     * @returns a promise on the fetched data object
      */
-    async addDatasetAssociatedInformationToDisplayList(dataId: string): QaDataObject {
+    async addDatasetAssociatedInformationToDisplayList(dataId: string): Promise<QaDataObject> {
       try {
         const metaDataResponse = await (
           this.metaDataInformationControllerApi as MetaDataControllerApiInterface
