@@ -85,13 +85,13 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
 
   cy.visit("/qualityassurance").wait(1000);
 
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr')
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
     .should("exist")
     .get(".qa-review-company-name")
     .should("contain", companyName);
 
-  cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody').last().click();
 
   cy.get(".p-dialog").should("exist").get(".p-dialog-header").should("contain", companyName);
   cy.get(".p-dialog").get('.p-dialog-content pre[id="dataset-container"]').should("not.be.empty");
@@ -111,7 +111,7 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
 function testDatasetPresent(companyName: string, status: string): void {
   cy.visit("/datasets").wait(1000);
 
-  cy.get('[data-test="datasets-table"] .p-datatable-tbody tr')
+  cy.get('[data-test="datasets-table"] .p-datatable-tbody')
     .first()
     .should("exist")
     .get(".data-test-company-name")
