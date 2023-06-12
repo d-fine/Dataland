@@ -32,8 +32,7 @@ describeIf(
           )
           .then((uploadIds) => {
             cy.visit(`/qualityassurance`);
-            cy.get("th", { timeout: Cypress.env("long_timeout_in_ms") as number }).should("exist");
-            cy.get("td", { timeout: Cypress.env("long_timeout_in_ms") as number }).should("exist");
+            cy.get("td", { timeout: Cypress.env("medium_timeout_in_ms") as number }).should("exist");
             cy.contains(`${uploadIds.dataId}`).click();
             cy.get("button[aria-label='Reject Dataset']").click();
             cy.visit(`/datasets`);
