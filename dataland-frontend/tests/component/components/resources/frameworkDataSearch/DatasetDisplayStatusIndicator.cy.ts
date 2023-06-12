@@ -17,10 +17,15 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
     supersededDataset.currentlyActive = false;
     supersededDataset.qaStatus = QaStatus.Accepted;
 
-    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
-      void mounted.wrapper.setProps({
-        displayedDataset: supersededDataset,
-      });
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
+      data() {
+        return {
+          displayedDataset: supersededDataset,
+          receivedMapOfReportingPeriodsToActiveDataMetaInfo: new Map<string, DataMetaInformation>([
+            [acceptedAndActiveDataset.reportingPeriod, acceptedAndActiveDataset],
+          ]),
+        };
+      },
     });
 
     cy.get("div[data-test=datasetDisplayStatusContainer]").contains("superseded").should("exist");
@@ -37,10 +42,13 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
     datasetPendingReview.currentlyActive = false;
     datasetPendingReview.qaStatus = QaStatus.Pending;
 
-    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
-      void mounted.wrapper.setProps({
-        displayedDataset: datasetPendingReview,
-      });
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
+      data() {
+        return {
+          displayedDataset: datasetPendingReview,
+          receivedMapOfReportingPeriodsToActiveDataMetaInfo: new Map<string, DataMetaInformation>(),
+        };
+      },
     });
 
     cy.get("div[data-test=datasetDisplayStatusContainer]").contains("pending").should("exist");
@@ -50,15 +58,17 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   it("Should display a show all message when only one active dataset is viewed when multiview and multiple are available", () => {
     const otherReportingPeriod = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
     otherReportingPeriod.reportingPeriod = "other-reporting-period";
-    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
-      void mounted.wrapper.setProps({
-        displayedDataset: acceptedAndActiveDataset,
-        isMultiview: true,
-        receivedMapOfReportingPeriodsToActiveDataMetaInfo: new Map<string, DataMetaInformation>([
-          [acceptedAndActiveDataset.reportingPeriod, acceptedAndActiveDataset],
-          [otherReportingPeriod.reportingPeriod, otherReportingPeriod],
-        ]),
-      });
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
+      data() {
+        return {
+          displayedDataset: acceptedAndActiveDataset,
+          isMultiview: true,
+          receivedMapOfReportingPeriodsToActiveDataMetaInfo: new Map<string, DataMetaInformation>([
+            [acceptedAndActiveDataset.reportingPeriod, acceptedAndActiveDataset],
+            [otherReportingPeriod.reportingPeriod, otherReportingPeriod],
+          ]),
+        };
+      },
     });
 
     cy.get("div[data-test=datasetDisplayStatusContainer]").contains("single").should("exist");
@@ -73,14 +83,16 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   it("Should not display anything when only one active dataset is viewed when singleview and multiple are available", () => {
     const otherReportingPeriod = structuredClone(acceptedAndActiveDataset) as DataMetaInformation;
     otherReportingPeriod.reportingPeriod = "other-reporting-period";
-    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
-      void mounted.wrapper.setProps({
-        displayedDataset: acceptedAndActiveDataset,
-        receivedMapOfReportingPeriodsToActiveDataMetaInfo: new Map<string, DataMetaInformation>([
-          [acceptedAndActiveDataset.reportingPeriod, acceptedAndActiveDataset],
-          [otherReportingPeriod.reportingPeriod, otherReportingPeriod],
-        ]),
-      });
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
+      data() {
+        return {
+          displayedDataset: acceptedAndActiveDataset,
+          receivedMapOfReportingPeriodsToActiveDataMetaInfo: new Map<string, DataMetaInformation>([
+            [acceptedAndActiveDataset.reportingPeriod, acceptedAndActiveDataset],
+            [otherReportingPeriod.reportingPeriod, otherReportingPeriod],
+          ]),
+        };
+      },
     });
 
     cy.get("div[data-test=datasetDisplayStatusContainer]").should("not.exist");
@@ -88,13 +100,15 @@ describe("Component Tests for DatasetDisplayStatusIndicator", () => {
   });
 
   it("Should not display anything when only one active dataset is viewed when multiview and no other active are available", () => {
-    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {}).then((mounted) => {
-      void mounted.wrapper.setProps({
-        displayedDataset: acceptedAndActiveDataset,
-        receivedMapOfReportingPeriodsToActiveDataMetaInfo: new Map<string, DataMetaInformation>([
-          [acceptedAndActiveDataset.reportingPeriod, acceptedAndActiveDataset],
-        ]),
-      });
+    cy.mountWithPlugins(DatasetDisplayStatusIndicator, {
+      data() {
+        return {
+          displayedDataset: acceptedAndActiveDataset,
+          receivedMapOfReportingPeriodsToActiveDataMetaInfo: new Map<string, DataMetaInformation>([
+            [acceptedAndActiveDataset.reportingPeriod, acceptedAndActiveDataset],
+          ]),
+        };
+      },
     });
 
     cy.get("div[data-test=datasetDisplayStatusContainer]").should("not.exist");
