@@ -97,11 +97,10 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
   cy.get(".p-dialog").get('.p-dialog-content pre[id="dataset-container"]').should("not.be.empty");
   cy.get(".p-dialog").get('button[id="accept-button"]').should("exist").click();
 
-  cy.visit("/qualityassurance").wait(1000);
-
   safeLogout();
   login(uploader_name, uploader_pw);
 
+  cy.visit("/qualityassurance").wait(1000);
   testDatasetPresent(companyName, "APPROVED");
 }
 
