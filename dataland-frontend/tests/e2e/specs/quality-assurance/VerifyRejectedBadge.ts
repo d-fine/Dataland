@@ -31,11 +31,9 @@ describeIf(
             )
           )
           .then((uploadIds) => {
-            cy.wait(10000);
             cy.visit(`/qualityassurance`);
             cy.get("th", { timeout: Cypress.env("long_timeout_in_ms") as number }).should("exist");
             cy.get("td", { timeout: Cypress.env("long_timeout_in_ms") as number }).should("exist");
-            cy.get("button.p-paginator-last").click();
             cy.contains(`${uploadIds.dataId}`).click();
             cy.get("button[aria-label='Reject Dataset']").click();
             cy.visit(`/datasets`);
