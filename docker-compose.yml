@@ -146,6 +146,7 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    shm_size: 512mb
   e2etests:
     profiles: ["testing"]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
