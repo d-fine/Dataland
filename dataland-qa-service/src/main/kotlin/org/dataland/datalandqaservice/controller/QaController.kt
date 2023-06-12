@@ -42,7 +42,7 @@ class QaController(
 
     @Transactional
     override fun assignQualityStatus(dataId: String, qualityStatus: QaStatus):
-        ResponseEntity<Void> {
+        ResponseEntity<Unit> {
         val correlationId = randomUUID().toString()
         logger.info(
             "Received request to change the quality status of dataset with ID $dataId " +
