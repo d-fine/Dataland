@@ -12,6 +12,8 @@ import java.util.*
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
+const val WAIT_TIME: Long = 5000
+
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
  * @param gleifApiAccessor downloads the golden copy files from GLEIF
@@ -42,7 +44,8 @@ class Scheduler(
                 actuatorApi.health()
                 break
             } catch (exception: ConnectException) {
-                logger.info("Waiting for backend to be available. Exception was: ${exception.message}.")
+                logger.info("Waiting for 5s backend to be available. Exception was: ${exception.message}.")
+                Thread.sleep(WAIT_TIME)
             }
         }
     }
