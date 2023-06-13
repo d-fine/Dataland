@@ -71,7 +71,7 @@ export default defineComponent({
         const qaServiceControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getQaControllerApi();
-        await qaServiceControllerApi.assignQualityStatus(this.dataId, qaStatus);
+        await qaServiceControllerApi.assignQaStatus(this.dataId, qaStatus);
         this.reviewSuccessful = true;
         setTimeout(() => {
           this.closeTheDialogAndReloadPage();
