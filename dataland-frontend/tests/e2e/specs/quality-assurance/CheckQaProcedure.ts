@@ -100,6 +100,7 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
   safeLogout();
   login(uploader_name, uploader_pw);
 
+  cy.visit("/qualityassurance").wait(1000);
   testDatasetPresent(companyName, "APPROVED");
 }
 
