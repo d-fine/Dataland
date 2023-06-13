@@ -1,4 +1,4 @@
-package org.dataland.batchmanager.services
+package org.dataland.batchmanager.service
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
