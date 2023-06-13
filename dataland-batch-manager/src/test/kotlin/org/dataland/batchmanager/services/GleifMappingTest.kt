@@ -1,21 +1,18 @@
-package org.datalandapikeymanager.services
+package org.dataland.batchmanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbatchmanager.DatalandBatchManager
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
 import java.io.BufferedReader
 import java.io.FileReader
 
 @ComponentScan(basePackages = ["org.dataland"])
-@SpringBootTest(classes = [DatalandBatchManager::class])
 class GleifMappingTest {
-    private final val expectedGleifCompanyInformation = GleifCompanyInformation(
+    private val expectedGleifCompanyInformation = GleifCompanyInformation(
         companyName = "CompanyName",
         countryCode = "CompanyCountry",
         headquarters = "CompanyCity",
