@@ -27,7 +27,7 @@
         ],
         "summary": "Assign a quality status to a unreviewed dataset",
         "description": "Set the quality status after a dataset has been reviewed",
-        "operationId": "assignQualityStatus",
+        "operationId": "assignQaStatus",
         "parameters": [
           {
             "name": "dataId",
@@ -38,7 +38,7 @@
             }
           },
           {
-            "name": "qualityStatus",
+            "name": "qaStatus",
             "in": "query",
             "required": true,
             "schema": {

@@ -41,30 +41,30 @@ class QaController(
     }
 
     @Transactional
-    override fun assignQualityStatus(dataId: String, qualityStatus: QaStatus) {
+    override fun assignQaStatus(dataId: String, qaStatus: QaStatus) {
         val correlationId = randomUUID().toString()
         logger.info(
             "Received request to change the quality status of dataset with ID $dataId " +
                 "(correlationId: $correlationId)",
         )
-        if (qualityStatus == QaStatus.Pending) {
+        if (qaStatus == QaStatus.Pending) {
             throw InvalidInputApiException(
                 "Quality \"Pending\" cannot be assigned to a reviewed dataset",
                 "Quality \"Pending\" cannot be assigned to a reviewed dataset",
             )
         }
         val dataReviewStatusToUpdate = validateDataIdAndGetDataReviewStatus(dataId)
-        logger.info("Assigning quality status ${qualityStatus.name} to dataset with ID $dataId")
+        logger.info("Assigning quality status ${qaStatus.name} to dataset with ID $dataId")
         reviewHistoryRepository.save(
             ReviewInformationEntity(
                 dataId = dataId,
                 receptionTime = dataReviewStatusToUpdate.receptionTime,
-                qaStatus = qualityStatus,
+                qaStatus = qaStatus,
                 reviewerKeycloakId = DatalandAuthentication.fromContext().userId,
             ),
         )
         reviewQueueRepository.deleteById(dataId)
-        sendQaCompletedMessage(dataId, qualityStatus, correlationId)
+        sendQaCompletedMessage(dataId, qaStatus, correlationId)
     }
 
     /**
@@ -84,12 +84,12 @@ class QaController(
     /**
      * Sends the QA completed message
      * @param dataId the ID of the QAed dataset
-     * @param qualityStatus the assigned quality status
+     * @param qaStatus the assigned quality status
      * @param correlationId the ID of the process
      */
-    fun sendQaCompletedMessage(dataId: String, qualityStatus: QaStatus, correlationId: String) {
+    fun sendQaCompletedMessage(dataId: String, qaStatus: QaStatus, correlationId: String) {
         val message = objectMapper.writeValueAsString(
-            QaCompletedMessage(dataId, qualityStatus),
+            QaCompletedMessage(dataId, qaStatus),
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             message, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,

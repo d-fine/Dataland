@@ -8,8 +8,8 @@
       <FailMessage v-else message="The resource you tried to access is not available. Please close the data pop-up." />
     </div>
     <div autofocus="autofocus" v-else>
-      <PrimeButton @click="setQualityStatusTo(QaStatus.Accepted)" label="Accept Dataset" id="accept-button" />
-      <PrimeButton @click="setQualityStatusTo(QaStatus.Rejected)" label="Reject Dataset" id="reject-button" />
+      <PrimeButton @click="setQaStatusTo(QaStatus.Accepted)" label="Accept Dataset" id="accept-button" />
+      <PrimeButton @click="setQaStatusTo(QaStatus.Rejected)" label="Reject Dataset" id="reject-button" />
     </div>
   </MiddleCenterDiv>
 </template>
@@ -65,13 +65,13 @@ export default defineComponent({
      * Sets dataset quality status to the given status
      * @param qaStatus the QA status to be assigned
      */
-    async setQualityStatusTo(qaStatus: QaStatus) {
+    async setQaStatusTo(qaStatus: QaStatus) {
       try {
         this.reviewSubmitted = true;
         const qaServiceControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getQaControllerApi();
-        await qaServiceControllerApi.assignQualityStatus(this.dataId, qaStatus);
+        await qaServiceControllerApi.assignQaStatus(this.dataId, qaStatus);
         this.reviewSuccessful = true;
         setTimeout(() => {
           this.closeTheDialogAndReloadPage();

@@ -89,7 +89,7 @@ class QaServiceTest {
         val qaServiceController = apiAccessor.qaServiceControllerApi
         await().atMost(2, TimeUnit.SECONDS)
             .until { qaServiceController.getUnreviewedDatasetsIds().contains(dataId) }
-        qaServiceController.assignQualityStatus(dataId, qaStatus)
+        qaServiceController.assignQaStatus(dataId, qaStatus)
         assertFalse(qaServiceController.getUnreviewedDatasetsIds().contains(dataId))
     }
 
@@ -142,7 +142,7 @@ class QaServiceTest {
     private fun clearReviewQueue() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         apiAccessor.qaServiceControllerApi.getUnreviewedDatasetsIds().forEach {
-            apiAccessor.qaServiceControllerApi.assignQualityStatus(it, QaServiceQaStatus.rejected)
+            apiAccessor.qaServiceControllerApi.assignQaStatus(it, QaServiceQaStatus.rejected)
         }
     }
 
@@ -152,7 +152,7 @@ class QaServiceTest {
         reviewDatasetAndValidateItIsNotReviewable(dataId, QaServiceQaStatus.accepted)
         awaitQaStatusChange(dataId, BackendQaStatus.accepted)
         val exception = assertThrows<QaServiceClientException> {
-            apiAccessor.qaServiceControllerApi.assignQualityStatus(dataId, QaServiceQaStatus.rejected)
+            apiAccessor.qaServiceControllerApi.assignQaStatus(dataId, QaServiceQaStatus.rejected)
         }
         assertEquals("Client error : 400 ", exception.message)
         assertNotEquals(
