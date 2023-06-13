@@ -31,8 +31,6 @@ describeIf(
     });
 
     it("Check wether newly added dataset has Pending status", () => {
-      login(uploader_name, uploader_pw);
-
       uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
         DataTypeEnum.EutaxonomyFinancials,
         testCompany,
