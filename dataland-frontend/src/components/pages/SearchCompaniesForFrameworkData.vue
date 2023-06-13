@@ -56,6 +56,12 @@
 
               <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
                 <PrimeButton
+                  class="uppercase p-button p-button-sm d-letters mr-3"
+                  label="Request Data"
+                  icon="pi pi-question"
+                  @click="redirectToRequestDataPage"
+                />
+                <PrimeButton
                   v-if="hasUserUploaderRights"
                   class="uppercase p-button p-button-sm d-letters mr-3"
                   label="New Dataset"
@@ -64,6 +70,8 @@
                 />
                 <span>{{ currentlyVisiblePageText }}</span>
               </div>
+
+
             </div>
           </div>
 
@@ -219,6 +227,13 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Executes router push to the request data page
+     */
+    async redirectToRequestDataPage() {
+      await this.$router.push("/requests");
+    },
+
     /**
      * Executes router push to the choose company page
      */

@@ -55,8 +55,14 @@
       </Column>
     </DataTable>
     <div class="d-center-div text-center px-7 py-4" v-else>
-      <p class="font-medium text-xl">Sorry! Your search didn't return any results.</p>
-      <p class="font-medium">Try again please!</p>
+      <p class="font-medium text-xl">We're sorry, but your search did not return any results.</p>
+      <p class="font-medium">Please double-check the spelling and try again or request the data you are missing!</p>
+      <PrimeButton
+          class="uppercase p-button p-button-sm d-letters mr-3"
+          label="Request Data"
+          icon="pi pi-question"
+          @click="redirectToRequestDataPage"
+      />
     </div>
   </div>
 </template>
@@ -64,6 +70,7 @@
 <script lang="ts">
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import PrimeButton from "primevue/button";
 import Tooltip from "primevue/tooltip";
 import {
   DataSearchStoredCompany,
@@ -73,7 +80,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "FrameworkDataSearchResults",
-  components: { DataTable, Column },
+  components: { DataTable, Column, PrimeButton },
   directives: {
     tooltip: Tooltip,
   },
@@ -88,6 +95,13 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Executes router push to the request data page
+     */
+    async redirectToRequestDataPage() {
+      await this.$router.push("/requests");
+    },
+
     /**
      * Navigates to the view framework data page on a click on the row of the company
      * @param event the row click event
