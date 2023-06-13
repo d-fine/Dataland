@@ -283,6 +283,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
  * @param data the data to fill the form with
  */
 export function fillEuTaxonomyForFinancialsRequiredFields(data: EuTaxonomyDataForFinancials): void {
+  cy.wait(4000);
   dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
   dateFormElement.validateDay("fiscalYearEnd", 12);
 

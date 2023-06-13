@@ -1,6 +1,6 @@
 <template>
   <div :class="`p-badge badge-${assertDefined(statusMap.get(datasetStatus)).color}`">
-    <span data-test="data-test-status">{{ assertDefined(statusMap.get(datasetStatus)).text }}</span>
+    <span data-test="qa-status">{{ assertDefined(statusMap.get(datasetStatus)).text }}</span>
   </div>
 </template>
 <script lang="ts">

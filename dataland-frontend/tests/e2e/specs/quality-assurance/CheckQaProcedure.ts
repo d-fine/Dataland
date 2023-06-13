@@ -2,7 +2,7 @@ import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
 import {
   fillEligibilityKpis,
   fillEuTaxonomyForFinancialsRequiredFields,
@@ -30,7 +30,7 @@ describeIf(
       });
     });
 
-    it("Check wether newly added dataset has Pending status", () => {
+    it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
       uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
         DataTypeEnum.EutaxonomyFinancials,
         testCompany,
@@ -96,9 +96,8 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
   cy.get(".p-dialog").get('button[id="accept-button"]').should("exist").click();
 
   safeLogout();
-  login(uploader_name, uploader_pw);
+  login(admin_name, admin_pw);
 
-  cy.visit("/qualityassurance").wait(1000);
   testDatasetPresent(companyName, "APPROVED");
 }
 
@@ -108,7 +107,8 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresent(companyName: string, status: string): void {
-  cy.visit("/datasets").wait(1000);
+  cy.visit("/datasets");
+  cy.wait(4000);
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody')
     .first()
@@ -116,7 +116,7 @@ function testDatasetPresent(companyName: string, status: string): void {
     .get(".data-test-company-name")
     .should("contain", companyName);
 
-  cy.get('[data-test="datasets-table"]').first().get('span[data-test="data-test-status"]').should("contain", status);
+  cy.get('[data-test="datasets-table"]').first().get('span[data-test="qa-status"]').should("contain", status);
 }
 
 /**
