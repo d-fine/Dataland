@@ -41,8 +41,7 @@ class QaController(
     }
 
     @Transactional
-    override fun assignQualityStatus(dataId: String, qualityStatus: QaStatus):
-        ResponseEntity<Void> {
+    override fun assignQualityStatus(dataId: String, qualityStatus: QaStatus) {
         val correlationId = randomUUID().toString()
         logger.info(
             "Received request to change the quality status of dataset with ID $dataId " +
@@ -66,8 +65,6 @@ class QaController(
         )
         reviewQueueRepository.deleteById(dataId)
         sendQaCompletedMessage(dataId, qualityStatus, correlationId)
-
-        return ResponseEntity.ok(null)
     }
 
     /**
