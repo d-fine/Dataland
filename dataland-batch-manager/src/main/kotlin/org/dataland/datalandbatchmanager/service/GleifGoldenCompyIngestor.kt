@@ -29,7 +29,11 @@ class GleifGoldenCompyIngestor(
     @Autowired private val gleifParser: GleifCsvParser,
     @Autowired private val companyUploader: CompanyUpload,
     @Autowired private val actuatorApi: ActuatorApi,
-    @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies}") private val ingestAllCompanies: Boolean,
+    @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
+    private val allCompaniesForceIngest: Boolean,
+
+    @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
+    private val allCompaniesIngestFlagFilePath: String?
 ) {
     companion object {
         const val WAIT_TIME: Long = 5000
@@ -44,10 +48,20 @@ class GleifGoldenCompyIngestor(
      */
     @EventListener(ApplicationReadyEvent::class)
     fun processFullGoldenCopyFileIfEnabled() {
-        if (ingestAllCompanies) {
+        val flagFile = allCompaniesIngestFlagFilePath?.let { File(it) }
+
+        if (allCompaniesForceIngest || flagFile?.exists() == true) {
+
+            if (flagFile?.exists() == true) {
+                logger.info("Found collect all companies flag. Deleting it.")
+                flagFile.delete()
+            }
+
             logger.info("Retrieving all company data available via GLEIF.")
             val tempFile = File.createTempFile("gleif_golden_copy", ".csv")
             processFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
+        } else {
+            logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
     }
 
