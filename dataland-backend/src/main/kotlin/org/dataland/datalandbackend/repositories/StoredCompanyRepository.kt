@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-
 /**
  * A JPA repository for accessing the StoredCompany Entity
  */
@@ -50,7 +49,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "WHEN lower(max(alternativeName)) LIKE :#{#searchFilter.searchStringLower}% THEN 4 ELSE 5 END) ASC, " +
             "company.companyName ASC",
     )
-    fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter, pageable: Pageable): List<StoredCompanyEntity>
+    fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter, pageable: Pageable):
+        List<StoredCompanyEntity>
 
     /**
      * Returns all available distinct country codes
