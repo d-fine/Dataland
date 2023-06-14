@@ -33,7 +33,7 @@ class GleifGoldenCompyIngestor(
     private val allCompaniesForceIngest: Boolean,
 
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
-    private val allCompaniesIngestFlagFilePath: String?
+    private val allCompaniesIngestFlagFilePath: String?,
 ) {
     companion object {
         const val WAIT_TIME: Long = 5000
@@ -51,7 +51,6 @@ class GleifGoldenCompyIngestor(
         val flagFile = allCompaniesIngestFlagFilePath?.let { File(it) }
 
         if (allCompaniesForceIngest || flagFile?.exists() == true) {
-
             if (flagFile?.exists() == true) {
                 logger.info("Found collect all companies flag. Deleting it.")
                 flagFile.delete()

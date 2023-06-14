@@ -1,7 +1,11 @@
 package org.dataland.batchmanager.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import okhttp3.*
+import okhttp3.Call
+import okhttp3.OkHttpClient
+import okhttp3.Protocol
+import okhttp3.Request
+import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.dataland.datalandbatchmanager.service.KeycloakTokenManager
 import org.junit.jupiter.api.Assertions
