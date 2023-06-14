@@ -125,7 +125,18 @@ class CompanyManager(
             countryCodeFilter = filter.countryCodeFilter.toList(),
             uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
         )
-        val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA, PageRequest.of(filter.page - 1, filter.entriesPerPage, Sort.unsorted()))
+        if (filter.page < 1 || filter.entriesPerPage < 1) {
+            throw InvalidInputApiException(
+                "Requestparam has a non acceptable value",
+                "Please choose a value greater than 0",
+            )
+        }
+        val filteredAndSortedResults = companyRepository.searchCompanies(
+            searchFilterForJPA,
+            PageRequest.of(
+                filter.page - 1, filter.entriesPerPage, Sort.unsorted(),
+            ),
+        )
         val sortingMap = filteredAndSortedResults.mapIndexed {
                 index, storedCompanyEntity ->
             storedCompanyEntity.companyId to index
