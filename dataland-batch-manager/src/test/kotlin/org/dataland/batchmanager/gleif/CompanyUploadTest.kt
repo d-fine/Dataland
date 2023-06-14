@@ -5,9 +5,8 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbatchmanager.gleif.CompanyUpload
-import org.dataland.datalandbatchmanager.gleif.UNAUTHORIZED_CODE
-import org.dataland.datalandbatchmanager.service.KeycloakTokenManager
+import org.dataland.datalandbatchmanager.service.CompanyUpload
+import org.dataland.datalandbatchmanager.service.CompanyUpload.Companion.UNAUTHORIZED_CODE
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -20,9 +19,9 @@ import java.net.SocketTimeoutException
 @ComponentScan(basePackages = ["org.dataland"])
 class CompanyUploadTest {
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
-    private lateinit var spyCompanyUpload: CompanyUpload
+    private lateinit var companyUpload: CompanyUpload
 
-    val dummyCompanyInformation1 = CompanyInformation(
+    private val dummyCompanyInformation1 = CompanyInformation(
         companyName = "CompanyName1",
         companyAlternativeNames = null,
         companyLegalForm = null,
@@ -39,7 +38,7 @@ class CompanyUploadTest {
         ),
     )
 
-    val dummyCompanyInformation2 = CompanyInformation(
+    private val dummyCompanyInformation2 = CompanyInformation(
         companyName = "CompanyName2",
         companyAlternativeNames = null,
         companyLegalForm = null,
@@ -58,19 +57,15 @@ class CompanyUploadTest {
 
     @BeforeEach
     fun setup() {
-        val mockKeycloakTokenManager = mock(KeycloakTokenManager::class.java)
-        `when`(mockKeycloakTokenManager.getAccessToken()).thenReturn("dummy")
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        spyCompanyUpload = CompanyUpload(mockKeycloakTokenManager, mockCompanyDataControllerApi)
+        companyUpload = CompanyUpload(mockCompanyDataControllerApi)
     }
 
     @Test
     fun `check that the upload requests are formatted correctly`() {
-        spyCompanyUpload.uploadCompanies(
-            listOf(
-                dummyCompanyInformation1, dummyCompanyInformation2,
-            ),
-        )
+        companyUpload.uploadSingleCompany(dummyCompanyInformation1)
+        companyUpload.uploadSingleCompany(dummyCompanyInformation2)
+
         verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyCompanyInformation2)
     }
@@ -78,14 +73,14 @@ class CompanyUploadTest {
     @Test
     fun `check that the upload handles a socket timeout and terminates`() {
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1)).thenThrow(SocketTimeoutException())
-        spyCompanyUpload.uploadCompanies(listOf(dummyCompanyInformation1))
+        companyUpload.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(3)).postCompany(dummyCompanyInformation1)
     }
 
     @Test
     fun `check that the upload handles a server exception and terminates`() {
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1)).thenThrow(ServerException())
-        spyCompanyUpload.uploadCompanies(listOf(dummyCompanyInformation1))
+        companyUpload.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(3)).postCompany(dummyCompanyInformation1)
     }
 
@@ -96,7 +91,7 @@ class CompanyUploadTest {
                 statusCode = UNAUTHORIZED_CODE,
             ),
         )
-        spyCompanyUpload.uploadCompanies(listOf(dummyCompanyInformation1))
+        companyUpload.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(3)).postCompany(dummyCompanyInformation1)
     }
 
@@ -107,7 +102,7 @@ class CompanyUploadTest {
                 statusCode = 400,
             ),
         )
-        spyCompanyUpload.uploadCompanies(listOf(dummyCompanyInformation1))
+        companyUpload.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyCompanyInformation1)
     }
 }

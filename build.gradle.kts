@@ -114,11 +114,11 @@ tasks.jacocoTestReport {
 detekt {
     buildUponDefaultConfig = true
     allRules = false
-    config = files("$projectDir/config/detekt.yml")
+    config.setFrom("$projectDir/config/detekt.yml")
     baseline = file("$projectDir/config/baseline.xml")
     val detektFileTree = fileTree("$projectDir")
     detektFileTree.exclude("**/build/**").exclude("**/node_modules/**").exclude(".gradle")
-    source = files(detektFileTree)
+    source.setFrom(detektFileTree)
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {

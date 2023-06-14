@@ -108,6 +108,8 @@ export default defineComponent({
     /**
      * Resets the pagination of the dataTable
      */
+    // The following method is used, the linter reports a false positive here
+    // eslint-disable-next-line vue/no-unused-properties
     resetPagination() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       if (this.$refs.dataTable) this.$refs.dataTable.resetPage();

@@ -13,7 +13,7 @@
     </table>
 
     <p>Or copy and paste the URL into your browser.</p>
-    <a href="${msg(link)}"> ${msg(link)} </a>
+    <a href="${msg(link)}" style="color: #e67f3f;"> ${msg(link)} </a>
     <br>
     <br>
     <br>

@@ -23,10 +23,6 @@ export default defineComponent({
       type: String,
       default: null,
     },
-    closable: {
-      type: Boolean,
-      default: true,
-    },
   },
   data() {
     return {

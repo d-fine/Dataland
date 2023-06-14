@@ -42,6 +42,12 @@ module.exports = {
     ],
     "no-restricted-imports": ["error", {
       "patterns": ["../*"]
+    }],
+    'vue/no-unused-properties': ['error', {
+      "groups": ["props", "data", "computed", "methods", "setup"],
+      "deepData": true,
+      "ignorePublicMembers": false,
+      "unreferencedOptions": ["returnAsUnreferenced", "unknownMemberAsUnreferenced"]
     }]
   },
 }
