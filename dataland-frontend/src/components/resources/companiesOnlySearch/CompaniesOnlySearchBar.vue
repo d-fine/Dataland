@@ -14,8 +14,8 @@
         inputClass="h-3rem d-framework-searchbar-input"
         panelClass="d-framework-searchbar-panel"
         style="z-index: 10"
-        @complete="searchCompanyName"
-        @item-select="pushToChooseFrameworkForDataUploadPageForItem"
+        @complete="searchCompanyName($event)"
+        @item-select="pushToChooseFrameworkForDataUploadPageForItem($event)"
       >
         <template #option="slotProps">
           <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import AutoComplete from "primevue/autocomplete";
+import AutoComplete, { AutoCompleteCompleteEvent, AutoCompleteItemSelectEvent } from "primevue/autocomplete";
 import { StoredCompany } from "@clients/backend";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import { defineComponent, inject, ref } from "vue";
@@ -58,7 +58,7 @@ export default defineComponent({
     return {
       searchBarInput: "",
       latestValidSearchString: "",
-      autocompleteArray: [] as Array<object>,
+      autocompleteArray: [] as Array<StoredCompany>,
     };
   },
 
@@ -83,15 +83,15 @@ export default defineComponent({
      * @param event object containing the stored company
      * @param event.value the stored company object
      */
-    pushToChooseFrameworkForDataUploadPageForItem(event: { value: StoredCompany }) {
-      void this.$router.push(`/companies/${event.value.companyId}/frameworks/upload`);
+    pushToChooseFrameworkForDataUploadPageForItem(event: AutoCompleteItemSelectEvent) {
+      void this.$router.push(`/companies/${(event.value as StoredCompany).companyId}/frameworks/upload`);
     },
     /**
      * Queries the getCompanies endpoint and writes the response to the variable autoCompleteArray
      * @param companyName object containing the search query for the getCompanies endpoint
      * @param companyName.query the query for the getCompany endpoint
      */
-    async searchCompanyName(companyName: { query: string }) {
+    async searchCompanyName(companyName: AutoCompleteCompleteEvent) {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
@@ -104,7 +104,7 @@ export default defineComponent({
           undefined,
           undefined,
           1,
-          20,
+          10,
         );
         this.autocompleteArray = response.data;
       } catch (error) {
