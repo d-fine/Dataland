@@ -9,6 +9,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.dataland.datalandbatchmanager.model.KeycloakAccessTokenResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.Duration
@@ -22,6 +23,7 @@ import java.util.*
 @Service
 class KeycloakTokenManager(
     @Autowired private val objectMapper: ObjectMapper,
+    @Qualifier("UnauthenticatedOkHttpClient") private val httpClient: OkHttpClient,
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
     @Value("\${dataland.dataland-batch-manager.client-id}") private val clientId: String,
     @Value("\${dataland.dataland-batch-manager.client-secret}") private val clientSecret: String,
@@ -52,7 +54,6 @@ class KeycloakTokenManager(
         logger.info("Updating Keycloak Access Token.")
         val authorizationHeader = Base64.getEncoder().encodeToString(("$clientId:$clientSecret").toByteArray())
 
-        val client = OkHttpClient()
         val mediaType = "application/x-www-form-urlencoded".toMediaType()
         val body = "grant_type=client_credentials".toRequestBody(mediaType)
         val request = Request.Builder()
@@ -61,7 +62,7 @@ class KeycloakTokenManager(
             .addHeader("Content-Type", "application/x-www-form-urlencoded")
             .addHeader("Authorization", "Basic $authorizationHeader")
             .build()
-        val response = client.newCall(request).execute()
+        val response = httpClient.newCall(request).execute()
 
         val parsedResponseBody = objectMapper.readValue<KeycloakAccessTokenResponse>(response.body!!.string())
 
