@@ -15,7 +15,9 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
@@ -125,18 +127,32 @@ class CompanyManager(
             countryCodeFilter = filter.countryCodeFilter.toList(),
             uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
         )
-        if (filter.page < 1 || filter.entriesPerPage < 1) {
-            throw InvalidInputApiException(
-                "Requestparam has a non acceptable value",
-                "Please choose a value greater than 0",
-            )
-        }
-        val filteredAndSortedResults = companyRepository.searchCompanies(
-            searchFilterForJPA,
-            PageRequest.of(
-                filter.page - 1, filter.entriesPerPage, Sort.unsorted(),
-            ),
-        )
+
+        val filteredAndSortedResults =
+        if (filter.page != null && filter.entriesPerPage != null) {
+            if (filter.page < 1 || filter.entriesPerPage < 1) {
+                throw InvalidInputApiException(
+                    "Requestparam has a non acceptable value",
+                    "Please choose a value greater than 0",
+                )
+            }else {
+                companyRepository.searchCompanies(
+                    searchFilterForJPA,
+                    PageRequest.of(
+                        filter.page - 1, filter.entriesPerPage, Sort.unsorted(),
+                    ),
+                )
+            }
+        } else if (filter.page == null && filter.entriesPerPage == null){
+            companyRepository.searchCompanies(
+                searchFilterForJPA,
+                Pageable.unpaged()
+                                  )
+        } else{throw InvalidInputApiException(
+            "Requestparam has a non acceptable value",
+            "Set page and entriesPerPage both to a non empty value or leave both params empty",
+        )}
+
         val sortingMap = filteredAndSortedResults.mapIndexed {
                 index, storedCompanyEntity ->
             storedCompanyEntity.companyId to index
