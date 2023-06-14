@@ -89,7 +89,7 @@ interface CompanyApi {
         @RequestParam("page", defaultValue = "1") page: Int? = 1,
         @RequestParam("entriesPerPage", defaultValue = "250") entriesPerPage: Int? = 250,
 
-        ):
+    ):
         ResponseEntity<List<StoredCompany>>
 
     /**

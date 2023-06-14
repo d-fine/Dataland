@@ -22,6 +22,7 @@ import java.util.*
 @Service
 class KeycloakTokenManager(
     @Autowired private val objectMapper: ObjectMapper,
+    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
     @Value("\${dataland.dataland-batch-manager.client-id}") private val clientId: String,
     @Value("\${dataland.dataland-batch-manager.client-secret}") private val clientSecret: String,
 ) {
@@ -37,6 +38,7 @@ class KeycloakTokenManager(
      * Triggers the update of the access token if required
      * @return the value of the currently used access token
      */
+    @Synchronized
     fun getAccessToken(): String {
         if (currentAccessToken == null ||
             Instant.now().until(currentAccessTokenExpireTime, ChronoUnit.SECONDS) < LIFETIME_THRESHOLD_IN_SECONDS
@@ -54,7 +56,7 @@ class KeycloakTokenManager(
         val mediaType = "application/x-www-form-urlencoded".toMediaType()
         val body = "grant_type=client_credentials".toRequestBody(mediaType)
         val request = Request.Builder()
-            .url("http://keycloak:8080/keycloak/realms/datalandsecurity/protocol/openid-connect/token")
+            .url("$keycloakBaseUrl/realms/datalandsecurity/protocol/openid-connect/token")
             .post(body)
             .addHeader("Content-Type", "application/x-www-form-urlencoded")
             .addHeader("Authorization", "Basic $authorizationHeader")

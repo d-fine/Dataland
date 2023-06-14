@@ -5,15 +5,15 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbatchmanager.gleif.CompanyUpload
-import org.dataland.datalandbatchmanager.gleif.UNAUTHORIZED_CODE
+import org.dataland.datalandbatchmanager.service.CompanyUpload
 import org.dataland.datalandbatchmanager.service.KeycloakTokenManager
+import org.dataland.datalandbatchmanager.service.UNAUTHORIZED_CODE
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.springframework.context.annotation.ComponentScan
 import java.net.SocketTimeoutException
 
