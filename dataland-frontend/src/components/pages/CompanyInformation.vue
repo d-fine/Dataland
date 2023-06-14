@@ -15,7 +15,7 @@
       </div>
       <div class="col-4">
         <span>Sector: </span>
-        <span class="font-semibold">{{ companyInformation.sector }}</span>
+        <span class="font-semibold">{{ companyInformation.sector ?? "-" }}</span>
       </div>
     </div>
     <div v-else-if="companyIdDoesNotExist" class="col-12">

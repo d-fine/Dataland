@@ -104,7 +104,7 @@ export default defineComponent({
           undefined,
           undefined,
           1,
-          10,
+          10
         );
         this.autocompleteArray = response.data;
       } catch (error) {

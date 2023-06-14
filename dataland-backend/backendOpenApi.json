@@ -453,8 +453,7 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32",
-              "default": 1
+              "format": "int32"
             }
           },
           {
@@ -463,8 +462,7 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32",
-              "default": 250
+              "format": "int32"
             }
           }
         ],
@@ -3891,8 +3889,7 @@
           "companyName",
           "countryCode",
           "headquarters",
-          "identifiers",
-          "sector"
+          "identifiers"
         ],
         "type": "object",
         "properties": {

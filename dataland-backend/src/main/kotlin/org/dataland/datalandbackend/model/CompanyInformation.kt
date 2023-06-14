@@ -29,7 +29,6 @@ data class CompanyInformation(
 
     val headquartersPostalCode: String?,
 
-    @field:JsonProperty(required = true)
     val sector: String,
 
     @field:JsonProperty(required = true)
