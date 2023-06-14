@@ -3,8 +3,6 @@ package org.dataland.datalandbatchmanager.configurations
 import okhttp3.OkHttpClient
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbatchmanager.service.KeycloakTokenManager
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean

@@ -26,7 +26,7 @@ class KeycloakTokenManagerTest {
 
     @BeforeAll
     fun setup() {
-        keycloakTokenManager = KeycloakTokenManager(objectMapper, httpClient, "client", "secret")
+        keycloakTokenManager = KeycloakTokenManager(objectMapper, httpClient, "http://keycloak", "client", "secret")
     }
 
     @Test
