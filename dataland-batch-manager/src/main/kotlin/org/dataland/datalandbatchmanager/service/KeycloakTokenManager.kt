@@ -16,8 +16,6 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 
-const val LIFETIME_THRESHOLD = 30
-
 /**
  * Class to manage the token retrieval from keycloak via service account
  */
@@ -27,6 +25,9 @@ class KeycloakTokenManager(
     @Value("\${dataland.dataland-batch-manager.client-id}") private val clientId: String,
     @Value("\${dataland.dataland-batch-manager.client-secret}") private val clientSecret: String,
 ) {
+    companion object {
+        private const val LIFETIME_THRESHOLD_IN_SECONDS = 30
+    }
     private val logger = LoggerFactory.getLogger(javaClass)
 
     private var currentAccessToken: String? = null
@@ -38,7 +39,7 @@ class KeycloakTokenManager(
      */
     fun getAccessToken(): String {
         if (currentAccessToken == null ||
-            Instant.now().until(currentAccessTokenExpireTime, ChronoUnit.SECONDS) < LIFETIME_THRESHOLD
+            Instant.now().until(currentAccessTokenExpireTime, ChronoUnit.SECONDS) < LIFETIME_THRESHOLD_IN_SECONDS
         ) {
             updateAccessToken()
         }

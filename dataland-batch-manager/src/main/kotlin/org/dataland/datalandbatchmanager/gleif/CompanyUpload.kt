@@ -3,23 +3,32 @@ package org.dataland.datalandbatchmanager.gleif
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbatchmanager.service.KeycloakTokenManager
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import java.net.SocketTimeoutException
 
 const val MAX_RETRIES = 3
 const val UNAUTHORIZED_CODE = 401
 const val FORBIDDEN_CODE = 403
 
+/**
+ * Class for handling the upload of the company information retrieved from GLEIF to the Dataland backend
+ * @param keycloakTokenManager the token manager required for access authentication
+ */
 class CompanyUpload(
-    @Autowired private val keycloakTokenManager: KeycloakTokenManager,
+    private val keycloakTokenManager: KeycloakTokenManager,
+    private val companyDataControllerApi: CompanyDataControllerApi =
+        CompanyDataControllerApi(System.getenv("INTERNAL_BACKEND_URL")),
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    /**
+     * Uploads a list of CompanyInformation objects via the backend endpoint
+     * @param companyInformation the objects to be uploaded
+     */
     fun uploadCompanies(companyInformation: List<CompanyInformation>) {
-        val companyDataControllerApi = CompanyDataControllerApi(System.getenv("INTERNAL_BACKEND_URL"))
         companyInformation.forEach { uploadSingleCompany(it, companyDataControllerApi) }
     }
 
@@ -48,6 +57,9 @@ class CompanyUpload(
                 } else {
                     counter = MAX_RETRIES
                 }
+            } catch (exception: ServerException) {
+                logger.error("Unexpected server exception. Response was: ${exception.message}.")
+                counter++
             }
         }
     }

@@ -146,6 +146,7 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    shm_size: 512mb
   e2etests:
     profiles: ["testing"]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
@@ -356,7 +357,7 @@ services:
       - internal
     image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
     environment:
-      GET_ALL_GLEIF_COMPANIES: "false"
+      GET_ALL_GLEIF_COMPANIES: "true"
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
 networks:
