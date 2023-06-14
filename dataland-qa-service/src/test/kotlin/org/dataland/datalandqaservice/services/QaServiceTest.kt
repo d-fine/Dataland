@@ -1,4 +1,4 @@
-package org.datalandqaservice.services
+package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
@@ -11,7 +11,6 @@ import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
-import org.dataland.datalandqaservice.services.QaService
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
