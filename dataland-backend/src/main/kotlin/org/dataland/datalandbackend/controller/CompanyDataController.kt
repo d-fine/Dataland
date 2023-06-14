@@ -23,7 +23,7 @@ class CompanyDataController(
     @Autowired var companyManager: CompanyManager,
 ) : CompanyApi {
     companion object {
-        private const val defaultPageLength = 25
+        private const val defaultEntriesPerPage = 250
     }
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -43,7 +43,7 @@ class CompanyDataController(
         onlyCompanyNames: Boolean,
         onlyCurrentUserAsUploader: Boolean,
         page: Int?,
-        size: Int?,
+        entriesPerPage: Int?,
     ): ResponseEntity<List<StoredCompany>> {
         logger.info(
             "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
@@ -60,7 +60,7 @@ class CompanyDataController(
                     sectors ?: setOf(),
                     onlyCurrentUserAsUploader,
                     page ?: 1,
-                    size ?: defaultPageLength,
+                    entriesPerPage ?: defaultEntriesPerPage,
                 ),
                 DatalandAuthentication.fromContextOrNull(),
             ),
