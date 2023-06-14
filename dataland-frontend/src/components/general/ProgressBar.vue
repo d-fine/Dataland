@@ -89,10 +89,6 @@ export default defineComponent({
       type: Number,
       default: 0,
     },
-    progressBarSuccessColorCode: {
-      type: String,
-      default: "#4BB917",
-    },
   },
   methods: {
     /**

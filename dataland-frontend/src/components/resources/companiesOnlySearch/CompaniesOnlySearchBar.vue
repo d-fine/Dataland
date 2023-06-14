@@ -35,7 +35,6 @@ import { StoredCompany } from "@clients/backend";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
-import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
 
@@ -60,7 +59,6 @@ export default defineComponent({
       searchBarInput: "",
       latestValidSearchString: "",
       autocompleteArray: [] as Array<object>,
-      route: useRoute(),
     };
   },
 
