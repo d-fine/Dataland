@@ -56,6 +56,11 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   delete_docker_volume_if_existent_remotely "rabbitmq_data" "$target_server_url" "$location"
 fi
 
+if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
+  echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"
+  ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_full_golden_copy_download_flag"
+fi
+
 echo "Starting docker compose stack."
 ssh ubuntu@"$target_server_url" "cd $location; sudo docker compose pull; sudo docker compose --profile $profile up -d --build"
 

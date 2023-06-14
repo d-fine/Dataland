@@ -11,6 +11,10 @@ on:
         description: 'Reset non-user related Docker Volumes & Re-populate'
         required: false
         type: boolean
+      loadGleifGoldenCopy:
+        description: 'Load the full GLEIF Golden Copy File into the database'
+        required: false
+        type: boolean
       whichEnvironment:
         description: "Choose environment"
         required: true
@@ -129,6 +133,7 @@ jobs:
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
+          LOAD_GLEIF_GOLDEN_COPY: ${{ github.event.inputs.loadGleifGoldenCopy }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
