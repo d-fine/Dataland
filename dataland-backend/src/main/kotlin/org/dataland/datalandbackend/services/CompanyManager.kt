@@ -125,7 +125,7 @@ class CompanyManager(
             countryCodeFilter = filter.countryCodeFilter.toList(),
             uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
         )
-        val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA, PageRequest.of(filter.page, filter.size, Sort.unsorted()))
+        val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA, PageRequest.of(filter.page - 1, filter.size, Sort.unsorted()))
         val sortingMap = filteredAndSortedResults.mapIndexed {
                 index, storedCompanyEntity ->
             storedCompanyEntity.companyId to index
