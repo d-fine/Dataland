@@ -16,6 +16,8 @@ import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -123,7 +125,7 @@ class CompanyManager(
             countryCodeFilter = filter.countryCodeFilter.toList(),
             uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
         )
-        val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA)
+        val filteredAndSortedResults = companyRepository.searchCompanies(searchFilterForJPA, PageRequest.of(filter.page - 1, filter.entriesPerPage, Sort.unsorted()))
         val sortingMap = filteredAndSortedResults.mapIndexed {
                 index, storedCompanyEntity ->
             storedCompanyEntity.companyId to index

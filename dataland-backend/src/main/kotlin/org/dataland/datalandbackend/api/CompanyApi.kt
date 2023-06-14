@@ -86,7 +86,10 @@ interface CompanyApi {
         @RequestParam sectors: Set<String>? = null,
         @RequestParam onlyCompanyNames: Boolean = false,
         @RequestParam onlyCurrentUserAsUploader: Boolean = false,
-    ):
+        @RequestParam("page", defaultValue = "1") page: Int? = 1,
+        @RequestParam("entriesPerPage", defaultValue = "250") entriesPerPage: Int? = 250,
+
+        ):
         ResponseEntity<List<StoredCompany>>
 
     /**
