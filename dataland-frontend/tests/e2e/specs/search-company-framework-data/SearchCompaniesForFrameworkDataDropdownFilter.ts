@@ -82,7 +82,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       )
         .wait("@companies-meta-information")
         .get("div[class='col-12 text-left']")
-        .should("contain.text", "Sorry! Your search didn't return any results.")
+        .should("contain.text", "We're sorry, but your search did not return any results.")
         .get("#country-filter")
         .click()
         .get('input[placeholder="Search countries"]')
@@ -111,7 +111,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
         .wait("@companies-meta-information")
         .get("div[class='col-12 text-left']")
-        .should("contain.text", "Sorry! Your search didn't return any results.")
+        .should("contain.text", "We're sorry, but your search did not return any results.")
         .get("#sector-filter")
         .click()
         .get('input[placeholder="Search sectors"]')
@@ -211,7 +211,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies?input=${companyName}`)
             .get("div[class='col-12 text-left']")
-            .should("contain.text", "Sorry! Your search didn't return any results.");
+            .should("contain.text", "We're sorry, but your search did not return any results.");
         }
       );
 
@@ -246,7 +246,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             .should("exist");
           cy.visit(`/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyNonFinancials}`)
             .get("div[class='col-12 text-left']")
-            .should("contain.text", "Sorry! Your search didn't return any results.");
+            .should("contain.text", "We're sorry, but your search did not return any results.");
           cy.visit(
             `/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyNonFinancials}&framework=${DataTypeEnum.EutaxonomyFinancials}`
           )
