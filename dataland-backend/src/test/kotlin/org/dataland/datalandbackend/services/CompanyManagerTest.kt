@@ -47,7 +47,12 @@ class CompanyManagerTest(
 
     @Test
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
-        val allCompaniesInStore = testCompanyManager.searchCompaniesAndGetApiModel(CompanySearchFilter())
+        val allCompaniesInStore = testCompanyManager.searchCompaniesAndGetApiModel(
+            CompanySearchFilter(
+                page = null,
+                entriesPerPage = null,
+            ),
+        )
         assertTrue(
             allCompaniesInStore.all {
                 testCompanyList.any { testCompany -> testCompany.companyName == it.companyInformation.companyName }
@@ -63,6 +68,8 @@ class CompanyManagerTest(
                 CompanySearchFilter(
                     searchString = company.companyName,
                     onlyCompanyNames = true,
+                    page = null,
+                    entriesPerPage = null,
                 ),
             )
             assertTrue(
@@ -77,6 +84,8 @@ class CompanyManagerTest(
             CompanySearchFilter(
                 searchString = identifier.identifierValue,
                 onlyCompanyNames = false,
+                page = null,
+                entriesPerPage = null,
             ),
         )
             .toMutableList()
@@ -118,7 +127,13 @@ class CompanyManagerTest(
                 if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
             }
         }
-        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(CompanySearchFilter(searchString))
+        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
+            CompanySearchFilter(
+                searchString,
+                page = null,
+                entriesPerPage = null,
+            ),
+        )
         assertEquals(
             occurencesOfSearchString,
             searchResponse.size,
@@ -136,7 +151,10 @@ class CompanyManagerTest(
             }
         }
         val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(searchString = searchString, onlyCompanyNames = true),
+            CompanySearchFilter(
+                searchString = searchString, onlyCompanyNames = true, page = null,
+                entriesPerPage = null,
+            ),
         )
         assertEquals(
             occurencesOfSearchString,
@@ -149,7 +167,10 @@ class CompanyManagerTest(
     fun `search for name substring to check the ordering of results`() {
         val searchString = testCompanyList.first().companyName.take(1)
         val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(searchString = searchString, onlyCompanyNames = true),
+            CompanySearchFilter(
+                searchString = searchString, onlyCompanyNames = true, page = null,
+                entriesPerPage = null,
+            ),
         )
         val responsesStartingWith =
             searchResponse.takeWhile { it.companyInformation.companyName.startsWith(searchString) }
