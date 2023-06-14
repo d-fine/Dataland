@@ -96,7 +96,7 @@ class GleifGoldenCompyIngestor(
             uploadThreadPool.submit {
                 StreamSupport.stream(gleifIterable.spliterator(), true)
                     .forEach { companyUploader.uploadSingleCompany(it.toCompanyInformation()) }
-            }
+            }.get()
         } finally {
             uploadThreadPool.shutdown()
         }
