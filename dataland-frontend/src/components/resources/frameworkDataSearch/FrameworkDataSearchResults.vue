@@ -58,10 +58,10 @@
       <p class="font-medium text-xl">We're sorry, but your search did not return any results.</p>
       <p class="font-medium">Please double-check the spelling and try again or request the data you are missing!</p>
       <PrimeButton
-          class="uppercase p-button p-button-sm d-letters mr-3"
-          label="Request Data"
-          icon="pi pi-question"
-          @click="redirectToRequestDataPage"
+        class="uppercase p-button p-button-sm d-letters mr-3"
+        label="Request Data"
+        icon="pi pi-question"
+        @click="redirectToRequestDataPage"
       />
     </div>
   </div>

@@ -70,8 +70,6 @@
                 />
                 <span>{{ currentlyVisiblePageText }}</span>
               </div>
-
-
             </div>
           </div>
 
