@@ -29,7 +29,7 @@ data class CompanyInformation(
 
     val headquartersPostalCode: String?,
 
-    val sector: String,
+    val sector: String?,
 
     @field:JsonProperty(required = true)
     val identifiers: List<CompanyIdentifier>,
