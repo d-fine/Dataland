@@ -40,7 +40,7 @@ class CompanyDataController(
         onlyCompanyNames: Boolean,
         onlyCurrentUserAsUploader: Boolean,
         page: Int?,
-        size: Int?,
+        entriesPerPage: Int?,
     ): ResponseEntity<List<StoredCompany>> {
         logger.info(
             "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
@@ -57,7 +57,7 @@ class CompanyDataController(
                     sectors ?: setOf(),
                     onlyCurrentUserAsUploader,
                     page ?: 1,
-                    size ?: 250,
+                    entriesPerPage ?: 250,
                 ),
                 DatalandAuthentication.fromContextOrNull(),
             ),
