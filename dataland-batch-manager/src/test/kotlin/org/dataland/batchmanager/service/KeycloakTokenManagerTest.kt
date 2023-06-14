@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class KeycloakTokenManagerTest {
     @Mock lateinit var httpClient: OkHttpClient
+
     @Autowired lateinit var objectMapper: ObjectMapper
 
     lateinit var keycloakTokenManager: KeycloakTokenManager
@@ -39,18 +40,10 @@ class KeycloakTokenManagerTest {
                 .message("")
                 .code(200)
                 .body(
-//                    objectMapper.writeValueAsString(
-//                        KeycloakAccessTokenResponse(
-//                            accessToken = expectedToken,
-//                            expiresIn = 0,
-//                        )
-//                    )
-                    ("{ \"access_token\":\"${expectedToken}\", \"expires_in\": 0 }").toResponseBody()
-                ).build()
+                    "{ \"access_token\":\"${expectedToken}\", \"expires_in\": 0 }".toResponseBody(),
+                ).build(),
         )
-        `when`(httpClient.newCall(any() ?: Request.Builder().url("http://into.void").build())).thenReturn(
-            mockCall
-        )
+        `when`(httpClient.newCall(any() ?: Request.Builder().url("http://into.void").build())).thenReturn(mockCall)
         val token = keycloakTokenManager.getAccessToken()
         Assertions.assertEquals(expectedToken, token)
     }
