@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController
 class CompanyDataController(
     @Autowired var companyManager: CompanyManager,
 ) : CompanyApi {
+    companion object {
+        private const val defaultPageLength = 25
+    }
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
@@ -57,7 +60,7 @@ class CompanyDataController(
                     sectors ?: setOf(),
                     onlyCurrentUserAsUploader,
                     page ?: 1,
-                    entriesPerPage ?: 250,
+                    entriesPerPage ?: defaultPageLength,
                 ),
                 DatalandAuthentication.fromContextOrNull(),
             ),
