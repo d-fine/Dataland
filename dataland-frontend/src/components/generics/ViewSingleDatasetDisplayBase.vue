@@ -2,6 +2,7 @@
   <ViewFrameworkBase
     :companyID="companyId"
     :dataType="dataType"
+    :single-data-meta-info-to-display="dataMetaInfoForDisplay"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
   >
     <template v-slot:reportingPeriodDropdown>
@@ -48,7 +49,7 @@
         <h2>Checking if {{ humanizedDataDescription }} data available...</h2>
       </div>
       <div
-        v-if="!isWaitingForDataIdToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size === 0"
+        v-if="!dataMetaInfoForDisplay && !isWaitingForDataIdToDisplay"
         data-test="noDataForThisFrameworkPresentErrorIndicator"
       >
         <h2>No {{ humanizedDataDescription }} data present for this company.</h2>
