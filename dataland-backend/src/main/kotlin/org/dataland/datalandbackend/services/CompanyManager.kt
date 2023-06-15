@@ -128,27 +128,10 @@ class CompanyManager(
             uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
         )
 
-        val filteredAndSortedResults =
-            if (filter.noPagination) {
-                companyRepository.searchCompanies(
-                    searchFilterForJPA,
-                    Pageable.unpaged(),
-                )
-            } else {
-                if (filter.page < 1 || filter.entriesPerPage < 1) {
-                    throw InvalidInputApiException(
-                        "Requestparam has a non acceptable value",
-                        "Please choose a value greater than 0",
-                    )
-                } else {
-                    companyRepository.searchCompanies(
-                        searchFilterForJPA,
-                        PageRequest.of(
-                            filter.page - 1, filter.entriesPerPage, Sort.unsorted(),
-                        ),
-                    )
-                }
-            }
+        val filteredAndSortedResults = companyRepository.searchCompanies(
+            searchFilterForJPA,
+            buildPageable(filter.page, filter.entriesPerPage, filter.noPagination),
+        )
 
         val sortingMap = filteredAndSortedResults.mapIndexed {
                 index, storedCompanyEntity ->
@@ -172,36 +155,36 @@ class CompanyManager(
     @Transactional
     fun searchCompaniesByNameOrIdentifierAndGetApiModel(
         searchString: String,
-        page: Int?,
-        entriesPerPage: Int?,
+        page: Int,
+        entriesPerPage: Int,
+        noPagination: Boolean,
     ): List<CompanyIdAndName> {
         val searchFilterForJPA = StoredCompanySearchFilter(
             searchString = searchString,
         )
         return companyRepository.searchCompaniesByNameOrIdentifier(
             searchFilterForJPA,
-            buildPageable(page, entriesPerPage),
+            buildPageable(page, entriesPerPage, noPagination),
         )
     }
 
-    private fun buildPageable(page: Int?, entriesPerPage: Int?): Pageable {
-        if (page != null && entriesPerPage != null) {
+    private fun buildPageable(page: Int, entriesPerPage: Int, noPagination: Boolean): Pageable {
+        if (noPagination) {
+            return Pageable.unpaged()
+        }
+        else   {
             if (page < 1 || entriesPerPage < 1) {
                 throw InvalidInputApiException(
                     "Requestparam has a non acceptable value",
                     "Please choose a value greater than 0",
                 )
             }
-            return PageRequest.of(
-                page - 1, entriesPerPage, Sort.unsorted(),
-            )
-        } else if (page == null && entriesPerPage == null) {
-            return Pageable.unpaged()
+            else {
+                return PageRequest.of(
+                    page - 1, entriesPerPage, Sort.unsorted(),
+                )
+            }
         }
-        throw InvalidInputApiException(
-            "Requestparam has a non acceptable value",
-            "Set page and entriesPerPage both to a non empty value or leave both params empty",
-        )
     }
 
     private fun getUploaderIdFilter(onlyCurrentUserAsUploader: Boolean): List<String> {

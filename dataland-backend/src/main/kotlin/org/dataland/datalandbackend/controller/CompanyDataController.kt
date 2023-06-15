@@ -75,9 +75,11 @@ class CompanyDataController(
         searchString: String,
         page: Int?,
         entriesPerPage: Int?,
+        noPagination: Boolean,
     ): ResponseEntity<List<CompanyIdAndName>> {
         return ResponseEntity.ok(
-            companyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(searchString, page, entriesPerPage),
+            companyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(searchString, page ?:1,
+                entriesPerPage?: defaultEntriesPerPage, noPagination),
         )
     }
 
