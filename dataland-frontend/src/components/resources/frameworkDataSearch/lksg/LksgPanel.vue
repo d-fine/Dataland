@@ -104,8 +104,6 @@ export default defineComponent({
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
 
-      kpiValue = this.reformatValueForDisplay(kpiField, kpiValue);
-
       const kpiData = {
         subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
         subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
@@ -113,7 +111,7 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfLksgDataset]: kpiValue },
+        content: { [dataIdOfLksgDataset]: this.reformatValueForDisplay(kpiField, kpiValue) },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
         Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
@@ -138,7 +136,7 @@ export default defineComponent({
               string,
               object
             ][]) {
-              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object][]) {
+              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, KpiValue][]) {
                 const subcategory = assertDefined(
                   lksgDataModel
                     .find((category) => category.name === categoryKey)
