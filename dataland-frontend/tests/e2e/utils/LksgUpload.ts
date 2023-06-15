@@ -84,7 +84,7 @@ function fillSingleProductionSite(): void {
  */
 function recursivelySelectYesOnAllFields(maxCounter: number): void {
   if (maxCounter <= 0) {
-    return;
+    throw new Error("Recursion depth exceeded selecting yes on all input fields");
   }
 
   cy.window().then((win) => {
@@ -102,7 +102,9 @@ function recursivelySelectYesOnAllFields(maxCounter: number): void {
 function selectYesOnAllFieldsBrowser(win: Window): boolean {
   let changedAnything = false;
   win.document.querySelectorAll<HTMLInputElement>('input[type="radio"][value="Yes"]').forEach((element) => {
-    if (!element.checked) {
+    const elementSelected = win.getComputedStyle(element, ":before").getPropertyValue("display") != "none";
+
+    if (!elementSelected) {
       element.click();
       changedAnything = true;
     }

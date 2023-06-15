@@ -21,11 +21,6 @@ import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/Fo
 export default defineComponent({
   name: "SingleSelectFormField",
   components: { SingleSelectFormElement, UploadFormHeader },
-  data() {
-    return {
-      selection: "",
-    };
-  },
   props: DropdownOptionFormFieldProps,
 });
 </script>

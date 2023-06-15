@@ -36,7 +36,6 @@ export default defineComponent({
       lksgDataAndMetaInfo: [] as Array<DataAndMetaInformationLksgData>,
       listOfDataSetReportingPeriods: [] as Array<ReportingPeriodOfDataSetWithId>,
       mapOfKpiKeysToDataObjects: new Map() as Map<string, KpiDataObject>,
-      lksgDataModel: lksgDataModel,
     };
   },
   props: PanelProps,

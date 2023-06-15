@@ -25,15 +25,6 @@ export default defineComponent({
   name: "DataPointFormElement",
   data: () => ({
     inputValue: null,
-    innerClass: {
-      "formkit-inner": false,
-      "p-inputwrapper": true,
-    },
-    inputClass: {
-      "formkit-input": false,
-      "p-inputtext": true,
-      "w-full": true,
-    },
   }),
   props: {
     name: {

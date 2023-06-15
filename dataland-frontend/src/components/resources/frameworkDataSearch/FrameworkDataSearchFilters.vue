@@ -63,7 +63,6 @@ import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeString } from "@/utils/StringHumanizer";
-import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import {
@@ -104,7 +103,6 @@ export default defineComponent({
   },
   data() {
     return {
-      route: useRoute(),
       availableCountries: [] as Array<CountryCodeSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       availableSectors: [] as Array<SelectableItem>,
@@ -163,6 +161,8 @@ export default defineComponent({
     /**
      * A helper function that closes all the dropdown filters
      */
+    // The following method is used, the linter reports a false positive here
+    // eslint-disable-next-line vue/no-unused-properties
     closeAllOpenDropDowns() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.countryFilter?.$refs.multiselect.hide();

@@ -89,11 +89,6 @@ export default defineComponent({
       option2Container: ref<Element>(),
     };
   },
-  props: {
-    companyID: {
-      type: String,
-    },
-  },
 
   methods: {
     /**

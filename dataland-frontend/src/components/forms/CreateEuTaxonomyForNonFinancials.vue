@@ -46,6 +46,7 @@
                     :showIcon="true"
                     view="year"
                     dateFormat="yy"
+                    validation="required"
                   />
                 </div>
 
@@ -123,8 +124,6 @@
                                 type="select"
                                 name="report"
                                 placeholder="Select a report"
-                                validation-label="Selecting a report"
-                                validation="required"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
@@ -310,7 +309,6 @@ import {
   ObjectType,
   updateObject,
 } from "@/utils/UpdateObjectUtils";
-import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import { AxiosResponse } from "axios";
 import DataPointForm from "@/components/forms/parts/kpiSelection/DataPointForm.vue";
@@ -359,8 +357,6 @@ export default defineComponent({
     route: useRoute(),
     editMode: false,
     waitingForData: false,
-    formatBytesUserFriendly,
-    checkCustomInputs,
     euTaxonomyKPIsModel,
     euTaxonomyKpiNameMappings,
     euTaxonomyKpiInfoMappings,
@@ -373,7 +369,6 @@ export default defineComponent({
     postEuTaxonomyDataForNonFinancialsProcessed: false,
     messageCount: 0,
     postEuTaxonomyDataForNonFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
-    humanizeString: humanizeString,
     message: "",
     namesOfAllCompanyReportsForTheDataset: [] as string[],
     templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,

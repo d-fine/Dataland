@@ -252,18 +252,6 @@ export default defineComponent({
     },
 
     /**
-     * Uses a list of data meta info and filters out all elements whose data type (framework) do not equal the
-     * dataType-prop set for this Vue-component during render.
-     * @param listOfDataMetaInfo a list of data meta info
-     * @returns the filtered list of data meta info
-     */
-    filterListOfDataMetaInfoForChosenFrameworkAndReturnIt(
-      listOfDataMetaInfo: DataMetaInformation[]
-    ): DataMetaInformation[] {
-      return listOfDataMetaInfo.filter((dataMetaInfo) => dataMetaInfo.dataType === this.dataType);
-    },
-
-    /**
      * Uses a list of data meta info to set a map which has the distinct repoting periods as keys, and the respective
      * active data meta info as value.
      * It only takes into account data meta info whose dataType equals the current dataType prop value.

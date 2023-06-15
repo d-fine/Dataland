@@ -111,7 +111,6 @@ export default defineComponent({
     return {
       isWaitingForDataIdToDisplay: true,
       receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo: {} as Map<string, DataMetaInformation>,
-      reportingPeriodsInReceivedDataMetaInfo: [] as Array<string>,
       reportingPeriodsInDropdown: [] as Array<string>,
       chosenReportingPeriodInDropdown: "",
       dataMetaInfoForDisplay: null as DataMetaInformation | null,
@@ -200,15 +199,6 @@ export default defineComponent({
             console.log("Setting route for reporting period " + reportingPeriod + " failed with error " + String(err))
           );
       }
-    },
-
-    /**
-     * Switches to the active dataset for the currently chosen reporting period.
-     */
-    handleClickOnSwitchToActiveDatasetForCurrentlyChosenReportingPeriodButton() {
-      this.switchToActiveDatasetForNewlyChosenReportingPeriod(
-        assertDefined(this.dataMetaInfoForDisplay?.reportingPeriod)
-      );
     },
 
     /**

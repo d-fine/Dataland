@@ -47,6 +47,7 @@
                     :showIcon="true"
                     view="year"
                     dateFormat="yy"
+                    validation="required"
                   />
                 </div>
 
@@ -123,7 +124,6 @@
                                 name="report"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
-                                validation="required"
                                 :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
@@ -337,7 +337,6 @@ import {
   ObjectType,
   updateObject,
 } from "@/utils/UpdateObjectUtils";
-import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
 import JumpLinksSection from "@/components/forms/parts/JumpLinksSection.vue";
 import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import { FormKitNode } from "@formkit/core";
@@ -386,17 +385,13 @@ export default defineComponent({
       euTaxonomyKPIsModel,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
-      formatBytesUserFriendly,
-      checkCustomInputs,
       route: useRoute(),
       waitingForData: false,
-      dataResponse: null as AxiosResponse<CompanyAssociatedDataEuTaxonomyDataForFinancials> | null,
       editMode: false,
 
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
       postEuTaxonomyDataForFinancialsResponse: null as AxiosResponse<DataMetaInformation> | null,
-      humanizeString: humanizeString,
       onThisPageLinksStart: [
         { label: "Upload company reports", value: "uploadReports" },
         { label: "Basic information", value: "basicInformation" },
