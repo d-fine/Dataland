@@ -103,8 +103,10 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its country code and sector`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        // TODO ist this test still fine if the company has by accident no sector set?
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
-            sectors = setOf(uploadInfo.actualStoredCompany.companyInformation.sector),
+            sectors = if (uploadInfo.actualStoredCompany.companyInformation.sector != null) {
+                setOf(uploadInfo.actualStoredCompany.companyInformation.sector!!) } else { null },
             countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
         )
         assertTrue(
