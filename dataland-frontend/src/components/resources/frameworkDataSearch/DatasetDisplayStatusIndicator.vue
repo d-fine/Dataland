@@ -20,11 +20,6 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 export default defineComponent({
   name: "DatasetDisplayStatusIndicator",
   components: { PrimeButton },
-  data() {
-    return {
-      QaStatus,
-    };
-  },
   props: {
     displayedDataset: {
       type: Object as PropType<DataMetaInformation | null>,
