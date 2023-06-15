@@ -146,12 +146,12 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
-    shm_size: 512mb
+    shm_size: 1024mb
     command:
       -c work_mem=64MB
       -c maintenance_work_mem=256MB
       -c max_wal_size=1GB
-      -c effective_cache_size=1024MB
+      -c effective_cache_size=2048MB
   e2etests:
     profiles: ["testing"]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
