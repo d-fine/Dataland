@@ -97,12 +97,3 @@ ktlint {
         exclude("**/openApiClient/**")
     }
 }
-
-tasks.register<Copy>("getTestData") {
-    from("$rootDir/testing/data")
-    into("$buildDir/resources/test")
-}
-
-tasks.getByName("processTestResources") {
-    dependsOn("getTestData")
-}
