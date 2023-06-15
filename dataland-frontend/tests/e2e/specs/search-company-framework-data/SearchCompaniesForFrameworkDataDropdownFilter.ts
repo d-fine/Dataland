@@ -121,9 +121,9 @@ describe("As a user, I expect the search functionality on the /companies page to
         .click()
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
-        .should("exist")
+        .should("exist");
       cy.url().then((url) => {
-        if(demoCompanyToTestFor.sector) {
+        if (demoCompanyToTestFor.sector) {
           expect(url).to.contain(`sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector)}`);
         } else {
           expect(url).to.not.contain("sector=");
