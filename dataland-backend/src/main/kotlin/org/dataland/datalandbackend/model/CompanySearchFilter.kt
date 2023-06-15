@@ -17,6 +17,7 @@ data class CompanySearchFilter(
     val countryCodeFilter: Set<String> = setOf(),
     val sectorFilter: Set<String> = setOf(),
     val onlyCurrentUserAsUploader: Boolean = false,
-    val page: Int?,
-    val entriesPerPage: Int?,
+    val page: Int = 1,
+    val entriesPerPage: Int = 250,
+    val noPagination: Boolean = true,
 )

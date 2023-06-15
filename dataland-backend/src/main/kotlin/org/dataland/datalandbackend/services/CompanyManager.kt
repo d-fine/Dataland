@@ -127,10 +127,27 @@ class CompanyManager(
             uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
         )
 
-        val filteredAndSortedResults = companyRepository.searchCompanies(
-            searchFilterForJPA,
-            buildPageable(filter.page, filter.entriesPerPage),
-        )
+        val filteredAndSortedResults =
+            if (filter.noPagination) {
+                companyRepository.searchCompanies(
+                    searchFilterForJPA,
+                    Pageable.unpaged(),
+                )
+            } else {
+                if (filter.page < 1 || filter.entriesPerPage < 1) {
+                    throw InvalidInputApiException(
+                        "Requestparam has a non acceptable value",
+                        "Please choose a value greater than 0",
+                    )
+                } else {
+                    companyRepository.searchCompanies(
+                        searchFilterForJPA,
+                        PageRequest.of(
+                            filter.page - 1, filter.entriesPerPage, Sort.unsorted(),
+                        ),
+                    )
+                }
+            }
 
         val sortingMap = filteredAndSortedResults.mapIndexed {
                 index, storedCompanyEntity ->
@@ -157,7 +174,6 @@ class CompanyManager(
         page: Int?,
         entriesPerPage: Int?,
     ): List<StoredCompany> {
-
         val searchFilterForJPA = StoredCompanySearchFilter(
             searchString = searchString,
         )
@@ -181,7 +197,7 @@ class CompanyManager(
             }
             return PageRequest.of(
                 page - 1, entriesPerPage, Sort.unsorted(),
-                )
+            )
         } else if (page == null && entriesPerPage == null) {
             return Pageable.unpaged()
         }

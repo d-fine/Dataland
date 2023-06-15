@@ -66,7 +66,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "WHERE " +
             "(:#{#searchFilter.searchStringLength} = 0 " +
             "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
-            //"(lower(alternativeName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
+            // "(lower(alternativeName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
             "(lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}%)) " +
             "GROUP BY company.companyId " +
             "ORDER BY " +
@@ -76,7 +76,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "WHEN lower(max(alternativeName)) LIKE :#{#searchFilter.searchStringLower}% THEN 4 ELSE 5 END) ASC, " +
             "company.companyName ASC",
     )
-    fun searchCompaniesByNameOrIdentifier(@Param("searchFilter") searchFilter: StoredCompanySearchFilter, pageable: Pageable):
+    fun searchCompaniesByNameOrIdentifier(
+        @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
+        pageable: Pageable,
+    ):
         List<StoredCompanyEntity>
 
     /**

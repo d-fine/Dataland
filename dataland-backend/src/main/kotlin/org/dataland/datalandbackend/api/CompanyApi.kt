@@ -86,12 +86,12 @@ interface CompanyApi {
         @RequestParam sectors: Set<String>? = null,
         @RequestParam onlyCompanyNames: Boolean = false,
         @RequestParam onlyCurrentUserAsUploader: Boolean = false,
-        @RequestParam page: Int? = null,
-        @RequestParam entriesPerPage: Int? = null,
+        @RequestParam("page", defaultValue = "1") page: Int? = 1,
+        @RequestParam("entriesPerPage", defaultValue = "250") entriesPerPage: Int? = 250,
+        @RequestParam noPagination: Boolean = true,
 
     ):
         ResponseEntity<List<StoredCompany>>
-
 
     /**
      * A method to retrieve companies with names or identifiers matching a search string
@@ -117,8 +117,8 @@ interface CompanyApi {
         @RequestParam page: Int? = null,
         @RequestParam entriesPerPage: Int? = null,
 
-        ):
-            ResponseEntity<List<StoredCompany>>
+    ):
+        ResponseEntity<List<StoredCompany>>
 
     /**
      * A method used to retrieve all available distinct values for framework type, country code & sector

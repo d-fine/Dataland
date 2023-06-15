@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController
 class CompanyDataController(
     @Autowired var companyManager: CompanyManager,
 ) : CompanyApi {
+    companion object {
+        private const val defaultEntriesPerPage = 250
+    }
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
@@ -41,6 +44,7 @@ class CompanyDataController(
         onlyCurrentUserAsUploader: Boolean,
         page: Int?,
         entriesPerPage: Int?,
+        noPagination: Boolean,
     ): ResponseEntity<List<StoredCompany>> {
         logger.info(
             "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
@@ -56,8 +60,10 @@ class CompanyDataController(
                     countryCodes ?: setOf(),
                     sectors ?: setOf(),
                     onlyCurrentUserAsUploader,
-                    page,
-                    entriesPerPage,
+                    page ?: 1,
+                    entriesPerPage ?: defaultEntriesPerPage,
+                    noPagination,
+
                 ),
                 DatalandAuthentication.fromContextOrNull(),
             ),
@@ -67,10 +73,10 @@ class CompanyDataController(
     override fun getCompaniesBySearchString(
         searchString: String,
         page: Int?,
-        entriesPerPage: Int?
+        entriesPerPage: Int?,
     ): ResponseEntity<List<StoredCompany>> {
         return ResponseEntity.ok(
-            companyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(searchString, page, entriesPerPage)
+            companyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(searchString, page, entriesPerPage),
         )
     }
 
