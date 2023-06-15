@@ -11,7 +11,7 @@ import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 
@@ -51,7 +51,7 @@ data class DataMetaInformationEntity(
     var currentlyActive: Boolean?,
 
     @Column(name = "quality_status", nullable = false)
-    var qaStatus: QAStatus,
+    var qaStatus: QaStatus,
 ) : ApiModelConversion<DataMetaInformation> {
 
     /**
@@ -62,9 +62,17 @@ data class DataMetaInformationEntity(
      * This function checks these conditions
      */
     fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean {
-        return this.qaStatus == QAStatus.Accepted ||
+        return this.qaStatus == QaStatus.Accepted ||
             this.uploaderUserId == viewingUser?.userId ||
-            viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false
+            isDatasetViewableByUserViaRole(viewingUser)
+    }
+
+    private fun isDatasetViewableByUserViaRole(viewingUser: DatalandAuthentication?): Boolean {
+        return viewingUser?.roles?.contains(DatalandRealmRole.ROLE_ADMIN) ?: false ||
+            (
+                viewingUser?.roles?.contains(DatalandRealmRole.ROLE_REVIEWER) ?: false &&
+                    this.qaStatus == QaStatus.Pending
+                )
     }
 
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {

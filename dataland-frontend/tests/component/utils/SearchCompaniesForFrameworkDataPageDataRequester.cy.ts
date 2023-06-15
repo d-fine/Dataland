@@ -1,4 +1,4 @@
-import { QAStatus, DataTypeEnum } from "@clients/backend";
+import { QaStatus, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
@@ -22,11 +22,11 @@ describe("Component test for ViewFrameworkBase", () => {
           dataRegisteredByDataland: [
             {
               dataId: "dataset-1",
-              qaStatus: QAStatus.Accepted,
+              qaStatus: QaStatus.Accepted,
             },
             {
               dataId: "dataset-2",
-              qaStatus: QAStatus.Pending,
+              qaStatus: QaStatus.Pending,
             },
           ],
         },
@@ -44,7 +44,7 @@ describe("Component test for ViewFrameworkBase", () => {
           dataRegisteredByDataland: [
             {
               dataId: "dataset-3",
-              qaStatus: QAStatus.Pending,
+              qaStatus: QaStatus.Pending,
             },
           ],
         },

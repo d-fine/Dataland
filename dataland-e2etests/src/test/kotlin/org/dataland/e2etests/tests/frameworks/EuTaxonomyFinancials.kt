@@ -20,7 +20,7 @@ class EuTaxonomyFinancials {
     fun `post a company with EuTaxonomyForFinancials data and check if the data can be retrieved correctly`() {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation, listOfOneEuTaxonomyFinancialsDataSet,
-            apiAccessor.euTaxonomyFinancialsUploaderFunction,
+            apiAccessor::euTaxonomyFinancialsUploaderFunction,
         )
         apiAccessor.ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo)
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo

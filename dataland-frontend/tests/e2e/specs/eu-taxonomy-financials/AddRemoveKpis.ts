@@ -1,11 +1,14 @@
 import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { fillEligibilityKpis, fillField } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { admin_name, admin_pw } from "@e2e/utils/Cypress";
+import {
+  fillEligibilityKpis,
+  fillEuTaxonomyForFinancialsRequiredFields,
+  fillField,
+} from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { dateFormElement } from "@sharedUtils/components/DateFormElement";
 
 describeIf(
   "As a user, I expect to be able to add and remove Eligible KPIs and send the form successfully",
@@ -15,7 +18,7 @@ describeIf(
   },
   function () {
     beforeEach(() => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
     let testData: FixtureData<EuTaxonomyDataForFinancials>;
@@ -46,26 +49,7 @@ describeIf(
  * @param data the data to fill the form with
  */
 function fillAndValidateEuTaxonomyForFinancialsUploadForm(data: EuTaxonomyDataForFinancials): void {
-  dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
-  dateFormElement.validateDay("fiscalYearEnd", 12);
-
-  if (data.reportingObligation !== undefined) {
-    cy.get(`input[name="reportingObligation"][value=${data.reportingObligation.toString()}]`).check();
-  }
-
-  cy.get(
-    `input[name="fiscalYearDeviation"][value=${
-      data.fiscalYearDeviation ? data.fiscalYearDeviation.toString() : "Deviation"
-    }]`
-  ).check();
-
-  cy.get('input[name="numberOfEmployees"]').type(
-    `${data.numberOfEmployees ? data.numberOfEmployees.toString() : "13"}`
-  );
-
-  cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
-  cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
-  cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+  fillEuTaxonomyForFinancialsRequiredFields(data);
 
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()

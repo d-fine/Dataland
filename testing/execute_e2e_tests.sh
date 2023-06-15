@@ -30,6 +30,7 @@ docker exec -i dala-e2e-test-backend-db-1 /bin/bash -c "PGPASSWORD=${BACKEND_DB_
 docker exec -i dala-e2e-test-api-key-manager-db-1 /bin/bash -c "PGPASSWORD=${API_KEY_MANAGER_DB_PASSWORD} pg_dump --username api_key_manager api_key_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/api-key-manager-db.sql || true
 docker exec -i dala-e2e-test-internal-storage-db-1 /bin/bash -c "PGPASSWORD=${INTERNAL_STORAGE_DB_PASSWORD} pg_dump --username internal_storage internal_storage" > ./dbdumps/${CYPRESS_TEST_GROUP}/internal-storage-db.sql || true
 docker exec -i dala-e2e-test-document-manager-db-1 /bin/bash -c "PGPASSWORD=${DOCUMENT_MANAGER_DB_PASSWORD} pg_dump --username document_manager document_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/document-manager-db.sql || true
+docker exec -i dala-e2e-test-qa-service-db-1 /bin/bash -c "PGPASSWORD=${QA_SERVICE_DB_PASSWORD} pg_dump --username qa_service qa_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/qa-service-db.sql || true
 
 # Stop Backend causing JaCoCo to write Coverage Report, get it to pwd
 docker exec dala-e2e-test-backend-1 pkill -f java
@@ -63,6 +64,7 @@ pg_isready -d keycloak -h "localhost" -p 5434
 pg_isready -d api_key_manager -h "localhost" -p 5435
 pg_isready -d internal_storage -h "localhost" -p 5436
 pg_isready -d document_manager -h "localhost" -p 5437
+pg_isready -d qa_service -h "localhost" -p 5438
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`

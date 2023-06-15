@@ -33,7 +33,7 @@ class WebSecurityConfig(
     @Value("\${dataland.authorization.publiclinks:}") private val publicLinks: String,
     @Value("\${dataland.authorization.internallinks:}") private val internalLinks: String,
     @Value("\${dataland.apikeymanager.base-url:}") private val apiKeyManagerBaseUrl: String,
-    @Value("\${org.dataland.authorization.apikey.enable:false}") private val enableApiKeyAuthentication: Boolean,
+    @Value("\${dataland.authorization.apikey.enable:false}") private val enableApiKeyAuthentication: Boolean,
 ) {
     /**
      * Defines the Session Authentication Strategy
