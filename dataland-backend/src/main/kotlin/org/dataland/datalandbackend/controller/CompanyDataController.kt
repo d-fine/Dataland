@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
+import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.DataType
@@ -74,7 +75,7 @@ class CompanyDataController(
         searchString: String,
         page: Int?,
         entriesPerPage: Int?,
-    ): ResponseEntity<List<StoredCompany>> {
+    ): ResponseEntity<List<CompanyIdAndName>> {
         return ResponseEntity.ok(
             companyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(searchString, page, entriesPerPage),
         )

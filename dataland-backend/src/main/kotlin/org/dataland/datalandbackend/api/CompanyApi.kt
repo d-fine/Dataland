@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
+import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
@@ -116,9 +117,7 @@ interface CompanyApi {
         @RequestParam searchString: String,
         @RequestParam page: Int? = null,
         @RequestParam entriesPerPage: Int? = null,
-
-    ):
-        ResponseEntity<List<StoredCompany>>
+    ): ResponseEntity<List<CompanyIdAndName>>
 
     /**
      * A method used to retrieve all available distinct values for framework type, country code & sector

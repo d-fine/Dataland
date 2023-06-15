@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.StoredCompany
@@ -173,18 +174,14 @@ class CompanyManager(
         searchString: String,
         page: Int?,
         entriesPerPage: Int?,
-    ): List<StoredCompany> {
+    ): List<CompanyIdAndName> {
         val searchFilterForJPA = StoredCompanySearchFilter(
             searchString = searchString,
         )
-        val filteredAndSortedResults = companyRepository.searchCompaniesByNameOrIdentifier(
+        return companyRepository.searchCompaniesByNameOrIdentifier(
             searchFilterForJPA,
             buildPageable(page, entriesPerPage),
         )
-
-        val results = fetchAllStoredCompanyFields(filteredAndSortedResults)
-
-        return results.map { it.toApiModel(DatalandAuthentication.fromContextOrNull()) }
     }
 
     private fun buildPageable(page: Int?, entriesPerPage: Int?): Pageable {

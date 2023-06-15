@@ -1616,7 +1616,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredCompany"
+                    "$ref": "#/components/schemas/CompanyIdAndName"
                   }
                 }
               }
@@ -4116,6 +4116,21 @@
           },
           "data": {
             "$ref": "#/components/schemas/EuTaxonomyDataForFinancials"
+          }
+        }
+      },
+      "CompanyIdAndName": {
+        "required": [
+          "companyId",
+          "companyName"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
           }
         }
       },

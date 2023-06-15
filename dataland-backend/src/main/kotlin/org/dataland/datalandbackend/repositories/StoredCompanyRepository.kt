@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -59,8 +60,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      * e.g. when searching for "a" Allianz will come before Deutsche Bank)
      */
     @Query(
-        "SELECT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN company.dataRegisteredByDataland data " +
+        "SELECT new org.dataland.datalandbackend.model.CompanyIdAndName(company.companyId, company.companyName) FROM StoredCompanyEntity company " +
             "LEFT JOIN company.identifiers identifier " +
             "LEFT JOIN company.companyAlternativeNames alternativeName " +
             "WHERE " +
@@ -79,8 +79,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun searchCompaniesByNameOrIdentifier(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
         pageable: Pageable,
-    ):
-        List<StoredCompanyEntity>
+    ): List<CompanyIdAndName>
 
     /**
      * Returns all available distinct country codes
