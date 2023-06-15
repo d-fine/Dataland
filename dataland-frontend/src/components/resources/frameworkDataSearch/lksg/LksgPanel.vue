@@ -163,6 +163,30 @@ export default defineComponent({
     },
 
     /**
+     * Converts a nace code to a human readable value
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformatted Country value ready for display
+     */
+    reformatIndustriesValue(kpiValue: KpiValue) {
+      return Array.isArray(kpiValue)
+        ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
+        : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+    },
+
+    /**
+     * Converts a country code to a human readable value
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformatted Country value ready for display
+     */
+    reformatCountriesValue(kpiValue: KpiValue) {
+      return Array.isArray(kpiValue)
+        ? kpiValue.map(
+            (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
+          )
+        : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+    },
+
+    /**
      *
      * @param kpiField the Field to which the value belongs
      * @param kpiValue the value that should be reformated corresponding to its field
@@ -173,16 +197,10 @@ export default defineComponent({
         kpiValue = this.convertToMillions(kpiValue);
       }
       if (kpiField.name === "industry" || kpiField.name === "subcontractingCompaniesIndustries") {
-        kpiValue = Array.isArray(kpiValue)
-          ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
-          : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+        kpiValue = this.reformatIndustriesValue(kpiValue);
       }
       if (kpiField.name.includes("Countries") && kpiField.component !== "YesNoFormField") {
-        kpiValue = Array.isArray(kpiValue)
-          ? kpiValue.map(
-              (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
-            )
-          : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+        kpiValue = this.reformatCountriesValue(kpiValue);
       }
 
       let returnValue;
