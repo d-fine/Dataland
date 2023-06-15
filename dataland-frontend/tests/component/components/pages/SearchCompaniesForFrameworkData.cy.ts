@@ -10,7 +10,7 @@ describe("Component tests for 'Request Data' button on the level of company sear
     cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
   });
 
-  it("Check that the 'Request Data' button is permanently visible for a data reader", () => {
+  it("Check that the 'Request Data' button exists and works as expected for a data reader", () => {
     const keycloakMock = minimalKeycloakMock({});
     cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
@@ -24,7 +24,7 @@ describe("Component tests for 'Request Data' button on the level of company sear
     });
   });
 
-  it("Check that the 'Request Data' button is permanently visible for a user with upload rights where the 'New Dataset' button is also present", () => {
+  it("Check that the 'Request Data' button exists and works as expected when the 'New Dataset' button is also present", () => {
     const keycloakMock = minimalKeycloakMock({
       roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
     });

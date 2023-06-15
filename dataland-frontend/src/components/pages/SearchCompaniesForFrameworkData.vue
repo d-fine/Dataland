@@ -55,12 +55,7 @@
               </div>
 
               <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
-                <PrimeButton
-                  class="uppercase p-button p-button-sm d-letters mr-3"
-                  label="Request Data"
-                  icon="pi pi-question"
-                  @click="redirectToRequestDataPage"
-                />
+                <RequestDataButton />
                 <PrimeButton
                   v-if="hasUserUploaderRights"
                   class="uppercase p-button p-button-sm d-letters mr-3"
@@ -117,6 +112,7 @@ import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import Keycloak from "keycloak-js";
 import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
+import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
 
 export default defineComponent({
   setup() {
@@ -130,6 +126,7 @@ export default defineComponent({
   },
   name: "SearchCompaniesForFrameworkData",
   components: {
+    RequestDataButton,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,
     TheHeader,
@@ -225,13 +222,6 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Executes router push to the request data page
-     */
-    async redirectToRequestDataPage() {
-      await this.$router.push("/requests");
-    },
-
     /**
      * Executes router push to the choose company page
      */

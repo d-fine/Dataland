@@ -56,13 +56,10 @@
     </DataTable>
     <div class="d-center-div text-center px-7 py-4" v-else>
       <p class="font-medium text-xl">We're sorry, but your search did not return any results.</p>
-      <p class="font-medium">Please double-check the spelling and try again or request the data you are missing!</p>
-      <PrimeButton
-        class="uppercase p-button p-button-sm d-letters mr-3"
-        label="Request Data"
-        icon="pi pi-question"
-        @click="redirectToRequestDataPage"
-      />
+      <p class="font-medium text-xl">
+        Please double-check the spelling and try again or request the data you are missing!
+      </p>
+      <RequestDataButton />
     </div>
   </div>
 </template>
@@ -70,17 +67,17 @@
 <script lang="ts">
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import PrimeButton from "primevue/button";
 import Tooltip from "primevue/tooltip";
 import {
   DataSearchStoredCompany,
   getRouterLinkTargetFramework,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent } from "vue";
+import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
 
 export default defineComponent({
   name: "FrameworkDataSearchResults",
-  components: { DataTable, Column, PrimeButton },
+  components: { RequestDataButton, DataTable, Column },
   directives: {
     tooltip: Tooltip,
   },
@@ -95,13 +92,6 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Executes router push to the request data page
-     */
-    async redirectToRequestDataPage() {
-      await this.$router.push("/requests");
-    },
-
     /**
      * Navigates to the view framework data page on a click on the row of the company
      * @param event the row click event
