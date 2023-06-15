@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Message severity="success" :sticky="true" :key:="messageId">
+    <Message severity="success" :sticky="true" :key="messageId">
       <h4>{{ successMessage }}</h4>
       <p v-if="message">{{ message }}</p>
     </Message>

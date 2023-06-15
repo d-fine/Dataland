@@ -53,7 +53,6 @@ export default defineComponent({
         isVisible: true,
       },
     ] as Tab[],
-    isCreated: false,
   }),
   setup() {
     return {

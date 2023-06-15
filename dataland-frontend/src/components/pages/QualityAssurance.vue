@@ -132,12 +132,6 @@ export default defineComponent({
   mounted() {
     void this.getQaDataForCurrentPage();
   },
-  props: {
-    data: {
-      type: Object,
-      default: null,
-    },
-  },
   methods: {
     convertUnixTimeInMsToDateString,
     humanizeString,

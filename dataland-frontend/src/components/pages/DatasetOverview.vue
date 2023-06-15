@@ -60,7 +60,6 @@ export default defineComponent({
     return {
       datasetTableInfos: [] as DatasetTableInfo[],
       waitingForData: true,
-      hasUserRequiredRole: null as boolean | null,
     };
   },
   setup() {

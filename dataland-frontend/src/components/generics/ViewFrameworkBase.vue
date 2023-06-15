@@ -141,7 +141,6 @@ export default defineComponent({
       },
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
       isDataProcessedSuccesfully: true,
-      hasUserRequiredRole: null as null | boolean,
     };
   },
   computed: {

@@ -166,7 +166,6 @@ export default defineComponent({
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
-      hasUserRequiredRole: null as null | boolean,
     };
   },
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
