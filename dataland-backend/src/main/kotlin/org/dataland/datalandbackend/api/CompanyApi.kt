@@ -63,6 +63,9 @@ interface CompanyApi {
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @param onlyCurrentUserAsUploader boolean determining if the search should only find companies with datasets
      * uploaded by the current user
+     * @param page determines which page of the result is returned
+     * @param entriesPerPage determines how many entries are shown on each page
+     * @param noPagination boolean that determines if the results should be paginated or not
      * @return information about all companies matching the search criteria
      */
     @Operation(
@@ -96,6 +99,9 @@ interface CompanyApi {
     /**
      * A method to retrieve companies with names or identifiers matching a search string
      * @param searchString string used for substring matching in the name and the identifiers of a company
+     * @param page determines which page of the result is returned
+     *      * @param entriesPerPage determines how many entries are shown on each page
+     *      * @param noPagination boolean that determines if the results should be paginated or not
      * @return names of all companies matching the search criteria
      */
     @Operation(
@@ -114,8 +120,9 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompaniesBySearchString(
         @RequestParam searchString: String,
-        @RequestParam page: Int? = null,
-        @RequestParam entriesPerPage: Int? = null,
+        @RequestParam("page", defaultValue = "1") page: Int? = 1,
+        @RequestParam("entriesPerPage", defaultValue = "250") entriesPerPage: Int? = 250,
+        @RequestParam noPagination: Boolean = true,
 
     ):
         ResponseEntity<List<StoredCompany>>
