@@ -53,6 +53,33 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         List<StoredCompanyEntity>
 
     /**
+     * A function for querying companies by search string:
+     * - searchString: If not empty, only companies that contain the search string in their name are returned
+     * (Prefix-Matches are ordered before Center-Matches,
+     * e.g. when searching for "a" Allianz will come before Deutsche Bank)
+     */
+    @Query(
+        "SELECT company FROM StoredCompanyEntity company " +
+            "LEFT JOIN company.dataRegisteredByDataland data " +
+            "LEFT JOIN company.identifiers identifier " +
+            "LEFT JOIN company.companyAlternativeNames alternativeName " +
+            "WHERE " +
+            "(:#{#searchFilter.searchStringLength} = 0 " +
+            "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
+            //"(lower(alternativeName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
+            "(lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}%)) " +
+            "GROUP BY company.companyId " +
+            "ORDER BY " +
+            "(CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1 " +
+            "WHEN lower(max(alternativeName)) = :#{#searchFilter.searchStringLower} THEN 2 " +
+            "WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 3 " +
+            "WHEN lower(max(alternativeName)) LIKE :#{#searchFilter.searchStringLower}% THEN 4 ELSE 5 END) ASC, " +
+            "company.companyName ASC",
+    )
+    fun searchCompaniesByNameOrIdentifier(@Param("searchFilter") searchFilter: StoredCompanySearchFilter, pageable: Pageable):
+        List<StoredCompanyEntity>
+
+    /**
      * Returns all available distinct country codes
      */
     @Query(

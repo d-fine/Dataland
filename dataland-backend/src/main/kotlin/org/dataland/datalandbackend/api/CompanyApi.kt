@@ -92,6 +92,34 @@ interface CompanyApi {
     ):
         ResponseEntity<List<StoredCompany>>
 
+
+    /**
+     * A method to retrieve companies with names or identifiers matching a search string
+     * @param searchString string used for substring matching in the name and the identifiers of a company
+     * @return names of all companies matching the search criteria
+     */
+    @Operation(
+        summary = "Retrieve specific companies by searching their names and identifiers",
+        description = "Companies identified via the provided company name/identifier are retrieved",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company names."),
+        ],
+    )
+    @GetMapping(
+        value = ["/names"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getCompaniesBySearchString(
+        @RequestParam searchString: String,
+        @RequestParam page: Int? = null,
+        @RequestParam entriesPerPage: Int? = null,
+
+        ):
+            ResponseEntity<List<StoredCompany>>
+
     /**
      * A method used to retrieve all available distinct values for framework type, country code & sector
      * to be used by the search UI

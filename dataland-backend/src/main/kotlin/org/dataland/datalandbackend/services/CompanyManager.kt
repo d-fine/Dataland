@@ -127,30 +127,10 @@ class CompanyManager(
             uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
         )
 
-        val filteredAndSortedResults =
-            if (filter.page != null && filter.entriesPerPage != null) {
-                if (filter.page < 1 || filter.entriesPerPage < 1) {
-                    throw InvalidInputApiException(
-                        "Requestparam has a non acceptable value",
-                        "Please choose a value greater than 0",
-                    )
-                } else {
-                    companyRepository.searchCompanies(
-                        searchFilterForJPA,
-                        PageRequest.of(
-                            filter.page - 1, filter.entriesPerPage, Sort.unsorted(),
-                        ),
-                    )
-                }
-            } else if (filter.page == null && filter.entriesPerPage == null) {
-                companyRepository.searchCompanies(
-                    searchFilterForJPA,
-                    Pageable.unpaged(),
-                )
-            } else { throw InvalidInputApiException(
-                "Requestparam has a non acceptable value",
-                "Set page and entriesPerPage both to a non empty value or leave both params empty",
-            ) }
+        val filteredAndSortedResults = companyRepository.searchCompanies(
+            searchFilterForJPA,
+            buildPageable(filter.page, filter.entriesPerPage),
+        )
 
         val sortingMap = filteredAndSortedResults.mapIndexed {
                 index, storedCompanyEntity ->
@@ -162,6 +142,53 @@ class CompanyManager(
         }
 
         return results.map { it.toApiModel(viewingUser) }
+    }
+
+    /**
+     * Method to search for companies matching the company name or identifier
+     * @param searchString the string to search for in the names or identifiers of a company
+     * @param page the requested page
+     * @param entriesPerPage the number of entries per page
+     * @return list of all matching companies in Dataland
+     */
+    @Transactional
+    fun searchCompaniesByNameOrIdentifierAndGetApiModel(
+        searchString: String,
+        page: Int?,
+        entriesPerPage: Int?,
+    ): List<StoredCompany> {
+
+        val searchFilterForJPA = StoredCompanySearchFilter(
+            searchString = searchString,
+        )
+        val filteredAndSortedResults = companyRepository.searchCompaniesByNameOrIdentifier(
+            searchFilterForJPA,
+            buildPageable(page, entriesPerPage),
+        )
+
+        val results = fetchAllStoredCompanyFields(filteredAndSortedResults)
+
+        return results.map { it.toApiModel(DatalandAuthentication.fromContextOrNull()) }
+    }
+
+    private fun buildPageable(page: Int?, entriesPerPage: Int?): Pageable {
+        if (page != null && entriesPerPage != null) {
+            if (page < 1 || entriesPerPage < 1) {
+                throw InvalidInputApiException(
+                    "Requestparam has a non acceptable value",
+                    "Please choose a value greater than 0",
+                )
+            }
+            return PageRequest.of(
+                page - 1, entriesPerPage, Sort.unsorted(),
+                )
+        } else if (page == null && entriesPerPage == null) {
+            return Pageable.unpaged()
+        }
+        throw InvalidInputApiException(
+            "Requestparam has a non acceptable value",
+            "Set page and entriesPerPage both to a non empty value or leave both params empty",
+        )
     }
 
     private fun getUploaderIdFilter(onlyCurrentUserAsUploader: Boolean): List<String> {

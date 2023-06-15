@@ -64,6 +64,16 @@ class CompanyDataController(
         )
     }
 
+    override fun getCompaniesBySearchString(
+        searchString: String,
+        page: Int?,
+        entriesPerPage: Int?
+    ): ResponseEntity<List<StoredCompany>> {
+        return ResponseEntity.ok(
+            companyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(searchString, page, entriesPerPage)
+        )
+    }
+
     override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> {
         return ResponseEntity.ok(
             CompanyAvailableDistinctValues(
