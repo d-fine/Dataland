@@ -152,6 +152,7 @@ services:
       -c maintenance_work_mem=256MB
       -c max_wal_size=1GB
       -c effective_cache_size=2048MB
+      -c shared_buffers=256MB
   e2etests:
     profiles: ["testing"]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
