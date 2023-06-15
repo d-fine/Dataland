@@ -186,7 +186,7 @@ export default defineComponent({
         this.gotoUpdateForm(
           assertDefined(this.companyID),
           this.dataType as DataTypeEnum,
-          (this.mapOfReportingPeriodToActiveDataset.entries().next().value as [string, DataMetaInformation])[1].dataId
+          Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId
         );
       }
     },
