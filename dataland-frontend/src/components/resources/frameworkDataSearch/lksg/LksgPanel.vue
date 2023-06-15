@@ -12,19 +12,20 @@
 </template>
 
 <script lang="ts">
-import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData } from "@clients/backend";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
+import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { DataAndMetaInformationLksgData } from "@clients/backend";
+import Keycloak from "keycloak-js";
+import { defineComponent, inject } from "vue";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -115,7 +116,7 @@ export default defineComponent({
         content: { [dataIdOfLksgDataset]: kpiValue },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
-        Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey).content);
+        Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
       }
       this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
     },
@@ -167,7 +168,7 @@ export default defineComponent({
      *
      * @param kpiField the Field to which the value belongs
      * @param kpiValue the value that should be reformated corresponding to its field
-     * @returns the reformated value ready for display
+     * @returns the reformatted value ready for display
      */
     reformatValueForDisplay(kpiField: Field, kpiValue: KpiValue): KpiValue {
       if (kpiField.name === "totalRevenue" && typeof kpiValue === "number") {
@@ -186,7 +187,14 @@ export default defineComponent({
           : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
       }
 
-      return kpiField.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;
+      let returnValue;
+
+      if (kpiField.options?.length) {
+        const filteredOption = kpiField.options.find((option: DropdownOption) => option.value === kpiValue);
+        if (filteredOption) returnValue = filteredOption.label;
+      }
+
+      return returnValue ?? kpiValue;
     },
   },
 });
