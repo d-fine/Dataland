@@ -81,6 +81,7 @@
                         <UploadFormHeader
                           :label="euTaxonomyKpiNameMappings.assurance ?? ''"
                           :description="euTaxonomyKpiInfoMappings.assurance ?? ''"
+                          :is-required="true"
                         />
                         <div class="lg:col-4 md:col-6 col-12 p-0">
                           <FormKit
@@ -116,6 +117,7 @@
                               <UploadFormHeader
                                 :label="euTaxonomyKpiNameMappings.report ?? ''"
                                 :description="euTaxonomyKpiInfoMappings.report ?? ''"
+                                :is-required="true"
                               />
                               <FormKit
                                 type="select"
