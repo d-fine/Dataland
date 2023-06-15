@@ -48,10 +48,7 @@ class CompanyManagerTest(
     @Test
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
         val allCompaniesInStore = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(
-                page = null,
-                entriesPerPage = null,
-            ),
+            CompanySearchFilter(),
         )
         assertTrue(
             allCompaniesInStore.all {
@@ -68,8 +65,6 @@ class CompanyManagerTest(
                 CompanySearchFilter(
                     searchString = company.companyName,
                     onlyCompanyNames = true,
-                    page = null,
-                    entriesPerPage = null,
                 ),
             )
             assertTrue(
@@ -84,8 +79,6 @@ class CompanyManagerTest(
             CompanySearchFilter(
                 searchString = identifier.identifierValue,
                 onlyCompanyNames = false,
-                page = null,
-                entriesPerPage = null,
             ),
         )
             .toMutableList()
@@ -130,8 +123,6 @@ class CompanyManagerTest(
         val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
             CompanySearchFilter(
                 searchString,
-                page = null,
-                entriesPerPage = null,
             ),
         )
         assertEquals(
@@ -152,8 +143,7 @@ class CompanyManagerTest(
         }
         val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
             CompanySearchFilter(
-                searchString = searchString, onlyCompanyNames = true, page = null,
-                entriesPerPage = null,
+                searchString = searchString, onlyCompanyNames = true,
             ),
         )
         assertEquals(
@@ -168,8 +158,7 @@ class CompanyManagerTest(
         val searchString = testCompanyList.first().companyName.take(1)
         val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
             CompanySearchFilter(
-                searchString = searchString, onlyCompanyNames = true, page = null,
-                entriesPerPage = null,
+                searchString = searchString, onlyCompanyNames = true,
             ),
         )
         val responsesStartingWith =
