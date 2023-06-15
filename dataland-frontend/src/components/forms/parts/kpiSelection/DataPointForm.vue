@@ -70,7 +70,11 @@
 
     <!-- Data quality -->
     <div class="form-field">
-      <UploadFormHeader label="Data quality" description="The level of confidence associated to the value." />
+      <UploadFormHeader
+        label="Data quality"
+        description="The level of confidence associated to the value."
+        :is-required="true"
+      />
       <div class="md:col-6 col-12 p-0">
         <FormKit
           :disabled="!dataPointIsAvailable"
