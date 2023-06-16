@@ -12,6 +12,7 @@ import { FixtureData } from "@sharedUtils/Fixtures";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
@@ -101,14 +102,18 @@ describe("As a user, I expect the search functionality on the /companies page to
     "Checks that the sector filter synchronises between the search bar and the drop down and works",
     { scrollBehavior: false },
     () => {
-      const demoCompanyToTestFor = companiesWithEuTaxonomyDataForNonFinancials[0].companyInformation;
+      const demoCompanyToTestFor = assertDefined(
+        companiesWithEuTaxonomyDataForNonFinancials.find((it) => it.companyInformation.sector !== undefined)
+      ).companyInformation;
       const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
-        (it) => it.companyInformation.sector !== demoCompanyToTestFor.sector
+        (it) =>
+          it.companyInformation.sector !== demoCompanyToTestFor.sector && it.companyInformation.sector !== undefined
       )!.companyInformation;
 
+      expect(demoCompanyToTestFor.sector).to.not.be.undefined;
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
-      cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
+      cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector?.sector}`)
         .wait("@companies-meta-information")
         .get("div[class='col-12 text-left']")
         .should("contain.text", "Sorry! Your search didn't return any results.")

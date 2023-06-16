@@ -19,10 +19,7 @@
       >
         <template #option="slotProps">
           <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-          <SearchResultHighlighter
-            :text="slotProps.option.companyName"
-            :searchString="latestValidSearchString"
-          />
+          <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
         </template>
       </AutoComplete>
     </span>
@@ -96,11 +93,7 @@ export default defineComponent({
         const companyDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getCompanyDataControllerApi();
-        const response = await companyDataControllerApi.getCompaniesBySearchString(
-          companyName.query,
-          1,
-          10
-        );
+        const response = await companyDataControllerApi.getCompaniesBySearchString(companyName.query, 1, 10);
         this.autocompleteArray = response.data;
       } catch (error) {
         console.error(error);
