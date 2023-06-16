@@ -5,7 +5,7 @@ import {
   CompanyInformation,
   DataMetaInformation,
   DataTypeEnum,
-  QAStatus,
+  QaStatus,
 } from "@clients/backend";
 
 /**
@@ -34,7 +34,7 @@ export function prepareSimpleDataSearchStoredCompanyArray(): DataSearchStoredCom
     uploadTime: 1672527600000, // 1.1.2023 00:00:00:0000
     reportingPeriod: "2023",
     currentlyActive: true,
-    qaStatus: QAStatus.Accepted,
+    qaStatus: QaStatus.Accepted,
   } as DataMetaInformation;
 
   return [
