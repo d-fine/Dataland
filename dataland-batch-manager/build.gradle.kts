@@ -25,10 +25,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
     implementation(libs.moshi.kotlin)
-    implementation(libs.moshi.adapters)
     implementation(libs.jackson.dataformat.csv)
-    implementation(libs.jackson.databind)
-    implementation(libs.jackson.datatype.jsr310)
     implementation(libs.jackson.kotlin)
     implementation(libs.okhttp)
     implementation(libs.commons.io)
