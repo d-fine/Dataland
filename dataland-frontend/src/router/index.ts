@@ -2,6 +2,8 @@ import { createWebHistory, createRouter, RouteComponent } from "vue-router";
 const UploadEuTaxonomyDataForNonFinancials = (): Promise<RouteComponent> =>
   import("@/components/pages/UploadEuTaxonomyDataForNonFinancials.vue");
 const WelcomeDataland = (): Promise<RouteComponent> => import("@/components/pages/WelcomeDataland.vue");
+
+const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
 const ViewEuTaxonomyNonFinancialsSample = (): Promise<RouteComponent> =>
@@ -88,6 +90,11 @@ const routes = [
     props: true,
     name: "Company EU Taxonomy for specific reporting period",
     component: ViewFrameworkData,
+  },
+  {
+    path: `/qualityassurance`,
+    name: "UI for quality assurance",
+    component: QualityAssurance,
   },
   {
     path: "/datasets",

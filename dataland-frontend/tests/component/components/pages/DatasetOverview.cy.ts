@@ -1,6 +1,7 @@
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import DatasetOverview from "@/components/pages/DatasetOverview.vue";
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
+import Keycloak from "keycloak-js";
 
 describe("Component tests for the DatasetOverview page", () => {
   it("Should not display the New Dataset button to non-uploader users", () => {
@@ -39,13 +40,26 @@ describe("Component tests for the DatasetOverview page", () => {
   /**
    * Validates the tab bar identified by the input
    * @param activeTabIndex number identifying the tab bar
+   * @param keycloak A keycloak object, especially containing information about the user rights (roles)
    */
-  function validateTabBar(activeTabIndex: number): void {
+  function validateTabBar(activeTabIndex: number, keycloak: Keycloak): void {
     cy.get(getTabSelector(0)).should("have.text", "AVAILABLE DATASETS");
     cy.get(getTabSelector(1)).should("have.text", "MY DATASETS");
-    const inactiveTabIndex = (activeTabIndex + 1) % 2;
+    if (keycloak.hasRealmRole("ROLE_REVIEWER")) {
+      cy.get(getTabSelector(2)).should("have.text", "QA");
+    } else {
+      cy.get(getTabSelector(2)).should("not.be.visible");
+    }
+    const inactiveTabIndices = [];
+    for (let i = 0; i < 3; i++) {
+      if (i != activeTabIndex) {
+        inactiveTabIndices.push(i);
+      }
+    }
     cy.get(getTabSelector(activeTabIndex)).should("have.class", "p-highlight");
-    cy.get(getTabSelector(inactiveTabIndex)).should("not.have.class", "p-highlight");
+    for (const i of inactiveTabIndices) {
+      cy.get(getTabSelector(i)).should("not.have.class", "p-highlight");
+    }
   }
 
   it("Checks that the tab-bar is rendered correctly and that clicking on 'AVAILABLE DATASETS' performs a router push", () => {
@@ -54,7 +68,7 @@ describe("Component tests for the DatasetOverview page", () => {
     cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
     }).then((mounted) => {
-      validateTabBar(1);
+      validateTabBar(1, keycloakMock);
       cy.get(getTabSelector(0)).click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/companies");
     });
@@ -71,9 +85,28 @@ describe("Component tests for the DatasetOverview page", () => {
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
     }).then((mounted) => {
-      validateTabBar(0);
+      validateTabBar(0, keycloakMock);
       cy.get(getTabSelector(1)).click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/datasets");
+    });
+  });
+
+  it("Checks that the tab-bar and clicking on 'QA' works as expected for data reviewer", () => {
+    const keycloakMock = minimalKeycloakMock({
+      roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
+    });
+    cy.intercept("**/api/companies?**", []);
+    const mockDistinctValues = {
+      countryCodes: [],
+      sectors: [],
+    };
+    cy.intercept("**/api/companies/meta-information", mockDistinctValues);
+    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+      keycloak: keycloakMock,
+    }).then((mounted) => {
+      validateTabBar(0, keycloakMock);
+      cy.get(getTabSelector(2)).click();
+      cy.wrap(mounted.component).its("$route.path").should("eq", "/qualityassurance");
     });
   });
 });

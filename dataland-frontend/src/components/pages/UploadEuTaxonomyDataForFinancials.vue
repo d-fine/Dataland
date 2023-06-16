@@ -1,11 +1,11 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <UploaderRoleWrapper>
+    <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <BackButton id="backButton" class="mt-2 pl-3" />
       <CompanyInformation :companyID="companyID" />
       <CreateEuTaxonomyForFinancials :companyID="companyID" @datasetCreated="redirectToMyDatasets(this.$router)" />
-    </UploaderRoleWrapper>
+    </AuthorizationWrapper>
     <TheFooter />
   </AuthenticationWrapper>
 </template>
@@ -17,14 +17,15 @@ import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyFo
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/general/TheFooter.vue";
 import BackButton from "@/components/general/BackButton.vue";
-import UploaderRoleWrapper from "@/components/wrapper/UploaderRoleWrapper.vue";
+import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
 import { defineComponent } from "vue";
+import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "UploadEuTaxonomyDataForFinancials",
   components: {
-    UploaderRoleWrapper,
+    AuthorizationWrapper,
     CreateEuTaxonomyForFinancials,
     TheHeader,
     AuthenticationWrapper,
@@ -40,6 +41,7 @@ export default defineComponent({
   data() {
     return {
       redirectToMyDatasets,
+      KEYCLOAK_ROLE_UPLOADER,
     };
   },
 });

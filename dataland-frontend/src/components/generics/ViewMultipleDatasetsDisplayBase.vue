@@ -37,9 +37,7 @@
         <h2>Checking if {{ humanizeString(dataType) }} data available...</h2>
       </div>
       <div
-        v-if="
-          !isWaitingForListOfDataIdsToDisplay && receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.size === 0
-        "
+        v-if="!isListOfDataIdsToDisplayFound && !isWaitingForListOfDataIdsToDisplay"
         class="col-12 text-left"
         data-test="noDataForThisFrameworkPresentErrorIndicator"
       >

@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.lksg.LksgData
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -67,7 +67,7 @@ class DataMetaInformationManagerTest(
             uploadTime = 0,
             reportingPeriod = "reporting-period",
             currentlyActive = null,
-            qaStatus = QAStatus.Accepted,
+            qaStatus = QaStatus.Accepted,
         )
         dataMetaInformationManager.storeDataMetaInformation(dataMetaInfoEntityToStore)
         assertThrows<DataIntegrityViolationException> {

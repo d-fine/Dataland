@@ -1,58 +1,57 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TabView class="col-12" v-model:activeIndex="activeTabIndex" @tab-change="handleTabChange">
-      <TabPanel header="AVAILABLE DATASETS">
-        <TheContent class="min-h-screen paper-section relative">
+    <DatasetsTabMenu :initial-tab-index="0">
+      <TheContent class="min-h-screen paper-section relative">
+        <div
+          id="searchBarAndFiltersContainer"
+          class="w-full bg-white pt-4"
+          :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
+          ref="searchBarAndFiltersContainer"
+        >
+          <FrameworkDataSearchBar
+            id="frameworkDataSearchBar"
+            ref="frameworkDataSearchBar"
+            class="pl-4 m-0"
+            v-model="currentSearchBarInput"
+            :filter="currentCombinedFilter"
+            :searchBarId="searchBarId"
+            :emit-search-results-array="true"
+            @search-confirmed="handleSearchConfirmed"
+            @companies-received="handleCompanyQuery"
+          />
+
           <div
-            id="searchBarAndFiltersContainer"
-            class="w-full bg-white pt-4"
-            :class="[pageScrolled && searchBarToggled ? ['d-search-toggle', 'fixed'] : '']"
-            ref="searchBarAndFiltersContainer"
+            id="searchFiltersPanel"
+            class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
+            :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
           >
-            <FrameworkDataSearchBar
-              id="frameworkDataSearchBar"
-              ref="frameworkDataSearchBar"
-              class="pl-4 m-0"
-              v-model="currentSearchBarInput"
-              :filter="currentCombinedFilter"
-              :searchBarId="searchBarId"
-              :emit-search-results-array="true"
-              @search-confirmed="handleSearchConfirmed"
-              @companies-received="handleCompanyQuery"
-            />
-
-            <div
-              id="searchFiltersPanel"
-              class="flex justify-content-between align-items-center d-search-filters-panel pl-4 pr-4"
-              :class="[pageScrolled && !searchBarToggled ? ['d-search-toggle', 'fixed', 'w-full', 'bg-white'] : '']"
-            >
-              <div class="flex" id="searchFiltersContainer">
-                <div
-                  id="scrolledSearchToggler"
-                  :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"
+            <div class="flex" id="searchFiltersContainer">
+              <div
+                id="scrolledSearchToggler"
+                :class="[pageScrolled && !searchBarToggled ? ['flex', 'align-items-center'] : 'hidden']"
+              >
+                <span class="mr-3 font-semibold">Search Data for Companies</span>
+                <PrimeButton
+                  name="search_bar_collapse"
+                  icon="pi pi-search"
+                  class="p-button-rounded surface-ground border-none m-2"
+                  @click="toggleSearchBar"
                 >
-                  <span class="mr-3 font-semibold">Search Data for Companies</span>
-                  <PrimeButton
-                    name="search_bar_collapse"
-                    icon="pi pi-search"
-                    class="p-button-rounded surface-ground border-none m-2"
-                    @click="toggleSearchBar"
-                  >
-                    <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-                  </PrimeButton>
-                </div>
-
-                <FrameworkDataSearchFilters
-                  id="frameworkDataSearchFilters"
-                  class="ml-3"
-                  ref="frameworkDataSearchFilters"
-                  :show-heading="!pageScrolled || searchBarToggled"
-                  v-model:selected-country-codes="currentFilteredCountryCodes"
-                  v-model:selected-frameworks="currentFilteredFrameworks"
-                  v-model:selected-sectors="currentFilteredSectors"
-                />
+                  <i class="pi pi-search" aria-hidden="true" style="z-index: 20; color: #958d7c" />
+                </PrimeButton>
               </div>
+
+              <FrameworkDataSearchFilters
+                id="frameworkDataSearchFilters"
+                class="ml-3"
+                ref="frameworkDataSearchFilters"
+                :show-heading="!pageScrolled || searchBarToggled"
+                v-model:selected-country-codes="currentFilteredCountryCodes"
+                v-model:selected-frameworks="currentFilteredFrameworks"
+                v-model:selected-sectors="currentFilteredSectors"
+              />
+            </div>
 
               <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
                 <RequestDataButton />
@@ -68,22 +67,20 @@
             </div>
           </div>
 
-          <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">Loading...</p>
-            <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
-          </div>
+        <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
+          <p class="font-medium text-xl">Loading...</p>
+          <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+        </div>
 
-          <FrameworkDataSearchResults
-            v-if="!waitingForSearchResults"
-            ref="searchResults"
-            :rows-per-page="rowsPerPage"
-            :data="resultsArray"
-            @update:first="setFirstShownRow"
-          />
-        </TheContent>
-      </TabPanel>
-      <TabPanel header="MY DATASETS"> </TabPanel>
-    </TabView>
+        <FrameworkDataSearchResults
+          v-if="!waitingForSearchResults"
+          ref="searchResults"
+          :rows-per-page="rowsPerPage"
+          :data="resultsArray"
+          @update:first="setFirstShownRow"
+        />
+      </TheContent>
+    </DatasetsTabMenu>
     <TheFooter />
   </AuthenticationWrapper>
 </template>
@@ -108,11 +105,10 @@ import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { useFrameworkFiltersStore } from "@/stores/Stores";
-import TabPanel from "primevue/tabpanel";
-import TabView from "primevue/tabview";
 import Keycloak from "keycloak-js";
-import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 
 export default defineComponent({
   setup() {
@@ -127,6 +123,7 @@ export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
   components: {
     RequestDataButton,
+    DatasetsTabMenu,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,
     TheHeader,
@@ -135,12 +132,10 @@ export default defineComponent({
     PrimeButton,
     FrameworkDataSearchResults,
     TheFooter,
-    TabView,
-    TabPanel,
   },
   created() {
     window.addEventListener("scroll", this.windowScrollHandler);
-    checkIfUserHasUploaderRights(this.getKeycloakPromise)
+    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })
@@ -174,8 +169,6 @@ export default defineComponent({
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
-      activeTabIndex: 0,
-      hasUserUploaderRights: null as null | boolean,
     };
   },
   beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
@@ -421,15 +414,6 @@ export default defineComponent({
       window.scrollBy(0, -this.hiddenSearchBarHeight);
       await this.$nextTick();
       this.searchBarId = "search_bar_scrolled";
-    },
-
-    /**
-     * Routes to my datasets page when MY DATASETS tab is clicked
-     */
-    handleTabChange(): void {
-      if (this.activeTabIndex == 1) {
-        void this.$router.push("/datasets");
-      }
     },
   },
   unmounted() {

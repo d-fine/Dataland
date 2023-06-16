@@ -2,7 +2,7 @@ import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials, StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -244,7 +244,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         cy.ensureLoggedIn();
         const highlightedSubString = "this_is_highlighted";
         const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
-        getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        getKeycloakToken(admin_name, admin_pw).then((token) => {
           getFirstEuTaxonomyNonFinancialsFixtureDataFromFixtures().then((fixtureData) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
               return uploadOneEuTaxonomyNonFinancialsDatasetViaApi(

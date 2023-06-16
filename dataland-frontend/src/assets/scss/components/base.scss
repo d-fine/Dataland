@@ -76,6 +76,11 @@ body {
     background: var(--green-100);
   }
 
+  &.badge-red {
+    color: var(--red-700);
+    background: var(--red-100);
+  }
+
   &.badge-blue {
     color: var(--blue-700);
     background: var(--blue-100);

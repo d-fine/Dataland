@@ -26,11 +26,14 @@ export async function uploadOneLksgDatasetViaApi(
 ): Promise<DataMetaInformation> {
   const response = await new LksgDataControllerApi(
     new Configuration({ accessToken: token })
-  ).postCompanyAssociatedLksgData({
-    companyId,
-    reportingPeriod,
-    data,
-  });
+  ).postCompanyAssociatedLksgData(
+    {
+      companyId,
+      reportingPeriod,
+      data,
+    },
+    true
+  );
   return response.data;
 }
 

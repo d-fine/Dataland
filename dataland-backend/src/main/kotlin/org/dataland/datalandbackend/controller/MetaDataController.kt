@@ -45,7 +45,7 @@ class MetaDataController(
         val currentUser = DatalandAuthentication.fromContextOrNull()
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-            throw AccessDeniedException(logMessageBuilder.accessDeniedExceptionMessage)
+            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }

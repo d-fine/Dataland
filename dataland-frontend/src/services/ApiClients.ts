@@ -15,6 +15,7 @@ import {
   InviteControllerApi,
 } from "@clients/backend/api";
 import { DocumentControllerApi } from "@clients/documentmanager";
+import { QaControllerApi } from "@clients/qaservice";
 import Keycloak from "keycloak-js";
 import { ApiKeyControllerApi, ApiKeyControllerApiInterface } from "@clients/apikeymanager";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
@@ -84,5 +85,9 @@ export class ApiClientProvider {
 
   async getInviteControllerApi(): Promise<InviteControllerApi> {
     return this.getConstructedApi(InviteControllerApi);
+  }
+
+  async getQaControllerApi(): Promise<QaControllerApi> {
+    return this.getConstructedApi(QaControllerApi, "/qa");
   }
 }

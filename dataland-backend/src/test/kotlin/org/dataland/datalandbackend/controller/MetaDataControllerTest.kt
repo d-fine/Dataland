@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.services.CompanyManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.CompanyUploader
 import org.dataland.datalandbackend.utils.TestDataProvider
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -78,7 +78,7 @@ internal class MetaDataControllerTest(
                 dataId = "data-id-for-testing-user-access", company = storedCompany,
                 dataType = DataType.of(LksgData::class.java).toString(), uploaderUserId = "uploader-user-id",
                 uploadTime = 0, reportingPeriod = "reporting-period", currentlyActive = null,
-                qaStatus = QAStatus.Pending,
+                qaStatus = QaStatus.Pending,
             ),
         )
         mockSecurityContext(userId = "reader-user-id", roles = expectedSetOfRolesForReader)
