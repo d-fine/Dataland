@@ -171,15 +171,13 @@ class CompanyManager(
     private fun buildPageable(page: Int, entriesPerPage: Int, noPagination: Boolean): Pageable {
         if (noPagination) {
             return Pageable.unpaged()
-        }
-        else   {
+        } else {
             if (page < 1 || entriesPerPage < 1) {
                 throw InvalidInputApiException(
                     "Requestparam has a non acceptable value",
                     "Please choose a value greater than 0",
                 )
-            }
-            else {
+            } else {
                 return PageRequest.of(
                     page - 1, entriesPerPage, Sort.unsorted(),
                 )

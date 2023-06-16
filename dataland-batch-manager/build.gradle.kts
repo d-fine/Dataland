@@ -29,8 +29,8 @@ dependencies {
     implementation(libs.jackson.kotlin)
     implementation(libs.okhttp)
     implementation(libs.commons.io)
-    implementation("org.springframework.boot:spring-boot-starter:3.1.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
 tasks.test {
