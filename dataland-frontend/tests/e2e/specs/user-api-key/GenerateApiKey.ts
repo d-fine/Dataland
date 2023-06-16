@@ -115,7 +115,16 @@ describe("As a user I expect my api key will be generated correctly", () => {
       .find('[data-test="regenerateApiKeyConfirmButton"]')
       .click();
     cy.get("h1").should("contain.text", "Create new API Key");
-    // TODO recreate with expiry time 90 days and assure that it worked
+
+    cy.get("div#expiryTime").click();
+    cy.get('ul[role="listbox"]').find('[aria-label="90 days"]').click();
+    cy.get("#expiryTimeWrapper").should("contain.text", `The API Key will expire on`);
+    cy.get("button#generateApiKey").click();
+    cy.wait("@generateApiKey", { timeout: Cypress.env("short_timeout_in_ms") as number });
+
+    cy.get("#existingApiKeyCard").find("span").contains("this is the text").should("exist");
+
+    // TODO remove spacings
   }
 
   it("check Api Key functionalities", () => {
