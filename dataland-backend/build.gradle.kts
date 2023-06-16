@@ -56,7 +56,6 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.mailjet.client)
     implementation(project(":dataland-message-queue-utils"))
-    implementation("org.flywaydb:flyway-core")
 }
 
 openApi {

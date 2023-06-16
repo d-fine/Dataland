@@ -1,1 +1,0 @@
-CREATE INDEX idx_gin ON stored_companies USING gin (company_name gin_trgm_ops);
