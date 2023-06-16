@@ -8,7 +8,7 @@
         v-model="searchBarInput"
         :suggestions="autocompleteArray"
         :minLength="3"
-        optionLabel="companyInformation.companyName"
+        optionLabel="companyName"
         :autoOptionFocus="false"
         placeholder="Search company by name or PermID"
         inputClass="h-3rem d-framework-searchbar-input"
@@ -20,7 +20,7 @@
         <template #option="slotProps">
           <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
           <SearchResultHighlighter
-            :text="slotProps.option.companyInformation.companyName"
+            :text="slotProps.option.companyName"
             :searchString="latestValidSearchString"
           />
         </template>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import AutoComplete, { AutoCompleteCompleteEvent, AutoCompleteItemSelectEvent } from "primevue/autocomplete";
-import { StoredCompany } from "@clients/backend";
+import { CompanyIdAndName } from "@clients/backend";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import { defineComponent, inject, ref } from "vue";
 import Keycloak from "keycloak-js";
@@ -58,7 +58,7 @@ export default defineComponent({
     return {
       searchBarInput: "",
       latestValidSearchString: "",
-      autocompleteArray: [] as Array<StoredCompany>,
+      autocompleteArray: [] as Array<CompanyIdAndName>,
     };
   },
 
@@ -84,7 +84,7 @@ export default defineComponent({
      * @param event.value the stored company object
      */
     pushToChooseFrameworkForDataUploadPageForItem(event: AutoCompleteItemSelectEvent) {
-      void this.$router.push(`/companies/${(event.value as StoredCompany).companyId}/frameworks/upload`);
+      void this.$router.push(`/companies/${(event.value as CompanyIdAndName).companyId}/frameworks/upload`);
     },
     /**
      * Queries the getCompanies endpoint and writes the response to the variable autoCompleteArray
