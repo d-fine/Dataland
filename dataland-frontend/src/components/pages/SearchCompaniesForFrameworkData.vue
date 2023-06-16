@@ -53,19 +53,19 @@
               />
             </div>
 
-              <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
-                <RequestDataButton />
-                <PrimeButton
-                  v-if="hasUserUploaderRights"
-                  class="uppercase p-button p-button-sm d-letters mr-3"
-                  label="New Dataset"
-                  icon="pi pi-plus"
-                  @click="redirectToChooseCompanyPage"
-                />
-                <span>{{ currentlyVisiblePageText }}</span>
-              </div>
+            <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
+              <RequestDataButton />
+              <PrimeButton
+                v-if="hasUserUploaderRights"
+                class="uppercase p-button p-button-sm d-letters mr-3"
+                label="New Dataset"
+                icon="pi pi-plus"
+                @click="redirectToChooseCompanyPage"
+              />
+              <span>{{ currentlyVisiblePageText }}</span>
             </div>
           </div>
+        </div>
 
         <div v-if="waitingForSearchResults" class="d-center-div text-center px-7 py-4">
           <p class="font-medium text-xl">Loading...</p>
