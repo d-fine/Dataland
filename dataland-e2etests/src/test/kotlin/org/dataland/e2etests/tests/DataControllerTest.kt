@@ -92,6 +92,7 @@ class DataControllerTest {
                             "",
                             testDataEuTaxonomyNonFinancials,
                         ),
+                        true,
                     )
             }
         assertEquals("Client error : 403 ", exception.message)

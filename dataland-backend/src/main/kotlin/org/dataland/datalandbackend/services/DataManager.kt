@@ -6,18 +6,19 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -77,13 +78,18 @@ class DataManager(
      * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
      * relevant message queues
      * @param storableDataSet contains all the inputs needed by Dataland
+     * @param bypassQa whether the data should be sent to QA or not
      * @return ID of the newly stored data in the data store
      */
-    fun addDataSetToTemporaryStorageAndSendMessage(storableDataSet: StorableDataSet, correlationId: String):
+    fun storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
+        storableDataSet: StorableDataSet,
+        bypassQa: Boolean,
+        correlationId: String,
+    ):
         String {
         val dataId = generateRandomDataId()
-        addDatasetToDatabase(dataId, storableDataSet, correlationId)
-        storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, correlationId)
+        storeMetaDataFrom(dataId, storableDataSet, correlationId)
+        storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
         return dataId
     }
 
@@ -95,7 +101,7 @@ class DataManager(
      * @param correlationId the correlation id of the insertion process
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun addDatasetToDatabase(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
+    fun storeMetaDataFrom(dataId: String, storableDataSet: StorableDataSet, correlationId: String) {
         val company = companyManager.getCompanyById(storableDataSet.companyId)
         logger.info(
             "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
@@ -111,7 +117,7 @@ class DataManager(
             storableDataSet.uploadTime,
             storableDataSet.reportingPeriod,
             null,
-            QAStatus.Pending,
+            QaStatus.Pending,
         )
         metaDataManager.storeDataMetaInformation(metaData)
     }
@@ -128,12 +134,12 @@ class DataManager(
                 value = Queue(
                     "dataQualityAssuredBackendDataManager",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
+                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
                 key = [RoutingKeyNames.data],
             ),
         ],
@@ -144,17 +150,20 @@ class DataManager(
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QACompleted)
-        val dataId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
+        messageUtils.validateMessageType(type, MessageType.QaCompleted)
+        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
+        val dataId = qaCompletedMessage.identifier
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         messageUtils.rejectMessageOnException {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            metaInformation.qaStatus = QAStatus.Accepted
-            metaDataManager.setActiveDataset(metaInformation)
+            metaInformation.qaStatus = qaCompletedMessage.validationResult
+            if (qaCompletedMessage.validationResult == QaStatus.Accepted) {
+                metaDataManager.setActiveDataset(metaInformation)
+            }
             logger.info(
-                "Received quality assurance for data upload with DataId: " +
+                "Received quality assurance: ${qaCompletedMessage.validationResult} for data upload with DataId: " +
                     "$dataId with Correlation Id: $correlationId",
             )
         }
@@ -179,18 +188,21 @@ class DataManager(
      * Method to temporarily store a data set in a hash map and send a message to the storage_queue
      * @param dataId The id of the inserted data set
      * @param storableDataSet The data set to store
+     * @param bypassQa Whether the data set should be sent to QA or not
      * @param correlationId The correlation id of the request initiating the storing of data
      * @return ID of the stored data set
      */
     fun storeDataSetInTemporaryStoreAndSendMessage(
         dataId: String,
         storableDataSet: StorableDataSet,
+        bypassQa: Boolean,
         correlationId: String,
     ) {
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
+        val payload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to bypassQa)).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            dataId, MessageType.DataReceived, correlationId,
-            ExchangeNames.dataReceived,
+            payload, MessageType.DataReceived, correlationId,
+            ExchangeName.DataReceived,
         )
         logger.info(
             "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
@@ -221,12 +233,12 @@ class DataManager(
                 value = Queue(
                     "dataStoredBackendDataManager",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
                 key = [RoutingKeyNames.data],
             ),
         ],

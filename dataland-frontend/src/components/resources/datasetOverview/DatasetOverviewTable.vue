@@ -13,8 +13,9 @@
       @row-click="rerouteRowClick"
       sortField="uploadTimeInMs"
       :sortOrder="-1"
+      data-test="datasets-table"
     >
-      <Column field="companyName" header="COMPANY" :sortable="true" class="w-3"></Column>
+      <Column field="companyName" header="COMPANY" :sortable="true" class="w-3 data-test-company-name"></Column>
       <Column field="dataType" header="DATA FRAMEWORK" :sortable="true" sortField="dataType" class="w-3">
         <template #body="{ data }">
           {{ humanizeString(data.dataType) }}

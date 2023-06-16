@@ -36,9 +36,9 @@ class SfdrDataController(
     }
 
     @Operation(operationId = "postCompanyAssociatedSfdrData")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SfdrData>):
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SfdrData>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData)
+        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
 
     @Operation(operationId = "getAllCompanySfdrData")

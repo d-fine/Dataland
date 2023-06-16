@@ -61,6 +61,28 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
+tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val qaServiceClientDestinationPackage = "org.dataland.datalandqaservice.openApiClient"
+    input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
+    outputDir.set("$buildDir/clients/qa-service")
+    packageName.set(qaServiceClientDestinationPackage)
+    modelPackage.set("$qaServiceClientDestinationPackage.model")
+    apiPackage.set("$qaServiceClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java17",
+            "useTags" to "true",
+        ),
+    )
+}
+
 tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
     val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path
@@ -97,6 +119,7 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
 
 tasks.register("generateClients") {
     dependsOn("generateBackendClient")
+    dependsOn("generateQaServiceClient")
     dependsOn("generateApiKeyManagerClient")
     dependsOn("generateDocumentManagerClient")
 }
@@ -114,6 +137,7 @@ sourceSets {
     main.kotlin.srcDir("$buildDir/clients/backend/src/main/kotlin")
     main.kotlin.srcDir("$buildDir/clients/api-key-manager/src/main/kotlin")
     main.kotlin.srcDir("$buildDir/clients/document-manager/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/qa-service/src/main/kotlin")
 }
 
 ktlint {

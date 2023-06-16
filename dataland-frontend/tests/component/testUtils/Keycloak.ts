@@ -29,6 +29,9 @@ export function minimalKeycloakMock(config: KeycloakMockConfiguration): Keycloak
     updateToken(minValidity: number): KeycloakPromise<boolean, boolean> {
       return Promise.resolve(true) as KeycloakPromise<boolean, boolean>;
     },
+    hasRealmRole(role: string): boolean {
+      return this.realmAccess.roles.includes(role);
+    },
   };
   return mock as Keycloak;
 }

@@ -1,4 +1,4 @@
-import { TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS } from "@/utils/Constants";
+import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from "@/utils/Constants";
 import { Router } from "vue-router";
 
 /**
@@ -9,5 +9,5 @@ import { Router } from "vue-router";
 export function redirectToMyDatasets(router: Router): void {
   setTimeout(() => {
     void router.push(`/datasets`);
-  }, TIME_DELAY_BETWEEN_UPLOAD_AND_REDIRECT_IN_MS);
+  }, TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS);
 }

@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
@@ -269,7 +269,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        */
       function uploadCompanyAlphaAndData(): void {
         const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
-        getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyAlpha))
             .then((storedCompany) => {
               companyIdOfAlpha = storedCompany.companyId;
@@ -356,7 +356,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        *
        */
       function uploadCompanyBetaAndData(): void {
-        getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyBeta))
             .then(async (storedCompany) => {
               companyIdOfBeta = storedCompany.companyId;

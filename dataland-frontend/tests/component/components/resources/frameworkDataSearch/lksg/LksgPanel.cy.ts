@@ -7,7 +7,7 @@ import {
   DataMetaInformation,
   DataTypeEnum,
   LksgData,
-  QAStatus,
+  QaStatus,
 } from "@clients/backend";
 import { sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
 
@@ -122,7 +122,7 @@ describe("Component test for LksgPanel", () => {
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
         reportingPeriod: reportingYear.toString(),
-        qaStatus: QAStatus.Accepted,
+        qaStatus: QaStatus.Accepted,
         currentlyActive: true,
         dataType: DataTypeEnum.Lksg,
         companyId: "mock-company-id",

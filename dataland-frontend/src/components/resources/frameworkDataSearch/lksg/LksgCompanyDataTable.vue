@@ -167,7 +167,11 @@ export default defineComponent({
      * @returns true if the data point contains a document reference and has the appropriate value
      */
     hasDocument(dataPoint: BaseDataPointYesNo): boolean {
-      return dataPoint?.value === YesNo.Yes && dataPoint?.dataSource?.reference !== undefined;
+      return (
+        dataPoint?.value === YesNo.Yes &&
+        dataPoint?.dataSource?.reference != undefined &&
+        dataPoint.dataSource.reference.length > 0
+      );
     },
     /**
      * Checks if a label belongs to a certificate
