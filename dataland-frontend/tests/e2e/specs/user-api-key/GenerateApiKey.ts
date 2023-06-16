@@ -65,7 +65,6 @@ describe("As a user I expect my api key will be generated correctly", () => {
     // TODO check for "no expiry time" text
 
     if (Cypress.browser.displayName === "Chrome") {
-      console.log("yep");
       cy.wrap(
         Cypress.automation("remote:debugger:protocol", {
           command: "Browser.grantPermissions",
@@ -99,11 +98,8 @@ describe("As a user I expect my api key will be generated correctly", () => {
    */
   function verifyAlreadyExistingApiKeyState(): void {
     cy.reload(true);
-    cy.location("pathname", { timeout: Cypress.env("short_timeout_in_ms") as number }).should("include", "/api-key");
-    cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithKey.json" }).as(
-      "getApiKeyMetaInfoForUser"
-    );
     cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") as number });
+    cy.location("pathname", { timeout: Cypress.env("short_timeout_in_ms") as number }).should("include", "/api-key");
     cy.get('[data-test="regenerateApiKeyMessage"]').should("exist");
     cy.get("textarea#newKeyHolder").should("not.exist");
     cy.get('[data-test="text-info"]').should(
