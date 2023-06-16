@@ -137,11 +137,13 @@ services:
     image: postgres:15.3
     volumes:
       - backend_data:/var/lib/postgresql/data
+      - ./postgres-extensions/backend-db:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_DB: backend
       POSTGRES_USER: backend
       POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
       PGUSER: backend
+      POSTGRES_EXTENSIONS: pg_trgm
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
