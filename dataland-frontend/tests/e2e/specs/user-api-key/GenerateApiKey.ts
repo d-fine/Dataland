@@ -47,7 +47,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
         const val = $input.val();
         expect(val).to.include("13");
       });
-    cy.get('[data-test="cancelGenerateApiKey"]').click();
+    cy.get('[data-test="cancelGenerateApiKey"]').click(); // TODO test can be component test
   }
 
   /**
@@ -62,6 +62,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("button#generateApiKey").click();
     cy.get('[data-test="apiKeyInfo"]').should("exist");
     cy.get("textarea#newKeyHolder").should("exist");
+    // TODO check for "no expiry time" text
 
     if (Cypress.browser.displayName === "Chrome") {
       console.log("yep");
@@ -119,6 +120,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
       .find('[data-test="regenerateApiKeyConfirmButton"]')
       .click();
     cy.get("h1").should("contain.text", "Create new API Key");
+    // TODO recreate with expiry time 90 days and assure that it worked
   }
 
   it("check Api Key functionalities", () => {
