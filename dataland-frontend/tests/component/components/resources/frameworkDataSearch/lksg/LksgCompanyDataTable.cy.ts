@@ -6,16 +6,21 @@ import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSea
 describe("Component test for LksgCompanyDataTable", () => {
   const dataId = "dummyId";
   const dummyDataSource = { name: "document", reference: "123" } as DocumentReference;
+  const emptyStringDataSource = { name: "", reference: "" } as DocumentReference;
   it("Check that certificate/policy download links are displayed as expected", () => {
     const kpiDataObjects = [
       generateBaseDataPointKpi(YesNo.Yes, "Certification 1", dummyDataSource),
       generateBaseDataPointKpi(YesNo.No, "2 Certificate", dummyDataSource),
       generateBaseDataPointKpi(YesNo.Yes, "Certification 3", {} as DocumentReference),
       generateBaseDataPointKpi(YesNo.No, "Certification 4", {} as DocumentReference),
+      generateBaseDataPointKpi(YesNo.Yes, "Certification A", emptyStringDataSource),
+      generateBaseDataPointKpi(YesNo.No, "Certification B", emptyStringDataSource),
       generateBaseDataPointKpi(YesNo.Yes, "Certification 5"),
       generateBaseDataPointKpi(YesNo.Yes, "Policy 1", dummyDataSource),
       generateBaseDataPointKpi(YesNo.Yes, "Policy 2", {} as DocumentReference),
       generateBaseDataPointKpi(YesNo.No, "Policy 3", {} as DocumentReference),
+      generateBaseDataPointKpi(YesNo.Yes, "Policy A", emptyStringDataSource),
+      generateBaseDataPointKpi(YesNo.No, "Policy B", emptyStringDataSource),
     ];
 
     const reportingPeriodWithDataId = { dataId: dataId, reportingPeriod: "2023" };
@@ -37,6 +42,10 @@ describe("Component test for LksgCompanyDataTable", () => {
     cy.contains("tr", "Certification 3").find("td").last().should("contain.text", "Certified");
     cy.contains("tr", "Certification 4").find("td").last().find(".underline").should("not.exist");
     cy.contains("tr", "Certification 4").find("td").last().should("contain.text", "Uncertified");
+    cy.contains("tr", "Certification A").find("td").last().find(".underline").should("not.exist");
+    cy.contains("tr", "Certification A").find("td").last().should("contain.text", "Certified");
+    cy.contains("tr", "Certification B").find("td").last().find(".underline").should("not.exist");
+    cy.contains("tr", "Certification B").find("td").last().should("contain.text", "Uncertified");
     cy.contains("tr", "Certification 5").find("td").last().find(".underline").should("not.exist");
     cy.contains("tr", "Certification 5").find("td").last().should("contain.text", "Certified");
     cy.contains("tr", "Policy 1").find("td").last().find(".underline").should("contain.text", "Yes");
@@ -44,6 +53,10 @@ describe("Component test for LksgCompanyDataTable", () => {
     cy.contains("tr", "Policy 2").find("td").last().should("contain.text", "Yes");
     cy.contains("tr", "Policy 3").find("td").last().find(".underline").should("not.exist");
     cy.contains("tr", "Policy 3").find("td").last().should("contain.text", "No");
+    cy.contains("tr", "Policy A").find("td").last().find(".underline").should("not.exist");
+    cy.contains("tr", "Policy A").find("td").last().should("contain.text", "Yes");
+    cy.contains("tr", "Policy B").find("td").last().find(".underline").should("not.exist");
+    cy.contains("tr", "Policy B").find("td").last().should("contain.text", "No");
   });
 
   /**

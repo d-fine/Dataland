@@ -230,7 +230,7 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @Test
-    fun `generate an API key per technichal user and get the meta info about that API key for that user`() {
+    fun `generate an API key per technical user and get the meta info about that API key for that user`() {
         TechnicalUser.values().forEach { userType ->
             val apiKeyAndMetaInfo = apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(userType)
             val apiKeyMetaInfoFromEndpoint = apiKeyHelper.getApiKeyMetaInformationForTechnicalUser(userType)

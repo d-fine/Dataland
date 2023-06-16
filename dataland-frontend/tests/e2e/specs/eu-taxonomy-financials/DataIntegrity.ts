@@ -9,7 +9,7 @@ import {
   EuTaxonomyDataForFinancials,
 } from "@clients/backend";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 
 describeIf(
@@ -43,7 +43,7 @@ describeIf(
       testData: EuTaxonomyDataForFinancials,
       reportingPeriod: string
     ): void {
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
           (storedCompany) => {
             return uploadOneEuTaxonomyFinancialsDatasetViaApi(

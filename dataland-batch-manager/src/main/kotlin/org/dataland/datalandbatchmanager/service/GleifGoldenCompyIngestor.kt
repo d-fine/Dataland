@@ -53,7 +53,12 @@ class GleifGoldenCompyIngestor(
         if (allCompaniesForceIngest || flagFile?.exists() == true) {
             if (flagFile?.exists() == true) {
                 logger.info("Found collect all companies flag. Deleting it.")
-                flagFile.delete()
+                if (!flagFile.delete()) {
+                    logger.error(
+                        "Unable to delete flag file $flagFile. Manually remove it or import will " +
+                            "be triggered after service restart again.",
+                    )
+                }
             }
 
             logger.info("Retrieving all company data available via GLEIF.")

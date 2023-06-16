@@ -1,6 +1,6 @@
 <template>
   <div :class="`p-badge badge-${assertDefined(statusMap.get(datasetStatus)).color}`">
-    <span>{{ assertDefined(statusMap.get(datasetStatus)).text }}</span>
+    <span data-test="qa-status">{{ assertDefined(statusMap.get(datasetStatus)).text }}</span>
   </div>
 </template>
 <script lang="ts">
@@ -14,8 +14,9 @@ export default defineComponent({
     return {
       assertDefined,
       statusMap: new Map<DatasetStatus, BadgeProperties>([
-        [DatasetStatus.QAApproved, BadgeProperties.Approved],
-        [DatasetStatus.QAPending, BadgeProperties.Pending],
+        [DatasetStatus.QaApproved, BadgeProperties.Approved],
+        [DatasetStatus.QaPending, BadgeProperties.Pending],
+        [DatasetStatus.QaRejected, BadgeProperties.Rejected],
         [DatasetStatus.Superseded, BadgeProperties.Superseded],
       ]),
     };
@@ -31,6 +32,7 @@ export default defineComponent({
 class BadgeProperties {
   static readonly Approved = new BadgeProperties("green", "APPROVED");
   static readonly Pending = new BadgeProperties("yellow", "PENDING");
+  static readonly Rejected = new BadgeProperties("red", "REJECTED");
   static readonly Superseded = new BadgeProperties("brown", "SUPERSEDED");
 
   readonly color: string;

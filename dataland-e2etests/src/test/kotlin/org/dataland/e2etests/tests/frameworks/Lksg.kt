@@ -20,7 +20,7 @@ class Lksg {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneLksgDataSet,
-            apiAccessor.lksgUploaderFunction,
+            apiAccessor::lksgUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForLksgData
@@ -94,7 +94,7 @@ class Lksg {
                 companyId = companyId,
                 frameworkData = pair.first,
                 reportingPeriod = pair.second,
-                uploadFunction = apiAccessor.lksgUploaderFunction,
+                uploadFunction = apiAccessor::lksgUploaderFunction,
             )
         }
         return Pair(companyId, lksgData)

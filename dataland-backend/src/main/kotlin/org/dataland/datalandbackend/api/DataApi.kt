@@ -45,6 +45,7 @@ interface DataApi<T> {
     fun postCompanyAssociatedData(
         @Valid @RequestBody
         companyAssociatedData: CompanyAssociatedData<T>,
+        @RequestParam(defaultValue = "false") bypassQa: Boolean,
     ):
         ResponseEntity<DataMetaInformation>
 

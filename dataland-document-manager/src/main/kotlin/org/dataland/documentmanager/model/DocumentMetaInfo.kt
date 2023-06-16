@@ -1,6 +1,6 @@
 package org.dataland.documentmanager.model
 
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 
 /**
  * --- API model ---
@@ -14,5 +14,5 @@ data class DocumentMetaInfo(
     val documentId: String,
     val uploaderId: String,
     val uploadTime: Long,
-    var qaStatus: QAStatus,
+    var qaStatus: QaStatus,
 )

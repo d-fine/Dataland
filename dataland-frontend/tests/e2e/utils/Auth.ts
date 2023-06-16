@@ -9,7 +9,7 @@ export function logout(): void {
     .get("div[id='profile-picture-dropdown-toggle']")
     .click()
     .wait(1000)
-    .get("a[id='profile-picture-dropdown-toggle']")
+    .get("a[id='profile-picture-dropdown-logout-anchor']")
     .click()
     .wait(1000)
     .url()

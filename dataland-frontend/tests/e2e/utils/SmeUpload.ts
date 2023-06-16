@@ -16,10 +16,13 @@ export async function uploadOneSmeDataset(
 ): Promise<DataMetaInformation> {
   const response = await new SmeDataControllerApi(
     new Configuration({ accessToken: token })
-  ).postCompanyAssociatedSmeData({
-    companyId,
-    reportingPeriod,
-    data,
-  });
+  ).postCompanyAssociatedSmeData(
+    {
+      companyId,
+      reportingPeriod,
+      data,
+    },
+    true
+  );
   return response.data;
 }
