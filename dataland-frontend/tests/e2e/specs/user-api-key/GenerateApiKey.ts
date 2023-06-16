@@ -121,10 +121,10 @@ describe("As a user I expect my api key will be generated correctly", () => {
 
   it("check Api Key functionalities", () => {
     cy.ensureLoggedIn();
-    cy.visitAndCheckAppMount("/api-key");
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithNOKey.json" }).as(
       "getApiKeyMetaInfoForUser"
     );
+    cy.visitAndCheckAppMount("/api-key");
     cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") as number });
 
     verifyInitialPageStateAndCreateApiKeyCardPopup();
