@@ -117,6 +117,7 @@
                               <UploadFormHeader
                                 :label="euTaxonomyKpiNameMappings.report ?? ''"
                                 :description="euTaxonomyKpiInfoMappings.report ?? ''"
+                                :is-required="true"
                               />
                               <FormKit
                                 type="select"

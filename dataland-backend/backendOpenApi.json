@@ -94,6 +94,17 @@
           "sme-data-controller"
         ],
         "operationId": "postCompanyAssociatedSmeData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -152,6 +163,17 @@
           "sfdr-data-controller"
         ],
         "operationId": "postCompanyAssociatedSfdrData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -210,6 +232,17 @@
           "lksg-data-controller"
         ],
         "operationId": "postCompanyAssociatedLksgData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -268,6 +301,17 @@
           "eu-taxonomy-data-for-non-financials-controller"
         ],
         "operationId": "postCompanyAssociatedEuTaxonomyDataForNonFinancials",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -326,6 +370,17 @@
           "eu-taxonomy-data-for-financials-controller"
         ],
         "operationId": "postCompanyAssociatedEuTaxonomyDataForFinancials",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2178,15 +2233,16 @@
             "type": "boolean"
           },
           "qaStatus": {
-            "$ref": "#/components/schemas/QAStatus"
+            "$ref": "#/components/schemas/QaStatus"
           }
         }
       },
-      "QAStatus": {
+      "QaStatus": {
         "type": "string",
         "enum": [
           "Pending",
-          "Accepted"
+          "Accepted",
+          "Rejected"
         ]
       },
       "CompanyAssociatedDataSfdrData": {

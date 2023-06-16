@@ -26,7 +26,7 @@ describe("Component test for DatasetOverviewTable", () => {
       dataType: dataType,
       companyName: companyName,
       dataReportingPeriod: "2023",
-      status: DatasetStatus.QAApproved,
+      status: DatasetStatus.QaApproved,
       uploadTimeInMs: 1672527600000, // 1.1.2023 00:00:00:0000
     };
   }

@@ -6,12 +6,7 @@
     style="min-height: 2rem"
   >
     <span class="flex-1">{{ warningMessage }}</span>
-    <router-link
-      v-if="displayedDataset.qaStatus !== QAStatus.Pending"
-      :to="link"
-      class="no-underline"
-      data-test="datasetDisplayStatusLink"
-    >
+    <router-link v-if="existsAcceptedVersion" :to="link" class="no-underline" data-test="datasetDisplayStatusLink">
       <PrimeButton :label="buttonLabel" icon="pi pi-stopwatch" />
     </router-link>
   </div>
@@ -19,17 +14,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { DataMetaInformation, QAStatus } from "@clients/backend";
+import { DataMetaInformation, QaStatus } from "@clients/backend";
 import PrimeButton from "primevue/button";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 export default defineComponent({
   name: "DatasetDisplayStatusIndicator",
   components: { PrimeButton },
-  data() {
-    return {
-      QAStatus,
-    };
-  },
   props: {
     displayedDataset: {
       type: Object as PropType<DataMetaInformation | null>,
@@ -47,18 +37,19 @@ export default defineComponent({
     displayWarning(): boolean {
       return (
         this.displayedDataset?.currentlyActive === false ||
-        this.displayedDataset?.qaStatus === QAStatus.Pending ||
+        (this.displayedDataset?.qaStatus && this.displayedDataset.qaStatus !== QaStatus.Accepted) ||
         this.areMoreDatasetsViewableSimultaneously
       );
     },
     warningMessage(): string {
-      if (this.displayedDataset?.qaStatus === QAStatus.Pending) return "This dataset is currently pending review";
+      if (this.displayedDataset?.qaStatus === QaStatus.Pending) return "This dataset is currently pending review";
+      else if (this.displayedDataset?.qaStatus === QaStatus.Rejected) return "This dataset has been rejected";
       else if (this.displayedDataset?.currentlyActive === false) return "This dataset is superseded";
       else if (this.areMoreDatasetsViewableSimultaneously) return "You are only viewing a single available dataset";
       else return "ERROR";
     },
     buttonLabel(): string {
-      if (this.displayedDataset?.qaStatus === QAStatus.Pending || this.displayedDataset?.currentlyActive === false) {
+      if (this.displayedDataset?.qaStatus === QaStatus.Pending || this.displayedDataset?.currentlyActive === false) {
         return "View Active";
       } else if (this.areMoreDatasetsViewableSimultaneously) {
         return "View All";
@@ -67,7 +58,10 @@ export default defineComponent({
       }
     },
     link(): string | undefined {
-      if (this.displayedDataset?.qaStatus === QAStatus.Pending || this.displayedDataset?.currentlyActive === false) {
+      if (
+        (this.displayedDataset?.qaStatus && this.displayedDataset.qaStatus !== QaStatus.Accepted) ||
+        this.displayedDataset?.currentlyActive === false
+      ) {
         return (
           `/companies/${this.displayedDataset.companyId}` +
           `/frameworks/${this.displayedDataset.dataType}/reportingPeriods/${this.displayedDataset.reportingPeriod}`
@@ -80,6 +74,11 @@ export default defineComponent({
       } else {
         return undefined;
       }
+    },
+    existsAcceptedVersion(): boolean {
+      return (this.receivedMapOfReportingPeriodsToActiveDataMetaInfo as Map<string, DataMetaInformation>).has(
+        this.displayedDataset?.reportingPeriod ?? ""
+      );
     },
     areMoreDatasetsViewableSimultaneously(): boolean {
       return (

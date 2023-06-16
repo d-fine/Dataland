@@ -62,7 +62,22 @@
         "composites": {
           "realm": [
             "ROLE_USER",
-            "ROLE_UPLOADER"
+            "ROLE_UPLOADER",
+            "ROLE_REVIEWER"
+          ]
+        },
+        "clientRole": false,
+        "containerId": "datalandsecurity",
+        "attributes": {}
+      },
+      {
+        "id": "63fff10d-8146-4b06-8bde-23f02313585b",
+        "name": "ROLE_REVIEWER",
+        "description": "",
+        "composite": true,
+        "composites": {
+          "realm": [
+            "ROLE_USER"
           ]
         },
         "clientRole": false,
@@ -509,6 +524,30 @@
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
     "realmRoles" : [ "ROLE_ADMIN", "default-roles-datalandsecurity" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "f7a02ff1-0dab-4e10-a908-7d775c1014ae",
+    "createdTimestamp" : 1684915574777,
+    "username" : "data_reviewer",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "credentials" : [
+      {
+        "id" : "18740e54-9c4b-462e-a5d8-ca527acb6b12",
+        "type" : "password",
+        "createdDate" : 1684915574777,
+        "secretData" : "{\"value\":\"${KEYCLOAK_REVIEWER_VALUE}\",\"salt\":\"${KEYCLOAK_REVIEWER_SALT}\",\"additionalParameters\":{ }}",
+        "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
+      }
+    ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [
+      "ROLE_REVIEWER",
+      "default-roles-datalandsecurity"
+    ],
     "notBefore" : 0,
     "groups" : [ ]
   }, {

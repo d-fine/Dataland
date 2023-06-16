@@ -38,6 +38,7 @@ tasks.register("generateClients") {
     dependsOn("generateBackendClient")
     dependsOn("generateApiKeyManagerClient")
     dependsOn("generateDocumentManagerClient")
+    dependsOn("generateQaServiceClient")
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
@@ -103,11 +104,32 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
         ),
     )
 }
+tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val destinationPackage = "org.dataland.datalandfrontend.openApiClient.qaservice"
+    input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
+    outputDir.set("$buildDir/clients/qaservice")
+    modelPackage.set("$destinationPackage.model")
+    apiPackage.set("$destinationPackage.api")
+    packageName.set(destinationPackage)
+    generatorName.set("typescript-axios")
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
 
 sourceSets {
     val main by getting
     main.java.srcDir("$buildDir/clients/backend/src/main/kotlin")
     main.java.srcDir("$buildDir/clients/documentmanager/src/main/kotlin")
+    main.java.srcDir("$buildDir/clients/qaservice/src/main/kotlin")
 }
 
 ktlint {

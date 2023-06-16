@@ -53,6 +53,7 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   delete_docker_volume_if_existent_remotely "backend_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "document_manager_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "internal_storage_data" "$target_server_url" "$location"
+  delete_docker_volume_if_existent_remotely "qa_service_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "rabbitmq_data" "$target_server_url" "$location"
 fi
 
