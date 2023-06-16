@@ -58,7 +58,6 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
     cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });
-    cy.intercept("GET", "**/api-keys/generateApiKey*").as("generateApiKey");
     cy.get("button#generateApiKey").click();
     cy.get('[data-test="apiKeyInfo"]').should("exist");
     cy.get("textarea#newKeyHolder").should("exist");
@@ -124,6 +123,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithNOKey.json" }).as(
       "getApiKeyMetaInfoForUser"
     );
+    cy.intercept("GET", "**/api-keys/generateApiKey*").as("generateApiKey");
     cy.visitAndCheckAppMount("/api-key");
     cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") as number });
 
