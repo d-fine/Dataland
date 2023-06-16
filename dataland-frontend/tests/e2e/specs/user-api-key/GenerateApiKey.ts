@@ -14,8 +14,8 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get('[data-test="CreateApiKeyCard"]').should("exist");
     cy.get("h1").should("contain.text", "Create new API Key");
     cy.get('[data-test="cancelGenerateApiKey"]').click();
-    cy.get("h1").should("contain.text", "API");
-    cy.get('[data-test="CreateApiKeyCard"]').should("not.exist");
+    cy.get("h1").should("contain.text", "API Keys");
+    cy.get('[data-test="CreateApiKeyCard"]').should("not.exist"); // TODO test can be component test
   }
 
   /**
