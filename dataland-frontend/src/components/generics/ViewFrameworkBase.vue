@@ -75,7 +75,6 @@
 
 <script lang="ts">
 import BackButton from "@/components/general/BackButton.vue";
-import TheFooter from "@/components/general/TheFooter.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
@@ -83,15 +82,17 @@ import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/F
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
-import { humanizeString } from "@/utils/StringHumanizer";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
 import { defineComponent, inject, ref } from "vue";
+
+import TheFooter from "@/components/general/TheFooter.vue";
+import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
+import { humanizeString } from "@/utils/StringHumanizer";
+import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
@@ -141,7 +142,6 @@ export default defineComponent({
       },
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
       isDataProcessedSuccesfully: true,
-      hasUserUploaderRights: null as null | boolean,
     };
   },
   computed: {
@@ -158,7 +158,7 @@ export default defineComponent({
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
-    checkIfUserHasUploaderRights(this.getKeycloakPromise)
+    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })

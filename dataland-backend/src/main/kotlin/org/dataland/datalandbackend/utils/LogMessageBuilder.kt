@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend
 
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.stereotype.Component
 
 /**
@@ -9,7 +10,13 @@ import org.springframework.stereotype.Component
 
 @Component("LogMessageBuilder")
 class LogMessageBuilder {
-    val accessDeniedExceptionMessage = "You are trying to access a unreviewed dataset"
+    /**
+     * Generates an access denied message if a user without the necessary role tries to bypass the QA process
+     * @param qaStatus the qa status of the respective dataset
+     */
+    fun generateAccessDeniedExceptionMessage(qaStatus: QaStatus) =
+        "You are trying to access a ${qaStatus.toString().lowercase()} dataset."
+    val bypassQaDeniedExceptionMessage = "You do not have the required permissions to bypass QA checks."
 
     /**
      * Generates a message to inform that a correlation ID was generated for a request in association with a company ID

@@ -1,5 +1,6 @@
 import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
 import { mount } from "@vue/test-utils";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
 describe("Component test for UserProfileDropDown", () => {
   it("Should display a profile picture if the keycloak authenticator provides one", () => {
@@ -29,5 +30,31 @@ describe("Component test for UserProfileDropDown", () => {
     cy.get("@onProfilePictureObtainedSpy").should("have.been.calledWith", testImagePath);
 
     cy.get("@onProfilePictureLoadingErrorSpy").should("have.been.called");
+  });
+
+  const profileDropdownToggleSelector = "div[id='profile-picture-dropdown-toggle']";
+  const qaAnchorSelector = "a[id='profile-picture-dropdown-qa-services-anchor']";
+  it("Checks QA menu item is visible for the reviewer role", () => {
+    const reviewerKeycloakMock = minimalKeycloakMock({
+      roles: ["ROLE_REVIEWER"],
+    });
+    cy.mountWithPlugins(UserProfileDropDown, {
+      keycloak: reviewerKeycloakMock,
+    }).then((mounted) => {
+      cy.get(profileDropdownToggleSelector).click().get(qaAnchorSelector).should("exist").should("be.visible");
+      cy.get(qaAnchorSelector).click();
+      cy.wrap(mounted.component).its("$route.path").should("eq", "/qualityassurance");
+    });
+  });
+
+  it("Checks QA menu item is invisible for a regular user", () => {
+    const reviewerKeycloakMock = minimalKeycloakMock({
+      roles: ["ROLE_USER"],
+    });
+    cy.mountWithPlugins(UserProfileDropDown, {
+      keycloak: reviewerKeycloakMock,
+    }).then(() => {
+      cy.get(profileDropdownToggleSelector).click().get(qaAnchorSelector).should("not.exist");
+    });
   });
 });

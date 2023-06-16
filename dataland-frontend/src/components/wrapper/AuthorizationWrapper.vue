@@ -1,11 +1,11 @@
 <template>
-  <div v-if="hasUserUploaderRights">
+  <div v-if="hasUserRequiredRole">
     <slot></slot>
   </div>
   <TheContent v-else class="paper-section flex">
     <MiddleCenterDiv class="col-12">
       <div class="col-6 md:col-8 lg:col-12">
-        <h1>You can not visit this site because you have no uploader status.</h1>
+        <h1>You do not have permission to visit this page.</h1>
       </div>
     </MiddleCenterDiv>
   </TheContent>
@@ -14,17 +14,23 @@
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole } from "@/utils/KeycloakUtils";
 import TheContent from "@/components/generics/TheContent.vue";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 
 export default defineComponent({
-  name: "UploaderRoleWrapper",
+  name: "AuthorizationWrapper",
   components: { TheContent, MiddleCenterDiv },
   data() {
     return {
-      hasUserUploaderRights: null as boolean | null,
+      hasUserRequiredRole: null as boolean | null,
     };
+  },
+  props: {
+    requiredRole: {
+      type: String,
+      required: true,
+    },
   },
   setup() {
     return {
@@ -32,9 +38,9 @@ export default defineComponent({
     };
   },
   mounted: function () {
-    checkIfUserHasUploaderRights(this.getKeycloakPromise)
-      .then((hasUserUploaderRights) => {
-        this.hasUserUploaderRights = hasUserUploaderRights;
+    checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise)
+      .then((hasUserRequiredRole) => {
+        this.hasUserRequiredRole = hasUserRequiredRole;
       })
       .catch((error) => console.log(error));
   },

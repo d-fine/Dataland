@@ -8,5 +8,5 @@ object MessageType {
     const val DataStored = "Data stored"
     const val DocumentReceived = "Document received"
     const val DocumentStored = "Document stored"
-    const val QACompleted = "QA completed"
+    const val QaCompleted = "QA completed"
 }

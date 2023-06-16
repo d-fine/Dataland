@@ -2,10 +2,10 @@ package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
@@ -74,7 +74,7 @@ class DocumentManager(
         saveMetaInfoToDatabase(documentMetaInfo, correlationId)
         inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeNames.documentReceived,
+            documentMetaInfo.documentId, MessageType.DocumentReceived, correlationId, ExchangeName.DocumentReceived,
         )
         return DocumentUploadResponse(documentMetaInfo.documentId)
     }
@@ -100,7 +100,7 @@ class DocumentManager(
             documentId = documentId,
             uploaderId = DatalandAuthentication.fromContext().userId,
             uploadTime = Instant.now().toEpochMilli(),
-            qaStatus = QAStatus.Pending,
+            qaStatus = QaStatus.Pending,
         )
     }
 
@@ -131,7 +131,7 @@ class DocumentManager(
                 "No document with ID: $documentId could be found. Correlation ID: $correlationId",
             )
         }
-        if (metaDataInfoEntity.qaStatus != QAStatus.Accepted) {
+        if (metaDataInfoEntity.qaStatus != QaStatus.Accepted) {
             throw ResourceNotFoundApiException(
                 "No accepted document found",
                 "A non-quality-assured document with ID: $documentId was found. " +
@@ -171,12 +171,12 @@ class DocumentManager(
                 value = Queue(
                     "dataStoredDocumentManager",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.itemStored, declare = "false"),
+                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
                 key = [RoutingKeyNames.document],
             ),
         ],
@@ -212,12 +212,12 @@ class DocumentManager(
                 value = Queue(
                     "documentQualityAssuredDocumentManager",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataQualityAssured, declare = "false"),
+                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
                 key = [RoutingKeyNames.document],
             ),
         ],
@@ -229,14 +229,14 @@ class DocumentManager(
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils = MessageQueueUtils()
-        messageUtils.validateMessageType(type, MessageType.QACompleted)
+        messageUtils.validateMessageType(type, MessageType.QaCompleted)
         val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
         messageUtils.rejectMessageOnException {
             val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
-            metaInformation.qaStatus = QAStatus.Accepted
+            metaInformation.qaStatus = QaStatus.Accepted
             logger.info(
                 "Received quality assurance for document upload with document ID: " +
                     "$documentId with Correlation ID: $correlationId",

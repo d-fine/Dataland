@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
@@ -47,11 +47,11 @@ internal class DataControllerTest(
     val otherUserPendingDataId = "otheruser_pending"
     val otherUserAcceptedDataId = "otheruser_accepted"
     val testUserPendingDataMetaInformationEntity =
-        buildDataMetaInformationEntity(testUserPendingDataId, testUserId, QAStatus.Pending)
+        buildDataMetaInformationEntity(testUserPendingDataId, testUserId, QaStatus.Pending)
     val otherUserPendingDataMetaInformationEntity =
-        buildDataMetaInformationEntity(otherUserPendingDataId, otherUserId, QAStatus.Pending)
+        buildDataMetaInformationEntity(otherUserPendingDataId, otherUserId, QaStatus.Pending)
     val otherUserAcceptedDataMetaInformationEntity =
-        buildDataMetaInformationEntity(otherUserAcceptedDataId, otherUserId, QAStatus.Accepted)
+        buildDataMetaInformationEntity(otherUserAcceptedDataId, otherUserId, QaStatus.Accepted)
 
     lateinit var mockSecurityContext: SecurityContext
     lateinit var mockDataManager: DataManager
@@ -109,7 +109,7 @@ internal class DataControllerTest(
     private fun buildDataMetaInformationEntity(
         dataId: String,
         uploaderId: String,
-        qaStatus: QAStatus,
+        qaStatus: QaStatus,
     ): DataMetaInformationEntity {
         return DataMetaInformationEntity(
             dataId,

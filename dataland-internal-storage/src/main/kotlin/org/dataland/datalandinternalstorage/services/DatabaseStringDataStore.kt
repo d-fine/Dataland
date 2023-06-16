@@ -6,12 +6,13 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -45,7 +46,7 @@ class DatabaseStringDataStore(
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
      * storage_queue
-     * @param dataId the ID of the dataset to store
+     * @param payload the content of the message
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -55,24 +56,25 @@ class DatabaseStringDataStore(
                 value = Queue(
                     "dataReceivedInternalStorageDatabaseDataStore",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.dataReceived, declare = "false"),
+                exchange = Exchange(ExchangeName.DataReceived, declare = "false"),
                 key = [""],
             ),
         ],
     )
     fun persistentlyStoreDataAndSendMessage(
-        @Payload dataId: String,
+        @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DataReceived)
+        val dataId = JSONObject(payload).getString("dataId")
         if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided document ID is empty")
+            throw MessageQueueRejectException("Provided data ID is empty.")
         }
         messageUtils.rejectMessageOnException {
             logger.info("Received DataID $dataId and CorrelationId: $correlationId")
@@ -80,7 +82,7 @@ class DatabaseStringDataStore(
             logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
             storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                dataId, MessageType.DataStored, correlationId, ExchangeNames.itemStored, RoutingKeyNames.data,
+                payload, MessageType.DataStored, correlationId, ExchangeName.ItemStored, RoutingKeyNames.data,
             )
         }
     }

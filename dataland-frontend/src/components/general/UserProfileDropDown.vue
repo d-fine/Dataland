@@ -16,7 +16,14 @@
   </div>
   <PrimeMenu data-test="profileMenu" ref="menu" :model="dropdownMenuItems" :popup="true">
     <template #item="{ item }">
-      <a class="p-menuitem-link" role="menuitem" tabindex="0" @click="item.clickAction()" :id="item.id">
+      <a
+        v-if="hasRole(item.role)"
+        class="p-menuitem-link"
+        role="menuitem"
+        tabindex="0"
+        @click="item.clickAction()"
+        :id="item.id"
+      >
         <span class="p-menuitem-icon material-icons">{{ item.icon }}</span>
         <span class="p-menuitem-text">{{ item.label }}</span>
       </a>
@@ -31,7 +38,7 @@ import type { Ref } from "vue";
 import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import defaultProfilePicture from "@/assets/images/elements/default_user_icon.svg";
-import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
+import { KEYCLOAK_ROLE_REVIEWER, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "UserProfileDropDown",
@@ -64,7 +71,6 @@ export default defineComponent({
       hideDropdownMenu,
     };
   },
-
   data() {
     return {
       dropdownMenuItems: [
@@ -72,28 +78,36 @@ export default defineComponent({
           label: "USER SETTINGS",
           icon: "settings",
           id: "profile-picture-dropdown-settings-button",
-          clickAction: this.gotoUserSettings,
+          clickAction: this.goToUserSettings,
         },
         {
-          label: "API",
+          label: "API KEYS",
           icon: "key",
           id: "profile-api-generate-key-button",
-          clickAction: this.gotoApiKeysPage,
+          clickAction: this.goToApiKeysPage,
         },
         {
           label: "DATA REQUEST",
           icon: "mail",
           id: "profile-picture-dropdown-data-request-button",
-          clickAction: this.gotoDataRequest,
+          clickAction: this.goToDataRequest,
+        },
+        {
+          label: "QUALITY ASSURANCE",
+          icon: "add_moderator",
+          id: "profile-picture-dropdown-qa-services-anchor",
+          clickAction: this.goToQualityAssurance,
+          role: KEYCLOAK_ROLE_REVIEWER,
         },
         {
           label: "LOG OUT",
           icon: "logout",
-          id: "profile-picture-dropdown-toggle",
+          id: "profile-picture-dropdown-logout-anchor",
           clickAction: this.logoutViaDropdown,
         },
       ],
       profilePictureSource: defaultProfilePicture,
+      hasRole: ((role: string) => !role) as (role: string) => boolean,
     };
   },
   mounted() {
@@ -109,39 +123,37 @@ export default defineComponent({
     logoutViaDropdown() {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
-          if (keycloak.authenticated) {
-            logoutAndRedirectToUri(keycloak, "");
-          }
+          logoutAndRedirectToUri(keycloak, "");
         })
         .catch((error) => console.log(error));
     },
     /**
      * Redirects the user to the keycloak user settings page
      */
-    gotoUserSettings() {
+    goToUserSettings() {
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
-          if (keycloak.authenticated) {
-            return keycloak.accountManagement();
-          }
+          return keycloak.accountManagement();
         })
         .catch((error) => console.log(error));
     },
     /**
      * Redirects the user to the data-request/invite screen
      */
-    gotoDataRequest() {
-      assertDefined(this.getKeycloakPromise)()
-        .then(() => {
-          return this.$router.push("requests");
-        })
-        .catch((error) => console.log(error));
+    goToDataRequest() {
+      void this.$router.push("/requests");
     },
     /**
      * Redirects the user to the api-key management interface
      */
-    gotoApiKeysPage() {
+    goToApiKeysPage() {
       void this.$router.push("/api-key");
+    },
+    /**
+     * Redirects the user to the QA Services page
+     */
+    goToQualityAssurance() {
+      void this.$router.push("/qualityassurance");
     },
     /**
      * Called when the profile picture could not load. Propagates the event and sets the profile picture
@@ -157,10 +169,14 @@ export default defineComponent({
   created() {
     assertDefined(this.getKeycloakPromise)()
       .then((keycloak) => {
-        if (keycloak.authenticated && keycloak.idTokenParsed?.picture) {
-          const profilePictureUrl = keycloak.idTokenParsed.picture as string;
-          this.$emit("profilePictureObtained", profilePictureUrl);
-          this.profilePictureSource = profilePictureUrl;
+        if (keycloak.authenticated) {
+          this.hasRole = (role: string | undefined): boolean => (!role ? true : keycloak.hasRealmRole(role));
+
+          if (keycloak.idTokenParsed?.picture) {
+            const profilePictureUrl = keycloak.idTokenParsed.picture as string;
+            this.$emit("profilePictureObtained", profilePictureUrl);
+            this.profilePictureSource = profilePictureUrl;
+          }
         }
       })
       .catch((error) => console.log(error));

@@ -8,7 +8,7 @@ import {
 import { CyHttpMessages, Interception, RouteHandler } from "cypress/types/net-stubbing";
 import Chainable = Cypress.Chainable;
 import { getKeycloakToken } from "./Auth";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyUpload";
 
 export interface UploadIds {
@@ -75,6 +75,31 @@ export function interceptAllAndCheckFor500Errors(): void {
 }
 
 /**
+ * Intercepts all data upload requests to the backend and sets the bypassQa flag
+ */
+export function interceptAllDataPostsAndBypassQaIfPossible(): void {
+  const handler: RouteHandler = (incomingRequest) => {
+    const isQaRequired = incomingRequest.headers["REQUIRE-QA"] === "true";
+    delete incomingRequest.headers["REQUIRE-QA"];
+    if (isQaRequired) {
+      incomingRequest.query["bypassQa"] = "false";
+      return;
+    }
+    const authorizationHeader = (incomingRequest.headers["authorization"] ??
+      incomingRequest.headers["Authorization"]) as string;
+    if (authorizationHeader === undefined) {
+      return;
+    }
+    const base64EncodedAuthorizationPayload = authorizationHeader.split(".")[1];
+    const authorization = JSON.parse(atob(base64EncodedAuthorizationPayload)) as { realm_access: { roles: string[] } };
+    if (authorization.realm_access.roles.includes("ROLE_REVIEWER")) {
+      incomingRequest.query["bypassQa"] = "true";
+    }
+  };
+  cy.intercept("/api/data/*", handler);
+}
+
+/**
  * Visits the edit page for a framework via UI navigation.
  * @param companyId the id of the company for which to edit a dataset
  * @param dataType the framework type
@@ -114,7 +139,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
   getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
     return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
       (storedCompany): void => {
-        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${frameworkDataType}/upload`);
         formFill(testData);
         submitFilledInEuTaxonomyForm(submissionDataIntercept);
