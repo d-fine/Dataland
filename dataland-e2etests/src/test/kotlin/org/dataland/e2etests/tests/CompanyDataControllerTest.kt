@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.util.*
 
 class CompanyDataControllerTest {
 
@@ -222,5 +224,79 @@ class CompanyDataControllerTest {
             response.body.toString().contains("Could not insert company as one company identifier is already used"),
             "The response message is not as expected.",
         )
+    }
+
+    val baseCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+        .getCompanyInformationWithRandomIdentifiers(1).first()
+
+    @Test
+    fun `check if the new companies search via name and ids endpoint works as expeted`() {
+        val testString = "unique-test-string-${UUID.randomUUID()}"
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        uploadModifiedBaseCompany("Company 9", null, "3${testString}")
+        uploadModifiedBaseCompany("Company 8", listOf("3${testString}", "other_name"), null)
+        uploadModifiedBaseCompany("3${testString}", null, null)
+        uploadModifiedBaseCompany("Company 6", null, "${testString}2")
+        uploadModifiedBaseCompany("Company 5", listOf("${testString}2"), null)
+        uploadModifiedBaseCompany("${testString}2", null, null)
+        uploadModifiedBaseCompany("Company 3", null, testString)
+        uploadModifiedBaseCompany("Company 2", listOf(testString), null)
+        uploadModifiedBaseCompany(testString, null, null)
+        val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+            searchString = testString, noPagination = true,
+        ).map { it.companyName }
+        assertEquals(
+            listOf(
+                testString,
+                "Company 3",
+                "Company 2",
+                "${testString}2",
+                "Company 5",
+                "Company 6",
+                "3${testString}",
+                "Company 9",
+            ),
+            sortedCompanyNames.filter { it != "Company 8" },
+        )
+        assertEquals(
+            listOf(
+                testString,
+                "Company 3",
+                "Company 2",
+                "${testString}2",
+                "Company 5",
+                "Company 6",
+                "Company 8",
+                "Company 9",
+            ),
+            sortedCompanyNames.filter { it != "3${testString}" },
+        )
+
+        val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+            searchString = "other_name", noPagination = true,
+        ).map { it.companyName }
+        assertTrue(otherCompanyNames.contains("Company 8"))
+        assertFalse(otherCompanyNames.contains("Company 7"))
+
+        val page2CompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+            searchString = testString, noPagination = false, page = 2, entriesPerPage = 3,
+        ).map { it.companyName }
+        assertEquals(
+            listOf(
+                "${testString}2",
+                "Company 5",
+                "Company 6",
+            ),
+            page2CompanyNames,
+        )
+    }
+
+    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?) {
+        val companyInformation = baseCompanyInformation.copy(
+            companyName = name,
+            companyAlternativeNames = alternativeNames,
+            identifiers = listOf(CompanyIdentifier(CompanyIdentifier.IdentifierType.isin, identifier ?: UUID.randomUUID().toString()))
+        )
+        apiAccessor.companyDataControllerApi.postCompany(companyInformation)
     }
 }
