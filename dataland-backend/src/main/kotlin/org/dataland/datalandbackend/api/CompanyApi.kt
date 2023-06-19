@@ -96,8 +96,7 @@ interface CompanyApi {
      * A method to retrieve companies with names or identifiers matching a search string
      * @param searchString string used for substring matching in the name and the identifiers of a company
      * @param page determines which page of the result is returned
-     *      * @param entriesPerPage determines how many entries are shown on each page
-     *      * @param noPagination boolean that determines if the results should be paginated or not
+     * @param entriesPerPage determines how many entries are shown on each page
      * @return names of all companies matching the search criteria
      */
     @Operation(
