@@ -119,30 +119,36 @@ class CompanyManager(
         filter: CompanySearchFilter,
         viewingUser: DatalandAuthentication? = null,
     ): List<StoredCompany> {
-        val searchFilterForJPA = StoredCompanySearchFilter(
-            searchString = filter.searchString,
-            nameOnlyFilter = filter.onlyCompanyNames,
-            dataTypeFilter = filter.dataTypeFilter.map { it.name },
-            sectorFilter = filter.sectorFilter.toList(),
-            countryCodeFilter = filter.countryCodeFilter.toList(),
-            uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
-        )
-
-        val filteredAndSortedResults = companyRepository.searchCompanies(
-            searchFilterForJPA,
-            buildPageable(filter.page, filter.entriesPerPage, filter.noPagination),
-        )
-
-        val sortingMap = filteredAndSortedResults.mapIndexed {
-                index, storedCompanyEntity ->
-            storedCompanyEntity.companyId to index
-        }.toMap()
-
-        val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
-            sortingMap.getValue(it.companyId)
+        if (filter.dataTypeFilter.isNullOrEmpty()) {
+            throw InvalidInputApiException(
+                "Requestparam has a non acceptable value",
+                "Please specify a dataframework",
+            )
         }
+            val searchFilterForJPA = StoredCompanySearchFilter(
+                searchString = filter.searchString,
+                nameOnlyFilter = filter.onlyCompanyNames,
+                dataTypeFilter = filter.dataTypeFilter.map { it.name },
+                sectorFilter = filter.sectorFilter.toList(),
+                countryCodeFilter = filter.countryCodeFilter.toList(),
+                uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
+            )
 
-        return results.map { it.toApiModel(viewingUser) }
+            val filteredAndSortedResults = companyRepository.searchCompanies(
+                searchFilterForJPA,
+                Pageable.unpaged(),
+            )
+
+            val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
+                storedCompanyEntity.companyId to index
+            }.toMap()
+
+            val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
+                sortingMap.getValue(it.companyId)
+            }
+
+            return results.map { it.toApiModel(viewingUser) }
+
     }
 
     /**
@@ -157,18 +163,14 @@ class CompanyManager(
         searchString: String,
         page: Int,
         entriesPerPage: Int,
-        noPagination: Boolean,
     ): List<CompanyIdAndName> {
         return companyRepository.searchCompaniesByNameOrIdentifier(
             searchString,
-            buildPageable(page, entriesPerPage, noPagination),
+            buildPageable(page, entriesPerPage),
         )
     }
 
-    private fun buildPageable(page: Int, entriesPerPage: Int, noPagination: Boolean): Pageable {
-        if (noPagination) {
-            return Pageable.unpaged()
-        } else {
+    private fun buildPageable(page: Int, entriesPerPage: Int): Pageable {
             if (page < 1 || entriesPerPage < 1) {
                 throw InvalidInputApiException(
                     "Requestparam has a non acceptable value",
@@ -179,7 +181,6 @@ class CompanyManager(
                     page - 1, entriesPerPage, Sort.unsorted(),
                 )
             }
-        }
     }
 
     private fun getUploaderIdFilter(onlyCurrentUserAsUploader: Boolean): List<String> {

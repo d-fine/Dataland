@@ -453,7 +453,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
               "uniqueItems": true,
               "type": "array",
@@ -496,34 +496,6 @@
           },
           {
             "name": "onlyCurrentUserAsUploader",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 1
-            }
-          },
-          {
-            "name": "entriesPerPage",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 250
-            }
-          },
-          {
-            "name": "noPagination",
             "in": "query",
             "required": false,
             "schema": {
@@ -1662,14 +1634,6 @@
               "type": "integer",
               "format": "int32",
               "default": 250
-            }
-          },
-          {
-            "name": "noPagination",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
             }
           }
         ],

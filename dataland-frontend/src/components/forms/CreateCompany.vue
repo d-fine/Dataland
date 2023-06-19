@@ -243,6 +243,7 @@ import {
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { AxiosError } from "axios";
 import { FormKitNode } from "@formkit/core";
+import {ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE} from "@/utils/Constants";
 
 export default defineComponent({
   name: "CreateCompany",
@@ -303,10 +304,11 @@ export default defineComponent({
       node: FormKitNode,
       identifierType: CompanyIdentifierIdentifierTypeEnum
     ): Promise<boolean> {
+        const frameworkFilter = new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE);
       const fetchedCompanies = (
         await (
           await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
-        ).getCompanies(node.value as string)
+        ).getCompanies(frameworkFilter, node.value as string)
       ).data;
       return !fetchedCompanies.some((it: StoredCompany) =>
         it.companyInformation.identifiers.some(
