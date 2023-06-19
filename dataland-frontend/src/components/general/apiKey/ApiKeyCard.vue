@@ -54,6 +54,7 @@ import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 export default defineComponent({
   name: "ApiKeyCard",
   components: { PrimeButton, PrimeDialog, UserRolesBadges },
+  emits: ["revokeKey"],
   props: {
     expiryDateInMilliseconds: {
       type: Number,
