@@ -14,7 +14,7 @@ describe("Component tests for 'Request Data' button on the level of company sear
         data: mockDataSearchStoredCompanyArray,
         rowsPerPage: 100,
       });
-      cy.get("button").contains("Request Data").should("not.exist");
+      cy.get("a[data-test=requestDataButton]").should("not.exist");
     });
   });
 
