@@ -5,7 +5,7 @@ import java.util.*
 
 class DatesHandler {
 
-    private fun addDaysToDate(date: Date, days: Int): Date {
+    private fun addDaysToDate(date: Date, days: Long): Date {
         val calendar = Calendar.getInstance()
         calendar.time = date
         calendar.add(Calendar.DATE, days)
