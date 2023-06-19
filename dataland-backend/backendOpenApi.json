@@ -4150,10 +4150,6 @@
         }
       },
       "CompanyIdAndName": {
-        "required": [
-          "companyId",
-          "companyName"
-        ],
         "type": "object",
         "properties": {
           "companyId": {
