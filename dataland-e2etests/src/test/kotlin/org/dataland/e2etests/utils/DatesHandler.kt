@@ -16,7 +16,7 @@ class DatesHandler {
         return SimpleDateFormat("MM/dd/yyyy").format(date)
     }
 
-    fun calculateExpectedExpiryDateSimpleFormatted(daysValid: Int? = null): String? {
+    fun calculateExpectedExpiryDateSimpleFormatted(daysValid: Long? = null): String? {
         return when (daysValid) {
             null -> null
             else -> formatDateAsSimpleDateString(addDaysToDate(Date(), daysValid))
