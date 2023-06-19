@@ -92,8 +92,8 @@ export async function getCompanyDataForFrameworkDataSearchPage(
     }
 
     const response = await companyDataControllerApi.getCompanies(
-      searchString,
       frameworkFilter,
+      searchString,
       countryCodeFilter,
       sectorFilter,
       onlyCompanyNames

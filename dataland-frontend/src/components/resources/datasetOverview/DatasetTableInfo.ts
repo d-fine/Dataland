@@ -51,8 +51,8 @@ export async function getMyDatasetTableInfos(
   const companyDataControllerApi = await new ApiClientProvider(getKeycloakPromise()).getCompanyDataControllerApi();
   const storedCompaniesUploadedByCurrentUser = (
     await companyDataControllerApi.getCompanies(
-      searchString,
       new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE),
+      searchString,
       undefined,
       undefined,
       undefined,

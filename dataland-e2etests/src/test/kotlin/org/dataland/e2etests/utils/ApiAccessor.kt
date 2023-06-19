@@ -35,6 +35,10 @@ import java.lang.NullPointerException
 import java.util.concurrent.TimeUnit
 
 class ApiAccessor {
+    val frameworkData = setOf(
+        DataTypeEnum.lksg, DataTypeEnum.eutaxonomyMinusFinancials,
+        DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.sfdr,
+    )
 
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
@@ -357,6 +361,7 @@ class ApiAccessor {
     fun getCompaniesOnlyByName(searchString: String): List<StoredCompany> {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         return companyDataControllerApi.getCompanies(
+            frameworkData,
             searchString,
             onlyCompanyNames = true,
         )
@@ -364,7 +369,7 @@ class ApiAccessor {
 
     fun getNumberOfStoredCompanies(): Int {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        return companyDataControllerApi.getCompanies().size
+        return companyDataControllerApi.getCompanies(frameworkData).size
     }
 
     fun getNumberOfDataMetaInfo(

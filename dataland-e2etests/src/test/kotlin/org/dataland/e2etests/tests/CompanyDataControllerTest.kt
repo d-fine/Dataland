@@ -107,6 +107,7 @@ class CompanyDataControllerTest {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         // TODO ist this test still fine if the company has by accident no sector set?
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
+            apiAccessor.frameworkData,
             sectors = if (uploadInfo.actualStoredCompany.companyInformation.sector != null) {
                 setOf(uploadInfo.actualStoredCompany.companyInformation.sector!!) } else { null },
             countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
@@ -121,6 +122,7 @@ class CompanyDataControllerTest {
     fun `post a dummy company and check that it is not returned if filtered by a different sector`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
+            apiAccessor.frameworkData,
             sectors = setOf("${uploadInfo.actualStoredCompany.companyInformation.sector}a"),
             countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
         )
@@ -150,6 +152,7 @@ class CompanyDataControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
+                apiAccessor.frameworkData,
                 searchString = uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
                 onlyCompanyNames = false,
             ).any { it.companyId == uploadInfo.actualStoredCompany.companyId },

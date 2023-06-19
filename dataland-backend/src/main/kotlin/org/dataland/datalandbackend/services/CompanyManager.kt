@@ -119,6 +119,12 @@ class CompanyManager(
         filter: CompanySearchFilter,
         viewingUser: DatalandAuthentication? = null,
     ): List<StoredCompany> {
+        if (filter.dataTypeFilter.isNullOrEmpty()) {
+            throw InvalidInputApiException(
+                "Requestparam has a non acceptable value",
+                "Please specify a dataframework",
+            )
+        }
         val searchFilterForJPA = StoredCompanySearchFilter(
             searchString = filter.searchString,
             nameOnlyFilter = filter.onlyCompanyNames,
@@ -130,11 +136,10 @@ class CompanyManager(
 
         val filteredAndSortedResults = companyRepository.searchCompanies(
             searchFilterForJPA,
-            buildPageable(filter.page, filter.entriesPerPage, filter.noPagination),
+            Pageable.unpaged(),
         )
 
-        val sortingMap = filteredAndSortedResults.mapIndexed {
-                index, storedCompanyEntity ->
+        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
             storedCompanyEntity.companyId to index
         }.toMap()
 
@@ -157,28 +162,23 @@ class CompanyManager(
         searchString: String,
         page: Int,
         entriesPerPage: Int,
-        noPagination: Boolean,
     ): List<CompanyIdAndName> {
         return companyRepository.searchCompaniesByNameOrIdentifier(
             searchString,
-            buildPageable(page, entriesPerPage, noPagination),
+            buildPageable(page, entriesPerPage),
         )
     }
 
-    private fun buildPageable(page: Int, entriesPerPage: Int, noPagination: Boolean): Pageable {
-        if (noPagination) {
-            return Pageable.unpaged()
+    private fun buildPageable(page: Int, entriesPerPage: Int): Pageable {
+        if (page < 1 || entriesPerPage < 1) {
+            throw InvalidInputApiException(
+                "Requestparam has a non acceptable value",
+                "Please choose a value greater than 0",
+            )
         } else {
-            if (page < 1 || entriesPerPage < 1) {
-                throw InvalidInputApiException(
-                    "Requestparam has a non acceptable value",
-                    "Please choose a value greater than 0",
-                )
-            } else {
-                return PageRequest.of(
-                    page - 1, entriesPerPage, Sort.unsorted(),
-                )
-            }
+            return PageRequest.of(
+                page - 1, entriesPerPage, Sort.unsorted(),
+            )
         }
     }
 

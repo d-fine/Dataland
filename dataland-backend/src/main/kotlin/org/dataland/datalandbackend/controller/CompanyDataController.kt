@@ -38,14 +38,11 @@ class CompanyDataController(
 
     override fun getCompanies(
         searchString: String?,
-        dataTypes: Set<DataType>?,
+        dataTypes: Set<DataType>,
         countryCodes: Set<String>?,
         sectors: Set<String>?,
         onlyCompanyNames: Boolean,
         onlyCurrentUserAsUploader: Boolean,
-        page: Int?,
-        entriesPerPage: Int?,
-        noPagination: Boolean,
     ): ResponseEntity<List<StoredCompany>> {
         logger.info(
             "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
@@ -61,9 +58,6 @@ class CompanyDataController(
                     countryCodes ?: setOf(),
                     sectors ?: setOf(),
                     onlyCurrentUserAsUploader,
-                    page ?: 1,
-                    entriesPerPage ?: defaultEntriesPerPage,
-                    noPagination,
 
                 ),
                 DatalandAuthentication.fromContextOrNull(),
@@ -75,12 +69,11 @@ class CompanyDataController(
         searchString: String,
         page: Int?,
         entriesPerPage: Int?,
-        noPagination: Boolean,
     ): ResponseEntity<List<CompanyIdAndName>> {
         return ResponseEntity.ok(
             companyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
                 searchString, page ?: 1,
-                entriesPerPage ?: defaultEntriesPerPage, noPagination,
+                entriesPerPage ?: defaultEntriesPerPage,
             ),
         )
     }
