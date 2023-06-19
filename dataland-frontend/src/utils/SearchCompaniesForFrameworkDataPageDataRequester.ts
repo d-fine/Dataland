@@ -108,7 +108,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
 
 /**
  * Filters an array of companies for companies which have at least one data set which may be displayed
- * i.e. a dataset that has quality status "Accepted"
+ * I.e. a dataset that has quality status "Accepted"
  * @param companies the companies to filter
  * @returns the filtered companies
  */
