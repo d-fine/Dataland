@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.*
+import java.util.UUID
 
 class CompanyDataControllerTest {
 
@@ -147,9 +148,27 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company and check if it can be searched for by identifier`() {
+    fun `post a dummy company and check if it can be searched for by identifier at the right time`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithRandomIdentifier()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertTrue(
+            apiAccessor.companyDataControllerApi.getCompanies(
+                apiAccessor.frameworkData,
+                searchString = uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
+                onlyCompanyNames = false,
+            ).isEmpty(),
+            "The posted company was found in the query results.",
+        )
+        apiAccessor.companyDataControllerApi.existsIdentifier(
+            CompanyDataControllerApi.IdentifierType_existsIdentifier.permId,
+            uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
+        )
+        apiAccessor.uploadSingleFrameworkDataSet(
+            companyId = uploadInfo.actualStoredCompany.companyId,
+            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+            reportingPeriod = "2023",
+            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+        )
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
                 apiAccessor.frameworkData,
@@ -246,7 +265,7 @@ class CompanyDataControllerTest {
         uploadModifiedBaseCompany("Company 2", listOf(testString), null)
         uploadModifiedBaseCompany(testString, null, null)
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-            searchString = testString, noPagination = true,
+            searchString = testString
         ).map { it.companyName }
         assertEquals(
             listOf(
@@ -276,13 +295,13 @@ class CompanyDataControllerTest {
         )
 
         val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-            searchString = "other_name", noPagination = true,
+            searchString = "other_name"
         ).map { it.companyName }
         assertTrue(otherCompanyNames.contains("Company 8"))
         assertFalse(otherCompanyNames.contains("Company 7"))
 
         val page2CompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-            searchString = testString, noPagination = false, page = 2, entriesPerPage = 3,
+            searchString = testString, page = 2, entriesPerPage = 3,
         ).map { it.companyName }
         assertEquals(
             listOf(
