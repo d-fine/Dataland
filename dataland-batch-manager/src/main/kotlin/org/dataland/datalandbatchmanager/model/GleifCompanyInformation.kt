@@ -37,7 +37,7 @@ data class GleifCompanyInformation(
             countryCode = countryCode,
             headquarters = headquarters,
             headquartersPostalCode = headquartersPostalCode,
-            sector = "dummy",
+            sector = null,
             website = null,
             identifiers = listOf(
                 CompanyIdentifier(identifierType = CompanyIdentifier.IdentifierType.lei, identifierValue = lei),
