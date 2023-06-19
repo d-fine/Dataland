@@ -1,5 +1,5 @@
 import { ApiKeyAndMetaInfo } from "@clients/apikeymanager";
-
+// TODO check at the end if docs still valid
 describe("As a user I expect my api key will be generated correctly", () => {
   // TODO at the end check if names of functions still adequate
   /**
@@ -94,7 +94,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
   }
 
   /**
-   * Verifies that the api key page looks and behaves as expected if you visit it while you already have an api key.
+   * Verifies that creating an api key  with a fixed time of validity works as expected.
    */
   function verifyAlreadyExistingApiKeyState(): void {
     cy.reload(true);
@@ -116,6 +116,12 @@ describe("As a user I expect my api key will be generated correctly", () => {
       .find('[data-test="regenerateApiKeyConfirmButton"]')
       .click();
     cy.get("h1").should("contain.text", "Create new API Key");
+  }
+
+  /**
+   * Verifies that the api key page looks and behaves as expected if you visit it while you already have an api key.
+   */
+  function verifyCreatingApiKeyWith90DaysValidity(): void {
     cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="90 days"]').click();
     cy.get("#expiryTimeWrapper").should("contain.text", `The API Key will expire on`);
@@ -138,5 +144,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     verifyCreatingApiKeyAndCopyingIt();
 
     verifyAlreadyExistingApiKeyState();
+
+    verifyCreatingApiKeyWith90DaysValidity();
   });
 });
