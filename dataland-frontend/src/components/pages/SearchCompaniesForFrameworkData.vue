@@ -56,13 +56,7 @@
 
               <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
                 <RequestDataButton />
-                <PrimeButton
-                  v-if="hasUserUploaderRights"
-                  class="uppercase p-button p-button-sm d-letters mr-3"
-                  label="New Dataset"
-                  icon="pi pi-plus"
-                  @click="redirectToChooseCompanyPage"
-                />
+                <NewDatasetButton v-if="hasUserUploaderRights" />
                 <span>{{ currentlyVisiblePageText }}</span>
               </div>
             </div>
@@ -113,6 +107,7 @@ import TabView from "primevue/tabview";
 import Keycloak from "keycloak-js";
 import { checkIfUserHasUploaderRights } from "@/utils/KeycloakUtils";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
+import NewDatasetButton from "@/components/general/NewDatasetButton.vue";
 
 export default defineComponent({
   setup() {
@@ -126,6 +121,7 @@ export default defineComponent({
   },
   name: "SearchCompaniesForFrameworkData",
   components: {
+    NewDatasetButton,
     RequestDataButton,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,
