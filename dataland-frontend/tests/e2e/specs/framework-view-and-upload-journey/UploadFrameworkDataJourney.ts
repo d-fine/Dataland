@@ -108,7 +108,8 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         cy.visitAndCheckAppMount("/companies");
         verifySearchResultTable();
 
-        cy.get('button[aria-label="New Dataset"]')
+        cy.get("button")
+          .contains("New Dataset")
           .click({ force: true })
           .url()
           .should("eq", getBaseUrl() + "/companies/choose");
@@ -229,7 +230,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
         function () {
           cy.visitAndCheckAppMount("/companies");
           verifySearchResultTable();
-          cy.get('button[aria-label="New Dataset"]').click({ force: true });
+          cy.get("button").contains("New Dataset").click({ force: true });
           cy.get("input[id=company_search_bar_standard]")
             .should("exist")
             .url()

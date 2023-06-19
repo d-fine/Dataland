@@ -54,13 +54,8 @@
             </div>
 
             <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
-              <PrimeButton
-                v-if="hasUserUploaderRights"
-                class="uppercase p-button p-button-sm d-letters mr-3"
-                label="New Dataset"
-                icon="pi pi-plus"
-                @click="redirectToChooseCompanyPage"
-              />
+              <RequestDataButton />
+              <NewDatasetButton v-if="hasUserUploaderRights" />
               <span>{{ currentlyVisiblePageText }}</span>
             </div>
           </div>
@@ -105,8 +100,10 @@ import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheFooter from "@/components/general/TheFooter.vue";
 import { useFrameworkFiltersStore } from "@/stores/Stores";
 import Keycloak from "keycloak-js";
+import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
+import NewDatasetButton from "@/components/general/NewDatasetButton.vue";
 
 export default defineComponent({
   setup() {
@@ -120,6 +117,8 @@ export default defineComponent({
   },
   name: "SearchCompaniesForFrameworkData",
   components: {
+    NewDatasetButton,
+    RequestDataButton,
     DatasetsTabMenu,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,
@@ -212,13 +211,6 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Executes router push to the choose company page
-     */
-    async redirectToChooseCompanyPage() {
-      await this.$router.push("/companies/choose");
-    },
-
     /**
      * Updates the local variable indicating which row of the datatable is currently displayed at the top
      * @param value the index of the new row displayed on top
