@@ -11,6 +11,11 @@ describe("Component tests for 'Request Data' button on the level of company sear
     cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
   });
 
+  /**
+   * Method to check the existence and the functionality of the Request Data button after it has been ensured that only
+   * one button of this kind can be visible at all (via data table entry)
+   * @param keycloakMock Keycloak settings for the mock, especially containing user roles
+   */
   function verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock: Keycloak): void {
     cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
