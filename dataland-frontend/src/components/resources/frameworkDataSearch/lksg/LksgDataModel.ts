@@ -152,7 +152,8 @@ export const lksgDataModel = [
             required: false,
           },
           {
-            showIf: (): boolean => true,
+            showIf: (dataModel: LksgData): boolean =>
+              dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
             certificateRequiredIfYes: false,
             name: "isContractProcessing",
             description: "Is production done via subcontracting?",
@@ -182,7 +183,8 @@ export const lksgDataModel = [
             required: false,
           },
           {
-            showIf: (): boolean => true,
+            showIf: (dataModel: LksgData): boolean =>
+              dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
             certificateRequiredIfYes: false,
             name: "productionSites",
             description: "Do you have production sites in your company?",
@@ -199,7 +201,8 @@ export const lksgDataModel = [
             required: false,
           },
           {
-            showIf: (): boolean => true,
+            showIf: (dataModel: LksgData): boolean =>
+              dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
             options: [
               {
                 label: "National",
@@ -221,7 +224,8 @@ export const lksgDataModel = [
             required: false,
           },
           {
-            showIf: (): boolean => true,
+            showIf: (dataModel: LksgData): boolean =>
+              dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
             certificateRequiredIfYes: false,
             name: "specificProcurement",
             description:
