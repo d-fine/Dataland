@@ -1,7 +1,5 @@
 import { ApiKeyAndMetaInfo } from "@clients/apikeymanager";
-// TODO check at the end if docs still valid
 describe("As a user I expect my api key will be generated correctly", () => {
-  // TODO at the end check if names of functions still adequate
   /**
    * Verifies that the initial state of the api key page is as expected and that the "Create Api Key" popup works
    * as expected
@@ -60,9 +58,10 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="No expiry"]').click({ force: true });
     cy.get("button#generateApiKey").click();
+    cy.wait("@generateApiKey", { timeout: Cypress.env("short_timeout_in_ms") as number });
     cy.get('[data-test="apiKeyInfo"]').should("exist");
     cy.get("textarea#newKeyHolder").should("exist");
-    // TODO check for "no expiry time" text
+    cy.get("#existingApiKeyCard").find("span").contains("The API Key has no defined expiry date").should("exist");
 
     if (Cypress.browser.displayName === "Chrome") {
       cy.wrap(
@@ -94,7 +93,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
   }
 
   /**
-   * Verifies that creating an api key  with a fixed time of validity works as expected.
+   * Verifies that the api key page looks and behaves as expected if you visit it while you already have an api key.
    */
   function verifyAlreadyExistingApiKeyState(): void {
     cy.reload(true);
@@ -119,7 +118,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
   }
 
   /**
-   * Verifies that the api key page looks and behaves as expected if you visit it while you already have an api key.
+   * Verifies that creating an api key with a fixed time of validity of 90 days works as expected.
    */
   function verifyCreatingApiKeyWith90DaysValidity(): void {
     cy.get("div#expiryTime").click();
@@ -130,7 +129,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("#existingApiKeyCard").find("span").contains("The API Key will expire on").should("exist");
   }
 
-  it("check Api Key functionalities", () => {
+  it("Check Api Key functionalities", () => {
     cy.ensureLoggedIn();
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*").as("getApiKeyMetaInfoForUser");
     cy.intercept("GET", "**/api-keys/generateApiKey*").as("generateApiKey");
