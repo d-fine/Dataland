@@ -61,41 +61,47 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "WITH filtered_text_results as (" +
-            "SELECT" +
-            " company_id," +
-            " company_name as match, " +
+        value =
+        "WITH filtered_text_results as (" +
+            // Fuzzy-Search Company Name
+            "SELECT company_id, company_name AS match," +
             " CASE " +
             " WHEN company_name = :#{#searchString} THEN 10" +
-            " WHEN company_name ILIKE :#{#searchString}% THEN 5" +
+            " WHEN company_name ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
             " ELSE 1" +
             " END match_quality " +
             " FROM stored_companies" +
-            " WHERE company_name ILIKE %:#{#searchString}% " +
+            " WHERE company_name ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
+
             " UNION " +
+            // Fuzzy-Search Company Alternative Name
             " SELECT " +
-            " stored_company_entity_company_id as company_id," +
-            " company_alternative_names as match," +
-            " CASE\n" +
+            " stored_company_entity_company_id AS company_id," +
+            " company_alternative_names AS match," +
+            " CASE " +
             " WHEN company_alternative_names = :#{#searchString} THEN 9" +
-            " WHEN company_alternative_names ILIKE :#{#searchString}% THEN 4" +
-            " ELSE 1\n" +
-            " END \"match_quality\"" +
+            " WHEN company_alternative_names ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
+            " ELSE 1 " +
+            " END match_quality " +
             " FROM stored_company_entity_company_alternative_names" +
-            " WHERE company_alternative_names ILIKE %:#{#searchString}%" +
+            " WHERE company_alternative_names ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
+
             " UNION" +
-            " SELECT " +
-            " company_id," +
-            " identifier_value as match," +
-            " CASE\n" +
+            // Fuzzy-Search Company Identifier
+            " SELECT company_id, identifier_value AS match," +
+            " CASE " +
             " WHEN identifier_value = :#{#searchString} THEN 10" +
-            " WHEN identifier_value ILIKE :#{#searchString}% THEN 3" +
+            " WHEN identifier_value ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
             " ELSE 0" +
             " END match_quality" +
             " FROM company_identifiers" +
-            " WHERE identifier_value ILIKE %:#{#searchString}%" +
-            ") SELECT stored_companies.company_id as companyId, max(stored_companies.company_name) as companyName, max(filtered_text_results.match_quality) as match_quality from filtered_text_results" +
-            " JOIN stored_companies on filtered_text_results.company_id = stored_companies.company_id" +
+            " WHERE identifier_value ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}) " +
+            // Combine Results
+            "SELECT stored_companies.company_id AS companyId," +
+            " max(stored_companies.company_name) AS companyName," +
+            " max(filtered_text_results.match_quality) AS match_quality" +
+            " FROM filtered_text_results " +
+            " JOIN stored_companies ON filtered_text_results.company_id = stored_companies.company_id" +
             " GROUP BY stored_companies.company_id" +
             " ORDER BY match_quality DESC, companyName DESC",
     )
