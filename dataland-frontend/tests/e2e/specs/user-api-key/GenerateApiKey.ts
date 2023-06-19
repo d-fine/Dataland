@@ -1,6 +1,7 @@
 import { ApiKeyAndMetaInfo } from "@clients/apikeymanager";
 
 describe("As a user I expect my api key will be generated correctly", () => {
+  // TODO at the end check if names of functions still adequate
   /**
    * Verifies that the initial state of the api key page is as expected and that the "Create Api Key" popup works
    * as expected
@@ -115,23 +116,17 @@ describe("As a user I expect my api key will be generated correctly", () => {
       .find('[data-test="regenerateApiKeyConfirmButton"]')
       .click();
     cy.get("h1").should("contain.text", "Create new API Key");
-
     cy.get("div#expiryTime").click();
     cy.get('ul[role="listbox"]').find('[aria-label="90 days"]').click();
     cy.get("#expiryTimeWrapper").should("contain.text", `The API Key will expire on`);
     cy.get("button#generateApiKey").click();
     cy.wait("@generateApiKey", { timeout: Cypress.env("short_timeout_in_ms") as number });
-
-    cy.get("#existingApiKeyCard").find("span").contains("this is the text").should("exist");
-
-    // TODO remove spacings
+    cy.get("#existingApiKeyCard").find("span").contains("The API Key will expire on").should("exist");
   }
 
   it("check Api Key functionalities", () => {
     cy.ensureLoggedIn();
-    cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*", { fixture: "ApiKeyInfoMockWithNOKey.json" }).as(
-      "getApiKeyMetaInfoForUser"
-    );
+    cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*").as("getApiKeyMetaInfoForUser");
     cy.intercept("GET", "**/api-keys/generateApiKey*").as("generateApiKey");
     cy.visitAndCheckAppMount("/api-key");
     cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") as number });
