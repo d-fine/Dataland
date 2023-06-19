@@ -19,7 +19,7 @@ describe("Component tests for 'Request Data' button on the level of company sear
         resultArray: mockDataSearchStoredCompanyArray,
       });
       cy.wait(500);
-      cy.get("button[aria-label='Request Data']").should("exist").click({ force: true });
+      cy.get("button").contains("Request Data").should("exist").click({ force: true });
       cy.wrap(mounted.component).its("$route.path").should("eq", "/requests");
     });
   });
@@ -35,7 +35,7 @@ describe("Component tests for 'Request Data' button on the level of company sear
         resultArray: mockDataSearchStoredCompanyArray,
       });
       cy.wait(500);
-      cy.get("button[aria-label='Request Data']").should("exist").click({ force: true });
+      cy.get("button").contains("Request Data").should("exist").click({ force: true });
       cy.wrap(mounted.component).its("$route.path").should("eq", "/requests");
     });
   });

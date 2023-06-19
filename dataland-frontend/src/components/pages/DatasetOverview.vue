@@ -30,7 +30,6 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import { defineComponent, inject } from "vue";
 import TheFooter from "@/components/general/TheFooter.vue";
-import PrimeButton from "primevue/button";
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
@@ -48,7 +47,6 @@ export default defineComponent({
     TheHeader,
     TheContent,
     TheFooter,
-    PrimeButton,
     DatasetOverviewTable,
   },
   data() {

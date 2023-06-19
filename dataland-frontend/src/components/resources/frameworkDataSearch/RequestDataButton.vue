@@ -1,11 +1,7 @@
 <template>
-  <router-link
-      to="/requests"
-      class="no-underline"
-      data-test="requestDataButton"
-  >
+  <router-link to="/requests" class="no-underline" data-test="requestDataButton">
     <PrimeButton class="uppercase p-button p-button-sm mr-3">
-      <i class="material-icons" > add_box </i>
+      <i class="material-icons"> add_box </i>
       <span class="d-letters pl-2"> Request Data </span>
     </PrimeButton>
   </router-link>

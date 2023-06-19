@@ -55,7 +55,7 @@
 
             <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
               <RequestDataButton />
-              <NewDatasetButton v-if="hasUserUploaderRights"/>
+              <NewDatasetButton v-if="hasUserUploaderRights" />
               <span>{{ currentlyVisiblePageText }}</span>
             </div>
           </div>
@@ -211,13 +211,6 @@ export default defineComponent({
     },
   },
   methods: {
-    /**
-     * Executes router push to the choose company page
-     */
-    async redirectToChooseCompanyPage() {
-      await this.$router.push("/companies/choose");
-    },
-
     /**
      * Updates the local variable indicating which row of the datatable is currently displayed at the top
      * @param value the index of the new row displayed on top
