@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -64,9 +65,6 @@ interface CompanyApi {
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @param onlyCurrentUserAsUploader boolean determining if the search should only find companies with datasets
      * uploaded by the current user
-     * @param page determines which page of the result is returned
-     * @param entriesPerPage determines how many entries are shown on each page
-     * @param noPagination boolean that determines if the results should be paginated or not
      * @return information about all companies matching the search criteria
      */
     @Operation(
@@ -123,6 +121,29 @@ interface CompanyApi {
 
     ):
         ResponseEntity<List<CompanyIdAndName>>
+
+    /**
+     * A method to check if an identifier of a given type exists
+     * @param identifierType the type of the identifier
+     * @param identifier the identifier
+     */
+    @Operation(
+        summary = "Checks that an identifier of specified type exists.",
+        description = "Checks that an identifier of specified type exists.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully checked that identifier exists."),
+        ],
+    )
+    @GetMapping(
+        value = ["/identifiers/{identifierType}/{identifier}"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun existsIdentifier(
+        @PathVariable("identifierType") identifierType: IdentifierType,
+        @PathVariable("identifier") identifier: String,
+    )
 
     /**
      * A method used to retrieve all available distinct values for framework type, country code & sector

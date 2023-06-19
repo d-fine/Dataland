@@ -1,11 +1,13 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
+import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -20,6 +22,7 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -248,5 +251,21 @@ class CompanyManager(
      */
     fun isCompanyPublic(companyId: String): Boolean {
         return getCompanyById(companyId).isTeaserCompany
+    }
+
+    /**
+     * Checks if an identifier already exists, if not an exception is thrown
+     * @param identifierType type of the identifier to check
+     * @param identifier identifier to check
+     */
+    fun checkIfIdentifierExists(identifierType: IdentifierType, identifier: String) {
+        try {
+            companyIdentifierRepository.getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
+        } catch (e: JpaObjectRetrievalFailureException) {
+            throw ResourceNotFoundApiException(
+                "Company identifier does not exist",
+                "Company identifier $identifier of type $identifierType does not exist",
+            )
+        }
     }
 }

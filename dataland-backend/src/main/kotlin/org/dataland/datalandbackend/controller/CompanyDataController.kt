@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.CompanyInformation
 import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.services.CompanyManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -54,7 +55,7 @@ class CompanyDataController(
                 CompanySearchFilter(
                     searchString ?: "",
                     onlyCompanyNames,
-                    dataTypes ?: setOf(),
+                    dataTypes,
                     countryCodes ?: setOf(),
                     sectors ?: setOf(),
                     onlyCurrentUserAsUploader,
@@ -76,6 +77,10 @@ class CompanyDataController(
                 entriesPerPage ?: defaultEntriesPerPage,
             ),
         )
+    }
+
+    override fun existsIdentifier(identifierType: IdentifierType, identifier: String) {
+        companyManager.checkIfIdentifierExists(identifierType, identifier)
     }
 
     override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> {

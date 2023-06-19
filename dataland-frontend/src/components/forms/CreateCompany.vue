@@ -225,7 +225,6 @@ import {
   CompanyInformation,
   CompanyIdentifier,
   CompanyIdentifierIdentifierTypeEnum,
-  StoredCompany,
 } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import PrimeButton from "primevue/button";
@@ -243,7 +242,6 @@ import {
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { AxiosError } from "axios";
 import { FormKitNode } from "@formkit/core";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 export default defineComponent({
   name: "CreateCompany",
@@ -304,17 +302,12 @@ export default defineComponent({
       node: FormKitNode,
       identifierType: CompanyIdentifierIdentifierTypeEnum
     ): Promise<boolean> {
-      const frameworkFilter = new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE);
-      const fetchedCompanies = (
+      const response = (
         await (
           await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
-        ).getCompanies(frameworkFilter, node.value as string)
-      ).data;
-      return !fetchedCompanies.some((it: StoredCompany) =>
-        it.companyInformation.identifiers.some(
-          (id) => id.identifierType == identifierType && id.identifierValue == (node.value as string)
-        )
+        ).existsIdentifier(identifierType, node.value as string)
       );
+      return response.status == 404;
     },
     /**
      * Adds a CompanyIdentifier to the array of identifiers
