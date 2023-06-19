@@ -62,7 +62,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value = "SELECT company_id as companyId, company_name as companyName FROM \"stored_companies\" " +
-                "WHERE company_name LIKE '%string%'"
+                "WHERE company_name ILIKE %:#{#searchString}%"
     )
     fun searchCompaniesByNameOrIdentifier(
         @Param("searchString") searchString: String,
