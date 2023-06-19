@@ -35,7 +35,8 @@ import java.lang.NullPointerException
 import java.util.concurrent.TimeUnit
 
 class ApiAccessor {
-    val frameworkData = setOf(DataTypeEnum.lksg, DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.sfdr)
+    val frameworkData = setOf(DataTypeEnum.lksg, DataTypeEnum.eutaxonomyMinusFinancials,
+        DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.sfdr)
 
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()

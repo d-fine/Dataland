@@ -125,30 +125,29 @@ class CompanyManager(
                 "Please specify a dataframework",
             )
         }
-            val searchFilterForJPA = StoredCompanySearchFilter(
-                searchString = filter.searchString,
-                nameOnlyFilter = filter.onlyCompanyNames,
-                dataTypeFilter = filter.dataTypeFilter.map { it.name },
-                sectorFilter = filter.sectorFilter.toList(),
-                countryCodeFilter = filter.countryCodeFilter.toList(),
-                uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
-            )
+        val searchFilterForJPA = StoredCompanySearchFilter(
+            searchString = filter.searchString,
+            nameOnlyFilter = filter.onlyCompanyNames,
+            dataTypeFilter = filter.dataTypeFilter.map { it.name },
+            sectorFilter = filter.sectorFilter.toList(),
+            countryCodeFilter = filter.countryCodeFilter.toList(),
+            uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
+        )
 
-            val filteredAndSortedResults = companyRepository.searchCompanies(
-                searchFilterForJPA,
-                Pageable.unpaged(),
-            )
+        val filteredAndSortedResults = companyRepository.searchCompanies(
+            searchFilterForJPA,
+            Pageable.unpaged(),
+        )
 
-            val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
-                storedCompanyEntity.companyId to index
-            }.toMap()
+        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
+            storedCompanyEntity.companyId to index
+        }.toMap()
 
-            val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
-                sortingMap.getValue(it.companyId)
-            }
+        val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
+            sortingMap.getValue(it.companyId)
+        }
 
-            return results.map { it.toApiModel(viewingUser) }
-
+        return results.map { it.toApiModel(viewingUser) }
     }
 
     /**
@@ -171,16 +170,16 @@ class CompanyManager(
     }
 
     private fun buildPageable(page: Int, entriesPerPage: Int): Pageable {
-            if (page < 1 || entriesPerPage < 1) {
-                throw InvalidInputApiException(
-                    "Requestparam has a non acceptable value",
-                    "Please choose a value greater than 0",
-                )
-            } else {
-                return PageRequest.of(
-                    page - 1, entriesPerPage, Sort.unsorted(),
-                )
-            }
+        if (page < 1 || entriesPerPage < 1) {
+            throw InvalidInputApiException(
+                "Requestparam has a non acceptable value",
+                "Please choose a value greater than 0",
+            )
+        } else {
+            return PageRequest.of(
+                page - 1, entriesPerPage, Sort.unsorted(),
+            )
+        }
     }
 
     private fun getUploaderIdFilter(onlyCurrentUserAsUploader: Boolean): List<String> {

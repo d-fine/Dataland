@@ -85,7 +85,7 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanies(
         @RequestParam searchString: String? = null,
-        @RequestParam (required = true) dataTypes: Set<DataType>,
+        @RequestParam(required = true) dataTypes: Set<DataType>,
         @RequestParam countryCodes: Set<String>? = null,
         @RequestParam sectors: Set<String>? = null,
         @RequestParam onlyCompanyNames: Boolean = false,
