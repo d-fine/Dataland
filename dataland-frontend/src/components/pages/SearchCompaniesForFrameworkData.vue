@@ -55,13 +55,7 @@
 
             <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
               <RequestDataButton />
-              <PrimeButton
-                v-if="hasUserUploaderRights"
-                class="uppercase p-button p-button-sm d-letters mr-3"
-                label="New Dataset"
-                icon="pi pi-plus"
-                @click="redirectToChooseCompanyPage"
-              />
+              <NewDatasetButton v-if="hasUserUploaderRights"/>
               <span>{{ currentlyVisiblePageText }}</span>
             </div>
           </div>
@@ -109,6 +103,7 @@ import Keycloak from "keycloak-js";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
+import NewDatasetButton from "@/components/general/NewDatasetButton.vue";
 
 export default defineComponent({
   setup() {
@@ -122,6 +117,7 @@ export default defineComponent({
   },
   name: "SearchCompaniesForFrameworkData",
   components: {
+    NewDatasetButton,
     RequestDataButton,
     DatasetsTabMenu,
     FrameworkDataSearchFilters,
