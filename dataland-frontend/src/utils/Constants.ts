@@ -25,6 +25,13 @@ export const TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS = 2000;
 // This always has to be shorter than the ssoSessionIdleTimeout value in the realm settings.
 export const TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS = 2 * 60 * 1000;
 
+/*
+If this value is changed, it needs to be changed in the application.properties of the Api-Key-Manager-microservice
+too. That way it is guaranteed, that the selectable validity in the Dataland-frontend and in the backend of the
+Api-Key-Manager are always in sync.
+*/
+export const MAX_NUMBER_OF_DAYS_VALIDITY_SELECTABLE_FOR_API_KEYS = 10 * 365;
+
 export const KEYCLOAK_INIT_OPTIONS = {
   realm: "datalandsecurity",
   url: "/keycloak",

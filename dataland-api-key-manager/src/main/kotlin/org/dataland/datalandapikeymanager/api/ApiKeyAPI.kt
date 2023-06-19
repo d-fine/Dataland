@@ -42,7 +42,7 @@ interface ApiKeyAPI {
     @SecurityRequirement(name = "default-bearer-auth")
     @SecurityRequirement(name = "default-oauth")
     fun generateApiKey(
-        @RequestParam(required = false) daysValid: Int?,
+        @RequestParam(required = false) daysValid: Long?,
     ): ResponseEntity<ApiKeyAndMetaInfo>
 
     /** A method to get meta information about the API key status of a specific user, like if that user

@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.apikey.ParsedApiKey
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
@@ -25,7 +26,11 @@ class ApiKeyManager(
 
     companion object {
         private const val milliSecondsInADay = 86400000
+        private const val defaultMaxDaysOfValidityForApiKey: Long = 365
     }
+
+    @Value("\${dataland.max-days-of-validity-for-api-key}")
+    private var maxDaysOfValidityForApiKey: Long = defaultMaxDaysOfValidityForApiKey
 
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
         "Please generate one."
@@ -45,20 +50,31 @@ class ApiKeyManager(
         return SecurityContextHolder.getContext().authentication
     }
 
-    private fun checkIfDaysValidValueIsValid(daysValid: Int?) {
-        if (daysValid != null && daysValid <= 0) {
-            throw InvalidInputApiException(
-                "If set, the value of daysValid must be a positive integer.",
-                "If set, the value of daysValid must be a positive integer but it was $daysValid",
-            )
+    private fun checkIfDaysValidValueIsValid(daysValid: Long?) {
+        if (daysValid != null) {
+            if (daysValid < 1) {
+                throw InvalidInputApiException(
+                    "If set, the value of daysValid must be a positive number.",
+                    "If set, the value of daysValid must be a positive number but it was $daysValid",
+                )
+            }
+            if (daysValid > maxDaysOfValidityForApiKey) {
+                throw InvalidInputApiException(
+                    "If set, the value of daysValid cannot be greater than 3650.",
+                    "If set, the value of daysValid cannot be greater than 3650 but it was $daysValid",
+                )
+            }
         }
     }
 
-    private fun calculateExpiryDate(daysValid: Int?): Long? {
+    private fun calculateExpiryDate(daysValid: Long?): Long? {
         checkIfDaysValidValueIsValid(daysValid)
         return when (daysValid) {
             null -> null
-            else -> (daysValid * milliSecondsInADay) + Instant.now().toEpochMilli()
+            else -> {
+                val millisecondsValidLong: Long = (daysValid * milliSecondsInADay)
+                millisecondsValidLong + Instant.now().toEpochMilli()
+            }
         }
     }
 
@@ -67,7 +83,7 @@ class ApiKeyManager(
         return authentication.name
     }
 
-    private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
+    private fun generateApiKeyMetaInfo(daysValid: Long?): ApiKeyMetaInfo {
         val authentication = getAuthentication()
         val keycloakUserId = getKeycloakUserId()
         val keycloakRoles = authentication.authorities.map { it.authority!! }.toList()
@@ -83,7 +99,7 @@ class ApiKeyManager(
      * @param daysValid the number of days the API key should be valid from time of generation
      * @return the API key and its meta info
      */
-    fun generateNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
+    fun generateNewApiKey(daysValid: Long?): ApiKeyAndMetaInfo {
         val apiKeyMetaInfo = generateApiKeyMetaInfo(daysValid)
 
         val secret = apiKeyUtility.generateApiKeySecret()
