@@ -12,19 +12,20 @@
 </template>
 
 <script lang="ts">
-import { ApiClientProvider } from "@/services/ApiClients";
-import { DataAndMetaInformationLksgData } from "@clients/backend";
-import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
-import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
-import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { PanelProps } from "@/components/resources/frameworkDataSearch/PanelComponentOptions";
+import LksgCompanyDataTable from "@/components/resources/frameworkDataSearch/lksg/LksgCompanyDataTable.vue";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
+import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
+import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { DataAndMetaInformationLksgData } from "@clients/backend";
+import Keycloak from "keycloak-js";
+import { defineComponent, inject } from "vue";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -103,8 +104,6 @@ export default defineComponent({
     ): void {
       const kpiField = assertDefined(subcategory.fields.find((field) => field.name === kpiKey));
 
-      kpiValue = this.reformatValueForDisplay(kpiField, kpiValue);
-
       const kpiData = {
         subcategoryKey: subcategory.name == "masterData" ? `_${subcategory.name}` : subcategory.name,
         subcategoryLabel: subcategory.label ? subcategory.label : subcategory.name,
@@ -112,10 +111,10 @@ export default defineComponent({
         kpiLabel: kpiField?.label ? kpiField.label : kpiKey,
         kpiDescription: kpiField?.description ? kpiField.description : "",
         kpiFormFieldComponent: kpiField?.component ?? "",
-        content: { [dataIdOfLksgDataset]: kpiValue },
+        content: { [dataIdOfLksgDataset]: this.reformatValueForDisplay(kpiField, kpiValue) },
       } as KpiDataObject;
       if (this.mapOfKpiKeysToDataObjects.has(kpiKey)) {
-        Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey).content);
+        Object.assign(kpiData.content, this.mapOfKpiKeysToDataObjects.get(kpiKey)?.content);
       }
       this.mapOfKpiKeysToDataObjects.set(kpiKey, kpiData);
     },
@@ -137,7 +136,7 @@ export default defineComponent({
               string,
               object
             ][]) {
-              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, object][]) {
+              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, KpiValue][]) {
                 const subcategory = assertDefined(
                   lksgDataModel
                     .find((category) => category.name === categoryKey)
@@ -164,29 +163,54 @@ export default defineComponent({
     },
 
     /**
+     * Converts a nace code to a human readable value
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformatted Country value ready for display
+     */
+    reformatIndustriesValue(kpiValue: KpiValue) {
+      return Array.isArray(kpiValue)
+        ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
+        : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+    },
+
+    /**
+     * Converts a country code to a human readable value
+     * @param kpiValue the value that should be reformated corresponding to its field
+     * @returns the reformatted Country value ready for display
+     */
+    reformatCountriesValue(kpiValue: KpiValue) {
+      return Array.isArray(kpiValue)
+        ? kpiValue.map(
+            (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
+          )
+        : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+    },
+
+    /**
      *
      * @param kpiField the Field to which the value belongs
      * @param kpiValue the value that should be reformated corresponding to its field
-     * @returns the reformated value ready for display
+     * @returns the reformatted value ready for display
      */
     reformatValueForDisplay(kpiField: Field, kpiValue: KpiValue): KpiValue {
       if (kpiField.name === "totalRevenue" && typeof kpiValue === "number") {
         kpiValue = this.convertToMillions(kpiValue);
       }
       if (kpiField.name === "industry" || kpiField.name === "subcontractingCompaniesIndustries") {
-        kpiValue = Array.isArray(kpiValue)
-          ? kpiValue.map((naceCodeShort: string) => naceCodeMap.get(naceCodeShort)?.label ?? naceCodeShort)
-          : naceCodeMap.get(kpiValue as string)?.label ?? kpiValue;
+        kpiValue = this.reformatIndustriesValue(kpiValue);
       }
-      if (kpiField.name.includes("Countries")) {
-        kpiValue = Array.isArray(kpiValue)
-          ? kpiValue.map(
-              (countryCodeShort: string) => getCountryNameFromCountryCode(countryCodeShort) ?? countryCodeShort
-            )
-          : getCountryNameFromCountryCode(kpiValue as string) ?? kpiValue;
+      if (kpiField.name.includes("Countries") && kpiField.component !== "YesNoFormField") {
+        kpiValue = this.reformatCountriesValue(kpiValue);
       }
 
-      return kpiField.options?.filter((option) => option.value === kpiValue)[0]?.label ?? kpiValue;
+      let returnValue;
+
+      if (kpiField.options?.length) {
+        const filteredOption = kpiField.options.find((option: DropdownOption) => option.value === kpiValue);
+        if (filteredOption) returnValue = filteredOption.label;
+      }
+
+      return returnValue ?? kpiValue;
     },
   },
 });
