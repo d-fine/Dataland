@@ -52,7 +52,7 @@ class DataRetrievalViaApiKeyTest {
         )
     }
 
-    private fun assertExpiryDate(daysValid: Int? = null, receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo) {
+    private fun assertExpiryDate(daysValid: Long? = null, receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo) {
         val expectedExpiryDateForApiKey = datesHandler.calculateExpectedExpiryDateSimpleFormatted(daysValid)
         val expiryDateInReceivedApiKeyMetaInfo = datesHandler.convertUnixTimeToSimpleFormattedDate(
             receivedApiKeyMetaInfoFromValidation.expiryDate,
@@ -67,7 +67,7 @@ class DataRetrievalViaApiKeyTest {
 
     private fun doAssertionsAfterApiKeyValidation(
         technicalUser: TechnicalUser,
-        daysValid: Int? = null,
+        daysValid: Long? = null,
         receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo,
     ) {
         assertUserId(technicalUser, receivedApiKeyMetaInfoFromValidation)
