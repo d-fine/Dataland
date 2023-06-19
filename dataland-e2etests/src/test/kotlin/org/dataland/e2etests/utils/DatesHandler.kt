@@ -8,7 +8,7 @@ class DatesHandler {
     private fun addDaysToDate(date: Date, days: Long): Date {
         val calendar = Calendar.getInstance()
         calendar.time = date
-        calendar.add(Calendar.DATE, days)
+        calendar.add(Calendar.DATE, days.toInt())
         return calendar.time
     }
 
