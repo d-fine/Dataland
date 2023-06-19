@@ -1,5 +1,6 @@
 import { login, logout } from "@e2e/utils/Auth";
 import { authenticator } from "otplib";
+import { getStringCypressEnv } from "@e2e/utils/Cypress";
 
 describe("As a user I want to be able to register for an account and be able to log in and out of that account", () => {
   const email = `test_user${Date.now()}@dataland.com`;
@@ -82,10 +83,10 @@ describe("As a user I want to be able to register for an account and be able to 
       cy.url().should("contain", "realms/master");
       cy.get("#username")
         .should("exist")
-        .type(Cypress.env("KEYCLOAK_ADMIN") as string, { force: true })
+        .type(getStringCypressEnv("KEYCLOAK_ADMIN"), { force: true })
         .get("#password")
         .should("exist")
-        .type(Cypress.env("KEYCLOAK_ADMIN_PASSWORD") as string, { force: true })
+        .type(getStringCypressEnv("KEYCLOAK_ADMIN_PASSWORD"), { force: true })
         .get("#kc-login")
         .should("exist")
         .click();

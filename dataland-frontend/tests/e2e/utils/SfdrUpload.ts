@@ -24,11 +24,14 @@ export async function uploadOneSfdrDataset(
 ): Promise<DataMetaInformation> {
   const response = await new SfdrDataControllerApi(
     new Configuration({ accessToken: token })
-  ).postCompanyAssociatedSfdrData({
-    companyId,
-    reportingPeriod,
-    data,
-  });
+  ).postCompanyAssociatedSfdrData(
+    {
+      companyId,
+      reportingPeriod,
+      data,
+    },
+    true
+  );
   return response.data;
 }
 

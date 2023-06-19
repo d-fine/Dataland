@@ -36,9 +36,9 @@ class SmeDataController(
     }
 
     @Operation(operationId = "postCompanyAssociatedSmeData")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SmeData>):
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SmeData>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
-        return super.postCompanyAssociatedData(companyAssociatedData)
+        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
 
     @Operation(operationId = "getAllCompanySmeData")

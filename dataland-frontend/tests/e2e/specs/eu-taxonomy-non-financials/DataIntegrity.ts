@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
@@ -17,7 +17,7 @@ describeIf(
   },
   function (): void {
     beforeEach(() => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
     let preparedFixtures: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
@@ -47,7 +47,7 @@ describeIf(
       fixtureData: FixtureData<EuTaxonomyDataForNonFinancials>,
       euTaxonomyPageVerifier: () => void
     ): void {
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(
           token,
           generateDummyCompanyInformation(fixtureData.companyInformation.companyName)
@@ -111,7 +111,7 @@ describeIf(
       () => {
         const companyName = "Missing field company";
         const missingDataMessage = "No data has been reported";
-        getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        getKeycloakToken(admin_name, admin_pw).then((token) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
             uploadEuTaxonomyDataForNonFinancialsViaForm(storedCompany.companyId, true);
             cy.intercept(`/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/*`).as("retrieveTaxonomyData");

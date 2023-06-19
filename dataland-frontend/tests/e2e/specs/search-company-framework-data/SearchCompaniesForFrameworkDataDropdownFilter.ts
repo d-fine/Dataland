@@ -7,7 +7,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils
 import { uploadOneEuTaxonomyNonFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { DataTypeEnum, EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
-import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
 import { getKeycloakToken } from "@e2e/utils/Auth";
@@ -22,6 +22,8 @@ before(function () {
 });
 
 describe("As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters", () => {
+  const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
+
   it(
     "The framework filter should contain SFDR even though it is not yet implemented, and synchronise " +
       "between the search bar and the URL",
@@ -82,7 +84,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       )
         .wait("@companies-meta-information")
         .get("div[class='col-12 text-left']")
-        .should("contain.text", "Sorry! Your search didn't return any results.")
+        .should("contain.text", failureMessageOnAvailableDatasetsPage)
         .get("#country-filter")
         .click()
         .get('input[placeholder="Search countries"]')
@@ -111,7 +113,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
         .wait("@companies-meta-information")
         .get("div[class='col-12 text-left']")
-        .should("contain.text", "Sorry! Your search didn't return any results.")
+        .should("contain.text", failureMessageOnAvailableDatasetsPage)
         .get("#sector-filter")
         .click()
         .get('input[placeholder="Search sectors"]')
@@ -211,7 +213,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           });
           cy.visit(`/companies?input=${companyName}`)
             .get("div[class='col-12 text-left']")
-            .should("contain.text", "Sorry! Your search didn't return any results.");
+            .should("contain.text", failureMessageOnAvailableDatasetsPage);
         }
       );
 
@@ -222,7 +224,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           "framework filter is set to that framework, or to several frameworks including that framework",
         () => {
           const companyName = "CompanyWithFinancial" + companyNameMarker;
-          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+          getKeycloakToken(admin_name, admin_pw).then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
                 return uploadOneEuTaxonomyFinancialsDatasetViaApi(
@@ -246,7 +248,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             .should("exist");
           cy.visit(`/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyNonFinancials}`)
             .get("div[class='col-12 text-left']")
-            .should("contain.text", "Sorry! Your search didn't return any results.");
+            .should("contain.text", failureMessageOnAvailableDatasetsPage);
           cy.visit(
             `/companies?input=${companyName}&framework=${DataTypeEnum.EutaxonomyNonFinancials}&framework=${DataTypeEnum.EutaxonomyFinancials}`
           )
@@ -285,7 +287,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           const companyNameFinancialPrefix = "CompanyWithFinancial";
           const companyNameFinancial = companyNameFinancialPrefix + companyNameMarker;
 
-          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+          getKeycloakToken(admin_name, admin_pw).then((token) => {
             getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
               return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameFinancial)).then(
                 (storedCompany) => {
@@ -304,7 +306,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           const companyNameNonFinancialPrefix = "CompanyWithNonFinancial";
           const companyNameNonFinancial = companyNameNonFinancialPrefix + companyNameMarker;
 
-          getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+          getKeycloakToken(admin_name, admin_pw).then((token) => {
             return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyNameNonFinancial)).then(
               (storedCompany) => {
                 const firstFixtureDataForEuTaxonomyNonFinancials = companiesWithEuTaxonomyDataForNonFinancials[0];
