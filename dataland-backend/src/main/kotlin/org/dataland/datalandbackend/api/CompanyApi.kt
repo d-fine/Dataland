@@ -133,6 +133,7 @@ interface CompanyApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully checked that identifier exists."),
+            ApiResponse(responseCode = "404", description = "Successfully checked that identifier does not exist."),
         ],
     )
     @GetMapping(
