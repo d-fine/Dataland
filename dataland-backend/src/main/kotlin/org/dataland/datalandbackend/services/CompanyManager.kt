@@ -159,11 +159,8 @@ class CompanyManager(
         entriesPerPage: Int,
         noPagination: Boolean,
     ): List<CompanyIdAndName> {
-        val searchFilterForJPA = StoredCompanySearchFilter(
-            searchString = searchString,
-        )
         return companyRepository.searchCompaniesByNameOrIdentifier(
-            searchFilterForJPA,
+            searchString,
             buildPageable(page, entriesPerPage, noPagination),
         )
     }
