@@ -49,6 +49,16 @@
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
       "PassFile": "../../pgpass"
+    },
+    "6": {
+      "Name": "QaServiceDb",
+      "Group": "QaServiceDb",
+      "Port": 5432,
+      "Username": "qa_service",
+      "Host": "qa-service-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "PassFile": "../../pgpass"
     }
   }
 }

@@ -5,7 +5,7 @@ import {
   DataMetaInformation,
   DataAndMetaInformationSfdrData,
   DataTypeEnum,
-  QAStatus,
+  QaStatus,
   SfdrData,
 } from "@clients/backend";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
@@ -71,7 +71,7 @@ describe("Component tests for SfdrPanel", () => {
       const metaData: DataMetaInformation = {
         dataId: `dataset-${i}`,
         reportingPeriod: reportingYear.toString(),
-        qaStatus: QAStatus.Accepted,
+        qaStatus: QaStatus.Accepted,
         currentlyActive: true,
         dataType: DataTypeEnum.Sfdr,
         companyId: "mock-company-id",

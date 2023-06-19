@@ -10,7 +10,8 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackendutils.model.QAStatus
+import org.dataland.datalandbackend.utils.canUserBypassQa
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
@@ -35,27 +36,33 @@ abstract class DataController<T>(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val logMessageBuilder = LogMessageBuilder()
 
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>):
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
+        if (bypassQa && !canUserBypassQa(DatalandAuthentication.fromContextOrNull())) {
+            throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
+        }
         val companyId = companyAssociatedData.companyId
         val reportingPeriod = companyAssociatedData.reportingPeriod
         val userId = DatalandAuthentication.fromContext().userId
         val uploadTime = Instant.now().toEpochMilli()
         logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))
         val correlationId = generateCorrelationId(companyAssociatedData.companyId)
-        val datasetToStore = buildDatasetToStore(companyAssociatedData, userId, uploadTime)
-        val dataIdOfPostedData = dataManager.addDataSetToTemporaryStorageAndSendMessage(datasetToStore, correlationId)
+        val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
+        val dataIdOfPostedData = dataManager.storeDataSetInMemoryAndSendReceptionMessageAndPersistMetaInfo(
+            datasetToStore,
+            bypassQa, correlationId,
+        )
         logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
         return ResponseEntity.ok(
             DataMetaInformation(
                 dataId = dataIdOfPostedData, companyId = companyId, dataType = dataType,
                 uploaderUserId = userId, uploadTime = uploadTime, reportingPeriod = reportingPeriod,
-                currentlyActive = false, qaStatus = QAStatus.Pending,
+                currentlyActive = false, qaStatus = QaStatus.Pending,
             ),
         )
     }
 
-    private fun buildDatasetToStore(
+    private fun buildStorableDataset(
         companyAssociatedData: CompanyAssociatedData<T>,
         userId: String,
         uploadTime: Long,
@@ -79,7 +86,7 @@ abstract class DataController<T>(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-            throw AccessDeniedException(logMessageBuilder.accessDeniedExceptionMessage)
+            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         val companyId = metaInfo.company.companyId
         val correlationId = generateCorrelationId(companyId)

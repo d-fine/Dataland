@@ -17,7 +17,7 @@ class EuTaxonomyNonFinancials {
     fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation, listOfOneEuTaxonomyNonFinancialsDataSet,
-            apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
         )
         val expectedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val listOfDataMetaInfoForTestCompany = apiAccessor.metaDataControllerApi.getListOfDataMetaInfo(
@@ -35,7 +35,7 @@ class EuTaxonomyNonFinancials {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
             listOfOneCompanyInformation,
             listOfOneEuTaxonomyNonFinancialsDataSet,
-            apiAccessor.euTaxonomyNonFinancialsUploaderFunction,
+            apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials

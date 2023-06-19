@@ -99,11 +99,9 @@
                     : noLabelMap.get(true)
                 }}
               </span>
-              <span v-else>
-                {{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}
-              </span>
+              <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId].value }}</span>
             </span>
-            <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId] }} </span>
+            <span v-else>{{ slotProps.data.content[reportingPeriodWithDataId.dataId] }}</span>
           </template>
         </template>
       </Column>
@@ -119,15 +117,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import Tooltip from "primevue/tooltip";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import { BaseDataPointYesNo, YesNo } from "@clients/backend";
+import { KpiDataObject } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { ReportingPeriodOfDataSetWithId } from "@/utils/DataTableDisplay";
+import { BaseDataPointYesNo, YesNo } from "@clients/backend";
+import Column from "primevue/column";
+import DataTable from "primevue/datatable";
+import Tooltip from "primevue/tooltip";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   name: "LksgCompanyDataTable",
@@ -169,7 +167,11 @@ export default defineComponent({
      * @returns true if the data point contains a document reference and has the appropriate value
      */
     hasDocument(dataPoint: BaseDataPointYesNo): boolean {
-      return dataPoint?.value === YesNo.Yes && dataPoint?.dataSource?.reference !== undefined;
+      return (
+        dataPoint?.value === YesNo.Yes &&
+        dataPoint?.dataSource?.reference != undefined &&
+        dataPoint.dataSource.reference.length > 0
+      );
     },
     /**
      * Checks if a label belongs to a certificate

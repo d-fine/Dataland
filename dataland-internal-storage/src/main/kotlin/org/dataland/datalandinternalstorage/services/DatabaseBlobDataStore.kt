@@ -4,7 +4,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.BlobItem
 import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeNames
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
@@ -46,12 +46,12 @@ class DatabaseBlobDataStore(
                 value = Queue(
                     "documentReceivedDatabaseDataStore",
                     arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeNames.deadLetter),
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeNames.documentReceived, declare = "false"),
+                exchange = Exchange(ExchangeName.DocumentReceived, declare = "false"),
                 key = [""],
             ),
         ],
@@ -73,7 +73,7 @@ class DatabaseBlobDataStore(
                 "Inserting blob into database with blob ID: $blobId and correlation ID: $correlationId.",
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                blobId, MessageType.DocumentStored, correlationId, ExchangeNames.itemStored,
+                blobId, MessageType.DocumentStored, correlationId, ExchangeName.ItemStored,
                 RoutingKeyNames.document,
             )
         }
