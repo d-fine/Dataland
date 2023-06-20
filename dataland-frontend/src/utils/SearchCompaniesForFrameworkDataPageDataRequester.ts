@@ -135,15 +135,13 @@ function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCo
  */
 export function getRouterLinkTargetFramework(
   companyData: DataSearchStoredCompany,
-  selectedFiltersForFrameworks: DataTypeEnum[] = useFrameworkFiltersStore().selectedFiltersForFrameworks,
+  selectedFiltersForFrameworks: DataTypeEnum[] = useFrameworkFiltersStore().selectedFiltersForFrameworks
 ): string {
   const activeDataRegisteredByDataland = companyData.dataRegisteredByDataland.filter(
     (dataMetaInfo: DataMetaInformation) => dataMetaInfo.currentlyActive
   );
   const actuallySelectedFiltersForFrameworks =
-    selectedFiltersForFrameworks.length == 0
-      ? ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE
-      : selectedFiltersForFrameworks;
+    selectedFiltersForFrameworks.length == 0 ? ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE : selectedFiltersForFrameworks;
   const frameworkToRouteTo = activeDataRegisteredByDataland.find((dataMetaInfo) =>
     actuallySelectedFiltersForFrameworks.includes(dataMetaInfo.dataType)
   )?.dataType;

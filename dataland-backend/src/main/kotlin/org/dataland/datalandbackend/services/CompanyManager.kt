@@ -120,7 +120,7 @@ class CompanyManager(
         filter: CompanySearchFilter,
         viewingUser: DatalandAuthentication? = null,
     ): List<StoredCompany> {
-        if (filter.dataTypeFilter.isNullOrEmpty()) {
+        if (filter.dataTypeFilter.isEmpty()) {
             throw InvalidInputApiException(
                 "Requestparam has a non acceptable value",
                 "Please specify a dataframework",
@@ -229,6 +229,8 @@ class CompanyManager(
      * @param companyId the ID of the company to be checked
      * @return a boolean signalling if the company is public or not
      */
+    @Transactional
+
     fun isCompanyPublic(companyId: String): Boolean {
         return getCompanyById(companyId).isTeaserCompany
     }
@@ -245,6 +247,7 @@ class CompanyManager(
             throw ResourceNotFoundApiException(
                 "Company identifier does not exist",
                 "Company identifier $identifier of type $identifierType does not exist",
+                e
             )
         }
     }
