@@ -5,10 +5,10 @@ import java.util.*
 
 class DatesHandler {
 
-    private fun addDaysToDate(date: Date, days: Long): Date {
+    private fun addDaysToDate(date: Date, days: Int): Date {
         val calendar = Calendar.getInstance()
         calendar.time = date
-        calendar.add(Calendar.DATE, days.toInt())
+        calendar.add(Calendar.DATE, days)
         return calendar.time
     }
 
@@ -16,7 +16,7 @@ class DatesHandler {
         return SimpleDateFormat("MM/dd/yyyy").format(date)
     }
 
-    fun calculateExpectedExpiryDateSimpleFormatted(daysValid: Long? = null): String? {
+    fun calculateExpectedExpiryDateSimpleFormatted(daysValid: Int? = null): String? {
         return when (daysValid) {
             null -> null
             else -> formatDateAsSimpleDateString(addDaysToDate(Date(), daysValid))

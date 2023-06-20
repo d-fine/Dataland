@@ -18,7 +18,7 @@ class ApiKeyController(
     @Autowired private val apiKeyManager: ApiKeyManager,
 ) : ApiKeyAPI {
 
-    override fun generateApiKey(daysValid: Long?): ResponseEntity<ApiKeyAndMetaInfo> {
+    override fun generateApiKey(daysValid: Int?): ResponseEntity<ApiKeyAndMetaInfo> {
         return ResponseEntity.ok(apiKeyManager.generateNewApiKey(daysValid))
     }
 

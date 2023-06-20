@@ -26,11 +26,11 @@ class ApiKeyManager(
 
     companion object {
         private const val milliSecondsInADay = 86400000
-        private const val defaultMaxDaysOfValidityForApiKey: Long = 365
+        private const val defaultMaxDaysOfValidityForApiKey = 365
     }
 
     @Value("\${dataland.max-days-of-validity-for-api-key}")
-    private var maxDaysOfValidityForApiKey: Long = defaultMaxDaysOfValidityForApiKey
+    private var maxDaysOfValidityForApiKey = defaultMaxDaysOfValidityForApiKey
 
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
         "Please generate one."
@@ -50,7 +50,7 @@ class ApiKeyManager(
         return SecurityContextHolder.getContext().authentication
     }
 
-    private fun checkIfDaysValidValueIsValid(daysValid: Long?) {
+    private fun checkIfDaysValidValueIsValid(daysValid: Int?) {
         if (daysValid != null) {
             if (daysValid < 1) {
                 throw InvalidInputApiException(
@@ -67,12 +67,13 @@ class ApiKeyManager(
         }
     }
 
-    private fun calculateExpiryDate(daysValid: Long?): Long? {
+    private fun calculateExpiryDate(daysValid: Int?): Long? {
         checkIfDaysValidValueIsValid(daysValid)
         return when (daysValid) {
             null -> null
             else -> {
-                val millisecondsValidLong: Long = (daysValid * milliSecondsInADay)
+                val daysValidLong: Long = daysValid.toLong()
+                val millisecondsValidLong: Long = (daysValidLong * milliSecondsInADay)
                 millisecondsValidLong + Instant.now().toEpochMilli()
             }
         }
@@ -83,7 +84,7 @@ class ApiKeyManager(
         return authentication.name
     }
 
-    private fun generateApiKeyMetaInfo(daysValid: Long?): ApiKeyMetaInfo {
+    private fun generateApiKeyMetaInfo(daysValid: Int?): ApiKeyMetaInfo {
         val authentication = getAuthentication()
         val keycloakUserId = getKeycloakUserId()
         val keycloakRoles = authentication.authorities.map { it.authority!! }.toList()
@@ -99,7 +100,7 @@ class ApiKeyManager(
      * @param daysValid the number of days the API key should be valid from time of generation
      * @return the API key and its meta info
      */
-    fun generateNewApiKey(daysValid: Long?): ApiKeyAndMetaInfo {
+    fun generateNewApiKey(daysValid: Int?): ApiKeyAndMetaInfo {
         val apiKeyMetaInfo = generateApiKeyMetaInfo(daysValid)
 
         val secret = apiKeyUtility.generateApiKeySecret()
