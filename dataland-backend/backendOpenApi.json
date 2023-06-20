@@ -1615,26 +1615,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 1
-            }
-          },
-          {
-            "name": "entriesPerPage",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 250
-            }
           }
         ],
         "responses": {
@@ -1770,6 +1750,9 @@
         "responses": {
           "200": {
             "description": "Successfully checked that identifier exists."
+          },
+          "404": {
+            "description": "Successfully checked that identifier does not exist."
           },
           "default": {
             "description": "An error occurred",

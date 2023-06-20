@@ -64,7 +64,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         value =
         "WITH filtered_text_results as (" +
             // Fuzzy-Search Company Name
-            "SELECT company_id, company_name AS match," +
+            "(SELECT company_id, company_name AS company_name," +
             " CASE " +
             " WHEN company_name = :#{#searchString} THEN 10" +
             " WHEN company_name ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
@@ -72,42 +72,46 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " END match_quality " +
             " FROM stored_companies" +
             " WHERE company_name ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
+            " ORDER BY match_quality DESC, company_id LIMIT 100)" +
 
             " UNION " +
             // Fuzzy-Search Company Alternative Name
-            " SELECT " +
+            " (SELECT " +
             " stored_company_entity_company_id AS company_id," +
-            " company_alternative_names AS match," +
+            " stored_companies.company_name AS company_name," +
             " CASE " +
             " WHEN company_alternative_names = :#{#searchString} THEN 9" +
             " WHEN company_alternative_names ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
             " ELSE 1 " +
             " END match_quality " +
             " FROM stored_company_entity_company_alternative_names" +
+            " JOIN stored_companies ON stored_companies.company_id = " +
+            " stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
             " WHERE company_alternative_names ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
+            " ORDER BY match_quality DESC, company_id LIMIT 100)" +
 
             " UNION" +
             // Fuzzy-Search Company Identifier
-            " SELECT company_id, identifier_value AS match," +
+            "(SELECT company_identifiers.company_id, stored_companies.company_name AS company_name," +
             " CASE " +
             " WHEN identifier_value = :#{#searchString} THEN 10" +
             " WHEN identifier_value ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
             " ELSE 0" +
             " END match_quality" +
             " FROM company_identifiers" +
-            " WHERE identifier_value ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}) " +
+            " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
+            " WHERE identifier_value ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} " +
+            " ORDER BY match_quality DESC, company_id LIMIT 100)) " +
             // Combine Results
-            "SELECT stored_companies.company_id AS companyId," +
-            " max(stored_companies.company_name) AS companyName," +
-            " max(filtered_text_results.match_quality) AS match_quality" +
+            "SELECT filtered_text_results.company_id AS companyId," +
+            " MIN(filtered_text_results.company_name) AS companyName" +
             " FROM filtered_text_results " +
-            " JOIN stored_companies ON filtered_text_results.company_id = stored_companies.company_id" +
-            " GROUP BY stored_companies.company_id" +
-            " ORDER BY match_quality DESC, companyName DESC",
+            " GROUP BY filtered_text_results.company_id" +
+            " ORDER BY MAX(filtered_text_results.match_quality) DESC, companyId" +
+            " LIMIT 100 ",
     )
     fun searchCompaniesByNameOrIdentifier(
-        @Param("searchString") searchString: String,
-        pageable: Pageable,
+        @Param("searchString") searchString: String
     ): List<CompanyIdAndName>
 
     /**
