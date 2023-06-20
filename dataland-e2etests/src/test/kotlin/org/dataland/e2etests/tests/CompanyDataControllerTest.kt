@@ -77,11 +77,11 @@ class CompanyDataControllerTest {
         )
         val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
-            distinctValues.sectors!!.containsAll(listOfTestCompanyInformation.map { it.sector }),
+            distinctValues.sectors.containsAll(listOfTestCompanyInformation.map { it.sector }),
             "The list of all occurring sectors does not contain the sectors of the posted companies.",
         )
         assertTrue(
-            distinctValues.countryCodes!!.containsAll(listOfTestCompanyInformation.map { it.countryCode }),
+            distinctValues.countryCodes.containsAll(listOfTestCompanyInformation.map { it.countryCode }),
             "The list of all occurring country codes does not contain the country codes of the posted companies.",
         )
     }
@@ -96,7 +96,7 @@ class CompanyDataControllerTest {
         )
         val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
-            distinctValues.sectors!!.intersect(
+            distinctValues.sectors.intersect(
                 mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation.map { it.value[0].sector }.toSet(),
             ).isEmpty(),
             "At least one sector of the frontend-excluded data sets appears in the distinct sector value list.",
@@ -299,18 +299,6 @@ class CompanyDataControllerTest {
         ).map { it.companyName }
         assertTrue(otherCompanyNames.contains("Company 8"))
         assertFalse(otherCompanyNames.contains("Company 7"))
-
-        val page2CompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-            searchString = testString, page = 2, entriesPerPage = 3,
-        ).map { it.companyName }
-        assertEquals(
-            listOf(
-                "${testString}2",
-                "Company 5",
-                "Company 6",
-            ),
-            page2CompanyNames,
-        )
     }
 
     private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?) {

@@ -111,7 +111,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " LIMIT 100 ",
     )
     fun searchCompaniesByNameOrIdentifier(
-        @Param("searchString") searchString: String
+        @Param("searchString") searchString: String,
     ): List<CompanyIdAndName>
 
     /**
