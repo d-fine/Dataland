@@ -27,7 +27,7 @@ class GleifMappingTest {
         countryCode = expectedGleifCompanyInformation.countryCode,
         headquarters = expectedGleifCompanyInformation.headquarters,
         headquartersPostalCode = expectedGleifCompanyInformation.headquartersPostalCode,
-        sector = "dummy",
+        sector = null,
         website = null,
         identifiers = listOf(
             CompanyIdentifier(
