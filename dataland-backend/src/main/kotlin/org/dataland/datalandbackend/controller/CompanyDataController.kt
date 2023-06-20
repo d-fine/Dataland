@@ -68,13 +68,10 @@ class CompanyDataController(
 
     override fun getCompaniesBySearchString(
         searchString: String,
-        page: Int?,
-        entriesPerPage: Int?,
     ): ResponseEntity<List<CompanyIdAndName>> {
         return ResponseEntity.ok(
             companyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-                searchString, page ?: 1,
-                entriesPerPage ?: defaultEntriesPerPage,
+                searchString
             ),
         )
     }

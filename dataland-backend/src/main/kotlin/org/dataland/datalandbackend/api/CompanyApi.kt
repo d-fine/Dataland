@@ -95,9 +95,7 @@ interface CompanyApi {
     /**
      * A method to retrieve companies with names or identifiers matching a search string
      * @param searchString string used for substring matching in the name and the identifiers of a company
-     * @param page determines which page of the result is returned
-     * @param entriesPerPage determines how many entries are shown on each page
-     * @return names of all companies matching the search criteria
+     * @return names of the first 100 companies matching the search criteria
      */
     @Operation(
         summary = "Retrieve specific companies by searching their names and identifiers",
@@ -115,9 +113,6 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompaniesBySearchString(
         @RequestParam searchString: String,
-        @RequestParam("page", defaultValue = "1") page: Int? = 1,
-        @RequestParam("entriesPerPage", defaultValue = "250") entriesPerPage: Int? = 250,
-
     ):
         ResponseEntity<List<CompanyIdAndName>>
 

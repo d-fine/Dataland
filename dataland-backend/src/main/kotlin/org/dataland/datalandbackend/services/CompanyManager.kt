@@ -156,33 +156,15 @@ class CompanyManager(
     /**
      * Method to search for companies matching the company name or identifier
      * @param searchString the string to search for in the names or identifiers of a company
-     * @param page the requested page
-     * @param entriesPerPage the number of entries per page
-     * @return list of all matching companies in Dataland
+     * @return list of the first 100 matching companies in Dataland
      */
     @Transactional
     fun searchCompaniesByNameOrIdentifierAndGetApiModel(
-        searchString: String,
-        page: Int,
-        entriesPerPage: Int,
+        searchString: String
     ): List<CompanyIdAndName> {
         return companyRepository.searchCompaniesByNameOrIdentifier(
             searchString,
-            buildPageable(page, entriesPerPage),
         )
-    }
-
-    private fun buildPageable(page: Int, entriesPerPage: Int): Pageable {
-        if (page < 1 || entriesPerPage < 1) {
-            throw InvalidInputApiException(
-                "Requestparam has a non acceptable value",
-                "Please choose a value greater than 0",
-            )
-        } else {
-            return PageRequest.of(
-                page - 1, entriesPerPage, Sort.unsorted(),
-            )
-        }
     }
 
     private fun getUploaderIdFilter(onlyCurrentUserAsUploader: Boolean): List<String> {
