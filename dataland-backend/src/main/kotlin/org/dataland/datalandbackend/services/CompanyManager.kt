@@ -230,7 +230,6 @@ class CompanyManager(
      * @return a boolean signalling if the company is public or not
      */
     @Transactional
-
     fun isCompanyPublic(companyId: String): Boolean {
         return getCompanyById(companyId).isTeaserCompany
     }
@@ -247,7 +246,7 @@ class CompanyManager(
             throw ResourceNotFoundApiException(
                 "Company identifier does not exist",
                 "Company identifier $identifier of type $identifierType does not exist",
-                e
+                e,
             )
         }
     }
