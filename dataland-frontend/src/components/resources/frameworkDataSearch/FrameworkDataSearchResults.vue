@@ -95,15 +95,7 @@ export default defineComponent({
      * @returns the promise of the router push action
      */
     goToData(event: { data: DataSearchStoredCompany }) {
-      return this.$router.push(this.getRouterLinkTargetFrameworkInt(event.data));
-    },
-    /**
-     * A wrapper around th getRouterLinkTargetFramework function so it can be used in the vue template
-     * @param companyData the company to get the link for
-     * @returns a link to the view framework data page for the company
-     */
-    getRouterLinkTargetFrameworkInt(companyData: DataSearchStoredCompany) {
-      return getRouterLinkTargetFramework(companyData);
+      return this.$router.push(getRouterLinkTargetFramework(event.data));
     },
     /**
      * Resets the pagination of the dataTable

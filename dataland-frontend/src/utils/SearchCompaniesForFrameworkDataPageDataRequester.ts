@@ -127,23 +127,21 @@ function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCo
  * @returns a vue router link to the view page for a specific framework
  */
 export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompany): string {
-  const dataRegisteredByDataland = companyData.dataRegisteredByDataland;
-  let routeToVisit = `/companies/${companyData.companyId}/frameworks/${dataRegisteredByDataland[0].dataType}`;
-  const selectedFiltersForFrameworks = useFrameworkFiltersStore().selectedFiltersForFrameworks;
-  if (
-    selectedFiltersForFrameworks.length > 0 &&
-    selectedFiltersForFrameworks.length < ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.length
-  ) {
-    const frameworkToRouteTo = dataRegisteredByDataland.find((dataMetaInfo) => {
-      return selectedFiltersForFrameworks.includes(dataMetaInfo.dataType);
-    })?.dataType;
-    if (frameworkToRouteTo) {
-      routeToVisit = `/companies/${companyData.companyId}/frameworks/${frameworkToRouteTo}`;
-    } else {
-      throw new Error(
-        "No data meta info for the frameworks set in the filters could be found in the data of the server response."
-      );
-    }
+  const activeDataRegisteredByDataland = companyData.dataRegisteredByDataland.filter(
+    (dataMetaInfo: DataMetaInformation) => dataMetaInfo.currentlyActive
+  );
+  const selectedFiltersForFrameworksFromStorage = useFrameworkFiltersStore().selectedFiltersForFrameworks;
+  const selectedFiltersForFrameworks = selectedFiltersForFrameworksFromStorage.length == 0 ?
+    ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE :
+    selectedFiltersForFrameworksFromStorage;
+  const frameworkToRouteTo = activeDataRegisteredByDataland.find((dataMetaInfo) =>
+    selectedFiltersForFrameworks.includes(dataMetaInfo.dataType)
+  )?.dataType;
+  if (frameworkToRouteTo) {
+    return `/companies/${companyData.companyId}/frameworks/${frameworkToRouteTo}`;
+  } else {
+    throw new Error(
+      "No data meta info for the frameworks set in the filters could be found in the data of the server response."
+    );
   }
-  return routeToVisit;
 }
