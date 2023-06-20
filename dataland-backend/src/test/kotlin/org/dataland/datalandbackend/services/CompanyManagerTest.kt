@@ -3,9 +3,6 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
-import org.dataland.datalandbackend.model.CompanyIdentifier
-import org.dataland.datalandbackend.model.CompanySearchFilter
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -26,10 +23,6 @@ class CompanyManagerTest(
 ) {
     val testDataProvider = TestDataProvider(objectMapper)
     val testCompanyList = testDataProvider.getCompanyInformation(4)
-    val frameworkData = setOf(
-        DataType("lksg"), DataType("sfdr"),
-        DataType("eutaxonomy-financials"), DataType("eutaxonomy-non-financials"),
-    )
 
     @BeforeEach
     fun addTestCompanies() {
@@ -73,41 +66,6 @@ class CompanyManagerTest(
                 searchResponse.any { it.companyName == company.companyName },
                 "The posted company could not be retrieved by searching for its name.",
             )
-        }
-    }
-
-// TODO Move it to an e2e test for the old getcompanies endpoint
-    private fun testThatSearchForCompanyIdentifierWorks(identifier: CompanyIdentifier) {
-        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(
-                searchString = identifier.identifierValue,
-                onlyCompanyNames = false,
-                dataTypeFilter = frameworkData,
-            ),
-        )
-            .toMutableList()
-        // The response list is filtered to exclude results that match in account of another identifier having
-        // the required value but the looked for identifier type does not exist (This happens due to the test
-        // data having non-unique identifier values for different identifier types)
-        searchResponse.retainAll {
-            it.companyInformation.identifiers.any {
-                    identifierInResponse ->
-                identifierInResponse.identifierType == identifier.identifierType
-            }
-        }
-        assertTrue(
-            searchResponse.all { results -> results.companyInformation.identifiers.any { it == identifier } },
-            "The search by identifier returns at least one company that does not contain the looked" +
-                "for value $identifier.",
-        )
-    }
-
-    @Test
-    fun `search for all identifier values and check if all results contain the looked for value`() {
-        for (company in testCompanyList) {
-            for (identifier in company.identifiers) {
-                testThatSearchForCompanyIdentifierWorks(identifier)
-            }
         }
     }
 

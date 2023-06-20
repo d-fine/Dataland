@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
@@ -301,7 +302,8 @@ class CompanyDataControllerTest {
         assertFalse(otherCompanyNames.contains("Company 7"))
     }
 
-    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?) {
+    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?):
+        CompanyInformation {
         val companyInformation = baseCompanyInformation.copy(
             companyName = name,
             companyAlternativeNames = alternativeNames,
@@ -313,5 +315,48 @@ class CompanyDataControllerTest {
             ),
         )
         apiAccessor.companyDataControllerApi.postCompany(companyInformation)
+        return (companyInformation)
+    }
+
+    // TODO Recreate the old unit tests for the old getcompanies endpoint here
+    private fun testThatSearchForCompanyIdentifierWorks(identifier: CompanyIdentifier) {
+        val searchResponse = apiAccessor.companyDataControllerApi.getCompanies(
+            dataTypes = apiAccessor.frameworkData,
+            searchString = identifier.identifierValue,
+            onlyCompanyNames = false,
+
+        )
+            .toMutableList()
+        // The response list is filtered to exclude results that match in account of another identifier having
+        // the required value but the looked for identifier type does not exist (This happens due to the test
+        // data having non-unique identifier values for different identifier types)
+        searchResponse.retainAll {
+            it.companyInformation.identifiers.any {
+                    identifierInResponse ->
+                identifierInResponse.identifierType == identifier.identifierType
+            }
+        }
+        assertTrue(
+            searchResponse.all { results -> results.companyInformation.identifiers.any { it == identifier } },
+            "The search by identifier returns at least one company that does not contain the looked" +
+                "for value $identifier.",
+        )
+    }
+
+    @Test
+    fun `search for all identifier values and check if all results contain the looked for value`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val testString = "unique-test-string-${UUID.randomUUID()}"
+        val testCompanyList = listOf(
+            uploadModifiedBaseCompany("Company 1", listOf(testString), null),
+            uploadModifiedBaseCompany("Company 1", listOf(testString), null),
+            uploadModifiedBaseCompany("Company 1", listOf(testString), null),
+            uploadModifiedBaseCompany("Company 1", listOf(testString), null),
+        )
+        for (company in testCompanyList) {
+            for (identifier in company.identifiers) {
+                testThatSearchForCompanyIdentifierWorks(identifier)
+            }
+        }
     }
 }
