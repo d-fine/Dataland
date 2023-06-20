@@ -19,9 +19,7 @@ import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -160,7 +158,7 @@ class CompanyManager(
      */
     @Transactional
     fun searchCompaniesByNameOrIdentifierAndGetApiModel(
-        searchString: String
+        searchString: String,
     ): List<CompanyIdAndName> {
         return companyRepository.searchCompaniesByNameOrIdentifier(
             searchString,

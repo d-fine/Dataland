@@ -255,9 +255,9 @@ class CompanyDataControllerTest {
     fun `check if the new companies search via name and ids endpoint works as expeted`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        uploadModifiedBaseCompany("Company 9", null, "3${testString}")
-        uploadModifiedBaseCompany("Company 8", listOf("3${testString}", "other_name"), null)
-        uploadModifiedBaseCompany("3${testString}", null, null)
+        uploadModifiedBaseCompany("Company 9", null, "3$testString")
+        uploadModifiedBaseCompany("Company 8", listOf("3$testString", "other_name"), null)
+        uploadModifiedBaseCompany("3$testString", null, null)
         uploadModifiedBaseCompany("Company 6", null, "${testString}2")
         uploadModifiedBaseCompany("Company 5", listOf("${testString}2"), null)
         uploadModifiedBaseCompany("${testString}2", null, null)
@@ -265,7 +265,7 @@ class CompanyDataControllerTest {
         uploadModifiedBaseCompany("Company 2", listOf(testString), null)
         uploadModifiedBaseCompany(testString, null, null)
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-            searchString = testString
+            searchString = testString,
         ).map { it.companyName }
         assertEquals(
             listOf(
@@ -275,7 +275,7 @@ class CompanyDataControllerTest {
                 "${testString}2",
                 "Company 5",
                 "Company 6",
-                "3${testString}",
+                "3$testString",
                 "Company 9",
             ),
             sortedCompanyNames.filter { it != "Company 8" },
@@ -291,11 +291,11 @@ class CompanyDataControllerTest {
                 "Company 8",
                 "Company 9",
             ),
-            sortedCompanyNames.filter { it != "3${testString}" },
+            sortedCompanyNames.filter { it != "3$testString" },
         )
 
         val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-            searchString = "other_name"
+            searchString = "other_name",
         ).map { it.companyName }
         assertTrue(otherCompanyNames.contains("Company 8"))
         assertFalse(otherCompanyNames.contains("Company 7"))
@@ -305,7 +305,7 @@ class CompanyDataControllerTest {
         val companyInformation = baseCompanyInformation.copy(
             companyName = name,
             companyAlternativeNames = alternativeNames,
-            identifiers = listOf(CompanyIdentifier(CompanyIdentifier.IdentifierType.isin, identifier ?: UUID.randomUUID().toString()))
+            identifiers = listOf(CompanyIdentifier(CompanyIdentifier.IdentifierType.isin, identifier ?: UUID.randomUUID().toString())),
         )
         apiAccessor.companyDataControllerApi.postCompany(companyInformation)
     }
