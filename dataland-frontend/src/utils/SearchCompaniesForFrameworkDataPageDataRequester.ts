@@ -137,9 +137,10 @@ export function getRouterLinkTargetFramework(companyData: DataSearchStoredCompan
     (dataMetaInfo: DataMetaInformation) => dataMetaInfo.currentlyActive
   );
   const selectedFiltersForFrameworksFromStorage = useFrameworkFiltersStore().selectedFiltersForFrameworks;
-  const selectedFiltersForFrameworks = selectedFiltersForFrameworksFromStorage.length == 0 ?
-    ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE :
-    selectedFiltersForFrameworksFromStorage;
+  const selectedFiltersForFrameworks =
+    selectedFiltersForFrameworksFromStorage.length == 0
+      ? ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE
+      : selectedFiltersForFrameworksFromStorage;
   const frameworkToRouteTo = activeDataRegisteredByDataland.find((dataMetaInfo) =>
     selectedFiltersForFrameworks.includes(dataMetaInfo.dataType)
   )?.dataType;

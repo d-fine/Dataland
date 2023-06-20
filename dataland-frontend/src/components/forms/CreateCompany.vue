@@ -221,11 +221,7 @@ import { FormKit } from "@formkit/vue";
 import Card from "primevue/card";
 import { defineComponent, inject } from "vue";
 import Keycloak from "keycloak-js";
-import {
-  CompanyInformation,
-  CompanyIdentifier,
-  CompanyIdentifierIdentifierTypeEnum,
-} from "@clients/backend";
+import { CompanyInformation, CompanyIdentifier, CompanyIdentifierIdentifierTypeEnum } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import PrimeButton from "primevue/button";
 import { getAllCountryCodes } from "@/utils/CountryCodeConverter";
@@ -302,11 +298,9 @@ export default defineComponent({
       node: FormKitNode,
       identifierType: CompanyIdentifierIdentifierTypeEnum
     ): Promise<boolean> {
-      const response = (
-        await (
-          await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
-        ).existsIdentifier(identifierType, node.value as string)
-      );
+      const response = await (
+        await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
+      ).existsIdentifier(identifierType, node.value as string);
       return response.status == 404;
     },
     /**
