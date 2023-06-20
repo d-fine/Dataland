@@ -20,13 +20,13 @@ import java.util.UUID
 class CompanyDataControllerTest {
 
     private val apiAccessor = ApiAccessor()
-    private val Company1 = "Company 1"
-    private val Company2 = "Company 2"
-    private val Company3 = "Company 3"
-    private val Company5 = "Company 5"
-    private val Company6 = "Company 6"
-    private val Company8 = "Company 8"
-    private val Company9 = "Company 9"
+    private val company1 = "Company 1"
+    private val company2 = "Company 2"
+    private val company3 = "Company 3"
+    private val company5 = "Company 5"
+    private val company6 = "Company 6"
+    private val company8 = "Company 8"
+    private val company9 = "Company 9"
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -285,14 +285,14 @@ class CompanyDataControllerTest {
     fun `check if the new companies search via name and ids endpoint works as expeted`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        uploadModifiedBaseCompany(Company9, null, "3$testString")
-        uploadModifiedBaseCompany(Company8, listOf("3$testString", "other_name"), null)
+        uploadModifiedBaseCompany(company9, null, "3$testString")
+        uploadModifiedBaseCompany(company8, listOf("3$testString", "other_name"), null)
         uploadModifiedBaseCompany("3$testString", null, null)
-        uploadModifiedBaseCompany(Company6, null, "${testString}2")
-        uploadModifiedBaseCompany(Company5, listOf("${testString}2"), null)
+        uploadModifiedBaseCompany(company6, null, "${testString}2")
+        uploadModifiedBaseCompany(company5, listOf("${testString}2"), null)
         uploadModifiedBaseCompany("${testString}2", null, null)
-        uploadModifiedBaseCompany(Company3, null, testString)
-        uploadModifiedBaseCompany(Company2, listOf(testString), null)
+        uploadModifiedBaseCompany(company3, null, testString)
+        uploadModifiedBaseCompany(company2, listOf(testString), null)
         uploadModifiedBaseCompany(testString, null, null)
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             searchString = testString,
@@ -300,26 +300,26 @@ class CompanyDataControllerTest {
         assertEquals(
             listOf(
                 testString,
-                Company3,
-                Company2,
+                company3,
+                company2,
                 "${testString}2",
-                Company5,
-                Company6,
+                company5,
+                company6,
                 "3$testString",
-                Company9,
+                company9,
             ),
-            sortedCompanyNames.filter { it != Company8 },
+            sortedCompanyNames.filter { it != company8 },
         )
         assertEquals(
             listOf(
                 testString,
-                Company3,
-                Company2,
+                company3,
+                company2,
                 "${testString}2",
-                Company5,
-                Company6,
-                Company8,
-                Company9,
+                company5,
+                company6,
+                company8,
+                company9,
             ),
             sortedCompanyNames.filter { it != "3$testString" },
         )
@@ -327,7 +327,7 @@ class CompanyDataControllerTest {
         val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             searchString = "other_name",
         ).map { it.companyName }
-        assertTrue(otherCompanyNames.contains(Company8))
+        assertTrue(otherCompanyNames.contains(company8))
         assertFalse(otherCompanyNames.contains("Company 7"))
     }
 
@@ -377,10 +377,10 @@ class CompanyDataControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val testString = "unique-test-string-${UUID.randomUUID()}"
         val testCompanyList = listOf(
-            uploadModifiedBaseCompany(Company1, listOf(testString), null),
-            uploadModifiedBaseCompany(Company1, listOf(testString), null),
-            uploadModifiedBaseCompany(Company1, listOf(testString), null),
-            uploadModifiedBaseCompany(Company1, listOf(testString), null),
+            uploadModifiedBaseCompany(company1, listOf(testString), null),
+            uploadModifiedBaseCompany(company1, listOf(testString), null),
+            uploadModifiedBaseCompany(company1, listOf(testString), null),
+            uploadModifiedBaseCompany(company1, listOf(testString), null),
         )
         for (company in testCompanyList) {
             for (identifier in company.identifiers) {
