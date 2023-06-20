@@ -8,8 +8,8 @@
       <FailMessage v-else message="The resource you tried to access is not available. Please close the data pop-up." />
     </div>
     <div autofocus="autofocus" v-else>
-      <PrimeButton @click="setQaStatusTo(QaStatus.Accepted)" label="Accept Dataset" id="accept-button" />
-      <PrimeButton @click="setQaStatusTo(QaStatus.Rejected)" label="Reject Dataset" id="reject-button" />
+      <PrimeButton @click="setQaStatusTo(QaServiceQaStatus.Accepted)" label="Accept Dataset" id="accept-button" />
+      <PrimeButton @click="setQaStatusTo(QaServiceQaStatus.Rejected)" label="Reject Dataset" id="reject-button" />
     </div>
   </MiddleCenterDiv>
 </template>
@@ -25,7 +25,7 @@ import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS } from "@/utils/Constants";
-import { QaStatus } from "@clients/qaservice";
+import { QaStatus as QaServiceQaStatus } from "@clients/qaservice";
 
 export default defineComponent({
   components: { FailMessage, SuccessMessage, MiddleCenterDiv, PrimeButton },
@@ -42,7 +42,7 @@ export default defineComponent({
       dataId: "",
       reviewSubmitted: false,
       reviewSuccessful: false,
-      QaStatus,
+      QaServiceQaStatus,
     };
   },
   mounted() {
@@ -65,7 +65,7 @@ export default defineComponent({
      * Sets dataset quality status to the given status
      * @param qaStatus the QA status to be assigned
      */
-    async setQaStatusTo(qaStatus: QaStatus) {
+    async setQaStatusTo(qaStatus: QaServiceQaStatus) {
       try {
         this.reviewSubmitted = true;
         const qaServiceControllerApi = await new ApiClientProvider(

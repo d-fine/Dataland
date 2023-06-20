@@ -93,7 +93,7 @@ export default defineComponent({
         const companyDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getCompanyDataControllerApi();
-        const response = await companyDataControllerApi.getCompaniesBySearchString(companyName.query, 1, 10);
+        const response = await companyDataControllerApi.getCompaniesBySearchString(companyName.query);
         this.autocompleteArray = response.data;
       } catch (error) {
         console.error(error);
