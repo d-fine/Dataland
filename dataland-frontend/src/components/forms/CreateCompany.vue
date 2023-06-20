@@ -298,10 +298,16 @@ export default defineComponent({
       node: FormKitNode,
       identifierType: CompanyIdentifierIdentifierTypeEnum
     ): Promise<boolean> {
-      const response = await (
-        await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
-      ).existsIdentifier(identifierType, node.value as string);
-      return response.status == 404;
+      try {
+        await (await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi())
+          .existsIdentifier(identifierType, node.value as string);
+        return false;
+      } catch (error: AxiosError) {
+        if (error.response.status == 404) {
+          return true;
+        }
+        throw error;
+      }
     },
     /**
      * Adds a CompanyIdentifier to the array of identifiers
