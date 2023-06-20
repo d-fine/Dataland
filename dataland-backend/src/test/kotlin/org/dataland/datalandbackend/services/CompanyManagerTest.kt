@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.CompanyIdentifier
 import org.dataland.datalandbackend.model.CompanySearchFilter
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -25,6 +26,10 @@ class CompanyManagerTest(
 ) {
     val testDataProvider = TestDataProvider(objectMapper)
     val testCompanyList = testDataProvider.getCompanyInformation(4)
+    val frameworkData = setOf(
+        DataType("lksg"), DataType("sfdr"),
+        DataType("eutaxonomy-financials"), DataType("eutaxonomy-non-financials"),
+    )
 
     @BeforeEach
     fun addTestCompanies() {
@@ -47,12 +52,12 @@ class CompanyManagerTest(
 
     @Test
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
-        val allCompaniesInStore = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(),
+        val allCompaniesInStore = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            "", 1, 250,
         )
         assertTrue(
             allCompaniesInStore.all {
-                testCompanyList.any { testCompany -> testCompany.companyName == it.companyInformation.companyName }
+                testCompanyList.any { testCompany -> testCompany.companyName == it.companyName }
             },
             "Not all the companyInformation of the posted companies could be found in the stored companies.",
         )
@@ -61,24 +66,23 @@ class CompanyManagerTest(
     @Test
     fun `search for them one by one by using their names`() {
         for (company in testCompanyList) {
-            val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-                CompanySearchFilter(
-                    searchString = company.companyName,
-                    onlyCompanyNames = true,
-                ),
+            val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+                searchString = company.companyName, 1, 250,
             )
             assertTrue(
-                searchResponse.any { it.companyInformation.companyName == company.companyName },
+                searchResponse.any { it.companyName == company.companyName },
                 "The posted company could not be retrieved by searching for its name.",
             )
         }
     }
 
+// TODO Move it to an e2e test for the old getcompanies endpoint
     private fun testThatSearchForCompanyIdentifierWorks(identifier: CompanyIdentifier) {
         val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
             CompanySearchFilter(
                 searchString = identifier.identifierValue,
                 onlyCompanyNames = false,
+                dataTypeFilter = frameworkData,
             ),
         )
             .toMutableList()
@@ -120,10 +124,9 @@ class CompanyManagerTest(
                 if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
             }
         }
-        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(
-                searchString,
-            ),
+        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            searchString,
+            1, 250,
         )
         assertEquals(
             occurencesOfSearchString,
@@ -141,10 +144,8 @@ class CompanyManagerTest(
                 occurencesOfSearchString += 1
             }
         }
-        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(
-                searchString = searchString, onlyCompanyNames = true,
-            ),
+        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            searchString = searchString, 1, 250,
         )
         assertEquals(
             occurencesOfSearchString,
@@ -156,16 +157,14 @@ class CompanyManagerTest(
     @Test
     fun `search for name substring to check the ordering of results`() {
         val searchString = testCompanyList.first().companyName.take(1)
-        val searchResponse = testCompanyManager.searchCompaniesAndGetApiModel(
-            CompanySearchFilter(
-                searchString = searchString, onlyCompanyNames = true,
-            ),
+        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            searchString = searchString, 1, 250,
         )
         val responsesStartingWith =
-            searchResponse.takeWhile { it.companyInformation.companyName.startsWith(searchString) }
-        val otherResponses = searchResponse.dropWhile { it.companyInformation.companyName.startsWith(searchString) }
+            searchResponse.takeWhile { it.companyName.startsWith(searchString) }
+        val otherResponses = searchResponse.dropWhile { it.companyName.startsWith(searchString) }
         assertTrue(
-            otherResponses.none { it.companyInformation.companyName.startsWith(searchString) },
+            otherResponses.none { it.companyName.startsWith(searchString) },
             "Expected to have matches ordered by starting with search string followed by all other results." +
                 "However, at least one of the matches in the other results starts with the search string " +
                 "($searchString).",
