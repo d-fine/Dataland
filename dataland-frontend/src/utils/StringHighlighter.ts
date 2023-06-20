@@ -6,7 +6,7 @@ export interface StringSplitSearchMatch {
 /**
  * A helper function for the search highlighting. Splits a string into segments based on the searchString.
  * Segments matching the searchString are marked as highlighted.
- * (i.e. using input "this is a test" with searchString "a" will return the split "this is " + "a" + " test"
+ * (I.e. using input "this is a test" with searchString "a" will return the split "this is " + "a" + " test"
  * with the segment "a" being marked as highlighted
  * @param rawText the text to split
  * @param searchString the search string to split by

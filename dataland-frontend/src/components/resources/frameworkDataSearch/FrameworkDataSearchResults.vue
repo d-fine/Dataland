@@ -55,8 +55,11 @@
       </Column>
     </DataTable>
     <div class="d-center-div text-center px-7 py-4" v-else>
-      <p class="font-medium text-xl">Sorry! Your search didn't return any results.</p>
-      <p class="font-medium">Try again please!</p>
+      <p class="font-medium text-xl">We're sorry, but your search did not return any results.</p>
+      <p class="font-medium text-xl">
+        Please double-check the spelling and try again or request the data you are missing!
+      </p>
+      <RequestDataButton />
     </div>
   </div>
 </template>
@@ -70,10 +73,11 @@ import {
   getRouterLinkTargetFramework,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent } from "vue";
+import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
 
 export default defineComponent({
   name: "FrameworkDataSearchResults",
-  components: { DataTable, Column },
+  components: { RequestDataButton, DataTable, Column },
   directives: {
     tooltip: Tooltip,
   },

@@ -4,14 +4,7 @@
     <DatasetsTabMenu :initial-tab-index="1">
       <TheContent class="p-3 min-h-screen paper-section relative">
         <div class="col-12 flex flex-row justify-content-between align-items-end">
-          <router-link
-            v-if="hasUserUploaderRights"
-            to="/companies/choose"
-            class="no-underline"
-            data-test="newDatasetButton"
-          >
-            <PrimeButton class="uppercase p-button p-button-sm d-letters mr-3" label="New Dataset" icon="pi pi-plus" />
-          </router-link>
+          <NewDatasetButton v-if="hasUserUploaderRights" />
         </div>
         <DatasetOverviewTable
           data-test="datasetOverviewTable"
@@ -37,23 +30,23 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import { defineComponent, inject } from "vue";
 import TheFooter from "@/components/general/TheFooter.vue";
-import PrimeButton from "primevue/button";
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Keycloak from "keycloak-js";
 import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
+import NewDatasetButton from "@/components/general/NewDatasetButton.vue";
 
 export default defineComponent({
   name: "DatasetOverview",
   components: {
+    NewDatasetButton,
     DatasetsTabMenu,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
     TheFooter,
-    PrimeButton,
     DatasetOverviewTable,
   },
   data() {
