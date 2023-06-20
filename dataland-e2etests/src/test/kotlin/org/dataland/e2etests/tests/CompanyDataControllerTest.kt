@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -54,13 +55,19 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        val expectedDataset = apiAccessor.uploadSingleFrameworkDataSet(
+            companyId = uploadInfo.actualStoredCompany.companyId,
+            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+            reportingPeriod = "2023",
+            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
         val getCompaniesOnlyByNameResponse = apiAccessor.getCompaniesOnlyByName(
             uploadInfo.actualStoredCompany.companyInformation.companyName,
         )
         val expectedCompany = StoredCompany(
             uploadInfo.actualStoredCompany.companyId,
             uploadInfo.actualStoredCompany.companyInformation,
-            emptyList(),
+            listOf(expectedDataset),
         )
         assertTrue(
             getCompaniesOnlyByNameResponse.contains(expectedCompany),
@@ -107,7 +114,14 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its country code and sector`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
-        // TODO ist this test still fine if the company has by accident no sector set?
+        val expectedDataMetaInfo = apiAccessor.uploadSingleFrameworkDataSet(
+            companyId = uploadInfo.actualStoredCompany.companyId,
+            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+            reportingPeriod = "2023",
+            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+        )
+        val expectedStoredCompany = uploadInfo.actualStoredCompany
+            .copy(dataRegisteredByDataland = listOf(expectedDataMetaInfo))
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
             apiAccessor.frameworkData,
             sectors = if (uploadInfo.actualStoredCompany.companyInformation.sector != null) {
@@ -115,7 +129,7 @@ class CompanyDataControllerTest {
             countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
         )
         assertTrue(
-            getCompaniesByCountryCodeAndSectorResponse.contains(uploadInfo.actualStoredCompany),
+            getCompaniesByCountryCodeAndSectorResponse.contains(expectedStoredCompany),
             "The posted company could not be found in the query results when querying for its country code and sector.",
         )
     }
@@ -140,6 +154,14 @@ class CompanyDataControllerTest {
     fun `post some dummy companies and check if the number of companies increased accordingly`() {
         val allCompaniesListSizeBefore = apiAccessor.getNumberOfStoredCompanies()
         val listOfUploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(3)
+        listOfUploadInfo.forEach {
+            apiAccessor.uploadSingleFrameworkDataSet(
+                companyId = it.actualStoredCompany.companyId,
+                frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+                reportingPeriod = "2023",
+                frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+            )
+        }
         val allCompaniesListSizeAfter = apiAccessor.getNumberOfStoredCompanies()
         assertEquals(
             listOfUploadInfo.size,
