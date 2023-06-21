@@ -2,7 +2,6 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyResponse
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.ApiKeyAuthenticationHelper
@@ -15,6 +14,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientException as ApiKeyManagerClientException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
 class DataRetrievalViaApiKeyTest {
 
@@ -140,7 +141,7 @@ class DataRetrievalViaApiKeyTest {
         apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
         GlobalAuth.setBearerToken(apiKey.apiKey)
         val exception =
-            assertThrows<ClientException> {
+            assertThrows<BackendClientException> {
                 apiAccessor.companyDataControllerApi.getCompanyById(companyId).companyId
             }
         assertEquals(
@@ -150,12 +151,26 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `generate an API key which is valid for a certain amount of days and then validate it`() {
-        val daysValid = 2
+        val daysValid = 360
         val technicalUser = TechnicalUser.Reader
         val apiKeyToValidate = apiKeyHelper
             .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValid).apiKey
         val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyToValidate)
         doAssertionsAfterApiKeyValidation(technicalUser, daysValid, apiKeyMetaInfo)
+    }
+
+    @Test
+    fun `generate an API key with an invalid value for days validity and assert that exception is thrown`() {
+        val daysValidTooSmall = 0
+        val technicalUser = TechnicalUser.Reader
+        val exception =
+            assertThrows<ApiKeyManagerClientException> {
+                apiKeyHelper.obtainApikeyForTechnicalUser(technicalUser, daysValidTooSmall)
+            }
+        assertEquals(
+            "Client error : 400 ",
+            exception.message,
+        )
     }
 
     @Test

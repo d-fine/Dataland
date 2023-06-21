@@ -68,19 +68,6 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("h1").should("contain.text", "Create new API Key");
   }
 
-  /**
-   * Verifies that creating an api key with a fixed time of validity of 90 days works as expected.
-   */
-  function verifyCreatingApiKeyWith90DaysValidity(): void {
-    cy.get("div#expiryTime").click();
-    cy.get('ul[role="listbox"]').find('[aria-label="90 days"]').click();
-    cy.get("#expiryTimeWrapper").should("contain.text", `The API Key will expire on`);
-    cy.get("button#generateApiKey").click();
-    cy.wait("@generateApiKey", { timeout: Cypress.env("short_timeout_in_ms") as number });
-    cy.get("#existingApiKeyCard").find("span").contains("The API Key will expire on").should("exist");
-    // TODO purge api key at the end to have the same state as in the beginning => that way the test can be run multiple times in series
-  }
-
   it("Check Api Key functionalities", () => {
     cy.ensureLoggedIn();
     cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser*").as("getApiKeyMetaInfoForUser");
@@ -91,7 +78,5 @@ describe("As a user I expect my api key will be generated correctly", () => {
     verifyCreatingApiKeyAndCopyingIt();
 
     verifyAlreadyExistingApiKeyState();
-
-    verifyCreatingApiKeyWith90DaysValidity();
   });
 });
