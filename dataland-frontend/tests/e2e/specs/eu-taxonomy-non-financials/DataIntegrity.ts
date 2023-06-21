@@ -73,7 +73,7 @@ describeIf(
     it("Create a EU Taxonomy Dataset via Api with total(€) and eligible(%) numbers", () => {
       const preparedFixture = getPreparedFixture("only-eligible-and-total-numbers", preparedFixtures);
       uploadCompanyAndEuTaxonomyDataForNonFinancialsViaApiAndRunVerifier(preparedFixture, () => {
-        cy.get("body").should("contain", `Out of total of`);
+        cy.get("body").should("contain", `Out of a total of`);
         cy.get("body")
           .should("contain", "Eligible Revenue")
           .should(
@@ -93,7 +93,7 @@ describeIf(
             "contain",
             `${roundNumberToTwoDecimalPlaces(100 * preparedFixture.t.revenue!.eligiblePercentage!.value!)}%`
           );
-        cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `Out of total of`);
+        cy.get("body").should("contain", "Eligible Revenue").should("not.contain", `Out of a total of`);
         cy.get(".font-medium.text-3xl").should("not.contain", "€");
       });
     });
