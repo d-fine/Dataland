@@ -81,7 +81,7 @@ export default defineComponent({
      * @param event.value the stored company object
      */
     pushToChooseFrameworkForDataUploadPageForItem(event: AutoCompleteItemSelectEvent) {
-      void this.$router.push(
+      this.$router.push(
         `/companies/${assertDefined(assertDefined(event.value as CompanyIdAndName).companyId)}/frameworks/upload`
       );
     },
