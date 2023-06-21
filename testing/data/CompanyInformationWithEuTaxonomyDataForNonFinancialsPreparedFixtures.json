@@ -2,87 +2,194 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Schildhauerdorf",
-			"headquartersPostalCode": "20342",
-			"sector": "paradigms",
+			"headquarters": "Jena",
+			"headquartersPostalCode": "22212",
+			"sector": "portals",
 			"identifiers": [
 				{
-					"identifierType": "Isin",
-					"identifierValue": "yTAYvEzlpp3Q"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "wJYcMIfmUunKRAw"
 				},
 				{
-					"identifierType": "PermId",
-					"identifierValue": "thYx51pK9h"
+					"identifierType": "Lei",
+					"identifierValue": "UQDySe7QqoddI7vS2t3p"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "wiWgenT"
+					"identifierValue": "aFCqqIc"
 				}
 			],
-			"countryCode": "US",
+			"countryCode": "FK",
 			"companyAlternativeNames": [
-				"Fink-König",
-				"Mehlorn, Jander und Alexander"
+				"Alizadeh-Kupprion",
+				"Bethke, Rau und Kupprion",
+				"Harting-Aryee",
+				"Schultze AG"
 			],
-			"companyLegalForm": "GmbH",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://herrlich-palast.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-12-11",
-			"numberOfEmployees": 22383,
 			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-06-29",
-					"currency": "MKD"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-07-03",
-					"currency": "NOK"
-				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-04-08",
-					"currency": "ETB"
+					"reportDate": "2023-01-26",
+					"currency": "BOB"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"provider": "Kral-Best",
+				"dataSource": {
+					"page": 747,
+					"report": "IntegratedReport",
+					"tagName": "deliverables"
+				}
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.2983,
-					"quality": "Incomplete"
+					"value": 0.1279,
+					"dataSource": {
+						"page": 1138,
+						"report": "IntegratedReport",
+						"tagName": "ROI"
+					},
+					"quality": "Audited",
+					"comment": "calculate cross-platform sensor"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.8508,
+					"value": 0.9872,
 					"dataSource": {
-						"page": 264,
-						"report": "AnnualReport",
-						"tagName": "methodologies"
+						"page": 1050,
+						"report": "IntegratedReport",
+						"tagName": "initiatives"
 					},
-					"quality": "Incomplete",
-					"comment": "program bluetooth pixel"
+					"quality": "Reported",
+					"comment": "parse virtual circuit"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.3938,
+					"value": 0.2932,
 					"dataSource": {
-						"page": 663,
-						"report": "AnnualReport",
-						"tagName": "ROI"
+						"page": 166,
+						"report": "IntegratedReport",
+						"tagName": "e-business"
 					},
-					"quality": "Incomplete",
-					"comment": "bypass back-end bandwidth"
+					"quality": "Reported",
+					"comment": "transmit back-end alarm"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Kurnickidorf",
+			"sector": "mindshare",
+			"identifiers": [
+				{
+					"identifierType": "Lei",
+					"identifierValue": "rdoMsfzR6v1V2CyIzaQX"
+				}
+			],
+			"countryCode": "SO",
+			"companyAlternativeNames": [
+				"Hingsen OHG",
+				"Katzinski-Fincke",
+				"Minah GmbH",
+				"Wünsche, Gerschler und Schieskow"
+			],
+			"companyLegalForm": "AG",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2022-09-04",
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "USD"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-01-27",
+					"currency": "XPF"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "LYD"
+				}
+			},
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 243,
+					"report": "SustainabilityReport",
+					"tagName": "models"
+				}
+			},
+			"scopeOfEntities": "No",
+			"activityLevelReporting": "No",
+			"opex": {
+				"totalAmount": {
+					"value": 258858.28012833372,
+					"quality": "Estimated"
+				},
+				"eligiblePercentage": {
+					"value": 0.5232,
+					"dataSource": {
+						"page": 382,
+						"report": "ESEFReport",
+						"tagName": "applications"
+					},
+					"quality": "Reported",
+					"comment": "back up cross-platform matrix"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 512891.78687147796,
+					"dataSource": {
+						"page": 470,
+						"report": "IntegratedReport",
+						"tagName": "mindshare"
+					},
+					"quality": "Reported",
+					"comment": "calculate open-source system"
+				},
+				"eligiblePercentage": {
+					"value": 0.956,
+					"dataSource": {
+						"page": 483,
+						"report": "SustainabilityReport",
+						"tagName": "portals"
+					},
+					"quality": "Reported",
+					"comment": "reboot optical application"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 433239.7287362255,
+					"dataSource": {
+						"page": 341,
+						"report": "IntegratedReport",
+						"tagName": "bandwidth"
+					},
+					"quality": "Audited",
+					"comment": "transmit multi-byte array"
+				},
+				"eligiblePercentage": {
+					"value": 0.7338,
+					"quality": "Estimated"
 				}
 			}
 		},
@@ -90,207 +197,106 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Haferkampstadt",
-			"sector": "deliverables",
+			"companyName": "company_without_reports",
+			"headquarters": "Neu Timon",
+			"sector": "portals",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "Odxqt9nVPKn6FDp"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "YJT04zRIBZyY"
+					"identifierValue": "OfJUdRB3yQqSR3d"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "mqEgzcRqeZ"
+					"identifierValue": "CQGvSFymZ4"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "taWXcZT"
+					"identifierValue": "HOWqPtU"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "cW8z3iwBY"
 				}
 			],
-			"countryCode": "CC",
+			"countryCode": "NO",
 			"companyAlternativeNames": [
-				"Bruckmann, Roba und Schwidde",
-				"Huke-Tidow",
-				"Moormann, Mörsch und Esser",
-				"Schelk-Pohle"
+				"Meier, Götzelmann und Koehl",
+				"Saumweber GmbH & Co. KG",
+				"Schultze Gruppe",
+				"Stephan-Dück"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://zeitlos-kase.com",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 63749,
-			"referencedReports": {
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"currency": "KES"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2022-10-13",
-					"currency": "TMT"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "AED"
-				}
-			},
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-09-09",
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Radtke-Jürgens"
+				"assurance": "LimitedAssurance"
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
+			"scopeOfEntities": "No",
 			"activityLevelReporting": "Yes",
 			"opex": {
-				"totalAmount": {
-					"value": 254493.99091303349,
+				"alignedPercentage": {
 					"dataSource": {
-						"page": 595,
+						"page": 655,
 						"report": "SustainabilityReport",
-						"tagName": "models"
+						"tagName": "users"
 					},
-					"quality": "Reported",
-					"comment": "hack online circuit"
+					"quality": "Incomplete",
+					"comment": "compress solid state bus"
 				},
 				"eligiblePercentage": {
-					"value": 0.2602,
 					"dataSource": {
-						"page": 133,
+						"page": 721,
 						"report": "ESEFReport",
 						"tagName": "deliverables"
 					},
 					"quality": "Reported",
-					"comment": "connect mobile application"
+					"comment": "generate optical card"
 				}
 			},
 			"capex": {
-				"totalAmount": {
-					"value": 127905.52568621933,
+				"alignedPercentage": {
+					"value": 0.3514,
 					"dataSource": {
-						"page": 192,
-						"report": "ESEFReport",
-						"tagName": "channels"
-					},
-					"quality": "Incomplete",
-					"comment": "bypass open-source system"
-				},
-				"eligiblePercentage": {
-					"value": 0.4117,
-					"dataSource": {
-						"page": 850,
-						"report": "ESEFReport",
-						"tagName": "infrastructures"
-					},
-					"quality": "Audited",
-					"comment": "transmit optical interface"
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 586623.0738931336,
-					"dataSource": {
-						"page": 727,
-						"report": "AnnualReport",
-						"tagName": "experiences"
+						"page": 1025,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
 					},
 					"quality": "Estimated",
-					"comment": "compress auxiliary program"
+					"comment": "index open-source program"
 				},
 				"eligiblePercentage": {
-					"value": 0.0526,
-					"dataSource": {
-						"page": 635,
-						"report": "SustainabilityReport",
-						"tagName": "supply-chains"
-					},
-					"quality": "Reported",
-					"comment": "synthesize digital panel"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Hessburg",
-			"sector": "networks",
-			"identifiers": [
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "5wU9HCkLx"
-				}
-			],
-			"countryCode": "MG",
-			"companyAlternativeNames": [
-				"Höft OHG"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://effektiv-flughafen.info",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"numberOfEmployees": 61559,
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Kohnle OHG",
-				"dataSource": {
-					"page": 980,
-					"report": "SustainabilityReport",
-					"tagName": "channels"
-				}
-			},
-			"reportingObligation": "No",
-			"opex": {
-				"totalAmount": {
-					"quality": "Estimated"
-				},
-				"alignedPercentage": {
-					"value": 0.4343,
-					"dataSource": {
-						"page": 705,
-						"report": "ESEFReport",
-						"tagName": "niches"
-					},
-					"quality": "Incomplete",
-					"comment": "quantify wireless driver"
-				}
-			},
-			"capex": {
-				"alignedAmount": {
-					"dataSource": {
-						"page": 460,
-						"report": "ESEFReport",
-						"tagName": "functionalities"
-					},
-					"quality": "Reported",
-					"comment": "navigate solid state bus"
+					"quality": "Incomplete"
 				}
 			},
 			"revenue": {
-				"alignedAmount": {
-					"value": 510550.7533880882,
+				"totalAmount": {
+					"value": 775603.4769816324,
 					"dataSource": {
-						"page": 846,
-						"report": "AnnualReport",
-						"tagName": "technologies"
+						"page": 841,
+						"report": "SustainabilityReport",
+						"tagName": "communities"
 					},
-					"quality": "Audited",
-					"comment": "transmit wireless circuit"
+					"quality": "Reported",
+					"comment": "back up digital bandwidth"
 				},
 				"alignedPercentage": {
-					"quality": "Incomplete"
+					"value": 0.5794,
+					"dataSource": {
+						"page": 289,
+						"report": "IntegratedReport",
+						"tagName": "metrics"
+					},
+					"quality": "Reported",
+					"comment": "compress auxiliary firewall"
+				},
+				"eligibleAmount": {
+					"value": 635465.76439403,
+					"quality": "Estimated"
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2021"
 	}
 ]
