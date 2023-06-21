@@ -299,11 +299,12 @@ export default defineComponent({
       identifierType: CompanyIdentifierIdentifierTypeEnum
     ): Promise<boolean> {
       try {
-        await (await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi())
-          .existsIdentifier(identifierType, node.value as string);
+        await (
+          await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
+        ).existsIdentifier(identifierType, node.value as string);
         return false;
       } catch (error: AxiosError) {
-        if (error.response.status == 404) {
+        if ((error as AxiosError).response.status == 404) {
           return true;
         }
         throw error;
