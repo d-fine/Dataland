@@ -355,7 +355,8 @@ class CompanyDataControllerTest {
                 "for value $identifier.",
         )
     }
- //TODO this test is broken, searchRespnses are empty
+
+    // TODO this test is broken, searchRespnses are empty
     @Test
     fun `search for all identifier values and check if all results contain the looked for value`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -447,14 +448,14 @@ class CompanyDataControllerTest {
             searchResponseForIdentifier.contains(expectedCompany),
             "The search results do not contain the expected company.",
         )
-
     }
+
     @Test
     fun `search for name and check the ordering of results`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val companyList = createCompaniesForTestingOrdering(testString)
-        for (company in companyList){
+        for (company in companyList) {
             val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(company)
             apiAccessor.uploadSingleFrameworkDataSet(
                 companyId = uploadedCompany.companyId,
@@ -482,42 +483,44 @@ class CompanyDataControllerTest {
         assertFalse(otherCompanyNames.contains("Company 7"))
     }
 
-    private fun createCompaniesForTestingOrdering(testString: String) = listOf(
-        CompanyInformation(
-            company9, "",
-            listOf(
-                CompanyIdentifier(
-                    CompanyIdentifier.IdentifierType.isin,
-                    "3$testString",
+    private fun createCompaniesForTestingOrdering(inputString: String): List<CompanyInformation> {
+        return listOf(
+            CompanyInformation(
+                company9, "",
+                listOf(
+                    CompanyIdentifier(
+                        CompanyIdentifier.IdentifierType.isin,
+                        "3$inputString",
+                    ),
                 ),
+                "", listOf(),
             ),
-            "", listOf(),
-        ),
-        CompanyInformation(company8, "", listOf(), "", listOf("3$testString", "other_name")),
-        CompanyInformation("3$testString", "", listOf(), "", listOf()),
-        CompanyInformation(
-            company6, "",
-            listOf(
-                CompanyIdentifier(
-                    CompanyIdentifier.IdentifierType.isin,
-                    "${testString}2",
+            CompanyInformation(company8, "", listOf(), "", listOf("3$inputString", "other_name")),
+            CompanyInformation("3$inputString", "", listOf(), "", listOf()),
+            CompanyInformation(
+                company6, "",
+                listOf(
+                    CompanyIdentifier(
+                        CompanyIdentifier.IdentifierType.isin,
+                        "${inputString}2",
+                    ),
                 ),
+                "", listOf(),
             ),
-            "", listOf(),
-        ),
-        CompanyInformation(company5, "", listOf(), "", listOf("${testString}2")),
-        CompanyInformation("${testString}2", "", listOf(), "", listOf()),
-        CompanyInformation(
-            company3, "",
-            listOf(
-                CompanyIdentifier(
-                    CompanyIdentifier.IdentifierType.isin,
-                    testString,
+            CompanyInformation(company5, "", listOf(), "", listOf("${inputString}2")),
+            CompanyInformation("${inputString}2", "", listOf(), "", listOf()),
+            CompanyInformation(
+                company3, "",
+                listOf(
+                    CompanyIdentifier(
+                        CompanyIdentifier.IdentifierType.isin,
+                        inputString,
+                    ),
                 ),
+                "", listOf(),
             ),
-            "", listOf(),
-        ),
-        CompanyInformation(company2, "", listOf(), "", listOf(testString)),
-        CompanyInformation(testString, "", listOf(), "", listOf()),
-    )
+            CompanyInformation(company2, "", listOf(), "", listOf(inputString)),
+            CompanyInformation(inputString, "", listOf(), "", listOf()),
+        )
+    }
 }
