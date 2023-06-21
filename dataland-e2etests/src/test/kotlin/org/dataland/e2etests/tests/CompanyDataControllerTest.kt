@@ -453,46 +453,7 @@ class CompanyDataControllerTest {
     fun `search for name and check the ordering of results`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        fun companyInformations() = listOf(
-            CompanyInformation(
-                company9, "",
-                listOf(
-                    CompanyIdentifier(
-                        CompanyIdentifier.IdentifierType.isin,
-                        "3$testString",
-                    ),
-                ),
-                "", listOf(),
-            ),
-            CompanyInformation(company8, "", listOf(), "", listOf("3$testString", "other_name")),
-            CompanyInformation("3$testString", "", listOf(), "", listOf()),
-            CompanyInformation(
-                company6, "",
-                listOf(
-                    CompanyIdentifier(
-                        CompanyIdentifier.IdentifierType.isin,
-                        "${testString}2",
-                    ),
-                ),
-                "", listOf(),
-            ),
-            CompanyInformation(company5, "", listOf(), "", listOf("${testString}2")),
-            CompanyInformation("${testString}2", "", listOf(), "", listOf()),
-            CompanyInformation(
-                company3, "",
-                listOf(
-                    CompanyIdentifier(
-                        CompanyIdentifier.IdentifierType.isin,
-                        testString,
-                    ),
-                ),
-                "", listOf(),
-            ),
-            CompanyInformation(company2, "", listOf(), "", listOf(testString)),
-            CompanyInformation(testString, "", listOf(), "", listOf()),
-        )
-
-        val companyList = companyInformations1(testString)
+        val companyList = createCompaniesForTestingOrdering(testString)
         for (company in companyList){
             val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(company)
             apiAccessor.uploadSingleFrameworkDataSet(
@@ -521,7 +482,7 @@ class CompanyDataControllerTest {
         assertFalse(otherCompanyNames.contains("Company 7"))
     }
 
-    private fun companyInformations1(testString: String) = listOf(
+    private fun createCompaniesForTestingOrdering(testString: String) = listOf(
         CompanyInformation(
             company9, "",
             listOf(
