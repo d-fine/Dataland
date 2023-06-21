@@ -339,6 +339,7 @@ class CompanyDataControllerTest {
 
         )
             .toMutableList()
+        println(searchResponse)
         // The response list is filtered to exclude results that match in account of another identifier having
         // the required value but the looked for identifier type does not exist (This happens due to the test
         // data having non-unique identifier values for different identifier types)
@@ -355,6 +356,7 @@ class CompanyDataControllerTest {
         )
     }
 
+    // TODO this test is broken, searchRespnses are empty
     @Test
     fun `search for all identifier values and check if all results contain the looked for value`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -446,29 +448,79 @@ class CompanyDataControllerTest {
             searchResponseForIdentifier.contains(expectedCompany),
             "The search results do not contain the expected company.",
         )
-
     }
-/*
-        @Test
-        fun `search for name substring to check the ordering of results`() {
-            val searchString = testCompanyList.first().companyName.take(1)
-            val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-                searchString = searchString,
-            )
-            val responsesStartingWith =
-                searchResponse.takeWhile { it.companyName.startsWith(searchString) }
-            val otherResponses = searchResponse.dropWhile { it.companyName.startsWith(searchString) }
-            assertTrue(
-                otherResponses.none { it.companyName.startsWith(searchString) },
-                "Expected to have matches ordered by starting with search string followed by all other results." +
-                        "However, at least one of the matches in the other results starts with the search string " +
-                        "($searchString).",
-            )
-            assertTrue(
-                responsesStartingWith.isNotEmpty(),
-                "No matches starting with the search string " +
-                        "$searchString were returned. At least one was expected.",
-            )
+
+    @Test
+    fun `search for name and check the ordering of results`() {
+        val testString = "unique-test-string-${UUID.randomUUID()}"
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val companyList = createCompaniesForTestingOrdering(testString)
+        for (company in companyList) {
+            val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(company)
+            apiAccessor.uploadSingleFrameworkDataSet(
+                companyId = uploadedCompany.companyId,
+                frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+                reportingPeriod = "2023",
+                frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+            ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
         }
-*/
+        val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+            searchString = testString,
+        ).map { it.companyName }
+        assertEquals(
+            listOf(testString, company2, "${testString}2", company5, company6, "3$testString", company9),
+            sortedCompanyNames.filter { it != company8 && it != company3 },
+        )
+        assertEquals(
+            listOf(company3, company2, "${testString}2", company5, company6, company8, company9),
+            sortedCompanyNames.filter { it != "3$testString" && it != testString },
+        )
+
+        val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+            searchString = "other_name",
+        ).map { it.companyName }
+        assertTrue(otherCompanyNames.contains(company8))
+        assertFalse(otherCompanyNames.contains("Company 7"))
+    }
+
+    private fun createCompaniesForTestingOrdering(inputString: String): List<CompanyInformation> {
+        return listOf(
+            CompanyInformation(
+                company9, "",
+                listOf(
+                    CompanyIdentifier(
+                        CompanyIdentifier.IdentifierType.isin,
+                        "3$inputString",
+                    ),
+                ),
+                "", listOf(),
+            ),
+            CompanyInformation(company8, "", listOf(), "", listOf("3$inputString", "other_name")),
+            CompanyInformation("3$inputString", "", listOf(), "", listOf()),
+            CompanyInformation(
+                company6, "",
+                listOf(
+                    CompanyIdentifier(
+                        CompanyIdentifier.IdentifierType.isin,
+                        "${inputString}2",
+                    ),
+                ),
+                "", listOf(),
+            ),
+            CompanyInformation(company5, "", listOf(), "", listOf("${inputString}2")),
+            CompanyInformation("${inputString}2", "", listOf(), "", listOf()),
+            CompanyInformation(
+                company3, "",
+                listOf(
+                    CompanyIdentifier(
+                        CompanyIdentifier.IdentifierType.isin,
+                        inputString,
+                    ),
+                ),
+                "", listOf(),
+            ),
+            CompanyInformation(company2, "", listOf(), "", listOf(inputString)),
+            CompanyInformation(inputString, "", listOf(), "", listOf()),
+        )
+    }
 }
