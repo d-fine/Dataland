@@ -6,7 +6,7 @@
         <div class="col-6 text-left">
           <strong>{{ title }}</strong>
         </div>
-        <div v-if="percent !== undefined" class="col-6 text-right text-primary">
+        <div v-if="percent !== undefined && percent !== null" class="col-6 text-right text-primary">
           <span class="font-medium text-3xl" data-test="value">{{ percentCalculation }}</span>
           <span>%</span>
         </div>
@@ -14,11 +14,11 @@
           <span class="pl-4 font-semibold">No data has been reported </span>
         </div>
       </div>
-      <template v-if="percent !== undefined">
+      <template v-if="percent !== undefined && percent !== null">
         <PrimeProgressBar :value="percentCalculation" :showValue="false" class="bg-black-alpha-20 d-progressbar" />
         <div class="grid mt-4">
-          <div class="col-12 text-left p-0 pl-2" v-if="total !== undefined">
-            <template v-if="amount !== undefined">
+          <div class="col-12 text-left p-0 pl-2" v-if="total !== undefined && total !== null">
+            <template v-if="amount !== undefined && amount !== null">
               <span class="font-medium text-3xl">€ </span>
               <span class="font-bold text-4xl">{{ amount }}</span>
             </template>
