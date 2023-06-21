@@ -21,8 +21,8 @@ describe("Component test for ApiKeyCard.vue", () => {
   });
 
   it(
-    "If api key does not exist yet, you can open a creation popup, set an expiration date in the dropdown, or " +
-      "close the whole popup again",
+    "If api key does not exist yet, you can begin to create one, set an expiration date in the dropdown, " +
+      "or close the creation again",
     () => {
       cy.intercept("GET", "**/api-keys/getApiKeyMetaInfoForUser", { fixture: "ApiKeyInfoMockWithNOKey.json" });
       cy.stub(TheHeader);
