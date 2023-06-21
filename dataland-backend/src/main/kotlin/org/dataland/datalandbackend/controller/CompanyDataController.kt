@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class CompanyDataController(
-        @Autowired var companyManager: CompanyManager,
-        @Autowired var companyIdentifierRepository: CompanyIdentifierRepository,
+    @Autowired var companyManager: CompanyManager,
+    @Autowired var companyIdentifierRepository: CompanyIdentifierRepository,
 ) : CompanyApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -83,9 +83,9 @@ class CompanyDataController(
             companyIdentifierRepository.getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
         } catch (e: JpaObjectRetrievalFailureException) {
             throw ResourceNotFoundApiException(
-                    "Company identifier does not exist",
-                    "Company identifier $identifier of type $identifierType does not exist",
-                    e,
+                "Company identifier does not exist",
+                "Company identifier $identifier of type $identifierType does not exist",
+                e,
             )
         }
     }
