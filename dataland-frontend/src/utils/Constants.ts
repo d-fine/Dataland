@@ -30,7 +30,7 @@ If this value is changed, it needs to be changed in the application.properties o
 too. That way it is guaranteed, that the selectable validity in the Dataland-frontend and in the backend of the
 Api-Key-Manager are always in sync.
 */
-export const MAX_NUMBER_OF_DAYS_VALIDITY_SELECTABLE_FOR_API_KEYS = 10 * 365;
+export const MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY = 10 * 365;
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
