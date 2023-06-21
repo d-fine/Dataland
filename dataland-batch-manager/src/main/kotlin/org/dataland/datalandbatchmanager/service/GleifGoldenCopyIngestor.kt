@@ -24,7 +24,7 @@ import kotlin.time.toDuration
  * @param keycloakTokenManager manages the access tokens for authenticating against the backend API
  */
 @Component
-class GleifGoldenCompyIngestor(
+class GleifGoldenCopyIngestor(
     @Autowired private val gleifApiAccessor: GleifApiAccessor,
     @Autowired private val gleifParser: GleifCsvParser,
     @Autowired private val companyUploader: CompanyUpload,
