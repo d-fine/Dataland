@@ -300,7 +300,11 @@ class CompanyDataControllerTest {
             companyName = name,
             companyAlternativeNames = alternativeNames,
             identifiers = listOf(
-                createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, identifier ?: UUID.randomUUID().toString(),)
+                createCompanyIdentifier(
+                    CompanyIdentifier.IdentifierType.isin,
+                    identifier
+                        ?: UUID.randomUUID().toString(),
+                ),
             ),
         )
         apiAccessor.companyDataControllerApi.postCompany(companyInformation)
@@ -338,8 +342,9 @@ class CompanyDataControllerTest {
         val testCompanyList = listOf(
             CompanyInformation(
                 company1, "",
-                listOf(createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, "Isin" + UUID.randomUUID().toString(),),
-                    createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, "Lei" + UUID.randomUUID().toString(),)
+                listOf(
+                    createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, "Isin$testString"),
+                    createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, "Lei$testString"),
                 ),
                 "",
                 listOf(company1 + testString),
@@ -358,7 +363,7 @@ class CompanyDataControllerTest {
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val companyIdentifier = listOf(
-            createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, UUID.randomUUID().toString(),)
+            createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, UUID.randomUUID().toString()),
         )
         val companyInformation = CompanyInformation(
             "retrieve empty search string", "", companyIdentifier, "",
@@ -385,10 +390,7 @@ class CompanyDataControllerTest {
         val testIdentifier = UUID.randomUUID().toString()
         val testName = "SubstringSearch"
         val companyIdentifier = listOf(
-            CompanyIdentifier(
-                CompanyIdentifier.IdentifierType.lei,
-                testIdentifier,
-            ),
+            createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, testIdentifier),
         )
         val companyInformation = CompanyInformation(
             testName, "", companyIdentifier, "", listOf(),
@@ -447,7 +449,8 @@ class CompanyDataControllerTest {
         return listOf(
             CompanyInformation(
                 company9, "",
-                listOf(createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, "3$inputString",)
+                listOf(
+                    createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, "3$inputString"),
                 ),
                 "", listOf(),
             ),
@@ -457,7 +460,8 @@ class CompanyDataControllerTest {
             CompanyInformation("${inputString}2", "", listOf(), "", listOf()),
             CompanyInformation(
                 company3, "",
-                listOf(createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, inputString,)
+                listOf(
+                    createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, inputString),
                 ),
                 "", listOf(),
             ),
@@ -473,10 +477,10 @@ class CompanyDataControllerTest {
             frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
         ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
     }
-    private fun createCompanyIdentifier (type: CompanyIdentifier.IdentifierType, value: String): CompanyIdentifier {
-           return CompanyIdentifier(
-               type,
-                value,
-            )
+    private fun createCompanyIdentifier(type: CompanyIdentifier.IdentifierType, value: String): CompanyIdentifier {
+        return CompanyIdentifier(
+            type,
+            value,
+        )
     }
 }
