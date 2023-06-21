@@ -31,7 +31,7 @@ class GleifGoldenCopyIngestorTest {
     }
 
     @Test
-    fun test() {
+    fun `test failing ingestion`() {
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUpload, mockActuatorApi,
             false, null,
@@ -40,7 +40,7 @@ class GleifGoldenCopyIngestorTest {
     }
 
     @Test
-    fun otherTest() {
+    fun `test successful ingestion`() {
         val flagFile = File.createTempFile("test", ".csv", File("./"))
         `when`(
             mockGleifCsvParser.readGleifDataFromBufferedReader(
