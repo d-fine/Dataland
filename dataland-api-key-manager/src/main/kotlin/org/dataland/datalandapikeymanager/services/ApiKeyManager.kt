@@ -58,8 +58,9 @@ class ApiKeyManager(
             }
             if (daysValid > maxDaysSelectableForApiKeyValidity) {
                 throw InvalidInputApiException(
-                    "If set, the value of daysValid cannot be greater than 3650.",
-                    "If set, the value of daysValid cannot be greater than 3650 but it was $daysValid",
+                    "If set, the value of daysValid cannot be greater than $maxDaysSelectableForApiKeyValidity.",
+                    "If set, the value of daysValid cannot be greater than $maxDaysSelectableForApiKeyValidity " +
+                        "but it was $daysValid",
                 )
             }
         }
