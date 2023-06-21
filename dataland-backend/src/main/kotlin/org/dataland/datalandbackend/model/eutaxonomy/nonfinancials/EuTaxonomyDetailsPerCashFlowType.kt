@@ -10,7 +10,11 @@ import java.math.BigDecimal
 data class EuTaxonomyDetailsPerCashFlowType(
     val totalAmount: DataPoint<BigDecimal>? = null,
 
+    val alignedAmount: DataPoint<BigDecimal>? = null,
+
     val alignedPercentage: DataPoint<BigDecimal>? = null,
+
+    val eligibleAmount: DataPoint<BigDecimal>? = null,
 
     val eligiblePercentage: DataPoint<BigDecimal>? = null,
 )

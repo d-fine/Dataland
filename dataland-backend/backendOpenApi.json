@@ -3666,7 +3666,13 @@
           "totalAmount": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
           },
+          "alignedAmount": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
           "alignedPercentage": {
+            "$ref": "#/components/schemas/DataPointBigDecimal"
+          },
+          "eligibleAmount": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
           },
           "eligiblePercentage": {

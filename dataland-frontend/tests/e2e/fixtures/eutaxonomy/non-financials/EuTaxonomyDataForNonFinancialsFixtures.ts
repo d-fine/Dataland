@@ -7,7 +7,7 @@ import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
-import { generateDatapointOrNotReportedAtRandom, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateDatapoint, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
 import {
   generateEuTaxonomyWithBaseFields,
   getCsvSharedEuTaxonomyValuesMapping,
@@ -15,6 +15,7 @@ import {
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { parse } from "json2csv";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates fake data for a single cash-flow type for the eutaxonomy-non-financials framework
@@ -22,14 +23,12 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
  * @returns the generated data
  */
 export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
-  const total = randomEuroValue();
-  const eligiblePercentage = randomPercentageValue();
-  const alignedPercentage = randomPercentageValue();
-
   return {
-    totalAmount: generateDatapointOrNotReportedAtRandom(total, reports),
-    alignedPercentage: generateDatapointOrNotReportedAtRandom(alignedPercentage, reports),
-    eligiblePercentage: generateDatapointOrNotReportedAtRandom(eligiblePercentage, reports),
+    totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
+    alignedAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
+    alignedPercentage: valueOrUndefined(generateDatapoint(valueOrUndefined(randomPercentageValue()), reports)),
+    eligibleAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
+    eligiblePercentage: valueOrUndefined(generateDatapoint(valueOrUndefined(randomPercentageValue()), reports)),
   };
 }
 
