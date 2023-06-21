@@ -270,7 +270,7 @@ export const sfdrKpisInfoMappings = {
   grievanceHandlingMechanism:
     "Does the company have a grievance/complaints handling mechanism related to employee matters?",
   totalRevenue:
-    "Total Revenue in MM (Millions) for the financial year. i.e., Income arising in the course of an entity's ordinary activities., the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time",
+    "Total Revenue for the financial year. I.e., Income arising in the course of an entity's ordinary activities., the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time",
 };
 
 export const sfdrSubAreasNameMappings = {
