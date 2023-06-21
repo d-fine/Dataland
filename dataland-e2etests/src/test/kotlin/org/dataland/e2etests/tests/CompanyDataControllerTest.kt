@@ -76,6 +76,8 @@ class CompanyDataControllerTest {
             uploadInfo.actualStoredCompany.companyInformation,
             listOf(expectedDataset),
         )
+        println(expectedCompany)
+        println(getCompaniesOnlyByNameResponse)
         assertTrue(
             getCompaniesOnlyByNameResponse.contains(expectedCompany),
             "Dataland does not contain the posted company.",
@@ -347,7 +349,6 @@ class CompanyDataControllerTest {
         return (companyInformation)
     }
 
-    // TODO Recreate the old unit tests for the old getcompanies endpoint here
     private fun testThatSearchForCompanyIdentifierWorks(identifier: CompanyIdentifier) {
         val searchResponse = apiAccessor.companyDataControllerApi.getCompanies(
             dataTypes = apiAccessor.frameworkData,
@@ -388,4 +389,106 @@ class CompanyDataControllerTest {
             }
         }
     }
+
+    // TODO Recreate the old unit tests for the old getcompanies endpoint here
+    @Test
+    fun `retrieve companies as a list and check for each company if it can be found as expected`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val companyIdentifier = listOf(
+            CompanyIdentifier(
+                CompanyIdentifier.IdentifierType.lei,
+                UUID.randomUUID().toString(),
+            ),
+        )
+        val companyInformation = CompanyInformation(
+            "retrieve empty search string", "", companyIdentifier, "",
+            listOf(),
+        )
+        val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
+        val uploadedData = apiAccessor.uploadSingleFrameworkDataSet(
+            companyId = uploadedCompany.companyId,
+            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+            reportingPeriod = "2023",
+            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+        val expectedCompany = StoredCompany(
+            uploadedCompany.companyId,
+            uploadedCompany.companyInformation,
+            listOf(uploadedData),
+        )
+
+        val retrievedCompanies = apiAccessor.getCompaniesOnlyByName("")
+        println(expectedCompany)
+        println(retrievedCompanies)
+        assertTrue(
+            retrievedCompanies.contains(expectedCompany),
+            "Not all the companyInformation of the posted companies could be found in the stored companies.",
+        )
+    }
+    /*
+    @Test
+    fun `search for identifier substring to verify substring matching in company search`() {
+        val searchString = testCompanyList.first().identifiers.first().identifierValue.drop(1).dropLast(1)
+        var occurencesOfSearchString = 0
+        for (companyInformation in testCompanyList) {
+            require(!(companyInformation.companyName.contains(searchString))) {
+                "The company name " +
+                        "${companyInformation.companyName} includes the searchString $searchString."
+            }
+            for (identifier in companyInformation.identifiers) {
+                if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
+            }
+        }
+        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            searchString,
+        )
+        assertEquals(
+            occurencesOfSearchString,
+            searchResponse.size,
+            "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}.",
+        )
+    }
+
+    @Test
+    fun `search for name substring to verify substring matching in company search`() {
+        val searchString = testCompanyList.first().companyName.drop(1).dropLast(1)
+        var occurencesOfSearchString = 0
+        for (companyInformation in testCompanyList) {
+            if (companyInformation.companyName.contains(searchString)) {
+                occurencesOfSearchString += 1
+            }
+        }
+        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            searchString = searchString,
+        )
+        assertEquals(
+            occurencesOfSearchString,
+            searchResponse.size,
+            "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}.",
+        )
+    }
+
+    @Test
+    fun `search for name substring to check the ordering of results`() {
+        val searchString = testCompanyList.first().companyName.take(1)
+        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+            searchString = searchString,
+        )
+        val responsesStartingWith =
+            searchResponse.takeWhile { it.companyName.startsWith(searchString) }
+        val otherResponses = searchResponse.dropWhile { it.companyName.startsWith(searchString) }
+        assertTrue(
+            otherResponses.none { it.companyName.startsWith(searchString) },
+            "Expected to have matches ordered by starting with search string followed by all other results." +
+                    "However, at least one of the matches in the other results starts with the search string " +
+                    "($searchString).",
+        )
+        assertTrue(
+            responsesStartingWith.isNotEmpty(),
+            "No matches starting with the search string " +
+                    "$searchString were returned. At least one was expected.",
+        )
+    }
+
+     */
 }
