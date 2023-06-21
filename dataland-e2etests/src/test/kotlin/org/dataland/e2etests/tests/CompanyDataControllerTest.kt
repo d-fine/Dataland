@@ -339,7 +339,6 @@ class CompanyDataControllerTest {
 
         )
             .toMutableList()
-        println(searchResponse)
         // The response list is filtered to exclude results that match in account of another identifier having
         // the required value but the looked for identifier type does not exist (This happens due to the test
         // data having non-unique identifier values for different identifier types)
@@ -356,25 +355,41 @@ class CompanyDataControllerTest {
         )
     }
 
-    // TODO this test is broken, searchRespnses are empty
     @Test
     fun `search for all identifier values and check if all results contain the looked for value`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val testString = "unique-test-string-${UUID.randomUUID()}"
+        val testString = UUID.randomUUID().toString()
         val testCompanyList = listOf(
-            uploadModifiedBaseCompany(company1, listOf(testString), null),
-            uploadModifiedBaseCompany(company1, listOf(testString), null),
-            uploadModifiedBaseCompany(company1, listOf(testString), null),
-            uploadModifiedBaseCompany(company1, listOf(testString), null),
+            CompanyInformation(
+                company1, "",
+                listOf(
+                    CompanyIdentifier(
+                        CompanyIdentifier.IdentifierType.isin,
+                        "Isin" + UUID.randomUUID().toString(),
+                    ),
+                    CompanyIdentifier(
+                        CompanyIdentifier.IdentifierType.lei,
+                        "Lei" + UUID.randomUUID().toString(),
+                    ),
+                ),
+                "",
+                listOf(company1 + testString),
+            ),
         )
         for (company in testCompanyList) {
+            val companyResponse = apiAccessor.companyDataControllerApi.postCompany(company)
+            apiAccessor.uploadSingleFrameworkDataSet(
+                companyId = companyResponse.companyId,
+                frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+                reportingPeriod = "2023",
+                frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+            ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
             for (identifier in company.identifiers) {
                 testThatSearchForCompanyIdentifierWorks(identifier)
             }
         }
     }
 
-    // TODO Recreate the old unit tests for the old getcompanies endpoint here
     @Test
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
