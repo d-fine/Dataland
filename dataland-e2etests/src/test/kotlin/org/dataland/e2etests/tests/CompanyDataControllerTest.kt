@@ -300,30 +300,12 @@ class CompanyDataControllerTest {
             searchString = testString,
         ).map { it.companyName }
         assertEquals(
-            listOf(
-                testString,
-                company3,
-                company2,
-                "${testString}2",
-                company5,
-                company6,
-                "3$testString",
-                company9,
-            ),
-            sortedCompanyNames.filter { it != company8 },
+            listOf(testString, company2, "${testString}2", company5, company6, "3$testString", company9),
+            sortedCompanyNames.filter { it != company8 && it != company3 },
         )
         assertEquals(
-            listOf(
-                testString,
-                company3,
-                company2,
-                "${testString}2",
-                company5,
-                company6,
-                company8,
-                company9,
-            ),
-            sortedCompanyNames.filter { it != "3$testString" },
+            listOf(company3, company2, "${testString}2", company5, company6, company8, company9),
+            sortedCompanyNames.filter { it != "3$testString" && it != testString },
         )
 
         val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
