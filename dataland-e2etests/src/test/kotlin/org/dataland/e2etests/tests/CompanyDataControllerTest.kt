@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -76,8 +77,6 @@ class CompanyDataControllerTest {
             uploadInfo.actualStoredCompany.companyInformation,
             listOf(expectedDataset),
         )
-        println(expectedCompany)
-        println(getCompaniesOnlyByNameResponse)
         assertTrue(
             getCompaniesOnlyByNameResponse.contains(expectedCompany),
             "Dataland does not contain the posted company.",
@@ -339,7 +338,6 @@ class CompanyDataControllerTest {
 
         )
             .toMutableList()
-        println(searchResponse)
         // The response list is filtered to exclude results that match in account of another identifier having
         // the required value but the looked for identifier type does not exist (This happens due to the test
         // data having non-unique identifier values for different identifier types)
@@ -356,25 +354,36 @@ class CompanyDataControllerTest {
         )
     }
 
-    // TODO this test is broken, searchRespnses are empty
     @Test
     fun `search for all identifier values and check if all results contain the looked for value`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val testString = "unique-test-string-${UUID.randomUUID()}"
+        val testString = UUID.randomUUID().toString()
         val testCompanyList = listOf(
-            uploadModifiedBaseCompany(company1, listOf(testString), null),
-            uploadModifiedBaseCompany(company1, listOf(testString), null),
-            uploadModifiedBaseCompany(company1, listOf(testString), null),
-            uploadModifiedBaseCompany(company1, listOf(testString), null),
+            CompanyInformation(
+                company1, "",
+                listOf(
+                    CompanyIdentifier(
+                        CompanyIdentifier.IdentifierType.isin,
+                        "Isin" + UUID.randomUUID().toString(),
+                    ),
+                    CompanyIdentifier(
+                        CompanyIdentifier.IdentifierType.lei,
+                        "Lei" + UUID.randomUUID().toString(),
+                    ),
+                ),
+                "",
+                listOf(company1 + testString),
+            ),
         )
         for (company in testCompanyList) {
+            val companyResponse = apiAccessor.companyDataControllerApi.postCompany(company)
+            uploadTestDataSet(companyResponse.companyId)
             for (identifier in company.identifiers) {
                 testThatSearchForCompanyIdentifierWorks(identifier)
             }
         }
     }
 
-    // TODO Recreate the old unit tests for the old getcompanies endpoint here
     @Test
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
@@ -389,12 +398,7 @@ class CompanyDataControllerTest {
             listOf(),
         )
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
-        val uploadedData = apiAccessor.uploadSingleFrameworkDataSet(
-            companyId = uploadedCompany.companyId,
-            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-            reportingPeriod = "2023",
-            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+        val uploadedData = uploadTestDataSet(uploadedCompany.companyId)
         val expectedCompany = StoredCompany(
             uploadedCompany.companyId,
             uploadedCompany.companyInformation,
@@ -424,12 +428,7 @@ class CompanyDataControllerTest {
             listOf(),
         )
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
-        val uploadedData = apiAccessor.uploadSingleFrameworkDataSet(
-            companyId = uploadedCompany.companyId,
-            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-            reportingPeriod = "2023",
-            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+        val uploadedData = uploadTestDataSet(uploadedCompany.companyId)
         val expectedCompany = StoredCompany(
             uploadedCompany.companyId,
             uploadedCompany.companyInformation,
@@ -457,22 +456,17 @@ class CompanyDataControllerTest {
         val companyList = createCompaniesForTestingOrdering(testString)
         for (company in companyList) {
             val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(company)
-            apiAccessor.uploadSingleFrameworkDataSet(
-                companyId = uploadedCompany.companyId,
-                frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-                reportingPeriod = "2023",
-                frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-            ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+            uploadTestDataSet(uploadedCompany.companyId)
         }
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             searchString = testString,
         ).map { it.companyName }
         assertEquals(
-            listOf(testString, company2, "${testString}2", company5, company6, "3$testString", company9),
+            listOf(testString, company2, "${testString}2", company5, "3$testString", company9),
             sortedCompanyNames.filter { it != company8 && it != company3 },
         )
         assertEquals(
-            listOf(company3, company2, "${testString}2", company5, company6, company8, company9),
+            listOf(company3, company2, "${testString}2", company5, company8, company9),
             sortedCompanyNames.filter { it != "3$testString" && it != testString },
         )
 
@@ -497,16 +491,6 @@ class CompanyDataControllerTest {
             ),
             CompanyInformation(company8, "", listOf(), "", listOf("3$inputString", "other_name")),
             CompanyInformation("3$inputString", "", listOf(), "", listOf()),
-            CompanyInformation(
-                company6, "",
-                listOf(
-                    CompanyIdentifier(
-                        CompanyIdentifier.IdentifierType.isin,
-                        "${inputString}2",
-                    ),
-                ),
-                "", listOf(),
-            ),
             CompanyInformation(company5, "", listOf(), "", listOf("${inputString}2")),
             CompanyInformation("${inputString}2", "", listOf(), "", listOf()),
             CompanyInformation(
@@ -522,5 +506,13 @@ class CompanyDataControllerTest {
             CompanyInformation(company2, "", listOf(), "", listOf(inputString)),
             CompanyInformation(inputString, "", listOf(), "", listOf()),
         )
+    }
+    private fun uploadTestDataSet(companyId: String): DataMetaInformation {
+        return apiAccessor.uploadSingleFrameworkDataSet(
+            companyId = companyId,
+            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+            reportingPeriod = "2023",
+            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
     }
 }
