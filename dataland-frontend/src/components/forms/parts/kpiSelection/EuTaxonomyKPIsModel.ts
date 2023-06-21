@@ -67,7 +67,9 @@ export const euTaxonomyKpiNameMappings = {
   reportingObligation: "NFRD Mandatory",
   totalAmount: "Total Amount",
   alignedPercentage: "Aligned Percentage",
+  alignedAmount: "Aligned Amount",
   eligiblePercentage: "Eligible Percentage",
+  eligibleAmount: "Eligible Amount",
 
   iSfS: "IS/FS",
   financialServicesTypes: "Financial Services Types",
@@ -140,7 +142,9 @@ export const euTaxonomyKpiInfoMappings = {
   reportingObligation: "The reporting obligation for companies whose number of employees is greater or equal to 500.",
   totalAmount: "Total Amount",
   alignedPercentage: "Aligned Percentage",
+  alignedAmount: "Aligned Amount",
   eligiblePercentage: "Eligible Percentage",
+  eligibleAmount: "Eligible Amount",
 
   isfs: "Distinguishes between non-financial companies (IS) and financial companies (FS). There are two possible values expected: 1- IS, 2- FS.",
   financialServicesTypes:
