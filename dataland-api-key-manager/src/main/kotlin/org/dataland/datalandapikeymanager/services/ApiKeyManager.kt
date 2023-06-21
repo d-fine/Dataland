@@ -27,7 +27,7 @@ class ApiKeyManager(
 ) {
 
     companion object {
-        private const val milliSecondsInADay = 86400000
+        private const val milliSecondsInADay = 24 * 60 * 60 * 1000
     }
 
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
