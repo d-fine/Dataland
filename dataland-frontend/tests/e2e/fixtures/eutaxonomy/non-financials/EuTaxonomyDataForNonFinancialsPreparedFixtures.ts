@@ -72,16 +72,19 @@ function createOnlyEligibleAndTotalNumbers(
     alignedPercentage: undefined,
     totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
     eligiblePercentage: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    eligibleAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
   };
   input.t.capex = {
     alignedPercentage: undefined,
     totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
     eligiblePercentage: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    eligibleAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
   };
   input.t.revenue = {
     alignedPercentage: undefined,
     totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
     eligiblePercentage: generateDatapoint(randomPercentageValue(), input.t.referencedReports!),
+    eligibleAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
   };
   return input;
 }

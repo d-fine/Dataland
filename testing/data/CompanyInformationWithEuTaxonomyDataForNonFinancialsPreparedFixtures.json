@@ -2,88 +2,230 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Jena",
-			"headquartersPostalCode": "22212",
-			"sector": "portals",
+			"headquarters": "Esenweinstadt",
+			"headquartersPostalCode": "54675",
+			"sector": "ROI",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "wJYcMIfmUunKRAw"
+					"identifierValue": "w2rFE3UkZW6oZXU"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "cZLVBUXHNO8E"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "UQDySe7QqoddI7vS2t3p"
+					"identifierValue": "ZZR1cNvF2JOS7N7PEuj5"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "iRciIcgkLa"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "aFCqqIc"
+					"identifierValue": "Mtet6u6"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "CPNScxBOK"
 				}
 			],
-			"countryCode": "FK",
+			"countryCode": "BY",
 			"companyAlternativeNames": [
-				"Alizadeh-Kupprion",
-				"Bethke, Rau und Kupprion",
-				"Harting-Aryee",
-				"Schultze AG"
+				"Decker GmbH & Co. KG"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://herrlich-palast.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
 			"referencedReports": {
-				"IntegratedReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-01-26",
-					"currency": "BOB"
+					"isGroupLevel": "No",
+					"currency": "CZK"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Kral-Best",
-				"dataSource": {
-					"page": 747,
-					"report": "IntegratedReport",
-					"tagName": "deliverables"
-				}
+				"assurance": "None"
 			},
 			"reportingObligation": "No",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.1279,
+					"value": 0.7861,
 					"dataSource": {
-						"page": 1138,
-						"report": "IntegratedReport",
-						"tagName": "ROI"
+						"page": 73,
+						"report": "SustainabilityReport",
+						"tagName": "models"
 					},
-					"quality": "Audited",
-					"comment": "calculate cross-platform sensor"
+					"quality": "Reported",
+					"comment": "calculate haptic bus"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.9872,
-					"dataSource": {
-						"page": 1050,
-						"report": "IntegratedReport",
-						"tagName": "initiatives"
-					},
-					"quality": "Reported",
-					"comment": "parse virtual circuit"
+					"value": 0.434,
+					"quality": "Estimated"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.2932,
+					"value": 0.9095,
 					"dataSource": {
-						"page": 166,
-						"report": "IntegratedReport",
-						"tagName": "e-business"
+						"page": 580,
+						"report": "SustainabilityReport",
+						"tagName": "synergies"
 					},
 					"quality": "Reported",
-					"comment": "transmit back-end alarm"
+					"comment": "calculate virtual sensor"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Floraburg",
+			"sector": "interfaces",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "VHZejKeHutMoD4p"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "BPSc56OEzas1"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "ceovDde9AGH714gjLrnB"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "3XTN20JyRU"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "k6SZdwK"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "yhHObvbH5"
+				}
+			],
+			"countryCode": "AR",
+			"companyAlternativeNames": [
+				"Liebich-Mulrain",
+				"Schott GmbH"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearEnd": "2023-06-02",
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"currency": "LBP"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"reportDate": "2022-08-22",
+					"currency": "SAR"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "SGD"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"currency": "THB"
+				}
+			},
+			"assurance": {
+				"assurance": "None"
+			},
+			"reportingObligation": "No",
+			"opex": {
+				"totalAmount": {
+					"value": 779444.3489285186,
+					"quality": "Incomplete"
+				},
+				"eligiblePercentage": {
+					"value": 0.7574,
+					"dataSource": {
+						"page": 189,
+						"report": "AnnualReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Estimated",
+					"comment": "copy auxiliary hard drive"
+				},
+				"eligibleAmount": {
+					"value": 312211.79586136714,
+					"dataSource": {
+						"page": 438,
+						"report": "AnnualReport",
+						"tagName": "relationships"
+					},
+					"quality": "Incomplete",
+					"comment": "copy primary driver"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 595110.5411513709,
+					"quality": "Incomplete"
+				},
+				"eligiblePercentage": {
+					"value": 0.4297,
+					"dataSource": {
+						"page": 714,
+						"report": "AnnualReport",
+						"tagName": "e-commerce"
+					},
+					"quality": "Estimated",
+					"comment": "reboot primary interface"
+				},
+				"eligibleAmount": {
+					"value": 785898.1579309329,
+					"dataSource": {
+						"page": 57,
+						"report": "SustainabilityReport",
+						"tagName": "models"
+					},
+					"quality": "Audited",
+					"comment": "synthesize 1080p feed"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 299892.30532664806,
+					"quality": "Incomplete"
+				},
+				"eligiblePercentage": {
+					"value": 0.3603,
+					"dataSource": {
+						"page": 1099,
+						"report": "SustainabilityReport",
+						"tagName": "synergies"
+					},
+					"quality": "Reported",
+					"comment": "parse wireless panel"
+				},
+				"eligibleAmount": {
+					"value": 924605.430138763,
+					"dataSource": {
+						"page": 950,
+						"report": "ESEFReport",
+						"tagName": "architectures"
+					},
+					"quality": "Incomplete",
+					"comment": "back up wireless driver"
 				}
 			}
 		},
@@ -91,212 +233,110 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Kurnickidorf",
-			"sector": "mindshare",
-			"identifiers": [
-				{
-					"identifierType": "Lei",
-					"identifierValue": "rdoMsfzR6v1V2CyIzaQX"
-				}
-			],
-			"countryCode": "SO",
-			"companyAlternativeNames": [
-				"Hingsen OHG",
-				"Katzinski-Fincke",
-				"Minah GmbH",
-				"Wünsche, Gerschler und Schieskow"
-			],
-			"companyLegalForm": "AG",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-09-04",
-			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "USD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-01-27",
-					"currency": "XPF"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "LYD"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 243,
-					"report": "SustainabilityReport",
-					"tagName": "models"
-				}
-			},
-			"scopeOfEntities": "No",
-			"activityLevelReporting": "No",
-			"opex": {
-				"totalAmount": {
-					"value": 258858.28012833372,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.5232,
-					"dataSource": {
-						"page": 382,
-						"report": "ESEFReport",
-						"tagName": "applications"
-					},
-					"quality": "Reported",
-					"comment": "back up cross-platform matrix"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 512891.78687147796,
-					"dataSource": {
-						"page": 470,
-						"report": "IntegratedReport",
-						"tagName": "mindshare"
-					},
-					"quality": "Reported",
-					"comment": "calculate open-source system"
-				},
-				"eligiblePercentage": {
-					"value": 0.956,
-					"dataSource": {
-						"page": 483,
-						"report": "SustainabilityReport",
-						"tagName": "portals"
-					},
-					"quality": "Reported",
-					"comment": "reboot optical application"
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 433239.7287362255,
-					"dataSource": {
-						"page": 341,
-						"report": "IntegratedReport",
-						"tagName": "bandwidth"
-					},
-					"quality": "Audited",
-					"comment": "transmit multi-byte array"
-				},
-				"eligiblePercentage": {
-					"value": 0.7338,
-					"quality": "Estimated"
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Neu Timon",
-			"sector": "portals",
+			"headquarters": "Neu Edwinland",
+			"headquartersPostalCode": "73312",
+			"sector": "users",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "OfJUdRB3yQqSR3d"
+					"identifierType": "Isin",
+					"identifierValue": "Aj9vx7ggCkGK"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "CQGvSFymZ4"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "HOWqPtU"
+					"identifierValue": "iB27oL8LEN"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "cW8z3iwBY"
+					"identifierValue": "GI9LzzCNk"
 				}
 			],
-			"countryCode": "NO",
+			"countryCode": "MS",
 			"companyAlternativeNames": [
-				"Meier, Götzelmann und Koehl",
-				"Saumweber GmbH & Co. KG",
-				"Schultze Gruppe",
-				"Stephan-Dück"
+				"Gottschalk-Liebe",
+				"Melzer, Achkinadze und Zeyen",
+				"Roecker, Büngener und Rehwagen"
 			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://flink-flughafen.ch",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-09-09",
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "None"
 			},
-			"scopeOfEntities": "No",
+			"reportingObligation": "No",
 			"activityLevelReporting": "Yes",
 			"opex": {
-				"alignedPercentage": {
+				"totalAmount": {
+					"value": 397470.8400433883,
 					"dataSource": {
-						"page": 655,
-						"report": "SustainabilityReport",
-						"tagName": "users"
-					},
-					"quality": "Incomplete",
-					"comment": "compress solid state bus"
-				},
-				"eligiblePercentage": {
-					"dataSource": {
-						"page": 721,
-						"report": "ESEFReport",
-						"tagName": "deliverables"
+						"page": 1131,
+						"report": "AnnualReport",
+						"tagName": "interfaces"
 					},
 					"quality": "Reported",
-					"comment": "generate optical card"
+					"comment": "back up neural card"
 				}
 			},
 			"capex": {
-				"alignedPercentage": {
-					"value": 0.3514,
+				"totalAmount": {
+					"value": 427786.9535260834,
 					"dataSource": {
-						"page": 1025,
-						"report": "SustainabilityReport",
-						"tagName": "convergence"
+						"page": 675,
+						"report": "AnnualReport",
+						"tagName": "communities"
 					},
-					"quality": "Estimated",
-					"comment": "index open-source program"
+					"quality": "Audited",
+					"comment": "bypass 1080p interface"
 				},
-				"eligiblePercentage": {
-					"quality": "Incomplete"
+				"alignedAmount": {
+					"dataSource": {
+						"page": 576,
+						"report": "ESEFReport",
+						"tagName": "models"
+					},
+					"quality": "Audited",
+					"comment": "input virtual transmitter"
+				},
+				"alignedPercentage": {
+					"value": 0.7813,
+					"dataSource": {
+						"page": 676,
+						"report": "SustainabilityReport",
+						"tagName": "e-business"
+					},
+					"quality": "Audited",
+					"comment": "bypass online matrix"
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"value": 775603.4769816324,
-					"dataSource": {
-						"page": 841,
-						"report": "SustainabilityReport",
-						"tagName": "communities"
-					},
-					"quality": "Reported",
-					"comment": "back up digital bandwidth"
-				},
-				"alignedPercentage": {
-					"value": 0.5794,
-					"dataSource": {
-						"page": 289,
-						"report": "IntegratedReport",
-						"tagName": "metrics"
-					},
-					"quality": "Reported",
-					"comment": "compress auxiliary firewall"
+				"alignedAmount": {
+					"value": 119926.26031860709,
+					"quality": "Estimated"
 				},
 				"eligibleAmount": {
-					"value": 635465.76439403,
-					"quality": "Estimated"
+					"value": 367440.31112175435,
+					"dataSource": {
+						"page": 172,
+						"report": "IntegratedReport",
+						"tagName": "applications"
+					},
+					"quality": "Reported",
+					"comment": "quantify haptic pixel"
+				},
+				"eligiblePercentage": {
+					"value": 0.8588,
+					"dataSource": {
+						"page": 978,
+						"report": "SustainabilityReport",
+						"tagName": "systems"
+					},
+					"quality": "Estimated",
+					"comment": "synthesize online monitor"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2023"
 	}
 ]
