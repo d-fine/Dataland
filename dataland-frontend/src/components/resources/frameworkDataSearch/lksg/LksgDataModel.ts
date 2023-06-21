@@ -80,8 +80,6 @@ export const lksgDataModel = [
             label: "Share of Temporary Workers",
             description: "What is the share of temporary workers vs total number of employees in the company?",
             component: "RadioButtonsFormField",
-            required: false,
-            showIf: (): boolean => true,
             options: [
               {
                 label: "<10%",
@@ -100,15 +98,17 @@ export const lksgDataModel = [
                 value: "Greater50",
               },
             ],
+            required: false,
+            showIf: (): boolean => true,
           },
           {
             name: "totalRevenueCurrency",
             label: "Total Revenue Currency",
             description: "The 3-letter code (ISO 4217) representing the currency used for the total revenue",
             component: "SingleSelectFormField",
+            options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
             required: false,
             showIf: (): boolean => true,
-            options: getDataset(DropdownDatasetIdentifier.CurrencyCodes),
             placeholder: "Select Currency",
           },
           {
@@ -166,10 +166,10 @@ export const lksgDataModel = [
             label: "Subcontracting Companies Countries",
             description: "In which countries do the subcontracting companies operate?",
             component: "MultiSelectFormField",
+            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.general?.productionSpecific?.isContractProcessing === "Yes",
-            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
             placeholder: "Select Country",
           },
           {
@@ -204,9 +204,6 @@ export const lksgDataModel = [
             label: "Market",
             description: "Does your business focus predominantly on national or international markets?",
             component: "RadioButtonsFormField",
-            required: false,
-            showIf: (dataModel: LksgData): boolean =>
-              dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
             options: [
               {
                 label: "National",
@@ -221,6 +218,9 @@ export const lksgDataModel = [
                 value: "Both",
               },
             ],
+            required: false,
+            showIf: (dataModel: LksgData): boolean =>
+              dataModel?.general?.productionSpecific?.manufacturingCompany === "Yes",
           },
           {
             name: "specificProcurement",
@@ -783,10 +783,10 @@ export const lksgDataModel = [
             label: "High Risk Countries Raw Materials Location",
             description: "From which conflict/high-risk regions do you source your raw materials?",
             component: "MultiSelectFormField",
+            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesRawMaterials === "Yes",
-            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
             placeholder: "Select Country",
           },
           {
@@ -804,10 +804,10 @@ export const lksgDataModel = [
             label: "High Risk Countries",
             description: "In which high risk countries does your company have activities?",
             component: "MultiSelectFormField",
+            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesActivity === "Yes",
-            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
             placeholder: "Select Country",
           },
           {
@@ -825,10 +825,10 @@ export const lksgDataModel = [
             label: "High Risk Countries Procurement Name",
             description: "From which high risk countries does your company procure from?",
             component: "MultiSelectFormField",
+            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
             required: false,
             showIf: (dataModel: LksgData): boolean =>
               dataModel?.governance?.generalViolations?.highRiskCountriesProcurement === "Yes",
-            options: getDataset(DropdownDatasetIdentifier.CountryCodes),
             placeholder: "Select Country",
           },
         ],
@@ -854,8 +854,8 @@ export const lksgDataModel = [
             certificateRequiredIfYes: false,
           },
           {
-            name: "employeeUnder18Under15",
-            label: "Employee Under 18 Under 15",
+            name: "employeeUnder15",
+            label: "Employee Under 15",
             description:
               "With regard to the place of employment and the applicable laws: do you employ school-age children or children under the age of 15 on a full-time basis?",
             component: "YesNoFormField",
