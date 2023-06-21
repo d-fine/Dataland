@@ -83,7 +83,7 @@ import Calendar from "primevue/calendar";
 import { calculateExpiryDateAsDateString, calculateDaysFromNow } from "@/utils/DataFormatUtils";
 import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { MAX_NUMBER_OF_DAYS_VALIDITY_SELECTABLE_FOR_API_KEYS } from "@/utils/Constants";
+import { MAX_NUMBER_OF_DAYS_VALIDITY_SELECTABLE_FOR_API_KEYS, MS_PER_DAY } from "@/utils/Constants";
 
 export default defineComponent({
   name: "CreateApiKeyCard",
@@ -97,8 +97,8 @@ export default defineComponent({
     expiryTimeDays: null as null | number,
     expiryTimeDropdown: "",
     isExpiryDateValid: true,
-    minDate: new Date(new Date().getTime() + 1 * 86400000),
-    maxDate: new Date(new Date().getTime() + MAX_NUMBER_OF_DAYS_VALIDITY_SELECTABLE_FOR_API_KEYS * 86400000),
+    minDate: new Date(new Date().getTime() + MS_PER_DAY),
+    maxDate: new Date(new Date().getTime() + MAX_NUMBER_OF_DAYS_VALIDITY_SELECTABLE_FOR_API_KEYS * MS_PER_DAY),
 
     customDateInMilliseconds: null as null | number,
     days: [

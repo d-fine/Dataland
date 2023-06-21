@@ -32,6 +32,8 @@ Api-Key-Manager are always in sync.
 */
 export const MAX_NUMBER_OF_DAYS_VALIDITY_SELECTABLE_FOR_API_KEYS = 10 * 365;
 
+export const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
 export const KEYCLOAK_INIT_OPTIONS = {
   realm: "datalandsecurity",
   url: "/keycloak",
