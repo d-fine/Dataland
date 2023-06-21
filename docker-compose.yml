@@ -197,7 +197,7 @@ services:
       - frontend-dev-node-modules:/app/node_modules
     command: sh -c "cd /app && npm install && npm run dev"
     environment:
-      POLLING: "true"
+      POLLING: "false"
   frontend:
     restart: always
     profiles: ["production", "testing"]
