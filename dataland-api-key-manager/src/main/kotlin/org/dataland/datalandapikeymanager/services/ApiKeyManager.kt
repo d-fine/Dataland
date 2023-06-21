@@ -22,15 +22,13 @@ import java.time.Instant
 @Component("ApiKeyManager")
 class ApiKeyManager(
     @Autowired private val apiKeyRepository: ApiKeyRepository,
+    @Value("\${dataland.max-days-selectable-for-api-key-validity:365}")
+    private val maxDaysSelectableForApiKeyValidity: Int,
 ) {
 
     companion object {
         private const val milliSecondsInADay = 86400000
-        private const val defaultMaxDaysOfValidityForApiKey = 365
     }
-
-    @Value("\${dataland.max-days-of-validity-for-api-key}")
-    private var maxDaysOfValidityForApiKey = defaultMaxDaysOfValidityForApiKey
 
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
         "Please generate one."
@@ -58,7 +56,7 @@ class ApiKeyManager(
                     "If set, the value of daysValid must be a positive number but it was $daysValid",
                 )
             }
-            if (daysValid > maxDaysOfValidityForApiKey) {
+            if (daysValid > maxDaysSelectableForApiKeyValidity) {
                 throw InvalidInputApiException(
                     "If set, the value of daysValid cannot be greater than 3650.",
                     "If set, the value of daysValid cannot be greater than 3650 but it was $daysValid",
