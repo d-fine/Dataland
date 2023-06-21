@@ -20,8 +20,10 @@ export const euTaxonomyKPIsModel = {
   euTaxonomyDetailsPerCashFlowType: ["total", "aligned", "eligible"],
   euTaxonomyDetailsPerCashFlowFilesNames: {
     total: "totalAmount",
-    aligned: "alignedPercentage",
-    eligible: "eligiblePercentage",
+    alignedPercentage: "alignedPercentage",
+    alignedAmount: "alignedAmount",
+    eligiblePercentage: "eligiblePercentage",
+    eligibleAmount: "eligibleAmount",
   },
 };
 

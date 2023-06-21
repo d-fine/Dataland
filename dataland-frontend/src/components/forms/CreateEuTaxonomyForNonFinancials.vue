@@ -174,7 +174,7 @@
                               :name="`${detailCashFlowType}CapEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
+                              :valueType="detailCashFlowType.includes('Percentage') ? 'percent' : 'number'"
                               :reportsName="namesOfAllCompanyReportsForTheDataset"
                             />
                           </div>
