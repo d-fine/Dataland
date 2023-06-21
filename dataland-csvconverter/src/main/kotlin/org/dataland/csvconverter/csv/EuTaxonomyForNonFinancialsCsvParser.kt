@@ -33,6 +33,12 @@ class EuTaxonomyForNonFinancialsCsvParser(
         "alignedRevenue" to "Aligned Revenue",
         "alignedCapex" to "Aligned CapEx",
         "alignedOpex" to "Aligned OpEx",
+        "eligibleRevenuePercentage" to "Eligible Revenue (%)",
+        "eligibleCapexPercentage" to "Eligible CapEx (%)",
+        "eligibleOpexPercentage" to "Eligible OpEx (%)",
+        "alignedRevenuePercentage" to "Aligned Revenue (%)",
+        "alignedCapexPercentage" to "Aligned CapEx (%)",
+        "alignedOpexPercentage" to "Aligned OpEx (%)",
     )
 
     override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
@@ -54,13 +60,27 @@ class EuTaxonomyForNonFinancialsCsvParser(
             dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForNonFinancials,
                 csvLineData,
+                "aligned${type}Percentage",
+            ),
+            alignedAmount =
+            dataPointParser.buildDecimalDataPoint(
+                columnMappingEuTaxonomyForNonFinancials,
+                csvLineData,
                 "aligned$type",
+                CsvUtils.SCALE_FACTOR_ONE_MILLION,
             ),
             eligiblePercentage =
             dataPointParser.buildPercentageDataPoint(
                 columnMappingEuTaxonomyForNonFinancials,
                 csvLineData,
+                "eligible${type}Percentage",
+            ),
+            eligibleAmount =
+            dataPointParser.buildDecimalDataPoint(
+                columnMappingEuTaxonomyForNonFinancials,
+                csvLineData,
                 "eligible$type",
+                CsvUtils.SCALE_FACTOR_ONE_MILLION,
             ),
         )
     }
