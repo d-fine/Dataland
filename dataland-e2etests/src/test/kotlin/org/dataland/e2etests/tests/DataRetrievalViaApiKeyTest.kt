@@ -150,13 +150,13 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @Test
-    fun `generate an API key which is valid for a certain amount of days and then validate it`() {
-        val daysValid = 360
+    fun `generate an API key with the current max value for daysValid then validate it`() {
+        val daysValidMax = 3650
         val technicalUser = TechnicalUser.Reader
         val apiKeyToValidate = apiKeyHelper
-            .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValid).apiKey
+            .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValidMax).apiKey
         val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyToValidate)
-        doAssertionsAfterApiKeyValidation(technicalUser, daysValid, apiKeyMetaInfo)
+        doAssertionsAfterApiKeyValidation(technicalUser, daysValidMax, apiKeyMetaInfo)
     }
 
     @Test
