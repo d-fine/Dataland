@@ -160,12 +160,26 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @Test
-    fun `generate an API key with an invalid value for days validity and assert that exception is thrown`() {
+    fun `generate an API key with a too small value for daysValid and assert that exception is thrown`() {
         val daysValidTooSmall = 0
         val technicalUser = TechnicalUser.Reader
         val exception =
             assertThrows<ApiKeyManagerClientException> {
                 apiKeyHelper.obtainApikeyForTechnicalUser(technicalUser, daysValidTooSmall)
+            }
+        assertEquals(
+            "Client error : 400 ",
+            exception.message,
+        )
+    }
+
+    @Test
+    fun `generate an API key with a too large value for daysValid and assert that exception is thrown`() {
+        val daysValidTooLarge = 3651
+        val technicalUser = TechnicalUser.Reader
+        val exception =
+            assertThrows<ApiKeyManagerClientException> {
+                apiKeyHelper.obtainApikeyForTechnicalUser(technicalUser, daysValidTooLarge)
             }
         assertEquals(
             "Client error : 400 ",
