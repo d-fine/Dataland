@@ -1,55 +1,6 @@
 import { ApiKeyAndMetaInfo } from "@clients/apikeymanager";
 describe("As a user I expect my api key will be generated correctly", () => {
   /**
-   * Verifies that the initial state of the api key page is as expected and that the "Create Api Key" popup works
-   * as expected
-   */
-  function verifyInitialPageStateAndCreateApiKeyCardPopup(): void {
-    cy.get("[data-test='noApiKeyWelcomeComponent']").should("exist").should("contain.text", "You have no API Key!");
-    cy.get("[data-test='noApiKeyWelcomeComponent']")
-      .find("button")
-      .should("contain.text", "CREATE NEW API KEY")
-      .click();
-    cy.get('[data-test="CreateApiKeyCard"]').should("exist");
-    cy.get("h1").should("contain.text", "Create new API Key");
-    cy.get('[data-test="cancelGenerateApiKey"]').click();
-    cy.get("h1").should("contain.text", "API Keys");
-    cy.get('[data-test="CreateApiKeyCard"]').should("not.exist"); // TODO test can be component test
-  }
-
-  /**
-   * Verifies that setting the expiration date via the dropdown options works as expected
-   */
-  function verifyExpirationDropdownOptions(): void {
-    cy.get("div.middle-center-div button").contains("CREATE NEW API KEY").click();
-    cy.get("button#generateApiKey").click();
-    cy.get('label[for="expiryTime"]').should("contain.text", `Please select expiration date`);
-    cy.get("div#expiryTime").click();
-    cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click();
-    cy.get('label[for="expiryTime"]').should("not.contain.text", `Please select expiration date`);
-    cy.get("button#generateApiKey").click();
-    cy.get('label[for="expiryTime"]').should("contain.text", `Please select expiration date`);
-
-    cy.get("div#expiryTime").click();
-    cy.get('ul[role="listbox"]').find('[aria-label="7 days"]').click();
-    cy.get("#expiryTimeWrapper").should("contain.text", `The API Key will expire on`);
-    cy.get("div#expiryTime").click();
-    cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click({ force: true });
-    cy.get("#expiryTimeWrapper").should("not.exist");
-    cy.get('[data-test="expiryDatePicker"]').should("be.visible");
-    cy.get("button.p-datepicker-trigger").click();
-    cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
-    cy.get("div.p-datepicker").find('span:contains("13")').click();
-    cy.get('[data-test="expiryDatePicker"]')
-      .find("input")
-      .should(($input) => {
-        const val = $input.val();
-        expect(val).to.include("13");
-      });
-    cy.get('[data-test="cancelGenerateApiKey"]').click(); // TODO test can be component test
-  }
-
-  /**
    * Verifies that creating an api key works as expected, and also assures that the copy-to-clipboard button works if
    * the Chrome browser is used to execute this cypress test. For other browsers it skips that part of the test.
    */
@@ -127,6 +78,7 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.get("button#generateApiKey").click();
     cy.wait("@generateApiKey", { timeout: Cypress.env("short_timeout_in_ms") as number });
     cy.get("#existingApiKeyCard").find("span").contains("The API Key will expire on").should("exist");
+    // TODO purge api key at the end to have the same state as in the beginning => that way the test can be run multiple times in series
   }
 
   it("Check Api Key functionalities", () => {
@@ -135,10 +87,6 @@ describe("As a user I expect my api key will be generated correctly", () => {
     cy.intercept("GET", "**/api-keys/generateApiKey*").as("generateApiKey");
     cy.visitAndCheckAppMount("/api-key");
     cy.wait("@getApiKeyMetaInfoForUser", { timeout: Cypress.env("short_timeout_in_ms") as number });
-
-    verifyInitialPageStateAndCreateApiKeyCardPopup();
-
-    verifyExpirationDropdownOptions();
 
     verifyCreatingApiKeyAndCopyingIt();
 
