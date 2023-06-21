@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -376,12 +377,7 @@ class CompanyDataControllerTest {
         )
         for (company in testCompanyList) {
             val companyResponse = apiAccessor.companyDataControllerApi.postCompany(company)
-            apiAccessor.uploadSingleFrameworkDataSet(
-                companyId = companyResponse.companyId,
-                frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-                reportingPeriod = "2023",
-                frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-            ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+            uploadTestDataSet(companyResponse.companyId)
             for (identifier in company.identifiers) {
                 testThatSearchForCompanyIdentifierWorks(identifier)
             }
@@ -402,12 +398,7 @@ class CompanyDataControllerTest {
             listOf(),
         )
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
-        val uploadedData = apiAccessor.uploadSingleFrameworkDataSet(
-            companyId = uploadedCompany.companyId,
-            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-            reportingPeriod = "2023",
-            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+        val uploadedData = uploadTestDataSet(uploadedCompany.companyId)
         val expectedCompany = StoredCompany(
             uploadedCompany.companyId,
             uploadedCompany.companyInformation,
@@ -437,12 +428,7 @@ class CompanyDataControllerTest {
             listOf(),
         )
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
-        val uploadedData = apiAccessor.uploadSingleFrameworkDataSet(
-            companyId = uploadedCompany.companyId,
-            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-            reportingPeriod = "2023",
-            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+        val uploadedData = uploadTestDataSet(uploadedCompany.companyId)
         val expectedCompany = StoredCompany(
             uploadedCompany.companyId,
             uploadedCompany.companyInformation,
@@ -470,12 +456,7 @@ class CompanyDataControllerTest {
         val companyList = createCompaniesForTestingOrdering(testString)
         for (company in companyList) {
             val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(company)
-            apiAccessor.uploadSingleFrameworkDataSet(
-                companyId = uploadedCompany.companyId,
-                frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-                reportingPeriod = "2023",
-                frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-            ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+            uploadTestDataSet(uploadedCompany.companyId)
         }
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             searchString = testString,
@@ -525,5 +506,13 @@ class CompanyDataControllerTest {
             CompanyInformation(company2, "", listOf(), "", listOf(inputString)),
             CompanyInformation(inputString, "", listOf(), "", listOf()),
         )
+    }
+    private fun uploadTestDataSet(companyId: String): DataMetaInformation {
+        return apiAccessor.uploadSingleFrameworkDataSet(
+            companyId = companyId,
+            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+            reportingPeriod = "2023",
+            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
     }
 }
