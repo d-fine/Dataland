@@ -207,7 +207,7 @@
                               :name="`${detailCashFlowType}OpEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
+                              :valueType="detailCashFlowType.includes('Percentage') ? 'percent' : 'number'"
                               :reportsName="namesOfAllCompanyReportsForTheDataset"
                             />
                           </div>
@@ -240,7 +240,7 @@
                               :name="`${detailCashFlowType}Revenue`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
+                              :valueType="detailCashFlowType.includes('Percentage') ? 'percent' : 'number'"
                               :reportsName="namesOfAllCompanyReportsForTheDataset"
                             />
                           </div>
