@@ -37,6 +37,6 @@ class GleifApiAccessorTest {
     @Test
     fun `test download delta file`() {
         `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
-        GleifApiAccessor().getFullGoldenCopy(File("test"))
+        GleifApiAccessor().getLastMonthGoldenCopyDelta(File("test"))
     }
 }
