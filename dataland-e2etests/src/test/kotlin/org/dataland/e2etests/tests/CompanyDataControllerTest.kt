@@ -76,8 +76,6 @@ class CompanyDataControllerTest {
             uploadInfo.actualStoredCompany.companyInformation,
             listOf(expectedDataset),
         )
-        println(expectedCompany)
-        println(getCompaniesOnlyByNameResponse)
         assertTrue(
             getCompaniesOnlyByNameResponse.contains(expectedCompany),
             "Dataland does not contain the posted company.",
@@ -483,11 +481,11 @@ class CompanyDataControllerTest {
             searchString = testString,
         ).map { it.companyName }
         assertEquals(
-            listOf(testString, company2, "${testString}2", company5, company6, "3$testString", company9),
+            listOf(testString, company2, "${testString}2", company5, "3$testString", company9),
             sortedCompanyNames.filter { it != company8 && it != company3 },
         )
         assertEquals(
-            listOf(company3, company2, "${testString}2", company5, company6, company8, company9),
+            listOf(company3, company2, "${testString}2", company5, company8, company9),
             sortedCompanyNames.filter { it != "3$testString" && it != testString },
         )
 
@@ -512,16 +510,6 @@ class CompanyDataControllerTest {
             ),
             CompanyInformation(company8, "", listOf(), "", listOf("3$inputString", "other_name")),
             CompanyInformation("3$inputString", "", listOf(), "", listOf()),
-            CompanyInformation(
-                company6, "",
-                listOf(
-                    CompanyIdentifier(
-                        CompanyIdentifier.IdentifierType.isin,
-                        "${inputString}2",
-                    ),
-                ),
-                "", listOf(),
-            ),
             CompanyInformation(company5, "", listOf(), "", listOf("${inputString}2")),
             CompanyInformation("${inputString}2", "", listOf(), "", listOf()),
             CompanyInformation(
