@@ -284,7 +284,7 @@ class CompanyDataControllerTest {
         .getCompanyInformationWithRandomIdentifiers(1).first()
 
     @Test
-    fun `check if the new companies search via name and ids endpoint works as expeted`() {
+    fun `check if the new companies search via name and ids endpoint works as expected`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         uploadModifiedBaseCompany(company9, null, "3$testString")
@@ -400,77 +400,75 @@ class CompanyDataControllerTest {
         )
 
         val retrievedCompanies = apiAccessor.getCompaniesOnlyByName("")
-        println(expectedCompany)
-        println(retrievedCompanies)
         assertTrue(
             retrievedCompanies.contains(expectedCompany),
             "Not all the companyInformation of the posted companies could be found in the stored companies.",
         )
     }
-    /*
-    @Test
-    fun `search for identifier substring to verify substring matching in company search`() {
-        val searchString = testCompanyList.first().identifiers.first().identifierValue.drop(1).dropLast(1)
-        var occurencesOfSearchString = 0
-        for (companyInformation in testCompanyList) {
-            require(!(companyInformation.companyName.contains(searchString))) {
-                "The company name " +
-                        "${companyInformation.companyName} includes the searchString $searchString."
-            }
-            for (identifier in companyInformation.identifiers) {
-                if (identifier.identifierValue.contains(searchString)) { occurencesOfSearchString += 1 }
-            }
-        }
-        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-            searchString,
-        )
-        assertEquals(
-            occurencesOfSearchString,
-            searchResponse.size,
-            "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}.",
-        )
-    }
 
     @Test
-    fun `search for name substring to verify substring matching in company search`() {
-        val searchString = testCompanyList.first().companyName.drop(1).dropLast(1)
-        var occurencesOfSearchString = 0
-        for (companyInformation in testCompanyList) {
-            if (companyInformation.companyName.contains(searchString)) {
-                occurencesOfSearchString += 1
-            }
-        }
-        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-            searchString = searchString,
+    fun `search for identifier and name substring to verify substring matching in company search`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        val testIdentifier = UUID.randomUUID().toString()
+        val testName = "SubstringSearch"
+        val companyIdentifier = listOf(
+            CompanyIdentifier(
+                CompanyIdentifier.IdentifierType.lei,
+                testIdentifier,
+            ),
         )
-        assertEquals(
-            occurencesOfSearchString,
-            searchResponse.size,
-            "There are $occurencesOfSearchString expected matches but found ${searchResponse.size}.",
+        val companyInformation = CompanyInformation(
+            testName, "", companyIdentifier, "",
+            listOf(),
         )
-    }
+        val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
+        val uploadedData = apiAccessor.uploadSingleFrameworkDataSet(
+            companyId = uploadedCompany.companyId,
+            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
+            reportingPeriod = "2023",
+            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+        val expectedCompany = StoredCompany(
+            uploadedCompany.companyId,
+            uploadedCompany.companyInformation,
+            listOf(uploadedData),
+        )
 
-    @Test
-    fun `search for name substring to check the ordering of results`() {
-        val searchString = testCompanyList.first().companyName.take(1)
-        val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-            searchString = searchString,
-        )
-        val responsesStartingWith =
-            searchResponse.takeWhile { it.companyName.startsWith(searchString) }
-        val otherResponses = searchResponse.dropWhile { it.companyName.startsWith(searchString) }
+        val searchIdentifier = testIdentifier.drop(1).dropLast(1)
+        val searchName = testName.drop(1).dropLast(1)
+        val searchResponseForName = apiAccessor.getCompaniesOnlyByName(searchName)
+        val searchResponseForIdentifier = apiAccessor.getCompaniesByNameAndIdentifier(searchIdentifier)
         assertTrue(
-            otherResponses.none { it.companyName.startsWith(searchString) },
-            "Expected to have matches ordered by starting with search string followed by all other results." +
-                    "However, at least one of the matches in the other results starts with the search string " +
-                    "($searchString).",
+            searchResponseForName.contains(expectedCompany),
+            "The search results do not contain the expected company.",
         )
         assertTrue(
-            responsesStartingWith.isNotEmpty(),
-            "No matches starting with the search string " +
-                    "$searchString were returned. At least one was expected.",
+            searchResponseForIdentifier.contains(expectedCompany),
+            "The search results do not contain the expected company.",
         )
-    }
 
-     */
+    }
+/*
+        @Test
+        fun `search for name substring to check the ordering of results`() {
+            val searchString = testCompanyList.first().companyName.take(1)
+            val searchResponse = testCompanyManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
+                searchString = searchString,
+            )
+            val responsesStartingWith =
+                searchResponse.takeWhile { it.companyName.startsWith(searchString) }
+            val otherResponses = searchResponse.dropWhile { it.companyName.startsWith(searchString) }
+            assertTrue(
+                otherResponses.none { it.companyName.startsWith(searchString) },
+                "Expected to have matches ordered by starting with search string followed by all other results." +
+                        "However, at least one of the matches in the other results starts with the search string " +
+                        "($searchString).",
+            )
+            assertTrue(
+                responsesStartingWith.isNotEmpty(),
+                "No matches starting with the search string " +
+                        "$searchString were returned. At least one was expected.",
+            )
+        }
+*/
 }
