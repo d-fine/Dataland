@@ -366,6 +366,13 @@ class ApiAccessor {
             onlyCompanyNames = true,
         )
     }
+    fun getCompaniesByNameAndIdentifier(searchString: String): List<StoredCompany> {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        return companyDataControllerApi.getCompanies(
+            frameworkData,
+            searchString,
+        )
+    }
 
     fun getNumberOfStoredCompanies(): Int {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
