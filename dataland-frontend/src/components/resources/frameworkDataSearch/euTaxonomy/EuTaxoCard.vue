@@ -20,10 +20,10 @@
           <div class="col-12 text-left p-0 pl-2" v-if="total !== undefined && total !== null">
             <template v-if="amount !== undefined && amount !== null">
               <span class="font-medium text-3xl">€ </span>
-              <span class="font-bold text-4xl">{{ amount }}</span>
+              <span class="font-bold text-4xl">{{ valueWithOrderOfMagnitudeSuffix(amount) }}</span>
             </template>
             <p class="left-align">
-              <strong>Out of a total of € {{ totalWithOrderOfMagnitudeSuffix }}</strong>
+              <strong>Out of a total of € {{ valueWithOrderOfMagnitudeSuffix(total) }}</strong>
             </p>
           </div>
         </div>
@@ -59,8 +59,15 @@ export default defineComponent({
     percentCalculation() {
       return Math.round(this.percent * 100 * 100) / 100;
     },
-    totalWithOrderOfMagnitudeSuffix() {
-      return convertCurrencyNumbersToNotationWithLetters(this.total, 2);
+  },
+  methods: {
+    /**
+     * Transforms a number into a more readable format using abbreviations, e.g. 200132.12 -> 200.13 K
+     * @param value the number to be transformed
+     * @returns the string representation using abbreviations of the input value
+     */
+    valueWithOrderOfMagnitudeSuffix(value: number | undefined) {
+      return convertCurrencyNumbersToNotationWithLetters(value, 2);
     },
   },
 });
