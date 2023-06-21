@@ -6,7 +6,7 @@
  * @returns the formatted number
  */
 export function convertCurrencyNumbersToNotationWithLetters(
-  numberToConvert: number,
+  numberToConvert: number | undefined,
   maxNumberOfDigitsAfterDecimalPoint?: number
 ): string {
   const lookup = [
@@ -18,14 +18,18 @@ export function convertCurrencyNumbersToNotationWithLetters(
     { value: 1e15, symbol: "QA" },
     { value: 1e18, symbol: "QI" },
   ];
-  const regex = /\.0+$|(\.d*[1-9])0+$/;
-  const item = lookup
-    .slice()
-    .reverse()
-    .find((part): boolean => numberToConvert >= part.value);
-  return item
-    ? (numberToConvert / item.value).toFixed(maxNumberOfDigitsAfterDecimalPoint).replace(regex, "$1") +
-        " " +
-        item.symbol
-    : "0";
+  if (numberToConvert !== undefined) {
+    const regex = /\.0+$|(\.d*[1-9])0+$/;
+    const item = lookup
+      .slice()
+      .reverse()
+      .find((part): boolean => numberToConvert >= part.value);
+    return item
+      ? (numberToConvert / item.value).toFixed(maxNumberOfDigitsAfterDecimalPoint).replace(regex, "$1") +
+          " " +
+          item.symbol
+      : "0";
+  } else {
+    return "";
+  }
 }

@@ -35,6 +35,7 @@
           title="Eligible Revenue"
           :percent="dataSet.revenue?.eligiblePercentage?.value"
           :total="dataSet.revenue?.totalAmount?.value"
+          :amount="dataSet.revenue?.eligibleAmount?.value"
         ></TaxoCard>
       </div>
       <div class="col-6">
@@ -42,6 +43,7 @@
           title="Aligned Revenue"
           :percent="dataSet.revenue?.alignedPercentage?.value"
           :total="dataSet.revenue?.totalAmount?.value"
+          :amount="dataSet.revenue?.alignedAmount?.value"
         ></TaxoCard>
       </div>
     </div>
@@ -54,6 +56,7 @@
           title="Eligible CapEx"
           :percent="dataSet.capex?.eligiblePercentage?.value"
           :total="dataSet.capex?.totalAmount?.value"
+          :amount="dataSet.capex?.eligibleAmount?.value"
         />
       </div>
       <div class="col-6">
@@ -61,6 +64,7 @@
           title="Aligned CapEx"
           :percent="dataSet.capex?.alignedPercentage?.value"
           :total="dataSet.capex?.totalAmount?.value"
+          :amount="dataSet.capex?.alignedAmount?.value"
         />
       </div>
     </div>
@@ -73,6 +77,7 @@
           title="Eligible OpEx"
           :percent="dataSet.opex?.eligiblePercentage?.value"
           :total="dataSet.opex?.totalAmount?.value"
+          :amount="dataSet.opex?.eligibleAmount?.value"
         />
       </div>
       <div class="col-6">
@@ -80,6 +85,7 @@
           title="Aligned OpEx"
           :percent="dataSet.opex?.alignedPercentage?.value"
           :total="dataSet.opex?.totalAmount?.value"
+          :amount="dataSet.opex?.alignedAmount?.value"
         />
       </div>
     </div>
