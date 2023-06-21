@@ -300,10 +300,7 @@ class CompanyDataControllerTest {
             companyName = name,
             companyAlternativeNames = alternativeNames,
             identifiers = listOf(
-                CompanyIdentifier(
-                    CompanyIdentifier.IdentifierType.isin,
-                    identifier ?: UUID.randomUUID().toString(),
-                ),
+                createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, identifier ?: UUID.randomUUID().toString(),)
             ),
         )
         apiAccessor.companyDataControllerApi.postCompany(companyInformation)
@@ -341,15 +338,8 @@ class CompanyDataControllerTest {
         val testCompanyList = listOf(
             CompanyInformation(
                 company1, "",
-                listOf(
-                    CompanyIdentifier(
-                        CompanyIdentifier.IdentifierType.isin,
-                        "Isin" + UUID.randomUUID().toString(),
-                    ),
-                    CompanyIdentifier(
-                        CompanyIdentifier.IdentifierType.lei,
-                        "Lei" + UUID.randomUUID().toString(),
-                    ),
+                listOf(createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, "Isin" + UUID.randomUUID().toString(),),
+                    createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, "Lei" + UUID.randomUUID().toString(),)
                 ),
                 "",
                 listOf(company1 + testString),
@@ -368,10 +358,7 @@ class CompanyDataControllerTest {
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val companyIdentifier = listOf(
-            CompanyIdentifier(
-                CompanyIdentifier.IdentifierType.lei,
-                UUID.randomUUID().toString(),
-            ),
+            createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, UUID.randomUUID().toString(),)
         )
         val companyInformation = CompanyInformation(
             "retrieve empty search string", "", companyIdentifier, "",
@@ -404,8 +391,7 @@ class CompanyDataControllerTest {
             ),
         )
         val companyInformation = CompanyInformation(
-            testName, "", companyIdentifier, "",
-            listOf(),
+            testName, "", companyIdentifier, "", listOf(),
         )
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
         val uploadedData = uploadTestDataSet(uploadedCompany.companyId)
@@ -461,11 +447,7 @@ class CompanyDataControllerTest {
         return listOf(
             CompanyInformation(
                 company9, "",
-                listOf(
-                    CompanyIdentifier(
-                        CompanyIdentifier.IdentifierType.isin,
-                        "3$inputString",
-                    ),
+                listOf(createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, "3$inputString",)
                 ),
                 "", listOf(),
             ),
@@ -475,11 +457,7 @@ class CompanyDataControllerTest {
             CompanyInformation("${inputString}2", "", listOf(), "", listOf()),
             CompanyInformation(
                 company3, "",
-                listOf(
-                    CompanyIdentifier(
-                        CompanyIdentifier.IdentifierType.isin,
-                        inputString,
-                    ),
+                listOf(createCompanyIdentifier(CompanyIdentifier.IdentifierType.isin, inputString,)
                 ),
                 "", listOf(),
             ),
@@ -494,5 +472,11 @@ class CompanyDataControllerTest {
             reportingPeriod = "2023",
             frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
         ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+    }
+    private fun createCompanyIdentifier (type: CompanyIdentifier.IdentifierType, value: String): CompanyIdentifier {
+           return CompanyIdentifier(
+               type,
+                value,
+            )
     }
 }
