@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit
 class ApiAccessor {
     val frameworkData = setOf(
         DataTypeEnum.lksg, DataTypeEnum.eutaxonomyMinusFinancials,
-        DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.sfdr,
+        DataTypeEnum.eutaxonomyMinusNonMinusFinancials, DataTypeEnum.sfdr,
     )
 
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
