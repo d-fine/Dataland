@@ -153,7 +153,7 @@ describeIf(
     );
 
     /**
-     * Checks that the computed hash in the frontend is the same as the one returned by the documen upload endpoint
+     * Checks that the computed hash in the frontend is the same as the one returned by the document upload endpoint
      */
     function validateFrontendAndBackendDocumentHashesCoincede(): void {
       cy.task<{ [type: string]: ArrayBuffer }>("readFile", `../${TEST_PDF_FILE_PATH}`).then(async (bufferObject) => {

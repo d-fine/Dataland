@@ -171,23 +171,37 @@ export default defineComponent({
      * @param event event
      */
     editDataset(event: Event) {
+        console.log(0);
+        console.log({
+            mapOfReportingPeriodToActiveDataset: this.mapOfReportingPeriodToActiveDataset,
+            singleDataMetaInfoToDisplay: this.singleDataMetaInfoToDisplay
+        });
       if (this.singleDataMetaInfoToDisplay) {
+        console.log(1);
         this.gotoUpdateForm(
           this.singleDataMetaInfoToDisplay.companyId,
           this.singleDataMetaInfoToDisplay.dataType,
           this.singleDataMetaInfoToDisplay.dataId
         );
+        console.log(2);
+        debugger;
       } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
+        console.log(3);
         const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
         if (panel) {
           panel.toggle(event);
         }
+        console.log(4);
+        debugger;
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
+        console.log(5);
         this.gotoUpdateForm(
           assertDefined(this.companyID),
           this.dataType as DataTypeEnum,
           Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId
         );
+        console.log(6);
+        debugger;
       }
     },
     /**

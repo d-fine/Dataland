@@ -93,7 +93,7 @@ describe("Component test for ViewFrameworkBase", () => {
   });
 
   it(
-    "Should display the edit and crate new dataset button for users with " +
+    "Should display the edit and create new dataset button for users with " +
       "upload permission and framework with edit page",
     () => {
       const keycloakMock = minimalKeycloakMock({

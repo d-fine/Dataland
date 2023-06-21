@@ -132,7 +132,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
   frameworkDataType: DataTypeEnum,
   companyInformation: CompanyInformation,
   testData: T,
-  formFill: (data: T) => void,
+  formFill: (data: T, storedCompany: StoredCompany) => void,
   submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
   afterDatasetSubmission: (companyId: string) => void
 ): void {
@@ -141,7 +141,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
       (storedCompany): void => {
         cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${frameworkDataType}/upload`);
-        formFill(testData);
+        formFill(testData, storedCompany);
         submitFilledInEuTaxonomyForm(submissionDataIntercept);
         afterDatasetSubmission(storedCompany.companyId);
       }
@@ -170,5 +170,6 @@ export function submitFilledInEuTaxonomyForm(
   cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then((interception) => {
     expect(interception.response?.statusCode).to.eq(200);
   });
+  cy.wait(4000);
   cy.contains("td", "EU Taxonomy");
 }
