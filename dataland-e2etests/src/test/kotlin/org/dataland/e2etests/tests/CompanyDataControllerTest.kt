@@ -63,12 +63,7 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
-        val expectedDataset = apiAccessor.uploadSingleFrameworkDataSet(
-            companyId = uploadInfo.actualStoredCompany.companyId,
-            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-            reportingPeriod = "2023",
-            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-        ).copy(qaStatus = QaStatus.accepted, currentlyActive = true, uploaderUserId = null)
+        val expectedDataset = uploadTestDataSet(uploadInfo.actualStoredCompany.companyId)
         val getCompaniesOnlyByNameResponse = apiAccessor.getCompaniesOnlyByName(
             uploadInfo.actualStoredCompany.companyInformation.companyName,
         )
@@ -122,12 +117,7 @@ class CompanyDataControllerTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its country code and sector`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
-        val expectedDataMetaInfo = apiAccessor.uploadSingleFrameworkDataSet(
-            companyId = uploadInfo.actualStoredCompany.companyId,
-            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-            reportingPeriod = "2023",
-            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-        )
+        val expectedDataMetaInfo = uploadTestDataSet(uploadInfo.actualStoredCompany.companyId)
         val expectedStoredCompany = uploadInfo.actualStoredCompany
             .copy(dataRegisteredByDataland = listOf(expectedDataMetaInfo))
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
@@ -163,12 +153,7 @@ class CompanyDataControllerTest {
         val allCompaniesListSizeBefore = apiAccessor.getNumberOfStoredCompanies()
         val listOfUploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(3)
         listOfUploadInfo.forEach {
-            apiAccessor.uploadSingleFrameworkDataSet(
-                companyId = it.actualStoredCompany.companyId,
-                frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-                reportingPeriod = "2023",
-                frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-            )
+            uploadTestDataSet(it.actualStoredCompany.companyId)
         }
         val allCompaniesListSizeAfter = apiAccessor.getNumberOfStoredCompanies()
         assertEquals(
@@ -194,12 +179,7 @@ class CompanyDataControllerTest {
             CompanyDataControllerApi.IdentifierType_existsIdentifier.permId,
             uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
         )
-        apiAccessor.uploadSingleFrameworkDataSet(
-            companyId = uploadInfo.actualStoredCompany.companyId,
-            frameworkData = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0],
-            reportingPeriod = "2023",
-            frameworkDataUploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-        )
+        uploadTestDataSet(uploadInfo.actualStoredCompany.companyId)
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
                 apiAccessor.frameworkData,
