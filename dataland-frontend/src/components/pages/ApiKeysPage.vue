@@ -189,7 +189,7 @@ export default defineComponent({
   },
   computed: {
     pageTitle() {
-      if (this.pageState === "view") return "API Keys";
+      if (this.pageState === "view") return "API Key";
       if (this.pageState === "create") return "Create new API Key";
       return "API";
     },
