@@ -6,13 +6,13 @@ import { DataTypeEnum } from "@clients/backend";
 
 // ----------------------DATALAND SETTINGS----------------------
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-export const DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES = (import.meta.env.VITE_DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES as number) * 1000000;
+export const DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES = import.meta.env.VITE_DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES * 1000000;
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-export const DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES = (import.meta.env.VITE_DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES as number) * 1000000;
+export const DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES = import.meta.env.VITE_DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES * 1000000;
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-export const MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY = (import.meta.env.VITE_MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY as number);
+export const MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY = import.meta.env.VITE_MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY;
 
 
 
