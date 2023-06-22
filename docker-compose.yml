@@ -204,6 +204,8 @@ services:
     image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
     networks:
       - internal
+    environment:
+      <<: *common-dataland-settings
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
