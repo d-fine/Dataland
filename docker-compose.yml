@@ -69,7 +69,7 @@ services:
     depends_on:
       - api-key-manager-db
     environment:
-      <: *common-dataland-settings
+      <<: *common-dataland-settings
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   api-key-manager-db:
@@ -99,7 +99,7 @@ services:
     expose:
       - "8080"
     environment:
-      <: *rabbit-mq-user-and-pass
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
     depends_on:
