@@ -1,7 +1,7 @@
 import { Interception } from "cypress/types/net-stubbing";
 import { describeIf } from "@e2e/support/TestUtility";
 import { InviteMetaInfoEntity } from "@clients/backend";
-import { DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
+import {getStringCypressEnv} from "@e2e/utils/Cypress";
 
 describe("As a user I expect a data request page where I can download an excel template, fill it, and submit it", (): void => {
   describeIf(
@@ -166,7 +166,7 @@ describe("As a user I expect a data request page where I can download an excel t
         [
           {
             filename: tooLargeFilename,
-            fileSize: DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES + 1,
+            fileSize: getStringCypressEnv("DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES") + 1,
             errorMessage: "Invalid file size",
           },
           {
