@@ -3309,7 +3309,13 @@
           "productionSteps": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LksgProductionStep"
+              "type": "string"
+            }
+          },
+          "relatedCorporateSupplyChain": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }
@@ -3423,20 +3429,6 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/LksgProductCategory"
-            }
-          }
-        }
-      },
-      "LksgProductionStep": {
-        "type": "object",
-        "properties": {
-          "productionStepName": {
-            "type": "string"
-          },
-          "relatedCorporateSupplyChain": {
-            "type": "array",
-            "items": {
-              "type": "string"
             }
           }
         }

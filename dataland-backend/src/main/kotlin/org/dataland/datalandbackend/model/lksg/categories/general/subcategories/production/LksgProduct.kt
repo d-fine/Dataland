@@ -6,5 +6,6 @@ package org.dataland.datalandbackend.model.lksg.categories.general.subcategories
  */
 data class LksgProduct(
     val productName: String?, // TODO this should be required, I guess. Data dictionary says optional
-    val productionSteps: List<LksgProductionStep>?,
+    val productionSteps: List<String>?,
+    val relatedCorporateSupplyChain: List<String>?,
 )

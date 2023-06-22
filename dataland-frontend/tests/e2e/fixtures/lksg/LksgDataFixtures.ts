@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker/locale/de";
 import {
-  LksgAddress,
-  LksgData,
+  LksgAddress, LksgCountryAssociatedSuppliers,
+  LksgData, LksgProduct, LksgProductCategory,
   LksgProductionSite,
   NationalOrInternationalMarket,
   ShareOfTemporaryWorkers,
@@ -31,6 +31,10 @@ export function generateLksgFixture(numFixtures: number, undefinedProbability = 
   );
 }
 
+function generateArray<T>(generator: () => T, min: number = 0, max: number = 5): T[] {
+  return Array.from({ length: faker.number.int({ min, max }) }, () => generator());
+}
+
 /**
  * Generates a random production site
  * @param undefinedProbability the percentage of undefined values in the returned production site
@@ -50,19 +54,70 @@ export function generateProductionSite(undefinedProbability = 0.5): LksgProducti
  * @returns 0 to 5 random production sites
  */
 export function generateArrayOfProductionSites(undefinedProbability = 0.5): LksgProductionSite[] {
-  return Array.from({ length: faker.number.int({ min: 0, max: 5 }) }, () =>
+  return generateArray(() =>
     generateProductionSite(undefinedProbability)
   );
 }
 
 /**
- * Generates a random list of goods or services
- * @returns random list of goods or services
+ * Generates a random product
+ * @returns a random product
+ */
+function generateProduct(): LksgProduct {
+  return {
+    productName: valueOrUndefined(faker.commerce.productName()),
+    productionSteps: valueOrUndefined(generateArray(faker.commerce.productName)),
+    relatedCorporateSupplyChain: valueOrUndefined(generateArray(faker.commerce.productName)),
+  };
+}
+
+/**
+ * Generates a random company associated supplier
+ * @returns random company associated supplier
+ */
+function generateCompanyAssociatedSupplier(): LksgCountryAssociatedSuppliers {
+  return {
+    country: generateIso2CountryCode(), // TODO should this be extended to all strings? just because the backend would accept it
+    numberOfSuppliers: randomNumber(10),
+  };
+}
+
+/**
+ * Generates a random product category
+ * @returns random product category
+ */
+function generateProductCategory(): LksgProductCategory {
+  return {
+    definitionProductTypeService: valueOrUndefined(generateArray(faker.commerce.productName)),
+    suppliersPerCountry: valueOrUndefined(generateArray(generateCompanyAssociatedSupplier)),
+    orderVolume: valueOrUndefined(randomPercentageValue()),
+  };
+}
+
+/**
+ * Generates a random map of product categories
+ * @returns random map of product categories
+ */
+function generateProductCategories(): { [key: string]: LksgProductCategory } {
+  return Object.fromEntries(
+    new Map<string, LksgProductCategory>(
+        Array.from(
+            { length: faker.number.int({ min: 0, max: 5 }) },
+            () => [faker.commerce.productName(), generateProductCategory()]
+        )
+    )
+  );
+}
+
+/**
+ * Generates a random array of goods or services
+ * @returns random array of goods or services
  */
 export function generateListOfGoodsOrServices(): string[] {
-  return Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => {
-    return faker.commerce.productName();
-  });
+  return generateArray(() =>
+    faker.commerce.productName(),
+    1,
+  );
 }
 
 /**
@@ -139,6 +194,8 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
           undefinedProbability
         ),
         specificProcurement: valueOrUndefined(randomYesNo(), undefinedProbability),
+        mostImportantProducts: valueOrUndefined(generateArray(generateProduct), undefinedProbability),
+        productCategories: valueOrUndefined(generateProductCategories(), undefinedProbability),
       },
     },
     governance: {
