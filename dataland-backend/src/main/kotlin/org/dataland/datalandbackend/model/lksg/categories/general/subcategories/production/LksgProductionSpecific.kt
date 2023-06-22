@@ -29,4 +29,9 @@ data class LksgProductionSpecific(
     val market: NationalOrInternationalMarket?,
 
     val specificProcurement: YesNo?,
+
+    val mostImportantProducts: List<LksgProduct>,
+
+    // TODO Since it is unclear of the amount of product categories is only a small set, String is used for now
+    val productCategories: Map<String, LksgProductCategory>,
 )

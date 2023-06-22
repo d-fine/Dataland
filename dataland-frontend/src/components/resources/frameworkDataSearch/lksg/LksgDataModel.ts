@@ -235,6 +235,29 @@ export const lksgDataModel = [
           },
         ],
       },
+      {
+        name: "productionSpecificOwnOperations",
+        label: "Production-specific - Own Operations",
+        fields: [
+          {
+            name: "mostImportantProducts",
+            label: "Most Important Products",
+            description:
+              "Please give an overview of the most important products or services in terms of sales that your company manufactures and/or distributes or offers (own operations)",
+            component: "MostImportantProductsFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: "productCategories",
+            label: "Product Categories",
+            description: "Name their procurement categories (products, raw materials, services) (own operations)",
+            component: "ProductCategoriesFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
     ],
   },
   {

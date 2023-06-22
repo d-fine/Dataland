@@ -2929,6 +2929,18 @@
           }
         }
       },
+      "LksgCountryAssociatedSuppliers": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "numberOfSuppliers": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "LksgData": {
         "required": [
           "general"
@@ -3288,6 +3300,40 @@
           }
         }
       },
+      "LksgProduct": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string"
+          },
+          "productionSteps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LksgProductionStep"
+            }
+          }
+        }
+      },
+      "LksgProductCategory": {
+        "type": "object",
+        "properties": {
+          "definitionProductTypeService": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "suppliersPerCountry": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LksgCountryAssociatedSuppliers"
+            }
+          },
+          "orderVolume": {
+            "type": "number"
+          }
+        }
+      },
       "LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention": {
         "type": "object",
         "properties": {
@@ -3366,6 +3412,32 @@
           },
           "specificProcurement": {
             "$ref": "#/components/schemas/YesNo"
+          },
+          "mostImportantProducts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LksgProduct"
+            }
+          },
+          "productCategories": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LksgProductCategory"
+            }
+          }
+        }
+      },
+      "LksgProductionStep": {
+        "type": "object",
+        "properties": {
+          "productionStepName": {
+            "type": "string"
+          },
+          "relatedCorporateSupplyChain": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
