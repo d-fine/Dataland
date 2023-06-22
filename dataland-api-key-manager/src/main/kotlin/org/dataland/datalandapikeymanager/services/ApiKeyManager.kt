@@ -22,7 +22,7 @@ import java.time.Instant
 @Component("ApiKeyManager")
 class ApiKeyManager(
     @Autowired private val apiKeyRepository: ApiKeyRepository,
-    @Value("\${dataland.max-days-selectable-for-api-key-validity:365}")
+    @Value("\${dataland.max-days-selectable-for-api-key-validity}")
     private val maxDaysSelectableForApiKeyValidity: Int,
 ) {
 

@@ -82,6 +82,16 @@ class DataRetrievalViaApiKeyTest {
         )
     }
 
+    private val valueFromEnv = System.getenv("MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY")
+
+    private val defaultValue = 365
+
+    private val maxNumberOfDaysSelectableForApiKeyValidity = if (valueFromEnv.isNullOrEmpty()) {
+        defaultValue
+    } else {
+        valueFromEnv.toInt()
+    }
+
     @AfterEach
     fun `delete the API key from Backend client to ensure clean state`() {
         GlobalAuth.setBearerToken(null)
@@ -151,7 +161,7 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `generate an API key with the current max value for daysValid then validate it`() {
-        val daysValidMax = 3650
+        val daysValidMax = maxNumberOfDaysSelectableForApiKeyValidity
         val technicalUser = TechnicalUser.Reader
         val apiKeyToValidate = apiKeyHelper
             .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValidMax).apiKey
@@ -175,7 +185,7 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `generate an API key with a too large value for daysValid and assert that exception is thrown`() {
-        val daysValidTooLarge = 3651
+        val daysValidTooLarge = maxNumberOfDaysSelectableForApiKeyValidity + 1
         val technicalUser = TechnicalUser.Reader
         val exception =
             assertThrows<ApiKeyManagerClientException> {

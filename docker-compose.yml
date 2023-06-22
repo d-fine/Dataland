@@ -5,6 +5,12 @@ version: "3.8"
 # testing: The profile to be used for testing in the CI (i.e.: starts a testing-container along with the rest of the stack)
 # development: The profile to be used for local development. Leaves out frontend and backend
 # init: The profile to be used if keycloak-db should be re-initialized
+x-common-dataland-settings: &common-dataland-settings
+  MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY: 3650
+x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
+  RABBITMQ_USER: ${RABBITMQ_USER}
+  RABBITMQ_PASS: ${RABBITMQ_PASS}
+
 
 services:
   proxy:
@@ -60,6 +66,7 @@ services:
     depends_on:
       - api-key-manager-db
     environment:
+      <<: *common-dataland-settings
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   api-key-manager-db:
@@ -89,9 +96,8 @@ services:
     expose:
       - "8080"
     environment:
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
     depends_on:
       - document-manager-db
@@ -124,14 +130,13 @@ services:
     depends_on:
       - backend-db
     environment:
+      <<: *rabbit-mq-user-and-pass
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       MAILJET_API_SECRET: ${MAILJET_API_SECRET}
       MAILJET_API_ID: ${MAILJET_API_ID}
       INVITATION_REQUEST_RECEIVERS: ${INVITATION_REQUEST_RECEIVERS}
       INVITATION_REQUEST_CC: ${INVITATION_REQUEST_CC}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
   backend-db:
     restart: always
     profiles: ["production", "testing", "development"]
@@ -157,6 +162,8 @@ services:
     volumes:
       - ./.git:/app/.git
     environment:
+      <<: *common-dataland-settings
+      <<: *rabbit-mq-user-and-pass
       KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${KEYCLOAK_DATALAND_ADMIN_PASSWORD}
       KEYCLOAK_REVIEWER_PASSWORD: ${KEYCLOAK_REVIEWER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
@@ -164,8 +171,6 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
       REALDATA: ${REALDATA}
       CYPRESS_EXECUTION_ENVIRONMENT: ${CYPRESS_EXECUTION_ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
@@ -189,6 +194,7 @@ services:
       - frontend-dev-node-modules:/app/node_modules
     command: sh -c "cd /app && npm install && npm run dev"
     environment:
+      <<: *common-dataland-settings
       POLLING: "false"
   frontend:
     restart: always
@@ -204,10 +210,9 @@ services:
       - internal
       - internal-storage-db
     environment:
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
     depends_on:
       - internal-storage-db
@@ -354,8 +359,7 @@ services:
     expose:
       - "8080"
     environment:
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
     depends_on:
