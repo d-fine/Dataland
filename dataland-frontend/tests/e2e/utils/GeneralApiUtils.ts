@@ -155,7 +155,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
  * @param submissionDataIntercept function that asserts content of an intercepted request
  */
 export function submitFilledInEuTaxonomyForm(
-  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
+  submissionDataIntercept?: (request: CyHttpMessages.IncomingHttpRequest) => void
 ): void {
   const postRequestAlias = "postDataAlias";
   cy.intercept(

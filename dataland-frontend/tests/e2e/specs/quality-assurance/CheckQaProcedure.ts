@@ -4,6 +4,7 @@ import { login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
 import {
+  fillAndValidateEuTaxonomyCreditInstitutionForm,
   fillEligibilityKpis,
   fillEuTaxonomyForFinancialsRequiredFields,
   fillField,
@@ -35,40 +36,13 @@ describeIf(
         DataTypeEnum.EutaxonomyFinancials,
         testCompany,
         testData.t,
-        fillEuTaxonomyForm,
+        (data) => fillAndValidateEuTaxonomyCreditInstitutionForm(data),
         (req) => (req.headers["REQUIRE-QA"] = "true"),
         () => testSubmittedDatasetIsInReviewList(companyName)
       );
     });
   }
 );
-
-/**
- * Fills the eutaxonomy-financials upload form with the given dataset
- * @param data the data to fill the form with
- */
-function fillEuTaxonomyForm(data: EuTaxonomyDataForFinancials): void {
-  fillEuTaxonomyForFinancialsRequiredFields(data);
-
-  cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
-    .click()
-    .get("div.p-multiselect-panel")
-    .find("li.p-multiselect-item")
-    .first()
-    .click({ force: true });
-
-  cy.get('[data-test="addKpisButton"]').click({ force: true });
-
-  fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
-  fillField(
-    "creditInstitutionKpis",
-    "tradingPortfolioAndInterbankLoans",
-    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans
-  );
-  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
-  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
-  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
-}
 
 /**
  * Tests that the item was added and is visible on the QA list

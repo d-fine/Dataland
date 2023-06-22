@@ -1,13 +1,11 @@
 import { DataTypeEnum, EuTaxonomyDataForFinancials, StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
-import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import {
-  fillEligibilityKpis,
-  fillEuTaxonomyForFinancialsRequiredFields,
-  fillField,
-} from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
+import { getKeycloakToken } from "@e2e/utils/Auth";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { admin_name, admin_pw } from "@e2e/utils/Cypress";
+import { addCreditInstitutionDataset } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 describeIf(
   "As a user, I expect to be able to edit datasets with multiple reporting periods",
@@ -29,14 +27,18 @@ describeIf(
     });
 
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
-      uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
-        DataTypeEnum.EutaxonomyFinancials,
-        testCompany,
-        testData.t,
-        (data, company) => addTwoDatasetsWithDifferentReportingPeriods(data, company),
-        () => void 0,
-        testEditDataButton
-      );
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompany.companyName)).then(
+          (storedCompany): void => {
+            cy.ensureLoggedIn(admin_name, admin_pw);
+            cy.visitAndCheckAppMount(
+              `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
+            );
+            addTwoDatasetsWithDifferentReportingPeriods(testData.t, storedCompany);
+            testEditDataButton(storedCompany);
+          }
+        );
+      });
     });
   }
 );
@@ -51,49 +53,37 @@ function addTwoDatasetsWithDifferentReportingPeriods(
   storedCompany: StoredCompany
 ): void {
   addCreditInstitutionDataset(data, "2022");
-  cy.pause();
+
+  cy.visit("/companies").wait(4000);
   cy.visitAndCheckAppMount(
     `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
   );
+
   addCreditInstitutionDataset(data, "2021");
 }
 
 /**
- * Fills the eutaxonomy-financials upload form with the given dataset
- * @param data the data to fill the form with
- * @param reportingPeriod (optional) to specify reporting period
- */
-function addCreditInstitutionDataset(data: EuTaxonomyDataForFinancials, reportingPeriod?: string): void {
-  fillEuTaxonomyForFinancialsRequiredFields(data, reportingPeriod);
-
-  cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
-    .click()
-    .get("div.p-multiselect-panel")
-    .find("li.p-multiselect-item")
-    .first()
-    .click({ force: true });
-
-  cy.get('[data-test="addKpisButton"]').click({ force: true });
-
-  fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
-  fillField(
-    "creditInstitutionKpis",
-    "tradingPortfolioAndInterbankLoans",
-    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans
-  );
-  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
-  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
-  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
-
-  cy.wait(4000);
-  cy.get('button[data-test="submitButton"]').click();
-  cy.wait(4000);
-  cy.visit("/companies").wait(1000);
-}
-
-/**
  * Tests that the item was added and is visible on the QA list
+ * @param storedCompany details of the company that was created
  */
-function testEditDataButton(): void {
-  cy.pause();
+function testEditDataButton(storedCompany: StoredCompany): void {
+  cy.visit("/companies").wait(4000);
+
+  cy.get('[data-test="search-result-framework-data"] .p-datatable-tbody')
+    .first()
+    .should("exist")
+    .should("contain", storedCompany.companyInformation.companyName)
+    .click();
+
+  // cy.get('[data-test="search-result-framework-data"]').first().click({ force: true });
+  cy.get('[data-test="editDatasetButton"').should("exist").click();
+  cy.get('[data-test="select-reporting-period-dialog"')
+    .should("exist")
+    .get('[data-test="reporting-periods"')
+    .last()
+    .should("contain", "2021")
+    .click();
+
+  cy.get('[data-test="companyNameTitle"').should("contain", storedCompany.companyInformation.companyName);
+  cy.get('[data-test="reportingPeriod" input').should("contain", "2021");
 }

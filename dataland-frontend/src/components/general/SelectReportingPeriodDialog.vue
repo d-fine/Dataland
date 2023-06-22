@@ -1,9 +1,11 @@
 <template>
-  <h4 class="title">SELECT YEAR</h4>
-  <div class="three-in-row">
-    <router-link v-for="(el, index) in dataTableContents" :key="index" class="link" :to="el.editUrl">{{
-      el.reportingPeriod
-    }}</router-link>
+  <div data-test="select-reporting-period-dialog">
+    <h4 class="title">SELECT YEAR</h4>
+    <div class="three-in-row" data-test="reporting-periods">
+      <router-link v-for="(el, index) in dataTableContents" :key="index" class="link" :to="el.editUrl">{{
+        el.reportingPeriod
+      }}</router-link>
+    </div>
   </div>
 </template>
 

@@ -13,6 +13,7 @@
       @row-click="goToData"
       class="table-cursor"
       id="search-result-framework-data"
+      data-test="search-result-framework-data"
       :rowHover="true"
     >
       <Column

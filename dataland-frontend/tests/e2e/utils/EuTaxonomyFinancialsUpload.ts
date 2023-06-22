@@ -323,3 +323,58 @@ export function fillEuTaxonomyForFinancialsRequiredFields(
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
   cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
 }
+
+/**
+ * Fills the eutaxonomy-financials upload form with the given dataset
+ * @param data the data to fill the form with
+ * @param reportingPeriod
+ */
+export function fillAndValidateEuTaxonomyCreditInstitutionForm(
+  data: EuTaxonomyDataForFinancials,
+  reportingPeriod?: string
+): void {
+  fillEuTaxonomyForFinancialsRequiredFields(data, reportingPeriod);
+
+  cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
+    .click()
+    .get("div.p-multiselect-panel")
+    .find("li.p-multiselect-item")
+    .each(($el) => {
+      cy.wrap($el).click({ force: true });
+    });
+
+  cy.get('[data-test="addKpisButton"]').click({ force: true });
+
+  cy.get('[data-test="removeSectionButton"]').each(($el, index) => {
+    if (index > 0) {
+      cy.wrap($el).click({ force: true });
+    }
+  });
+
+  cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
+
+  fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
+  fillField(
+    "creditInstitutionKpis",
+    "tradingPortfolioAndInterbankLoans",
+    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans
+  );
+  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
+  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
+  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
+}
+
+/**
+ * Fills the eutaxonomy-financials upload form with the given dataset
+ * @param data the data to fill the form with
+ * @param reportingPeriod (optional) to specify reporting period
+ * @param submissionDataIntercept function that asserts content of an intercepted request
+ */
+export function addCreditInstitutionDataset(
+  data: EuTaxonomyDataForFinancials,
+  reportingPeriod?: string,
+  submissionDataIntercept?: (request: CyHttpMessages.IncomingHttpRequest) => void
+): void {
+  fillAndValidateEuTaxonomyCreditInstitutionForm(data, reportingPeriod);
+  submitFilledInEuTaxonomyForm(submissionDataIntercept);
+}
