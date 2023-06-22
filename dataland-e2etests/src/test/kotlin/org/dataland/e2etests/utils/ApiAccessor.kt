@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuT
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -220,7 +221,7 @@ class ApiAccessor {
     private fun ensureQaIsPassed(metaDatas: List<DataMetaInformation>): List<DataMetaInformation> {
         await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedForMetaDataList(metaDatas) }
         val updatedMetaDatas = mutableListOf<DataMetaInformation>()
-        metaDatas.forEach() { metaData ->
+        metaDatas.forEach { metaData ->
             updatedMetaDatas.add(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
         }
         return updatedMetaDatas
@@ -415,6 +416,12 @@ class ApiAccessor {
         )
         Thread.sleep(waitTime)
         return uploadedMetaData
+    }
+    fun createCompanyIdentifier(type: CompanyIdentifier.IdentifierType, value: String): CompanyIdentifier {
+        return CompanyIdentifier(
+            type,
+            value,
+        )
     }
 }
 
