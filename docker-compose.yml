@@ -10,6 +10,9 @@ x-common-dataland-settings: &common-dataland-settings
 x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
   RABBITMQ_USER: ${RABBITMQ_USER}
   RABBITMQ_PASS: ${RABBITMQ_PASS}
+x-mailjet-api-id-and-secret: &mailjet-api-id-and-secret
+  MAILJET_API_SECRET: ${MAILJET_API_SECRET}
+  MAILJET_API_ID: ${MAILJET_API_ID}
 
 
 services:
@@ -131,10 +134,9 @@ services:
       - backend-db
     environment:
       <<: *rabbit-mq-user-and-pass
+      <<: *mailjet-api-id-and-secret
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      MAILJET_API_SECRET: ${MAILJET_API_SECRET}
-      MAILJET_API_ID: ${MAILJET_API_ID}
       INVITATION_REQUEST_RECEIVERS: ${INVITATION_REQUEST_RECEIVERS}
       INVITATION_REQUEST_CC: ${INVITATION_REQUEST_CC}
   backend-db:
@@ -281,6 +283,7 @@ services:
       - ./dataland-keycloak/users:/keycloak_users
     command: initialize
     environment:
+      <<: *mailjet-api-id-and-secret
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
@@ -297,8 +300,6 @@ services:
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
       KEYCLOAK_LINKEDIN_ID: ${KEYCLOAK_LINKEDIN_ID}
       KEYCLOAK_LINKEDIN_SECRET: ${KEYCLOAK_LINKEDIN_SECRET}
-      MAILJET_API_SECRET: ${MAILJET_API_SECRET}
-      MAILJET_API_ID: ${MAILJET_API_ID}
     expose:
       - "8080"
     depends_on:
