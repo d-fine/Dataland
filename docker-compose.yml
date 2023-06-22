@@ -7,6 +7,7 @@ version: "3.8"
 # init: The profile to be used if keycloak-db should be re-initialized
 x-common-dataland-settings: &common-dataland-settings
   MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY: 3650
+  # TODO set this in setEnvs too so local instance can run
 x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
   RABBITMQ_USER: ${RABBITMQ_USER}
   RABBITMQ_PASS: ${RABBITMQ_PASS}
