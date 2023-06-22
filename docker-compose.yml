@@ -163,7 +163,7 @@ services:
     volumes:
       - ./.git:/app/.git
     environment:
-      <<: [*rabbit-mq-user-and-pass, *mailjet-api-id-and-secret. *common-dataland-settings]
+      <<: [*rabbit-mq-user-and-pass, *mailjet-api-id-and-secret, *common-dataland-settings]
       KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${KEYCLOAK_DATALAND_ADMIN_PASSWORD}
       KEYCLOAK_REVIEWER_PASSWORD: ${KEYCLOAK_REVIEWER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
