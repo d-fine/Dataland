@@ -1,14 +1,9 @@
 import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { login } from "@e2e/utils/Auth";
-import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
+import { prepareUniqueCompany } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
-import {
-  fillAndValidateEuTaxonomyCreditInstitutionForm,
-  fillEligibilityKpis,
-  fillEuTaxonomyForFinancialsRequiredFields,
-  fillField,
-} from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { fillAndValidateEuTaxonomyCreditInstitutionForm, prepareFixture } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
@@ -20,13 +15,11 @@ describeIf(
   },
   function () {
     let testData: FixtureData<EuTaxonomyDataForFinancials>;
-    const uuid = new Date().getTime();
-    const companyName = `company-for-testing-qa-${uuid}`;
-    const testCompany = generateDummyCompanyInformation(companyName);
+    const testCompany = prepareUniqueCompany("company-for-testing-qa");
 
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+      const fixtureType = "CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures";
+      prepareFixture<EuTaxonomyDataForFinancials>(fixtureType).then((preparedFixtures) => {
         testData = getPreparedFixture("company-for-all-types", preparedFixtures);
       });
     });
@@ -38,7 +31,7 @@ describeIf(
         testData.t,
         (data) => fillAndValidateEuTaxonomyCreditInstitutionForm(data),
         (req) => (req.headers["REQUIRE-QA"] = "true"),
-        () => testSubmittedDatasetIsInReviewList(companyName)
+        () => testSubmittedDatasetIsInReviewList(testCompany.companyName)
       );
     });
   }

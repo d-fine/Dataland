@@ -1,11 +1,10 @@
 import { DataTypeEnum, EuTaxonomyDataForFinancials, StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { generateDummyCompanyInformation, prepareUniqueCompany, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { addCreditInstitutionDataset } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { addCreditInstitutionDataset, prepareFixture } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { CyHttpMessages } from "cypress/types/net-stubbing";
 
 describeIf(
   "As a user, I expect to be able to edit datasets with multiple reporting periods",
@@ -15,13 +14,11 @@ describeIf(
   },
   function () {
     let testData: FixtureData<EuTaxonomyDataForFinancials>;
-    const uuid = new Date().getTime();
-    const companyName = `company-for-testing-edit-button-${uuid}`;
-    const testCompany = generateDummyCompanyInformation(companyName);
+    const testCompany = prepareUniqueCompany("company-for-testing-edit-button");
 
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+      const fixtureType = "CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures";
+      prepareFixture<EuTaxonomyDataForFinancials>(fixtureType).then((preparedFixtures) => {
         testData = getPreparedFixture("company-for-all-types", preparedFixtures);
       });
     });
@@ -75,7 +72,6 @@ function testEditDataButton(storedCompany: StoredCompany): void {
     .should("contain", storedCompany.companyInformation.companyName)
     .click();
 
-  // cy.get('[data-test="search-result-framework-data"]').first().click({ force: true });
   cy.get('[data-test="editDatasetButton"').should("exist").click();
   cy.get('[data-test="select-reporting-period-dialog"')
     .should("exist")

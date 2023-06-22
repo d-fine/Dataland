@@ -327,7 +327,7 @@ export function fillEuTaxonomyForFinancialsRequiredFields(
 /**
  * Fills the eutaxonomy-financials upload form with the given dataset
  * @param data the data to fill the form with
- * @param reportingPeriod
+ * @param reportingPeriod (optional) to specify reporting period
  */
 export function fillAndValidateEuTaxonomyCreditInstitutionForm(
   data: EuTaxonomyDataForFinancials,
@@ -377,4 +377,14 @@ export function addCreditInstitutionDataset(
 ): void {
   fillAndValidateEuTaxonomyCreditInstitutionForm(data, reportingPeriod);
   submitFilledInEuTaxonomyForm(submissionDataIntercept);
+}
+
+/**
+ * @param fixtureType name of fixture data to prepare
+ * @returns cypress chainable fixture containing array of fixture data
+ */
+export function prepareFixture<T>(fixtureType: string): Chainable<FixtureData<T>[]> {
+  return cy.fixture(fixtureType).then(function (jsonContent) {
+    return jsonContent as Array<FixtureData<T>>;
+  });
 }
