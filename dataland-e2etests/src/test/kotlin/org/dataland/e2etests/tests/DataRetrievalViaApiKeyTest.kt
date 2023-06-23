@@ -4,10 +4,10 @@ import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyResponse
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.e2etests.MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY
 import org.dataland.e2etests.auth.ApiKeyAuthenticationHelper
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
-import org.dataland.e2etests.maxNumberOfDaysSelectableForApiKeyValidity
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DatesHandler
 import org.junit.jupiter.api.AfterEach
@@ -152,7 +152,7 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `generate an API key with the current max value for daysValid then validate it`() {
-        val daysValidMax = maxNumberOfDaysSelectableForApiKeyValidity
+        val daysValidMax = MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY
         val technicalUser = TechnicalUser.Reader
         val apiKeyToValidate = apiKeyHelper
             .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValidMax).apiKey
@@ -176,7 +176,7 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `generate an API key with a too large value for daysValid and assert that exception is thrown`() {
-        val daysValidTooLarge = maxNumberOfDaysSelectableForApiKeyValidity + 1
+        val daysValidTooLarge = MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY + 1
         val technicalUser = TechnicalUser.Reader
         val exception =
             assertThrows<ApiKeyManagerClientException> {

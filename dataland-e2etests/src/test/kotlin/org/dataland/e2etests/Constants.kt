@@ -45,9 +45,8 @@ val FRONTEND_DISPLAYED_FRAMEWORKS = listOf(
 
 // Set maxNumberOfDaysSelectableForApiKeyValidity
 private val valueFromEnv = System.getenv("MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY")
-private const val DEFAULT = 365
-val maxNumberOfDaysSelectableForApiKeyValidity = if (valueFromEnv.isNullOrEmpty()) {
-    DEFAULT
+val MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY = if (valueFromEnv.isNullOrEmpty()) {
+    365
 } else {
     valueFromEnv.toInt()
 }
