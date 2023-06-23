@@ -290,7 +290,7 @@ export function getSectorGeneral(undefinedProbability: number, sectors: Array<P2
 export function generateP2pData(undefinedProbability = 0.5): PathwaysToParisData {
   const sectors = faker.helpers.arrayElements(Object.values(P2pSector));
 
-  const p2pFixture: PathwaysToParisData = {
+  return {
     general: getSectorGeneral(undefinedProbability, sectors),
     ammonia: sectors.indexOf("Ammonia") != -1 ? getSectorAmmonia(undefinedProbability) : undefined,
     automotive: sectors.indexOf("Automotive") != -1 ? getSectorAutomotive(undefinedProbability) : undefined,
@@ -310,6 +310,4 @@ export function generateP2pData(undefinedProbability = 0.5): PathwaysToParisData
       sectors.indexOf("LivestockFarming") != -1 ? getSectorLivestockFarming(undefinedProbability) : undefined,
     cement: sectors.indexOf("Cement") != -1 ? getSectorCement(undefinedProbability) : undefined,
   };
-
-  return p2pFixture;
 }
