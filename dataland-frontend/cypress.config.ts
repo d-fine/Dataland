@@ -34,7 +34,7 @@ export default defineConfig({
         PGADMIN_PASSWORD: process.env.PGADMIN_PASSWORD,
         RABBITMQ_PASS: process.env.RABBITMQ_PASS,
         RABBITMQ_USER: process.env.RABBITMQ_USER,
-        DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: process.env.DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES // TODO this needs to be fixed since this doesnt run in a container!
+        DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: process.env.DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES || "2"
     },
     numTestsKeptInMemory: 2,
     defaultCommandTimeout: 10000,
