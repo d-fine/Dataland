@@ -20,8 +20,9 @@ import SessionDialog from "@/components/general/SessionDialog.vue";
 import { useSharedSessionStateStore } from "@/stores/Stores";
 import { SessionDialogMode } from "@/utils/SessionTimeoutUtils";
 import {
-    DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES, DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
-    MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY
+  DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+  DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+  MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY,
 } from "@/utils/Constants";
 
 export default defineComponent({
@@ -39,11 +40,11 @@ export default defineComponent({
     },
   },
   mounted() {
-      console.log(MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY) // TODO remove after tests green
-      console.log(DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES)
-      console.log(DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES)
+    console.log(MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY); // TODO remove after tests green
+    console.log(DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES);
+    console.log(DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_BYTES);
 
-      if (useRoute().query.externalLogout === "true") {
+    if (useRoute().query.externalLogout === "true") {
       this.openLogoutModal();
     }
     void this.checkAuthenticatedAndRedirectIfLoggedIn();
