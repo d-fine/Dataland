@@ -174,8 +174,9 @@
                               :name="`${detailCashFlowType}CapEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :valueType="detailCashFlowType.includes('Percentage') ? 'percent' : 'number'"
+                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfAllCompanyReportsForTheDataset"
+                              :showSecondInput="true"
                             />
                           </div>
                         </FormKit>
@@ -207,8 +208,9 @@
                               :name="`${detailCashFlowType}OpEx`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :valueType="detailCashFlowType.includes('Percentage') ? 'percent' : 'number'"
+                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfAllCompanyReportsForTheDataset"
+                              :showSecondInput="true"
                             />
                           </div>
                         </FormKit>
@@ -240,8 +242,9 @@
                               :name="`${detailCashFlowType}Revenue`"
                               :kpiInfoMappings="euTaxonomyKpiInfoMappings"
                               :kpiNameMappings="euTaxonomyKpiNameMappings"
-                              :valueType="detailCashFlowType.includes('Percentage') ? 'percent' : 'number'"
+                              :valueType="detailCashFlowType === 'total' ? 'number' : 'percent'"
                               :reportsName="namesOfAllCompanyReportsForTheDataset"
+                              :showSecondInput="true"
                             />
                           </div>
                         </FormKit>

@@ -3618,6 +3618,29 @@
           }
         }
       },
+      "DataPointAbsoluteAndPercentageBigDecimal": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/CompanyReportReference"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "valueAsAbsolute": {
+            "type": "number"
+          }
+        }
+      },
       "EuTaxonomyDataForNonFinancials": {
         "type": "object",
         "properties": {
@@ -3666,17 +3689,11 @@
           "totalAmount": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
           },
-          "alignedAmount": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+          "aligned": {
+            "$ref": "#/components/schemas/DataPointAbsoluteAndPercentageBigDecimal"
           },
-          "alignedPercentage": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "eligibleAmount": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
-          },
-          "eligiblePercentage": {
-            "$ref": "#/components/schemas/DataPointBigDecimal"
+          "eligible": {
+            "$ref": "#/components/schemas/DataPointAbsoluteAndPercentageBigDecimal"
           }
         }
       },
