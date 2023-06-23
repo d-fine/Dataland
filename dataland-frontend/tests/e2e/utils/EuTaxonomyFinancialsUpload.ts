@@ -279,16 +279,14 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
 }
 
 /**
- *
+ * Fills the eutaxonomy-financials upload form with the given dataset
  * @param data the data to fill the form with
  * @param reportingPeriod (optional) to specify reporting period
  */
-export function fillEuTaxonomyForFinancialsRequiredFields(
+export function fillAndValidateEuTaxonomyCreditInstitutionForm(
   data: EuTaxonomyDataForFinancials,
   reportingPeriod?: string
 ): void {
-  cy.wait(4000);
-
   if (reportingPeriod && !Number.isNaN(parseInt(reportingPeriod, 10))) {
     cy.get('[data-test="reportingPeriod"]').click();
     cy.get(".p-datepicker .p-yearpicker .p-yearpicker-year").each(($element) => {
@@ -322,18 +320,6 @@ export function fillEuTaxonomyForFinancialsRequiredFields(
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
   cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
-}
-
-/**
- * Fills the eutaxonomy-financials upload form with the given dataset
- * @param data the data to fill the form with
- * @param reportingPeriod (optional) to specify reporting period
- */
-export function fillAndValidateEuTaxonomyCreditInstitutionForm(
-  data: EuTaxonomyDataForFinancials,
-  reportingPeriod?: string
-): void {
-  fillEuTaxonomyForFinancialsRequiredFields(data, reportingPeriod);
 
   cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
     .click()

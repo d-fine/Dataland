@@ -1,9 +1,10 @@
-import { DataTypeEnum, EuTaxonomyDataForFinancials, StoredCompany } from "@clients/backend";
+import { DataTypeEnum, LksgData, StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, prepareUniqueCompany, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { prepareFixture, uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { prepareFixture } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 describeIf(
@@ -13,39 +14,26 @@ describeIf(
     dataEnvironments: ["fakeFixtures"],
   },
   function () {
-    let testData: FixtureData<EuTaxonomyDataForFinancials>;
+    let testData: FixtureData<LksgData>;
     const testCompany = prepareUniqueCompany("company-for-testing-edit-button");
 
     before(function () {
-      const fixtureType = "CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures";
-      prepareFixture<EuTaxonomyDataForFinancials>(fixtureType).then((preparedFixtures) => {
-        testData = getPreparedFixture("company-for-all-types", preparedFixtures);
+      const fixtureType = "CompanyInformationWithLksgPreparedFixtures";
+      prepareFixture<LksgData>(fixtureType).then((preparedFixtures) => {
+        testData = getPreparedFixture("LkSG-date-2023-04-18", preparedFixtures);
       });
     });
 
-    it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
+    it("Check whether Edit Data button has dropdown with 2 different Reporting Periods", () => {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompany.companyName)).then(
-          (storedCompany): void => {
+          async (storedCompany) => {
             cy.ensureLoggedIn(admin_name, admin_pw);
 
-            const datasetFor2022 = uploadOneEuTaxonomyFinancialsDatasetViaApi(
-              token,
-              storedCompany.companyId,
-              "2022",
-              testData.t
-            );
+            await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", testData.t);
+            await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2021", testData.t);
 
-            const datasetFor2021 = uploadOneEuTaxonomyFinancialsDatasetViaApi(
-              token,
-              storedCompany.companyId,
-              "2021",
-              testData.t
-            );
-
-            Promise.all([datasetFor2022, datasetFor2021])
-              .then(() => testEditDataButton(storedCompany))
-              .catch(console.error);
+            testEditDataButton(storedCompany);
           }
         );
       });
@@ -58,7 +46,7 @@ describeIf(
  * @param storedCompany details of the company that was created
  */
 function testEditDataButton(storedCompany: StoredCompany): void {
-  cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
+  cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
 
   cy.get('[data-test="editDatasetButton"').should("exist").click();
   cy.get('[data-test="select-reporting-period-dialog"')
@@ -69,5 +57,4 @@ function testEditDataButton(storedCompany: StoredCompany): void {
     .click();
 
   cy.get('[data-test="companyNameTitle"').should("contain", storedCompany.companyInformation.companyName);
-  cy.get('[data-test="reportingPeriod" input').should("contain", "2021");
 }

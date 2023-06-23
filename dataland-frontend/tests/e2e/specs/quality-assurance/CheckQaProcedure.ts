@@ -48,7 +48,7 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
 
   login(reviewer_name, reviewer_pw);
 
-  cy.visit("/qualityassurance").wait(1000);
+  cy.visitAndCheckAppMount("/qualityassurance");
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
@@ -74,8 +74,7 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresent(companyName: string, status: string): void {
-  cy.visit("/datasets");
-  cy.wait(4000);
+  cy.visitAndCheckAppMount("/datasets");
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody')
     .first()
@@ -92,7 +91,6 @@ function testDatasetPresent(companyName: string, status: string): void {
 function safeLogout(): void {
   cy.get("div[id='profile-picture-dropdown-toggle']")
     .click()
-    .wait(1000)
     .get("a[id='profile-picture-dropdown-logout-anchor']")
     .click();
 }
