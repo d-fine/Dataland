@@ -246,7 +246,7 @@ export const lksgDataModel = [
               "Please give an overview of the most important products or services in terms of sales that your company manufactures and/or distributes or offers (own operations)",
             component: "MostImportantProductsFormField",
             required: false,
-            showIf: (): boolean => true,
+            showIf: (): boolean => true, // TODO this is wrong
           },
           {
             name: "productCategories",
@@ -254,7 +254,7 @@ export const lksgDataModel = [
             description: "Name their procurement categories (products, raw materials, services) (own operations)",
             component: "ProductCategoriesFormField",
             required: false,
-            showIf: (): boolean => true,
+            showIf: (): boolean => true, // TODO this is wrong
           },
         ],
       },
