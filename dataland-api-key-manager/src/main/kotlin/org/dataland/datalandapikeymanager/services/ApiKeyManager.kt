@@ -71,9 +71,9 @@ class ApiKeyManager(
         return when (daysValid) {
             null -> null
             else -> {
-                val daysValidLong = daysValid.toLong()
-                val millisecondsValidLong = (daysValidLong * milliSecondsInADay)
-                millisecondsValidLong + Instant.now().toEpochMilli()
+                val daysValid = daysValid.toLong()
+                val millisecondsValid = (daysValid * milliSecondsInADay)
+                millisecondsValid + Instant.now().toEpochMilli()
             }
         }
     }
