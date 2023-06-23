@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.ApiKeyAuthenticationHelper
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
+import org.dataland.e2etests.maxNumberOfDaysSelectableForApiKeyValidity
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DatesHandler
 import org.junit.jupiter.api.AfterEach
@@ -80,16 +81,6 @@ class DataRetrievalViaApiKeyTest {
             receivedApiKeyMetaInfoFromValidation.validationMessage,
             "The received validation message does not match the expected one.",
         )
-    }
-
-    private val valueFromEnv = System.getenv("MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY")
-
-    private val defaultValue = 365
-
-    private val maxNumberOfDaysSelectableForApiKeyValidity = if (valueFromEnv.isNullOrEmpty()) {
-        defaultValue
-    } else {
-        valueFromEnv.toInt()
     }
 
     @AfterEach
