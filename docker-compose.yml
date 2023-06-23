@@ -7,6 +7,8 @@ version: "3.8"
 # init: The profile to be used if keycloak-db should be re-initialized
 
 
+
+# These are envs/settings which are required for several services and therefore maintained centrally here:
 x-max-number-of-days-selectable-for-api-key-validity: &max-number-of-days-selectable-for-api-key-validity
   MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY: 3650
 x-data-request-upload-max-file-size-in-megabytes: &data-request-upload-max-file-size-in-megabytes
