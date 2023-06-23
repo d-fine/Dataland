@@ -98,7 +98,7 @@ export default defineComponent({
     expiryTimeDropdown: "",
     isExpiryDateValid: true,
     minDate: new Date(new Date().getTime() + MS_PER_DAY),
-    maxDate: new Date(new Date().getTime() + MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY * MS_PER_DAY), // TODO in component test stub this!
+    maxDate: new Date(new Date().getTime() + MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY * MS_PER_DAY),
 
     customDateInMilliseconds: null as null | number,
     days: [
