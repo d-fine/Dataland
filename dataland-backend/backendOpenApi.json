@@ -3624,7 +3624,7 @@
         ],
         "type": "object",
         "properties": {
-          "value": {
+          "valueAsPercentage": {
             "type": "number"
           },
           "quality": {
@@ -3689,10 +3689,10 @@
           "totalAmount": {
             "$ref": "#/components/schemas/DataPointBigDecimal"
           },
-          "aligned": {
+          "alignedData": {
             "$ref": "#/components/schemas/DataPointAbsoluteAndPercentageBigDecimal"
           },
-          "eligible": {
+          "eligibleData": {
             "$ref": "#/components/schemas/DataPointAbsoluteAndPercentageBigDecimal"
           }
         }

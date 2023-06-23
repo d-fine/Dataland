@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
  * Fields of a generic data point and its source
  */
 data class DataPointAbsoluteAndPercentage<T> (
-    val value: T? = null,
+    val valueAsPercentage: T? = null,
 
     @field:JsonProperty(required = true)
     val quality: QualityOptions,
