@@ -10,24 +10,27 @@
           <span class="font-medium text-3xl" data-test="value">{{ percentCalculation }}</span>
           <span>%</span>
         </div>
-        <div v-else class="col-6 grid align-items-center text-right">
+        <div v-else-if="total == undefined && amount == undefined" class="col-6 grid align-items-center text-right">
           <span class="pl-4 font-semibold">No data has been reported </span>
         </div>
       </div>
-      <template v-if="percent !== undefined && percent !== null">
-        <PrimeProgressBar :value="percentCalculation" :showValue="false" class="bg-black-alpha-20 d-progressbar" />
-        <div class="grid mt-4">
-          <div class="col-12 text-left p-0 pl-2" v-if="total !== undefined && total !== null">
-            <template v-if="amount !== undefined && amount !== null">
-              <span class="font-medium text-3xl">€ </span>
-              <span class="font-bold text-4xl">{{ valueWithOrderOfMagnitudeSuffix(amount) }}</span>
-            </template>
-            <p class="left-align">
-              <strong>Out of a total of € {{ valueWithOrderOfMagnitudeSuffix(total) }}</strong>
-            </p>
-          </div>
+      <PrimeProgressBar
+        :value="percentCalculation"
+        :showValue="false"
+        class="bg-black-alpha-20 d-progressbar"
+        v-if="percentCalculation !== undefined"
+      />
+      <div class="grid mt-4">
+        <div class="col-12 text-left p-0 pl-2">
+          <template v-if="amount !== undefined && amount !== null">
+            <span class="font-medium text-3xl">€ </span>
+            <span class="font-bold text-4xl">{{ valueWithOrderOfMagnitudeSuffix(amount) }}</span>
+          </template>
+          <p class="left-align" v-if="total !== undefined && total !== null">
+            <strong>With a total of € {{ valueWithOrderOfMagnitudeSuffix(total) }}</strong>
+          </p>
         </div>
-      </template>
+      </div>
     </template>
   </Card>
 </template>
@@ -57,7 +60,13 @@ export default defineComponent({
   },
   computed: {
     percentCalculation() {
-      return Math.round(this.percent * 100 * 100) / 100;
+      if (typeof this.percent === "number") {
+        return Math.round(this.percent * 100 * 100) / 100;
+      } else if (typeof this.amount === "number" && typeof this.total === "number" && this.total > 0) {
+        return Math.round((this.amount / this.total) * 100 * 100) / 100;
+      } else {
+        return undefined;
+      }
     },
   },
   methods: {
