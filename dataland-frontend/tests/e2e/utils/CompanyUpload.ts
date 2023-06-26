@@ -88,15 +88,3 @@ export async function uploadCompanyViaApi(
   );
   return data.data;
 }
-
-/**
- * A simple util to create a unique company
- * @param companyName the company name which will be suffixed with a unique ID
- * @returns company information with unique identifiers
- */
-export function prepareUniqueCompany(companyName: string): CompanyInformation {
-  const uuid = new Date().getTime();
-  const uniqueCompanyName = `${companyName}-${uuid}`;
-
-  return generateDummyCompanyInformation(uniqueCompanyName);
-}

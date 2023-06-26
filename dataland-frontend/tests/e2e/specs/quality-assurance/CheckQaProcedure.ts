@@ -1,7 +1,7 @@
 import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { login } from "@e2e/utils/Auth";
-import { prepareUniqueCompany } from "@e2e/utils/CompanyUpload";
+import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
 import { fillAndValidateEuTaxonomyCreditInstitutionForm, prepareFixture } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
@@ -15,7 +15,7 @@ describeIf(
   },
   function () {
     let testData: FixtureData<EuTaxonomyDataForFinancials>;
-    const testCompany = prepareUniqueCompany("company-for-testing-qa");
+    const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${new Date().getTime()}`);
 
     before(function () {
       const fixtureType = "CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures";

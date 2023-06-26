@@ -1,7 +1,7 @@
 import { DataTypeEnum, LksgData, StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { generateDummyCompanyInformation, prepareUniqueCompany, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { prepareFixture } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
@@ -15,7 +15,7 @@ describeIf(
   },
   function () {
     let testData: FixtureData<LksgData>;
-    const testCompany = prepareUniqueCompany("company-for-testing-edit-button");
+    const testCompany = generateDummyCompanyInformation(`company-for-testing-edit-button-${new Date().getTime()}`);
 
     before(function () {
       const fixtureType = "CompanyInformationWithLksgPreparedFixtures";
@@ -26,16 +26,14 @@ describeIf(
 
     it("Check whether Edit Data button has dropdown with 2 different Reporting Periods", () => {
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompany.companyName)).then(
-          async (storedCompany) => {
-            cy.ensureLoggedIn(admin_name, admin_pw);
+        return uploadCompanyViaApi(token, testCompany).then(async (storedCompany) => {
+          cy.ensureLoggedIn(admin_name, admin_pw);
 
-            await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", testData.t);
-            await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2021", testData.t);
+          await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", testData.t);
+          await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2021", testData.t);
 
-            testEditDataButton(storedCompany);
-          }
-        );
+          testEditDataButton(storedCompany);
+        });
       });
     });
   }
