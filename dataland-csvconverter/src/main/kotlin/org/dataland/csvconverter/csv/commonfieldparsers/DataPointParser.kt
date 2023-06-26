@@ -142,9 +142,10 @@ class DataPointParser(
             comment = datapointColumnMapping
                 .getCsvValueAllowingNull("${baseString}Comment", row),
             dataSource = buildSingleCompanyReportReference(generalMap, row, baseString),
-            valueAsPercentage = valueFunction(datapointColumnMapping)
+            valueAsPercentage = valueFunction(datapointColumnMapping),
         )
     }
+
     /**
      * Parses a single percentage data point
      */
@@ -155,8 +156,8 @@ class DataPointParser(
         baseStringPercentage: String,
         valueScaleFactor: BigDecimal,
     ):
-            DataPointAbsoluteAndPercentage<BigDecimal>? {
-        return buildDataAndPercentagePoint(generalMap, row, baseString,) {
+        DataPointAbsoluteAndPercentage<BigDecimal>? {
+        return buildDataAndPercentagePoint(generalMap, row, baseString) {
             it.readCsvPercentage(baseStringPercentage, row)
             it.readCsvDecimal(baseString, row, valueScaleFactor)
         }
