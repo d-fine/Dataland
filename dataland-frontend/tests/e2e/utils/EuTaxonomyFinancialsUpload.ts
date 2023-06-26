@@ -281,25 +281,8 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
 /**
  * Fills the eutaxonomy-financials upload form with the given dataset
  * @param data the data to fill the form with
- * @param reportingPeriod (optional) to specify reporting period
  */
-export function fillAndValidateEuTaxonomyCreditInstitutionForm(
-  data: EuTaxonomyDataForFinancials,
-  reportingPeriod?: string
-): void {
-  if (reportingPeriod && !Number.isNaN(parseInt(reportingPeriod, 10))) {
-    cy.get('[data-test="reportingPeriod"]').click();
-    cy.get(".p-datepicker .p-yearpicker .p-yearpicker-year").each(($element) => {
-      cy.wrap($element)
-        .invoke("text")
-        .then((text) => {
-          if (text.trim() === reportingPeriod.trim()) {
-            cy.wrap($element).click({ force: true });
-          }
-        });
-    });
-  }
-
+export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyDataForFinancials): void {
   dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
   dateFormElement.validateDay("fiscalYearEnd", 12);
 

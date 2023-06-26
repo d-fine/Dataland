@@ -132,7 +132,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
   frameworkDataType: DataTypeEnum,
   companyInformation: CompanyInformation,
   testData: T,
-  formFill: (data: T, storedCompany: StoredCompany) => void,
+  formFill: (data: T) => void,
   submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void,
   afterDatasetSubmission: (companyId: string) => void
 ): void {
@@ -141,7 +141,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
       (storedCompany): void => {
         cy.ensureLoggedIn(admin_name, admin_pw);
         cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${frameworkDataType}/upload`);
-        formFill(testData, storedCompany);
+        formFill(testData);
         submitFilledInEuTaxonomyForm(submissionDataIntercept);
         afterDatasetSubmission(storedCompany.companyId);
       }
@@ -155,7 +155,7 @@ export function uploadCompanyViaApiAndEuTaxonomyDataViaForm<T>(
  * @param submissionDataIntercept function that asserts content of an intercepted request
  */
 export function submitFilledInEuTaxonomyForm(
-  submissionDataIntercept?: (request: CyHttpMessages.IncomingHttpRequest) => void
+  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
 ): void {
   const postRequestAlias = "postDataAlias";
   cy.intercept(
@@ -170,6 +170,5 @@ export function submitFilledInEuTaxonomyForm(
   cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then((interception) => {
     expect(interception.response?.statusCode).to.eq(200);
   });
-  cy.wait(4000);
   cy.contains("td", "EU Taxonomy");
 }
