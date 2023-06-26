@@ -33,12 +33,7 @@ class EuTaxonomyForNonFinancialsCsvParser(
         "alignedRevenue" to "Aligned Revenue",
         "alignedCapex" to "Aligned CapEx",
         "alignedOpex" to "Aligned OpEx",
-        "eligibleRevenuePercentage" to "Eligible Revenue (%)",
-        "eligibleCapexPercentage" to "Eligible CapEx (%)",
-        "eligibleOpexPercentage" to "Eligible OpEx (%)",
-        "alignedRevenuePercentage" to "Aligned Revenue (%)",
-        "alignedCapexPercentage" to "Aligned CapEx (%)",
-        "alignedOpexPercentage" to "Aligned OpEx (%)",
+
     )
 
     override fun validateLine(companyData: CompanyInformation, row: Map<String, String>): Boolean {
