@@ -3341,6 +3341,44 @@
           "orderVolume": {
             "type": "number"
           }
+        },
+        "example": {
+          "Products": {
+            "definitionProductTypeService": [
+              "string"
+            ],
+            "suppliersPerCountry": [
+              {
+                "country": "string",
+                "numberOfSuppliers": 0
+              }
+            ],
+            "orderVolume": 0
+          },
+          "Services": {
+            "definitionProductTypeService": [
+              "string"
+            ],
+            "suppliersPerCountry": [
+              {
+                "country": "string",
+                "numberOfSuppliers": 0
+              }
+            ],
+            "orderVolume": 0
+          },
+          "RawMaterials": {
+            "definitionProductTypeService": [
+              "string"
+            ],
+            "suppliersPerCountry": [
+              {
+                "country": "string",
+                "numberOfSuppliers": 0
+              }
+            ],
+            "orderVolume": 0
+          }
         }
       },
       "LksgProductionAndUseOfPersistentOrganicPollutantsPopsConvention": {
@@ -3437,6 +3475,44 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/LksgProductCategory"
+            },
+            "example": {
+              "Products": {
+                "definitionProductTypeService": [
+                  "string"
+                ],
+                "suppliersPerCountry": [
+                  {
+                    "country": "string",
+                    "numberOfSuppliers": 0
+                  }
+                ],
+                "orderVolume": 0
+              },
+              "Services": {
+                "definitionProductTypeService": [
+                  "string"
+                ],
+                "suppliersPerCountry": [
+                  {
+                    "country": "string",
+                    "numberOfSuppliers": 0
+                  }
+                ],
+                "orderVolume": 0
+              },
+              "RawMaterials": {
+                "definitionProductTypeService": [
+                  "string"
+                ],
+                "suppliersPerCountry": [
+                  {
+                    "country": "string",
+                    "numberOfSuppliers": 0
+                  }
+                ],
+                "orderVolume": 0
+              }
             }
           }
         }
