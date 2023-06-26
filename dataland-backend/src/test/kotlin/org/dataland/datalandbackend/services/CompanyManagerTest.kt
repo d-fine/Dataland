@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
-import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -139,7 +139,14 @@ class CompanyManagerTest(
     @Test
     fun `check that it is not possible to get a result with no data type filter specified`() {
         val exception = assertThrows<InvalidInputApiException> {
-            testCompanyManager.searchCompaniesAndGetApiModel(CompanySearchFilter(dataTypeFilter = emptySet()))
+            testCompanyManager.searchCompaniesAndGetApiModel(StoredCompanySearchFilter(
+                dataTypeFilter = emptyList(),
+                countryCodeFilter = emptyList(),
+                sectorFilter = emptyList(),
+                searchString = "",
+                nameOnlyFilter = false,
+                uploaderIdFilter = emptyList(),
+            ))
         }
         assertEquals(exception.message, "Please specify a dataframework")
     }
