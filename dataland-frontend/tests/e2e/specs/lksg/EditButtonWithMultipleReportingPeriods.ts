@@ -2,7 +2,7 @@ import { DataTypeEnum, LksgData, StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, prepareUniqueCompany, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { admin_name, admin_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { prepareFixture } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
@@ -56,5 +56,5 @@ function testEditDataButton(storedCompany: StoredCompany): void {
     .should("contain", "2021")
     .click();
 
-  cy.get('[data-test="companyNameTitle"').should("contain", storedCompany.companyInformation.companyName);
+  cy.url().should("eq", getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?*`);
 }

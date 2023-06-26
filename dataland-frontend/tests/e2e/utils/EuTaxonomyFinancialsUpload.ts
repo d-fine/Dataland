@@ -351,21 +351,6 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(
 }
 
 /**
- * Fills the eutaxonomy-financials upload form with the given dataset
- * @param data the data to fill the form with
- * @param reportingPeriod (optional) to specify reporting period
- * @param submissionDataIntercept function that asserts content of an intercepted request
- */
-export function addCreditInstitutionDataset(
-  data: EuTaxonomyDataForFinancials,
-  reportingPeriod?: string,
-  submissionDataIntercept?: (request: CyHttpMessages.IncomingHttpRequest) => void
-): void {
-  fillAndValidateEuTaxonomyCreditInstitutionForm(data, reportingPeriod);
-  submitFilledInEuTaxonomyForm(submissionDataIntercept);
-}
-
-/**
  * @param fixtureType name of fixture data to prepare
  * @returns cypress chainable fixture containing array of fixture data
  */
