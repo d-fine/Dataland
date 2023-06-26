@@ -5,11 +5,11 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
+import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -54,18 +54,25 @@ class CompanyDataController(
         )
         return ResponseEntity.ok(
             companyManager.searchCompaniesAndGetApiModel(
-                CompanySearchFilter(
-                    searchString ?: "",
-                    onlyCompanyNames,
-                    dataTypes,
-                    countryCodes ?: setOf(),
-                    sectors ?: setOf(),
-                    onlyCurrentUserAsUploader,
-
+                StoredCompanySearchFilter(
+                    searchString = searchString ?: "",
+                    nameOnlyFilter = onlyCompanyNames,
+                    dataTypeFilter = dataTypes.map { it.name },
+                    countryCodeFilter = countryCodes?.toList() ?: listOf(),
+                    sectorFilter = sectors?.toList() ?: listOf(),
+                    uploaderIdFilter = getUploaderIdFilter(onlyCurrentUserAsUploader),
                 ),
                 DatalandAuthentication.fromContextOrNull(),
             ),
         )
+    }
+
+    private fun getUploaderIdFilter(onlyCurrentUserAsUploader: Boolean): List<String> {
+        return if (onlyCurrentUserAsUploader) {
+            listOf(DatalandAuthentication.fromContext().userId)
+        } else {
+            listOf()
+        }
     }
 
     override fun getCompaniesBySearchString(

@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.CompanySearchFilter
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
@@ -114,7 +113,7 @@ class CompanyManager(
      */
     @Transactional
     fun searchCompaniesAndGetApiModel(
-        filter: CompanySearchFilter,
+        filter: StoredCompanySearchFilter,
         viewingUser: DatalandAuthentication? = null,
     ): List<StoredCompany> {
         if (filter.dataTypeFilter.isEmpty()) {
@@ -123,17 +122,9 @@ class CompanyManager(
                 "Please specify a dataframework",
             )
         }
-        val searchFilterForJPA = StoredCompanySearchFilter(
-            searchString = filter.searchString,
-            nameOnlyFilter = filter.onlyCompanyNames,
-            dataTypeFilter = filter.dataTypeFilter.map { it.name },
-            sectorFilter = filter.sectorFilter.toList(),
-            countryCodeFilter = filter.countryCodeFilter.toList(),
-            uploaderIdFilter = getUploaderIdFilter(filter.onlyCurrentUserAsUploader),
-        )
 
         val filteredAndSortedResults = companyRepository.searchCompanies(
-            searchFilterForJPA,
+            filter,
             Pageable.unpaged(),
         )
 
@@ -160,14 +151,6 @@ class CompanyManager(
         return companyRepository.searchCompaniesByNameOrIdentifier(
             searchString,
         )
-    }
-
-    private fun getUploaderIdFilter(onlyCurrentUserAsUploader: Boolean): List<String> {
-        return if (onlyCurrentUserAsUploader) {
-            listOf(DatalandAuthentication.fromContext().userId)
-        } else {
-            listOf()
-        }
     }
 
     private fun fetchAllStoredCompanyFields(storedCompanies: List<StoredCompanyEntity>): List<StoredCompanyEntity> {
