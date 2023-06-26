@@ -56,30 +56,20 @@ class EuTaxonomyForNonFinancialsCsvParser(
                 "total$type",
                 CsvUtils.SCALE_FACTOR_ONE_MILLION,
             ),
-            alignedPercentage =
-            dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForNonFinancials,
-                csvLineData,
-                "aligned${type}Percentage",
-            ),
-            alignedAmount =
-            dataPointParser.buildDecimalDataPoint(
+            alignedData =
+            dataPointParser.buildAbsoulteAndPercentageDataPoint(
                 columnMappingEuTaxonomyForNonFinancials,
                 csvLineData,
                 "aligned$type",
+                "aligned${type}Percentage",
                 CsvUtils.SCALE_FACTOR_ONE_MILLION,
             ),
-            eligiblePercentage =
-            dataPointParser.buildPercentageDataPoint(
-                columnMappingEuTaxonomyForNonFinancials,
-                csvLineData,
-                "eligible${type}Percentage",
-            ),
-            eligibleAmount =
-            dataPointParser.buildDecimalDataPoint(
+            eligibleData =
+            dataPointParser.buildAbsoulteAndPercentageDataPoint(
                 columnMappingEuTaxonomyForNonFinancials,
                 csvLineData,
                 "eligible$type",
+                "eligible${type}Percentage",
                 CsvUtils.SCALE_FACTOR_ONE_MILLION,
             ),
         )
