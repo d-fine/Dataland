@@ -145,3 +145,37 @@ export function getCsvDataPointMapping<T>(
     ...getCsvDataSourceMapping<T>(dataPointName, (row: T) => dataPointGetter(row)?.dataSource),
   ];
 }
+
+/**
+ * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
+ * @param value the decimal value of the datapoint to generate
+ * @param valueAsPercent the percentage of the datapoint to generate
+ * @param reports the reports that can be referenced as data sources
+ * @returns the generated datapoint
+ */
+export function generateDatapointAbsoulteAndPercentage<T, Y>(value: T | null, valueAsPercent: T |null, reports: ReferencedDocuments): Y {
+  const qualityBucket =
+      value === null
+          ? QualityOptions.Na
+          : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
+
+  let dataSource: CompanyReportReference | undefined = undefined;
+  let comment: string | undefined = undefined;
+  if (
+      qualityBucket === QualityOptions.Audited ||
+      qualityBucket === QualityOptions.Reported ||
+      ((qualityBucket === QualityOptions.Estimated || qualityBucket === QualityOptions.Incomplete) &&
+          faker.datatype.boolean())
+  ) {
+    dataSource = generateDataSource(reports);
+    comment = faker.git.commitMessage();
+  }
+
+  return {
+    value: value ?? undefined,
+    dataSource: dataSource,
+    quality: qualityBucket,
+    comment: comment,
+    valueAsPercent: valueAsPercent ?? undefined,
+  } as Y;
+}
