@@ -2,7 +2,7 @@ import { EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken, login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { admin_name, admin_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
+import { reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
@@ -19,16 +19,16 @@ describeIf(
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
-        testData = getPreparedFixture("company-for-all-type", preparedFixtures);
+        testData = getPreparedFixture("company-for-all-types", preparedFixtures);
       });
     });
 
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyViaApi(token, testCompany).then(async (storedCompany) => {
-          cy.ensureLoggedIn(admin_name, admin_pw);
+          cy.ensureLoggedIn(uploader_name, uploader_pw);
 
-          await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", testData.t);
+          await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", testData.t, false);
 
           testSubmittedDatasetIsInReviewList(testCompany.companyName);
         });
@@ -63,7 +63,7 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
   cy.get(".p-dialog").get('button[id="accept-button"]').should("exist").click();
 
   safeLogout();
-  login(admin_name, admin_pw);
+  login(uploader_name, uploader_pw);
 
   testDatasetPresent(companyName, "APPROVED");
 }

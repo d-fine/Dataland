@@ -1,4 +1,4 @@
-import { DataTypeEnum, LksgData, StoredCompany } from "@clients/backend";
+import { DataMetaInformation, DataTypeEnum, LksgData, StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -29,9 +29,14 @@ describeIf(
           cy.ensureLoggedIn(admin_name, admin_pw);
 
           await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", testData.t);
-          await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2021", testData.t);
+          const lksgDatasetFor2021 = await uploadOneLksgDatasetViaApi(
+            token,
+            storedCompany.companyId,
+            "2021",
+            testData.t
+          );
 
-          testEditDataButton(storedCompany);
+          testEditDataButton(storedCompany, lksgDatasetFor2021);
         });
       });
     });
@@ -41,8 +46,9 @@ describeIf(
 /**
  * Tests that the item was added and is visible on the QA list
  * @param storedCompany details of the company that was created
+ * @param uploadedDataset meta information of the uploaded dataset
  */
-function testEditDataButton(storedCompany: StoredCompany): void {
+function testEditDataButton(storedCompany: StoredCompany, uploadedDataset: DataMetaInformation): void {
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
 
   cy.get('[data-test="editDatasetButton"').should("exist").click();
@@ -53,5 +59,9 @@ function testEditDataButton(storedCompany: StoredCompany): void {
     .should("contain", "2021")
     .click();
 
-  cy.url().should("eq", getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?*`);
+  cy.url().should(
+    "eq",
+    getBaseUrl() +
+      `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${uploadedDataset.dataId}`
+  );
 }
