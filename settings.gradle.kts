@@ -37,8 +37,8 @@ dependencyResolutionManagement {
             library("log4j-api", "org.apache.logging.log4j:log4j-api:2.20.0")
             library("log4j-to-slf4j", "org.apache.logging.log4j:log4j-to-slf4j:2.20.0")
 
-            library("logback-classic", "ch.qos.logback:logback-classic:1.4.7")
-            library("logback-core", "ch.qos.logback:logback-core:1.4.7")
+            library("logback-classic", "ch.qos.logback:logback-classic:1.4.8")
+            library("logback-core", "ch.qos.logback:logback-core:1.4.8")
 
             library("slf4j-api", "org.slf4j:slf4j-api:2.0.7")
 

@@ -50,16 +50,16 @@ plugins {
     id("com.github.node-gradle.node") version "5.0.0" apply false
     id("org.springframework.boot") version "3.1.0" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.3.2"
-    kotlin("jvm") version "1.8.21"
-    kotlin("plugin.spring") version "1.8.21" apply false
-    id("org.sonarqube") version "4.2.0.3129"
+    kotlin("jvm") version "1.8.22"
+    kotlin("plugin.spring") version "1.8.22" apply false
+    id("org.sonarqube") version "4.2.1.3168"
     jacoco
     id("org.springdoc.openapi-gradle-plugin") version "1.6.0" apply false
     id("com.gorylenko.gradle-git-properties") version "2.4.1" apply false
     id("org.openapi.generator") version "6.6.0" apply false
-    id("com.github.ben-manes.versions") version "0.46.0"
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.8.21" apply false
-    kotlin("plugin.serialization") version "1.8.21" apply false
+    id("com.github.ben-manes.versions") version "0.47.0"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.8.22" apply false
+    kotlin("plugin.serialization") version "1.8.22" apply false
 }
 
 sonar {
