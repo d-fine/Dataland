@@ -3,7 +3,6 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
-import { prepareFixture } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
@@ -18,8 +17,8 @@ describeIf(
     const testCompany = generateDummyCompanyInformation(`company-for-testing-edit-button-${new Date().getTime()}`);
 
     before(function () {
-      const fixtureType = "CompanyInformationWithLksgPreparedFixtures";
-      prepareFixture<LksgData>(fixtureType).then((preparedFixtures) => {
+      cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+        const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
         testData = getPreparedFixture("LkSG-date-2023-04-18", preparedFixtures);
       });
     });

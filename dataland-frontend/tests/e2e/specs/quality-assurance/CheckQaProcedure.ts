@@ -3,7 +3,7 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
-import { fillAndValidateEuTaxonomyCreditInstitutionForm, prepareFixture } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { fillAndValidateEuTaxonomyCreditInstitutionForm } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
@@ -18,9 +18,9 @@ describeIf(
     const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${new Date().getTime()}`);
 
     before(function () {
-      const fixtureType = "CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures";
-      prepareFixture<EuTaxonomyDataForFinancials>(fixtureType).then((preparedFixtures) => {
-        testData = getPreparedFixture("company-for-all-types", preparedFixtures);
+      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
+        const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+        testData = getPreparedFixture("LkSG-date-2023-04-18", preparedFixtures);
       });
     });
 

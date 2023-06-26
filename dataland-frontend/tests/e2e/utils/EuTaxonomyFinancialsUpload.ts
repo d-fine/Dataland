@@ -332,13 +332,3 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
   fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
 }
-
-/**
- * @param fixtureType name of fixture data to prepare
- * @returns cypress chainable fixture containing array of fixture data
- */
-export function prepareFixture<T>(fixtureType: string): Chainable<FixtureData<T>[]> {
-  return cy.fixture(fixtureType).then(function (jsonContent) {
-    return jsonContent as Array<FixtureData<T>>;
-  });
-}
