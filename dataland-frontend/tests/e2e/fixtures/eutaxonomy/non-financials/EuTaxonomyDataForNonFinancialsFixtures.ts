@@ -1,13 +1,18 @@
 import {
+  DataPointAbsoluteAndPercentageBigDecimal,
   DataPointBigDecimal,
   EuTaxonomyDataForNonFinancials,
   EuTaxonomyDetailsPerCashFlowType,
 } from "@clients/backend";
 import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
-import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
+import { decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
-import { generateDatapoint, getCsvDataPointMapping } from "@e2e/fixtures/common/DataPointFixtures";
+import {
+  generateDatapoint,
+  getCsvDataPointMapping,
+  getCsvDataPointMappingAbsoluteAndPercentage,
+} from "@e2e/fixtures/common/DataPointFixtures";
 import {
   generateEuTaxonomyWithBaseFields,
   getCsvSharedEuTaxonomyValuesMapping,
@@ -25,10 +30,8 @@ import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
   return {
     totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
-    alignedAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
-    alignedPercentage: valueOrUndefined(generateDatapoint(valueOrUndefined(randomPercentageValue()), reports)),
-    eligibleAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
-    eligiblePercentage: valueOrUndefined(generateDatapoint(valueOrUndefined(randomPercentageValue()), reports)),
+    alignedData: valueOrUndefined(generateDatapoint(valueOrUndefined(randomPercentageValue()), reports)),
+    eligibleData: valueOrUndefined(generateDatapoint(valueOrUndefined(randomPercentageValue()), reports)),
   };
 }
 
@@ -73,64 +76,34 @@ export function generateCSVDataForNonFinancials(
         (row): DataPointBigDecimal | undefined => row.t.opex?.totalAmount,
         decimalSeparatorConverter(1000000)
       ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Eligible Revenue (%)`,
-        (row): DataPointBigDecimal | undefined => row.t.revenue?.eligiblePercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Eligible CapEx (%)`,
-        (row): DataPointBigDecimal | undefined => row.t.capex?.eligiblePercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Eligible OpEx (%)`,
-        (row): DataPointBigDecimal | undefined => row.t.opex?.eligiblePercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Aligned Revenue (%)`,
-        (row): DataPointBigDecimal | undefined => row.t.revenue?.alignedPercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Aligned CapEx (%)`,
-        (row): DataPointBigDecimal | undefined => row.t.capex?.alignedPercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
-        `Aligned OpEx (%)`,
-        (row): DataPointBigDecimal | undefined => row.t.opex?.alignedPercentage,
-        convertToPercentageString
-      ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Eligible Revenue`,
-        (row): DataPointBigDecimal | undefined => row.t.revenue?.eligibleAmount,
+        (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.revenue?.eligibleData,
         decimalSeparatorConverter(1000000)
       ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Eligible CapEx`,
-        (row): DataPointBigDecimal | undefined => row.t.capex?.eligibleAmount,
+        (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.capex?.eligibleData,
         decimalSeparatorConverter(1000000)
       ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Eligible OpEx`,
-        (row): DataPointBigDecimal | undefined => row.t.opex?.eligibleAmount,
+        (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.opex?.eligibleData,
         decimalSeparatorConverter(1000000)
       ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Aligned Revenue`,
-        (row): DataPointBigDecimal | undefined => row.t.revenue?.alignedAmount,
+        (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.revenue?.alignedData,
         decimalSeparatorConverter(1000000)
       ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Aligned CapEx`,
-        (row): DataPointBigDecimal | undefined => row.t.capex?.alignedAmount,
+        (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.capex?.alignedData,
         decimalSeparatorConverter(1000000)
       ),
-      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Aligned OpEx`,
-        (row): DataPointBigDecimal | undefined => row.t.opex?.alignedAmount,
+        (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.opex?.alignedData,
         decimalSeparatorConverter(1000000)
       ),
     ],

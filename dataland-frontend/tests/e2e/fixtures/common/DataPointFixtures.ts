@@ -1,5 +1,11 @@
 import { faker } from "@faker-js/faker/locale/de";
-import { CompanyReportReference, DataPointBigDecimal, DataPointYesNo, QualityOptions } from "@clients/backend";
+import {
+  CompanyReportReference,
+  DataPointAbsoluteAndPercentageBigDecimal,
+  DataPointBigDecimal,
+  DataPointYesNo,
+  QualityOptions,
+} from "@clients/backend";
 import { generateDataSource, getCsvDataSourceMapping } from "./DataSourceFixtures";
 import { DataPoint, ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { randomYesNo, randomYesNoNa } from "./YesNoFixtures";
@@ -153,19 +159,23 @@ export function getCsvDataPointMapping<T>(
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint
  */
-export function generateDatapointAbsoulteAndPercentage<T, Y>(value: T | null, valueAsPercent: T |null, reports: ReferencedDocuments): Y {
+export function generateDatapointAbsoluteAndPercentage<T, Y>(
+  value: T | null,
+  valueAsPercent: T | null,
+  reports: ReferencedDocuments
+): Y {
   const qualityBucket =
-      value === null
-          ? QualityOptions.Na
-          : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
+    value === null
+      ? QualityOptions.Na
+      : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 
   let dataSource: CompanyReportReference | undefined = undefined;
   let comment: string | undefined = undefined;
   if (
-      qualityBucket === QualityOptions.Audited ||
-      qualityBucket === QualityOptions.Reported ||
-      ((qualityBucket === QualityOptions.Estimated || qualityBucket === QualityOptions.Incomplete) &&
-          faker.datatype.boolean())
+    qualityBucket === QualityOptions.Audited ||
+    qualityBucket === QualityOptions.Reported ||
+    ((qualityBucket === QualityOptions.Estimated || qualityBucket === QualityOptions.Incomplete) &&
+      faker.datatype.boolean())
   ) {
     dataSource = generateDataSource(reports);
     comment = faker.git.commitMessage();
@@ -178,4 +188,36 @@ export function generateDatapointAbsoulteAndPercentage<T, Y>(value: T | null, va
     comment: comment,
     valueAsPercent: valueAsPercent ?? undefined,
   } as Y;
+}
+/**
+ * Generates the CSV mapping for a datapoint containing percentage and absoulte values
+ * @param dataPointName the name of the datapoint
+ * @param dataPointGetter a function that can be used to access the datapoint given the current fixture element
+ * @param valueConverter a conversion function for formatting the number (i.e. that converts the decimal number to a percentage string)
+ * @returns the CSV mapping for the datapoint
+ */
+export function getCsvDataPointMappingAbsoluteAndPercentage<T>(
+  dataPointName: string,
+  dataPointGetter: (row: T) => DataPointAbsoluteAndPercentageBigDecimal | undefined,
+  valueConverter: (input: number | undefined) => string = (x): string => x?.toString() ?? ""
+): Array<DataPoint<T, string | number>> {
+  return [
+    {
+      label: `${dataPointName} (%)`,
+      value: (row: T): string | undefined => valueConverter(dataPointGetter(row)?.valueAsPercentage),
+    },
+    {
+      label: `${dataPointName} Quality`,
+      value: (row: T): string | undefined => humanizeOrUndefined(dataPointGetter(row)?.quality),
+    },
+    {
+      label: `${dataPointName} Comment`,
+      value: (row: T): string | undefined => dataPointGetter(row)?.comment,
+    },
+    {
+      label: dataPointName,
+      value: (row: T): string | undefined => valueConverter(dataPointGetter(row)?.valueAsAbsolute),
+    },
+    ...getCsvDataSourceMapping<T>(dataPointName, (row: T) => dataPointGetter(row)?.dataSource),
+  ];
 }

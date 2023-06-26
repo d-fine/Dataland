@@ -2,83 +2,100 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Esenweinstadt",
-			"headquartersPostalCode": "54675",
-			"sector": "ROI",
+			"headquarters": "Lucdorf",
+			"headquartersPostalCode": "08921",
+			"sector": "experiences",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "w2rFE3UkZW6oZXU"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "cZLVBUXHNO8E"
+					"identifierValue": "k7cXqA3GYMZQDcD"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "ZZR1cNvF2JOS7N7PEuj5"
+					"identifierValue": "ChQiEnsoM8G10KSNg6qg"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "iRciIcgkLa"
+					"identifierValue": "a1AhVgS7Vn"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "Mtet6u6"
+					"identifierValue": "80wgZ8X"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "CPNScxBOK"
+					"identifierValue": "jjdG0wTII"
 				}
 			],
-			"countryCode": "BY",
+			"countryCode": "HK",
 			"companyAlternativeNames": [
-				"Decker GmbH & Co. KG"
+				"Hüttcher, Cleem und Huth",
+				"Moguenara, Stephan und Ringel",
+				"Tittman-Ladewig"
 			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-06-18",
+			"numberOfEmployees": 54460,
 			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-07-05",
+					"currency": "WST"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "SRD"
+				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"currency": "CZK"
+					"reportDate": "2023-01-07",
+					"currency": "TRY"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"provider": "Schreiter Gruppe",
+				"dataSource": {
+					"page": 436,
+					"report": "IntegratedReport",
+					"tagName": "technologies"
+				}
 			},
+			"scopeOfEntities": "No",
 			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
-				"eligiblePercentage": {
-					"value": 0.7861,
+				"eligibleData": {
+					"value": 0.5551,
 					"dataSource": {
-						"page": 73,
-						"report": "SustainabilityReport",
-						"tagName": "models"
+						"page": 1199,
+						"report": "IntegratedReport",
+						"tagName": "systems"
 					},
-					"quality": "Reported",
-					"comment": "calculate haptic bus"
+					"quality": "Incomplete",
+					"comment": "navigate haptic capacitor"
 				}
 			},
 			"capex": {
-				"eligiblePercentage": {
-					"value": 0.434,
-					"quality": "Estimated"
+				"eligibleData": {
+					"value": 0.9826,
+					"dataSource": {
+						"page": 1169,
+						"report": "AnnualReport",
+						"tagName": "e-commerce"
+					},
+					"quality": "Estimated",
+					"comment": "quantify multi-byte array"
 				}
 			},
 			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.9095,
-					"dataSource": {
-						"page": 580,
-						"report": "SustainabilityReport",
-						"tagName": "synergies"
-					},
-					"quality": "Reported",
-					"comment": "calculate virtual sensor"
+				"eligibleData": {
+					"value": 0.5643,
+					"quality": "Incomplete"
 				}
 			}
 		},
@@ -87,145 +104,134 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Floraburg",
-			"sector": "interfaces",
+			"headquarters": "Rostock",
+			"sector": "networks",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "VHZejKeHutMoD4p"
+					"identifierValue": "odGUK7bUCBjlfWW"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "Vh8yip198"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "BPSc56OEzas1"
+					"identifierValue": "PUpR47YWMY90"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "ceovDde9AGH714gjLrnB"
+					"identifierValue": "qJUor1iWfiO5LP1kkAZY"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "3XTN20JyRU"
+					"identifierValue": "uifJ42JExB"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "k6SZdwK"
+					"identifierValue": "To4j8Pp"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "yhHObvbH5"
+					"identifierValue": "QG4wLx35r"
 				}
 			],
-			"countryCode": "AR",
+			"countryCode": "MG",
 			"companyAlternativeNames": [
-				"Liebich-Mulrain",
-				"Schott GmbH"
+				"Denner-Reiber",
+				"Jerschabek-Ruth",
+				"Lokar, Bormann und Clarius",
+				"Merkel OHG"
 			],
+			"companyLegalForm": "Partnership without Limited Liability",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2023-06-02",
+			"fiscalYearEnd": "2022-10-15",
+			"numberOfEmployees": 56875,
 			"referencedReports": {
-				"ESEFReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "LBP"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2022-08-22",
-					"currency": "SAR"
+					"currency": "MAD"
 				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "SGD"
+					"reportDate": "2023-03-01",
+					"currency": "ZWL"
 				},
-				"SustainabilityReport": {
+				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-05-01",
 					"currency": "THB"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"provider": "Eleyth, Kröger und Menne",
+				"dataSource": {
+					"page": 801,
+					"report": "SustainabilityReport",
+					"tagName": "paradigms"
+				}
 			},
+			"scopeOfEntities": "Yes",
 			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 779444.3489285186,
-					"quality": "Incomplete"
-				},
-				"eligiblePercentage": {
-					"value": 0.7574,
+					"value": 927727.8990950435,
 					"dataSource": {
-						"page": 189,
+						"page": 960,
 						"report": "AnnualReport",
-						"tagName": "eyeballs"
-					},
-					"quality": "Estimated",
-					"comment": "copy auxiliary hard drive"
-				},
-				"eligibleAmount": {
-					"value": 312211.79586136714,
-					"dataSource": {
-						"page": 438,
-						"report": "AnnualReport",
-						"tagName": "relationships"
+						"tagName": "initiatives"
 					},
 					"quality": "Incomplete",
-					"comment": "copy primary driver"
+					"comment": "bypass neural capacitor"
+				},
+				"eligibleData": {
+					"value": 571332.3887321167,
+					"dataSource": {
+						"page": 148,
+						"report": "AnnualReport",
+						"tagName": "infrastructures"
+					},
+					"quality": "Incomplete",
+					"comment": "program cross-platform bus",
+					"valueAsPercent": 0.3743
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 595110.5411513709,
-					"quality": "Incomplete"
+					"value": 205710.1249927655,
+					"quality": "Estimated"
 				},
-				"eligiblePercentage": {
-					"value": 0.4297,
-					"dataSource": {
-						"page": 714,
-						"report": "AnnualReport",
-						"tagName": "e-commerce"
-					},
+				"eligibleData": {
+					"value": 117487.96179890633,
 					"quality": "Estimated",
-					"comment": "reboot primary interface"
-				},
-				"eligibleAmount": {
-					"value": 785898.1579309329,
-					"dataSource": {
-						"page": 57,
-						"report": "SustainabilityReport",
-						"tagName": "models"
-					},
-					"quality": "Audited",
-					"comment": "synthesize 1080p feed"
+					"valueAsPercent": 0.5844
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 299892.30532664806,
-					"quality": "Incomplete"
-				},
-				"eligiblePercentage": {
-					"value": 0.3603,
+					"value": 248038.54688070714,
 					"dataSource": {
-						"page": 1099,
-						"report": "SustainabilityReport",
-						"tagName": "synergies"
+						"page": 427,
+						"report": "AnnualReport",
+						"tagName": "lifetime value"
 					},
-					"quality": "Reported",
-					"comment": "parse wireless panel"
+					"quality": "Audited",
+					"comment": "copy open-source circuit"
 				},
-				"eligibleAmount": {
-					"value": 924605.430138763,
+				"eligibleData": {
+					"value": 438595.90225620195,
 					"dataSource": {
-						"page": 950,
+						"page": 740,
 						"report": "ESEFReport",
-						"tagName": "architectures"
+						"tagName": "users"
 					},
 					"quality": "Incomplete",
-					"comment": "back up wireless driver"
+					"comment": "reboot solid state hard drive",
+					"valueAsPercent": 0.9764
 				}
 			}
 		},
@@ -234,109 +240,112 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Neu Edwinland",
-			"headquartersPostalCode": "73312",
-			"sector": "users",
+			"headquarters": "Ost Zeynepland",
+			"headquartersPostalCode": "61258",
+			"sector": "experiences",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "Bl4SzQohdjfCOiy"
+				},
+				{
 					"identifierType": "Isin",
-					"identifierValue": "Aj9vx7ggCkGK"
+					"identifierValue": "0ZyqFc38WMZ8"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "2zOxaluQEXAA8pIeITFa"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "iB27oL8LEN"
+					"identifierValue": "CQF5Hl37qC"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "NXzltne"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "GI9LzzCNk"
+					"identifierValue": "xY1F8uPlI"
 				}
 			],
-			"countryCode": "MS",
+			"countryCode": "PR",
 			"companyAlternativeNames": [
-				"Gottschalk-Liebe",
-				"Melzer, Achkinadze und Zeyen",
-				"Roecker, Büngener und Rehwagen"
+				"Friedmann, Knorscheidt und Jakubczyk"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://flink-flughafen.ch",
+			"website": "https://progressiv-vogel.de",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "NoDeviation",
+			"numberOfEmployees": 8138,
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"dataSource": {
+					"page": 1103,
+					"report": "IntegratedReport",
+					"tagName": "partnerships"
+				}
 			},
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 397470.8400433883,
 					"dataSource": {
-						"page": 1131,
-						"report": "AnnualReport",
-						"tagName": "interfaces"
+						"page": 535,
+						"report": "SustainabilityReport",
+						"tagName": "initiatives"
 					},
-					"quality": "Reported",
-					"comment": "back up neural card"
+					"quality": "Audited",
+					"comment": "override neural program"
+				},
+				"alignedData": {
+					"dataSource": {
+						"page": 189,
+						"report": "AnnualReport",
+						"tagName": "web services"
+					},
+					"quality": "Estimated",
+					"comment": "connect virtual bandwidth"
+				},
+				"eligibleData": {
+					"value": 0.4983,
+					"dataSource": {
+						"page": 831,
+						"report": "IntegratedReport",
+						"tagName": "bandwidth"
+					},
+					"quality": "Estimated",
+					"comment": "transmit haptic card"
 				}
 			},
 			"capex": {
-				"totalAmount": {
-					"value": 427786.9535260834,
+				"alignedData": {
+					"value": 0.8925,
 					"dataSource": {
-						"page": 675,
-						"report": "AnnualReport",
-						"tagName": "communities"
-					},
-					"quality": "Audited",
-					"comment": "bypass 1080p interface"
-				},
-				"alignedAmount": {
-					"dataSource": {
-						"page": 576,
-						"report": "ESEFReport",
-						"tagName": "models"
-					},
-					"quality": "Audited",
-					"comment": "input virtual transmitter"
-				},
-				"alignedPercentage": {
-					"value": 0.7813,
-					"dataSource": {
-						"page": 676,
+						"page": 744,
 						"report": "SustainabilityReport",
-						"tagName": "e-business"
+						"tagName": "partnerships"
 					},
-					"quality": "Audited",
-					"comment": "bypass online matrix"
+					"quality": "Reported",
+					"comment": "override solid state bandwidth"
 				}
 			},
 			"revenue": {
-				"alignedAmount": {
-					"value": 119926.26031860709,
+				"alignedData": {
 					"quality": "Estimated"
 				},
-				"eligibleAmount": {
-					"value": 367440.31112175435,
+				"eligibleData": {
+					"value": 0.1249,
 					"dataSource": {
-						"page": 172,
-						"report": "IntegratedReport",
-						"tagName": "applications"
-					},
-					"quality": "Reported",
-					"comment": "quantify haptic pixel"
-				},
-				"eligiblePercentage": {
-					"value": 0.8588,
-					"dataSource": {
-						"page": 978,
+						"page": 524,
 						"report": "SustainabilityReport",
-						"tagName": "systems"
+						"tagName": "deliverables"
 					},
-					"quality": "Estimated",
-					"comment": "synthesize online monitor"
+					"quality": "Incomplete",
+					"comment": "compress solid state system"
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2019"
 	}
 ]

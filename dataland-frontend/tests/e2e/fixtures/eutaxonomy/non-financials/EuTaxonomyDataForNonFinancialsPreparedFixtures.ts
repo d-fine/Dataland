@@ -2,7 +2,7 @@ import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { EuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { generateEuTaxonomyDataForNonFinancials } from "./EuTaxonomyDataForNonFinancialsFixtures";
-import {generateDatapoint, generateDatapointAbsoulteAndPercentage} from "@e2e/fixtures/common/DataPointFixtures";
+import { generateDatapoint, generateDatapointAbsoluteAndPercentage } from "@e2e/fixtures/common/DataPointFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 
 type generatorFunction = (
@@ -44,17 +44,17 @@ function createOnlyEglibileNumbers(
   input.t.opex = {
     alignedData: undefined,
     totalAmount: undefined,
-    eligibleData: generateDatapointAbsoulteAndPercentage(randomPercentageValue(),null ,input.t.referencedReports!),
+    eligibleData: generateDatapointAbsoluteAndPercentage(randomPercentageValue(), null, input.t.referencedReports!),
   };
   input.t.capex = {
     alignedData: undefined,
     totalAmount: undefined,
-    eligibleData: generateDatapointAbsoulteAndPercentage(randomPercentageValue(), null, input.t.referencedReports!),
+    eligibleData: generateDatapointAbsoluteAndPercentage(randomPercentageValue(), null, input.t.referencedReports!),
   };
   input.t.revenue = {
     alignedData: undefined,
     totalAmount: undefined,
-    eligibleData: generateDatapointAbsoulteAndPercentage(randomPercentageValue(), null, input.t.referencedReports!),
+    eligibleData: generateDatapointAbsoluteAndPercentage(randomPercentageValue(), null, input.t.referencedReports!),
   };
   return input;
 }
@@ -71,17 +71,29 @@ function createOnlyEligibleAndTotalNumbers(
   input.t.opex = {
     alignedData: undefined,
     totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
-    eligibleData: generateDatapointAbsoulteAndPercentage(randomEuroValue(),randomPercentageValue(), input.t.referencedReports!),
+    eligibleData: generateDatapointAbsoluteAndPercentage(
+      randomEuroValue(),
+      randomPercentageValue(),
+      input.t.referencedReports!
+    ),
   };
   input.t.capex = {
     alignedData: undefined,
     totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
-    eligibleData: generateDatapointAbsoulteAndPercentage(randomEuroValue(),randomPercentageValue(), input.t.referencedReports!),
+    eligibleData: generateDatapointAbsoluteAndPercentage(
+      randomEuroValue(),
+      randomPercentageValue(),
+      input.t.referencedReports!
+    ),
   };
   input.t.revenue = {
     alignedData: undefined,
     totalAmount: generateDatapoint(randomEuroValue(), input.t.referencedReports!),
-    eligibleData: generateDatapointAbsoulteAndPercentage(randomEuroValue(),randomPercentageValue(), input.t.referencedReports!),
+    eligibleData: generateDatapointAbsoluteAndPercentage(
+      randomEuroValue(),
+      randomPercentageValue(),
+      input.t.referencedReports!
+    ),
   };
   return input;
 }
