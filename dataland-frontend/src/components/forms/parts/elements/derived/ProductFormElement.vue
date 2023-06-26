@@ -3,10 +3,49 @@
     <InputTextFormField name="productName" label="Product Name" description="Please enter the name of the product" />
   </div>
   <div class="form-field">
-    <UploadFormHeader
-      label="Production Steps"
-      description="Please give a brief overview of the production steps/activities undertaken"
-    />
+      <div class="flex justify-content-between">
+          <UploadFormHeader
+                  label="Production Steps"
+                  description="Please give a brief overview of the production steps/activities undertaken"
+          />
+          <PrimeButton
+                  :disabled="listOfProductionStepsString === ''"
+                  @click="addNewItemsToListOfProductionSteps()"
+                  label="Add"
+                  class="p-button-text"
+                  icon="pi pi-plus"
+          ></PrimeButton>
+      </div>
+
+      <FormKit
+              data-test="listOfProductionSteps"
+              type="text"
+              :ignore="true"
+              v-model="listOfProductionStepsString"
+              placeholder="Add comma (,) for more than one value"
+      />
+      <FormKit
+              v-if="listOfProductionStepsString.length > 0"
+              type="text"
+              v-model="listOfProductionStepsString"
+              validation="length:0,0"
+              validation-visibility="live"
+              :validation-messages="{ length: 'Please add the entered value via pressing the add button or empty the field.' }"
+              outer-class="hidden-input"
+      />
+
+      <FormKit
+              v-model="listOfProductionSteps"
+              type="list"
+              label="list of production steps"
+              name="productionSteps"
+      />
+      <div class="">
+      <span class="form-list-item" :key="element" v-for="element in listOfProductionSteps">
+        {{ element }}
+        <em @click="removeItemFromListOfProductionSteps(element)" class="material-icons">close</em>
+      </span>
+    </div>
   </div>
 
   <div class="form-field">
@@ -16,11 +55,11 @@
     />
     <FormKit type="list" name="relatedCorporateSupplyChain" v-model="existingRelatedCorporateSupplyChain">
       <div v-for="id in listOfRelatedCorporateSupplyChainIds" :key="id">
-        <div data-test="relatedCorporateSupplyChainSection" class="relatedCorporateSupplyChainSection flex vertical-middle align-content-center">
+        <div data-test="relatedCorporateSupplyChainSection" class="relatedCorporateSupplyChainSection flex">
           <em
-            data-test="removeItemFromListOfrelatedCorporateSupplyChain"
-            @click="removeItemFromListOfrelatedCorporateSupplyChain(id)"
-            class="material-icons mr-2"
+            data-test="removeItemFromListOfRelatedCorporateSupplyChain"
+            @click="removeItemFromListOfRelatedCorporateSupplyChain(id)"
+            class="material-icons mr-2 mt-2"
           >
             close
           </em>
@@ -58,6 +97,8 @@ export default defineComponent({
       existingRelatedCorporateSupplyChain: [] as string[],
       listOfRelatedCorporateSupplyChainIds: [] as number[],
       productionStepIdCounter: 0,
+      listOfProductionStepsString: "",
+      listOfProductionSteps: [] as string[],
     };
   },
   props: {
@@ -79,8 +120,29 @@ export default defineComponent({
      * Remove Object from Product array
      * @param id - the id of the object in the array
      */
-    removeItemFromListOfrelatedCorporateSupplyChain(id: number) {
+    removeItemFromListOfRelatedCorporateSupplyChain(id: number) {
       this.listOfRelatedCorporateSupplyChainIds = this.listOfRelatedCorporateSupplyChainIds.filter((el) => el !== id);
+    },
+    /**
+     * Remove item from list of Production Steps
+     * @param element - the item to be deleted
+     */
+    removeItemFromListOfProductionSteps(element: string) {
+        if (this.listOfProductionSteps) {
+            this.listOfProductionSteps = this.listOfProductionSteps.filter((el) => el !== element);
+        }
+    },
+
+    /**
+     * Adds a new item to the list of Production Steps
+     */
+    addNewItemsToListOfProductionSteps() {
+        const items = this.listOfProductionStepsString
+            .split(",")
+            .map((element) => element.trim())
+            .filter((element) => element !== "");
+        this.listOfProductionSteps = [...new Set([...this.listOfProductionSteps, ...items])];
+        this.listOfProductionStepsString = "";
     },
   },
 });
