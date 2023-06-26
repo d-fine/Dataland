@@ -12,8 +12,7 @@ class ApiKeyAuthenticationHelper {
 
     fun obtainApikeyForTechnicalUser(technicalUser: TechnicalUser, daysValid: Int? = null): ApiKeyAndMetaInfo {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
-        val apiKeyAndMetaInfo = apiKeyManagerClient.generateApiKey(daysValid)
-        return apiKeyAndMetaInfo
+        return apiKeyManagerClient.generateApiKey(daysValid)
     }
 
     fun authenticateApiCallsWithApiKeyForTechnicalUser
