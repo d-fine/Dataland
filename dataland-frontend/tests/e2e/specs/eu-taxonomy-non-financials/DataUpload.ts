@@ -307,7 +307,7 @@ describeIf(
       cy.get(`div[data-test=capexSection] div[data-test=total] select[name="report"]`).select(
         differentFileNameForSameFile
       );
-      cy.intercept(`**/documents/*/exists`).as("documentExists");
+      cy.intercept({ url: `**/documents/*`, method: "HEAD" }).as("documentExists");
       cy.intercept(`**/documents/`, cy.spy().as("postDocument"));
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
       cy.get('button[data-test="submitButton"]').click();
