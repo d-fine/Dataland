@@ -67,7 +67,7 @@
           type="number"
           name="value"
           validation-label=""
-          v-model="currentPercentageValue"
+          v-model="currentAmountValue"
           :placeholder="'Value'"
           step="any"
           min="0"
