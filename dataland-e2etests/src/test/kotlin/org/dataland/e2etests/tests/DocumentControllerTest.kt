@@ -9,9 +9,8 @@ import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.http.HttpStatus
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -27,10 +26,13 @@ class DocumentControllerTest {
         val expectedHash = document.readBytes().sha256()
         val nonExistentDocumentId = "nonExistentDocumentId"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        assertFalse(documentControllerClient.checkDocument(nonExistentDocumentId).documentExists)
+        val exception = assertThrows<ClientException> {
+            documentControllerClient.checkDocument(nonExistentDocumentId).documentExists
+        }
+        assertEquals(HttpStatus.NOT_FOUND.value(), exception.statusCode)
         val uploadResponse = documentControllerClient.postDocument(document)
         assertEquals(expectedHash, uploadResponse.documentId)
-        assertTrue(documentControllerClient.checkDocument(uploadResponse.documentId).documentExists)
+        documentControllerClient.checkDocument(uploadResponse.documentId)
         val downloadedFile = ensureQaCompleted(uploadResponse)
         assertEquals(expectedHash, downloadedFile.readBytes().sha256())
     }

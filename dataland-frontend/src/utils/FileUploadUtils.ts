@@ -1,6 +1,7 @@
 import { CompanyReport } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Keycloak from "keycloak-js";
+import {AxiosError} from "axios";
 
 export interface DocumentToUpload {
   file: File;
@@ -29,8 +30,16 @@ export async function uploadFiles(
 ): Promise<void> {
   const documentControllerApi = await new ApiClientProvider(getKeycloakPromise()).getDocumentControllerApi();
   for (const fileToUpload of files) {
-    const fileIsAlreadyInStorage = (await documentControllerApi.checkDocument(fileToUpload.reference)).data
-      .documentExists;
+    let fileIsAlreadyInStorage: Boolean;
+    try {
+      await documentControllerApi.checkDocument(fileToUpload.reference)
+      fileIsAlreadyInStorage = true;
+    }  catch (error) {
+      if (error instanceof AxiosError && (error as AxiosError).response!.status != 404) {
+        fileIsAlreadyInStorage = false;
+      }
+      throw error;
+    }
     if (!fileIsAlreadyInStorage) {
       const backendComputedHash = (await documentControllerApi.postDocument(fileToUpload.file)).data.documentId;
       if (fileToUpload.reference !== backendComputedHash) {
