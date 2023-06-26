@@ -21,7 +21,7 @@ appear.
 - [ ] Update Ktlint to >= 49.0 breaks the ktlint tasks (issue described here: 
   https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
-
+- [ ] Update Node to 20.3.1 is skipped due to issues in rebuilding Docker images
 ### Gradle update
 
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
