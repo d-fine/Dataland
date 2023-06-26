@@ -131,7 +131,8 @@ interface CompanyApi {
             ApiResponse(responseCode = "404", description = "Successfully checked that identifier does not exist."),
         ],
     )
-    @GetMapping(
+    @RequestMapping(
+        method = [org.springframework.web.bind.annotation.RequestMethod.HEAD],
         value = ["/identifiers/{identifierType}/{identifier}"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")

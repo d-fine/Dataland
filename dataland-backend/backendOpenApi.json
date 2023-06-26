@@ -606,6 +606,79 @@
         ]
       }
     },
+    "/companies/identifiers/{identifierType}/{identifier}": {
+      "head": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Checks that an identifier of specified type exists.",
+        "description": "Checks that an identifier of specified type exists.",
+        "operationId": "existsIdentifier",
+        "parameters": [
+          {
+            "name": "identifierType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Lei",
+                "Isin",
+                "PermId",
+                "Ticker",
+                "Duns",
+                "CompanyRegistrationNumber",
+                "VatNumber"
+              ]
+            }
+          },
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked that identifier exists."
+          },
+          "404": {
+            "description": "Successfully checked that identifier does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/metadata": {
       "get": {
         "tags": [
@@ -1680,79 +1753,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/companies/identifiers/{identifierType}/{identifier}": {
-      "get": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Checks that an identifier of specified type exists.",
-        "description": "Checks that an identifier of specified type exists.",
-        "operationId": "existsIdentifier",
-        "parameters": [
-          {
-            "name": "identifierType",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "Lei",
-                "Isin",
-                "PermId",
-                "Ticker",
-                "Duns",
-                "CompanyRegistrationNumber",
-                "VatNumber"
-              ]
-            }
-          },
-          {
-            "name": "identifier",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully checked that identifier exists."
-          },
-          "404": {
-            "description": "Successfully checked that identifier does not exist."
           },
           "default": {
             "description": "An error occurred",
@@ -4205,10 +4205,10 @@
       "CompanyIdAndName": {
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
