@@ -25,7 +25,7 @@ class DocumentController(
     }
 
     override fun checkDocument(documentId: String) {
-        if(!documentManager.checkIfDocumentExistsWithId(documentId)) {
+        if (!documentManager.checkIfDocumentExistsWithId(documentId)) {
             throw ResourceNotFoundApiException(
                 "Document with ID $documentId does not exist.",
                 "Document with ID $documentId does not exist.",
