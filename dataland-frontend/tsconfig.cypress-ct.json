@@ -6,7 +6,8 @@
     "src/**/*.vue",
     "build/clients/**/*",
     "tests/component/**/*",
-    "tests/sharedUtils/**/*"
+    "tests/sharedUtils/**/*",
+    "./custom-adjustments-for-cypress-ct-tsconfig.d.ts"
   ],
   "compilerOptions": {
     "composite": true,

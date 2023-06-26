@@ -81,7 +81,7 @@ export default defineComponent({
           clickAction: this.goToUserSettings,
         },
         {
-          label: "API KEYS",
+          label: "API KEY",
           icon: "key",
           id: "profile-api-generate-key-button",
           clickAction: this.goToApiKeysPage,

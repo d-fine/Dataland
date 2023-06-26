@@ -7,6 +7,7 @@
   ],
   "compilerOptions": {
     "composite": true,
+    "types": ["vite/client"],
     "baseUrl": ".",
     "lib": [
       "ESNext",

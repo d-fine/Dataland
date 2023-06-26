@@ -17,7 +17,7 @@
 
       <MiddleCenterDiv
         data-test="noApiKeyWelcomeComponent"
-        v-if="!existsApiKey && !waitingForData && this.pageState !== 'create'"
+        v-if="!userAlreadyHasApiKey && !waitingForData && this.pageState !== 'create'"
         class="col-12"
       >
         <div>
@@ -39,7 +39,11 @@
         />
       </div>
 
-      <div data-test="apiKeyInfo" class="apiKeyInfo" v-if="existsApiKey && !waitingForData && pageState === 'view'">
+      <div
+        data-test="apiKeyInfo"
+        class="apiKeyInfo"
+        v-if="userAlreadyHasApiKey && !waitingForData && pageState === 'view'"
+      >
         <div class="col-12 md:col-8 lg:col-6">
           <MessageComponent
             data-test="newKeyHolder"
@@ -86,7 +90,7 @@
               <div class="text-900 font-medium text-xl text-left">API Key usage info</div>
               <div class="block text-600 mb-2 mt-4 text-left">
                 You can use the API-Keys as bearer-tokens by including them in the authorization header of any requests
-                you make to dataland (i.e., "Authorization: Bearer &lt;API Key&gt;").
+                you make to Dataland (i.e., "Authorization: Bearer &lt;API Key&gt;").
               </div>
             </div>
           </div>
@@ -174,7 +178,7 @@ export default defineComponent({
   data() {
     return {
       pageState: "view",
-      existsApiKey: false,
+      userAlreadyHasApiKey: false,
       waitingForData: true,
       regenerateConfirmationVisible: false,
       newKey: "",
@@ -185,7 +189,7 @@ export default defineComponent({
   },
   computed: {
     pageTitle() {
-      if (this.pageState === "view") return "API";
+      if (this.pageState === "view") return "API Key";
       if (this.pageState === "create") return "Create new API Key";
       return "API";
     },
@@ -222,7 +226,7 @@ export default defineComponent({
         this.userRolesAccordingToKeycloak = resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
           ? resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
           : [];
-        this.existsApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
+        this.userAlreadyHasApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
         this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : undefined;
       } catch (error) {
         console.error(error);
@@ -240,7 +244,7 @@ export default defineComponent({
           keycloakPromiseGetter()
         ).getApiKeyManagerController();
         await apiKeyManagerController.revokeApiKey();
-        this.existsApiKey = false;
+        this.userAlreadyHasApiKey = false;
       } catch (error) {
         console.error(error);
       }
@@ -261,7 +265,7 @@ export default defineComponent({
         ).getApiKeyManagerController();
         const response = await apiKeyManagerController.generateApiKey(daysValid);
         this.waitingForData = false;
-        this.existsApiKey = true;
+        this.userAlreadyHasApiKey = true;
         this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : undefined;
         this.newKey = response.data.apiKey;
         this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles
@@ -270,7 +274,7 @@ export default defineComponent({
         this.setActivePageState("view");
       } catch (error) {
         console.error(error);
-        this.existsApiKey = false;
+        this.userAlreadyHasApiKey = false;
       }
     },
 

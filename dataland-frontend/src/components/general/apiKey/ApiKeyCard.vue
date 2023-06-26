@@ -24,7 +24,7 @@
         <div>
           <div class="text-900 font-medium text-xl text-left">API Key info</div>
           <span :class="{ 'text-red-700': isKeyExpired() }" class="block text-600 mb-3 mt-6">
-            {{ whenKeyExpire }}
+            {{ keyExpiryInfoText }}
           </span>
         </div>
 
@@ -54,6 +54,7 @@ import UserRolesBadges from "@/components/general/apiKey/UserRolesBadges.vue";
 export default defineComponent({
   name: "ApiKeyCard",
   components: { PrimeButton, PrimeDialog, UserRolesBadges },
+  emits: ["revokeKey"],
   props: {
     expiryDateInMilliseconds: {
       type: Number,
@@ -67,7 +68,7 @@ export default defineComponent({
     viewDeleteConfirmation: false,
   }),
   computed: {
-    whenKeyExpire() {
+    keyExpiryInfoText() {
       if (this.expiryDateInMilliseconds && this.expiryDateInMilliseconds >= Date.now()) {
         return `The API Key will expire on ${convertUnixTimeInMsToDateString(this.expiryDateInMilliseconds)}`;
       } else if (this.expiryDateInMilliseconds && this.expiryDateInMilliseconds < Date.now()) {
