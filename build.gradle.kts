@@ -39,7 +39,7 @@ tasks.dependencyUpdates.configure {
 
 dependencies {
     detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.23.0")
-    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.21")
+    detekt("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.22")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
