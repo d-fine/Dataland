@@ -1,4 +1,5 @@
-const msPerDay = 86400000;
+import { MS_PER_DAY } from "@/utils/Constants";
+
 export const dateFormatOptions = {
   weekday: "short",
   year: "numeric",
@@ -15,7 +16,7 @@ export const dateFormatOptions = {
  */
 export function calculateDaysFromNow(endDateInMilliseconds: number): number {
   const currentUtcDateInMilliseconds = new Date().getTime();
-  const daysFromNow = (endDateInMilliseconds - currentUtcDateInMilliseconds) / msPerDay;
+  const daysFromNow = (endDateInMilliseconds - currentUtcDateInMilliseconds) / MS_PER_DAY;
   return Math.ceil(daysFromNow);
 }
 
@@ -35,7 +36,7 @@ export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
  */
 export function calculateExpiryDateAsDateString(expiryTimeDays: number): string {
   const currentUtcDateInMilliseconds = new Date().getTime();
-  const expiryUtcDateInMilliseconds = currentUtcDateInMilliseconds + expiryTimeDays * msPerDay;
+  const expiryUtcDateInMilliseconds = currentUtcDateInMilliseconds + expiryTimeDays * MS_PER_DAY;
   return convertUnixTimeInMsToDateString(expiryUtcDateInMilliseconds);
 }
 

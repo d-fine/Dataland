@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.apikey.ParsedApiKey
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
@@ -21,10 +22,12 @@ import java.time.Instant
 @Component("ApiKeyManager")
 class ApiKeyManager(
     @Autowired private val apiKeyRepository: ApiKeyRepository,
+    @Value("\${dataland.max-days-selectable-for-api-key-validity}")
+    private val maxDaysSelectableForApiKeyValidity: Int,
 ) {
 
     companion object {
-        private const val milliSecondsInADay = 86400000
+        private const val milliSecondsInADay = 24 * 60 * 60 * 1000
     }
 
     private val validationMessageNoApiKeyRegistered = "Your Dataland account has no API key registered. " +
@@ -46,11 +49,20 @@ class ApiKeyManager(
     }
 
     private fun checkIfDaysValidValueIsValid(daysValid: Int?) {
-        if (daysValid != null && daysValid <= 0) {
-            throw InvalidInputApiException(
-                "If set, the value of daysValid must be a positive integer.",
-                "If set, the value of daysValid must be a positive integer but it was $daysValid",
-            )
+        if (daysValid != null) {
+            if (daysValid < 1) {
+                throw InvalidInputApiException(
+                    "If set, the value of daysValid must be a positive number.",
+                    "If set, the value of daysValid must be a positive number but it was $daysValid",
+                )
+            }
+            if (daysValid > maxDaysSelectableForApiKeyValidity) {
+                throw InvalidInputApiException(
+                    "If set, the value of daysValid cannot be greater than $maxDaysSelectableForApiKeyValidity.",
+                    "If set, the value of daysValid cannot be greater than $maxDaysSelectableForApiKeyValidity " +
+                        "but it was $daysValid",
+                )
+            }
         }
     }
 
@@ -58,7 +70,11 @@ class ApiKeyManager(
         checkIfDaysValidValueIsValid(daysValid)
         return when (daysValid) {
             null -> null
-            else -> (daysValid * milliSecondsInADay) + Instant.now().toEpochMilli()
+            else -> {
+                val daysValid = daysValid.toLong()
+                val millisecondsValid = (daysValid * milliSecondsInADay)
+                millisecondsValid + Instant.now().toEpochMilli()
+            }
         }
     }
 
