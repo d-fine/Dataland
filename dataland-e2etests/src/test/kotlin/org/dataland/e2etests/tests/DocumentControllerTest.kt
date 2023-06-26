@@ -27,7 +27,7 @@ class DocumentControllerTest {
         val nonExistentDocumentId = "nonExistentDocumentId"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val exception = assertThrows<ClientException> {
-            documentControllerClient.checkDocument(nonExistentDocumentId).documentExists
+            documentControllerClient.checkDocument(nonExistentDocumentId)
         }
         assertEquals(HttpStatus.NOT_FOUND.value(), exception.statusCode)
         val uploadResponse = documentControllerClient.postDocument(document)
