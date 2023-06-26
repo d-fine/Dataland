@@ -16,10 +16,7 @@ import {
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm,
   uploadEuTaxonomyDataForNonFinancialsViaForm,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import {
-  goToEditFormOfMostRecentDataset,
-  uploadCompanyViaApiAndEuTaxonomyDataViaForm,
-} from "@e2e/utils/GeneralApiUtils";
+import { goToEditFormOfMostRecentDataset, uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralUtils";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import Chainable = Cypress.Chainable;
