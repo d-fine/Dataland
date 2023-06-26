@@ -1,10 +1,9 @@
-import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
+import { EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
-import { login } from "@e2e/utils/Auth";
-import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
+import { getKeycloakToken, login } from "@e2e/utils/Auth";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { admin_name, admin_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
-import { fillAndValidateEuTaxonomyCreditInstitutionForm } from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
+import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 describeIf(
@@ -20,19 +19,20 @@ describeIf(
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
-        testData = getPreparedFixture("LkSG-date-2023-04-18", preparedFixtures);
+        testData = getPreparedFixture("company-for-all-type", preparedFixtures);
       });
     });
 
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
-      uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
-        DataTypeEnum.EutaxonomyFinancials,
-        testCompany,
-        testData.t,
-        (data) => fillAndValidateEuTaxonomyCreditInstitutionForm(data),
-        (req) => (req.headers["REQUIRE-QA"] = "true"),
-        () => testSubmittedDatasetIsInReviewList(testCompany.companyName)
-      );
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return uploadCompanyViaApi(token, testCompany).then(async (storedCompany) => {
+          cy.ensureLoggedIn(admin_name, admin_pw);
+
+          await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", testData.t);
+
+          testSubmittedDatasetIsInReviewList(testCompany.companyName);
+        });
+      });
     });
   }
 );

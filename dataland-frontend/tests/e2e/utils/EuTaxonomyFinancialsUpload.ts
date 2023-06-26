@@ -14,11 +14,11 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { goToEditFormOfMostRecentDataset, submitFilledInEuTaxonomyForm } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
+import { goToEditFormOfMostRecentDataset } from "./GeneralUtils";
 import Chainable = Cypress.Chainable;
 
 /**
@@ -331,4 +331,28 @@ export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyD
   fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
   fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
   fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
+}
+
+/**
+ * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks
+ * if a 200 response is returned by the backend
+ * @param submissionDataIntercept function that asserts content of an intercepted request
+ */
+export function submitFilledInEuTaxonomyForm(
+  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
+): void {
+  const postRequestAlias = "postDataAlias";
+  cy.intercept(
+    {
+      method: "POST",
+      url: `**/api/data/**`,
+      times: 1,
+    },
+    submissionDataIntercept
+  ).as(postRequestAlias);
+  cy.get('button[data-test="submitButton"]').click();
+  cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then((interception) => {
+    expect(interception.response?.statusCode).to.eq(200);
+  });
+  cy.contains("td", "EU Taxonomy");
 }
