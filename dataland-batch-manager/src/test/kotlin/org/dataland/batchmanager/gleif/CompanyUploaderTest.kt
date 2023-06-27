@@ -71,14 +71,14 @@ class CompanyUploaderTest {
     }
 
     @Test
-    fun `check that the upload handles a socket timeout and terminates`() {
+    fun `check that the upload handles a socket timeout and terminates after two retries`() {
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1)).thenThrow(SocketTimeoutException())
         companyUploader.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(3)).postCompany(dummyCompanyInformation1)
     }
 
     @Test
-    fun `check that the upload handles a server exception and terminates`() {
+    fun `check that the upload handles a server exception and terminates after two retries`() {
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1)).thenThrow(ServerException())
         companyUploader.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(3)).postCompany(dummyCompanyInformation1)

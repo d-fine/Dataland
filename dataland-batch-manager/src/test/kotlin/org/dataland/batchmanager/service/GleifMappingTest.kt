@@ -20,7 +20,7 @@ class GleifMappingTest {
         lei = "DummyLei",
     )
 
-    val expectedCompanyInformation = CompanyInformation(
+    private val expectedCompanyInformation = CompanyInformation(
         companyName = expectedGleifCompanyInformation.companyName,
         companyAlternativeNames = null,
         companyLegalForm = null,

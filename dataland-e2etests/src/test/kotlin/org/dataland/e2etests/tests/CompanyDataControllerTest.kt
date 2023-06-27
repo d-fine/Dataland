@@ -3,7 +3,6 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
@@ -195,8 +194,7 @@ class CompanyDataControllerTest {
         assertFalse(otherCompanyNames.contains("Company 7"))
     }
 
-    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?):
-        CompanyInformation {
+    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?) {
         val companyInformation = baseCompanyInformation.copy(
             companyName = name,
             companyAlternativeNames = alternativeNames,
@@ -209,6 +207,5 @@ class CompanyDataControllerTest {
             ),
         )
         apiAccessor.companyDataControllerApi.postCompany(companyInformation)
-        return (companyInformation)
     }
 }

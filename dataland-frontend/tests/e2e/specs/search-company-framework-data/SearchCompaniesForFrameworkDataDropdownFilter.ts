@@ -105,15 +105,19 @@ describe("As a user, I expect the search functionality on the /companies page to
     { scrollBehavior: false },
     () => {
       const demoCompanyToTestFor = assertDefined(
-        companiesWithEuTaxonomyDataForNonFinancials.find((it) => it.companyInformation.sector !== undefined)
-      ).companyInformation;
-      const demoCompanyWithDifferentSector = companiesWithEuTaxonomyDataForNonFinancials.find(
-        (it) =>
-          it.companyInformation.sector !== demoCompanyToTestFor.sector && it.companyInformation.sector !== undefined
-      )!.companyInformation;
+        companiesWithEuTaxonomyDataForNonFinancials.find((it) => it.companyInformation?.sector !== undefined)
+          ?.companyInformation
+      );
+      expect(demoCompanyToTestFor?.sector).to.not.be.undefined;
 
-      expect(demoCompanyToTestFor.sector).to.not.be.undefined;
-      expect(demoCompanyWithDifferentSector.sector).to.not.be.undefined;
+      const demoCompanyWithDifferentSector = assertDefined(
+        companiesWithEuTaxonomyDataForNonFinancials.find(
+          (it) =>
+            it.companyInformation?.sector !== demoCompanyToTestFor.sector && it.companyInformation?.sector !== undefined
+        )?.companyInformation
+      );
+      expect(demoCompanyWithDifferentSector?.sector).to.not.be.undefined;
+
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
       cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector!}`)
