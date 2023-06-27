@@ -40,17 +40,12 @@ class CompanyUpload(
                 )
                 companyDataControllerApi.postCompany(companyInformation)
                 break
+            } catch (exception: ClientException) {
+                logger.error("Unable to upload company data. Response was: ${exception.message}.")
+                counter = MAX_RETRIES
             } catch (exception: SocketTimeoutException) {
                 logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
                 counter++
-            } catch (exception: ClientException) {
-                logger.error("Unable to upload company data. Response was: ${exception.message}.")
-                if (exception.statusCode == UNAUTHORIZED_CODE || exception.statusCode == FORBIDDEN_CODE) {
-                    logger.error("Authorization failed, attempting to regenerate access token.")
-                    counter++
-                } else {
-                    break
-                }
             } catch (exception: ServerException) {
                 logger.error("Unexpected server exception. Response was: ${exception.message}.")
                 counter++
