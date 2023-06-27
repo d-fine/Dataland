@@ -2,92 +2,95 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Tinoscheid",
+			"headquarters": "West Alma",
 			"sector": "schemas",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "44P6IwL5ZOyNHyB"
+					"identifierValue": "kJ8BnFoh2MA0ko1"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "EA67IaUHS"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "naodT2FZUdQPb1Kn1ETA"
+					"identifierValue": "rZ3u3oLkrtv8ur2uhqcX"
 				},
 				{
-					"identifierType": "VatNumber",
-					"identifierValue": "BdpUdziNI"
+					"identifierType": "PermId",
+					"identifierValue": "tj0lcLUEzS"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "nd5gDs9"
 				}
 			],
-			"countryCode": "SN",
+			"countryCode": "BG",
 			"companyAlternativeNames": [
-				"Burghagen GmbH & Co. KG",
-				"Gamlin-Nwachukwu",
-				"Kallensee, Hooss und Weigel",
-				"Klauder, Tischmann und Danneberg"
+				"Beyer KG",
+				"Rautenkranz, Thöne und Kramer",
+				"Reuss-Weniger"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-05-28",
+			"fiscalYearEnd": "2022-12-09",
+			"numberOfEmployees": 28852,
 			"referencedReports": {
-				"AnnualReport": {
+				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-01-10",
-					"currency": "SLE"
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-12-01",
+					"currency": "BWP"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2023-06-05",
+					"currency": "CAD"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "LSL"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "NA",
-					"currency": "AUD"
+					"currency": "MAD"
 				}
 			},
 			"assurance": {
 				"assurance": "LimitedAssurance",
 				"dataSource": {
-					"page": 659,
+					"page": 830,
 					"report": "AnnualReport",
-					"tagName": "architectures"
+					"tagName": "ROI"
 				}
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "Yes",
 			"opex": {
 				"eligibleData": {
-					"dataSource": {
-						"page": 688,
-						"report": "ESEFReport",
-						"tagName": "functionalities"
-					},
-					"quality": "Audited",
-					"comment": "synthesize primary protocol",
-					"valueAsAbsolute": 0.9724
+					"quality": "Incomplete",
+					"valueAsAbsolute": 0.1984
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"dataSource": {
-						"page": 513,
-						"report": "AnnualReport",
-						"tagName": "functionalities"
-					},
-					"quality": "Reported",
-					"comment": "override virtual port",
-					"valueAsAbsolute": 0.6844
+					"quality": "Estimated",
+					"valueAsAbsolute": 0.4869
 				}
 			},
 			"revenue": {
 				"eligibleData": {
 					"dataSource": {
-						"page": 129,
+						"page": 143,
 						"report": "ESEFReport",
-						"tagName": "deliverables"
+						"tagName": "portals"
 					},
 					"quality": "Incomplete",
-					"comment": "transmit cross-platform circuit",
-					"valueAsAbsolute": 0.3033
+					"comment": "reboot 1080p array",
+					"valueAsAbsolute": 0.3053
 				}
 			}
 		},
@@ -96,241 +99,198 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Nilsstadt",
-			"sector": "action-items",
+			"headquarters": "Herford",
+			"sector": "communities",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "5N3U3DhTWK12fx3"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "Ejab0tSxo"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "hWci0Oh3VHs1"
+					"identifierValue": "At1pRobJgEbeU1e"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "74o9uCaSmfIaCQHmMAEV"
+					"identifierValue": "VGdBiZ01YiY1XsQkzAES"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "yeIPJPxifg"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "1Rhxcl3"
+					"identifierValue": "xUWs17NKOB"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "aoC55kxbw"
+					"identifierValue": "C1oCoDtwe"
 				}
 			],
-			"countryCode": "ST",
+			"countryCode": "PK",
 			"companyAlternativeNames": [
-				"Cors, Gutjahr und Daudrich",
-				"Moguenara OHG",
-				"Niklaus GmbH",
-				"Schäffer, Bruder und Hertel"
+				"Benninger OHG",
+				"Gollnow-Astafei",
+				"Holinski-Hodea"
 			],
-			"website": "https://betriebsam-sprache.de/",
+			"website": "https://tauglich-ozean.net",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
+			"fiscalYearDeviation": "NoDeviation",
+			"numberOfEmployees": 33855,
 			"referencedReports": {
-				"ESEFReport": {
+				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "CLP"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "JMD"
+					"currency": "AED"
 				}
 			},
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"provider": "Schönberg-Fried"
 			},
-			"scopeOfEntities": "No",
+			"scopeOfEntities": "NA",
 			"reportingObligation": "Yes",
 			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 869955.8411026374,
+					"value": 551605.3451923653,
 					"dataSource": {
-						"page": 977,
-						"report": "ESEFReport",
-						"tagName": "architectures"
-					},
-					"quality": "Audited",
-					"comment": "override solid state matrix"
-				},
-				"eligibleData": {
-					"valueAsPercent": 0.5363,
-					"dataSource": {
-						"page": 143,
-						"report": "AnnualReport",
-						"tagName": "blockchains"
+						"page": 855,
+						"report": "IntegratedReport",
+						"tagName": "metrics"
 					},
 					"quality": "Incomplete",
-					"comment": "copy mobile bus",
-					"valueAsAbsolute": 238062.97103874385
+					"comment": "copy redundant bandwidth"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.6793,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 812262.6746306196
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 128195.7370811142,
+					"value": 692975.1830990426,
 					"dataSource": {
-						"page": 439,
-						"report": "AnnualReport",
-						"tagName": "lifetime value"
+						"page": 610,
+						"report": "IntegratedReport",
+						"tagName": "platforms"
 					},
-					"quality": "Audited",
-					"comment": "synthesize digital driver"
+					"quality": "Incomplete",
+					"comment": "calculate bluetooth transmitter"
 				},
 				"eligibleData": {
-					"valueAsPercent": 0.7472,
-					"dataSource": {
-						"page": 530,
-						"report": "AnnualReport",
-						"tagName": "paradigms"
-					},
-					"quality": "Reported",
-					"comment": "index redundant circuit",
-					"valueAsAbsolute": 366674.52566325665
+					"valueAsPercentage": 0.2338,
+					"quality": "Estimated",
+					"valueAsAbsolute": 387366.7522217147
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 220343.66548759863,
+					"value": 314885.4499915615,
 					"dataSource": {
-						"page": 172,
-						"report": "ESEFReport",
-						"tagName": "metrics"
+						"page": 1165,
+						"report": "IntegratedReport",
+						"tagName": "technologies"
 					},
-					"quality": "Reported",
-					"comment": "override auxiliary port"
+					"quality": "Audited",
+					"comment": "input haptic feed"
 				},
 				"eligibleData": {
-					"valueAsPercent": 0.1255,
-					"quality": "Incomplete",
-					"valueAsAbsolute": 779471.2733943015
+					"valueAsPercentage": 0.0333,
+					"dataSource": {
+						"page": 1077,
+						"report": "IntegratedReport",
+						"tagName": "ROI"
+					},
+					"quality": "Audited",
+					"comment": "index redundant port",
+					"valueAsAbsolute": 668608.593987301
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Stralsund",
-			"headquartersPostalCode": "80663",
-			"sector": "experiences",
+			"headquarters": "Ost Joschuastadt",
+			"headquartersPostalCode": "99765",
+			"sector": "paradigms",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "mErFu2ifUcWVNrI"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "PV2u6yWRB"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "qABU8mnyfi6p"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "mYsftM5X4G"
+					"identifierType": "VatNumber",
+					"identifierValue": "erjGVyyAC"
 				}
 			],
-			"countryCode": "UZ",
+			"countryCode": "MG",
 			"companyAlternativeNames": [
-				"Koszewski KG",
-				"Schlitzer KG"
+				"Höft UG",
+				"Schmitt-Knorr",
+				"Wessel KG"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://hell-uranus.com/",
+			"companyLegalForm": "AG",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"fiscalYearDeviation": "Deviation",
-			"numberOfEmployees": 93795,
 			"assurance": {
-				"assurance": "ReasonableAssurance",
+				"assurance": "LimitedAssurance",
 				"dataSource": {
-					"page": 194,
-					"report": "ESEFReport",
-					"tagName": "solutions"
+					"page": 916,
+					"report": "IntegratedReport",
+					"tagName": "initiatives"
 				}
 			},
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "No",
+			"reportingObligation": "Yes",
 			"opex": {
-				"alignedData": {
-					"valueAsPercent": 0.5598,
-					"dataSource": {
-						"page": 1078,
-						"report": "SustainabilityReport",
-						"tagName": "niches"
-					},
-					"quality": "Incomplete",
-					"comment": "bypass online alarm"
+				"totalAmount": {
+					"quality": "Estimated"
 				},
-				"eligibleData": {
-					"valueAsPercent": 0.6728,
+				"alignedData": {
+					"valueAsPercentage": 0.9308,
+					"dataSource": {
+						"page": 534,
+						"report": "IntegratedReport",
+						"tagName": "networks"
+					},
 					"quality": "Estimated",
-					"valueAsAbsolute": 178756.42088474706
+					"comment": "generate wireless bus",
+					"valueAsAbsolute": 838825.3221404739
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 873701.9348423928,
 					"dataSource": {
-						"page": 737,
-						"report": "IntegratedReport",
-						"tagName": "systems"
+						"page": 60,
+						"report": "AnnualReport",
+						"tagName": "channels"
 					},
-					"quality": "Estimated",
-					"comment": "synthesize solid state interface"
+					"quality": "Reported",
+					"comment": "navigate 1080p system"
 				},
 				"alignedData": {
-					"valueAsPercent": 0.0219,
+					"valueAsPercentage": 0.3662,
 					"dataSource": {
-						"page": 754,
-						"report": "SustainabilityReport",
-						"tagName": "e-commerce"
+						"page": 1129,
+						"report": "IntegratedReport",
+						"tagName": "metrics"
 					},
-					"quality": "Incomplete",
-					"comment": "override solid state pixel"
-				},
-				"eligibleData": {
-					"dataSource": {
-						"page": 1043,
-						"report": "ESEFReport",
-						"tagName": "schemas"
-					},
-					"quality": "Estimated",
-					"comment": "override multi-byte microchip",
-					"valueAsAbsolute": 773290.4411735944
+					"quality": "Reported",
+					"comment": "calculate cross-platform alarm"
 				}
 			},
 			"revenue": {
 				"alignedData": {
 					"dataSource": {
-						"page": 183,
-						"report": "SustainabilityReport",
-						"tagName": "communities"
+						"page": 40,
+						"report": "AnnualReport",
+						"tagName": "e-markets"
 					},
-					"quality": "Audited",
-					"comment": "synthesize haptic program"
+					"quality": "Incomplete",
+					"comment": "calculate online driver",
+					"valueAsAbsolute": 492754.8060310073
 				},
 				"eligibleData": {
+					"valueAsPercentage": 0.3029,
 					"quality": "Incomplete"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	}
 ]

@@ -161,7 +161,7 @@ export function getCsvDataPointMapping<T>(
  */
 export function generateDatapointAbsoluteAndPercentage<T, Y>(
     valueAsAbsolute: T | null,
-  valueAsPercent: T | null,
+  valueAsPercentage: T | null,
   reports: ReferencedDocuments
 ): Y {
   const qualityBucket =
@@ -182,7 +182,7 @@ export function generateDatapointAbsoluteAndPercentage<T, Y>(
   }
 
   return {
-    valueAsPercent: valueAsPercent ?? undefined,
+    valueAsPercentage: valueAsPercentage ?? undefined,
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
