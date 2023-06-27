@@ -44,16 +44,6 @@ class CsvToJsonConverter {
         companyReportParser,
     )
 
-    /*
-    private val euTaxonomyForNonFinancialsCsvParser = EuTaxonomyForNonFinancialsCsvParser(
-        euTaxonomyCommonFieldParser,
-        companyTypeParser,
-        dataPointParser,
-        assuranceDataParser,
-        fiscalYearParser,
-        companyReportParser,
-    )
-     */
     private val reportingPeriodParser = ReportingPeriodParser()
 
     /**
@@ -77,13 +67,7 @@ class CsvToJsonConverter {
                 }
             }
     }
-/*
-    /**
-     * Parses data for the EuTaxonomyForNonFinancials framework from the CSV
-     */
-    fun parseEuTaxonomyNonFinancialData(): List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> =
-        buildListOfCompanyInformationWithFrameworkData(rawCsvData, euTaxonomyForNonFinancialsCsvParser)
-*/
+
     /**
      * Parses data for the EuTaxonomyForFinancials framework from the CSV
      */
@@ -108,10 +92,6 @@ class CsvToJsonConverter {
         fun main(args: Array<String>) {
             val converter = CsvToJsonConverter()
             converter.parseCsvFile(File(args.first()).path)
-/*
-            val euTaxonomyNonFinancial = converter.parseEuTaxonomyNonFinancialData()
-            JsonConfig.exportJson("./CompanyInformationWithEuTaxonomyDataForNonFinancials.json", euTaxonomyNonFinancial)
-*/
             val euTaxonomyFinancial = converter.parseEuTaxonomyFinancialData()
             JsonConfig.exportJson("./CompanyInformationWithEuTaxonomyDataForFinancials.json", euTaxonomyFinancial)
         }

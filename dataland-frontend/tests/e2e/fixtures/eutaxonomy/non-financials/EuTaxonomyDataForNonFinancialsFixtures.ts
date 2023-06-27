@@ -12,7 +12,6 @@ import {
   generateDatapoint,
   generateDatapointAbsoluteAndPercentage,
   getCsvDataPointMapping,
-  getCsvDataPointMappingAbsoluteAndPercentage,
 } from "@e2e/fixtures/common/DataPointFixtures";
 import {
   generateEuTaxonomyWithBaseFields,
@@ -89,41 +88,35 @@ export function generateCSVDataForNonFinancials(
         (row): DataPointBigDecimal | undefined => row.t.opex?.totalAmount,
         decimalSeparatorConverter(1000000)
       ),
-      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Eligible Revenue`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.revenue?.eligibleData,
         decimalSeparatorConverter(1000000),
-        convertToPercentageString
       ),
-      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Eligible CapEx`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.capex?.eligibleData,
         decimalSeparatorConverter(1000000),
-        convertToPercentageString
       ),
-      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Eligible OpEx`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.opex?.eligibleData,
         decimalSeparatorConverter(1000000),
-        convertToPercentageString
       ),
-      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Aligned Revenue`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.revenue?.alignedData,
         decimalSeparatorConverter(1000000),
-        convertToPercentageString
       ),
-      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Aligned CapEx`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.capex?.alignedData,
         decimalSeparatorConverter(1000000),
-        convertToPercentageString
       ),
-      ...getCsvDataPointMappingAbsoluteAndPercentage<FixtureData<EuTaxonomyDataForNonFinancials>>(
+      ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Aligned OpEx`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.opex?.alignedData,
         decimalSeparatorConverter(1000000),
-        convertToPercentageString
       ),
     ],
     delimiter: ";",
