@@ -1,9 +1,10 @@
-import { EuTaxonomyDataForFinancials } from "@clients/backend";
+import { EuTaxonomyDataForFinancials, LksgData, StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken, login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { getBaseUrl, reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
+import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 describeIf(
@@ -13,25 +14,45 @@ describeIf(
     dataEnvironments: ["fakeFixtures"],
   },
   function () {
-    let testData: FixtureData<EuTaxonomyDataForFinancials>;
-    const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${new Date().getTime()}`);
+    let storedCompany: StoredCompany;
+    let preparedEuTaxonomyFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
+    let preparedLksgFixtures: Array<FixtureData<LksgData>>;
 
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
-        testData = getPreparedFixture("company-for-all-types", preparedFixtures);
+      cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+        preparedLksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
+      });
+
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${new Date().getTime()}`);
+        return uploadCompanyViaApi(token, testCompany).then((newCompany) => (storedCompany = newCompany));
       });
     });
 
+    beforeEach(() => cy.ensureLoggedIn(uploader_name, uploader_pw));
+    afterEach(() => safeLogout());
+
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, testCompany).then(async (storedCompany) => {
-          cy.ensureLoggedIn(uploader_name, uploader_pw);
+      const data = getPreparedFixture("company-for-all-types", preparedEuTaxonomyFixtures);
+      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+        await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
+        testSubmittedDatasetIsInReviewListAndPending(storedCompany.companyInformation.companyName);
+      });
+    });
 
-          await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", testData.t, false);
+    it("Check whether newly added dataset has Rejected status and can be edited", () => {
+      const data = getPreparedFixture("LkSG-date-2023-04-18", preparedLksgFixtures);
+      getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
+        const lksgDataset = await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
+        testSubmittedDatasetIsInReviewListAndRejected(storedCompany.companyInformation.companyName);
 
-          testSubmittedDatasetIsInReviewList(testCompany.companyName);
-        });
+        cy.get('[data-test="editDatasetButton"').should("exist").click();
+
+        cy.url().should(
+          "eq",
+          getBaseUrl() +
+            `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${lksgDataset.dataId}`
+        );
       });
     });
   }
@@ -41,8 +62,8 @@ describeIf(
  * Tests that the item was added and is visible on the QA list
  * @param companyName The name of the company
  */
-function testSubmittedDatasetIsInReviewList(companyName: string): void {
-  testDatasetPresent(companyName, "PENDING");
+function testSubmittedDatasetIsInReviewListAndPending(companyName: string): void {
+  testDatasetPresentWithCorrectStatus(companyName, "PENDING");
 
   safeLogout();
 
@@ -65,7 +86,27 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
   safeLogout();
   login(uploader_name, uploader_pw);
 
-  testDatasetPresent(companyName, "APPROVED");
+  testDatasetPresentWithCorrectStatus(companyName, "APPROVED");
+}
+
+/**
+ * Tests that the item was added and is visible on the QA list
+ * @param companyName The name of the company
+ */
+function testSubmittedDatasetIsInReviewListAndRejected(companyName: string): void {
+  safeLogout();
+
+  login(reviewer_name, reviewer_pw);
+
+  cy.visitAndCheckAppMount("/qualityassurance");
+
+  cy.get('[data-test="qa-review-section"] .p-datatable-tbody').last().click();
+  cy.get(".p-dialog").get('button[id="reject-button"]').should("exist").click();
+
+  safeLogout();
+  login(uploader_name, uploader_pw);
+
+  testDatasetPresentWithCorrectStatus(companyName, "REJECTED");
 }
 
 /**
@@ -73,7 +114,7 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
  * @param companyName The name of the company that just uploaded
  * @param status The current expected status of the dataset
  */
-function testDatasetPresent(companyName: string, status: string): void {
+function testDatasetPresentWithCorrectStatus(companyName: string, status: string): void {
   cy.visitAndCheckAppMount("/datasets");
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody')
@@ -89,8 +130,9 @@ function testDatasetPresent(companyName: string, status: string): void {
  * Logs the user out without testing the url
  */
 function safeLogout(): void {
-  cy.get("div[id='profile-picture-dropdown-toggle']")
+  cy.visitAndCheckAppMount("/companies");
+  cy.get('div[id="profile-picture-dropdown-toggle"]')
     .click()
-    .get("a[id='profile-picture-dropdown-logout-anchor']")
+    .get('a[id="profile-picture-dropdown-logout-anchor"]')
     .click();
 }
