@@ -81,9 +81,7 @@ export default defineComponent({
      * @param event.value the stored company object
      */
     async pushToChooseFrameworkForDataUploadPageForItem(event: AutoCompleteItemSelectEvent) {
-      await this.$router.push(
-        `/companies/${assertDefined(assertDefined(event.value as CompanyIdAndName).companyId)}/frameworks/upload`
-      );
+      await this.$router.push(`/companies/${(event.value as CompanyIdAndName).companyId}/frameworks/upload`);
     },
     /**
      * Queries the getCompanies endpoint and writes the response to the variable autoCompleteArray
