@@ -4203,12 +4203,16 @@
         }
       },
       "CompanyIdAndName": {
+        "required": [
+          "companyId",
+          "companyName"
+        ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
