@@ -193,9 +193,8 @@ export function generateDatapointAbsoluteAndPercentage<T, Y>(
  * Generates the CSV mapping for a datapoint containing percentage and absoulte values
  * @param dataPointName the name of the datapoint
  * @param dataPointGetter a function that can be used to access the datapoint given the current fixture element
- * @param valueConverter a conversion function for formatting the number (i.e. that converts the decimal number to a percentage string)
- * @param valueConverterAbsolute
- * @param valueConverterPercentage
+ * @param valueConverterAbsolute a conversion function for formatting the number (i.e. that converts the decimal number to a percentage string)
+ * @param valueConverterPercentage a conversion function for formatting the percentage
  * @returns the CSV mapping for the datapoint
  */
 export function getCsvDataPointMappingAbsoluteAndPercentage<T>(
