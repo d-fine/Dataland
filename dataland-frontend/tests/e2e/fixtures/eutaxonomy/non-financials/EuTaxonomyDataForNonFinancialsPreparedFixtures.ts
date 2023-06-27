@@ -44,17 +44,17 @@ function createOnlyEglibileNumbers(
   input.t.opex = {
     alignedData: undefined,
     totalAmount: undefined,
-    eligibleData: generateDatapointAbsoluteAndPercentage(randomPercentageValue(), null, input.t.referencedReports!),
+    eligibleData: generateDatapointAbsoluteAndPercentage(null, randomPercentageValue(), input.t.referencedReports!),
   };
   input.t.capex = {
     alignedData: undefined,
     totalAmount: undefined,
-    eligibleData: generateDatapointAbsoluteAndPercentage(randomPercentageValue(), null, input.t.referencedReports!),
+    eligibleData: generateDatapointAbsoluteAndPercentage(null, randomPercentageValue(), input.t.referencedReports!),
   };
   input.t.revenue = {
     alignedData: undefined,
     totalAmount: undefined,
-    eligibleData: generateDatapointAbsoluteAndPercentage(randomPercentageValue(), null, input.t.referencedReports!),
+    eligibleData: generateDatapointAbsoluteAndPercentage(null, randomPercentageValue(), input.t.referencedReports!),
   };
   return input;
 }

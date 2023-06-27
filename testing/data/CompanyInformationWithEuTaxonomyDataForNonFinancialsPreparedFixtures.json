@@ -2,95 +2,205 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "West Alma",
-			"sector": "schemas",
+			"headquarters": "Ost Michaelascheid",
+			"sector": "architectures",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "kJ8BnFoh2MA0ko1"
+					"identifierValue": "nwkPwaYo5GA85w7"
 				},
 				{
-					"identifierType": "Duns",
-					"identifierValue": "EA67IaUHS"
+					"identifierType": "Isin",
+					"identifierValue": "sRvMSLO9xbI9"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "rZ3u3oLkrtv8ur2uhqcX"
+					"identifierValue": "1qtdGvn7choVaNJKYvfz"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "tj0lcLUEzS"
+					"identifierValue": "FAhkNmdJ8I"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "nd5gDs9"
+					"identifierValue": "XPPSuLp"
 				}
 			],
-			"countryCode": "BG",
+			"countryCode": "YE",
 			"companyAlternativeNames": [
-				"Beyer KG",
-				"Rautenkranz, Thöne und Kramer",
-				"Reuss-Weniger"
+				"Wartenberg AG",
+				"Wieser, Grundmann und Manns"
 			],
+			"website": "https://sorgsam-kupfer.net",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2022-12-09",
-			"numberOfEmployees": 28852,
+			"fiscalYearDeviation": "NoDeviation",
+			"fiscalYearEnd": "2022-07-16",
 			"referencedReports": {
-				"SustainabilityReport": {
+				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-12-01",
-					"currency": "BWP"
+					"reportDate": "2022-12-18",
+					"currency": "LYD"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-06-05",
-					"currency": "CAD"
+					"isGroupLevel": "NA",
+					"reportDate": "2023-05-16",
+					"currency": "SRD"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "KYD"
 				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "LSL"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "MAD"
+					"currency": "AOA"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 830,
-					"report": "AnnualReport",
-					"tagName": "ROI"
-				}
+				"assurance": "ReasonableAssurance"
 			},
-			"scopeOfEntities": "Yes",
+			"reportingObligation": "Yes",
 			"opex": {
 				"eligibleData": {
-					"quality": "Incomplete",
-					"valueAsAbsolute": 0.1984
+					"valueAsPercentage": 0.3595,
+					"quality": "NA"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"quality": "Estimated",
-					"valueAsAbsolute": 0.4869
+					"valueAsPercentage": 0.3976,
+					"quality": "NA"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
+					"valueAsPercentage": 0.4365,
+					"quality": "NA"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Neu Arviddorf",
+			"sector": "e-commerce",
+			"identifiers": [
+				{
+					"identifierType": "Duns",
+					"identifierValue": "iZfNEjgU6"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "TrY1kTTzJ9QNBf69Xm4C"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "g5dZof7dk7"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "L3090av"
+				}
+			],
+			"countryCode": "BT",
+			"companyAlternativeNames": [
+				"Jossa Gruppe",
+				"Schreck, Graf und Schuster",
+				"Schultze, Sahner und Scharf"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://stimmungsvoll-literatur.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearEnd": "2022-12-27",
+			"numberOfEmployees": 47014,
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"currency": "BDT"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"currency": "ALL"
+				},
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-07-22",
+					"currency": "SDG"
+				}
+			},
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 260377.963015344,
 					"dataSource": {
-						"page": 143,
-						"report": "ESEFReport",
-						"tagName": "portals"
+						"page": 1,
+						"report": "AnnualReport",
+						"tagName": "architectures"
+					},
+					"quality": "Estimated",
+					"comment": "hack online monitor"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.8937,
+					"dataSource": {
+						"page": 900,
+						"report": "AnnualReport",
+						"tagName": "convergence"
 					},
 					"quality": "Incomplete",
-					"comment": "reboot 1080p array",
-					"valueAsAbsolute": 0.3053
+					"comment": "copy neural feed",
+					"valueAsAbsolute": 459292.5057047978
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 783502.2821556777,
+					"dataSource": {
+						"page": 43,
+						"report": "ESEFReport",
+						"tagName": "networks"
+					},
+					"quality": "Audited",
+					"comment": "synthesize virtual bandwidth"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.5558,
+					"dataSource": {
+						"page": 410,
+						"report": "IntegratedReport",
+						"tagName": "content"
+					},
+					"quality": "Audited",
+					"comment": "connect cross-platform capacitor",
+					"valueAsAbsolute": 432931.979035493
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 760766.8950571679,
+					"quality": "Estimated"
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.634,
+					"dataSource": {
+						"page": 896,
+						"report": "ESEFReport",
+						"tagName": "mindshare"
+					},
+					"quality": "Audited",
+					"comment": "input 1080p bandwidth",
+					"valueAsAbsolute": 462911.4280920476
 				}
 			}
 		},
@@ -98,199 +208,89 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Herford",
-			"sector": "communities",
+			"companyName": "company_without_reports",
+			"headquarters": "Cassandraland",
+			"sector": "supply-chains",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "At1pRobJgEbeU1e"
+					"identifierValue": "nZL76S74SV3MvEC"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "VGdBiZ01YiY1XsQkzAES"
+					"identifierValue": "LfVrrHckFB6t6qonI618"
 				},
 				{
-					"identifierType": "PermId",
-					"identifierValue": "xUWs17NKOB"
+					"identifierType": "Ticker",
+					"identifierValue": "OstWKgd"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "C1oCoDtwe"
+					"identifierValue": "DFXNRUl5r"
 				}
 			],
-			"countryCode": "PK",
+			"countryCode": "MM",
 			"companyAlternativeNames": [
-				"Benninger OHG",
-				"Gollnow-Astafei",
-				"Holinski-Hodea"
+				"Bunjes AG",
+				"Kempe-Roba"
 			],
-			"website": "https://tauglich-ozean.net",
+			"companyLegalForm": "Sole Trader",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"numberOfEmployees": 33855,
-			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "AED"
-				}
-			},
+			"fiscalYearEnd": "2023-04-13",
+			"numberOfEmployees": 19460,
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Schönberg-Fried"
+				"assurance": "LimitedAssurance"
 			},
-			"scopeOfEntities": "NA",
 			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
+			"activityLevelReporting": "No",
 			"opex": {
-				"totalAmount": {
-					"value": 551605.3451923653,
+				"alignedData": {
 					"dataSource": {
-						"page": 855,
-						"report": "IntegratedReport",
-						"tagName": "metrics"
+						"page": 955,
+						"report": "SustainabilityReport",
+						"tagName": "niches"
 					},
-					"quality": "Incomplete",
-					"comment": "copy redundant bandwidth"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.6793,
-					"quality": "Incomplete",
-					"valueAsAbsolute": 812262.6746306196
+					"quality": "Audited",
+					"comment": "index primary sensor",
+					"valueAsAbsolute": 612438.381568063
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 692975.1830990426,
+					"value": 247466.1030457355,
 					"dataSource": {
-						"page": 610,
-						"report": "IntegratedReport",
-						"tagName": "platforms"
+						"page": 880,
+						"report": "ESEFReport",
+						"tagName": "blockchains"
 					},
-					"quality": "Incomplete",
-					"comment": "calculate bluetooth transmitter"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.2338,
 					"quality": "Estimated",
-					"valueAsAbsolute": 387366.7522217147
+					"comment": "back up back-end protocol"
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"value": 314885.4499915615,
+				"alignedData": {
 					"dataSource": {
-						"page": 1165,
-						"report": "IntegratedReport",
-						"tagName": "technologies"
+						"page": 527,
+						"report": "ESEFReport",
+						"tagName": "niches"
 					},
 					"quality": "Audited",
-					"comment": "input haptic feed"
+					"comment": "parse multi-byte program"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.0333,
+					"valueAsPercentage": 0.9016,
 					"dataSource": {
-						"page": 1077,
-						"report": "IntegratedReport",
-						"tagName": "ROI"
+						"page": 971,
+						"report": "ESEFReport",
+						"tagName": "paradigms"
 					},
-					"quality": "Audited",
-					"comment": "index redundant port",
-					"valueAsAbsolute": 668608.593987301
+					"quality": "Reported",
+					"comment": "synthesize virtual driver"
 				}
 			}
 		},
 		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Ost Joschuastadt",
-			"headquartersPostalCode": "99765",
-			"sector": "paradigms",
-			"identifiers": [
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "erjGVyyAC"
-				}
-			],
-			"countryCode": "MG",
-			"companyAlternativeNames": [
-				"Höft UG",
-				"Schmitt-Knorr",
-				"Wessel KG"
-			],
-			"companyLegalForm": "AG",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 916,
-					"report": "IntegratedReport",
-					"tagName": "initiatives"
-				}
-			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "Yes",
-			"opex": {
-				"totalAmount": {
-					"quality": "Estimated"
-				},
-				"alignedData": {
-					"valueAsPercentage": 0.9308,
-					"dataSource": {
-						"page": 534,
-						"report": "IntegratedReport",
-						"tagName": "networks"
-					},
-					"quality": "Estimated",
-					"comment": "generate wireless bus",
-					"valueAsAbsolute": 838825.3221404739
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"dataSource": {
-						"page": 60,
-						"report": "AnnualReport",
-						"tagName": "channels"
-					},
-					"quality": "Reported",
-					"comment": "navigate 1080p system"
-				},
-				"alignedData": {
-					"valueAsPercentage": 0.3662,
-					"dataSource": {
-						"page": 1129,
-						"report": "IntegratedReport",
-						"tagName": "metrics"
-					},
-					"quality": "Reported",
-					"comment": "calculate cross-platform alarm"
-				}
-			},
-			"revenue": {
-				"alignedData": {
-					"dataSource": {
-						"page": 40,
-						"report": "AnnualReport",
-						"tagName": "e-markets"
-					},
-					"quality": "Incomplete",
-					"comment": "calculate online driver",
-					"valueAsAbsolute": 492754.8060310073
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.3029,
-					"quality": "Incomplete"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
 	}
 ]
