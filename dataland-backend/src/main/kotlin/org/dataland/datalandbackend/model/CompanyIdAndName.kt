@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 interface CompanyIdAndName {
     @get:JsonProperty(required = true)
     val companyId: String
+
     @get:JsonProperty(required = true)
     val companyName: String
 }

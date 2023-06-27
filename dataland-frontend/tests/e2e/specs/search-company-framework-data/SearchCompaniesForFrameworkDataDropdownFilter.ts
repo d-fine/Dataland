@@ -135,9 +135,7 @@ describe("As a user, I expect the search functionality on the /companies page to
   );
   it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();
-    cy.visit(
-      `/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyNonFinancials}`
-    );
+    cy.visit(`/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyNonFinancials}`);
     cy.get("span:contains('RESET')")
       .click()
       .url()
