@@ -23,9 +23,10 @@ import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns 
 import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationLksgData } from "@clients/backend";
+import { DataAndMetaInformationLksgData, LksgCountryAssociatedSuppliers, LksgProductCategory } from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
+import { ProcurementCategory } from "@/api-models/ProcurementCategory";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -187,6 +188,67 @@ export default defineComponent({
     },
 
     /**
+     * Converts the map of ProcurementCategory and LksgProductCategory into an array for a proper handling of the
+     * DetailsCompanyDataTable in the LksgCompanyDataTable (modal showing information related to Product Categories)
+     * @param inputObject Map to convert to array
+     * @returns The constructed map
+     */
+    reformatProductCategoriesValue(inputObject: Map<ProcurementCategory, LksgProductCategory> | null) {
+      if (inputObject == null) return null;
+      const listOfProductCategories = [];
+      for (const [procurementCategory, lksgProductCategory] of Object.entries(inputObject) as [
+        string,
+        LksgProductCategory
+      ][]) {
+        const definitionsOfProductTypeOrService = function (): string[] | string | null {
+          if (lksgProductCategory.definitionProductTypeService != undefined) {
+            if (lksgProductCategory.definitionProductTypeService?.length > 1) {
+              return lksgProductCategory.definitionProductTypeService;
+            } else {
+              return lksgProductCategory.definitionProductTypeService[0];
+            }
+          } else {
+            return null;
+          }
+        };
+
+        const readableSuppliersAndCountries = function (): string[] | string | null {
+          if (lksgProductCategory.suppliersPerCountry != undefined) {
+            const readableListOfSuppliersAndCountries = lksgProductCategory.suppliersPerCountry?.map(
+              (value: LksgCountryAssociatedSuppliers) => {
+                if (value.country != undefined) {
+                  const printedCountry = getCountryNameFromCountryCode(value.country) ?? value.country;
+                  if (value.numberOfSuppliers != undefined) {
+                    return String(value.numberOfSuppliers) + " suppliers from " + printedCountry;
+                  } else {
+                    return "There are suppliers from " + printedCountry;
+                  }
+                } else {
+                  return null;
+                }
+              }
+            );
+            if (readableListOfSuppliersAndCountries.length > 1) {
+              return readableListOfSuppliersAndCountries;
+            } else {
+              return readableListOfSuppliersAndCountries[0];
+            }
+          } else {
+            return null;
+          }
+        };
+
+        listOfProductCategories.push({
+          procurementCategory: procurementCategory,
+          definitionsOfProductTypeOrService: definitionsOfProductTypeOrService(),
+          suppliersAndCountries: readableSuppliersAndCountries(),
+          orderVolume: lksgProductCategory.orderVolume != null ? String(lksgProductCategory.orderVolume) : null,
+        });
+      }
+      return listOfProductCategories;
+    },
+
+    /**
      *
      * @param kpiField the Field to which the value belongs
      * @param kpiValue the value that should be reformated corresponding to its field
@@ -201,6 +263,11 @@ export default defineComponent({
       }
       if (kpiField.name.includes("Countries") && kpiField.component !== "YesNoFormField") {
         kpiValue = this.reformatCountriesValue(kpiValue);
+      }
+      if (kpiField.name === "productCategories") {
+        kpiValue = this.reformatProductCategoriesValue(
+          kpiValue as Map<ProcurementCategory, LksgProductCategory> | null
+        );
       }
 
       let returnValue;
