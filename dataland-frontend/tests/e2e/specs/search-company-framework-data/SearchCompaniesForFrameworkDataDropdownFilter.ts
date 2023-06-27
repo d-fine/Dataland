@@ -134,12 +134,9 @@ describe("As a user, I expect the search functionality on the /companies page to
     }
   );
   it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
-    const demoCompanyToTestFor = assertDefined(
-      companiesWithEuTaxonomyDataForNonFinancials.find((it) => it.companyInformation.sector !== undefined)
-    ).companyInformation;
     cy.ensureLoggedIn();
     cy.visit(
-      `/companies?sector=${demoCompanyToTestFor.sector!}&countryCode=${demoCompanyToTestFor.countryCode}&framework=${DataTypeEnum.EutaxonomyNonFinancials}`
+      `/companies?sector=dummy&countryCode=dummy&framework=${DataTypeEnum.EutaxonomyNonFinancials}`
     );
     cy.get("span:contains('RESET')")
       .click()
