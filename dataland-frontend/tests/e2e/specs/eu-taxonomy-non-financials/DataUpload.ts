@@ -160,7 +160,7 @@ describeIf(
       });
     }
 
-    it.only(
+    it(
       "Upload EU Taxonomy Dataset via form, check that redirect to MyDatasets works and assure that it can be " +
         "viewed and edited, and that file selection, upload and download works properly",
       () => {
