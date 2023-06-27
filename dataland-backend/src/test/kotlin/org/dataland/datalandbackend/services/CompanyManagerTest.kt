@@ -146,7 +146,7 @@ class CompanyManagerTest(
                     sectorFilter = emptyList(),
                     searchString = "",
                     nameOnlyFilter = false,
-                    uploaderIdFilter = emptyList(),
+                    uploaderId = "",
                 ),
             )
         }
