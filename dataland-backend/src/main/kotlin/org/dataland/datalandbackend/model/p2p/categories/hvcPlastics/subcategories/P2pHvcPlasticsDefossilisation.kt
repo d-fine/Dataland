@@ -7,11 +7,11 @@ import java.math.BigDecimal
  * Fields of the P2P questionnaire regarding the defossilisation of the HVC Plastics sector
  */
 data class P2pHvcPlasticsDefossilisation(
-    val useOfRenewableFeedstocks: BigDecimal?,
+    val useOfRenewableFeedstocks: BigDecimal? = null,
 
-    val useOfBioplastics: BigDecimal?,
+    val useOfBioplastics: BigDecimal? = null,
 
-    val useOfCo2FromCarbonCaptureAndReUseTechnologies: BigDecimal?,
+    val useOfCo2FromCarbonCaptureAndReUseTechnologies: BigDecimal? = null,
 
-    val carbonCaptureAndUseStorageTechnologies: BigDecimal?,
+    val carbonCaptureAndUseStorageTechnologies: BigDecimal? = null,
 )

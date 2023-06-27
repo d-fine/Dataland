@@ -8,13 +8,13 @@ import java.time.LocalDate
 * Fields of the P2P questionnaire regarding the technology of the electricity generation sector
 */
 data class P2pElectricityGenerationTechnology(
-    val electricityMixEmissions: BigDecimal?,
+    val electricityMixEmissions: BigDecimal? = null,
 
-    val shareOfRenewableElectricity: BigDecimal?,
+    val shareOfRenewableElectricity: BigDecimal? = null,
 
-    val naturalGasPhaseOut: LocalDate?,
+    val naturalGasPhaseOut: LocalDate? = null,
 
-    val coalPhaseOut: LocalDate?,
+    val coalPhaseOut: LocalDate? = null,
 
-    val storageCapacityExpansion: BigDecimal?,
+    val storageCapacityExpansion: BigDecimal? = null,
 )

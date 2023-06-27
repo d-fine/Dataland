@@ -7,11 +7,11 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the energy of the cement sector
 */
 data class P2pCementEnergy(
-    val energyMix: BigDecimal?,
+    val energyMix: BigDecimal? = null,
 
-    val fuelMix: BigDecimal?,
+    val fuelMix: BigDecimal? = null,
 
-    val thermalEnergyEfficiency: BigDecimal?,
+    val thermalEnergyEfficiency: BigDecimal? = null,
 
-    val compositionOfThermalInput: BigDecimal?,
+    val compositionOfThermalInput: BigDecimal? = null,
 )

@@ -8,7 +8,7 @@ import java.time.LocalDate
 * Fields of the P2P questionnaire regarding the technology of the freight transport by road sector
 */
 data class P2pFreightTransportByRoadTechnology(
-    val driveMix: BigDecimal?,
+    val driveMix: BigDecimal? = null,
 
-    val icePhaseOut: LocalDate?,
+    val icePhaseOut: LocalDate? = null,
 )

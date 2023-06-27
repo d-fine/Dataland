@@ -7,5 +7,5 @@ import java.math.BigDecimal
  * Fields of the P2P questionnaire regarding the defossilisation of ammonia production
  */
 data class P2pAmmoniaDefossilisation(
-    val useOfRenewableFeedstocks: BigDecimal?,
+    val useOfRenewableFeedstocks: BigDecimal? = null,
 )

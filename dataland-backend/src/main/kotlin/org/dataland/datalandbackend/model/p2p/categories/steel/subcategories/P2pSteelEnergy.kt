@@ -8,7 +8,7 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the energy of the steel sector
 */
 data class P2pSteelEnergy(
-    val emissionIntensityOfElectricity: BigDecimal?,
+    val emissionIntensityOfElectricity: BigDecimal? = null,
 
-    val greenHydrogenUsage: YesNo?,
+    val greenHydrogenUsage: YesNo? = null,
 )

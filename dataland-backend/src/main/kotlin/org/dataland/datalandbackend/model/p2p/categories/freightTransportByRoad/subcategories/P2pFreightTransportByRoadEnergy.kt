@@ -7,5 +7,5 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the energy of the freight transport by road sector
 */
 data class P2pFreightTransportByRoadEnergy(
-    val fuelMix: BigDecimal?,
+    val fuelMix: BigDecimal? = null,
 )

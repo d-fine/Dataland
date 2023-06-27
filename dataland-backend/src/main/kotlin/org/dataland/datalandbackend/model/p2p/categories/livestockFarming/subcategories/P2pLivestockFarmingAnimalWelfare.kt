@@ -7,6 +7,6 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the animalWelfare of the livestockFarming sector
 */
 data class P2pLivestockFarmingAnimalWelfare(
-    val mortalityRate: BigDecimal?,
+    val mortalityRate: BigDecimal? = null,
 
 )

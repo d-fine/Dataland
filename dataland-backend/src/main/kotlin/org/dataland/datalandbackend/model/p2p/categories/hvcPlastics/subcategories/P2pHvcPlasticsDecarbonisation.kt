@@ -7,7 +7,7 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the decarbonisation of the HVC Plastics sector
 */
 data class P2pHvcPlasticsDecarbonisation(
-    val energyMix: BigDecimal?,
+    val energyMix: BigDecimal? = null,
 
-    val electrification: BigDecimal?,
+    val electrification: BigDecimal? = null,
 )

@@ -22,23 +22,23 @@ data class PathwaysToParisData(
     @field:JsonProperty(required = true)
     val general: P2pGeneral,
 
-    val ammonia: P2pAmmonia?,
+    val ammonia: P2pAmmonia? = null,
 
-    val automotive: P2pAutomotive?,
+    val automotive: P2pAutomotive? = null,
 
-    val hvcPlastics: P2pHvcPlastics?,
+    val hvcPlastics: P2pHvcPlastics? = null,
 
-    val commercialRealEstate: P2pRealEstate?,
+    val commercialRealEstate: P2pRealEstate? = null,
 
-    val residentialRealEstate: P2pRealEstate?,
+    val residentialRealEstate: P2pRealEstate? = null,
 
-    val steel: P2pSteel?,
+    val steel: P2pSteel? = null,
 
-    val freightTransportByRoad: P2pFreightTransportByRoad?,
+    val freightTransportByRoad: P2pFreightTransportByRoad? = null,
 
-    val electricityGeneration: P2pElectricityGeneration?,
+    val electricityGeneration: P2pElectricityGeneration? = null,
 
-    val livestockFarming: P2pLivestockFarming?,
+    val livestockFarming: P2pLivestockFarming? = null,
 
-    val cement: P2pCement?,
+    val cement: P2pCement? = null,
 )

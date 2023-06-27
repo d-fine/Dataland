@@ -15,11 +15,11 @@ data class P2pGeneral(
     @field:JsonProperty(required = true)
     val general: P2pGeneralGeneral,
 
-    val governance: P2pGovernance?,
+    val governance: P2pGovernance? = null,
 
-    val climateTargets: P2pClimateTargets?,
+    val climateTargets: P2pClimateTargets? = null,
 
-    val emissionsPlanning: P2pEmissionsPlanning?,
+    val emissionsPlanning: P2pEmissionsPlanning? = null,
 
-    val investmentPlanning: P2pInvestmentPlanning?,
+    val investmentPlanning: P2pInvestmentPlanning? = null,
 )

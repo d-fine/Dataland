@@ -8,9 +8,9 @@ import java.math.BigDecimal
  * Fields of the P2P questionnaire regarding recycling in the HVC Plastics sector
  */
 data class P2pHvcPlasticsRecycling(
-    val contributionToCircularEconomy: YesNo?,
+    val contributionToCircularEconomy: YesNo? = null,
 
-    val materialRecycling: BigDecimal?,
+    val materialRecycling: BigDecimal? = null,
 
-    val chemicalRecycling: BigDecimal?,
+    val chemicalRecycling: BigDecimal? = null,
 )

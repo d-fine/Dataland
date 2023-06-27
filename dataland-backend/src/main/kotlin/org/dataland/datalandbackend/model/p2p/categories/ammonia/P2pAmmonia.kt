@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.p2p.categories.ammonia.subcategories.P
  * Fields of the P2P questionnaire regarding the ammonia sector
  */
 data class P2pAmmonia(
-    val decarbonisation: P2pAmmoniaDecarbonisation?,
+    val decarbonisation: P2pAmmoniaDecarbonisation? = null,
 
-    val defossilisation: P2pAmmoniaDefossilisation?,
+    val defossilisation: P2pAmmoniaDefossilisation? = null,
 )

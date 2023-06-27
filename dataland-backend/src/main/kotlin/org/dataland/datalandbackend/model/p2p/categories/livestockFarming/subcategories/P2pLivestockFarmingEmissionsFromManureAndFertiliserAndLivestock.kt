@@ -8,7 +8,7 @@ import java.math.BigDecimal
 * of the livestock Farming sector
 */
 data class P2pLivestockFarmingEmissionsFromManureAndFertiliserAndLivestock(
-    val compostedFermentedManure: BigDecimal?,
+    val compostedFermentedManure: BigDecimal? = null,
 
-    val emissionProofFertiliserStorage: BigDecimal?,
+    val emissionProofFertiliserStorage: BigDecimal? = null,
 )

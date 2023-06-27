@@ -8,11 +8,12 @@ import java.math.BigDecimal
  * Fields of the P2P questionnaire regarding investment planning.
  */
 data class P2pInvestmentPlanning(
-    val capexShareInGhgIntensivePlants: BigDecimal?,
+    val capexShareInGhgIntensivePlants: BigDecimal? = null,
 
-    val capexShareInNetZeroSolutions: BigDecimal?,
+    val capexShareInNetZeroSolutions: BigDecimal? = null,
 
-    val investmentPlanForClimateTargets: YesNo?,
+    val investmentPlanForClimateTargets: YesNo? = null,
 
-    val rAndDExpenditureForNetZeroSolutions: BigDecimal?,
+    // Note: This field is called randD instead of rAndD as swagger really does not like you using rAndD
+    val randDExpenditureForNetZeroSolutions: BigDecimal? = null,
 )

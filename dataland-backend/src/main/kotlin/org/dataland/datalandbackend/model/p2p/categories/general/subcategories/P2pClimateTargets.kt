@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * Fields of the P2P questionnaire regarding climate targets
  */
 data class P2pClimateTargets(
-    val longTermScienceBasedClimateTarget: YesNo?,
+    val longTermScienceBasedClimateTarget: YesNo? = null,
 
-    val shortTermScienceBasedClimateTarget: YesNo?,
+    val shortTermScienceBasedClimateTarget: YesNo? = null,
 )

@@ -8,9 +8,9 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the materials of the cement sector
 */
 data class P2pCementMaterial(
-    val clinkerFactorReduction: BigDecimal?,
+    val clinkerFactorReduction: BigDecimal? = null,
 
-    val preCalcinedClayUsage: BigDecimal?,
+    val preCalcinedClayUsage: BigDecimal? = null,
 
-    val circularEconomyContribution: YesNo?,
+    val circularEconomyContribution: YesNo? = null,
 )

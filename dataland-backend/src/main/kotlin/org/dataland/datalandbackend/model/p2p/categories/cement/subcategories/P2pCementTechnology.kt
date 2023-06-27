@@ -8,7 +8,7 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the technology of the cement sector
 */
 data class P2pCementTechnology(
-    val carbonCaptureAndUseTechnologyUsage: YesNo?,
+    val carbonCaptureAndUseTechnologyUsage: YesNo? = null,
 
-    val electrificationOfProcessHeat: BigDecimal?,
+    val electrificationOfProcessHeat: BigDecimal? = null,
 )

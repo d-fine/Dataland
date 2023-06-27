@@ -9,9 +9,9 @@ import org.dataland.datalandbackend.model.p2p.categories.realEstate.subcategorie
  * Fields of the P2P questionnaire regarding the real estate sectors
  */
 data class P2pRealEstate(
-    val buildingEfficiency: P2pRealEstateBuildingEfficiency?,
+    val buildingEfficiency: P2pRealEstateBuildingEfficiency? = null,
 
-    val energySource: P2pRealEstateEnergySource?,
+    val energySource: P2pRealEstateEnergySource? = null,
 
-    val technology: P2plRealEstateTechnology?,
+    val technology: P2plRealEstateTechnology? = null,
 )

@@ -8,23 +8,23 @@ import java.math.BigDecimal
  * Fields of the P2P questionnaire regarding company policies and governance for all sectors.
  */
 data class P2pGovernance(
-    val organisationalResponsibilityForParisCompatibility: YesNo?,
+    val organisationalResponsibilityForParisCompatibility: YesNo? = null,
 
-    val parisCompatibilityInExecutiveRemuneration: BigDecimal?,
+    val parisCompatibilityInExecutiveRemuneration: BigDecimal? = null,
 
-    val parisCompatibilityInAverageRemuneration: BigDecimal?,
+    val parisCompatibilityInAverageRemuneration: BigDecimal? = null,
 
-    val shareOfEmployeesTrainedOnParisCompatibility: BigDecimal?,
+    val shareOfEmployeesTrainedOnParisCompatibility: BigDecimal? = null,
 
-    val qualificationRequirementsOnParisCompatibility: YesNo?,
+    val qualificationRequirementsOnParisCompatibility: YesNo? = null,
 
-    val mobilityAndTravelPolicy: YesNo?,
+    val mobilityAndTravelPolicy: YesNo? = null,
 
-    val downstreamCustomerEngagement: YesNo?,
+    val downstreamCustomerEngagement: YesNo? = null,
 
-    val policymakerEngagement: YesNo?,
+    val policymakerEngagement: YesNo? = null,
 
-    val upstreamSupplierEngagementStrategy: YesNo?,
+    val upstreamSupplierEngagementStrategy: YesNo? = null,
 
-    val upstreamSupplierProcurementPolicy: YesNo?,
+    val upstreamSupplierProcurementPolicy: YesNo? = null,
 )

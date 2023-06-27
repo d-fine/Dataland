@@ -9,9 +9,9 @@ import org.dataland.datalandbackend.model.p2p.categories.automotive.subcategorie
  * Fields of the P2P questionnaire regarding the automotive sector
  */
 data class P2pAutomotive(
-    val energy: P2pAutomotiveEnergy?,
+    val energy: P2pAutomotiveEnergy? = null,
 
-    val technologyValueCreation: P2pAutomotiveTechnologyValueCreation?,
+    val technologyValueCreation: P2pAutomotiveTechnologyValueCreation? = null,
 
-    val materials: P2pAutomotiveMaterials?,
+    val materials: P2pAutomotiveMaterials? = null,
 )

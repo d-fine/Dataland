@@ -7,5 +7,5 @@ import org.dataland.datalandbackend.model.p2p.categories.electricityGeneration.s
 * Fields of the P2P questionnaire regarding the electricity generation sector
 */
 data class P2pElectricityGeneration(
-    val technology: P2pElectricityGenerationTechnology?,
+    val technology: P2pElectricityGenerationTechnology? = null,
 )

@@ -7,7 +7,7 @@ import java.math.BigDecimal
 * Fields of the P2P questionnaire regarding the energy of the automotive sector
 */
 data class P2pAutomotiveEnergy(
-    val productionSiteEnergyConsumption: BigDecimal?,
+    val productionSiteEnergyConsumption: BigDecimal? = null,
 
-    val energyMix: BigDecimal?,
+    val energyMix: BigDecimal? = null,
 )
