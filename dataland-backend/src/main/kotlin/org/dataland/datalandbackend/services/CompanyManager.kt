@@ -16,7 +16,6 @@ import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -205,7 +204,6 @@ class CompanyManager(
      * @param companyId the ID of the company to be checked
      * @return a boolean signalling if the company is public or not
      */
-    @Transactional
     fun isCompanyPublic(companyId: String): Boolean {
         return getCompanyById(companyId).isTeaserCompany
     }
