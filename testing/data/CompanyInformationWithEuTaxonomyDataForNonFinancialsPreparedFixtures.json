@@ -2,191 +2,221 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Balnuweitscheid",
-			"headquartersPostalCode": "25186",
-			"sector": "platforms",
+			"headquarters": "Tinoscheid",
+			"sector": "schemas",
 			"identifiers": [
 				{
-					"identifierType": "Duns",
-					"identifierValue": "1yzTNLlnc"
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "44P6IwL5ZOyNHyB"
 				},
 				{
-					"identifierType": "Ticker",
-					"identifierValue": "VBCmm4L"
+					"identifierType": "Lei",
+					"identifierValue": "naodT2FZUdQPb1Kn1ETA"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "cUlpJhOmj"
+					"identifierValue": "BdpUdziNI"
 				}
 			],
-			"countryCode": "NO",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://friedvoll-islam.name",
+			"countryCode": "SN",
+			"companyAlternativeNames": [
+				"Burghagen GmbH & Co. KG",
+				"Gamlin-Nwachukwu",
+				"Kallensee, Hooss und Weigel",
+				"Klauder, Tischmann und Danneberg"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"fiscalYearEnd": "2023-05-28",
 			"referencedReports": {
-				"IntegratedReport": {
+				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-02-28",
-					"currency": "CLP"
+					"reportDate": "2023-01-10",
+					"currency": "SLE"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-11-27",
-					"currency": "RUB"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "NA",
-					"reportDate": "2022-07-02",
-					"currency": "KWD"
+					"currency": "AUD"
+				}
+			},
+			"assurance": {
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 659,
+					"report": "AnnualReport",
+					"tagName": "architectures"
+				}
+			},
+			"scopeOfEntities": "NA",
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"eligibleData": {
+					"dataSource": {
+						"page": 688,
+						"report": "ESEFReport",
+						"tagName": "functionalities"
+					},
+					"quality": "Audited",
+					"comment": "synthesize primary protocol",
+					"valueAsAbsolute": 0.9724
+				}
+			},
+			"capex": {
+				"eligibleData": {
+					"dataSource": {
+						"page": 513,
+						"report": "AnnualReport",
+						"tagName": "functionalities"
+					},
+					"quality": "Reported",
+					"comment": "override virtual port",
+					"valueAsAbsolute": 0.6844
+				}
+			},
+			"revenue": {
+				"eligibleData": {
+					"dataSource": {
+						"page": 129,
+						"report": "ESEFReport",
+						"tagName": "deliverables"
+					},
+					"quality": "Incomplete",
+					"comment": "transmit cross-platform circuit",
+					"valueAsAbsolute": 0.3033
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Nilsstadt",
+			"sector": "action-items",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "5N3U3DhTWK12fx3"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "Ejab0tSxo"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "hWci0Oh3VHs1"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "74o9uCaSmfIaCQHmMAEV"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "yeIPJPxifg"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "1Rhxcl3"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "aoC55kxbw"
+				}
+			],
+			"countryCode": "ST",
+			"companyAlternativeNames": [
+				"Cors, Gutjahr und Daudrich",
+				"Moguenara OHG",
+				"Niklaus GmbH",
+				"Schäffer, Bruder und Hertel"
+			],
+			"website": "https://betriebsam-sprache.de/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"referencedReports": {
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "CLP"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "JMD"
 				}
 			},
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "NA",
-			"reportingObligation": "No",
-			"activityLevelReporting": "No",
-			"opex": {
-				"eligibleData": {
-					"value": 0.7568,
-					"quality": "Estimated"
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"value": 0.6676,
-					"dataSource": {
-						"page": 145,
-						"report": "IntegratedReport",
-						"tagName": "technologies"
-					},
-					"quality": "Estimated",
-					"comment": "program mobile array"
-				}
-			},
-			"revenue": {
-				"eligibleData": {
-					"value": 0.1006,
-					"dataSource": {
-						"page": 1087,
-						"report": "IntegratedReport",
-						"tagName": "supply-chains"
-					},
-					"quality": "Estimated",
-					"comment": "back up open-source protocol"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Böhmburg",
-			"sector": "relationships",
-			"identifiers": [
-				{
-					"identifierType": "Lei",
-					"identifierValue": "RQnJSOPB1x4rDg3KKPDX"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "HD1GOnvUDG"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "qtA2bPKef"
-				}
-			],
-			"countryCode": "PA",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://enorm-wohnhaus.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2022-12-25",
-			"numberOfEmployees": 15201,
-			"referencedReports": {
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-01-13",
-					"currency": "PYG"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-12-29",
-					"currency": "NAD"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-01-29",
-					"currency": "PYG"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance"
-			},
+			"scopeOfEntities": "No",
+			"reportingObligation": "Yes",
+			"activityLevelReporting": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 69021.07447385788,
-					"quality": "Incomplete"
-				},
-				"eligibleData": {
-					"value": 84375.91354595497,
+					"value": 869955.8411026374,
 					"dataSource": {
-						"page": 440,
-						"report": "IntegratedReport",
-						"tagName": "mindshare"
+						"page": 977,
+						"report": "ESEFReport",
+						"tagName": "architectures"
 					},
 					"quality": "Audited",
-					"comment": "connect optical microchip",
-					"valueAsPercent": 0.7565
+					"comment": "override solid state matrix"
+				},
+				"eligibleData": {
+					"valueAsPercent": 0.5363,
+					"dataSource": {
+						"page": 143,
+						"report": "AnnualReport",
+						"tagName": "blockchains"
+					},
+					"quality": "Incomplete",
+					"comment": "copy mobile bus",
+					"valueAsAbsolute": 238062.97103874385
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 801665.6874446198,
-					"quality": "Estimated"
+					"value": 128195.7370811142,
+					"dataSource": {
+						"page": 439,
+						"report": "AnnualReport",
+						"tagName": "lifetime value"
+					},
+					"quality": "Audited",
+					"comment": "synthesize digital driver"
 				},
 				"eligibleData": {
-					"value": 119184.6935194917,
+					"valueAsPercent": 0.7472,
 					"dataSource": {
-						"page": 861,
+						"page": 530,
 						"report": "AnnualReport",
-						"tagName": "mindshare"
+						"tagName": "paradigms"
 					},
 					"quality": "Reported",
-					"comment": "program virtual feed",
-					"valueAsPercent": 0.9719
+					"comment": "index redundant circuit",
+					"valueAsAbsolute": 366674.52566325665
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 985216.561856214,
+					"value": 220343.66548759863,
 					"dataSource": {
-						"page": 685,
+						"page": 172,
 						"report": "ESEFReport",
-						"tagName": "e-business"
-					},
-					"quality": "Incomplete",
-					"comment": "bypass cross-platform bus"
-				},
-				"eligibleData": {
-					"value": 600887.6176434569,
-					"dataSource": {
-						"page": 237,
-						"report": "IntegratedReport",
-						"tagName": "interfaces"
+						"tagName": "metrics"
 					},
 					"quality": "Reported",
-					"comment": "generate solid state firewall",
-					"valueAsPercent": 0.4482
+					"comment": "override auxiliary port"
+				},
+				"eligibleData": {
+					"valueAsPercent": 0.1255,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 779471.2733943015
 				}
 			}
 		},
@@ -195,115 +225,112 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Bad Hannah",
-			"headquartersPostalCode": "13528",
-			"sector": "blockchains",
+			"headquarters": "Stralsund",
+			"headquartersPostalCode": "80663",
+			"sector": "experiences",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "tE3Rgsb8JEeIo2j"
+					"identifierValue": "mErFu2ifUcWVNrI"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "PV2u6yWRB"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "g23zeKAVOVrY"
+					"identifierValue": "qABU8mnyfi6p"
 				},
 				{
-					"identifierType": "VatNumber",
-					"identifierValue": "Wl0UiNGYn"
+					"identifierType": "PermId",
+					"identifierValue": "mYsftM5X4G"
 				}
 			],
-			"countryCode": "MY",
+			"countryCode": "UZ",
 			"companyAlternativeNames": [
-				"Ahrenberg-Amberg",
-				"Roschinsky Gruppe"
+				"Koszewski KG",
+				"Schlitzer KG"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://majestatisch-verstand.name/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://hell-uranus.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"numberOfEmployees": 37932,
+			"fiscalYearDeviation": "Deviation",
+			"numberOfEmployees": 93795,
 			"assurance": {
-				"assurance": "None"
+				"assurance": "ReasonableAssurance",
+				"dataSource": {
+					"page": 194,
+					"report": "ESEFReport",
+					"tagName": "solutions"
+				}
 			},
+			"activityLevelReporting": "Yes",
 			"opex": {
-				"totalAmount": {
-					"value": 100146.73059340566,
-					"dataSource": {
-						"page": 38,
-						"report": "AnnualReport",
-						"tagName": "supply-chains"
-					},
-					"quality": "Audited",
-					"comment": "navigate wireless interface"
-				},
 				"alignedData": {
+					"valueAsPercent": 0.5598,
 					"dataSource": {
-						"page": 1066,
+						"page": 1078,
 						"report": "SustainabilityReport",
-						"tagName": "blockchains"
+						"tagName": "niches"
 					},
-					"quality": "Reported",
-					"comment": "compress neural panel"
+					"quality": "Incomplete",
+					"comment": "bypass online alarm"
 				},
 				"eligibleData": {
-					"dataSource": {
-						"page": 878,
-						"report": "ESEFReport",
-						"tagName": "systems"
-					},
-					"quality": "Reported",
-					"comment": "override virtual alarm"
+					"valueAsPercent": 0.6728,
+					"quality": "Estimated",
+					"valueAsAbsolute": 178756.42088474706
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 648548.576340545,
+					"value": 873701.9348423928,
 					"dataSource": {
-						"page": 444,
-						"report": "ESEFReport",
-						"tagName": "web services"
+						"page": 737,
+						"report": "IntegratedReport",
+						"tagName": "systems"
 					},
-					"quality": "Audited",
-					"comment": "quantify optical sensor"
+					"quality": "Estimated",
+					"comment": "synthesize solid state interface"
 				},
 				"alignedData": {
-					"value": 614261.6381053813,
+					"valueAsPercent": 0.0219,
 					"dataSource": {
-						"page": 1144,
+						"page": 754,
 						"report": "SustainabilityReport",
-						"tagName": "channels"
-					},
-					"quality": "Audited",
-					"comment": "synthesize redundant monitor"
-				},
-				"eligibleData": {
-					"value": 499850.3611772321,
-					"dataSource": {
-						"page": 453,
-						"report": "AnnualReport",
-						"tagName": "portals"
+						"tagName": "e-commerce"
 					},
 					"quality": "Incomplete",
-					"comment": "generate neural sensor"
+					"comment": "override solid state pixel"
+				},
+				"eligibleData": {
+					"dataSource": {
+						"page": 1043,
+						"report": "ESEFReport",
+						"tagName": "schemas"
+					},
+					"quality": "Estimated",
+					"comment": "override multi-byte microchip",
+					"valueAsAbsolute": 773290.4411735944
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"value": 917272.1862792969,
-					"quality": "Estimated"
-				},
-				"eligibleData": {
+				"alignedData": {
 					"dataSource": {
-						"page": 1,
+						"page": 183,
 						"report": "SustainabilityReport",
-						"tagName": "web services"
+						"tagName": "communities"
 					},
 					"quality": "Audited",
-					"comment": "hack mobile firewall"
+					"comment": "synthesize haptic program"
+				},
+				"eligibleData": {
+					"quality": "Incomplete"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2022"
 	}
 ]

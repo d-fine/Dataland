@@ -154,18 +154,18 @@ export function getCsvDataPointMapping<T>(
 
 /**
  * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
- * @param value the decimal value of the datapoint to generate
+ * @param valueAsAbsolute the decimal value of the datapoint to generate
  * @param valueAsPercent the percentage of the datapoint to generate
  * @param reports the reports that can be referenced as data sources
  * @returns the generated datapoint
  */
 export function generateDatapointAbsoluteAndPercentage<T, Y>(
-  value: T | null,
+    valueAsAbsolute: T | null,
   valueAsPercent: T | null,
   reports: ReferencedDocuments
 ): Y {
   const qualityBucket =
-    value === null
+      valueAsAbsolute === null
       ? QualityOptions.Na
       : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 
@@ -182,11 +182,11 @@ export function generateDatapointAbsoluteAndPercentage<T, Y>(
   }
 
   return {
-    value: value ?? undefined,
+    valueAsPercent: valueAsPercent ?? undefined,
     dataSource: dataSource,
     quality: qualityBucket,
     comment: comment,
-    valueAsPercent: valueAsPercent ?? undefined,
+    valueAsAbsolute: valueAsAbsolute ?? undefined,
   } as Y;
 }
 /**
