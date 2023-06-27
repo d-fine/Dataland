@@ -25,7 +25,7 @@
         label="ADD NEW Product"
         class="p-button-text"
         icon="pi pi-plus"
-        @click="addNewProduct"
+        @click="addNewProductEventHandler"
       />
     </FormKit>
   </div>
@@ -48,6 +48,7 @@ export default defineComponent({
       existingProducts: [] as LksgProduct[],
       listOfProductIds: [] as number[],
       idCounter: 0,
+      userAddedProduct: false,
     };
   },
   components: {
@@ -57,17 +58,34 @@ export default defineComponent({
     PrimeButton,
   },
   mounted() {
-    for (let i = 1; i < this.existingProducts.length; i++) {
+    for (let i = 0; i < this.existingProducts.length; i++) {
       this.addNewProduct();
+    }
+  },
+  watch: {
+    existingProducts(newValue) {
+      if(this.userAddedProduct) {
+          return;
+      }
+      for (let i = 0; i < this.existingProducts.length; i++) {
+          this.addNewProduct();
+      }
     }
   },
   methods: {
     /**
      * Adds a new Object to the Product array
      */
+    addNewProductEventHandler() {
+        this.userAddedProduct = true;
+        this.addNewProduct()
+    },
+    /**
+     * Adds a new Object to the Product array
+     */
     addNewProduct() {
-      this.idCounter++;
-      this.listOfProductIds.push(this.idCounter);
+        this.idCounter++;
+        this.listOfProductIds.push(this.idCounter);
     },
 
     /**
