@@ -2,206 +2,76 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Constantindorf",
-			"sector": "solutions",
+			"headquarters": "Tillmannburg",
+			"headquartersPostalCode": "84658",
+			"sector": "channels",
 			"identifiers": [
 				{
-					"identifierType": "VatNumber",
-					"identifierValue": "JhqMxxUrh"
+					"identifierType": "Duns",
+					"identifierValue": "cp6ldKmkT"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "kj2qgBn2TCIZ"
 				}
 			],
-			"countryCode": "FO",
+			"countryCode": "LB",
 			"companyAlternativeNames": [
-				"Hirsch, Franz und Jacob",
-				"Kappler-Baarck",
-				"Nitzsche-Schreck"
+				"Bourrouag, Schenk und Biba",
+				"Sehls, Arens und Reichardt",
+				"Siener-Scherer"
 			],
-			"website": "https://offentlich-anderes.de/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2022-06-07",
-			"numberOfEmployees": 80971,
+			"fiscalYearDeviation": "Deviation",
+			"numberOfEmployees": 81941,
 			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-07-01",
-					"currency": "XAF"
-				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-08-31",
-					"currency": "NOK"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "NA",
-					"reportDate": "2022-10-03",
-					"currency": "CZK"
+					"reportDate": "2023-05-02",
+					"currency": "LRD"
 				},
 				"AnnualReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-05-14",
-					"currency": "PLN"
+					"isGroupLevel": "Yes",
+					"reportDate": "2022-11-28",
+					"currency": "BZD"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "Yes",
+					"reportDate": "2023-05-09",
+					"currency": "BHD"
 				}
 			},
 			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Blockhaus, Lobinger und Sutschet",
-				"dataSource": {
-					"page": 937,
-					"report": "AnnualReport",
-					"tagName": "users"
-				}
+				"assurance": "ReasonableAssurance"
 			},
+			"scopeOfEntities": "No",
 			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.524,
+					"value": 0.9618,
 					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.0734,
+					"value": 0.9508,
 					"dataSource": {
-						"page": 370,
-						"report": "AnnualReport",
-						"tagName": "convergence"
-					},
-					"quality": "Incomplete",
-					"comment": "back up wireless matrix"
-				}
-			},
-			"revenue": {
-				"eligiblePercentage": {
-					"value": 0.7692,
-					"dataSource": {
-						"page": 997,
-						"report": "AnnualReport",
-						"tagName": "metrics"
-					},
-					"quality": "Audited",
-					"comment": "hack auxiliary bus"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Lassestadt",
-			"headquartersPostalCode": "25139",
-			"sector": "solutions",
-			"identifiers": [
-				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "d0EOU6LH3y6xzKs"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "7srdatngs"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "3rMhNEDfw9H8"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "Sjrsa4ZYiv"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "fF2dz0U"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "cimBhqGfZ"
-				}
-			],
-			"countryCode": "PA",
-			"companyAlternativeNames": [
-				"Jungbluth GmbH & Co. KG"
-			],
-			"website": "https://stilvoll-mond.name",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"numberOfEmployees": 42479,
-			"referencedReports": {
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "No",
-					"reportDate": "2023-01-07",
-					"currency": "BDT"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "BIF"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "TRY"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 920,
-					"report": "IntegratedReport",
-					"tagName": "schemas"
-				}
-			},
-			"reportingObligation": "No",
-			"opex": {
-				"totalAmount": {
-					"value": 530731.8614562973,
-					"dataSource": {
-						"page": 1195,
+						"page": 606,
 						"report": "ESEFReport",
-						"tagName": "applications"
-					},
-					"quality": "Incomplete",
-					"comment": "calculate cross-platform array"
-				},
-				"eligiblePercentage": {
-					"value": 0.608,
-					"dataSource": {
-						"page": 1195,
-						"report": "AnnualReport",
-						"tagName": "interfaces"
+						"tagName": "content"
 					},
 					"quality": "Estimated",
-					"comment": "bypass 1080p transmitter"
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 109498.88956965879,
-					"dataSource": {
-						"page": 999,
-						"report": "IntegratedReport",
-						"tagName": "e-markets"
-					},
-					"quality": "Audited",
-					"comment": "compress open-source transmitter"
-				},
-				"eligiblePercentage": {
-					"value": 0.1742,
-					"quality": "Estimated"
+					"comment": "index virtual capacitor"
 				}
 			},
 			"revenue": {
-				"totalAmount": {
-					"value": 301906.21913643554,
-					"quality": "Estimated"
-				},
 				"eligiblePercentage": {
-					"value": 0.9811,
+					"value": 0.4984,
 					"quality": "Incomplete"
 				}
 			}
@@ -210,133 +80,212 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "Esslingen am Neckar",
-			"sector": "e-markets",
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "Nord Frederick",
+			"sector": "methodologies",
 			"identifiers": [
 				{
-					"identifierType": "Lei",
-					"identifierValue": "3JAcxFe8dZ6gFR4iufqh"
+					"identifierType": "Duns",
+					"identifierValue": "vwHF3mt8j"
 				},
 				{
-					"identifierType": "Ticker",
-					"identifierValue": "0WX49Pt"
+					"identifierType": "PermId",
+					"identifierValue": "c0WBiiedMv"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "n2g3OCoIh"
+					"identifierValue": "TQ91yOfOq"
 				}
 			],
-			"countryCode": "TL",
+			"countryCode": "LU",
 			"companyAlternativeNames": [
-				"Jakobs, Spitzmüller und Philipp",
-				"Keller, Loogen und Daum",
-				"Schenk-Brosch"
+				"Dietrich-Götzelmann",
+				"Thöne-Stengel"
 			],
+			"website": "https://qualifiziert-revolution.org",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2023-06-01",
-			"numberOfEmployees": 59727,
-			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Tilgner, Marquart und Jander"
+			"referencedReports": {
+				"IntegratedReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "NA",
+					"currency": "MRU"
+				}
 			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
+			"assurance": {
+				"assurance": "ReasonableAssurance"
+			},
+			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 226455.11378068477,
+					"value": 828183.115052525,
 					"dataSource": {
-						"page": 430,
-						"report": "SustainabilityReport",
-						"tagName": "supply-chains"
+						"page": 625,
+						"report": "IntegratedReport",
+						"tagName": "e-commerce"
 					},
-					"quality": "Reported",
-					"comment": "copy multi-byte monitor"
-				},
-				"alignedPercentage": {
-					"value": 0.5925,
-					"dataSource": {
-						"page": 643,
-						"report": "SustainabilityReport",
-						"tagName": "relationships"
-					},
-					"quality": "Audited",
-					"comment": "input online bus"
+					"quality": "Incomplete",
+					"comment": "connect digital interface"
 				},
 				"eligiblePercentage": {
-					"value": 0.2799,
-					"dataSource": {
-						"page": 783,
-						"report": "SustainabilityReport",
-						"tagName": "action-items"
-					},
-					"quality": "Reported",
-					"comment": "copy primary matrix"
+					"value": 0.2918,
+					"quality": "Estimated"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 198333.0752933398,
+					"value": 914721.778279636,
 					"dataSource": {
-						"page": 851,
-						"report": "SustainabilityReport",
-						"tagName": "partnerships"
-					},
-					"quality": "Estimated",
-					"comment": "index bluetooth port"
-				},
-				"alignedPercentage": {
-					"value": 0.0214,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.5795,
-					"dataSource": {
-						"page": 1014,
-						"report": "SustainabilityReport",
-						"tagName": "models"
+						"page": 734,
+						"report": "IntegratedReport",
+						"tagName": "lifetime value"
 					},
 					"quality": "Incomplete",
-					"comment": "navigate mobile program"
+					"comment": "input primary circuit"
+				},
+				"eligiblePercentage": {
+					"value": 0.3944,
+					"dataSource": {
+						"page": 228,
+						"report": "IntegratedReport",
+						"tagName": "blockchains"
+					},
+					"quality": "Audited",
+					"comment": "transmit solid state port"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 389080.30714374036,
-					"dataSource": {
-						"page": 1043,
-						"report": "SustainabilityReport",
-						"tagName": "markets"
-					},
-					"quality": "Incomplete",
-					"comment": "override multi-byte program"
-				},
-				"alignedPercentage": {
-					"value": 0.9505,
-					"dataSource": {
-						"page": 493,
-						"report": "SustainabilityReport",
-						"tagName": "ROI"
-					},
-					"quality": "Incomplete",
-					"comment": "bypass digital sensor"
+					"value": 574480.307707563,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.3396,
+					"value": 0.2842,
 					"dataSource": {
-						"page": 932,
-						"report": "SustainabilityReport",
-						"tagName": "deliverables"
+						"page": 551,
+						"report": "IntegratedReport",
+						"tagName": "mindshare"
 					},
 					"quality": "Reported",
-					"comment": "program optical sensor"
+					"comment": "synthesize neural circuit"
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "company_without_reports",
+			"headquarters": "Ost Charlotta",
+			"sector": "systems",
+			"identifiers": [
+				{
+					"identifierType": "PermId",
+					"identifierValue": "75xgQMnqDY"
+				}
+			],
+			"countryCode": "CM",
+			"companyAlternativeNames": [
+				"Marl AG"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://hochinteressant-riff.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearEnd": "2022-12-25",
+			"numberOfEmployees": 81198,
+			"assurance": {
+				"assurance": "ReasonableAssurance"
+			},
+			"reportingObligation": "No",
+			"activityLevelReporting": "Yes",
+			"opex": {
+				"totalAmount": {
+					"value": 817377.9011005536,
+					"dataSource": {
+						"page": 1186,
+						"report": "IntegratedReport",
+						"tagName": "communities"
+					},
+					"quality": "Audited",
+					"comment": "generate virtual transmitter"
+				},
+				"alignedPercentage": {
+					"value": 0.8901,
+					"dataSource": {
+						"page": 332,
+						"report": "IntegratedReport",
+						"tagName": "blockchains"
+					},
+					"quality": "Estimated",
+					"comment": "index haptic panel"
+				},
+				"eligiblePercentage": {
+					"value": 0.3306,
+					"dataSource": {
+						"page": 834,
+						"report": "IntegratedReport",
+						"tagName": "interfaces"
+					},
+					"quality": "Audited",
+					"comment": "calculate multi-byte bandwidth"
+				}
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 596030.4334876128,
+					"dataSource": {
+						"page": 638,
+						"report": "IntegratedReport",
+						"tagName": "experiences"
+					},
+					"quality": "Audited",
+					"comment": "override auxiliary array"
+				},
+				"alignedPercentage": {
+					"value": 0.3539,
+					"dataSource": {
+						"page": 662,
+						"report": "IntegratedReport",
+						"tagName": "eyeballs"
+					},
+					"quality": "Audited",
+					"comment": "copy back-end feed"
+				},
+				"eligiblePercentage": {
+					"value": 0.6976,
+					"dataSource": {
+						"page": 70,
+						"report": "IntegratedReport",
+						"tagName": "architectures"
+					},
+					"quality": "Reported",
+					"comment": "compress mobile protocol"
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 244339.6500311792,
+					"quality": "Estimated"
+				},
+				"alignedPercentage": {
+					"value": 0.6794,
+					"dataSource": {
+						"page": 653,
+						"report": "IntegratedReport",
+						"tagName": "communities"
+					},
+					"quality": "Audited",
+					"comment": "copy back-end matrix"
+				},
+				"eligiblePercentage": {
+					"value": 0.8052,
+					"quality": "Estimated"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
 	}
 ]
