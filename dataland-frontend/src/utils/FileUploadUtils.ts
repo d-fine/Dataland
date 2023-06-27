@@ -36,7 +36,7 @@ export async function uploadFiles(
       await documentControllerApi.checkDocument(fileToUpload.reference);
       fileIsAlreadyInStorage = true;
     } catch (error) {
-      if (error instanceof AxiosError && assertDefined((error as AxiosError).response).status != 404) {
+      if (error instanceof AxiosError && assertDefined((error as AxiosError).response).status == 404) {
         fileIsAlreadyInStorage = false;
       } else {
         throw error;

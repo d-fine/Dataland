@@ -87,15 +87,14 @@ export default defineComponent({
     },
     /**
      * Queries the getCompanies endpoint and writes the response to the variable autoCompleteArray
-     * @param companyName object containing the search query for the getCompanies endpoint
-     * @param companyName.query the query for the getCompany endpoint
+     * @param autoCompleteCompleteEvent object containing the search query for the getCompanies endpoint
      */
-    async searchCompanyName(companyName: AutoCompleteCompleteEvent) {
+    async searchCompanyName(autoCompleteCompleteEvent: AutoCompleteCompleteEvent) {
       try {
         const companyDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)()
         ).getCompanyDataControllerApi();
-        const response = await companyDataControllerApi.getCompaniesBySearchString(companyName.query);
+        const response = await companyDataControllerApi.getCompaniesBySearchString(autoCompleteCompleteEvent.query);
         this.autocompleteArray = response.data;
       } catch (error) {
         console.error(error);
