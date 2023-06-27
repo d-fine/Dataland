@@ -5,8 +5,8 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbatchmanager.service.CompanyUpload
-import org.dataland.datalandbatchmanager.service.CompanyUpload.Companion.UNAUTHORIZED_CODE
+import org.dataland.datalandbatchmanager.service.CompanyUploader
+import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -17,9 +17,9 @@ import org.springframework.context.annotation.ComponentScan
 import java.net.SocketTimeoutException
 
 @ComponentScan(basePackages = ["org.dataland"])
-class CompanyUploadTest {
+class CompanyUploaderTest {
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
-    private lateinit var companyUpload: CompanyUpload
+    private lateinit var companyUploader: CompanyUploader
 
     private val dummyCompanyInformation1 = CompanyInformation(
         companyName = "CompanyName1",
@@ -58,13 +58,13 @@ class CompanyUploadTest {
     @BeforeEach
     fun setup() {
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        companyUpload = CompanyUpload(mockCompanyDataControllerApi)
+        companyUploader = CompanyUploader(mockCompanyDataControllerApi)
     }
 
     @Test
-    fun `check that the upload requests are formatted correctly`() {
-        companyUpload.uploadSingleCompany(dummyCompanyInformation1)
-        companyUpload.uploadSingleCompany(dummyCompanyInformation2)
+    fun `check that the upload requests are succesfully sent on the first try if the environment is ideal`() {
+        companyUploader.uploadSingleCompany(dummyCompanyInformation1)
+        companyUploader.uploadSingleCompany(dummyCompanyInformation2)
 
         verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyCompanyInformation2)
@@ -73,14 +73,14 @@ class CompanyUploadTest {
     @Test
     fun `check that the upload handles a socket timeout and terminates`() {
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1)).thenThrow(SocketTimeoutException())
-        companyUpload.uploadSingleCompany(dummyCompanyInformation1)
+        companyUploader.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(3)).postCompany(dummyCompanyInformation1)
     }
 
     @Test
     fun `check that the upload handles a server exception and terminates`() {
         `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1)).thenThrow(ServerException())
-        companyUpload.uploadSingleCompany(dummyCompanyInformation1)
+        companyUploader.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(3)).postCompany(dummyCompanyInformation1)
     }
 
@@ -91,7 +91,7 @@ class CompanyUploadTest {
                 statusCode = UNAUTHORIZED_CODE,
             ),
         )
-        companyUpload.uploadSingleCompany(dummyCompanyInformation1)
+        companyUploader.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(3)).postCompany(dummyCompanyInformation1)
     }
 
@@ -102,7 +102,7 @@ class CompanyUploadTest {
                 statusCode = 400,
             ),
         )
-        companyUpload.uploadSingleCompany(dummyCompanyInformation1)
+        companyUploader.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyCompanyInformation1)
     }
 }

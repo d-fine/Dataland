@@ -2,7 +2,7 @@ package org.dataland.batchmanager.service
 
 import com.fasterxml.jackson.databind.MappingIterator
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
-import org.dataland.datalandbatchmanager.service.CompanyUpload
+import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
@@ -18,7 +18,7 @@ import java.io.File
 class GleifGoldenCopyIngestorTest {
     private val mockGleifApiAccessor = mock(GleifApiAccessor::class.java)
     private val mockGleifCsvParser = mock(GleifCsvParser::class.java)
-    private val mockCompanyUpload = mock(CompanyUpload::class.java)
+    private val mockCompanyUploader = mock(CompanyUploader::class.java)
     private val mockActuatorApi = mock(ActuatorApi::class.java)
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
 
@@ -26,14 +26,14 @@ class GleifGoldenCopyIngestorTest {
     fun setupTest() {
         reset(mockGleifApiAccessor)
         reset(mockGleifCsvParser)
-        reset(mockCompanyUpload)
+        reset(mockCompanyUploader)
         reset(mockActuatorApi)
     }
 
     @Test
     fun `test failing ingestion`() {
         companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUpload, mockActuatorApi,
+            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi,
             false, null,
         )
         companyIngestor.processFullGoldenCopyFileIfEnabled()
@@ -50,7 +50,7 @@ class GleifGoldenCopyIngestorTest {
         )
             .thenReturn(MappingIterator.emptyIterator())
         companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUpload, mockActuatorApi,
+            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi,
             false, flagFile.absolutePath,
         )
         companyIngestor.processFullGoldenCopyFileIfEnabled()

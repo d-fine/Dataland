@@ -13,7 +13,7 @@ import java.net.SocketTimeoutException
  * Class for handling the upload of the company information retrieved from GLEIF to the Dataland backend
  */
 @Service
-class CompanyUpload(
+class CompanyUploader(
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
     companion object {

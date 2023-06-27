@@ -1,7 +1,7 @@
 package org.dataland.datalandbatchmanager.service
 
 import org.apache.commons.io.FileUtils
-import org.dataland.datalandbatchmanager.service.CompanyUpload.Companion.MAX_RETRIES
+import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.MAX_RETRIES
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.io.File

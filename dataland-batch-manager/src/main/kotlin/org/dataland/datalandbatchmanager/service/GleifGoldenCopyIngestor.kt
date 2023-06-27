@@ -27,7 +27,7 @@ import kotlin.time.toDuration
 class GleifGoldenCopyIngestor(
     @Autowired private val gleifApiAccessor: GleifApiAccessor,
     @Autowired private val gleifParser: GleifCsvParser,
-    @Autowired private val companyUploader: CompanyUpload,
+    @Autowired private val companyUploader: CompanyUploader,
     @Autowired private val actuatorApi: ActuatorApi,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
