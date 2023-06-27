@@ -139,14 +139,16 @@ class CompanyManagerTest(
     @Test
     fun `check that it is not possible to get a result with no data type filter specified`() {
         val exception = assertThrows<InvalidInputApiException> {
-            testCompanyManager.searchCompaniesAndGetApiModel(StoredCompanySearchFilter(
-                dataTypeFilter = emptyList(),
-                countryCodeFilter = emptyList(),
-                sectorFilter = emptyList(),
-                searchString = "",
-                nameOnlyFilter = false,
-                uploaderIdFilter = emptyList(),
-            ))
+            testCompanyManager.searchCompaniesAndGetApiModel(
+                StoredCompanySearchFilter(
+                    dataTypeFilter = emptyList(),
+                    countryCodeFilter = emptyList(),
+                    sectorFilter = emptyList(),
+                    searchString = "",
+                    nameOnlyFilter = false,
+                    uploaderIdFilter = emptyList(),
+                ),
+            )
         }
         assertEquals(exception.message, "Please specify a dataframework")
     }

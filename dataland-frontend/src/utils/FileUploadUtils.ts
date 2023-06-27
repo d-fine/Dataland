@@ -38,8 +38,9 @@ export async function uploadFiles(
     } catch (error) {
       if (error instanceof AxiosError && assertDefined((error as AxiosError).response).status != 404) {
         fileIsAlreadyInStorage = false;
+      } else {
+        throw error;
       }
-      throw error;
     }
     if (!fileIsAlreadyInStorage) {
       const backendComputedHash = (await documentControllerApi.postDocument(fileToUpload.file)).data.documentId;
