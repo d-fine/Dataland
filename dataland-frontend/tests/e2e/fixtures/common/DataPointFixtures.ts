@@ -199,12 +199,13 @@ export function generateDatapointAbsoluteAndPercentage<T, Y>(
 export function getCsvDataPointMappingAbsoluteAndPercentage<T>(
   dataPointName: string,
   dataPointGetter: (row: T) => DataPointAbsoluteAndPercentageBigDecimal | undefined,
-  valueConverter: (input: number | undefined) => string = (x): string => x?.toString() ?? ""
+  valueConverterAbsolute: (input: number | undefined) => string = (x): string => x?.toString() ?? "",
+  valueConverterPercentage: (input: number | undefined) => string = (x): string => x?.toString() ?? "",
 ): Array<DataPoint<T, string | number>> {
   return [
     {
       label: `${dataPointName} (%)`,
-      value: (row: T): string | undefined => valueConverter(dataPointGetter(row)?.valueAsPercentage),
+      value: (row: T): string | undefined => valueConverterAbsolute(dataPointGetter(row)?.valueAsPercentage),
     },
     {
       label: `${dataPointName} Quality`,
@@ -216,7 +217,7 @@ export function getCsvDataPointMappingAbsoluteAndPercentage<T>(
     },
     {
       label: dataPointName,
-      value: (row: T): string | undefined => valueConverter(dataPointGetter(row)?.valueAsAbsolute),
+      value: (row: T): string | undefined => valueConverterPercentage(dataPointGetter(row)?.valueAsAbsolute),
     },
     ...getCsvDataSourceMapping<T>(dataPointName, (row: T) => dataPointGetter(row)?.dataSource),
   ];

@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 
 /**
  * --- API model ---
- * Fields of a generic data point and its source
+ * Fields of a big decimal data point containing absolute and percentage values and their source
  */
 data class DataPointAbsoluteAndPercentage<T> (
     val valueAsPercentage: T? = null,

@@ -123,43 +123,4 @@ class DataPointParser(
             it.readCsvPercentage(baseString, row)
         }
     }
-    private fun <T> buildDataAndPercentagePoint(
-        generalMap: Map<String, String>,
-        row: Map<String, String>,
-        baseString: String,
-        valueFunction: (datapointColumnMapping: Map<String, String>) -> T?,
-    ): DataPointAbsoluteAndPercentage<T>? {
-        val datapointColumnMapping = buildMapForSpecificDatapoint(generalMap, baseString)
-        if (!datapointColumnMapping.checkIfAnyFieldHasValue(datapointColumnMapping.keys.toList(), row)) {
-            return null
-        }
-
-        return DataPointAbsoluteAndPercentage(
-            valueAsAbsolute = valueFunction(datapointColumnMapping),
-            quality = datapointColumnMapping
-                .getCsvValueAllowingNull("${baseString}Quality", row)
-                .let { qualityOptionCsvParser.parse("${baseString}Quality", it) },
-            comment = datapointColumnMapping
-                .getCsvValueAllowingNull("${baseString}Comment", row),
-            dataSource = buildSingleCompanyReportReference(generalMap, row, baseString),
-            valueAsPercentage = valueFunction(datapointColumnMapping),
-        )
-    }
-
-    /**
-     * Parses a single percentage data point
-     */
-    fun buildAbsoulteAndPercentageDataPoint(
-        generalMap: Map<String, String>,
-        row: Map<String, String>,
-        baseString: String,
-        baseStringPercentage: String,
-        valueScaleFactor: BigDecimal,
-    ):
-        DataPointAbsoluteAndPercentage<BigDecimal>? {
-        return buildDataAndPercentagePoint(generalMap, row, baseString) {
-            it.readCsvPercentage(baseStringPercentage, row)
-            it.readCsvDecimal(baseString, row, valueScaleFactor)
-        }
-    }
 }

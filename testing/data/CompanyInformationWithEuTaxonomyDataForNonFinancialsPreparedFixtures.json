@@ -2,100 +2,82 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Lucdorf",
-			"headquartersPostalCode": "08921",
-			"sector": "experiences",
+			"headquarters": "Balnuweitscheid",
+			"headquartersPostalCode": "25186",
+			"sector": "platforms",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "k7cXqA3GYMZQDcD"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "ChQiEnsoM8G10KSNg6qg"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "a1AhVgS7Vn"
+					"identifierType": "Duns",
+					"identifierValue": "1yzTNLlnc"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "80wgZ8X"
+					"identifierValue": "VBCmm4L"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "jjdG0wTII"
+					"identifierValue": "cUlpJhOmj"
 				}
 			],
-			"countryCode": "HK",
-			"companyAlternativeNames": [
-				"Hüttcher, Cleem und Huth",
-				"Moguenara, Stephan und Ringel",
-				"Tittman-Ladewig"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"countryCode": "NO",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://friedvoll-islam.name",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2023-06-18",
-			"numberOfEmployees": 54460,
 			"referencedReports": {
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-07-05",
-					"currency": "WST"
+					"reportDate": "2023-02-28",
+					"currency": "CLP"
 				},
-				"AnnualReport": {
+				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "SRD"
+					"reportDate": "2022-11-27",
+					"currency": "RUB"
 				},
 				"SustainabilityReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-01-07",
-					"currency": "TRY"
+					"isGroupLevel": "NA",
+					"reportDate": "2022-07-02",
+					"currency": "KWD"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Schreiter Gruppe",
-				"dataSource": {
-					"page": 436,
-					"report": "IntegratedReport",
-					"tagName": "technologies"
-				}
+				"assurance": "None"
 			},
-			"scopeOfEntities": "No",
+			"scopeOfEntities": "NA",
 			"reportingObligation": "No",
 			"activityLevelReporting": "No",
 			"opex": {
 				"eligibleData": {
-					"value": 0.5551,
-					"dataSource": {
-						"page": 1199,
-						"report": "IntegratedReport",
-						"tagName": "systems"
-					},
-					"quality": "Incomplete",
-					"comment": "navigate haptic capacitor"
+					"value": 0.7568,
+					"quality": "Estimated"
 				}
 			},
 			"capex": {
 				"eligibleData": {
-					"value": 0.9826,
+					"value": 0.6676,
 					"dataSource": {
-						"page": 1169,
-						"report": "AnnualReport",
-						"tagName": "e-commerce"
+						"page": 145,
+						"report": "IntegratedReport",
+						"tagName": "technologies"
 					},
 					"quality": "Estimated",
-					"comment": "quantify multi-byte array"
+					"comment": "program mobile array"
 				}
 			},
 			"revenue": {
 				"eligibleData": {
-					"value": 0.5643,
-					"quality": "Incomplete"
+					"value": 0.1006,
+					"dataSource": {
+						"page": 1087,
+						"report": "IntegratedReport",
+						"tagName": "supply-chains"
+					},
+					"quality": "Estimated",
+					"comment": "back up open-source protocol"
 				}
 			}
 		},
@@ -104,245 +86,221 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Rostock",
-			"sector": "networks",
+			"headquarters": "Böhmburg",
+			"sector": "relationships",
 			"identifiers": [
 				{
-					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "odGUK7bUCBjlfWW"
-				},
-				{
-					"identifierType": "Duns",
-					"identifierValue": "Vh8yip198"
-				},
-				{
-					"identifierType": "Isin",
-					"identifierValue": "PUpR47YWMY90"
-				},
-				{
 					"identifierType": "Lei",
-					"identifierValue": "qJUor1iWfiO5LP1kkAZY"
+					"identifierValue": "RQnJSOPB1x4rDg3KKPDX"
 				},
 				{
 					"identifierType": "PermId",
-					"identifierValue": "uifJ42JExB"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "To4j8Pp"
+					"identifierValue": "HD1GOnvUDG"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "QG4wLx35r"
+					"identifierValue": "qtA2bPKef"
 				}
 			],
-			"countryCode": "MG",
-			"companyAlternativeNames": [
-				"Denner-Reiber",
-				"Jerschabek-Ruth",
-				"Lokar, Bormann und Clarius",
-				"Merkel OHG"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
+			"countryCode": "PA",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://enorm-wohnhaus.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2022-10-15",
-			"numberOfEmployees": 56875,
+			"fiscalYearEnd": "2022-12-25",
+			"numberOfEmployees": 15201,
 			"referencedReports": {
-				"SustainabilityReport": {
+				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "MAD"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2023-03-01",
-					"currency": "ZWL"
+					"reportDate": "2023-01-13",
+					"currency": "PYG"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-12-29",
+					"currency": "NAD"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "Yes",
-					"reportDate": "2023-05-01",
-					"currency": "THB"
+					"reportDate": "2023-01-29",
+					"currency": "PYG"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"provider": "Eleyth, Kröger und Menne",
-				"dataSource": {
-					"page": 801,
-					"report": "SustainabilityReport",
-					"tagName": "paradigms"
-				}
+				"assurance": "LimitedAssurance"
 			},
-			"scopeOfEntities": "Yes",
-			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 927727.8990950435,
-					"dataSource": {
-						"page": 960,
-						"report": "AnnualReport",
-						"tagName": "initiatives"
-					},
-					"quality": "Incomplete",
-					"comment": "bypass neural capacitor"
+					"value": 69021.07447385788,
+					"quality": "Incomplete"
 				},
 				"eligibleData": {
-					"value": 571332.3887321167,
+					"value": 84375.91354595497,
 					"dataSource": {
-						"page": 148,
-						"report": "AnnualReport",
-						"tagName": "infrastructures"
+						"page": 440,
+						"report": "IntegratedReport",
+						"tagName": "mindshare"
 					},
-					"quality": "Incomplete",
-					"comment": "program cross-platform bus",
-					"valueAsPercent": 0.3743
+					"quality": "Audited",
+					"comment": "connect optical microchip",
+					"valueAsPercent": 0.7565
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 205710.1249927655,
+					"value": 801665.6874446198,
 					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"value": 117487.96179890633,
-					"quality": "Estimated",
-					"valueAsPercent": 0.5844
+					"value": 119184.6935194917,
+					"dataSource": {
+						"page": 861,
+						"report": "AnnualReport",
+						"tagName": "mindshare"
+					},
+					"quality": "Reported",
+					"comment": "program virtual feed",
+					"valueAsPercent": 0.9719
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 248038.54688070714,
+					"value": 985216.561856214,
 					"dataSource": {
-						"page": 427,
-						"report": "AnnualReport",
-						"tagName": "lifetime value"
-					},
-					"quality": "Audited",
-					"comment": "copy open-source circuit"
-				},
-				"eligibleData": {
-					"value": 438595.90225620195,
-					"dataSource": {
-						"page": 740,
+						"page": 685,
 						"report": "ESEFReport",
-						"tagName": "users"
+						"tagName": "e-business"
 					},
 					"quality": "Incomplete",
-					"comment": "reboot solid state hard drive",
-					"valueAsPercent": 0.9764
+					"comment": "bypass cross-platform bus"
+				},
+				"eligibleData": {
+					"value": 600887.6176434569,
+					"dataSource": {
+						"page": 237,
+						"report": "IntegratedReport",
+						"tagName": "interfaces"
+					},
+					"quality": "Reported",
+					"comment": "generate solid state firewall",
+					"valueAsPercent": 0.4482
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Ost Zeynepland",
-			"headquartersPostalCode": "61258",
-			"sector": "experiences",
+			"headquarters": "Bad Hannah",
+			"headquartersPostalCode": "13528",
+			"sector": "blockchains",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "Bl4SzQohdjfCOiy"
+					"identifierValue": "tE3Rgsb8JEeIo2j"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "0ZyqFc38WMZ8"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "2zOxaluQEXAA8pIeITFa"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "CQF5Hl37qC"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "NXzltne"
+					"identifierValue": "g23zeKAVOVrY"
 				},
 				{
 					"identifierType": "VatNumber",
-					"identifierValue": "xY1F8uPlI"
+					"identifierValue": "Wl0UiNGYn"
 				}
 			],
-			"countryCode": "PR",
+			"countryCode": "MY",
 			"companyAlternativeNames": [
-				"Friedmann, Knorscheidt und Jakubczyk"
+				"Ahrenberg-Amberg",
+				"Roschinsky Gruppe"
 			],
-			"website": "https://progressiv-vogel.de",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://majestatisch-verstand.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"numberOfEmployees": 8138,
+			"numberOfEmployees": 37932,
 			"assurance": {
-				"assurance": "ReasonableAssurance",
-				"dataSource": {
-					"page": 1103,
-					"report": "IntegratedReport",
-					"tagName": "partnerships"
-				}
+				"assurance": "None"
 			},
-			"scopeOfEntities": "Yes",
 			"opex": {
 				"totalAmount": {
+					"value": 100146.73059340566,
 					"dataSource": {
-						"page": 535,
-						"report": "SustainabilityReport",
-						"tagName": "initiatives"
+						"page": 38,
+						"report": "AnnualReport",
+						"tagName": "supply-chains"
 					},
 					"quality": "Audited",
-					"comment": "override neural program"
+					"comment": "navigate wireless interface"
 				},
 				"alignedData": {
 					"dataSource": {
-						"page": 189,
-						"report": "AnnualReport",
-						"tagName": "web services"
+						"page": 1066,
+						"report": "SustainabilityReport",
+						"tagName": "blockchains"
 					},
-					"quality": "Estimated",
-					"comment": "connect virtual bandwidth"
+					"quality": "Reported",
+					"comment": "compress neural panel"
 				},
 				"eligibleData": {
-					"value": 0.4983,
 					"dataSource": {
-						"page": 831,
-						"report": "IntegratedReport",
-						"tagName": "bandwidth"
+						"page": 878,
+						"report": "ESEFReport",
+						"tagName": "systems"
 					},
-					"quality": "Estimated",
-					"comment": "transmit haptic card"
+					"quality": "Reported",
+					"comment": "override virtual alarm"
 				}
 			},
 			"capex": {
-				"alignedData": {
-					"value": 0.8925,
+				"totalAmount": {
+					"value": 648548.576340545,
 					"dataSource": {
-						"page": 744,
-						"report": "SustainabilityReport",
-						"tagName": "partnerships"
+						"page": 444,
+						"report": "ESEFReport",
+						"tagName": "web services"
 					},
-					"quality": "Reported",
-					"comment": "override solid state bandwidth"
+					"quality": "Audited",
+					"comment": "quantify optical sensor"
+				},
+				"alignedData": {
+					"value": 614261.6381053813,
+					"dataSource": {
+						"page": 1144,
+						"report": "SustainabilityReport",
+						"tagName": "channels"
+					},
+					"quality": "Audited",
+					"comment": "synthesize redundant monitor"
+				},
+				"eligibleData": {
+					"value": 499850.3611772321,
+					"dataSource": {
+						"page": 453,
+						"report": "AnnualReport",
+						"tagName": "portals"
+					},
+					"quality": "Incomplete",
+					"comment": "generate neural sensor"
 				}
 			},
 			"revenue": {
-				"alignedData": {
+				"totalAmount": {
+					"value": 917272.1862792969,
 					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"value": 0.1249,
 					"dataSource": {
-						"page": 524,
+						"page": 1,
 						"report": "SustainabilityReport",
-						"tagName": "deliverables"
+						"tagName": "web services"
 					},
-					"quality": "Incomplete",
-					"comment": "compress solid state system"
+					"quality": "Audited",
+					"comment": "hack mobile firewall"
 				}
 			}
 		},
