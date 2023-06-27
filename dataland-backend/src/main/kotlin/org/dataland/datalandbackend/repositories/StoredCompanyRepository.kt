@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.repositories
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -52,7 +51,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "company.companyName ASC",
     )
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter, pageable: Pageable):
-            Page<StoredCompanyEntity>
+            List<StoredCompanyEntity>
 
     /**
      * A function for querying companies by search string:
