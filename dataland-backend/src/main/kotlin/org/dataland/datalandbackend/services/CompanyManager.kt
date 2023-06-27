@@ -125,7 +125,6 @@ class CompanyManager(
 
         val filteredAndSortedResults = companyRepository.searchCompanies(
             filter,
-            Pageable.unpaged(),
         )
 
         val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->

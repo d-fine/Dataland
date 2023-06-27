@@ -50,8 +50,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "WHEN lower(max(alternativeName)) LIKE :#{#searchFilter.searchStringLower}% THEN 4 ELSE 5 END) ASC, " +
             "company.companyName ASC",
     )
-    fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter, pageable: Pageable):
-            List<StoredCompanyEntity>
+    fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
 
     /**
      * A function for querying companies by search string:
