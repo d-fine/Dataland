@@ -1,12 +1,12 @@
 package org.dataland.csvconverter
-
+/*
 import org.dataland.csvconverter.json.JsonConfig
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
-/*
+
 class CsvToJsonConverterTest {
     private val testDataProvider = TestDataProvider(JsonConfig.objectMapper)
 
