@@ -49,7 +49,7 @@ class CompanyUpload(
                     logger.error("Authorization failed, attempting to regenerate access token.")
                     counter++
                 } else {
-                    counter = MAX_RETRIES
+                    break
                 }
             } catch (exception: ServerException) {
                 logger.error("Unexpected server exception. Response was: ${exception.message}.")
