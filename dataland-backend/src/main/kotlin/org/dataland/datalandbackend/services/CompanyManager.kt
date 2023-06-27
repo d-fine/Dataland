@@ -123,10 +123,7 @@ class CompanyManager(
             )
         }
 
-        val filteredAndSortedResults = companyRepository.searchCompanies(
-            filter,
-        )
-
+        val filteredAndSortedResults = companyRepository.searchCompanies(filter)
         val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
             storedCompanyEntity.companyId to index
         }.toMap()

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
@@ -132,7 +133,7 @@ interface CompanyApi {
         ],
     )
     @RequestMapping(
-        method = [org.springframework.web.bind.annotation.RequestMethod.HEAD],
+        method = [RequestMethod.HEAD],
         value = ["/identifiers/{identifierType}/{identifier}"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
