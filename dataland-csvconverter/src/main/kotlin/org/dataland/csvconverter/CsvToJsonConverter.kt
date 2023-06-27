@@ -4,7 +4,6 @@ import org.dataland.csvconverter.csv.CompanyInformationCsvParser
 import org.dataland.csvconverter.csv.CsvFrameworkParser
 import org.dataland.csvconverter.csv.CsvUtils
 import org.dataland.csvconverter.csv.EuTaxonomyForFinancialsCsvParser
-import org.dataland.csvconverter.csv.EuTaxonomyForNonFinancialsCsvParser
 import org.dataland.csvconverter.csv.commonfieldparsers.AssuranceDataParser
 import org.dataland.csvconverter.csv.commonfieldparsers.CompanyReportParser
 import org.dataland.csvconverter.csv.commonfieldparsers.CompanyTypeParser
@@ -16,7 +15,6 @@ import org.dataland.csvconverter.csv.utils.YesNoNaParser
 import org.dataland.csvconverter.csv.utils.YesNoParser
 import org.dataland.csvconverter.json.JsonConfig
 import org.dataland.datalandbackend.model.eutaxonomy.financials.EuTaxonomyDataForFinancials
-import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.utils.CompanyInformationWithData
 import java.io.File
 
@@ -45,6 +43,8 @@ class CsvToJsonConverter {
         fiscalYearParser,
         companyReportParser,
     )
+
+    /*
     private val euTaxonomyForNonFinancialsCsvParser = EuTaxonomyForNonFinancialsCsvParser(
         euTaxonomyCommonFieldParser,
         companyTypeParser,
@@ -53,6 +53,7 @@ class CsvToJsonConverter {
         fiscalYearParser,
         companyReportParser,
     )
+     */
     private val reportingPeriodParser = ReportingPeriodParser()
 
     /**
@@ -76,13 +77,13 @@ class CsvToJsonConverter {
                 }
             }
     }
-
+/*
     /**
      * Parses data for the EuTaxonomyForNonFinancials framework from the CSV
      */
     fun parseEuTaxonomyNonFinancialData(): List<CompanyInformationWithData<EuTaxonomyDataForNonFinancials>> =
         buildListOfCompanyInformationWithFrameworkData(rawCsvData, euTaxonomyForNonFinancialsCsvParser)
-
+*/
     /**
      * Parses data for the EuTaxonomyForFinancials framework from the CSV
      */
@@ -107,10 +108,10 @@ class CsvToJsonConverter {
         fun main(args: Array<String>) {
             val converter = CsvToJsonConverter()
             converter.parseCsvFile(File(args.first()).path)
-
+/*
             val euTaxonomyNonFinancial = converter.parseEuTaxonomyNonFinancialData()
             JsonConfig.exportJson("./CompanyInformationWithEuTaxonomyDataForNonFinancials.json", euTaxonomyNonFinancial)
-
+*/
             val euTaxonomyFinancial = converter.parseEuTaxonomyFinancialData()
             JsonConfig.exportJson("./CompanyInformationWithEuTaxonomyDataForFinancials.json", euTaxonomyFinancial)
         }

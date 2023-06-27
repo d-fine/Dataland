@@ -194,13 +194,15 @@ export function generateDatapointAbsoluteAndPercentage<T, Y>(
  * @param dataPointName the name of the datapoint
  * @param dataPointGetter a function that can be used to access the datapoint given the current fixture element
  * @param valueConverter a conversion function for formatting the number (i.e. that converts the decimal number to a percentage string)
+ * @param valueConverterAbsolute
+ * @param valueConverterPercentage
  * @returns the CSV mapping for the datapoint
  */
 export function getCsvDataPointMappingAbsoluteAndPercentage<T>(
   dataPointName: string,
   dataPointGetter: (row: T) => DataPointAbsoluteAndPercentageBigDecimal | undefined,
   valueConverterAbsolute: (input: number | undefined) => string = (x): string => x?.toString() ?? "",
-  valueConverterPercentage: (input: number | undefined) => string = (x): string => x?.toString() ?? "",
+  valueConverterPercentage: (input: number | undefined) => string = (x): string => x?.toString() ?? ""
 ): Array<DataPoint<T, string | number>> {
   return [
     {

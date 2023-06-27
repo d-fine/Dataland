@@ -8,7 +8,6 @@ import org.dataland.csvconverter.csv.CsvUtils.readCsvPercentage
 import org.dataland.csvconverter.csv.utils.EnumCsvParser
 import org.dataland.datalandbackend.model.CompanyReportReference
 import org.dataland.datalandbackend.model.DataPoint
-import org.dataland.datalandbackend.model.DataPointAbsoluteAndPercentage
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import java.math.BigDecimal
 
