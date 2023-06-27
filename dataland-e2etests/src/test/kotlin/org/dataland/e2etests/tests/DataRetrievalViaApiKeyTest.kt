@@ -2,9 +2,9 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyResponse
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.e2etests.MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY
 import org.dataland.e2etests.auth.ApiKeyAuthenticationHelper
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.dataland.datalandapikeymanager.openApiClient.infrastructure.ClientException as ApiKeyManagerClientException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
 class DataRetrievalViaApiKeyTest {
 
@@ -140,7 +142,7 @@ class DataRetrievalViaApiKeyTest {
         apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
         GlobalAuth.setBearerToken(apiKey.apiKey)
         val exception =
-            assertThrows<ClientException> {
+            assertThrows<BackendClientException> {
                 apiAccessor.companyDataControllerApi.getCompanyById(companyId).companyId
             }
         assertEquals(
@@ -149,13 +151,41 @@ class DataRetrievalViaApiKeyTest {
     }
 
     @Test
-    fun `generate an API key which is valid for a certain amount of days and then validate it`() {
-        val daysValid = 2
+    fun `generate an API key with the current max value for daysValid then validate it`() {
+        val daysValidMax = MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY
         val technicalUser = TechnicalUser.Reader
         val apiKeyToValidate = apiKeyHelper
-            .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValid).apiKey
+            .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValidMax).apiKey
         val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyToValidate)
-        doAssertionsAfterApiKeyValidation(technicalUser, daysValid, apiKeyMetaInfo)
+        doAssertionsAfterApiKeyValidation(technicalUser, daysValidMax, apiKeyMetaInfo)
+    }
+
+    @Test
+    fun `generate an API key with a too small value for daysValid and assert that exception is thrown`() {
+        val daysValidTooSmall = 0
+        val technicalUser = TechnicalUser.Reader
+        val exception =
+            assertThrows<ApiKeyManagerClientException> {
+                apiKeyHelper.obtainApikeyForTechnicalUser(technicalUser, daysValidTooSmall)
+            }
+        assertEquals(
+            "Client error : 400 ",
+            exception.message,
+        )
+    }
+
+    @Test
+    fun `generate an API key with a too large value for daysValid and assert that exception is thrown`() {
+        val daysValidTooLarge = MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY + 1
+        val technicalUser = TechnicalUser.Reader
+        val exception =
+            assertThrows<ApiKeyManagerClientException> {
+                apiKeyHelper.obtainApikeyForTechnicalUser(technicalUser, daysValidTooLarge)
+            }
+        assertEquals(
+            "Client error : 400 ",
+            exception.message,
+        )
     }
 
     @Test

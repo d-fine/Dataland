@@ -16,10 +16,7 @@ import {
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm,
   uploadEuTaxonomyDataForNonFinancialsViaForm,
 } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
-import {
-  goToEditFormOfMostRecentDataset,
-  uploadCompanyViaApiAndEuTaxonomyDataViaForm,
-} from "@e2e/utils/GeneralApiUtils";
+import { goToEditFormOfMostRecentDataset, uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralUtils";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import Chainable = Cypress.Chainable;
@@ -153,7 +150,7 @@ describeIf(
     );
 
     /**
-     * Checks that the computed hash in the frontend is the same as the one returned by the documen upload endpoint
+     * Checks that the computed hash in the frontend is the same as the one returned by the document upload endpoint
      */
     function validateFrontendAndBackendDocumentHashesCoincede(): void {
       cy.task<{ [type: string]: ArrayBuffer }>("readFile", `../${TEST_PDF_FILE_PATH}`).then(async (bufferObject) => {

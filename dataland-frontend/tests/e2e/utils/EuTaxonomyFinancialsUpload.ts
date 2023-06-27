@@ -14,11 +14,11 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { TEST_PDF_FILE_NAME } from "@e2e/utils/Constants";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { goToEditFormOfMostRecentDataset, submitFilledInEuTaxonomyForm } from "@e2e/utils/GeneralApiUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
 import { dateFormElement } from "@sharedUtils/components/DateFormElement";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { CyHttpMessages } from "cypress/types/net-stubbing";
+import { goToEditFormOfMostRecentDataset } from "./GeneralUtils";
 import Chainable = Cypress.Chainable;
 
 /**
@@ -205,13 +205,15 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Chainable
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
+ * @param bypassQa (optional) should the entry be automatically Approved. Default: true
  * @returns a promise on the created data meta information
  */
 export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: EuTaxonomyDataForFinancials
+  data: EuTaxonomyDataForFinancials,
+  bypassQa = true
 ): Promise<DataMetaInformation> {
   const response = await new EuTaxonomyDataForFinancialsControllerApi(
     new Configuration({ accessToken: token })
@@ -221,7 +223,7 @@ export async function uploadOneEuTaxonomyFinancialsDatasetViaApi(
       reportingPeriod,
       data,
     },
-    true
+    bypassQa
   );
   return response.data;
 }
@@ -279,11 +281,10 @@ export function uploadCompanyViaApiAndEuTaxonomyDataForFinancialsViaForm(
 }
 
 /**
- *
+ * Fills the eutaxonomy-financials upload form with the given dataset
  * @param data the data to fill the form with
  */
-export function fillEuTaxonomyForFinancialsRequiredFields(data: EuTaxonomyDataForFinancials): void {
-  cy.wait(4000);
+export function fillAndValidateEuTaxonomyCreditInstitutionForm(data: EuTaxonomyDataForFinancials): void {
   dateFormElement.selectDayOfNextMonth("fiscalYearEnd", 12);
   dateFormElement.validateDay("fiscalYearEnd", 12);
 
@@ -304,4 +305,56 @@ export function fillEuTaxonomyForFinancialsRequiredFields(data: EuTaxonomyDataFo
   cy.get('[data-test="assuranceSection"] select[name="assurance"]').select(2);
   cy.get('[data-test="assuranceSection"] input[name="provider"]').type("Assurance Provider", { force: true });
   cy.get('[data-test="assuranceSection"] select[name="report"]').select(1);
+
+  cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
+    .click()
+    .get("div.p-multiselect-panel")
+    .find("li.p-multiselect-item")
+    .each(($el) => {
+      cy.wrap($el).click({ force: true });
+    });
+
+  cy.get('[data-test="addKpisButton"]').click({ force: true });
+
+  cy.get('[data-test="removeSectionButton"]').each(($el, index) => {
+    if (index > 0) {
+      cy.wrap($el).click({ force: true });
+    }
+  });
+
+  cy.get('button[data-test="removeSectionButton"]').should("exist").should("have.class", "ml-auto");
+
+  fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
+  fillField(
+    "creditInstitutionKpis",
+    "tradingPortfolioAndInterbankLoans",
+    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans
+  );
+  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
+  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
+  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
+}
+
+/**
+ * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks
+ * if a 200 response is returned by the backend
+ * @param submissionDataIntercept function that asserts content of an intercepted request
+ */
+export function submitFilledInEuTaxonomyForm(
+  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
+): void {
+  const postRequestAlias = "postDataAlias";
+  cy.intercept(
+    {
+      method: "POST",
+      url: `**/api/data/**`,
+      times: 1,
+    },
+    submissionDataIntercept
+  ).as(postRequestAlias);
+  cy.get('button[data-test="submitButton"]').click();
+  cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then((interception) => {
+    expect(interception.response?.statusCode).to.eq(200);
+  });
+  cy.contains("td", "EU Taxonomy");
 }

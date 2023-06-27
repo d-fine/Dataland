@@ -10,7 +10,7 @@ fi
 
 echo "Clearing Docker..."
 docker compose down --remove-orphans
-docker volume prune --force
+docker volume prune --force --all
 
 echo "Rebuilding clients..."
 ./gradlew clean
