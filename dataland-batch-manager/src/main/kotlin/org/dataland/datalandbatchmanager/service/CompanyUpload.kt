@@ -32,26 +32,20 @@ class CompanyUpload(
         companyInformation: CompanyInformation,
     ) {
         var counter = 0
-        var shouldRetry = true
-        while (shouldRetry && counter < MAX_RETRIES) {
+        while (counter < MAX_RETRIES) {
             try {
                 logger.info(
                     "Uploading company data for ${companyInformation.companyName} " +
                         "(LEI: ${companyInformation.identifiers[0].identifierValue})",
                 )
                 companyDataControllerApi.postCompany(companyInformation)
-                shouldRetry = false
+                break
+            } catch (exception: ClientException) {
+                logger.error("Unable to upload company data. Response was: ${exception.message}.")
+                counter = MAX_RETRIES
             } catch (exception: SocketTimeoutException) {
                 logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
                 counter++
-            } catch (exception: ClientException) {
-                logger.error("Unable to upload company data. Response was: ${exception.message}.")
-                if (exception.statusCode == UNAUTHORIZED_CODE || exception.statusCode == FORBIDDEN_CODE) {
-                    logger.error("Authorization failed, attempting to regenerate access token.")
-                    counter++
-                } else {
-                    shouldRetry = false
-                }
             } catch (exception: ServerException) {
                 logger.error("Unexpected server exception. Response was: ${exception.message}.")
                 counter++
