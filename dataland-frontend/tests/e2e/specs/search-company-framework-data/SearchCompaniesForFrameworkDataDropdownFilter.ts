@@ -113,6 +113,7 @@ describe("As a user, I expect the search functionality on the /companies page to
       )!.companyInformation;
 
       expect(demoCompanyToTestFor.sector).to.not.be.undefined;
+      expect(demoCompanyWithDifferentSector.sector).to.not.be.undefined;
       cy.ensureLoggedIn();
       cy.intercept("**/api/companies/meta-information").as("companies-meta-information");
       cy.visit(`/companies?input=${demoCompanyToTestFor.companyName}&sector=${demoCompanyWithDifferentSector.sector}`)
@@ -129,13 +130,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         .get("td[class='d-bg-white w-3 d-datatable-column-left']")
         .contains(demoCompanyToTestFor.companyName)
         .should("exist");
-      cy.url().then((url) => {
-        if (demoCompanyToTestFor.sector) {
-          expect(url).to.contain(`sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector)}`);
-        } else {
-          expect(url).to.not.contain("sector=");
-        }
-      });
+      cy.url().should("contain", `sector=${convertStringToQueryParamFormat(demoCompanyToTestFor.sector)}`);
     }
   );
   it("Checks that the reset button works as expected", { scrollBehavior: false }, () => {
@@ -145,9 +140,8 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.ensureLoggedIn();
     cy.visit(
       `/companies?sector=${demoCompanyToTestFor.sector}&countryCode=${demoCompanyToTestFor.countryCode}&framework=${DataTypeEnum.EutaxonomyNonFinancials}`
-    )
-      .get("span:contains('RESET')")
-      .eq(0)
+    );
+    cy.get("span:contains('RESET')")
       .click()
       .url()
       .should("eq", getBaseUrl() + "/companies");
