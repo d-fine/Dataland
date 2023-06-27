@@ -6,7 +6,7 @@ import {
 } from "@clients/backend";
 import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 import { FixtureData } from "@sharedUtils/Fixtures";
-import { convertToPercentageString, decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
+import { decimalSeparatorConverter } from "@e2e/fixtures/CsvUtils";
 import { getCsvCompanyMapping } from "@e2e/fixtures/CompanyFixtures";
 import {
   generateDatapoint,
@@ -91,32 +91,32 @@ export function generateCSVDataForNonFinancials(
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Eligible Revenue`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.revenue?.eligibleData,
-        decimalSeparatorConverter(1000000),
+        decimalSeparatorConverter(1000000)
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Eligible CapEx`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.capex?.eligibleData,
-        decimalSeparatorConverter(1000000),
+        decimalSeparatorConverter(1000000)
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Eligible OpEx`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.opex?.eligibleData,
-        decimalSeparatorConverter(1000000),
+        decimalSeparatorConverter(1000000)
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Aligned Revenue`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.revenue?.alignedData,
-        decimalSeparatorConverter(1000000),
+        decimalSeparatorConverter(1000000)
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Aligned CapEx`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.capex?.alignedData,
-        decimalSeparatorConverter(1000000),
+        decimalSeparatorConverter(1000000)
       ),
       ...getCsvDataPointMapping<FixtureData<EuTaxonomyDataForNonFinancials>>(
         `Aligned OpEx`,
         (row): DataPointAbsoluteAndPercentageBigDecimal | undefined => row.t.opex?.alignedData,
-        decimalSeparatorConverter(1000000),
+        decimalSeparatorConverter(1000000)
       ),
     ],
     delimiter: ";",

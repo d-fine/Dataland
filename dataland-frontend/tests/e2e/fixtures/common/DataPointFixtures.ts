@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker/locale/de";
 import {
   CompanyReportReference,
-  DataPointAbsoluteAndPercentageBigDecimal,
   DataPointBigDecimal,
   DataPointYesNo,
   QualityOptions,
