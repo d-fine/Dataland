@@ -24,6 +24,7 @@ import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
@@ -41,6 +42,7 @@ import java.time.Instant
 @SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class DataManagerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
@@ -67,14 +69,13 @@ class DataManagerTest(
     private fun addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt(): StorableDataSet {
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
         val companyId = companyManager.addCompany(companyInformation).companyId
-        val euTaxonomyDataForNonFinancialsAsString = "someEuTaxonomyDataForNonFinancials123"
         return StorableDataSet(
             companyId,
             DataType("eutaxonomy-non-financials"),
             "USER_ID_OF_AN_UPLOADING_USER",
             Instant.now().toEpochMilli(),
             "",
-            euTaxonomyDataForNonFinancialsAsString,
+            "someEuTaxonomyDataForNonFinancials123",
         )
     }
 
