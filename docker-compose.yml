@@ -6,6 +6,23 @@ version: "3.8"
 # development: The profile to be used for local development. Leaves out frontend and backend
 # init: The profile to be used if keycloak-db should be re-initialized
 
+
+
+# These are envs/settings which are required for several services and therefore maintained centrally here:
+x-max-number-of-days-selectable-for-api-key-validity: &max-number-of-days-selectable-for-api-key-validity
+  MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY: ${MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY:-3650}
+x-data-request-upload-max-file-size-in-megabytes: &data-request-upload-max-file-size-in-megabytes
+  DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: 2
+x-document-upload-max-file-size-in-megabytes: &document-upload-max-file-size-in-megabytes
+  DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: 100
+x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
+  RABBITMQ_USER: ${RABBITMQ_USER}
+  RABBITMQ_PASS: ${RABBITMQ_PASS}
+x-mailjet-api-id-and-secret: &mailjet-api-id-and-secret
+  MAILJET_API_SECRET: ${MAILJET_API_SECRET}
+  MAILJET_API_ID: ${MAILJET_API_ID}
+
+
 services:
   proxy:
     image: ${PROXY_IMAGE:-ghcr.io/d-fine/dataland/dataland_inbound_proxy:${DATALAND_INBOUND_PROXY_VERSION}}
@@ -60,6 +77,7 @@ services:
     depends_on:
       - api-key-manager-db
     environment:
+      <<: *max-number-of-days-selectable-for-api-key-validity
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   api-key-manager-db:
@@ -89,9 +107,8 @@ services:
     expose:
       - "8080"
     environment:
+      <<: [*rabbit-mq-user-and-pass, *document-upload-max-file-size-in-megabytes]
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
     depends_on:
       - document-manager-db
@@ -124,14 +141,11 @@ services:
     depends_on:
       - backend-db
     environment:
+      <<: [*rabbit-mq-user-and-pass, *mailjet-api-id-and-secret, *data-request-upload-max-file-size-in-megabytes]
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      MAILJET_API_SECRET: ${MAILJET_API_SECRET}
-      MAILJET_API_ID: ${MAILJET_API_ID}
       INVITATION_REQUEST_RECEIVERS: ${INVITATION_REQUEST_RECEIVERS}
       INVITATION_REQUEST_CC: ${INVITATION_REQUEST_CC}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
   backend-db:
     restart: always
     profiles: ["production", "testing", "development"]
@@ -165,6 +179,7 @@ services:
     volumes:
       - ./.git:/app/.git
     environment:
+      <<: [*rabbit-mq-user-and-pass, *max-number-of-days-selectable-for-api-key-validity, *data-request-upload-max-file-size-in-megabytes]
       KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${KEYCLOAK_DATALAND_ADMIN_PASSWORD}
       KEYCLOAK_REVIEWER_PASSWORD: ${KEYCLOAK_REVIEWER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
@@ -172,8 +187,6 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
       REALDATA: ${REALDATA}
       CYPRESS_EXECUTION_ENVIRONMENT: ${CYPRESS_EXECUTION_ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
@@ -197,6 +210,7 @@ services:
       - frontend-dev-node-modules:/app/node_modules
     command: sh -c "cd /app && npm install && npm run dev"
     environment:
+      <<: [*max-number-of-days-selectable-for-api-key-validity, *document-upload-max-file-size-in-megabytes, *data-request-upload-max-file-size-in-megabytes]
       POLLING: "false"
   frontend:
     restart: always
@@ -204,6 +218,8 @@ services:
     image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
     networks:
       - internal
+    environment:
+      <<: [*max-number-of-days-selectable-for-api-key-validity, *document-upload-max-file-size-in-megabytes, *data-request-upload-max-file-size-in-megabytes]
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -212,10 +228,9 @@ services:
       - internal
       - internal-storage-db
     environment:
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
     depends_on:
       - internal-storage-db
@@ -284,6 +299,7 @@ services:
       - ./dataland-keycloak/users:/keycloak_users
     command: initialize
     environment:
+      <<: *mailjet-api-id-and-secret
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
@@ -301,8 +317,6 @@ services:
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
       KEYCLOAK_LINKEDIN_ID: ${KEYCLOAK_LINKEDIN_ID}
       KEYCLOAK_LINKEDIN_SECRET: ${KEYCLOAK_LINKEDIN_SECRET}
-      MAILJET_API_SECRET: ${MAILJET_API_SECRET}
-      MAILJET_API_ID: ${MAILJET_API_ID}
     expose:
       - "8080"
     depends_on:
@@ -363,8 +377,7 @@ services:
     expose:
       - "8080"
     environment:
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
     depends_on:

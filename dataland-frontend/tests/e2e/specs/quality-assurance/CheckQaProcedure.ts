@@ -1,14 +1,9 @@
-import { DataTypeEnum, EuTaxonomyDataForFinancials } from "@clients/backend";
+import { EuTaxonomyDataForFinancials } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
-import { login } from "@e2e/utils/Auth";
-import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { admin_name, admin_pw, reviewer_name, reviewer_pw } from "@e2e/utils/Cypress";
-import {
-  fillEligibilityKpis,
-  fillEuTaxonomyForFinancialsRequiredFields,
-  fillField,
-} from "@e2e/utils/EuTaxonomyFinancialsUpload";
-import { uploadCompanyViaApiAndEuTaxonomyDataViaForm } from "@e2e/utils/GeneralApiUtils";
+import { getKeycloakToken, login } from "@e2e/utils/Auth";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 describeIf(
@@ -19,9 +14,7 @@ describeIf(
   },
   function () {
     let testData: FixtureData<EuTaxonomyDataForFinancials>;
-    const uuid = new Date().getTime();
-    const companyName = `company-for-testing-qa-${uuid}`;
-    const testCompany = generateDummyCompanyInformation(companyName);
+    const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${new Date().getTime()}`);
 
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
@@ -31,44 +24,18 @@ describeIf(
     });
 
     it("Check whether newly added dataset has Pending status and can be approved by a reviewer", () => {
-      uploadCompanyViaApiAndEuTaxonomyDataViaForm<EuTaxonomyDataForFinancials>(
-        DataTypeEnum.EutaxonomyFinancials,
-        testCompany,
-        testData.t,
-        fillEuTaxonomyForm,
-        (req) => (req.headers["REQUIRE-QA"] = "true"),
-        () => testSubmittedDatasetIsInReviewList(companyName)
-      );
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
+        return uploadCompanyViaApi(token, testCompany).then(async (storedCompany) => {
+          cy.ensureLoggedIn(uploader_name, uploader_pw);
+
+          await uploadOneEuTaxonomyFinancialsDatasetViaApi(token, storedCompany.companyId, "2022", testData.t, false);
+
+          testSubmittedDatasetIsInReviewList(testCompany.companyName);
+        });
+      });
     });
   }
 );
-
-/**
- * Fills the eutaxonomy-financials upload form with the given dataset
- * @param data the data to fill the form with
- */
-function fillEuTaxonomyForm(data: EuTaxonomyDataForFinancials): void {
-  fillEuTaxonomyForFinancialsRequiredFields(data);
-
-  cy.get('[data-test="MultiSelectfinancialServicesTypes"]')
-    .click()
-    .get("div.p-multiselect-panel")
-    .find("li.p-multiselect-item")
-    .first()
-    .click({ force: true });
-
-  cy.get('[data-test="addKpisButton"]').click({ force: true });
-
-  fillEligibilityKpis("creditInstitutionKpis", data.eligibilityKpis?.CreditInstitution);
-  fillField(
-    "creditInstitutionKpis",
-    "tradingPortfolioAndInterbankLoans",
-    data.creditInstitutionKpis?.tradingPortfolioAndInterbankLoans
-  );
-  fillField("creditInstitutionKpis", "tradingPortfolio", data.creditInstitutionKpis?.tradingPortfolio);
-  fillField("creditInstitutionKpis", "interbankLoans", data.creditInstitutionKpis?.interbankLoans);
-  fillField("creditInstitutionKpis", "greenAssetRatio", data.creditInstitutionKpis?.greenAssetRatio);
-}
 
 /**
  * Tests that the item was added and is visible on the QA list
@@ -81,7 +48,7 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
 
   login(reviewer_name, reviewer_pw);
 
-  cy.visit("/qualityassurance").wait(1000);
+  cy.visitAndCheckAppMount("/qualityassurance");
 
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody')
     .last()
@@ -96,7 +63,7 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
   cy.get(".p-dialog").get('button[id="accept-button"]').should("exist").click();
 
   safeLogout();
-  login(admin_name, admin_pw);
+  login(uploader_name, uploader_pw);
 
   testDatasetPresent(companyName, "APPROVED");
 }
@@ -107,8 +74,7 @@ function testSubmittedDatasetIsInReviewList(companyName: string): void {
  * @param status The current expected status of the dataset
  */
 function testDatasetPresent(companyName: string, status: string): void {
-  cy.visit("/datasets");
-  cy.wait(4000);
+  cy.visitAndCheckAppMount("/datasets");
 
   cy.get('[data-test="datasets-table"] .p-datatable-tbody')
     .first()
@@ -125,7 +91,6 @@ function testDatasetPresent(companyName: string, status: string): void {
 function safeLogout(): void {
   cy.get("div[id='profile-picture-dropdown-toggle']")
     .click()
-    .wait(1000)
     .get("a[id='profile-picture-dropdown-logout-anchor']")
     .click();
 }
