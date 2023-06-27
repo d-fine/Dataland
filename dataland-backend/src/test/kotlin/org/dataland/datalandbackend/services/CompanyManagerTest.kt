@@ -9,8 +9,9 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest(classes = [DatalandBackend::class])
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CompanyManagerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired val testCompanyManager: CompanyManager,
@@ -27,7 +29,7 @@ class CompanyManagerTest(
     val testDataProvider = TestDataProvider(objectMapper)
     val testCompanyList = testDataProvider.getCompanyInformation(4)
 
-    @BeforeEach
+    @BeforeAll
     fun addTestCompanies() {
         for (company in testCompanyList) {
             testCompanyManager.addCompany(company)
@@ -146,7 +148,7 @@ class CompanyManagerTest(
                     sectorFilter = emptyList(),
                     searchString = "",
                     nameOnlyFilter = false,
-                    uploaderIdFilter = emptyList(),
+                    uploaderId = "",
                 ),
             )
         }
