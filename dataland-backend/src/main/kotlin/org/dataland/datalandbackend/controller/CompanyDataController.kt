@@ -60,19 +60,11 @@ class CompanyDataController(
                     dataTypeFilter = dataTypes.map { it.name },
                     countryCodeFilter = countryCodes?.toList() ?: listOf(),
                     sectorFilter = sectors?.toList() ?: listOf(),
-                    uploaderIdFilter = getUploaderIdFilter(onlyCurrentUserAsUploader),
+                    uploaderId = if (onlyCurrentUserAsUploader) DatalandAuthentication.fromContext().userId else "",
                 ),
                 DatalandAuthentication.fromContextOrNull(),
             ),
         )
-    }
-
-    private fun getUploaderIdFilter(onlyCurrentUserAsUploader: Boolean): List<String> {
-        return if (onlyCurrentUserAsUploader) {
-            listOf(DatalandAuthentication.fromContext().userId)
-        } else {
-            listOf()
-        }
     }
 
     override fun getCompaniesBySearchString(
