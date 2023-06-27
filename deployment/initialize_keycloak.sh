@@ -29,18 +29,19 @@ docker logs "$keycloak_initializer_container_name"
 
 if ls "$keycloak_user_dir"/*-users-*.json &>/dev/null; then
   echo "Testing if the number of current users matches the number of exported users"
-  current_users=$(sudo docker exec $keycloak_database_container_name psql -U keycloak -d keycloak -t -c "select count(*) from user_entity where realm_id = 'datalandsecurity'")
-  current_technical_users=$(sudo docker exec $keycloak_database_container_name psql -U keycloak -d keycloak -t -c "select count(*) from user_entity where realm_id = 'datalandsecurity' and username in ('data_reader','data_uploader','data_reviewer','data_admin','service-account-dataland-batch-manager')")
-  all_users=$(sudo docker exec "$keycloak_initializer_container_name" bash -c 'grep -l username /keycloak_users/datalandsecurity-users-*.json | wc -l')
-  technical_users=$(sudo docker exec --env USER_PATTERN='"username" : "data_(reader|uploader|reviewer|admin)"' "$keycloak_initializer_container_name" bash -c 'grep -E -l "$USER_PATTERN" /keycloak_users/datalandsecurity-users-*.json | wc -l')
-  test_users=$(sudo docker exec "$keycloak_initializer_container_name" bash -c 'grep -E -l \"test_user.*@dataland.com\" /keycloak_users/datalandsecurity-users-*.json | wc -l')
-  service_users=$(sudo docker exec --env USER_PATTERN='"username" : "service-account-dataland-batch-manager"' "$keycloak_initializer_container_name" bash -c 'grep -E -l "$USER_PATTERN" /keycloak_users/datalandsecurity-users-*.json | wc -l')
-  actual_users=$((current_users-current_technical_users))
-  expected_users=$((all_users-test_users-technical_users-service_users))
-  echo "The new instance contains a total of $current_users users with $current_technical_users technical users (Actual users: $actual_users)"
-  echo "The old instance contained a total of $all_users users with $technical_users technical users and $test_users test users and $service_users service users (Actual users: $expected_users)"
-  if [[ ! $expected_users -eq actual_users ]]; then
-    echo "Found $actual_users but $expected_users were expected."
+  exported_users=$(sudo docker exec "$keycloak_initializer_container_name" bash -c 'grep -l username /keycloak_users/datalandsecurity-users-*.json | wc -l')
+  exported_expected_technical_users=$(sudo docker exec --env USER_PATTERN='"username" : "(data_(reader|uploader|reviewer|admin))|service-account-dataland-batch-manager"' "$keycloak_initializer_container_name" bash -c 'grep -E -l "$USER_PATTERN" /keycloak_users/datalandsecurity-users-*.json | wc -l')
+  exported_test_users=$(sudo docker exec "$keycloak_initializer_container_name" bash -c 'grep -E -l \"test_user.*@dataland.com\" /keycloak_users/datalandsecurity-users-*.json | wc -l')
+  exported_actual_users=$((exported_users-exported_test_users-exported_expected_technical_users))
+
+  imported_users=$(sudo docker exec $keycloak_database_container_name psql -U keycloak -d keycloak -t -c "select count(*) from user_entity where realm_id = 'datalandsecurity'")
+  imported_expected_technical_users=$(sudo docker exec $keycloak_database_container_name psql -U keycloak -d keycloak -t -c "select count(*) from user_entity where realm_id = 'datalandsecurity' and username in ('data_reader','data_uploader','data_reviewer','data_admin','service-account-dataland-batch-manager')")
+  imported_actual_users=$((imported_users-imported_expected_technical_users))
+
+  echo "The new instance contains a total of $imported_users users with $imported_expected_technical_users technical users (Actual users: $imported_actual_users)"
+  echo "The old instance contained a total of $exported_users users with $exported_expected_technical_users technical users and $exported_test_users test users (Actual users: $exported_actual_users)"
+  if [[ ! $exported_actual_users -eq imported_actual_users ]]; then
+    echo "Found $imported_actual_users but $exported_actual_users were expected."
     exit 1
   fi
   echo "Number of imported users match the exported users."
