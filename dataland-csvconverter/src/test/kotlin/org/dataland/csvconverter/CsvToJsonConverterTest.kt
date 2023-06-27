@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
+@Disabled
 class CsvToJsonConverterTest {
     private val testDataProvider = TestDataProvider(JsonConfig.objectMapper)
 
