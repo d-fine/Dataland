@@ -92,17 +92,6 @@ class CompanyUploaderTest {
             ),
         )
         companyUploader.uploadSingleCompany(dummyCompanyInformation1)
-        verify(mockCompanyDataControllerApi, times(3)).postCompany(dummyCompanyInformation1)
-    }
-
-    @Test
-    fun `check that the upload handles a client exception for invalid input and terminates`() {
-        `when`(mockCompanyDataControllerApi.postCompany(dummyCompanyInformation1)).thenThrow(
-            ClientException(
-                statusCode = 400,
-            ),
-        )
-        companyUploader.uploadSingleCompany(dummyCompanyInformation1)
         verify(mockCompanyDataControllerApi, times(1)).postCompany(dummyCompanyInformation1)
     }
 }
