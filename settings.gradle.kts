@@ -61,7 +61,7 @@ dependencyResolutionManagement {
             library("mockito-kotlin", "org.mockito.kotlin:mockito-kotlin:5.0.0")
             library("mockito-inline", "org.mockito:mockito-inline:5.2.0")
 
-            library("json", "org.json:json:20230227")
+            library("json", "org.json:json:20230618")
         }
     }
 }

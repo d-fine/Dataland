@@ -48,8 +48,8 @@ plugins {
     id("com.github.jk1.dependency-license-report") version "2.4"
     id("io.gitlab.arturbosch.detekt") version "1.23.0"
     id("com.github.node-gradle.node") version "5.0.0" apply false
-    id("org.springframework.boot") version "3.1.0" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.3.2"
+    id("org.springframework.boot") version "3.1.1" apply false
+    id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
     kotlin("jvm") version "1.8.21"
     kotlin("plugin.spring") version "1.8.21" apply false
     id("org.sonarqube") version "4.2.1.3168"
