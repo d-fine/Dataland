@@ -192,6 +192,27 @@ function fillRequiredLksgFieldsWithDummyData(): void {
   cy.get("select[name=totalRevenueCurrency]").select("EUR");
 }
 
+function fillNewProduct(productName: string, productionSteps: string[], description?: string) {
+  cy.get('button[data-test="ADD-NEW-Product-button"]').click();
+  const productFormElementSelector = '[data-test="productSection"] [data-test="productFormElement"]';
+  cy.get(productFormElementSelector).last().find('input[name="productName"]')
+      .type(productName);
+  if(productionSteps.length > 0 && productionSteps.some((productionStep) => productionStep.length > 0)) {
+    cy.get(productFormElementSelector).last().find('input[data-test^="listOfProductionSteps"]')
+        .type(productionSteps.join(", "))
+    cy.get(productFormElementSelector).last().find('[data-test="addProductionStep"]').click();
+  }
+  if (description) {
+      cy.get(productFormElementSelector).last().find('textarea[name="relatedCorporateSupplyChain"]')
+          .type(description);
+  }
+}
+
+function fillInMostImportantProducts() {
+  fillNewProduct("Test Product 1", ["first", "second"], "Description of something");
+  fillNewProduct("Test Product 2", []);
+}
+
 /**
  * Uploads a single LKSG data entry for a company via form
  */
@@ -205,6 +226,7 @@ export function uploadLksgDataViaForm(): void {
   selectDummyDateInDataPicker();
 
   recursivelySelectYesOnAllFields(15);
+  fillInMostImportantProducts();
 
   uploadDocuments.selectDocumentAtEachFileSelector("test-report");
 

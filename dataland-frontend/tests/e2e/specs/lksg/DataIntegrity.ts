@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import {
   DataMetaInformation,
@@ -33,7 +33,25 @@ describeIf(
     function toggleRowGroup(groupKey: string): void {
       cy.get(`span[data-test=${groupKey}]`).siblings("button").last().click();
     }
-    it("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
+
+    function validateFormUploadedData(companyId: string) {
+      cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg);
+      cy.get('td > [data-test="productionSpecificOwnOperations"]').click();
+      cy.contains('Show "Most Important Products"').click();
+      cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Most Important Products");
+      cy.get(".p-dialog th").eq(0).should("have.text", "Product Name");
+      cy.get(".p-dialog th").eq(1).should("have.text", "Production Steps");
+      cy.get(".p-dialog th").eq(2).should("have.text", "Related Corporate Supply Chain");
+      cy.get(".p-dialog tr").should("have.length", 3);
+      cy.get(".p-dialog tr").eq(1).find("td").eq(0).should("have.text", "Test Product 1");
+      cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").should("have.length", 2);
+      cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(0).should("have.text", "first");
+      cy.get(".p-dialog tr").eq(1).find("td").eq(1).find("li").eq(1).should("have.text", "second");
+      cy.get(".p-dialog tr").eq(1).find("td").eq(2).should("have.text", "Description of something");
+      cy.get(".p-dialog tr").eq(2).find("td").eq(0).should("have.text", "Test Product 2");
+    }
+
+    it.only("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
       getKeycloakToken(uploader_name, uploader_pw)
@@ -41,6 +59,7 @@ describeIf(
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
         })
         .then((storedCompany) => {
+          cy.ensureLoggedIn(admin_name, admin_pw);
           cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
           cy.visitAndCheckAppMount(
             "/companies/" + storedCompany.companyId + "/frameworks/" + DataTypeEnum.Lksg + "/upload"
@@ -52,6 +71,7 @@ describeIf(
           );
           cy.get("h1").should("contain", testCompanyName);
           uploadLksgDataViaForm();
+          validateFormUploadedData(storedCompany.companyId);
         });
     });
 

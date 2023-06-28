@@ -1,54 +1,57 @@
 <template>
-  <div class="form-field">
-    <InputTextFormField name="productName" label="Product Name" description="Please enter the name of the product" />
-  </div>
-  <div class="form-field">
-    <div class="flex justify-content-between">
-      <UploadFormHeader
-        label="Production Steps"
-        description="Please give a brief overview of the production steps/activities undertaken"
+  <div data-test="productFormElement">
+    <div class="form-field">
+      <InputTextFormField name="productName" label="Product Name" description="Please enter the name of the product" />
+    </div>
+    <div class="form-field">
+      <div class="flex justify-content-between">
+        <UploadFormHeader
+          label="Production Steps"
+          description="Please give a brief overview of the production steps/activities undertaken"
+        />
+        <PrimeButton
+          :disabled="listOfProductionStepsString === ''"
+          @click="addNewItemsToListOfProductionSteps()"
+          data-test="addProductionStep"
+          label="Add"
+          class="p-button-text"
+          icon="pi pi-plus"
+        ></PrimeButton>
+      </div>
+
+      <FormKit
+        :data-test="`listOfProductionSteps${id}`"
+        type="text"
+        :ignore="true"
+        v-model="listOfProductionStepsString"
+        placeholder="Add comma (,) for more than one value"
       />
-      <PrimeButton
-        :disabled="listOfProductionStepsString === ''"
-        @click="addNewItemsToListOfProductionSteps()"
-        label="Add"
-        class="p-button-text"
-        icon="pi pi-plus"
-      ></PrimeButton>
+      <FormKit
+        v-if="listOfProductionStepsString.length > 0"
+        type="text"
+        v-model="listOfProductionStepsString"
+        validation="length:0,0"
+        validation-visibility="live"
+        :validation-messages="{ length: 'Please add the entered value via pressing the add button or empty the field.' }"
+        outer-class="hidden-input"
+      />
+
+      <FormKit v-model="listOfProductionSteps" type="list" label="list of production steps" name="productionSteps" />
+      <div class="">
+        <span class="form-list-item" :key="element" v-for="element in listOfProductionSteps">
+          {{ element }}
+          <em @click="removeItemFromListOfProductionSteps(element)" class="material-icons">close</em>
+        </span>
+      </div>
     </div>
 
-    <FormKit
-      :data-test="`listOfProductionSteps${id}`"
-      type="text"
-      :ignore="true"
-      v-model="listOfProductionStepsString"
-      placeholder="Add comma (,) for more than one value"
-    />
-    <FormKit
-      v-if="listOfProductionStepsString.length > 0"
-      type="text"
-      v-model="listOfProductionStepsString"
-      validation="length:0,0"
-      validation-visibility="live"
-      :validation-messages="{ length: 'Please add the entered value via pressing the add button or empty the field.' }"
-      outer-class="hidden-input"
-    />
-
-    <FormKit v-model="listOfProductionSteps" type="list" label="list of production steps" name="productionSteps" />
-    <div class="">
-      <span class="form-list-item" :key="element" v-for="element in listOfProductionSteps">
-        {{ element }}
-        <em @click="removeItemFromListOfProductionSteps(element)" class="material-icons">close</em>
-      </span>
+    <div class="form-field">
+      <UploadFormHeader
+        label="Related Corporate Supply Chain"
+        description="Please give an overview of the related corporate supply chain(s) and key business relationships (by procurement or order volume) (own operations)"
+      />
+      <FreeTextFormField name="relatedCorporateSupplyChain" v-model="existingRelatedCorporateSupplyChain" />
     </div>
-  </div>
-
-  <div class="form-field">
-    <UploadFormHeader
-      label="Related Corporate Supply Chain"
-      description="Please give an overview of the related corporate supply chain(s) and key business relationships (by procurement or order volume) (own operations)"
-    />
-    <FreeTextFormField name="relatedCorporateSupplyChain" v-model="existingRelatedCorporateSupplyChain" />
   </div>
 </template>
 
