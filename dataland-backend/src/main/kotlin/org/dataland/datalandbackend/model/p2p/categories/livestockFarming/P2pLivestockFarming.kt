@@ -2,7 +2,8 @@ package org.dataland.datalandbackend.model.p2p.categories.livestockFarming
 
 import org.dataland.datalandbackend.model.p2p.categories.livestockFarming.subcategories.P2pLivestockFarmingAnimalFeed
 import org.dataland.datalandbackend.model.p2p.categories.livestockFarming.subcategories.P2pLivestockFarmingAnimalWelfare
-import org.dataland.datalandbackend.model.p2p.categories.livestockFarming.subcategories.P2pLivestockFarmingEmissionsFromManureAndFertiliserAndLivestock
+import org.dataland.datalandbackend.model.p2p.categories
+    .livestockFarming.subcategories.P2pLivestockFarmingEmissionsFromManureAndFertiliserAndLivestock
 import org.dataland.datalandbackend.model.p2p.categories.livestockFarming.subcategories.P2pLivestockFarmingEnergy
 
 /**

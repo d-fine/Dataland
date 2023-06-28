@@ -1,7 +1,9 @@
 package org.dataland.datalandbackend.model.p2p.categories.freightTransportByRoad
 
-import org.dataland.datalandbackend.model.p2p.categories.freightTransportByRoad.subcategories.P2pFreightTransportByRoadEnergy
-import org.dataland.datalandbackend.model.p2p.categories.freightTransportByRoad.subcategories.P2pFreightTransportByRoadTechnology
+import org.dataland.datalandbackend.model.p2p.categories
+    .freightTransportByRoad.subcategories.P2pFreightTransportByRoadEnergy
+import org.dataland.datalandbackend.model.p2p.categories
+    .freightTransportByRoad.subcategories.P2pFreightTransportByRoadTechnology
 
 /**
 * --- API model ---
