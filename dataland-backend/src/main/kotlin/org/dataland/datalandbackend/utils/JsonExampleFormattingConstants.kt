@@ -30,42 +30,22 @@ object JsonExampleFormattingConstants {
         taxonomyEligibilityActivity +
         "}"
 
+    private const val productCategory = "{" +
+        "\"definitionProductTypeService\": [" +
+        "\"string\"" +
+        "]," +
+        "\"suppliersPerCountry\": [" +
+        "{" +
+        "\"country\": \"string\"," +
+        "\"numberOfSuppliers\": 0" +
+        "}" +
+        "]," +
+        "\"orderVolume\": 0" +
+        "}"
+
     const val PRODUCT_CATEGORIES_DEFAULT_VALUE: String = "{" +
-        "\"Products\": {" +
-        "\"definitionProductTypeService\": [" +
-        "\"string\"" +
-        "]," +
-        "\"suppliersPerCountry\": [" +
-        "{" +
-        "\"country\": \"string\"," +
-        "\"numberOfSuppliers\": 0" +
-        "}" +
-        "]," +
-        "\"orderVolume\": 0" +
-        "}," +
-        "\"Services\": {" +
-        "\"definitionProductTypeService\": [" +
-        "\"string\"" +
-        "]," +
-        "\"suppliersPerCountry\": [" +
-        "{" +
-        "\"country\": \"string\"," +
-        "\"numberOfSuppliers\": 0" +
-        "}" +
-        "]," +
-        "\"orderVolume\": 0" +
-        "}," +
-        "\"RawMaterials\": {" +
-        "\"definitionProductTypeService\": [" +
-        "\"string\"" +
-        "]," +
-        "\"suppliersPerCountry\": [" +
-        "{" +
-        "\"country\": \"string\"," +
-        "\"numberOfSuppliers\": 0" +
-        "}" +
-        "]," +
-        "\"orderVolume\": 0" +
-        "}" +
+        "\"Products\":" + productCategory + "," +
+        "\"Services\":" + productCategory + "," +
+        "\"RawMaterials\":" + productCategory + "," +
         "}"
 }
