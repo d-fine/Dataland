@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.math.BigDecimal
 
 /**
@@ -7,7 +8,10 @@ import java.math.BigDecimal
  * Fields of the LKSG questionnaire regarding a single product category for the "Product Categories" field
  */
 data class LksgProductCategory(
-    val definitionProductTypeService: List<String>?, // TODO proposal: non empty list required
+    @field:JsonProperty(required = true)
+    val definitionProductTypeService: List<String>, // TODO adapt dataDictionary according to required = true
+
     val suppliersPerCountry: List<LksgCountryAssociatedSuppliers>?,
-    val orderVolume: BigDecimal?, // TODO should this be required? It is about important products and this field weights the importance
+
+    val orderVolume: BigDecimal?,
 )
