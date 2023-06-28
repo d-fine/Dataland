@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.io.File
 import java.net.ConnectException
+import java.time.Instant
 import java.util.*
 import java.util.concurrent.ForkJoinPool
 import java.util.stream.StreamSupport
@@ -36,7 +37,7 @@ class GleifGoldenCopyIngestor(
     private val allCompaniesIngestFlagFilePath: String?,
 ) {
     companion object {
-        const val WAIT_TIME: Long = 5000
+        const val WAIT_TIME_IN_MS: Long = 5000
         const val UPLOAD_THREAT_POOL_SIZE = 32
     }
 
@@ -93,13 +94,18 @@ class GleifGoldenCopyIngestor(
     }
 
     private fun waitForBackend() {
-        while (true) {
+        val maxWaitingTimeInMilliseconds = 10L * 60L * 1000L
+        val timeoutTime = Instant.now().toEpochMilli() + maxWaitingTimeInMilliseconds
+        while (Instant.now().toEpochMilli() <= timeoutTime) {
             try {
                 actuatorApi.health()
                 break
             } catch (exception: ConnectException) {
-                logger.info("Waiting for 5s backend to be available. Exception was: ${exception.message}.")
-                Thread.sleep(WAIT_TIME)
+                logger.info(
+                    "Waiting for ${WAIT_TIME_IN_MS / 1000}s backend to be available." +
+                        " Exception was: ${exception.message}.",
+                )
+                Thread.sleep(WAIT_TIME_IN_MS)
             }
         }
     }
