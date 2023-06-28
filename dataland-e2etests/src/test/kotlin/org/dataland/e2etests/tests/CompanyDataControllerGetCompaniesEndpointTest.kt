@@ -226,21 +226,21 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(company)
             uploadTestDataSet(uploadedCompany.companyId)
         }
-        val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+        val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
             searchString = testString,
-        ).map { it.companyName }
+        ).map { it.companyInformation.companyName }
         assertEquals(
             listOf(testString, company2, "${testString}2", company5, "3$testString", company9),
             sortedCompanyNames.filter { it != company8 && it != company3 },
         )
         assertEquals(
-            listOf(company3, company2, "${testString}2", company5, company8, company9),
+            listOf(company2, "${testString}2", company5, company3, company8, company9),
             sortedCompanyNames.filter { it != "3$testString" && it != testString },
         )
 
-        val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+        val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
             searchString = "other_name",
-        ).map { it.companyName }
+        ).map { it.companyInformation.companyName }
         assertTrue(otherCompanyNames.contains(company8))
         assertFalse(otherCompanyNames.contains("Company 7"))
     }

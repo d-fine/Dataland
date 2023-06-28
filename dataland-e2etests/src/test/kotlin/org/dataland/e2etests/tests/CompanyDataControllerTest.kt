@@ -166,15 +166,7 @@ class CompanyDataControllerTest {
     fun `check if the new companies search via name and ids endpoint works as expected`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        uploadModifiedBaseCompany(company9, null, "3$testString")
-        uploadModifiedBaseCompany(company8, listOf("3$testString", "other_name"), null)
-        uploadModifiedBaseCompany("3$testString", null, null)
-        uploadModifiedBaseCompany(company6, null, "${testString}2")
-        uploadModifiedBaseCompany(company5, listOf("${testString}2"), null)
-        uploadModifiedBaseCompany("${testString}2", null, null)
-        uploadModifiedBaseCompany(company3, null, testString)
-        uploadModifiedBaseCompany(company2, listOf(testString), null)
-        uploadModifiedBaseCompany(testString, null, null)
+        uploadCompaniesInReverseToExpectedOrder(testString)
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             searchString = testString,
         ).map { it.companyName }
@@ -192,6 +184,18 @@ class CompanyDataControllerTest {
         ).map { it.companyName }
         assertTrue(otherCompanyNames.contains(company8))
         assertFalse(otherCompanyNames.contains("Company 7"))
+    }
+
+    private fun uploadCompaniesInReverseToExpectedOrder(expectedSearchString: String) {
+        uploadModifiedBaseCompany(company9, null, "3$expectedSearchString")
+        uploadModifiedBaseCompany(company8, listOf("3$expectedSearchString", "other_name"), null)
+        uploadModifiedBaseCompany("3$expectedSearchString", null, null)
+        uploadModifiedBaseCompany(company6, null, "${expectedSearchString}2")
+        uploadModifiedBaseCompany(company5, listOf("${expectedSearchString}2"), null)
+        uploadModifiedBaseCompany("${expectedSearchString}2", null, null)
+        uploadModifiedBaseCompany(company3, null, expectedSearchString)
+        uploadModifiedBaseCompany(company2, listOf(expectedSearchString), null)
+        uploadModifiedBaseCompany(expectedSearchString, null, null)
     }
 
     private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?) {
