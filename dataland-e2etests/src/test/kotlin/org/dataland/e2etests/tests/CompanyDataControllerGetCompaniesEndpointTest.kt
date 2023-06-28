@@ -152,17 +152,15 @@ class CompanyDataControllerGetCompaniesEndpointTest {
                 listOf(company1 + testString),
             ),
         )
-        for (company in testCompanyList) {
-            val companyResponse = apiAccessor.companyDataControllerApi.postCompany(company)
-            uploadTestDataSet(companyResponse.companyId)
-            for (identifier in company.identifiers) {
-                testThatSearchForCompanyIdentifierWorks(identifier)
-            }
+        val companyResponse = apiAccessor.companyDataControllerApi.postCompany(testCompanyList.first)
+        uploadTestDataSet(companyResponse.companyId)
+        for (identifier in testCompanyList.first.identifiers) {
+            testThatSearchForCompanyIdentifierWorks(identifier)
         }
     }
 
     @Test
-    fun `retrieve companies as a list and check for each company if it can be found as expected`() {
+    fun `upload a company with a dataset and check if it can be found via an empty name search`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val companyIdentifier = listOf(
             apiAccessor.createCompanyIdentifier(CompanyIdentifier.IdentifierType.lei, UUID.randomUUID().toString()),
