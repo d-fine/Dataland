@@ -188,6 +188,33 @@ export default defineComponent({
     },
 
     /**
+     * Generates a list of readible strings (or just a single one) combining suppliers and their associated countries
+     * @param countryAssociatedSuppliers the list of suppliers and associated companies from which strings are written
+     * @returns the constructed collection of readable strings
+     */
+    generateReadableCombinationOfSuppliersAndCountries(countryAssociatedSuppliers?: LksgCountryAssociatedSuppliers[]) {
+      if (countryAssociatedSuppliers != undefined) {
+        const readableListOfSuppliersAndCountries = countryAssociatedSuppliers?.map(
+            (value: LksgCountryAssociatedSuppliers) => {
+              const printedCountry = getCountryNameFromCountryCode(value.country) ?? value.country;
+              if (value.numberOfSuppliers != undefined) {
+                return String(value.numberOfSuppliers) + " suppliers from " + printedCountry;
+              } else {
+                return "There are suppliers from " + printedCountry;
+              }
+            }
+        );
+        if (readableListOfSuppliersAndCountries.length > 1) {
+          return readableListOfSuppliersAndCountries;
+        } else {
+          return readableListOfSuppliersAndCountries[0];
+        }
+      } else {
+        return null;
+      }
+    },
+
+    /**
      * Converts the map of ProcurementCategory and LksgProductCategory into an array for a proper handling of the
      * DetailsCompanyDataTable in the LksgCompanyDataTable (modal showing information related to Product Categories)
      * @param inputObject Map to convert to array
@@ -205,32 +232,10 @@ export default defineComponent({
           }
         };
 
-        const readableSuppliersAndCountries = function (): string[] | string | null {
-          if (lksgProductCategory.suppliersPerCountry != undefined) {
-            const readableListOfSuppliersAndCountries = lksgProductCategory.suppliersPerCountry?.map(
-              (value: LksgCountryAssociatedSuppliers) => {
-              const printedCountry = getCountryNameFromCountryCode(value.country) ?? value.country;
-              if (value.numberOfSuppliers != undefined) {
-                return String(value.numberOfSuppliers) + " suppliers from " + printedCountry;
-              } else {
-                return "There are suppliers from " + printedCountry;
-              }
-              }
-            );
-            if (readableListOfSuppliersAndCountries.length > 1) {
-              return readableListOfSuppliersAndCountries;
-            } else {
-              return readableListOfSuppliersAndCountries[0];
-            }
-          } else {
-            return null;
-          }
-        };
-
         listOfProductCategories.push({
           procurementCategory: procurementCategory,
           definitionsOfProductTypeOrService: definitionsOfProductTypeOrService(),
-          suppliersAndCountries: readableSuppliersAndCountries(),
+          suppliersAndCountries: this.generateReadableCombinationOfSuppliersAndCountries(),
           orderVolume: lksgProductCategory.orderVolume != null ? String(lksgProductCategory.orderVolume) : null,
         });
       }
