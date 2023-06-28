@@ -2,77 +2,94 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Tillmannburg",
-			"headquartersPostalCode": "84658",
-			"sector": "channels",
+			"headquarters": "Worms",
+			"headquartersPostalCode": "21617",
+			"sector": "systems",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "vA6f5XMMqvScA14"
+				},
+				{
 					"identifierType": "Duns",
-					"identifierValue": "cp6ldKmkT"
+					"identifierValue": "5UzwUZbJO"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "kj2qgBn2TCIZ"
+					"identifierValue": "E7DciQjkvVkG"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "l6bwuSJglLxPH2aIiRzk"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "3NQhfQTwKn"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "NOeN4g6"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "p827YYxIH"
 				}
 			],
-			"countryCode": "LB",
+			"countryCode": "TH",
 			"companyAlternativeNames": [
-				"Bourrouag, Schenk und Biba",
-				"Sehls, Arens und Reichardt",
-				"Siener-Scherer"
+				"Hetzler GmbH & Co. KG",
+				"Lakomy, Grams und Simon",
+				"Szendrei-Schwarzkopf"
 			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://einnehmend-proton.name",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"numberOfEmployees": 81941,
 			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"reportDate": "2022-09-02",
+					"currency": "MZN"
+				},
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 					"isGroupLevel": "NA",
-					"reportDate": "2023-05-02",
-					"currency": "LRD"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2022-11-28",
-					"currency": "BZD"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"reportDate": "2023-05-09",
-					"currency": "BHD"
+					"reportDate": "2022-11-05",
+					"currency": "PLN"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "None"
 			},
-			"scopeOfEntities": "No",
-			"reportingObligation": "Yes",
 			"opex": {
 				"eligiblePercentage": {
-					"value": 0.9618,
+					"value": 0.8223,
 					"quality": "Incomplete"
 				}
 			},
 			"capex": {
 				"eligiblePercentage": {
-					"value": 0.9508,
+					"value": 0.6532,
 					"dataSource": {
-						"page": 606,
-						"report": "ESEFReport",
-						"tagName": "content"
+						"page": 759,
+						"report": "SustainabilityReport",
+						"tagName": "web services"
 					},
-					"quality": "Estimated",
-					"comment": "index virtual capacitor"
+					"quality": "Reported",
+					"comment": "back up virtual bus"
 				}
 			},
 			"revenue": {
 				"eligiblePercentage": {
-					"value": 0.4984,
-					"quality": "Incomplete"
+					"value": 0.0951,
+					"dataSource": {
+						"page": 318,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
+					},
+					"quality": "Reported",
+					"comment": "copy optical feed"
 				}
 			}
 		},
@@ -81,211 +98,253 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Nord Frederick",
-			"sector": "methodologies",
+			"headquarters": "Benningerstadt",
+			"sector": "convergence",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "Qj1DJRVgzGWR2Id"
+				},
+				{
 					"identifierType": "Duns",
-					"identifierValue": "vwHF3mt8j"
+					"identifierValue": "CQCk4QyVx"
 				},
 				{
-					"identifierType": "PermId",
-					"identifierValue": "c0WBiiedMv"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "TQ91yOfOq"
+					"identifierType": "Lei",
+					"identifierValue": "kyE4chkk6ln42Lnq3ZxO"
 				}
 			],
-			"countryCode": "LU",
+			"countryCode": "GW",
 			"companyAlternativeNames": [
-				"Dietrich-Götzelmann",
-				"Thöne-Stengel"
+				"Dilla, Balck und Herberger",
+				"Sielemann KG",
+				"Spiegelburg, Fenske und Linnenbaum"
 			],
-			"website": "https://qualifiziert-revolution.org",
+			"website": "https://prachtvoll-leben.name",
 			"isTeaserCompany": false
 		},
 		"t": {
+			"fiscalYearDeviation": "Deviation",
+			"numberOfEmployees": 15367,
 			"referencedReports": {
 				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "MRU"
+					"isGroupLevel": "No",
+					"reportDate": "2022-09-24",
+					"currency": "ALL"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "PGK"
+				},
+				"ESEFReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "NIO"
+				},
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "HUF"
 				}
 			},
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "ReasonableAssurance",
+				"provider": "Savoia Gruppe"
 			},
+			"scopeOfEntities": "NA",
+			"reportingObligation": "Yes",
 			"activityLevelReporting": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 828183.115052525,
+					"value": 972180.7001740672,
 					"dataSource": {
-						"page": 625,
-						"report": "IntegratedReport",
-						"tagName": "e-commerce"
+						"page": 212,
+						"report": "SustainabilityReport",
+						"tagName": "communities"
 					},
 					"quality": "Incomplete",
-					"comment": "connect digital interface"
+					"comment": "bypass virtual bus"
 				},
 				"eligiblePercentage": {
-					"value": 0.2918,
-					"quality": "Estimated"
+					"value": 0.2518,
+					"dataSource": {
+						"page": 812,
+						"report": "IntegratedReport",
+						"tagName": "mindshare"
+					},
+					"quality": "Audited",
+					"comment": "calculate online interface"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 914721.778279636,
-					"dataSource": {
-						"page": 734,
-						"report": "IntegratedReport",
-						"tagName": "lifetime value"
-					},
-					"quality": "Incomplete",
-					"comment": "input primary circuit"
+					"value": 508102.3485166952,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.3944,
+					"value": 0.535,
 					"dataSource": {
-						"page": 228,
-						"report": "IntegratedReport",
-						"tagName": "blockchains"
+						"page": 443,
+						"report": "ESEFReport",
+						"tagName": "architectures"
 					},
 					"quality": "Audited",
-					"comment": "transmit solid state port"
+					"comment": "bypass bluetooth interface"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 574480.307707563,
-					"quality": "Estimated"
-				},
-				"eligiblePercentage": {
-					"value": 0.2842,
+					"value": 854803.9782093838,
 					"dataSource": {
-						"page": 551,
-						"report": "IntegratedReport",
-						"tagName": "mindshare"
+						"page": 505,
+						"report": "SustainabilityReport",
+						"tagName": "niches"
 					},
 					"quality": "Reported",
-					"comment": "synthesize neural circuit"
+					"comment": "navigate open-source interface"
+				},
+				"eligiblePercentage": {
+					"value": 0.4138,
+					"dataSource": {
+						"page": 67,
+						"report": "AnnualReport",
+						"tagName": "interfaces"
+					},
+					"quality": "Audited",
+					"comment": "transmit virtual system"
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2020"
 	},
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Ost Charlotta",
-			"sector": "systems",
+			"headquarters": "Konstanz",
+			"headquartersPostalCode": "54419",
+			"sector": "architectures",
 			"identifiers": [
 				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "yaghiiqM3w92pTA"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "1Z2TkNtCq"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "sLTWhEAHSg6E"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "teIaTFa5Q3aUh2dKLvlW"
+				},
+				{
 					"identifierType": "PermId",
-					"identifierValue": "75xgQMnqDY"
+					"identifierValue": "5vEsj986C7"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "SAg8iId"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "c6BvphiwY"
 				}
 			],
-			"countryCode": "CM",
+			"countryCode": "DJ",
 			"companyAlternativeNames": [
-				"Marl AG"
+				"Deerberg Gruppe"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://hochinteressant-riff.name/",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://simpel-haus.com",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2022-12-25",
-			"numberOfEmployees": 81198,
+			"fiscalYearEnd": "2023-06-01",
+			"numberOfEmployees": 69931,
 			"assurance": {
-				"assurance": "ReasonableAssurance"
+				"assurance": "LimitedAssurance",
+				"dataSource": {
+					"page": 1113,
+					"report": "ESEFReport",
+					"tagName": "relationships"
+				}
 			},
-			"reportingObligation": "No",
-			"activityLevelReporting": "Yes",
+			"scopeOfEntities": "NA",
+			"reportingObligation": "Yes",
 			"opex": {
 				"totalAmount": {
-					"value": 817377.9011005536,
-					"dataSource": {
-						"page": 1186,
-						"report": "IntegratedReport",
-						"tagName": "communities"
-					},
-					"quality": "Audited",
-					"comment": "generate virtual transmitter"
+					"quality": "NA"
 				},
 				"alignedPercentage": {
-					"value": 0.8901,
-					"dataSource": {
-						"page": 332,
-						"report": "IntegratedReport",
-						"tagName": "blockchains"
-					},
-					"quality": "Estimated",
-					"comment": "index haptic panel"
+					"value": 0.0556,
+					"quality": "Estimated"
 				},
 				"eligiblePercentage": {
-					"value": 0.3306,
+					"value": 0.3727,
 					"dataSource": {
-						"page": 834,
-						"report": "IntegratedReport",
-						"tagName": "interfaces"
+						"page": 76,
+						"report": "SustainabilityReport",
+						"tagName": "initiatives"
 					},
-					"quality": "Audited",
-					"comment": "calculate multi-byte bandwidth"
+					"quality": "Reported",
+					"comment": "reboot redundant transmitter"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 596030.4334876128,
-					"dataSource": {
-						"page": 638,
-						"report": "IntegratedReport",
-						"tagName": "experiences"
-					},
-					"quality": "Audited",
-					"comment": "override auxiliary array"
+					"value": 307356.105837971,
+					"quality": "Incomplete"
 				},
 				"alignedPercentage": {
-					"value": 0.3539,
+					"value": 0.6602,
 					"dataSource": {
-						"page": 662,
-						"report": "IntegratedReport",
-						"tagName": "eyeballs"
+						"page": 1067,
+						"report": "SustainabilityReport",
+						"tagName": "convergence"
 					},
 					"quality": "Audited",
-					"comment": "copy back-end feed"
+					"comment": "hack primary hard drive"
 				},
 				"eligiblePercentage": {
-					"value": 0.6976,
+					"value": 0.9122,
 					"dataSource": {
-						"page": 70,
-						"report": "IntegratedReport",
-						"tagName": "architectures"
+						"page": 1169,
+						"report": "AnnualReport",
+						"tagName": "content"
 					},
-					"quality": "Reported",
-					"comment": "compress mobile protocol"
+					"quality": "Audited",
+					"comment": "override cross-platform circuit"
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 244339.6500311792,
-					"quality": "Estimated"
+					"value": 817929.6210641041,
+					"quality": "Incomplete"
 				},
 				"alignedPercentage": {
-					"value": 0.6794,
+					"value": 0.848,
 					"dataSource": {
-						"page": 653,
-						"report": "IntegratedReport",
-						"tagName": "communities"
+						"page": 176,
+						"report": "ESEFReport",
+						"tagName": "mindshare"
 					},
-					"quality": "Audited",
-					"comment": "copy back-end matrix"
+					"quality": "Incomplete",
+					"comment": "parse open-source circuit"
 				},
 				"eligiblePercentage": {
-					"value": 0.8052,
-					"quality": "Estimated"
+					"value": 0.9297,
+					"dataSource": {
+						"page": 368,
+						"report": "ESEFReport",
+						"tagName": "architectures"
+					},
+					"quality": "Incomplete",
+					"comment": "compress multi-byte sensor"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	}
 ]
