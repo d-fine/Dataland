@@ -90,10 +90,8 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForLksgData =
-        LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForLksgData =
-        FrameworkTestDataProvider(LksgData::class.java)
+    val dataControllerApiForLksgData = LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForLksgData = FrameworkTestDataProvider(LksgData::class.java)
     fun lksgUploaderFunction(
         companyId: String,
         lksgData: LksgData,
@@ -106,10 +104,8 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForP2pData =
-        P2pDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForP2pData =
-        FrameworkTestDataProvider(PathwaysToParisData::class.java)
+    val dataControllerApiForP2pData = P2pDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForP2pData = FrameworkTestDataProvider(PathwaysToParisData::class.java)
     fun p2pUploaderFunction(
         companyId: String,
         p2pData: PathwaysToParisData,
@@ -122,10 +118,8 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForSfdrData =
-        SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForSfdrData =
-        FrameworkTestDataProvider(SfdrData::class.java)
+    val dataControllerApiForSfdrData = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForSfdrData = FrameworkTestDataProvider(SfdrData::class.java)
     fun sfdrUploaderFunction(
         companyId: String,
         sfdrData: SfdrData,
@@ -138,10 +132,8 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForSmeData =
-        SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForSmeData =
-        FrameworkTestDataProvider(SmeData::class.java)
+    val dataControllerApiForSmeData = SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForSmeData = FrameworkTestDataProvider(SmeData::class.java)
     fun smeUploaderFunction(
         companyId: String,
         smeData: SmeData,
@@ -435,11 +427,7 @@ class ApiAccessor {
 }
 
 data class UploadInfo(
-
     val inputCompanyInformation: CompanyInformation,
-
     val actualStoredCompany: StoredCompany,
-
     var actualStoredDataMetaInfo: DataMetaInformation? = null,
-
 )
