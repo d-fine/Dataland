@@ -196,19 +196,12 @@ export default defineComponent({
     reformatProductCategoriesValue(inputObject: Map<ProcurementCategory, LksgProductCategory> | null) {
       if (inputObject == null) return null;
       const listOfProductCategories = [];
-      for (const [procurementCategory, lksgProductCategory] of Object.entries(inputObject) as [
-        string,
-        LksgProductCategory
-      ][]) {
-        const definitionsOfProductTypeOrService = function (): string[] | string | null {
-          if (lksgProductCategory.definitionProductTypeService != undefined) {
-            if (lksgProductCategory.definitionProductTypeService?.length > 1) {
-              return lksgProductCategory.definitionProductTypeService;
-            } else {
-              return lksgProductCategory.definitionProductTypeService[0];
-            }
+      for (const [procurementCategory, lksgProductCategory] of Object.entries(inputObject)) {
+        const definitionsOfProductTypeOrService = function (): string[] | string {
+          if (lksgProductCategory.definitionProductTypeService?.length > 1) {
+            return lksgProductCategory.definitionProductTypeService;
           } else {
-            return null;
+            return lksgProductCategory.definitionProductTypeService[0];
           }
         };
 
@@ -216,16 +209,12 @@ export default defineComponent({
           if (lksgProductCategory.suppliersPerCountry != undefined) {
             const readableListOfSuppliersAndCountries = lksgProductCategory.suppliersPerCountry?.map(
               (value: LksgCountryAssociatedSuppliers) => {
-                if (value.country != undefined) {
-                  const printedCountry = getCountryNameFromCountryCode(value.country) ?? value.country;
-                  if (value.numberOfSuppliers != undefined) {
-                    return String(value.numberOfSuppliers) + " suppliers from " + printedCountry;
-                  } else {
-                    return "There are suppliers from " + printedCountry;
-                  }
-                } else {
-                  return null;
-                }
+              const printedCountry = getCountryNameFromCountryCode(value.country) ?? value.country;
+              if (value.numberOfSuppliers != undefined) {
+                return String(value.numberOfSuppliers) + " suppliers from " + printedCountry;
+              } else {
+                return "There are suppliers from " + printedCountry;
+              }
               }
             );
             if (readableListOfSuppliersAndCountries.length > 1) {
