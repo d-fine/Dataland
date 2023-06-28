@@ -55,7 +55,7 @@ describeIf(
       cy.get(".p-dialog tr").eq(2).find("td").eq(0).should("have.text", "Test Product 2");
     }
 
-    it.only("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
+    it("Create a company via api and upload an LkSG dataset via the LkSG upload form", () => {
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
       getKeycloakToken(uploader_name, uploader_pw)
