@@ -8,5 +8,4 @@ import java.math.BigDecimal
 */
 data class P2pLivestockFarmingAnimalWelfare(
     val mortalityRate: BigDecimal? = null,
-
 )

@@ -23,9 +23,9 @@ import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataP
 
 /**
  * Generates a set number of P2P fixtures
- * @param numFixtures the number of p2p fixtures to generate
+ * @param numFixtures the number of P2P fixtures to generate
  * @param undefinedProbability the probability of fields to be undefined (number between 0 and 1)
- * @returns a set number of P2p fixtures
+ * @returns a set number of P2P fixtures
  */
 export function generateP2pFixture(
   numFixtures: number,
@@ -39,11 +39,11 @@ export function generateP2pFixture(
 }
 
 /**
- * Generates random P2PAmonia instance
+ * Generates random P2pAmmonia instance
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
- * @returns a random P2PAmonia
+ * @returns a random P2pAmmonia
  */
-export function getSectorAmonia(undefinedProbability: number): P2pAmmonia {
+export function getSectorAmmonia(undefinedProbability: number): P2pAmmonia {
   return {
     decarbonisation: {
       energyMix: valueOrUndefined(randomPercentageValue(), undefinedProbability),
@@ -57,9 +57,9 @@ export function getSectorAmonia(undefinedProbability: number): P2pAmmonia {
 }
 
 /**
- * Generates random P2PAutomotive instance
+ * Generates random P2pAutomotive instance
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
- * @returns a random P2PAutomotive
+ * @returns a random P2pAutomotive
  */
 export function getSectorAutomotive(undefinedProbability: number): P2pAutomotive {
   return {
@@ -80,9 +80,9 @@ export function getSectorAutomotive(undefinedProbability: number): P2pAutomotive
 }
 
 /**
- * Generates random HVCPPlastics instance
+ * Generates random P2pHvcPlastics instance
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
- * @returns a random HVCPPlastics
+ * @returns a random P2pHvcPlastics
  */
 export function getSectorHVCPlastics(undefinedProbability: number): P2pHvcPlastics {
   return {
@@ -105,9 +105,9 @@ export function getSectorHVCPlastics(undefinedProbability: number): P2pHvcPlasti
 }
 
 /**
- * Generates random P2PRealEstate (commercial and residential) instance
+ * Generates random P2pRealEstate (commercial and residential) instance
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
- * @returns a random P2PRealEstate
+ * @returns a random P2pRealEstate
  */
 export function getSectorRealEstate(undefinedProbability: number): P2pRealEstate {
   return {
@@ -127,9 +127,9 @@ export function getSectorRealEstate(undefinedProbability: number): P2pRealEstate
 }
 
 /**
- * Generates random P2PSteel (commercial and residential) instance
+ * Generates random P2pSteel instance
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
- * @returns a random P2PSteel
+ * @returns a random P2pSteel
  */
 export function getSectorSteel(undefinedProbability: number): P2pSteel {
   return {
@@ -162,9 +162,9 @@ export function getSectorFreightTransportByRoad(undefinedProbability: number): P
 }
 
 /**
- * Generates random P2PElectricityGeneration instance
+ * Generates random P2pElectricityGeneration instance
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
- * @returns a random P2PElectricityGeneration
+ * @returns a random P2pElectricityGeneration
  */
 export function getSectorElectricityGeneration(undefinedProbability: number): P2pElectricityGeneration {
   return {
@@ -179,9 +179,9 @@ export function getSectorElectricityGeneration(undefinedProbability: number): P2
 }
 
 /**
- * Generates random P2PLivestockFarming instance
+ * Generates random P2pLivestockFarming instance
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
- * @returns a random P2PLivestockFarming
+ * @returns a random P2pLivestockFarming
  */
 export function getSectorLivestockFarming(undefinedProbability: number): P2pLivestockFarming {
   return {
@@ -210,9 +210,9 @@ export function getSectorLivestockFarming(undefinedProbability: number): P2pLive
 }
 
 /**
- * Generates random P2PCement instance
+ * Generates random P2pCement instance
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
- * @returns a random P2PCement
+ * @returns a random P2pCement
  */
 export function getSectorCement(undefinedProbability: number): P2pCement {
   return {
@@ -235,7 +235,7 @@ export function getSectorCement(undefinedProbability: number): P2pCement {
 }
 
 /**
- * Generates random generatl information for the P2P Framework
+ * Generates random general information for the P2P Framework
  * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
  * @param sectors Sectors of the company
  * @returns a random P2pGeneral instance with the given sectors
@@ -292,7 +292,7 @@ export function generateP2pData(undefinedProbability = 0.5): PathwaysToParisData
 
   const p2pFixture: PathwaysToParisData = {
     general: getSectorGeneral(undefinedProbability, sectors),
-    ammonia: sectors.indexOf("Ammonia") != -1 ? getSectorAmonia(undefinedProbability) : undefined,
+    ammonia: sectors.indexOf("Ammonia") != -1 ? getSectorAmmonia(undefinedProbability) : undefined,
     automotive: sectors.indexOf("Automotive") != -1 ? getSectorAutomotive(undefinedProbability) : undefined,
     hvcPlastics: sectors.indexOf("HVCPlastics") != -1 ? getSectorHVCPlastics(undefinedProbability) : undefined,
     commercialRealEstate:
