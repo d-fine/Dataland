@@ -49,7 +49,6 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val expectedStoredCompany = uploadInfo.actualStoredCompany
             .copy(dataRegisteredByDataland = listOf(expectedDataMetaInfo))
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
-            apiAccessor.frameworkData,
             sectors = if (uploadInfo.actualStoredCompany.companyInformation.sector != null) {
                 setOf(uploadInfo.actualStoredCompany.companyInformation.sector!!) } else { null },
             countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
@@ -64,7 +63,6 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     fun `post a dummy company and check that it is not returned if filtered by a different sector`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
-            apiAccessor.frameworkData,
             sectors = setOf("${uploadInfo.actualStoredCompany.companyInformation.sector}a"),
             countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
         )
@@ -97,7 +95,6 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
-                apiAccessor.frameworkData,
                 searchString = uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
                 onlyCompanyNames = false,
             ).isEmpty(),
@@ -110,7 +107,6 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         uploadTestDataSet(uploadInfo.actualStoredCompany.companyId)
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
-                apiAccessor.frameworkData,
                 searchString = uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
                 onlyCompanyNames = false,
             ).any { it.companyId == uploadInfo.actualStoredCompany.companyId },
@@ -120,7 +116,6 @@ class CompanyDataControllerGetCompaniesEndpointTest {
 
     private fun testThatSearchForCompanyIdentifierWorks(identifier: CompanyIdentifier) {
         val searchResponse = apiAccessor.companyDataControllerApi.getCompanies(
-            dataTypes = apiAccessor.frameworkData,
             searchString = identifier.identifierValue,
             onlyCompanyNames = false,
 

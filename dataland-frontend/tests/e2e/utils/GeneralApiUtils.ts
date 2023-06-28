@@ -14,6 +14,7 @@ export interface UploadIds {
  */
 export async function getStoredCompaniesForDataType(token: string, dataType: DataTypeEnum): Promise<StoredCompany[]> {
   const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
+    undefined,
     new Set([dataType])
   );
   return response.data;

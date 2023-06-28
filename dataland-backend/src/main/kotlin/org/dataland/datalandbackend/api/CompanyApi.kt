@@ -55,23 +55,25 @@ interface CompanyApi {
         ResponseEntity<StoredCompany>
 
     /**
-     * A method to retrieve specific companies identified by different filters
+     * A method to retrieve specific companies with framework data identified by different filters
      * If the filters are not set, all companies in the data store are returned.
      * @param searchString string used for substring matching
-     * @param dataTypes If set & non-empty,
-     * this function only returns companies that have data for the specified dataTypes
+     * @param dataTypes this function only returns companies that have data for the specified dataTypes.
+     * if none is specified, it is filtered all data types are allowed
      * @param countryCodes If set & non-empty,
      * this function only returns companies that have a country code contained in the set
      * @param sectors If set & non-empty, this function only returns companies that belong to a sector in the set
      * @param onlyCompanyNames boolean determining if the search should be solely against the companyNames
      * @param onlyCurrentUserAsUploader boolean determining if the search should only find companies with datasets
      * uploaded by the current user
-     * @return information about all companies matching the search criteria
+     * @return information about all companies with framework data matching the search criteria
      */
     @Operation(
-        summary = "Retrieve specific companies by different filters or just all companies from the data store.",
-        description = "Companies identified via the provided company name/identifier are retrieved and filtered by" +
-            "countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        summary = "Retrieve specific companies with framework data by different filters" +
+                " or just all companies from the data store.",
+        description = "Companies with associated framework data identified via the provided company name/identifier" +
+                " are retrieved and filtered by countryCode, sector and available framework data." +
+                " Empty/Unspecified filters are ignored.",
     )
     @ApiResponses(
         value = [
@@ -84,7 +86,7 @@ interface CompanyApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanies(
         @RequestParam searchString: String? = null,
-        @RequestParam(required = true) dataTypes: Set<DataType>,
+        @RequestParam dataTypes: Set<DataType>? = null,
         @RequestParam countryCodes: Set<String>? = null,
         @RequestParam sectors: Set<String>? = null,
         @RequestParam onlyCompanyNames: Boolean = false,

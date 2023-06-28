@@ -41,7 +41,7 @@ class CompanyDataController(
 
     override fun getCompanies(
         searchString: String?,
-        dataTypes: Set<DataType>,
+        dataTypes: Set<DataType>?,
         countryCodes: Set<String>?,
         sectors: Set<String>?,
         onlyCompanyNames: Boolean,
@@ -57,7 +57,7 @@ class CompanyDataController(
                 StoredCompanySearchFilter(
                     searchString = searchString ?: "",
                     nameOnlyFilter = onlyCompanyNames,
-                    dataTypeFilter = dataTypes.map { it.name },
+                    dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
                     countryCodeFilter = countryCodes?.toList() ?: listOf(),
                     sectorFilter = sectors?.toList() ?: listOf(),
                     uploaderId = if (onlyCurrentUserAsUploader) DatalandAuthentication.fromContext().userId else "",

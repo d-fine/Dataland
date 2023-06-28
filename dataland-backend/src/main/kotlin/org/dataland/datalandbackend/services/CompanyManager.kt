@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.CompanyIdAndName
@@ -116,10 +117,7 @@ class CompanyManager(
         viewingUser: DatalandAuthentication? = null,
     ): List<StoredCompany> {
         if (filter.dataTypeFilter.isEmpty()) {
-            throw InvalidInputApiException(
-                "Requestparam has a non acceptable value",
-                "Please specify a dataframework",
-            )
+            filter.dataTypeFilter = DataTypesExtractor().getAllDataTypes()
         }
 
         val filteredAndSortedResults = companyRepository.searchCompanies(filter)

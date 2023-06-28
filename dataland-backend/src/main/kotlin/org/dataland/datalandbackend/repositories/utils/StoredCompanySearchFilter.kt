@@ -5,7 +5,7 @@ package org.dataland.datalandbackend.repositories.utils
  * convenient usage of SEPL instructions in the query
  */
 data class StoredCompanySearchFilter(
-    val dataTypeFilter: List<String>,
+    var dataTypeFilter: List<String>,
     val countryCodeFilter: List<String>,
     val sectorFilter: List<String>,
     val searchString: String,

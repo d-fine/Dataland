@@ -453,7 +453,7 @@
           {
             "name": "dataTypes",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "uniqueItems": true,
               "type": "array",
