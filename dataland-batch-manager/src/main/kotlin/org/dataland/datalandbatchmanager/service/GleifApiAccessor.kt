@@ -3,6 +3,7 @@ package org.dataland.datalandbatchmanager.service
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.MAX_RETRIES
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.FileNotFoundException
@@ -13,19 +14,17 @@ import java.net.URL
  * The class to download the zipped GLEIF golden copy CSV files
  */
 @Component
-class GleifApiAccessor {
+class GleifApiAccessor(
+    @Value("\${gleif.download.baseurl}") private val gleifBaseUrl: String,
+) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val gleifBaseUrl = "https://goldencopy.gleif.org/api/v2/golden-copies/publishes/lei2"
 
     /**
      * Downloads the golden copy delta file of last month
      * @param targetFile the local target file to be written
      */
     fun getLastMonthGoldenCopyDelta(targetFile: File) {
-        logger.info("Starting download of Golden Copy Delta File.")
-        val deltaUrl = URL("$gleifBaseUrl/latest.csv?delta=LastMonth")
-        downloadFile(deltaUrl, targetFile)
-        logger.info("Download of Golden Copy Delta File completed.")
+        downloadFileFromGleif("latest.csv?delta=LastMonth", targetFile, "Golden Copy Delta File")
     }
 
     /**
@@ -33,10 +32,14 @@ class GleifApiAccessor {
      * @param targetFile the local target file to be written
      */
     fun getFullGoldenCopy(targetFile: File) {
-        logger.info("Starting download of full Golden Copy File.")
-        val downloadUrl = URL("$gleifBaseUrl/latest.csv")
+        downloadFileFromGleif("latest.csv", targetFile, "full Golden Copy File")
+    }
+
+    private fun downloadFileFromGleif(urlSuffx: String, targetFile: File, fileDescription: String) {
+        logger.info("Starting download of $fileDescription.")
+        val downloadUrl = URL("$gleifBaseUrl/$urlSuffx")
         downloadFile(downloadUrl, targetFile)
-        logger.info("Download of full Golden Copy File completed.")
+        logger.info("Download of $fileDescription completed.")
     }
 
     private fun downloadFile(url: URL, targetFile: File) {

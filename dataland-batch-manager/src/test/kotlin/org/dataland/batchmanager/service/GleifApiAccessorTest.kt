@@ -33,25 +33,25 @@ class GleifApiAccessorTest {
     }
 
     @Test
-    fun `test download failure`() {
+    fun `test download failure if there are socket exceptions`() {
         `when`(FileUtils.copyURLToFile(any(), any())).thenThrow(SocketException("Test Exception"))
         assertThrows<FileNotFoundException> {
-            GleifApiAccessor().getFullGoldenCopy(File("test"))
+            GleifApiAccessor("dummy").getFullGoldenCopy(File("test"))
         }
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(3))
     }
 
     @Test
-    fun `test download full golden copy`() {
+    fun `test if download full golden copy works fine under the right conditions`() {
         `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
-        GleifApiAccessor().getFullGoldenCopy(File("test"))
+        GleifApiAccessor("dummy").getFullGoldenCopy(File("test"))
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
     }
 
     @Test
-    fun `test download delta file`() {
+    fun `test if download delta file works fine under the right conditions`() {
         `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
-        GleifApiAccessor().getLastMonthGoldenCopyDelta(File("test"))
+        GleifApiAccessor("dummy").getLastMonthGoldenCopyDelta(File("test"))
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
     }
 }
