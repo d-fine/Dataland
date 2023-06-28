@@ -1,12 +1,12 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :label="label!" :description="description!" :is-required="required" />
+    <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <FormKit
       type="list"
       :name="name"
       :label="label"
-      :validation="validation!"
-      :validation-label="validationLabel!"
+      :validation="validation"
+      :validation-label="validationLabel"
       v-model="existingProducts"
     >
       <FormKit type="group" v-for="id in listOfProductIds" :key="id">
@@ -25,7 +25,7 @@
         label="ADD NEW Product"
         class="p-button-text"
         icon="pi pi-plus"
-        @click="addNewProductEventHandler"
+        @click="addNewProduct"
       />
     </FormKit>
   </div>
@@ -48,7 +48,6 @@ export default defineComponent({
       existingProducts: [] as LksgProduct[],
       listOfProductIds: [] as number[],
       idCounter: 0,
-      userAddedProduct: false,
     };
   },
   components: {
@@ -62,30 +61,14 @@ export default defineComponent({
       this.addNewProduct();
     }
   },
-  watch: {
-    existingProducts(newValue) {
-      if(this.userAddedProduct) {
-          return;
-      }
-      for (let i = 0; i < this.existingProducts.length; i++) {
-          this.addNewProduct();
-      }
-    }
-  },
+
   methods: {
     /**
      * Adds a new Object to the Product array
      */
-    addNewProductEventHandler() {
-        this.userAddedProduct = true;
-        this.addNewProduct()
-    },
-    /**
-     * Adds a new Object to the Product array
-     */
     addNewProduct() {
-        this.idCounter++;
-        this.listOfProductIds.push(this.idCounter);
+      this.idCounter++;
+      this.listOfProductIds.push(this.idCounter);
     },
 
     /**

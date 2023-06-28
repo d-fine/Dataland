@@ -2,11 +2,11 @@
   <Card class="col-12 page-wrapper-card p-3">
     <template #title>New Dataset - LkSG</template>
     <template #content>
-      <div v-show="waitingForData" class="d-center-div text-center px-7 py-4">
+      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading LkSG data...</p>
         <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
-      <div v-show="!waitingForData" class="grid uploadFormWrapper">
+      <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedLksgData"
