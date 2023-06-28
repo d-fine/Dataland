@@ -74,27 +74,28 @@
 </template>
 
 <script lang="ts">
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";
-import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import TheHeader from "@/components/generics/TheHeader.vue";
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import PrimeButton from "primevue/button";
+import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
+import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject, ref } from "vue";
-import Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import Keycloak from "keycloak-js";
+import PrimeButton from "primevue/button";
 import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
-import { humanizeString } from "@/utils/StringHumanizer";
-import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import TheFooter from "@/components/general/TheFooter.vue";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { defineComponent, inject, ref } from "vue";
 
-import OverlayPanel from "primevue/overlaypanel";
+import TheFooter from "@/components/general/TheFooter.vue";
+import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
+import { humanizeString } from "@/utils/StringHumanizer";
+import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
+import OverlayPanel from "primevue/overlaypanel";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -177,14 +178,15 @@ export default defineComponent({
           this.singleDataMetaInfoToDisplay.dataId
         );
       } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
-        if (this.$refs.reportingPeriodsOverlayPanel instanceof OverlayPanel) {
-          this.$refs.reportingPeriodsOverlayPanel.toggle(event);
+        const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
+        if (panel) {
+          panel.toggle(event);
         }
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
         this.gotoUpdateForm(
           assertDefined(this.companyID),
           this.dataType as DataTypeEnum,
-          (this.mapOfReportingPeriodToActiveDataset.entries().next().value as [string, DataMetaInformation])[1].dataId
+          Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId
         );
       }
     },
