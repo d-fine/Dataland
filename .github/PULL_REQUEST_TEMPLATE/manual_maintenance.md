@@ -22,6 +22,7 @@ appear.
   https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
 - [ ] Update Node to 20.3.1 is skipped due to issues in rebuilding Docker images
+- [ ] Skipped typescript update to 5.1.5 as eslint does not support it yet
 ### Gradle update
 
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
