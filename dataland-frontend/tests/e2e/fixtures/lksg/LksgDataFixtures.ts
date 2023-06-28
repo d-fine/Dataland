@@ -74,9 +74,9 @@ export function generateArrayOfProductionSites(undefinedProbability = 0.5): Lksg
  */
 function generateProduct(): LksgProduct {
   return {
-    productName: valueOrUndefined(faker.commerce.productName()),
+    productName: faker.commerce.productName(),
     productionSteps: valueOrUndefined(generateArray(faker.commerce.productName)),
-    relatedCorporateSupplyChain: valueOrUndefined(generateArray(faker.commerce.productName)),
+    relatedCorporateSupplyChain: valueOrUndefined(faker.commerce.productName()),
   };
 }
 
@@ -87,7 +87,7 @@ function generateProduct(): LksgProduct {
 function generateCompanyAssociatedSupplier(): LksgCountryAssociatedSuppliers {
   return {
     country: generateIso2CountryCode(), // TODO should this be extended to all strings? just because the backend would accept it
-    numberOfSuppliers: randomNumber(10),
+    numberOfSuppliers: valueOrUndefined(randomNumber(10)),
   };
 }
 
@@ -97,7 +97,7 @@ function generateCompanyAssociatedSupplier(): LksgCountryAssociatedSuppliers {
  */
 function generateProductCategory(): LksgProductCategory {
   return {
-    definitionProductTypeService: valueOrUndefined(generateArray(faker.commerce.productName)),
+    definitionProductTypeService: generateArray(faker.commerce.productName),
     suppliersPerCountry: valueOrUndefined(generateArray(generateCompanyAssociatedSupplier)),
     orderVolume: valueOrUndefined(randomPercentageValue()),
   };

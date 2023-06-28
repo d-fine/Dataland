@@ -2930,6 +2930,9 @@
         }
       },
       "LksgCountryAssociatedSuppliers": {
+        "required": [
+          "country"
+        ],
         "type": "object",
         "properties": {
           "country": {
@@ -3304,6 +3307,9 @@
         }
       },
       "LksgProduct": {
+        "required": [
+          "productName"
+        ],
         "type": "object",
         "properties": {
           "productName": {
@@ -3316,14 +3322,14 @@
             }
           },
           "relatedCorporateSupplyChain": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           }
         }
       },
       "LksgProductCategory": {
+        "required": [
+          "definitionProductTypeService"
+        ],
         "type": "object",
         "properties": {
           "definitionProductTypeService": {
