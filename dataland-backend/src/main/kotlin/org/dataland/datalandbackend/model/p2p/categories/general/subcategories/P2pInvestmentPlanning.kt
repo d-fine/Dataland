@@ -14,6 +14,5 @@ data class P2pInvestmentPlanning(
 
     val investmentPlanForClimateTargets: YesNo? = null,
 
-    // Note: This field is called randD instead of rAndD as swagger really does not like you using rAndD
-    val randDExpenditureForNetZeroSolutions: BigDecimal? = null,
+    val researchAndDevelopmentExpenditureForNetZeroSolutions: BigDecimal? = null,
 )

@@ -3319,7 +3319,7 @@
           "investmentPlanForClimateTargets": {
             "$ref": "#/components/schemas/YesNo"
           },
-          "randDExpenditureForNetZeroSolutions": {
+          "researchAndDevelopmentExpenditureForNetZeroSolutions": {
             "type": "number"
           }
         }

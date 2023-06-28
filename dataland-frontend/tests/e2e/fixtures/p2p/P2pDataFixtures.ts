@@ -274,7 +274,10 @@ export function getSectorGeneral(undefinedProbability: number, sectors: Array<P2
       investmentPlanForClimateTargets: valueOrUndefined(randomYesNo(), undefinedProbability),
       capexShareInNetZeroSolutions: valueOrUndefined(randomPercentageValue(), undefinedProbability),
       capexShareInGhgIntensivePlants: valueOrUndefined(randomPercentageValue(), undefinedProbability),
-      randDExpenditureForNetZeroSolutions: valueOrUndefined(randomPercentageValue(), undefinedProbability),
+      researchAndDevelopmentExpenditureForNetZeroSolutions: valueOrUndefined(
+        randomPercentageValue(),
+        undefinedProbability
+      ),
     },
   };
 }
