@@ -30,42 +30,42 @@ object JsonExampleFormattingConstants {
         taxonomyEligibilityActivity +
         "}"
 
-    const val PRODUCT_CATEGORIES_DEFAULT_VALUE: String = "{\n" +
-        "          \"Products\": {\n" +
-        "            \"definitionProductTypeService\": [\n" +
-        "              \"string\"\n" +
-        "            ],\n" +
-        "            \"suppliersPerCountry\": [\n" +
-        "              {\n" +
-        "                \"country\": \"string\",\n" +
-        "                \"numberOfSuppliers\": 0\n" +
-        "              }\n" +
-        "            ],\n" +
-        "            \"orderVolume\": 0\n" +
-        "          },\n" +
-        "          \"Services\": {\n" +
-        "            \"definitionProductTypeService\": [\n" +
-        "              \"string\"\n" +
-        "            ],\n" +
-        "            \"suppliersPerCountry\": [\n" +
-        "              {\n" +
-        "                \"country\": \"string\",\n" +
-        "                \"numberOfSuppliers\": 0\n" +
-        "              }\n" +
-        "            ],\n" +
-        "            \"orderVolume\": 0\n" +
-        "          },\n" +
-        "          \"RawMaterials\": {\n" +
-        "            \"definitionProductTypeService\": [\n" +
-        "              \"string\"\n" +
-        "            ],\n" +
-        "            \"suppliersPerCountry\": [\n" +
-        "              {\n" +
-        "                \"country\": \"string\",\n" +
-        "                \"numberOfSuppliers\": 0\n" +
-        "              }\n" +
-        "            ],\n" +
-        "            \"orderVolume\": 0\n" +
-        "          }\n" +
-        "        }"
+    const val PRODUCT_CATEGORIES_DEFAULT_VALUE: String = "{" +
+        "\"Products\": {" +
+        "\"definitionProductTypeService\": [" +
+        "\"string\"" +
+        "]," +
+        "\"suppliersPerCountry\": [" +
+        "{" +
+        "\"country\": \"string\"," +
+        "\"numberOfSuppliers\": 0" +
+        "}" +
+        "]," +
+        "\"orderVolume\": 0" +
+        "}," +
+        "\"Services\": {" +
+        "\"definitionProductTypeService\": [" +
+        "\"string\"" +
+        "]," +
+        "\"suppliersPerCountry\": [" +
+        "{" +
+        "\"country\": \"string\"," +
+        "\"numberOfSuppliers\": 0" +
+        "}" +
+        "]," +
+        "\"orderVolume\": 0" +
+        "}," +
+        "\"RawMaterials\": {" +
+        "\"definitionProductTypeService\": [" +
+        "\"string\"" +
+        "]," +
+        "\"suppliersPerCountry\": [" +
+        "{" +
+        "\"country\": \"string\"," +
+        "\"numberOfSuppliers\": 0" +
+        "}" +
+        "]," +
+        "\"orderVolume\": 0" +
+        "}" +
+        "}"
 }
