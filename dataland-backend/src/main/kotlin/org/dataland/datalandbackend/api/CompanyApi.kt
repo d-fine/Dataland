@@ -70,10 +70,10 @@ interface CompanyApi {
      */
     @Operation(
         summary = "Retrieve specific companies with framework data by different filters" +
-                " or just all companies from the data store.",
+            " or just all companies from the data store.",
         description = "Companies with associated framework data identified via the provided company name/identifier" +
-                " are retrieved and filtered by countryCode, sector and available framework data." +
-                " Empty/Unspecified filters are ignored.",
+            " are retrieved and filtered by countryCode, sector and available framework data." +
+            " Empty/Unspecified filters are ignored.",
     )
     @ApiResponses(
         value = [

@@ -438,8 +438,8 @@
         "tags": [
           "company-data-controller"
         ],
-        "summary": "Retrieve specific companies by different filters or just all companies from the data store.",
-        "description": "Companies identified via the provided company name/identifier are retrieved and filtered bycountryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "summary": "Retrieve specific companies with framework data by different filters or just all companies from the data store.",
+        "description": "Companies with associated framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
         "operationId": "getCompanies",
         "parameters": [
           {
