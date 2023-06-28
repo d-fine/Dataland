@@ -1,7 +1,13 @@
 <template>
   <div data-test="productFormElement">
     <div class="form-field">
-      <InputTextFormField name="productName" label="Product Name" description="Please enter the name of the product" />
+      <InputTextFormField
+        name="productName"
+        label="Product Name"
+        description="Please enter the name of the product"
+        :required="true"
+        validation="required"
+      />
     </div>
     <div class="form-field">
       <div class="flex justify-content-between">
