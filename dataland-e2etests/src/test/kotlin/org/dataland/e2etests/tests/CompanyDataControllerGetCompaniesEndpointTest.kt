@@ -152,9 +152,9 @@ class CompanyDataControllerGetCompaniesEndpointTest {
                 listOf(company1 + testString),
             ),
         )
-        val companyResponse = apiAccessor.companyDataControllerApi.postCompany(testCompanyList.first)
+        val companyResponse = apiAccessor.companyDataControllerApi.postCompany(testCompanyList.first())
         uploadTestDataSet(companyResponse.companyId)
-        for (identifier in testCompanyList.first.identifiers) {
+        for (identifier in testCompanyList.first().identifiers) {
             testThatSearchForCompanyIdentifierWorks(identifier)
         }
     }
