@@ -31,41 +31,41 @@ object JsonExampleFormattingConstants {
         "}"
 
     const val PRODUCT_CATEGORIES_DEFAULT_VALUE: String = "{\n" +
-            "          \"Products\": {\n" +
-            "            \"definitionProductTypeService\": [\n" +
-            "              \"string\"\n" +
-            "            ],\n" +
-            "            \"suppliersPerCountry\": [\n" +
-            "              {\n" +
-            "                \"country\": \"string\",\n" +
-            "                \"numberOfSuppliers\": 0\n" +
-            "              }\n" +
-            "            ],\n" +
-            "            \"orderVolume\": 0\n" +
-            "          },\n" +
-            "          \"Services\": {\n" +
-            "            \"definitionProductTypeService\": [\n" +
-            "              \"string\"\n" +
-            "            ],\n" +
-            "            \"suppliersPerCountry\": [\n" +
-            "              {\n" +
-            "                \"country\": \"string\",\n" +
-            "                \"numberOfSuppliers\": 0\n" +
-            "              }\n" +
-            "            ],\n" +
-            "            \"orderVolume\": 0\n" +
-            "          },\n" +
-            "          \"RawMaterials\": {\n" +
-            "            \"definitionProductTypeService\": [\n" +
-            "              \"string\"\n" +
-            "            ],\n" +
-            "            \"suppliersPerCountry\": [\n" +
-            "              {\n" +
-            "                \"country\": \"string\",\n" +
-            "                \"numberOfSuppliers\": 0\n" +
-            "              }\n" +
-            "            ],\n" +
-            "            \"orderVolume\": 0\n" +
-            "          }\n" +
-            "        }"
+        "          \"Products\": {\n" +
+        "            \"definitionProductTypeService\": [\n" +
+        "              \"string\"\n" +
+        "            ],\n" +
+        "            \"suppliersPerCountry\": [\n" +
+        "              {\n" +
+        "                \"country\": \"string\",\n" +
+        "                \"numberOfSuppliers\": 0\n" +
+        "              }\n" +
+        "            ],\n" +
+        "            \"orderVolume\": 0\n" +
+        "          },\n" +
+        "          \"Services\": {\n" +
+        "            \"definitionProductTypeService\": [\n" +
+        "              \"string\"\n" +
+        "            ],\n" +
+        "            \"suppliersPerCountry\": [\n" +
+        "              {\n" +
+        "                \"country\": \"string\",\n" +
+        "                \"numberOfSuppliers\": 0\n" +
+        "              }\n" +
+        "            ],\n" +
+        "            \"orderVolume\": 0\n" +
+        "          },\n" +
+        "          \"RawMaterials\": {\n" +
+        "            \"definitionProductTypeService\": [\n" +
+        "              \"string\"\n" +
+        "            ],\n" +
+        "            \"suppliersPerCountry\": [\n" +
+        "              {\n" +
+        "                \"country\": \"string\",\n" +
+        "                \"numberOfSuppliers\": 0\n" +
+        "              }\n" +
+        "            ],\n" +
+        "            \"orderVolume\": 0\n" +
+        "          }\n" +
+        "        }"
 }

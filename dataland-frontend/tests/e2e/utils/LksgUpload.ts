@@ -192,23 +192,32 @@ function fillRequiredLksgFieldsWithDummyData(): void {
   cy.get("select[name=totalRevenueCurrency]").select("EUR");
 }
 
-function fillNewProduct(productName: string, productionSteps: string[], description?: string) {
+/**
+ * Adds a new product and fills its form
+ * @param productName the name of the product to fill in
+ * @param productionSteps the production steps to fill in
+ * @param description the description to fill in
+ */
+function fillNewProduct(productName: string, productionSteps: string[], description?: string): void {
   cy.get('button[data-test="ADD-NEW-Product-button"]').click();
   const productFormElementSelector = '[data-test="productSection"] [data-test="productFormElement"]';
-  cy.get(productFormElementSelector).last().find('input[name="productName"]')
-      .type(productName);
-  if(productionSteps.length > 0 && productionSteps.some((productionStep) => productionStep.length > 0)) {
-    cy.get(productFormElementSelector).last().find('input[data-test^="listOfProductionSteps"]')
-        .type(productionSteps.join(", "))
+  cy.get(productFormElementSelector).last().find('input[name="productName"]').type(productName);
+  if (productionSteps.length > 0 && productionSteps.some((productionStep) => productionStep.length > 0)) {
+    cy.get(productFormElementSelector)
+      .last()
+      .find('input[data-test^="listOfProductionSteps"]')
+      .type(productionSteps.join(", "));
     cy.get(productFormElementSelector).last().find('[data-test="addProductionStep"]').click();
   }
   if (description) {
-      cy.get(productFormElementSelector).last().find('textarea[name="relatedCorporateSupplyChain"]')
-          .type(description);
+    cy.get(productFormElementSelector).last().find('textarea[name="relatedCorporateSupplyChain"]').type(description);
   }
 }
 
-function fillInMostImportantProducts() {
+/**
+ * Adds some products to the most important products form
+ */
+function fillInMostImportantProducts(): void {
   fillNewProduct("Test Product 1", ["first", "second"], "Description of something");
   fillNewProduct("Test Product 2", []);
 }

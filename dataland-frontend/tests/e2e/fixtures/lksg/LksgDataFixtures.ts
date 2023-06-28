@@ -19,7 +19,7 @@ import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtu
 import { generateIso2CountryCode, generateListOfIso2CountryCodes } from "@e2e/fixtures/common/CountryFixtures";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataPointFixtures";
-import {ProcurementCategory} from "@/api-models/ProcurementCategory";
+import { ProcurementCategory } from "@/api-models/ProcurementCategory";
 
 /**
  * Generates a set number of LKSG fixtures
@@ -75,7 +75,7 @@ export function generateArrayOfProductionSites(undefinedProbability = 0.5): Lksg
 function generateProduct(): LksgProduct {
   return {
     productName: faker.commerce.productName(),
-    productionSteps: valueOrUndefined(generateArray(faker.commerce.productName)),
+    productionSteps: valueOrUndefined(generateArray(() => faker.commerce.productName())),
     relatedCorporateSupplyChain: valueOrUndefined(faker.commerce.productName()),
   };
 }
@@ -97,7 +97,7 @@ function generateCompanyAssociatedSupplier(): LksgCountryAssociatedSuppliers {
  */
 function generateProductCategory(): LksgProductCategory {
   return {
-    definitionProductTypeService: generateArray(faker.commerce.productName),
+    definitionProductTypeService: generateArray(() => faker.commerce.productName()),
     suppliersPerCountry: valueOrUndefined(generateArray(generateCompanyAssociatedSupplier)),
     orderVolume: valueOrUndefined(randomPercentageValue()),
   };
@@ -111,16 +111,13 @@ function generateProductCategories(): { [key: string]: LksgProductCategory } {
   const procurementCategories = Object.values(ProcurementCategory) as ProcurementCategory[];
   const keys = [] as ProcurementCategory[];
   procurementCategories.forEach((category) => {
-    if(faker.datatype.boolean()) {
+    if (faker.datatype.boolean()) {
       keys.push(category);
     }
   });
   return Object.fromEntries(
     new Map<string, LksgProductCategory>(
-      keys.map((procurementCategory) => [
-        procurementCategory as string,
-        generateProductCategory(),
-      ])
+      keys.map((procurementCategory) => [procurementCategory as string, generateProductCategory()])
     )
   );
 }
@@ -190,8 +187,8 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
       productionSpecific: {
         manufacturingCompany: valueOrUndefined(randomYesNo(), undefinedProbability),
         capacity: valueOrUndefined(
-            randomNumber(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
-            undefinedProbability
+          randomNumber(25).toString() + " " + faker.commerce.product() + " per " + faker.date.weekday(),
+          undefinedProbability
         ),
         isContractProcessing: valueOrUndefined(randomYesNo(), undefinedProbability),
         subcontractingCompaniesCountries: valueOrUndefined(generateListOfIso2CountryCodes(), undefinedProbability),
@@ -199,12 +196,12 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
         productionSites: valueOrUndefined(randomYesNo(), undefinedProbability),
         listOfProductionSites: valueOrUndefined(generateArrayOfProductionSites(), undefinedProbability),
         market: valueOrUndefined(
-            faker.helpers.arrayElement([
-              NationalOrInternationalMarket.National,
-              NationalOrInternationalMarket.International,
-              NationalOrInternationalMarket.Both,
-            ]),
-            undefinedProbability
+          faker.helpers.arrayElement([
+            NationalOrInternationalMarket.National,
+            NationalOrInternationalMarket.International,
+            NationalOrInternationalMarket.Both,
+          ]),
+          undefinedProbability
         ),
         specificProcurement: valueOrUndefined(randomYesNo(), undefinedProbability),
       },

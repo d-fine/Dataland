@@ -34,7 +34,11 @@ describeIf(
       cy.get(`span[data-test=${groupKey}]`).siblings("button").last().click();
     }
 
-    function validateFormUploadedData(companyId: string) {
+    /**
+     * validates that the data uploaded via the function `uploadLksgDataViaForm` is displayed correctly for a company
+     * @param companyId the company associated to the data uploaded via form
+     */
+    function validateFormUploadedData(companyId: string): void {
       cy.visit("/companies/" + companyId + "/frameworks/" + DataTypeEnum.Lksg);
       cy.get('td > [data-test="productionSpecificOwnOperations"]').click();
       cy.contains('Show "Most Important Products"').click();

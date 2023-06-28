@@ -195,14 +195,14 @@ export default defineComponent({
     generateReadableCombinationOfSuppliersAndCountries(countryAssociatedSuppliers?: LksgCountryAssociatedSuppliers[]) {
       if (countryAssociatedSuppliers != undefined) {
         const readableListOfSuppliersAndCountries = countryAssociatedSuppliers?.map(
-            (value: LksgCountryAssociatedSuppliers) => {
-              const printedCountry = getCountryNameFromCountryCode(value.country) ?? value.country;
-              if (value.numberOfSuppliers != undefined) {
-                return String(value.numberOfSuppliers) + " suppliers from " + printedCountry;
-              } else {
-                return "There are suppliers from " + printedCountry;
-              }
+          (value: LksgCountryAssociatedSuppliers) => {
+            const printedCountry = getCountryNameFromCountryCode(value.country) ?? value.country;
+            if (value.numberOfSuppliers != undefined) {
+              return String(value.numberOfSuppliers) + " suppliers from " + printedCountry;
+            } else {
+              return "There are suppliers from " + printedCountry;
             }
+          }
         );
         if (readableListOfSuppliersAndCountries.length > 1) {
           return readableListOfSuppliersAndCountries;
@@ -225,18 +225,21 @@ export default defineComponent({
       const listOfProductCategories = [];
       for (const [procurementCategory, lksgProductCategory] of Object.entries(inputObject)) {
         const definitionsOfProductTypeOrService = function (): string[] | string {
-          if (lksgProductCategory.definitionProductTypeService?.length > 1) {
-            return lksgProductCategory.definitionProductTypeService;
+          if ((lksgProductCategory as LksgProductCategory).definitionProductTypeService?.length > 1) {
+            return (lksgProductCategory as LksgProductCategory).definitionProductTypeService;
           } else {
-            return lksgProductCategory.definitionProductTypeService[0];
+            return (lksgProductCategory as LksgProductCategory).definitionProductTypeService[0];
           }
         };
 
         listOfProductCategories.push({
-          procurementCategory: procurementCategory,
+          procurementCategory: procurementCategory as ProcurementCategory,
           definitionsOfProductTypeOrService: definitionsOfProductTypeOrService(),
           suppliersAndCountries: this.generateReadableCombinationOfSuppliersAndCountries(),
-          orderVolume: lksgProductCategory.orderVolume != null ? String(lksgProductCategory.orderVolume) : null,
+          orderVolume:
+            (lksgProductCategory as LksgProductCategory).orderVolume != null
+              ? String((lksgProductCategory as LksgProductCategory).orderVolume)
+              : null,
         });
       }
       return listOfProductCategories;

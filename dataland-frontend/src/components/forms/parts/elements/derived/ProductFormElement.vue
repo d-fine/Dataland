@@ -38,7 +38,9 @@
         v-model="listOfProductionStepsString"
         validation="length:0,0"
         validation-visibility="live"
-        :validation-messages="{ length: 'Please add the entered value via pressing the add button or empty the field.' }"
+        :validation-messages="{
+          length: 'Please add the entered value via pressing the add button or empty the field.',
+        }"
         outer-class="hidden-input"
       />
 
