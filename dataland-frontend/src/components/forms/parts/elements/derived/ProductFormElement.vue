@@ -1,29 +1,24 @@
 <template>
   <div data-test="productFormElement">
-    <div class="form-field">
-      <InputTextFormField
-        name="productName"
-        label="Product Name"
-        description="Please enter the name of the product"
-        :required="true"
-        validation="required"
-      />
-    </div>
-
+    <InputTextFormField
+      name="productName"
+      label="Product Name"
+      description="Please enter the name of the product"
+      :required="true"
+      validation="required"
+    />
     <StringBadgeListFormField
       name="productionSteps"
       label="Production Steps"
       description="Please give a brief overview of the production steps/activities undertaken"
       data-test-add-button="addProductionStep"
     />
-
-    <div class="form-field">
-      <UploadFormHeader
-        label="Related Corporate Supply Chain"
-        description="Please give an overview of the related corporate supply chain(s) and key business relationships (by procurement or order volume) (own operations)"
-      />
-      <FreeTextFormField name="relatedCorporateSupplyChain" v-model="existingRelatedCorporateSupplyChain" />
-    </div>
+    <FreeTextFormField
+      name="relatedCorporateSupplyChain"
+      label="Related Corporate Supply Chain"
+      description="Please give an overview of the related corporate supply chain(s) and key business relationships (by procurement or order volume) (own operations)"
+      v-model="existingRelatedCorporateSupplyChain"
+    />
   </div>
 </template>
 

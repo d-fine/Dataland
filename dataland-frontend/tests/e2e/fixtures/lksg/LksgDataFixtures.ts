@@ -108,7 +108,7 @@ function generateProductCategory(): LksgProductCategory {
  * @returns random map of product categories
  */
 function generateProductCategories(): { [key: string]: LksgProductCategory } {
-  const procurementCategories = Object.values(ProcurementCategory) as ProcurementCategory[];
+  const procurementCategories = Object.values(ProcurementCategory);
   const keys = [] as ProcurementCategory[];
   procurementCategories.forEach((category) => {
     if (faker.datatype.boolean()) {

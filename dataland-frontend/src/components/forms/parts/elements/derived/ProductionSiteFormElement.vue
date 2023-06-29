@@ -1,22 +1,16 @@
 <template>
-  <div class="form-field">
-    <InputTextFormField
-      name="nameOfProductionSite"
-      description="Please state the name of the production site."
-      label="Production Site"
-    />
-  </div>
-
-  <div class="form-field">
-    <AddressFormField
-      :data-test="`AddressFormField${id}`"
-      name="addressOfProductionSite"
-      description="Please state the address of the production site."
-      label="Production Site Address"
-      validation="required"
-    />
-  </div>
-
+  <InputTextFormField
+    name="nameOfProductionSite"
+    description="Please state the name of the production site."
+    label="Production Site"
+  />
+  <AddressFormField
+    data-test="AddressFormField"
+    name="addressOfProductionSite"
+    description="Please state the address of the production site."
+    label="Production Site Address"
+    validation="required"
+  />
   <StringBadgeList
     name="listOfGoodsOrServices"
     label="Lists of Goods or Services"
@@ -36,12 +30,6 @@ export default defineComponent({
     StringBadgeList,
     InputTextFormField,
     AddressFormField,
-  },
-  props: {
-    id: {
-      type: String,
-      required: true,
-    },
   },
 });
 </script>
