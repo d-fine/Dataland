@@ -31,9 +31,7 @@ object JsonExampleFormattingConstants {
         "}"
 
     private const val productCategory = "{" +
-        "\"definitionProductTypeService\": [" +
-        "\"string\"" +
-        "]," +
+        "\"definitionProductTypeService\": [\"string\"]," +
         "\"suppliersPerCountry\": [" +
         "{" +
         "\"country\": \"string\"," +
@@ -44,8 +42,8 @@ object JsonExampleFormattingConstants {
         "}"
 
     const val PRODUCT_CATEGORIES_DEFAULT_VALUE: String = "{" +
-        "\"Products\":" + productCategory + "," +
-        "\"Services\":" + productCategory + "," +
-        "\"RawMaterials\":" + productCategory + "," +
+        "\"Products\": $productCategory," +
+        "\"Services\": $productCategory," +
+        "\"RawMaterials\": $productCategory" +
         "}"
 }

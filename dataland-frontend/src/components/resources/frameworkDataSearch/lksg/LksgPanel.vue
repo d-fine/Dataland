@@ -235,7 +235,9 @@ export default defineComponent({
         listOfProductCategories.push({
           procurementCategory: procurementCategory as ProcurementCategory,
           definitionsOfProductTypeOrService: definitionsOfProductTypeOrService(),
-          suppliersAndCountries: this.generateReadableCombinationOfSuppliersAndCountries(),
+          suppliersAndCountries: this.generateReadableCombinationOfSuppliersAndCountries(
+            (lksgProductCategory as LksgProductCategory).suppliersPerCountry
+          ),
           orderVolume:
             (lksgProductCategory as LksgProductCategory).orderVolume != null
               ? String((lksgProductCategory as LksgProductCategory).orderVolume)

@@ -28,7 +28,7 @@
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory" >
+                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
                   <template v-if="isSubcategoryVisible.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
@@ -197,8 +197,9 @@ export default defineComponent({
       const map = new Map<Subcategory, boolean>();
       for (const category of this.lksgDataModel) {
         for (const subcategory of category.subcategories) {
-          map.set(subcategory, subcategory.fields.some(
-              (field) => field.showIf(this.companyAssociatedLksgData.data))
+          map.set(
+            subcategory,
+            subcategory.fields.some((field) => field.showIf(this.companyAssociatedLksgData.data))
           );
         }
       }
