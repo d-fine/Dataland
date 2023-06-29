@@ -1,9 +1,11 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <ProductCategoriesFormElement :name="ProcurementCategory.Products" label="Products" />
-    <ProductCategoriesFormElement :name="ProcurementCategory.RawMaterials" label="Raw Materials" />
-    <ProductCategoriesFormElement :name="ProcurementCategory.Services" label="Services" />
+    <FormKit type="group" name="productCategories">
+      <ProductCategoriesFormElement :name="ProcurementCategory.Products" label="Products" />
+      <ProductCategoriesFormElement :name="ProcurementCategory.RawMaterials" label="Raw Materials" />
+      <ProductCategoriesFormElement :name="ProcurementCategory.Services" label="Services" />
+    </FormKit>
   </div>
 </template>
 
