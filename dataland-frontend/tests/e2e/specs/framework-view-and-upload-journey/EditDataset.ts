@@ -46,7 +46,10 @@ describeIf(
       cy.get("div").contains("New Dataset - LkSG").should("be.visible");
       const expectedCountry = preparedFixture.t.general?.productionSpecific?.listOfProductionSites?.[0]
         ?.addressOfProductionSite?.country as string;
-      cy.get('[data-test="AddressFormField0"] [data-test="country"]').should("contain", `(${expectedCountry})`);
+      cy.get('[data-test="AddressFormField"]')
+        .first()
+        .find('[data-test="country"]')
+        .should("contain", `(${expectedCountry})`);
       submitButton.buttonIsUpdateDataButton();
       submitButton.buttonAppearsEnabled();
       checkStickynessOfSubmitSideBar();
