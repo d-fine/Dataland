@@ -130,7 +130,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    void this.getQaDataForCurrentPage();
+    this.getQaDataForCurrentPage().catch((error) => console.log(error));
   },
   methods: {
     convertUnixTimeInMsToDateString,
@@ -285,7 +285,7 @@ export default defineComponent({
           dataId: this.dataId,
         },
         onClose: () => {
-          void this.getQaDataForCurrentPage();
+          void this.getQaDataForCurrentPage().catch((error) => console.log(error));
         },
       });
     },
@@ -293,9 +293,9 @@ export default defineComponent({
      * Updates the data for the current page
      * @param event event containing the new page
      */
-    onPage(event: DataTablePageEvent) {
+    async onPage(event: DataTablePageEvent) {
       this.currentPage = event.page;
-      void this.getQaDataForCurrentPage();
+      await this.getQaDataForCurrentPage();
     },
   },
 });

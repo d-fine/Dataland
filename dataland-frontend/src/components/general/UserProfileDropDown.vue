@@ -140,14 +140,14 @@ export default defineComponent({
     /**
      * Redirects the user to the data-request/invite screen
      */
-    goToDataRequest() {
-      void this.$router.push("/requests");
+    async goToDataRequest() {
+      await this.$router.push("/requests");
     },
     /**
      * Redirects the user to the api-key management interface
      */
-    goToApiKeysPage() {
-      void this.$router.push("/api-key");
+    async goToApiKeysPage() {
+      await this.$router.push("/api-key");
     },
     /**
      * Redirects the user to the QA Services page
