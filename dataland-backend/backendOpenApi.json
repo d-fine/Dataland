@@ -564,7 +564,7 @@
             }
           },
           {
-            "name": "getOnlyCompaniesWithDataFromCurrentUser",
+            "name": "onlyWithDataFromCurrentUser",
             "in": "query",
             "required": false,
             "schema": {
