@@ -3441,14 +3441,14 @@
         "enum": [
           "Ammonia",
           "Automotive",
-          "HVCPlastics",
+          "Cement",
           "CommercialRealEstate",
+          "ElectricityGeneration",
+          "FreightTransportByRoad",
+          "HVCPlastics",
+          "LivestockFarming",
           "ResidentialRealEstate",
           "Steel",
-          "FreightTransportByRoad",
-          "ElectricityGeneration",
-          "LivestockFarming",
-          "Cement",
           "Other"
         ]
       },
