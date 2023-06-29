@@ -13,7 +13,7 @@
     </div>
 
     <FormKit
-      data-test="listOfElementsInput"
+      :data-test="dataTestListInput"
       type="text"
       :ignore="true"
       v-model="listOfElementsString"
@@ -49,7 +49,7 @@ import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import PrimeButton from "primevue/button";
 
 export default defineComponent({
-  name: "StringBadgeList",
+  name: "StringBadgeListFormField",
   components: { PrimeButton, FormKit, UploadFormHeader },
   data() {
     return {
@@ -62,6 +62,10 @@ export default defineComponent({
     dataTestAddButton: {
       type: String,
       default: "addButton",
+    },
+    dataTestListInput: {
+      type: String,
+      default: "listOfElementsInput",
     },
   },
   methods: {

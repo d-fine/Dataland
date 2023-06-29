@@ -25,14 +25,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import StringBadgeListFormField from "@/components/forms/parts/fields/StringBadgeListFormField.vue";
 
 export default defineComponent({
   name: "ProductFormElement",
   components: {
-    UploadFormHeader,
     InputTextFormField,
     FreeTextFormField,
     StringBadgeListFormField,
