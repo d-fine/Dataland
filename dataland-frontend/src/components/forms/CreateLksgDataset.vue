@@ -28,34 +28,36 @@
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
-                  <div class="col-3 p-3 topicLabel">
-                    <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
-                    <div :class="`p-badge badge-${category.color}`">
-                      <span>{{ category.label.toUpperCase() }}</span>
+                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory" >
+                  <template v-if="isSubcategoryVisible.get(subcategory) ?? true">
+                    <div class="col-3 p-3 topicLabel">
+                      <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
+                      <div :class="`p-badge badge-${category.color}`">
+                        <span>{{ category.label.toUpperCase() }}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="col-9 formFields">
-                    <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
-                      <component
-                        v-if="field.showIf(companyAssociatedLksgData.data)"
-                        :is="field.component"
-                        :label="field.label"
-                        :placeholder="field.placeholder"
-                        :description="field.description"
-                        :name="field.name"
-                        :options="field.options"
-                        :required="field.required"
-                        :certificateRequiredIfYes="field.certificateRequiredIfYes"
-                        :validation="field.validation"
-                        :validation-label="field.validationLabel"
-                        :data-test="field.name"
-                        @documentUpdated="updateDocumentList"
-                        :ref="field.name"
-                      />
-                    </FormKit>
-                  </div>
+                    <div class="col-9 formFields">
+                      <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                        <component
+                          v-if="field.showIf(companyAssociatedLksgData.data)"
+                          :is="field.component"
+                          :label="field.label"
+                          :placeholder="field.placeholder"
+                          :description="field.description"
+                          :name="field.name"
+                          :options="field.options"
+                          :required="field.required"
+                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
+                          :validation="field.validation"
+                          :validation-label="field.validationLabel"
+                          :data-test="field.name"
+                          @documentUpdated="updateDocumentList"
+                          :ref="field.name"
+                        />
+                      </FormKit>
+                    </div>
+                  </template>
                 </div>
               </FormKit>
             </FormKit>
@@ -121,6 +123,7 @@ import { smoothScroll } from "@/utils/SmoothScroll";
 import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import ProductCategoriesFormField from "@/components/forms/parts/fields/ProductCategoriesFormField.vue";
+import { Subcategory } from "@/utils/GenericFrameworkTypes";
 
 export default defineComponent({
   setup() {
@@ -189,6 +192,17 @@ export default defineComponent({
       set() {
         // IGNORED
       },
+    },
+    isSubcategoryVisible(): Map<Subcategory, boolean> {
+      const map = new Map<Subcategory, boolean>();
+      for (const category of this.lksgDataModel) {
+        for (const subcategory of category.subcategories) {
+          map.set(subcategory, subcategory.fields.some(
+              (field) => field.showIf(this.companyAssociatedLksgData.data))
+          );
+        }
+      }
+      return map;
     },
   },
   props: {
