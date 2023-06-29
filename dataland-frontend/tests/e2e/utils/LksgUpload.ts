@@ -160,7 +160,7 @@ function selectDummyDateInDataPicker(): void {
  */
 function testProductionSiteAdditionAndRemovalAndFillOutOneProductionSite(): void {
   cy.get('div[data-test="productionSiteSection"]').should("be.visible");
-  cy.get('button[data-test="ADD-NEW-Production-Site-button"]').should("be.visible").click();
+  cy.get('button[data-test="addNewProductionSiteButton"]').should("be.visible").click();
   cy.get('div[data-test="productionSiteSection"]').should("have.length", 2);
   cy.get('[data-test="removeItemFromListOfProductionSites"]').eq(1).click();
   cy.get('div[data-test="productionSiteSection"]').should("have.length", 1);
@@ -199,7 +199,7 @@ function fillRequiredLksgFieldsWithDummyData(): void {
  * @param description the description to fill in
  */
 function fillNewProduct(productName: string, productionSteps: string[], description?: string): void {
-  cy.get('button[data-test="ADD-NEW-Product-button"]').click();
+  cy.get('button[data-test="addNewProductButton"]').click();
   const productFormElementSelector = '[data-test="productSection"] [data-test="productFormElement"]';
   cy.get(productFormElementSelector).last().find('input[name="productName"]').type(productName);
   if (productionSteps.length > 0 && productionSteps.some((productionStep) => productionStep.length > 0)) {
