@@ -22,38 +22,56 @@
           </div>
 
           <div class="form-field">
-            <FormKit type="group" name="suppliersPerCountry" label="Suppliers Per Country">
-              <div class="next-to-each-other">
-                <FormKit
-                  type="text"
-                  name="country"
-                  validation-label="Country"
-                  validation="required"
-                  placeholder="Country"
-                  data-test="country"
-                />
-                <FormKit
-                  type="text"
-                  name="numberOfSuppliers"
-                  validation-label="Number Of Suppliers"
-                  validation="number"
-                  placeholder="Number Of Suppliers"
-                />
-              </div>
+            <div class="flex justify-content-between">
+              <UploadFormHeader label="Suppliers Per Country" description="..." :is-required="false" />
 
-              <PrimeButton :disabled="false" label="Add" class="p-button-text" icon="pi pi-plus"></PrimeButton>
-
-              <div class="form-field">
-                <FormKit
-                  type="text"
-                  name="orderVolume"
-                  validation-label="validationLabel ?? label"
-                  validation="number"
-                  placeholder="placeholder"
-                  inner-class="long"
-                />
-              </div>
+              <PrimeButton
+                :disabled="false"
+                label="Add"
+                class="p-button-text"
+                icon="pi pi-plus"
+                @click="addNewSuppliers"
+              ></PrimeButton>
+            </div>
+            <FormKit type="list" name="suppliersPerCountry" label="Suppliers Per Country" v-model="existingSuppliers">
+              <FormKit type="group" v-for="id in listOfSuppliersIds" :key="id">
+                <div class="next-to-each-other">
+                  <FormKit
+                    type="text"
+                    name="country"
+                    validation-label="Country"
+                    validation="required"
+                    placeholder="Country"
+                    data-test="country"
+                  />
+                  <FormKit
+                    type="text"
+                    name="numberOfSuppliers"
+                    validation-label="Number Of Suppliers"
+                    validation="number"
+                    placeholder="Number Of Suppliers"
+                  />
+                  <em
+                    data-test="removeItemFromListOfSuppliersIds"
+                    @click="removeItemFromListOfSuppliers(id)"
+                    class="material-icons mt-2 link"
+                    >close</em
+                  >
+                </div>
+              </FormKit>
             </FormKit>
+          </div>
+
+          <div class="form-field">
+            <UploadFormHeader label="Order Volume" description="..." :is-required="false" />
+            <FormKit
+              type="text"
+              name="orderVolume"
+              validation-label="validationLabel ?? label"
+              validation="number"
+              placeholder="placeholder"
+              inner-class="long"
+            />
           </div>
         </div>
       </keep-alive>
@@ -63,6 +81,7 @@
 
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
+import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
@@ -76,14 +95,34 @@ export default defineComponent({
     PrimeButton,
     Checkbox,
     FreeTextFormField,
+    UploadFormHeader,
   },
   data() {
     return {
       existingRelatedCorporateSupplyChain: "",
+      existingSuppliers: [] as Array<object>,
+      listOfSuppliersIds: [0] as number[],
+      idCounter: 0,
       isItActive: false,
     };
   },
   props: FormFieldProps,
-  methods: {},
+  methods: {
+    /**
+     * Adds a new Object to the Suppliers array
+     */
+    addNewSuppliers() {
+      this.idCounter++;
+      this.listOfSuppliersIds.push(this.idCounter);
+    },
+
+    /**
+     * Remove Object from Product array
+     * @param id - the id of the object in the array
+     */
+    removeItemFromListOfSuppliers(id: number) {
+      this.listOfSuppliersIds = this.listOfSuppliersIds.filter((el) => el !== id);
+    },
+  },
 });
 </script>
