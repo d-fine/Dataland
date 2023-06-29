@@ -11,13 +11,13 @@ import io.swagger.v3.oas.annotations.media.Schema
 enum class P2pSector {
     Ammonia,
     Automotive,
-    HVCPlastics,
+    Cement,
     CommercialRealEstate,
+    ElectricityGeneration,
+    FreightTransportByRoad,
+    HVCPlastics,
+    LivestockFarming,
     ResidentialRealEstate,
     Steel,
-    FreightTransportByRoad,
-    ElectricityGeneration,
-    LivestockFarming,
-    Cement,
     Other,
 }
