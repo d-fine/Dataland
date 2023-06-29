@@ -1,4 +1,10 @@
-import { DataMetaInformation, EuTaxonomyDataForFinancials, LksgData, StoredCompany } from "@clients/backend";
+import {
+  DataMetaInformation,
+  DataTypeEnum,
+  EuTaxonomyDataForFinancials,
+  LksgData,
+  StoredCompany,
+} from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken, login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -43,10 +49,11 @@ describeIf(
     });
 
     it("Check whether newly added dataset has Rejected status and can be edited", () => {
-      const data = getPreparedFixture("LkSG-date-2023-04-18", preparedLksgFixtures);
+      const data = getPreparedFixture("lksg-all-fields", preparedLksgFixtures);
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         const lksgDataset = await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
+        cy.pause();
         testSubmittedDatasetIsInReviewListAndRejected(storedCompany, lksgDataset);
       });
     });
@@ -108,15 +115,13 @@ function testSubmittedDatasetIsInReviewListAndRejected(
 
   testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, "REJECTED");
 
-  cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataset.dataId}`)
-    .get('[data-test="editDatasetButton"')
-    .should("exist")
-    .click()
-    .url()
-    .should(
-      "eq",
-      getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${dataset.dataId}`
-    );
+  cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataset.dataId}`);
+  cy.get('button[data-test="editDatasetButton"]').should("exist").click();
+
+  cy.url().should(
+    "eq",
+    getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${dataset.dataId}`
+  );
 }
 
 /**
