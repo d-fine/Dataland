@@ -5,6 +5,7 @@ import {
   EuTaxonomyDataForFinancials,
   EuTaxonomyDataForNonFinancials,
   LksgData,
+  PathwaysToParisData,
   SfdrData,
   SmeData,
 } from "@clients/backend";
@@ -18,6 +19,7 @@ import { uploadOneSfdrDataset } from "@e2e/utils/SfdrUpload";
 import { uploadOneSmeDataset } from "@e2e/utils/SmeUpload";
 import { describeIf } from "@e2e/support/TestUtility";
 import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
+import { uploadOneP2pDatasetViaApi } from "@e2e/utils/P2pUpload";
 
 const chunkSize = 15;
 
@@ -152,6 +154,31 @@ describe(
 
         it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
           checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.Lksg, companiesWithLksgData.length);
+        });
+      }
+    );
+
+    describeIf(
+      "Upload and validate P2p data",
+      {
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
+        dataEnvironments: ["fakeFixtures"],
+      },
+      () => {
+        let companiesWithP2pData: Array<FixtureData<PathwaysToParisData>>;
+
+        before(function () {
+          cy.fixture("CompanyInformationWithP2pData").then(function (jsonContent) {
+            companiesWithP2pData = jsonContent as Array<FixtureData<PathwaysToParisData>>;
+          });
+        });
+
+        it("Upload P2p fake-fixtures", () => {
+          prepopulate(companiesWithP2pData, uploadOneP2pDatasetViaApi);
+        });
+
+        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(DataTypeEnum.P2p, companiesWithP2pData.length);
         });
       }
     );
