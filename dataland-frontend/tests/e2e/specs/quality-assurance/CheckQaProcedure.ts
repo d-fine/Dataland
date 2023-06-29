@@ -53,7 +53,6 @@ describeIf(
       getKeycloakToken(uploader_name, uploader_pw).then(async (token: string) => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         const lksgDataset = await uploadOneLksgDatasetViaApi(token, storedCompany.companyId, "2022", data.t, false);
-        cy.pause();
         testSubmittedDatasetIsInReviewListAndRejected(storedCompany, lksgDataset);
       });
     });
