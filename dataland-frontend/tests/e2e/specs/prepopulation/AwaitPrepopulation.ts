@@ -15,7 +15,8 @@ describe("I want to ensure that the prepopulation has finished before executing 
       fixtures.push(
         "CompanyInformationWithLksgData",
         "CompanyInformationWithSfdrData",
-        "CompanyInformationWithSmeData"
+        "CompanyInformationWithSmeData",
+        "CompanyInformationWithP2pData"
       );
     }
     fixtures.forEach((fixtureFile) => {
@@ -51,10 +52,12 @@ describe("I want to ensure that the prepopulation has finished before executing 
             const lksgResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Lksg);
             const sfdrResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Sfdr);
             const smeResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Sme);
+            const p2pResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.P2p);
             totalCompanies +=
               lksgResponse.numberOfCompaniesForDataType +
               sfdrResponse.numberOfCompaniesForDataType +
-              smeResponse.numberOfCompaniesForDataType;
+              smeResponse.numberOfCompaniesForDataType +
+              p2pResponse.numberOfCompaniesForDataType;
           }
           assert(
             totalCompanies >= expectedNumberOfCompanies,

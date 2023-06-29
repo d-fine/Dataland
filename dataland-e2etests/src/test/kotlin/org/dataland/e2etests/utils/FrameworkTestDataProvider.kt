@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import java.io.File
@@ -48,6 +49,8 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
             File("./build/resources/test/CompanyInformationWithSfdrData.json"),
         SmeData::class.java to
             File("./build/resources/test/CompanyInformationWithSmeData.json"),
+        PathwaysToParisData::class.java to
+            File("./build/resources/test/CompanyInformationWithP2pData.json"),
     )
 
     private val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
