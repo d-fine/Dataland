@@ -495,7 +495,7 @@
             }
           },
           {
-            "name": "onlyCurrentUserAsUploader",
+            "name": "getOnlyCompaniesWithDataFromCurrentUser",
             "in": "query",
             "required": false,
             "schema": {

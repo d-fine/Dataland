@@ -38,12 +38,12 @@ class CompanyDataController(
         countryCodes: Set<String>?,
         sectors: Set<String>?,
         onlyCompanyNames: Boolean,
-        onlyCurrentUserAsUploader: Boolean,
+        getOnlyCompaniesWithDataFromCurrentUser: Boolean,
     ): ResponseEntity<List<StoredCompany>> {
         logger.info(
             "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
                 "='$onlyCompanyNames', dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors', " +
-                "onlyCurrentUserAsUploader='$onlyCurrentUserAsUploader'",
+                "onlyCurrentUserAsUploader='$getOnlyCompaniesWithDataFromCurrentUser'",
         )
         return ResponseEntity.ok(
             companyManager.searchCompaniesAndGetApiModel(
@@ -53,7 +53,7 @@ class CompanyDataController(
                     dataTypes ?: setOf(),
                     countryCodes ?: setOf(),
                     sectors ?: setOf(),
-                    onlyCurrentUserAsUploader,
+                    getOnlyCompaniesWithDataFromCurrentUser,
                 ),
                 DatalandAuthentication.fromContextOrNull(),
             ),
