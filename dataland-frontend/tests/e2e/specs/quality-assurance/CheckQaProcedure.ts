@@ -2,7 +2,7 @@ import { DataMetaInformation, EuTaxonomyDataForFinancials, LksgData, StoredCompa
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken, login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { getBaseUrl, reviewer_name, reviewer_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { uploadOneEuTaxonomyFinancialsDatasetViaApi } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 import { uploadOneLksgDatasetViaApi } from "@e2e/utils/LksgUpload";
 import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
@@ -110,7 +110,13 @@ function testSubmittedDatasetIsInReviewListAndRejected(
 
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataset.dataId}`)
     .get('[data-test="editDatasetButton"')
-    .should("exist");
+    .should("exist")
+    .click()
+    .url()
+    .should(
+      "eq",
+      getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/lksg/upload?templateDataId=${dataset.dataId}`
+    );
 }
 
 /**
