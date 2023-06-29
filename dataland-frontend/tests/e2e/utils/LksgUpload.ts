@@ -205,7 +205,7 @@ function fillNewProduct(productName: string, productionSteps: string[], descript
   if (productionSteps.length > 0 && productionSteps.some((productionStep) => productionStep.length > 0)) {
     cy.get(productFormElementSelector)
       .last()
-      .find('input[data-test^="listOfProductionSteps"]')
+      .find('input[data-test="listOfElementsInput"]')
       .type(productionSteps.join(", "));
     cy.get(productFormElementSelector).last().find('[data-test="addProductionStep"]').click();
   }
