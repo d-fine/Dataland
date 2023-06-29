@@ -1,9 +1,9 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <ProductCategory :name="ProcurementCategory.Products" label="Products" />
-    <ProductCategory :name="ProcurementCategory.RawMaterials" label="Raw Materials" />
-    <ProductCategory :name="ProcurementCategory.Services" label="Services" />
+    <ProductCategoriesFormElement :name="ProcurementCategory.Products" label="Products" />
+    <ProductCategoriesFormElement :name="ProcurementCategory.RawMaterials" label="Raw Materials" />
+    <ProductCategoriesFormElement :name="ProcurementCategory.Services" label="Services" />
   </div>
 </template>
 
@@ -11,6 +11,8 @@
 import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { ProcurementCategory } from "@/api-models/ProcurementCategory";
+import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import ProductCategoriesFormElement from "@/components/forms/parts/elements/derived/ProductCategoriesFormElement.vue";
 
 export default defineComponent({
   name: "ProductCategoriesFormField",
@@ -19,8 +21,10 @@ export default defineComponent({
       ProcurementCategory,
     };
   },
+  props: FormFieldProps,
   components: {
     UploadFormHeader,
+    ProductCategoriesFormElement,
   },
 });
 </script>
