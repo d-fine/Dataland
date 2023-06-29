@@ -60,9 +60,11 @@ export default defineComponent({
     };
   },
   created() {
-    void checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise).then((hasUserReviewerRights) => {
-      this.tabs[2].isVisible = hasUserReviewerRights;
-    });
+    checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
+      .then((hasUserReviewerRights) => {
+        this.tabs[2].isVisible = hasUserReviewerRights;
+      })
+      .catch((error) => console.log(error));
   },
   methods: {
     /**
@@ -70,9 +72,9 @@ export default defineComponent({
      * @param event the event containing the index of the newly selected tab
      * @param event.index the index of the tab element
      */
-    handleTabChange(event: { index: number }): void {
+    async handleTabChange(event: { index: number }): void {
       if (this.initialTabIndex != event.index) {
-        void this.$router.push(this.tabs[event.index].route);
+        await this.$router.push(this.tabs[event.index].route);
       }
     },
   },
