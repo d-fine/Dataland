@@ -1,5 +1,5 @@
 <template>
-  <FormKit type="group" :name="name">
+  <FormKit type="group" :name="name" :ignore="!isItActive">
     <div class="flex align-items-center mt-3">
       <Checkbox inputId="productCategorieCheck" :binary="true" v-model="isItActive" />
       <label for="productCategorieCheck" class="ml-2"> {{ label }} </label>
