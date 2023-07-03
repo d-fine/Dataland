@@ -2,205 +2,193 @@
 	{
 		"companyInformation": {
 			"companyName": "only-eligible-numbers",
-			"headquarters": "Ost Michaelascheid",
-			"sector": "architectures",
+			"headquarters": "Björnland",
+			"headquartersPostalCode": "68869",
+			"sector": "bandwidth",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "nwkPwaYo5GA85w7"
+					"identifierValue": "6C2vcoPIP9mWOMj"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "6mijIXLZ1"
 				},
 				{
 					"identifierType": "Isin",
-					"identifierValue": "sRvMSLO9xbI9"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "1qtdGvn7choVaNJKYvfz"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "FAhkNmdJ8I"
+					"identifierValue": "rwL0dWLSnFn9"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "XPPSuLp"
+					"identifierValue": "DkaRthS"
 				}
 			],
-			"countryCode": "YE",
+			"countryCode": "GQ",
 			"companyAlternativeNames": [
-				"Wartenberg AG",
-				"Wieser, Grundmann und Manns"
+				"Förster, Scc und Fitschen",
+				"Fried-Jacob",
+				"Tuschmo-Buchholz"
 			],
-			"website": "https://sorgsam-kupfer.net",
+			"website": "https://fundamental-schlange.com",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"fiscalYearEnd": "2022-07-16",
+			"fiscalYearEnd": "2023-05-23",
 			"referencedReports": {
-				"AnnualReport": {
+				"IntegratedReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-12-18",
-					"currency": "LYD"
+					"currency": "GMD"
 				},
 				"ESEFReport": {
 					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-05-16",
-					"currency": "SRD"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "KYD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "AOA"
-				}
-			},
-			"assurance": {
-				"assurance": "ReasonableAssurance"
-			},
-			"reportingObligation": "Yes",
-			"opex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.3595,
-					"quality": "NA"
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.3976,
-					"quality": "NA"
-				}
-			},
-			"revenue": {
-				"eligibleData": {
-					"valueAsPercentage": 0.4365,
-					"quality": "NA"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "Neu Arviddorf",
-			"sector": "e-commerce",
-			"identifiers": [
-				{
-					"identifierType": "Duns",
-					"identifierValue": "iZfNEjgU6"
-				},
-				{
-					"identifierType": "Lei",
-					"identifierValue": "TrY1kTTzJ9QNBf69Xm4C"
-				},
-				{
-					"identifierType": "PermId",
-					"identifierValue": "g5dZof7dk7"
-				},
-				{
-					"identifierType": "Ticker",
-					"identifierValue": "L3090av"
-				}
-			],
-			"countryCode": "BT",
-			"companyAlternativeNames": [
-				"Jossa Gruppe",
-				"Schreck, Graf und Schuster",
-				"Schultze, Sahner und Scharf"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://stimmungsvoll-literatur.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2022-12-27",
-			"numberOfEmployees": 47014,
-			"referencedReports": {
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "BDT"
-				},
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"currency": "ALL"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-07-22",
-					"currency": "SDG"
+					"reportDate": "2023-06-09",
+					"currency": "SCR"
 				}
 			},
 			"assurance": {
 				"assurance": "None"
 			},
-			"scopeOfEntities": "Yes",
+			"scopeOfEntities": "No",
+			"opex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.3498,
+					"quality": "NA"
+				}
+			},
+			"capex": {
+				"eligibleData": {
+					"valueAsPercentage": 0.5955,
+					"quality": "NA"
+				}
+			},
+			"revenue": {
+				"eligibleData": {
+					"valueAsPercentage": 0.4391,
+					"quality": "NA"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "only-eligible-and-total-numbers",
+			"headquarters": "West Karl",
+			"headquartersPostalCode": "45978",
+			"sector": "platforms",
+			"identifiers": [
+				{
+					"identifierType": "CompanyRegistrationNumber",
+					"identifierValue": "kaRvemM4rHzLZyY"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "xwVBtyaHh"
+				},
+				{
+					"identifierType": "Lei",
+					"identifierValue": "kF11DkM5Cj3lRILxsegS"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "UEpJN82CQM"
+				},
+				{
+					"identifierType": "Ticker",
+					"identifierValue": "p9gnwCg"
+				},
+				{
+					"identifierType": "VatNumber",
+					"identifierValue": "qvidLCrr1"
+				}
+			],
+			"countryCode": "CW",
+			"companyAlternativeNames": [
+				"Jakubczyk AG",
+				"Proske, Weidner und Drews"
+			],
+			"isTeaserCompany": false
+		},
+		"t": {
+			"fiscalYearEnd": "2023-05-04",
+			"referencedReports": {
+				"SustainabilityReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"currency": "DJF"
+				},
+				"AnnualReport": {
+					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"isGroupLevel": "No",
+					"reportDate": "2023-01-05",
+					"currency": "RWF"
+				}
+			},
+			"assurance": {
+				"assurance": "None"
+			},
+			"scopeOfEntities": "NA",
+			"reportingObligation": "No",
 			"opex": {
 				"totalAmount": {
-					"value": 260377.963015344,
+					"value": 343301.54170747846,
 					"dataSource": {
-						"page": 1,
+						"page": 185,
 						"report": "AnnualReport",
-						"tagName": "architectures"
+						"tagName": "e-markets"
 					},
-					"quality": "Estimated",
-					"comment": "hack online monitor"
+					"quality": "Reported",
+					"comment": "override virtual panel"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.8937,
+					"valueAsPercentage": 0.3739,
 					"dataSource": {
-						"page": 900,
-						"report": "AnnualReport",
-						"tagName": "convergence"
+						"page": 823,
+						"report": "SustainabilityReport",
+						"tagName": "schemas"
 					},
-					"quality": "Incomplete",
-					"comment": "copy neural feed",
-					"valueAsAbsolute": 459292.5057047978
+					"quality": "Audited",
+					"comment": "override wireless bandwidth",
+					"valueAsAbsolute": 455956.6491981968
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 783502.2821556777,
+					"value": 410822.3715447821,
 					"dataSource": {
-						"page": 43,
-						"report": "ESEFReport",
-						"tagName": "networks"
+						"page": 1115,
+						"report": "AnnualReport",
+						"tagName": "portals"
 					},
-					"quality": "Audited",
-					"comment": "synthesize virtual bandwidth"
+					"quality": "Reported",
+					"comment": "back up virtual feed"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.5558,
-					"dataSource": {
-						"page": 410,
-						"report": "IntegratedReport",
-						"tagName": "content"
-					},
-					"quality": "Audited",
-					"comment": "connect cross-platform capacitor",
-					"valueAsAbsolute": 432931.979035493
+					"valueAsPercentage": 0.4877,
+					"quality": "Incomplete",
+					"valueAsAbsolute": 958511.6806789301
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 760766.8950571679,
-					"quality": "Estimated"
+					"value": 991226.1406192556,
+					"dataSource": {
+						"page": 521,
+						"report": "AnnualReport",
+						"tagName": "e-markets"
+					},
+					"quality": "Incomplete",
+					"comment": "transmit 1080p feed"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.634,
+					"valueAsPercentage": 0.1993,
 					"dataSource": {
-						"page": 896,
-						"report": "ESEFReport",
-						"tagName": "mindshare"
+						"page": 377,
+						"report": "AnnualReport",
+						"tagName": "channels"
 					},
 					"quality": "Audited",
-					"comment": "input 1080p bandwidth",
-					"valueAsAbsolute": 462911.4280920476
+					"comment": "quantify multi-byte panel",
+					"valueAsAbsolute": 631118.9557542093
 				}
 			}
 		},
@@ -209,87 +197,99 @@
 	{
 		"companyInformation": {
 			"companyName": "company_without_reports",
-			"headquarters": "Cassandraland",
-			"sector": "supply-chains",
+			"headquarters": "Chemnitz",
+			"headquartersPostalCode": "07876",
+			"sector": "web services",
 			"identifiers": [
 				{
 					"identifierType": "CompanyRegistrationNumber",
-					"identifierValue": "nZL76S74SV3MvEC"
+					"identifierValue": "5CQhEDrf1kNqzFD"
+				},
+				{
+					"identifierType": "Duns",
+					"identifierValue": "C0O0S87oe"
+				},
+				{
+					"identifierType": "Isin",
+					"identifierValue": "2XlvmRQdeVaD"
 				},
 				{
 					"identifierType": "Lei",
-					"identifierValue": "LfVrrHckFB6t6qonI618"
+					"identifierValue": "dXL0uz1sZhsJEJHLeICX"
+				},
+				{
+					"identifierType": "PermId",
+					"identifierValue": "CrAnZWHq6C"
 				},
 				{
 					"identifierType": "Ticker",
-					"identifierValue": "OstWKgd"
-				},
-				{
-					"identifierType": "VatNumber",
-					"identifierValue": "DFXNRUl5r"
+					"identifierValue": "XjqlU3P"
 				}
 			],
-			"countryCode": "MM",
+			"countryCode": "NG",
 			"companyAlternativeNames": [
-				"Bunjes AG",
-				"Kempe-Roba"
+				"Lorenz-Thränhardt",
+				"Pajonk AG",
+				"Tegethof-Schedler",
+				"Wiese, Knoblich und Zaituc"
 			],
-			"companyLegalForm": "Sole Trader",
+			"companyLegalForm": "GmbH & Co. KG",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearEnd": "2023-04-13",
-			"numberOfEmployees": 19460,
+			"fiscalYearDeviation": "Deviation",
 			"assurance": {
-				"assurance": "LimitedAssurance"
+				"assurance": "LimitedAssurance",
+				"provider": "Schönfeld KG",
+				"dataSource": {
+					"page": 728,
+					"report": "ESEFReport",
+					"tagName": "systems"
+				}
 			},
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "No",
 			"opex": {
 				"alignedData": {
 					"dataSource": {
-						"page": 955,
-						"report": "SustainabilityReport",
-						"tagName": "niches"
+						"page": 76,
+						"report": "ESEFReport",
+						"tagName": "communities"
+					},
+					"quality": "Reported",
+					"comment": "reboot redundant protocol",
+					"valueAsAbsolute": 796514.3253095448
+				},
+				"eligibleData": {
+					"valueAsPercentage": 0.2169,
+					"dataSource": {
+						"page": 869,
+						"report": "ESEFReport",
+						"tagName": "communities"
 					},
 					"quality": "Audited",
-					"comment": "index primary sensor",
-					"valueAsAbsolute": 612438.381568063
+					"comment": "index bluetooth pixel"
 				}
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 247466.1030457355,
-					"dataSource": {
-						"page": 880,
-						"report": "ESEFReport",
-						"tagName": "blockchains"
-					},
-					"quality": "Estimated",
-					"comment": "back up back-end protocol"
-				}
-			},
-			"revenue": {
+					"value": 148392.20982976258,
+					"quality": "Incomplete"
+				},
 				"alignedData": {
-					"dataSource": {
-						"page": 527,
-						"report": "ESEFReport",
-						"tagName": "niches"
-					},
-					"quality": "Audited",
-					"comment": "parse multi-byte program"
+					"valueAsPercentage": 0.4091,
+					"quality": "Estimated"
 				},
 				"eligibleData": {
-					"valueAsPercentage": 0.9016,
+					"valueAsPercentage": 0.5632,
 					"dataSource": {
-						"page": 971,
+						"page": 748,
 						"report": "ESEFReport",
-						"tagName": "paradigms"
+						"tagName": "schemas"
 					},
-					"quality": "Reported",
-					"comment": "synthesize virtual driver"
+					"quality": "Estimated",
+					"comment": "index virtual driver"
 				}
-			}
+			},
+			"revenue": {}
 		},
 		"reportingPeriod": "2021"
 	}
