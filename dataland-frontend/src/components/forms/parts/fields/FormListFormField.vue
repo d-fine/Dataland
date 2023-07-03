@@ -102,3 +102,26 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.formListSection {
+    border: 1px solid $input-text-border;
+    padding: 1rem;
+    border-radius: .5rem;
+    margin: 2rem 0;
+    position: relative;
+    .close-section {
+        position: absolute;
+        right: -15px;
+        left: auto;
+        top: -15px;
+        background: white;
+        border: 1px solid;
+        border-radius: 50%;
+        text-align: center;
+        display: flex;
+        padding: 3px;
+        cursor: pointer;
+    }
+}
+</style>

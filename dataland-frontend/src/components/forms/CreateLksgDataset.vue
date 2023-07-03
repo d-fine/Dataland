@@ -126,7 +126,7 @@ import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
-import ProductCategoriesFormField from "@/components/forms/parts/fields/ProductCategoriesFormField.vue";
+import ProductCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { Subcategory } from "@/utils/GenericFrameworkTypes";
 
 export default defineComponent({
