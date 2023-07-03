@@ -52,7 +52,6 @@ class GleifGoldenCopyIngestor(
     @EventListener(ApplicationReadyEvent::class)
     fun processFullGoldenCopyFileIfEnabled() {
         val flagFile = allCompaniesIngestFlagFilePath?.let { File(it) }
-
         if (allCompaniesForceIngest || flagFile?.exists() == true) {
             if (flagFile?.exists() == true) {
                 logger.info("Found collect all companies flag. Deleting it.")
