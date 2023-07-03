@@ -27,7 +27,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     @Test
     fun `post a dummy company and check if that specific company can be queried by its name`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
-        val expectedDataset = uploadTestEuTaxonomyFinancialsDataSet(uploadInfo.actualStoredCompany.companyId).copy(uploaderUserId = null)
+        val expectedDataset = uploadTestEuTaxonomyFinancialsDataSet(uploadInfo.actualStoredCompany.companyId)
+            .copy(uploaderUserId = null)
         val getCompaniesOnlyByNameResponse = apiAccessor.getCompaniesOnlyByName(
             uploadInfo.actualStoredCompany.companyInformation.companyName,
         )
