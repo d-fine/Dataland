@@ -9,7 +9,7 @@ import java.math.BigDecimal
  */
 data class LksgProductCategory(
     @field:JsonProperty(required = true)
-    val definitionProductTypeService: List<String>, // TODO adapt dataDictionary according to required = true
+    val definitionProductTypeService: List<String>,
 
     val suppliersPerCountry: List<LksgCountryAssociatedSuppliers>?,
 

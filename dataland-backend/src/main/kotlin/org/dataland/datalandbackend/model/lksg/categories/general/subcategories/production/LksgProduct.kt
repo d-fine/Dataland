@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class LksgProduct(
     @field:JsonProperty(required = true)
-    val productName: String, // TODO adapt dataDictionary according to required = true
+    val productName: String,
 
     val productionSteps: List<String>?,
 

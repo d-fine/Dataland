@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class LksgCountryAssociatedSuppliers(
     @field:JsonProperty(required = true)
-    val country: String, // TODO adapt dataDictionary according to required = true
+    val country: String,
 
     val numberOfSuppliers: Int?,
 )
