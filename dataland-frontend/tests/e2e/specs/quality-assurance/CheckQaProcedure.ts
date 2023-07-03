@@ -1,9 +1,4 @@
-import {
-  DataMetaInformation,
-  EuTaxonomyDataForFinancials,
-  LksgData,
-  StoredCompany,
-} from "@clients/backend";
+import { DataMetaInformation, EuTaxonomyDataForFinancials, LksgData, StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken, login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
