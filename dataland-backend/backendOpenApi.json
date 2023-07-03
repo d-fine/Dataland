@@ -226,6 +226,75 @@
         ]
       }
     },
+    "/data/p2p": {
+      "post": {
+        "tags": [
+          "p-2p-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedP2pData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataPathwaysToParisData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/lksg": {
       "post": {
         "tags": [
@@ -1042,6 +1111,142 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationSfdrData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/p2p/{dataId}": {
+      "get": {
+        "tags": [
+          "p-2p-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedP2pData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPathwaysToParisData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/p2p/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "p-2p-data-controller"
+        ],
+        "operationId": "getAllCompanyP2pData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationPathwaysToParisData"
                   }
                 }
               }
@@ -2700,6 +2905,638 @@
           }
         }
       },
+      "CompanyAssociatedDataPathwaysToParisData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PathwaysToParisData"
+          }
+        }
+      },
+      "DocumentReference": {
+        "required": [
+          "name",
+          "reference"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "reference": {
+            "type": "string"
+          }
+        }
+      },
+      "P2pAmmonia": {
+        "type": "object",
+        "properties": {
+          "decarbonisation": {
+            "$ref": "#/components/schemas/P2pAmmoniaDecarbonisation"
+          },
+          "defossilisation": {
+            "$ref": "#/components/schemas/P2pAmmoniaDefossilisation"
+          }
+        }
+      },
+      "P2pAmmoniaDecarbonisation": {
+        "type": "object",
+        "properties": {
+          "energyMix": {
+            "type": "number"
+          },
+          "ccsTechnologyAdoption": {
+            "type": "number"
+          },
+          "electrification": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pAmmoniaDefossilisation": {
+        "type": "object",
+        "properties": {
+          "useOfRenewableFeedstocks": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pAutomotive": {
+        "type": "object",
+        "properties": {
+          "energy": {
+            "$ref": "#/components/schemas/P2pAutomotiveEnergy"
+          },
+          "technologyValueCreation": {
+            "$ref": "#/components/schemas/P2pAutomotiveTechnologyValueCreation"
+          },
+          "materials": {
+            "$ref": "#/components/schemas/P2pAutomotiveMaterials"
+          }
+        }
+      },
+      "P2pAutomotiveEnergy": {
+        "type": "object",
+        "properties": {
+          "productionSiteEnergyConsumption": {
+            "type": "number"
+          },
+          "energyMix": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pAutomotiveMaterials": {
+        "type": "object",
+        "properties": {
+          "materialUseManagement": {
+            "type": "number"
+          },
+          "useOfSecondaryMaterials": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pAutomotiveTechnologyValueCreation": {
+        "type": "object",
+        "properties": {
+          "driveMix": {
+            "type": "number"
+          },
+          "icAndHybridEnginePhaseOutDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "futureValueCreationStrategy": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "P2pCement": {
+        "type": "object",
+        "properties": {
+          "energy": {
+            "$ref": "#/components/schemas/P2pCementEnergy"
+          },
+          "technology": {
+            "$ref": "#/components/schemas/P2pCementTechnology"
+          },
+          "material": {
+            "$ref": "#/components/schemas/P2pCementMaterial"
+          }
+        }
+      },
+      "P2pCementEnergy": {
+        "type": "object",
+        "properties": {
+          "energyMix": {
+            "type": "number"
+          },
+          "fuelMix": {
+            "type": "number"
+          },
+          "thermalEnergyEfficiency": {
+            "type": "number"
+          },
+          "compositionOfThermalInput": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pCementMaterial": {
+        "type": "object",
+        "properties": {
+          "clinkerFactorReduction": {
+            "type": "number"
+          },
+          "preCalcinedClayUsage": {
+            "type": "number"
+          },
+          "circularEconomyContribution": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "P2pCementTechnology": {
+        "type": "object",
+        "properties": {
+          "carbonCaptureAndUseTechnologyUsage": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "electrificationOfProcessHeat": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pClimateTargets": {
+        "type": "object",
+        "properties": {
+          "longTermScienceBasedClimateTarget": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "shortTermScienceBasedClimateTarget": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "P2pElectricityGeneration": {
+        "type": "object",
+        "properties": {
+          "technology": {
+            "$ref": "#/components/schemas/P2pElectricityGenerationTechnology"
+          }
+        }
+      },
+      "P2pElectricityGenerationTechnology": {
+        "type": "object",
+        "properties": {
+          "electricityMixEmissions": {
+            "type": "number"
+          },
+          "shareOfRenewableElectricity": {
+            "type": "number"
+          },
+          "naturalGasPhaseOut": {
+            "type": "string",
+            "format": "date"
+          },
+          "coalPhaseOut": {
+            "type": "string",
+            "format": "date"
+          },
+          "storageCapacityExpansion": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pEmissionsPlanning": {
+        "type": "object",
+        "properties": {
+          "reductionOfAbsoluteEmissions": {
+            "type": "number"
+          },
+          "absoluteEmissions": {
+            "type": "number"
+          },
+          "climateActionPlan": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "reductionOfRelativeEmissions": {
+            "type": "number"
+          },
+          "relativeEmissions": {
+            "type": "number"
+          },
+          "useOfInternalCarbonPrice": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "P2pFreightTransportByRoad": {
+        "type": "object",
+        "properties": {
+          "technology": {
+            "$ref": "#/components/schemas/P2pFreightTransportByRoadTechnology"
+          },
+          "energy": {
+            "$ref": "#/components/schemas/P2pFreightTransportByRoadEnergy"
+          }
+        }
+      },
+      "P2pFreightTransportByRoadEnergy": {
+        "type": "object",
+        "properties": {
+          "fuelMix": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pFreightTransportByRoadTechnology": {
+        "type": "object",
+        "properties": {
+          "driveMix": {
+            "type": "number"
+          },
+          "icePhaseOut": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "P2pGeneral": {
+        "required": [
+          "general"
+        ],
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/P2pGeneralGeneral"
+          },
+          "governance": {
+            "$ref": "#/components/schemas/P2pGovernance"
+          },
+          "climateTargets": {
+            "$ref": "#/components/schemas/P2pClimateTargets"
+          },
+          "emissionsPlanning": {
+            "$ref": "#/components/schemas/P2pEmissionsPlanning"
+          },
+          "investmentPlanning": {
+            "$ref": "#/components/schemas/P2pInvestmentPlanning"
+          }
+        }
+      },
+      "P2pGeneralGeneral": {
+        "required": [
+          "dataDate",
+          "sector"
+        ],
+        "type": "object",
+        "properties": {
+          "dataDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "sector": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/P2pSector"
+            }
+          }
+        }
+      },
+      "P2pGovernance": {
+        "type": "object",
+        "properties": {
+          "organisationalResponsibilityForParisCompatibility": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "parisCompatibilityInExecutiveRemuneration": {
+            "type": "number"
+          },
+          "parisCompatibilityInAverageRemuneration": {
+            "type": "number"
+          },
+          "shareOfEmployeesTrainedOnParisCompatibility": {
+            "type": "number"
+          },
+          "qualificationRequirementsOnParisCompatibility": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "mobilityAndTravelPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "downstreamCustomerEngagement": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "policymakerEngagement": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "upstreamSupplierEngagementStrategy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "upstreamSupplierProcurementPolicy": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "P2pHvcPlastics": {
+        "type": "object",
+        "properties": {
+          "decarbonisation": {
+            "$ref": "#/components/schemas/P2pHvcPlasticsDecarbonisation"
+          },
+          "defossilisation": {
+            "$ref": "#/components/schemas/P2pHvcPlasticsDefossilisation"
+          },
+          "recycling": {
+            "$ref": "#/components/schemas/P2pHvcPlasticsRecycling"
+          }
+        }
+      },
+      "P2pHvcPlasticsDecarbonisation": {
+        "type": "object",
+        "properties": {
+          "energyMix": {
+            "type": "number"
+          },
+          "electrification": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pHvcPlasticsDefossilisation": {
+        "type": "object",
+        "properties": {
+          "useOfRenewableFeedstocks": {
+            "type": "number"
+          },
+          "useOfBioplastics": {
+            "type": "number"
+          },
+          "useOfCo2FromCarbonCaptureAndReUseTechnologies": {
+            "type": "number"
+          },
+          "carbonCaptureAndUseStorageTechnologies": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pHvcPlasticsRecycling": {
+        "type": "object",
+        "properties": {
+          "contributionToCircularEconomy": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "materialRecycling": {
+            "type": "number"
+          },
+          "chemicalRecycling": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pInvestmentPlanning": {
+        "type": "object",
+        "properties": {
+          "capexShareInGhgIntensivePlants": {
+            "type": "number"
+          },
+          "capexShareInNetZeroSolutions": {
+            "type": "number"
+          },
+          "investmentPlanForClimateTargets": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "researchAndDevelopmentExpenditureForNetZeroSolutions": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pLivestockFarming": {
+        "type": "object",
+        "properties": {
+          "emissionsFromManureAndFertiliserAndLivestock": {
+            "$ref": "#/components/schemas/P2pLivestockFarmingEmissionsFromManureAndFertiliserAndLivestock"
+          },
+          "animalWelfare": {
+            "$ref": "#/components/schemas/P2pLivestockFarmingAnimalWelfare"
+          },
+          "animalFeed": {
+            "$ref": "#/components/schemas/P2pLivestockFarmingAnimalFeed"
+          },
+          "energy": {
+            "$ref": "#/components/schemas/P2pLivestockFarmingEnergy"
+          }
+        }
+      },
+      "P2pLivestockFarmingAnimalFeed": {
+        "type": "object",
+        "properties": {
+          "ownFeedPercentage": {
+            "type": "number"
+          },
+          "externalFeedCertification": {
+            "$ref": "#/components/schemas/BaseDataPointYesNo"
+          },
+          "originOfExternalFeed": {
+            "type": "string"
+          },
+          "excessNitrogen": {
+            "type": "number"
+          },
+          "cropRotation": {
+            "type": "number"
+          },
+          "climateFriendlyProteinProduction": {
+            "type": "number"
+          },
+          "greenFodderPercentage": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pLivestockFarmingAnimalWelfare": {
+        "type": "object",
+        "properties": {
+          "mortalityRate": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pLivestockFarmingEmissionsFromManureAndFertiliserAndLivestock": {
+        "type": "object",
+        "properties": {
+          "compostedFermentedManure": {
+            "type": "number"
+          },
+          "emissionProofFertiliserStorage": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pLivestockFarmingEnergy": {
+        "type": "object",
+        "properties": {
+          "renewableElectricityPercentage": {
+            "type": "number"
+          },
+          "renewableHeatingPercentage": {
+            "type": "number"
+          },
+          "electricGasPoweredMachineryVehiclePercentage": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pRealEstate": {
+        "type": "object",
+        "properties": {
+          "buildingEfficiency": {
+            "$ref": "#/components/schemas/P2pRealEstateBuildingEfficiency"
+          },
+          "energySource": {
+            "$ref": "#/components/schemas/P2pRealEstateEnergySource"
+          },
+          "technology": {
+            "$ref": "#/components/schemas/P2plRealEstateTechnology"
+          }
+        }
+      },
+      "P2pRealEstateBuildingEfficiency": {
+        "type": "object",
+        "properties": {
+          "buildingSpecificReburbishmentRoadmap": {
+            "type": "number"
+          },
+          "zeroEmissionBuildingShare": {
+            "type": "number"
+          },
+          "buildingEnergyEfficiency": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pRealEstateEnergySource": {
+        "type": "object",
+        "properties": {
+          "renewableHeating": {
+            "type": "number"
+          }
+        }
+      },
+      "P2pSector": {
+        "type": "string",
+        "enum": [
+          "Ammonia",
+          "Automotive",
+          "Cement",
+          "CommercialRealEstate",
+          "ElectricityGeneration",
+          "FreightTransportByRoad",
+          "HVCPlastics",
+          "LivestockFarming",
+          "ResidentialRealEstate",
+          "Steel",
+          "Other"
+        ]
+      },
+      "P2pSteel": {
+        "type": "object",
+        "properties": {
+          "energy": {
+            "$ref": "#/components/schemas/P2pSteelEnergy"
+          },
+          "technology": {
+            "$ref": "#/components/schemas/P2pSteelTechnology"
+          }
+        }
+      },
+      "P2pSteelEnergy": {
+        "type": "object",
+        "properties": {
+          "emissionIntensityOfElectricity": {
+            "type": "number"
+          },
+          "greenHydrogenUsage": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "P2pSteelTechnology": {
+        "type": "object",
+        "properties": {
+          "blastFurnacePhaseOut": {
+            "type": "number"
+          },
+          "lowCarbonSteelScaleUp": {
+            "type": "number"
+          }
+        }
+      },
+      "P2plRealEstateTechnology": {
+        "type": "object",
+        "properties": {
+          "useOfDistrictHeatingNetworks": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "heatPumpUsage": {
+            "$ref": "#/components/schemas/YesNo"
+          }
+        }
+      },
+      "PathwaysToParisData": {
+        "required": [
+          "general"
+        ],
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/P2pGeneral"
+          },
+          "ammonia": {
+            "$ref": "#/components/schemas/P2pAmmonia"
+          },
+          "automotive": {
+            "$ref": "#/components/schemas/P2pAutomotive"
+          },
+          "hvcPlastics": {
+            "$ref": "#/components/schemas/P2pHvcPlastics"
+          },
+          "commercialRealEstate": {
+            "$ref": "#/components/schemas/P2pRealEstate"
+          },
+          "residentialRealEstate": {
+            "$ref": "#/components/schemas/P2pRealEstate"
+          },
+          "steel": {
+            "$ref": "#/components/schemas/P2pSteel"
+          },
+          "freightTransportByRoad": {
+            "$ref": "#/components/schemas/P2pFreightTransportByRoad"
+          },
+          "electricityGeneration": {
+            "$ref": "#/components/schemas/P2pElectricityGeneration"
+          },
+          "livestockFarming": {
+            "$ref": "#/components/schemas/P2pLivestockFarming"
+          },
+          "cement": {
+            "$ref": "#/components/schemas/P2pCement"
+          }
+        }
+      },
       "CompanyAssociatedDataLksgData": {
         "required": [
           "companyId",
@@ -2716,21 +3553,6 @@
           },
           "data": {
             "$ref": "#/components/schemas/LksgData"
-          }
-        }
-      },
-      "DocumentReference": {
-        "required": [
-          "name",
-          "reference"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "reference": {
-            "type": "string"
           }
         }
       },
@@ -4045,6 +4867,21 @@
           }
         }
       },
+      "DataAndMetaInformationPathwaysToParisData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PathwaysToParisData"
+          }
+        }
+      },
       "DataAndMetaInformationLksgData": {
         "required": [
           "data",
@@ -4130,6 +4967,7 @@
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
+          "p2p",
           "sfdr",
           "sme"
         ]
