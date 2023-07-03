@@ -136,13 +136,13 @@ export default defineComponent({
               string,
               object
             ][]) {
-              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject) as [string, KpiValue][]) {
+              for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
                 const subcategory = assertDefined(
                   lksgDataModel
                     .find((category) => category.name === categoryKey)
                     ?.subcategories.find((subCategory) => subCategory.name === subCategoryKey)
                 );
-                this.createKpiDataObjects(kpiKey, kpiValue, subcategory, dataIdOfLksgDataset);
+                this.createKpiDataObjects(kpiKey, kpiValue as KpiValue, subcategory, dataIdOfLksgDataset);
               }
             }
           }
