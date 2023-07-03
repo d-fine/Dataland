@@ -62,7 +62,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         value =
         "WITH filtered_text_results as (" +
             // Fuzzy-Search Company Name
-            "(SELECT company_id, company_name AS company_name," +
+            "(SELECT company_id, company_name," +
             " CASE " +
             " WHEN company_name = :#{#searchString} THEN 10" +
             " WHEN company_name ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
