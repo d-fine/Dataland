@@ -1,10 +1,4 @@
-import {
-  DataMetaInformation,
-  DataTypeEnum,
-  EuTaxonomyDataForFinancials,
-  LksgData,
-  StoredCompany,
-} from "@clients/backend";
+import { DataMetaInformation, EuTaxonomyDataForFinancials, LksgData, StoredCompany } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken, login } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
@@ -115,7 +109,9 @@ function testSubmittedDatasetIsInReviewListAndRejected(
   testDatasetPresentWithCorrectStatus(storedCompany.companyInformation.companyName, "REJECTED");
 
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataset.dataId}`);
-  cy.get('button[data-test="editDatasetButton"]').should("exist").click();
+  cy.get('button[data-test="editDatasetButton"]').should("exist");
+  cy.wait(1000); //  This wait is needed for the .click() to work
+  cy.get('button[data-test="editDatasetButton"]').click();
 
   cy.url().should(
     "eq",
