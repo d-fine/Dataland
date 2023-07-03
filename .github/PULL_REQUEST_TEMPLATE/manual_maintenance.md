@@ -21,7 +21,9 @@ appear.
 - [ ] Update Ktlint to >= 49.0 breaks the ktlint tasks (issue described here: 
   https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
-
+- [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
+- [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloakd Docker images
+- [ ] Skipped typescript update to 5.1.5 as eslint does not support it yet
 ### Gradle update
 
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
