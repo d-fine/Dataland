@@ -1,79 +1,80 @@
 <template>
   <FormKit type="group" :name="name" :ignore="!isItActive">
-    <div data-test="dataPointToggle" class="form-field vertical-middle">
-      <InputSwitch
-        data-test="dataPointToggleButton"
-        inputId="dataPointIsAvailableSwitch"
-        @click="this.isItActive = false"
-        v-model="isItActive"
-      />
-      <h5 data-test="dataPointToggleTitle" class="m-2">
-        {{ label }}
-      </h5>
+    <div class="flex align-items-center mt-3">
+      <Checkbox inputId="productCategorieCheck" :binary="true" v-model="isItActive" />
+      <label for="productCategorieCheck" class="ml-2"> {{ label }} </label>
     </div>
-    {{ selectedCountrys }}
-    <div v-if="isItActive">
-      <div>
-        <MultiSelectFormField
-          label="Definition Product Type/Service"
-          placeholder="Select"
-          description="..."
-          name="definitionProductTypeService"
-          :options="['1', '2', '3']"
-          innerClass="long"
-        />
 
-        <div class="form-field">
-          <UploadFormHeader label="Order Volume per Procurement %" description="..." :is-required="false" />
-          <FormKit
-            type="text"
-            name="orderVolume"
-            :validation-label="validationLabel ?? label"
-            validation="number"
-            inner-class="long"
-          />
-        </div>
-
-        <MultiSelectFormField
-          label="Select the countries"
-          placeholder="Countries"
-          description="..."
-          name="suppliersPerCountry"
-          :options="allCountry"
-          optionLabel="label"
-          optionValue="value"
-          v-model="selectedCountrys"
-          innerClass="long"
-          @selectedValuesChanged="handleSelectedCountriesChanged"
-        />
-
-        <div class="form-field">
-          <div class="flex justify-content-between">
-            <UploadFormHeader label="Suppliers Per Country" description="..." :is-required="false" />
+    <div v-if="isItActive" class="productSection">
+      <em data-test="removeItemFromListOfProducts" @click="this.isItActive = false" class="material-icons close-section"
+        >close</em
+      >
+      {{ existingRelatedCorporateSupplyChain }}
+      <keep-alive>
+        <div>
+          <div class="form-field">
+            <FreeTextFormField
+              name="relatedCorporateSupplyChain"
+              label="Definition Product Type Service"
+              description="..."
+              v-model="existingRelatedCorporateSupplyChain"
+            />
           </div>
-          <FormKit type="list" name="suppliersPerCountry" label="Suppliers Per Country" v-model="existingSuppliers">
-            <FormKit type="group" v-for="el in selectedCountrys" :key="el.label">
-              <div class="next-to-each-other">
-                <h5>{{ el.label }}</h5>
-                <FormKit type="text" name="country" :modelValue="el.value" data-test="country" />
-                <FormKit
-                  type="text"
-                  name="numberOfSuppliers"
-                  validation-label="Number Of Suppliers"
-                  validation="number"
-                  placeholder="Number Of Suppliers"
-                />
-                <em
-                  data-test="removeItemFromListOfSuppliersIds"
-                  @click="removeItemFromListOfSuppliers(id)"
-                  class="material-icons mt-2 link"
-                  >close</em
-                >
-              </div>
+
+          <div class="form-field">
+            <div class="flex justify-content-between">
+              <UploadFormHeader label="Suppliers Per Country" description="..." :is-required="false" />
+
+              <PrimeButton
+                :disabled="false"
+                label="Add"
+                class="p-button-text"
+                icon="pi pi-plus"
+                @click="addNewSuppliers"
+              ></PrimeButton>
+            </div>
+            <FormKit type="list" name="suppliersPerCountry" label="Suppliers Per Country" v-model="existingSuppliers">
+              <FormKit type="group" v-for="id in listOfSuppliersIds" :key="id">
+                <div class="next-to-each-other">
+                  <FormKit
+                    type="text"
+                    name="country"
+                    validation-label="Country"
+                    validation="required"
+                    placeholder="Country"
+                    data-test="country"
+                  />
+                  <FormKit
+                    type="text"
+                    name="numberOfSuppliers"
+                    validation-label="Number Of Suppliers"
+                    validation="number"
+                    placeholder="Number Of Suppliers"
+                  />
+                  <em
+                    data-test="removeItemFromListOfSuppliersIds"
+                    @click="removeItemFromListOfSuppliers(id)"
+                    class="material-icons mt-2 link"
+                    >close</em
+                  >
+                </div>
+              </FormKit>
             </FormKit>
-          </FormKit>
+          </div>
+
+          <div class="form-field">
+            <UploadFormHeader label="Order Volume" description="..." :is-required="false" />
+            <FormKit
+              type="text"
+              name="orderVolume"
+              validation-label="validationLabel ?? label"
+              validation="number"
+              placeholder="placeholder"
+              inner-class="long"
+            />
+          </div>
         </div>
-      </div>
+      </keep-alive>
     </div>
   </FormKit>
 </template>
@@ -85,36 +86,34 @@ import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
 import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import InputSwitch from "primevue/inputswitch";
-import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
-import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import Checkbox from "primevue/checkbox";
 
 export default defineComponent({
-  name: "ProductCategoriesFormElement",
+  name: "ProductFormElement",
   components: {
     FormKit,
+    PrimeButton,
+    Checkbox,
+    FreeTextFormField,
     UploadFormHeader,
-    InputSwitch,
-    MultiSelectFormField,
   },
   data() {
     return {
+      existingRelatedCorporateSupplyChain: "",
       existingSuppliers: [] as Array<object>,
-      listOfSuppliersIds: [] as number[],
-
+      listOfSuppliersIds: [0] as number[],
+      idCounter: 0,
       isItActive: false,
-      allCountry: getDataset(DropdownDatasetIdentifier.CountryCodes),
-      selectedCountrys: [],
     };
   },
   props: FormFieldProps,
   methods: {
     /**
-     * handle changes in selected Countrys
-     * @param newVal - selected countrys new Value
+     * Adds a new Object to the Suppliers array
      */
-    handleSelectedCountriesChanged(newVal: []) {
-      this.selectedCountrys = newVal;
+    addNewSuppliers() {
+      this.idCounter++;
+      this.listOfSuppliersIds.push(this.idCounter);
     },
 
     /**

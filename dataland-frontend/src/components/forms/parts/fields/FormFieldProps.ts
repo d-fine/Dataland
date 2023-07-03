@@ -26,10 +26,6 @@ export const FormFieldProps = {
     type: Boolean,
     default: false,
   },
-  innerClass: {
-    type: String,
-    default: "short",
-  },
 };
 
 export const YesNoFormFieldProps = Object.assign(deepCopyObject(FormFieldProps), {

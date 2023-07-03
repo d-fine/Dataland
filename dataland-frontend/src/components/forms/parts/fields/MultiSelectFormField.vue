@@ -7,9 +7,7 @@
       :validation-label="validationLabel ?? label"
       :placeholder="placeholder"
       :options="options"
-      :inner-class="innerClass"
-      :optionLabel="optionLabel"
-      @selectedValuesChanged="selectedValuesChanged"
+      inner-class="short"
     />
   </div>
 </template>
@@ -23,22 +21,7 @@ import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/Fo
 
 export default defineComponent({
   name: "MultiSelectFormField",
-  emits: ["selectedValuesChanged"],
   components: { MultiSelectFormElement, UploadFormHeader },
-  props: {
-    ...DropdownOptionFormFieldProps,
-    optionLabel: {
-      type: String,
-    },
-  },
-  methods: {
-    /**
-     * handle changes in selected Countrys
-     * @param newVal - selected countrys new Value
-     */
-    selectedValuesChanged(newVal) {
-      this.$emit("selectedValuesChanged", newVal);
-    },
-  },
+  props: DropdownOptionFormFieldProps,
 });
 </script>

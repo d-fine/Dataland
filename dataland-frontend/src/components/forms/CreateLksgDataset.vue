@@ -75,11 +75,7 @@
             <li v-for="category in lksgDataModel" :key="category">
               <ul>
                 <li v-for="subcategory in category.subcategories" :key="subcategory">
-                  <a
-                    v-if="isSubcategoryVisible.get(subcategory) ?? true"
-                    @click="smoothScroll(`#${subcategory.name}`)"
-                    >{{ subcategory.label }}</a
-                  >
+                  <a @click="smoothScroll(`#${subcategory.name}`)">{{ subcategory.label }}</a>
                 </li>
               </ul>
             </li>
