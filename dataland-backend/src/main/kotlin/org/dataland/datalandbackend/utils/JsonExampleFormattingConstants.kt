@@ -30,7 +30,7 @@ object JsonExampleFormattingConstants {
         taxonomyEligibilityActivity +
         "}"
 
-    private const val productCategory = "{" +
+    private const val procurementCategory = "{" +
         "\"definitionProductTypeService\": [\"string\"]," +
         "\"suppliersPerCountry\": [" +
         "{" +
@@ -41,9 +41,9 @@ object JsonExampleFormattingConstants {
         "\"orderVolume\": 0" +
         "}"
 
-    const val PRODUCT_CATEGORIES_DEFAULT_VALUE: String = "{" +
-        "\"Products\": $productCategory," +
-        "\"Services\": $productCategory," +
-        "\"RawMaterials\": $productCategory" +
+    const val PROCUREMENT_CATEGORIES_DEFAULT_VALUE: String = "{" +
+        "\"Products\": $procurementCategory," +
+        "\"Services\": $procurementCategory," +
+        "\"RawMaterials\": $procurementCategory" +
         "}"
 }

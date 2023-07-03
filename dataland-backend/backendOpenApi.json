@@ -3751,21 +3751,6 @@
           }
         }
       },
-      "LksgCountryAssociatedSuppliers": {
-        "required": [
-          "country"
-        ],
-        "type": "object",
-        "properties": {
-          "country": {
-            "type": "string"
-          },
-          "numberOfSuppliers": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
       "LksgData": {
         "required": [
           "general"
@@ -4128,27 +4113,7 @@
           }
         }
       },
-      "LksgProduct": {
-        "required": [
-          "productName"
-        ],
-        "type": "object",
-        "properties": {
-          "productName": {
-            "type": "string"
-          },
-          "productionSteps": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "relatedCorporateSupplyChain": {
-            "type": "string"
-          }
-        }
-      },
-      "LksgProductCategory": {
+      "LksgProcurementCategory": {
         "required": [
           "definitionProductTypeService"
         ],
@@ -4160,10 +4125,11 @@
               "type": "string"
             }
           },
-          "suppliersPerCountry": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LksgCountryAssociatedSuppliers"
+          "numberOfSuppliersPerCountry": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
             }
           },
           "orderVolume": {
@@ -4206,6 +4172,26 @@
               }
             ],
             "orderVolume": 0
+          }
+        }
+      },
+      "LksgProduct": {
+        "required": [
+          "productName"
+        ],
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string"
+          },
+          "productionSteps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "relatedCorporateSupplyChain": {
+            "type": "string"
           }
         }
       },
@@ -4299,10 +4285,10 @@
               "$ref": "#/components/schemas/LksgProduct"
             }
           },
-          "productCategories": {
+          "procurementCategories": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/LksgProductCategory"
+              "$ref": "#/components/schemas/LksgProcurementCategory"
             },
             "example": {
               "Products": {
