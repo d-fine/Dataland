@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.model.CompanyIdAndName
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param
 /**
  * A JPA repository for accessing the StoredCompany Entity
  */
+
 interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     /**
      * A function for querying companies by various filters:
@@ -32,8 +34,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "OR (company.sector in :#{#searchFilter.sectorFilter})) AND " +
             "(:#{#searchFilter.countryCodeFilterSize} = 0 " +
             "OR (company.countryCode in :#{#searchFilter.countryCodeFilter})) AND " +
-            "(:#{#searchFilter.uploaderIdFilterSize} = 0 " +
-            "OR (data.uploaderUserId in :#{#searchFilter.uploaderIdFilter})) AND " +
+            "(:#{#searchFilter.uploaderIdLength} = 0 " +
+            "OR (data.uploaderUserId = :#{#searchFilter.uploaderId})) AND " +
             "(:#{#searchFilter.searchStringLength} = 0 " +
             "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
             "(lower(alternativeName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
@@ -48,6 +50,67 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "company.companyName ASC",
     )
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
+
+    /**
+     * A function for querying companies by search string:
+     * - searchString: If not empty, only companies that contain the search string in their name are returned
+     * (Prefix-Matches are ordered before Center-Matches,
+     * e.g. when searching for "a" Allianz will come before Deutsche Bank)
+     */
+    @Query(
+        nativeQuery = true,
+        value =
+        "WITH filtered_text_results as (" +
+            // Fuzzy-Search Company Name
+            "(SELECT company_id, company_name," +
+            " CASE " +
+            " WHEN company_name = :#{#searchString} THEN 10" +
+            " WHEN company_name ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
+            " ELSE 1" +
+            " END match_quality " +
+            " FROM stored_companies" +
+            " WHERE company_name ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
+            " ORDER BY match_quality DESC, company_id LIMIT 100)" +
+
+            " UNION " +
+            // Fuzzy-Search Company Alternative Name
+            " (SELECT " +
+            " stored_company_entity_company_id AS company_id," +
+            " stored_companies.company_name AS company_name," +
+            " CASE " +
+            " WHEN company_alternative_names = :#{#searchString} THEN 9" +
+            " WHEN company_alternative_names ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
+            " ELSE 1 " +
+            " END match_quality " +
+            " FROM stored_company_entity_company_alternative_names" +
+            " JOIN stored_companies ON stored_companies.company_id = " +
+            " stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
+            " WHERE company_alternative_names ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
+            " ORDER BY match_quality DESC, company_id LIMIT 100)" +
+
+            " UNION" +
+            // Fuzzy-Search Company Identifier
+            "(SELECT company_identifiers.company_id, stored_companies.company_name AS company_name," +
+            " CASE " +
+            " WHEN identifier_value = :#{#searchString} THEN 10" +
+            " WHEN identifier_value ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
+            " ELSE 0" +
+            " END match_quality" +
+            " FROM company_identifiers" +
+            " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
+            " WHERE identifier_value ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} " +
+            " ORDER BY match_quality DESC, company_id LIMIT 100)) " +
+            // Combine Results
+            "SELECT filtered_text_results.company_id AS companyId," +
+            " MIN(filtered_text_results.company_name) AS companyName" +
+            " FROM filtered_text_results " +
+            " GROUP BY filtered_text_results.company_id" +
+            " ORDER BY MAX(filtered_text_results.match_quality) DESC, companyId" +
+            " LIMIT 100 ",
+    )
+    fun searchCompaniesByNameOrIdentifier(
+        @Param("searchString") searchString: String,
+    ): List<CompanyIdAndName>
 
     /**
      * Returns all available distinct country codes

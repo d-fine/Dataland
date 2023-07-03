@@ -507,8 +507,8 @@
         "tags": [
           "company-data-controller"
         ],
-        "summary": "Retrieve specific companies by different filters or just all companies from the data store.",
-        "description": "Companies identified via the provided company name/identifier are retrieved and filtered bycountryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "summary": "Retrieve specific companies with framework data by different filters or just all companies from the data store.",
+        "description": "Companies with associated framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
         "operationId": "getCompanies",
         "parameters": [
           {
@@ -643,6 +643,79 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/companies/identifiers/{identifierType}/{identifier}": {
+      "head": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Checks that an identifier of specified type exists.",
+        "description": "Checks that an identifier of specified type exists.",
+        "operationId": "existsIdentifier",
+        "parameters": [
+          {
+            "name": "identifierType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Lei",
+                "Isin",
+                "PermId",
+                "Ticker",
+                "Duns",
+                "CompanyRegistrationNumber",
+                "VatNumber"
+              ]
+            }
+          },
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked that identifier exists."
+          },
+          "404": {
+            "description": "Successfully checked that identifier does not exist."
           },
           "default": {
             "description": "An error occurred",
@@ -1768,6 +1841,69 @@
                   "type": "array",
                   "items": {
                     "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/companies/names": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve specific companies by searching their names and identifiers",
+        "description": "Companies identified via the provided company name/identifier are retrieved",
+        "operationId": "getCompaniesBySearchString",
+        "parameters": [
+          {
+            "name": "searchString",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company names.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyIdAndName"
                   }
                 }
               }
@@ -4749,8 +4885,7 @@
           "companyName",
           "countryCode",
           "headquarters",
-          "identifiers",
-          "sector"
+          "identifiers"
         ],
         "type": "object",
         "properties": {
@@ -4901,6 +5036,21 @@
           },
           "data": {
             "$ref": "#/components/schemas/EuTaxonomyDataForFinancials"
+          }
+        }
+      },
+      "CompanyIdAndName": {
+        "required": [
+          "companyId",
+          "companyName"
+        ],
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           }
         }
       },

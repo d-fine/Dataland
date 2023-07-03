@@ -161,10 +161,8 @@
             "default-bearer-auth": []
           }
         ]
-      }
-    },
-    "/{documentId}/exists": {
-      "get": {
+      },
+      "head": {
         "tags": [
           "document-controller"
         ],
@@ -182,15 +180,11 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Successfully checked that a document does not exist."
+          },
           "200": {
-            "description": "Successfully checked document existence.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentExistsResponse"
-                }
-              }
-            }
+            "description": "Successfully checked document existence."
           },
           "default": {
             "description": "An error occurred",
@@ -509,17 +503,6 @@
         "properties": {
           "documentId": {
             "type": "string"
-          }
-        }
-      },
-      "DocumentExistsResponse": {
-        "required": [
-          "documentExists"
-        ],
-        "type": "object",
-        "properties": {
-          "documentExists": {
-            "type": "boolean"
           }
         }
       },

@@ -13,7 +13,6 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
-import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentStream
 import org.dataland.documentmanager.model.DocumentUploadResponse
@@ -107,8 +106,9 @@ class DocumentManager(
     /**
      * This method checks whether a document is already stored in the database or not
      * @param documentId the documentId of the document to be checked
+     * @returns true if the document exists, false otherwise
      */
-    fun checkIfDocumentExistsWithId(documentId: String): DocumentExistsResponse {
+    fun checkIfDocumentExistsWithId(documentId: String): Boolean {
         logger.info("Check if document exists with ID: $documentId")
         val documentExists = documentMetaInfoRepository.existsById(documentId)
         if (documentExists) {
@@ -116,7 +116,7 @@ class DocumentManager(
         } else {
             logger.info("Document with ID: $documentId does not exist")
         }
-        return DocumentExistsResponse(documentExists)
+        return documentExists
     }
 
     /**
