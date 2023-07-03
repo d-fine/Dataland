@@ -148,7 +148,9 @@ export default defineComponent({
     canEdit() {
       return (
         ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum) &&
-        (!this.singleDataMetaInfoToDisplay || this.singleDataMetaInfoToDisplay.currentlyActive)
+        (!this.singleDataMetaInfoToDisplay ||
+          this.singleDataMetaInfoToDisplay.currentlyActive ||
+          this.singleDataMetaInfoToDisplay.qaStatus === "Rejected")
       );
     },
     addNewDatasetLinkTarget() {

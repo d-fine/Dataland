@@ -16,13 +16,15 @@ import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
  * @param companyId The Id of the company to upload the dataset for
  * @param reportingPeriod The reporting period to use for the upload
  * @param data The Dataset to upload
+ * @param bypassQa (optional) should the entry be automatically Approved. Default: true
  * @returns a promise on the created data meta information
  */
 export async function uploadOneLksgDatasetViaApi(
   token: string,
   companyId: string,
   reportingPeriod: string,
-  data: LksgData
+  data: LksgData,
+  bypassQa = true
 ): Promise<DataMetaInformation> {
   const response = await new LksgDataControllerApi(
     new Configuration({ accessToken: token })
@@ -32,7 +34,7 @@ export async function uploadOneLksgDatasetViaApi(
       reportingPeriod,
       data,
     },
-    true
+    bypassQa
   );
   return response.data;
 }
