@@ -1,77 +1,76 @@
 <template>
   <FormKit type="group" :name="name" :ignore="!isItActive">
-    <div data-test="dataPointToggle" class="form-field vertical-middle">
-      <InputSwitch
-        data-test="dataPointToggleButton"
-        inputId="dataPointIsAvailableSwitch"
-        @click="this.isItActive = false"
-        v-model="isItActive"
-      />
-      <h5 data-test="dataPointToggleTitle" class="m-2">
-        {{ label }}
-      </h5>
-    </div>
-    {{ selectedCountrys }}
-    <div v-if="isItActive">
-      <div>
-        <MultiSelectFormField
-          label="Definition Product Type/Service"
-          placeholder="Select"
-          description="..."
-          name="definitionProductTypeService"
-          :options="['1', '2', '3']"
-          innerClass="long"
+    <div class="form-field">
+      <div data-test="dataPointToggle" class="form-field border-none vertical-middle">
+        <InputSwitch
+          data-test="dataPointToggleButton"
+          inputId="dataPointIsAvailableSwitch"
+          @click="this.isItActive = false"
+          v-model="isItActive"
         />
-
-        <div class="form-field">
-          <UploadFormHeader label="Order Volume per Procurement %" description="..." :is-required="false" />
-          <FormKit
-            type="text"
-            name="orderVolume"
-            :validation-label="validationLabel ?? label"
-            validation="number"
-            inner-class="long"
-          />
-        </div>
-
-        <MultiSelectFormField
-          label="Select the countries"
-          placeholder="Countries"
-          description="..."
-          name="suppliersPerCountry"
-          :options="allCountry"
-          optionLabel="label"
-          optionValue="value"
-          v-model="selectedCountrys"
-          innerClass="long"
-          @selectedValuesChanged="handleSelectedCountriesChanged"
-        />
-
-        <div class="form-field">
-          <div class="flex justify-content-between">
-            <UploadFormHeader label="Suppliers Per Country" description="..." :is-required="false" />
+        <h5 data-test="dataPointToggleTitle" class="m-2">
+          {{ label }}
+        </h5>
+      </div>
+      <div v-if="isItActive">
+        <div>
+          <div class="form-field border-none">
+            <MultiSelectFormField
+              label="Definition Product Type/Service"
+              placeholder="Select"
+              description="..."
+              name="definitionProductTypeService"
+              :options="['1', '2', '3']"
+              innerClass="long"
+            />
           </div>
-          <FormKit type="list" name="suppliersPerCountry" label="Suppliers Per Country" v-model="existingSuppliers">
-            <FormKit type="group" v-for="el in selectedCountrys" :key="el.label">
-              <div class="next-to-each-other">
-                <h5>{{ removeWordFromPhrase(`(${el.value})`, el.label) }}</h5>
-                <FormKit type="text" name="country" :modelValue="el.value" data-test="country" />
-                <FormKit
-                  type="text"
-                  name="numberOfSuppliers"
-                  validation-label="Number Of Suppliers"
-                  validation="number"
-                  placeholder="Number Of Suppliers"
-                />
-                <em
-                  data-test="removeItemFromListOfSuppliersIds"
-                  @click="removeItemFromListOfSuppliers(id)"
-                  class="material-icons mt-2 link"
-                  >close</em
-                >
-              </div>
+
+          <div class="form-field border-none">
+            <UploadFormHeader label="Order Volume per Procurement %" description="..." :is-required="false" />
+            <FormKit
+              type="text"
+              name="orderVolume"
+              :validation-label="validationLabel ?? label"
+              validation="number"
+              inner-class="long"
+            />
+          </div>
+          <div class="form-field border-none">
+            <MultiSelectFormField
+              label="Select the countries"
+              placeholder="Countries"
+              description="..."
+              name="suppliersPerCountry"
+              :options="allCountry"
+              optionLabel="label"
+              optionValue="value"
+              v-model="selectedCountrys"
+              innerClass="long"
+              @selectedValuesChanged="handleSelectedCountriesChanged"
+            />
+          </div>
+          <div class="form-field border-none">
+            <div class="flex justify-content-between">
+              <UploadFormHeader label="Number of Direct Supliers" description="..." :is-required="false" />
+            </div>
+            <FormKit type="list" name="suppliersPerCountry" label="Suppliers Per Country" v-model="existingSuppliers">
+              <FormKit type="group" v-for="el in selectedCountrys" :key="el.label">
+                <div class="justify-content-between flex align-items-center">
+                  <h5>{{ removeWordFromPhrase(`(${el.value})`, el.label) }}</h5>
+                  <FormKit type="hidden" name="country" :modelValue="el.value" data-test="country" />
+                  <div class="justify-content-end flex align-items-center">
+                    <FormKit type="number" name="numberOfSuppliers" min="0" step="1" outer-class="my-0 mx-3" />
+                    <PrimeButton icon="pi pi-times" rounded class="p-button-icon" />
+                    <!--                  <em-->
+                    <!--                      data-test="removeItemFromListOfSuppliersIds"-->
+                    <!--                      @click="removeItemFromListOfSuppliers(id)"-->
+                    <!--                      class="material-icons"-->
+                    <!--                  >close</em>-->
+                  </div>
+                </div>
+              </FormKit>
             </FormKit>
-          </FormKit>
+          </div>
         </div>
       </div>
     </div>
@@ -86,6 +85,7 @@ import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import InputSwitch from "primevue/inputswitch";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
+import PrimeButton from "primevue/button";
 
 export default defineComponent({
   name: "ProductCategoriesFormElement",
@@ -94,11 +94,11 @@ export default defineComponent({
     UploadFormHeader,
     InputSwitch,
     MultiSelectFormField,
+    PrimeButton,
   },
   data() {
     return {
       existingSuppliers: [] as Array<object>,
-      listOfSuppliersIds: [] as number[],
 
       isItActive: false,
       allCountry: getDataset(DropdownDatasetIdentifier.CountryCodes),
@@ -116,17 +116,10 @@ export default defineComponent({
     },
 
     /**
-     * Remove Object from Product array
-     * @param id - the id of the object in the array
-     */
-    removeItemFromListOfSuppliers(id: number) {
-      this.listOfSuppliersIds = this.listOfSuppliersIds.filter((el) => el !== id);
-    },
-
-    /**
      * remove the word from the phrase
      * @param word - word to remove
      * @param phrase - phrase from which we remove
+     * @returns phrase without the removed word
      */
     removeWordFromPhrase(word: string, phrase: string): string {
       const splittedPhrase: [string] = phrase.split(" ");
