@@ -1,10 +1,8 @@
 import { faker } from "@faker-js/faker/locale/de";
 import {
   LksgAddress,
-  LksgCountryAssociatedSuppliers,
-  LksgData,
+  LksgData, LksgProcurementCategory,
   LksgProduct,
-  LksgProductCategory,
   LksgProductionSite,
   NationalOrInternationalMarket,
   ShareOfTemporaryWorkers,
@@ -19,7 +17,7 @@ import { randomEuroValue, randomNumber, randomPercentageValue } from "@e2e/fixtu
 import { generateIso2CountryCode, generateListOfIso2CountryCodes } from "@e2e/fixtures/common/CountryFixtures";
 import { randomPastDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateBaseDataPointOrUndefined } from "@e2e/fixtures/common/BaseDataPointFixtures";
-import { ProcurementCategory } from "@/api-models/ProcurementCategory";
+import { ProcurementCategoryType } from "@/api-models/ProcurementCategoryType";
 
 /**
  * Generates a set number of LKSG fixtures
@@ -81,24 +79,16 @@ function generateProduct(): LksgProduct {
 }
 
 /**
- * Generates a random company associated supplier
- * @returns random company associated supplier
- */
-function generateCompanyAssociatedSupplier(): LksgCountryAssociatedSuppliers {
-  return {
-    country: generateIso2CountryCode(), // TODO should this be extended to all strings? just because the backend would accept it
-    numberOfSuppliers: valueOrUndefined(randomNumber(10)),
-  };
-}
-
-/**
  * Generates a random product category
  * @returns random product category
  */
-function generateProductCategory(): LksgProductCategory {
+function generateProcurementCategory(): LksgProcurementCategory {
+  const numberOfSuppliersPerCountryAsMap = new Map<string, number>(generateArray(() =>
+      [generateIso2CountryCode(), valueOrUndefined(faker.number.int({ min: 0, max: 50 }))!]
+  ));
   return {
     definitionProductTypeService: generateArray(() => faker.commerce.productName()),
-    suppliersPerCountry: valueOrUndefined(generateArray(generateCompanyAssociatedSupplier)),
+    numberOfSuppliersPerCountry: valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryAsMap)),
     orderVolume: valueOrUndefined(randomPercentageValue()),
   };
 }
@@ -107,17 +97,17 @@ function generateProductCategory(): LksgProductCategory {
  * Generates a random map of product categories
  * @returns random map of product categories
  */
-function generateProductCategories(): { [key: string]: LksgProductCategory } {
-  const procurementCategories = Object.values(ProcurementCategory);
-  const keys = [] as ProcurementCategory[];
+function generateProcurementCategories(): { [key: string]: LksgProcurementCategory } {
+  const procurementCategories = Object.values(ProcurementCategoryType);
+  const keys = [] as ProcurementCategoryType[];
   procurementCategories.forEach((category) => {
     if (faker.datatype.boolean()) {
       keys.push(category);
     }
   });
   return Object.fromEntries(
-    new Map<string, LksgProductCategory>(
-      keys.map((procurementCategory) => [procurementCategory as string, generateProductCategory()])
+    new Map<string, LksgProcurementCategory>(
+      keys.map((procurementCategoryType) => [procurementCategoryType as string, generateProcurementCategory()])
     )
   );
 }
@@ -207,7 +197,7 @@ export function generateLksgData(undefinedProbability = 0.5): LksgData {
       },
       productionSpecificOwnOperations: {
         mostImportantProducts: valueOrUndefined(generateArray(generateProduct), undefinedProbability),
-        productCategories: valueOrUndefined(generateProductCategories(), undefinedProbability),
+        procurementCategories: valueOrUndefined(generateProcurementCategories(), undefinedProbability),
       },
     },
     governance: {
