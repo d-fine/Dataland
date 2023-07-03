@@ -3,6 +3,7 @@ import { exportFixturesEuTaxonomyNonFinancial } from "./eutaxonomy/non-financial
 import { exportFixturesLksg } from "./lksg";
 import { exportFixturesSfdrData } from "./sfdr";
 import { exportFixturesSme } from "./sme";
+import { exportFixturesP2p } from "@e2e/fixtures/p2p";
 
 /**
  * The main entrypoint of the fake fixture generator
@@ -13,6 +14,7 @@ function main(): void {
   exportFixturesLksg();
   exportFixturesSfdrData();
   exportFixturesSme();
+  exportFixturesP2p();
 }
 
 main();

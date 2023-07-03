@@ -6,11 +6,13 @@ import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancial
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSmeData
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
@@ -20,6 +22,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
@@ -87,10 +90,8 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForLksgData =
-        LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForLksgData =
-        FrameworkTestDataProvider(LksgData::class.java)
+    val dataControllerApiForLksgData = LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForLksgData = FrameworkTestDataProvider(LksgData::class.java)
     fun lksgUploaderFunction(
         companyId: String,
         lksgData: LksgData,
@@ -103,10 +104,22 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForSfdrData =
-        SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForSfdrData =
-        FrameworkTestDataProvider(SfdrData::class.java)
+    val dataControllerApiForP2pData = P2pDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForP2pData = FrameworkTestDataProvider(PathwaysToParisData::class.java)
+    fun p2pUploaderFunction(
+        companyId: String,
+        p2pData: PathwaysToParisData,
+        reportingPeriod: String,
+        bypassQa: Boolean = true,
+    ): DataMetaInformation {
+        val companyAssociatedP2pData = CompanyAssociatedDataPathwaysToParisData(companyId, reportingPeriod, p2pData)
+        return dataControllerApiForP2pData.postCompanyAssociatedP2pData(
+            companyAssociatedP2pData, bypassQa,
+        )
+    }
+
+    val dataControllerApiForSfdrData = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForSfdrData = FrameworkTestDataProvider(SfdrData::class.java)
     fun sfdrUploaderFunction(
         companyId: String,
         sfdrData: SfdrData,
@@ -119,10 +132,8 @@ class ApiAccessor {
         )
     }
 
-    val dataControllerApiForSmeData =
-        SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForSmeData =
-        FrameworkTestDataProvider(SmeData::class.java)
+    val dataControllerApiForSmeData = SmeDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForSmeData = FrameworkTestDataProvider(SmeData::class.java)
     fun smeUploaderFunction(
         companyId: String,
         smeData: SmeData,
@@ -283,6 +294,15 @@ class ApiAccessor {
                 reportingPeriod = reportingPeriod,
                 ensureQaPassed = ensureQaPassed,
             )
+
+            DataTypeEnum.p2p -> uploadCompanyAndFrameworkDataForOneFramework(
+                listOfCompanyInformation = listOfCompanyInformation,
+                listOfFrameworkData = testDataProviderForP2pData.getTData(numberOfDataSetsPerCompany),
+                frameworkDataUploadFunction = this::p2pUploaderFunction,
+                uploadConfig = uploadConfig,
+                reportingPeriod = reportingPeriod,
+                ensureQaPassed = ensureQaPassed,
+            )
         }
     }
 
@@ -419,11 +439,7 @@ class ApiAccessor {
 }
 
 data class UploadInfo(
-
     val inputCompanyInformation: CompanyInformation,
-
     val actualStoredCompany: StoredCompany,
-
     var actualStoredDataMetaInfo: DataMetaInformation? = null,
-
 )
