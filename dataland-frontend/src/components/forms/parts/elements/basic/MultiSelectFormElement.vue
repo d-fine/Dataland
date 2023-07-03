@@ -3,10 +3,10 @@
     v-model="selections"
     :options="options"
     :placeholder="placeholder"
-    option-label="label"
-    option-value="value"
     :show-toggle-all="false"
     :class="innerClass"
+    :optionLabel="optionLabel"
+    :maxSelectedLabels="3"
   />
   <!--
     Note: It is required to set the id of this div to the FormKit node Id to allow the checkCustomInputs methods
@@ -36,6 +36,7 @@ import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "MultiSelectFormElement",
+  emits: ["selectedValuesChanged"],
   components: { FormKit, MultiSelect, FormKitMessages },
   setup() {
     return {
@@ -46,6 +47,11 @@ export default defineComponent({
     return {
       selections: [] as string[],
     };
+  },
+  watch: {
+    selections(newVal) {
+      this.$emit("selectedValuesChanged", newVal);
+    },
   },
   props: {
     name: {
@@ -71,6 +77,9 @@ export default defineComponent({
     innerClass: {
       type: String,
       default: "",
+    },
+    optionLabel: {
+      type: String,
     },
   },
 });
