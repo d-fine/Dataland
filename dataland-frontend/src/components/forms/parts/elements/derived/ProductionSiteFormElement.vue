@@ -28,7 +28,7 @@ import StringBadgeListFormField from "@/components/forms/parts/fields/StringBadg
 export default defineComponent({
   name: "ProductionSiteFormElement",
   components: {
-      StringBadgeListFormField,
+    StringBadgeListFormField,
     InputTextFormField,
     AddressFormField,
   },
