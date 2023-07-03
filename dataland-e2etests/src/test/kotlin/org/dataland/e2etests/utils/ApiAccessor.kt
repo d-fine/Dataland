@@ -1,6 +1,5 @@
 package org.dataland.e2etests.utils
 
-import org.awaitility.Awaitility.await
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
@@ -23,7 +22,6 @@ import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinanci
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
-import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SmeData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -35,8 +33,6 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedCompanyDataControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDataNonFinancialsControllerApi
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
-import java.lang.NullPointerException
-import java.util.concurrent.TimeUnit
 
 class ApiAccessor {
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
@@ -46,6 +42,7 @@ class ApiAccessor {
     val unauthorizedMetaDataControllerApi = UnauthorizedMetaDataControllerApi()
 
     val qaServiceControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
+    private val qaApiAccessor = QaApiAccessor()
 
     val jwtHelper = JwtAuthenticationHelper()
 
@@ -177,7 +174,7 @@ class ApiAccessor {
             }
             Thread.sleep(waitTimeBeforeNextUpload)
         }
-        if (ensureQaPassed) ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo)
+        if (ensureQaPassed) qaApiAccessor.ensureQaCompletedAndUpdateUploadInfo(listOfUploadInfo, metaDataControllerApi)
         return listOfUploadInfo
     }
 
@@ -193,50 +190,7 @@ class ApiAccessor {
     ): DataMetaInformation {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val dataMetaInformation = frameworkDataUploadFunction(companyId, frameworkData, reportingPeriod)
-        return ensureQaIsPassed(listOf(dataMetaInformation))[0]
-    }
-
-    /**
-     * Wait until QaStatus is accepted for all Upload Infos or throw error. The metadata of the provided uploadInfos
-     * are updated in the process.
-     *
-     * @param uploadInfos List of UploadInfo for which an update of the QaStatus should be checked and awaited
-     * @return Input list of UplaodInfo but with updated metadata
-     */
-    fun ensureQaCompletedAndUpdateUploadInfo(uploadInfos: List<UploadInfo>) {
-        await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedAndUpdateUploadInfo(uploadInfos) }
-    }
-
-    private fun checkIfQaPassedAndUpdateUploadInfo(uploadInfos: List<UploadInfo>): Boolean {
-        return uploadInfos.all { uploadInfo ->
-            val metaData = uploadInfo.actualStoredDataMetaInfo
-                ?: throw NullPointerException(
-                    "To check QA Status, metadata is required but was null for $uploadInfo",
-                )
-            if (metaData.qaStatus != QaStatus.accepted) {
-                uploadInfo.actualStoredDataMetaInfo = metaDataControllerApi.getDataMetaInfo(metaData.dataId)
-            }
-            return uploadInfo.actualStoredDataMetaInfo!!.qaStatus == QaStatus.accepted
-        }
-    }
-
-    /**
-     * Waits until the status of all provided [metaDatas] is QaStatus.Accepted. Then returns an updated list of metaData
-     * each of which has qaStatus = QaStatus.Accepted.
-     */
-    private fun ensureQaIsPassed(metaDatas: List<DataMetaInformation>): List<DataMetaInformation> {
-        await().atMost(10, TimeUnit.SECONDS).until { checkIfQaPassedForMetaDataList(metaDatas) }
-        val updatedMetaDatas = mutableListOf<DataMetaInformation>()
-        metaDatas.forEach { metaData ->
-            updatedMetaDatas.add(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
-        }
-        return updatedMetaDatas
-    }
-
-    private fun checkIfQaPassedForMetaDataList(metaDatas: List<DataMetaInformation>): Boolean {
-        return metaDatas.all { metaData ->
-            return (metaDataControllerApi.getDataMetaInfo(metaData.dataId).qaStatus == QaStatus.accepted)
-        }
+        return qaApiAccessor.ensureQaIsPassed(listOf(dataMetaInformation), metaDataControllerApi)[0]
     }
 
     @Suppress("kotlin:S138")
