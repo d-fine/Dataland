@@ -15,14 +15,11 @@
       <div v-if="isItActive">
         <div>
           <div class="form-field border-none">
-            <MultiSelectFormField
+            <NaceCodeFormField
               label="Definition Product Type/Service"
-              placeholder="Select"
               description="..."
               name="definitionProductTypeService"
-              :options="['1', '2', '3']"
-              innerClass="long"
-            />
+            ></NaceCodeFormField>
           </div>
 
           <div class="form-field border-none">
@@ -84,6 +81,7 @@ import { defineComponent } from "vue";
 import { FormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import InputSwitch from "primevue/inputswitch";
 import MultiSelectFormField from "@/components/forms/parts/fields/MultiSelectFormField.vue";
+import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import PrimeButton from "primevue/button";
 
@@ -95,6 +93,7 @@ export default defineComponent({
     InputSwitch,
     MultiSelectFormField,
     PrimeButton,
+    NaceCodeFormField,
   },
   data() {
     return {
