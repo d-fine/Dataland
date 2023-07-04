@@ -10,10 +10,10 @@
         :name="'fiscalYearDeviation'"
         :description="euTaxonomyKpiInfoMappings.fiscalYearDeviation"
         :label="euTaxonomyKpiNameMappings.fiscalYearDeviation"
-        :options="[
-          { label: 'Deviation', value: 'Deviation' },
-          { label: 'No Deviation', value: 'NoDeviation' },
-        ]"
+        :options="{
+            'Deviation': 'Deviation',
+            'NoDeviation': 'No Deviation',
+          }"
       />
 
       <!-- The date the fiscal year ends -->
