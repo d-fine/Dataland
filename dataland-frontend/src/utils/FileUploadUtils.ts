@@ -52,8 +52,7 @@ export async function uploadFiles(
 }
 
 /**
- * Checks if there was actually a file added by the user that was not filtered
- * out by the FileUpload component.
+ * Checks if there was actually a file added by the user that was not filtered out by the FileUpload component.
  * @param filesCurrentlySelectedByUser the files currently selected by the user
  * @param previouslySelectedCertificates the reports that have already been selected before the last change
  * @returns true if there is actually a file added by the user
