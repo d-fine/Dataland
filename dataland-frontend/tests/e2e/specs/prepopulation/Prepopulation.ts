@@ -110,28 +110,35 @@ describe(
       });
     });
 
-    describe("Upload and validate EuTaxonomy for non-financials data", () => {
-      let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+    describeIf(
+      "Upload and validate EuTaxonomy for non-financials data",
+      {
+        executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
+        dataEnvironments: ["fakeFixtures"],
+      },
+      () => {
+        let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
 
-      before(function () {
-        cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
-          companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<
-            FixtureData<EuTaxonomyDataForNonFinancials>
-          >;
+        before(function () {
+          cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (jsonContent) {
+            companiesWithEuTaxonomyDataForNonFinancials = jsonContent as Array<
+              FixtureData<EuTaxonomyDataForNonFinancials>
+            >;
+          });
         });
-      });
 
-      it("Upload eutaxonomy-non-financials fake-fixtures", () => {
-        prepopulate(companiesWithEuTaxonomyDataForNonFinancials, uploadOneEuTaxonomyNonFinancialsDatasetViaApi);
-      });
+        it("Upload eutaxonomy-non-financials fake-fixtures", () => {
+          prepopulate(companiesWithEuTaxonomyDataForNonFinancials, uploadOneEuTaxonomyNonFinancialsDatasetViaApi);
+        });
 
-      it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
-        checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
-          DataTypeEnum.EutaxonomyNonFinancials,
-          companiesWithEuTaxonomyDataForNonFinancials.length
-        );
-      });
-    });
+        it("Checks that all the uploaded company ids and data ids can be retrieved", () => {
+          checkIfNumberOfCompaniesAndDataSetsAreAsExpectedForDataType(
+            DataTypeEnum.EutaxonomyNonFinancials,
+            companiesWithEuTaxonomyDataForNonFinancials.length
+          );
+        });
+      }
+    );
 
     describeIf(
       "Upload and validate Lksg data",

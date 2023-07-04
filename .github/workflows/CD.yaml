@@ -7,6 +7,10 @@ on:
         description: 'Reset non-user related Docker Volumes & Re-populate'
         required: false
         type: boolean
+      loadGleifGoldenCopy:
+        description: 'Load the full GLEIF Golden Copy File into the database'
+        required: false
+        type: boolean
       whichEnvironment:
         description: "Choose environment"
         required: true
@@ -103,6 +107,7 @@ jobs:
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
           KEYCLOAK_DATALAND_ADMIN_VALUE: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_VALUE }}
           KEYCLOAK_DATALAND_ADMIN_SALT: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_SALT }}
+          DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_BATCH_MANAGER_CLIENT_SECRET }}
           KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
           KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
           KEYCLOAK_UPLOADER_VALUE: ${{ secrets.KEYCLOAK_UPLOADER_VALUE }}
@@ -124,6 +129,7 @@ jobs:
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
+          LOAD_GLEIF_GOLDEN_COPY: ${{ github.event.inputs.loadGleifGoldenCopy }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:

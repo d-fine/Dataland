@@ -320,6 +320,7 @@ class DataManager(
      * @param dataId the ID of the data set to be checked
      * @return a boolean signalling if the data is public or not
      */
+    @Transactional(readOnly = true)
     fun isDataSetPublic(dataId: String): Boolean {
         val associatedCompanyId = metaDataManager.getDataMetaInformationByDataId(dataId).company.companyId
         return companyManager.isCompanyPublic(associatedCompanyId)

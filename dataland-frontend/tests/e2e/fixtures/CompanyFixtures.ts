@@ -108,7 +108,7 @@ export function getCsvCompanyMapping<T>(): Array<DataPoint<FixtureData<T>, strin
     },
     {
       label: "Sector",
-      value: (row: FixtureData<T>): string => row.companyInformation.sector,
+      value: (row: FixtureData<T>): string | undefined => row.companyInformation.sector,
     },
     {
       label: "Countrycode",

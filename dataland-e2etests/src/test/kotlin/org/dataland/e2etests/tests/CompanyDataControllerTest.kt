@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
@@ -11,10 +12,19 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.util.UUID
 
 class CompanyDataControllerTest {
 
     private val apiAccessor = ApiAccessor()
+    private val baseCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+        .getCompanyInformationWithRandomIdentifiers(1).first()
+    private val company2 = "Company 2"
+    private val company3 = "Company 3"
+    private val company5 = "Company 5"
+    private val company6 = "Company 6"
+    private val company8 = "Company 8"
+    private val company9 = "Company 9"
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -48,23 +58,6 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post a dummy company and check if that specific company can be queried by its name`() {
-        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
-        val getCompaniesOnlyByNameResponse = apiAccessor.getCompaniesOnlyByName(
-            uploadInfo.actualStoredCompany.companyInformation.companyName,
-        )
-        val expectedCompany = StoredCompany(
-            uploadInfo.actualStoredCompany.companyId,
-            uploadInfo.actualStoredCompany.companyInformation,
-            emptyList(),
-        )
-        assertTrue(
-            getCompaniesOnlyByNameResponse.contains(expectedCompany),
-            "Dataland does not contain the posted company.",
-        )
-    }
-
-    @Test
     fun `post two dummy companies with framework data and check if the distinct endpoint returns all values`() {
         val listOfTestCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getCompanyInformationWithoutIdentifiers(2)
@@ -74,11 +67,11 @@ class CompanyDataControllerTest {
         )
         val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
-            distinctValues.sectors!!.containsAll(listOfTestCompanyInformation.map { it.sector }),
+            distinctValues.sectors.containsAll(listOfTestCompanyInformation.map { it.sector }),
             "The list of all occurring sectors does not contain the sectors of the posted companies.",
         )
         assertTrue(
-            distinctValues.countryCodes!!.containsAll(listOfTestCompanyInformation.map { it.countryCode }),
+            distinctValues.countryCodes.containsAll(listOfTestCompanyInformation.map { it.countryCode }),
             "The list of all occurring country codes does not contain the country codes of the posted companies.",
         )
     }
@@ -93,63 +86,10 @@ class CompanyDataControllerTest {
         )
         val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
         assertTrue(
-            distinctValues.sectors!!.intersect(
+            distinctValues.sectors.intersect(
                 mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation.map { it.value[0].sector }.toSet(),
             ).isEmpty(),
             "At least one sector of the frontend-excluded data sets appears in the distinct sector value list.",
-        )
-    }
-
-    @Test
-    fun `post a dummy company and check if that specific company can be queried by its country code and sector`() {
-        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
-        val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
-            sectors = setOf(uploadInfo.actualStoredCompany.companyInformation.sector),
-            countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
-        )
-        assertTrue(
-            getCompaniesByCountryCodeAndSectorResponse.contains(uploadInfo.actualStoredCompany),
-            "The posted company could not be found in the query results when querying for its country code and sector.",
-        )
-    }
-
-    @Test
-    fun `post a dummy company and check that it is not returned if filtered by a different sector`() {
-        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
-        val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
-            sectors = setOf("${uploadInfo.actualStoredCompany.companyInformation.sector}a"),
-            countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
-        )
-        assertFalse(
-            getCompaniesByCountryCodeAndSectorResponse.contains(uploadInfo.actualStoredCompany),
-            "The posted company is in the query results," +
-                " even though the country code filter was set to a different country code.",
-
-        )
-    }
-
-    @Test
-    fun `post some dummy companies and check if the number of companies increased accordingly`() {
-        val allCompaniesListSizeBefore = apiAccessor.getNumberOfStoredCompanies()
-        val listOfUploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(3)
-        val allCompaniesListSizeAfter = apiAccessor.getNumberOfStoredCompanies()
-        assertEquals(
-            listOfUploadInfo.size,
-            allCompaniesListSizeAfter - allCompaniesListSizeBefore,
-            "The size of the all-companies-list did not increase by ${listOfUploadInfo.size}.",
-        )
-    }
-
-    @Test
-    fun `post a dummy company and check if it can be searched for by identifier`() {
-        val uploadInfo = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertTrue(
-            apiAccessor.companyDataControllerApi.getCompanies(
-                searchString = uploadInfo.inputCompanyInformation.identifiers.first().identifierValue,
-                onlyCompanyNames = false,
-            ).any { it.companyId == uploadInfo.actualStoredCompany.companyId },
-            "The posted company could not be found in the query results when querying for its first identifiers value.",
         )
     }
 
@@ -220,5 +160,56 @@ class CompanyDataControllerTest {
             response.body.toString().contains("Could not insert company as one company identifier is already used"),
             "The response message is not as expected.",
         )
+    }
+
+    @Test
+    fun `check if the new companies search via name and ids endpoint works as expected`() {
+        val testString = "unique-test-string-${UUID.randomUUID()}"
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        uploadCompaniesInReverseToExpectedOrder(testString)
+        val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+            searchString = testString,
+        ).map { it.companyName }
+        assertEquals(
+            listOf(testString, company2, "${testString}2", company5, company6, "3$testString", company9),
+            sortedCompanyNames.filter { it != company8 && it != company3 },
+        )
+        assertEquals(
+            listOf(company3, company2, "${testString}2", company5, company6, company8, company9),
+            sortedCompanyNames.filter { it != "3$testString" && it != testString },
+        )
+
+        val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
+            searchString = "other_name",
+        ).map { it.companyName }
+        assertTrue(otherCompanyNames.contains(company8))
+        assertFalse(otherCompanyNames.contains("Company 7"))
+    }
+
+    private fun uploadCompaniesInReverseToExpectedOrder(expectedSearchString: String) {
+        uploadModifiedBaseCompany(company9, null, "3$expectedSearchString")
+        uploadModifiedBaseCompany(company8, listOf("3$expectedSearchString", "other_name"), null)
+        uploadModifiedBaseCompany("3$expectedSearchString", null, null)
+        uploadModifiedBaseCompany(company6, null, "${expectedSearchString}2")
+        uploadModifiedBaseCompany(company5, listOf("${expectedSearchString}2"), null)
+        uploadModifiedBaseCompany("${expectedSearchString}2", null, null)
+        uploadModifiedBaseCompany(company3, null, expectedSearchString)
+        uploadModifiedBaseCompany(company2, listOf(expectedSearchString), null)
+        uploadModifiedBaseCompany(expectedSearchString, null, null)
+    }
+
+    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?) {
+        val companyInformation = baseCompanyInformation.copy(
+            companyName = name,
+            companyAlternativeNames = alternativeNames,
+            identifiers = listOf(
+                apiAccessor.createCompanyIdentifier(
+                    CompanyIdentifier.IdentifierType.isin,
+                    identifier
+                        ?: UUID.randomUUID().toString(),
+                ),
+            ),
+        )
+        apiAccessor.companyDataControllerApi.postCompany(companyInformation)
     }
 }

@@ -1,7 +1,7 @@
 package org.dataland.documentmanager.controller
 
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.documentmanager.api.DocumentApi
-import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.services.DocumentManager
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,8 +24,13 @@ class DocumentController(
         return ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(pdfDocument))
     }
 
-    override fun checkDocument(documentId: String): ResponseEntity<DocumentExistsResponse> {
-        return ResponseEntity.ok(documentManager.checkIfDocumentExistsWithId(documentId))
+    override fun checkDocument(documentId: String) {
+        if (!documentManager.checkIfDocumentExistsWithId(documentId)) {
+            throw ResourceNotFoundApiException(
+                "Document with ID $documentId does not exist.",
+                "Document with ID $documentId does not exist.",
+            )
+        }
     }
 
     override fun getDocument(documentId: String): ResponseEntity<InputStreamResource> {

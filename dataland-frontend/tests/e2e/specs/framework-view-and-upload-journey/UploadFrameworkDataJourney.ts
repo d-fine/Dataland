@@ -234,7 +234,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
             .should("exist")
             .url()
             .should("eq", getBaseUrl() + "/companies/choose");
-          cy.intercept("**/api/companies*").as("searchCompanyName");
+          cy.intercept("**/api/companies/names*").as("searchCompanyName");
           cy.get("input[id=company_search_bar_standard]")
             .click({ force: true })
             .type(testCompanyNameForManyDatasetsCompany);

@@ -4,6 +4,7 @@ import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/Dat
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
 
 /**
  * Generates fake data for a single cash-flow type for the eutaxonomy-non-financials framework
@@ -11,14 +12,22 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
  * @returns the generated data
  */
 export function generateEuTaxonomyPerCashflowType(reports: ReferencedDocuments): EuTaxonomyDetailsPerCashFlowType {
-  const total = randomEuroValue();
-  const eligiblePercentage = randomPercentageValue();
-  const alignedPercentage = randomPercentageValue();
-
   return {
-    totalAmount: generateDatapointOrNotReportedAtRandom(total, reports),
-    alignedPercentage: generateDatapointOrNotReportedAtRandom(alignedPercentage, reports),
-    eligiblePercentage: generateDatapointOrNotReportedAtRandom(eligiblePercentage, reports),
+    totalAmount: valueOrUndefined(generateDatapoint(valueOrUndefined(randomEuroValue()), reports)),
+    alignedData: valueOrUndefined(
+      generateDatapointAbsoluteAndPercentage(
+        valueOrUndefined(randomEuroValue()),
+        valueOrUndefined(randomPercentageValue()),
+        reports
+      )
+    ),
+    eligibleData: valueOrUndefined(
+      generateDatapointAbsoluteAndPercentage(
+        valueOrUndefined(randomEuroValue()),
+        valueOrUndefined(randomPercentageValue()),
+        reports
+      )
+    ),
   };
 }
 

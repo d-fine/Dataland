@@ -97,6 +97,26 @@ export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedDocu
       ? QualityOptions.Na
       : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
 
+  const { dataSource, comment } = createQualityAndDataSourceAndComment(reports, qualityBucket);
+
+  return {
+    value: value ?? undefined,
+    dataSource: dataSource,
+    quality: qualityBucket,
+    comment: comment,
+  } as Y;
+}
+
+/**
+ * This method constructs the data source and the comment for the fake datapoint
+ * @param reports the reports that can be referenced as data sources
+ * @param qualityBucket the quality bucket of the datapoint
+ * @returns the generated data source and comment of the datapoint
+ */
+function createQualityAndDataSourceAndComment(
+  reports: ReferencedDocuments,
+  qualityBucket: QualityOptions
+): { dataSource: CompanyReportReference | undefined; comment: string | undefined } {
   let dataSource: CompanyReportReference | undefined = undefined;
   let comment: string | undefined = undefined;
   if (
@@ -108,13 +128,7 @@ export function generateDatapoint<T, Y>(value: T | null, reports: ReferencedDocu
     dataSource = generateDataSource(reports);
     comment = faker.git.commitMessage();
   }
-
-  return {
-    value: value ?? undefined,
-    dataSource: dataSource,
-    quality: qualityBucket,
-    comment: comment,
-  } as Y;
+  return { dataSource, comment };
 }
 
 /**
@@ -144,4 +158,31 @@ export function getCsvDataPointMapping<T>(
     },
     ...getCsvDataSourceMapping<T>(dataPointName, (row: T) => dataPointGetter(row)?.dataSource),
   ];
+}
+
+/**
+ * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
+ * @param valueAsAbsolute the decimal value of the datapoint to generate
+ * @param valueAsPercentage the percentage of the datapoint to generate
+ * @param reports the reports that can be referenced as data sources
+ * @returns the generated datapoint
+ */
+export function generateDatapointAbsoluteAndPercentage<T, Y>(
+  valueAsAbsolute: T | null,
+  valueAsPercentage: T | null,
+  reports: ReferencedDocuments
+): Y {
+  const qualityBucket =
+    valueAsAbsolute === null
+      ? QualityOptions.Na
+      : faker.helpers.arrayElement(Object.values(QualityOptions).filter((it) => it !== QualityOptions.Na));
+  const { dataSource, comment } = createQualityAndDataSourceAndComment(reports, qualityBucket);
+
+  return {
+    valueAsPercentage: valueAsPercentage ?? undefined,
+    dataSource: dataSource,
+    quality: qualityBucket,
+    comment: comment,
+    valueAsAbsolute: valueAsAbsolute ?? undefined,
+  } as Y;
 }

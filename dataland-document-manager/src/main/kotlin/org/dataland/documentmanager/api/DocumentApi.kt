@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.documentmanager.model.DocumentExistsResponse
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -15,6 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 
@@ -58,16 +59,18 @@ interface DocumentApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully checked document existence."),
+            ApiResponse(responseCode = "404", description = "Successfully checked that a document does not exist."),
         ],
     )
-    @GetMapping(
-        value = ["/{documentId}/exists"],
+    @RequestMapping(
+        method = [RequestMethod.HEAD],
+        value = ["/{documentId}"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun checkDocument(
         @PathVariable("documentId") documentId: String,
-    ): ResponseEntity<DocumentExistsResponse>
+    )
 
     /**
      * Retrieve a document by its ID

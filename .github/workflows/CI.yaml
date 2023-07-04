@@ -90,8 +90,8 @@ jobs:
       - name: Execute linting and detekt
         run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
         if: always()
-      - name: Execute Backend unit tests
-        run: ./gradlew :dataland-backend:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test --no-daemon --stacktrace
+      - name: Execute unit tests for all spring services
+        run: ./gradlew :dataland-backend:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
@@ -186,6 +186,7 @@ jobs:
           KEYCLOAK_DATALAND_ADMIN_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="
           KEYCLOAK_DATALAND_ADMIN_PASSWORD: "password"
+          DATALAND_BATCH_MANAGER_CLIENT_SECRET: "password"
           KEYCLOAK_READER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_READER_SALT: "K9nzg086pCNjq8dxl84GZg=="
           KEYCLOAK_READER_PASSWORD: "password"

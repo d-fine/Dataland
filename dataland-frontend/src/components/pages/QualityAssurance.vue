@@ -285,7 +285,7 @@ export default defineComponent({
           dataId: this.dataId,
         },
         onClose: () => {
-          void this.getQaDataForCurrentPage().catch((error) => console.log(error));
+          this.getQaDataForCurrentPage().catch((error) => console.log(error));
         },
       });
     },
