@@ -4261,7 +4261,7 @@
               "type": "string"
             }
           },
-          "numberOfSuppliersPerCountry": {
+          "numberOfSuppliersPerCountryCode": {
             "type": "object",
             "additionalProperties": {
               "type": "integer",

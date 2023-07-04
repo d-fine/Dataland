@@ -85,12 +85,12 @@ function generateProduct(): LksgProduct {
  * @returns random procurement category
  */
 function generateProcurementCategory(): LksgProcurementCategory {
-  const numberOfSuppliersPerCountryAsMap = new Map<string, number>(
+  const numberOfSuppliersPerCountryCodeAsMap = new Map<string, number>(
     generateArray(() => [generateIso2CountryCode(), valueOrNull(faker.number.int({ min: 0, max: 50 }))!])
   );
   return {
     definitionProductTypeService: generateArray(() => faker.commerce.productName()),
-    numberOfSuppliersPerCountry: valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryAsMap)),
+    numberOfSuppliersPerCountryCode: valueOrUndefined(Object.fromEntries(numberOfSuppliersPerCountryCodeAsMap)),
     orderVolume: valueOrUndefined(randomPercentageValue()),
   };
 }

@@ -190,15 +190,15 @@ export default defineComponent({
 
     /**
      * Generates a list of readible strings (or just a single one) combining suppliers and their associated countries
-     * @param numberOfSuppliersPerCountry the map of number of suppliers and associated companies
+     * @param numberOfSuppliersPerCountryCode the map of number of suppliers and associated companies
      * from which strings are written
      * @returns the constructed collection of readable strings
      */
     generateReadableCombinationOfNumberOfSuppliersAndCountries(
-      numberOfSuppliersPerCountry?: Map<string, number | undefined | null>
+      numberOfSuppliersPerCountryCode?: Map<string, number | undefined | null>
     ) {
-      if (numberOfSuppliersPerCountry != undefined) {
-        const readableListOfSuppliersAndCountries = Array.from(numberOfSuppliersPerCountry.entries()).map(
+      if (numberOfSuppliersPerCountryCode != undefined) {
+        const readableListOfSuppliersAndCountries = Array.from(numberOfSuppliersPerCountryCode.entries()).map(
           ([countryCode, numberOfSuppliers]) => {
             const countryName = getCountryNameFromCountryCode(countryCode) ?? countryCode;
             if (numberOfSuppliers != undefined) {
@@ -240,7 +240,7 @@ export default defineComponent({
           procurementCategory: procurementCategory as ProcurementCategoryType,
           definitionsOfProductTypeOrService: definitionsOfProductTypeOrService(),
           suppliersAndCountries: this.generateReadableCombinationOfNumberOfSuppliersAndCountries(
-            new Map(Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountry ?? {}))
+            new Map(Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountryCode ?? {}))
           ),
           orderVolume:
             (lksgProductCategory as LksgProcurementCategory).orderVolume != null

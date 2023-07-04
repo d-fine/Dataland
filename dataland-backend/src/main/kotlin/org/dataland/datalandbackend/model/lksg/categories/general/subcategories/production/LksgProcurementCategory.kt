@@ -11,7 +11,7 @@ data class LksgProcurementCategory(
     @field:JsonProperty(required = true)
     val definitionProductTypeService: List<String>,
 
-    val numberOfSuppliersPerCountry: Map<String, Int?>?,
+    val numberOfSuppliersPerCountryCode: Map<String, Int?>?,
 
     val orderVolume: BigDecimal?,
 )
