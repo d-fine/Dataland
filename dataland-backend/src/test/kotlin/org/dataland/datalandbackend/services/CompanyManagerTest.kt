@@ -34,7 +34,6 @@ class CompanyManagerTest(
     @Test
     fun `add sample company and check if it can be retrieved by using the company ID that is returned`() {
         val testCompanyData = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
-        println(testCompanyData)
         val testCompanyId = testCompanyManager.addCompany(testCompanyData).companyId
         assertEquals(
             StoredCompany(testCompanyId, testCompanyData, mutableListOf()),
