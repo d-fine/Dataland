@@ -23,10 +23,13 @@ import { ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns 
 import { Field, Subcategory } from "@/utils/GenericFrameworkTypes";
 import { DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { DataAndMetaInformationLksgData, LksgCountryAssociatedSuppliers, LksgProductCategory } from "@clients/backend";
+import {
+    DataAndMetaInformationLksgData,
+    LksgProcurementCategory,
+} from "@clients/backend";
 import Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import { ProcurementCategory } from "@/api-models/ProcurementCategory";
+import {ProcurementCategoryType} from "@/api-models/ProcurementCategoryType";
 
 export default defineComponent({
   name: "LksgPanel",
@@ -192,15 +195,16 @@ export default defineComponent({
      * @param countryAssociatedSuppliers the list of suppliers and associated companies from which strings are written
      * @returns the constructed collection of readable strings
      */
-    generateReadableCombinationOfSuppliersAndCountries(countryAssociatedSuppliers?: LksgCountryAssociatedSuppliers[]) {
-      if (countryAssociatedSuppliers != undefined) {
-        const readableListOfSuppliersAndCountries = countryAssociatedSuppliers?.map(
-          (value: LksgCountryAssociatedSuppliers) => {
-            const printedCountry = getCountryNameFromCountryCode(value.country) ?? value.country;
-            if (value.numberOfSuppliers != undefined) {
-              return String(value.numberOfSuppliers) + " suppliers from " + printedCountry;
+    generateReadableCombinationOfSuppliersAndCountries(numberOfSuppliersPerCountry?: Map<string, number | undefined | null>) {
+      if (numberOfSuppliersPerCountry != undefined) {
+        let readableListOfSuppliersAndCountries = [] as string[];
+        numberOfSuppliersPerCountry?.forEach(
+          (numberOfSuppliers, countryCode) => {
+            const printedCountry = getCountryNameFromCountryCode(countryCode) ?? countryCode;
+            if (numberOfSuppliers != undefined) {
+              readableListOfSuppliersAndCountries.push(String(numberOfSuppliers) + " suppliers from " + printedCountry);
             } else {
-              return "There are suppliers from " + printedCountry;
+              readableListOfSuppliersAndCountries.push("There are suppliers from " + printedCountry);
             }
           }
         );
@@ -216,31 +220,31 @@ export default defineComponent({
 
     /**
      * Converts the map of ProcurementCategory and LksgProductCategory into an array for a proper handling of the
-     * DetailsCompanyDataTable in the LksgCompanyDataTable (modal showing information related to Product Categories)
+     * DetailsCompanyDataTable in the LksgCompanyDataTable (modal showing information related to Procurement Categories)
      * @param inputObject Map to convert to array
      * @returns The constructed map
      */
-    reformatProductCategoriesValue(inputObject: Map<ProcurementCategory, LksgProductCategory> | null) {
+    reformatProcurementCategoriesValue(inputObject: Map<ProcurementCategoryType, LksgProcurementCategory> | null) {
       if (inputObject == null) return null;
       const listOfProductCategories = [];
       for (const [procurementCategory, lksgProductCategory] of Object.entries(inputObject)) {
         const definitionsOfProductTypeOrService = function (): string[] | string {
-          if ((lksgProductCategory as LksgProductCategory).definitionProductTypeService?.length > 1) {
-            return (lksgProductCategory as LksgProductCategory).definitionProductTypeService;
+          if ((lksgProductCategory as LksgProcurementCategory).definitionProductTypeService?.length > 1) {
+            return (lksgProductCategory as LksgProcurementCategory).definitionProductTypeService;
           } else {
-            return (lksgProductCategory as LksgProductCategory).definitionProductTypeService[0];
+            return (lksgProductCategory as LksgProcurementCategory).definitionProductTypeService[0];
           }
         };
 
         listOfProductCategories.push({
-          procurementCategory: procurementCategory as ProcurementCategory,
+          procurementCategory: procurementCategory as ProcurementCategoryType,
           definitionsOfProductTypeOrService: definitionsOfProductTypeOrService(),
           suppliersAndCountries: this.generateReadableCombinationOfSuppliersAndCountries(
-            (lksgProductCategory as LksgProductCategory).suppliersPerCountry
+            new Map(Object.entries((lksgProductCategory as LksgProcurementCategory).numberOfSuppliersPerCountry))
           ),
           orderVolume:
-            (lksgProductCategory as LksgProductCategory).orderVolume != null
-              ? String((lksgProductCategory as LksgProductCategory).orderVolume)
+            (lksgProductCategory as LksgProcurementCategory).orderVolume != null
+              ? String((lksgProductCategory as LksgProcurementCategory).orderVolume)
               : null,
         });
       }
@@ -263,9 +267,9 @@ export default defineComponent({
       if (kpiField.name.includes("Countries") && kpiField.component !== "YesNoFormField") {
         kpiValue = this.reformatCountriesValue(kpiValue);
       }
-      if (kpiField.name === "productCategories") {
-        kpiValue = this.reformatProductCategoriesValue(
-          kpiValue as Map<ProcurementCategory, LksgProductCategory> | null
+      if (kpiField.name === "procurementCategories") {
+        kpiValue = this.reformatProcurementCategoriesValue(
+          kpiValue as Map<ProcurementCategoryType, LksgProcurementCategory> | null
         );
       }
 

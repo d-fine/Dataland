@@ -5,7 +5,7 @@ import java.math.BigDecimal
 
 /**
  * --- API model ---
- * Fields of the LKSG questionnaire regarding a single product category for the "Product Categories" field
+ * Fields of the LKSG questionnaire regarding a single procurement category for the "Procurement Categories" field
  */
 data class LksgProcurementCategory(
     @field:JsonProperty(required = true)

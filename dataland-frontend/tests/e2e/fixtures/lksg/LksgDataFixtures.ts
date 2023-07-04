@@ -79,8 +79,8 @@ function generateProduct(): LksgProduct {
 }
 
 /**
- * Generates a random product category
- * @returns random product category
+ * Generates a random procurement category
+ * @returns random procurement category
  */
 function generateProcurementCategory(): LksgProcurementCategory {
   const numberOfSuppliersPerCountryAsMap = new Map<string, number>(generateArray(() =>
@@ -94,8 +94,8 @@ function generateProcurementCategory(): LksgProcurementCategory {
 }
 
 /**
- * Generates a random map of product categories
- * @returns random map of product categories
+ * Generates a random map of procurement categories
+ * @returns random map of procurement categories
  */
 function generateProcurementCategories(): { [key: string]: LksgProcurementCategory } {
   const procurementCategories = Object.values(ProcurementCategoryType);
