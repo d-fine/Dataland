@@ -81,8 +81,8 @@ export default defineComponent({
     this.updateFileUploadFiles();
   },
   watch: {
-    baseDataPointYesNo(newValue) {
-      if (newValue === "No") {
+    baseDataPointYesNo(newValue: BaseDataPointYesNo) {
+      if (newValue.value && newValue.value === "No") {
         (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
       }
     },
