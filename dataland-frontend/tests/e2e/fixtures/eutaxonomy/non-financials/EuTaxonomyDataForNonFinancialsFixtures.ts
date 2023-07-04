@@ -1,6 +1,6 @@
 import { EuTaxonomyDataForNonFinancials, EuTaxonomyDetailsPerCashFlowType } from "@clients/backend";
 import { ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
-import { generateDatapointOrNotReportedAtRandom } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateDatapoint, generateDatapointAbsoluteAndPercentage } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { randomEuroValue, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { assertDefined } from "@/utils/TypeScriptUtils";

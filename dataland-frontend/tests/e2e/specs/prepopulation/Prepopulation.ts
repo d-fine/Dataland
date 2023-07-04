@@ -114,7 +114,6 @@ describe(
       "Upload and validate EuTaxonomy for non-financials data",
       {
         executionEnvironments: ["developmentLocal", "ci", "developmentCd", "previewCd"],
-        dataEnvironments: ["fakeFixtures"],
       },
       () => {
         let companiesWithEuTaxonomyDataForNonFinancials: Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
