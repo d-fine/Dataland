@@ -137,7 +137,7 @@ export default defineComponent({
               string,
               object | null
             ][]) {
-              if(subCategoryObject == null) continue;
+              if (subCategoryObject == null) continue;
               for (const [kpiKey, kpiValue] of Object.entries(subCategoryObject)) {
                 const subcategory = assertDefined(
                   lksgDataModel
